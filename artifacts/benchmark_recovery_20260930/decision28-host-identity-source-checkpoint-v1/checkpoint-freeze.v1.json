@@ -1,0 +1,1720 @@
+{
+  "artifact_kind": "decision28_host_identity_exact_checkpoint_v1",
+  "controller_source_peer_sha256": "e51563b124182dc6c5341ca4d0ea00bcc858fa93d1559483de6dfda7e7fc1405",
+  "ext4_successor_peer_sha256": "8605b8c47799f7aacb17f0ca7ff66c4ffd8132c3df6db07b6af5bcd614202864",
+  "future_host_closure_current95_CPU_GPU_and_local_fullCI_pending": true,
+  "host_source_peer_sha256": "83d27f58d5e54f1ae48c2df98bf2fa61c8f8f8e39a530bf49fbf91084166d9eb",
+  "new_image_id": "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+  "original_current_source_checkout_and_selected_build_closed": true,
+  "owned_files": {
+    "BENCHMARK_RECOVERY_PLAN.md": {
+      "epoch7": [
+        17601399781211216820,
+        68398419340689794,
+        33206,
+        1,
+        115296,
+        1791011659900490600,
+        1790712292069693500
+      ],
+      "sha256": "152d1906df36bebbe3850a35fabfe41f4a03bfe6a3eda0e8185ce79c159a3d16",
+      "size_bytes": 115296
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/author-review.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400523,
+        33206,
+        1,
+        8582,
+        1791010984137102400,
+        1791010984137102400
+      ],
+      "sha256": "3f603a3d16423d5e62990b084abf0efbc7b176df07965dc8f435cd40691b4df4",
+      "size_bytes": 8582
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/literal-replacements.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979137,
+        33206,
+        1,
+        29949,
+        1791010504411498100,
+        1791010504411498100
+      ],
+      "sha256": "afd8f3329ad97f6820936b8077390e3c856106cc5282891645fa7e89b4ad3e48",
+      "size_bytes": 29949
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/ancestry.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979229,
+        33206,
+        1,
+        609,
+        1791011379096014100,
+        1791011379095014200
+      ],
+      "sha256": "428da01e4f8d04f78b1dbbd33f05db38a0a89b9e78dcfe91bd5239b3d73b4ced",
+      "size_bytes": 609
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/ancestry.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979228,
+        33206,
+        1,
+        0,
+        1791011379093008700,
+        1791011379093008700
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/ancestry.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400539,
+        33206,
+        1,
+        0,
+        1791011379091757400,
+        1791011379091757400
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/ancestry.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400542,
+        33206,
+        1,
+        2686,
+        1791011379215151800,
+        1791011379215151800
+      ],
+      "sha256": "9a61f09fc821599c94fc7c68bb022bc01a9b40d274e313c207c70a3cc251e752",
+      "size_bytes": 2686
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/checkout.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979243,
+        33206,
+        1,
+        554,
+        1791011392278527300,
+        1791011392278527300
+      ],
+      "sha256": "2c14d834e9c5ae637b8a955604f6b695d3cfd954b11aa0ab3083da45252f97a8",
+      "size_bytes": 554
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/checkout.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979242,
+        33206,
+        1,
+        170,
+        1791011393106023800,
+        1791011392277024900
+      ],
+      "sha256": "b81c300f10aa380e548606fa181879a7e25b3a11e47b384dcd1c1cab51b95fbe",
+      "size_bytes": 170
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/checkout.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400553,
+        33206,
+        1,
+        0,
+        1791011392276024700,
+        1791011392276024700
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/checkout.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1688849862689900,
+        33206,
+        1,
+        2637,
+        1791011393179249100,
+        1791011393177982600
+      ],
+      "sha256": "a5f7b7d810bc5d375bc0313bca89955f6f6768a43d264d313147643555bc5033",
+      "size_bytes": 2637
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/dispatch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400526,
+        33206,
+        1,
+        426,
+        1791011378397446100,
+        1791011378397446100
+      ],
+      "sha256": "745f3ffdb0e9cf290a77c87680a7a7ae3e2305ebd27d0fbf33e2e05939c09b23",
+      "size_bytes": 426
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/execution.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979260,
+        33206,
+        1,
+        2107738,
+        1791011414238026200,
+        1791011414231341200
+      ],
+      "sha256": "95354cc8fa451f0de79bc02c25e8372470e7d52cbf086dde40599f9104cf3347",
+      "size_bytes": 2107738
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/future-tree.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979237,
+        33206,
+        1,
+        557,
+        1791011379528688100,
+        1791011379528688100
+      ],
+      "sha256": "702e8cf273a6fd571d2dda6374f72b18cd28ba9e1f3b7caaa1992ec542f85bd1",
+      "size_bytes": 557
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/future-tree.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979236,
+        33206,
+        1,
+        0,
+        1791011379527561700,
+        1791011379527561700
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/future-tree.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979235,
+        33206,
+        1,
+        858573,
+        1791011379699406500,
+        1791011379526557100
+      ],
+      "sha256": "5709a1c8f1e7f8cbb312452fac1386b044106a9be92e9aeb20a0274994a20e65",
+      "size_bytes": 858573
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/future-tree.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400550,
+        33206,
+        1,
+        2655,
+        1791011379776743100,
+        1791011379775297300
+      ],
+      "sha256": "76964d9e03c7f3acd67db8c3d1bc054c6e5a789682c476769560f29e1cbe9841",
+      "size_bytes": 2655
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/intentional-reviewed-transitions.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979259,
+        33206,
+        1,
+        7382,
+        1791011402759290800,
+        1791011402757928100
+      ],
+      "sha256": "f4be70331a73966e23cabba1c73827bfa6bfee6112beef78ff2469e6b78a2d23",
+      "size_bytes": 7382
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-head.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979247,
+        33206,
+        1,
+        503,
+        1791011393184252300,
+        1791011393183252500
+      ],
+      "sha256": "61ac9157630585752971d6c164dc1072536d94f8fdad6fbd2203940d96749f7a",
+      "size_bytes": 503
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-head.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979246,
+        33206,
+        1,
+        0,
+        1791011393181252100,
+        1791011393181252100
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-head.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400557,
+        33206,
+        1,
+        41,
+        1791011393186254200,
+        1791011393181252100
+      ],
+      "sha256": "a19c4bd8a2afd29aec770a3900b25eee49b4ec9d3e6ad16d7cfe0872dfc4a6b0",
+      "size_bytes": 41
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-head.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979248,
+        33206,
+        1,
+        2583,
+        1791011393245478100,
+        1791011393244478200
+      ],
+      "sha256": "64e7774aa4438f5eb2fff99409d5fc61e9fd7e35538ea4c53fbf0708381e97eb",
+      "size_bytes": 2583
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-object.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979225,
+        33206,
+        1,
+        557,
+        1791011378958194600,
+        1791011378958194600
+      ],
+      "sha256": "25ab6faad197678093ed766713d81eb9594240830e51967fa6154f020e0776c7",
+      "size_bytes": 557
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-object.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400536,
+        33206,
+        1,
+        0,
+        1791011378957195000,
+        1791011378957195000
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-object.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979223,
+        33206,
+        1,
+        0,
+        1791011378956192000,
+        1791011378956192000
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-object.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979226,
+        33206,
+        1,
+        2638,
+        1791011379089583600,
+        1791011379089583600
+      ],
+      "sha256": "26936fc7c3d11d70c1d07749f493100df18beb2e7baa0bc28a644b3b11941076",
+      "size_bytes": 2638
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-status.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1688849862689907,
+        33206,
+        1,
+        548,
+        1791011393249981300,
+        1791011393249981300
+      ],
+      "sha256": "f8bafcded230d3d903757c2294646bc7df3eead6d397bd365c90f557b7c7c556",
+      "size_bytes": 548
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-status.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979250,
+        33206,
+        1,
+        0,
+        1791011393248478800,
+        1791011393248478800
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-status.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400561,
+        33206,
+        1,
+        0,
+        1791011393247477000,
+        1791011393247477000
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-status.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979252,
+        33206,
+        1,
+        2629,
+        1791011393375258000,
+        1791011393374254400
+      ],
+      "sha256": "c955317b0ed65ecf922867327ca0b934a01bbf38a3a2184d0ecf06fd780ababf",
+      "size_bytes": 2629
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-tree.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979255,
+        33206,
+        1,
+        557,
+        1791011393379258500,
+        1791011393379258500
+      ],
+      "sha256": "e18bcdea79baa118504ab00df26779a18004ecdeba1d9af1ac60e514cde366cb",
+      "size_bytes": 557
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-tree.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979254,
+        33206,
+        1,
+        0,
+        1791011393377257100,
+        1791011393377257100
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-tree.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        2533274792821877,
+        33206,
+        1,
+        858573,
+        1791011393551015600,
+        1791011393377257100
+      ],
+      "sha256": "5709a1c8f1e7f8cbb312452fac1386b044106a9be92e9aeb20a0274994a20e65",
+      "size_bytes": 858573
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/new-tree.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979256,
+        33206,
+        1,
+        2649,
+        1791011393614321800,
+        1791011393612836600
+      ],
+      "sha256": "20924551516d38c225dabbd7bb258c9565cb5bedd2ab2ad163819f66dfb2d89d",
+      "size_bytes": 2649
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-head.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400529,
+        33206,
+        1,
+        503,
+        1791011378670852300,
+        1791011378670852300
+      ],
+      "sha256": "47a8489a70a5619b7964e59eaf0b906ac91c159c2c7f977e5ad8adc4a7b8bcd8",
+      "size_bytes": 503
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-head.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979216,
+        33206,
+        1,
+        0,
+        1791011378665109100,
+        1791011378665109100
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-head.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979215,
+        33206,
+        1,
+        41,
+        1791011378677868400,
+        1791011378664110100
+      ],
+      "sha256": "6b0e5dd1ac7a6b80f97350c25c5d687076dbf5e27987cdd6e448e7688884be27",
+      "size_bytes": 41
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-head.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979218,
+        33206,
+        1,
+        2583,
+        1791011378762172300,
+        1791011378761172600
+      ],
+      "sha256": "403b1a4ea1514a43c028cb35022ed65f3a094f4237a97c137545c75ff5fa6ce1",
+      "size_bytes": 2583
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-status.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979221,
+        33206,
+        1,
+        548,
+        1791011378767171500,
+        1791011378766173700
+      ],
+      "sha256": "8dc6e76decec9c4b580e00d4b722c881d42e79bfcefffd45ea782a59b25ce687",
+      "size_bytes": 548
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-status.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400532,
+        33206,
+        1,
+        0,
+        1791011378764171100,
+        1791011378764171100
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-status.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1688849862689875,
+        33206,
+        1,
+        0,
+        1791011378764171100,
+        1791011378764171100
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-status.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979222,
+        33206,
+        1,
+        2629,
+        1791011378954192500,
+        1791011378954192500
+      ],
+      "sha256": "1b16250edea26a4785106b057db12137fa372ad16086e747a78161b3cff795bd",
+      "size_bytes": 2629
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-tree.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1688849862689889,
+        33206,
+        1,
+        557,
+        1791011379226393300,
+        1791011379226393300
+      ],
+      "sha256": "b47af1490d3aa76360772ef5f52138278d0b6a090a8e766943b8a523b6da8638",
+      "size_bytes": 557
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-tree.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979232,
+        33206,
+        1,
+        0,
+        1791011379225393100,
+        1791011379225393100
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-tree.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979231,
+        33206,
+        1,
+        824157,
+        1791011379429157300,
+        1791011379224388800
+      ],
+      "sha256": "bb86498454f01959bb873ac260c5310f08cc3caa2b27f1623f76c174ad54777e",
+      "size_bytes": 824157
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-tree.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400546,
+        33206,
+        1,
+        2649,
+        1791011379499215400,
+        1791011379499215400
+      ],
+      "sha256": "6d8284c64ef73ac636d4f976c8a4e3d121e3b6e4a3d3e4a8a2dead133df72da3",
+      "size_bytes": 2649
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/preserved-after.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979257,
+        33206,
+        1,
+        2014039,
+        1791011402699187800,
+        1791011402691514000
+      ],
+      "sha256": "e79fb582cd5d8e1b48167371aff32df9727d0e081e28424381830f08971f7a02",
+      "size_bytes": 2014039
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/preserved-before.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979239,
+        33206,
+        1,
+        2014039,
+        1791011392219355600,
+        1791011392211658300
+      ],
+      "sha256": "e79fb582cd5d8e1b48167371aff32df9727d0e081e28424381830f08971f7a02",
+      "size_bytes": 2014039
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/tracked-after.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        3659174699664506,
+        33206,
+        1,
+        2901661,
+        1791011402744012800,
+        1791011402733939200
+      ],
+      "sha256": "df49fc1f296adb78448316aba53e9433fd5019614ce93fbbf117ac62ecfee4b4",
+      "size_bytes": 2901661
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/tracked-before.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979240,
+        33206,
+        1,
+        2787538,
+        1791011392263907000,
+        1791011392255382200
+      ],
+      "sha256": "03c8101aec854cb927e0aad5af1ea4bb55697b0c8ca0d13558948b0b2b4430ec",
+      "size_bytes": 2787538
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/preparation.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979210,
+        33206,
+        1,
+        8150,
+        1791010984133103300,
+        1791010984129682200
+      ],
+      "sha256": "d8d325d2ad735ab9d184afc648fcc38c738f9ca9bcf000ef26fc6b6dc613143c",
+      "size_bytes": 8150
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/renew_existing_ext4_checkout_v1.py": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979136,
+        33206,
+        1,
+        26173,
+        1791010504410497000,
+        1791010504410497000
+      ],
+      "sha256": "91e85e9a0733abd175bea854fe9ad8456f2d7918c57c59fab2501dfd3c297c04",
+      "size_bytes": 26173
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/root-independent-review-and-grant.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        2251799816110189,
+        33206,
+        1,
+        3120,
+        1791011369142216400,
+        1791011369142216400
+      ],
+      "sha256": "cdf0cf7ab8e381b3502ea731fa6102531b3913fd6afb5a48b602203271b1022c",
+      "size_bytes": 3120
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/root-original-closure.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979262,
+        33206,
+        1,
+        15361,
+        1791011480697948400,
+        1791011480697948400
+      ],
+      "sha256": "86cfd1460b7ff9e8bb9a0af082e65b132383c7eb84160688b62970cb4a6ff78f",
+      "size_bytes": 15361
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/source-transformation.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979139,
+        33206,
+        1,
+        1741,
+        1791010504426900800,
+        1791010504425985300
+      ],
+      "sha256": "f765080f1c6129411ddd388ed3e06e1591a0a3326f1f177cbca5dd701a5400bf",
+      "size_bytes": 1741
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/source.diff": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979138,
+        33206,
+        1,
+        29967,
+        1791010504414044000,
+        1791010504414044000
+      ],
+      "sha256": "b10ad398bcb0b5efebb4ad1d3d636cc5f8d875f08ac2d92b8c4a394c60ee2e5c",
+      "size_bytes": 29967
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/actual-literal-binding.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400650,
+        33206,
+        1,
+        1879,
+        1791013007926559000,
+        1791013007926559000
+      ],
+      "sha256": "5e43e8b22d0bd1ba5ec82bb499f0d4dffe6c61a4163b4168d9e6bd0429d5d889",
+      "size_bytes": 1879
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979337,
+        33206,
+        1,
+        23631,
+        1791013007926559000,
+        1791013007925559500
+      ],
+      "sha256": "445535a2ea9176effbe97e5de1db53aae614645e40db65bc1debf74489371f36",
+      "size_bytes": 23631
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-independent-source-review-v1/review.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400627,
+        33206,
+        1,
+        11847,
+        1791011816222399500,
+        1791011816221398300
+      ],
+      "sha256": "8edb7a0c230718c6d5ff612e2fea81c39b6bb72aa2023af1740e01488b296112",
+      "size_bytes": 11847
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-independent-source-review-v2/review.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1688849862689991,
+        33206,
+        1,
+        3028,
+        1791012947245205300,
+        1791012947245205300
+      ],
+      "sha256": "e51563b124182dc6c5341ca4d0ea00bcc858fa93d1559483de6dfda7e7fc1405",
+      "size_bytes": 3028
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/README.pending.md": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400643,
+        33206,
+        1,
+        1895,
+        1791012557503514200,
+        1791012557502989000
+      ],
+      "sha256": "be9a9ce7cdf9ed3c9e213b14342f4300449e80327fb5a4babce49a6beb6b062a",
+      "size_bytes": 1895
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/author-review.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400641,
+        33206,
+        1,
+        2894,
+        1791012559754278900,
+        1791012559754278900
+      ],
+      "sha256": "2bb9f690586a8c900a1ddec7b6480c4f1e3b6257cd728c5cc6394e8d5d146375",
+      "size_bytes": 2894
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/capture_selected_host_closure_ext4_decision28_v4.py": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400635,
+        33206,
+        1,
+        21481,
+        1791012559734199300,
+        1791012559734199300
+      ],
+      "sha256": "d0cf043a71ebbc19d23f2bccf5f7a6abc5cfeb0452af7dcb4e1d21db61998e82",
+      "size_bytes": 21481
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/cpu.v3-to-v4.diff": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400638,
+        33206,
+        1,
+        23936,
+        1791012559753278400,
+        1791012559753278400
+      ],
+      "sha256": "b9665f66581a09665bc542823b079f35ec07f3df5ad778034c94cbca781ddd5d",
+      "size_bytes": 23936
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/host.v3-to-v4.diff": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400636,
+        33206,
+        1,
+        22057,
+        1791012559734199300,
+        1791012559734199300
+      ],
+      "sha256": "bd0a6ca923a06a72d16447b875f80de855cce2bad260f4858a6b941096f9062b",
+      "size_bytes": 22057
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/literal-replacements.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400639,
+        33206,
+        1,
+        42366,
+        1791012559753278400,
+        1791012559753278400
+      ],
+      "sha256": "893367c3b7f412fded2115828a24781bfb9e4be90adffe5b47610ffe5297e217",
+      "size_bytes": 42366
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/preparation.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400640,
+        33206,
+        1,
+        5580,
+        1791012559754278900,
+        1791012559754278900
+      ],
+      "sha256": "d783ad662720fe087b44898de33f777d51cc0dcdab33a26d6e69f0013c4342a8",
+      "size_bytes": 5580
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/prepare_source_v4.py": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979322,
+        33206,
+        1,
+        40078,
+        1791012557502989000,
+        1791012242117350800
+      ],
+      "sha256": "5446f831639e9e137fe05c754d2319382516f7d22bce79d03e6e46e37104bf12",
+      "size_bytes": 40078
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/run_original_cpu_component_pair_ext4_decision28_v4.pending.py": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400637,
+        33206,
+        1,
+        23389,
+        1791012559752279000,
+        1791012559752279000
+      ],
+      "sha256": "741ba26e2f04e970cc51be5a4dff93798e369f2d6d3dd53566f27be976cb77ec",
+      "size_bytes": 23389
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-independent-review-v1/review.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979340,
+        33206,
+        1,
+        10478,
+        1791013095024980200,
+        1791013095024980200
+      ],
+      "sha256": "8605b8c47799f7aacb17f0ca7ff66c4ffd8132c3df6db07b6af5bcd614202864",
+      "size_bytes": 10478
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/literal-replacements.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979318,
+        33206,
+        1,
+        3063,
+        1791012011442969000,
+        1791012011442969000
+      ],
+      "sha256": "b6d342a983f0db460730c6e74f90e101b16077fbd771d2f0fe89d774c8296eee",
+      "size_bytes": 3063
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/preparation.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979320,
+        33206,
+        1,
+        1404,
+        1791012011444517500,
+        1791012011444517500
+      ],
+      "sha256": "a7f4c7152d1939e1770caff8a49ba2ead7fc59635497ef38e1fa01dd5f639d30",
+      "size_bytes": 1404
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/renew_host_binding_ext4_checkout_v1.py": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979317,
+        33206,
+        1,
+        27066,
+        1791012011442969000,
+        1791012011442969000
+      ],
+      "sha256": "8ed63b07b02f74e3be1d7b66e8453f239ae598291a6a4dadb04a238db2108ab2",
+      "size_bytes": 27066
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/source.diff": {
+      "epoch7": [
+        17601399781211216820,
+        4503599629796535,
+        33206,
+        1,
+        7344,
+        1791012011444517500,
+        1791012011443968900
+      ],
+      "sha256": "d0f47686f552b33ce6a09fb5e020db0b963f04b42413bc9215947a85eb3c7438",
+      "size_bytes": 7344
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-identity-source-checkpoint-v1/stage_exact_host_checkpoint_v1.py": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979342,
+        33206,
+        1,
+        6679,
+        1791013330417689000,
+        1791013330417689000
+      ],
+      "sha256": "9f739857b420235155e6520d93f062bda7211792f289722714dad305ae7b2f48",
+      "size_bytes": 6679
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-image-binding-v1/before-edit.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979312,
+        33206,
+        1,
+        23895,
+        1791011812721832700,
+        1791011812720834000
+      ],
+      "sha256": "fed550cc766d6fd60e59827fc203f4b64af41879802ded8789c339fea29c900e",
+      "size_bytes": 23895
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-image-binding-v1/original-host-wrapper.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979310,
+        33206,
+        1,
+        59640,
+        1791011812714646900,
+        1791011812714646900
+      ],
+      "sha256": "ee0476b574e012b213bdc603a7a930234c0bb27d929859ef03acfdb99eb7a241",
+      "size_bytes": 59640
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-image-binding-v1/original-runtime-test.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979311,
+        33206,
+        1,
+        25082,
+        1791011812715648100,
+        1791011812715648100
+      ],
+      "sha256": "5013163d54512a48702198b4778bf9d7eaf047a6f3d94a5d3f4cb1091d8c5910",
+      "size_bytes": 25082
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-image-binding-v1/renew_actual_host_and_test_bindings_v1.py": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979309,
+        33206,
+        1,
+        6444,
+        1791011786865262300,
+        1791011786864890500
+      ],
+      "sha256": "519675f3f51ace71abe7fa081063a2755c1d36f8b3b9a1290d17837e6b755e82",
+      "size_bytes": 6444
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-image-binding-v1/renewal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979313,
+        33206,
+        1,
+        4662,
+        1791011812807112700,
+        1791011812806113100
+      ],
+      "sha256": "7ae7f04707732c803ebebc512c377d765b1c2a5f8906ee0040a9cf6352ec05c2",
+      "size_bytes": 4662
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-host-image-independent-review-v1/review.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979333,
+        33206,
+        1,
+        30902,
+        1791012825529188300,
+        1791012825529188300
+      ],
+      "sha256": "83d27f58d5e54f1ae48c2df98bf2fa61c8f8f8e39a530bf49fbf91084166d9eb",
+      "size_bytes": 30902
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-own-reassessment-working-v1.md": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979330,
+        33206,
+        1,
+        4397,
+        1791012485796000400,
+        1791012485796000400
+      ],
+      "sha256": "b91454d1ad69a0c8be3833bf7f732e6c7f006079208c11fa895eaed7a1d7195f",
+      "size_bytes": 4397
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/base-before.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979264,
+        33206,
+        1,
+        455,
+        1791011659800879500,
+        1791011659800879500
+      ],
+      "sha256": "8813dabe8bcb21d01bad0f176295d454b88c06ceebc15da90b9ce95f36618495",
+      "size_bytes": 455
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/base-before.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979265,
+        33206,
+        1,
+        0,
+        1791011659802883000,
+        1791011659802883000
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/base-before.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979266,
+        33206,
+        1,
+        7371,
+        1791011659805883300,
+        1791011659804883700
+      ],
+      "sha256": "2009f1976196e4183b86563d702c3a88257ac0026c751abdccf54687573dda32",
+      "size_bytes": 7371
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/base-before.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        2533274792821891,
+        33206,
+        1,
+        2012,
+        1791011659808127800,
+        1791011659808127800
+      ],
+      "sha256": "8ef0f41d1cf5e7467feccdd20b4a823f8438f05756d5c2c822273124d5ba9a56",
+      "size_bytes": 2012
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/candidate-container-terminal.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979268,
+        33206,
+        1,
+        553,
+        1791011659811235700,
+        1791011659810188100
+      ],
+      "sha256": "f426f4192963b7c9db9a17c0ed35bf75f8d2fb0270d629d8597f099707ece4bd",
+      "size_bytes": 553
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/candidate-container-terminal.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979269,
+        33206,
+        1,
+        0,
+        1791011659812469100,
+        1791011659812469100
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/candidate-container-terminal.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979270,
+        33206,
+        1,
+        0,
+        1791011659814472800,
+        1791011659814472800
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/candidate-container-terminal.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979271,
+        33206,
+        1,
+        2141,
+        1791011659816473200,
+        1791011659816473200
+      ],
+      "sha256": "3f20c00dd0eef9c7dcac457b5fdac08850afe026b58aecdf476b5ecd03a2039b",
+      "size_bytes": 2141
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/daemon-after.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        2533274792821896,
+        33206,
+        1,
+        423,
+        1791011659819473600,
+        1791011659819473600
+      ],
+      "sha256": "939f59d3cf66c427252c67e7a4f865e95294c090b4d0a966dd0b3a4e13f4b8fb",
+      "size_bytes": 423
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/daemon-after.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979273,
+        33206,
+        1,
+        0,
+        1791011659821495200,
+        1791011659821495200
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/daemon-after.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979274,
+        33206,
+        1,
+        39,
+        1791011659823496200,
+        1791011659823496200
+      ],
+      "sha256": "406a38b0d978a01b1e5fbb7b6d4f5194161c01404c8226898e29bfdad449f523",
+      "size_bytes": 39
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/daemon-after.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979275,
+        33206,
+        1,
+        1980,
+        1791011659825495200,
+        1791011659825495200
+      ],
+      "sha256": "58a1a2080cd649da651c1a8ab0b500acca5b36782f7e29e62417d6000be275f7",
+      "size_bytes": 1980
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/daemon-before.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979276,
+        33206,
+        1,
+        423,
+        1791011659827950600,
+        1791011659827950600
+      ],
+      "sha256": "900d583278f47eb9c5d0732457fffff527b7e107c25214093bfe5b17246ca0d1",
+      "size_bytes": 423
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/daemon-before.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400589,
+        33206,
+        1,
+        0,
+        1791011659829953000,
+        1791011659829953000
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/daemon-before.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979278,
+        33206,
+        1,
+        39,
+        1791011659832952400,
+        1791011659831951800
+      ],
+      "sha256": "406a38b0d978a01b1e5fbb7b6d4f5194161c01404c8226898e29bfdad449f523",
+      "size_bytes": 39
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/daemon-before.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979279,
+        33206,
+        1,
+        1981,
+        1791011659834952000,
+        1791011659834952000
+      ],
+      "sha256": "c0297681fb4b0e778e2e652b13a5413595faf91fe062fc7f1983c1f3461e53fc",
+      "size_bytes": 1981
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400592,
+        33206,
+        1,
+        7001,
+        1791011659837841900,
+        1791011659837841900
+      ],
+      "sha256": "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+      "size_bytes": 7001
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/image-after.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979281,
+        33206,
+        1,
+        647,
+        1791011659839845400,
+        1791011659839845400
+      ],
+      "sha256": "be6f2085ebdd95e7080ec3b4307719bbab2ecf776e0ba242ab60350e23fe9619",
+      "size_bytes": 647
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/image-after.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979282,
+        33206,
+        1,
+        0,
+        1791011659841844800,
+        1791011659841844800
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/image-after.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        2814749769532563,
+        33206,
+        1,
+        20862,
+        1791011659843873800,
+        1791011659843873800
+      ],
+      "sha256": "984ecc434775c32007fcc173e9f2b3d6f6990c2b8c2cb946bc193412a89c140b",
+      "size_bytes": 20862
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/image-after.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979284,
+        33206,
+        1,
+        2202,
+        1791011659847013800,
+        1791011659847013800
+      ],
+      "sha256": "0c3826290f503f2cdbf2b0210907bcf0644babe6fad3237a9a48e0e04baed9bb",
+      "size_bytes": 2202
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/operation.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979285,
+        33206,
+        1,
+        14459,
+        1791011659848488900,
+        1791011659848488900
+      ],
+      "sha256": "b29040c9e679cc579284bd9c8ba8681508ed1ec052b4d33fc1e90c931462a692",
+      "size_bytes": 14459
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/prelaunch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979286,
+        33206,
+        1,
+        42282,
+        1791011659851891100,
+        1791011659851891100
+      ],
+      "sha256": "e71342346edf7ba553ffeea929cfe412f0fd32815230b7c75c35273c5318fff6",
+      "size_bytes": 42282
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/root-original-closure.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979307,
+        33206,
+        1,
+        21718,
+        1791011659897490700,
+        1791011659897490700
+      ],
+      "sha256": "cd257078476f1fe33eb85e9e26ca1b51aac50d9a01b034c1e725a862b9a6842f",
+      "size_bytes": 21718
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/stock-selected-capture.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979287,
+        33206,
+        1,
+        1471,
+        1791011659853791100,
+        1791011659853791100
+      ],
+      "sha256": "e9e153102bc4e0b77b02d7b2025a4cf634495e4ea9a87febb7d6e5e76b984850",
+      "size_bytes": 1471
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/stock-selected-capture.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979288,
+        33206,
+        1,
+        0,
+        1791011659855790300,
+        1791011659855790300
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/stock-selected-capture.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        2814749769532569,
+        33206,
+        1,
+        7001,
+        1791011659858449000,
+        1791011659858449000
+      ],
+      "sha256": "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+      "size_bytes": 7001
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/stock-selected-capture.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979290,
+        33206,
+        1,
+        3049,
+        1791011659860454000,
+        1791011659860454000
+      ],
+      "sha256": "aff391c79cd49df593503f1c06810401cb6ed2280d147d2188d0b1e38bee7228",
+      "size_bytes": 3049
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/stock-two-build.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979291,
+        33206,
+        1,
+        494,
+        1791011659862452800,
+        1791011659862452800
+      ],
+      "sha256": "b7bf9f64c8bea96386e8d73a32343328e69622e7f46c241912f4742a2eabe74c",
+      "size_bytes": 494
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/stock-two-build.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979292,
+        33206,
+        1,
+        32656,
+        1791011659864453700,
+        1791011659864453700
+      ],
+      "sha256": "0a797e0d1a5be74dc7f9d6e9921aa418be14e575187c902ad0cd528814df3bed",
+      "size_bytes": 32656
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/stock-two-build.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979293,
+        33206,
+        1,
+        5533,
+        1791011659866937800,
+        1791011659866937800
+      ],
+      "sha256": "3af3a88d0ffb8647ee1b24157eb944d48154288813fe7191a0c793ea716bc569",
+      "size_bytes": 5533
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/stock-two-build.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979294,
+        33206,
+        1,
+        2062,
+        1791011659869936500,
+        1791011659868937200
+      ],
+      "sha256": "7417cf4572094d603d62dbb539740dbc9d8f3b7bd6b7c89ecfcb514ce46dd622",
+      "size_bytes": 2062
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-0.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839400607,
+        33206,
+        1,
+        530,
+        1791011659871667500,
+        1791011659871667500
+      ],
+      "sha256": "5955229dff2c088a845e98ee9bfa47478f5852ce10acef46760bd22f653d92db",
+      "size_bytes": 530
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-0.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979296,
+        33206,
+        1,
+        0,
+        1791011659873671800,
+        1791011659873671800
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-0.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1688849862689953,
+        33206,
+        1,
+        0,
+        1791011659875671300,
+        1791011659875671300
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-0.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979298,
+        33206,
+        1,
+        2097,
+        1791011659878703100,
+        1791011659878703100
+      ],
+      "sha256": "993f26452b081b6991263ac7d5f239ca4f1b0b3200b7d3d6ecbcf7509f185858",
+      "size_bytes": 2097
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-1.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979299,
+        33206,
+        1,
+        544,
+        1791011659880703400,
+        1791011659880703400
+      ],
+      "sha256": "3376208a5d6c1fa82ea80d050b28ac101e5a1158fae49d1dce37e68291c9bd0b",
+      "size_bytes": 544
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-1.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        5066549583217828,
+        33206,
+        1,
+        0,
+        1791011659882702000,
+        1791011659882702000
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-1.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979301,
+        33206,
+        1,
+        0,
+        1791011659885205400,
+        1791011659885205400
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-1.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979302,
+        33206,
+        1,
+        2110,
+        1791011659888070700,
+        1791011659888070700
+      ],
+      "sha256": "1d49736e0bec7e3878454ec3c14ba16c82becfbf5a27463730a60c5e4d561c4e",
+      "size_bytes": 2110
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-2.launch.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979303,
+        33206,
+        1,
+        544,
+        1791011659890490400,
+        1791011659890490400
+      ],
+      "sha256": "0edf66ffa704e5e27d5ddb2ef46909cbfb1ee27608aa1db46e8ed2e588c67ee8",
+      "size_bytes": 544
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-2.stderr.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979304,
+        33206,
+        1,
+        0,
+        1791011659892490900,
+        1791011659892490900
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-2.stdout.raw": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979305,
+        33206,
+        1,
+        0,
+        1791011659894491500,
+        1791011659894491500
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/tag-reservation-2.terminal.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979306,
+        33206,
+        1,
+        2110,
+        1791011659897490700,
+        1791011659897490700
+      ],
+      "sha256": "85d2ab177f642108e0f0a341432aad63d351321b8226d7015e8b5ef48a6bb8db",
+      "size_bytes": 2110
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v2/root-independent-review-and-conditional-grant.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        1407374885979261,
+        33206,
+        1,
+        2185,
+        1791011429288273500,
+        1791011429288273500
+      ],
+      "sha256": "b35c9d04645d73e019e40b852e22e0f2cd58ec250e9a92d00c62faf0d8b1f29f",
+      "size_bytes": 2185
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-source-checkpoint-v1/committed-checkpoint-proof.v1.json": {
+      "epoch7": [
+        17601399781211216820,
+        2533274792821832,
+        33206,
+        1,
+        53112,
+        1791010787318275000,
+        1791010787318275000
+      ],
+      "sha256": "2acd6a8ddd2cb15c86e6dc684fe4b2cc7f763422e2beb3af689730b97172813a",
+      "size_bytes": 53112
+    },
+    "artifacts/benchmark_recovery_20260930/decision28-source-checkpoint-v1/verify_committed_checkpoint_v1.py": {
+      "epoch7": [
+        17601399781211216820,
+        1970324839399955,
+        33206,
+        1,
+        2597,
+        1791010775573779800,
+        1791010775573779800
+      ],
+      "sha256": "a45d5c7adaf23153fba1a757410ffcab863aff5016ec6c1c153f859b34452b20",
+      "size_bytes": 2597
+    },
+    "scripts/checkpoint_gstreamer_publication_runtime_v3.py": {
+      "epoch7": [
+        17601399781211216820,
+        1125899909260128,
+        33206,
+        1,
+        59624,
+        1791011812724832300,
+        1790569504272062700
+      ],
+      "sha256": "0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c",
+      "size_bytes": 59624
+    },
+    "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py": {
+      "epoch7": [
+        17601399781211216820,
+        2251799816102762,
+        33206,
+        1,
+        25066,
+        1791011812724832300,
+        1790569504321528000
+      ],
+      "sha256": "b6bc88d91a11eda378cb079ade41e473164db39f2dcb224e29f607dc106fd02c",
+      "size_bytes": 25066
+    }
+  },
+  "owned_total_bytes": 15409038,
+  "previous_commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "prospective_raw_clean_autocrlf_false_true_equal": true,
+  "schema_version": 1,
+  "source_checkpoint_A_selected73_equal_current": true,
+  "unrelated_dirt_preserved": true
+}

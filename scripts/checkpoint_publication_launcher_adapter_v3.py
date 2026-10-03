@@ -49,10 +49,27 @@ EXIT_SUCCESS = 0
 EXIT_TRANSIENT = 75
 EXIT_PERMANENT = 78
 ASSESSMENT_KIND = "vast_native_publication_launcher_adapter_assessment_v3"
+PRODUCTION_FENCE_KIND = "vast_backend_publication_production_launch_fence_v4"
+PRODUCTION_EXECUTION_SCOPE = "full_publication_measurement_v3"
+PRODUCTION_ACCEPTANCE_CLAIM_FIELDS = (
+    "accepted_measurement_evidence",
+    "publication_output_accepted",
+    "publication_ready",
+    "promotable",
+    "semantic_evidence_validated",
+    "external_pins_validated",
+    "process_tree_quiescent",
+)
 TOPOLOGIES = ("independent_processes", "shared_video_dag")
 MAX_EVIDENCE_FILES = 64
 MAX_EVIDENCE_FILE_BYTES = 64 * 1024 * 1024
 MAX_TOTAL_EVIDENCE_BYTES = 256 * 1024 * 1024
+DETERMINISTIC_NUMERIC_THREAD_ENVIRONMENT_V1 = (
+    "OPENBLAS_NUM_THREADS=1",
+    "OMP_NUM_THREADS=1",
+    "MKL_NUM_THREADS=1",
+    "NUMEXPR_NUM_THREADS=1",
+)
 _PARENT_OWNED_FILES = frozenset({
     ARM_CONTRACT_FILENAME,
     LAUNCH_FENCE_FILENAME,
@@ -77,6 +94,16 @@ class NativePublicationLauncherV3Error(RuntimeError):
 
 class NativePublicationTransientErrorV3(NativePublicationLauncherV3Error):
     """The exact native runtime may be retried by a new parent transaction."""
+
+
+def deterministic_numeric_thread_environment_argv_v1() -> tuple[str, ...]:
+    """Return the closed Docker argv that prevents hidden numeric oversubscription."""
+
+    return tuple(
+        token
+        for binding in DETERMINISTIC_NUMERIC_THREAD_ENVIRONMENT_V1
+        for token in ("--env", binding)
+    )
 
 
 class NativePublicationPermanentErrorV3(NativePublicationLauncherV3Error):
@@ -142,6 +169,14 @@ class _PinnedFile:
     sha256: str
 
 
+def _valid_sha256(value: object) -> bool:
+    return (
+        type(value) is str
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
+    )
+
+
 def _canonical(value: object) -> bytes:
     return (
         json.dumps(
@@ -153,6 +188,19 @@ def _canonical(value: object) -> bytes:
         )
         + "\n"
     ).encode("ascii")
+
+
+def _canonical_content_sha256(value: object) -> str:
+    return hashlib.sha256(_canonical(value)[:-1]).hexdigest()
+
+
+def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    value: dict[str, Any] = {}
+    for key, item in pairs:
+        if key in value:
+            raise ValueError("duplicate JSON key")
+        value[key] = item
+    return value
 
 
 def _print_assessment(value: Mapping[str, Any]) -> None:
@@ -218,6 +266,88 @@ def _require_pin_unchanged(pin: _PinnedFile) -> None:
         ) from error
 
 
+def _validate_authenticated_launch_authority(
+    *,
+    project_root: Path,
+    expected_system: str,
+    arm: Mapping[str, Any],
+) -> _PinnedFile:
+    """Hold the exact Q4-bound launcher and grant/cell identities before call."""
+
+    dispatch = arm.get("dispatch_resolution")
+    runtime = arm.get("runtime_inputs")
+    if type(dispatch) is not dict or type(runtime) is not dict:
+        raise NativePublicationPermanentErrorV3(
+            "production_dispatch_authority_missing"
+        )
+    expected_path = f"scripts/checkpoint_{expected_system}_publication_launcher_v3.py"
+    descriptor = dispatch.get("publication_launcher")
+    coordinate = dispatch.get("coordinate")
+    invocation = validate_publication_launcher_invocation_v3(
+        publication_launcher_invocation_v3_contract()
+    )
+    if (
+        type(descriptor) is not dict
+        or set(descriptor) != {"path", "size_bytes", "sha256"}
+        or descriptor.get("path") != expected_path
+        or type(descriptor.get("size_bytes")) is not int
+        or descriptor["size_bytes"] <= 0
+        or not _valid_sha256(descriptor.get("sha256"))
+        or dispatch.get("launcher_invocation") != invocation
+        or dispatch.get("launcher_invocation_sha256")
+        != invocation["invocation_sha256"]
+    ):
+        raise NativePublicationPermanentErrorV3(
+            "launcher_authority_not_q4_bound"
+        )
+    coordinate_fields = ("system", "codec", "topology_kind", "policy", "deadline_ms")
+    if (
+        type(coordinate) is not dict
+        or any(coordinate.get(field) != runtime.get(field) for field in coordinate_fields)
+        or coordinate.get("system") != expected_system
+        or arm.get("backend_runtime_grant_sha256")
+        != dispatch.get("backend_runtime_grant_sha256")
+        or arm.get("identity_artifact_binding_sha256")
+        != dispatch.get("identity_artifact_binding_sha256")
+        or any(
+            not _valid_sha256(dispatch.get(field))
+            for field in (
+                "cell_identity_sha256",
+                "validation_record_sha256",
+                "runtime_binding_identity_sha256",
+                "resolution_sha256",
+            )
+        )
+        or any(
+            not _valid_sha256(arm.get(field))
+            for field in (
+                "resource_capability_grant_sha256",
+                "backend_runtime_grant_sha256",
+                "model_parity_grant_sha256",
+                "model_parity_acceptance_binding_sha256",
+                "identity_artifact_binding_sha256",
+            )
+        )
+    ):
+        raise NativePublicationPermanentErrorV3(
+            "production_q4_grant_or_coordinate_binding_invalid"
+        )
+    launcher_path = project_root.joinpath(*expected_path.split("/"))
+    pin = _pin_plain_file(
+        launcher_path,
+        blocker="launcher_authority_file_drifted",
+        allow_empty=False,
+    )
+    if (
+        int(pin.snapshot[4]) != descriptor["size_bytes"]
+        or pin.sha256 != descriptor["sha256"]
+    ):
+        raise NativePublicationPermanentErrorV3(
+            "launcher_authority_file_drifted"
+        )
+    return pin
+
+
 def _namespace_names(output_dir: Path) -> frozenset[str]:
     try:
         names = [entry.name for entry in output_dir.iterdir()]
@@ -253,6 +383,58 @@ def _initial_namespace(output_dir: Path) -> tuple[_PinnedFile, _PinnedFile]:
         allow_empty=False,
     )
     return arm, fence
+
+
+def _validate_production_launch_fence_authority(
+    *, arm: Mapping[str, Any], arm_pin: _PinnedFile, fence_pin: _PinnedFile
+) -> None:
+    """Require the exact parent-owned production fence for this held arm."""
+
+    try:
+        _require_pin_unchanged(arm_pin)
+        _require_pin_unchanged(fence_pin)
+        payload = fence_pin.path.read_bytes()
+        if hashlib.sha256(payload).hexdigest() != fence_pin.sha256:
+            raise ValueError("fence bytes changed")
+        decoded = json.loads(
+            payload.decode("ascii"), object_pairs_hook=_unique_object
+        )
+    except NativePublicationPermanentErrorV3:
+        raise
+    except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError) as error:
+        raise NativePublicationPermanentErrorV3(
+            "production_launch_fence_authority_invalid"
+        ) from error
+    dispatch = arm["dispatch_resolution"]
+    execution = arm["full_publication_execution_binding"]
+    unsigned: dict[str, Any] = {
+        "schema_version": 4,
+        "artifact_kind": PRODUCTION_FENCE_KIND,
+        "status": "production_launch_fenced_not_yet_accepted",
+        "execution_scope": PRODUCTION_EXECUTION_SCOPE,
+        "arm_contract": {
+            "path": ARM_CONTRACT_FILENAME,
+            "size_bytes": int(arm_pin.snapshot[4]),
+            "sha256": arm_pin.sha256,
+        },
+        "arm_contract_content_sha256": arm["contract_sha256"],
+        "dispatch_resolution_sha256": dispatch["resolution_sha256"],
+        "full_publication_execution_binding": copy.deepcopy(execution),
+        "run_identity_sha256": execution["run_identity_sha256"],
+        "cell_identity_sha256": dispatch["cell_identity_sha256"],
+        "launcher_invocation_sha256": dispatch["launcher_invocation_sha256"],
+        "python_executable": copy.deepcopy(dispatch["python_executable"]),
+        "publication_launcher": copy.deepcopy(dispatch["publication_launcher"]),
+        **{field: False for field in PRODUCTION_ACCEPTANCE_CLAIM_FIELDS},
+    }
+    expected = {
+        **unsigned,
+        "fence_sha256": _canonical_content_sha256(unsigned),
+    }
+    if type(decoded) is not dict or decoded != expected or payload != _canonical(expected):
+        raise NativePublicationPermanentErrorV3(
+            "production_launch_fence_authority_invalid"
+        )
 
 
 def _validate_evidence_file(path: Path) -> int:
@@ -406,7 +588,6 @@ def run_native_publication_launcher_adapter_v3(
     *,
     expected_system: str,
     native_topology_runners: Mapping[str, NativeTopologyRunnerV3],
-    readiness_blockers: Sequence[str] = (),
 ) -> int:
     """Validate, dispatch once, and return only the closed 0/75/78 set."""
 
@@ -523,13 +704,28 @@ def run_native_publication_launcher_adapter_v3(
             physical=True,
             semantic=True,
         )
-    blockers = tuple(readiness_blockers)
-    if (
-        any(type(value) is not str or not value for value in blockers)
-        or len(set(blockers)) != len(blockers)
-    ):
-        blockers = ("launcher_readiness_blockers_invalid",)
-    if blockers:
+    try:
+        _validate_production_launch_fence_authority(
+            arm=arm,
+            arm_pin=arm_pin,
+            fence_pin=fence_pin,
+        )
+    except NativePublicationPermanentErrorV3 as error:
+        return _emit_preflight_failure(
+            system=expected_system,
+            contract_sha256=contract_sha,
+            blocker=error.blocker,
+            physical=True,
+            semantic=True,
+            namespace=True,
+        )
+    try:
+        launcher_pin = _validate_authenticated_launch_authority(
+            project_root=root,
+            expected_system=expected_system,
+            arm=arm,
+        )
+    except NativePublicationPermanentErrorV3 as error:
         _print_assessment(_assessment(
             system=expected_system,
             contract_sha256=contract_sha,
@@ -540,7 +736,7 @@ def run_native_publication_launcher_adapter_v3(
             native_runtime_invoked=False,
             native_runtime_exit_code=None,
             exact_evidence_validated=False,
-            blockers=blockers,
+            blockers=(error.blocker,),
         ))
         return EXIT_PERMANENT
     if (
@@ -569,9 +765,56 @@ def run_native_publication_launcher_adapter_v3(
         runtime_inputs=MappingProxyType(copy.deepcopy(runtime)),
         launcher_evidence_files=evidence_names,
     )
+    from production_arm_evidence_finalizer_v1 import (
+        finalize_production_arm_evidence_v1,
+        validate_production_arm_finalization_contract_v1,
+    )
+
+    try:
+        validate_production_arm_finalization_contract_v1(
+            request=request,
+            arm_contract=arm,
+        )
+    except NativePublicationPermanentErrorV3 as error:
+        _print_assessment(_assessment(
+            system=expected_system,
+            contract_sha256=contract_sha,
+            topology_kind=topology,
+            physical_contract_validated=True,
+            semantic_contract_validated=True,
+            namespace_validated=True,
+            native_runtime_invoked=False,
+            native_runtime_exit_code=None,
+            exact_evidence_validated=False,
+            blockers=(error.blocker,),
+        ))
+        return EXIT_PERMANENT
+    native_runtime_invoked = False
+
+    def guarded_native_runner(
+        native_request: NativePublicationRequestV3,
+    ) -> NativePublicationOutcomeV3:
+        nonlocal native_runtime_invoked
+        native_runtime_invoked = True
+        returned = native_topology_runners[topology](native_request)
+        _require_pin_unchanged(launcher_pin)
+        _require_pin_unchanged(arm_pin)
+        _require_pin_unchanged(fence_pin)
+        return returned
+
+    def precommit_guard() -> None:
+        _require_pin_unchanged(launcher_pin)
+        _require_pin_unchanged(arm_pin)
+        _require_pin_unchanged(fence_pin)
+
     outcome: NativePublicationOutcomeV3
     try:
-        returned = native_topology_runners[topology](request)
+        returned = finalize_production_arm_evidence_v1(
+            request=request,
+            arm_contract=arm,
+            native_runner=guarded_native_runner,
+            precommit_guard=precommit_guard,
+        )
         if type(returned) is not NativePublicationOutcomeV3:
             raise NativePublicationPermanentErrorV3(
                 "native_runtime_terminal_outcome_invalid"
@@ -592,6 +835,7 @@ def run_native_publication_launcher_adapter_v3(
         )
     exact_evidence = False
     try:
+        _require_pin_unchanged(launcher_pin)
         exact_evidence = _audit_terminal_namespace(
             output_dir=output,
             evidence_names=evidence_names,
@@ -611,7 +855,7 @@ def run_native_publication_launcher_adapter_v3(
         physical_contract_validated=True,
         semantic_contract_validated=True,
         namespace_validated=True,
-        native_runtime_invoked=True,
+        native_runtime_invoked=native_runtime_invoked,
         native_runtime_exit_code=outcome.exit_code,
         exact_evidence_validated=exact_evidence,
         blockers=outcome.blockers,
@@ -621,6 +865,7 @@ def run_native_publication_launcher_adapter_v3(
 
 __all__ = [
     "ASSESSMENT_KIND",
+    "DETERMINISTIC_NUMERIC_THREAD_ENVIRONMENT_V1",
     "EXIT_PERMANENT",
     "EXIT_SUCCESS",
     "EXIT_TRANSIENT",
@@ -634,5 +879,6 @@ __all__ = [
     "NativePublicationTransientErrorV3",
     "NativeTopologyRunnerV3",
     "TOPOLOGIES",
+    "deterministic_numeric_thread_environment_argv_v1",
     "run_native_publication_launcher_adapter_v3",
 ]

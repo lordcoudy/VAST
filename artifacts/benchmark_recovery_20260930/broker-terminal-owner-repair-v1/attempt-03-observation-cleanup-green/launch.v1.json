@@ -1,0 +1,81 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/run_focused_v2.py",
+    "child",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-03-observation-cleanup-green",
+    "green"
+  ],
+  "cleanup_seconds": 10,
+  "execution_seconds": 120,
+  "mode": "green",
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 53648,
+    "pid": 53648,
+    "ppid": 53647,
+    "startticks": 29297245,
+    "uid": 1000
+  },
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        3096224745679184,
+        33279,
+        1,
+        124707,
+        1790809978827636100,
+        1790809978827636100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+      "size_bytes": 124707
+    },
+    {
+      "epoch": [
+        69,
+        3659174699626610,
+        33279,
+        1,
+        22598,
+        1790810656596529500,
+        1790810656596529500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_backend_publication_broker_terminal_v3.py",
+      "sha256": "1e632d43c6a8361b7483ef9d160832e5993760f48103a8a22527c3bac1cbe1fa",
+      "size_bytes": 22598
+    },
+    {
+      "epoch": [
+        69,
+        137078313659951802,
+        33279,
+        1,
+        52269,
+        1789990792141350500,
+        1789990792141350500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_backend_publication_process_supervisor_v3.py",
+      "sha256": "63a6835836ff057e2e38b2d3f18ed4f7cb8b5a6f8dddea926b376b0e8a6b5eb5",
+      "size_bytes": 52269
+    },
+    {
+      "epoch": [
+        69,
+        2533274792819121,
+        33279,
+        1,
+        7521,
+        1790810656599499000,
+        1790810656599499000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/run_focused_v2.py",
+      "sha256": "fd8d4dd013b1ba266386d13f425a2beca9324c181bccaadc98f2198d9294d784",
+      "size_bytes": 7521
+    }
+  ]
+}

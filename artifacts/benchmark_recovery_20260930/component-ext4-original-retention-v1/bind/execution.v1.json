@@ -1,0 +1,573 @@
+{
+  "all_held_fds_released": true,
+  "bind_reachability_only": true,
+  "cleanup_errors": [],
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/git",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+        "rev-parse",
+        "HEAD"
+      ],
+      "both_eof": true,
+      "captured_bytes_counter": {
+        "stderr": 0,
+        "stdout": 41
+      },
+      "channels": {
+        "stderr": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command00.stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command00.stdout.raw",
+          "sha256": "b95ab96715696c8b15ce23f007229370f445a7e958ee479a17afc55ef31ad5af",
+          "size_bytes": 41
+        }
+      },
+      "cleanup_errors": [],
+      "eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "failure": null,
+      "original_group_absent": true,
+      "original_pid": 41540,
+      "original_pid_absent": true,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable": "/usr/bin/git",
+        "executable_unavailable": null,
+        "gid": 1000,
+        "pgid": 41540,
+        "pid": 41540,
+        "ppid": 41539,
+        "startticks": 28329024,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "container",
+        "inspect",
+        "vast-d27-bind-41539"
+      ],
+      "both_eof": true,
+      "captured_bytes_counter": {
+        "stderr": 67,
+        "stdout": 3
+      },
+      "channels": {
+        "stderr": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command01.stderr.raw",
+          "sha256": "b73e54bf77cba4b55c69e0a8484d6a2e080cfb0e8acf2608c047bb8b70828c41",
+          "size_bytes": 67
+        },
+        "stdout": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command01.stdout.raw",
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+          "size_bytes": 3
+        }
+      },
+      "cleanup_errors": [],
+      "eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "failure": null,
+      "original_group_absent": true,
+      "original_pid": 41541,
+      "original_pid_absent": true,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable": "/usr/bin/docker",
+        "executable_unavailable": null,
+        "gid": 1000,
+        "pgid": 41541,
+        "pid": 41541,
+        "ppid": 41539,
+        "startticks": 28329028,
+        "uid": 1000
+      },
+      "returncode": 1,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "image",
+        "inspect",
+        "--format",
+        "{{.Id}}",
+        "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6"
+      ],
+      "both_eof": true,
+      "captured_bytes_counter": {
+        "stderr": 0,
+        "stdout": 72
+      },
+      "channels": {
+        "stderr": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command02.stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command02.stdout.raw",
+          "sha256": "6c2564fea2eeb5bbbf69228810bea9b05645c99a16e243f08c4b1528ad089a59",
+          "size_bytes": 72
+        }
+      },
+      "cleanup_errors": [],
+      "eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "failure": null,
+      "original_group_absent": true,
+      "original_pid": 41554,
+      "original_pid_absent": true,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable": "/usr/bin/docker",
+        "executable_unavailable": null,
+        "gid": 1000,
+        "pgid": 41554,
+        "pid": 41554,
+        "ppid": 41539,
+        "startticks": 28329030,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "container",
+        "create",
+        "--name",
+        "vast-d27-bind-41539",
+        "--label",
+        "vast.component.ext4-bind-owner=dde50e69-39bf-45bd-bdb7-bc33c9adcb0b:41539",
+        "--read-only",
+        "--network",
+        "none",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--user",
+        "1000:1000",
+        "--mount",
+        "type=bind,source=/home/s-a-balashov/work/vast-component-release-20260930-d27,target=/vast-root,readonly",
+        "--entrypoint",
+        "/usr/bin/python3",
+        "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6",
+        "-I",
+        "-B",
+        "-c",
+        "import hashlib,json;from pathlib import Path;p=Path('/vast-root/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json');raw=p.read_bytes();print(json.dumps({'sha256':hashlib.sha256(raw).hexdigest(),'size_bytes':len(raw)},sort_keys=True));assert hashlib.sha256(raw).hexdigest()=='61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7'"
+      ],
+      "both_eof": true,
+      "captured_bytes_counter": {
+        "stderr": 0,
+        "stdout": 65
+      },
+      "channels": {
+        "stderr": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command03.stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command03.stdout.raw",
+          "sha256": "1723601ae816e28b0b6ec54a12649c55fd21436eba026d703c656e7f527a0e5d",
+          "size_bytes": 65
+        }
+      },
+      "cleanup_errors": [],
+      "eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "failure": null,
+      "original_group_absent": true,
+      "original_pid": 41568,
+      "original_pid_absent": true,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable": "/usr/bin/docker",
+        "executable_unavailable": null,
+        "gid": 1000,
+        "pgid": 41568,
+        "pid": 41568,
+        "ppid": 41539,
+        "startticks": 28329034,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "container",
+        "inspect",
+        "4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1"
+      ],
+      "both_eof": true,
+      "captured_bytes_counter": {
+        "stderr": 0,
+        "stdout": 11150
+      },
+      "channels": {
+        "stderr": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command04.stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command04.stdout.raw",
+          "sha256": "fbf3d759129adc92c33b6f1e9f5af73607334e7e2d30bd38fcc589aec32aff9b",
+          "size_bytes": 11150
+        }
+      },
+      "cleanup_errors": [],
+      "eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "failure": null,
+      "original_group_absent": true,
+      "original_pid": 41581,
+      "original_pid_absent": true,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable": "/usr/bin/docker",
+        "executable_unavailable": null,
+        "gid": 1000,
+        "pgid": 41581,
+        "pid": 41581,
+        "ppid": 41539,
+        "startticks": 28329041,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "container",
+        "start",
+        "--attach",
+        "4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1"
+      ],
+      "both_eof": true,
+      "captured_bytes_counter": {
+        "stderr": 0,
+        "stdout": 99
+      },
+      "channels": {
+        "stderr": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command05.stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command05.stdout.raw",
+          "sha256": "3c0596536d2d6a5ef7c0a92bfe6cbe798b6e02a921514cf15010458a3a192320",
+          "size_bytes": 99
+        }
+      },
+      "cleanup_errors": [],
+      "eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "failure": null,
+      "original_group_absent": true,
+      "original_pid": 41595,
+      "original_pid_absent": true,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable": "/usr/bin/docker",
+        "executable_unavailable": null,
+        "gid": 1000,
+        "pgid": 41595,
+        "pid": 41595,
+        "ppid": 41539,
+        "startticks": 28329044,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "container",
+        "inspect",
+        "4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1"
+      ],
+      "both_eof": true,
+      "captured_bytes_counter": {
+        "stderr": 0,
+        "stdout": 11837
+      },
+      "channels": {
+        "stderr": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command06.stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command06.stdout.raw",
+          "sha256": "12ffb91cc8dbd706ad2f88a5b1c69b9b3003f5311aa556e4379177b8e1ee14d3",
+          "size_bytes": 11837
+        }
+      },
+      "cleanup_errors": [],
+      "eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "failure": null,
+      "original_group_absent": true,
+      "original_pid": 41609,
+      "original_pid_absent": true,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable": "/usr/bin/docker",
+        "executable_unavailable": null,
+        "gid": 1000,
+        "pgid": 41609,
+        "pid": 41609,
+        "ppid": 41539,
+        "startticks": 28329075,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "container",
+        "rm",
+        "4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1"
+      ],
+      "both_eof": true,
+      "captured_bytes_counter": {
+        "stderr": 0,
+        "stdout": 65
+      },
+      "channels": {
+        "stderr": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command07.stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command07.stdout.raw",
+          "sha256": "1723601ae816e28b0b6ec54a12649c55fd21436eba026d703c656e7f527a0e5d",
+          "size_bytes": 65
+        }
+      },
+      "cleanup_errors": [],
+      "eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "failure": null,
+      "original_group_absent": true,
+      "original_pid": 41623,
+      "original_pid_absent": true,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable": "/usr/bin/docker",
+        "executable_unavailable": null,
+        "gid": 1000,
+        "pgid": 41623,
+        "pid": 41623,
+        "ppid": 41539,
+        "startticks": 28329077,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "container",
+        "inspect",
+        "4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1"
+      ],
+      "both_eof": true,
+      "captured_bytes_counter": {
+        "stderr": 112,
+        "stdout": 3
+      },
+      "channels": {
+        "stderr": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command08.stderr.raw",
+          "sha256": "3583b2d7dd17a33b607d929ed98af49d6ff65a83510b37e5203dd901449bcd94",
+          "size_bytes": 112
+        },
+        "stdout": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command08.stdout.raw",
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+          "size_bytes": 3
+        }
+      },
+      "cleanup_errors": [],
+      "eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "failure": null,
+      "original_group_absent": true,
+      "original_pid": 41637,
+      "original_pid_absent": true,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable": "/usr/bin/docker",
+        "executable_unavailable": null,
+        "gid": 1000,
+        "pgid": 41637,
+        "pid": 41637,
+        "ppid": 41539,
+        "startticks": 28329089,
+        "uid": 1000
+      },
+      "returncode": 1,
+      "signals": []
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "container",
+        "inspect",
+        "vast-d27-bind-41539"
+      ],
+      "both_eof": true,
+      "captured_bytes_counter": {
+        "stderr": 67,
+        "stdout": 3
+      },
+      "channels": {
+        "stderr": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command09.stderr.raw",
+          "sha256": "b73e54bf77cba4b55c69e0a8484d6a2e080cfb0e8acf2608c047bb8b70828c41",
+          "size_bytes": 67
+        },
+        "stdout": {
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command09.stdout.raw",
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+          "size_bytes": 3
+        }
+      },
+      "cleanup_errors": [],
+      "eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "failure": null,
+      "original_group_absent": true,
+      "original_pid": 41651,
+      "original_pid_absent": true,
+      "owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "executable": "/usr/bin/docker",
+        "executable_unavailable": null,
+        "gid": 1000,
+        "pgid": 41651,
+        "pid": 41651,
+        "ppid": 41539,
+        "startticks": 28329091,
+        "uid": 1000
+      },
+      "returncode": 1,
+      "signals": []
+    }
+  ],
+  "container_id": "4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1",
+  "container_removed_without_force": true,
+  "elapsed_s": 0.7538167180027813,
+  "inputs_after": [
+    {
+      "epoch": [
+        2096,
+        548709,
+        33188,
+        1,
+        7049,
+        1790800677895996945,
+        1790800677895996945
+      ],
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json",
+      "sha256": "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
+      "size_bytes": 7049
+    },
+    {
+      "epoch": [
+        2096,
+        547140,
+        33188,
+        1,
+        16732,
+        1790800677639982951,
+        1790800677639982951
+      ],
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/probe_original_ext4_bind_v1.py",
+      "sha256": "5b7fc5eea23b4847489f598689176eb96f202b2e4588566663e217248532e70f",
+      "size_bytes": 16732
+    },
+    {
+      "epoch": [
+        2096,
+        11482,
+        33261,
+        1,
+        45570705,
+        1785954533000000000,
+        1787561618463537524
+      ],
+      "path": "/usr/bin/docker",
+      "sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+      "size_bytes": 45570705
+    }
+  ],
+  "model_native_gpu_acceptance": false,
+  "primary_error": null,
+  "publication_ready": false,
+  "status": "passed"
+}

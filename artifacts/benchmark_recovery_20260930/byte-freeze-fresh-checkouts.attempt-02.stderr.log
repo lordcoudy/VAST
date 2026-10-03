@@ -1,0 +1,26 @@
+Original verify_checkout_byte_freeze_v3.py checkouts invocation exited1 before any clone.
+It called its real verify-source child for exact source commit79ff17832cf7293f3ff3321af537f687072a1d52.
+That child successfully compared all165 original physical/index/commit blobs, then failed at:
+
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/verify_checkout_byte_freeze_v3.py", line 460, in verify_source
+    require(command(prefix + ["status", "--porcelain=v1", "-z", "--untracked-files=no", "--",
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/verify_checkout_byte_freeze_v3.py", line 40, in require
+    raise ValueError(message)
+ValueError: declared source paths dirty
+
+Separate actual readonly Linux Git commands observed:
+ M deploy/deepstream/checkpoint/requirements.lock
+ M deploy/gstreamer_custom/publication/requirements.lock
+
+Both git diff invocations were empty. The actual index OIDs and separate
+git hash-object --no-filters results were equal:
+8f2488da369d42959c38c13c7d3964bc14f14cb2 deploy/deepstream/checkpoint/requirements.lock
+e615a18f64cb7c6f37b7da488848a2c2236e7922 deploy/gstreamer_custom/publication/requirements.lock
+
+git diff-files --raw reported old100644/new100644 and unresolved newOID zeros
+for both stat-status entries. This is retained original tool-observed failure
+and diagnostic text, not an invented original child PID/executable receipt.
+No raw source/index object/configuration mutation or clone followed this attempt.
+V4 records this original stat observation separately and still requires every
+physical/index/commit blob exact, plus strict clean declared paths in each fresh
+initial checkout. It disables optional Git locks for read commands.

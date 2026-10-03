@@ -1,0 +1,81 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/run_focused_v1.py",
+    "child",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/attempt-02-green-new",
+    "new"
+  ],
+  "cleanup_s": 10,
+  "execution_s": 120,
+  "original_scope": "new",
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 66034,
+    "pid": 66034,
+    "ppid": 66027,
+    "startticks": 31025804,
+    "uid": 1000
+  },
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        128071114405210518,
+        33279,
+        1,
+        299297,
+        1790827921541744500,
+        1790827921541744500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "d1b92834c68bbb331d75327922d0da3bea2aa12ac0d8debeb839a67ecb288885",
+      "size_bytes": 299297
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390247,
+        33279,
+        1,
+        138081,
+        1790827656400008200,
+        1790827656400008200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "7fcbdd3b18d6554c2067cd583a57ea7d0345e100bff6bf2734f6ddc31857ee4d",
+      "size_bytes": 138081
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973086,
+        33279,
+        1,
+        6599,
+        1790827656401511500,
+        1790827656401511500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_worker_termination_facts_v1.py",
+      "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+      "size_bytes": 6599
+    },
+    {
+      "epoch": [
+        69,
+        1688849862689342,
+        33279,
+        1,
+        7749,
+        1790827756521336600,
+        1790827756521336600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/run_focused_v1.py",
+      "sha256": "313641c51248d2733af9cdc9373903fc9c6daab75fed7d056acecd18d7098c2a",
+      "size_bytes": 7749
+    }
+  ]
+}

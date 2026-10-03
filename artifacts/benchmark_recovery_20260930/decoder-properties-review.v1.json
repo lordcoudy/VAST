@@ -1,0 +1,197 @@
+{
+  "accepted": false,
+  "actual_scanner_stderr": "Fresh-registry observations contain Python plugin CRITICAL scanner warnings; raw stderr is retained. Both decoder inspections return0.",
+  "artifact_kind": "vast_readonly_decoder_properties_review_v1",
+  "fresh_registry_observations": [
+    {
+      "container_id": "a24951641a51c23ed000ba8e8987e84c367589c90f00baab72183628093272ea",
+      "container_not_found_after_rm": true,
+      "decoder": "nvh264dec",
+      "low_latency_property_present": false,
+      "observed_property_names": [
+        "automatic-request-sync-point-flags",
+        "automatic-request-sync-points",
+        "compliance",
+        "cuda-device-id",
+        "discard-corrupted-frames",
+        "init-max-height",
+        "init-max-width",
+        "max-display-delay",
+        "max-errors",
+        "min-force-key-unit-interval",
+        "name",
+        "num-output-surfaces",
+        "parent",
+        "qos"
+      ],
+      "oom_killed": null,
+      "original_child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 9663,
+        "ppid": 9414,
+        "proc_stat_starttime_ticks": 20932407,
+        "uid": 1000
+      },
+      "properties": {
+        "max-display-delay": {
+          "line_end": 101,
+          "line_start": 99,
+          "original_lines": [
+            "  max-display-delay   : Improves pipelining of decode with display, 0 means no delay (auto = -1)",
+            "                        flags: readable, writable",
+            "                        Integer. Range: -1 - 16 Default: -1 "
+          ]
+        },
+        "num-output-surfaces": {
+          "line_end": 117,
+          "line_start": 115,
+          "original_lines": [
+            "  num-output-surfaces : Maximum number of output surfaces simultaneously mapped in CUDA output mode (0 = auto, 1 = always copy)",
+            "                        flags: readable, writable, changeable only in NULL or READY state",
+            "                        Unsigned Integer. Range: 0 - 64 Default: 1 "
+          ]
+        }
+      },
+      "reported_plugin_path": "/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstnvcodec.so",
+      "reported_plugin_version": "1.28.2",
+      "returncode": 0,
+      "stderr": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\gstreamer-decoder-fresh-registry-inspection\\nvh264dec.stderr",
+        "sha256": "125f6a1f6c3780f740a5fb7dcdf053db06b8d594894366eafcd21b12a958a086",
+        "size_bytes": 224
+      },
+      "stdout": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\gstreamer-decoder-fresh-registry-inspection\\nvh264dec.stdout",
+        "sha256": "d6deccb28b9cb06a780a1ca489882a146f0cf0e6bf14d734b7160bfef784673b",
+        "size_bytes": 6020
+      },
+      "terminal": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\gstreamer-decoder-fresh-registry-inspection\\nvh264dec.terminal.v1.json",
+        "sha256": "48d168e0cb683fc83c6732c809f5f113b7112cd7bfede67fa70dd0704c29d070",
+        "size_bytes": 2380
+      },
+      "zero_latency_property_present": false
+    },
+    {
+      "container_id": "2b85c4d11229f7fb4ffbb18eb5e8667d14fd86505520d39b1800f34fd8af8f23",
+      "container_not_found_after_rm": true,
+      "decoder": "nvh265dec",
+      "low_latency_property_present": false,
+      "observed_property_names": [
+        "automatic-request-sync-point-flags",
+        "automatic-request-sync-points",
+        "cuda-device-id",
+        "discard-corrupted-frames",
+        "init-max-height",
+        "init-max-width",
+        "max-display-delay",
+        "max-errors",
+        "min-force-key-unit-interval",
+        "name",
+        "num-output-surfaces",
+        "parent",
+        "qos"
+      ],
+      "oom_killed": null,
+      "original_child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 9703,
+        "ppid": 9414,
+        "proc_stat_starttime_ticks": 20932501,
+        "uid": 1000
+      },
+      "properties": {
+        "max-display-delay": {
+          "line_end": 93,
+          "line_start": 91,
+          "original_lines": [
+            "  max-display-delay   : Improves pipelining of decode with display, 0 means no delay (auto = -1)",
+            "                        flags: readable, writable",
+            "                        Integer. Range: -1 - 16 Default: -1 "
+          ]
+        },
+        "num-output-surfaces": {
+          "line_end": 109,
+          "line_start": 107,
+          "original_lines": [
+            "  num-output-surfaces : Maximum number of output surfaces simultaneously mapped in CUDA output mode (0 = auto, 1 = always copy)",
+            "                        flags: readable, writable, changeable only in NULL or READY state",
+            "                        Unsigned Integer. Range: 0 - 64 Default: 1 "
+          ]
+        }
+      },
+      "reported_plugin_path": "/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstnvcodec.so",
+      "reported_plugin_version": "1.28.2",
+      "returncode": 0,
+      "stderr": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\gstreamer-decoder-fresh-registry-inspection\\nvh265dec.stderr",
+        "sha256": "fd4ff098d85dcfa22cac91101d1f90cb19c1d570abcb4a7f2a66e40962052898",
+        "size_bytes": 224
+      },
+      "stdout": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\gstreamer-decoder-fresh-registry-inspection\\nvh265dec.stdout",
+        "sha256": "42f66301ab672323f35d842cca2e99afd2fcfbad001c19d46ff1afc86bc0ba18",
+        "size_bytes": 5682
+      },
+      "terminal": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\gstreamer-decoder-fresh-registry-inspection\\nvh265dec.terminal.v1.json",
+        "sha256": "15acd1192eb03c7b9500e6603f98d9231ef9105a28ccff06c7148934ea9536a5",
+        "size_bytes": 2380
+      },
+      "zero_latency_property_present": false
+    }
+  ],
+  "fresh_registry_receipt": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\gstreamer-decoder-fresh-registry-inspection\\decoder-inspection.v1.json",
+    "sha256": "99134bca7b5ca889338fa645e500b606d836359642410afc0c7cf19e6fb1418b",
+    "size_bytes": 1323
+  },
+  "frozen_registry_receipt": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\gstreamer-decoder-inspection\\decoder-inspection.v1.json",
+    "sha256": "ffba311ac8f924349bb772f0e234559680cf88f485ed6b8bb4005b766305964b",
+    "size_bytes": 1259
+  },
+  "frozen_registry_result": "Both decoder inspections exit255 with exact No such element or plugin messages. This only covers direct frozen-template inspection; the stock coordinator refreshes a GPU-aware registry before launch.",
+  "image_id": "sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a",
+  "interpretation": "The actual packaged runtime exposes max-display-delay auto(-1) and configurable0. These metadata observations do not establish a latency reduction, remove B-frame decode dependencies, or demonstrate measurement acceptance. No source, runtime flags, encoded input, or model workload changed.",
+  "publication_ready": false,
+  "reported_gst_inspect_path": "/opt/intel/dlstreamer/gstreamer/bin/gst-inspect-1.0",
+  "reported_gstreamer_version": "1.28.2",
+  "schema_version": 1,
+  "source_commit": "a5b3812457cc2eddfd19eaf7687a4e868a7d085b",
+  "stock_refresh_source": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\scripts\\checkpoint_gstreamer_runtime.py",
+    "sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+    "size_bytes": 156160
+  },
+  "stock_refresh_source_lines": {
+    "actual_gst_inspect": [
+      775,
+      782
+    ],
+    "fresh_registry_creation": [
+      758,
+      765
+    ],
+    "remove_registry_update_disabled": [
+      767,
+      770
+    ],
+    "seed_each_child": [
+      805,
+      811
+    ]
+  },
+  "version_stdout": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\gstreamer-decoder-fresh-registry-inspection\\version.stdout",
+    "sha256": "22099ecbc060c33f659fb912a529cbbbce93dc52b770ed3e3ffde484bf75d9da",
+    "size_bytes": 123
+  },
+  "version_terminal": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\gstreamer-decoder-fresh-registry-inspection\\version.terminal.v1.json",
+    "sha256": "0a233552e1c47cdf3fa18b1158097c8f92cf9e81a88e08d303213f8cf3fa30f0",
+    "size_bytes": 2392
+  }
+}

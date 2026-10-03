@@ -43,12 +43,16 @@ FILE_ROLES = (
 class GstreamerPublicationContainerBoundaryV3Tests(unittest.TestCase):
     def test_runtime_is_bound_to_the_materialized_image_and_not_host_native_dispatch(self) -> None:
         self.assertEqual(
+            runtime.EXPECTED_IMAGE_REFERENCE,
+            "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9",
+        )
+        self.assertEqual(
             runtime.EXPECTED_IMAGE_ID,
-            "sha256:3c63c15ed7a8022c45f5fb3038ab6d1ff5cc152f430681bbc97c1f332091ebf7",
+            "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
         )
         self.assertEqual(
             runtime.EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256,
-            "f5fda9d722635f5ae24797031b3a89d479ab86efccc5a11a9915eb2414890e42",
+            "65af20e2fc8a6089cade6026a1e1ee98f66a24508a1c76ddcb4699df0a50061c",
         )
         self.assertTrue({
             "container_image", "embedded_artifacts", "container_engine_socket",
@@ -75,6 +79,52 @@ def descriptor(
 
 @unittest.skipUnless(os.name == "posix", "exact descriptor execution is POSIX-only")
 class GstreamerPublicationRuntimeV3Tests(unittest.TestCase):
+    def test_container_engine_accepts_the_bundle_copied_client(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            copied = root / "artifacts/bundle/_assets/container-engine/docker"
+            copied.parent.mkdir(parents=True)
+            payload = b"docker-client-frozen\n"
+            copied.write_bytes(payload)
+            copied.chmod(0o755)
+            relative = copied.relative_to(root).as_posix()
+            digest = hashlib.sha256(payload).hexdigest()
+
+            def descriptor(path: str, sha: str = digest) -> dict:
+                return {"path": path, "size_bytes": len(payload), "sha256": sha}
+
+            pin = runtime._open_pin(
+                root, "container_engine", descriptor(relative),
+                executable=True, mounted=False,
+            )
+            try:
+                self.assertEqual(pin.path, copied)
+                self.assertIsNone(pin.container_path)
+            finally:
+                os.close(pin.fd)
+            host = runtime._open_pin(
+                root, "container_engine", descriptor(str(copied)),
+                executable=True, mounted=False,
+            )
+            os.close(host.fd)
+            for invalid, blocker in (
+                ("../outside/docker", "gstreamer_runtime_input_path_invalid"),
+                (relative, "gstreamer_runtime_file"),
+            ):
+                with self.subTest(path=invalid, blocker=blocker):
+                    sha = digest if invalid.startswith("..") else "0" * 64
+                    with self.assertRaisesRegex(runtime.GstreamerPublicationRuntimeV3Error, blocker):
+                        runtime._open_pin(
+                            root, "container_engine", descriptor(invalid, sha),
+                            executable=True, mounted=False,
+                        )
+
+    def test_container_pid_ceiling_admits_all_native_workers(self) -> None:
+        contract = mock.Mock(device={"docker_gpus_request": "device=GPU-test"})
+        argv = runtime._security_argv(contract)
+        self.assertEqual(argv[argv.index("--pids-limit") + 1], "4096")
+        self.assertEqual(runtime.MAX_CONTAINER_PIDS, 4096)
+
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name).resolve()
@@ -157,9 +207,9 @@ class GstreamerPublicationRuntimeV3Tests(unittest.TestCase):
             "container_image": {
                 "image_id": runtime.EXPECTED_IMAGE_ID,
                 "repository_digest": runtime.EXPECTED_REPOSITORY_DIGEST,
-                "inspect_projection_sha256": hashlib.sha256(
-                    runtime._canonical(self.inspect_projection)
-                ).hexdigest(),
+                "inspect_projection_sha256": runtime.image_projection_sha256(
+                    self.inspect_projection
+                ),
                 "base_image_id": runtime.EXPECTED_BASE_IMAGE_ID,
             },
             "embedded_artifacts": runtime.EXPECTED_EMBEDDED_ARTIFACTS,
@@ -300,6 +350,10 @@ class GstreamerPublicationRuntimeV3Tests(unittest.TestCase):
             self.assertEqual(engine_socket["path"], self.engine_socket["path"])
             calls.append(argv)
             if argv[:2] == ("image", "inspect"):
+                self.assertEqual(
+                    argv,
+                    ("image", "inspect", runtime.EXPECTED_IMAGE_REFERENCE),
+                )
                 return mock.Mock(
                     returncode=0,
                     stdout=(json.dumps([self.inspect_projection]) + "\n").encode(),
@@ -329,8 +383,19 @@ class GstreamerPublicationRuntimeV3Tests(unittest.TestCase):
                 )
             self.assertEqual(timeout_s, 900.0)
             self.assertEqual(argv[0], "run")
+            user_index = argv.index("--user")
+            self.assertEqual(
+                argv[user_index + 1], f"{os.getuid()}:{os.getgid()}"
+            )
             self.assertIn(runtime.EXPECTED_IMAGE_ID, argv)
             self.assertNotIn("--system", argv)
+            for binding in (
+                "OPENBLAS_NUM_THREADS=1",
+                "OMP_NUM_THREADS=1",
+                "MKL_NUM_THREADS=1",
+                "NUMEXPR_NUM_THREADS=1",
+            ):
+                self.assertEqual(argv[argv.index(binding) - 1], "--env")
             for value in (
                 "--rm", "--network", "none", "--read-only", "--cap-drop",
                 "ALL", "--security-opt", "no-new-privileges", "--gpus",
@@ -378,8 +443,8 @@ class GstreamerPublicationRuntimeV3Tests(unittest.TestCase):
         return invoke
 
     def test_launcher_is_implemented_and_binds_both_topologies_to_genuine_runner(self) -> None:
-        self.assertFalse(launcher.PUBLICATION_READY)
-        self.assertEqual(len(launcher.MISSING_RUNTIME_PINS), 2)
+        self.assertTrue(launcher.PUBLICATION_READY)
+        self.assertFalse(hasattr(launcher, "MISSING_RUNTIME_PINS"))
         self.assertEqual(
             set(launcher.NATIVE_TOPOLOGY_RUNNERS),
             {"independent_processes", "shared_video_dag"},

@@ -1,0 +1,128 @@
+--- capture_owned_runtime_bind_cleanup_v1.py
++++ capture_owned_runtime_bind_cleanup_v2.py
+@@ -151,8 +151,15 @@
+     row, fd = hold(path, CONTROL_CAP, expected)
+     control_bytes += row['size_bytes']
+     assert control_bytes <= CONTROL_TOTAL_CAP
+-    data = os.pread(fd, row['size_bytes'] + 1, 0)
+-    assert len(data) == row['size_bytes'] and hashlib.sha256(data).hexdigest() == row['sha256']
++    blocks, offset = [], 0
++    while offset < row['size_bytes']:
++        gate()
++        block = os.pread(fd, min(65536, row['size_bytes'] - offset), offset)
++        assert block, 'held control payload ended early'
++        blocks.append(block)
++        offset += len(block)
++    data = b''.join(blocks)
++    assert len(data) == row['size_bytes'] and not os.pread(fd, 1, len(data)) and hashlib.sha256(data).hexdigest() == row['sha256']
+     assert epoch(os.fstat(fd)) == row['epoch7'] == epoch(os.lstat(path))
+     return json.loads(data), row
+ 
+@@ -167,8 +174,8 @@
+ 
+ def scan(owners):
+     pids = {r['pid'] for r in owners}
+-    groups = {r['pgid'] for r in owners}
+-    sessions = {r['session'] for r in owners}
++    groups = {r['pgid'] for r in owners if r['pgid'] is not None}
++    sessions = {r['session'] for r in owners if r['session'] is not None}
+     rows, failed = [], []
+     for entry in Path('/proc').iterdir():
+         if not entry.name.isdigit():
+@@ -204,12 +211,27 @@
+     return {'namespace': os.readlink('/proc/self/ns/mnt'), 'namespace_stat': epoch(os.stat('/proc/self/ns/mnt')), 'boot_id': Path('/proc/sys/kernel/random/boot_id').read_text().strip(), 'mountinfo_size_bytes': len(data), 'mountinfo_sha256': hashlib.sha256(data).hexdigest(), 'rows': rows}
+ 
+ 
++def normalize_owner(value):
++    # Unknown fields stay null; neither sessions nor birth are inferred.
++    assert isinstance(value, dict) and type(value.get('pid')) is int and value['pid'] > 0
++    row = {key: value.get(key) for key in ('pid', 'pgid', 'session', 'startticks', 'uid', 'gid', 'boot_id')}
++    for key in ('pgid', 'session', 'startticks'):
++        assert row[key] is None or type(row[key]) is int and row[key] > 0
++    for key in ('uid', 'gid'):
++        assert row[key] is None or type(row[key]) is int and row[key] >= 0
++    assert row['boot_id'] is None or row['boot_id'] == BOOT
++    return row
++
++
+ def authentic_owners(value):
+     found = []
+     if isinstance(value, dict):
+-        if all(k in value for k in ('pid', 'pgid', 'session', 'startticks', 'uid', 'gid', 'boot_id')):
+-            if all(type(value[k]) is int and value[k] > 0 for k in ('pid', 'pgid', 'session', 'startticks')) and value['boot_id'] == BOOT:
+-                found.append({k: value[k] for k in ('pid', 'pgid', 'session', 'startticks', 'uid', 'gid', 'boot_id')})
++        if type(value.get('pid')) is int and value['pid'] > 0:
++            found.append(normalize_owner(value))
++        if type(value.get('reader_pid')) is int and value['reader_pid'] > 0:
++            found.append(normalize_owner({'pid': value['reader_pid']}))
++        if type(value.get('original_pid')) is int and value['original_pid'] > 0:
++            found.append(normalize_owner({'pid': value['original_pid'], 'pgid': value.get('original_pgid')}))
+         for nested in value.values():
+             found.extend(authentic_owners(nested))
+     elif isinstance(value, list):
+@@ -353,7 +375,7 @@
+     assert len(sys.argv) == 4, 'requires exact bound-closure size/SHA and reviewed source SHA'
+     binding_size, binding_sha, self_sha = int(sys.argv[1]), sys.argv[2], sys.argv[3]
+     assert re.fullmatch('[0-9a-f]{64}', binding_sha) and re.fullmatch('[0-9a-f]{64}', self_sha)
+-    assert Path(__file__).absolute() == HERE / 'capture_owned_runtime_bind_cleanup_v1.py'
++    assert Path(__file__).absolute() == HERE / 'capture_owned_runtime_bind_cleanup_v2.py'
+     assert os.getuid() == os.getgid() == 0 and Path(sys.executable) == PYTHON and sys.version_info[:3] == (3, 12, 3)
+     controller = owner(os.getpid())
+     controller['observed_parent'] = owner(controller['ppid'])
+@@ -383,7 +405,7 @@
+     assert tool_stat.st_uid == tool_stat.st_gid == 0 and tool_stat.st_mode & 0o111 and not tool_stat.st_mode & 0o022
+     head_pin, head_fd = hold(ROOT / '.git/HEAD', 41, (41, '33b3c32b7cd1f722f6eeaf2bff0e7ee83a9e2f01bcaa902a4d72f96558b507af'))
+     assert os.pread(head_fd, 42, 0) == (COMMIT + '\n').encode()
+-    documents, proof_pins = [], []
++    documents, proof_pins, conformance_proofs = [], [], {}
+     ci = binding['full_ci']
+     for label in ('dispatch', 'terminal'):
+         expected_path = CI_BASE / (label + '.v1.json')
+@@ -409,6 +431,7 @@
+     assert conf_terminal['FD_holds_released'] is True and not conf_terminal['close_errors']
+     for label in ('independent_review', 'process_closure'):
+         value, pin = evidence(conformance[label], BASE)
++        conformance_proofs[label] = value
+         documents.append(value)
+         proof_pins.append(pin)
+     assert len(binding['additional_D_consumer_closures']) <= 32
+@@ -418,10 +441,17 @@
+         proof_pins.append(pin)
+     authentic = authentic_owners(documents)
+     declared = binding['all_closed_consumer_owners']
+-    assert 3 <= len(declared) <= 512 and len({(r['pid'], r['startticks']) for r in declared}) == len(declared)
+-    assert all(set(r) == {'pid', 'pgid', 'session', 'startticks', 'uid', 'gid', 'boot_id'} and r in authentic for r in declared), 'closed consumers require original dispatch/terminal-derived owners'
+-    required_ci = authentic_owners([documents[0]['controller'], documents[1]['original'], ci_review['facts']['actual_observer']['owner']])
+-    assert required_ci and all(r in declared for r in required_ci)
++    assert 4 <= len(declared) <= 512 and len({(r['pid'], r['startticks']) for r in declared}) == len(declared)
++    assert all(set(r) == {'pid', 'pgid', 'session', 'startticks', 'uid', 'gid', 'boot_id'} and normalize_owner(r) == r and r in authentic for r in declared), 'closed consumers require named actual dispatch/result/closure records'
++    assert ci_review['facts']['actual_wrapper_dispatch'] == documents[0] and ci_review['facts']['actual_wrapper_terminal'] == documents[1]
++    required_ci = [normalize_owner(documents[0]['controller']), normalize_owner(documents[1]['original']), normalize_owner(ci_review['facts']['actual_observer']['owner']), normalize_owner({'pid': ci_review['reader_pid']})]
++    required_conformance = [normalize_owner({'pid': conf_terminal['original_pid'], 'pgid': conf_terminal.get('original_pgid')})]
++    # Independent conformance reader PID must also be declared when its actual
++    # top-level result provides it. Nested historical owners are not relabeled.
++    for value in conformance_proofs.values():
++        if type(value.get('reader_pid')) is int and value['reader_pid'] > 0:
++            required_conformance.append(normalize_owner({'pid': value['reader_pid']}))
++    assert conf_terminal['source_commit'] == COMMIT and all(r in declared for r in required_ci + required_conformance)
+     consumer_scans = [scan(declared), scan(declared)]
+     require_absent(consumer_scans)
+     assert not close_errors
+@@ -440,7 +470,7 @@
+     precommand = mount_observation('immediate-pre-command')
+     assert precommand['rows'] == before['rows'] and precommand['namespace'] == NAMESPACE and precommand['boot_id'] == BOOT
+     assert precommand['namespace_stat'] == before['namespace_stat']
+-    facts = {'creator': creator_pin, 'creator_closure': closure_pin, 'binding': binding_pin, 'consumer_proof_pins': proof_pins, 'consumer_owner_scans': consumer_scans, 'canonical_python': cp_pin, 'umount_executable': umount_pin, 'source_HEAD': head_pin, 'target_python_before_only_all_FDs_closed': temporary_target, 'mount_before': before, 'mount_immediate_pre_command': precommand, 'original_underlying_target_directory_identity': None}
++    facts = {'creator': creator_pin, 'creator_closure': closure_pin, 'binding': binding_pin, 'consumer_proof_pins': proof_pins, 'consumer_owner_scans': consumer_scans, 'normalized_actual_consumer_owners_unknown_fields_null': declared, 'canonical_python': cp_pin, 'umount_executable': umount_pin, 'source_HEAD': head_pin, 'target_python_before_only_all_FDs_closed': temporary_target, 'mount_before': before, 'mount_immediate_pre_command': precommand, 'original_underlying_target_directory_identity': None}
+     gate()
+     command_result = command()
+     after = mount_observation('after')
+@@ -476,7 +506,7 @@
+             close_errors.append({'path': str(path), 'type': type(exc).__name__, 'message': str(exc)[:512]})
+ 
+ fd_after = len(list(Path('/proc/self/fd').iterdir()))
+-result = {'schema_version': 1, 'kind': 'original_owned_runtime_bind_cleanup_capture_v1', 'source_commit_D': COMMIT, 'status': 'verified_owned_unmount_not_acceptance' if not errors and not close_errors and fd_before == fd_after else 'failed', 'controller': controller, 'command': command_result, 'facts': facts, 'first_error': errors[0] if errors else None, 'errors': errors, 'close_errors': close_errors, 'all_held_FDs_closed': not close_errors, 'fd_before': fd_before, 'fd_after': fd_after, 'elapsed_s': time.monotonic() - START, 'acceptance_claim': False, 'full_CI_acceptance': False, 'conformance_acceptance': False, 'benchmark_acceptance': False, 'directory_deletion_performed': False, 'underlying_target_directory_pre_mount_identity': None, 'limits': ['Only recorded original consumer and command PIDs/groups/sessions are scanned; no global descendant absence claim.', 'Original underlying target-directory inode was never recorded. Its post-unmount observation cannot prove pre-mount identity; empty directories remain.', 'No mount-source331 mutation, force/lazy/recursive umount, source/model/engine operation, test/CI replay or authority rebinding.', 'Capture controller/outer timeout absence requires an independent parent postterminal closure before cleanup is considered fully closed.']}
++result = {'schema_version': 1, 'kind': 'original_owned_runtime_bind_cleanup_capture_v1', 'source_commit_D': COMMIT, 'status': 'verified_owned_unmount_not_acceptance' if not errors and not close_errors and fd_before == fd_after else 'failed', 'controller': controller, 'command': command_result, 'facts': facts, 'first_error': errors[0] if errors else None, 'errors': errors, 'close_errors': close_errors, 'all_held_FDs_closed': not close_errors, 'fd_before': fd_before, 'fd_after': fd_after, 'elapsed_s': time.monotonic() - START, 'acceptance_claim': False, 'full_CI_acceptance': False, 'conformance_acceptance': False, 'benchmark_acceptance': False, 'directory_deletion_performed': False, 'underlying_target_directory_pre_mount_identity': None, 'limits': ['Only recorded positive consumer and command PIDs/groups/sessions are scanned. Unknown original birth/session/group fields stay null, not inferred; no global descendant absence claim.', 'Original underlying target-directory inode was never recorded. Its post-unmount observation cannot prove pre-mount identity; empty directories remain.', 'No mount-source331 mutation, force/lazy/recursive umount, source/model/engine operation, test/CI replay or authority rebinding.', 'Capture controller/outer timeout absence requires an independent parent postterminal closure before cleanup is considered fully closed.']}
+ if output_owned:
+     terminal_attempted = False
+     terminal_saved = False

@@ -1,0 +1,19 @@
+test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins (test_ci_userns_profile_v1.AuditClockTests.test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins) ... ERROR
+
+======================================================================
+ERROR: test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins (test_ci_userns_profile_v1.AuditClockTests.test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py", line 494, in test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins
+    proof=module.join_original_userns_denial_v1(*args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_userns_profile_v1.py", line 167, in join_original_userns_denial_v1
+    _require(capture['started_wall_time_ns']<=wall_ns<=capture['terminal_wall_time_ns'] and
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_userns_profile_v1.py", line 32, in _require
+    raise RuntimeError(message)
+RuntimeError: original kernel denial outside exact syscall/clock interval
+
+----------------------------------------------------------------------
+Ran 1 test in 0.024s
+
+FAILED (errors=1)

@@ -1,0 +1,14 @@
+{
+  "all_retainer_CI_model_engine_sources_unchanged": true,
+  "first_error": "AssertionError comparing equal retained metadata descriptors with Windows backslash path representation against original Linux forward-slash path",
+  "original_provider_or_local_attempt_outcome_changed": false,
+  "own_static_observer_attempt02_returncode": 1,
+  "own_static_observer_attempt02_tool": "88bc0e",
+  "preserved_failed_metadata_observer_source": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-ci-P-C-original-independent-review-v1\\review_retained_originals_v2.py",
+    "sha256": "a5ad6d5c60135be6930ba7ac30f0d2131b9cef65d92b212ff7f581d85db59316",
+    "size_bytes": 21041
+  },
+  "schema_version": 1,
+  "v3_narrow_change": "Render observer descriptors as POSIX paths; hashes, sizes, exact original path selection and all other checks unchanged."
+}

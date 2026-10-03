@@ -42,6 +42,7 @@ from analytics_execution_worker import (
     validate_runtime_probe,
     validate_worker_capability,
 )
+from analytics_execution_endpoint import terminal_detector_identity
 from checkpoint_runtime import RuntimeMessage
 from topology_contract import INDEPENDENT_PROCESSES, SHARED_VIDEO_DAG
 
@@ -584,7 +585,7 @@ class OpenVINOGVAExecutionBridge:
                 "implementation_version": (
                     "sha256:" + capability["worker_implementation_sha256"]
                 ),
-                "terminal_detector": capability["model_id"],
+                "terminal_detector": terminal_detector_identity(capability),
                 "terminal_backend": (
                     f"analytics-execution:{capability['engine']};"
                     f"runtime={capability['runtime_name']};"

@@ -13,6 +13,7 @@ from typing import Iterable, Sequence
 ENTRY_MODULES = (
     "checkpoint_savant_container_runtime_v3",
     "checkpoint_savant_sdk_runtime_v3",
+    "checkpoint_savant_pyfunc_v3",
 )
 MANIFEST_RELATIVE_PATH = (
     "deploy/savant/publication/runtime-source-allowlist.txt"
@@ -27,13 +28,11 @@ BUILD_ONLY_SOURCES = {
     "scripts/materialize_runtime_build_context_v3.py",
 }
 RUNTIME_FIXED_COPY_SOURCES = {
+    "configs/checkpoint_analytics_models_openvino.yaml",
     DEPENDENCY_MANIFEST_RELATIVE_PATH,
     MANIFEST_RELATIVE_PATH,
     "deploy/savant/publication/vast_savant_checkpoint_runtime",
 }
-NATIVE_ENTRY_SOURCE = (
-    "deploy/native_gst_probe/checkpoint_source_coordinator.cpp"
-)
 _PYTHON_PATH = re.compile(r"scripts/[a-z][a-z0-9_]*\.py")
 _NATIVE_PATH = re.compile(
     r"deploy/native_gst_probe/[a-z][a-z0-9_]*\.(?:cpp|hpp)"
@@ -205,7 +204,7 @@ def validate_native_source_closure(
     *,
     project_root: Path,
     declared_paths: Iterable[str],
-    entry_source: str = NATIVE_ENTRY_SOURCE,
+    entry_source: str = "deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
 ) -> tuple[str, ...]:
     root = project_root.resolve(strict=True)
     declared = tuple(_canonical_relative_path(value) for value in declared_paths)
@@ -377,10 +376,11 @@ def validate_runtime_source_closure(
         declared_paths=python_declared,
         entry_modules=ENTRY_MODULES,
     )
-    native_sources = validate_native_source_closure(
-        project_root=root,
-        declared_paths=native_declared,
+    _require(
+        not native_declared,
+        "Savant runtime must consume the frozen native-builder binary",
     )
+    native_sources: tuple[str, ...] = ()
     dependency_sources = validate_dependency_source_closure(
         project_root=root,
         manifest_path=root / DEPENDENCY_MANIFEST_RELATIVE_PATH,

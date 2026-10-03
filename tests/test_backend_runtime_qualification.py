@@ -520,7 +520,6 @@ class BackendRuntimeQualificationTests(unittest.TestCase):
         canonical_root = Path(os.path.abspath(os.fspath(self.root)))
         canonical_output = output.resolve(strict=True)
         canonical_root = canonical_output.parents[2]
-        registry = identity._Registry(canonical_root)
         binding = {
             "binding_index": descriptor(canonical_root, canonical_output / target.BINDING_INDEX_FILENAME),
             "receipts": {
@@ -528,19 +527,24 @@ class BackendRuntimeQualificationTests(unittest.TestCase):
                 for system in SYSTEMS
             },
         }
-        accepted = identity._validate_backends(
-            binding, registry=registry,
-            parity_identity=self.fixture.parity_identity,
-            parity_acceptance_binding_sha256=hashlib.sha256(
-                b"parity-acceptance-binding"
-            ).hexdigest(),
-            execution_identity=self.fixture.execution_identity,
-            policy_record=self.fixture.policy_receipt_descriptor,
-            policy_receipt=json.loads((self.root / self.fixture.policy_receipt_descriptor["path"]).read_text()),
-            policy_outputs={},
-            resource_record=self.fixture.resource_receipt_descriptor,
-            resource_receipt=json.loads((self.root / self.fixture.resource_receipt_descriptor["path"]).read_text()),
-        )
+        with identity.PhysicalRootCustodyV1.open(
+            canonical_root, label="backend qualification test root",
+        ) as custody:
+            registry = identity._Registry(canonical_root, custody)
+            accepted = identity._validate_backends(
+                binding, registry=registry,
+                parity_identity=self.fixture.parity_identity,
+                parity_acceptance_binding_sha256=hashlib.sha256(
+                    b"parity-acceptance-binding"
+                ).hexdigest(),
+                execution_identity=self.fixture.execution_identity,
+                policy_record=self.fixture.policy_receipt_descriptor,
+                policy_receipt=json.loads((self.root / self.fixture.policy_receipt_descriptor["path"]).read_text()),
+                policy_outputs={},
+                resource_record=self.fixture.resource_receipt_descriptor,
+                resource_receipt=json.loads((self.root / self.fixture.resource_receipt_descriptor["path"]).read_text()),
+            )
+            custody.verify()
         self.assertEqual(accepted["binding_index"]["sha256"], result["binding_index_descriptor"]["sha256"])
 
     def test_output_collision_fails_closed_without_replacing_binding_index(self) -> None:

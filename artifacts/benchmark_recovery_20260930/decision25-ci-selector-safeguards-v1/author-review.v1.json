@@ -1,0 +1,136 @@
+{
+  "approved_planning_commit": "bec47b794ef9183fe9e3ce4cb1ec15541070f96f",
+  "artifact_kind": "vast_decision25_ci_selector_safeguards_author_review_v1",
+  "before_inventory": {
+    "path": "artifacts/benchmark_recovery_20260930/decision25-ci-selector-safeguards-v1/before/inventory.json",
+    "sha256": "2f077a34a9a3a908a6416cdf3e704f830b9d0cf9a39ed9119c68dfa19acf6f2d",
+    "size_bytes": 417
+  },
+  "behavior": {
+    "all_other_original_method_AST_identical": true,
+    "case_objects_and_order_retained": true,
+    "existing_skip_ids_and_reasons_unchanged": true,
+    "finite_module_count": 35,
+    "finite_safety_modules": [
+      "test_backend_publication_broker_terminal_v3",
+      "test_backend_runtime_replay_handle_abi_authority_v1",
+      "test_backend_runtime_replay_runner_authority_v2",
+      "test_backend_runtime_replay_runner_authority_v3",
+      "test_backend_runtime_replay_runner_invocation_protocol_v3",
+      "test_backend_runtime_replay_runner_invocation_protocol_v4",
+      "test_backend_runtime_replay_runner_invocation_v2",
+      "test_checkpoint_native_policy_publication_projection_v1",
+      "test_checkpoint_native_policy_runtime",
+      "test_checkpoint_operational_admission_guard_v1",
+      "test_ci_namespace_diagnostic_v1",
+      "test_publication_gstreamer_component_cli_v1",
+      "test_publication_gstreamer_component_inputs_v1",
+      "test_publication_gstreamer_component_runtime_v1",
+      "test_publication_guardian_accepted_policy_preprocessing_contract_v1",
+      "test_publication_guardian_capture_context_v1",
+      "test_publication_guardian_component_preprocessing_contract_v1",
+      "test_publication_guardian_operational_recorder_v1",
+      "test_publication_guardian_preprocessing_contract_v1",
+      "test_publication_guardian_runtime_expectations_v1",
+      "test_publication_operational_boundary_v1",
+      "test_publication_operational_capture_plan_v1",
+      "test_publication_operational_container_custody_v1",
+      "test_publication_operational_execution_binding_v1",
+      "test_publication_operational_pilot_custody_v1",
+      "test_publication_operational_process_custody_v1",
+      "test_publication_operational_request_domain_v1",
+      "test_publication_operational_runtime_context_v1",
+      "test_publication_operational_runtime_input_binding_v1",
+      "test_publication_operational_stock_operations_v1",
+      "test_publication_operational_stock_request_v1",
+      "test_publication_operational_wrapper_composition_v1",
+      "test_publication_runtime_source_closure_guardian_v1",
+      "test_qualification_complete_operational_promotion_gate_v1",
+      "test_qualification_operational_closure_cold_gate_v1"
+    ],
+    "integration_deferral_forbidden": true,
+    "new_skip_declarations_forbidden": true,
+    "new_unit_methods": 4,
+    "old_positive_fixture_change": "Replace synthetic legacy ID with one exact original tombstone ID; decorator and nonexecution assertions retained.",
+    "original_integration_declarations": 9,
+    "original_retired_ids": [
+      "test_checkpoint_model_parity.AssessmentTests.test_calibration_and_evaluation_sample_ids_must_be_disjoint",
+      "test_checkpoint_model_parity.AssessmentTests.test_calibration_minimum_and_numeric_tolerances_are_enforced",
+      "test_checkpoint_model_parity.AssessmentTests.test_complete_common_source_contract_passes",
+      "test_checkpoint_model_parity.AssessmentTests.test_image_command_cannot_pull_or_run",
+      "test_checkpoint_model_parity.AssessmentTests.test_lineage_preprocessing_and_toolchain_drift_fail_closed",
+      "test_checkpoint_model_parity.AssessmentTests.test_non_finite_tolerance_is_rejected",
+      "test_checkpoint_model_parity.AssessmentTests.test_openvino_gpu_execution_evidence_is_not_cuda",
+      "test_checkpoint_model_parity.AssessmentTests.test_repository_state_is_honestly_blocked",
+      "test_checkpoint_model_parity.AssessmentTests.test_symlinked_model_artifact_is_not_accepted",
+      "test_checkpoint_model_parity.AssessmentTests.test_verified_equivalent_derivations_can_replace_a_local_source"
+    ],
+    "original_skip_declarations": 80,
+    "retired_source_decorator_required": true
+  },
+  "default_discovery_invoked": false,
+  "engine_queries": 0,
+  "hardware_acceptance": false,
+  "independent_review": false,
+  "manifest_unchanged": {
+    "path": ".ci/integration-test-selection.v1.json",
+    "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+    "size_bytes": 31541
+  },
+  "model_calls": 0,
+  "namespace_calls": 0,
+  "original_green": {
+    "capture_elapsed_s": 0.11682823899900541,
+    "original_group_members": [],
+    "original_returncode": 0,
+    "path": "artifacts/benchmark_recovery_20260930/decision25-ci-selection-v1/safeguards-green-02/terminal.v1.json",
+    "raw_stderr": {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-selection-v1/safeguards-green-02/stderr.raw",
+      "sha256": "359be0f3dc52452fc7f77ddcd3597ddb83006a2d71542cfcd19c3ae7b6514b4b",
+      "size_bytes": 3507
+    },
+    "sha256": "eb22e2bcea1150c7b0eb1320a2800d5757c1eca79b94081917f7b8c3b3717ede",
+    "size_bytes": 3118,
+    "source3_before_after_equal": true,
+    "tests": 20
+  },
+  "original_red": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-selection-v1/safeguards-red-01/terminal.v1.json",
+      "sha256": "7f96dbe2dd1545cde3faf62c48d2bc2a0d409f82edd47193f1ae2ec92b032d8f",
+      "size_bytes": 3115
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-selection-v1/safeguards-red-02/terminal.v1.json",
+      "sha256": "9e39bb006d493e6b5b4a2c8b305562058edc34fbea3a05d3b259ea9756f7a67f",
+      "size_bytes": 3115
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-ci-selection-v1/safeguards-red-03/terminal.v1.json",
+      "sha256": "a32e508fa537ff8648d58ab5903e14e12ea5b12e0ef50a0c01b474453bdb2460",
+      "size_bytes": 3113
+    }
+  ],
+  "owned_final": [
+    {
+      "path": "scripts/ci_test_selection_v1.py",
+      "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+      "size_bytes": 9945
+    },
+    {
+      "path": "tests/test_ci_test_selection_v1.py",
+      "sha256": "70ed46fc26c61f19dc584aba5aa9565c80838862e1332ba4ca927862da65c4ee",
+      "size_bytes": 11499
+    }
+  ],
+  "reviewable": true,
+  "schema_version": 1,
+  "self_review": [
+    "The finite module inventory can require reviewed maintenance when a new safety module is added; every undeclared test remains mandatory by default.",
+    "Tests use original method identity strings with explicit TestCase metadata fixtures. No broker/raw/component/native method body or namespace work is run by these selection tests.",
+    "Initial RED01 included one synthetic raw method coordinate; source-only inspection corrected the raw/skip coordinates to actual existing methods before RED02. All original failures remain retained.",
+    "The original80 skip audit proves unchanged metadata/nonexecution, not80 passing tests. Full-host conformance and retired10 disposition remain separate.",
+    "Reviewer now authors these2files after identifying gaps; a parent-independent source review is required. Earlier partialreview2ea522 is not final approval of these new bytes."
+  ],
+  "tests_run_by_author": 20
+}

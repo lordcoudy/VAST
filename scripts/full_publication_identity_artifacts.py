@@ -12,6 +12,11 @@ import stat
 from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Any, Callable, Mapping
 
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
+
 SCHEMA_VERSION = 2
 DEFAULT_MANIFEST = Path("configs/full_publication_identity_artifacts.yaml")
 MANIFEST_KIND = "vast_full_publication_identity_artifact_manifest"
@@ -36,6 +41,9 @@ _PARITY_ACCEPTANCE_FIELDS_V2 = {
     "canonical_assessment_identity_sha256", "evidence_count",
     "evidence_sha256", "runtime_registries_sha256", "runtime_images_sha256",
     "files", "files_sha256", "transaction_index", "binding_sha256",
+}
+_PARITY_ACCEPTANCE_FIELDS_V4 = _PARITY_ACCEPTANCE_FIELDS_V2 | {
+    "refresh_authority",
 }
 _PARITY_TRANSACTION_FIELDS = {
     "path", "size_bytes", "sha256", "transaction_sha256", "files_sha256",
@@ -97,11 +105,18 @@ def _is_reparse_or_link(path: Path) -> bool:
 
 
 def _root_path(project_root: Path | str) -> Path:
+    supplied = Path(os.path.abspath(os.fspath(project_root)))
     try:
-        root = Path(project_root).resolve(strict=True)
+        info = supplied.lstat()
+        root = supplied.resolve(strict=True)
     except OSError as error:
         raise IdentityArtifactError(f"project_root is unavailable: {error}") from error
-    _require(root.is_dir() and not _is_reparse_or_link(root), "project_root must be a physical directory")
+    _require(
+        root == supplied
+        and stat.S_ISDIR(info.st_mode)
+        and not _is_reparse_or_link(supplied),
+        "project_root must be one canonical physical directory",
+    )
     return root
 
 
@@ -151,44 +166,42 @@ def _resolve_file(root: Path, value: Any, label: str, *, base: Path | None = Non
     return candidate
 
 
-def _hash_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as source:
-        for chunk in iter(lambda: source.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def _stable_record(root: Path, descriptor: Any, label: str, *, base: Path | None = None) -> tuple[dict[str, Any], tuple[int, int], Path]:
+def _stable_record(
+    root: Path,
+    custody: PhysicalRootCustodyV1,
+    descriptor: Any,
+    label: str,
+    *,
+    base: Path | None = None,
+) -> tuple[dict[str, Any], tuple[int, int], Path]:
     item = _exact(descriptor, {"path", "size_bytes", "sha256"}, f"{label} descriptor")
     size = item.get("size_bytes")
     _require(type(size) is int and size > 0, f"{label} artifact size is invalid")
     _require(_valid_sha(item.get("sha256")), f"{label} artifact SHA-256 is invalid")
     path = _resolve_file(root, item["path"], label, base=base)
-    before = path.stat()
-    _require(int(before.st_nlink) == 1, f"{label} hardlink alias is prohibited")
-    first = _hash_file(path)
-    middle = path.stat()
-    second = _hash_file(path)
-    after = path.stat()
-    identities = [(value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns, int(getattr(value, "st_ctime_ns", 0))) for value in (before, middle, after)]
-    _require(identities[0] == identities[1] == identities[2] and first == second, f"{label} changed while hashing")
-    _require(int(after.st_size) == size and first == item["sha256"], f"{label} artifact size/SHA drift")
-    return ({"path": path.relative_to(root).as_posix(), "size_bytes": size, "sha256": first}, (int(after.st_dev), int(after.st_ino)), path)
-
-
-def _read_object(path: Path, label: str) -> dict[str, Any]:
     try:
-        payload = path.read_text(encoding="utf-8")
-        if path.suffix.lower() in {".yaml", ".yml"}:
-            import yaml
-            value = yaml.safe_load(payload)
-        else:
-            value = json.loads(payload)
-    except Exception as error:
-        raise IdentityArtifactError(f"invalid {label}: {error}") from error
-    _require(type(value) is dict, f"{label} must be an object")
-    return value
+        preliminary = path.lstat()
+    except OSError as error:
+        raise IdentityArtifactError(f"{label} artifact stat failed") from error
+    _require(int(preliminary.st_nlink) == 1, f"{label} hardlink alias is prohibited")
+    try:
+        observed, _payload, inode = custody.read_descriptor_identity(
+            path,
+            label=label,
+            maximum=size,
+            capture=False,
+        )
+    except PublicationPhysicalIoV1Error as error:
+        raise IdentityArtifactError(
+            f"{label} artifact size/SHA drift or physical custody failed while hashing: {error}"
+        ) from error
+    expected = {
+        "path": path.relative_to(root).as_posix(),
+        "size_bytes": size,
+        "sha256": item["sha256"],
+    }
+    _require(observed == expected, f"{label} artifact size/SHA drift")
+    return observed, inode, path
 
 
 def _self_hash(value: Mapping[str, Any], field: str, label: str) -> None:
@@ -197,19 +210,45 @@ def _self_hash(value: Mapping[str, Any], field: str, label: str) -> None:
 
 
 class _Registry:
-    def __init__(self, root: Path) -> None:
+    def __init__(self, root: Path, custody: PhysicalRootCustodyV1) -> None:
         self.root = root
+        self.custody = custody
         self.files: dict[str, dict[str, Any]] = {}
         self.inodes: dict[tuple[int, int], str] = {}
         self.path_inodes: dict[str, tuple[int, int]] = {}
 
-    def add(self, descriptor: Any, label: str, *, base: Path | None = None) -> tuple[dict[str, Any], Path]:
-        record, inode, path = _stable_record(self.root, descriptor, label, base=base)
+    def _insert(
+        self, record: dict[str, Any], inode: tuple[int, int], label: str,
+    ) -> None:
         _require(record["path"] not in self.files, f"{label} duplicates another artifact path")
         _require(inode not in self.inodes, f"{label} aliases artifact {self.inodes.get(inode, '')}")
         self.files[record["path"]] = record
         self.inodes[inode] = record["path"]
         self.path_inodes[record["path"]] = inode
+
+    def add(self, descriptor: Any, label: str, *, base: Path | None = None) -> tuple[dict[str, Any], Path]:
+        record, inode, path = _stable_record(
+            self.root, self.custody, descriptor, label, base=base,
+        )
+        self._insert(record, inode, label)
+        return record, path
+
+    def observe(
+        self, path: Path, label: str, *, maximum_bytes: int,
+    ) -> tuple[dict[str, Any], Path]:
+        """Register a manifest whose descriptor is not known until physical read."""
+        try:
+            record, _payload, inode = self.custody.read_descriptor_identity(
+                path,
+                label=label,
+                maximum=maximum_bytes,
+                capture=False,
+            )
+        except PublicationPhysicalIoV1Error as error:
+            raise IdentityArtifactError(
+                f"{label} physical custody failed while registering: {error}"
+            ) from error
+        self._insert(record, inode, label)
         return record, path
 
     def add_shared(
@@ -217,7 +256,7 @@ class _Registry:
     ) -> tuple[dict[str, Any], Path]:
         """Register an exact recurring physical input once, never an alias."""
         record, inode, path = _stable_record(
-            self.root, descriptor, label, base=base,
+            self.root, self.custody, descriptor, label, base=base,
         )
         existing = self.files.get(record["path"])
         if existing is not None:
@@ -236,8 +275,68 @@ class _Registry:
         return record, path
 
     def verify_embedded(self, descriptor: Any, expected: Mapping[str, Any], label: str, *, base: Path) -> None:
-        record, _, path = _stable_record(self.root, descriptor, label, base=base)
+        record, _, path = _stable_record(
+            self.root, self.custody, descriptor, label, base=base,
+        )
         _require(record == dict(expected) and path == self.root / expected["path"], f"{label} descriptor binding drift")
+
+    def guarded_load(
+        self,
+        *,
+        paths: list[Path],
+        label: str,
+        callback: Callable[[], Any],
+    ) -> Any:
+        """Fail closed if a path-based canonical loader observes a rebind."""
+        unique_paths = list(dict.fromkeys(paths))
+        try:
+            namespace = self.custody.capture_read_namespace(
+                unique_paths, label=f"{label} physical closure",
+            )
+            directories = self.custody.capture_pinned_directory_epochs(
+                label=f"{label} physical closure",
+            )
+            mutation_watch = (
+                self.custody.begin_read_namespace_mutation_watch(
+                    unique_paths,
+                    label=f"{label} physical closure",
+                )
+            )
+        except PublicationPhysicalIoV1Error as error:
+            raise IdentityArtifactError(
+                f"{label} physical namespace could not be pinned: {error}"
+            ) from error
+        callback_error: BaseException | None = None
+        result: Any = None
+        try:
+            result = callback()
+        except BaseException as error:
+            callback_error = error
+        verification_error: PublicationPhysicalIoV1Error | None = None
+        try:
+            self.custody.verify_read_namespace(
+                namespace, label=f"{label} physical closure",
+            )
+            self.custody.verify_pinned_directory_epochs(
+                directories, label=f"{label} physical closure",
+            )
+        except PublicationPhysicalIoV1Error as error:
+            verification_error = error
+        try:
+            self.custody.verify_pinned_directory_mutation_watch(
+                mutation_watch, label=f"{label} physical closure",
+            )
+        except PublicationPhysicalIoV1Error as error:
+            if verification_error is None:
+                verification_error = error
+        if verification_error is not None:
+            raise IdentityArtifactError(
+                f"{label} physical namespace changed during cold load: "
+                f"{verification_error}"
+            ) from verification_error
+        if callback_error is not None:
+            raise callback_error
+        return result
 
 
 def _read_registered_object(
@@ -252,50 +351,49 @@ def _read_registered_object(
     )
     expected_inode = registry.path_inodes.get(str(record.get("path")))
     _require(expected_inode is not None, f"{label} was not physically registered")
-    descriptor_fd: int | None = None
     try:
-        before = path.lstat()
-        _require(
-            stat.S_ISREG(before.st_mode)
-            and int(before.st_nlink) == 1
-            and not _is_reparse_or_link(path),
-            f"{label} is not one physical regular file",
+        mutation_watch = registry.custody.begin_read_namespace_mutation_watch(
+            [path], label=f"{label} cold load",
         )
-        flags = os.O_RDONLY | int(getattr(os, "O_BINARY", 0))
-        flags |= int(getattr(os, "O_NOFOLLOW", 0))
-        descriptor_fd = os.open(path, flags)
-        opened = os.fstat(descriptor_fd)
-        path_opened = path.lstat()
-        _require(
-            (int(opened.st_dev), int(opened.st_ino)) == expected_inode
-            and (int(path_opened.st_dev), int(path_opened.st_ino))
-            == expected_inode,
-            f"{label} inode changed before parsing",
+    except PublicationPhysicalIoV1Error as error:
+        raise IdentityArtifactError(
+            f"{label} physical custody could not start cold load: {error}"
+        ) from error
+    read_error: BaseException | None = None
+    observed: dict[str, Any] | None = None
+    payload: bytes | None = None
+    inode: tuple[int, int] | None = None
+    try:
+        observed, payload, inode = registry.custody.read_descriptor_identity(
+            path,
+            label=label,
+            maximum=maximum_bytes,
+            capture=True,
         )
-        payload = bytearray()
-        while True:
-            chunk = os.read(descriptor_fd, min(1024 * 1024, maximum_bytes + 1))
-            if not chunk:
-                break
-            payload.extend(chunk)
-            _require(len(payload) <= maximum_bytes, f"{label} exceeded bounded parse size")
-        after = os.fstat(descriptor_fd)
-        path_after = path.lstat()
-    except IdentityArtifactError:
-        raise
-    except OSError as error:
-        raise IdentityArtifactError(f"{label} cannot be parsed safely: {error}") from error
-    finally:
-        if descriptor_fd is not None:
-            os.close(descriptor_fd)
+    except BaseException as error:
+        read_error = error
+    try:
+        registry.custody.verify_pinned_directory_mutation_watch(
+            mutation_watch, label=f"{label} cold load",
+        )
+    except PublicationPhysicalIoV1Error as error:
+        raise IdentityArtifactError(
+            f"{label} physical custody changed during cold load: {error}"
+        ) from error
+    if read_error is not None:
+        if isinstance(read_error, PublicationPhysicalIoV1Error):
+            raise IdentityArtifactError(
+                f"{label} physical custody changed during cold load: "
+                f"{read_error}"
+            ) from read_error
+        raise read_error
+    assert observed is not None and inode is not None
     _require(
-        (int(after.st_dev), int(after.st_ino)) == expected_inode
-        and (int(path_after.st_dev), int(path_after.st_ino)) == expected_inode
-        and int(after.st_nlink) == 1
-        and int(path_after.st_nlink) == 1,
-        f"{label} inode changed while parsing",
+        observed == dict(record) and inode == expected_inode,
+        f"{label} registered descriptor/inode drifted while parsing",
     )
-    raw = bytes(payload)
+    _require(payload is not None, f"{label} registered bytes were not captured")
+    raw = payload
     _require(
         len(raw) == record["size_bytes"]
         and hashlib.sha256(raw).hexdigest() == record["sha256"],
@@ -321,13 +419,37 @@ def _default_parity_loader(path: Path) -> Mapping[str, Any]:
 def _default_parity_acceptance_loader(
     *, project_root: Path, receipt_path: Path,
 ) -> Mapping[str, Any]:
-    from checkpoint_model_parity_acceptance import (
-        load_verified_model_parity_acceptance,
+    try:
+        header = json.loads(receipt_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise IdentityArtifactError(
+            f"invalid model parity acceptance receipt header: {error}"
+        ) from error
+    coordinate = (
+        header.get("schema_version") if type(header) is dict else None,
+        header.get("artifact_kind") if type(header) is dict else None,
     )
-    return load_verified_model_parity_acceptance(
-        project_root=project_root,
-        receipt_path=receipt_path,
-    )
+    if coordinate in {
+        (1, "vast_checkpoint_model_parity_acceptance_receipt"),
+        (2, "vast_checkpoint_model_parity_acceptance_receipt"),
+    }:
+        from checkpoint_model_parity_acceptance import (
+            load_verified_model_parity_acceptance,
+        )
+        loader = load_verified_model_parity_acceptance
+    elif coordinate == (
+        4,
+        "vast_checkpoint_model_parity_acceptance_receipt_v4",
+    ):
+        from checkpoint_model_parity_acceptance_v4 import (
+            load_verified_model_parity_acceptance_v4,
+        )
+        loader = load_verified_model_parity_acceptance_v4
+    else:
+        raise IdentityArtifactError(
+            "model parity acceptance receipt schema/kind is unsupported"
+        )
+    return loader(project_root=project_root, receipt_path=receipt_path)
 
 
 def _default_execution_loader(path: Path) -> Mapping[str, Any]:
@@ -353,7 +475,11 @@ def _validate_content_binding(
     _require(_valid_sha(declared), f"{label} content identity SHA-256 is invalid")
     record, path = registry.add(item["artifact"], label)
     try:
-        loaded = loader(path)
+        loaded = registry.guarded_load(
+            paths=[path],
+            label=f"{label} canonical loader",
+            callback=lambda: loader(path),
+        )
     except Exception as error:
         raise IdentityArtifactError(f"{label} canonical loader rejected artifact: {error}") from error
     _require(isinstance(loaded, Mapping) and loaded.get("artifact_kind") == expected_kind, f"{label} artifact kind drift")
@@ -377,28 +503,56 @@ def _validate_parity_acceptance_binding(
     receipt_record, receipt_path = registry.add(
         item["receipt"], "model parity acceptance receipt"
     )
-    manifest_record, _ = registry.add(
+    manifest_record, manifest_path = registry.add(
         item["accepted_manifest"], "accepted model parity manifest"
     )
-    assessment_record, _ = registry.add(
+    assessment_record, assessment_path = registry.add(
         item["accepted_assessment"], "accepted model parity assessment"
     )
     try:
-        accepted = loader(project_root=root, receipt_path=receipt_path)
+        accepted = registry.guarded_load(
+            paths=[receipt_path, manifest_path, assessment_path],
+            label="model parity physical acceptance loader",
+            callback=lambda: loader(
+                project_root=root, receipt_path=receipt_path,
+            ),
+        )
     except Exception as error:
         raise IdentityArtifactError(
             f"model parity physical acceptance rejected artifact: {error}"
         ) from error
-    _require(
-        isinstance(accepted, Mapping)
-        and accepted.get("schema_version") == 2
-        and accepted.get("artifact_kind")
-        == "vast_verified_model_parity_acceptance_binding",
-        "model parity physical acceptance binding is invalid",
+    coordinate = (
+        accepted.get("schema_version") if isinstance(accepted, Mapping) else None,
+        accepted.get("artifact_kind") if isinstance(accepted, Mapping) else None,
     )
+    if coordinate == (2, "vast_verified_model_parity_acceptance_binding"):
+        expected_fields = _PARITY_ACCEPTANCE_FIELDS_V2
+        expected_file_count = 36
+    elif coordinate == (4, "vast_verified_model_parity_acceptance_binding_v4"):
+        expected_fields = _PARITY_ACCEPTANCE_FIELDS_V4
+        expected_file_count = 50
+        try:
+            from checkpoint_model_parity_acceptance_v4 import (
+                validate_refresh_authority_v4,
+            )
+            refresh = validate_refresh_authority_v4(
+                accepted.get("refresh_authority")
+            )
+        except Exception as error:
+            raise IdentityArtifactError(
+                f"model parity v4 refresh authority is invalid: {error}"
+            ) from error
+        _require(
+            refresh == accepted.get("refresh_authority"),
+            "model parity v4 refresh authority normalization drifted",
+        )
+    else:
+        raise IdentityArtifactError(
+            "model parity physical acceptance binding is invalid: schema/kind drifted"
+        )
     _exact(
         accepted,
-        _PARITY_ACCEPTANCE_FIELDS_V2,
+        expected_fields,
         "model parity physical acceptance binding",
     )
     for field, expected in (
@@ -412,8 +566,8 @@ def _validate_parity_acceptance_binding(
         )
     files = accepted.get("files")
     _require(
-        type(files) is list and len(files) == 36,
-        "model parity acceptance must bind exact 36 files",
+        type(files) is list and len(files) == expected_file_count,
+        f"model parity acceptance must bind exact {expected_file_count} files",
     )
     _require(
         accepted.get("evidence_count") == 32
@@ -465,7 +619,7 @@ def _validate_parity_acceptance_binding(
         file_descriptors[path] = record
     expected_paths = set(file_descriptors)
     _require(
-        len(expected_paths) == 36,
+        len(expected_paths) == expected_file_count,
         "model parity acceptance file set contains aliases",
     )
     transaction_descriptor = {
@@ -507,7 +661,9 @@ def _validate_policy(
     receipt_record, receipt_path = registry.add(item["receipt"], "policy qualification receipt")
     capability_record, capability_path = registry.add(outputs["capability_manifest"], "policy capability manifest")
     calibration_record, calibration_path = registry.add(outputs["calibration_mapping"], "policy calibration mapping")
-    receipt = _read_object(receipt_path, "policy qualification receipt")
+    receipt = _read_registered_object(
+        registry, receipt_record, receipt_path, "policy qualification receipt",
+    )
     _exact(receipt, {
         "schema_version", "artifact_kind", "status", "policy_contract_sha256",
         "qualification_index_sha256", "dataset_manifest_sha256", "coverage", "outputs", "sha256",
@@ -530,11 +686,16 @@ def _validate_policy(
     registry.verify_embedded(embedded["capability_manifest"], capability_record, "policy receipt capability output", base=receipt_path.parent)
     registry.verify_embedded(embedded["calibration_mapping"], calibration_record, "policy receipt calibration output", base=receipt_path.parent)
     _self_hash(receipt, "sha256", "policy qualification receipt")
-    capability = _read_object(capability_path, "policy capability manifest")
+    capability = _read_registered_object(
+        registry, capability_record, capability_path, "policy capability manifest",
+    )
     assessment = assessor(capability)
     _require(isinstance(assessment, Mapping) and assessment.get("passed") is True, "policy capability manifest is not accepted: " + ", ".join(str(value) for value in (assessment.get("blockers") or [])[:5]))
     _require(capability.get("policy_contract_sha256") == receipt["policy_contract_sha256"], "policy capability/receipt contract identity drift")
-    calibration = _read_object(calibration_path, "policy calibration mapping")
+    calibration = _read_registered_object(
+        registry, calibration_record, calibration_path,
+        "policy calibration mapping",
+    )
     _require(calibration.get("schema_version") == 1 and calibration.get("artifact_kind") == "vast_publication_policy_calibration_mapping", "policy calibration mapping schema/kind drift")
     _require(calibration.get("policy_contract_sha256") == receipt["policy_contract_sha256"], "policy calibration/receipt contract identity drift")
     _require(calibration.get("aggregation_rule") == "median_of_balanced_native_codec_topology_cells_v1" and calibration.get("minimum_samples_per_branch_cell") == 30, "policy calibration acceptance rule drift")
@@ -551,7 +712,9 @@ def _validate_resource_binding(binding: Any, *, registry: _Registry) -> tuple[di
     outputs = _exact(item["outputs"], {"capability_manifest"}, "resource qualification outputs")
     receipt_record, receipt_path = registry.add(item["receipt"], "resource qualification receipt")
     capability_record, capability_path = registry.add(outputs["capability_manifest"], "resource capability manifest")
-    receipt = _read_object(receipt_path, "resource qualification receipt")
+    receipt = _read_registered_object(
+        registry, receipt_record, receipt_path, "resource qualification receipt",
+    )
     _exact(receipt, {
         "schema_version", "artifact_kind", "status", "qualification_index_sha256",
         "dataset_manifest_sha256", "resource_contract_identity_sha256",
@@ -567,7 +730,10 @@ def _validate_resource_binding(binding: Any, *, registry: _Registry) -> tuple[di
     embedded = _exact(receipt["outputs"], {"capability_manifest"}, "resource receipt outputs")
     registry.verify_embedded(embedded["capability_manifest"], capability_record, "resource receipt capability output", base=receipt_path.parent)
     _self_hash(receipt, "sha256", "resource qualification receipt")
-    capability = _read_object(capability_path, "resource capability manifest")
+    capability = _read_registered_object(
+        registry, capability_record, capability_path,
+        "resource capability manifest",
+    )
     _validate_resource_capability(capability)
     _require(capability["content_sha256"] == receipt["capability_manifest_content_sha256"], "resource capability content identity drift")
     _require(capability["resource_contract_identity_sha256"] == receipt["resource_contract_identity_sha256"], "resource contract identity drift")
@@ -928,7 +1094,9 @@ def _validate_backends_v2(
             path.name == f"checkpoint_{system}_backend_runtime_qualification_receipt.json",
             f"backend v2 receipt {system} filename drift",
         )
-        value = _read_object(path, f"backend v2 receipt {system}")
+        value = _read_registered_object(
+            registry, record, path, f"backend v2 receipt {system}",
+        )
         system_value, upstream = _validate_backend_receipt_v2(
             value, system=system, registry=registry,
         )
@@ -1316,26 +1484,15 @@ def _validate_backends_v3(
                 authority, upstream=upstream, policy_outputs=policy_artifacts,
                 label=f"backend v3 {system} runtime authority[{position}]",
             )
-            physical = assess_backend_publication_runtime_authority(
-                authority,
-                project_root=registry.root,
-                expected_system=authority_record["system"],
-                expected_codec=authority_record["codec"],
-                expected_topology_kind=authority_record["topology_kind"],
-                expected_policy=authority_record["policy"],
-            )
-            _require(
-                physical.get("status") == "physically_valid",
-                "backend v3 runtime authority physical assessment blocked: "
-                + ";".join(str(item) for item in physical.get("blockers", [])),
-            )
+            authority_leaf_paths: list[Path] = []
             for leaf_position, leaf in enumerate(
                 _runtime_authority_leaf_descriptors(authority)
             ):
-                normalized_leaf, _ = registry.add_shared(
+                normalized_leaf, leaf_path = registry.add_shared(
                     leaf,
                     f"backend v3 {system} authority[{position}] leaf[{leaf_position}]",
                 )
+                authority_leaf_paths.append(leaf_path)
                 previous = system_leaves.get(normalized_leaf["path"])
                 _require(
                     previous is None or previous == normalized_leaf,
@@ -1348,6 +1505,23 @@ def _validate_backends_v3(
                     "backend v3 recurring global leaf descriptor drift",
                 )
                 global_leaves[normalized_leaf["path"]] = normalized_leaf
+            physical = registry.guarded_load(
+                paths=[authority_path, *authority_leaf_paths],
+                label=f"backend v3 {system} runtime authority[{position}] assessment",
+                callback=lambda: assess_backend_publication_runtime_authority(
+                    authority,
+                    project_root=registry.root,
+                    expected_system=authority_record["system"],
+                    expected_codec=authority_record["codec"],
+                    expected_topology_kind=authority_record["topology_kind"],
+                    expected_policy=authority_record["policy"],
+                ),
+            )
+            _require(
+                physical.get("status") == "physically_valid",
+                "backend v3 runtime authority physical assessment blocked: "
+                + ";".join(str(item) for item in physical.get("blockers", [])),
+            )
             normalized_authorities.append({
                 **{
                     field: authority_record[field]
@@ -1449,9 +1623,13 @@ def _validate_backends_v4(
         "backend Q4 binding index filename drift",
     )
     try:
-        normalized = load_backend_runtime_qualification_v4_binding(
-            project_root=registry.root,
-            binding_index_path=index_path,
+        normalized = registry.guarded_load(
+            paths=[index_path],
+            label="persisted backend Q4 binding loader",
+            callback=lambda: load_backend_runtime_qualification_v4_binding(
+                project_root=registry.root,
+                binding_index_path=index_path,
+            ),
         )
     except Exception as error:
         raise IdentityArtifactError(
@@ -1583,7 +1761,9 @@ def _validate_backends(binding: Any, *, registry: _Registry, parity_identity: st
     for system in SYSTEMS:
         record, path = registry.add(receipts_map[system], f"backend receipt {system}")
         _require(path.name == f"checkpoint_{system}_backend_runtime_qualification_receipt.json", f"backend receipt {system} filename drift")
-        value = _read_object(path, f"backend receipt {system}")
+        value = _read_registered_object(
+            registry, record, path, f"backend receipt {system}",
+        )
         _validate_backend_receipt(value, system=system)
         receipt_records[system], receipt_values[system], receipt_paths[system] = record, value, path
     index = index_probe
@@ -1611,9 +1791,10 @@ def _validate_backends(binding: Any, *, registry: _Registry, parity_identity: st
     return {"binding_index": index_record, "receipts": receipt_records}
 
 
-def load_full_publication_identity_artifacts(
+def _load_full_publication_identity_artifacts_with_custody(
     *,
-    project_root: Path | str,
+    root: Path,
+    custody: PhysicalRootCustodyV1,
     manifest_path: Path | str = DEFAULT_MANIFEST,
     parity_loader: Loader = _default_parity_loader,
     parity_acceptance_loader: Callable[..., Mapping[str, Any]] = (
@@ -1622,28 +1803,34 @@ def load_full_publication_identity_artifacts(
     execution_loader: Loader = _default_execution_loader,
     policy_capability_assessor: PolicyAssessor = _default_policy_assessor,
 ) -> dict[str, Any]:
-    """Load only accepted, physical qualification outputs into run identity."""
+    """Load the complete binding while one physical root remains held."""
 
-    root = _root_path(project_root)
     candidate = Path(manifest_path)
     if not candidate.is_absolute():
         candidate = root / candidate
     try:
-        relative = candidate.resolve(strict=True).relative_to(root).as_posix()
-    except (OSError, ValueError) as error:
+        candidate = Path(os.path.abspath(os.fspath(candidate)))
+        relative = candidate.relative_to(root).as_posix()
+        manifest_path_resolved = _resolve_file(
+            root, relative, "identity artifact manifest",
+        )
+    except (IdentityArtifactError, OSError, ValueError) as error:
         raise IdentityArtifactError(
             "full publication identity artifact manifest is missing or outside project_root: "
             f"{candidate}"
         ) from error
-    manifest_path_resolved = _resolve_file(root, relative, "identity artifact manifest")
-    manifest_descriptor = {
-        "path": relative,
-        "size_bytes": manifest_path_resolved.stat().st_size,
-        "sha256": _hash_file(manifest_path_resolved),
-    }
-    registry = _Registry(root)
-    manifest_record, _ = registry.add(manifest_descriptor, "identity artifact manifest")
-    manifest = _read_object(manifest_path_resolved, "identity artifact manifest")
+    registry = _Registry(root, custody)
+    manifest_record, _ = registry.observe(
+        manifest_path_resolved,
+        "identity artifact manifest",
+        maximum_bytes=64 * 1024 * 1024,
+    )
+    manifest = _read_registered_object(
+        registry,
+        manifest_record,
+        manifest_path_resolved,
+        "identity artifact manifest",
+    )
     top = _exact(manifest, {"schema_version", "artifact_kind", "bindings"}, "identity artifact manifest")
     _require(top["schema_version"] == SCHEMA_VERSION and top["artifact_kind"] == MANIFEST_KIND, "identity artifact manifest schema/kind drift")
     bindings = _exact(top["bindings"], {
@@ -1705,6 +1892,43 @@ def load_full_publication_identity_artifacts(
     }
     material["binding_sha256"] = _canonical_sha(material)
     return json.loads(_canonical_bytes(material).decode("utf-8"))
+
+
+def load_full_publication_identity_artifacts(
+    *,
+    project_root: Path | str,
+    manifest_path: Path | str = DEFAULT_MANIFEST,
+    parity_loader: Loader = _default_parity_loader,
+    parity_acceptance_loader: Callable[..., Mapping[str, Any]] = (
+        _default_parity_acceptance_loader
+    ),
+    execution_loader: Loader = _default_execution_loader,
+    policy_capability_assessor: PolicyAssessor = _default_policy_assessor,
+) -> dict[str, Any]:
+    """Load only accepted artifacts under one descriptor-held physical root."""
+
+    root = _root_path(project_root)
+    try:
+        with PhysicalRootCustodyV1.open(
+            root, label="full publication identity project_root",
+        ) as custody:
+            value = _load_full_publication_identity_artifacts_with_custody(
+                root=root,
+                custody=custody,
+                manifest_path=manifest_path,
+                parity_loader=parity_loader,
+                parity_acceptance_loader=parity_acceptance_loader,
+                execution_loader=execution_loader,
+                policy_capability_assessor=policy_capability_assessor,
+            )
+            custody.verify()
+            return value
+    except IdentityArtifactError:
+        raise
+    except PublicationPhysicalIoV1Error as error:
+        raise IdentityArtifactError(
+            f"full publication identity physical root custody failed: {error}"
+        ) from error
 
 
 __all__ = [

@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_component_runbook_independent_source_and_result_review_v3",
+  "reviewed_at_utc": "2026-09-30T23:20:29.959461+00:00",
+  "disposition": "approved_current_two_completed_pairs_repeatable_stock_cli_and_descriptive_limits",
+  "document": {
+    "path": "docs/gstreamer-component-benchmark-runbook.md",
+    "size_bytes": 11712,
+    "sha256": "be0f47eb43a8746f1753ba175f96cabc15e3992ac39c95d7505c0f0804287a8b"
+  },
+  "document_snapshot": {
+    "path": "artifacts/benchmark_recovery_20260930/component-runbook-independent-review-v1/review.v3.document.md.raw",
+    "size_bytes": 11712,
+    "sha256": "be0f47eb43a8746f1753ba175f96cabc15e3992ac39c95d7505c0f0804287a8b"
+  },
+  "execution_source_checkpoint": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "scope": "Read-only source/closed original metadata review; no invocation, raw reduction, engine operation or test by this reviewer. The authentic four-arm scientific operation and independent result review are separately referenced.",
+  "historical_previous_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-runbook-independent-review-v1/review.v2.json",
+    "size_bytes": 4140,
+    "sha256": "c0c270e2d98258f4293024328ba1907de99e9ebae43f9f2478e6533d9d080357"
+  },
+  "reviewed_sources": [
+    {
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "size_bytes": 40969,
+      "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b",
+      "equal_original_ext4_source": true
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "size_bytes": 69372,
+      "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014",
+      "equal_original_ext4_source": true
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_authority_v1.py",
+      "size_bytes": 27355,
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+      "equal_original_ext4_source": true
+    },
+    {
+      "path": "scripts/publication_physical_io_v1.py",
+      "size_bytes": 132238,
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "equal_original_ext4_source": true
+    },
+    {
+      "path": "configs/experiments.yaml",
+      "size_bytes": 23078,
+      "sha256": "18b69285690cdb6ad2f8e9fa528122a05fd3e4abe647a776e60c8e5eed4344e0",
+      "equal_original_ext4_source": true
+    }
+  ],
+  "original_pair_receipts": [
+    {
+      "resource": "cpu",
+      "external_terminal": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/original.terminal.v1.json",
+        "size_bytes": 88066,
+        "sha256": "e87c878c725f309cf344f27926cb6e12647e839a8f5745084b69619c090d3db9"
+      },
+      "cli_terminal": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/component_cli_terminal.v1.json",
+        "size_bytes": 8836,
+        "sha256": "325b61a733baaa6b304131d6b45e4b612d29d7e4212521d0f7d4a0ef231f5b99"
+      },
+      "original_returncode": 0,
+      "outer_elapsed_s": 804.3636947160121,
+      "cli_pair_elapsed_wall_s": 803.410419025,
+      "all_eligibility_flags_false": true
+    },
+    {
+      "resource": "gpu",
+      "external_terminal": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01-original-controller/original.terminal.v1.json",
+        "size_bytes": 88102,
+        "sha256": "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9"
+      },
+      "cli_terminal": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01/component_cli_terminal.v1.json",
+        "size_bytes": 8836,
+        "sha256": "abea1a00a5cb5c68e56657b78bea0683461bed121cce61afb11f2f1cd046460e"
+      },
+      "original_returncode": 0,
+      "outer_elapsed_s": 834.7983397349599,
+      "cli_pair_elapsed_wall_s": 833.858985112,
+      "all_eligibility_flags_false": true
+    }
+  ],
+  "physical_review_inputs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-result-review-v1/review.v1.json",
+      "size_bytes": 7344,
+      "sha256": "21af3b2aefc8d1a8eb5c4785253843e0b950b94bcbd3536fda5e2e3f8346ddd7"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/four_arm_metrics.csv",
+      "size_bytes": 1913,
+      "sha256": "0926bc6bf324f7b4489f1ffbd0df25b16cbe6c0da0b96b3c244e43ef86350d34"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/four_arm_latency_coverage_cobs.svg",
+      "size_bytes": 183708,
+      "sha256": "73b4cf44a795e188fd9a1a9d2445005d184fc55dcac305d535267b5bfad463e2"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/exports-and-interpretation.v1.json",
+      "size_bytes": 11407,
+      "sha256": "0700a387be61f1bbd6c8cb9f71d32d6b1182aa4e8ce79815037cdf10b07aa88c"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu06-ext4-actual-audit-closure-v1/review.v1.json",
+      "size_bytes": 13097,
+      "sha256": "20c896c126454b17f747d2b119b6a60444f7d8bc338184782eb68ec8ab37218a"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-actual-audit-closure-v1/review.v1.json",
+      "size_bytes": 16564,
+      "sha256": "6c25127270763cf47a03291be9b2115671ea7d6df3d4d8c19fb7f59932b79768"
+    }
+  ],
+  "checks": [
+    {
+      "document_lines": [
+        7,
+        9,
+        11
+      ],
+      "finding": "Original CPU06/GPU01 terminal0 and source0ad/imagee474/selected73/host87 custody are accurately distinguished from failed CPU05 and pending final repository acceptance. CPU CLI wall803.4337s and GPU outer834.79834s agree with rounded text."
+    },
+    {
+      "document_lines": [
+        15,
+        17
+      ],
+      "finding": "Actual identical source playback/schedule contracts support six logical streams, five front-gate plus one underbody replica of two recordings, offered1fps each/6fps total, timestamp scale600, both NVDEC, four branches,30/180/10 and100ms. Config seed20260323 is source-attested; no causal/accuracy grant."
+    },
+    {
+      "document_lines": [
+        19,
+        23,
+        25,
+        27,
+        42
+      ],
+      "finding": "Production2100s pair bound, actual controller2250+15, real20GiB reservation/freefloor, strict fresh root-relative output and changed-root fresh stock closure/custody obligations are retained. PhysicalRootCustodyV1.ensure_directory_owned creates and verifies the parent chain, so the fresh nested example needs no external mkdir or permissive path adapter."
+    },
+    {
+      "document_lines": [
+        31,
+        46,
+        59
+      ],
+      "finding": "All six concrete input path variables, actual selected image/closure and explicit /usr/bin/docker plus /run/docker.sock match both authentic original argv. The isolated runpy entry parses and inserts ROOT/scripts before running the real CLI; the documented required flags match source parser702-710 and source-only relative adaptation535-537. It uses default production dependencies. New output/resource values remain subject to normal strict validation and exclusive no-reuse semantics."
+    },
+    {
+      "document_lines": [
+        63,
+        65,
+        67,
+        69
+      ],
+      "finding": "At-most12 phase pairs/16KiB diagnostic timeline, original exit0+full cold+cleanup requirement, completed-only distributions, absolute drop/censor/on-time coverage, nonpositive ratio nulls, one baseline-first pair and partial attributed elapsed C_obs limitations agree with source and independently recomputed outputs."
+    },
+    {
+      "document_lines": [
+        73,
+        75,
+        76,
+        77,
+        79,
+        81
+      ],
+      "finding": "Both export links resolve to the closed authentic physical files. All stated1080 admissions/zero censors/completions/drops/median/on-time/coverage and per-admission C_obs numbers match the reviewed four CSV rows. SLO failure remains explicit; there is no CPU-work/energy/NVDEC-busy/accuracy/population/causal inference. Full campaign/latest mandatory CI/archive remain pending."
+    }
+  ],
+  "blockers": [],
+  "warnings": [],
+  "review_does_not_grant": {
+    "new_hardware_execution": true,
+    "full_campaign_or_qualification": true,
+    "latest_ci_or_archive": true,
+    "population_confidence_or_causal_mechanism": true
+  },
+  "document_unchanged_during_review": true
+}

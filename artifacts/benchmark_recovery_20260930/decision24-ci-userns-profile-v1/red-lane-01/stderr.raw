@@ -1,0 +1,14 @@
+test_new_ci_userns_policy_contract_cannot_be_deferred_or_skipped (test_ci_test_selection_v1.SelectionContracts.test_new_ci_userns_policy_contract_cannot_be_deferred_or_skipped) ... FAIL
+
+======================================================================
+FAIL: test_new_ci_userns_policy_contract_cannot_be_deferred_or_skipped (test_ci_test_selection_v1.SelectionContracts.test_new_ci_userns_policy_contract_cannot_be_deferred_or_skipped)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 119, in test_new_ci_userns_policy_contract_cannot_be_deferred_or_skipped
+    with self.assertRaisesRegex(ValueError,'mandatory contract'):
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.007s
+
+FAILED (failures=1)

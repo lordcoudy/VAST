@@ -1,0 +1,109 @@
+{
+  "EOF": {
+    "stderr": true,
+    "stdout": true
+  },
+  "argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "30s",
+    "/usr/bin/bash",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/mount_publication_runtime_wsl.sh",
+    "--source-runtime",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+    "--project-root",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+    "--project-runtime-mount",
+    ".publication-runtime/full-publication-cp312-v1"
+  ],
+  "channels": {
+    "stderr": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/original-bind-attempt01/01-materialize.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/original-bind-attempt01/01-materialize.stdout.raw",
+      "sha256": "05ae6ac6beae6a285447281d5d9812f5b0d3a9986a2e7cc840de032a5fc7f333",
+      "size_bytes": 126
+    }
+  },
+  "cleanup_s": 10,
+  "elapsed_s": 0.06859598797746003,
+  "failure": null,
+  "label": "01-materialize",
+  "observed_descendants": [
+    {
+      "argv": [
+        "/usr/bin/bash",
+        "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/mount_publication_runtime_wsl.sh",
+        "--source-runtime",
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+        "--project-root",
+        "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "--project-runtime-mount",
+        ".publication-runtime/full-publication-cp312-v1"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 0,
+      "pgid": 6532,
+      "pid": 6533,
+      "ppid": 6532,
+      "session": 6532,
+      "startticks": 51155133,
+      "state": "S",
+      "uid": 0
+    }
+  ],
+  "owner": {
+    "argv": [
+      "/usr/bin/timeout",
+      "--signal=TERM",
+      "--kill-after=10s",
+      "30s",
+      "/usr/bin/bash",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/mount_publication_runtime_wsl.sh",
+      "--source-runtime",
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+      "--project-root",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+      "--project-runtime-mount",
+      ".publication-runtime/full-publication-cp312-v1"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 0,
+    "pgid": 6532,
+    "pid": 6532,
+    "ppid": 6531,
+    "session": 6532,
+    "startticks": 51155133,
+    "state": "R",
+    "uid": 0
+  },
+  "process_scans": [
+    {
+      "at_ns": 1791029220964413842,
+      "errors": [],
+      "members": [],
+      "original_pid_absent": {
+        "6532": true,
+        "6533": true
+      }
+    },
+    {
+      "at_ns": 1791029220966019152,
+      "errors": [],
+      "members": [],
+      "original_pid_absent": {
+        "6532": true,
+        "6533": true
+      }
+    }
+  ],
+  "reaped": true,
+  "returncode": 0,
+  "signals": [],
+  "started_at_ns": 1791029220894031894,
+  "work_s": 30
+}

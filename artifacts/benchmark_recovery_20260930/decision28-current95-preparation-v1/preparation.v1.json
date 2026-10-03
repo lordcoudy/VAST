@@ -1,0 +1,123 @@
+{
+  "actual_image_id": "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+  "actual_runtime_receipt": {
+    "root_relative_path": "artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/gstreamer_custom.runtime.freeze.json",
+    "sealed_sha256": "8dbd48381495beddc23abab774055ebb3ce89af7f8d56901580da2612092e093",
+    "sha256": "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+    "size_bytes": 7001
+  },
+  "actual_source_commit_B": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "actual_stock_host_closed_evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/root-original-closure.v1.json",
+      "sha256": "c7c5fd83d6745ad9fabeccf9cff0c73ba42e229406a47e07669a19e2dab30af4",
+      "size_bytes": 6720
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/execution.v1.json",
+      "sha256": "9c5007d1f80fac889bb8fd9a4038e56bea645194b851a7a9cfd98bd9fd8f9f03",
+      "size_bytes": 73010
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/execution-code-closure.ext4-decision28.v4.json",
+      "sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+      "size_bytes": 30266
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/source-head.stdout.raw",
+      "sha256": "40400ec4a92b244401f6f9130b03a78f4c866798d9d845df0ed273487af783fa",
+      "size_bytes": 41
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/source-head.terminal.v1.json",
+      "sha256": "f2c5a6c079336d159ab3deda6e1ac7aa743b9046e782679d3663ee6d839a01d9",
+      "size_bytes": 2059
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/stock-closure.terminal.v1.json",
+      "sha256": "3f399057c8abf829c2741dcf49d5cb8a387944635a4496dcbe5adf624cbb7ba7",
+      "size_bytes": 2598
+    }
+  ],
+  "actual_stock_host_v4_descriptor": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json",
+    "sealed_sha256": "792f7c8369f2aced26fe5b32282999cb625ed168e20df5e8f40ed369d6e8b754",
+    "sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+    "size_bytes": 30266
+  },
+  "binding_schema_and_original_two_size_SHA_arguments_unchanged": true,
+  "binding_template": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/collection.binding.template.v1.json",
+    "sha256": "64d221abe557fa39699affedceab3b9a80ff601fb92fb112f34a238ae5aab5e8",
+    "size_bytes": 296
+  },
+  "bounds": {
+    "Git_stderr_bytes": 0,
+    "Git_stdout_bytes": 128,
+    "cleanup_s": 10,
+    "failure_companion_bytes": 65536,
+    "input95_aggregate_bytes": 67108864,
+    "input_leaf_bytes": 16777216,
+    "metadata_and_capture_channel_bytes": 1048576,
+    "outer_capture_s": 130,
+    "work_s": 120
+  },
+  "collector_command_pending": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/capture_original_current95_v1.py",
+    null,
+    null
+  ],
+  "composition": {
+    "canonical_interpreter": 1,
+    "exact_current_controller": 1,
+    "fresh_project_sources": 87,
+    "role_documents": 6,
+    "unique_total": 95
+  },
+  "final_CPU08_controller": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py",
+    "sha256": "445535a2ea9176effbe97e5de1db53aae614645e40db65bc1debf74489371f36",
+    "size_bytes": 23631
+  },
+  "four_fixed_original_role_pins_unchanged": true,
+  "fresh_host_role": "artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json",
+  "future_binding_descriptor": null,
+  "future_manifest": null,
+  "future_owner": null,
+  "future_terminal": null,
+  "historical_dispatch_bookkeeping_failure_retained_no_prior_grant_claim": true,
+  "no_historical_epoch_rows_reused": true,
+  "original_sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current95-ci-successor-preparation-v1/collect_current95_v1.py",
+      "sha256": "c372d0ffb25405512c5cb662950cb902b54461bc89c87dd855241463caf15047",
+      "size_bytes": 10238
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current95-ci-successor-preparation-v1/capture_original_current95_v1.py",
+      "sha256": "c36c6f952c694f3c0fc0fc7197b77eec27f9308a15ee18f031ad11634334b6df",
+      "size_bytes": 4979
+    }
+  ],
+  "planning_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "schema_version": 1,
+  "scope": "Unexecuted Decision28 current95 metadata collector and original capture; no CI/model/engine/scientific grant.",
+  "source_checkpoint_A": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "source_descriptors": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/collect_current95_v1.py",
+      "sha256": "7492e2d836dd0ed0f9192923a8cb3b7060ac0d1afc834aacaf730245dc1b2749",
+      "size_bytes": 20616
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/capture_original_current95_v1.py",
+      "sha256": "5daacc183a34c4906ad7db102cc2a5fbbd39e2aaacd67237f709fdbf5c3539bd",
+      "size_bytes": 15819
+    }
+  ],
+  "status": "prepared_unexecuted_requires_independent_source_review_actual_size_SHA_binding_and_once_only_observation_grant",
+  "stock_loader_body_and_fresh_source_interpreter_snapshot_checks_unchanged": true
+}

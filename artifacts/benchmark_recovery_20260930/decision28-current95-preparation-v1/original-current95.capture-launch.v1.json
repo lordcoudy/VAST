@@ -1,0 +1,64 @@
+{
+  "argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/collect_current95_v1.py",
+    "3018",
+    "7d3a4f92f05404de18498f7cf163a15233ed966935b52983ff97c98a98a53a24"
+  ],
+  "capture_owner": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/capture_original_current95_v1.py",
+      "3018",
+      "7d3a4f92f05404de18498f7cf163a15233ed966935b52983ff97c98a98a53a24"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 73730,
+    "pid": 73730,
+    "ppid": 73727,
+    "session": 73730,
+    "startticks": 49765158,
+    "state": "R",
+    "uid": 1000
+  },
+  "cleanup_s": 10,
+  "source_before": {
+    "epoch7": [
+      69,
+      2251799816111492,
+      33279,
+      1,
+      20616,
+      1791014747597984700,
+      1791014747597984700
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/collect_current95_v1.py",
+    "sha256": "7492e2d836dd0ed0f9192923a8cb3b7060ac0d1afc834aacaf730245dc1b2749",
+    "size_bytes": 20616
+  },
+  "started_at_ns": 1791015322089542171,
+  "timeout_owner": {
+    "argv": [
+      ""
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 73731,
+    "pid": 73731,
+    "ppid": 73730,
+    "session": 73731,
+    "startticks": 49765167,
+    "state": "D",
+    "uid": 1000
+  },
+  "work_s": 120
+}

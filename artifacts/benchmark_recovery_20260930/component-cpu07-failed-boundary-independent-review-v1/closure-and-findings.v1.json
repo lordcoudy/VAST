@@ -1,0 +1,72 @@
+{
+  "actual_model_engine_native_namespace_test_or_replay": false,
+  "all_reader_FDs_released": true,
+  "benchmark_accepted": false,
+  "explicit_release_of_original95_source_input_hold": true,
+  "fd_counts": [
+    6,
+    6
+  ],
+  "full_publication_accepted": false,
+  "original95_count": 95,
+  "original95_fullbytes_and7epochs_match": true,
+  "original95_total_bytes": 12608865,
+  "original_and_reader_processes_absent_in_two_later_actual_scans": true,
+  "owned_closed_evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/audit_failed_cpu07_v1.py",
+      "sha256": "74807a616dc612de0b6dd6c01f3e41b67d1e9e36abec1c76ded57c4549fb7c83",
+      "size_bytes": 11378
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/launch.v1.json",
+      "sha256": "b986a7d00303faf195b373dc1aa760ae840de4d56e2c811a8fc01c7085de6c13",
+      "size_bytes": 699
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/observe_reader_closure_v1.py",
+      "sha256": "d1557d876b3ce1958ad914b5e1f97596880b7926673fa301a6d306ab80e96201",
+      "size_bytes": 2484
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/original-tool-return.v1.json",
+      "sha256": "03224d58efdb478bff691de495c109cf009b0d3f5da0049c6e655974ef41bf08",
+      "size_bytes": 2332
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/process-closure.v1.json",
+      "sha256": "4353e833ed21153f31299cb1f4cf658829ab49e2f389768b9822edf247fc0036",
+      "size_bytes": 2415
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/review.v1.json",
+      "sha256": "85b668c7510641ab3d7fd2455b1f7cd0f9e7b83ae9ef37531a6949ed46403d3d",
+      "size_bytes": 16997
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/scanner-original-tool-return.v1.json",
+      "sha256": "b3bf9cc612edf0ba3266ff48de85849652c7580ea2acf561dbf4c0a731ed8aad",
+      "size_bytes": 2168
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/witness.v1.json",
+      "sha256": "47e536bf4b04553c2fe8e0cb4948543349871a819f47ab982772d5983d5e5171",
+      "size_bytes": 105694
+    }
+  ],
+  "retained_primary_chain": [
+    "Guardian original lifecycle records inference ProtocolError Broken pipe/EPIPE32; vehicle_type/cpu payload diagnostic retains equal expected/observed byte-length, seals and digest.",
+    "Original native measurement engine05 returned1 and original CID terminal inspect returned exact NotFound on the same retained daemon.",
+    "CLI failed78 with original_measurement_failed; later guardian-stop cleanup records /proc owner custody drift without the failed field snapshot."
+  ],
+  "reviewer_capture_provenance": "Saved source reviewed by root before actual one-shot120+10. Original tool result and later actual process scans retained; combined WSL proxy warning is not normalized or mislabelled as separately captured raw stdout/stderr.",
+  "schema_version": 1,
+  "scientific_boundary": "No accepted pair, no cold-pair result, task18.8False. Failed original and prefix remain immutable.",
+  "status": "closed_independent_failed_CPU07_boundary_with_95_hold_release",
+  "unknowns": [
+    "First native stderr body is unavailable here; only original50490B digest descriptor retained.",
+    "No failed guardian /proc field or observed stack retained; no causal claim for the custody drift.",
+    "No positive daemon exit-code/OOM observation retained for native --rm CID.",
+    "Guardian authenticated_stop and container_cleanup_verified false; hidden worker-container cleanup cannot be inferred from host PID absence."
+  ]
+}

@@ -1,0 +1,20 @@
+test_complete_cold_workload_includes_warmup_measurement_and_drain (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_complete_cold_workload_includes_warmup_measurement_and_drain) ... ok
+test_duplicate_actual_terminal_is_rejected_without_an_extra_front_call (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_duplicate_actual_terminal_is_rejected_without_an_extra_front_call) ... ok
+test_observed_stream_substitution_is_rejected_before_inference (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_observed_stream_substitution_is_rejected_before_inference) ... ERROR
+test_resealed_guardian_identity_and_terminal_mutations_fail_cold_validation (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_resealed_guardian_identity_and_terminal_mutations_fail_cold_validation) ... ok
+test_same_count_foreign_front_frame_cannot_pass_complete_cold_join (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_same_count_foreign_front_frame_cannot_pass_complete_cold_join) ... ok
+test_stock_canonical_frame_mapping_can_differ_from_original_worker_frame (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_stock_canonical_frame_mapping_can_differ_from_original_worker_frame) ... ok
+
+======================================================================
+ERROR: test_observed_stream_substitution_is_rejected_before_inference (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_observed_stream_substitution_is_rejected_before_inference)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_boundary_v1.py", line 532, in test_observed_stream_substitution_is_rejected_before_inference
+    self.assertEqual(fixture.service._bridge.execution_calls, 0)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'execution_calls'
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.822s
+
+FAILED (errors=1)

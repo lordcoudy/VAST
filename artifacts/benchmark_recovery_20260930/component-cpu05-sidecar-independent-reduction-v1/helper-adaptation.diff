@@ -1,0 +1,169 @@
+--- cpu04/reduce.py
++++ cpu05/reduce.py
+@@ -1,4 +1,4 @@
+-"""One pure reduction of original CPU04 sidecars; no authority or publication."""
++"""One pure reduction of original CPU05 sidecars; no authority or publication."""
+ import hashlib
+ import json
+ import os
+@@ -8,7 +8,7 @@
+ from pathlib import Path
+ 
+ ROOT = Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec')
+-PAIR = ROOT / 'artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04'
++PAIR = ROOT / 'artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-05'
+ OUT = Path(__file__).parent / 'attempt01'
+ MUTABLE = {'publication_gstreamer_component_cli_v1.py', 'publication_gstreamer_component_inputs_v1.py',
+            'publication_gstreamer_component_runtime_v1.py'}
+@@ -87,7 +87,7 @@
+     assert held[recipe_path]['before']['sha256'] == '79a5f65ea6d46fc3b256dbbee682e392dd507fe212741b32ec67ed4efb7b214a'
+     for row in recipe['source_witnesses']:
+         hold(row['path'], row)
+-    closure_path = PAIR.parent / 'host/execution-code-closure.v5.json'
++    closure_path = PAIR.parent / 'host/execution-code-closure.v6.json'
+     closure = doc(closure_path)
+     original_sources = {row['path']: row for row in closure['project_sources']}
+     sys.path.insert(0, str(ROOT / 'scripts'))
+@@ -113,6 +113,20 @@
+     configuration = yaml.safe_load(configuration_path.read_bytes())
+     index = doc(PAIR / 'operations/capture-plan/capture_plan_index.v1.json')
+     operations = ref(index['operation_manifest'])['operations']
++    cold = doc(PAIR / 'cold-pair/component_pair_result.v1.json')
++    cli = doc(PAIR / 'component_cli_terminal.v1.json')
++    late = doc(PAIR / 'component_cli_late_failure.v1.json')
++    assert cli['status'] == late['status'] == 'failed' and cli['pair_result']['sha256'] == held[PAIR / 'cold-pair/component_pair_result.v1.json']['before']['sha256']
++    assert late['original_terminal_sha256'] == cli['sha256'] and cold['publication_ready'] is False
++    assert cold['scientific_scope'] == 'topology_load_proxy_only' and cold['resource'] == 'cpu'
++    assert len(cold['arms']) == len(cold['arm_results']) == 2
++    for row in (cold['descriptive_csv'], cold['latency_ecdf_svg']):
++        hold(row['path'], row)
++    import csv
++    csv_path = hold(PAIR / 'cold-pair/component_pair_metrics.csv', cold['descriptive_csv'])
++    csv_rows = list(csv.DictReader(csv_path.open(newline='')))
++    assert len(csv_rows) == 2
++
+     assert len(operations) == 2 and authority['resource'] == 'cpu'
+     for position, operation in enumerate(operations):
+         name = 'baseline' if position == 0 else 'shared'
+@@ -134,6 +148,13 @@
+         arm = doc(directory.parent / 'component_arm_result.v1.json')
+         assert arm['original_operation'] == operation['original_operation'] and arm['original_exit_code'] == 0
+         assert candidate['run_id'] == arm['physical_validation']['run_id'] == operation['run_id']
++        cold_arm = cold['arms'][position]
++        assert cold_arm['operation_id'] == operation['operation_id'] and cold_arm['scenario'] == operation['scenario']
++        assert cold['arm_results'][position] == {'path': str(directory.parent / 'component_arm_result.v1.json'),
++            'size_bytes': held[directory.parent / 'component_arm_result.v1.json']['before']['size_bytes'],
++            'sha256': held[directory.parent / 'component_arm_result.v1.json']['before']['sha256']}
++        assert cold_arm['schedule_sha256'] == cold['measurement_schedule_fingerprint_sha256'] == arm['physical_validation']['measurement_schedule_fingerprint_sha256']
++
+         for filename, digest in candidate['evidence_sha256'].items():
+             assert held[directory / filename]['before']['sha256'] == digest
+         for filename, digest in arm['physical_validation']['full_resource_evidence_sha256'].items():
+@@ -172,6 +193,17 @@
+                 'differences': {key: {'recomputed': observed.get(key), 'carried': carried.get(key),
+                     'recomputed_present': key in observed, 'carried_present': key in carried}
+                     for key in keys if key not in observed or key not in carried or exact(observed[key]) != exact(carried[key])}}
++        metrics = contract.summarize_frames(directory / 'frames.csv', deadline_ms=operation['deadline_ms'],
++            measurement_s=operation['measurement_s'])
++        metrics.update(completed_deadline_misses=int((frames['e2e_latency_ms'] > operation['deadline_ms']).sum()),
++            measurement_admitted=updated['ingress_frame_count'],
++            measurement_dropped=updated['ingress_frame_count'] - len(frames), measurement_censored=0,
++            completion_coverage=len(frames) / updated['ingress_frame_count'], latency_population='completed_measurement_frames')
++        assert metrics['measurement_dropped'] == updated['dropped_frame_count']
++        assert cold_arm['measurement_ingress_count'] == updated['ingress_frame_count']
++        csv_expected = {**metrics, 'operation_id': operation['operation_id'], 'scenario': operation['scenario']}
++        assert csv_rows[position] == {key: str(csv_expected[key]) for key in csv_rows[position]}
++        assert len(legacy) == len(updated) == len(candidate['summary']) == len(arm['physical_validation']['summary']) == len(cold_arm['summary']) == 72
+         outcome = {'operation_id': operation['operation_id'], 'scenario': operation['scenario'],
+             'arguments': {'run_dir': str(directory), 'run_id': operation['run_id'], 'mode': 'benchmark',
+                 'policy': operation['policy'], 'topology_kind': plan['topology_kind'], 'required_branches': plan['required_branches'],
+@@ -179,7 +211,12 @@
+             'recomputed_legacy_summary': legacy, 'recomputed_v2_summary': updated,
+             'candidate_comparison': comparison(legacy, candidate['summary']),
+             'carried_arm_comparison': comparison(updated, arm['physical_validation']['summary']),
++            'cold_summary_comparison': comparison(updated, cold_arm['summary']),
++            'cold_descriptive_comparison': comparison(metrics, cold_arm['descriptive_metrics']),
++            'recomputed_descriptive_metrics': metrics, 'cold_csv_fields_exactly_matched': len(csv_rows[position]),
+             'completed_rows': len(frames), 'completed_deadline_misses': int((frames['e2e_latency_ms'] > 100).sum())}
++        assert all(outcome[key]['equal'] for key in ('candidate_comparison', 'carried_arm_comparison',
++            'cold_summary_comparison', 'cold_descriptive_comparison')), 'original carried metric mismatch'
+         results.append(outcome)
+         print(json.dumps({'operation': operation['operation_id'], 'legacy_match': outcome['candidate_comparison']['equal'],
+                           'arm_match': outcome['carried_arm_comparison']['equal']}), flush=True)
+@@ -205,11 +242,11 @@
+         for row in held.values():
+             os.close(row['fd'])
+         closed = True
+-    save('custody-and-comparison.v1.json', {'schema_version': 1, 'scope': 'Pure closed CPU04 sidecar reduction, not full cold/CLI acceptance',
++    save('custody-and-comparison.v1.json', {'schema_version': 1, 'scope': 'Pure closed CPU05 sidecar reduction, not full cold/CLI acceptance',
+         'before': [row['before'] for row in held.values()], 'after': after, 'namespaces': {str(path): names for path, names in namespaces.items()},
+         'source_scope': 'Actual reducer import closure only; mutable component CLI/inputs/runtime excluded, no claim about all87 sources.',
+         'primary_error': primary, 'fd_holds_released': closed, 'reduced_arms': len(results), 'elapsed_s': time.monotonic() - START,
+-        'all_fields_match': len(results) == 2 and all(row['candidate_comparison']['equal'] and row['carried_arm_comparison']['equal'] for row in results),
++        'all_fields_match': len(results) == 2 and all(all(row[key]['equal'] for key in ('candidate_comparison', 'carried_arm_comparison', 'cold_summary_comparison', 'cold_descriptive_comparison')) for row in results),
+         'measurement_acceptance': False, 'all_phase_cold': False, 'original_cli_status': 'failed_immutable',
+         'engine_or_model_or_native_or_guardian_operations': False})
+ raise SystemExit(0 if primary is None and len(results) == 2 else 78)
+--- cpu04/run.py
++++ cpu05/run.py
+@@ -60,7 +60,7 @@
+     child = subprocess.Popen(argv, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
+     child_owner = owner(child.pid)
+     save('launch.v1.json', {'argv': argv, 'observer': owner(os.getpid()), 'child': child_owner,
+-        'source_before': source_before, 'initial_head': '6358c42cf1b969fb7ac2aa7be51929c3da46b9af',
++        'source_before': source_before, 'initial_head': '8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21',
+         'execution_budget_s': 110, 'teardown_budget_s': 10,
+         'scope': 'Pure original sidecar reduction; unrelated three component modules may change.'})
+     for name, pipe in (('stdout', child.stdout), ('stderr', child.stderr)):
+@@ -116,7 +116,7 @@
+             and observed_eof == set(files) and not group_members and source_before == source_after
+             and custody_value is not None and custody_value['fd_holds_released']
+             and custody_value['primary_error'] is None and custody_value['reduced_arms'] == 2)
+-    terminal = save('terminal.v1.json', {'schema_version': 1, 'scope': 'Pure sidecar reduction only; CPU04 remains failed, no all-phase acceptance',
++    terminal = save('terminal.v1.json', {'schema_version': 1, 'scope': 'Pure sidecar reduction only; CPU05 remains failed, no all-phase acceptance',
+         'child': child_owner if child is not None else None, 'original_child_returncode': None if child is None else child.returncode,
+         'timed_out': timeout, 'capture_exceeded': overflow, 'primary_error': first, 'additional_errors': errors,
+         'source_before': source_before, 'source_after': source_after, 'original_child_current': None if child is None else owner(child.pid),
+--- cpu04/close.py
++++ cpu05/close.py
+@@ -54,6 +54,10 @@
+     assert summary['censored_frame_count'] == 0 and row['completed_deadline_misses'] == completed
+     arms.append({'operation_id': row['operation_id'], 'candidate_keys_exactly_matched': row['candidate_comparison']['keys_compared'],
+         'carried_arm_keys_exactly_matched': row['carried_arm_comparison']['keys_compared'],
++        'cold_summary_keys_exactly_matched': row['cold_summary_comparison']['keys_compared'],
++        'cold_descriptive_keys_exactly_matched': row['cold_descriptive_comparison']['keys_compared'],
++        'cold_csv_fields_exactly_matched': row['cold_csv_fields_exactly_matched'],
++        'descriptive_metrics': row['recomputed_descriptive_metrics'],
+         'admitted': admitted, 'completed': completed, 'dropped': summary['dropped_frame_count'], 'censored': 0,
+         'completion_coverage_percent': completed / admitted * 100,
+         'completed_deadline_misses': completed, 'completed_deadline_miss_percent': 100,
+@@ -64,14 +68,14 @@
+         'c_obs_in_ms_per_ingress': summary['c_obs_in_ms_per_ingress'],
+         'c_obs_comp_ms_per_completed': summary['c_obs_comp_ms_per_completed'], 'c_obs_is_partial': summary['c_obs_is_partial'],
+         'decoder_factory': summary['decoder_factory'], 'decoder_required_resource': summary['decoder_required_resource']})
+-report = {'schema_version': 1, 'artifact_kind': 'vast_cpu04_pure_sidecar_scientific_reduction_v1',
++report = {'schema_version': 1, 'artifact_kind': 'vast_cpu05_pure_sidecar_scientific_reduction_v1',
+     'disposition': 'metric_consistency_verified_original_cli_still_failed',
+     'original_reduction_terminal': descriptor(OUT / 'terminal.v1.json'),
+     'custody': descriptor(OUT / 'custody-and-comparison.v1.json'), 'recomputed_summaries': descriptor(OUT / 'recomputed-summaries.v1.json'),
+     'helper_sources': [descriptor(BASE / name) for name in ('reduce.py', 'run.py', 'close.py')],
+     'held_inputs': len(custody['before']), 'held_reducer_sources': sum('/scripts/' in row['path'] for row in custody['before']),
+     'all_held_bytes_and_full_7_epochs_unchanged': True, 'fd_holds_released': True, 'postterminal_process_observations': snapshots,
+-    'exact_summary_field_comparison': '72 candidate keys and72 carried arm keys per arm; typed canonical JSON comparisons, no differences.',
++    'exact_summary_field_comparison': '72 candidate keys,72 carried arm keys and72 cold pair summary keys per arm; complete typed canonical JSON comparisons. Cold descriptive metrics and all14 CSV fields independently recomputed; SVG bound by original descriptor only.',
+     'arms': arms, 'measurement_signature': baseline['measurement_signature'],
+     'input_schedule_sha256': baseline['input_schedule_sha256'],
+     'input_frame_key_sequence_sha256': baseline['input_frame_key_sequence_sha256'],
+@@ -81,9 +85,9 @@
+     'limitations': ['One original descriptive CPU pair, no statistical repeats or GPU pair.',
+         'CPU-only denotes analytics placement; both plans use nvh264dec/NVDEC.',
+         'Completed-frame deadline percentages exclude dropped ingress; no latency was assigned to drops.',
+-        'The stock legacy reducer and pure full-resource validator were run; no full authority/cold/all-phase join or current complete87-source validation.',
+-        'Original CPU04 CLI failure remains immutable. This check cannot complete task18.8 or grant measurement/publication/fullcampaign acceptance.'],
+-    'measurement_acceptance': False, 'all_phase_cold': False, 'model_or_engine_or_native_or_guardian_operations': False}
++        'The unchanged stock legacy reducer, summarize_frames and pure full-resource validator were run. All72 fields join candidate/arm/cold summaries; no public cold/full authority/all-phase entrypoint or current complete87-source validation.',
++        'Original CPU05 CLI78/late deadline failure remains immutable. Authentic retained cold exports do not override it. This check cannot complete task18.8 or grant measurement/publication/fullcampaign acceptance.', 'nvdec_busy_equivalent_ns/device_sample and fanout resource counters may match their original carried summaries; no measured native decoder busy-time, quality or population claim is inferred.', 'Original SVG is physically descriptor-verified; no new rendering or independent SVG curve geometry check was performed.'],
++    'measurement_acceptance': False, 'task_18_8_complete': False, 'original_cpu05_cli_exit_code': 78, 'all_phase_cold': False, 'model_or_engine_or_native_or_guardian_operations': False}
+ path = BASE / 'scientific-report.v1.json'
+ with path.open('xb') as stream:
+     stream.write((json.dumps(report, sort_keys=True, indent=2, allow_nan=False) + '\n').encode())

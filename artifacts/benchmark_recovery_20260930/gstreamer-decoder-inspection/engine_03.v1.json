@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "/usr/bin/docker",
+    "container",
+    "inspect",
+    "--format",
+    "{\"Id\":{{json .Id}},\"Name\":{{json .Name}},\"Image\":{{json .Image}},\"Created\":{{json .Created}},\"Running\":{{json .State.Running}},\"OOMKilled\":{{json .State.OOMKilled}},\"ExitCode\":{{json .State.ExitCode}},\"Pid\":{{json .State.Pid}},\"StartedAt\":{{json .State.StartedAt}},\"FinishedAt\":{{json .State.FinishedAt}},\"Operation\":{{json (index .Config.Labels \"vast.operational-custody\")}}}",
+    "ccd0541c4fb6ac44650590ef3c17f6faae2b3e18fe84b916015d790a73344893"
+  ],
+  "returncode": 1,
+  "started_at_ns": 1790726926690739917,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-inspection/engine_03.stderr",
+    "sha256": "d7552384dc5e69fa2985fa625a37f8f0ddc6544b7eb94a817cc654e3216a1576",
+    "size_bytes": 112
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-inspection/engine_03.stdout",
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "size_bytes": 1
+  },
+  "terminal_at_ns": 1790726926712641511
+}

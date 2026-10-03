@@ -1,0 +1,83 @@
+{
+  "engine_or_model_calls": false,
+  "old_test_ast_comparisons": [
+    {
+      "added_tests": [
+        "ComponentCliTests.test_default_cli_owns_one_private_context_through_original_cold_and_stop",
+        "ComponentCliTests.test_failed_original_arm_timeline_does_not_invent_later_phases",
+        "ComponentCliTests.test_original_pair_retains_bounded_phase_starts_and_real_terminals",
+        "ComponentCliTests.test_timeline_has_exact_fixed_names_and_rejects_oversize_before_write",
+        "ComponentCliTests.test_timing_terminal_write_failure_keeps_start_and_performs_owned_cleanup"
+      ],
+      "changed_original_tests": [],
+      "original_test_count": 15,
+      "path": "tests/test_publication_gstreamer_component_cli_v1.py",
+      "removed_original_tests": []
+    },
+    {
+      "added_tests": [
+        "ComponentHeldSessionTests.test_engine_bytes_or_socket_identity_drift_rejects",
+        "ComponentHeldSessionTests.test_exception_closes_actual_input_fds_and_keeps_original_failure",
+        "ComponentHeldSessionTests.test_five_boundaries_share_one_full_assessment_but_observe_twenty_images",
+        "ComponentHeldSessionTests.test_original_socket_replacement_and_ancestor_alias_reject_before_inspect",
+        "ComponentHeldSessionTests.test_private_projection_collector_publishes_only_after_complete_assessment",
+        "ComponentHeldSessionTests.test_public_held_inputs_retains_independent_complete_validation",
+        "ComponentHeldSessionTests.test_raw_dict_foreign_pid_root_authority_and_closed_session_fail",
+        "ComponentHeldSessionTests.test_same_bytes_replacement_is_rejected_before_live_image_observation",
+        "ComponentHeldSessionTests.test_same_image_id_does_not_hide_projection_drift"
+      ],
+      "changed_original_tests": [],
+      "original_test_count": 14,
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "removed_original_tests": []
+    },
+    {
+      "added_tests": [
+        "ComponentRuntimeFixtureTests.test_private_session_keeps_real_factory_and_custody_at_all_five_boundaries"
+      ],
+      "changed_original_tests": [],
+      "original_test_count": 14,
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "removed_original_tests": []
+    }
+  ],
+  "original_execution": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-implementation-v1/attempt-04-focused/execution.json",
+    "sha256": "a73811714efb59491f2ac5acf2cd37002e7ba0ecc42e84269dde384a1383ae15",
+    "size_bytes": 3577
+  },
+  "project_modules_imported": false,
+  "reviewer_tests_executed": false,
+  "sources": [
+    {
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b",
+      "size_bytes": 40969
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_inputs_v1.py",
+      "sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1",
+      "size_bytes": 34510
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014",
+      "size_bytes": 69372
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_cli_v1.py",
+      "sha256": "f8204fe8b4c45ef4a0dce6cafc3bed8242dc33e67468e6e35767fd42e752e125",
+      "size_bytes": 27148
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "sha256": "678aee8e50b780950c86c13b8e76871d4e4b5496fadff5e2cc883af841b54368",
+      "size_bytes": 54712
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "18d72265cbed3d4d88f013f83922f458053329a22b1a10c04b1aa5938c34ef50",
+      "size_bytes": 25105
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "acceptance_claim": false,
+  "actual_reviewer_process_and_late_closure": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\independent-original-cleanup-review-attempt01\\later-observer-process-closure.v1.json",
+    "sha256": "1a735816d0a13b4f60185a8203795b37c6789b427fb59d347bde7d000e408252",
+    "size_bytes": 946
+  },
+  "all_independent_reader_and_timeout_paths_groups_sessions_absent_twice": true,
+  "all_original_and_independent_late_companions_absent": true,
+  "all_original_and_independent_reported_handles_released": true,
+  "all_original_cleanup_owner_paths_and_recorded_groups_sessions_absent_twice": true,
+  "cleanup_or_CI_or_target_replayed": false,
+  "global_source_mount331_and_canonical_interpreter_original_epochs_unchanged": true,
+  "independent_review": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\independent-original-cleanup-review-attempt01\\review.v1.json",
+    "sha256": "f9a99ba7f2bcbf6a711c3767a1a27de1353ea5ba9e89bcd563c87b86bcdaf45d",
+    "size_bytes": 8601
+  },
+  "independent_review_tool": {
+    "FD_before_after": [
+      6,
+      6
+    ],
+    "actual_reader_pid": 11371,
+    "actual_timeout_pid": 11370,
+    "chunk": "c1ded6",
+    "exit_code": 0,
+    "tool_wall_s": 1.1569312
+  },
+  "kind": "closed_actual_owned_cleanup_and_independent_reader_scope_v1",
+  "later_scanner_tool": {
+    "FD_before_after": [
+      6,
+      6
+    ],
+    "actual_scanner_pid": 11386,
+    "chunk": "4605eb",
+    "exit_code": 0,
+    "tool_wall_s": 0.9426812
+  },
+  "limits": [
+    "Underlying target-directory inode was never recorded before mounting; its post-unmount identity is not retrospectively bound. Empty directories remain.",
+    "Only named original cleanup/reader/timeout/command actors and recorded groups/sessions are checked. No global descendant quiescence claim.",
+    "Last tiny metadata scanner11386 completed normal tool0 with FD6\u21926; its own later group absence was not observed and no infinite scanner chain is invented.",
+    "The umount subprocess stdout/stderr are genuine stored 0B with EOF. The two metadata tool outputs include the WSL startup proxy warning and have no separated raw-stdio capture.",
+    "This closes only the owned temporary resource. It does not turn earlier failed CI/benchmark outcomes into successes or claim archive/final-CI/merge/release completion."
+  ],
+  "original_cleanup_tool": {
+    "basis": "Parent genuine original terminal notification",
+    "chunk": "40b69c",
+    "exit_code": 0,
+    "tool_wall_s": 1.1290933
+  },
+  "original_command_raw_channel_lengths": [
+    0,
+    0
+  ],
+  "original_command_reaped_and_EOF_both": true,
+  "original_command_returncode": 0,
+  "original_execution": {
+    "epoch7": [
+      69,
+      1407374885980599,
+      33279,
+      1,
+      38407,
+      1791036320317790000,
+      1791036320317790000
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/original-owned-cleanup-attempt01/execution.v1.json",
+    "sha256": "57f8f2ea90b1cc3ef23a8409a3e7302141fb22730ee91bb605e946ec283fa15d",
+    "size_bytes": 38407
+  },
+  "owned_target_mount2708_absent": true,
+  "retained_empty_target_directory": {
+    "deleted": false,
+    "epoch7": [
+      2096,
+      591859,
+      16877,
+      2,
+      4096,
+      1791029220905523078,
+      1791029220905523078
+    ],
+    "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1",
+    "pre_mount_identity_unknown": true
+  },
+  "schema_version": 1,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "source_refs": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\review_actual_owned_cleanup_v1.py",
+      "sha256": "ca4e51944a2c0b10b63ac4d89e9e8fb7bb7553e5bed1c3fa66dfcabbeee249a6",
+      "size_bytes": 15841
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-owned-cleanup-preparation-v1\\observe_cleanup_reviewer_later_paths_v1.py",
+      "sha256": "1397637d430e46f070e3b872bcd6fc1590a0b77a184cded4cd3b3ae13abdfd2e",
+      "size_bytes": 2630
+    }
+  ],
+  "status": "verified"
+}

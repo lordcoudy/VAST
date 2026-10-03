@@ -1,0 +1,911 @@
+{
+  "accepted": false,
+  "argv": [
+    "/usr/bin/bash",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_gstreamer_custom_publication_runtime_v3.sh"
+  ],
+  "artifact_kind": "vast_original_stock_runtime_image_build_terminal_v1",
+  "child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pid": 6515,
+    "ppid": 6513,
+    "proc_stat_starttime_ticks": 20661935,
+    "uid": 1000
+  },
+  "classification": "original stock two-build image result; no model/hardware/benchmark acceptance",
+  "commit": "7f3dfa42858c85d6e3db2cb1274dd13af35696c9",
+  "elapsed_s": 47.39003576597315,
+  "engine_stable": true,
+  "finished_at_ns": 1790724356991139703,
+  "publication_ready": false,
+  "returncode": 0,
+  "schema_version": 1,
+  "socket_stable": true,
+  "sources_after": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/run_first_gstreamer_runtime_build_v1.py",
+      "sha256": "15fcab984e008e41cdf18ebb6510f580f6e0aba49564535d2d0824d50727f926",
+      "size_bytes": 6499
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/native-a/native_probe.freeze.json",
+      "sha256": "901e5e3188fae6867b6dbb29b723cfccab1f9133e91715a7055afa30e284fce6",
+      "size_bytes": 6094
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/publication_image_build_v1.json",
+      "sha256": "c13f12001048471e20400e5a0bb37df5efa01e6c936772ae9aaea5de548a6b22",
+      "size_bytes": 4953
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/publication_qualification_image_refreeze_v1.json",
+      "sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+      "size_bytes": 12401
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/Dockerfile",
+      "sha256": "8e50a76ad65566ecc68318f01f55332be2e59a411b409b399e8f990f83046682",
+      "size_bytes": 8037
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/requirements.lock",
+      "sha256": "e5ac36aa2ad9cbd78636a2a317d4c19ac04392124e7f70ad8936f0a6472642ef",
+      "size_bytes": 554
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt",
+      "sha256": "c90fd7e4b347fdf086924d1bf419d0e03c3335a1e901bcd402b628a5379872bc",
+      "size_bytes": 320
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt",
+      "sha256": "f4655c4dbd7eee1da21267a9e3f08cbddc4a18d8e69fda2a8a0fcc4898119072",
+      "size_bytes": 589
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "sha256": "691ea8a474fe1ce2653cf40246f3bd9ea3c0c2d9ea62c1f86c18825364f9e538",
+      "size_bytes": 3414
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py",
+      "sha256": "a71457f0d8a9d49acc208714d08714b67912d200056fdf72e62b5f7f88431d9a",
+      "size_bytes": 9513
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/vast_gstreamer_custom_publication_runtime_v3",
+      "sha256": "2f241d0fbf8e250d09f3dc8c6c97999910991c8649c44e56ee69d4f1cb38b8e7",
+      "size_bytes": 117
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/wheels/numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "3cdec01fa790a186d430433fdd4d4ffb70eed6f0eeb4bf05c8dbe2dce0a9bcb8",
+      "size_bytes": 16722264
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/wheels/pandas-3.0.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "d373ce03ffd84010ed9839fa73672a9c8256990532e158440c0085db7d914b34",
+      "size_bytes": 10998091
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+      "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+      "size_bytes": 229892
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+      "size_bytes": 807870
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/wheels/six-1.17.0-py2.py3-none-any.whl",
+      "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+      "size_bytes": 11050
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_admission_transport.hpp",
+      "sha256": "54e9aa0a05b50aacd9372fa6a2a660fb7f31f37d68b76d349362dad34e87e48d",
+      "size_bytes": 9551
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+      "sha256": "d531893e2586bb02432d69edfae7bb2ec08a04711c2c8e22353efda678ae461a",
+      "size_bytes": 41004
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp",
+      "sha256": "1133706b13443ada600105f3b6897a82e7cf2d3493b04937b58fe4f4a24bf98d",
+      "size_bytes": 11004
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp",
+      "sha256": "18f53922dc6af25d4e24c1c35a11603122d80c04261bfe67c5db149e300e44a6",
+      "size_bytes": 4868
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_native_policy_client.hpp",
+      "sha256": "85d2b64ccc977a76b6a9c250fd77ea8f02029382cc6121c52ff7ec3bc57acc0c",
+      "size_bytes": 22257
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp",
+      "sha256": "6eb7c3b5f6cd31820727b6cd0808707873b9b01a45547a5549b8dde9b7b728b6",
+      "size_bytes": 19721
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_runtime_emitter.hpp",
+      "sha256": "2fd34309bfcbdce6b96f4023c198453dbcbbbef59351a4e5e06f0f2be9d8bc9b",
+      "size_bytes": 11207
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_endpoint.py",
+      "sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+      "size_bytes": 6756
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_protocol.py",
+      "sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "size_bytes": 18555
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_worker.py",
+      "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "size_bytes": 38433
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_model_contract.py",
+      "sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62",
+      "size_bytes": 15765
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_dispatch.py",
+      "sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+      "size_bytes": 17104
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_launcher_invocation_v3.py",
+      "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "size_bytes": 7230
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_output_receipt.py",
+      "sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+      "size_bytes": 34431
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_runtime_authority.py",
+      "sha256": "ba633140e27fe78cb6bfec97093f60e476f2bd8c43f50a0998a6b80532ffb56c",
+      "size_bytes": 44628
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_runtime_grant.py",
+      "sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+      "size_bytes": 51402
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_runtime_qualification_v3.py",
+      "sha256": "c4fbd3e2afa99d5ca83130622857bbbaa3ceb0d60796d3d5a761345a32f764a4",
+      "size_bytes": 54917
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/benchmark_contract.py",
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "size_bytes": 344569
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_gstreamer_custom_publication_runtime_v3.sh",
+      "sha256": "dfd5412560adeb9002cd137f64d2e98a99fee9ec25f9d00ef2247b5d22dfa73c",
+      "size_bytes": 8668
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_publication_runtime_images_after_refreeze_v1.py",
+      "sha256": "78cba98af399779f49cc840f87d9591aa70784b88f2f3f366d746870eeed903f",
+      "size_bytes": 13089
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_acceptance_metadata_binding.py",
+      "sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+      "size_bytes": 20605
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_admission.py",
+      "sha256": "4db82ea10118d942457901393f447ebcf7602577b77fd1c0be9084f54366b7f7",
+      "size_bytes": 19971
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_deepstream_protocol_bridge.py",
+      "sha256": "356e9171fb772f217c785632d3f57e96430da7138a146fe8720c56b1decd68ae",
+      "size_bytes": 53754
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_deepstream_qualification_fragment_v1.py",
+      "sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe",
+      "size_bytes": 40419
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_bridge.py",
+      "sha256": "d0ff1e5910e41815e116988757ad5eb3b6c9ea6bc1cc56219d00be0b23e2da43",
+      "size_bytes": 39243
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "05c958f75564577465f5031dcb52010be990516c01f9e7b0504926abe9ccf55a",
+      "size_bytes": 293953
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_container_coordinator_v3.py",
+      "sha256": "7f70138de1e87ab43dfab1e37674979c551dd24ee02fba205cd9905790b060c5",
+      "size_bytes": 759
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_runtime.py",
+      "sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+      "size_bytes": 156160
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_model_parity.py",
+      "sha256": "ecb4d10ee878fe77fef30ca7df9990e5e2cc8a959c6aa6e285736a489b71d17c",
+      "size_bytes": 97548
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_model_parity_acceptance.py",
+      "sha256": "660071f68ae3378f704c497aab78ffa3b2c6d20a976ca52402ebe2c7b4bbeea4",
+      "size_bytes": 39938
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_model_parity_acceptance_v4.py",
+      "sha256": "80e4164651f8a4ddf0d7dca06b957b8f51b04f0bb9349b7452dc412de0a2b649",
+      "size_bytes": 31240
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_model_parity_v4.py",
+      "sha256": "34474de61e19a8f3b1167ff8b52f11f33514e1d9483220abf693456ec840cf9c",
+      "size_bytes": 35800
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_native_policy_runtime.py",
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "size_bytes": 73421
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_publication_runtime.py",
+      "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+      "size_bytes": 55785
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+      "sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+      "size_bytes": 65596
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_runtime.py",
+      "sha256": "fb91d24e69385d37fc59b68c116829163cc3e29ed6b1403276b0b0676af90135",
+      "size_bytes": 94557
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_runtime_plan.py",
+      "sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+      "size_bytes": 30727
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/extract_kpp_legacy_iss.py",
+      "sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+      "size_bytes": 73654
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/formal_aw_heft_reference.py",
+      "sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+      "size_bytes": 70898
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_frozen_reconstruction_v1.py",
+      "sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+      "size_bytes": 28006
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_iss_publication_v3.py",
+      "sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+      "size_bytes": 43081
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+      "sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+      "size_bytes": 69386
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/full_resource_contract.py",
+      "sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+      "size_bytes": 21340
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_frozen_reconstruction_v1_dataset.py",
+      "sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+      "size_bytes": 15206
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_iss_publication_v3_dataset.py",
+      "sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+      "size_bytes": 23901
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_legacy_iss_v2_manifest.py",
+      "sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+      "size_bytes": 29663
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/materialize_runtime_build_context_v3.py",
+      "sha256": "db4cdb5f42268e2f1eb2c75c1bb44fa25d1e30f8938e4809cd1477b1ced88d01",
+      "size_bytes": 10857
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/model_parity_grant.py",
+      "sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+      "size_bytes": 14740
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_acceptance_evidence.py",
+      "sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+      "size_bytes": 2263
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_child_evidence_materializer_v1.py",
+      "sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+      "size_bytes": 21544
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+      "size_bytes": 48963
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_operational_recorder_v1.py",
+      "sha256": "130130ba64079f6a80ef4762a45c9969f4b3a425432a70d082ecc5a59004169d",
+      "size_bytes": 24563
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_preprocessing_contract_v1.py",
+      "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+      "size_bytes": 68402
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_runtime_expectations_v1.py",
+      "sha256": "556a3cd0a3c6a9081829ff639ed312bf5708f871347dfc4ed4d5257c4b69dc95",
+      "size_bytes": 6308
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_capture_plan_v1.py",
+      "sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+      "size_bytes": 25882
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_container_custody_v1.py",
+      "sha256": "fcc6058a09e4f600f0d2c5af712754faba88c2a91c70f4641bbea155f5c5f200",
+      "size_bytes": 38040
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "40fabd0c797d914b82a0852df9d86f6fad08c2af13fef5280f1adc4a8b069ba5",
+      "size_bytes": 47167
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_reconciliation_v1.py",
+      "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+      "size_bytes": 28069
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_runtime_context_v1.py",
+      "sha256": "20a470135fef1d6fc37b76585623197f18b2b20e4f192ba61ace45fcac5bdb51",
+      "size_bytes": 11192
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_owned_staging_cleanup_v1.py",
+      "sha256": "33fcaa13096c4d958a21c4ee0af4bb1ddda2caa4b254ba550872cf70d7bc9821",
+      "size_bytes": 38584
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_contract.py",
+      "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "size_bytes": 40143
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_frozen_replay_v1.py",
+      "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "size_bytes": 21538
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_projection_v1.py",
+      "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+      "size_bytes": 29622
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification.py",
+      "sha256": "529a5ed62e57dba014dd781fa8e2a6b1a24b63812cd5a53aefb8ae279d9948e3",
+      "size_bytes": 63279
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py",
+      "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "size_bytes": 147846
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_qualification_image_refreeze_v1.py",
+      "sha256": "38757bd592fed2c137325f0f4b320812145ac64a2a78550a85e549bf0a0cbb8a",
+      "size_bytes": 65676
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/resource_interval_contract.py",
+      "sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+      "size_bytes": 33557
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/topology_contract.py",
+      "sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+      "size_bytes": 18707
+    }
+  ],
+  "sources_before": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/run_first_gstreamer_runtime_build_v1.py",
+      "sha256": "15fcab984e008e41cdf18ebb6510f580f6e0aba49564535d2d0824d50727f926",
+      "size_bytes": 6499
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/native-a/native_probe.freeze.json",
+      "sha256": "901e5e3188fae6867b6dbb29b723cfccab1f9133e91715a7055afa30e284fce6",
+      "size_bytes": 6094
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/publication_image_build_v1.json",
+      "sha256": "c13f12001048471e20400e5a0bb37df5efa01e6c936772ae9aaea5de548a6b22",
+      "size_bytes": 4953
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/publication_qualification_image_refreeze_v1.json",
+      "sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+      "size_bytes": 12401
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/Dockerfile",
+      "sha256": "8e50a76ad65566ecc68318f01f55332be2e59a411b409b399e8f990f83046682",
+      "size_bytes": 8037
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/requirements.lock",
+      "sha256": "e5ac36aa2ad9cbd78636a2a317d4c19ac04392124e7f70ad8936f0a6472642ef",
+      "size_bytes": 554
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt",
+      "sha256": "c90fd7e4b347fdf086924d1bf419d0e03c3335a1e901bcd402b628a5379872bc",
+      "size_bytes": 320
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt",
+      "sha256": "f4655c4dbd7eee1da21267a9e3f08cbddc4a18d8e69fda2a8a0fcc4898119072",
+      "size_bytes": 589
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "sha256": "691ea8a474fe1ce2653cf40246f3bd9ea3c0c2d9ea62c1f86c18825364f9e538",
+      "size_bytes": 3414
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py",
+      "sha256": "a71457f0d8a9d49acc208714d08714b67912d200056fdf72e62b5f7f88431d9a",
+      "size_bytes": 9513
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/vast_gstreamer_custom_publication_runtime_v3",
+      "sha256": "2f241d0fbf8e250d09f3dc8c6c97999910991c8649c44e56ee69d4f1cb38b8e7",
+      "size_bytes": 117
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/wheels/numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "3cdec01fa790a186d430433fdd4d4ffb70eed6f0eeb4bf05c8dbe2dce0a9bcb8",
+      "size_bytes": 16722264
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/wheels/pandas-3.0.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "d373ce03ffd84010ed9839fa73672a9c8256990532e158440c0085db7d914b34",
+      "size_bytes": 10998091
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+      "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+      "size_bytes": 229892
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+      "size_bytes": 807870
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/wheels/six-1.17.0-py2.py3-none-any.whl",
+      "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+      "size_bytes": 11050
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_admission_transport.hpp",
+      "sha256": "54e9aa0a05b50aacd9372fa6a2a660fb7f31f37d68b76d349362dad34e87e48d",
+      "size_bytes": 9551
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+      "sha256": "d531893e2586bb02432d69edfae7bb2ec08a04711c2c8e22353efda678ae461a",
+      "size_bytes": 41004
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp",
+      "sha256": "1133706b13443ada600105f3b6897a82e7cf2d3493b04937b58fe4f4a24bf98d",
+      "size_bytes": 11004
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp",
+      "sha256": "18f53922dc6af25d4e24c1c35a11603122d80c04261bfe67c5db149e300e44a6",
+      "size_bytes": 4868
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_native_policy_client.hpp",
+      "sha256": "85d2b64ccc977a76b6a9c250fd77ea8f02029382cc6121c52ff7ec3bc57acc0c",
+      "size_bytes": 22257
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp",
+      "sha256": "6eb7c3b5f6cd31820727b6cd0808707873b9b01a45547a5549b8dde9b7b728b6",
+      "size_bytes": 19721
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_runtime_emitter.hpp",
+      "sha256": "2fd34309bfcbdce6b96f4023c198453dbcbbbef59351a4e5e06f0f2be9d8bc9b",
+      "size_bytes": 11207
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_endpoint.py",
+      "sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+      "size_bytes": 6756
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_protocol.py",
+      "sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "size_bytes": 18555
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_worker.py",
+      "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "size_bytes": 38433
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_model_contract.py",
+      "sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62",
+      "size_bytes": 15765
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_dispatch.py",
+      "sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+      "size_bytes": 17104
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_launcher_invocation_v3.py",
+      "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "size_bytes": 7230
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_output_receipt.py",
+      "sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+      "size_bytes": 34431
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_runtime_authority.py",
+      "sha256": "ba633140e27fe78cb6bfec97093f60e476f2bd8c43f50a0998a6b80532ffb56c",
+      "size_bytes": 44628
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_runtime_grant.py",
+      "sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+      "size_bytes": 51402
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_runtime_qualification_v3.py",
+      "sha256": "c4fbd3e2afa99d5ca83130622857bbbaa3ceb0d60796d3d5a761345a32f764a4",
+      "size_bytes": 54917
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/benchmark_contract.py",
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "size_bytes": 344569
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_gstreamer_custom_publication_runtime_v3.sh",
+      "sha256": "dfd5412560adeb9002cd137f64d2e98a99fee9ec25f9d00ef2247b5d22dfa73c",
+      "size_bytes": 8668
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_publication_runtime_images_after_refreeze_v1.py",
+      "sha256": "78cba98af399779f49cc840f87d9591aa70784b88f2f3f366d746870eeed903f",
+      "size_bytes": 13089
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_acceptance_metadata_binding.py",
+      "sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+      "size_bytes": 20605
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_admission.py",
+      "sha256": "4db82ea10118d942457901393f447ebcf7602577b77fd1c0be9084f54366b7f7",
+      "size_bytes": 19971
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_deepstream_protocol_bridge.py",
+      "sha256": "356e9171fb772f217c785632d3f57e96430da7138a146fe8720c56b1decd68ae",
+      "size_bytes": 53754
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_deepstream_qualification_fragment_v1.py",
+      "sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe",
+      "size_bytes": 40419
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_bridge.py",
+      "sha256": "d0ff1e5910e41815e116988757ad5eb3b6c9ea6bc1cc56219d00be0b23e2da43",
+      "size_bytes": 39243
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "05c958f75564577465f5031dcb52010be990516c01f9e7b0504926abe9ccf55a",
+      "size_bytes": 293953
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_container_coordinator_v3.py",
+      "sha256": "7f70138de1e87ab43dfab1e37674979c551dd24ee02fba205cd9905790b060c5",
+      "size_bytes": 759
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_runtime.py",
+      "sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+      "size_bytes": 156160
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_model_parity.py",
+      "sha256": "ecb4d10ee878fe77fef30ca7df9990e5e2cc8a959c6aa6e285736a489b71d17c",
+      "size_bytes": 97548
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_model_parity_acceptance.py",
+      "sha256": "660071f68ae3378f704c497aab78ffa3b2c6d20a976ca52402ebe2c7b4bbeea4",
+      "size_bytes": 39938
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_model_parity_acceptance_v4.py",
+      "sha256": "80e4164651f8a4ddf0d7dca06b957b8f51b04f0bb9349b7452dc412de0a2b649",
+      "size_bytes": 31240
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_model_parity_v4.py",
+      "sha256": "34474de61e19a8f3b1167ff8b52f11f33514e1d9483220abf693456ec840cf9c",
+      "size_bytes": 35800
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_native_policy_runtime.py",
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "size_bytes": 73421
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_publication_runtime.py",
+      "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+      "size_bytes": 55785
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+      "sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+      "size_bytes": 65596
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_runtime.py",
+      "sha256": "fb91d24e69385d37fc59b68c116829163cc3e29ed6b1403276b0b0676af90135",
+      "size_bytes": 94557
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_runtime_plan.py",
+      "sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+      "size_bytes": 30727
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/extract_kpp_legacy_iss.py",
+      "sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+      "size_bytes": 73654
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/formal_aw_heft_reference.py",
+      "sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+      "size_bytes": 70898
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_frozen_reconstruction_v1.py",
+      "sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+      "size_bytes": 28006
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_iss_publication_v3.py",
+      "sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+      "size_bytes": 43081
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+      "sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+      "size_bytes": 69386
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/full_resource_contract.py",
+      "sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+      "size_bytes": 21340
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_frozen_reconstruction_v1_dataset.py",
+      "sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+      "size_bytes": 15206
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_iss_publication_v3_dataset.py",
+      "sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+      "size_bytes": 23901
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_legacy_iss_v2_manifest.py",
+      "sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+      "size_bytes": 29663
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/materialize_runtime_build_context_v3.py",
+      "sha256": "db4cdb5f42268e2f1eb2c75c1bb44fa25d1e30f8938e4809cd1477b1ced88d01",
+      "size_bytes": 10857
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/model_parity_grant.py",
+      "sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+      "size_bytes": 14740
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_acceptance_evidence.py",
+      "sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+      "size_bytes": 2263
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_child_evidence_materializer_v1.py",
+      "sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+      "size_bytes": 21544
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+      "size_bytes": 48963
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_operational_recorder_v1.py",
+      "sha256": "130130ba64079f6a80ef4762a45c9969f4b3a425432a70d082ecc5a59004169d",
+      "size_bytes": 24563
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_preprocessing_contract_v1.py",
+      "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+      "size_bytes": 68402
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_runtime_expectations_v1.py",
+      "sha256": "556a3cd0a3c6a9081829ff639ed312bf5708f871347dfc4ed4d5257c4b69dc95",
+      "size_bytes": 6308
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_capture_plan_v1.py",
+      "sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+      "size_bytes": 25882
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_container_custody_v1.py",
+      "sha256": "fcc6058a09e4f600f0d2c5af712754faba88c2a91c70f4641bbea155f5c5f200",
+      "size_bytes": 38040
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "40fabd0c797d914b82a0852df9d86f6fad08c2af13fef5280f1adc4a8b069ba5",
+      "size_bytes": 47167
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_reconciliation_v1.py",
+      "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+      "size_bytes": 28069
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_runtime_context_v1.py",
+      "sha256": "20a470135fef1d6fc37b76585623197f18b2b20e4f192ba61ace45fcac5bdb51",
+      "size_bytes": 11192
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_owned_staging_cleanup_v1.py",
+      "sha256": "33fcaa13096c4d958a21c4ee0af4bb1ddda2caa4b254ba550872cf70d7bc9821",
+      "size_bytes": 38584
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_contract.py",
+      "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "size_bytes": 40143
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_frozen_replay_v1.py",
+      "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "size_bytes": 21538
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_projection_v1.py",
+      "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+      "size_bytes": 29622
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification.py",
+      "sha256": "529a5ed62e57dba014dd781fa8e2a6b1a24b63812cd5a53aefb8ae279d9948e3",
+      "size_bytes": 63279
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py",
+      "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "size_bytes": 147846
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_qualification_image_refreeze_v1.py",
+      "sha256": "38757bd592fed2c137325f0f4b320812145ac64a2a78550a85e549bf0a0cbb8a",
+      "size_bytes": 65676
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/resource_interval_contract.py",
+      "sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+      "size_bytes": 33557
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/topology_contract.py",
+      "sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+      "size_bytes": 18707
+    }
+  ],
+  "sources_stable": true,
+  "started_at_ns": 1790724309605278777,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-first-build/original.stderr",
+    "sha256": "5f7f17c2b41539979be07f87154cd1d9ff45eea1dd19d40a2c972465001ab595",
+    "size_bytes": 32027
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-first-build/original.stdout",
+    "sha256": "08292441de2e684b16856576a030e9138a47fb6ad1eba82b35a8cef8b89bdd55",
+    "size_bytes": 5398
+  }
+}

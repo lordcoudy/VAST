@@ -1,0 +1,68 @@
+{
+  "CI_evidence_acceptance": false,
+  "all_two_source_read_FDs_closed": true,
+  "current_observed_rows": {
+    "current_Windows": {
+      "CRLF_count": 5160,
+      "LF_count": 5672,
+      "epoch": [
+        69,
+        2814749768968919,
+        33279,
+        1,
+        254120,
+        1790496747900481700,
+        1790496747900481700
+      ],
+      "matches_original_fullSHA_size_blob": false,
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_benchmark_contract.py",
+      "raw_Git_blob_sha1": "d91f7c801d4ac09c51c5a805fe0cc55d71e968a1",
+      "sha256": "9918a25c4eb94f6b60323360bbbfed1a579b542b306e4f46024b17f74e991abc",
+      "size_bytes": 254120
+    },
+    "genuine_samecommit_ext4": {
+      "CRLF_count": 0,
+      "LF_count": 5672,
+      "epoch": [
+        2096,
+        549625,
+        33188,
+        1,
+        248960,
+        1790800678464027992,
+        1790800678464027992
+      ],
+      "matches_original_fullSHA_size_blob": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/tests/test_benchmark_contract.py",
+      "raw_Git_blob_sha1": "ff311ef1e5bd712602624cf895444742ba055fad",
+      "sha256": "cd79cd27ba7265783fcacbab7879a01f8fb61aed8441ed64b4bcc135874014e7",
+      "size_bytes": 248960
+    }
+  },
+  "diagnostic_CRLF_replacement_view_equals_ext4_original_bytes": true,
+  "no_original_reader_reexecution": true,
+  "original_expected_row": {
+    "epoch7": [
+      2096,
+      549625,
+      33188,
+      1,
+      248960,
+      1790800678464027992,
+      1790800678464027992
+    ],
+    "git_blob_sha1": "ff311ef1e5bd712602624cf895444742ba055fad",
+    "path": "tests/test_benchmark_contract.py",
+    "sha256": "cd79cd27ba7265783fcacbab7879a01f8fb61aed8441ed64b4bcc135874014e7",
+    "size_bytes": 248960
+  },
+  "original_rawGit_source_table": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/original-checkout-recovery-attempt01/tracked-after.v1.json",
+    "sha256": "03c8101aec854cb927e0aad5af1ea4bb55697b0c8ca0d13558948b0b2b4430ec",
+    "size_bytes": 2787538
+  },
+  "schema_version": 1,
+  "scope": "Computed diagnostic byte view only. Neither file normalized/rewritten. Raw original hashes/epochs retained separately. Ext4 physical leaf joins original samecommit raw Git blob; no source-change causal inference from Windows raw mismatch alone.",
+  "source_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+  "status": "closed_finite_control_root_raw_byte_diagnosis"
+}

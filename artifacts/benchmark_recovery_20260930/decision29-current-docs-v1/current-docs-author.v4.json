@@ -1,0 +1,108 @@
+{
+  "CI_source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "actual_archive_commit": null,
+  "actual_hosted_counts": {
+    "approved_skip": 88,
+    "deferred_integration": 9,
+    "discovered": 3001,
+    "error": 0,
+    "failure": 0,
+    "selected": 2992,
+    "success": 2904
+  },
+  "actual_local_counts": {
+    "approved_skip": 86,
+    "builds": 6,
+    "deferred_integration": 9,
+    "discovered": 3001,
+    "error": 0,
+    "failure": 0,
+    "required_native": 3,
+    "selected": 2992,
+    "success": 2906,
+    "unchanged_source_files": 5577
+  },
+  "actual_mapping_dispatch": null,
+  "document_pins": [
+    {
+      "path": "README.md",
+      "sha256": "746e1946b1c60d662f5bc8c1f584ab890fb224a023b7d7591ebf273a2abf0687",
+      "size_bytes": 59212
+    },
+    {
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "sha256": "4e2d733b6816bc6aadcb8c8759a29d4e0783f3308d8f4863f4c35c02f483c407",
+      "size_bytes": 14543
+    },
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "2677e85865bd63dee5de24fb9017c7abd716396355a22a2d5d63af5cb9bdb987",
+      "size_bytes": 137502
+    },
+    {
+      "path": "progress.md",
+      "sha256": "e93049786410beff6d512b9ebac515c74368a5f8b25e37097abd3424a4826f2e",
+      "size_bytes": 1239979
+    }
+  ],
+  "final_process_authority": "same PR2 actual ledger; snapshot is not future success",
+  "full_diff": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/current-docs.v4.diff",
+    "sha256": "558d5d88d528c9ead040bd77cfa9d5f245ee8f6cf1d9612f240220467f946dae",
+    "size_bytes": 19156
+  },
+  "kind": "current_document_closed_CI_snapshot_author_v4",
+  "local_original_independent_review": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/original-prerequisite-review-attempt01/review.v1.json",
+    "sha256": "5a58508acf35f71d3c2934a022de1bff2e60eb44a39b6f85bd48cc3715ab7c60",
+    "size_bytes": 119285
+  },
+  "measurement_source_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "no_target_or_Git_execution": true,
+  "original_snapshots": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/before-v4/README.md.raw",
+      "sha256": "84a5dd70a679b49c034a345893cac6d07b8b21d906748f629e87c2014e3fcb25",
+      "size_bytes": 59084
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/before-v4/docs__gstreamer-component-benchmark-runbook.md.raw",
+      "sha256": "d25262ad4be606f3acc545dbde6cb94d5f271742021e97569282c12b7800b770",
+      "size_bytes": 13637
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/before-v4/BENCHMARK_RECOVERY_PLAN.md.raw",
+      "sha256": "ca1d4c84cafecd2e7e5038f746f4eed6169003b5dbefa2d2bff7f9317d7d6aa6",
+      "size_bytes": 134920
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/before-v4/progress.md.raw",
+      "sha256": "633a4ce024903c3b84697ac99f460da15d50bf8d4814f0d49c1d580f96370feb",
+      "size_bytes": 1238564
+    }
+  ],
+  "own_reassessment": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/own-reassessment.v4.md",
+    "sha256": "eb7defa5d09b9d838ab206d1c539bcf065ac1e2987562a097e399a84bbdb70f9",
+    "size_bytes": 7155
+  },
+  "pending": [
+    "independent_current_conformance",
+    "same_change_sync_archive",
+    "latest_archived_commit_CI",
+    "exact_final_review",
+    "owned_temporary_bind_cleanup",
+    "authorized_merge_after_actual_gates"
+  ],
+  "preservation": {
+    "OpenSpec_clauses_tasks_production_tests_CI_unchanged": true,
+    "README_only_one_current_front_sentence_replaced": true,
+    "old_original_failures_preserved": true,
+    "own_v3_immutable": true,
+    "plan_entire_previous_bytes_identical_suffix": true,
+    "progress_entire_previous_bytes_identical_suffix": true,
+    "runbook_only_current_status_sentences_replaced": true
+  },
+  "reviewer_handles_released": true,
+  "schema_version": 1
+}

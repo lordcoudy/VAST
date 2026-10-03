@@ -1,0 +1,126 @@
+{
+  "all_held_bytes_and_full_7_epochs_unchanged": true,
+  "all_phase_cold": false,
+  "arms": [
+    {
+      "admitted": 1080,
+      "c_obs_comp_ms_per_completed": 26302.176470588,
+      "c_obs_cpu_total_ms": 15202658.0,
+      "c_obs_gpu_total_ms": 0.0,
+      "c_obs_in_ms_per_ingress": 14076.535185185,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 15202658.0,
+      "candidate_keys_exactly_matched": 72,
+      "carried_arm_keys_exactly_matched": 72,
+      "censored": 0,
+      "completed": 578,
+      "completed_deadline_miss_percent": 100,
+      "completed_deadline_misses": 578,
+      "completed_per_180s_fps": 3.2111111111111112,
+      "completion_coverage_percent": 53.51851851851852,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "dropped": 502,
+      "on_time_completed": 0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-independent-processes",
+      "recorded_decode_stage_count": 4320,
+      "recorded_preprocess_stage_count": 4315
+    },
+    {
+      "admitted": 1080,
+      "c_obs_comp_ms_per_completed": 11695.027696793,
+      "c_obs_cpu_total_ms": 8022789.0,
+      "c_obs_gpu_total_ms": 0.0,
+      "c_obs_in_ms_per_ingress": 7428.508333333,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 8022789.0,
+      "candidate_keys_exactly_matched": 72,
+      "carried_arm_keys_exactly_matched": 72,
+      "censored": 0,
+      "completed": 686,
+      "completed_deadline_miss_percent": 100,
+      "completed_deadline_misses": 686,
+      "completed_per_180s_fps": 3.811111111111111,
+      "completion_coverage_percent": 63.51851851851852,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "dropped": 394,
+      "on_time_completed": 0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-shared-video-dag",
+      "recorded_decode_stage_count": 1080,
+      "recorded_preprocess_stage_count": 1080
+    }
+  ],
+  "artifact_kind": "vast_cpu04_pure_sidecar_scientific_reduction_v1",
+  "completion_coverage_shared_minus_baseline_percentage_points": 10.0,
+  "custody": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/attempt01/custody-and-comparison.v1.json",
+    "sha256": "90c0c1e8b3f6b71a64999ef07896dd6a838652c1c0ba3ddd26f569017a8c362c",
+    "size_bytes": 67264
+  },
+  "descriptive_partial_c_obs_reduction_percent": 47.227721626047234,
+  "disposition": "metric_consistency_verified_original_cli_still_failed",
+  "exact_summary_field_comparison": "72 candidate keys and72 carried arm keys per arm; typed canonical JSON comparisons, no differences.",
+  "fd_holds_released": true,
+  "held_inputs": 67,
+  "held_reducer_sources": 24,
+  "helper_sources": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/reduce.py",
+      "sha256": "250cdea5a5d67e4a96d2bd10e27581e65e2e2bd274fde1e3c7f043e1a36627f4",
+      "size_bytes": 12906
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/run.py",
+      "sha256": "e1a584867413fd2a71b14aa6f210fafedbd22a303a0066118a40dafc400eda54",
+      "size_bytes": 6414
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/close.py",
+      "sha256": "519d116ea92c03d4d9c2fb48230c72ad0ca03883780d7dcac990ac7a3b8d63a3",
+      "size_bytes": 6699
+    }
+  ],
+  "input_frame_key_sequence_sha256": "3f6cb4213c5e2909cebd9d48ce1284afe4f419957bd7dd71058dcc7ef39be948",
+  "input_schedule_sha256": "d07c87d325dd8d89315d0b0c532796bc553b2d7ec8bc49fa5d21ded24581b454",
+  "interpretation": "The shared graph recorded fewer decode/preprocess stage executions, lower partial attributed stage elapsed per admitted ingress, and more completed frames in this one CPU pair. Both arms delivered zero completed frames within100ms. The lower C_obs does not establish lower processor work, energy or native decoder busy time; differing completion/drop populations remain visible.",
+  "limitations": [
+    "One original descriptive CPU pair, no statistical repeats or GPU pair.",
+    "CPU-only denotes analytics placement; both plans use nvh264dec/NVDEC.",
+    "Completed-frame deadline percentages exclude dropped ingress; no latency was assigned to drops.",
+    "The stock legacy reducer and pure full-resource validator were run; no full authority/cold/all-phase join or current complete87-source validation.",
+    "Original CPU04 CLI failure remains immutable. This check cannot complete task18.8 or grant measurement/publication/fullcampaign acceptance."
+  ],
+  "measurement_acceptance": false,
+  "measurement_signature": "d2909d7ea12473e2d8f8b8322cf2847d35a1fd23594eb367a02053339fb9e0c1",
+  "model_or_engine_or_native_or_guardian_operations": false,
+  "original_reduction_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/attempt01/terminal.v1.json",
+    "sha256": "f061569fd892133e3fb1aafab9ff86b95f21ddfa774fa220de044874c07ab0ea",
+    "size_bytes": 3327
+  },
+  "postterminal_process_observations": [
+    {
+      "observed_at_ns": 1790786384955502496,
+      "original_child_group_members": [],
+      "original_processes": {
+        "34478": null,
+        "34479": null
+      }
+    },
+    {
+      "observed_at_ns": 1790786385007628201,
+      "original_child_group_members": [],
+      "original_processes": {
+        "34478": null,
+        "34479": null
+      }
+    }
+  ],
+  "recomputed_summaries": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/attempt01/recomputed-summaries.v1.json",
+    "sha256": "1cf147c4d9b82961030f3dd2ba2ebbf97612451ab6acd0c096934b2ad9fcaf8a",
+    "size_bytes": 28233
+  },
+  "schema_version": 1
+}

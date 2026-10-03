@@ -225,15 +225,8 @@ class SavantPublicationRuntimeV3Tests(unittest.TestCase):
         self.temporary.cleanup()
 
     def test_launcher_binds_both_topologies_to_real_container_runner(self) -> None:
-        self.assertFalse(launcher.PUBLICATION_READY)
-        self.assertEqual(
-            launcher.MISSING_RUNTIME_PINS,
-            (
-                "savant_exact_runtime_image_repo_digest_not_published",
-                "savant_endpoint_bound_24_6_full_kpp_arm_pilot_not_complete",
-                "savant_forced_resource_8_cell_qualification_not_complete",
-            ),
-        )
+        self.assertTrue(launcher.PUBLICATION_READY)
+        self.assertFalse(hasattr(launcher, "MISSING_RUNTIME_PINS"))
         self.assertIs(
             launcher.NATIVE_TOPOLOGY_RUNNERS["independent_processes"],
             run_checkpoint_savant_publication_runtime_v3,
@@ -242,6 +235,29 @@ class SavantPublicationRuntimeV3Tests(unittest.TestCase):
             launcher.NATIVE_TOPOLOGY_RUNNERS["shared_video_dag"],
             run_checkpoint_savant_publication_runtime_v3,
         )
+
+    def test_native_failure_keeps_bounded_diagnostics_without_promoting_evidence(self) -> None:
+        stderr = b"x" * 9000 + b"\xffreal native failure"
+        stdout = b"y" * 9000
+
+        def invoke(engine, engine_socket, argv, timeout_s):
+            if argv[:2] == ("image", "inspect"):
+                return mock.Mock(returncode=0, stdout=json.dumps([self.inspect_payload]).encode(), stderr=b"")
+            return mock.Mock(returncode=2, stdout=stdout, stderr=stderr)
+
+        with mock.patch("checkpoint_savant_publication_runtime_v3._invoke_engine", side_effect=invoke):
+            with self.assertRaises(SavantPublicationRuntimeV3Error) as caught:
+                run_checkpoint_savant_publication_runtime_v3(self.request)
+        self.assertEqual(caught.exception.blocker, "savant_native_runtime_failed")
+        diagnostic = caught.exception.native_diagnostic
+        self.assertEqual(diagnostic["returncode"], 2)
+        for name, value in (("stdout", stdout), ("stderr", stderr)):
+            self.assertEqual(diagnostic[name + "_size_bytes"], len(value))
+            self.assertEqual(diagnostic[name + "_sha256"], hashlib.sha256(value).hexdigest())
+            self.assertLessEqual(len(diagnostic[name + "_tail"]), 4096)
+        self.assertIn("real native failure", diagnostic["stderr_tail"])
+        self.assertEqual(list(self.output.iterdir()), [self.arm_path])
+        self.assertEqual(self.arm_path.read_bytes(), b"arm\n")
 
     def test_exact_engine_image_inputs_sockets_and_evidence_are_bound(self) -> None:
         observed: dict[str, object] = {}
@@ -264,9 +280,16 @@ class SavantPublicationRuntimeV3Tests(unittest.TestCase):
             observed["argv"] = argv
             observed["timeout_s"] = timeout_s
             self.assertEqual(argv[0], "run")
+            user_index = argv.index("--user")
+            self.assertEqual(
+                argv[user_index + 1], f"{os.getuid()}:{os.getgid()}"
+            )
             self.assertIn("--gpus", argv)
             self.assertIn("all", argv)
             self.assertIn("--read-only", argv)
+            # A125 exhausted 2048 tasks after all 24 native/HTTP workers started.
+            # Keep a finite PID ceiling with headroom for actual decoder threads.
+            self.assertEqual(argv[argv.index("--pids-limit") + 1], "4096")
             self.assertIn(IMAGE_ID, argv)
             image_index = argv.index(IMAGE_ID)
             self.assertEqual(argv[image_index + 1], "arm")
@@ -327,6 +350,13 @@ class SavantPublicationRuntimeV3Tests(unittest.TestCase):
         )
         self.assertEqual(observed["timeout_s"], 900.0)
         argv = observed["argv"]
+        for binding in (
+            "OPENBLAS_NUM_THREADS=1",
+            "OMP_NUM_THREADS=1",
+            "MKL_NUM_THREADS=1",
+            "NUMEXPR_NUM_THREADS=1",
+        ):
+            self.assertEqual(argv[argv.index(binding) - 1], "--env")
         self.assertIn("--model-binding", argv)
         self.assertIn(
             self.runtime_contract["model_files"][0]["sha256"]

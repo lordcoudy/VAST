@@ -1,0 +1,11 @@
+--- artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/before/tests/test_run_ci_checks.py
++++ tests/test_run_ci_checks.py
+@@ -47,7 +47,7 @@
+ commands=[]
+ ci.command=lambda argv,*a:commands.append(argv) or {}
+ ci.gstreamer_factory_facts=lambda *a:{'fixture':True}
+-ci.namespace_diagnostic=lambda *a:{'capture_completed':True,'explicit_local_fixture':True}
++ci.namespace_diagnostic=lambda *a:{'capture_completed':True,'namespace_succeeded':True,'explicit_local_fixture':True}
+ def observe(factory,**kwargs):
+  argv=factory(101,102,103)
+  ci.write_json(output/'unittest-child.report.json',{'successful':True})

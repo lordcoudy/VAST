@@ -1,0 +1,89 @@
+{
+  "artifact_kind": "vast_component_ext4_unexecuted_preparation_v2",
+  "bind_root_smoke": "required separate30+10 bounded original exact-image read-only mount observation before measurement; these helpers do not query Docker and leave readiness explicitly unverified",
+  "changes_from_preparation_v1": "Setup now observes exact source HEAD before and after via original captured Git child, and preserves before/after held ancestor identity; final receipt deadline failure stays failed. Added ten tiny actual-filesystem fixture methods, not run. CPU/GPU/capture adapted helpers unchanged.",
+  "copy_executed": false,
+  "fixed_limits": {
+    "closure_cleanup_seconds": 10,
+    "closure_seconds": 120,
+    "pair_channels_bytes": 1048576,
+    "pair_cleanup_seconds": 15,
+    "pair_outer_seconds": 2250,
+    "pair_stock_cli_seconds": 2100,
+    "setup_channel_bytes": 1048576,
+    "setup_cleanup_seconds": 10,
+    "setup_metadata_bytes": 8388608,
+    "setup_seconds": 600
+  },
+  "hardware_acceptance": false,
+  "helpers": [
+    {
+      "ast_and_compile": "passed; no function/module dispatch executed",
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/capture_selected_host_closure_ext4_v1.py",
+      "sha256": "425834a1b3016cc5a50843017de32a58b58449de571eda17ff4d5e3d6632ac6b",
+      "size_bytes": 3878
+    },
+    {
+      "ast_and_compile": "passed; no function/module dispatch executed",
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_cpu_component_pair_ext4_v1.py",
+      "sha256": "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559",
+      "size_bytes": 15089
+    },
+    {
+      "ast_and_compile": "passed; no function/module dispatch executed",
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_gpu_component_pair_ext4_v3.py",
+      "sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2",
+      "size_bytes": 15089
+    },
+    {
+      "ast_and_compile": "passed; no function/module dispatch executed",
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/setup_finite_ext4_root_v1.py",
+      "sha256": "c9f4bcb028e7fc4113ca8598f1971e2f736dea64d39948e2ab486a599c01705f",
+      "size_bytes": 17317
+    },
+    {
+      "ast_and_compile": "passed; no function/module dispatch executed",
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/test_setup_finite_transfer_v1.py",
+      "sha256": "0ad94304fe99bb1168031ac304075c3c64488de1667457537db6062551a6a374",
+      "size_bytes": 5962
+    }
+  ],
+  "historical_original_helpers": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-cpu05-controller-preparation-v1/run_original_cpu_component_pair_v1.py",
+      "sha256": "a6245ffaef0f197fa561dacdd173aa45a1a35b84e4beda1fbe063ddcb1d19c13",
+      "size_bytes": 15136
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-gpu01-controller-preparation-v2/run_original_gpu_component_pair_v1.py",
+      "sha256": "095de25ad80f0d2e38da3cbb2cbd5df0e84e51df4f55d0dccb07781b71e6a707",
+      "size_bytes": 15136
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/capture_selected_host_closure_v6.py",
+      "sha256": "a05b1c72e6188dac057ea7104e2ffe2cc83cf8f596ab1b1675b10f70a09314db",
+      "size_bytes": 3049
+    }
+  ],
+  "interfaces": {
+    "closure": "PINNED_PYTHON -I -B capture_selected_host_closure_ext4_v1.py SOURCE_COMMIT",
+    "cpu": "PINNED_PYTHON -I -B run_original_cpu_component_pair_ext4_v1.py SOURCE_COMMIT NEW_EXT4_CLOSURE_SHA256",
+    "gpu": "PINNED_PYTHON -I -B run_original_gpu_component_pair_ext4_v3.py SOURCE_COMMIT NEW_EXT4_CLOSURE_SHA256",
+    "setup": "PINNED_PYTHON -I -B setup_finite_ext4_root_v1.py SOURCE_COMMIT REVIEWED_PLANNING_COMMIT"
+  },
+  "new_workspace_created": false,
+  "previous_preparation": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/preparation.v1.json",
+    "sha256": "52b34bd28fe8b8c9fb8952fdf154c8ea8e74dccab1dd9fb368b944e6b3da53e7",
+    "size_bytes": 3021
+  },
+  "production_source_mutations": [],
+  "reviewed_planning_record": "parent reported exact Decision27 review e0b21853 and PR action authorization; no dispatch inferred",
+  "schema_version": 1,
+  "setup_copy_inputs": 2693,
+  "setup_exclusive_copies": 2504,
+  "setup_retained_tracked": 189,
+  "source_checkpoint_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "status": "authored_parsed_unexecuted_pending_independent_review",
+  "tests_executed": false
+}

@@ -1,0 +1,28 @@
+{
+  "argv": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu",
+    "--exec",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests",
+    "-p",
+    "test_run_ci_checks.py",
+    "-v"
+  ],
+  "fixture_tests_only": true,
+  "hardware_acceptance": false,
+  "repair": "Isolate real faulthandler timer regression in its own child to preserve outer full-suite timer.",
+  "source_before": {
+    ".github/workflows/ci.yml": "ca182d794d66a14091cf64d95474e3359efa0d8490692086505bfa11a258aba2",
+    "scripts/run_ci_checks.py": "61c356c6bfae8d808ff4db1becee7385cd5ccebc9505b9a482e691c1a89d56ea",
+    "scripts/run_ci_host_diagnostics.py": "26e7eb57d77ad9c09417ea0cf11fbfa87bfec9decac465a527fcaf06a200f797",
+    "tests/test_run_ci_checks.py": "c96381a8ceea61844d403104d68cc17192ba1007b2ee9a04503195bdae4b05e2"
+  }
+}

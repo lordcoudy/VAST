@@ -1,0 +1,46 @@
+setUpClass (test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests) ... ERROR
+test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed (test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed) ... ERROR
+
+======================================================================
+ERROR: setUpClass (test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py", line 27, in setUpClass
+    (corpus / gate.MANIFEST_NAME).read_text(encoding="ascii")
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/data/videos/kpp/kpp_frozen_reconstruction_v1/kpp_frozen_reconstruction_v1_manifest.json'
+
+======================================================================
+ERROR: test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed (test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 248, in test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed
+    first = target.materialize_qualification_fragment(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 874, in materialize_qualification_fragment
+    fragment, payloads = _expected(root, output)
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 750, in _expected
+    for role, branch, coordinate, artifact in _material_values(root):
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 583, in _material_values
+    image = _image_identity(root)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 528, in _image_identity
+    "source_set": _source_set_identity(root),
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 448, in _source_set_identity
+    _require(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 138, in _require
+    raise QualificationFragmentError(message)
+checkpoint_gstreamer_custom_qualification_fragment_v3.QualificationFragmentError: GStreamer source allowlist identity drifted
+
+----------------------------------------------------------------------
+Ran 1 test in 1.857s
+
+FAILED (errors=2)

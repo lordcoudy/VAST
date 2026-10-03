@@ -1,0 +1,303 @@
+{
+  "Git_checkout_original_returncode": 0,
+  "all_original_owners": [
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 57514,
+      "pid": 57515,
+      "ppid": 57514,
+      "session": 57514,
+      "startticks": 29864047,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 57526,
+      "pid": 57526,
+      "ppid": 57515,
+      "session": 57526,
+      "startticks": 29864098,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 57529,
+      "pid": 57529,
+      "ppid": 57515,
+      "session": 57529,
+      "startticks": 29865205,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 57528,
+      "pid": 57528,
+      "ppid": 57515,
+      "session": 57528,
+      "startticks": 29864116,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 57544,
+      "pid": 57544,
+      "ppid": 57515,
+      "session": 57544,
+      "startticks": 29865286,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 57525,
+      "pid": 57525,
+      "ppid": 57515,
+      "session": 57525,
+      "startticks": 29864091,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 57545,
+      "pid": 57545,
+      "ppid": 57515,
+      "session": 57545,
+      "startticks": 29865288,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 57516,
+      "pid": 57516,
+      "ppid": 57515,
+      "session": 57516,
+      "startticks": 29864059,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 57517,
+      "pid": 57517,
+      "ppid": 57515,
+      "session": 57517,
+      "startticks": 29864060,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 57527,
+      "pid": 57527,
+      "ppid": 57515,
+      "session": 57527,
+      "startticks": 29864105,
+      "uid": 1000
+    }
+  ],
+  "artifact_kind": "vast_original_failed_renewal_two_status_forensic_v1",
+  "earlier_readonly_inspection_prefix": {
+    "facts": "Both status paths were introduced by the original checkout, not present in oldtree. The diagnostic now reports absent old reference explicitly; no producer/source mutation or new checkout.",
+    "field": "old_tree[path]",
+    "returncode": 1,
+    "tool_chunk": "cee400",
+    "type": "KeyError"
+  },
+  "new_stock_closure_launched": false,
+  "original_execution": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/original-checkout-renewal-attempt01/execution.v1.json",
+    "sha256": "588f23dad4097608741a2068112fb0e56dec76488dda21903a971193716cea13",
+    "size_bytes": 5724
+  },
+  "original_new_HEAD_bytes": "78b869e4f8bc101413ed00776bd89d1089a8318d\n",
+  "original_new_status_bytes_sha256": "a2c63bab890bf2185c74f658c71e12b46d0522c69ec460133f6feea8a11c5a2a",
+  "original_tool_session": 65821,
+  "protected_epoch_only_recheck": {
+    "changed_paths": [],
+    "full_bytes_after_not_rehashed": true,
+    "row_count": 3024
+  },
+  "remaining_unknowns": [
+    "Frozen original checker stopped at tracked-status before its postcheckout alltracked/completeprotectedSHA and source180final validation. Current equal protected epochs alone are not a new full-byte acceptance.",
+    "Failed original remains failed even if checkout body returned0. Root must review exact next allowed continuation; no automatic retry."
+  ],
+  "retry_reset_or_source_rewrite": false,
+  "rows": [
+    {
+      "CRLF_count": 12,
+      "CR_count": 12,
+      "LF_count": 12,
+      "actual_epoch7": [
+        2096,
+        569844,
+        33188,
+        1,
+        552,
+        1790816337140890716,
+        1790816337140890716
+      ],
+      "actual_raw_blob_matches_future": true,
+      "actual_raw_blob_matches_old": null,
+      "actual_raw_git_blob_sha1": "a014c6a345b082274424e21d68ec4c1bc7f8c4fd",
+      "actual_sha256": "fd05cee1e1e3bc3adf34e8b65e31e245c7389827008417f4c3bb900980bf2482",
+      "actual_size_bytes": 552,
+      "commands": [
+        {
+          "argv": [
+            "/usr/bin/git",
+            "-c",
+            "core.longpaths=true",
+            "-C",
+            "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+            "check-attr",
+            "text",
+            "eol",
+            "--",
+            "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json: text: set\nartifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json: eol: lf\n"
+        },
+        {
+          "argv": [
+            "/usr/bin/git",
+            "-c",
+            "core.longpaths=true",
+            "-C",
+            "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+            "hash-object",
+            "--path=artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+            "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "5782753256d37677ccdb841305dca285f07a6630\n"
+        }
+      ],
+      "future_tree": {
+        "kind": "blob",
+        "mode": "100644",
+        "sha1": "a014c6a345b082274424e21d68ec4c1bc7f8c4fd"
+      },
+      "named_epoch_unchanged_during_diagnosis": true,
+      "new_path_introduced_by_original_checkout": true,
+      "old_raw": null,
+      "old_tree": null,
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json",
+      "protected_before": null
+    },
+    {
+      "CRLF_count": 13,
+      "CR_count": 13,
+      "LF_count": 13,
+      "actual_epoch7": [
+        2096,
+        570030,
+        33188,
+        1,
+        887,
+        1790816337280897340,
+        1790816337280897340
+      ],
+      "actual_raw_blob_matches_future": true,
+      "actual_raw_blob_matches_old": null,
+      "actual_raw_git_blob_sha1": "966f7390f6c816a7ac7654a85351efb9500cf84c",
+      "actual_sha256": "34f807f54f06a0dbaad50966608e54d299801b950cd7ea2f1e46d642878fd0f3",
+      "actual_size_bytes": 887,
+      "commands": [
+        {
+          "argv": [
+            "/usr/bin/git",
+            "-c",
+            "core.longpaths=true",
+            "-C",
+            "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+            "check-attr",
+            "text",
+            "eol",
+            "--",
+            "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json: text: set\nartifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json: eol: lf\n"
+        },
+        {
+          "argv": [
+            "/usr/bin/git",
+            "-c",
+            "core.longpaths=true",
+            "-C",
+            "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+            "hash-object",
+            "--path=artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+            "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "b7afd1fc29845c90ca4e2783b8875475414316b2\n"
+        }
+      ],
+      "future_tree": {
+        "kind": "blob",
+        "mode": "100644",
+        "sha1": "966f7390f6c816a7ac7654a85351efb9500cf84c"
+      },
+      "named_epoch_unchanged_during_diagnosis": true,
+      "new_path_introduced_by_original_checkout": true,
+      "old_raw": null,
+      "old_tree": null,
+      "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json",
+      "protected_before": null
+    }
+  ],
+  "schema_version": 1,
+  "status": "closed_readonly_failed_original_diagnosis",
+  "tool_terminal_exit_code": 1,
+  "two_actual_process_scans": [
+    {
+      "PIDs_absent": {
+        "57514": true,
+        "57515": true,
+        "57516": true,
+        "57517": true,
+        "57525": true,
+        "57526": true,
+        "57527": true,
+        "57528": true,
+        "57529": true,
+        "57544": true,
+        "57545": true
+      },
+      "at_ns": 1790816592493247904,
+      "errors": [],
+      "members": []
+    },
+    {
+      "PIDs_absent": {
+        "57514": true,
+        "57515": true,
+        "57516": true,
+        "57517": true,
+        "57525": true,
+        "57526": true,
+        "57527": true,
+        "57528": true,
+        "57529": true,
+        "57544": true,
+        "57545": true
+      },
+      "at_ns": 1790816592494689858,
+      "errors": [],
+      "members": []
+    }
+  ]
+}

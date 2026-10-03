@@ -1,0 +1,36 @@
+{
+  "capture": "One original bounded parent process with raw channels/actual owner/EOF/toolstatus and source-before-after; no execution yet",
+  "fresh_output_namespace": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-retention-attempt01",
+  "inventory": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/inventory.v1.json",
+    "sha256": "aa750080acc6da6d66b9e5f9e2b52a9f9952a5f587d9f6cbe00c9d576650d371",
+    "size_bytes": 100145
+  },
+  "maximum_outer_seconds": 130,
+  "maximum_output_archive_bytes": 268435456,
+  "original_argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+    "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+    "88102"
+  ],
+  "reader": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+    "sha256": "6e60e0b8c88cb94ba9590bad617b8fa1d29715d6c58fa4ba3bdfc90987e21b44",
+    "size_bytes": 10516
+  },
+  "retention_is_not_authority": true,
+  "root_postterminal_gate": "Exact source peer + original6c GPU closed FD/process proof + root one-dispatch grant",
+  "schema_version": 1,
+  "status": "prepared_unexecuted",
+  "stderr_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-copy.stderr.raw",
+  "stdout_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-copy.stdout.raw",
+  "term_cleanup_seconds": 10,
+  "work_seconds": 120
+}

@@ -1,0 +1,239 @@
+{
+  "actual_final_skips": [
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_oversized_component_is_rejected_before_ntcreatefile"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_root_parent_final_reparse_and_rewalk_drift_are_fail_closed"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_verification_handle_cleanup_failure_is_fail_closed"
+    }
+  ],
+  "actual_final_test_successes": 96,
+  "artifact_kind": "vast_portable_fixture_independent_static_audit_v1",
+  "closed531_before_after_equal": true,
+  "current_owned_paths_disjoint_from_host87_and_all9_allowlists": true,
+  "current_test_ids": 99,
+  "eight_additions_original2f_decorated_methods_exact_AST": true,
+  "exact_patch_paths": [
+    ".ci/integration-test-selection.v1.json",
+    "tests/test_backend_runtime_replay_runner_authority_v2.py",
+    "tests/test_checkpoint_deepstream_qualification_fragment_v1.py",
+    "tests/test_checkpoint_model_parity_materializer_v4.py",
+    "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+    "tests/test_checkpoint_savant_qualification_fragment_v3.py",
+    "tests/test_checkpoint_source_runtime_closure_authority_v1.py",
+    "tests/test_ci_test_selection_v1.py",
+    "tests/test_publication_operational_container_custody_v1.py",
+    "tests/test_publication_policy_qualification_fragments_from_authority_v2.py",
+    "tests/test_replay_broker_artifact_bytes_observation_v4.py"
+  ],
+  "manifest_after": {
+    "path": ".ci/integration-test-selection.v1.json",
+    "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+    "size_bytes": 34014
+  },
+  "manifest_before": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/integration-test-selection.v1.json",
+    "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+    "size_bytes": 31541
+  },
+  "new_case_ids": [
+    "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_selection_identity_does_not_hide_a_production_import",
+    "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_selection_identity_does_not_hide_a_production_import",
+    "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_selection_identity_does_not_hide_a_production_import"
+  ],
+  "nine_integrations_and_all_non_skip_fields_unchanged": true,
+  "no_project_imports_or_tests_executed": true,
+  "old80_skip_rows_unchanged": true,
+  "original99_execution": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/execution.json",
+    "sha256": "db8167780b4e44c58d0dfae2e69060c7ae7eec4d60a9f783873ce0742e2f64d3",
+    "size_bytes": 587
+  },
+  "original_capture_elapsed_s": 138.3685269250418,
+  "original_test_ids": 96,
+  "original_unit_duration_s": 136.829,
+  "owned_before_after": [
+    {
+      "after": {
+        "path": "tests/test_backend_runtime_replay_runner_authority_v2.py",
+        "sha256": "20a903cb40910b6f4c2981798e1456f6932b80ce0e916c2576cd1afc6f7cc6dc",
+        "size_bytes": 30675
+      },
+      "all_original_decorators_and_assertion_counts_equal": true,
+      "assertion_AST_changed_cases": [
+        "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_source_has_no_process_network_write_or_downstream_consumers"
+      ],
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_backend_runtime_replay_runner_authority_v2.py",
+        "sha256": "34c3ccb8db7c0f942cb800883115074e66c267ed344923d7793ba353ce956506",
+        "size_bytes": 30043
+      },
+      "before_equals_original_commit_bytes": true,
+      "current_cases": 13,
+      "original_cases": 12
+    },
+    {
+      "after": {
+        "path": "tests/test_checkpoint_deepstream_qualification_fragment_v1.py",
+        "sha256": "0f82dcfa8525ae459d482ae672fd4fd779a1dfeec22d160aded9d3d0cee86f73",
+        "size_bytes": 17673
+      },
+      "all_original_decorators_and_assertion_counts_equal": true,
+      "assertion_AST_changed_cases": [],
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_deepstream_qualification_fragment_v1.py",
+        "sha256": "753e59985503431a2e6822b4e5a56547faf27b1e26c79ac5d30c0c92f8b688ad",
+        "size_bytes": 16696
+      },
+      "before_equals_original_commit_bytes": true,
+      "current_cases": 4,
+      "original_cases": 4
+    },
+    {
+      "after": {
+        "path": "tests/test_checkpoint_model_parity_materializer_v4.py",
+        "sha256": "2aa4d4e8aedde6ca30ad178e7ff7d2fec13ed1d840f122e851075afa77000ac4",
+        "size_bytes": 15690
+      },
+      "all_original_decorators_and_assertion_counts_equal": true,
+      "assertion_AST_changed_cases": [],
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_model_parity_materializer_v4.py",
+        "sha256": "032c8ea8a5a25e79208cd6acec826789dbaeffa5333660fb5f2a36cdbea2b5a1",
+        "size_bytes": 15682
+      },
+      "before_equals_original_commit_bytes": true,
+      "current_cases": 6,
+      "original_cases": 6
+    },
+    {
+      "after": {
+        "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+        "sha256": "62f91b0a8480e11ae018bb31c53cbc167dca78fbe8fe7de23f6a6133723cb87f",
+        "size_bytes": 11502
+      },
+      "all_original_decorators_and_assertion_counts_equal": true,
+      "assertion_AST_changed_cases": [],
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+        "sha256": "dee0a7e1418dba5ec4206b4f8f65646f13e9348fd4230beac8e3cde78d37013e",
+        "size_bytes": 10431
+      },
+      "before_equals_original_commit_bytes": true,
+      "current_cases": 4,
+      "original_cases": 4
+    },
+    {
+      "after": {
+        "path": "tests/test_checkpoint_savant_qualification_fragment_v3.py",
+        "sha256": "75feb1788871e4f70f25b08d23020bf6fab9be250ce4b87034d262d42e9ce7fe",
+        "size_bytes": 10069
+      },
+      "all_original_decorators_and_assertion_counts_equal": true,
+      "assertion_AST_changed_cases": [],
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_savant_qualification_fragment_v3.py",
+        "sha256": "03a9af86b0e03a3e8debf94a9a80c5d5febe649775f6f86c3fed92d82c59469d",
+        "size_bytes": 8929
+      },
+      "before_equals_original_commit_bytes": true,
+      "current_cases": 3,
+      "original_cases": 3
+    },
+    {
+      "after": {
+        "path": "tests/test_checkpoint_source_runtime_closure_authority_v1.py",
+        "sha256": "7a3e36a1cb642a5e914b9483261cc95ad3861d7752b0d47019d338bbbb6cfd95",
+        "size_bytes": 88905
+      },
+      "all_original_decorators_and_assertion_counts_equal": true,
+      "assertion_AST_changed_cases": [],
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_source_runtime_closure_authority_v1.py",
+        "sha256": "e4c341a6523b30c941d8e9898d00c9382b6dc42b1bb259b62cb418285a8531ac",
+        "size_bytes": 88416
+      },
+      "before_equals_original_commit_bytes": true,
+      "current_cases": 25,
+      "original_cases": 24
+    },
+    {
+      "after": {
+        "path": "tests/test_ci_test_selection_v1.py",
+        "sha256": "3d35114149e44d50f6d762fd6c05d4a903bbd9f1b5afc01c0bae4278b1933024",
+        "size_bytes": 11499
+      },
+      "all_original_decorators_and_assertion_counts_equal": true,
+      "assertion_AST_changed_cases": [
+        "test_ci_test_selection_v1.SelectionContracts.test_all_original_platform_and_retired_skip_ids_remain_nonexecution"
+      ],
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_ci_test_selection_v1.py",
+        "sha256": "70ed46fc26c61f19dc584aba5aa9565c80838862e1332ba4ca927862da65c4ee",
+        "size_bytes": 11499
+      },
+      "before_equals_original_commit_bytes": true,
+      "current_cases": 20,
+      "original_cases": 20
+    },
+    {
+      "after": {
+        "path": "tests/test_publication_operational_container_custody_v1.py",
+        "sha256": "6fd45b43fe0a5acc0cc59951d9c4bafa0496780110f89b59950c3bbd420d9cee",
+        "size_bytes": 21792
+      },
+      "all_original_decorators_and_assertion_counts_equal": true,
+      "assertion_AST_changed_cases": [],
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_publication_operational_container_custody_v1.py",
+        "sha256": "9cb286476e38d7045c4d5e4537ebaa4efef2d508703c7f165e0350639794e4c0",
+        "size_bytes": 21620
+      },
+      "before_equals_original_commit_bytes": true,
+      "current_cases": 13,
+      "original_cases": 13
+    },
+    {
+      "after": {
+        "path": "tests/test_publication_policy_qualification_fragments_from_authority_v2.py",
+        "sha256": "cf7574d817dd416d0886a25b9f559975f39aa58c2fa32cfe9f6729f0ea48a72d",
+        "size_bytes": 19287
+      },
+      "all_original_decorators_and_assertion_counts_equal": true,
+      "assertion_AST_changed_cases": [],
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_publication_policy_qualification_fragments_from_authority_v2.py",
+        "sha256": "c28586d197fef2b64650b4a3b0e5d7efb5f701d33056d267ba1c5950114eb4cd",
+        "size_bytes": 18121
+      },
+      "before_equals_original_commit_bytes": true,
+      "current_cases": 6,
+      "original_cases": 6
+    },
+    {
+      "after": {
+        "path": "tests/test_replay_broker_artifact_bytes_observation_v4.py",
+        "sha256": "2b484a675fb4808ccb8ab6340a7e53bad17a1d04c60cf2e35552036b2298314c",
+        "size_bytes": 6787
+      },
+      "all_original_decorators_and_assertion_counts_equal": true,
+      "assertion_AST_changed_cases": [],
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_replay_broker_artifact_bytes_observation_v4.py",
+        "sha256": "9b6e7f0405680f82846c8ac122733a463d578ecd6e13a11013b64cd3228a23f9",
+        "size_bytes": 5916
+      },
+      "before_equals_original_commit_bytes": true,
+      "current_cases": 5,
+      "original_cases": 4
+    }
+  ],
+  "schema_version": 1,
+  "source_checkpoint": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21"
+}

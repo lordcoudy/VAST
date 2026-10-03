@@ -1,0 +1,124 @@
+{
+  "all_function_class_ASTs_unchanged": true,
+  "observed_at_ns": 1791024471050604500,
+  "original_setup_outcome": null,
+  "recipe": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/recipe.bound.v1.json",
+    "sha256": "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5",
+    "size_bytes": 11220
+  },
+  "recipe_inverse_equals_original_C": true,
+  "reviewer": "/root",
+  "root_review_tool_checks_exit_required": 0,
+  "scope": "One genuine new D setup only; cache copy and fresh95 require separate actual setup closure before dispatch; original full CI requires fresh95 closure. Prior failures preserved.",
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "source_exact_forward_inverse": true,
+  "sources": [
+    {
+      "Popen_AST_count_unchanged": 2,
+      "all_function_and_class_ASTs_unchanged": true,
+      "byte_identical": true,
+      "exact_forward_and_inverse": true,
+      "function_and_class_names": [
+        "clock",
+        "epoch",
+        "identity",
+        "descriptor",
+        "save",
+        "owner",
+        "command",
+        "scan"
+      ],
+      "literal_pairs": [],
+      "original_C_source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/setup_original_current_ci_v2.py",
+        "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+        "size_bytes": 16786
+      },
+      "preserved_before_raw": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/before/setup_original_current_ci_v2.py.raw",
+        "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+        "size_bytes": 16786
+      },
+      "source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/setup_original_current_ci_v2.py",
+        "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+        "size_bytes": 16786
+      }
+    },
+    {
+      "Popen_AST_count_unchanged": 1,
+      "all_function_and_class_ASTs_unchanged": true,
+      "byte_identical": false,
+      "exact_forward_and_inverse": true,
+      "function_and_class_names": [
+        "descriptor",
+        "save",
+        "owner",
+        "scan"
+      ],
+      "literal_pairs": [
+        [
+          "decision29-current-ci-preparation-v1",
+          "decision29-successor-ci-D-preparation-v1"
+        ]
+      ],
+      "original_C_source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_setup_v2.py",
+        "sha256": "60de16c4355b60636c85f1630eb00722a958f625b73f7326b367a3e373f45406",
+        "size_bytes": 4931
+      },
+      "preserved_before_raw": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/before/capture_original_setup_v2.py.raw",
+        "sha256": "60de16c4355b60636c85f1630eb00722a958f625b73f7326b367a3e373f45406",
+        "size_bytes": 4931
+      },
+      "source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/capture_original_setup_v2.py",
+        "sha256": "930a40eb19dc00d289cbd1e38207933f459dd7a7bcf4d889cd086fb74b3b6cfe",
+        "size_bytes": 4935
+      }
+    },
+    {
+      "Popen_AST_count_unchanged": 1,
+      "all_function_and_class_ASTs_unchanged": true,
+      "byte_identical": false,
+      "exact_forward_and_inverse": true,
+      "function_and_class_names": [
+        "clock",
+        "epoch",
+        "err",
+        "owner",
+        "write",
+        "digest",
+        "pin",
+        "scan"
+      ],
+      "literal_pairs": [
+        [
+          "ROOT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29')",
+          "ROOT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D')"
+        ],
+        [
+          "RESULT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output')",
+          "RESULT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output')"
+        ]
+      ],
+      "original_C_source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_full_ci_v1.py",
+        "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+        "size_bytes": 12429
+      },
+      "preserved_before_raw": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/before/capture_original_full_ci_v1.py.raw",
+        "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+        "size_bytes": 12429
+      },
+      "source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/capture_original_full_ci_v1.py",
+        "sha256": "b41ab243053aea3be149f01801490e84623fa11efedcf0e706f2111090769b97",
+        "size_bytes": 12433
+      }
+    }
+  ]
+}

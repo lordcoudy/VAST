@@ -1,0 +1,158 @@
+"""Unexecuted tiny physical fixture for the finite artifact setup collector.
+
+Loads only the actual file/ancestor functions through AST, never its dispatch
+body. No repository clone, model, Docker, source input or benchmark is touched.
+"""
+import ast
+import hashlib
+import os
+from pathlib import Path, PurePosixPath
+import stat
+import tempfile
+import time
+import unittest
+from unittest.mock import patch
+
+
+HELPER = Path(__file__).with_name('setup_finite_ext4_root_v1.py')
+
+
+class FiniteTransferFixtureTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix='vast-d27-transfer-fixture-')
+        self.root = Path(self.temporary.name)
+        self.source = self.root/'source'
+        self.target = self.root/'target'
+        self.source.mkdir()
+        self.target.mkdir()
+        self.file = self.source/'leaf.bin'
+        self.payload = b'original tiny fixture\x00'*193
+        self.file.write_bytes(self.payload)
+        self.ns = {'Path': Path, 'PurePosixPath': PurePosixPath, 'os': os,
+                   'stat': stat, 'time': time, 'hashlib': hashlib,
+                   'DEADLINE': time.monotonic()+30, 'held': [], 'directory_pins': {}}
+        tree = ast.parse(HELPER.read_bytes())
+        wanted = {'clock', 'epoch', 'canonical_directory', 'directory_barrier',
+                  'path_for', 'pin', 'digest', 'copy_original'}
+        definitions = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name in wanted]
+        self.assertEqual({node.name for node in definitions}, wanted)
+        exec(compile(ast.Module(body=definitions, type_ignores=[]), str(HELPER), 'exec'), self.ns)
+        self.expected = {'path': 'leaf.bin', 'size_bytes': len(self.payload),
+                         'sha256': hashlib.sha256(self.payload).hexdigest(),
+                         'current_epoch': self.ns['epoch'](self.file.lstat())}
+
+    def tearDown(self):
+        for row in self.ns['held']:
+            os.close(row['fd'])
+        for row in self.ns['directory_pins'].values():
+            os.close(row['fd'])
+        self.temporary.cleanup()
+
+    def pinned(self):
+        return self.ns['pin'](self.file, self.expected)
+
+    def test_actual_original_stream_copy_has_new_inode_and_exact_bytes(self):
+        src = self.pinned()
+        dst = self.target/'leaf.bin'
+        target = self.ns['copy_original'](src, dst, self.expected)
+        self.assertEqual(dst.read_bytes(), self.payload)
+        self.assertEqual(target['epoch'], self.ns['epoch'](dst.lstat()))
+        self.assertNotEqual(src['epoch'][:2], target['epoch'][:2])
+        self.ns['digest'](src, self.expected)
+        self.ns['digest'](target, self.expected)
+
+    def test_occupied_target_is_not_replaced(self):
+        dst = self.target/'leaf.bin'
+        dst.write_bytes(b'owned existing fixture')
+        before = self.ns['epoch'](dst.lstat())
+        with self.assertRaises(AssertionError):
+            self.ns['copy_original'](self.pinned(), dst, self.expected)
+        self.assertEqual(dst.read_bytes(), b'owned existing fixture')
+        self.assertEqual(before, self.ns['epoch'](dst.lstat()))
+
+    def test_same_bytes_source_leaf_replacement_rejects_real_fd_name_mismatch(self):
+        src = self.pinned()
+        self.file.rename(self.source/'old.bin')
+        self.file.write_bytes(self.payload)
+        with self.assertRaises(AssertionError):
+            self.ns['digest'](src, self.expected)
+
+    def test_actual_ancestor_symlink_rejects_even_same_original_leaf_inode(self):
+        src = self.pinned()
+        original = self.root/'original-source'
+        self.source.rename(original)
+        self.source.symlink_to(original, target_is_directory=True)
+        with self.assertRaises(AssertionError):
+            self.ns['digest'](src, self.expected)
+
+    def test_actual_source_byte_change_is_not_accepted(self):
+        src = self.pinned()
+        self.file.write_bytes(b'x'*len(self.payload))
+        with self.assertRaises(AssertionError):
+            self.ns['digest'](src, self.expected)
+
+    def test_same_bytes_target_leaf_replacement_rejects(self):
+        dst = self.target/'leaf.bin'
+        target = self.ns['copy_original'](self.pinned(), dst, self.expected)
+        dst.rename(self.target/'old-target.bin')
+        dst.write_bytes(self.payload)
+        with self.assertRaises(AssertionError):
+            self.ns['digest'](target, self.expected)
+
+    def test_hardlinked_leaf_is_rejected(self):
+        os.link(self.file, self.source/'alias.bin')
+        with self.assertRaises(AssertionError):
+            self.ns['pin'](self.file)
+
+    def test_wrong_declared_raw_hash_leaves_failed_prefix_without_success(self):
+        src = self.pinned()
+        wrong = {**self.expected, 'sha256': '0'*64}
+        dst = self.target/'leaf.bin'
+        with self.assertRaises(AssertionError):
+            self.ns['copy_original'](src, dst, wrong)
+        self.assertTrue(dst.is_file())
+        self.assertEqual(len(self.ns['held']), 1)
+
+    def test_actual_target_name_substitution_during_fsync_is_rejected(self):
+        src = self.pinned()
+        dst = self.target/'leaf.bin'
+        real_fsync = os.fsync
+        replaced = False
+
+        def fsync_and_replace(fd):
+            nonlocal replaced
+            real_fsync(fd)
+            if not replaced and dst.exists():
+                replaced = True
+                dst.rename(self.target/'old-target.bin')
+                dst.write_bytes(self.payload)
+
+        with patch.object(os, 'fsync', side_effect=fsync_and_replace):
+            with self.assertRaises(AssertionError):
+                self.ns['copy_original'](src, dst, self.expected)
+        self.assertTrue(replaced)
+
+    def test_legitimate_sibling_creation_preserves_actual_ancestor_identity(self):
+        src = self.pinned()
+        (self.source/'legitimate-sibling').write_bytes(b'fixture output')
+        self.ns['digest'](src, self.expected)
+
+    def test_relative_escape_is_rejected_before_any_output(self):
+        with self.assertRaises(AssertionError):
+            self.ns['path_for'](self.target, '../escape.bin', create_parents=True)
+        self.assertFalse((self.root/'escape.bin').exists())
+        self.assertEqual(list(self.target.iterdir()), [])
+
+    def test_expired_original_deadline_is_failed_not_a_successful_copy(self):
+        src = self.pinned()
+        self.ns['DEADLINE'] = time.monotonic()-1
+        dst = self.target/'leaf.bin'
+        with self.assertRaises(TimeoutError):
+            self.ns['copy_original'](src, dst, self.expected)
+        self.assertEqual(len(self.ns['held']), 1)
+        self.assertEqual(self.file.read_bytes(), self.payload)
+        self.assertEqual(dst.stat().st_size, 0)
+
+
+if __name__ == '__main__':
+    unittest.main()

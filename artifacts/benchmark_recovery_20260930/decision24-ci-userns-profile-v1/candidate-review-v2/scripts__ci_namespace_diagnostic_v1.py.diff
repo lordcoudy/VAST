@@ -1,0 +1,51 @@
+--- artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/guard-repair-v1/before/scripts/ci_namespace_diagnostic_v1.py
++++ scripts/ci_namespace_diagnostic_v1.py
+@@ -121,13 +121,17 @@
+ 
+ 
+ def capture_original_child(argv, output_dir, absolute_deadline_ns, *, execution_s=20, cleanup_s=10,
+-                           start_gate=False, raw_limit=RAW_LIMIT, report_limit=REPORT_LIMIT):
++                           start_gate=False, raw_limit=RAW_LIMIT, report_limit=REPORT_LIMIT,
++                           minimum_start_budget_ns=0):
+     """Keep bounded original channels and only the original private process group."""
+     if not (0 < execution_s <= 20 and 0 < cleanup_s <= 10):
+         raise ValueError('namespace diagnostic20s/10s limits exceeded')
+     if not (type(raw_limit) is int and 0 < raw_limit <= RAW_LIMIT and
+             type(report_limit) is int and 0 < report_limit <= REPORT_LIMIT):
+         raise ValueError('original diagnostic capture limits may only be reduced')
++    if not (type(minimum_start_budget_ns) is int and 0 <= minimum_start_budget_ns <= 30_000_000_000
++            and (not minimum_start_budget_ns or start_gate)):
++        raise ValueError('minimum original gated start budget must stay within30s')
+     output = Path(output_dir)
+     output.mkdir(parents=True, exist_ok=False)
+     began = time.monotonic_ns()
+@@ -149,6 +153,7 @@
+     cleanup_deadline = None
+     signal_failures = []
+     kill_attempted = False
++    gate_released = False
+     selector = selectors.DefaultSelector()
+     def kill_original_group():
+         nonlocal error
+@@ -176,7 +181,11 @@
+         except OSError as failure:
+             error = f'original owner/pidfd unavailable: {type(failure).__name__}: {failure}'
+         if start_gate and error is None:
+-            os.write(gate_w, b'1')
++            if minimum_start_budget_ns and min(absolute_deadline_ns,final_deadline)-time.monotonic_ns() < minimum_start_budget_ns:
++                error = 'original root command self-timeout plus closing reserve does not fit at gate release'
++            else:
++                os.write(gate_w, b'1')
++                gate_released = True
+         os.close(gate_w); gate_w = -1
+         for name, pipe in [('stdout',process.stdout), ('stderr',process.stderr)]:
+             os.set_blocking(pipe.fileno(), False)
+@@ -264,6 +273,8 @@
+     if time.monotonic_ns() >= final_deadline:
+         report['capture_completed'] = False
+         report['failure'] = report['failure'] or 'original diagnostic deadline exceeded'
++    if minimum_start_budget_ns:
++        report.update(minimum_start_budget_ns=minimum_start_budget_ns,original_start_gate_released=gate_released)
+     raw = _json(report)
+     if len(raw) > report_limit:
+         raise RuntimeError('namespace report exceeds12KiB reserve')

@@ -1,0 +1,954 @@
+{
+  "accepted": false,
+  "arms": [
+    {
+      "accepted": false,
+      "all_frame_event_queue_enter_equals_stage_start": true,
+      "branch_terminal_status_counts": {
+        "damage:completed": 1001,
+        "damage:drop": 79,
+        "foreign_object:completed": 596,
+        "foreign_object:drop": 484,
+        "plate_number:completed": 1073,
+        "plate_number:drop": 7,
+        "vehicle_type:completed": 1002,
+        "vehicle_type:drop": 78
+      },
+      "completed": 558,
+      "completed_100ms_misses": 558,
+      "completed_latency_ms": {
+        "count": 558,
+        "max": 10042.0,
+        "mean": 6147.489247311828,
+        "min": 2241.0,
+        "p50": 5400.0,
+        "p95": 9400.55
+      },
+      "decode_stage_elapsed_ms": {
+        "count": 4320,
+        "max": 6330.0,
+        "mean": 2524.5516203703705,
+        "min": 7.0,
+        "p50": 2011.0,
+        "p95": 6034.0
+      },
+      "drop_max_ingress_percent": 49.44444444444444,
+      "hardware_resource_samples_present": false,
+      "ingress": 1080,
+      "native_decoder_submit_output_interval_ms": {
+        "count": 2232,
+        "max": 6309.184784,
+        "mean": 3329.004907607527,
+        "min": 3.242172,
+        "p50": 2019.6680975,
+        "p95": 6266.0673652000005
+      },
+      "objects_values": {
+        "4": 558
+      },
+      "original_precheck": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_cpu_h264_independent_processes",
+      "original_status": "nonpromoting_precheck_verified",
+      "per_stream_completed_slo_violation_100ms_percent": {
+        "0": 100.0,
+        "1": 100.0,
+        "2": 100.0,
+        "3": 100.0,
+        "4": 100.0,
+        "5": 100.0
+      },
+      "pre_decision_expired_by_deadline_ms": {
+        "100": 3660,
+        "16.7": 3668,
+        "33.3": 3663,
+        "50": 3662,
+        "500": 3654
+      },
+      "pre_decision_lag_ms": {
+        "count": 3672,
+        "max": 8103.92626953125,
+        "mean": 3045.520399505017,
+        "min": 10.712890625,
+        "p50": 2451.8975830078125,
+        "p95": 6318.490661621094
+      },
+      "publication_ready": false,
+      "raw_attributed_c_obs_ms_per_ingress": 14173.796296296296,
+      "raw_attributed_decode_share_percent": 71.24560188663222,
+      "raw_cpu_component_ms_per_ingress": 14173.796296296296,
+      "raw_gpu_component_ms_per_ingress": 0.0,
+      "statuses": {
+        "completed": 558,
+        "drop": 522
+      },
+      "vmax_completed_slo_violation_100ms_percent": 100.0
+    },
+    {
+      "accepted": false,
+      "all_frame_event_queue_enter_equals_stage_start": true,
+      "branch_terminal_status_counts": {
+        "damage:completed": 1074,
+        "damage:drop": 6,
+        "foreign_object:completed": 1071,
+        "foreign_object:drop": 9,
+        "plate_number:completed": 1071,
+        "plate_number:drop": 9,
+        "vehicle_type:completed": 1074,
+        "vehicle_type:drop": 6
+      },
+      "completed": 1066,
+      "completed_100ms_misses": 1063,
+      "completed_latency_ms": {
+        "count": 1066,
+        "max": 6355.0,
+        "mean": 2604.918386491557,
+        "min": 55.0,
+        "p50": 2122.5,
+        "p95": 6316.0
+      },
+      "decode_stage_elapsed_ms": {
+        "count": 4320,
+        "max": 6043.0,
+        "mean": 2459.9171296296295,
+        "min": 8.0,
+        "p50": 2011.0,
+        "p95": 6031.0
+      },
+      "drop_max_ingress_percent": 4.444444444444445,
+      "hardware_resource_samples_present": false,
+      "ingress": 1080,
+      "native_decoder_submit_output_interval_ms": {
+        "count": 4264,
+        "max": 6020.269111,
+        "mean": 2447.389048115619,
+        "min": 3.124625,
+        "p50": 2005.834128,
+        "p95": 6011.5656223000005
+      },
+      "objects_values": {
+        "4": 1066
+      },
+      "original_precheck": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_gpu_h264_independent_processes",
+      "original_status": "nonpromoting_precheck_verified",
+      "per_stream_completed_slo_violation_100ms_percent": {
+        "0": 100.0,
+        "1": 100.0,
+        "2": 100.0,
+        "3": 100.0,
+        "4": 100.0,
+        "5": 98.25581395348837
+      },
+      "pre_decision_expired_by_deadline_ms": {
+        "100": 4266,
+        "16.7": 4281,
+        "33.3": 4273,
+        "50": 4267,
+        "500": 4266
+      },
+      "pre_decision_lag_ms": {
+        "count": 4290,
+        "max": 6074.3466796875,
+        "mean": 2484.411575054178,
+        "min": 11.911376953125,
+        "p50": 2046.637451171875,
+        "p95": 6038.359619140625
+      },
+      "publication_ready": false,
+      "raw_attributed_c_obs_ms_per_ingress": 10276.605555555556,
+      "raw_attributed_decode_share_percent": 95.74823578977566,
+      "raw_cpu_component_ms_per_ingress": 9918.964814814815,
+      "raw_gpu_component_ms_per_ingress": 357.64074074074074,
+      "statuses": {
+        "completed": 1066,
+        "drop": 14
+      },
+      "vmax_completed_slo_violation_100ms_percent": 100.0
+    },
+    {
+      "accepted": false,
+      "all_frame_event_queue_enter_equals_stage_start": true,
+      "branch_terminal_status_counts": {
+        "damage:completed": 1015,
+        "damage:drop": 65,
+        "foreign_object:completed": 580,
+        "foreign_object:drop": 500,
+        "plate_number:completed": 1072,
+        "plate_number:drop": 8,
+        "vehicle_type:completed": 1023,
+        "vehicle_type:drop": 57
+      },
+      "completed": 570,
+      "completed_100ms_misses": 570,
+      "completed_latency_ms": {
+        "count": 570,
+        "max": 9910.0,
+        "mean": 6183.378947368421,
+        "min": 2480.0,
+        "p50": 5187.0,
+        "p95": 9550.3
+      },
+      "decode_stage_elapsed_ms": {
+        "count": 4320,
+        "max": 6390.0,
+        "mean": 2503.2113425925927,
+        "min": 7.0,
+        "p50": 2010.0,
+        "p95": 6349.0
+      },
+      "drop_max_ingress_percent": 47.77777777777778,
+      "hardware_resource_samples_present": false,
+      "ingress": 1080,
+      "native_decoder_submit_output_interval_ms": {
+        "count": 2280,
+        "max": 6368.048377,
+        "mean": 3260.6181004561404,
+        "min": 10.82861,
+        "p50": 1372.336788,
+        "p95": 6348.85440445
+      },
+      "objects_values": {
+        "4": 570
+      },
+      "original_precheck": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_cpu_h264_independent_processes",
+      "original_status": "nonpromoting_precheck_verified",
+      "per_stream_completed_slo_violation_100ms_percent": {
+        "0": 100.0,
+        "1": 100.0,
+        "2": 100.0,
+        "3": 100.0,
+        "4": 100.0,
+        "5": 100.0
+      },
+      "pre_decision_expired_by_deadline_ms": {
+        "100": 3678,
+        "16.7": 3688,
+        "33.3": 3680,
+        "50": 3680,
+        "500": 3672
+      },
+      "pre_decision_lag_ms": {
+        "count": 3690,
+        "max": 8071.52490234375,
+        "mean": 3001.0717852171197,
+        "min": 16.669189453125,
+        "p50": 2348.846435546875,
+        "p95": 6383.945812988281
+      },
+      "publication_ready": false,
+      "raw_attributed_c_obs_ms_per_ingress": 14072.096296296297,
+      "raw_attributed_decode_share_percent": 71.15390031125426,
+      "raw_cpu_component_ms_per_ingress": 14072.096296296297,
+      "raw_gpu_component_ms_per_ingress": 0.0,
+      "statuses": {
+        "completed": 570,
+        "drop": 510
+      },
+      "vmax_completed_slo_violation_100ms_percent": 100.0
+    },
+    {
+      "accepted": false,
+      "all_frame_event_queue_enter_equals_stage_start": true,
+      "branch_terminal_status_counts": {
+        "damage:completed": 1075,
+        "damage:drop": 5,
+        "foreign_object:completed": 1074,
+        "foreign_object:drop": 6,
+        "plate_number:completed": 1073,
+        "plate_number:drop": 7,
+        "vehicle_type:completed": 1073,
+        "vehicle_type:drop": 7
+      },
+      "completed": 1070,
+      "completed_100ms_misses": 1068,
+      "completed_latency_ms": {
+        "count": 1070,
+        "max": 6354.0,
+        "mean": 2596.8121495327105,
+        "min": 50.0,
+        "p50": 2123.0,
+        "p95": 6280.55
+      },
+      "decode_stage_elapsed_ms": {
+        "count": 4320,
+        "max": 6048.0,
+        "mean": 2459.937037037037,
+        "min": 6.0,
+        "p50": 2009.0,
+        "p95": 6032.0
+      },
+      "drop_max_ingress_percent": 2.2222222222222223,
+      "hardware_resource_samples_present": false,
+      "ingress": 1080,
+      "native_decoder_submit_output_interval_ms": {
+        "count": 4280,
+        "max": 6019.458551,
+        "mean": 2445.898636909112,
+        "min": 2.634803,
+        "p50": 2004.1527145,
+        "p95": 6012.92643035
+      },
+      "objects_values": {
+        "4": 1070
+      },
+      "original_precheck": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_gpu_h264_independent_processes",
+      "original_status": "nonpromoting_precheck_verified",
+      "per_stream_completed_slo_violation_100ms_percent": {
+        "0": 100.0,
+        "1": 100.0,
+        "2": 100.0,
+        "3": 100.0,
+        "4": 100.0,
+        "5": 98.86363636363636
+      },
+      "pre_decision_expired_by_deadline_ms": {
+        "100": 4271,
+        "16.7": 4285,
+        "33.3": 4278,
+        "50": 4275,
+        "500": 4271
+      },
+      "pre_decision_lag_ms": {
+        "count": 4295,
+        "max": 6061.607177734375,
+        "mean": 2483.4866669091966,
+        "min": 9.42236328125,
+        "p50": 2047.329833984375,
+        "p95": 6038.524169921875
+      },
+      "publication_ready": false,
+      "raw_attributed_c_obs_ms_per_ingress": 10257.042592592592,
+      "raw_attributed_decode_share_percent": 95.93162999297863,
+      "raw_cpu_component_ms_per_ingress": 9914.732407407408,
+      "raw_gpu_component_ms_per_ingress": 342.31018518518516,
+      "statuses": {
+        "completed": 1070,
+        "drop": 10
+      },
+      "vmax_completed_slo_violation_100ms_percent": 100.0
+    }
+  ],
+  "artifact_kind": "vast_independent_scientific_operating_regime_review_v1",
+  "diagnostic_calculations": {
+    "c_obs": "raw sum(cpu_time_ms+gpu_time_ms)/all1080ingress; no claim of stock acceptance recomputation",
+    "decode_share": "raw resource_events rows stage startswith decode divided by complete raw attributed sum",
+    "drop_max": "max over six streams of all ingress mean(terminal_status==drop)*100",
+    "latency": "frames.csv egress-minus-ingress and stored e2e; quantiles linear interpolation",
+    "pre_decision_lag": "policy_decisions.csv decision_timestamp_ms minus matched original ingress_ledger.csv ingress_timestamp_ms",
+    "vmax": "max over six streams of completed-frame mean(latency>100ms)*100"
+  },
+  "findings": [
+    {
+      "conclusion": "The negative operating regime is real but the frozen100ms worst-stream metric is saturated in all four old arms.",
+      "evidence": "All CPU completed frames miss; GPU few timely completions onlystream5; thereforeVmax100% in each arm. More than99.3% of actual analytics decisions already occur after100msdeadline; 500ms also expired for most.",
+      "implication": "Do not equate successful operation/cold accounting with an informative deadline-sensitive scientific experiment; do not silently retune frozen5600matrix."
+    },
+    {
+      "conclusion": "Codec/replay buffering is a credible mechanistic confound, not yet a complete causal attribution.",
+      "evidence": "Frozen corpus600fps encoded; offered1fps/scale600; actualbothH264headers has_b_frames2 and decode-order nonmonotonicPTS. sourcecoordinator.cpp606\u2013683 sends duration-paced decode-order AUs and scalesPTS/DTS. Decoder stage and truehostsubmit-to-output median\u22482s.",
+      "implication": "Physical pair should check actual ingress/decode/decision timeline and whether that delay persists in bothtopologies before broad execution. These intervals include reorder/queue/hostholding, notNVDECbusy."
+    },
+    {
+      "conclusion": "Deadline-awareHEFT is mathematically degenerate withHEFT after deadline expiration.",
+      "evidence": "frozen_replay_v1:321\u2013376 predictedfinish common form; ifdecisiontime>deadline thenallpositive-service candidateslate andfinish-minus-commondeadline preservesfinish order.",
+      "implication": "Most oldrequests cannot distinguish those policies bydeadlinefeasibility; forced prechecks do not prove actualdynamicmatrix equivalence."
+    },
+    {
+      "conclusion": "The workload proxies are real inference and do not provide application-quality results.",
+      "evidence": "v4semantic_claim topology_load_proxy_only, ImageNet1000rawlogits, fourResNets18/34/50/101; bothworkers returnobjects=1 and aggregate sums4. Dataset accuracy_ground_truth=false/routing production_semantics=false.",
+      "implication": "NoOCR/damage/foreignobject detection accuracy, fourdetectedobjects, or productionanalytics validity claim; numericparity means sameproxy outputs acrossCPU/GPU, not semantic accuracy."
+    },
+    {
+      "conclusion": "Framework rows do not measure distinct framework-native inference engines.",
+      "evidence": "NativeGst/GVA recorded branchbackends are identicalexternalOpenVINOCPU orTensorRTCUDAnativeworker APIs; framework differences livein orchestration/decoder/prefix/fanout/adapter.",
+      "implication": "Describe nativeAPI worker inference honestly; do not advertiseGVA GPUexecution asOpenVINO GPU or claim DeepStream/Savantnativeengine performance from commonworkers."
+    },
+    {
+      "conclusion": "RawC_obs mostly measures duplicate elapseddecoderholding, not hardwareconsumption.",
+      "evidence": "Decode share71%CPU and96%GPU;NVDEC hostelapsed entersCPUcomponent per signature andone-to-one topologyparent completion intervals. resourceutil1%/transferdimensions/vramdimension proxies explicit; nohardwareResourceCSV oldprechecks.",
+      "implication": "Removing4duplicatewaiting intervals can yield favorableobservedreuse with no evidence of proportionateCPUcycles/NVDECbusy/energy reduction. Retainpartialstageelapsedlabel and inspectgenuinehardware samples."
+    },
+    {
+      "conclusion": "Shared externalbranch-workerserialization is an important scope constraint.",
+      "evidence": "Exactly8backendworkers=4branches\u00d72resources, bridgeper-route lock; sixstreamfrontrequests shareoneworkerperbranch/resource;CPUcompile NUM_STREAMS1/INFERENCE_NUM_THREADS1. CPUforeignobject dominatesdrops.",
+      "implication": "This is branchcapacity/serialization evidence; wholehostCPUoversubscription,GPUutilization,memorypressure orOSkill cause cannot be inferred withoutphysicalfacts. Bothtopologies must useexact samepools,source schedule,modelcaps andwarmstate."
+    },
+    {
+      "conclusion": "Zeroqueuewait andrecordstage0 are derived timeline conventions, not independent measurements of noqueueing or storagecost.",
+      "evidence": "checkpoint_publication_runtime.py:906\u2013932 copies parenttimestamp intoqueueenter andstagestart;recordstart=end atjoin. GPUmonotonic timings translated usingexplicit pairedclockanchors in nativeprobe, not arbitrary fabricated duration.",
+      "implication": "Host-derivedstageelapsed remains validprovenance-labelled data; cannotclaim measuredexclusivecompute time or measuredqueuewait0."
+    },
+    {
+      "conclusion": "Qualityguardrail ceiling can hide latency regression.",
+      "evidence": "Primaryguardrail maxcompletedSLOmissrate mayremain100% even with substantiallyworsep95; p95 issecondary. Eventfactor4vs1 isstructural proof of actualsharing, not independent proof of fasterexecution.",
+      "implication": "Inspect latencytail and dropbalance in actualpair; a favorablearchitecturecostresult alone doesnot establish practical100ms feasibility."
+    }
+  ],
+  "next_physical_observations": [
+    "Complete smallest genuinepackaged front gate; recordactualDocker/APIcompatibility failures insteadof expandingfixtures.",
+    "Run originalauthorizedforcedCPU/GPU two-topologydiagnosticpair withsame sixstreams/30+180+10, sourcekeys, pools andmodel authority; independentlycoldjoin allphase/measured evidence.",
+    "Read ingress\u2192decoder sink/output\u2192decision\u2192terminal timing, p50/p95/p99 andperstreamcompletion/dropcounts, realdevice/hostsamples andworkerfailures; distinguishcodecdelay frombridgeinference/capturecost.",
+    "Ifdeadline/costsaturation persists, prepare explicitlyreviewedscientificdesign amendment andcapacity/evidencebudget changes before broadmatrix; do notalter frozen5600matrix,codec,fps,deadline orqueue rules inthisreview."
+  ],
+  "original_outputs": [
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_cpu_h264_independent_processes/evidence/frames.csv",
+      "sha256": "5b467fd60630dc9cc63acd41570a45327a739f28899d4c9e357c50327af5d20e",
+      "size_bytes": 147586
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_cpu_h264_independent_processes/evidence/ingress_ledger.csv",
+      "sha256": "cd9bc188a8a92c2d8b711cc3df6d6c1fcaf1594cf4757cb2d1b6043226df38c6",
+      "size_bytes": 751271
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_cpu_h264_independent_processes/evidence/frame_events.csv",
+      "sha256": "78f1f9fff3f98c3d5ff00ce60e3050470bf979e48d134b3a38b63d03f6804bd1",
+      "size_bytes": 5883104
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_cpu_h264_independent_processes/evidence/resource_events.csv",
+      "sha256": "db27b689ed1fd08550ff8e4bb6fd24daac5f702b7e81115917575b003562fc6d",
+      "size_bytes": 5706579
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_cpu_h264_independent_processes/evidence/resource_intervals.csv",
+      "sha256": "a6e4c888e233d3b43c36fb0117193c4a66bcc6a0377a277c86365443e0e33bcb",
+      "size_bytes": 1333331
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_cpu_h264_independent_processes/evidence/policy_decisions.csv",
+      "sha256": "71920266271705833bb8e7934ec5ff74cd0982a1caf14427f31611e485decf0a",
+      "size_bytes": 6648955
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_cpu_h264_independent_processes/evidence/branch_terminals.csv",
+      "sha256": "55590a074e19bfe74552a80f434acb1435ea1b69ebbdb6f14b5171ac1367a83d",
+      "size_bytes": 2850431
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_cpu_h264_independent_processes/precheck-audit.json",
+      "sha256": "2c4703360fadc4e6ac294d55c93a4849c00aec9def0a242f1c33e49207400e27",
+      "size_bytes": 1235
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_gpu_h264_independent_processes/evidence/frames.csv",
+      "sha256": "1d01914b3e3cf4a341f302ba4a9faf1df533a70c621feb80d03195f4a1b79401",
+      "size_bytes": 281796
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_gpu_h264_independent_processes/evidence/ingress_ledger.csv",
+      "sha256": "97d752db0c691189af177ad0ea1fe8f133a7bb80cbe1b3bf83ae05651d7ba791",
+      "size_bytes": 749704
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_gpu_h264_independent_processes/evidence/frame_events.csv",
+      "sha256": "453f11610618770c42a313a621d6ad6eb43793652902b47e2a851a1737e6c9c0",
+      "size_bytes": 6656978
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_gpu_h264_independent_processes/evidence/resource_events.csv",
+      "sha256": "ae6720c394f524271d820098958df2629ee3aefa1055f869bde092701d35abe6",
+      "size_bytes": 6511552
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_gpu_h264_independent_processes/evidence/resource_intervals.csv",
+      "sha256": "6d6abac70e534054e04e526d86eeeb82c7b5a1095ac5ce7cecd2a283de951404",
+      "size_bytes": 7730451
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_gpu_h264_independent_processes/evidence/policy_decisions.csv",
+      "sha256": "f9cd0b4f1d0f60bc50621744acd667123574112aa96da24759a5112e2c0a6187",
+      "size_bytes": 7817755
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_gpu_h264_independent_processes/evidence/branch_terminals.csv",
+      "sha256": "62c0455d7d2646e6ade51caf3098306b695a5f25a44c428d65534ce44e0ab80e",
+      "size_bytes": 3034787
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_gstreamer_custom_gpu_h264_independent_processes/precheck-audit.json",
+      "sha256": "d414973361cbb633a8464e9644f0c1f4963b84a4943ae27088bf6c922be11b97",
+      "size_bytes": 1235
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_cpu_h264_independent_processes/evidence/frames.csv",
+      "sha256": "4a4d473bc7a7a889e894d2a044ea9d964ce28a2b104e66a8ee03a6f92e87acdb",
+      "size_bytes": 146195
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_cpu_h264_independent_processes/evidence/ingress_ledger.csv",
+      "sha256": "375fcd4c5acec145bd98a9d57a04d0edcfc4881f228738c30111078dd94efd76",
+      "size_bytes": 738370
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_cpu_h264_independent_processes/evidence/frame_events.csv",
+      "sha256": "1a1a5b84d649a03fa03f7e78e9f134a214b948381fe224976d9b9b94941920c5",
+      "size_bytes": 5750843
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_cpu_h264_independent_processes/evidence/resource_events.csv",
+      "sha256": "31d901646adff03bfccec2e39ae494df3017de338195ebac698a191b4107ad6d",
+      "size_bytes": 5588472
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_cpu_h264_independent_processes/evidence/resource_intervals.csv",
+      "sha256": "8d4c8e17491dede9839f057a228470d0687eafe7e06106113404ba5c66579e8c",
+      "size_bytes": 1334700
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_cpu_h264_independent_processes/evidence/policy_decisions.csv",
+      "sha256": "173d542cfd78ad491fb0ccaa6b96f3632bab1e3c4199f1e3af108a1d4883b786",
+      "size_bytes": 6562551
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_cpu_h264_independent_processes/evidence/branch_terminals.csv",
+      "sha256": "e937b6f9ea82c2f5684772d93dd9078806ba36c79c2b65926ed5374583f3411f",
+      "size_bytes": 2800346
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_cpu_h264_independent_processes/precheck-audit.json",
+      "sha256": "8f01dc943f8b70cae8b4a1a78b9370f3c410bcf66eca0d9630ff03607e29b90a",
+      "size_bytes": 1227
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_gpu_h264_independent_processes/evidence/frames.csv",
+      "sha256": "cfe77ac17cb92129ebf8bfab8fabb01fa0fa6bb8ce3bfdc2270661a5bd5152f9",
+      "size_bytes": 274293
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_gpu_h264_independent_processes/evidence/ingress_ledger.csv",
+      "sha256": "b544dbaa8f27711cefc356a09dd094a8c42e1e55d81e785df471ef6bc20cb326",
+      "size_bytes": 736671
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_gpu_h264_independent_processes/evidence/frame_events.csv",
+      "sha256": "6e817a06ae1911da6b0866846c420b581d7b04e314b1e7ab7688c16b3bc7451a",
+      "size_bytes": 6491628
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_gpu_h264_independent_processes/evidence/resource_events.csv",
+      "sha256": "7f485d5c835bd774d7c8c31b2292f247ad82dd30f3712941122acd4e984fc39a",
+      "size_bytes": 6363310
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_gpu_h264_independent_processes/evidence/resource_intervals.csv",
+      "sha256": "1f1507874ad6f3ccf7d5ba5df5562eb5844ccc318e2ff6a6f6e73379a6d2b7de",
+      "size_bytes": 7605409
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_gpu_h264_independent_processes/evidence/policy_decisions.csv",
+      "sha256": "274a7b29adb3345aabef4ea11e62dcfcd12ed3b345a5b9374721e8050e223736",
+      "size_bytes": 7689516
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_gpu_h264_independent_processes/evidence/branch_terminals.csv",
+      "sha256": "ea1f4f39ddd32a0f4ad598e8532b08d25c0902f4fd673d3529e27431cd7e342a",
+      "size_bytes": 2983559
+    },
+    {
+      "path": "artifacts/fix_benchmark_preparations_20260928g/qualification_control/precheck_openvino_gva_gpu_h264_independent_processes/precheck-audit.json",
+      "sha256": "02ff73dcf01c1ed4035048e502817c12f323baf32a88f90153dd7273ce5a63fb",
+      "size_bytes": 1227
+    }
+  ],
+  "publication_ready": false,
+  "read_only_original_media_metadata": [
+    {
+      "argv": [
+        "/usr/bin/ffprobe",
+        "-v",
+        "error",
+        "-read_intervals",
+        "%+0.25",
+        "-show_streams",
+        "-show_packets",
+        "-show_entries",
+        "stream=codec_name,r_frame_rate,avg_frame_rate,has_b_frames,refs:packet=pts_time,dts_time,duration_time,flags",
+        "-of",
+        "json",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_front_gate.mp4"
+      ],
+      "first_twenty_packets": [
+        {
+          "dts_time": "-0.003333",
+          "duration_time": "0.001667",
+          "flags": "K__",
+          "pts_time": "0.000000"
+        },
+        {
+          "dts_time": "-0.001667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.006667"
+        },
+        {
+          "dts_time": "0.000000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.003333"
+        },
+        {
+          "dts_time": "0.001667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.001667"
+        },
+        {
+          "dts_time": "0.003333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.005000"
+        },
+        {
+          "dts_time": "0.005000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.013333"
+        },
+        {
+          "dts_time": "0.006667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.010000"
+        },
+        {
+          "dts_time": "0.008333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.008333"
+        },
+        {
+          "dts_time": "0.010000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.011667"
+        },
+        {
+          "dts_time": "0.011667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.020000"
+        },
+        {
+          "dts_time": "0.013333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.016667"
+        },
+        {
+          "dts_time": "0.015000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.015000"
+        },
+        {
+          "dts_time": "0.016667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.018333"
+        },
+        {
+          "dts_time": "0.018333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.026667"
+        },
+        {
+          "dts_time": "0.020000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.023333"
+        },
+        {
+          "dts_time": "0.021667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.021667"
+        },
+        {
+          "dts_time": "0.023333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.025000"
+        },
+        {
+          "dts_time": "0.025000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.033333"
+        },
+        {
+          "dts_time": "0.026667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.030000"
+        },
+        {
+          "dts_time": "0.028333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.028333"
+        }
+      ],
+      "packet_count_read": 149,
+      "path": "data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_front_gate.mp4",
+      "returncode": 0,
+      "scope": "read-only header and first 0.25 encoded seconds packet metadata; media full hash not independently reread in this review",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "4c5468666529b92600e1d250fca16b421cea20d270bb3a8cfaa924eba147739f",
+      "streams": [
+        {
+          "avg_frame_rate": "600/1",
+          "codec_name": "h264",
+          "has_b_frames": 2,
+          "r_frame_rate": "600/1",
+          "refs": 1
+        }
+      ]
+    },
+    {
+      "argv": [
+        "/usr/bin/ffprobe",
+        "-v",
+        "error",
+        "-read_intervals",
+        "%+0.25",
+        "-show_streams",
+        "-show_packets",
+        "-show_entries",
+        "stream=codec_name,r_frame_rate,avg_frame_rate,has_b_frames,refs:packet=pts_time,dts_time,duration_time,flags",
+        "-of",
+        "json",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_underbody.mp4"
+      ],
+      "first_twenty_packets": [
+        {
+          "dts_time": "-0.003333",
+          "duration_time": "0.001667",
+          "flags": "K__",
+          "pts_time": "0.000000"
+        },
+        {
+          "dts_time": "-0.001667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.003333"
+        },
+        {
+          "dts_time": "0.000000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.001667"
+        },
+        {
+          "dts_time": "0.001667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.005000"
+        },
+        {
+          "dts_time": "0.003333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.008333"
+        },
+        {
+          "dts_time": "0.005000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.006667"
+        },
+        {
+          "dts_time": "0.006667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.010000"
+        },
+        {
+          "dts_time": "0.008333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.013333"
+        },
+        {
+          "dts_time": "0.010000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.011667"
+        },
+        {
+          "dts_time": "0.011667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.015000"
+        },
+        {
+          "dts_time": "0.013333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.018333"
+        },
+        {
+          "dts_time": "0.015000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.016667"
+        },
+        {
+          "dts_time": "0.016667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.020000"
+        },
+        {
+          "dts_time": "0.018333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.023333"
+        },
+        {
+          "dts_time": "0.020000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.021667"
+        },
+        {
+          "dts_time": "0.021667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.025000"
+        },
+        {
+          "dts_time": "0.023333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.028333"
+        },
+        {
+          "dts_time": "0.025000",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.026667"
+        },
+        {
+          "dts_time": "0.026667",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.030000"
+        },
+        {
+          "dts_time": "0.028333",
+          "duration_time": "0.001667",
+          "flags": "___",
+          "pts_time": "0.033333"
+        }
+      ],
+      "packet_count_read": 150,
+      "path": "data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_underbody.mp4",
+      "returncode": 0,
+      "scope": "read-only header and first 0.25 encoded seconds packet metadata; media full hash not independently reread in this review",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "87c437b2bfcd811582e9b897924e49ff69dd16a2ef0993499f63a5390b8883ae",
+      "streams": [
+        {
+          "avg_frame_rate": "600/1",
+          "codec_name": "h264",
+          "has_b_frames": 2,
+          "r_frame_rate": "600/1",
+          "refs": 1
+        }
+      ]
+    }
+  ],
+  "reviewed_at_utc": "2026-09-29T23:41:34.594060+00:00",
+  "schema_version": 1,
+  "scope": "read-only old g four independent-topology nonpromoting native prechecks and current frozen source contracts; no new benchmark, container, matrix execution or publication acceptance",
+  "self_critique": "I initially emphasized anySLOmiss as a validnegative result toseparate infrastructure fromscience. That was incomplete: source andoldCSV now show deadlinealready expiredbefore scheduling andcostdominated bycodecwaiting. Repairing accounting is necessary, but we must use the smallrealpair as an operating-regime check before spendingdays on a weakdeadlinecontrast. I cannotclaim sharedtopology outcome or causality fromfourindependentforcedprechecks.",
+  "sha256": "9629811eca23ab586156ef9c3eb9fa3518b76845ac7accd1bb7721b16ca47802",
+  "sources": [
+    {
+      "path": "configs/datasets.yaml",
+      "sha256": "6f16a46c6a92c6aecd51cf669e4c5731f182a58b6a0f40dac7eff9b26d9d6086",
+      "size_bytes": 74277
+    },
+    {
+      "path": "configs/experiments.yaml",
+      "sha256": "18b69285690cdb6ad2f8e9fa528122a05fd3e4abe647a776e60c8e5eed4344e0",
+      "size_bytes": 23078
+    },
+    {
+      "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.yaml",
+      "sha256": "e040cd816b46d6d98bd6bf18fa45b6d57d5f8326819fbbecfc38b7b1f61f9bca",
+      "size_bytes": 26084
+    },
+    {
+      "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260928g.json",
+      "sha256": "9cd1b4e7fee54c97d81618862dc20bf3b8689efd2127c499262a3974f65be18c",
+      "size_bytes": 1508
+    },
+    {
+      "path": "scripts/benchmark_contract.py",
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "size_bytes": 344569
+    },
+    {
+      "path": "scripts/generate_vast_report_artifacts.py",
+      "sha256": "bf4a52dbd9b68769212f1a3f789c4d9a57014e26ca5296d635a9968188c0576b",
+      "size_bytes": 158465
+    },
+    {
+      "path": "scripts/publication_article_statistics_v1.py",
+      "sha256": "2363c9e843db4535677adf20f046098a2f432539501242ad132bbd9edc84c9aa",
+      "size_bytes": 94674
+    },
+    {
+      "path": "scripts/analyze_results.py",
+      "sha256": "340928682211c0138abf3a6d377e2a71f35f06ce9f28cdf0f3a55ba5a6b8c6d8",
+      "size_bytes": 5205
+    },
+    {
+      "path": "scripts/checkpoint_publication_runtime.py",
+      "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+      "size_bytes": 55785
+    },
+    {
+      "path": "scripts/checkpoint_native_policy_runtime.py",
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "size_bytes": 73421
+    },
+    {
+      "path": "scripts/publication_policy_frozen_replay_v1.py",
+      "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "size_bytes": 21538
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_bridge.py",
+      "sha256": "d0ff1e5910e41815e116988757ad5eb3b6c9ea6bc1cc56219d00be0b23e2da43",
+      "size_bytes": 39243
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "05c958f75564577465f5031dcb52010be990516c01f9e7b0504926abe9ccf55a",
+      "size_bytes": 293953
+    },
+    {
+      "path": "deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
+      "sha256": "03f69a8e1be20c03a9044d0a478e52b8721bed18b3f61170e35f899ff9708fc4",
+      "size_bytes": 27391
+    },
+    {
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    {
+      "path": "deploy/analytics_execution/openvino_worker.py",
+      "sha256": "ab7b50ef7143485594bf7426225a464b7d0299490ad7c3b75195b150547c53da",
+      "size_bytes": 17063
+    },
+    {
+      "path": "deploy/analytics_execution/tensorrt_worker.py",
+      "sha256": "8032150efc66e91c79aba37de98834f50238708aa9050cb8230d2a1ed96966d1",
+      "size_bytes": 24473
+    }
+  ]
+}

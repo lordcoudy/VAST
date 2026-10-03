@@ -17,6 +17,7 @@ DOCKERFILE = ROOT / "deploy" / "savant" / "publication" / "Dockerfile"
 ENTRYPOINT = (
     ROOT / "deploy" / "savant" / "publication" / "vast_savant_checkpoint_runtime"
 )
+BUILDER = ROOT / "scripts" / "build_savant_publication_runtime_v3.sh"
 
 
 def load_runtime():
@@ -47,9 +48,17 @@ class SavantPublicationImageV3Tests(unittest.TestCase):
             'org.vast.publication-runtime-abi="3"',
             'org.vast.savant.version="0.5.17"',
             'org.vast.deepstream.version="7.0"',
-            'org.vast.base-image-id="sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6"',
+            'ARG VAST_BASE_IMAGE_ID',
+            'org.vast.base-image-id="${VAST_BASE_IMAGE_ID}"',
         ):
             self.assertIn(value, dockerfile)
+        builder = BUILDER.read_text(encoding="utf-8")
+        self.assertIn(
+            "expected_base_id=\"${VAST_SAVANT_BASE_IMAGE_ID:-"
+            "sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6}\"",
+            builder,
+        )
+        self.assertIn('--build-arg "VAST_BASE_IMAGE_ID=$expected_base_id"', builder)
         self.assertIn(
             'ENTRYPOINT ["/usr/local/bin/vast_savant_checkpoint_runtime"]',
             dockerfile,

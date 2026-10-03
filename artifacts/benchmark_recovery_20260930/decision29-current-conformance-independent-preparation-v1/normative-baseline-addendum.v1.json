@@ -1,0 +1,719 @@
+{
+  "all112_IDs_names_and_complete_scenario_clauses_equal_current": true,
+  "all112_IDs_names_and_complete_scenario_clauses_equal_original_mapping": true,
+  "all20_names_and_complete_requirement_bodies_equal": true,
+  "artifact_kind": "independent_current20_and_original112_exact_normative_baseline_addendum_v1",
+  "blocking_findings": [],
+  "conformance_accepted": false,
+  "current_scenario_count": 118,
+  "joins_preparation": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current-conformance-independent-preparation-v1\\preparation.v1.json",
+    "sha256": "838b7ac7d86cd20b5848976560c8d28413b44596a008174f7386ca9419ba586a",
+    "size_bytes": 12623
+  },
+  "limits": [
+    "This resolves the original112-spec20-body baseline item in preparation.v1; all actual mapping/CI/per-scenario conformance and archive gates remain pending.",
+    "The original failed local D CI stays failed. No scientific campaign or whole-authority acceptance follows."
+  ],
+  "logical_text_method": "Independent line parser keeps header and full text up to next scenario/requirement; normalizes line endings via splitlines and removes only surrounding whitespace. Raw source size/full SHA pinned separately. No target imports or prepared generator execution.",
+  "old_scenario_count": 112,
+  "old_scenario_proofs": [
+    {
+      "id": "R1/S1",
+      "name": "Preparation succeeds",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "933c74c438a16df4a78303289be641f58dadfc56f91efa91dab78e536d7845e7"
+    },
+    {
+      "id": "R1/S2",
+      "name": "Readiness ages or inputs change",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "7f5ba3f43ac9e72b4af70e02412e467a1e0ba319f0645d0eaa4f19470e90f692"
+    },
+    {
+      "id": "R2/S1",
+      "name": "Correct payload and reuse",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "aa2b579b32b186018938a3f19e86d7b50dff32d426fc23522ae10f676b517f07"
+    },
+    {
+      "id": "R2/S2",
+      "name": "Incorrect digest",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "9eb2fa294955f7495278432c6e3c68c57cddfcc0e457c255403b8858044ff5fb"
+    },
+    {
+      "id": "R2/S3",
+      "name": "Payload bounds",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "33a9ccae743f1746f8b8fdd44e8841a0619e158352fc21240b7e1d3bde7aff79"
+    },
+    {
+      "id": "R3/S1",
+      "name": "Routed sealed wrong-content request",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "b05a81c03756899f374a75a4dbbd5a467b1f05e84dd68fe1e8639f17b50cf2ee"
+    },
+    {
+      "id": "R3/S2",
+      "name": "Invalid attribution or descriptor",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "1bd09835a1672b0accb56836038957f488a6d2e832bbcff2e886f833a5adcb1e"
+    },
+    {
+      "id": "R3/S3",
+      "name": "Concurrent failures or diagnostic persistence error",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "f9bfb649b2e51eb297bd2a4b55cef0d362e7065ff405331c7cbe4fd6d49d2cb5"
+    },
+    {
+      "id": "R3/S4",
+      "name": "Historical lifecycle",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "6fe313c9164222f6bfa00ae4d47102ec7448c87c32a346ca540de4d2f0284b4a"
+    },
+    {
+      "id": "R3/S5",
+      "name": "Preflight library rejection retains original structured facts",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "fcd845828b2d4a036b6d95095d0513dd7a15512777649c2c6146fb6df653c146"
+    },
+    {
+      "id": "R4/S1",
+      "name": "Retry option omitted",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "618d505bff84b52874e24f7bfc54c7ee1e34700bc5b9b307ef717c999b210811"
+    },
+    {
+      "id": "R4/S2",
+      "name": "Transient offload or low storage",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "421a6e9a9cf01ed47accfcf49a06adb99faf2164d7529ada143365d4b3df38aa"
+    },
+    {
+      "id": "R4/S3",
+      "name": "Remote integrity mismatch",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "2dbf404547d226d4cadd110b8774b20c3dbe25b3df4d3ea391610e14ba4c1416"
+    },
+    {
+      "id": "R5/S1",
+      "name": "Existing working tree differs from clean checkout",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "0738919cdd9f80a7ef7c3e6b0529d40ca6b33de585d18827fb20c16df4738265"
+    },
+    {
+      "id": "R5/S2",
+      "name": "Packaged source changes",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "a180f4087d62f6864b845358708b2909f4fb5f9241e4bb85eb24f1e6df1ca009"
+    },
+    {
+      "id": "R5/S3",
+      "name": "Deterministic planning replay",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "5537b1f07daf355e6f394bd66eadd5577062067fa8f476fc4ac3272e33d92340"
+    },
+    {
+      "id": "R5/S4",
+      "name": "Exact source identity depends on inherited line endings",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "7e7c677e092b65e4b6d1da9f6c441fa5f8badd185302ff91bf27baaa387e8b19"
+    },
+    {
+      "id": "R5/S5",
+      "name": "Stock build controller requires canonical LF metadata",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "fe6627500b4f5b5be3c5fb1afde397c844dd40c4697bb3699032825a4a72c047"
+    },
+    {
+      "id": "R5/S6",
+      "name": "Peer-observer unit runs on a non-WSL Linux CI host",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "7dc39161752084e3e5e6dc671b4077243c4e6ef6897937599e0cafdc0c4d2e83"
+    },
+    {
+      "id": "R5/S7",
+      "name": "Portable unit fixture preserves non-WSL rejection",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "621b19a9200d09cafec158a3e1473670e41582d4a41cafd69d54bf066aa289ce"
+    },
+    {
+      "id": "R6/S1",
+      "name": "Mixed-width queue properties",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "ccc3dc8acec7ebada572973bd98ba07b45eb9c7a6a9e7c55d833fb3a83d1b3af"
+    },
+    {
+      "id": "R6/S2",
+      "name": "Branch identifier shorter than eight bytes",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "abe4e3f57b15eedbda2e477fab06d467b38c17c4db93b065e40c2506545fa529"
+    },
+    {
+      "id": "R6/S3",
+      "name": "Policy decision names a manifest identity",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "31f9c7ffc99d909ee85a18a8690ecbc878465b42454076bd57c561457cb1ef41"
+    },
+    {
+      "id": "R6/S4",
+      "name": "Loaded path differs from manifest backend",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "d11b2edd2ae73da0021dc5f7e0efa4f8d419bc6dacadf878efd4c51bbf0fa959"
+    },
+    {
+      "id": "R6/S5",
+      "name": "Qualification bundle supplies a copied engine client",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "b96962cc727c464fcbf5c0ada6edacacef06ba62cc0271af195d837aade2d7bd"
+    },
+    {
+      "id": "R6/S6",
+      "name": "Postdecode prefix queue overflows before policy entry",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "4cd3089c7552c3011e33b28e21fe56d3d5fe8a907edc407e7a597994829db0b2"
+    },
+    {
+      "id": "R6/S7",
+      "name": "Pre-detector queue overflows before policy entry",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "7b2edaaca86db3ec54756665386df0553dc1a8f5a3ab2fdeaaaa219b2c5536ee"
+    },
+    {
+      "id": "R6/S8",
+      "name": "Queue-drop identity or ordering is invalid",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "1633a0c030be244b6bc94b435cac2a032415ce07770f5b7d56f2171442334da8"
+    },
+    {
+      "id": "R6/S9",
+      "name": "Preprocessing evidence is missing without a verified prefix drop",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "faa0a2d1e13e6df6f5044b6f64b284c7e22669c64bbeec00a9738fcaccc93741"
+    },
+    {
+      "id": "R6/S10",
+      "name": "Independent and shared prefix-drop coverage",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "be648bd39bbe5b012118d4d91e0094778aff474e9baa26b7592f1450c13ab776"
+    },
+    {
+      "id": "R6/S11",
+      "name": "Native stage resource sidecar",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "6bfcc5172aebb78011b77200086046fc1234facafc4d4cc91ec74cfc908f77be"
+    },
+    {
+      "id": "R6/S12",
+      "name": "Pre-check fails",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "87d859c7623520cc5360ceea510a7e56b524d0019aec5bc92a7a4e476ad63195"
+    },
+    {
+      "id": "R7/S1",
+      "name": "Worker traces and runtime sequence gaps enter a measurement cohort",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "ed09b38170686c15c14f176233db2d8d9ca99169c4972be3b66c790ded94ee8d"
+    },
+    {
+      "id": "R7/S2",
+      "name": "Publication preserves live decision and feedback authority",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "38b3320bb823dbd0d261264b9d5e2190b221e5333d19ef1a5ee9c4f1492063fb"
+    },
+    {
+      "id": "R7/S3",
+      "name": "Excluded feedback influences a measured adaptive decision",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "f00554ea1f6bef4edf8a6f185be66fc43cd138b47b971cc837b5efed63943686"
+    },
+    {
+      "id": "R7/S4",
+      "name": "Nonadaptive publication preserves strict closure without adaptive history",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "1e4a8720bc2c26e59374be2a310847c0ef54ecc661522934fc85f899a6a3f552"
+    },
+    {
+      "id": "R7/S5",
+      "name": "Publication mapping or original proof is corrupt",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "9dd5ed3baa19533602867093890d6d74b2c95561c737dafdad939e929eda2915"
+    },
+    {
+      "id": "R7/S6",
+      "name": "Runtime history or projected ordering is incomplete",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "3aed2980e02e03c2145fdb7644dcc86a8741023b198fac6ac26186239a84af0b"
+    },
+    {
+      "id": "R7/S7",
+      "name": "History input exceeds its bound or is malformed",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "9128499696d779fa2b4eed272427ca215f0efc808676719bd73795c7925dbdc1"
+    },
+    {
+      "id": "R7/S8",
+      "name": "Existing strict historical records are read",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "69b0cf559c1ac8137398c314b500de12b5b8f94ec9f41989c50460d76cbd6bf2"
+    },
+    {
+      "id": "R7/S9",
+      "name": "Independent Q4 reader runs under its isolated loader",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "4beedd01e9c0e0f6f5f5b4d0b69bd0e7b88c41a934f1e31d3c9f7fcdbf0b02c2"
+    },
+    {
+      "id": "R7/S10",
+      "name": "Original producer success has rejected cold evidence",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "8f71a98bbaa433bb2ed332a8d22f83568a653c77940d2000a586ab92311865b6"
+    },
+    {
+      "id": "R8/S1",
+      "name": "Allowed predecessor and pilot traffic completes",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "c62c138b10851cdbc25fc98608753825799820519d38f428de177bad34faf871"
+    },
+    {
+      "id": "R8/S2",
+      "name": "Unknown traffic preserves aggregate totals",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "18425e0422221d6fe8e2e13f06db47a149ae7b6a50399145c56f4cdaab380e0c"
+    },
+    {
+      "id": "R8/S3",
+      "name": "Separate invocations repeat a wire identity",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "9f2e56d0b9c36791b52c1cb778699aa93784ec8eeb619d288dd25c8d3bee1342"
+    },
+    {
+      "id": "R8/S4",
+      "name": "A measurement request finishes during drain",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "bc040c6937d030af960d0b21cce4b967418903cb5f65f773f4ddd720ab7eb544"
+    },
+    {
+      "id": "R8/S5",
+      "name": "Request or terminal capture is incomplete",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "ae1721bdace2095a04ba63f0b8d645c48e700c739ceaee360b471a942dfe94d9"
+    },
+    {
+      "id": "R8/S6",
+      "name": "Operational evidence exceeds bounds or cannot persist",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "0158fab362c3807ebc28b71459375c1e97447750e3685aecdb1d5d98a102f624"
+    },
+    {
+      "id": "R8/S7",
+      "name": "Domain custody or schema is invalid",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "69db84b6e2398fe72d233e0809a6b973729667fdc6e1670c8e1dbb55329aae53"
+    },
+    {
+      "id": "R8/S8",
+      "name": "Only legacy aggregate evidence exists",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "b4d10d299cf1ed45af4f773dc419c373fd4a6f53255a544491cd3a1ab69d02d3"
+    },
+    {
+      "id": "R8/S9",
+      "name": "Source accounting defect is found before pilots",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "bcc244bcbb93ba7e02f56bde7162d18ac7c3849fe298a4143a28675811e1ce8a"
+    },
+    {
+      "id": "R8/S10",
+      "name": "Component pair reconciles all phases",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "f6ecb29930b90979e2a4caa1f754d4de568c49b64245cc6ef3fcdd5cd2db47bc"
+    },
+    {
+      "id": "R9/S1",
+      "name": "A269 has eight historical cells",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "7aa51cd92a5cad149a121b5597ec83174f82ee87d7439fd293dfc0da3846ab8d"
+    },
+    {
+      "id": "R9/S2",
+      "name": "Fresh qualification and Q4 succeed",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "92b77e0a4825b34a8dfab1ab6f2f059601bad6f00044a382f7228cd191267461"
+    },
+    {
+      "id": "R9/S3",
+      "name": "A prerequisite is missing or fails",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "522e2e89283b10b3e4e0fe9fc376d877991352cc71f4b27f08fc8b909fe70766"
+    },
+    {
+      "id": "R10/S1",
+      "name": "Confirmation missing",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "eed1dd3a411a85e2d40c9f8cc7d86b24351efcaec2f92006fd8e4903b74078b0"
+    },
+    {
+      "id": "R10/S2",
+      "name": "Sizing or readback exceeds the guarantee",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "a9add4a98bfae5e97b25e2c005fdfe119a30697ad5d676cea199109d0c69a0bb"
+    },
+    {
+      "id": "R11/S1",
+      "name": "Unstarted package validates",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "b4f7cf53afb43388680a5ad2196fe8ab67657afc46f1599d508f20303ce5e409"
+    },
+    {
+      "id": "R11/S2",
+      "name": "Altered matrix or malformed command",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "d8905c81b43b6f1ffa5ec92e9b55c5135500b413fb927b7468cb9893fed1f317"
+    },
+    {
+      "id": "R12/S1",
+      "name": "Documentation reviewed",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "89d9f5f2b60b16f1eb39683ed9d1143bee2c8c2018b21c033df53ab4f06d2740"
+    },
+    {
+      "id": "R12/S2",
+      "name": "Required CI is unavailable",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "5164f4f0c01ce33106f1a9fad91eccda19521d69b984d481805981a3b54a4e26"
+    },
+    {
+      "id": "R12/S3",
+      "name": "Clean checkout lacks the frozen model assets",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "3ff888a00071ab31e5c2ab5939b8d96406ab8e983eafa2ed0ffc15f4a50f827c"
+    },
+    {
+      "id": "R12/S4",
+      "name": "Hosted test failure or interruption occurs before the suite report",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "fa93cbdf7fc30eb26924778dd5dfd2919f7bb8ba4fb70fb6ff6f12a118f6aceb"
+    },
+    {
+      "id": "R13/S1",
+      "name": "Forced-resource diagnostic pair completes",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "d9cb852a7989d4c20724887f4cc3fc7cdb66f7548337fc6beda0a3c0bd091823"
+    },
+    {
+      "id": "R13/S2",
+      "name": "Static-hybrid inputs are not yet materialized",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "a4d5f09510203804df84a3ab4ec9cc71db642fc4fd8f0fb520df22099a9a838c"
+    },
+    {
+      "id": "R13/S3",
+      "name": "Diagnostic authority or accounting is incomplete",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "9fb82c9366822e51f6bb1fb27a5b3ea2ec17c68096ffbd67fe76e8086c6f8e7b"
+    },
+    {
+      "id": "R13/S4",
+      "name": "Selected component authority materializes",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "15aa8e6b285a5fef6bfbf047cf8e4ecd60a4412837a944299f8b7f69ca581811"
+    },
+    {
+      "id": "R13/S5",
+      "name": "Selected physical or declaration row drifts",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "e079d50dbac6ab0514b54a32ee46bde8e1a1f1aaa5ee598c3c8b0d268705448e"
+    },
+    {
+      "id": "R13/S6",
+      "name": "Component authority reaches a full entrypoint",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "bdfef1c05ed08d91d0054f857c50d818880b13774bdbc2233ddaf2aed88c76d6"
+    },
+    {
+      "id": "R13/S7",
+      "name": "Component request is outside its original pair",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "1f122171b61425213039d8c566571bd2b7b41c5a52aec0b80217833a33461ca2"
+    },
+    {
+      "id": "R14/S1",
+      "name": "Worker exits during a diagnostic",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "f5ebc19232800b4c4da8391967dbbe5d6bd24d3fd54bd4e629301d2b11016c8d"
+    },
+    {
+      "id": "R14/S2",
+      "name": "Historical guardian already failed",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "aeb37c6275b10879d5cfb36508a0d05a006b97903541ec8c50508d586ba8e111"
+    },
+    {
+      "id": "R14/S3",
+      "name": "Original launcher terminates during container ID publication",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "c152fa706ca1b1db86b1bb9c0e8357e8e5ccb6eb13f540acd8a046aad0b1baea"
+    },
+    {
+      "id": "R14/S4",
+      "name": "Early broker setup fails with a validated durable journal",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "ddaf0f60aa81a9cc6a78bf8a66daa64d828ec276655f23d87c4d1f48e8ccafcf"
+    },
+    {
+      "id": "R14/S5",
+      "name": "Quiescent broker has no durable terminal response",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "a9a92f5bb7e68b0aefb824b569249fe1e29c0de215775f8a51a557df9589aa6f"
+    },
+    {
+      "id": "R15/S1",
+      "name": "Relative quality passes despite absolute deadline misses",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "8b56b81bf8474050e4188f85ef179ba56c827edd67318e3e7fff9a096b66cecc"
+    },
+    {
+      "id": "R15/S2",
+      "name": "Only proxy or partial resource evidence exists",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "fa74cce395a6a31f26ee725be3d0ffb68d7a5df35cf22a87f015660fa9a25bc2"
+    },
+    {
+      "id": "R15/S3",
+      "name": "Frozen policy labels are placement aliases",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "41450d8bfe615cf08732f91435ded163c11d2d9ec6f0e7b1fdd949f7352356f6"
+    },
+    {
+      "id": "R15/S4",
+      "name": "Deadline and attributed elapsed measurements are saturated or confounded",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "3740060658e27228bd4f9f9702c8c457ce82136fbab137d81ad04c313ff958e3"
+    },
+    {
+      "id": "R15/S5",
+      "name": "Decoder mechanism research precedes an adopted regime",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "625f3cfda4971e68be1e49648030d49faa6176adb79f2ea13c8cf9215f47a8f3"
+    },
+    {
+      "id": "R15/S6",
+      "name": "Research fails before source or decoder admission",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "e28d233db83dc36b811b3cff0f7d5ff65c42323a51a28841e6151153f2cce79a"
+    },
+    {
+      "id": "R15/S7",
+      "name": "A strict research file pin fails without original path facts",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "b5ddb64af2f8a94c7cb544cd76e31dc3fc43fe17fcc9f52fbd0f5c706ed33f38"
+    },
+    {
+      "id": "R15/S8",
+      "name": "A mapped library has several hard links",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "224289a1b1699e37051fca82224c33babf450e34cfc17141537bbb83692b4a6d"
+    },
+    {
+      "id": "R15/S9",
+      "name": "Reviewed mapped-input correction precedes another research attempt",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "0985ea4edbe8c4896e38c8c49d0baafad3ae4e65cce38e6c927b14faab7d3ba0"
+    },
+    {
+      "id": "R15/S10",
+      "name": "Unchanged intake runs before mechanism research completes",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "285558ff259c65b58ccbbdf8ef06560bcd748c9ba997df01de4f22876e91e369"
+    },
+    {
+      "id": "R16/S1",
+      "name": "Full benchmark finishes with valid negative results",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "a872a587e5898c7e363d4350c889ae7828461643c89fcaa23fc057d858d719aa"
+    },
+    {
+      "id": "R16/S2",
+      "name": "Accepted pairs exist when transient offload fails",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "d8987dea8f6f4a9a85812d14c7c4e390d42af7e6ba3a6c5d1986a3818c653d54"
+    },
+    {
+      "id": "R16/S3",
+      "name": "Completion or final repository gate is missing",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "73ba5dd92bda2dc3b829590f63279b4a14e7415b8093f3afb240ba891dcc2518"
+    },
+    {
+      "id": "R16/S4",
+      "name": "Selected component release finishes",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "3b384ffc7d99a6dd104ac24fef6c3c0dc2ab9d412c9cf783f96104b8d296c8a0"
+    },
+    {
+      "id": "R17/S1",
+      "name": "Full-suite worker enters strict native containment",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "495fc036da997a684e253b80ba045d4df6f80f0b3556210f0d7c87495f277f56"
+    },
+    {
+      "id": "R17/S2",
+      "name": "Scheduled stack request is late or absent",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "08a23473837040806674ea2b5dc6ce62d244220e0ef70308063ffb0fec6a8a12"
+    },
+    {
+      "id": "R17/S3",
+      "name": "Trace channel overflows or persistence fails",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "5d3947045e26af504f2f0cc979df1a9bbc7079f43cd78d89e27015463d6dcfbc"
+    },
+    {
+      "id": "R17/S4",
+      "name": "Full-suite child crashes or is interrupted",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "9be25d42498f7795ca6d57119595f835725699ebb1490c1f2eb2079a09701523"
+    },
+    {
+      "id": "R17/S5",
+      "name": "Namespace setup emits a generic denial",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "1e9c5f7463d01cd3fede32aec0dfc39a1bff4be86c0e6c998ecff84b723dd077"
+    },
+    {
+      "id": "R17/S6",
+      "name": "Exact executable userns policy denial is observed",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "ba454d0db7a366f78929fefef876305ef4910f867de66ac4c648696cd51ebd59"
+    },
+    {
+      "id": "R17/S7",
+      "name": "Observer repair passes focused checks",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "9175fe90c4023d2c9a188b1a13e34b303861c108a01b63da72e851e9a291808a"
+    },
+    {
+      "id": "R18/S1",
+      "name": "Hosted executable is an alias and repository imports are isolated",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "28cd63575018cfb216236f8e47dcc7e6e7de3a6d4565cea45acf4c0674ea68ff"
+    },
+    {
+      "id": "R18/S2",
+      "name": "Native build succeeds but a runtime factory is absent",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "f197f0164e01c4112d5fa00aa1124eb300d0d1ab051b25d118d6e2fecd4b60ad"
+    },
+    {
+      "id": "R18/S3",
+      "name": "Shared imports reach new component helpers in a sibling image",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "1fe10f66f6228b2eb7d694e48cd4697fab500b5251fb91a2137e877a4b602afd"
+    },
+    {
+      "id": "R18/S4",
+      "name": "Pure contract tests depend on ignored historical fixture files",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "a00005e0a1ee5184f4b60f4a67e6a91ec4e1d62804e22aa9e94d2bfb5cf7392c"
+    },
+    {
+      "id": "R18/S5",
+      "name": "Manifest omits a portable test or hides a mandatory failure",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "c273b2531781f8cd85275259e8ba81cd1e6ffe7636285e228ed1685fac896a10"
+    },
+    {
+      "id": "R18/S6",
+      "name": "Actual physical integration prerequisites are unavailable or historical",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "df67a54387e33cd4b13c252004285fcc85853342db4f1b393e2af3c3e60d8e49"
+    },
+    {
+      "id": "R18/S7",
+      "name": "Portable lane succeeds with remaining campaign obligations",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "97a540a9f15d7a83b417faf21a148ca38d34168486278a0fb19d16f3b7c49d33"
+    },
+    {
+      "id": "R19/S1",
+      "name": "Borrowed context is foreign or closed",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "73d9b019348c400785af3fc1ef42b705c283ea0268d4f8bc29124f4a9febcc9b"
+    },
+    {
+      "id": "R19/S2",
+      "name": "One original pair traverses repeated runtime stages",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "b8090e01fdd9984b01fb5847ece708a8616c5e64195930e6a4b19af3400436d7"
+    },
+    {
+      "id": "R19/S3",
+      "name": "Public validator runs independently",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "570b8e234626f36b6936603df7146755c80838afb6f44e250cfc5b05d88c4afc"
+    },
+    {
+      "id": "R19/S4",
+      "name": "Held source or live engine facts drift",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "01d440719c42f0c5586407b11f77e4c7c4e705219a12b415195a365e94e0d9f1"
+    },
+    {
+      "id": "R19/S5",
+      "name": "Cold consumer fails after real native arms",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "02b006b31465e1172f8ad709854ea62defa7c1e69910b0a5fc98d3ae4ebc6a29"
+    },
+    {
+      "id": "R19/S6",
+      "name": "Runtime improvement is assessed",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "70631e8d1ca26f1328d1f291a7b9410a9d72de228ef5cee69f869784b42fa98a"
+    },
+    {
+      "id": "R20/S1",
+      "name": "Genuine finite inputs are copied to a new root",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "85c36d068e81975e909b49bd28f8a632b37c580bdbfa0de4fb19702c4905426c"
+    },
+    {
+      "id": "R20/S2",
+      "name": "A historical closure or execution receipt is reused after relocation",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "65e6d68ffa87f4e95f1cf022e3f83f1d907cbc251678171c1aa6b5ce2bef7955"
+    },
+    {
+      "id": "R20/S3",
+      "name": "A relocated pair completes or exceeds its original deadline",
+      "original_current_and_mapping_LF_logical_clause_SHA256": "a3f0de7e9ba40aa28ebffd1e1b604460067989799c3824b1a3bedf525f2c1ea8"
+    }
+  ],
+  "original_Git_reference": {
+    "ROOT_original_tool": "61db81 CLOSED0 read-only scoped git show; reviewer executed no Git",
+    "commit": "e897514dbefe3015756995d05f924aa44dd39552",
+    "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md"
+  },
+  "owned_source_pins": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current-conformance-preparation-v1\\original112-spec.e897514.review-reference.raw",
+      "sha256": "576821b3fd057becb7735b70affba8001e3e70a15308c4783928e7f9c5471be3",
+      "size_bytes": 71033
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\openspec\\changes\\fix-benchmark-preparations-spec\\specs\\benchmark-launch-preparation\\spec.md",
+      "sha256": "383e90694a5f4a2ed81ff8d53fc7ee4a35dc67767f17b35fd8e5bffde4751ed9",
+      "size_bytes": 75100
+    }
+  ],
+  "pending_baseline_body_join_resolved": true,
+  "prior_mapping": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\current-conformance-preparation-v1\\mapping.v2.json",
+    "sha256": "0b184bfb7c7ebc88dd030a57ec7095dc61edc9123aaca8f50308ba5fbb875ec8",
+    "size_bytes": 3111449
+  },
+  "requirement_body_proofs": [
+    {
+      "id": "R1",
+      "name": "Benchmark recovery has explicit execution and completion gates",
+      "original_and_current_LF_logical_body_SHA256": "b9935fb25c4c2c873cdd7b5558c202c9ca3edbb01b56b94773f548de1f5f5b0b"
+    },
+    {
+      "id": "R2",
+      "name": "Native payload descriptors match immutable bytes",
+      "original_and_current_LF_logical_body_SHA256": "5961069b922c714578cc52d94441a422c1ce887c461a5adbe081558719638057"
+    },
+    {
+      "id": "R3",
+      "name": "Guardian preserves rejection and diagnostic evidence",
+      "original_and_current_LF_logical_body_SHA256": "b03f4b56e2ef7f96a4cfa8c8e96048cf50eb02ed5f45b315b1d9b221f9cd765e"
+    },
+    {
+      "id": "R4",
+      "name": "Retry and recovery policy is predictable",
+      "original_and_current_LF_logical_body_SHA256": "158574a4d9aa548692320c7b75d1f9a7264ea83c4256111acdd9927d37994633"
+    },
+    {
+      "id": "R5",
+      "name": "Baselines and affected evidence are reproducible",
+      "original_and_current_LF_logical_body_SHA256": "f96126dc646783a803048c20c6b9b0091224d63fd83b2e8a7fcac3fa41c9d01f"
+    },
+    {
+      "id": "R6",
+      "name": "Native-probe qualification path is integrated before qualification",
+      "original_and_current_LF_logical_body_SHA256": "91b0d84aed8ba29d981d5e2ccf8bf2caec35064a937bfbe542bab89da902284c"
+    },
+    {
+      "id": "R7",
+      "name": "Published policy decisions preserve canonical linkage and actual runtime history",
+      "original_and_current_LF_logical_body_SHA256": "47b2b6526026d2daa4fd910715c868abb7771a9b2a8dbebdd64073a215f96944"
+    },
+    {
+      "id": "R8",
+      "name": "Qualification reconciles the complete operational request domain",
+      "original_and_current_LF_logical_body_SHA256": "152cccd9089d47b22f72604ed37afcda3f2abdf0029b3f38b78ab3d451060cca"
+    },
+    {
+      "id": "R9",
+      "name": "Qualification and Q4 are complete before full launch readiness",
+      "original_and_current_LF_logical_body_SHA256": "a49fe068f795d35bd98024b2c08e9704acb537b7de86fc0c621599b53ff98752"
+    },
+    {
+      "id": "R10",
+      "name": "Cloud admission uses an actual dated guarantee",
+      "original_and_current_LF_logical_body_SHA256": "e648b2635131a8716e23bd1488e1c20fe270c04da13c450d57105611b33adf58"
+    },
+    {
+      "id": "R11",
+      "name": "Launch handoff preserves the full experiment",
+      "original_and_current_LF_logical_body_SHA256": "10b4e62ce89094e17a2a72c7cf21a9d72dc37e523308e939370ec0ab49853a56"
+    },
+    {
+      "id": "R12",
+      "name": "Documentation and conformance are truthful",
+      "original_and_current_LF_logical_body_SHA256": "ad8691030d5be5b42ac2d94e935820db57e7a2fe9e246ddc04c27be026f0fcd3"
+    },
+    {
+      "id": "R13",
+      "name": "Recovery first proves a bounded genuine native pair",
+      "original_and_current_LF_logical_body_SHA256": "853832011cdb6dcc7e883a5b173ecfd279ecc021500e486a88277eda3b338def"
+    },
+    {
+      "id": "R14",
+      "name": "Operations retain bounded ownership and worker termination facts",
+      "original_and_current_LF_logical_body_SHA256": "d5707deac42fda8e1bf939d3a1a58a171437ee56f8f2d3f9df79cd92683374f5"
+    },
+    {
+      "id": "R15",
+      "name": "Scientific interpretation matches the executed workload",
+      "original_and_current_LF_logical_body_SHA256": "41259deefd5043331f76885ce19be0e898cbccfcd3c3f1493c92669b8d07a423"
+    },
+    {
+      "id": "R16",
+      "name": "Component release closes durable results and repository evidence",
+      "original_and_current_LF_logical_body_SHA256": "a6b36c8ef87eb47318e6edf8ee29748b4e9402ca37b3ae78b799188e43e9b2e7"
+    },
+    {
+      "id": "R17",
+      "name": "CPU CI observation preserves native process invariants",
+      "original_and_current_LF_logical_body_SHA256": "d2b9c7c947b644484cdd2e08c7a306e65d70d6556bcc6f814de604fe97527769"
+    },
+    {
+      "id": "R18",
+      "name": "CI executes explicit portable contracts and preserves physical integration obligations",
+      "original_and_current_LF_logical_body_SHA256": "9ce7beb5e261df3f4fb3baf0c9f18266b0ac3afe1901abba030b050285c7b321"
+    },
+    {
+      "id": "R19",
+      "name": "Selected pair owns one physically held validation session",
+      "original_and_current_LF_logical_body_SHA256": "8840365f1105f6521ed00d6e2225cf14620f83bf81361c6d841c3bd987883706"
+    },
+    {
+      "id": "R20",
+      "name": "Relocated selected execution preserves genuine physical validation",
+      "original_and_current_LF_logical_body_SHA256": "9a4129f1cea17c9f9a4811be12cc614b18937f19dbc67b66a54af0ecb8459ded"
+    }
+  ],
+  "requirements_count": 20,
+  "reviewable": true,
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "six_added_scenario_ids": [
+    "R14/S6",
+    "R14/S7",
+    "R14/S8",
+    "R17/S10",
+    "R17/S8",
+    "R17/S9"
+  ]
+}

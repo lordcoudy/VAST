@@ -1,0 +1,31 @@
+
+### Requirement: CPU CI observation preserves native process invariants
+CPU CI observation SHALL preserve the pinned Python3.12.3, full discovered selection, original required native successes, source-before/after/report and90-minute whole-job gate,600000/615000-ms production ABI and strict native-task/namespace/WSL predicates. An external original parent SHALL supervise exactly one fresh full-suite child. Periodic observation SHALL add no watchdog or timer thread to that child and SHALL retain scheduled60s requests plus actual completed responses and explicit late/missing/coalescing limitations. The existing hosted-interruption scenario's periodic-stack wording SHALL mean these actual observations, not a guarantee of60s response. Trace capture SHALL use a parent-drained bounded pipe with at most1MiB persisted trace, <=16KiB whitelisted host facts and <=8MiB new diagnostic namespace; overflow, observer/persistence/cleanup failure SHALL remain sticky failed CI. Original signal/nonzero/interruption, PID lifecycle and reachable source facts SHALL remain intact. The original139 cause SHALL remain unproven absent actual causal evidence. This observer SHALL confer no component/scientific/full grant.
+
+#### Scenario: Full-suite worker enters strict native containment
+- **WHEN** CPU CI launches its original full-suite child and a test enters the production subreaper
+- **THEN** observation SHALL introduce no additional child native/Python thread or descendant observer; actual native task facts SHALL remain observable and any existing import-created task SHALL still fail the unchanged predicate. No per-test substitute child, Python bump or predicate waiver SHALL replace full selection.
+
+#### Scenario: Scheduled stack request is late or absent
+- **WHEN** an original scheduled60s request reaches delayed Python dispatch or a response is absent or potentially coalesced
+- **THEN** actual send/response/arrival times and their clock domains SHALL be retained with honest late/missing/ambiguous delivery state; sending SHALL NOT imply a completed stack, no timely response SHALL be invented, and test/job deadlines SHALL NOT reset.
+
+#### Scenario: Trace channel overflows or persistence fails
+- **WHEN** the parent observes more trace bytes than its fixed1MiB allowance or capture/write/drain/EOF/observer failure
+- **THEN** it SHALL retain only the bounded original prefix and available failure facts, fail CI permanently for that attempt and contain only the owned child within existing absolute limits; a direct unbounded trace file, silent truncation with success or accepted cleanup inference SHALL NOT substitute.
+
+#### Scenario: Full-suite child crashes or is interrupted
+- **WHEN** the original suite child exits by signal/nonzero or is contained at cancellation/timeout
+- **THEN** its original status and actual process/FD lifecycle SHALL remain failed, incomplete test starts and absent final source/report facts SHALL remain explicit, and no successful test/suite terminal or replacement run SHALL be manufactured. The observer SHALL stop requests before teardown and use existing bounded remaining cleanup.
+
+#### Scenario: Namespace setup emits a generic denial
+- **WHEN** actual namespace setup reports errno13 without an exact original userns policy denial join
+- **THEN** at most one preselected bounded diagnostic SHALL retain actual syscall/stage/errno/PID/interpreter/label and at most64KiB relevant timestamped denial facts or their unavailability within20s execution plus10s-or-remaining cleanup; a sysctl value or generic errno SHALL NOT authorize a profile, global change or namespace success claim.
+
+#### Scenario: Exact executable userns policy denial is observed
+- **WHEN** an original syscall/PID/executable/label/time join establishes a userns policy denial for the actual pinned interpreter
+- **THEN** only a separately reviewed job-owned ephemeral per-executable profile MAY be applied, preserving actual profile/load/unload/operation evidence and rejecting collision/foreign/unavailable or failed enforcement. Global sysctl changes, privileged backend/capability bypass, alternate sandbox, blanket skips, Python upgrade and automatic retry/profile search SHALL remain prohibited.
+
+#### Scenario: Observer repair passes focused checks
+- **WHEN** focused observer or conditional policy regressions pass
+- **THEN** current complete hosted source-before/after/report/full-selection/required-native and final ext4/conformance gates SHALL still be required; Decision23 four-arm physical/cold/scientific/repository acceptance and original unchecked campaign scopes SHALL remain unchanged and incomplete until actually verified.

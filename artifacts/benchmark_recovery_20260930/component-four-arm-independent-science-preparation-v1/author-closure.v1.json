@@ -1,0 +1,275 @@
+{
+  "FD_holds_released": true,
+  "actual_input_counts": {
+    "actual_project_import_sources": 27,
+    "held_inputs": 220,
+    "matplotlib_package_leaves": 95,
+    "raw_leaves": 60
+  },
+  "all_numeric_fields_exactly_match": true,
+  "all_seven_epochs_and_full_bytes_equal": true,
+  "author_metadata_check_history": {
+    "followup_exec_chunk": "bc18af",
+    "observation": "all3 physical size/hash pins and4 numeric count rows unchanged; author descriptor spelling normalized with Path.as_posix only",
+    "original_exec_chunk": "e2dc58",
+    "outcome": "assertion failed on Windows str(path) backslashes versus prepared POSIX spelling; no output/source/data/reducer retry"
+  },
+  "both_EOF": true,
+  "capture_terminal": {
+    "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/terminal.v1.json",
+    "sha256": "2bf785728fe48b3381cf3e275a2d912638deaeb4e2e45fd0a86117eed62a4825",
+    "size_bytes": 4439
+  },
+  "elapsed_s": 61.0041748189833,
+  "final_sources": {
+    "reduce.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/reduce.py",
+      "sha256": "f4332d703d94dd54e7b856f12d04300bc95d99ec1eb456f87d24b8f98813ccff",
+      "size_bytes": 24264
+    },
+    "render.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/render.py",
+      "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+      "size_bytes": 9184
+    },
+    "run.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/run.py",
+      "sha256": "b88c9e78b0ba8f075ab8934810f67de903af49dd3ef87181f896d59b2b5cf91e",
+      "size_bytes": 7853
+    }
+  },
+  "four_arm_metric_rows": [
+    {
+      "c_obs_comp_ms_per_completed": 27257.311270125,
+      "c_obs_cpu_total_ms": 15236837.0,
+      "c_obs_gpu_total_ms": 0.0,
+      "c_obs_in_ms_per_ingress": 14108.182407407,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 15236837.0,
+      "completed_deadline_miss_percent": 100.0,
+      "completed_deadline_misses": 559,
+      "completion_coverage": 0.5175925925925926,
+      "confidence_interval": null,
+      "confidence_interval_reason": "one_original_descriptive_pair_per_resource",
+      "deadline_ms": 100.0,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "frames": 559,
+      "latency_max_ms": 10070.0,
+      "latency_p50_ms": 5256.0,
+      "latency_p95_ms": 9488.1,
+      "latency_p999_ms": 10038.194,
+      "latency_p99_ms": 9778.82,
+      "latency_population": "completed_measurement_frames",
+      "measurement_admitted": 1080,
+      "measurement_censored": 0,
+      "measurement_dropped": 521,
+      "on_time_completed": 0,
+      "on_time_ingress_coverage": 0.0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-independent-processes",
+      "resource": "cpu",
+      "scenario": "checkpoint_independent_processes_baseline",
+      "slo_violation_rate_percent": 100.0,
+      "telemetry_source": "native",
+      "throughput_fps": 3.106
+    },
+    {
+      "c_obs_comp_ms_per_completed": 12019.668639053,
+      "c_obs_cpu_total_ms": 8125296.0,
+      "c_obs_gpu_total_ms": 0.0,
+      "c_obs_in_ms_per_ingress": 7523.422222222,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 8125296.0,
+      "completed_deadline_miss_percent": 100.0,
+      "completed_deadline_misses": 676,
+      "completion_coverage": 0.6259259259259259,
+      "confidence_interval": null,
+      "confidence_interval_reason": "one_original_descriptive_pair_per_resource",
+      "deadline_ms": 100.0,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "frames": 676,
+      "latency_max_ms": 8478.0,
+      "latency_p50_ms": 3590.0,
+      "latency_p95_ms": 7930.75,
+      "latency_p999_ms": 8398.35,
+      "latency_p99_ms": 8114.5,
+      "latency_population": "completed_measurement_frames",
+      "measurement_admitted": 1080,
+      "measurement_censored": 0,
+      "measurement_dropped": 404,
+      "on_time_completed": 0,
+      "on_time_ingress_coverage": 0.0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-shared-video-dag",
+      "resource": "cpu",
+      "scenario": "checkpoint_video_dag_shared",
+      "slo_violation_rate_percent": 100.0,
+      "telemetry_source": "native",
+      "throughput_fps": 3.756
+    },
+    {
+      "c_obs_comp_ms_per_completed": 10421.213084112,
+      "c_obs_cpu_total_ms": 10715294.0,
+      "c_obs_gpu_total_ms": 435404.0,
+      "c_obs_in_ms_per_ingress": 10324.72037037,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 11150698.0,
+      "completed_deadline_miss_percent": 99.90654205607477,
+      "completed_deadline_misses": 1069,
+      "completion_coverage": 0.9907407407407407,
+      "confidence_interval": null,
+      "confidence_interval_reason": "one_original_descriptive_pair_per_resource",
+      "deadline_ms": 100.0,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "frames": 1070,
+      "latency_max_ms": 6412.0,
+      "latency_p50_ms": 2131.0,
+      "latency_p95_ms": 6377.0,
+      "latency_p999_ms": 6410.931,
+      "latency_p99_ms": 6402.31,
+      "latency_population": "completed_measurement_frames",
+      "measurement_admitted": 1080,
+      "measurement_censored": 0,
+      "measurement_dropped": 10,
+      "on_time_completed": 1,
+      "on_time_ingress_coverage": 0.000925925925925926,
+      "operation_id": "component-gstreamer_custom-gpu-h264-independent-processes",
+      "resource": "gpu",
+      "scenario": "checkpoint_independent_processes_baseline",
+      "slo_violation_rate_percent": 99.907,
+      "telemetry_source": "native",
+      "throughput_fps": 5.944
+    },
+    {
+      "c_obs_comp_ms_per_completed": 2978.386046512,
+      "c_obs_cpu_total_ms": 2702552.0,
+      "c_obs_gpu_total_ms": 499213.0,
+      "c_obs_in_ms_per_ingress": 2964.597222222,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 3201765.0,
+      "completed_deadline_miss_percent": 99.90697674418605,
+      "completed_deadline_misses": 1074,
+      "completion_coverage": 0.9953703703703703,
+      "confidence_interval": null,
+      "confidence_interval_reason": "one_original_descriptive_pair_per_resource",
+      "deadline_ms": 100.0,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "frames": 1075,
+      "latency_max_ms": 6431.0,
+      "latency_p50_ms": 2154.0,
+      "latency_p95_ms": 6378.0,
+      "latency_p999_ms": 6429.556,
+      "latency_p99_ms": 6415.0,
+      "latency_population": "completed_measurement_frames",
+      "measurement_admitted": 1080,
+      "measurement_censored": 0,
+      "measurement_dropped": 5,
+      "on_time_completed": 1,
+      "on_time_ingress_coverage": 0.000925925925925926,
+      "operation_id": "component-gstreamer_custom-gpu-h264-shared-video-dag",
+      "resource": "gpu",
+      "scenario": "checkpoint_video_dag_shared",
+      "slo_violation_rate_percent": 99.907,
+      "telemetry_source": "native",
+      "throughput_fps": 5.972
+    }
+  ],
+  "full_campaign_acceptance": false,
+  "full_custody_before_after_equal": true,
+  "independent_closed_result_peer": "pending",
+  "launch": {
+    "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/launch.v1.json",
+    "sha256": "6aca01cea57a4d30beea5b52b5479fd928d62a71e9465b8293970c15eb68dfbd",
+    "size_bytes": 3126
+  },
+  "limits": {
+    "C_obs_partial_attributed_elapsed_not_work_energy_or_busy": true,
+    "completed_only_ECDF": true,
+    "drop_censor_coverage_retained": true,
+    "encoded_timeline_fps": 600,
+    "logical_offered_fps": 6,
+    "no_accuracy_population_or_confidence_interval_claim": true,
+    "no_causal_overload_claim": true,
+    "offered_fps_per_stream": 1,
+    "one_baseline_first_pair_per_resource": true,
+    "original_fixed_case_only": true,
+    "scientific_scope": "topology_load_proxy_only",
+    "six_logical_streams_two_recordings": true,
+    "timestamp_scale": 600
+  },
+  "measurement_acceptance": false,
+  "no_timeout_overflow_late_error": true,
+  "numeric_field_counts_per_arm": {
+    "arm_updated": 72,
+    "candidate_legacy": 72,
+    "cold_updated": 72,
+    "descriptive_metrics": 16,
+    "original_csv_columns": 14
+  },
+  "original_child_and_group_absent_at_terminal": true,
+  "original_observer_child_groups_absent_in_later_scan": true,
+  "original_tool_terminal": {
+    "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/original-tool-terminal.v1.json",
+    "sha256": "85009fed5096751fd4f2c9a4266c0d0a9449cab162f0d53f55a13b1deabefcc8",
+    "size_bytes": 624
+  },
+  "outputs": {
+    "custody-and-comparison.v1.json": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/custody-and-comparison.v1.json",
+      "sha256": "e73d34e277619099c7549fc7d51d9870d62c74dbd1c338496dc9aaa9d933c424",
+      "size_bytes": 206412
+    },
+    "exports-and-interpretation.v1.json": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/exports-and-interpretation.v1.json",
+      "sha256": "0700a387be61f1bbd6c8cb9f71d32d6b1182aa4e8ce79815037cdf10b07aa88c",
+      "size_bytes": 11407
+    },
+    "four_arm_latency_coverage_cobs.svg": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/four_arm_latency_coverage_cobs.svg",
+      "sha256": "73b4cf44a795e188fd9a1a9d2445005d184fc55dcac305d535267b5bfad463e2",
+      "size_bytes": 183708
+    },
+    "four_arm_metrics.csv": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/four_arm_metrics.csv",
+      "sha256": "0926bc6bf324f7b4489f1ffbd0df25b16cbe6c0da0b96b3c244e43ef86350d34",
+      "size_bytes": 1913
+    },
+    "recomputed-summaries.v1.json": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/recomputed-summaries.v1.json",
+      "sha256": "e6491331aef1750214bdc14cac407804bab4680b43244b58b50d99313fb9819b",
+      "size_bytes": 70769
+    },
+    "stderr.raw": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout.raw": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/stdout.raw",
+      "sha256": "7bcf8c7669d1c30fc89efd662e9036dbd47ee41bbd9141c11906c610196b2087",
+      "size_bytes": 454
+    }
+  },
+  "postterminal_process_observation": {
+    "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/postterminal-process-observation.v1.json",
+    "sha256": "e4c19a77d35236024e165ecd097fddb3aef0f517cbd70596e12b49a2adae32cf",
+    "size_bytes": 392
+  },
+  "reducer_elapsed_s": 60.856084486993495,
+  "returncode": 0,
+  "root_grant": {
+    "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/original-execution-root-grant.v1.json",
+    "sha256": "17c5ab405273c0a5a49dd7e02671d8bf1cfc1eb48c1de42926d39dc52490eb90",
+    "size_bytes": 4128
+  },
+  "schema_version": 1,
+  "scope": "Original once-only pure stock four-arm raw reduction/render; current producer receipts remain separate hardware authority",
+  "source_peer": {
+    "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-source-review-v1/review.v1.json",
+    "sha256": "bbfa27710f021cfb2177ad3336ce9fcb849d3aebdb5ba34c16c55cc5d326a27f",
+    "size_bytes": 7226
+  },
+  "sources_before_after_current_equal": true
+}

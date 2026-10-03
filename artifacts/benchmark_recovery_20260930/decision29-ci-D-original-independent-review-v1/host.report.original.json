@@ -1,0 +1,30 @@
+{
+  "changed_tracked_paths": [],
+  "commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "diagnostic_passed": true,
+  "diagnostic_tests_only": true,
+  "full_ci_successful": false,
+  "hardware_acceptance": false,
+  "kind": "vast_cpu_host_diagnostics_v1",
+  "original_process": {
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "import sys,unittest; sys.path[:0]=sys.argv[1:3]; import run_ci_checks as checks; suite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[3:]); result=unittest.TextTestRunner(verbosity=2,resultclass=checks.RecordedResult).run(suite); sys.exit(0 if result.wasSuccessful() and result.testsRun==2 and set(sys.argv[3:])<=set(result.successes) else 1)",
+      "/home/runner/work/VAST/VAST/tests",
+      "/home/runner/work/VAST/VAST/scripts",
+      "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+      "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+    ],
+    "cleanup_error": null,
+    "elapsed_s": 1.369504615999972,
+    "returncode": 0,
+    "timed_out": false
+  },
+  "test_ids": [
+    "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+    "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+  ]
+}

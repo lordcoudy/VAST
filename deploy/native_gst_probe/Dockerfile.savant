@@ -1,41 +1,80 @@
-ARG BASE_IMAGE=ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0
-FROM ${BASE_IMAGE}
+ARG BASE_IMAGE=ghcr.io/insight-platform/savant-deepstream@sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6
+ARG BUILD_IMAGE=nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+ARG SOURCE_DATE_EPOCH=1722470400
 
-ARG VAST_NATIVE_PROBE_SOURCE_SHA=unknown
-LABEL org.vast.native_probe.source_sha="${VAST_NATIVE_PROBE_SOURCE_SHA}"
-LABEL org.vast.native_probe.kind="savant"
+FROM ${BUILD_IMAGE} AS native_builder
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV SAVANT_CANONICAL_MODULE=/workspace/project/deploy/savant/canonical_distributed_module.yml
+ARG SOURCE_DATE_EPOCH
+ENV SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}
+USER root
 
-RUN for attempt in 1 2 3 4 5; do \
-      apt-get -o Acquire::Retries=5 update && \
-      apt-get -o Acquire::Retries=5 install -y --fix-missing --no-install-recommends \
-        build-essential \
-        ca-certificates \
-        cmake \
-        pkg-config \
-        python3 \
-        libgstreamer1.0-dev \
-        libgstreamer-plugins-base1.0-dev \
-        gstreamer1.0-plugins-good && break; \
-      if [ "$attempt" -eq 5 ]; then exit 1; fi; \
-      rm -rf /var/lib/apt/lists/*; \
-      sleep "$attempt"; \
-    done \
-  && rm -rf /var/lib/apt/lists/*
+RUN command -v c++ >/dev/null \
+  && command -v pkg-config >/dev/null \
+  && pkg-config --exists \
+      gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0
 
 WORKDIR /workspace/project
 
 COPY CMakeLists.txt /workspace/project/CMakeLists.txt
-COPY deploy/native_gst_probe /workspace/project/deploy/native_gst_probe
-COPY deploy/savant /workspace/project/deploy/savant
+COPY deploy/native_gst_probe/checkpoint_admission_transport.hpp /workspace/project/deploy/native_gst_probe/checkpoint_admission_transport.hpp
+COPY deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp /workspace/project/deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp
+COPY deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp /workspace/project/deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp
+COPY deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp /workspace/project/deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp
+COPY deploy/native_gst_probe/checkpoint_native_policy_client.hpp /workspace/project/deploy/native_gst_probe/checkpoint_native_policy_client.hpp
+COPY deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp /workspace/project/deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp
+COPY deploy/native_gst_probe/checkpoint_runtime_emitter.hpp /workspace/project/deploy/native_gst_probe/checkpoint_runtime_emitter.hpp
+COPY deploy/native_gst_probe/checkpoint_source_coordinator.cpp /workspace/project/deploy/native_gst_probe/checkpoint_source_coordinator.cpp
+COPY deploy/native_gst_probe/vast_native_gst_probe.cpp /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp
+COPY deploy/savant/publication/gstvastcheckpointbranchqueue.cpp /workspace/project/deploy/savant/publication/gstvastcheckpointbranchqueue.cpp
+COPY deploy/savant/canonical_distributed_module.yml /opt/vast/image-root/opt/vast/savant/canonical_distributed_module.yml
 
-RUN cmake -S /workspace/project -B /workspace/project/build/cmake \
-      -DVAST_BUILD_NATIVE_GST_PROBE=ON \
-      -DVAST_BUILD_GSTREAMER_CUSTOM_PLUGIN=OFF \
-      -DVAST_BUILD_CUSTOM_CUDA_QT=OFF \
-  && cmake --build /workspace/project/build/cmake --target vast_native_gst_probe --parallel \
-  && install -m 0755 /workspace/project/build/bin/vast_native_gst_probe /usr/local/bin/vast_native_gst_probe
+RUN install -d -m 0755 /opt/vast/image-root/usr/local/bin /opt/vast/image-root/usr/local/lib/gstreamer-1.0 \
+  && GST_CFLAGS="$(pkg-config --cflags \
+      gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)" \
+  && GST_LIBS="$(pkg-config --libs \
+      gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)" \
+  && c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread \
+      ${GST_CFLAGS} \
+      /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp \
+      ${GST_LIBS} -pie \
+      -o /opt/vast/image-root/usr/local/bin/vast_native_gst_probe \
+  && c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread \
+      ${GST_CFLAGS} \
+      /workspace/project/deploy/native_gst_probe/checkpoint_source_coordinator.cpp \
+      ${GST_LIBS} -pie \
+      -o /opt/vast/image-root/usr/local/bin/vast_checkpoint_source \
+  && c++ -std=c++17 -O3 -DNDEBUG -fPIC -shared -pthread \
+      ${GST_CFLAGS} \
+      /workspace/project/deploy/savant/publication/gstvastcheckpointbranchqueue.cpp \
+      ${GST_LIBS} \
+      -o /opt/vast/image-root/usr/local/lib/gstreamer-1.0/libgstvastcheckpointbranchqueue.so \
+  && chmod 0555 \
+      /opt/vast/image-root/usr/local/bin/vast_native_gst_probe \
+      /opt/vast/image-root/usr/local/bin/vast_checkpoint_source \
+      /opt/vast/image-root/usr/local/lib/gstreamer-1.0/libgstvastcheckpointbranchqueue.so \
+  && chmod 0444 /opt/vast/image-root/opt/vast/savant/canonical_distributed_module.yml \
+  && find /opt/vast/image-root -exec touch -h -d "@${SOURCE_DATE_EPOCH}" {} +
+
+FROM ${BASE_IMAGE}
+
+ARG VAST_SOURCE_SET_SHA256
+ARG VAST_DEPENDENCY_SET_SHA256
+ARG VAST_BUILD_CONTEXT_SHA256
+ARG VAST_BASE_IMAGE_ID
+ARG VAST_BUILD_IMAGE_ID
+
+LABEL org.vast.component="savant-native-probe-publication-foundation"
+LABEL org.vast.native_probe.kind="savant"
+LABEL org.vast.native_probe.source_sha="${VAST_SOURCE_SET_SHA256}"
+LABEL org.vast.publication-image.source-set-sha256="${VAST_SOURCE_SET_SHA256}"
+LABEL org.vast.publication-image.dependency-set-sha256="${VAST_DEPENDENCY_SET_SHA256}"
+LABEL org.vast.publication-image.build-context-sha256="${VAST_BUILD_CONTEXT_SHA256}"
+LABEL org.vast.publication-image.base-image-id="${VAST_BASE_IMAGE_ID}"
+LABEL org.vast.publication-image.build-image-id="${VAST_BUILD_IMAGE_ID}"
+
+ENV SAVANT_CANONICAL_MODULE=/opt/vast/savant/canonical_distributed_module.yml
+
+USER root
+COPY --from=native_builder /opt/vast/image-root/ /
 
 ENTRYPOINT ["/usr/local/bin/vast_native_gst_probe"]

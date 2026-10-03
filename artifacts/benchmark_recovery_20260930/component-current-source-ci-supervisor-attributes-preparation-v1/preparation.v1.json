@@ -1,0 +1,360 @@
+{
+  "actual_ci_dispatch": null,
+  "actual_ci_success": null,
+  "actual_ci_terminal": null,
+  "actual_setup_dispatch": null,
+  "actual_setup_terminal": null,
+  "all_original_function_and_class_AST_equal": true,
+  "artifact_kind": "vast_current_source_ci_literal_preparation_v1",
+  "author_generator": {
+    "epoch7": [
+      69,
+      1970324839398918,
+      33279,
+      1,
+      9961,
+      1790815618759731600,
+      1790815618759731600
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/prepare_literal_ci_v1.py",
+    "sha256": "ac92e1b897f566c74690fc57d03a70a4c8443962e9f7390ff9e243c049644f20",
+    "size_bytes": 9961
+  },
+  "benchmark_root_commit_required": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "benchmark_root_untouched": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "changes": {
+    "full_capture": [
+      {
+        "new": "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor-attributes",
+        "occurrences": 2,
+        "old": "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor"
+      }
+    ],
+    "recipe": [
+      {
+        "new": "78b869e4f8bc101413ed00776bd89d1089a8318d",
+        "occurrences": 3,
+        "old": "4cb9d8313cca71256179bc3b59cc6f9137e7b8ba"
+      },
+      {
+        "new": "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor-attributes",
+        "occurrences": 10,
+        "old": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831"
+      }
+    ],
+    "setup": [
+      {
+        "new": "78b869e4f8bc101413ed00776bd89d1089a8318d",
+        "occurrences": 1,
+        "old": "4cb9d8313cca71256179bc3b59cc6f9137e7b8ba"
+      },
+      {
+        "new": "recipe_pin['size_bytes']==7084",
+        "occurrences": 1,
+        "old": "recipe_pin['size_bytes']==6954"
+      },
+      {
+        "new": "11602ad3dcda9b7f432e2d93ada230c17a39e91879c596d631ecb9a11c8e65d5",
+        "occurrences": 1,
+        "old": "3cf7baa8a668f96753b1572f798c48d86cc15491359b9bbf1d6193e4819fb9a7"
+      }
+    ],
+    "setup_capture": [
+      {
+        "new": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1",
+        "occurrences": 1,
+        "old": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1"
+      },
+      {
+        "new": "before['sha256']=='dee5583e8ca3ca0cfae7e7ea479dd671207f76f37002ad99feb4129d347dfe77'",
+        "occurrences": 1,
+        "old": "before['sha256']=='0951dacf74c17fab49de6799375234c45dacfb778dcc22c7b4c9ae4a861b3b25'"
+      }
+    ]
+  },
+  "checkout": "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor-attributes",
+  "complete_raw_inverse_equal": true,
+  "eight_exact_commit_blob_oids": {
+    ".ci/integration-test-selection.v1.json": "69f60f1c660bda1842c298d68526caf6542beef9",
+    ".ci/requirements.txt": "573fbd07ce47deebb714386831bc421cc163c3bf",
+    "scripts/ci_external_test_observer_v1.py": "f86b2ac6a1e8a4fde4c61b1588e8162a8e714549",
+    "scripts/ci_namespace_diagnostic_v1.py": "ffd395c2730a1febb0bfab61341c7d2b890bc479",
+    "scripts/ci_test_selection_v1.py": "9df5481f47de07b27dfe3bb2f270bfbb99a72fc3",
+    "scripts/ci_userns_profile_v1.py": "a03a233b467a19877c6e5de15a3855a5d7d40501",
+    "scripts/prepare_ci_model_assets.py": "da1815c1fbe1be86239e0c2a90acf09b47f0e2a2",
+    "scripts/run_ci_checks.py": "fe89797166f5480d8861d220c6ec3ac16adaa84c"
+  },
+  "eight_physical_source_pins": {
+    ".ci/integration-test-selection.v1.json": {
+      "epoch7": [
+        69,
+        1970324839397180,
+        33279,
+        1,
+        34014,
+        1790787333660435700,
+        1790787333660435700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/.ci/integration-test-selection.v1.json",
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    },
+    ".ci/requirements.txt": {
+      "epoch7": [
+        69,
+        2251799816106028,
+        33279,
+        1,
+        454,
+        1790731871913020500,
+        1790731871913020500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/.ci/requirements.txt",
+      "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+      "size_bytes": 454
+    },
+    "scripts/ci_external_test_observer_v1.py": {
+      "epoch7": [
+        69,
+        1688849862683379,
+        33279,
+        1,
+        20916,
+        1790764891240741100,
+        1790764891240741100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_external_test_observer_v1.py",
+      "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+      "size_bytes": 20916
+    },
+    "scripts/ci_namespace_diagnostic_v1.py": {
+      "epoch7": [
+        69,
+        2533274792818481,
+        33279,
+        1,
+        23980,
+        1790804617823763700,
+        1790804617823763700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "4f7e10d2decd1411f4c31281ceda4374d4d8cf1971fcb36497d11cfca10d8cc0",
+      "size_bytes": 23980
+    },
+    "scripts/ci_test_selection_v1.py": {
+      "epoch7": [
+        69,
+        1407374885975880,
+        33279,
+        1,
+        9978,
+        1790802037424976300,
+        1790802037424976300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_test_selection_v1.py",
+      "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d",
+      "size_bytes": 9978
+    },
+    "scripts/ci_userns_profile_v1.py": {
+      "epoch7": [
+        69,
+        1407374885977088,
+        33279,
+        1,
+        25945,
+        1790804617836836400,
+        1790804617836836400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_userns_profile_v1.py",
+      "sha256": "2b268daa1f6b1c7095e2ad35aa333cfc88998dfc7f024e39cee04d178334a578",
+      "size_bytes": 25945
+    },
+    "scripts/prepare_ci_model_assets.py": {
+      "epoch7": [
+        69,
+        2814749769527988,
+        33279,
+        1,
+        30314,
+        1790746854776998800,
+        1790746854776998800
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/prepare_ci_model_assets.py",
+      "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+      "size_bytes": 30314
+    },
+    "scripts/run_ci_checks.py": {
+      "epoch7": [
+        69,
+        1407374885974064,
+        33279,
+        1,
+        29477,
+        1790801829184547900,
+        1790801829184547900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/run_ci_checks.py",
+      "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+      "size_bytes": 29477
+    }
+  },
+  "failed_previous_checkout_retained_untouched": "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor",
+  "files": {
+    "capture_original_full_ci_v1.py": {
+      "epoch7": [
+        69,
+        1970324839398922,
+        33279,
+        1,
+        10382,
+        1790815641303433700,
+        1790815641303433700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/capture_original_full_ci_v1.py",
+      "sha256": "7466113634f2b02da39f0dc6c47bc855bdb2fc850ec8f194f13ed2f4cef50c85",
+      "size_bytes": 10382
+    },
+    "capture_original_setup_v1.py": {
+      "epoch7": [
+        69,
+        1970324839398921,
+        33279,
+        1,
+        4860,
+        1790815641300063200,
+        1790815641300063200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/capture_original_setup_v1.py",
+      "sha256": "6527b4bac545e99c0d61d8b2e06ced7c482a08e6ed2dcd6d5bc64464d50cb45a",
+      "size_bytes": 4860
+    },
+    "recipe.v1.json": {
+      "epoch7": [
+        69,
+        1970324839398919,
+        33279,
+        1,
+        7084,
+        1790815641282011700,
+        1790815641282011700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/recipe.v1.json",
+      "sha256": "11602ad3dcda9b7f432e2d93ada230c17a39e91879c596d631ecb9a11c8e65d5",
+      "size_bytes": 7084
+    },
+    "setup_original_current_ci_v1.py": {
+      "epoch7": [
+        69,
+        1970324839398920,
+        33279,
+        1,
+        12547,
+        1790815641296523500,
+        1790815641296523500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/setup_original_current_ci_v1.py",
+      "sha256": "dee5583e8ca3ca0cfae7e7ea479dd671207f76f37002ad99feb4129d347dfe77",
+      "size_bytes": 12547
+    }
+  },
+  "full_ci_bounds_s": [
+    5400,
+    10
+  ],
+  "future_output_namespaces_absent": [
+    "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor-attributes",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor-attributes-original-output",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/original-setup-attempt01",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/original-full-ci-attempt01"
+  ],
+  "limitations": "Metadata literal preparation only. No new checkout, install, model, engine, namespace/profile, native test, benchmark or CI execution. Existing benchmark root and failed checkout were not modified. Future source/prerequisite/raw Git equality, original process ownership, complete stock CI results and final deadlines must be observed; this document grants no acceptance.",
+  "original95_metadata_custody_and_full_tracked_raw_byte_prerequisites_preserved": true,
+  "original_function_counts": {
+    "full_capture": 8,
+    "setup": 8,
+    "setup_capture": 4
+  },
+  "originals": {
+    "full_capture": {
+      "epoch7": [
+        69,
+        1688849862687249,
+        33279,
+        1,
+        10360,
+        1790813466239955000,
+        1790813466239955000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture_original_full_ci_v1.py",
+      "sha256": "d2ccc319ea70f21fa66710697dba2603f63b6508d6c29e69fd4410f997722281",
+      "size_bytes": 10360
+    },
+    "recipe": {
+      "epoch7": [
+        69,
+        3096224746236917,
+        33279,
+        1,
+        6954,
+        1790806822804008200,
+        1790806822804008200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-4cb9-preparation-v1/recipe.v1.json",
+      "sha256": "3cf7baa8a668f96753b1572f798c48d86cc15491359b9bbf1d6193e4819fb9a7",
+      "size_bytes": 6954
+    },
+    "setup": {
+      "epoch7": [
+        69,
+        2814749769526782,
+        33279,
+        1,
+        12547,
+        1790807671715135700,
+        1790807671715135700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-4cb9-preparation-v1/setup_original_current_ci_v1.py",
+      "sha256": "0469d49fa251540f70db5b35f4c65a80c63c0ffbc79ac0c09344b9f1d1e5f4e0",
+      "size_bytes": 12547
+    },
+    "setup_capture": {
+      "epoch7": [
+        69,
+        1970324839397930,
+        33279,
+        1,
+        4849,
+        1790813402913495900,
+        1790813402913495900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture_original_setup_v1.py",
+      "sha256": "d1bd578609c08f08824d9b9b26d27efb2f8f6fecd49778c6a4d5927d0e2cc86e",
+      "size_bytes": 4849
+    }
+  },
+  "output": "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor-attributes-original-output",
+  "preparation_read_fds_closed": true,
+  "prepared_at_ns": 1790815641353286816,
+  "ready_full_ci_argv_only_after_original_successful_setup": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/capture_original_full_ci_v1.py",
+    "78b869e4f8bc101413ed00776bd89d1089a8318d"
+  ],
+  "ready_setup_argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/capture_original_setup_v1.py"
+  ],
+  "schema_version": 1,
+  "setup_bounds_s": [
+    300,
+    10
+  ],
+  "source_commit": "78b869e4f8bc101413ed00776bd89d1089a8318d",
+  "source_pins_equal_original_recipe_and_current_commit": true,
+  "standing_authorization_record": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5922384139",
+  "status": "prepared_unexecuted_requires_peer_and_original_root_dispatch"
+}

@@ -1,0 +1,61 @@
+{
+  "artifact_kind": "vast_ci_profile_test_lane_supplement_pre_edit_v1",
+  "observed_at_ns": 1790801999242373500,
+  "parent_grant": "new policy controlmodule exact literal safety protection plus meaningful deferral/skip refusal, no declaration change",
+  "paths": [
+    {
+      "copy2693_member": false,
+      "host87_member": false,
+      "path": "scripts/ci_test_selection_v1.py",
+      "runtime_allowlists": {
+        "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/openvino-source-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-source-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-source-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-source-allowlist.txt": false,
+        "deploy/savant/publication/runtime-source-allowlist.txt": false
+      },
+      "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+      "size_bytes": 9945
+    },
+    {
+      "copy2693_member": false,
+      "host87_member": false,
+      "path": "tests/test_ci_test_selection_v1.py",
+      "runtime_allowlists": {
+        "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/openvino-source-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt": false,
+        "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt": false,
+        "deploy/deepstream/checkpoint/runtime-source-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt": false,
+        "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/openvino-source-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt": false,
+        "deploy/native_gst_probe/publication/savant-source-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-build-context-allowlist.txt": false,
+        "deploy/openvino_gva/publication/runtime-source-allowlist.txt": false,
+        "deploy/savant/publication/runtime-source-allowlist.txt": false
+      },
+      "sha256": "3d35114149e44d50f6d762fd6c05d4a903bbd9f1b5afc01c0bae4278b1933024",
+      "size_bytes": 11499
+    }
+  ]
+}

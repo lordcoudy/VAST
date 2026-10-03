@@ -1,0 +1,40 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/reduce.py"
+  ],
+  "child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "pgid": 40977,
+    "pid": 40977,
+    "ppid": 40976,
+    "session": 40977,
+    "startticks": 27706117
+  },
+  "execution_budget_s": 110,
+  "initial_head": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "observer": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "pgid": 40976,
+    "pid": 40976,
+    "ppid": 40972,
+    "session": 40976,
+    "startticks": 27706112
+  },
+  "scope": "Pure original sidecar reduction; unrelated three component modules may change.",
+  "source_before": {
+    "reduce.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/reduce.py",
+      "sha256": "f0855b5c2d1f587b795684766a6682d5e62e890b7f321a5dbe6d9f7713a71a87",
+      "size_bytes": 16508
+    },
+    "run.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/run.py",
+      "sha256": "6a9863de810ea22bdb4a23f0368771c616b750ffc46fce3b83f06dfc0cabe62f",
+      "size_bytes": 6414
+    }
+  },
+  "teardown_budget_s": 10
+}

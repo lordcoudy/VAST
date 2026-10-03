@@ -1,0 +1,14 @@
+test_actual_journalctl_parser_accepts_original_query_options_without_reading_journals (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_actual_journalctl_parser_accepts_original_query_options_without_reading_journals) ... FAIL
+
+======================================================================
+FAIL: test_actual_journalctl_parser_accepts_original_query_options_without_reading_journals (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_actual_journalctl_parser_accepts_original_query_options_without_reading_journals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 138, in test_actual_journalctl_parser_accepts_original_query_options_without_reading_journals
+    self.assertEqual(actual[0]['returncode'], 0)
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 1 test in 0.043s
+
+FAILED (failures=1)

@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import shutil
 import stat
 import sys
 import tempfile
@@ -18,6 +19,29 @@ if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
 import checkpoint_gstreamer_custom_qualification_fragment_v3 as target  # noqa: E402
+from analytics_execution_endpoint import (  # noqa: E402
+    expected_capability_from_binding_and_probe,
+    terminal_detector_identity,
+)
+
+
+def expected_terminal_detector(artifact: dict[str, object], resource: str) -> str:
+    binding_descriptor = artifact["analytics_execution_worker_binding"]
+    probe_descriptor = artifact["analytics_runtime_probe"]
+    assert isinstance(binding_descriptor, dict)
+    assert isinstance(probe_descriptor, dict)
+    binding = json.loads(
+        (ROOT / str(binding_descriptor["path"])).read_text(encoding="utf-8")
+    )
+    probe = json.loads(
+        (ROOT / str(probe_descriptor["path"])).read_text(encoding="utf-8")
+    )
+    capability = expected_capability_from_binding_and_probe(
+        binding=binding,
+        runtime_probe=probe,
+        resource=resource,
+    )
+    return terminal_detector_identity(capability)
 
 
 def sha256_file(path: Path) -> str:
@@ -45,6 +69,40 @@ def current_runtime_source_sha256() -> str:
         digest = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
         rows.extend(f"{digest}  {relative}\n".encode("ascii"))
     return hashlib.sha256(rows).hexdigest()
+
+
+def unit_fragment_project(project_root: Path) -> Path:
+    """Physical byte-contract fixture; full-grant methods never use this root.
+
+    Historical declared worker/parity metadata remain exact snapshots. Current
+    copied sources and canonical CI model bytes are checked by the original
+    materializer and assessor, with no live image claim.
+    """
+    fixtures = ROOT / ".ci/fixtures/gstreamer_fragment_unit_v1"
+    for source in sorted(fixtures.rglob("*")):
+        if source.is_file():
+            destination = project_root / source.relative_to(fixtures)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, destination)
+
+    allowlist = ROOT / "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt"
+    sources = set(allowlist.read_text(encoding="ascii").splitlines())
+    sources.update(value["path"] for value in target._runtime_sources(ROOT).values())
+    model_manifest, bindings = target._openvino_bindings(ROOT)
+    model_files = [bindings[branch][role] for branch in target.BRANCHES
+                   for role in ("model", "weights")]
+    if len({value["path"] for value in model_files}) != 8 or sum(
+        value["size_bytes"] for value in model_files
+    ) > 24 * 1024 * 1024:
+        raise ValueError("canonical CI model fixture domain/budget drifted")
+    sources.update(value["path"] for value in model_files)
+    sources.update((model_manifest["path"], target.ACCEPTED_PARITY[0],
+                    "scripts/publication_policy_contract.py"))
+    for relative in sorted(sources):
+        destination = project_root / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / relative, destination)
+    return project_root
 
 
 class GstreamerCustomQualificationFragmentV3Tests(unittest.TestCase):
@@ -167,10 +225,10 @@ class GstreamerCustomQualificationFragmentV3Tests(unittest.TestCase):
                 self.assertEqual(
                     artifact["accepted_model_parity_manifest"],
                     {
-                        "path": "configs/checkpoint_analytics_model_parity.accepted.yaml",
-                        "size_bytes": 25229,
-                        "sha256": "a570b8cc4bcc66119930f01239ed0fb2de7accd449b769d5a4b0511d70fb72b6",
-                        "content_identity_sha256": "05059ee44a21a82728f2608dc13804f55cc7df9eeedb245ad2d63a7c1ca46ee8",
+                        "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.yaml",
+                        "size_bytes": 30052,
+                        "sha256": "36511595d6c37685f97add9e51f9105e901aac36fa1ee1a141a623f02cfbb6b5",
+                        "content_identity_sha256": "0a8faf344b40a6bc11f8e4101b1cb45d2129db7b8897b697e59466368ff6dee0",
                     },
                 )
                 self.assertEqual(
@@ -212,9 +270,7 @@ class GstreamerCustomQualificationFragmentV3Tests(unittest.TestCase):
                 )
                 self.assertEqual(
                     artifact["runtime_identity"]["terminal_detector"],
-                    artifact["analytics_execution_worker_binding_identity"][
-                        "model_id"
-                    ],
+                    expected_terminal_detector(artifact, row["resource"]),
                 )
                 self.assertIn(
                     "analytics-execution:",
@@ -222,56 +278,66 @@ class GstreamerCustomQualificationFragmentV3Tests(unittest.TestCase):
                 )
 
     def test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as temporary:
-            output = Path(temporary).resolve() / "qualification"
-            first = target.materialize_qualification_fragment(
-                project_root=ROOT,
-                output_dir=output,
-            )
-            second = target.materialize_qualification_fragment(
-                project_root=ROOT,
-                output_dir=output,
-            )
-            self.assertEqual(first, second)
-
-            fragment_path = output / target.FRAGMENT_FILENAME
-            fragment = json.loads(fragment_path.read_text(encoding="utf-8"))
-            fragment["unexpected"] = True
-            fragment_path.write_text(
-                json.dumps(fragment, sort_keys=True, separators=(",", ":")) + "\n",
-                encoding="utf-8",
-            )
-            assessment = target.assess_qualification_fragment(
-                project_root=ROOT,
-                fragment_path=fragment_path,
-            )
-            self.assertFalse(assessment["passed"])
-            self.assertIn("fields", " ".join(assessment["blockers"]))
-            with self.assertRaises(target.QualificationFragmentError):
-                target.materialize_qualification_fragment(
-                    project_root=ROOT,
+        with tempfile.TemporaryDirectory() as temporary:
+            project_root = unit_fragment_project(Path(temporary).resolve())
+            with mock.patch.object(
+                target, "GSTREAMER_SOURCE_ALLOWLIST_SHA256",
+                sha256_file(project_root / "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt"),
+            ):
+                output = Path(temporary).resolve() / "qualification"
+                first = target.materialize_qualification_fragment(
+                    project_root=project_root,
                     output_dir=output,
                 )
+                second = target.materialize_qualification_fragment(
+                    project_root=project_root,
+                    output_dir=output,
+                )
+                self.assertEqual(first, second)
+
+                fragment_path = output / target.FRAGMENT_FILENAME
+                fragment = json.loads(fragment_path.read_text(encoding="utf-8"))
+                fragment["unexpected"] = True
+                fragment_path.write_text(
+                    json.dumps(fragment, sort_keys=True, separators=(",", ":")) + "\n",
+                    encoding="utf-8",
+                )
+                assessment = target.assess_qualification_fragment(
+                    project_root=project_root,
+                    fragment_path=fragment_path,
+                )
+                self.assertFalse(assessment["passed"])
+                self.assertIn("fields", " ".join(assessment["blockers"]))
+                with self.assertRaises(target.QualificationFragmentError):
+                    target.materialize_qualification_fragment(
+                        project_root=project_root,
+                        output_dir=output,
+                    )
 
     def test_assessment_recomputes_and_rejects_stale_runtime_source_closure(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as temporary:
-            output = Path(temporary).resolve() / "qualification"
-            target.materialize_qualification_fragment(
-                project_root=ROOT,
-                output_dir=output,
-            )
+        with tempfile.TemporaryDirectory() as temporary:
+            project_root = unit_fragment_project(Path(temporary).resolve())
             with mock.patch.object(
-                target, "GSTREAMER_RUNTIME_SOURCE_SHA256", "0" * 64,
+                target, "GSTREAMER_SOURCE_ALLOWLIST_SHA256",
+                sha256_file(project_root / "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt"),
             ):
-                assessment = target.assess_qualification_fragment(
-                    project_root=ROOT,
-                    fragment_path=output / target.FRAGMENT_FILENAME,
+                output = Path(temporary).resolve() / "qualification"
+                target.materialize_qualification_fragment(
+                    project_root=project_root,
+                    output_dir=output,
                 )
-            self.assertFalse(assessment["passed"])
-            self.assertIn(
-                "transitive runtime source identity drifted",
-                " ".join(assessment["blockers"]),
-            )
+                with mock.patch.object(
+                    target, "GSTREAMER_RUNTIME_SOURCE_SHA256", "0" * 64,
+                ):
+                    assessment = target.assess_qualification_fragment(
+                        project_root=project_root,
+                        fragment_path=output / target.FRAGMENT_FILENAME,
+                    )
+                self.assertFalse(assessment["passed"])
+                self.assertIn(
+                    "transitive runtime source identity drifted",
+                    " ".join(assessment["blockers"]),
+                )
 
 
 if __name__ == "__main__":

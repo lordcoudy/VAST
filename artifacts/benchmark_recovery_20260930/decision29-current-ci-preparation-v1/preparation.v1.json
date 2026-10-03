@@ -1,0 +1,170 @@
+{
+  "Git_or_production_or_test_mutation": false,
+  "all_original_module_function_ASTs_equal": true,
+  "author": "/root/decision28_source_peer",
+  "author_handles_released": true,
+  "benchmark_checkpoint_B": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "bounds": {
+    "full_ci_cleanup_s": 10,
+    "full_ci_each_channel_document_bytes": 4194304,
+    "full_ci_work_s": 5400,
+    "setup_cleanup_s": 10,
+    "setup_document_bytes": 4194304,
+    "setup_each_channel_bytes": 1048576,
+    "setup_work_s": 300
+  },
+  "diffs": {
+    "capture_original_full_ci_v1.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_full_ci_v1.py.diff",
+      "sha256": "f137faeec1e9fb0efae1f5468afd9ed47b5d5bd42d2ef59e410036ba5312060d",
+      "size_bytes": 2676
+    },
+    "capture_original_setup_v1.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_setup_v1.py.diff",
+      "sha256": "94893c45c671ef6d5492fb5fcb2ad3c67b0bc2b14615bc2095794cadca677e54",
+      "size_bytes": 1781
+    },
+    "setup_original_current_ci_v1.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/setup_original_current_ci_v1.py.diff",
+      "sha256": "7dcec8e4e5962346eea4a3db4b7b9f1b3547b2f6ccc2b8f9782e7f14693a3334",
+      "size_bytes": 9690
+    }
+  },
+  "exact_helper_raw_forward_and_inverse_equal": true,
+  "future_ci_checkpoint_C": null,
+  "future_full_ci_outcome": null,
+  "future_full_ci_owner": null,
+  "future_recipe_bound_descriptor": null,
+  "future_setup_outcome": null,
+  "future_setup_owner": null,
+  "genuine_B95_manifest": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/decision28-current95-original-attempt01/current95-inputs.v1.json",
+    "sha256": "3c9b7eca9c9b33e01624764b7ccfccb9d748c3ac9623389f7e12447f0085b150",
+    "size_bytes": 44579
+  },
+  "independent_source_review_required": true,
+  "limitations": [
+    "Author statically reads metadata and source bytes only; no target helper import/compile/execution, tests, Git, model, native build, engine, device or CI operation.",
+    "Original setup holds95 seven epochs; its separate fresh author/peer full-byte audit is retained as a required gate. No setup full95 hash claim is made.",
+    "Fresh checkout/output/capture names are declared but their actual absence/filesystem/space/owner must be observed by the original guarded setup at dispatch. No future result is inferred."
+  ],
+  "literal_replacements": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/literal-replacements.v1.json",
+    "sha256": "debaf0c09b073c4f9b57cde37bbc188cf2535037d88299224612bc8941c21a43",
+    "size_bytes": 6194
+  },
+  "mandatory_before_full_ci_grant": "Successful original setup plus fresh original full95 SHA/size and seven-epoch author/peer custody join, true tool rc/process/FD/final/late closure, actual immutable C recipe review and explicit ROOT dispatch grant.",
+  "new_capture_namespace": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1",
+  "new_checkout": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+  "new_stock_output": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output",
+  "new_target_module_functions": [],
+  "original_helpers": [
+    {
+      "module_function_names": [
+        "clock",
+        "epoch",
+        "identity",
+        "descriptor",
+        "save",
+        "owner",
+        "command",
+        "scan"
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-current95-ci-successor-preparation-v1\\setup_original_current_ci_v1.py",
+      "sha256": "8bddfb1ceccd736ebf1ab260b0f83637e950995666ced6db63167eff98234571",
+      "size_bytes": 15174
+    },
+    {
+      "module_function_names": [
+        "descriptor",
+        "save",
+        "owner",
+        "scan"
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-current95-ci-successor-preparation-v1\\capture_original_setup_v1.py",
+      "sha256": "49beedf798ccd1288550b9173b6a2337b04a60231a8c2f8d121142ff2f14b37e",
+      "size_bytes": 4942
+    },
+    {
+      "module_function_names": [
+        "clock",
+        "epoch",
+        "err",
+        "owner",
+        "write",
+        "digest",
+        "pin",
+        "scan"
+      ],
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-current95-ci-successor-preparation-v1\\capture_original_full_ci_v1.py",
+      "sha256": "3040540f4a12efdb259ce5143748572671ddb9fcf2e8606c2171d771896eff77",
+      "size_bytes": 10983
+    }
+  ],
+  "original_raw_snapshots": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/setup_original_current_ci_v1.py.original.raw",
+      "sha256": "8bddfb1ceccd736ebf1ab260b0f83637e950995666ced6db63167eff98234571",
+      "size_bytes": 15174
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_setup_v1.py.original.raw",
+      "sha256": "49beedf798ccd1288550b9173b6a2337b04a60231a8c2f8d121142ff2f14b37e",
+      "size_bytes": 4942
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_full_ci_v1.py.original.raw",
+      "sha256": "3040540f4a12efdb259ce5143748572671ddb9fcf2e8606c2171d771896eff77",
+      "size_bytes": 10983
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/recipe.template.v1.json.original.raw",
+      "sha256": "ee1878fe41a5a8e85856994af820dade6c5ef4a0d9f91eba1f7e441230c11a1c",
+      "size_bytes": 7360
+    }
+  ],
+  "recipe_inverse_equal_except_declared_bindings_preconditions_and_pins": true,
+  "recipe_template": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/recipe.template.v1.json",
+    "sha256": "dcda3e04500cb662a7011adea5460a9959be6d9bc831dbfd58937fe457310a3e",
+    "size_bytes": 10530
+  },
+  "schema_version": 1,
+  "source_impact_does_not_waive_any_actual95_epoch_or_new_checkout_raw_Git_guard": true,
+  "source_impact_inventory": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/source-impact.v1.json",
+    "sha256": "dcdc63621620f579653574d0a1380baac2d683c117d83b8b194b46e67abb2a41",
+    "size_bytes": 160709
+  },
+  "source_impact_review": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/review.v1.json",
+    "sha256": "835bf6c7c991c78062adc39459b34f51eab7c598c71185a7b00fe777f62f9d6d",
+    "size_bytes": 9951
+  },
+  "source_only_semantic_corrections": [
+    "B is an explicit unchanged benchmark commit, distinct from future C.",
+    "The current95 source_commit and both benchmark HEAD checks remain B; the new checkout/source checks remain C.",
+    "The manifest is the exact genuine Decision28 B95 original, never the old9d47/current95 namespace or a newly fabricated collector.",
+    "Exact root-reviewed source-impact descriptors and four CI pins are required in the immutable recipe; all four new checkout paths join full raw Git rows.",
+    "Only diagnostic/profile source pin bytes change in the original eight CI pins; stock commands, native builds/test selection/skips/policies and all helper functions remain unchanged."
+  ],
+  "source_pins": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/setup_original_current_ci_v1.py",
+      "sha256": "aee8876b15a54fbeb222ac6999536ef49be1eaa115e01ccd1a72f860021b547c",
+      "size_bytes": 16780
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_setup_v1.py",
+      "sha256": "51a3d441677adeec61e9d0ac46bb48b16e286f93f521ea7823b121e99ecb44e3",
+      "size_bytes": 4931
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_full_ci_v1.py",
+      "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+      "size_bytes": 12429
+    }
+  ],
+  "status": "authored_source_only_unexecuted_C_unbound_B_preserved",
+  "targets_imported_compiled_or_executed": false
+}

@@ -11,14 +11,20 @@ import math
 import os
 import re
 import socket
+import shutil
+import tempfile
 import threading
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
+from analytics_execution_endpoint import terminal_detector_identity
+from analytics_execution_worker import validate_worker_capability
+
 from benchmark_contract import (
     POLICY_DECISION_COLUMNS,
     TELEMETRY_SCHEMA_VERSION,
+    validate_frozen_policy_decisions,
     validate_frozen_policy_feedback,
     validate_policy_decisions,
 )
@@ -33,6 +39,26 @@ from publication_policy_contract import (
     assess_capability_manifest,
     bind_native_decision_evidence,
     select_static_hybrid_map,
+    validate_decision_record,
+)
+from publication_policy_frozen_replay_v1 import (
+    canonical_json_v1, payload_with_sha256_v1,
+)
+from publication_policy_projection_v1 import (
+    MAX_ACCEPTANCE_AGGREGATE_BYTES_V1,
+    MAX_RUNTIME_HISTORY_BYTES_V1,
+    MAX_RUNTIME_HISTORY_EVENTS_V1,
+    MAX_RUNTIME_HISTORY_LINE_BYTES_V1,
+    RUNTIME_HISTORY_JSONL,
+    project_accepted_decision_v1,
+    reconstruct_original_decision_v1,
+    serialize_runtime_history_v1,
+    validate_published_decisions_v1,
+)
+from publication_operational_request_domain_v1 import (
+    MAX_NATIVE_DECISIONS_V1, NATIVE_OPERATIONAL_JSONL, OperationalDomainError,
+    build_native_occurrence_v1, validate_native_header_v1,
+    validate_native_request_source_v1, write_native_domain_v1,
 )
 
 
@@ -43,6 +69,14 @@ NATIVE_EXECUTION_BINDING_PROVENANCE = "native_scheduler_execution_binding_v1"
 POLICY_DECISIONS_JSONL = "publication_policy_decisions.jsonl"
 POLICY_FEEDBACK_JSONL = "publication_policy_feedback.jsonl"
 POLICY_DECISIONS_CSV = "policy_decisions.csv"
+
+_NVIDIA_CUDA_TERMINAL_BACKEND = re.compile(
+    r"^analytics-execution:tensorrt_cuda;runtime=[^;\r\n]+;"
+    r"native_api=[^;\r\n]+;device=NVIDIA_CUDA:[^;\r\n]+$"
+)
+_DROP_DETECTOR_IDENTITY = re.compile(
+    r"^(?!identity;|topology_only;)[A-Za-z0-9._-]{1,80};model_sha256=[0-9a-f]{64}$"
+)
 
 _REQUEST_FIELDS = {
     "schema_version",
@@ -94,10 +128,117 @@ _TERMINAL_FIELDS = {
 }
 
 
+EXTERNAL_EXECUTION_MANIFEST_KIND = "vast_checkpoint_external_analytics_execution_manifest_v1"
+
+
+def _assess_external_worker_execution_manifest(
+    manifest: Mapping[str, Any],
+    *,
+    system: str | None,
+    capability_manifest: Mapping[str, Any] | None,
+    preprocessing_contract_sha256: str | None,
+) -> dict[str, Any]:
+    """Bind all eight real service workers to the exact policy authority."""
+    blockers: list[str] = []
+    ready: dict[str, set[str]] = {resource: set() for resource in RESOURCES}
+    expected_fields = {
+        "schema_version", "artifact_kind", "system",
+        "policy_capability_manifest_sha256", "execution_config", "branches",
+    }
+    if set(manifest) != expected_fields or manifest.get("schema_version") != 1:
+        blockers.append("external_execution_manifest_schema_mismatch")
+    if system not in {"openvino_gva", "gstreamer_custom"} or manifest.get("system") != system:
+        blockers.append("external_execution_manifest_system_mismatch")
+    execution = manifest.get("execution_config")
+    if not isinstance(execution, Mapping) or set(execution) != {"path", "size_bytes", "sha256"}:
+        blockers.append("external_execution_config_descriptor_missing")
+    else:
+        path = execution.get("path")
+        if (not isinstance(path, str) or not path or ":" in path or "\\" in path
+                or any(part in {"", ".", ".."} for part in path.split("/"))
+                or type(execution.get("size_bytes")) is not int or execution["size_bytes"] <= 0
+                or not isinstance(execution.get("sha256"), str)
+                or re.fullmatch(r"[0-9a-f]{64}", execution["sha256"]) is None):
+            blockers.append("external_execution_config_descriptor_invalid")
+    assessment = assess_capability_manifest(capability_manifest)
+    if not assessment["passed"]:
+        blockers.extend(assessment["blockers"])
+    if manifest.get("policy_capability_manifest_sha256") != assessment.get("manifest_sha256"):
+        blockers.append("external_execution_policy_manifest_identity_mismatch")
+    if not isinstance(preprocessing_contract_sha256, str) or re.fullmatch(r"[0-9a-f]{64}", preprocessing_contract_sha256) is None:
+        blockers.append("external_execution_preprocessing_identity_missing")
+    branches = manifest.get("branches")
+    if not isinstance(branches, Mapping) or set(branches) != set(ANALYTICS_BRANCHES):
+        blockers.append("external_execution_branch_set_mismatch")
+    if not blockers:
+        for branch in ANALYTICS_BRANCHES:
+            resources = branches[branch]
+            if not isinstance(resources, Mapping) or set(resources) != set(RESOURCES):
+                blockers.append(f"external_execution:{branch}:resource_set_mismatch")
+                continue
+            checked: dict[str, dict[str, Any]] = {}
+            for resource in RESOURCES:
+                label = f"external_execution:{branch}:{resource}"
+                try:
+                    worker = validate_worker_capability(resources[resource])
+                    binding = capability_manifest["systems"][system]["branches"][branch][resource]
+                    engine = "openvino_cpu" if resource == "cpu" else "tensorrt_cuda"
+                    if worker["branch"] != branch or worker["engine"] != engine:
+                        raise ValueError("branch or resource identity mismatch")
+                    if worker["preprocessing_contract_sha256"] != preprocessing_contract_sha256:
+                        raise ValueError("preprocessing identity mismatch")
+                    expected = {
+                        "worker_image_digest": worker["worker_image_id"],
+                        "implementation_version": "sha256:" + worker["worker_implementation_sha256"],
+                        "terminal_detector": terminal_detector_identity(worker),
+                        # Same attested terminal format emitted by the service;
+                        # native images do not ship the SDK protocol bridge.
+                        "terminal_backend": (
+                            f"analytics-execution:{worker['engine']};runtime={worker['runtime_name']};"
+                            f"native_api={worker['native_inference_api']};"
+                            f"device={worker['device_api']}:{worker['device_id']}"
+                        ),
+                        "device_api": "CPU" if resource == "cpu" else "NVIDIA_CUDA",
+                        "gpu_id": None if resource == "cpu" else 0,
+                    }
+                    if any(binding.get(key) != value for key, value in expected.items()):
+                        raise ValueError("worker differs from exact policy capability binding")
+                    checked[resource] = worker
+                    ready[resource].add(branch)
+                except (ValueError, TypeError, KeyError) as error:
+                    blockers.append(f"{label}:{error}")
+            if len(checked) == 2 and any(
+                checked["cpu"][field] != checked["gpu"][field]
+                for field in ("model_id", "source_model_sha256", "preprocessing_contract_sha256", "output_contract_sha256")
+            ):
+                blockers.append(f"external_execution:{branch}:cpu_gpu_model_contract_mismatch")
+    passed = not blockers and all(ready[resource] == set(ANALYTICS_BRANCHES) for resource in RESOURCES)
+    return {
+        "schema_version": 1,
+        "artifact_kind": "vast_checkpoint_gstreamer_native_policy_capability_assessment",
+        "passed": passed,
+        "status": "ready" if passed else "blocked",
+        "cpu_ready_branches": sorted(ready["cpu"]),
+        "nvidia_gpu_ready_branches": sorted(ready["gpu"]),
+        "eligible_policies": list(POLICIES) if passed else [],
+        "blockers": list(dict.fromkeys(blockers)),
+    }
+
+
 def assess_gstreamer_native_policy_execution_manifest(
     manifest: Mapping[str, Any] | None,
+    *,
+    system: str | None = None,
+    capability_manifest: Mapping[str, Any] | None = None,
+    preprocessing_contract_sha256: str | None = None,
 ) -> dict[str, Any]:
     """Assess real CPU/NVIDIA analytics paths; OpenVINO ``GPU`` is not CUDA."""
+
+    if isinstance(manifest, Mapping) and manifest.get("artifact_kind") == EXTERNAL_EXECUTION_MANIFEST_KIND:
+        return _assess_external_worker_execution_manifest(
+            manifest, system=system, capability_manifest=capability_manifest,
+            preprocessing_contract_sha256=preprocessing_contract_sha256,
+        )
 
     blockers: list[str] = []
     cpu_ready: set[str] = set()
@@ -182,6 +323,66 @@ def assess_gstreamer_native_policy_execution_manifest(
         "eligible_policies": list(POLICIES) if cpu_complete and gpu_complete else (["cpu_only"] if cpu_complete else []),
         "blockers": blockers,
     }
+
+
+def native_policy_identity_environment(
+    *,
+    system: str,
+    capability_manifest: Mapping[str, Any],
+) -> dict[str, str]:
+    """Expose each branch's frozen CPU/GPU policy identities to native workers.
+
+    Qualification-v2 identities are coordinate hashes over the image patch,
+    parity and analytics bindings, so the native probe cannot derive them; it
+    binds the manifest's values exactly and the coordinator rejects any other.
+    """
+    try:
+        branches = capability_manifest["systems"][system]["branches"]
+    except (KeyError, TypeError) as exc:
+        raise NativePolicyRuntimeError(f"{system} capability bindings are missing") from exc
+    if not isinstance(branches, Mapping) or set(branches) != set(ANALYTICS_BRANCHES):
+        raise NativePolicyRuntimeError("native policy identities do not cover every branch")
+    environment: dict[str, str] = {}
+    for branch in ANALYTICS_BRANCHES:
+        drop_detectors: set[str] = set()
+        for resource in RESOURCES:
+            try:
+                binding = branches[branch][resource]
+                native = binding["native_evidence"]
+                drop_detector = binding["terminal_detector"]
+                runtime_identity = binding["runtime_identity"]
+                values = {
+                    "IMPLEMENTATION_ID": _text(binding["implementation_id"], "implementation_id"),
+                    "EMITTER_ID": _text(native["emitter_id"], "emitter_id"),
+                    "EMITTER_SHA256": str(native["emitter_sha256"]),
+                }
+            except (KeyError, TypeError) as exc:
+                raise NativePolicyRuntimeError(
+                    f"{branch}:{resource}: native policy identity is missing"
+                ) from exc
+            if re.fullmatch(r"[0-9a-f]{64}", values["EMITTER_SHA256"]) is None:
+                raise NativePolicyRuntimeError(f"{branch}:{resource}: emitter_sha256 is invalid")
+            if (
+                type(drop_detector) is not str
+                or _DROP_DETECTOR_IDENTITY.fullmatch(drop_detector) is None
+                or not isinstance(runtime_identity, Mapping)
+                or runtime_identity.get("terminal_detector") != drop_detector
+            ):
+                raise NativePolicyRuntimeError(
+                    f"{branch}:{resource}: external drop detector identity is invalid or drifted"
+                )
+            drop_detectors.add(drop_detector)
+            for field, value in values.items():
+                environment[f"VAST_CHECKPOINT_ANALYTICS_{resource.upper()}_{field}_{branch}"] = value
+        if len(drop_detectors) != 1:
+            raise NativePolicyRuntimeError(
+                f"{branch}: CPU/GPU external drop detector identities differ"
+            )
+        environment[f"VAST_CHECKPOINT_ANALYTICS_DROP_DETECTOR_{branch}"] = next(
+            iter(drop_detectors)
+        )
+    environment["VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE"] = "1"
+    return environment
 
 
 def require_exact_native_cpu_capability_bindings(
@@ -329,7 +530,9 @@ class _DecisionState:
     input_frame_key: str
     transport_pts_ns: int
     feature_observed_timestamp_ms: float
+    submitted_decision_time_ms: float
     record: dict[str, Any]
+    decision_request: dict[str, Any] | None = None
     path: dict[str, Any] | None = None
     terminal: dict[str, Any] | None = None
     accepted: dict[str, Any] | None = None
@@ -354,6 +557,7 @@ class NativePolicyRuntimeCoordinator:
         capability_manifest: Mapping[str, Any],
         calibration: Mapping[str, Any],
         static_hybrid_map: Mapping[str, Any] | None = None,
+        operational_context: Mapping[str, Any] | None = None,
     ) -> None:
         self.run_id = _text(run_id, "run_id")
         self.arm_id = _text(arm_id, "arm_id")
@@ -415,12 +619,57 @@ class NativePolicyRuntimeCoordinator:
             static_hybrid_map=engine_static_map,
         )
         self._engine.reset(self.arm_id)
+        self._initial_policy_state = self._engine.state_snapshot()
+        self._operational_context = None
+        self._operational_error: str | None = None
+        if operational_context is not None:
+            if not isinstance(operational_context, Mapping) or set(operational_context) != {"header", "output_dir"}:
+                raise NativePolicyRuntimeError("operational context fields mismatch")
+            header = copy.deepcopy(dict(operational_context["header"]))
+            try:
+                validate_native_header_v1(header, require_sha="sha256" in header)
+            except ValueError as exc:
+                raise NativePolicyRuntimeError(f"operational context is blocked: {exc}") from exc
+            for key, expected in (("run_id", self.run_id), ("system", self.system),
+                                  ("scenario", self.scenario), ("codec", self.codec),
+                                  ("policy", self.policy), ("deadline_ms", self.deadline_ms),
+                                  ("initial_state", self._initial_policy_state)):
+                if canonical_json_v1(header[key]) != canonical_json_v1(expected):
+                    raise NativePolicyRuntimeError(f"operational context {key} mismatch")
+            self._operational_context = {"header": header,
+                                         "output_dir": Path(operational_context["output_dir"])}
         self._lock = threading.RLock()
         self._next_decision_seq = 1
         self._next_feedback_seq = 1
+        self._last_decision_timestamp_ms = 0.0
         self._resource_available_ms = {resource: 0.0 for resource in RESOURCES}
         self._states: dict[str, _DecisionState] = {}
         self._decision_by_execution: dict[tuple[str, str, str, int], str] = {}
+        # Actual successful commits only, recorded under the same coordinator
+        # lock. Records already live in _states; this log stores compact refs.
+        self._history_events: list[dict[str, Any]] = []
+        self._history_capture_bytes = 4096  # bounded header reservation
+        self._history_error: str | None = None
+
+    def _capture_history_event(self, event: Mapping[str, Any]) -> None:
+        if self.policy != "adaptive_weights":
+            return
+        captured = payload_with_sha256_v1({
+            "schema_version": 1,
+            "artifact_kind": "vast_publication_policy_runtime_history_event_v1",
+            "event_seq": len(self._history_events) + 1,
+            **event,
+        })
+        line_bytes = len(canonical_json_v1(captured)) + 1
+        if (
+            len(self._history_events) >= MAX_RUNTIME_HISTORY_EVENTS_V1
+            or line_bytes > MAX_RUNTIME_HISTORY_LINE_BYTES_V1
+            or self._history_capture_bytes + line_bytes > MAX_RUNTIME_HISTORY_BYTES_V1
+        ):
+            self._history_error = "adaptive runtime history capture exceeds frozen bounds"
+            raise NativePolicyRuntimeError(self._history_error)
+        self._history_events.append(captured)
+        self._history_capture_bytes += line_bytes
 
     def _binding(self, branch: str, resource: str) -> Mapping[str, Any]:
         return self._capability_manifest["systems"][self.system]["branches"][branch][resource]
@@ -436,6 +685,14 @@ class NativePolicyRuntimeCoordinator:
 
     def _handle_request(self, worker_id: str, message: Mapping[str, Any]) -> dict[str, Any]:
         _require_exact_fields(message, _REQUEST_FIELDS)
+        if self._operational_context is not None:
+            try:
+                validate_native_request_source_v1(message)
+                if len(self._states) >= MAX_NATIVE_DECISIONS_V1:
+                    raise OperationalDomainError("native operational state exceeds 6744 decisions")
+            except ValueError as exc:
+                self._operational_error = str(exc)
+                raise NativePolicyRuntimeError(self._operational_error) from exc
         if message.get("message_type") != "decision_request":
             raise NativePolicyRuntimeError("expected decision_request")
         observed_worker = _text(message.get("worker_id"), "worker_id")
@@ -452,14 +709,26 @@ class NativePolicyRuntimeCoordinator:
         if branch not in self.branches:
             raise NativePolicyRuntimeError("decision branch is outside analytics_only scope")
         arrival_ms = _finite(message.get("arrival_ms"), "arrival_ms")
-        decision_time_ms = _finite(message.get("decision_time_ms"), "decision_time_ms", positive=True)
+        submitted_decision_time_ms = _finite(
+            message.get("decision_time_ms"), "decision_time_ms", positive=True
+        )
         observed_ms = _finite(
             message.get("feature_observed_timestamp_ms"),
             "feature_observed_timestamp_ms",
             positive=True,
         )
-        if observed_ms > decision_time_ms or arrival_ms > decision_time_ms:
+        if (
+            observed_ms > submitted_decision_time_ms
+            or arrival_ms > submitted_decision_time_ms
+        ):
             raise NativePolicyRuntimeError("decision features or arrival occur after the decision")
+        # Worker processes capture their timestamps before contending for this
+        # coordinator lock.  The decision sequence is assigned here, so bind
+        # its timestamp to the same serialized order while retaining the
+        # original feature observation for provenance/age.
+        decision_time_ms = max(
+            submitted_decision_time_ms, self._last_decision_timestamp_ms
+        )
         raw_depths = message.get("queue_depths")
         if not isinstance(raw_depths, Mapping) or set(raw_depths) != set(RESOURCES):
             raise NativePolicyRuntimeError("queue_depths must contain exactly cpu and gpu")
@@ -523,11 +792,24 @@ class NativePolicyRuntimeCoordinator:
             input_frame_key=input_frame_key,
             transport_pts_ns=transport_pts_ns,
             feature_observed_timestamp_ms=observed_ms,
+            submitted_decision_time_ms=submitted_decision_time_ms,
             record=record,
+            decision_request=(copy.deepcopy(dict(message))
+                              if self._operational_context is not None else None),
         )
         self._states[decision_id] = state
         self._decision_by_execution[execution_key] = decision_id
+        self._last_decision_timestamp_ms = float(
+            record["request"]["decision_time_ms"]
+        )
         self._next_decision_seq += 1
+        if self.policy == "adaptive_weights":
+            self._capture_history_event({
+                "event_type": "decision_issued", "runtime_decision_seq": decision_seq,
+                "decision_id": decision_id, "measurement": False,
+                "issued_record_sha256": record["sha256"],
+                "accepted_record_sha256": "0" * 64, "accepted_record": None,
+            })
         binding = self._binding(branch, selected)
         native = binding["native_evidence"]
         return {
@@ -594,7 +876,12 @@ class NativePolicyRuntimeCoordinator:
                 raise NativePolicyRuntimeError(f"native path {field} does not match capability binding")
         _text(message.get("event_id"), "event_id")
         timestamp_ms = _finite(message.get("timestamp_ms"), "timestamp_ms", positive=True)
-        if timestamp_ms < float(state.record["request"]["decision_time_ms"]):
+        # Bound the path entry by the decision timestamp the worker submitted,
+        # not by the serialized value this coordinator may have raised above it.
+        # The raised value is never returned to the worker, so holding a worker
+        # to it turns a host wall-clock regression between two concurrent
+        # workers into a false native ordering violation.
+        if timestamp_ms < state.submitted_decision_time_ms:
             raise NativePolicyRuntimeError("native path entry precedes its decision")
         state.path = copy.deepcopy(dict(message))
         return {
@@ -662,7 +949,8 @@ class NativePolicyRuntimeCoordinator:
                 identity.get("device_api") == "NVIDIA_CUDA"
                 and type(identity.get("gpu_id")) is int
                 and identity.get("gpu_id") == 0
-                and "device=NVIDIA_CUDA:0" in expected_backend
+                and _NVIDIA_CUDA_TERMINAL_BACKEND.fullmatch(expected_backend)
+                is not None
             )
         if (
             not identity_projection_matches
@@ -718,6 +1006,12 @@ class NativePolicyRuntimeCoordinator:
         if feedback is not None:
             state.feedback_seq = self._next_feedback_seq
             self._next_feedback_seq += 1
+            self._capture_history_event({
+                "event_type": "feedback_applied", "runtime_feedback_seq": state.feedback_seq,
+                "decision_id": state.record["decision_id"], "measurement": False,
+                "issued_record_sha256": state.record["sha256"],
+                "feedback_record_sha256": feedback["sha256"], "feedback_record": None,
+            })
         self._resource_available_ms[selected] = max(
             self._resource_available_ms[selected],
             terminal_ms,
@@ -733,6 +1027,10 @@ class NativePolicyRuntimeCoordinator:
         if not isinstance(message, Mapping):
             raise NativePolicyRuntimeError("native policy message must be a JSON object")
         with self._lock:
+            if self._operational_error is not None:
+                raise NativePolicyRuntimeError(self._operational_error)
+            if self._history_error is not None:
+                raise NativePolicyRuntimeError(self._history_error)
             kind = message.get("message_type")
             if kind == "decision_request":
                 return self._handle_request(worker_id, message)
@@ -888,6 +1186,8 @@ class NativePolicyRuntimeCoordinator:
 
         output_dir = Path(output_dir)
         with self._lock:
+            if self._operational_error is not None:
+                raise NativePolicyRuntimeError(self._operational_error)
             if not self._states:
                 raise NativePolicyRuntimeError("native policy runtime emitted no decisions")
             pending = [
@@ -899,10 +1199,19 @@ class NativePolicyRuntimeCoordinator:
                 raise NativePolicyRuntimeError(
                     "unterminated native decisions: " + ", ".join(pending[:5])
                 )
-            ordered = sorted(
+            runtime_ordered = sorted(
                 self._states.values(),
                 key=lambda state: int(state.record["decision_seq"]),
             )
+            ordered = [
+                state
+                for state in runtime_ordered
+                if state.input_frame_key in canonical_frames
+            ]
+            if not ordered:
+                raise NativePolicyRuntimeError(
+                    "native policy runtime has no accepted measurement-cohort decisions"
+                )
             canonical_by_state: list[Mapping[str, Any]] = []
             for state in ordered:
                 canonical = canonical_frames.get(state.input_frame_key)
@@ -911,75 +1220,209 @@ class NativePolicyRuntimeCoordinator:
                         f"native decision has no canonical frame linkage: {state.input_frame_key}"
                     )
                 canonical_by_state.append(canonical)
-            rows = [
-                self._policy_row(state, canonical)
-                for state, canonical in zip(ordered, canonical_by_state, strict=True)
+            if self._history_error is not None:
+                raise NativePolicyRuntimeError(self._history_error)
+            accepted_records = []
+            rows = []
+            for publication_seq, (state, canonical) in enumerate(
+                zip(ordered, canonical_by_state, strict=True), 1
+            ):
+                projected = project_accepted_decision_v1(
+                    state.accepted,
+                    canonical_trace_id=_text(canonical.get("trace_id"), "canonical trace_id"),
+                    publication_decision_seq=publication_seq,
+                    issued_record_sha256=state.record["sha256"],
+                )
+                row = self._policy_row(state, canonical)
+                row["decision_seq"] = publication_seq
+                rows.append(row)
+                accepted_records.append(projected)
+            ingress_rows = [
+                {"input_frame_key": key, "trace_id": value.get("trace_id"),
+                 "stream_id": value.get("stream_id"), "frame_id": value.get("frame_id")}
+                for key, value in canonical_frames.items()
             ]
-            accepted_records = [state.accepted for state in ordered]
             feedback_states = sorted(
                 (state for state in ordered if state.feedback is not None),
                 key=lambda state: int(state.feedback_seq or 0),
             )
             feedback_records = [state.feedback for state in feedback_states]
-            if self.policy == "adaptive_weights" and len(feedback_records) != len(ordered):
+            if self.policy == "adaptive_weights" and (
+                len(feedback_records) != len(ordered)
+                or any(state.feedback is None for state in runtime_ordered)
+            ):
                 raise NativePolicyRuntimeError(
                     "adaptive_weights lacks complete native terminal feedback"
                 )
-            if self.policy != "adaptive_weights" and feedback_records:
+            if self.policy != "adaptive_weights" and any(
+                state.feedback is not None for state in runtime_ordered
+            ):
                 raise NativePolicyRuntimeError("non-adaptive policy emitted feedback")
+            def bounded_jsonl(records):
+                buffer = io.BytesIO()
+                for record in records:
+                    line = canonical_json_v1(record) + b"\n"
+                    if buffer.tell() + len(line) > MAX_RUNTIME_HISTORY_BYTES_V1:
+                        raise NativePolicyRuntimeError("native policy JSONL exceeds frozen file byte bound")
+                    buffer.write(line)
+                return buffer.getvalue()
 
-            decisions_json = (
-                "\n".join(_canonical_json(record) for record in accepted_records) + "\n"
-            ).encode("utf-8")
-            feedback_json = (
-                "\n".join(_canonical_json(record) for record in feedback_records) + "\n"
-                if feedback_records
-                else ""
-            ).encode("utf-8")
+            decisions_json = bounded_jsonl(accepted_records)
+            feedback_json = bounded_jsonl(feedback_records)
             csv_buffer = io.StringIO(newline="")
             writer = csv.DictWriter(csv_buffer, fieldnames=POLICY_DECISION_COLUMNS)
             writer.writeheader()
-            writer.writerows(rows)
-            csv_payload = csv_buffer.getvalue().encode("utf-8")
-
-            targets = {
-                POLICY_DECISIONS_JSONL: decisions_json,
-                POLICY_DECISIONS_CSV: csv_payload,
-            }
-            if feedback_records:
+            for row in rows:
+                writer.writerow(row)
+                if csv_buffer.tell() > MAX_RUNTIME_HISTORY_BYTES_V1:
+                    raise NativePolicyRuntimeError("native policy CSV exceeds frozen file byte bound")
+            targets = {POLICY_DECISIONS_JSONL: decisions_json,
+                       POLICY_DECISIONS_CSV: csv_buffer.getvalue().encode("utf-8")}
+            if self.policy == "adaptive_weights":
                 targets[POLICY_FEEDBACK_JSONL] = feedback_json
-            for name in targets:
-                if (output_dir / name).exists():
+                measured_ids = {state.record["decision_id"] for state in ordered}
+                def actual_history_events():
+                    for captured in self._history_events:
+                        event = copy.deepcopy(captured)
+                        state = self._states[event["decision_id"]]
+                        measurement = event["decision_id"] in measured_ids
+                        event["measurement"] = measurement
+                        if event["event_type"] == "decision_issued":
+                            event["accepted_record_sha256"] = state.accepted["sha256"]
+                            event["accepted_record"] = None if measurement else state.accepted
+                        else:
+                            event["feedback_record"] = None if measurement else state.feedback
+                        yield payload_with_sha256_v1(event)
+                header = payload_with_sha256_v1({
+                    "schema_version": 1, "artifact_kind": "vast_publication_policy_runtime_history_v1",
+                    "record_kind": "header", "run_id": self.run_id, "arm_id": self.arm_id,
+                    "system": self.system, "policy": self.policy,
+                    "policy_contract_sha256": accepted_records[0]["policy_contract_sha256"],
+                    "engine_implementation_id": accepted_records[0]["engine_implementation_id"],
+                    "initial_state": self._initial_policy_state,
+                    "runtime_decision_count": len(runtime_ordered),
+                    "runtime_feedback_count": self._next_feedback_seq - 1,
+                    "measurement_decision_count": len(ordered),
+                    "measurement_feedback_count": len(feedback_records), "event_count": len(self._history_events),
+                })
+                try:
+                    targets[RUNTIME_HISTORY_JSONL] = serialize_runtime_history_v1(header, actual_history_events())
+                except ValueError as exc:
+                    raise NativePolicyRuntimeError(f"adaptive runtime history is blocked: {exc}") from exc
+            # Preserve existing custody limits; no publication may add an
+            # oversized sidecar or raise the aggregate acceptance budget.
+            if any(len(payload) > MAX_RUNTIME_HISTORY_BYTES_V1 for payload in targets.values()) or sum(
+                len(payload) for payload in targets.values()
+            ) > MAX_ACCEPTANCE_AGGREGATE_BYTES_V1:
+                raise NativePolicyRuntimeError("native policy publication exceeds frozen byte bounds")
+            for name in (POLICY_DECISIONS_JSONL, POLICY_DECISIONS_CSV,
+                         POLICY_FEEDBACK_JSONL, RUNTIME_HISTORY_JSONL):
+                if os.path.lexists(output_dir / name):
                     raise NativePolicyRuntimeError(
                         f"refusing to overwrite native policy evidence: {output_dir / name}"
                     )
-            candidates = {
-                name: output_dir / f".{name}.candidate.{os.getpid()}"
-                for name in targets
-            }
+            output_dir.mkdir(parents=True, exist_ok=True)
+            staging = Path(tempfile.mkdtemp(prefix=".native-policy-publication.", dir=output_dir))
+            published = []
+            operational_descriptor = None
+            operational_counts = None
             try:
                 for name, payload in targets.items():
-                    _write_atomic(candidates[name], payload)
+                    with (staging / name).open("xb") as stream:
+                        stream.write(payload)
                 validated_decisions = validate_policy_decisions(
-                    candidates[POLICY_DECISIONS_CSV],
-                    require_labeled_provenance=True,
-                    require_full_trace=True,
-                    require_causal_trace=True,
+                    staging / POLICY_DECISIONS_CSV,
+                    require_labeled_provenance=True, require_full_trace=True, require_causal_trace=True,
+                )
+                history_path = staging / RUNTIME_HISTORY_JSONL if self.policy == "adaptive_weights" else None
+                validate_published_decisions_v1(
+                    accepted_records, rows, ingress_rows=ingress_rows,
+                    history_path=history_path, feedback_records=feedback_records,
+                    authority_callback=lambda record: validate_decision_record(record, self._capability_manifest),
+                    expected_policy_contract_sha256=accepted_records[0]["policy_contract_sha256"],
+                )
+                validate_frozen_policy_decisions(
+                    staging / POLICY_DECISIONS_JSONL, decisions=validated_decisions,
+                    expected_policy=self.policy, ingress_rows=ingress_rows,
+                    runtime_history_path=history_path,
                 )
                 if feedback_records:
                     validate_frozen_policy_feedback(
-                        candidates[POLICY_FEEDBACK_JSONL],
-                        decisions=validated_decisions,
-                        decision_records_path=candidates[POLICY_DECISIONS_JSONL],
-                        require_complete=True,
+                        staging / POLICY_FEEDBACK_JSONL, decisions=validated_decisions,
+                        decision_records_path=staging / POLICY_DECISIONS_JSONL, require_complete=True,
+                        ingress_rows=ingress_rows, runtime_history_path=history_path,
                     )
+                if self._operational_context is not None:
+                    operational_dir = self._operational_context["output_dir"]
+                    # This is a separate retained group, outside legacy stage custody.
+                    if operational_dir.resolve().is_relative_to(output_dir.resolve()):
+                        raise NativePolicyRuntimeError("operational group overlaps legacy stage output")
+                    header = copy.deepcopy(self._operational_context["header"])
+                    operational_counts = {
+                        "complete_decision_count": len(runtime_ordered),
+                        "measurement_decision_count": len(ordered),
+                        "excluded_decision_count": len(runtime_ordered) - len(ordered),
+                        "runtime_feedback_count": self._next_feedback_seq - 1,
+                        "measurement_feedback_count": len(feedback_records),
+                        "excluded_feedback_count": self._next_feedback_seq - 1 - len(feedback_records),
+                    }
+                    header["counts"] = operational_counts
+                    header["initial_state"] = copy.deepcopy(self._initial_policy_state)
+                    header["adaptive_history"] = ({
+                        "path": str((output_dir / RUNTIME_HISTORY_JSONL).resolve()),
+                        "size_bytes": len(targets[RUNTIME_HISTORY_JSONL]),
+                        "sha256": hashlib.sha256(targets[RUNTIME_HISTORY_JSONL]).hexdigest(),
+                    } if self.policy == "adaptive_weights" else None)
+                    header = payload_with_sha256_v1(header)
+                    def complete_operational_records():
+                        for state in runtime_ordered:
+                            if state.decision_request is None:
+                                raise NativePolicyRuntimeError("original native request was not captured")
+                            yield build_native_occurrence_v1(
+                                runtime_decision_seq=state.record["decision_seq"],
+                                measurement=state.input_frame_key in canonical_frames,
+                                decision_request=state.decision_request, accepted_record=state.accepted,
+                                path=state.path, terminal=state.terminal,
+                                issued_record_sha256=state.record["sha256"],
+                            )
+                    def original_authority(record):
+                        accepted = record["accepted_record"]
+                        projected = project_accepted_decision_v1(
+                            accepted, canonical_trace_id=accepted["trace_id"],
+                            publication_decision_seq=accepted["decision_seq"],
+                            issued_record_sha256=record["issued_record_sha256"],
+                        )
+                        original, issued = reconstruct_original_decision_v1(projected)
+                        if canonical_json_v1(original) != canonical_json_v1(accepted):
+                            raise NativePolicyRuntimeError("original accepted inverse mismatch")
+                        rebound = bind_native_decision_evidence(
+                            issued, accepted["native_decision_evidence"], self._capability_manifest,
+                        )
+                        if rebound["sha256"] != record["accepted_record_sha256"]:
+                            raise NativePolicyRuntimeError("original native-binding roundtrip mismatch")
+                    operational_dir.mkdir(parents=True, exist_ok=True)
+                    operational_descriptor = write_native_domain_v1(
+                        operational_dir / NATIVE_OPERATIONAL_JSONL, header,
+                        complete_operational_records(), original_authority_validator=original_authority,
+                    )
+                    if sum(len(payload) for payload in targets.values()) + operational_descriptor["size_bytes"] > MAX_ACCEPTANCE_AGGREGATE_BYTES_V1:
+                        raise NativePolicyRuntimeError("retained operation exceeds aggregate byte budget")
+                # Exclusive hard links publish validated bytes without an
+                # overwrite race. Roll back only our own links on any failure.
                 for name in targets:
-                    os.replace(candidates[name], output_dir / name)
+                    target = output_dir / name
+                    os.link(staging / name, target)
+                    published.append((staging / name, target))
+            except BaseException as exc:
+                if self._operational_context is not None:
+                    self._operational_error = f"native operational publication failed: {type(exc).__name__}: {exc}"
+                for candidate, target in reversed(published):
+                    if target.exists() and os.path.samefile(candidate, target):
+                        target.unlink()
+                raise
             finally:
-                for candidate in candidates.values():
-                    if candidate.exists():
-                        candidate.unlink()
-            return {
+                shutil.rmtree(staging)
+            result = {
                 "schema_version": 1,
                 "artifact_kind": "vast_checkpoint_native_policy_promotion",
                 "run_id": self.run_id,
@@ -989,10 +1432,18 @@ class NativePolicyRuntimeCoordinator:
                 "codec": self.codec,
                 "policy": self.policy,
                 "deadline_ms": self.deadline_ms,
+                "runtime_decision_count": len(runtime_ordered),
                 "accepted_decision_count": len(ordered),
+                "excluded_noncohort_decision_count": (
+                    len(runtime_ordered) - len(ordered)
+                ),
                 "feedback_count": len(feedback_records),
                 "status": "accepted",
             }
+            if operational_descriptor is not None:
+                result["operational_domain"] = operational_descriptor
+                result["operational_counts"] = operational_counts
+            return result
 
     def enrich_runtime_events(
         self,
@@ -1016,15 +1467,30 @@ class NativePolicyRuntimeCoordinator:
                 if stage in self.branches:
                     state = by_frame_branch.get((input_key, stage))
                 if state is not None and stage in {str(state.record["branch"]), branch}:
-                    resource = str(state.record["selected_resource"])
-                    decision_id = str(state.record["decision_id"])
+                    accepted = state.accepted
+                    if accepted is None:
+                        raise NativePolicyRuntimeError(
+                            "accepted native execution state lost its policy record"
+                        )
+                    resource = str(accepted["selected_resource"])
+                    decision_id = str(accepted["decision_id"])
                     action = f"{self.policy}:{resource}:{decision_id}"
+                    request = accepted["request"]
+                    scheduler_binding = {
+                        "scheduler_queue_depth": int(
+                            request["candidates"][resource]["queue_depth"]
+                        ),
+                        "scheduler_estimated_cost_ms": self._policy_score(
+                            accepted, resource
+                        ),
+                    }
                 else:
                     base = stage.split("_", 1)[0]
                     resource = "nvdec" if base == "decode" else "cpu"
                     execution_id = str(row.get("execution_id", stage))
                     decision_id = f"{self.run_id}:fixed:{input_key}:{execution_id}"
                     action = f"{self.policy}:fixed_outside_analytics_scope:{resource}"
+                    scheduler_binding = {}
                 row.update(
                     {
                         "execution_resource": resource,
@@ -1036,6 +1502,7 @@ class NativePolicyRuntimeCoordinator:
                         "benchmark_scenario": self.scenario,
                         "benchmark_codec": self.codec,
                         "benchmark_deadline_ms": self.deadline_ms,
+                        **scheduler_binding,
                     }
                 )
                 enriched.append(row)

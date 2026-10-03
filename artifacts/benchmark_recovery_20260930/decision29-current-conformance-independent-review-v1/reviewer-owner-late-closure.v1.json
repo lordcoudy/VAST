@@ -1,0 +1,155 @@
+{
+  "actual_prior_tool": {
+    "chunk_id": "90c2ea",
+    "exit_code": 0,
+    "observed_clock_after_report_and_FD_release_s": 2.897261918,
+    "original_pid": 11250,
+    "wall_time_seconds": 3.8045052999999998
+  },
+  "global_quiescence_claim": false,
+  "late_failure_absent": true,
+  "limits": [
+    "Exact known reader/timeout paths and groups only; live metadata scanner later absence is a separate observation.",
+    "Original mapper birth/session never reconstructed.",
+    "No target execution or model/raw producer body read."
+  ],
+  "mapper_later_closure_ref": {
+    "epoch": [
+      69,
+      1407374885980560,
+      33279,
+      1,
+      4763,
+      1791034760893577400,
+      1791034760893577400
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-mapper-owner-closure-v1/actual-tool-and-owner-closure-supplement.v1.json",
+    "sha256": "c708bff2864de2b1ead9ff2f06d894d311f7174ef998034bac3e61d042e86e4e",
+    "size_bytes": 4763
+  },
+  "metadata_scanner_fd_after": 6,
+  "metadata_scanner_fd_before": 6,
+  "metadata_scanner_original_pid": 11263,
+  "reader_source": {
+    "epoch": [
+      69,
+      1407374885980562,
+      33279,
+      1,
+      39360,
+      1791035299344781900,
+      1791035299344781900
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/review_actual_mapping_v1.py",
+    "sha256": "7988c6a08dbb777c4243988ed3424524dcf18ce5374b605134ac5cfcd78b9746",
+    "size_bytes": 39360
+  },
+  "review_ref": {
+    "epoch": [
+      69,
+      1407374885980567,
+      33279,
+      1,
+      434057,
+      1791035318516433800,
+      1791035318516433800
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/review.v1.json",
+    "sha256": "af861006d56d00e466648cf2479f1536925f7b33f5a246916e924c067abec202",
+    "size_bytes": 434057
+  },
+  "reviewer_fds_after": 6,
+  "reviewer_fds_before": 6,
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "two_actual_scans": [
+    {
+      "actors": [
+        {
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "observed_parent": {
+              "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+              "gid": 1000,
+              "pgid": 11249,
+              "pid": 11249,
+              "ppid": 11245,
+              "session": 11249,
+              "startticks": 51764641,
+              "uid": 1000
+            },
+            "pgid": 11249,
+            "pid": 11250,
+            "ppid": 11249,
+            "session": 11249,
+            "startticks": 51764644,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 11249,
+            "pid": 11249,
+            "ppid": 11245,
+            "session": 11249,
+            "startticks": 51764641,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        }
+      ],
+      "group_members": [],
+      "observed_monotonic_ns": 517838606840291,
+      "scan_errors": [],
+      "sequence": 1
+    },
+    {
+      "actors": [
+        {
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "observed_parent": {
+              "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+              "gid": 1000,
+              "pgid": 11249,
+              "pid": 11249,
+              "ppid": 11245,
+              "session": 11249,
+              "startticks": 51764641,
+              "uid": 1000
+            },
+            "pgid": 11249,
+            "pid": 11250,
+            "ppid": 11249,
+            "session": 11249,
+            "startticks": 51764644,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 11249,
+            "pid": 11249,
+            "ppid": 11245,
+            "session": 11249,
+            "startticks": 51764641,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        }
+      ],
+      "group_members": [],
+      "observed_monotonic_ns": 517838659413556,
+      "scan_errors": [],
+      "sequence": 2
+    }
+  ]
+}

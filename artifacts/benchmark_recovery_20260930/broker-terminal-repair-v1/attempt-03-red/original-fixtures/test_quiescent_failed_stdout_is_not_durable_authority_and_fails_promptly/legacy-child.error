@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_process_supervisor_v3.py", line 1424, in _commit_durable_journal_leaf
+    custody.commit_or_adopt_exact_identity(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py", line 1593, in commit_or_adopt_exact_identity
+    return self._commit_or_adopt_exact_posix(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py", line 2405, in _commit_or_adopt_exact_posix
+    self._require_epochs(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py", line 403, in _require_epochs
+    _require(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py", line 92, in _require
+    raise PublicationPhysicalIoV1Error(message)
+publication_physical_io_v1.PublicationPhysicalIoV1Error: backend publication durable broker owner parent directory mutated during custody
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_process_supervisor_v3.py", line 1566, in _commit_durable_owner
+    _commit_durable_journal_leaf(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_process_supervisor_v3.py", line 1444, in _commit_durable_journal_leaf
+    raise BackendPublicationProcessSupervisorV3Error(
+backend_publication_process_supervisor_v3.BackendPublicationProcessSupervisorV3Error: backend publication durable broker owner atomic commit failed

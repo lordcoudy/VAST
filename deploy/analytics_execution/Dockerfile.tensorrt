@@ -1,7 +1,8 @@
 ARG BASE_IMAGE=vast/deepstream-native-probe:7.0
+ARG BUILD_IMAGE=vast/deepstream-native-probe:7.0
 ARG SOURCE_DATE_EPOCH=0
 
-FROM ${BASE_IMAGE} AS worker_builder
+FROM ${BUILD_IMAGE} AS worker_builder
 
 ARG SOURCE_DATE_EPOCH
 USER root
@@ -34,8 +35,19 @@ RUN g++ -std=c++17 -O2 -fPIC -shared \
 FROM ${BASE_IMAGE}
 
 ARG EXPECTED_BASE_IMAGE_ID=sha256:16d284eb311f04a95f148746f0dc5637d54d527cc42be9a6cced5fcf0240770c
+ARG VAST_SOURCE_SET_SHA256
+ARG VAST_DEPENDENCY_SET_SHA256
+ARG VAST_BUILD_CONTEXT_SHA256
+ARG VAST_BASE_IMAGE_ID
+ARG VAST_BUILD_IMAGE_ID
+LABEL org.vast.component="analytics-tensorrt-worker-publication-v3"
 LABEL org.vast.analytics_worker.base_image_id="${EXPECTED_BASE_IMAGE_ID}"
 LABEL org.vast.analytics_worker.engine="tensorrt_cuda"
+LABEL org.vast.publication-image.source-set-sha256="${VAST_SOURCE_SET_SHA256}"
+LABEL org.vast.publication-image.dependency-set-sha256="${VAST_DEPENDENCY_SET_SHA256}"
+LABEL org.vast.publication-image.build-context-sha256="${VAST_BUILD_CONTEXT_SHA256}"
+LABEL org.vast.publication-image.base-image-id="${VAST_BASE_IMAGE_ID}"
+LABEL org.vast.publication-image.build-image-id="${VAST_BUILD_IMAGE_ID}"
 
 USER root
 

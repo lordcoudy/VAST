@@ -1,0 +1,63 @@
+test_changed_added_and_removed_sources_are_reported (test_run_ci_checks.RunCiChecksTests.test_changed_added_and_removed_sources_are_reported) ... ok
+test_empty_discovery_fails (test_run_ci_checks.RunCiChecksTests.test_empty_discovery_fails) ... ok
+test_expected_failure_and_unexpected_success_keep_original_outcomes (test_run_ci_checks.RunCiChecksTests.test_expected_failure_and_unexpected_success_keep_original_outcomes) ... ok
+test_failure_traceback_is_flushed_before_the_suite_returns (test_run_ci_checks.RunCiChecksTests.test_failure_traceback_is_flushed_before_the_suite_returns) ... ok
+test_foreign_namespace_origin_is_rejected_before_discovery (test_run_ci_checks.RunCiChecksTests.test_foreign_namespace_origin_is_rejected_before_discovery) ... ok
+test_host_facts_are_bounded_and_exclude_environment_secrets (test_run_ci_checks.RunCiChecksTests.test_host_facts_are_bounded_and_exclude_environment_secrets) ... ok
+test_interrupted_test_start_does_not_invent_a_terminal (test_run_ci_checks.RunCiChecksTests.test_interrupted_test_start_does_not_invent_a_terminal) ... ok
+test_isolated_default_discovery_imports_contained_namespaces_and_preserves_ids (test_run_ci_checks.RunCiChecksTests.test_isolated_default_discovery_imports_contained_namespaces_and_preserves_ids) ... ok
+test_loaded_factory_facts_bind_original_metadata_and_plugin_bytes (test_run_ci_checks.RunCiChecksTests.test_loaded_factory_facts_bind_original_metadata_and_plugin_bytes) ... ok
+test_manifest_detects_equal_size_source_replacement (test_run_ci_checks.RunCiChecksTests.test_manifest_detects_equal_size_source_replacement) ... ok
+test_missing_runtime_factory_remains_a_failed_prerequisite (test_run_ci_checks.RunCiChecksTests.test_missing_runtime_factory_remains_a_failed_prerequisite) ... ok
+test_real_alias_launcher_uses_canonical_interpreter_for_suite_and_assets (test_run_ci_checks.RunCiChecksTests.test_real_alias_launcher_uses_canonical_interpreter_for_suite_and_assets) ... ok
+test_real_periodic_stack_capture_keeps_the_active_test_and_result (test_run_ci_checks.RunCiChecksTests.test_real_periodic_stack_capture_keeps_the_active_test_and_result) ... ok
+test_required_native_skip_does_not_become_a_pass (test_run_ci_checks.RunCiChecksTests.test_required_native_skip_does_not_become_a_pass) ... ok
+test_required_native_successes_allow_other_explicit_skips (test_run_ci_checks.RunCiChecksTests.test_required_native_successes_allow_other_explicit_skips) ... ok
+test_subtest_error_traceback_is_flushed_and_parent_terminal_is_error (test_run_ci_checks.RunCiChecksTests.test_subtest_error_traceback_is_flushed_and_parent_terminal_is_error) ... ok
+test_exact_first_unshare_failure_delegates_once_and_retains_original_errno (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_exact_first_unshare_failure_delegates_once_and_retains_original_errno) ... ok
+test_mapping_open_failure_identifies_actual_path_and_flags (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_mapping_open_failure_identifies_actual_path_and_flags) ... ok
+test_original_capture_flush_failure_closes_fd_and_preserves_failed_status (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_capture_flush_failure_closes_fd_and_preserves_failed_status) ... ERROR
+test_original_cleanup_deadline_includes_capture_close (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_cleanup_deadline_includes_capture_close) ... FAIL
+test_original_mount_cause_and_flags_are_retained_without_policy_inference (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_mount_cause_and_flags_are_retained_without_policy_inference) ... ok
+test_original_pidfd_failure_contains_exact_child_and_leaves_no_parent_fds (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_pidfd_failure_contains_exact_child_and_leaves_no_parent_fds) ... FAIL
+test_real_ordinary_child_nonzero_and_raw_eof_are_preserved (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_real_ordinary_child_nonzero_and_raw_eof_are_preserved) ... ok
+test_real_ordinary_child_overflow_retains_bounded_prefix_and_fails (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_real_ordinary_child_overflow_retains_bounded_prefix_and_fails) ... ok
+test_real_ordinary_child_timeout_reaps_original_and_never_reports_success (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_real_ordinary_child_timeout_reaps_original_and_never_reports_success) ... ok
+
+======================================================================
+ERROR: test_original_capture_flush_failure_closes_fd_and_preserves_failed_status (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_capture_flush_failure_closes_fd_and_preserves_failed_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 142, in test_original_capture_flush_failure_closes_fd_and_preserves_failed_status
+    result = helper.capture_original_child(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_namespace_diagnostic_v1.py", line 213, in capture_original_child
+    stream.flush(); os.fsync(stream.fileno()); stream.close()
+    ^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 131, in flush
+    def flush(self): raise OSError('explicit original flush fault')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: explicit original flush fault
+
+======================================================================
+FAIL: test_original_cleanup_deadline_includes_capture_close (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_cleanup_deadline_includes_capture_close)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 163, in test_original_cleanup_deadline_includes_capture_close
+    self.assertFalse(result['capture_completed'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_original_pidfd_failure_contains_exact_child_and_leaves_no_parent_fds (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_pidfd_failure_contains_exact_child_and_leaves_no_parent_fds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 121, in test_original_pidfd_failure_contains_exact_child_and_leaves_no_parent_fds
+    self.assertEqual(set(Path('/proc/self/fd').iterdir()), before)
+AssertionError: Items in the second set but not the first:
+PosixPath('/proc/self/fd/7')
+PosixPath('/proc/self/fd/6')
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.697s
+
+FAILED (failures=2, errors=1)

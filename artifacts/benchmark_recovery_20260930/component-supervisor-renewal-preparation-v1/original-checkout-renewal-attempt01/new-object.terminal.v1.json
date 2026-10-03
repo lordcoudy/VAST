@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "core.longpaths=true",
+    "-c",
+    "core.hooksPath=/dev/null",
+    "-C",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "cat-file",
+    "-e",
+    "78b869e4f8bc101413ed00776bd89d1089a8318d^{commit}"
+  ],
+  "counts": {
+    "stderr": 0,
+    "stdout": 0
+  },
+  "eof": [
+    "stderr",
+    "stdout"
+  ],
+  "fault": null,
+  "original_group_absent": true,
+  "original_pid_absent": true,
+  "returncode": 0,
+  "signals": []
+}

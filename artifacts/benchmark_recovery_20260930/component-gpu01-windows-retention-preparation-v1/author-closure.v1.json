@@ -1,0 +1,189 @@
+{
+  "actual_raw_channels": {
+    "stderr": {
+      "epoch7": [
+        69,
+        2533274792819106,
+        33279,
+        1,
+        0,
+        1790810556394990700,
+        1790810556394990700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-copy.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout": {
+      "epoch7": [
+        69,
+        2533274792819105,
+        33279,
+        1,
+        404,
+        1790810557683099200,
+        1790810557683099200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-copy.stdout.raw",
+      "sha256": "b34846afa8561f0900f5f9adb408ddea651ee8b1a02850a1d969a5acaa2c4868",
+      "size_bytes": 404
+    }
+  },
+  "all_original_member_crc_full_sha_and_decompressed_full_sha_verified": true,
+  "archive": {
+    "epoch7": [
+      69,
+      2533274792819110,
+      33279,
+      1,
+      21482466,
+      1790810557237552600,
+      1790810557237552600
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-retention-attempt01/gpu01-original-output-retention.v1.zip",
+    "sha256": "5c1c0e4ae34e70e469b7acc55819d352f3e467a8bd1c86fb5c1f23f602e8e3c6",
+    "size_bytes": 21482466
+  },
+  "archive_descriptor_provenance": "Original bounded packer physically hashes the ZIP after full source-byte streaming, every member CRC/decompressed SHA and final source namespace/epoch/name/ancestor checks. This author closes small records and checks retained ZIP named size without a second payload pass.",
+  "artifact_kind": "vast_gpu01_original_output_retention_author_closure_v1",
+  "current_original_source_context": "Benchmark root/source0ad78d6abdb3c526544a17185af7fe8094716735 and original GPU01 input/producer bytes were never changed. Only separately owned Windows retention outputs were created.",
+  "excluded_original_copied_engine_input_bytes": 45570705,
+  "execution_count": 1,
+  "fd_retirement": {
+    "capture_raw_channel_fds_closed": true,
+    "later_capture_timeout_packer_pid_group_scan_empty": true,
+    "original_timeout_child_reaped": true,
+    "packer_all_metadata_directory_and_stream_fds_retired": true,
+    "two_original_child_pid_group_scans_empty": true
+  },
+  "first_failure": null,
+  "immutable_closed_leaves": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-execution-root-grant.v1.json",
+      "sha256": "7e7241cd72ba53ff08e0a596c5611a09d3f549f07ea371d9d5261a2f3eca8f43",
+      "size_bytes": 2754
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/capture_original_gpu01.py",
+      "sha256": "dd93615a874d101ab659d16d92034fc4a14553470c21de28584564f7531f2d7a",
+      "size_bytes": 5000
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+      "sha256": "6e60e0b8c88cb94ba9590bad617b8fa1d29715d6c58fa4ba3bdfc90987e21b44",
+      "size_bytes": 10516
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/inventory.v1.json",
+      "sha256": "aa750080acc6da6d66b9e5f9e2b52a9f9952a5f587d9f6cbe00c9d576650d371",
+      "size_bytes": 100145
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/preparation.v2.json",
+      "sha256": "0766d9b1c09e7733165bba89673b6d56ea291871d4048c0843b07e0fa539e9c1",
+      "size_bytes": 4764
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-launch-recipe.v1.json",
+      "sha256": "786ef09ec7db39e9d624bc84241084b29a7951d36a6a81cb418e786d018eda0a",
+      "size_bytes": 2254
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-tool-terminal.v1.json",
+      "sha256": "eefa7c688cf7a20e5d5edf248ead3c189485183258453c2e6eebbd0f47aa12ee",
+      "size_bytes": 1441
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-copy.launch.v1.json",
+      "sha256": "1e689b1465fca6ab53e32fadb271874dd7db114cc9d7b348b1904b6df0001d26",
+      "size_bytes": 1896
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-copy.child-owner.v1.json",
+      "sha256": "a1e40bc85f3fb5c9c398fe9734e8cc116be013474bcb69d1e9bb31932a74d128",
+      "size_bytes": 612
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-copy.terminal.v1.json",
+      "sha256": "33302f862e20bc868e85c2531c7af4e48520bf460b2b152100d8d53d7c552e5d",
+      "size_bytes": 4622
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-copy.stdout.raw",
+      "sha256": "b34846afa8561f0900f5f9adb408ddea651ee8b1a02850a1d969a5acaa2c4868",
+      "size_bytes": 404
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-copy.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/original-retention-attempt01/receipt.v1.json",
+      "sha256": "8d87e5f8bf6e8b748da41c94ea1be2007aeeed148068506eed04689ba80501c7",
+      "size_bytes": 2061
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1/postterminal-process-observation.v1.json",
+      "sha256": "c064fa12553a64a942eeeab850cd07b3b4cd28b260a2afc1ac1f5d8bfed97eca",
+      "size_bytes": 409
+    }
+  ],
+  "independent_closed_retention_result_review": "pending",
+  "late_failure_absent": true,
+  "limits": "120s packer+10s timeout containment/130s external cap unchanged; actual original capture1.303760664s. No model/native/guardian/engine/CI/test operation.",
+  "measurement_or_qualification_or_publication_authority_created": false,
+  "no_retry_or_second_packer": true,
+  "original_capture_elapsed_s": 1.30376066401368,
+  "original_tool": {
+    "chunk_id": "d030d1",
+    "returncode": 0,
+    "running_session_id": null
+  },
+  "owner_ids": {
+    "capture_owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 53614,
+      "pid": 53614,
+      "ppid": 53607,
+      "session": 53614,
+      "startticks": 29287101,
+      "uid": 1000
+    },
+    "packer_owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 53615,
+      "pid": 53616,
+      "ppid": 53615,
+      "session": 53615,
+      "startticks": 29287109,
+      "uid": 1000
+    },
+    "timeout_owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 53615,
+      "pid": 53615,
+      "ppid": 53614,
+      "session": 53615,
+      "startticks": 29287109,
+      "uid": 1000
+    }
+  },
+  "recorded_at_utc": "2026-09-30T23:24:37.465064+00:00",
+  "retained_original_bytes": 220703683,
+  "retained_original_file_count": 128,
+  "schema_version": 1,
+  "source_namespace_before_after_exact": true,
+  "source_original_epoch7_before_after_equal": true,
+  "source_peer_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-independent-review-v1/review.v1.json",
+    "sha256": "8e008cd475c69f2f10c6a29b9f3b203c749863a5d5b54f500261ca307dd3b1f7",
+    "size_bytes": 5024
+  },
+  "source_reader_before_after_equal": true,
+  "status": "complete_non_authority_retention",
+  "zip_member_count_including_manifest": 129
+}

@@ -1,0 +1,19 @@
+--- artifacts/benchmark_recovery_20260930/ci-9d47-original-host-retention-v1/retain_originals_v1.py
++++ artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/retain_originals_v1.py
+@@ -1,11 +1,11 @@
+ """Retain one completed original hosted run; GCM credentials/redirect URLs stay in memory."""
+ import hashlib,json,os,pathlib,stat,subprocess,time,urllib.request,urllib.parse,zipfile
+ ROOT=pathlib.Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec')
+-OUT=ROOT/'artifacts/benchmark_recovery_20260930/ci-9d47-original-host-retention-v1'
+-RUN=36802923013
+-CPU=110181019042
+-HOST=110181019292
+-EXPECTED='9d47e99b623df44816f7b0a0b73b249a940f7723'
++OUT=ROOT/'artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1'
++RUN=37116707816
++CPU=111184814376
++HOST=111184814522
++EXPECTED='3c025b29b3c1d5275c2ec693410e4b83700583de'
+ START=time.monotonic();END=START+180
+ class Redirect(urllib.request.HTTPRedirectHandler):
+  def redirect_request(self,req,fp,code,msg,headers,newurl):

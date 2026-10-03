@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_gva_owned_fixture_root_independent_review_v1",
+  "disposition": "approved_finite_test_only_repair",
+  "reviewer_execution": "read-only source/diff/closed original evidence; no test rerun",
+  "owned_source": {
+    "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+    "size_bytes": 11557,
+    "sha256": "7ffdbe0d1aed76bbb1da0251cbae86bf968396b998f3899f5c29ace7e9d3793b"
+  },
+  "original_source": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc-gva-root-fixture-repair-v1/original-test.raw",
+    "size_bytes": 11502,
+    "sha256": "62f91b0a8480e11ae018bb31c53cbc167dca78fbe8fe7de23f6a6133723cb87f"
+  },
+  "change": "Only expected_terminal_detector gains explicit project_root, its two descriptor reads use that root, and its existing test caller passes self.project_root. The helper now reads the same physical owned fixture artifacts that generated the policy identity.",
+  "preserved": [
+    "All four original method IDs, assertions and production calls remain; only the reviewed helper argument inside the existing assertion changes.",
+    "Stock capability construction and terminal identity equality remain intact; no mock/skip/fabricated physical grant was added.",
+    "No production/source87/image73 or authority/image predicate changed."
+  ],
+  "authentic_red": {
+    "source_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+    "run_id": 36764814739,
+    "job_id": 110056199709,
+    "review_path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/cpu-review.v1.json",
+    "review_sha256": "22a7cabacd01e24a7ba8de305575645939278a69f7df46c4d153de044c3137f4",
+    "failure": "The existing policy identity test read a historical binding under repository ROOT rather than its owned fixture root."
+  },
+  "original_focused_execution": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc-gva-root-fixture-repair-v1/attempt01/execution.json",
+    "size_bytes": 587,
+    "sha256": "658dbce304148c7de3ff00c358da70eb26358d5fe8bb1120446fc93ac9e54899",
+    "returncode": 0,
+    "tests_run": 4,
+    "actual_successes": 4,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "unittest_elapsed_s": 21.635,
+    "observer_elapsed_s": 22.582258704002015,
+    "stderr": {
+      "size_bytes": 3128,
+      "sha256": "ff166685f5bf66047b91e582800d0ae98613e440cbd3cf16d59a5a7257576121"
+    },
+    "before_after_documents": {
+      "rows": 522,
+      "size_bytes_each": 102136,
+      "sha256_each": "de9bb7cce35eb62ec2d517e5bc27d7ce9ad5919bbb83668e11b90a18b46d02f1"
+    },
+    "original_pid": 41357,
+    "original_pid_absent": true,
+    "original_group_members": [],
+    "both_pipe_eof": true,
+    "timed_out": false
+  },
+  "limits": "Focused fixture behavior only. No full hosted CI success, engine/model/native execution, component or hardware acceptance follows. Original failed hosted evidence stays unchanged."
+}

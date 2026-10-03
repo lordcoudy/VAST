@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_decision24_ci_userns_profile_independent_source_review_v1",
+  "reviewer": "/root/adversarial_review",
+  "disposition": "approved_source_and_focused_evidence",
+  "reviewable": true,
+  "blocking_findings": [],
+  "scope": "Independent read-only review of seven frozen CI source/test files, their exact snapshots and original focused evidence. No producer, workflow, requirement, benchmark receipt or skip manifest changed by this reviewer.",
+  "sources": [
+    {"path": "scripts/ci_namespace_diagnostic_v1.py", "size_bytes": 23980, "sha256": "4f7e10d2decd1411f4c31281ceda4374d4d8cf1971fcb36497d11cfca10d8cc0"},
+    {"path": "scripts/run_ci_checks.py", "size_bytes": 29477, "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c"},
+    {"path": "scripts/ci_test_selection_v1.py", "size_bytes": 9978, "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d"},
+    {"path": "tests/test_run_ci_checks.py", "size_bytes": 15813, "sha256": "c622b17d500d6f13094b304d2da3ae4284592502fdd49cfe3d3b1d4da034b201"},
+    {"path": "tests/test_ci_test_selection_v1.py", "size_bytes": 12157, "sha256": "eda164526e44f8084ed28ecceb6d99e0d7887c22750007aa1a04d8181f520b7a"},
+    {"path": "scripts/ci_userns_profile_v1.py", "size_bytes": 25945, "sha256": "2b268daa1f6b1c7095e2ad35aa333cfc88998dfc7f024e39cee04d178334a578"},
+    {"path": "tests/test_ci_userns_profile_v1.py", "size_bytes": 31429, "sha256": "74ea52a30432ce759b88cb7ec0bcdf94b7bb0f8904f8188df1e55a7fcf3a2804"}
+  ],
+  "evidence": [
+    {"path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/author-review.v3.json", "size_bytes": 55354, "sha256": "5846118e7f59a3326d61e8c3088abdcd963142319a105c20cd237c7268d50651"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/pre-edit.v1.json", "size_bytes": 11518, "sha256": "b17fbb0c7b5e2f6a538fa4d990e54f0ed10cb4cd70b5b40350e803c5875141dc"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/pre-edit-supplement.v1.json", "size_bytes": 3869, "sha256": "4aed0c8f2bc53e78b907b7d0283710a73b4b6a000ecb54c2f35885e11f2be7c8"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/green-06/execution.json", "size_bytes": 702, "sha256": "011cdb7ca92d7f7e624127f80001d3623f10201a7e860e038df5c5de97ec0b18"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/green-06/test-results.json", "size_bytes": 8931, "sha256": "7ff68b3e9444bae678268efeabd9b284369bf0e3ad946ec223eb45fa7332948e"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/green-06/source.before.json", "size_bytes": 1370, "sha256": "7fa4041cc95bb09384630fa4762ae800797ddda2d7c00f54fbfb5b2cba1e579d"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/green-06/source.after.json", "size_bytes": 1370, "sha256": "7fa4041cc95bb09384630fa4762ae800797ddda2d7c00f54fbfb5b2cba1e579d"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/green-06/stdout.raw", "size_bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/green-06/stderr.raw", "size_bytes": 173, "sha256": "9390ecced4329d6ef3966fcf645e9a2801e5cc843ad03b0eb8b1f3cd493819a4"}
+  ],
+  "independent_checks": {
+    "all_seven_physical_files_equal_final_snapshots_and_author_pins": true,
+    "all_seven_parse_without_import_or_execution": true,
+    "nine_focused_sources_before_after_equal_current_bytes": true,
+    "original_namespace_top_level_definitions_unchanged_except_capture_original_child": true,
+    "original_twenty_selector_test_methods_AST_unchanged": true,
+    "original_sixteen_runner_test_methods_AST_equal_after_reversing_one_explicit_namespace_success_fixture_literal": true,
+    "original_eighteen_profile_test_methods_AST_unchanged_plus_three_guard_negatives": true,
+    "host87_and_declared_copy2693_owned_intersections_empty": true,
+    "eighteen_current_deploy_allowlists_checked": true,
+    "owned_allowlist_hits": [],
+    "manifest_or_new_skip_declaration_edit": false
+  },
+  "control_flow_review": [
+    "Activation requires the current job's physically held diagnostic and raw query records, canonical CPython3.12.3 identity, original PID/parent/boot/label/syscall order and exact kernel denial clock joins. Historical receipts, a generic errno or query returncode zero cannot grant activation.",
+    "The unique job profile is a fixed exact-executable flags=(unconfined) userns rule. Held single-link profile/interpreter/input files retain full hashes, named identities and seven epoch fields. Parser add/remove use the same parent-held profile FD, no replace, no cache and no alternate policy command.",
+    "An exclusive absent-before name and exact positive post-add kernel state establish ownership separately from load success. Failed original capture remains failed; cleanup removes only that positively owned effect. Ambiguous, foreign or unavailable state never grants removal.",
+    "After full FD verification, the two fixed privileged command shapes require at least 21 seconds for parser or 3 seconds for inventory. Capture rechecks the same absolute remaining budget immediately before releasing the original child's start gate. An insufficient budget withholds the gate, retains the first failure and closes/reaps the ordinary original child.",
+    "The original load/unload 20-second work and 10-second-or-remaining cleanup limits, 64-KiB phase bounds, receipt-last checks and whole-job 90-minute deadline remain. The supplied suite observer deadline already caps its teardown; the original 30-second profile-unload reserve is preserved.",
+    "The fresh test child verifies the exact expected AppArmor label before discovery. Full portable selection, required native tests, source integrity and ordinary failure rules remain. The new profile module is protected against deferral and new skips.",
+    "Unloading, positive kernel absence, FD retirement and final receipt persistence remain required. A late companion or close/persistence/cleanup error is sticky failure and cannot become successful CI. No successful profile command independently grants benchmark or full-CI acceptance."
+  ],
+  "original_focused_execution": {
+    "tests_run": 74,
+    "unique_successful_test_ids": 74,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "returncode": 0,
+    "elapsed_s": 2.5179169079638086,
+    "owner_pid_and_pgid": 47609,
+    "owner_startticks": 28703743,
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "original_pid_absent": true,
+    "original_group_members": [],
+    "both_original_pipe_EOF": true,
+    "source9_stable": true,
+    "scope": "Original pure denial joins and ordinary process/file/child-label fixtures. Genuine AppArmor, namespace, kernel-query, engine and model operations were excluded. Earlier failures and 70/71-source successes remain historical."
+  },
+  "primary_source_review": {
+    "parser": "https://gitlab.com/apparmor/apparmor/-/raw/v4.0.0/parser/apparmor_parser.pod",
+    "verified_semantics": "--add refuses an existing profile; --remove accepts the complete profile definition; --skip-cache disables cache use and writes; --jobs=0 keeps parser work in its main process.",
+    "normative_scope": "Existing approved Decision24 conditional exact-executable profile, external one-child observer and honest failure/cleanup requirements. No additional policy or capability scope approved by this receipt."
+  },
+  "limitations": [
+    "The reviewer performed only source reading and bounded metadata/hash/AST checks. The inline inspection command has tool output, not a separately saved physical dispatch/log witness; no such witness is fabricated.",
+    "The reviewer did not repeat tests or observe a real profile load, enforcement label, namespace success, full suite or unload. Those remain actual next-job gates.",
+    "The earlier minimum-budget defect is resolved in these exact bytes. My temporary suggestion of a 45-second suite reserve was withdrawn after checking that the existing observer caps cleanup at the supplied suite deadline; 30 seconds is retained.",
+    "No source FD or process hold remains from this review. No benchmark/hardware/full-CI acceptance is issued."
+  ],
+  "full_CI_acceptance": false,
+  "genuine_profile_load_or_enforcement_verified": false,
+  "hardware_acceptance": false
+}

@@ -14,9 +14,8 @@ import json
 import os
 import re
 import stat
-import tempfile
 from pathlib import Path, PurePosixPath, PureWindowsPath
-from typing import Any, Mapping
+from typing import Any, Callable, Iterator, Mapping
 
 from backend_publication_launcher_invocation_v3 import (
     validate_publication_launcher_invocation_v3,
@@ -51,6 +50,10 @@ from backend_runtime_validation_runner_authority import (
 from backend_runtime_validator_authority_v4 import (
     assess_backend_runtime_validator_authority_v4,
     validate_backend_runtime_validator_authority_v4,
+)
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
 )
 
 
@@ -212,19 +215,57 @@ class _PhysicalRegistry:
         self.identities: dict[tuple[int, int], str] = {}
 
     def read(self, value: Any, label: str) -> bytes:
+        return b"".join(self.iter_read(value, label))
+
+    def iter_read(
+        self,
+        value: Any,
+        label: str,
+        *,
+        chunk_size: int = 1024 * 1024,
+    ) -> Iterator[bytes]:
+        """Cold-read one descriptor in bounded chunks under stable identity."""
+
+        if type(chunk_size) is not int or chunk_size <= 0:
+            _fail(f"{label} chunk size is invalid")
         descriptor = _descriptor(value, label)
         previous = self.descriptors.get(descriptor["path"])
         if previous is not None:
             if previous != descriptor:
                 _fail(f"{label} repeated descriptor drifted")
-            return self._read_once(descriptor, label, repeated=True)
-        payload = self._read_once(descriptor, label, repeated=False)
+            yield from self._iter_once(
+                descriptor,
+                label,
+                repeated=True,
+                chunk_size=chunk_size,
+            )
+            return
+        yield from self._iter_once(
+            descriptor,
+            label,
+            repeated=False,
+            chunk_size=chunk_size,
+        )
         self.descriptors[descriptor["path"]] = descriptor
-        return payload
 
     def _read_once(
         self, descriptor: Mapping[str, Any], label: str, *, repeated: bool,
     ) -> bytes:
+        return b"".join(self._iter_once(
+            descriptor,
+            label,
+            repeated=repeated,
+            chunk_size=1024 * 1024,
+        ))
+
+    def _iter_once(
+        self,
+        descriptor: Mapping[str, Any],
+        label: str,
+        *,
+        repeated: bool,
+        chunk_size: int,
+    ) -> Iterator[bytes]:
         relative = PurePosixPath(str(descriptor["path"]))
         cursor = self.root
         try:
@@ -264,17 +305,16 @@ class _PhysicalRegistry:
             ):
                 _fail(f"{label} changed while opening")
             digest = hashlib.sha256()
-            chunks: list[bytes] = []
             observed = 0
             while True:
-                chunk = os.read(descriptor_fd, 1024 * 1024)
+                chunk = os.read(descriptor_fd, chunk_size)
                 if not chunk:
                     break
                 observed += len(chunk)
                 if observed > descriptor["size_bytes"]:
                     _fail(f"{label} exceeded declared size")
                 digest.update(chunk)
-                chunks.append(chunk)
+                yield chunk
             after = os.fstat(descriptor_fd)
             path_after = path.lstat()
         except BackendRuntimeQualificationV4PersistenceError:
@@ -303,7 +343,6 @@ class _PhysicalRegistry:
             _fail(f"{label} physical size/SHA or stable identity drifted")
         if not repeated:
             self.identities[identity] = str(descriptor["path"])
-        return b"".join(chunks)
 
     def json(
         self, reference: Mapping[str, Any], label: str, *, typed: bool,
@@ -1153,101 +1192,51 @@ def _read_and_validate_graph(
     }
 
 
-def _atomic_immutable(path: Path, value: Mapping[str, Any]) -> None:
+def _atomic_immutable(
+    root: Path,
+    path: Path,
+    value: Mapping[str, Any],
+    *,
+    after_publish_step: Callable[[str], None] | None = None,
+) -> tuple[
+    dict[str, Any], tuple[int, int], str
+]:
     payload = _canonical_bytes(dict(value)) + b"\n"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    if path.exists():
-        try:
-            before = path.lstat()
-            flags = os.O_RDONLY | int(getattr(os, "O_BINARY", 0))
-            flags |= int(getattr(os, "O_NOFOLLOW", 0))
-            handle = os.open(path, flags)
-            try:
-                opened = os.fstat(handle)
-                chunks: list[bytes] = []
-                while True:
-                    chunk = os.read(handle, 1024 * 1024)
-                    if not chunk:
-                        break
-                    chunks.append(chunk)
-                after = os.fstat(handle)
-            finally:
-                os.close(handle)
-            path_after = path.lstat()
-        except OSError as error:
-            raise BackendRuntimeQualificationV4PersistenceError(
-                f"immutable Q4 output cannot be reopened: {path.name}"
-            ) from error
-        stable = (
-            before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns,
-            before.st_ctime_ns, before.st_nlink,
-        )
-        if (
-            _is_link(path) or not stat.S_ISREG(before.st_mode)
-            or int(before.st_nlink) != 1
-            or stable != (
-                opened.st_dev, opened.st_ino, opened.st_size,
-                opened.st_mtime_ns, opened.st_ctime_ns, opened.st_nlink,
-            )
-            or stable != (
-                after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns,
-                after.st_ctime_ns, after.st_nlink,
-            )
-            or stable != (
-                path_after.st_dev, path_after.st_ino, path_after.st_size,
-                path_after.st_mtime_ns, path_after.st_ctime_ns,
-                path_after.st_nlink,
-            )
-            or b"".join(chunks) != payload
-        ):
-            _fail(f"immutable Q4 output collision: {path.name}")
-        return
-    descriptor: int | None = None
-    temporary: Path | None = None
     try:
-        descriptor, name = tempfile.mkstemp(
-            prefix=f".{path.name}.q4-", suffix=".tmp", dir=path.parent,
-        )
-        temporary = Path(name)
-        os.write(descriptor, payload)
-        os.fsync(descriptor)
-        os.close(descriptor)
-        descriptor = None
-        try:
-            # A same-filesystem hard-link publish is an atomic no-replace
-            # commit.  Removing the temporary name immediately leaves the
-            # committed artifact with exactly one link.
-            os.link(temporary, path)
-        except FileExistsError as error:
-            raise BackendRuntimeQualificationV4PersistenceError(
-                f"immutable Q4 output collision: {path.name}"
-            ) from error
-        temporary.unlink()
-        temporary = None
-        if os.name != "nt":
-            directory = os.open(path.parent, os.O_RDONLY)
-            try:
-                os.fsync(directory)
-            finally:
-                os.close(directory)
-    finally:
-        if descriptor is not None:
-            os.close(descriptor)
-        if temporary is not None:
-            try:
-                temporary.unlink()
-            except FileNotFoundError:
-                pass
+        with PhysicalRootCustodyV1.open(
+            root, label="backend Q4 persistence project_root"
+        ) as custody:
+            return custody.commit_or_adopt_exact_identity(
+                path,
+                payload,
+                label=f"immutable Q4 output {path.name}",
+                mode=0o444,
+                create_parents=True,
+                after_publish_step=after_publish_step,
+            )
+    except PublicationPhysicalIoV1Error as error:
+        raise BackendRuntimeQualificationV4PersistenceError(
+            f"immutable Q4 output collision/commit failed: {path.name}: {error}"
+        ) from error
 
 
 def _output_directory(root: Path, output_dir: Path | str) -> Path:
     supplied = Path(output_dir)
-    candidate = supplied if supplied.is_absolute() else root / supplied
-    candidate.mkdir(parents=True, exist_ok=True)
+    candidate = Path(os.path.abspath(
+        supplied if supplied.is_absolute() else root / supplied
+    ))
     try:
+        candidate.relative_to(root)
+        if candidate != root:
+            with PhysicalRootCustodyV1.open(
+                root, label="backend Q4 output project_root",
+            ) as custody:
+                custody.ensure_directory(
+                    candidate, label="backend Q4 output directory",
+                )
         resolved = candidate.resolve(strict=True)
         resolved.relative_to(root)
-    except (OSError, ValueError) as error:
+    except (OSError, ValueError, PublicationPhysicalIoV1Error) as error:
         raise BackendRuntimeQualificationV4PersistenceError(
             "Q4 output directory is outside project_root"
         ) from error
@@ -1262,6 +1251,7 @@ def _output_directory(root: Path, output_dir: Path | str) -> Path:
 def promote_backend_runtime_qualification_v4(
     *, project_root: Path | str, catalog_path: Path | str,
     output_dir: Path | str,
+    after_physical_commit_step: Callable[[str], None] | None = None,
 ) -> dict[str, Any]:
     """Physically validate Q4 and commit four receipts plus one index."""
     root = _root(project_root)
@@ -1301,7 +1291,16 @@ def promote_backend_runtime_qualification_v4(
         material["receipt_sha256"] = _canonical_sha(material)
         receipt_values[system] = material
         _atomic_immutable(
-            output / RECEIPT_FILENAME_TEMPLATE.format(system=system), material,
+            root,
+            output / RECEIPT_FILENAME_TEMPLATE.format(system=system),
+            material,
+            after_publish_step=(
+                None
+                if after_physical_commit_step is None
+                else lambda step, system=system: after_physical_commit_step(
+                    f"receipt:{system}:{step}"
+                )
+            ),
         )
     receipt_descriptors = {
         system: _descriptor_for(
@@ -1326,7 +1325,16 @@ def promote_backend_runtime_qualification_v4(
     }
     index["binding_sha256"] = _canonical_sha(index)
     index_path = output / BINDING_INDEX_FILENAME
-    _atomic_immutable(index_path, index)
+    _atomic_immutable(
+        root,
+        index_path,
+        index,
+        after_publish_step=(
+            None
+            if after_physical_commit_step is None
+            else lambda step: after_physical_commit_step(f"index:{step}")
+        ),
+    )
     return {
         "schema_version": SCHEMA_VERSION,
         "artifact_kind": "vast_backend_runtime_qualification_v4_promotion",
@@ -1608,16 +1616,16 @@ def _production_receipt_protocol_binding(
             _fail(f"production-v3 receipt protocol file {role} is unregistered")
         protocol_files[role] = copy.deepcopy(descriptor)
     material: dict[str, Any] = {
-        "schema_version": 3,
+        "schema_version": 4,
         "artifact_kind": (
-            "vast_backend_publication_production_output_receipt_protocol_binding_v3"
+            "vast_backend_publication_production_output_receipt_protocol_binding_v4"
         ),
         "execution_scope": "full_publication_measurement_v3",
-        "receipt_kind": "vast_backend_publication_production_output_receipt_v3",
+        "receipt_kind": "vast_backend_publication_production_output_receipt_v4",
         "receipt_authority_kind": (
-            "vast_backend_publication_production_output_receipt_authority_v3"
+            "vast_backend_publication_production_output_receipt_authority_v4"
         ),
-        "atomicity": "launcher_result_then_output_receipt_last_v3",
+        "atomicity": "durable_journal_then_launcher_result_then_output_receipt_last_v4",
         "parent_owned_transaction_required": True,
         "semantic_evidence_validation_required": True,
         "protocol_files": protocol_files,
@@ -1666,6 +1674,26 @@ def load_backend_runtime_qualification_v4_binding(
     for position, descriptor in enumerate(registered):
         registry.read(descriptor, f"Q4 registered input[{position}]")
 
+    # Re-run the complete semantic graph.  Descriptor/self-hash checks alone
+    # would permit a mutually consistent rewrite with every hash recomputed;
+    # a grant is eligible only after the original validators accept the
+    # physically reopened graph again.
+    catalog_reference = _descriptor(index.get("catalog"), "Q4 persisted catalog")
+    catalog, catalog_descriptor, graph_registry = _load_catalog(
+        root, catalog_reference["path"],
+    )
+    recomputed_trust, recomputed_systems, recomputed_graph = (
+        _read_and_validate_graph(
+            root=root, catalog=catalog, registry=graph_registry,
+        )
+    )
+    graph_registry.revalidate()
+    if (
+        catalog_descriptor != catalog_reference
+        or graph_registry.records() != registered
+    ):
+        _fail("Q4 persisted physical graph closure drifted")
+
     receipt_map = index.get("receipts")
     if type(receipt_map) is not dict or set(receipt_map) != set(SYSTEMS):
         _fail("Q4 persisted receipt descriptor set drifted")
@@ -1711,8 +1739,14 @@ def load_backend_runtime_qualification_v4_binding(
         or not all(_SHA_RE.fullmatch(str(item)) for item in trust.values())
         or type(upstream) is not dict or set(upstream) != expected_upstream
         or not all(_SHA_RE.fullmatch(str(item)) for item in upstream.values())
+        or trust != recomputed_trust
+        or upstream != recomputed_graph["upstream_identities"]
     ):
         _fail("Q4 persisted trust/upstream identity set drifted")
+
+    for system in SYSTEMS:
+        if source_systems[system] != recomputed_systems[system]:
+            _fail(f"Q4 persisted {system} receipt/semantic graph drifted")
 
     normalized_systems = {
         system: _validate_loaded_system(

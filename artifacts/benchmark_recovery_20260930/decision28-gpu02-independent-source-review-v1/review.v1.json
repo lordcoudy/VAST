@@ -1,0 +1,105 @@
+{
+  "Popen_call_AST_identical": true,
+  "Popen_count": 1,
+  "Popen_runtime_argv_delta": "Only the argv assignment resource literal cpu becomes gpu; output/controller path literals change to their separately owned GPU02 names. All remaining argv elements and Popen keyword arguments are identical.",
+  "all_module_function_ASTs_identical": true,
+  "artifact_kind": "decision28_gpu02_prepared_source_independent_review_v1",
+  "blocking_findings": [],
+  "considered_CPU_baseline": {
+    "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py",
+    "sha256": "445535a2ea9176effbe97e5de1db53aae614645e40db65bc1debf74489371f36",
+    "size_bytes": 23631
+  },
+  "disposition": "approved_source_only",
+  "exact_raw_forward_and_reverse_join": true,
+  "findings": [
+    "Actual image222a0003 and genuine runtime receipt0b8a34e6 are unchanged. Host closure remains a required typed future64hex runtime argument; source commit remains a required40hex runtime argument.",
+    "Six exact source/input roles,87 full source descriptors, canonical interpreter and driver self pin form95 fresh held inputs. The driver does not require its self pin to equal the historical CPU controller; no extra current95 collector is needed for this separately owned GPU dispatch under the present stock CLI contract.",
+    "Stock CLI still performs live loader/source contract checks. The driver pins genuine source/role bytes and full seven-field current epochs before launch, keeps them held through the original child, hashes and compares afterward, independently attempts every close, and checks FD baseline restoration before and after terminal persistence.",
+    "2250s whole observation,2100s stock CLI,15s teardown,1MiB channels/normal metadata and64KiB failure/late companions are unchanged. All source/input/image validators and original scientific intake/deadline/settings remain identical.",
+    "First-cause latch, bounded additional errors, partial acquisition ownership, original owner/executable join, EOF/reap, two error-aware process scans, exclusive destination, terminal after FD release and nonauthorizing companions retain their reviewed CPUv4 code.",
+    "Original future GPU owner/copy/grant/result stay null. The three specific target names were observed absent; the original future driver independently rechecks exclusive output absence at execution.",
+    "Two fallback error-report phase strings retain original_cpu_failed_* from the CPU source. They carry no resource, authority or acceptance decision and do not affect argv or custody; preserved unchanged by the declared minimal resource substitution."
+  ],
+  "limits": [
+    "Static peer review only; no target import/compile/execution, tests, engine/model/native/device operation, Git operation or cleanup.",
+    "No actual GPU source copy, dispatch grant, original owner, terminal, closure, result, benchmark acceptance or full CI success is invented.",
+    "Exact UNC name observations are not Linux FD custody or future absence proof; ROOT must recheck and bind actual source copy/commit/host before its one original dispatch.",
+    "GPU dispatch still depends on the separately closed CPU08 independent actual audit and ROOT grant."
+  ],
+  "literal_replacement_occurrences": 11,
+  "module_function_names": [
+    "clock",
+    "descriptor",
+    "epoch",
+    "error",
+    "fd_count",
+    "latch",
+    "observe",
+    "owner",
+    "pin",
+    "scan_original_group",
+    "write"
+  ],
+  "namespace_absence_observations": [
+    {
+      "basis": "read-only exact UNC name lstat; future live driver must recheck exclusive absence",
+      "observed_absent": true,
+      "relative": "artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02"
+    },
+    {
+      "basis": "read-only exact UNC name lstat; future live driver must recheck exclusive absence",
+      "observed_absent": true,
+      "relative": "artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller"
+    },
+    {
+      "basis": "read-only exact UNC name lstat; future live driver must recheck exclusive absence",
+      "observed_absent": true,
+      "relative": "artifacts/benchmark_recovery_20260930/decision28-gpu02-preparation-v1/run_original_gpu_component_pair_ext4_decision28_v4.py"
+    }
+  ],
+  "ordered_literal_replacements": [
+    {
+      "after": "GPU02",
+      "before": "CPU08",
+      "count": 1
+    },
+    {
+      "after": "gpu-pair-02",
+      "before": "cpu-pair-08",
+      "count": 2
+    },
+    {
+      "after": "GPU",
+      "before": "CPU",
+      "count": 4
+    },
+    {
+      "after": "original_gpu_component_",
+      "before": "original_cpu_component_",
+      "count": 3
+    },
+    {
+      "after": "'--resource','gpu'",
+      "before": "'--resource','cpu'",
+      "count": 1
+    }
+  ],
+  "owned_source_pins": [
+    {
+      "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-gpu02-preparation-v1/run_original_gpu_component_pair_ext4_decision28_v4.py",
+      "sha256": "fa4bb696e20ac179557096525ad8eebfa0febae388f3e3033d8890eb7416f938",
+      "size_bytes": 23631
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-gpu02-preparation-v1/preparation.v1.json",
+      "sha256": "5505a02063d0a6b92e86396c2f56026c8bec0d48a8fc6ee227fef75bdc3bbd84",
+      "size_bytes": 1594
+    }
+  ],
+  "reviewable": true,
+  "reviewed_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewer_handles_released": true,
+  "schema_version": 1
+}

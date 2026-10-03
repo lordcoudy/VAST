@@ -1,0 +1,449 @@
+{
+  "actual_CI": {
+    "ext4": {
+      "audited_skips": 86,
+      "closure_bound": true,
+      "commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+      "discovered": 3001,
+      "limits": "No skipped method or deferred integration is passed; hosted executable raw binary/global descendant absence is not invented.",
+      "mandatory_native_missing": [],
+      "observer_returncode": 0,
+      "original_EOF": {
+        "control": true,
+        "trace": true
+      },
+      "selected": 2992,
+      "six_built_targets": [
+        "vast_native_gst_probe",
+        "vast_checkpoint_source",
+        "gstadaptivescheduler",
+        "gstvastanalyticsterminal",
+        "gstvastanalyticsqueue",
+        "gstvastcheckpointprefixqueue"
+      ],
+      "successes": 2906
+    },
+    "hosted": {
+      "audited_skips": 88,
+      "closure_bound": true,
+      "commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+      "discovered": 3001,
+      "limits": "No skipped method or deferred integration is passed; hosted executable raw binary/global descendant absence is not invented.",
+      "mandatory_native_missing": [],
+      "observer_returncode": 0,
+      "original_EOF": {
+        "control": true,
+        "trace": true
+      },
+      "selected": 2992,
+      "six_built_targets": [
+        "vast_native_gst_probe",
+        "vast_checkpoint_source",
+        "gstadaptivescheduler",
+        "gstvastanalyticsterminal",
+        "gstvastanalyticsqueue",
+        "gstvastcheckpointprefixqueue"
+      ],
+      "successes": 2904
+    }
+  },
+  "actual_reader_and_mapper_closure": {
+    "epoch": [
+      69,
+      1407374885980568,
+      33279,
+      1,
+      4648,
+      1791035507817511400,
+      1791035507817511400
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/reviewer-owner-late-closure.v1.json",
+    "sha256": "e3fea3ab9dcb4e2e633b9744eb4bb4aff692d4a049c40d4b8aef219bee6a162e",
+    "size_bytes": 4648
+  },
+  "all_requirement_adjudications": [
+    {
+      "complete_clause_sha256": "b9935fb25c4c2c873cdd7b5558c202c9ca3edbb01b56b94773f548de1f5f5b0b",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R1",
+      "name": "Benchmark recovery has explicit execution and completion gates",
+      "scenario_ids": [
+        "R1/S1",
+        "R1/S2"
+      ]
+    },
+    {
+      "complete_clause_sha256": "5961069b922c714578cc52d94441a422c1ce887c461a5adbe081558719638057",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R2",
+      "name": "Native payload descriptors match immutable bytes",
+      "scenario_ids": [
+        "R2/S1",
+        "R2/S2",
+        "R2/S3"
+      ]
+    },
+    {
+      "complete_clause_sha256": "b03f4b56e2ef7f96a4cfa8c8e96048cf50eb02ed5f45b315b1d9b221f9cd765e",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R3",
+      "name": "Guardian preserves rejection and diagnostic evidence",
+      "scenario_ids": [
+        "R3/S1",
+        "R3/S2",
+        "R3/S3",
+        "R3/S4",
+        "R3/S5"
+      ]
+    },
+    {
+      "complete_clause_sha256": "158574a4d9aa548692320c7b75d1f9a7264ea83c4256111acdd9927d37994633",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R4",
+      "name": "Retry and recovery policy is predictable",
+      "scenario_ids": [
+        "R4/S1",
+        "R4/S2",
+        "R4/S3"
+      ]
+    },
+    {
+      "complete_clause_sha256": "f96126dc646783a803048c20c6b9b0091224d63fd83b2e8a7fcac3fa41c9d01f",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R5",
+      "name": "Baselines and affected evidence are reproducible",
+      "scenario_ids": [
+        "R5/S1",
+        "R5/S2",
+        "R5/S3",
+        "R5/S4",
+        "R5/S5",
+        "R5/S6",
+        "R5/S7"
+      ]
+    },
+    {
+      "complete_clause_sha256": "91b0d84aed8ba29d981d5e2ccf8bf2caec35064a937bfbe542bab89da902284c",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R6",
+      "name": "Native-probe qualification path is integrated before qualification",
+      "scenario_ids": [
+        "R6/S1",
+        "R6/S2",
+        "R6/S3",
+        "R6/S4",
+        "R6/S5",
+        "R6/S6",
+        "R6/S7",
+        "R6/S8",
+        "R6/S9",
+        "R6/S10",
+        "R6/S11",
+        "R6/S12"
+      ]
+    },
+    {
+      "complete_clause_sha256": "47b2b6526026d2daa4fd910715c868abb7771a9b2a8dbebdd64073a215f96944",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R7",
+      "name": "Published policy decisions preserve canonical linkage and actual runtime history",
+      "scenario_ids": [
+        "R7/S1",
+        "R7/S2",
+        "R7/S3",
+        "R7/S4",
+        "R7/S5",
+        "R7/S6",
+        "R7/S7",
+        "R7/S8",
+        "R7/S9",
+        "R7/S10"
+      ]
+    },
+    {
+      "complete_clause_sha256": "152cccd9089d47b22f72604ed37afcda3f2abdf0029b3f38b78ab3d451060cca",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R8",
+      "name": "Qualification reconciles the complete operational request domain",
+      "scenario_ids": [
+        "R8/S1",
+        "R8/S2",
+        "R8/S3",
+        "R8/S4",
+        "R8/S5",
+        "R8/S6",
+        "R8/S7",
+        "R8/S8",
+        "R8/S9",
+        "R8/S10"
+      ]
+    },
+    {
+      "complete_clause_sha256": "a49fe068f795d35bd98024b2c08e9704acb537b7de86fc0c621599b53ff98752",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R9",
+      "name": "Qualification and Q4 are complete before full launch readiness",
+      "scenario_ids": [
+        "R9/S1",
+        "R9/S2",
+        "R9/S3"
+      ]
+    },
+    {
+      "complete_clause_sha256": "e648b2635131a8716e23bd1488e1c20fe270c04da13c450d57105611b33adf58",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R10",
+      "name": "Cloud admission uses an actual dated guarantee",
+      "scenario_ids": [
+        "R10/S1",
+        "R10/S2"
+      ]
+    },
+    {
+      "complete_clause_sha256": "10b4e62ce89094e17a2a72c7cf21a9d72dc37e523308e939370ec0ab49853a56",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R11",
+      "name": "Launch handoff preserves the full experiment",
+      "scenario_ids": [
+        "R11/S1",
+        "R11/S2"
+      ]
+    },
+    {
+      "complete_clause_sha256": "ad8691030d5be5b42ac2d94e935820db57e7a2fe9e246ddc04c27be026f0fcd3",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R12",
+      "name": "Documentation and conformance are truthful",
+      "scenario_ids": [
+        "R12/S1",
+        "R12/S2",
+        "R12/S3",
+        "R12/S4"
+      ]
+    },
+    {
+      "complete_clause_sha256": "853832011cdb6dcc7e883a5b173ecfd279ecc021500e486a88277eda3b338def",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R13",
+      "name": "Recovery first proves a bounded genuine native pair",
+      "scenario_ids": [
+        "R13/S1",
+        "R13/S2",
+        "R13/S3",
+        "R13/S4",
+        "R13/S5",
+        "R13/S6",
+        "R13/S7"
+      ]
+    },
+    {
+      "complete_clause_sha256": "d5707deac42fda8e1bf939d3a1a58a171437ee56f8f2d3f9df79cd92683374f5",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R14",
+      "name": "Operations retain bounded ownership and worker termination facts",
+      "scenario_ids": [
+        "R14/S1",
+        "R14/S2",
+        "R14/S3",
+        "R14/S4",
+        "R14/S5",
+        "R14/S6",
+        "R14/S7",
+        "R14/S8"
+      ]
+    },
+    {
+      "complete_clause_sha256": "41259deefd5043331f76885ce19be0e898cbccfcd3c3f1493c92669b8d07a423",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R15",
+      "name": "Scientific interpretation matches the executed workload",
+      "scenario_ids": [
+        "R15/S1",
+        "R15/S2",
+        "R15/S3",
+        "R15/S4",
+        "R15/S5",
+        "R15/S6",
+        "R15/S7",
+        "R15/S8",
+        "R15/S9",
+        "R15/S10"
+      ]
+    },
+    {
+      "complete_clause_sha256": "a6b36c8ef87eb47318e6edf8ee29748b4e9402ca37b3ae78b799188e43e9b2e7",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R16",
+      "name": "Component release closes durable results and repository evidence",
+      "scenario_ids": [
+        "R16/S1",
+        "R16/S2",
+        "R16/S3",
+        "R16/S4"
+      ]
+    },
+    {
+      "complete_clause_sha256": "d2b9c7c947b644484cdd2e08c7a306e65d70d6556bcc6f814de604fe97527769",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R17",
+      "name": "CPU CI observation preserves native process invariants",
+      "scenario_ids": [
+        "R17/S1",
+        "R17/S2",
+        "R17/S3",
+        "R17/S4",
+        "R17/S5",
+        "R17/S6",
+        "R17/S7",
+        "R17/S8",
+        "R17/S9",
+        "R17/S10"
+      ]
+    },
+    {
+      "complete_clause_sha256": "9ce7beb5e261df3f4fb3baf0c9f18266b0ac3afe1901abba030b050285c7b321",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R18",
+      "name": "CI executes explicit portable contracts and preserves physical integration obligations",
+      "scenario_ids": [
+        "R18/S1",
+        "R18/S2",
+        "R18/S3",
+        "R18/S4",
+        "R18/S5",
+        "R18/S6",
+        "R18/S7"
+      ]
+    },
+    {
+      "complete_clause_sha256": "8840365f1105f6521ed00d6e2225cf14620f83bf81361c6d841c3bd987883706",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R19",
+      "name": "Selected pair owns one physically held validation session",
+      "scenario_ids": [
+        "R19/S1",
+        "R19/S2",
+        "R19/S3",
+        "R19/S4",
+        "R19/S5",
+        "R19/S6"
+      ]
+    },
+    {
+      "complete_clause_sha256": "9a4129f1cea17c9f9a4811be12cc614b18937f19dbc67b66a54af0ecb8459ded",
+      "disposition": "all current applicable predicates reviewed; conditional future completion and final repository gates retained",
+      "id": "R20",
+      "name": "Relocated selected execution preserves genuine physical validation",
+      "scenario_ids": [
+        "R20/S1",
+        "R20/S2",
+        "R20/S3"
+      ]
+    }
+  ],
+  "all_scenario_adjudications_ref": {
+    "epoch": [
+      69,
+      1407374885980567,
+      33279,
+      1,
+      434057,
+      1791035318516433800,
+      1791035318516433800
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/review.v1.json",
+    "sha256": "af861006d56d00e466648cf2479f1536925f7b33f5a246916e924c067abec202",
+    "size_bytes": 434057
+  },
+  "archive_complete": false,
+  "blocking_findings": [],
+  "component_release_complete": false,
+  "conditional_finalization": {
+    "archive": "pending",
+    "conformance_review": "pending",
+    "final_process_ledger": "https://github.com/lordcoudy/VAST/pull/2",
+    "latest_archived_commit_CI": "pending_actual_archive_commit_and_original_checks",
+    "latest_final_review": "pending",
+    "merge": "user_authorized_pending_required_checks_and_exact_final_review",
+    "owned_temporary_runtime_bind_cleanup": "pending_consumers_closed_exact_owned_cleanup"
+  },
+  "direct_all_consumer_negative_gap": "R13/S6",
+  "full_campaign_executed": false,
+  "full_review": {
+    "epoch": [
+      69,
+      1407374885980567,
+      33279,
+      1,
+      434057,
+      1791035318516433800,
+      1791035318516433800
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/review.v1.json",
+    "sha256": "af861006d56d00e466648cf2479f1536925f7b33f5a246916e924c067abec202",
+    "size_bytes": 434057
+  },
+  "independent_metadata_scanner_original_pid": 11263,
+  "limits": [
+    "No target code import, model/inference/engine/test/CI/generator execution or Git action.",
+    "Both actual complete portable CI lanes are accepted in their own source scope;9 exact physical integrations and full32/Q4/5600 remain unexecuted.",
+    "B four arms are one baseline-first descriptive pair per resource under opaque proxy/partial C_obs; no SLO, accuracy, causal speedup, energy/NVDEC busy or population claim.",
+    "Archive/main-spec synchronization, cleanup, pushed latest archive-commit checks and exact final review remain separate gates.",
+    "No currently live reader can attest its own later absence; this report records held FD release only."
+  ],
+  "manual_rows": [
+    "R5/S5",
+    "R12/S1",
+    "R14/S2",
+    "R20/S1"
+  ],
+  "measurement_source_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "merge_performed": false,
+  "normative_preservation": {
+    "current_checked": 65,
+    "current_count": 74,
+    "historical72_exact_task_text_state": true,
+    "historical82_exact_memberships_names_bodies": true,
+    "historical_checked": 31,
+    "historical_unchecked": 41,
+    "original112_complete_clauses": true,
+    "requirements": 20,
+    "scenarios": 118,
+    "six_added_ids": [
+      "R14/S6",
+      "R14/S7",
+      "R14/S8",
+      "R17/S10",
+      "R17/S8",
+      "R17/S9"
+    ]
+  },
+  "publication_ready": false,
+  "reader_source": {
+    "epoch": [
+      69,
+      1407374885980562,
+      33279,
+      1,
+      39360,
+      1791035299344781900,
+      1791035299344781900
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/review_actual_mapping_v1.py",
+    "sha256": "7988c6a08dbb777c4243988ed3424524dcf18ce5374b605134ac5cfcd78b9746",
+    "size_bytes": 39360
+  },
+  "reviewable": true,
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "source_test_checks": {
+    "AST_is_not_execution_proof": true,
+    "actual_method_AST_body_assertions_and_direct_helpers_checked": true,
+    "compiled_CPP_checks_source_bound": true,
+    "literal_source_lines_and_enclosing_AST_checked": true,
+    "raw_tested_D_source_paths_checked": 121,
+    "unique_anchors": 195,
+    "unique_qualified_methods": 290
+  }
+}

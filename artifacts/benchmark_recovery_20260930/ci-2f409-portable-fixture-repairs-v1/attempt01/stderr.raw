@@ -1,0 +1,936 @@
+
+{"event": "test_started", "monotonic_ns": 270123712749775, "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_binding_authority_rejects_wrong_worker_image"}
+test_binding_authority_rejects_wrong_worker_image (test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_binding_authority_rejects_wrong_worker_image) ... ok
+
+{"elapsed_s": 0.00029865902615711093, "event": "test_terminal", "monotonic_ns": 270123713045841, "outcome": "success", "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_binding_authority_rejects_wrong_worker_image"}
+
+{"event": "test_started", "monotonic_ns": 270123713074665, "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_live_probe_adoption_rebind_before_cleanup_preserves_final"}
+test_live_probe_adoption_rebind_before_cleanup_preserves_final (test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_live_probe_adoption_rebind_before_cleanup_preserves_final) ... ok
+
+{"elapsed_s": 0.5094372439780273, "event": "test_terminal", "monotonic_ns": 270124222512952, "outcome": "success", "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_live_probe_adoption_rebind_before_cleanup_preserves_final"}
+
+{"event": "test_started", "monotonic_ns": 270124222542082, "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_live_probes_precede_and_bind_versioned_config"}
+test_live_probes_precede_and_bind_versioned_config (test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_live_probes_precede_and_bind_versioned_config) ... ok
+
+{"elapsed_s": 0.30752681504236534, "event": "test_terminal", "monotonic_ns": 270124530069721, "outcome": "success", "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_live_probes_precede_and_bind_versioned_config"}
+
+{"event": "test_started", "monotonic_ns": 270124530099688, "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_v4_candidate_rebind_before_cleanup_preserves_final_and_foreign"}
+test_v4_candidate_rebind_before_cleanup_preserves_final_and_foreign (test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_v4_candidate_rebind_before_cleanup_preserves_final_and_foreign) ... ok
+
+{"elapsed_s": 0.06681775499600917, "event": "test_terminal", "monotonic_ns": 270124596919298, "outcome": "success", "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_v4_candidate_rebind_before_cleanup_preserves_final_and_foreign"}
+
+{"event": "test_started", "monotonic_ns": 270124596954884, "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_versioned_leaf_adopts_all_three_atomic_crash_windows"}
+test_versioned_leaf_adopts_all_three_atomic_crash_windows (test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_versioned_leaf_adopts_all_three_atomic_crash_windows) ... ok
+
+{"elapsed_s": 0.6527120399987325, "event": "test_terminal", "monotonic_ns": 270125249667983, "outcome": "success", "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_versioned_leaf_adopts_all_three_atomic_crash_windows"}
+
+{"event": "test_started", "monotonic_ns": 270125249695892, "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_wrong_live_image_id_fails_before_probe_commit"}
+test_wrong_live_image_id_fails_before_probe_commit (test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_wrong_live_image_id_fails_before_probe_commit) ... ok
+
+{"elapsed_s": 0.0037900260067544878, "event": "test_terminal", "monotonic_ns": 270125253485988, "outcome": "success", "test_id": "test_checkpoint_model_parity_materializer_v4.MaterializerV4FoundationTest.test_wrong_live_image_id_fails_before_probe_commit"}
+
+{"event": "test_started", "monotonic_ns": 270125253529009, "test_id": "test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_materialization_is_idempotent_but_refuses_physical_binding_drift"}
+test_materialization_is_idempotent_but_refuses_physical_binding_drift (test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_materialization_is_idempotent_but_refuses_physical_binding_drift) ... ok
+
+{"elapsed_s": 0.03943791595520452, "event": "test_terminal", "monotonic_ns": 270125292966880, "outcome": "success", "test_id": "test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_materialization_is_idempotent_but_refuses_physical_binding_drift"}
+
+{"event": "test_started", "monotonic_ns": 270125292988953, "test_id": "test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_materializes_exact_ten_unique_physical_bindings_and_no_pilots"}
+test_materializes_exact_ten_unique_physical_bindings_and_no_pilots (test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_materializes_exact_ten_unique_physical_bindings_and_no_pilots) ... ok
+
+{"elapsed_s": 0.032914773968514055, "event": "test_terminal", "monotonic_ns": 270125325904262, "outcome": "success", "test_id": "test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_materializes_exact_ten_unique_physical_bindings_and_no_pilots"}
+
+{"event": "test_started", "monotonic_ns": 270125325926035, "test_id": "test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_repository_refrozen_endpoint_materials_are_exactly_accepted"}
+test_repository_refrozen_endpoint_materials_are_exactly_accepted (test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_repository_refrozen_endpoint_materials_are_exactly_accepted) ... ok
+
+{"elapsed_s": 2.2861258090124466, "event": "test_terminal", "monotonic_ns": 270127612053105, "outcome": "success", "test_id": "test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_repository_refrozen_endpoint_materials_are_exactly_accepted"}
+
+{"event": "test_started", "monotonic_ns": 270127612092808, "test_id": "test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_validator_rejects_hardlink_alias_and_image_identity_drift"}
+test_validator_rejects_hardlink_alias_and_image_identity_drift (test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_validator_rejects_hardlink_alias_and_image_identity_drift) ... ok
+
+{"elapsed_s": 0.03477235103491694, "event": "test_terminal", "monotonic_ns": 270127646865282, "outcome": "success", "test_id": "test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_validator_rejects_hardlink_alias_and_image_identity_drift"}
+
+{"event": "test_started", "monotonic_ns": 270127646903080, "test_id": "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_exact_worker_receipt_and_resource_v2_evidence_are_bound"}
+test_exact_worker_receipt_and_resource_v2_evidence_are_bound (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_exact_worker_receipt_and_resource_v2_evidence_are_bound) ... ERROR
+
+{"event": "test_error", "monotonic_ns": 270131574922266, "test_id": "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_exact_worker_receipt_and_resource_v2_evidence_are_bound"}
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 209, in test_exact_worker_receipt_and_resource_v2_evidence_are_bound
+    output, _ = self._materialize(temporary)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 127, in _materialize
+    result = target.materialize_qualification_fragment(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 526, in materialize_qualification_fragment
+    fragment, payloads = _expected(root, output)
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 393, in _expected
+    for role, branch, resource, artifact in _material_values(root):
+                                            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 273, in _material_values
+    sources = _runtime_sources(root)
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 173, in _runtime_sources
+    return {role: common._descriptor(root, path, role) for role, path in paths.items()}
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 207, in _descriptor
+    size, digest = _stable_hash(_relative_file(root, raw, label), label)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 179, in _relative_file
+    _require(not _is_link(cursor), f"{label} path contains a link")
+                 ^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 156, in _is_link
+    info = path.lstat()
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 849, in lstat
+    return self.stat(follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/tmpr2q4drg0/project/scripts/checkpoint_openvino_gva_publication_runtime_v3.py'
+
+
+{"elapsed_s": 3.9280733349733055, "event": "test_terminal", "monotonic_ns": 270131574976736, "outcome": "error", "test_id": "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_exact_worker_receipt_and_resource_v2_evidence_are_bound"}
+
+{"event": "test_started", "monotonic_ns": 270131574998040, "test_id": "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_phase_one_materializes_exact_policy_and_resource_bindings"}
+test_phase_one_materializes_exact_policy_and_resource_bindings (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_phase_one_materializes_exact_policy_and_resource_bindings) ... ERROR
+
+{"event": "test_error", "monotonic_ns": 270135431460624, "test_id": "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_phase_one_materializes_exact_policy_and_resource_bindings"}
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 135, in test_phase_one_materializes_exact_policy_and_resource_bindings
+    output, result = self._materialize(temporary)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 127, in _materialize
+    result = target.materialize_qualification_fragment(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 526, in materialize_qualification_fragment
+    fragment, payloads = _expected(root, output)
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 393, in _expected
+    for role, branch, resource, artifact in _material_values(root):
+                                            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 273, in _material_values
+    sources = _runtime_sources(root)
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 173, in _runtime_sources
+    return {role: common._descriptor(root, path, role) for role, path in paths.items()}
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 207, in _descriptor
+    size, digest = _stable_hash(_relative_file(root, raw, label), label)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 179, in _relative_file
+    _require(not _is_link(cursor), f"{label} path contains a link")
+                 ^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 156, in _is_link
+    info = path.lstat()
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 849, in lstat
+    return self.stat(follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/tmpx1utoufo/project/scripts/checkpoint_openvino_gva_publication_runtime_v3.py'
+
+
+{"elapsed_s": 3.856515836028848, "event": "test_terminal", "monotonic_ns": 270135431514165, "outcome": "error", "test_id": "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_phase_one_materializes_exact_policy_and_resource_bindings"}
+
+{"event": "test_started", "monotonic_ns": 270135431533584, "test_id": "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_physical_source_drift_is_rejected_after_fixture_is_pinned"}
+test_physical_source_drift_is_rejected_after_fixture_is_pinned (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_physical_source_drift_is_rejected_after_fixture_is_pinned) ... ok
+
+{"elapsed_s": 1.3583407660480589, "event": "test_terminal", "monotonic_ns": 270136789875804, "outcome": "success", "test_id": "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_physical_source_drift_is_rejected_after_fixture_is_pinned"}
+
+{"event": "test_started", "monotonic_ns": 270136789906839, "test_id": "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant"}
+test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant) ... ERROR
+
+{"event": "test_error", "monotonic_ns": 270140509685715, "test_id": "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant"}
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 172, in test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant
+    output, _ = self._materialize(temporary)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 127, in _materialize
+    result = target.materialize_qualification_fragment(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 526, in materialize_qualification_fragment
+    fragment, payloads = _expected(root, output)
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 393, in _expected
+    for role, branch, resource, artifact in _material_values(root):
+                                            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 273, in _material_values
+    sources = _runtime_sources(root)
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 173, in _runtime_sources
+    return {role: common._descriptor(root, path, role) for role, path in paths.items()}
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 207, in _descriptor
+    size, digest = _stable_hash(_relative_file(root, raw, label), label)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 179, in _relative_file
+    _require(not _is_link(cursor), f"{label} path contains a link")
+                 ^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 156, in _is_link
+    info = path.lstat()
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 849, in lstat
+    return self.stat(follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/tmpofvc4jwe/project/scripts/checkpoint_openvino_gva_publication_runtime_v3.py'
+
+
+{"elapsed_s": 3.719828867993783, "event": "test_terminal", "monotonic_ns": 270140509735889, "outcome": "error", "test_id": "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant"}
+
+{"event": "test_started", "monotonic_ns": 270140509770646, "test_id": "test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_phase_one_materializes_ten_physical_bindings_and_no_pilots"}
+test_phase_one_materializes_ten_physical_bindings_and_no_pilots (test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_phase_one_materializes_ten_physical_bindings_and_no_pilots) ... ERROR
+
+{"event": "test_error", "monotonic_ns": 270142284049662, "test_id": "test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_phase_one_materializes_ten_physical_bindings_and_no_pilots"}
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 150, in _validated_runtime_source_paths
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp2pevy7wt/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 384, in validate_runtime_source_closure
+  File "/tmp/tmp2pevy7wt/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 287, in validate_dependency_source_closure
+  File "/tmp/tmp2pevy7wt/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 65, in _require_regular_source
+  File "/tmp/tmp2pevy7wt/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+ValueError: runtime source must be a physical regular file: deploy/deepstream/checkpoint/wheels/PyYAML-6.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 71, in test_phase_one_materializes_ten_physical_bindings_and_no_pilots
+    manifest = self.image_manifest(base / "runtime-image.json", project_root)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 41, in image_manifest
+    source_sha = target.runtime_source_sha256(project_root)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 164, in runtime_source_sha256
+    return _aggregate_sha256(root, _validated_runtime_source_paths(root))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 154, in _validated_runtime_source_paths
+    raise QualificationFragmentError(
+checkpoint_gstreamer_custom_qualification_fragment_v3.QualificationFragmentError: runtime source closure validation failed
+
+
+{"elapsed_s": 1.7743136659846641, "event": "test_terminal", "monotonic_ns": 270142284084452, "outcome": "error", "test_id": "test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_phase_one_materializes_ten_physical_bindings_and_no_pilots"}
+
+{"event": "test_started", "monotonic_ns": 270142284104798, "test_id": "test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_refreeze_and_exact_runtime_identity_fields_are_bound"}
+test_refreeze_and_exact_runtime_identity_fields_are_bound (test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_refreeze_and_exact_runtime_identity_fields_are_bound) ... ERROR
+
+{"event": "test_error", "monotonic_ns": 270143996443283, "test_id": "test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_refreeze_and_exact_runtime_identity_fields_are_bound"}
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 150, in _validated_runtime_source_paths
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmpg35w0ya7/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 384, in validate_runtime_source_closure
+  File "/tmp/tmpg35w0ya7/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 287, in validate_dependency_source_closure
+  File "/tmp/tmpg35w0ya7/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 65, in _require_regular_source
+  File "/tmp/tmpg35w0ya7/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+ValueError: runtime source must be a physical regular file: deploy/deepstream/checkpoint/wheels/PyYAML-6.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 143, in test_refreeze_and_exact_runtime_identity_fields_are_bound
+    manifest = self.image_manifest(base / "runtime-image.json", project_root)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 41, in image_manifest
+    source_sha = target.runtime_source_sha256(project_root)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 164, in runtime_source_sha256
+    return _aggregate_sha256(root, _validated_runtime_source_paths(root))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 154, in _validated_runtime_source_paths
+    raise QualificationFragmentError(
+checkpoint_gstreamer_custom_qualification_fragment_v3.QualificationFragmentError: runtime source closure validation failed
+
+
+{"elapsed_s": 1.712384300015401, "event": "test_terminal", "monotonic_ns": 270143996489405, "outcome": "error", "test_id": "test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_refreeze_and_exact_runtime_identity_fields_are_bound"}
+
+{"event": "test_started", "monotonic_ns": 270143996507203, "test_id": "test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_source_and_dependency_hashes_use_only_exact_build_inputs"}
+test_source_and_dependency_hashes_use_only_exact_build_inputs (test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_source_and_dependency_hashes_use_only_exact_build_inputs) ... ok
+
+{"elapsed_s": 1.9485179670155048, "event": "test_terminal", "monotonic_ns": 270145945026314, "outcome": "success", "test_id": "test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_source_and_dependency_hashes_use_only_exact_build_inputs"}
+
+{"event": "test_started", "monotonic_ns": 270145945076482, "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_dangling_system_collision_is_never_treated_as_absent"}
+test_dangling_system_collision_is_never_treated_as_absent (test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_dangling_system_collision_is_never_treated_as_absent) ... FAIL
+
+{"event": "test_failure", "monotonic_ns": 270149046105216, "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_dangling_system_collision_is_never_treated_as_absent"}
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_fragments_from_authority_v2.py", line 148, in _under_root
+    path.relative_to(root)
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fragment-v2-e8zxq_qx/fragments' is not in the subpath of '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fragment-v2-e8zxq_qx/project'
+
+The above exception was the direct cause of the following exception:
+
+publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Error: fragments root escaped project_root
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_policy_qualification_fragments_from_authority_v2.py", line 417, in test_dangling_system_collision_is_never_treated_as_absent
+    with self.assertRaisesRegex(
+AssertionError: "already exists" does not match "fragments root escaped project_root"
+
+
+{"elapsed_s": 3.1010637279832736, "event": "test_terminal", "monotonic_ns": 270149046139798, "outcome": "failure", "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_dangling_system_collision_is_never_treated_as_absent"}
+
+{"event": "test_started", "monotonic_ns": 270149046169840, "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_materializes_exact_four_fragments_and_forty_unique_bindings"}
+test_materializes_exact_four_fragments_and_forty_unique_bindings (test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_materializes_exact_four_fragments_and_forty_unique_bindings) ... ok
+
+{"elapsed_s": 9.683133756974712, "event": "test_terminal", "monotonic_ns": 270158729305127, "outcome": "success", "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_materializes_exact_four_fragments_and_forty_unique_bindings"}
+
+{"event": "test_started", "monotonic_ns": 270158729337987, "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_stale_patch_cross_binding_is_rejected"}
+test_stale_patch_cross_binding_is_rejected (test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_stale_patch_cross_binding_is_rejected) ... ok
+
+{"elapsed_s": 8.450278887001332, "event": "test_terminal", "monotonic_ns": 270167179618516, "outcome": "success", "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_stale_patch_cross_binding_is_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270167179652209, "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_tampered_binding_is_rejected"}
+test_tampered_binding_is_rejected (test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_tampered_binding_is_rejected) ... ok
+
+{"elapsed_s": 8.580464909959119, "event": "test_terminal", "monotonic_ns": 270175760118226, "outcome": "success", "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_tampered_binding_is_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270175760152806, "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_v3_cannot_resolve_refresh_only_patch"}
+test_v3_cannot_resolve_refresh_only_patch (test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_v3_cannot_resolve_refresh_only_patch) ... ok
+
+{"elapsed_s": 3.836490062007215, "event": "test_terminal", "monotonic_ns": 270179596644162, "outcome": "success", "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_v3_cannot_resolve_refresh_only_patch"}
+
+{"event": "test_started", "monotonic_ns": 270179596678468, "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_v4_probe_authority_projects_descriptor_and_cross_binds_implementation"}
+test_v4_probe_authority_projects_descriptor_and_cross_binds_implementation (test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_v4_probe_authority_projects_descriptor_and_cross_binds_implementation) ... ok
+
+{"elapsed_s": 0.0005365319666452706, "event": "test_terminal", "monotonic_ns": 270179597214753, "outcome": "success", "test_id": "test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_v4_probe_authority_projects_descriptor_and_cross_binds_implementation"}
+
+{"event": "test_started", "monotonic_ns": 270179597259273, "test_id": "test_publication_operational_container_custody_v1.ContainerCustodyContractTests.test_cid_is_exact_original_regular_single_link_bytes"}
+test_cid_is_exact_original_regular_single_link_bytes (test_publication_operational_container_custody_v1.ContainerCustodyContractTests.test_cid_is_exact_original_regular_single_link_bytes) ... ok
+
+{"elapsed_s": 0.0008886149735189974, "event": "test_terminal", "monotonic_ns": 270179598147890, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.ContainerCustodyContractTests.test_cid_is_exact_original_regular_single_link_bytes"}
+
+{"event": "test_started", "monotonic_ns": 270179598172951, "test_id": "test_publication_operational_container_custody_v1.ContainerCustodyContractTests.test_inactive_measurement_does_not_change_original_arguments"}
+test_inactive_measurement_does_not_change_original_arguments (test_publication_operational_container_custody_v1.ContainerCustodyContractTests.test_inactive_measurement_does_not_change_original_arguments) ... ok
+
+{"elapsed_s": 0.0001560620148666203, "event": "test_terminal", "monotonic_ns": 270179598329283, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.ContainerCustodyContractTests.test_inactive_measurement_does_not_change_original_arguments"}
+
+{"event": "test_started", "monotonic_ns": 270179598354650, "test_id": "test_publication_operational_container_custody_v1.ContainerCustodyContractTests.test_noncanonical_or_foreign_not_found_is_not_positive_absence"}
+test_noncanonical_or_foreign_not_found_is_not_positive_absence (test_publication_operational_container_custody_v1.ContainerCustodyContractTests.test_noncanonical_or_foreign_not_found_is_not_positive_absence) ... ok
+
+{"elapsed_s": 0.00010529696010053158, "event": "test_terminal", "monotonic_ns": 270179598459823, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.ContainerCustodyContractTests.test_noncanonical_or_foreign_not_found_is_not_positive_absence"}
+
+{"event": "test_started", "monotonic_ns": 270179598483693, "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_gva_three_field_image_is_preserved_without_fabricated_base"}
+test_actual_gva_three_field_image_is_preserved_without_fabricated_base (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_gva_three_field_image_is_preserved_without_fabricated_base) ... ok
+
+{"elapsed_s": 0.9865471909870394, "event": "test_terminal", "monotonic_ns": 270180585031342, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_gva_three_field_image_is_preserved_without_fabricated_base"}
+
+{"event": "test_started", "monotonic_ns": 270180585059073, "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_process_and_original_cid_receipts_compose_through_cold_readers"}
+test_actual_process_and_original_cid_receipts_compose_through_cold_readers (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_process_and_original_cid_receipts_compose_through_cold_readers) ... ok
+
+{"elapsed_s": 0.9051756279659458, "event": "test_terminal", "monotonic_ns": 270181490235383, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_process_and_original_cid_receipts_compose_through_cold_readers"}
+
+{"event": "test_started", "monotonic_ns": 270181490263915, "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_retained_terminal_and_resealed_invalid_times_are_checked"}
+test_actual_retained_terminal_and_resealed_invalid_times_are_checked (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_retained_terminal_and_resealed_invalid_times_are_checked) ... ERROR
+
+{"event": "test_error", "monotonic_ns": 270182318968849, "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_retained_terminal_and_resealed_invalid_times_are_checked"}
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_container_custody_v1.py", line 215, in test_actual_retained_terminal_and_resealed_invalid_times_are_checked
+    self.measure("retained_success")
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_container_custody_v1.py", line 183, in measure
+    _materialize_operational_file_v1(self.root, self.operational, self.native_target)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_runtime_context_v1.py", line 97, in _materialize_operational_file_v1
+    result = materialize_publication_child_evidence_group_v1(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_child_evidence_materializer_v1.py", line 265, in materialize_publication_child_evidence_group_v1
+    _fail(f"{label} source evidence namespace drifted")
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_child_evidence_materializer_v1.py", line 43, in _fail
+    raise PublicationChildEvidenceMaterializerV1Error(message)
+publication_child_evidence_materializer_v1.PublicationChildEvidenceMaterializerV1Error: separate native operational evidence source evidence namespace drifted
+Original process capture finalization failed: original engine capture failed: original_wrapper_failed
+
+
+{"elapsed_s": 0.8291333169909194, "event": "test_terminal", "monotonic_ns": 270182319398113, "outcome": "error", "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_retained_terminal_and_resealed_invalid_times_are_checked"}
+
+{"event": "test_started", "monotonic_ns": 270182319433613, "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_malformed_original_cid_remains_failure_and_cleans_only_validated_owned_name"}
+test_malformed_original_cid_remains_failure_and_cleans_only_validated_owned_name (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_malformed_original_cid_remains_failure_and_cleans_only_validated_owned_name) ... ok
+
+{"elapsed_s": 1.245733110990841, "event": "test_terminal", "monotonic_ns": 270183565167186, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_malformed_original_cid_remains_failure_and_cleans_only_validated_owned_name"}
+
+{"event": "test_started", "monotonic_ns": 270183565195966, "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_nonzero_and_timeout_stop_only_original_surviving_cid_and_never_accept"}
+test_nonzero_and_timeout_stop_only_original_surviving_cid_and_never_accept (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_nonzero_and_timeout_stop_only_original_surviving_cid_and_never_accept) ... ok
+
+{"elapsed_s": 2.2684659500373527, "event": "test_terminal", "monotonic_ns": 270185833662501, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_nonzero_and_timeout_stop_only_original_surviving_cid_and_never_accept"}
+
+{"event": "test_started", "monotonic_ns": 270185833687985, "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_absence_cannot_grant_quiescence"}
+test_resealed_foreign_absence_cannot_grant_quiescence (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_absence_cannot_grant_quiescence) ... ok
+
+{"elapsed_s": 0.9190265570068732, "event": "test_terminal", "monotonic_ns": 270186752715404, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_absence_cannot_grant_quiescence"}
+
+{"event": "test_started", "monotonic_ns": 270186752765816, "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_daemon_identity_cannot_grant_quiescence"}
+test_resealed_foreign_daemon_identity_cannot_grant_quiescence (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_daemon_identity_cannot_grant_quiescence) ... ok
+
+{"elapsed_s": 0.9303388200351037, "event": "test_terminal", "monotonic_ns": 270187683105151, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_daemon_identity_cannot_grant_quiescence"}
+
+{"event": "test_started", "monotonic_ns": 270187683133691, "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_reserved_label_is_rejected_against_original_launch"}
+test_resealed_foreign_reserved_label_is_rejected_against_original_launch (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_reserved_label_is_rejected_against_original_launch) ... ok
+
+{"elapsed_s": 0.9260442460072227, "event": "test_terminal", "monotonic_ns": 270188609178595, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_reserved_label_is_rejected_against_original_launch"}
+
+{"event": "test_started", "monotonic_ns": 270188609209456, "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_start_persistence_failure_recovers_owned_name_and_cleans_original_cid"}
+test_start_persistence_failure_recovers_owned_name_and_cleans_original_cid (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_start_persistence_failure_recovers_owned_name_and_cleans_original_cid) ... ok
+
+{"elapsed_s": 1.0906115310499445, "event": "test_terminal", "monotonic_ns": 270189699821870, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_start_persistence_failure_recovers_owned_name_and_cleans_original_cid"}
+
+{"event": "test_started", "monotonic_ns": 270189699845848, "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_uncounted_container_fact_is_rejected"}
+test_uncounted_container_fact_is_rejected (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_uncounted_container_fact_is_rejected) ... ok
+
+{"elapsed_s": 0.9292234639870003, "event": "test_terminal", "monotonic_ns": 270190629069922, "outcome": "success", "test_id": "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_uncounted_container_fact_is_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270190629113181, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_all_pins_mandatory_distinct_and_protocol_source_hash_rejected"}
+test_all_pins_mandatory_distinct_and_protocol_source_hash_rejected (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_all_pins_mandatory_distinct_and_protocol_source_hash_rejected) ... ok
+
+{"elapsed_s": 0.0051408770377747715, "event": "test_terminal", "monotonic_ns": 270190634253998, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_all_pins_mandatory_distinct_and_protocol_source_hash_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270190634285899, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_base_q4_semantic_schema_identity_mismatch_fails"}
+test_base_q4_semantic_schema_identity_mismatch_fails (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_base_q4_semantic_schema_identity_mismatch_fails) ... ok
+
+{"elapsed_s": 0.01736377103952691, "event": "test_terminal", "monotonic_ns": 270190651650162, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_base_q4_semantic_schema_identity_mismatch_fails"}
+
+{"event": "test_started", "monotonic_ns": 270190651675715, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_build_validate_assess_exact_authority"}
+test_build_validate_assess_exact_authority (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_build_validate_assess_exact_authority) ... ok
+
+{"elapsed_s": 0.009931810025591403, "event": "test_terminal", "monotonic_ns": 270190661608188, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_build_validate_assess_exact_authority"}
+
+{"event": "test_started", "monotonic_ns": 270190661635602, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_casefold_path_alias_and_physical_tamper_fail"}
+test_casefold_path_alias_and_physical_tamper_fail (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_casefold_path_alias_and_physical_tamper_fail) ... ok
+
+{"elapsed_s": 0.007947716978378594, "event": "test_terminal", "monotonic_ns": 270190669583718, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_casefold_path_alias_and_physical_tamper_fail"}
+
+{"event": "test_started", "monotonic_ns": 270190669671594, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_hardlink_and_symlink_artifacts_fail_closed"}
+test_hardlink_and_symlink_artifacts_fail_closed (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_hardlink_and_symlink_artifacts_fail_closed) ... ok
+
+{"elapsed_s": 0.0031995070166885853, "event": "test_terminal", "monotonic_ns": 270190672870925, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_hardlink_and_symlink_artifacts_fail_closed"}
+
+{"event": "test_started", "monotonic_ns": 270190672897840, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_nested_q4_implementation_alias_is_not_globally_distinct"}
+test_nested_q4_implementation_alias_is_not_globally_distinct (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_nested_q4_implementation_alias_is_not_globally_distinct) ... ok
+
+{"elapsed_s": 0.010865056014154106, "event": "test_terminal", "monotonic_ns": 270190683763130, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_nested_q4_implementation_alias_is_not_globally_distinct"}
+
+{"event": "test_started", "monotonic_ns": 270190683788741, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_old_relabel_unknown_true_claim_and_type_smuggling_fail"}
+test_old_relabel_unknown_true_claim_and_type_smuggling_fail (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_old_relabel_unknown_true_claim_and_type_smuggling_fail) ... ok
+
+{"elapsed_s": 0.008997507044114172, "event": "test_terminal", "monotonic_ns": 270190692786879, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_old_relabel_unknown_true_claim_and_type_smuggling_fail"}
+
+{"event": "test_started", "monotonic_ns": 270190692812599, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_posix_read_accepts_atime_drift_for_every_traversal_node"}
+test_posix_read_accepts_atime_drift_for_every_traversal_node (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_posix_read_accepts_atime_drift_for_every_traversal_node) ... ok
+
+{"elapsed_s": 0.00503335299436003, "event": "test_terminal", "monotonic_ns": 270190697846370, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_posix_read_accepts_atime_drift_for_every_traversal_node"}
+
+{"event": "test_started", "monotonic_ns": 270190697866284, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_posix_read_rejects_stable_stat_drift_for_every_traversal_node"}
+test_posix_read_rejects_stable_stat_drift_for_every_traversal_node (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_posix_read_rejects_stable_stat_drift_for_every_traversal_node) ... ok
+
+{"elapsed_s": 0.03200304100755602, "event": "test_terminal", "monotonic_ns": 270190729869766, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_posix_read_rejects_stable_stat_drift_for_every_traversal_node"}
+
+{"event": "test_started", "monotonic_ns": 270190729897613, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_protocol_and_domain_separated_abi_are_exact"}
+test_protocol_and_domain_separated_abi_are_exact (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_protocol_and_domain_separated_abi_are_exact) ... ok
+
+{"elapsed_s": 0.00524581503123045, "event": "test_terminal", "monotonic_ns": 270190735143503, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_protocol_and_domain_separated_abi_are_exact"}
+
+{"event": "test_started", "monotonic_ns": 270190735169868, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_protocol_base_q4_physical_tamper_block_assessment"}
+test_protocol_base_q4_physical_tamper_block_assessment (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_protocol_base_q4_physical_tamper_block_assessment) ... ok
+
+{"elapsed_s": 0.023980747966561466, "event": "test_terminal", "monotonic_ns": 270190759150970, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_protocol_base_q4_physical_tamper_block_assessment"}
+
+{"event": "test_started", "monotonic_ns": 270190759180200, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_selection_identity_does_not_hide_a_production_import"}
+test_selection_identity_does_not_hide_a_production_import (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_selection_identity_does_not_hide_a_production_import) ... ok
+
+{"elapsed_s": 0.0023165949969552457, "event": "test_terminal", "monotonic_ns": 270190761496966, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_selection_identity_does_not_hide_a_production_import"}
+
+{"event": "test_started", "monotonic_ns": 270190761521305, "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_source_has_no_process_network_write_or_downstream_consumers"}
+test_source_has_no_process_network_write_or_downstream_consumers (test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_source_has_no_process_network_write_or_downstream_consumers) ... ok
+
+{"elapsed_s": 0.2326164020341821, "event": "test_terminal", "monotonic_ns": 270190994139130, "outcome": "success", "test_id": "test_backend_runtime_replay_runner_authority_v2.ReplayRunnerAuthorityV2Tests.test_source_has_no_process_network_write_or_downstream_consumers"}
+
+{"event": "test_started", "monotonic_ns": 270190994207184, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_capability_guard_resolves_import_and_assignment_aliases"}
+test_capability_guard_resolves_import_and_assignment_aliases (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_capability_guard_resolves_import_and_assignment_aliases) ... ok
+
+{"elapsed_s": 0.003337751026265323, "event": "test_terminal", "monotonic_ns": 270190997545002, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_capability_guard_resolves_import_and_assignment_aliases"}
+
+{"event": "test_started", "monotonic_ns": 270190997589271, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_closed_schema_self_hash_and_new_only_kinds"}
+test_closed_schema_self_hash_and_new_only_kinds (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_closed_schema_self_hash_and_new_only_kinds) ... ok
+
+{"elapsed_s": 0.00957169703906402, "event": "test_terminal", "monotonic_ns": 270191007160922, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_closed_schema_self_hash_and_new_only_kinds"}
+
+{"event": "test_started", "monotonic_ns": 270191007193314, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_elf_dynamic_segment_and_null_cardinality_fail_closed"}
+test_elf_dynamic_segment_and_null_cardinality_fail_closed (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_elf_dynamic_segment_and_null_cardinality_fail_closed) ... ok
+
+{"elapsed_s": 0.06317853200016543, "event": "test_terminal", "monotonic_ns": 270191070372311, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_elf_dynamic_segment_and_null_cardinality_fail_closed"}
+
+{"event": "test_started", "monotonic_ns": 270191070407156, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_environment_invocation_and_provenance_are_exact"}
+test_environment_invocation_and_provenance_are_exact (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_environment_invocation_and_provenance_are_exact) ... ok
+
+{"elapsed_s": 0.015466164972167462, "event": "test_terminal", "monotonic_ns": 270191085873822, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_environment_invocation_and_provenance_are_exact"}
+
+{"event": "test_started", "monotonic_ns": 270191085901833, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_exact_factory_set_and_plugin_binding"}
+test_exact_factory_set_and_plugin_binding (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_exact_factory_set_and_plugin_binding) ... ok
+
+{"elapsed_s": 0.005323647987097502, "event": "test_terminal", "monotonic_ns": 270191091225748, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_exact_factory_set_and_plugin_binding"}
+
+{"event": "test_started", "monotonic_ns": 270191091263332, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_exact_runtime_order_cardinality_and_global_alias_rejection"}
+test_exact_runtime_order_cardinality_and_global_alias_rejection (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_exact_runtime_order_cardinality_and_global_alias_rejection) ... ok
+
+{"elapsed_s": 0.007495747006032616, "event": "test_terminal", "monotonic_ns": 270191098759022, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_exact_runtime_order_cardinality_and_global_alias_rejection"}
+
+{"event": "test_started", "monotonic_ns": 270191098788857, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_external_pins_are_mandatory_strict_and_checked_before_content"}
+test_external_pins_are_mandatory_strict_and_checked_before_content (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_external_pins_are_mandatory_strict_and_checked_before_content) ... ok
+
+{"elapsed_s": 0.0028691450133919716, "event": "test_terminal", "monotonic_ns": 270191101658376, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_external_pins_are_mandatory_strict_and_checked_before_content"}
+
+{"event": "test_started", "monotonic_ns": 270191101685285, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_json_scalar_types_are_exact_and_never_accept_bool_or_float"}
+test_json_scalar_types_are_exact_and_never_accept_bool_or_float (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_json_scalar_types_are_exact_and_never_accept_bool_or_float) ... ok
+
+{"elapsed_s": 0.011738346016500145, "event": "test_terminal", "monotonic_ns": 270191113424076, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_json_scalar_types_are_exact_and_never_accept_bool_or_float"}
+
+{"event": "test_started", "monotonic_ns": 270191113464249, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_loader_graph_requires_exact_needed_order_targets_and_reachability"}
+test_loader_graph_requires_exact_needed_order_targets_and_reachability (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_loader_graph_requires_exact_needed_order_targets_and_reachability) ... ok
+
+{"elapsed_s": 0.00822475302265957, "event": "test_terminal", "monotonic_ns": 270191121688895, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_loader_graph_requires_exact_needed_order_targets_and_reachability"}
+
+{"event": "test_started", "monotonic_ns": 270191121717905, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_loader_roots_include_the_staged_elf_interpreter"}
+test_loader_roots_include_the_staged_elf_interpreter (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_loader_roots_include_the_staged_elf_interpreter) ... ok
+
+{"elapsed_s": 0.0026461390079930425, "event": "test_terminal", "monotonic_ns": 270191124364402, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_loader_roots_include_the_staged_elf_interpreter"}
+
+{"event": "test_started", "monotonic_ns": 270191124398421, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_needed_targets_are_direct_lib_shared_objects_named_by_soname"}
+test_needed_targets_are_direct_lib_shared_objects_named_by_soname (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_needed_targets_are_direct_lib_shared_objects_named_by_soname) ... ok
+
+{"elapsed_s": 0.004398148972541094, "event": "test_terminal", "monotonic_ns": 270191128796552, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_needed_targets_are_direct_lib_shared_objects_named_by_soname"}
+
+{"event": "test_started", "monotonic_ns": 270191128826055, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_no_process_write_discovery_consumer_or_readiness_surface"}
+test_no_process_write_discovery_consumer_or_readiness_surface (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_no_process_write_discovery_consumer_or_readiness_surface) ... ok
+
+{"elapsed_s": 35.483170380000956, "event": "test_terminal", "monotonic_ns": 270226611997838, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_no_process_write_discovery_consumer_or_readiness_surface"}
+
+{"event": "test_started", "monotonic_ns": 270226612063004, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_paths_content_identities_and_semantic_domains_are_globally_unique"}
+test_paths_content_identities_and_semantic_domains_are_globally_unique (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_paths_content_identities_and_semantic_domains_are_globally_unique) ... ok
+
+{"elapsed_s": 0.007079845992848277, "event": "test_terminal", "monotonic_ns": 270226619143013, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_paths_content_identities_and_semantic_domains_are_globally_unique"}
+
+{"event": "test_started", "monotonic_ns": 270226619220134, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_physical_hardlink_alias_is_rejected"}
+test_physical_hardlink_alias_is_rejected (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_physical_hardlink_alias_is_rejected) ... ok
+
+{"elapsed_s": 0.005065641016699374, "event": "test_terminal", "monotonic_ns": 270226624285683, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_physical_hardlink_alias_is_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270226624356669, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_physical_reader_is_handle_relative_and_revalidates_root_parent_final"}
+test_physical_reader_is_handle_relative_and_revalidates_root_parent_final (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_physical_reader_is_handle_relative_and_revalidates_root_parent_final) ... ok
+
+{"elapsed_s": 0.015779251989442855, "event": "test_terminal", "monotonic_ns": 270226640136255, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_physical_reader_is_handle_relative_and_revalidates_root_parent_final"}
+
+{"event": "test_started", "monotonic_ns": 270226640170002, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_physical_tamper_canonical_documents_and_elf_drift_block"}
+test_physical_tamper_canonical_documents_and_elf_drift_block (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_physical_tamper_canonical_documents_and_elf_drift_block) ... ok
+
+{"elapsed_s": 0.03766117099439725, "event": "test_terminal", "monotonic_ns": 270226677831560, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_physical_tamper_canonical_documents_and_elf_drift_block"}
+
+{"event": "test_started", "monotonic_ns": 270226677864469, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_bind_mount_escape_signal_is_fail_closed"}
+test_posix_bind_mount_escape_signal_is_fail_closed (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_bind_mount_escape_signal_is_fail_closed) ... ok
+
+{"elapsed_s": 0.004737787006888539, "event": "test_terminal", "monotonic_ns": 270226682602717, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_bind_mount_escape_signal_is_fail_closed"}
+
+{"event": "test_started", "monotonic_ns": 270226682626169, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_fifo_is_rejected_before_any_blocking_read"}
+test_posix_fifo_is_rejected_before_any_blocking_read (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_fifo_is_rejected_before_any_blocking_read) ... ok
+
+{"elapsed_s": 0.005094552994705737, "event": "test_terminal", "monotonic_ns": 270226687721074, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_fifo_is_rejected_before_any_blocking_read"}
+
+{"event": "test_started", "monotonic_ns": 270226687749517, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_reader_requires_openat2_beneath_no_xdev"}
+test_posix_reader_requires_openat2_beneath_no_xdev (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_reader_requires_openat2_beneath_no_xdev) ... ok
+
+{"elapsed_s": 0.008442392980214208, "event": "test_terminal", "monotonic_ns": 270226696192340, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_reader_requires_openat2_beneath_no_xdev"}
+
+{"event": "test_started", "monotonic_ns": 270226696224292, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_root_parent_and_final_rewalk_swaps_are_fail_closed"}
+test_posix_root_parent_and_final_rewalk_swaps_are_fail_closed (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_root_parent_and_final_rewalk_swaps_are_fail_closed) ... ok
+
+{"elapsed_s": 0.017779129033442587, "event": "test_terminal", "monotonic_ns": 270226714003691, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_posix_root_parent_and_final_rewalk_swaps_are_fail_closed"}
+
+{"event": "test_started", "monotonic_ns": 270226714034598, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_selection_identity_does_not_hide_a_production_import"}
+test_selection_identity_does_not_hide_a_production_import (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_selection_identity_does_not_hide_a_production_import) ... ok
+
+{"elapsed_s": 0.00259970297338441, "event": "test_terminal", "monotonic_ns": 270226716634665, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_selection_identity_does_not_hide_a_production_import"}
+
+{"event": "test_started", "monotonic_ns": 270226716670223, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_validate_assess_and_build_candidate_without_authorization"}
+test_validate_assess_and_build_candidate_without_authorization (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_validate_assess_and_build_candidate_without_authorization) ... ok
+
+{"elapsed_s": 0.01750386896310374, "event": "test_terminal", "monotonic_ns": 270226734174037, "outcome": "success", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_validate_assess_and_build_candidate_without_authorization"}
+
+{"event": "test_started", "monotonic_ns": 270226734204470, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_oversized_component_is_rejected_before_ntcreatefile"}
+test_windows_oversized_component_is_rejected_before_ntcreatefile (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_oversized_component_is_rejected_before_ntcreatefile) ... skipped 'Windows handle semantics only'
+
+{"elapsed_s": 4.364695632830262e-05, "event": "test_terminal", "monotonic_ns": 270226734247760, "outcome": "skip", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_oversized_component_is_rejected_before_ntcreatefile"}
+
+{"event": "test_started", "monotonic_ns": 270226734270525, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_root_parent_final_reparse_and_rewalk_drift_are_fail_closed"}
+test_windows_root_parent_final_reparse_and_rewalk_drift_are_fail_closed (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_root_parent_final_reparse_and_rewalk_drift_are_fail_closed) ... skipped 'Windows handle semantics only'
+
+{"elapsed_s": 2.4865963496267796e-05, "event": "test_terminal", "monotonic_ns": 270226734295032, "outcome": "skip", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_root_parent_final_reparse_and_rewalk_drift_are_fail_closed"}
+
+{"event": "test_started", "monotonic_ns": 270226734314302, "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_verification_handle_cleanup_failure_is_fail_closed"}
+test_windows_verification_handle_cleanup_failure_is_fail_closed (test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_verification_handle_cleanup_failure_is_fail_closed) ... skipped 'Windows handle semantics only'
+
+{"elapsed_s": 2.3340980987995863e-05, "event": "test_terminal", "monotonic_ns": 270226734337316, "outcome": "skip", "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_verification_handle_cleanup_failure_is_fail_closed"}
+
+{"event": "test_started", "monotonic_ns": 270226734370639, "test_id": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_claims_are_exactly_point_in_time_and_nonauthorizing"}
+test_claims_are_exactly_point_in_time_and_nonauthorizing (test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_claims_are_exactly_point_in_time_and_nonauthorizing) ... ok
+
+{"elapsed_s": 0.0041892940062098205, "event": "test_terminal", "monotonic_ns": 270226738559754, "outcome": "success", "test_id": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_claims_are_exactly_point_in_time_and_nonauthorizing"}
+
+{"event": "test_started", "monotonic_ns": 270226738581192, "test_id": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_default_off_windows_x64_target_is_dependency_closed"}
+test_default_off_windows_x64_target_is_dependency_closed (test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_default_off_windows_x64_target_is_dependency_closed) ... ok
+
+{"elapsed_s": 0.001653105951845646, "event": "test_terminal", "monotonic_ns": 270226740234713, "outcome": "success", "test_id": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_default_off_windows_x64_target_is_dependency_closed"}
+
+{"event": "test_started", "monotonic_ns": 270226740255070, "test_id": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_no_production_consumer_or_readiness_path_exists"}
+test_no_production_consumer_or_readiness_path_exists (test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_no_production_consumer_or_readiness_path_exists) ... ok
+
+{"elapsed_s": 449.3429978300119, "event": "test_terminal", "monotonic_ns": 270676083254079, "outcome": "success", "test_id": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_no_production_consumer_or_readiness_path_exists"}
+
+{"event": "test_started", "monotonic_ns": 270676083284833, "test_id": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_scope_is_synchronous_handle_relative_observation_only"}
+test_scope_is_synchronous_handle_relative_observation_only (test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_scope_is_synchronous_handle_relative_observation_only) ... ok
+
+{"elapsed_s": 0.003316659014672041, "event": "test_terminal", "monotonic_ns": 270676086602330, "outcome": "success", "test_id": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_scope_is_synchronous_handle_relative_observation_only"}
+
+{"event": "test_started", "monotonic_ns": 270676086631395, "test_id": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_selection_identity_does_not_hide_a_production_import"}
+test_selection_identity_does_not_hide_a_production_import (test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_selection_identity_does_not_hide_a_production_import) ... ok
+
+{"elapsed_s": 3.7551973946392536e-05, "event": "test_terminal", "monotonic_ns": 270676086669196, "outcome": "success", "test_id": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_selection_identity_does_not_hide_a_production_import"}
+
+{"event": "test_started", "monotonic_ns": 270676086703081, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_absent_declared_method_is_rejected"}
+test_absent_declared_method_is_rejected (test_ci_test_selection_v1.SelectionContracts.test_absent_declared_method_is_rejected) ... ok
+
+{"elapsed_s": 0.005843163002282381, "event": "test_terminal", "monotonic_ns": 270676092546294, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_absent_declared_method_is_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270676092567107, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_all_original_platform_and_retired_skip_ids_remain_nonexecution"}
+test_all_original_platform_and_retired_skip_ids_remain_nonexecution (test_ci_test_selection_v1.SelectionContracts.test_all_original_platform_and_retired_skip_ids_remain_nonexecution) ... FAIL
+
+{"event": "test_failure", "monotonic_ns": 270676098770807, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_all_original_platform_and_retired_skip_ids_remain_nonexecution"}
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 118, in test_all_original_platform_and_retired_skip_ids_remain_nonexecution
+    self.assertEqual(len(rows),80)
+AssertionError: 88 != 80
+
+
+{"elapsed_s": 0.006290366989560425, "event": "test_terminal", "monotonic_ns": 270676098857467, "outcome": "failure", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_all_original_platform_and_retired_skip_ids_remain_nonexecution"}
+
+{"event": "test_started", "monotonic_ns": 270676098884967, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred"}
+test_current_broker_and_operational_custody_cannot_be_deferred (test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred) ... ok
+
+{"elapsed_s": 0.004210069018881768, "event": "test_terminal", "monotonic_ns": 270676103095028, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred"}
+
+{"event": "test_started", "monotonic_ns": 270676103114851, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_duplicate_discovery_identity_is_rejected"}
+test_duplicate_discovery_identity_is_rejected (test_ci_test_selection_v1.SelectionContracts.test_duplicate_discovery_identity_is_rejected) ... ok
+
+{"elapsed_s": 0.003589283034671098, "event": "test_terminal", "monotonic_ns": 270676106704454, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_duplicate_discovery_identity_is_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270676106724703, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_duplicate_integration_declarations_are_rejected"}
+test_duplicate_integration_declarations_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_duplicate_integration_declarations_are_rejected) ... ok
+
+{"elapsed_s": 0.0037184699904173613, "event": "test_terminal", "monotonic_ns": 270676110443488, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_duplicate_integration_declarations_are_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270676110463817, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_exact_skip_identity_and_reason_are_audited_without_success_claim"}
+test_exact_skip_identity_and_reason_are_audited_without_success_claim (test_ci_test_selection_v1.SelectionContracts.test_exact_skip_identity_and_reason_are_audited_without_success_claim) ... ok
+
+{"elapsed_s": 0.003623309952672571, "event": "test_terminal", "monotonic_ns": 270676114087461, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_exact_skip_identity_and_reason_are_audited_without_success_claim"}
+
+{"event": "test_started", "monotonic_ns": 270676114106547, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_existing_retired_source_decorator_is_inventory_nonexecution_only"}
+test_existing_retired_source_decorator_is_inventory_nonexecution_only (test_ci_test_selection_v1.SelectionContracts.test_existing_retired_source_decorator_is_inventory_nonexecution_only) ... ok
+
+{"elapsed_s": 0.003169520990923047, "event": "test_terminal", "monotonic_ns": 270676117276567, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_existing_retired_source_decorator_is_inventory_nonexecution_only"}
+
+{"event": "test_started", "monotonic_ns": 270676117295880, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_foreign_decorated_class_cannot_invent_a_retired_migration"}
+test_foreign_decorated_class_cannot_invent_a_retired_migration (test_ci_test_selection_v1.SelectionContracts.test_foreign_decorated_class_cannot_invent_a_retired_migration) ... ok
+
+{"elapsed_s": 0.0032808869727887213, "event": "test_terminal", "monotonic_ns": 270676120577293, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_foreign_decorated_class_cannot_invent_a_retired_migration"}
+
+{"event": "test_started", "monotonic_ns": 270676120596484, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_manifest_unknown_version_or_default_lane_fails_closed"}
+test_manifest_unknown_version_or_default_lane_fails_closed (test_ci_test_selection_v1.SelectionContracts.test_manifest_unknown_version_or_default_lane_fails_closed) ... ok
+
+{"elapsed_s": 0.0043383410084061325, "event": "test_terminal", "monotonic_ns": 270676124935284, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_manifest_unknown_version_or_default_lane_fails_closed"}
+
+{"event": "test_started", "monotonic_ns": 270676124954980, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_missing_reason_or_real_capability_is_rejected"}
+test_missing_reason_or_real_capability_is_rejected (test_ci_test_selection_v1.SelectionContracts.test_missing_reason_or_real_capability_is_rejected) ... ok
+
+{"elapsed_s": 0.003322314005345106, "event": "test_terminal", "monotonic_ns": 270676128277702, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_missing_reason_or_real_capability_is_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270676128299024, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_native_namespace_interpreter_broker_source_safety_deferral_is_rejected"}
+test_native_namespace_interpreter_broker_source_safety_deferral_is_rejected (test_ci_test_selection_v1.SelectionContracts.test_native_namespace_interpreter_broker_source_safety_deferral_is_rejected) ... ok
+
+{"elapsed_s": 0.003437831997871399, "event": "test_terminal", "monotonic_ns": 270676131737179, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_native_namespace_interpreter_broker_source_safety_deferral_is_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270676131756684, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_nested_default_discovery_is_flattened_without_reloading_tests"}
+test_nested_default_discovery_is_flattened_without_reloading_tests (test_ci_test_selection_v1.SelectionContracts.test_nested_default_discovery_is_flattened_without_reloading_tests) ... ok
+
+{"elapsed_s": 0.0032975730136968195, "event": "test_terminal", "monotonic_ns": 270676135054633, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_nested_default_discovery_is_flattened_without_reloading_tests"}
+
+{"event": "test_started", "monotonic_ns": 270676135075024, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_new_broker_and_raw_custody_skip_declarations_are_rejected"}
+test_new_broker_and_raw_custody_skip_declarations_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_new_broker_and_raw_custody_skip_declarations_are_rejected) ... ok
+
+{"elapsed_s": 0.003590625012293458, "event": "test_terminal", "monotonic_ns": 270676138665789, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_new_broker_and_raw_custody_skip_declarations_are_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270676138685667, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_new_skip_or_changed_reason_is_rejected"}
+test_new_skip_or_changed_reason_is_rejected (test_ci_test_selection_v1.SelectionContracts.test_new_skip_or_changed_reason_is_rejected) ... ok
+
+{"elapsed_s": 0.004234969965182245, "event": "test_terminal", "monotonic_ns": 270676142921007, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_new_skip_or_changed_reason_is_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270676142941211, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_new_tests_remain_mandatory_and_original_cases_order_are_preserved"}
+test_new_tests_remain_mandatory_and_original_cases_order_are_preserved (test_ci_test_selection_v1.SelectionContracts.test_new_tests_remain_mandatory_and_original_cases_order_are_preserved) ... ok
+
+{"elapsed_s": 0.003298024006653577, "event": "test_terminal", "monotonic_ns": 270676146239620, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_new_tests_remain_mandatory_and_original_cases_order_are_preserved"}
+
+{"event": "test_started", "monotonic_ns": 270676146264062, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_original_failed_import_remains_portable_failure"}
+test_original_failed_import_remains_portable_failure (test_ci_test_selection_v1.SelectionContracts.test_original_failed_import_remains_portable_failure) ... ok
+
+{"elapsed_s": 0.0073371309554204345, "event": "test_terminal", "monotonic_ns": 270676153601560, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_original_failed_import_remains_portable_failure"}
+
+{"event": "test_started", "monotonic_ns": 270676153621466, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_patterns_and_module_exceptions_are_rejected"}
+test_patterns_and_module_exceptions_are_rejected (test_ci_test_selection_v1.SelectionContracts.test_patterns_and_module_exceptions_are_rejected) ... ok
+
+{"elapsed_s": 0.0038978129741735756, "event": "test_terminal", "monotonic_ns": 270676157519837, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_patterns_and_module_exceptions_are_rejected"}
+
+{"event": "test_started", "monotonic_ns": 270676157541295, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_retired_schema_declaration_cannot_create_a_new_skip"}
+test_retired_schema_declaration_cannot_create_a_new_skip (test_ci_test_selection_v1.SelectionContracts.test_retired_schema_declaration_cannot_create_a_new_skip) ... ok
+
+{"elapsed_s": 0.0038773020496591926, "event": "test_terminal", "monotonic_ns": 270676161419211, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_retired_schema_declaration_cannot_create_a_new_skip"}
+
+{"event": "test_started", "monotonic_ns": 270676161439837, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_skip_cannot_hide_deferred_native_contract"}
+test_skip_cannot_hide_deferred_native_contract (test_ci_test_selection_v1.SelectionContracts.test_skip_cannot_hide_deferred_native_contract) ... ok
+
+{"elapsed_s": 0.0036339930375106633, "event": "test_terminal", "monotonic_ns": 270676165074241, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_skip_cannot_hide_deferred_native_contract"}
+
+{"event": "test_started", "monotonic_ns": 270676165094155, "test_id": "test_ci_test_selection_v1.SelectionContracts.test_stale_or_duplicate_skip_declaration_fails_closed"}
+test_stale_or_duplicate_skip_declaration_fails_closed (test_ci_test_selection_v1.SelectionContracts.test_stale_or_duplicate_skip_declaration_fails_closed) ... ok
+
+{"elapsed_s": 0.003735852020327002, "event": "test_terminal", "monotonic_ns": 270676168830209, "outcome": "success", "test_id": "test_ci_test_selection_v1.SelectionContracts.test_stale_or_duplicate_skip_declaration_fails_closed"}
+
+======================================================================
+ERROR: test_exact_worker_receipt_and_resource_v2_evidence_are_bound (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_exact_worker_receipt_and_resource_v2_evidence_are_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 209, in test_exact_worker_receipt_and_resource_v2_evidence_are_bound
+    output, _ = self._materialize(temporary)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 127, in _materialize
+    result = target.materialize_qualification_fragment(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 526, in materialize_qualification_fragment
+    fragment, payloads = _expected(root, output)
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 393, in _expected
+    for role, branch, resource, artifact in _material_values(root):
+                                            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 273, in _material_values
+    sources = _runtime_sources(root)
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 173, in _runtime_sources
+    return {role: common._descriptor(root, path, role) for role, path in paths.items()}
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 207, in _descriptor
+    size, digest = _stable_hash(_relative_file(root, raw, label), label)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 179, in _relative_file
+    _require(not _is_link(cursor), f"{label} path contains a link")
+                 ^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 156, in _is_link
+    info = path.lstat()
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 849, in lstat
+    return self.stat(follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/tmpr2q4drg0/project/scripts/checkpoint_openvino_gva_publication_runtime_v3.py'
+
+======================================================================
+ERROR: test_phase_one_materializes_exact_policy_and_resource_bindings (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_phase_one_materializes_exact_policy_and_resource_bindings)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 135, in test_phase_one_materializes_exact_policy_and_resource_bindings
+    output, result = self._materialize(temporary)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 127, in _materialize
+    result = target.materialize_qualification_fragment(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 526, in materialize_qualification_fragment
+    fragment, payloads = _expected(root, output)
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 393, in _expected
+    for role, branch, resource, artifact in _material_values(root):
+                                            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 273, in _material_values
+    sources = _runtime_sources(root)
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 173, in _runtime_sources
+    return {role: common._descriptor(root, path, role) for role, path in paths.items()}
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 207, in _descriptor
+    size, digest = _stable_hash(_relative_file(root, raw, label), label)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 179, in _relative_file
+    _require(not _is_link(cursor), f"{label} path contains a link")
+                 ^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 156, in _is_link
+    info = path.lstat()
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 849, in lstat
+    return self.stat(follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/tmpx1utoufo/project/scripts/checkpoint_openvino_gva_publication_runtime_v3.py'
+
+======================================================================
+ERROR: test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 172, in test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant
+    output, _ = self._materialize(temporary)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 127, in _materialize
+    result = target.materialize_qualification_fragment(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 526, in materialize_qualification_fragment
+    fragment, payloads = _expected(root, output)
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 393, in _expected
+    for role, branch, resource, artifact in _material_values(root):
+                                            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 273, in _material_values
+    sources = _runtime_sources(root)
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 173, in _runtime_sources
+    return {role: common._descriptor(root, path, role) for role, path in paths.items()}
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 207, in _descriptor
+    size, digest = _stable_hash(_relative_file(root, raw, label), label)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 179, in _relative_file
+    _require(not _is_link(cursor), f"{label} path contains a link")
+                 ^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 156, in _is_link
+    info = path.lstat()
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 849, in lstat
+    return self.stat(follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/tmpofvc4jwe/project/scripts/checkpoint_openvino_gva_publication_runtime_v3.py'
+
+======================================================================
+ERROR: test_phase_one_materializes_ten_physical_bindings_and_no_pilots (test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_phase_one_materializes_ten_physical_bindings_and_no_pilots)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 150, in _validated_runtime_source_paths
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp2pevy7wt/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 384, in validate_runtime_source_closure
+  File "/tmp/tmp2pevy7wt/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 287, in validate_dependency_source_closure
+  File "/tmp/tmp2pevy7wt/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 65, in _require_regular_source
+  File "/tmp/tmp2pevy7wt/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+ValueError: runtime source must be a physical regular file: deploy/deepstream/checkpoint/wheels/PyYAML-6.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 71, in test_phase_one_materializes_ten_physical_bindings_and_no_pilots
+    manifest = self.image_manifest(base / "runtime-image.json", project_root)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 41, in image_manifest
+    source_sha = target.runtime_source_sha256(project_root)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 164, in runtime_source_sha256
+    return _aggregate_sha256(root, _validated_runtime_source_paths(root))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 154, in _validated_runtime_source_paths
+    raise QualificationFragmentError(
+checkpoint_gstreamer_custom_qualification_fragment_v3.QualificationFragmentError: runtime source closure validation failed
+
+======================================================================
+ERROR: test_refreeze_and_exact_runtime_identity_fields_are_bound (test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_refreeze_and_exact_runtime_identity_fields_are_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 150, in _validated_runtime_source_paths
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmpg35w0ya7/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 384, in validate_runtime_source_closure
+  File "/tmp/tmpg35w0ya7/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 287, in validate_dependency_source_closure
+  File "/tmp/tmpg35w0ya7/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 65, in _require_regular_source
+  File "/tmp/tmpg35w0ya7/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+ValueError: runtime source must be a physical regular file: deploy/deepstream/checkpoint/wheels/PyYAML-6.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 143, in test_refreeze_and_exact_runtime_identity_fields_are_bound
+    manifest = self.image_manifest(base / "runtime-image.json", project_root)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 41, in image_manifest
+    source_sha = target.runtime_source_sha256(project_root)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 164, in runtime_source_sha256
+    return _aggregate_sha256(root, _validated_runtime_source_paths(root))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_savant_qualification_fragment_v3.py", line 154, in _validated_runtime_source_paths
+    raise QualificationFragmentError(
+checkpoint_gstreamer_custom_qualification_fragment_v3.QualificationFragmentError: runtime source closure validation failed
+
+======================================================================
+ERROR: test_actual_retained_terminal_and_resealed_invalid_times_are_checked (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_retained_terminal_and_resealed_invalid_times_are_checked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_container_custody_v1.py", line 215, in test_actual_retained_terminal_and_resealed_invalid_times_are_checked
+    self.measure("retained_success")
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_container_custody_v1.py", line 183, in measure
+    _materialize_operational_file_v1(self.root, self.operational, self.native_target)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_runtime_context_v1.py", line 97, in _materialize_operational_file_v1
+    result = materialize_publication_child_evidence_group_v1(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_child_evidence_materializer_v1.py", line 265, in materialize_publication_child_evidence_group_v1
+    _fail(f"{label} source evidence namespace drifted")
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_child_evidence_materializer_v1.py", line 43, in _fail
+    raise PublicationChildEvidenceMaterializerV1Error(message)
+publication_child_evidence_materializer_v1.PublicationChildEvidenceMaterializerV1Error: separate native operational evidence source evidence namespace drifted
+Original process capture finalization failed: original engine capture failed: original_wrapper_failed
+
+======================================================================
+FAIL: test_dangling_system_collision_is_never_treated_as_absent (test_publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Tests.test_dangling_system_collision_is_never_treated_as_absent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_fragments_from_authority_v2.py", line 148, in _under_root
+    path.relative_to(root)
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fragment-v2-e8zxq_qx/fragments' is not in the subpath of '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fragment-v2-e8zxq_qx/project'
+
+The above exception was the direct cause of the following exception:
+
+publication_policy_qualification_fragments_from_authority_v2.QualificationFragmentsFromAuthorityV2Error: fragments root escaped project_root
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_policy_qualification_fragments_from_authority_v2.py", line 417, in test_dangling_system_collision_is_never_treated_as_absent
+    with self.assertRaisesRegex(
+AssertionError: "already exists" does not match "fragments root escaped project_root"
+
+======================================================================
+FAIL: test_all_original_platform_and_retired_skip_ids_remain_nonexecution (test_ci_test_selection_v1.SelectionContracts.test_all_original_platform_and_retired_skip_ids_remain_nonexecution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py", line 118, in test_all_original_platform_and_retired_skip_ids_remain_nonexecution
+    self.assertEqual(len(rows),80)
+AssertionError: 88 != 80
+
+----------------------------------------------------------------------
+Ran 99 tests in 552.556s
+
+FAILED (failures=2, errors=6, skipped=3)

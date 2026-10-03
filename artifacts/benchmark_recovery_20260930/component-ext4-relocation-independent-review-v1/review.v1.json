@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_component_ext4_prepared_helpers_independent_review_v1",
+  "disposition": "approved_finite_prepared_unexecuted_helpers",
+  "planning_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "planning_pr_comment": "5918066559",
+  "reviewed_helpers": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/setup_finite_ext4_root_v1.py",
+      "size_bytes": 26675,
+      "sha256": "c7306eefd8dce58fefd81e7fabb8a46a85c3910eb45993e897f7b7f5df48b979"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/capture_selected_host_closure_ext4_v1.py",
+      "size_bytes": 10782,
+      "sha256": "7455c32a8b2606e2b793c06cc244348bec86e570d173311f6adfde98e4e7dc7c"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_cpu_component_pair_ext4_v1.py",
+      "size_bytes": 15089,
+      "sha256": "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_gpu_component_pair_ext4_v3.py",
+      "size_bytes": 15089,
+      "sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/test_setup_finite_transfer_v1.py",
+      "size_bytes": 13207,
+      "sha256": "178217c6776de30ebb38680bf3ab593d8f67f4b13bf335a8284d716d55b0d92b"
+    }
+  ],
+  "closed_author_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/author-review.v2.json",
+    "size_bytes": 11238,
+    "sha256": "032cd87737d1a4fc61ae4199d4e6a644a1e6d28babbb328f5dd0af4369f9f25e"
+  },
+  "resolved_concrete_findings": [
+    "All setup/capture/controller Git arrays explicitly use core.longpaths=true.",
+    "Setup observes inherited soft/hard RLIMIT_NOFILE before either namespace. Required5388 input/target/plan leaves plus unique ancestor paths, observed baseline and64 temporary FDs are checked; no limit is raised.",
+    "Setup uses one initial600s work deadline and610s hard persistence/cleanup deadline. Capture starts one120s/130s envelope before HEAD, original inventory and87 source hashes; both after-hashes and terminal publication remain gated.",
+    "Capture uses bounded1MiB channels and metadata. Original owner/launch-write, overflow, timeout and nonzero failures remain failed and trigger owned original group/wait/pipe retirement; late receipts cannot become successful acceptance.",
+    "Initial target namespace must exactly match the cloned tracked files/directories. Final namespace must exactly match those names plus original copied inputs. Extra files/empty directories/symlinks/hardlinks fail.",
+    "All initial/final tracked checkout raw bytes and executable mode are compared to exact Git blobs. EOL conversion is a failure, not a normalized proof.",
+    "The original2693 obligations retain source and target FD/name/full seven epochs, bounded full raw SHA256 reads, held ancestor identities and exclusive no-overwrite copies. Source HEAD is checked before/after; planning ancestry and exact shared-object alternates are retained."
+  ],
+  "controller_scope": {
+    "cpu_original_sha256": "a6245ffaef0f197fa561dacdd173aa45a1a35b84e4beda1fbe063ddcb1d19c13",
+    "gpu_original_sha256": "095de25ad80f0d2e38da3cbb2cbd5df0e84e51df4f55d0dccb07781b71e6a707",
+    "all_nine_function_ASTs_equal_per_controller": true,
+    "intended_bindings": "Fresh fixed ext4 ROOT/.git, ext4 receipt filename and CPU06/GPU01 output names only. Current source commit and genuine new closure SHA are mandatory runtime arguments.",
+    "held_original_rows": 95,
+    "stock_cli_pair_seconds": 2100,
+    "outer_seconds": 2250,
+    "cleanup_seconds": 15,
+    "channel_bytes": 1048576,
+    "meaning": "CLI still owns actual source/model/device/guardian/native/all-phase cold predicates and20GiB reserve. No changed scientific window, replay policy, image or prior-failure reclassification follows."
+  },
+  "original_focused_evidence": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/focused-attempt-02/execution.v1.json",
+    "size_bytes": 7370,
+    "sha256": "621dac0891d0fa41c633eb07d0dc3e48fdde0eb71d3f6828cfc610ce8d741522",
+    "actual_tests": 22,
+    "returncode": 0,
+    "unittest_elapsed_s": 0.262,
+    "observer_elapsed_s": 0.3491103969863616,
+    "five_source_before_after_equal_and_current_bytes_equal": true,
+    "original_pid": 41435,
+    "original_pid_and_group_absent": true,
+    "stderr_size_bytes": 3711,
+    "stderr_sha256": "d05850798b5558494cee335165903c78aaea40cf62174472f3277c3bb896d3f1",
+    "scope": "Actual tiny filesystem copies/FD substitutions and small CPython child collector cases; full setup/clone/capture dispatch was not executed."
+  },
+  "historical_preservation": "Original author-v1 setup/capture raw bytes and12-test terminal are unchanged. Historical12-method test bytes were reconstructed by exact inverse and match the original8f7e hash; this is disclosed as reconstructed bytes, not original pre-edit FD custody. All12 method ASTs are preserved in the22-method candidate.",
+  "reviewer_checks": "Read complete repaired source and test/error paths plus original closed captures; a single pinned CPython read-only AST/hash calculation confirms controller function preservation, old12 method preservation and allfive current source/receipt bytes. No author helper module or test suite was imported/executed by reviewer.",
+  "remaining_actual_gates": [
+    "Checkpoint exact reviewed helper bytes and source commit before one setup. Observe actual inherited FD/free-space/UID/filesystem and genuine2693 full-byte copy outcome; preserve any failure without retry or overwrite.",
+    "Use the same bounded outer process-group envelope for actual setup/capture: cooperative Python checks cannot interrupt an indefinitely blocked kernel fsync/close. A late, interrupted or uncontained process remains failed.",
+    "Verify actual new-root project bind with the separately reviewed probe; original /tmp or source checkout reachability supplies no home-root proof.",
+    "Capture a genuine new stock host/interpreter epoch receipt and fresh selected/source/preprocessing/runtime/guardian/arm/cold authorities. Historicalv6 supplies only87 path inventory.",
+    "Only complete authentic CLI and independent cold/cleanup outcomes may close a pair; original CPU05CLI78 and every earlier failure stay unchanged."
+  ],
+  "hardware_acceptance": false,
+  "publication_ready": false,
+  "real_setup_or_clone_executed_by_reviewer": false,
+  "engine_model_native_namespace_or_test_execution_by_reviewer": false,
+  "source_holds_active": false
+}

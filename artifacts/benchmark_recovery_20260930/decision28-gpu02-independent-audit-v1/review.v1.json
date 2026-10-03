@@ -1,0 +1,1157 @@
+{
+  "acceptance_requires_final_deadline_gate_and_original_tool_rc0": true,
+  "all_retained_raw_output_descriptors_verified": true,
+  "arms": [
+    {
+      "completed_by_stream": {
+        "0": 179,
+        "1": 179,
+        "2": 179,
+        "3": 179,
+        "4": 179,
+        "5": 175
+      },
+      "container_id": "f09e2a7ac741119e40a562837e0c57c91e5fcdbabfa8a2c2c9d6068a3827e55c",
+      "container_receipt": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+        "sha256": "1e797afe8a24b39a5ff9b6b39887b04927335e23ebe8386471b217c254e1b343",
+        "size_bytes": 3824
+      },
+      "daemon_terminal_evidence": "not retained; original --rm CLI0 plus exactCID NotFound",
+      "measurement_ingress_count": 1080,
+      "native_cli_returncode": 0,
+      "operation_id": "component-gstreamer_custom-gpu-h264-independent-processes",
+      "result": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/component_arm_result.v1.json",
+        "sha256": "5333873bad5a8db46124d300a68d27efca2d3184422c6acd971e97450fb87417",
+        "size_bytes": 15442
+      },
+      "schedule_fingerprint": "c1365bac6483c39143dd0a8a350f6b6eb66de91e9cfd18987475c7b12f63a5a5"
+    },
+    {
+      "completed_by_stream": {
+        "0": 179,
+        "1": 179,
+        "2": 179,
+        "3": 179,
+        "4": 179,
+        "5": 180
+      },
+      "container_id": "8bdc3adddbf32aeb1add4010de8ad06410cf65e1e64f8b82dce9070c68a90374",
+      "container_receipt": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/original_container_custody.v1.json",
+        "sha256": "7f5189c139de1b8ff15a8bffb4fb32f8242cf832783cd0567287eb4102c37cbb",
+        "size_bytes": 3784
+      },
+      "daemon_terminal_evidence": "not retained; original --rm CLI0 plus exactCID NotFound",
+      "measurement_ingress_count": 1080,
+      "native_cli_returncode": 0,
+      "operation_id": "component-gstreamer_custom-gpu-h264-shared-video-dag",
+      "result": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/component_arm_result.v1.json",
+        "sha256": "0328487a21dc633e92479ae3a02d64270623dfbfd526733c0f28f6bb3558ca90",
+        "size_bytes": 14150
+      },
+      "schedule_fingerprint": "c1365bac6483c39143dd0a8a350f6b6eb66de91e9cfd18987475c7b12f63a5a5"
+    }
+  ],
+  "artifact_kind": "vast_gpu02_ext4_closed_boundary_independent_review_v1",
+  "benchmark_accepted": true,
+  "cli_terminal": {
+    "epoch": [
+      2096,
+      577986,
+      33060,
+      1,
+      8849,
+      1791018502200076384,
+      1791018502200076384
+    ],
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/component_cli_terminal.v1.json",
+    "sha256": "34d2b825a86ccba5974a6a1db4d6bff3a4c6f2c08eadfed504ab17b9bf4ea323",
+    "size_bytes": 8849
+  },
+  "close_errors": [],
+  "cold_pair": {
+    "descriptive_csv": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/cold-pair/component_pair_metrics.csv",
+      "sha256": "c5a2334fa19f8c46592829f2148252ac2a47c4f7c818c2a7e37966ff7e9d17f9",
+      "size_bytes": 616
+    },
+    "descriptor": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/cold-pair/component_pair_result.v1.json",
+      "sha256": "80b8d063ebfbc146eec837e4733398d7d7d28373dbbad0f0952f5a5b9c6b7130",
+      "size_bytes": 18451
+    },
+    "latency_ecdf_svg": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/cold-pair/component_pair_latency_ecdf.svg",
+      "sha256": "a80ac562dc471b50c4f1ebac22e58e6b2f978a1398e2caeab5fad01413aa65ad",
+      "size_bytes": 71035
+    },
+    "reconciliation": {
+      "artifact_kind": "vast_complete_operational_reconciliation_v1",
+      "comparison_sha256": "b3fb9ec1752f9ca09d875b1faf87a26532d2c4c8d0e3b20be09e89273e035ada",
+      "connections_accepted": 31,
+      "excluded_request_count": 1488,
+      "measurement_request_count": 8595,
+      "mode": "bounded_native_diagnostic_operational_v1",
+      "operations": [
+        {
+          "excluded_request_count": 744,
+          "measurement_request_count": 4295,
+          "ordinal": 0,
+          "request_count": 5039
+        },
+        {
+          "excluded_request_count": 744,
+          "measurement_request_count": 4300,
+          "ordinal": 1,
+          "request_count": 5044
+        }
+      ],
+      "original_operation_count": 2,
+      "publication_authority": false,
+      "request_count": 10083,
+      "requests_by_worker": {
+        "damage:cpu": 0,
+        "damage:gpu": 2520,
+        "foreign_object:cpu": 0,
+        "foreign_object:gpu": 2521,
+        "plate_number:cpu": 0,
+        "plate_number:gpu": 2522,
+        "vehicle_type:cpu": 0,
+        "vehicle_type:gpu": 2520
+      },
+      "schema_version": 1
+    },
+    "retained_cold_result_does_not_override_cli_failure": false
+  },
+  "current_source_HEAD_not_independently_queried": true,
+  "disposition": "closed_original_component_pair_complete",
+  "fresh_process_scans": [
+    {
+      "members": [],
+      "observed_at_ns": 1791018894033559486,
+      "pids_absent": {
+        "78944": true,
+        "78946": true,
+        "79194": true,
+        "83052": true,
+        "83679": true
+      },
+      "read_errors": []
+    },
+    {
+      "members": [],
+      "observed_at_ns": 1791018894035029789,
+      "pids_absent": {
+        "78944": true,
+        "78946": true,
+        "79194": true,
+        "83052": true,
+        "83679": true
+      },
+      "read_errors": []
+    }
+  ],
+  "guardian_original": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "import runpy,sys;sys.path.insert(0,'/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts');runpy.run_path('/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_sidecar.py',run_name='__main__')",
+      "--production-guardian",
+      "--project-root",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+      "--config",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260928g.json",
+      "--binding-set",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings",
+      "--policy-capability-manifest",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "--preprocessing-contract",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/preprocessing/guardian-preprocessing-contract.v1.json",
+      "--preprocessing-contract-receipt",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/preprocessing/guardian-component-preprocessing-receipt.v1.json",
+      "--operational-accounting-context",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/capture-plan/guardian_capture_context.v1.json",
+      "--runtime-dir",
+      "/tmp/vast-component-7043ea219d68312c/guardian",
+      "--front-socket",
+      "/tmp/vast-component-7043ea219d68312c/guardian/analytics-execution.sock",
+      "--evidence-root",
+      "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/guardian",
+      "--max-connections",
+      "202560",
+      "--max-requests-per-connection",
+      "4320000",
+      "--max-total-requests",
+      "29168640000",
+      "--startup-timeout-seconds",
+      "120.0",
+      "--shutdown-timeout-seconds",
+      "10"
+    ],
+    "authenticated_stop": true,
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "cleanup_errors": [],
+    "container_cleanup_verified": true,
+    "original_child_pid": 79194,
+    "original_engine": {
+      "path": "/usr/bin/docker",
+      "sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+      "size_bytes": 45570705
+    },
+    "original_engine_socket": "unix:///run/docker.sock",
+    "original_process_group": 79194,
+    "owner_process": {
+      "gid": 1000,
+      "pid": 79194,
+      "proc_stat_starttime_ticks": 50008295,
+      "uid": 1000
+    },
+    "process_quiescent": true,
+    "returncode": 0
+  },
+  "hold_release": true,
+  "limits": [
+    "This boundary audit joins retained authentic original receipts. It does not rerun the all-phase cold consumer or raw numeric/C_obs reducer.",
+    "Native daemon ExitCode/Pid/OOM fields are reported only when actually retained. Exact --rm CID absence plus originalCLI0 is stated separately.",
+    "Guardian cleanup is scoped to original authenticated lifecycle/CLI evidence and actual process absence. No daemon query or independent worker inspection.",
+    "No reviewer engine/model/native/guardian/namespace/test execution or historical failure reclassification."
+  ],
+  "original95_before_after_current_full7epochs_equal": true,
+  "original_cli_returncode": 0,
+  "original_first_error": null,
+  "original_outer_closure_verified": true,
+  "original_phase_timing": [
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 499991007887981,
+      "nonauthority": true,
+      "phase": "reservation",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791017661339258722
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 499991058232895,
+      "nonauthority": true,
+      "phase": "source",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791017661389603665
+    },
+    {
+      "elapsed_ns": 41386530474,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500032444763369,
+      "nonauthority": true,
+      "phase": "source",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791017702775074584
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500032454380812,
+      "nonauthority": true,
+      "phase": "context",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791017702784691019
+    },
+    {
+      "elapsed_ns": 22964388879,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500055418769691,
+      "nonauthority": true,
+      "phase": "context",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791017725747294758
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500055423251243,
+      "nonauthority": true,
+      "phase": "capture",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791017725751775511
+    },
+    {
+      "elapsed_ns": 16974698592,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500072397949835,
+      "nonauthority": true,
+      "phase": "capture",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791017742725130475
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500072401997686,
+      "nonauthority": true,
+      "phase": "preprocessing",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791017742729178086
+    },
+    {
+      "elapsed_ns": 6673950608,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500079075948294,
+      "nonauthority": true,
+      "phase": "preprocessing",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791017749403128868
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500082898100882,
+      "nonauthority": true,
+      "phase": "guardian_start",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791017753225281297
+    },
+    {
+      "elapsed_ns": 15917857500,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500098815958382,
+      "nonauthority": true,
+      "phase": "guardian_start",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791017769141998134
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500098821641384,
+      "nonauthority": true,
+      "phase": "runtime",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791017769147681012
+    },
+    {
+      "elapsed_ns": 11453500498,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500110275141882,
+      "nonauthority": true,
+      "phase": "runtime",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791017780601181708
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500110277821965,
+      "nonauthority": true,
+      "phase": "arm_baseline",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791017780603861492
+    },
+    {
+      "elapsed_ns": 316607800207,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500426885622172,
+      "nonauthority": true,
+      "phase": "arm_baseline",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791018097196781814
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500426888804364,
+      "nonauthority": true,
+      "phase": "arm_shared",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791018097199963794
+    },
+    {
+      "elapsed_ns": 310600010536,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500737488814900,
+      "nonauthority": true,
+      "phase": "arm_shared",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791018407786029070
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500737491411586,
+      "nonauthority": true,
+      "phase": "guardian_stop",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791018407788625579
+    },
+    {
+      "elapsed_ns": 756022683,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500738247434269,
+      "nonauthority": true,
+      "phase": "guardian_stop",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791018408544648207
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500738250156834,
+      "nonauthority": true,
+      "phase": "cold",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791018408547370730
+    },
+    {
+      "elapsed_ns": 91077465911,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500829327622745,
+      "nonauthority": true,
+      "phase": "cold",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791018499621143861
+    },
+    {
+      "event": "start",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500829332389565,
+      "nonauthority": true,
+      "phase": "context_close",
+      "schema_version": 1,
+      "status": "incomplete",
+      "terminal_ns": null,
+      "wall_ns": 1791018499625910170
+    },
+    {
+      "elapsed_ns": 2558036222,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500831890425787,
+      "nonauthority": true,
+      "phase": "context_close",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791018502183946426
+    },
+    {
+      "elapsed_ns": 840892037008,
+      "error_type": null,
+      "event": "terminal",
+      "explicit_fixture_dependencies": false,
+      "monotonic_ns": 500831899924989,
+      "nonauthority": true,
+      "phase": "reservation",
+      "schema_version": 1,
+      "status": "complete",
+      "wall_ns": 1791018502193445828
+    }
+  ],
+  "outer_elapsed_s": 841.888590076007,
+  "outer_signals": [],
+  "outer_terminal": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/original.terminal.v1.json",
+    "sha256": "7272120d78ae1d851a46cee48cf1f51267da504b4550a7a434d86c2db8cda062",
+    "size_bytes": 94879
+  },
+  "outer_timeout": false,
+  "reserve_released_and_absent": true,
+  "reviewer_fd_after": 6,
+  "reviewer_fd_before": 6,
+  "reviewer_held_fds_released": true,
+  "reviewer_pin_closes": [
+    {
+      "closed": true,
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-gpu02-independent-audit-v1/audit_gpu02_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/original.terminal.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/original.launch.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/prelaunch.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/gstreamer_custom.runtime.freeze.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_bindings.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_capability.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_endpoint.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_protocol.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_worker.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_model_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_launcher_invocation_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_output_receipt.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_process_supervisor_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_runtime_authority.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_grant.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_qualification_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/benchmark_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_acceptance_metadata_binding.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_admission.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_protocol_bridge.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_publication_runtime_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_qualification_fragment_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_bridge.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_sidecar.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_publication_runtime_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_runtime.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance_v4.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_v4.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_native_policy_runtime.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_openvino_gva_publication_runtime_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_adapter_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_guard_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_runtime.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_qualification_pilot_acceptance_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime_plan.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_savant_publication_runtime_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/collect_metrics.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/extract_kpp_legacy_iss.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/formal_aw_heft_reference.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_frozen_reconstruction_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_iss_publication_v3.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_legacy_iss_v2_transcodes.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/full_resource_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_frozen_reconstruction_v1_dataset.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_iss_publication_v3_dataset.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_legacy_iss_v2_manifest.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/model_parity_grant.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/production_arm_evidence_finalizer_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_acceptance_evidence.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_benchmark_native_diagnostic_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_child_evidence_materializer_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_authority_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_cli_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_inputs_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_runtime_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_component_preprocessing_contract_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_operational_recorder_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_preprocessing_contract_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_runtime_expectations_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_image_build_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_immutable_directory_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_capture_plan_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_container_custody_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_process_custody_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_domain_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_reconciliation_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_runtime_context_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_stock_operations_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_owned_staging_cleanup_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_physical_io_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_frozen_replay_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_projection_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_bootstrap_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_closure_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_code_closure_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_fragments_from_authority_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_index_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_pilot_executor_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_runtime_inputs_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_transaction_v2.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_qualification_image_refreeze_v1.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/resource_interval_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/topology_contract.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gpu02-preparation-v1/run_original_gpu_component_pair_ext4_decision28_v4.py"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/original.stdout.raw"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/original.stderr.raw"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/component_cli_terminal.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/guardian/service_authority.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/guardian/service_lifecycle.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/guardian.stdout.log"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/guardian.stderr.log"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/component_pair_timing.v1.jsonl"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/component_arm_result.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/ingress_ledger.csv"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/original_container_custody.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/hardware_resource_samples.csv"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence.operational/native_operational_requests.v1.jsonl"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/original_engine_process_capture.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/engine_05.launch.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/engine_05.terminal.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/measurement.cid"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/reservation.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_01.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_01.stdout"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_01.stderr"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_02.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_02.stdout"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_02.stderr"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_03.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_03.stdout"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_03.stderr"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_04.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_04.stdout"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_04.stderr"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/component_arm_result.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/ingress_ledger.csv"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/original_container_custody.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/hardware_resource_samples.csv"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence.operational/native_operational_requests.v1.jsonl"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/original_engine_process_capture.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/engine_05.launch.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/engine_05.terminal.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/measurement.cid"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/reservation.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_01.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_01.stdout"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_01.stderr"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_02.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_02.stdout"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_02.stderr"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_03.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_03.stdout"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_03.stderr"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_04.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_04.stdout"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/process-captures/component-gstreamer_custom-gpu-h264-shared-video-dag/container-custody/command_04.stderr"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/cold-pair/component_pair_result.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/guardian-operational/operational_group.v1.json"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/cold-pair/component_pair_metrics.csv"
+    },
+    {
+      "closed": true,
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/cold-pair/component_pair_latency_ecdf.svg"
+    }
+  ],
+  "schema_version": 1,
+  "source_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "source_only_original_receipt_join_no_cold_or_numeric_reexecution": true,
+  "task_18_9_complete": true,
+  "witness": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-gpu02-independent-audit-v1/held-inputs-and-processes.v1.json",
+    "sha256": "46e2d46b7deeca5c46098de6f628c6156b51efca75410e4481d2a9f0699798a3",
+    "size_bytes": 131452
+  }
+}

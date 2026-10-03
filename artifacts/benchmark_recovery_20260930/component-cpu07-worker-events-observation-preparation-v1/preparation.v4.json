@@ -1,0 +1,121 @@
+{
+  "acceptance": false,
+  "all_function_asts_identical": [
+    "clock",
+    "descriptor",
+    "epoch",
+    "hold",
+    "latch",
+    "owner",
+    "scan",
+    "write"
+  ],
+  "bounds_unchanged": {
+    "cleanup_seconds": 10,
+    "command_seconds": 2,
+    "records": 32,
+    "stderr_bytes": 1024,
+    "stdout_bytes": 8192,
+    "whole_work_seconds": 30
+  },
+  "changes": [
+    {
+      "after": "OUT=HERE/'original-terminal-events-observation-attempt01'",
+      "before": "OUT=HERE/'original-observation-attempt01'",
+      "reason": "Exclusive new output namespace; original failed query remains untouched."
+    },
+    {
+      "after": "OBSERVED_CID='893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa'\nTERMINAL_ACTIONS=('die','oom','kill','destroy')\nARGV+=['--filter','container='+OBSERVED_CID]\nfor action in TERMINAL_ACTIONS:ARGV+=['--filter','event='+action]",
+      "before": "for name in (\"vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu\",): ARGV+=['--filter','container='+name]",
+      "reason": "One physically recovered original CID; terminal events only, same original interval/caps."
+    },
+    {
+      "after": " prefix_fd,prefix_pin=hold(HERE/'original-observation-attempt01/stdout.raw','9deb990e0bb431026ca5781c8cbf4c3d3898545806a9c9dd5052280e45e05978',8192)\n assert prefix_pin['size_bytes']==8192\n prefix=os.pread(prefix_fd,8193,0);assert len(prefix)==8192\n prefix_lines=prefix.split(b'\\n');assert len(prefix_lines)==25 and len(prefix_lines[-1])==20\n primary_name='vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu'\n for line in prefix_lines[:-1]:\n  v=json.loads(line);assert v['type']=='container' and v['id']==OBSERVED_CID and v['name']==primary_name\n  assert v['image']==NAMES[primary_name]['image_id'] and type(v['time_ns']) is int and START_NS<=v['time_ns']<=END_NS\n _,self_pin=hold(Path(__file__),limit=65536)",
+      "before": " _,self_pin=hold(Path(__file__),limit=65536)",
+      "reason": "Hold/recheck original partial-prefix bytes and independently bind the recovered CID/name/image; do not infer terminal fate from that prefix."
+    },
+    {
+      "after": "  'input_descriptors':inputs,'observer_source':self_pin,'original_partial_prefix':prefix_pin,'observed_cid':OBSERVED_CID,'terminal_action_filters':TERMINAL_ACTIONS,'names':NAMES,'start_ns':START_NS,'end_ns':END_NS,",
+      "before": "  'input_descriptors':inputs,'observer_source':self_pin,'names':NAMES,'start_ns':START_NS,'end_ns':END_NS,",
+      "reason": "Actual dispatch records recovered-CID provenance and exact filters."
+    },
+    {
+      "after": "  'scope':'one read-only original vehicle_type/cpu CID terminal-events historical query; original daemon-ID retained; single query does not independently reobserve current daemon ID'})",
+      "before": "  'scope':'one read-only primary vehicle_type/cpu historical event query; original daemon-ID retained; single query does not independently reobserve current daemon ID'})",
+      "reason": "Accurate narrower scope; no contemporaneous authority claim."
+    },
+    {
+      "after": "  if child.returncode!=0:raise ValueError('original event query returned'+str(child.returncode))\n except BaseException as exc:latch(exc)\n finally:",
+      "before": "  if child.returncode!=0:raise ValueError('original event query returned'+str(child.returncode))\n finally:",
+      "reason": "Latch the first body failure before cleanup; cleanup errors remain additional, without changing cleanup or deadlines."
+    },
+    {
+      "after": "     assert v['type']=='container' and v['name']=='vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu' and v['id']==OBSERVED_CID and v['action'] in TERMINAL_ACTIONS",
+      "before": "     assert v['type']=='container' and v['name']=='vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu' and re.fullmatch('[0-9a-f]{64}',v['id'])",
+      "reason": "Every complete returned event must match exact original CID/name and a requested terminal action."
+    }
+  ],
+  "engine_commands_executed_by_preparation": 0,
+  "filters": [
+    "type=container",
+    "container=893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+    "event=die",
+    "event=oom",
+    "event=kill",
+    "event=destroy"
+  ],
+  "future_actual_owners": null,
+  "future_actual_result": null,
+  "future_outer_output": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-outer-attempt01",
+  "future_output": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01",
+  "limitations": [
+    "Original first query failed; its prefix cannot prove absent death/OOM.",
+    "Later query remains subject to daemon last256-event retention and unchanged caps.",
+    "Current daemon ID is not independently queried; exact original CLI bytes/socket and original ID provenance stay explicit.",
+    "No image/model/worker/protocol/budget changes or authority renewal occur."
+  ],
+  "observed_container_id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+  "original_later_process_closure": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-later-process-closure.v1.json",
+    "sha256": "e459d4fe37f791416cd5131a5d1c48f1ea10443cbc3203b7bb3e394b3578687e",
+    "size_bytes": 6384
+  },
+  "original_metadata_closure": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-closure-review.v1.json",
+    "sha256": "a944ac4dc1be3307f2912fc1b3501eb29cdba11f2f388f2be8c67e16a86f596b",
+    "size_bytes": 23272
+  },
+  "original_query_outer_capture": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-outer-attempt01/capture.v1.json",
+    "sha256": "ceb1f793656a2ab22303b122c053bec13838e5afcb5e46828d29cb7d018e904a",
+    "size_bytes": 3876
+  },
+  "original_query_report": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01/execution.v1.json",
+    "sha256": "59b1c28d8da847811b33f6edaed3b7e07862eaf382de679bdb43bffb6c16a81f",
+    "size_bytes": 2391
+  },
+  "original_raw_prefix": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01/stdout.raw",
+    "sha256": "9deb990e0bb431026ca5781c8cbf4c3d3898545806a9c9dd5052280e45e05978",
+    "size_bytes": 8192
+  },
+  "original_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_events_v4.py",
+    "sha256": "dfe892ea547de7fa8c4a1f24b2da0d9299ab2cad6deb8ef7212c6b7117583d5a",
+    "size_bytes": 14053
+  },
+  "same_original_image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+  "same_original_interval_ns": [
+    1790823221323071118,
+    1790823586186876374
+  ],
+  "same_original_name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+  "schema_version": 1,
+  "source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_terminal_events_v5.py",
+    "sha256": "312d3ea99ff396b2e9074cbc1c1f9958ef3d8ceb6dd29ec01cc57dc71a4fed1d",
+    "size_bytes": 15049
+  },
+  "state": "prepared_unexecuted_pending_independent_source_peer_and_root_grant"
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "new": "One future clean checkpointA to reviewed host-bindingB checkout; original inputs remain strict. No hardware.",
+    "old": "One future clean9d47 to reviewedDecision28 checkout; original inputs remain strict. No hardware."
+  },
+  {
+    "new": "OUT=HERE/'original-host-binding-checkout-renewal-attempt01'",
+    "old": "OUT=HERE/'original-decision28-checkout-renewal-attempt01'"
+  },
+  {
+    "new": "OLD='2a6a42c924ae3447ceda4bd9d1b6db33765c6466'",
+    "old": "OLD='9d47e99b623df44816f7b0a0b73b249a940f7723'"
+  },
+  {
+    "new": "CHANGED={'scripts/checkpoint_gstreamer_publication_runtime_v3.py'}\nPRODUCTION_CANDIDATES={",
+    "old": "CHANGED={'scripts/checkpoint_gstreamer_analytics_sidecar.py','scripts/publication_operational_process_custody_v1.py'}\nEXPECTED_CANDIDATES={"
+  },
+  {
+    "new": "EXPECTED_CANDIDATES={\n 'scripts/checkpoint_gstreamer_publication_runtime_v3.py':(59624,'0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c'),\n 'tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py':(25066,'b6bc88d91a11eda378cb079ade41e473164db39f2dcb224e29f607dc106fd02c'),\n}\nHOST_PEER=WINDOWS/'artifacts/benchmark_recovery_20260930/decision28-host-image-independent-review-v1/review.v1.json'\nSOURCE_PEER=WINDOWS/",
+    "old": "SOURCE_PEER=WINDOWS/"
+  },
+  {
+    "new": "AFFECTED_GROUPS={'host87'}\nUNCHANGED_GROUPS={'deepstream','gstreamer_custom','openvino_gva','savant','native_probe_deepstream','native_probe_openvino','native_probe_savant','analytics_worker_openvino','analytics_worker_tensorrt'}",
+    "old": "AFFECTED_GROUPS={'host87','deepstream','gstreamer_custom','openvino_gva','savant'}\nUNCHANGED_GROUPS={'native_probe_deepstream','native_probe_openvino','native_probe_savant','analytics_worker_openvino','analytics_worker_tensorrt'}"
+  },
+  {
+    "new": "assert len(sys.argv)==3,'renewal FUTURE_SOURCE_COMMIT CLOSED_HOST_PEER_SHA256'\nHOST_PEER_SHA=sys.argv[2];assert len(HOST_PEER_SHA)==64 and all(c in '0123456789abcdef' for c in HOST_PEER_SHA)",
+    "old": "assert len(sys.argv)==2,'renewal FUTURE_SOURCE_COMMIT'"
+  },
+  {
+    "new": "assert declared==PRODUCTION_CANDIDATES and counts_peer['owned_source_pins']==peer['owned_source_pins']\n host_peer=doc(HOST_PEER,HOST_PEER_SHA)\n assert host_peer['reviewable'] and not host_peer['blocking_findings'] and host_peer['reviewer_handles_released'] and host_peer['reviewed_commit']==OLD\n assert {r['path']:(r['size_bytes'],r['sha256']) for r in host_peer['owned_source_pins']}==EXPECTED_CANDIDATES\n for n,wanted in (PRODUCTION_CANDIDATES|EXPECTED_CANDIDATES).items():",
+    "old": "assert declared==EXPECTED_CANDIDATES and counts_peer['owned_source_pins']==peer['owned_source_pins']\n for n,wanted in EXPECTED_CANDIDATES.items():"
+  },
+  {
+    "new": "'selected_runtime_image_renewal_required':False,'selected73_A_to_B_unchanged':True",
+    "old": "'selected_runtime_image_renewal_required':True"
+  },
+  {
+    "new": "'only_host_binding_original_input_transition':sorted(CHANGED)",
+    "old": "'only_two_original_input_transitions':sorted(CHANGED)"
+  }
+]

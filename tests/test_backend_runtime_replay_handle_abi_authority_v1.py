@@ -212,6 +212,15 @@ class ReplayHandleAbiAuthorityV1Tests(unittest.TestCase):
             self.assertIs(value[field], False, field)
             self.assertIs(assessment[field], False, field)
 
+    @unittest.skipUnless(os.name == "posix", "POSIX atime regression")
+    def test_posix_protocol_read_ignores_read_driven_atime_change(self) -> None:
+        observed = self.fixture.path.stat()
+        os.utime(
+            self.fixture.path,
+            ns=(946684800 * 1_000_000_000, int(observed.st_mtime_ns)),
+        )
+        self.assertEqual(self.fixture.build(), self.fixture.value)
+
     def test_projection_is_exact_closed_and_contains_no_process_local_numbers(self) -> None:
         projection = self.fixture.projection
         self.assertEqual(

@@ -1,0 +1,67 @@
+{
+  "accepted": false,
+  "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+  "cli_original_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a3e976d0/cpu-pair-01/component_cli_terminal.v1.json",
+    "sha256": "827023ba5e2b7a70fcba0bcd45bd562f452ccbd3cbce81246be9ac9d986d6af3",
+    "size_bytes": 6111
+  },
+  "container_quiescence": "no engine query performed and none inferred from CLI/group absence",
+  "current_guardian_output_path_exists": false,
+  "current_operations_output_path_exists": false,
+  "observation_finished_at_ns": 1790769960127825391,
+  "observation_started_at_ns": 1790769960122129414,
+  "observer_pid": 25706,
+  "original_group_members": [],
+  "original_reserve": {
+    "claimed_original_inode": [
+      2096,
+      534868
+    ],
+    "current_named_path_exists": false,
+    "original_released": true,
+    "path": "/tmp/vast-component-72cb6f22ba99e2de/operational-reserve.v1.bin"
+  },
+  "original_stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a3e976d0/cpu-pair-01-original-controller/original.stderr.raw",
+    "sha256": "a485172ac04f8f344aa1d338cd2e53b00e38e25543e82bf66c89430bda6a6e7d",
+    "size_bytes": 103
+  },
+  "outer_original_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a3e976d0/cpu-pair-01-original-controller/original.terminal.v1.json",
+    "sha256": "e1313f02d264f0fcbc8b87cf6c3ac0e14cac4946e76f75b5552cb342bd0ff957",
+    "size_bytes": 91702
+  },
+  "publication_ready": false,
+  "science_or_pair_acceptance": false,
+  "selected_source_output_path_absent": true,
+  "source_commit": "f51273005165281e290a791d794902f3e722086d",
+  "subjects": [
+    {
+      "original_identity_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 25642,
+        "pid": 25642,
+        "ppid": 25638,
+        "startticks": 25201145,
+        "uid": 1000
+      },
+      "pid_path": "absent"
+    },
+    {
+      "original_identity_present": false,
+      "original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 25644,
+        "pid": 25644,
+        "ppid": 25642,
+        "startticks": 25201179,
+        "uid": 1000
+      },
+      "pid_path": "absent"
+    }
+  ]
+}

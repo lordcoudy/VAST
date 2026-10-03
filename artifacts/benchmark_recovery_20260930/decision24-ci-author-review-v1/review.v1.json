@@ -1,0 +1,107 @@
+{
+  "early_direct_test_gap": "First direct tool-only observer run failed on a genuine post-handler signal race and an overbroad libc padding equality assertion. Original tool output remains in task history; no raw-file capture claim is made for that direct run. All subsequent focused dispatch originals are physically retained, and final acceptance uses only named25-test source-stable receipts.",
+  "full_suite_acceptance": false,
+  "hardware_acceptance": false,
+  "kind": "vast_decision24_external_ci_observer_author_review_v1",
+  "native139_cause": "unproven",
+  "observations": {
+    "child": "main-thread synchronous Python safe-GIL handler; genuine READY native-task=1 fixture; no watchdog/thread/register",
+    "cleanup": "one absolute original-job budget; <=15s-or-remaining original-child reap/drain/receipt-close; later failure companion if crossed",
+    "namespace_diagnosis": "not run; no profile/sysctl/privilege/test skip or Python update",
+    "original_parent": "one fresh full-suite child only; pidfd requests and stop ACK prevent signals after disposition restoration",
+    "stdout_stderr": "original child CI console inherited; original unittest event/result log remains separate and unchanged",
+    "storage": "trace1MiB/control1MiB/new namespace8MiB before-write guards; child nonblocking control and sticky failure",
+    "timing": "actual scheduled/send/handler/arrival times, candidate matching ambiguity and coalescing; no timely dump guarantee"
+  },
+  "owned_sources_frozen": true,
+  "planning_commit": "ded811a8043575e7a93cf0bbc28696ac53667d3c",
+  "pr_comment": 5908873975,
+  "pre_edit_inventory": {
+    "path": "artifacts/benchmark_recovery_20260930/decision24-ci-pre-edit-v1/inventory.v1.json",
+    "sha256": "a9a915ce5a3dea0387d0bc82be2cb2c471faf3f6e63391c6ede42d42270c2321",
+    "size_bytes": 1824
+  },
+  "source_files": [
+    {
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "a501d9a8a07979e6657fcb129fe12b54e43d91693dbde0ab24a5b40c1cdbdb96",
+      "size_bytes": 22068
+    },
+    {
+      "path": "scripts/ci_external_test_observer_v1.py",
+      "sha256": "090827482e9a944fc7520bcdff2d91f34bef8711e977417b425ccd5268846b68",
+      "size_bytes": 19801
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "974160678fc6c68a1fc12e2ac277850466c9e507a850d8a1401ac93ac0e7e959",
+      "size_bytes": 4206
+    },
+    {
+      "path": "tests/test_run_ci_checks.py",
+      "sha256": "41a088e2be50d5707bdbe82291b1902c3b0e5d0b28aa07f6558c0829d6b02626",
+      "size_bytes": 8261
+    },
+    {
+      "path": "tests/test_ci_external_test_observer_v1.py",
+      "sha256": "370bcc5259892ed1e4ef0f863d4b4bc0a51d74355fbbd1a5b0b62ee54ff4fd57",
+      "size_bytes": 11462
+    }
+  ],
+  "test_count": 25,
+  "test_scope": "Focused CPython local fixtures only; source-before/after stable. No full CI/native build/hosted/hardware execution.",
+  "tests": [
+    {
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/observer-03/stderr.raw",
+        "sha256": "e715adb595c525dd5a64f3d9ee15033f59e74efbc05d345b7555922fe2bacd78",
+        "size_bytes": 3468
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/observer-03/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/observer-03/terminal.v1.json",
+        "sha256": "458cedf01a95bfbf27e32d5e302621c182c47775a50a667499886791ae71c9b6",
+        "size_bytes": 1325
+      },
+      "test_count": 14
+    },
+    {
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/runner-03/stderr.raw",
+        "sha256": "343fd41b81b6ac2e95632e55522b6bea13ed371e6b9a5e244749b4e01d92e936",
+        "size_bytes": 1824
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/runner-03/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/decision24-ci-focused-v1/runner-03/terminal.v1.json",
+        "sha256": "e5b2baccbc12523bc860a01d348ef3b5b3c423db95fde01d3ab7535dc3418c3d",
+        "size_bytes": 1323
+      },
+      "test_count": 11
+    }
+  ],
+  "unchanged_ast": [
+    "RecordedResult",
+    "suite_report",
+    "host_facts"
+  ],
+  "workflow_preserved": {
+    "full_pattern": "test_*.py",
+    "job_timeout_minutes": 90,
+    "production_bounds_ms": [
+      600000,
+      615000
+    ],
+    "python": "3.12.3",
+    "required_native_successes": 3,
+    "targets": 6
+  }
+}

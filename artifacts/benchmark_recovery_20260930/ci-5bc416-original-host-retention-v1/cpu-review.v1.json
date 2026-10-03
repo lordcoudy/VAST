@@ -1,0 +1,226 @@
+{
+  "actual_loaded_gstreamer_factories": {
+    "appsrc": {
+      "plugin": {
+        "device": 2049,
+        "inode": 94981,
+        "path": "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstapp.so",
+        "sha256": "4ff1814cf43e4d7df591da20458f912cedb6ffd8459ab02e3afd5347dfeaad59",
+        "size_bytes": 14424
+      },
+      "returncode": 0
+    },
+    "queue": {
+      "plugin": {
+        "device": 2049,
+        "inode": 7587,
+        "path": "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstcoreelements.so",
+        "sha256": "bf7fa7eab22d238f1bc5e2e76a978f24694460657efba0827961eb154482f436",
+        "size_bytes": 451152
+      },
+      "returncode": 0
+    },
+    "videoconvert": {
+      "plugin": {
+        "device": 2049,
+        "inode": 95004,
+        "path": "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstvideoconvertscale.so",
+        "sha256": "b0597f4da660da026c3cd8de9621471c74c8aec67562698adc944473fbc8c2ff",
+        "size_bytes": 59712
+      },
+      "returncode": 0
+    }
+  },
+  "archive": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/36764814739-cpu/original-artifact.zip",
+    "sha256": "8b03433fd6ffcbe0f231c8a7d92be8bda0b7f337bdd9792d9f92408e6fe32cd6",
+    "size_bytes": 1937644
+  },
+  "artifact_kind": "vast_5bc_original_cpu_ci_closed_readonly_review_v1",
+  "built_targets": [
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "crc_all_members_verified": true,
+  "decoded_bytes": 10295796,
+  "decoded_joblog": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/cpu-job-110056199709.decoded.exact.original.log",
+    "sha256": "46f7e9c2af31c1a93e7cf4b70d9c1d9d085713634e13d6f517f24c81b8fa6b32",
+    "size_bytes": 94976
+  },
+  "failure_index": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/cpu-failure-index.v1.json",
+    "sha256": "6cbd15261942dfeff9622572ab100624f8299fc0dc6cd23216162eb2c5bb0264",
+    "size_bytes": 77325
+  },
+  "failure_module_counts": {
+    "test_backend_publication_broker_terminal_v3": 1,
+    "test_backend_publication_output_transaction_production_v3": 13,
+    "test_backend_publication_output_transaction_v3": 17,
+    "test_backend_publication_process_supervisor_v3": 14,
+    "test_checkpoint_openvino_gva_qualification_fragment_v3": 1
+  },
+  "four_original_committed_sources_match_hosted_bytes": true,
+  "full_ci_successful": false,
+  "hardware_acceptance": false,
+  "job_id": 110056199709,
+  "limitations": [
+    "One original full run with normal childreport and exit1; no native139 observed here and no causal conclusion about historical139.",
+    "45 of46 remaining rows are in broker/transaction/supervisor modules; their exact tracebacks are preserved. Membership is not per-test syscall cause proof.",
+    "Original observer explicitly does not infer descendant quiescence from child status; no broader process/container cleanup claim added.",
+    "No model/native/engine/namespace/profile/test/rerun/cancellation by reviewer; only original archive/log retention and finite pure joins."
+  ],
+  "namespace_observation": {
+    "collector_policy_denial_proven": false,
+    "first_failed_syscall": {
+      "errno": 13,
+      "error": "[Errno 13] Permission denied: '/proc/self/setgroups'",
+      "error_type": "PermissionError",
+      "event": "syscall_failed",
+      "flags": 655361,
+      "monotonic_ns": 304927948998,
+      "original_pid": 3991,
+      "path": "/proc/self/setgroups",
+      "pid": 3991,
+      "stock_tolerated_missing_setgroups": false,
+      "syscall": "open",
+      "terminal_monotonic_ns": 304927991427,
+      "terminal_wall_time_ns": 1790796219520959955,
+      "wall_time_ns": 1790796219520917626
+    },
+    "interpretation": "A genuine matching AppArmor capable/sys_admin denial now exists for the same original interpreter PID/boot/time interval after successful CLONE_NEWUSER and failed setgroups open. This supports a narrowly scoped policy investigation; it does not authorize a profile or prove every remaining test failure shares that cause. The original candidate-only collector boolean stays false.",
+    "journal_record_wall_minus_syscall_terminal_ns": 184045,
+    "original_kernel_query_rc": 0,
+    "original_kernel_record": {
+      "MESSAGE": "audit: type=1400 audit(1790796219.519:128): apparmor=\"DENIED\" operation=\"capable\" class=\"cap\" profile=\"unprivileged_userns\" pid=3991 comm=\"python3.12\" capability=21  capname=\"sys_admin\"",
+      "PRIORITY": "5",
+      "SYSLOG_FACILITY": "0",
+      "SYSLOG_IDENTIFIER": "kernel",
+      "_BOOT_ID": "950bc69f7dab44ccbbd1b4ef02e6d140",
+      "_HOSTNAME": "runnervmtr4k5",
+      "_MACHINE_ID": "fa19dc2cce724d98816ef2caca855cd7",
+      "_RUNTIME_SCOPE": "system",
+      "_SOURCE_MONOTONIC_TIMESTAMP": "304998037",
+      "_TRANSPORT": "kernel",
+      "__CURSOR": "s=8ebe1c5396044b6aba7e131db82545fb;i=48d7;b=950bc69f7dab44ccbbd1b4ef02e6d140;m=122cd5af;t=65cb83c879878;x=4434312203baa2e3",
+      "__MONOTONIC_TIMESTAMP": "304928175",
+      "__REALTIME_TIMESTAMP": "1790796219521144",
+      "__SEQNUM": "18647",
+      "__SEQNUM_ID": "8ebe1c5396044b6aba7e131db82545fb"
+    },
+    "original_namespace_group_absent": true,
+    "original_owner": {
+      "boot_id": "950bc69f-7dab-44cc-bbd1-b4ef02e6d140",
+      "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "executable_stat": {
+        "st_dev": 2049,
+        "st_gid": 1001,
+        "st_ino": 9189472,
+        "st_mode": 33261,
+        "st_nlink": 1,
+        "st_size": 17744,
+        "st_uid": 1001
+      },
+      "gid": 1001,
+      "pgid": 3991,
+      "pid": 3991,
+      "ppid": 3681,
+      "startticks": 30459,
+      "uid": 1001
+    },
+    "original_raw_evidence": [
+      {
+        "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/original-namespace-diagnostic--stdout.raw",
+        "sha256": "4e7082021d819d7807305cec74bcb629b399092b233cdd7106d3284b00416175",
+        "size_bytes": 1410
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/original-namespace-diagnostic--kernel-query--stdout.raw",
+        "sha256": "bf1a95cb82f25b788698f1a175e385c6913ace5189d4da474d02d2dc158eda36",
+        "size_bytes": 773
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/original-namespace-diagnostic--kernel-denial.json",
+        "sha256": "2a2f84e0511f72922f642aac3a789d9764ee5d4d9bb370012abaaa0ebea21062",
+        "size_bytes": 1554
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/original-namespace-diagnostic--capture.json",
+        "sha256": "8a41ae5b420a7baa3645e8e09dd22769a74af724e23f0a72afd867336b77a838",
+        "size_bytes": 925
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/original-namespace-diagnostic--kernel-query--capture.json",
+        "sha256": "ac6cb0f13cf0b93be0108ab1178a096abd26ca946c956e007d508e9e86c75b29",
+        "size_bytes": 1238
+      }
+    ],
+    "same_original_pid_boot_and_wall_interval": true,
+    "successful_first_unshare": {
+      "event": "syscall_completed",
+      "flags": 268435456,
+      "monotonic_ns": 304927855344,
+      "original_pid": 3991,
+      "pid": 3991,
+      "syscall": "unshare",
+      "terminal_monotonic_ns": 304927925495,
+      "wall_time_ns": 1790796219520823952
+    }
+  },
+  "original_conclusion": "failure",
+  "original_full_elapsed_s": 1504.528051795,
+  "original_suite_observer": {
+    "descendant_quiescence": "not established by original-child status",
+    "forced_sigkill": false,
+    "forced_sigterm": false,
+    "pipe_eof": {
+      "control": true,
+      "trace": true
+    },
+    "returncode": 1,
+    "signal": null
+  },
+  "provider_jobs": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/provider-jobs.final.original.json",
+    "sha256": "3527a79a058f1571a36621a0c9c81d4f3a4ef227de3c6c94c08171a3fe1853db",
+    "size_bytes": 6012
+  },
+  "ranked_next_source_actions": [
+    "Investigate the actual same-PID sys_admin denial around the strict setgroups-open path before proposing a separately reviewed exact-executable ephemeral CI profile; no global waiver, skip or containment weakening.",
+    "Make the one remaining GVA pure policy/topology fixture hermetic using genuine historical metadata in an owned temp root; do not fabricate physical acceptance or defer this portable case by failure text."
+  ],
+  "required_native_successes": [
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+  ],
+  "run_id": 36764814739,
+  "schema_version": 1,
+  "selection_counts": {
+    "discovered": 2947,
+    "integration": 9,
+    "portable": 2938
+  },
+  "source_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "temporary_urls_or_credentials_saved_or_output": false,
+  "test_outcomes": {
+    "errors": 25,
+    "executed": 2938,
+    "existing_audited_skips": 88,
+    "failures": 21,
+    "missing_required_native_successes": 0,
+    "success": 2804
+  },
+  "tracked_before_after_equal": true,
+  "tracked_path_count": 3549,
+  "zip_inventory": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc416-original-host-retention-v1/36764814739-cpu/zip-readonly-inventory.v1.json",
+    "sha256": "ad98758095df7fcc50d727b56ade0ef9c39c66bd30850e1f0ea30d5ec7863e98",
+    "size_bytes": 30588
+  },
+  "zip_members": 178
+}

@@ -36,6 +36,7 @@ from analytics_execution_worker import (
     validate_inference_response,
     validate_worker_capability,
 )
+from analytics_execution_endpoint import terminal_detector_identity
 BRIDGE_SCHEMA_VERSION = 1
 BRIDGE_IMPLEMENTATION_STATUS = (
     "protocol_bridge_sdk_callback_adapter_source_implemented_not_kpp_pair_piloted"
@@ -71,6 +72,7 @@ _NVDS_IDENTITY_FIELDS = {
     "nvds_source_id",
     "nvds_frame_num",
     "nvds_buf_pts_ns",
+    "mux_gst_buffer_pts_ns",
     "decoder_factory",
     "decoder_gpu_id",
 }
@@ -325,11 +327,15 @@ class DeepStreamProtocolBridge:
         ],
         resource_recorder: Any | None = None,
         clock_ms: Callable[[], float] | None = None,
+        nvds_source_id: int = 0,
     ) -> None:
         self.run_id = _stable_id(run_id, "DeepStream run_id")
         self.arm_id = _stable_id(arm_id, "DeepStream arm_id")
         self.worker_id = _text(worker_id, "DeepStream worker_id")
         self.stream_id = _integer(stream_id, "DeepStream stream_id")
+        # DeepStream's single-source graph uses pad 0; Savant explicitly binds
+        # its native mux pad to the logical stream. Never relabel observed meta.
+        self.nvds_source_id = _integer(nvds_source_id, "expected native NvDs source_id")
         _require(
             topology_kind in {INDEPENDENT_PROCESSES, SHARED_VIDEO_DAG},
             "DeepStream topology kind is unsupported",
@@ -422,11 +428,12 @@ class DeepStreamProtocolBridge:
         value = self._clock_value(label) if observed_ms is None else _number(observed_ms, label)
         _require(value >= 0, f"{label} must be non-negative")
         timestamp = int(math.ceil(value))
-        _require(
-            timestamp >= self._last_event_timestamp_ms,
-            "DeepStream runtime event timestamps are not monotonic",
-        )
-        return timestamp
+        # Callback observations are captured before this bridge acquires its
+        # serialization lock.  A later callback can therefore serialize first,
+        # and an analytics RPC can finish after newer admissions were emitted.
+        # The native RPC/resource records retain the precise stage timings; the
+        # runtime event timestamp is the monotonic serialization clock.
+        return max(timestamp, self._last_event_timestamp_ms)
 
     @staticmethod
     def _execution_id(state: _FrameState, suffix: str) -> str:
@@ -443,7 +450,7 @@ class DeepStreamProtocolBridge:
         parents: list[str],
         observed_timestamp_ms: float | int | None = None,
         terminal: Mapping[str, Any] | None = None,
-    ) -> None:
+    ) -> int:
         timestamp_ms = self._runtime_timestamp(
             observed_timestamp_ms, "DeepStream runtime event timestamp_ms"
         )
@@ -488,6 +495,7 @@ class DeepStreamProtocolBridge:
         self._event_sink(line)
         self._sequence += 1
         self._last_event_timestamp_ms = timestamp_ms
+        return timestamp_ms
 
     def _frame(self, input_frame_key: str) -> _FrameState:
         key = _text(input_frame_key, "DeepStream input_frame_key")
@@ -675,6 +683,9 @@ class DeepStreamProtocolBridge:
             "nvds_source_id": _integer(identity["nvds_source_id"], "NvDs source_id"),
             "nvds_frame_num": _integer(identity["nvds_frame_num"], "NvDs frame_num"),
             "nvds_buf_pts_ns": _integer(identity["nvds_buf_pts_ns"], "NvDs buf_pts_ns"),
+            "mux_gst_buffer_pts_ns": _integer(
+                identity["mux_gst_buffer_pts_ns"], "mux GstBuffer PTS"
+            ),
             "decoder_factory": _text(identity["decoder_factory"], "NvDs decoder factory"),
             "decoder_gpu_id": _integer(identity["decoder_gpu_id"], "NvDs decoder gpu_id"),
         }
@@ -684,7 +695,7 @@ class DeepStreamProtocolBridge:
             "frame_id": state.frame_id,
             "transport_pts_ns": admitted.transport_pts_ns,
             "payload_sha256": admitted.payload_sha256,
-            "nvds_source_id": self.stream_id,
+            "nvds_source_id": self.nvds_source_id,
             "nvds_buf_pts_ns": admitted.transport_pts_ns,
             "decoder_factory": "nvv4l2decoder",
             "decoder_gpu_id": 0,
@@ -764,7 +775,7 @@ class DeepStreamProtocolBridge:
         branch: str,
         tensor_spec: Mapping[str, Any] | None = None,
         observed_timestamp_ms: float | int | None = None,
-    ) -> None:
+    ) -> int:
         with self._lock:
             _require(self.topology_kind == SHARED_VIDEO_DAG, "baseline bridge cannot emit fanout")
             state = self._validate_nvds_identity(nvds_identity)
@@ -772,7 +783,7 @@ class DeepStreamProtocolBridge:
             _require(branch in ANALYTICS_BRANCHES, "DeepStream fanout branch is outside frozen set")
             _require(branch not in state.fanout_event_ids, "DeepStream fanout callback was duplicated")
             event_id = self._execution_id(state, f"{branch}:fanout")
-            self._emit(
+            serialized_timestamp_ms = self._emit(
                 state,
                 event_kind="fanout",
                 stage="fanout",
@@ -784,6 +795,7 @@ class DeepStreamProtocolBridge:
             state.fanout_event_ids[branch] = event_id
             if tensor_spec is not None:
                 state.tensor_specs[branch] = _validate_tensor_spec(tensor_spec)
+            return serialized_timestamp_ms
 
     def bind_branch_tensor(
         self,
@@ -842,7 +854,9 @@ class DeepStreamProtocolBridge:
                 terminal={
                     "terminal_reason": reason,
                     "objects": 0,
-                    "detector": "not_executed",
+                    "detector": terminal_detector_identity(
+                        self._endpoints[branch]["cpu"][1]
+                    ),
                     "backend": "deepstream:native_pre_detector_queue",
                 },
             )
@@ -1025,11 +1039,19 @@ class DeepStreamProtocolBridge:
                 decision["selected_implementation_id"] == endpoint.implementation_id,
                 "policy selected implementation does not match analytics endpoint",
             )
-            path_timestamp_ms = self._clock_value("DeepStream native path timestamp")
-            _require(
-                path_timestamp_ms >= decision_time_ms,
-                "DeepStream native path precedes policy decision",
+            # The path is created only after the decision exchange above has
+            # returned its ACK.  WSL wall-clock synchronization can still make
+            # the next time.time_ns() observation fractionally earlier.  Keep
+            # the serialized causal clock monotonic instead of relabelling that
+            # host-clock regression as a native ordering violation.
+            path_timestamp_ms = max(
+                self._clock_value("DeepStream native path timestamp"),
+                decision_time_ms,
             )
+            # Keep the epoch timestamp for the policy/event protocol, but
+            # measure the enclosing service interval with an elapsed clock.
+            # Wall-clock corrections during inference must not change latency.
+            path_started_monotonic_ns = time.monotonic_ns()
             path_digest = hashlib.sha256(
                 f"{decision['decision_id']}\0{self.worker_id}\0{branch}".encode("utf-8")
             ).hexdigest()
@@ -1084,16 +1106,51 @@ class DeepStreamProtocolBridge:
                 output_sha256 == output_record["sha256"],
                 "analytics execution output digest does not match returned memfd payload",
             )
-            detector = str(response["provenance"]["model_id"])
+            detector = terminal_detector_identity(capability)
             backend = analytics_backend_identity(capability)
             timing = response["timing"]
             worker_received_ns = int(timing["worker_received_monotonic_ns"])
-            analytics_timestamp_ms = path_timestamp_ms + (
-                int(timing["inference_finished_monotonic_ns"]) - worker_received_ns
-            ) / 1_000_000.0
-            postprocess_timestamp_ms = path_timestamp_ms + (
-                int(timing["worker_completed_monotonic_ns"]) - worker_received_ns
-            ) / 1_000_000.0
+            inference_finished_ns = int(timing["inference_finished_monotonic_ns"])
+            worker_completed_ns = int(timing["worker_completed_monotonic_ns"])
+            if selected == "gpu":
+                transfers = response["resource"]["cuda_transfer_intervals"]
+                _require(
+                    isinstance(transfers, list) and len(transfers) == 2,
+                    "DeepStream GPU response lacks its exact CUDA transfer pair",
+                )
+                h2d, d2h = transfers
+                h2d_start_ns = int(h2d["host_start_monotonic_ns"])
+                h2d_end_ns = int(h2d["host_end_monotonic_ns"])
+                d2h_start_ns = int(d2h["host_start_monotonic_ns"])
+                d2h_end_ns = int(d2h["host_end_monotonic_ns"])
+                _require(
+                    h2d["direction"] == "h2d"
+                    and d2h["direction"] == "d2h"
+                    and worker_received_ns
+                    <= h2d_start_ns
+                    < h2d_end_ns
+                    <= d2h_start_ns
+                    < d2h_end_ns
+                    <= inference_finished_ns
+                    <= worker_completed_ns,
+                    "DeepStream CUDA transfer pair is outside native inference timing",
+                )
+                # The analytics topology node represents device computation and
+                # therefore completes when the native D2H copy begins.  The
+                # postprocess node completes when that copy ends.  Using the
+                # worker's later `inference_finished`/`worker_completed` receipt
+                # timestamps here would causally place D2H before its parent.
+                analytics_offset_ns = d2h_start_ns - worker_received_ns
+                postprocess_offset_ns = d2h_end_ns - worker_received_ns
+            else:
+                analytics_offset_ns = inference_finished_ns - worker_received_ns
+                postprocess_offset_ns = worker_completed_ns - worker_received_ns
+            analytics_timestamp_ms = (
+                path_timestamp_ms + analytics_offset_ns / 1_000_000.0
+            )
+            postprocess_timestamp_ms = (
+                path_timestamp_ms + postprocess_offset_ns / 1_000_000.0
+            )
             if self._resource_recorder is not None:
                 self._resource_recorder.record_analytics_transfers(
                     frame_id=state.frame_id,
@@ -1106,21 +1163,21 @@ class DeepStreamProtocolBridge:
                 )
 
             with self._lock:
-                terminal_timestamp_ms = self._clock_value(
-                    "DeepStream analytics terminal timestamp"
-                )
+                actual_service_ns = time.monotonic_ns() - path_started_monotonic_ns
                 _require(
-                    terminal_timestamp_ms > path_timestamp_ms,
+                    actual_service_ns > 0,
                     "DeepStream analytics terminal does not follow path entry",
                 )
-                actual_service_ms = terminal_timestamp_ms - path_timestamp_ms
+                actual_service_ms = actual_service_ns / 1_000_000.0
+                terminal_timestamp_ms = path_timestamp_ms + actual_service_ms
                 _require(
-                    actual_service_ms * 1_000_000
+                    actual_service_ns
                     >= int(response["timing"]["inference_latency_ns"]),
                     "DeepStream path service time is shorter than native inference",
                 )
                 _require(
-                    terminal_timestamp_ms >= postprocess_timestamp_ms
+                    actual_service_ns >= postprocess_offset_ns
+                    and terminal_timestamp_ms >= postprocess_timestamp_ms
                     >= analytics_timestamp_ms >= path_timestamp_ms,
                     "DeepStream native analytics/postprocess timing is outside its path",
                 )

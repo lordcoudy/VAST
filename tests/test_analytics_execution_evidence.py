@@ -19,6 +19,7 @@ from analytics_execution_evidence import (  # noqa: E402
     persist_execution_bundle,
     verify_execution_bundle,
 )
+import analytics_execution_evidence as evidence_module  # noqa: E402
 from analytics_execution_worker import ExecutionClient, WorkerHarness  # noqa: E402
 from test_analytics_execution_worker import FakeBackend, capability, request_for  # noqa: E402
 
@@ -45,18 +46,14 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
         request, response, input_tensor, output = self.completed_inference()
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "evidence"
-            with mock.patch(
-                "analytics_execution_evidence.shutil.rmtree"
-            ) as remove_tree:
-                manifest = persist_execution_bundle(
-                    root,
-                    request=request,
-                    response=response,
-                    input_tensor=input_tensor,
-                    output_tensor=output,
-                    capability=capability(),
-                )
-            remove_tree.assert_not_called()
+            manifest = persist_execution_bundle(
+                root,
+                request=request,
+                response=response,
+                input_tensor=input_tensor,
+                output_tensor=output,
+                capability=capability(),
+            )
             bundle = root / request["request_id"]
             self.assertTrue(bundle.is_dir())
             self.assertEqual(manifest["request_id"], request["request_id"])
@@ -65,7 +62,8 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
             self.assertEqual((bundle / "input.tensor.bin").read_bytes(), input_tensor)
             self.assertEqual((bundle / "output.tensor.bin").read_bytes(), output)
 
-            with self.assertRaisesRegex(EvidenceError, "already exists"):
+            identity = bundle.stat().st_dev, bundle.stat().st_ino
+            self.assertEqual(
                 persist_execution_bundle(
                     root,
                     request=request,
@@ -73,7 +71,10 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
                     input_tensor=input_tensor,
                     output_tensor=output,
                     capability=capability(),
-                )
+                ),
+                manifest,
+            )
+            self.assertEqual((bundle.stat().st_dev, bundle.stat().st_ino), identity)
 
     def test_mutated_raw_output_is_rejected(self) -> None:
         request, response, input_tensor, output = self.completed_inference()
@@ -92,6 +93,104 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
             output_path.write_bytes(b"tampered")
             with self.assertRaisesRegex(EvidenceError, "byte length|SHA-256"):
                 verify_execution_bundle(output_path.parent, capability=capability())
+
+    def test_evidence_directory_adopts_all_three_crash_windows(self) -> None:
+        request, response, input_tensor, output = self.completed_inference()
+        for step in (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(step=step), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp) / "evidence"
+
+                def crash(observed: str) -> None:
+                    if observed == step:
+                        raise OSError("injected evidence crash")
+
+                with self.assertRaisesRegex(OSError, "injected evidence crash"):
+                    persist_execution_bundle(
+                        root,
+                        request=request,
+                        response=response,
+                        input_tensor=input_tensor,
+                        output_tensor=output,
+                        capability=capability(),
+                        after_directory_publish_step=crash,
+                    )
+                manifest = persist_execution_bundle(
+                    root,
+                    request=request,
+                    response=response,
+                    input_tensor=input_tensor,
+                    output_tensor=output,
+                    capability=capability(),
+                )
+                bundle = root / request["request_id"]
+                identity = bundle.stat().st_dev, bundle.stat().st_ino
+                self.assertEqual(
+                    persist_execution_bundle(
+                        root,
+                        request=request,
+                        response=response,
+                        input_tensor=input_tensor,
+                        output_tensor=output,
+                        capability=capability(),
+                    ),
+                    manifest,
+                )
+                self.assertEqual((bundle.stat().st_dev, bundle.stat().st_ino), identity)
+
+    def test_adoption_rebind_before_cleanup_preserves_evidence_and_foreign_staging(self) -> None:
+        request, response, input_tensor, output = self.completed_inference()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "evidence"
+            expected = persist_execution_bundle(
+                root,
+                request=request,
+                response=response,
+                input_tensor=input_tensor,
+                output_tensor=output,
+                capability=capability(),
+            )
+            bundle = root / request["request_id"]
+            final_identity = bundle.stat().st_dev, bundle.stat().st_ino
+            real_commit = evidence_module.commit_or_adopt_immutable_directory_v1
+            rebound: list[tuple[Path, Path]] = []
+
+            def adopt_then_rebind(**kwargs):
+                result = real_commit(**kwargs)
+                staging = Path(kwargs["staging"])
+                stolen = staging.with_name(staging.name + ".stolen")
+                os.replace(staging, stolen)
+                staging.mkdir()
+                (staging / "FOREIGN").write_text("foreign\n", encoding="utf-8")
+                rebound.append((staging, stolen))
+                return result
+
+            with (
+                mock.patch.object(
+                    evidence_module,
+                    "commit_or_adopt_immutable_directory_v1",
+                    side_effect=adopt_then_rebind,
+                ),
+                self.assertRaisesRegex(EvidenceError, "mutated|rebound|changed"),
+            ):
+                persist_execution_bundle(
+                    root,
+                    request=request,
+                    response=response,
+                    input_tensor=input_tensor,
+                    output_tensor=output,
+                    capability=capability(),
+                )
+
+            self.assertEqual(len(rebound), 1)
+            foreign, stolen = rebound[0]
+            self.assertEqual((bundle.stat().st_dev, bundle.stat().st_ino), final_identity)
+            self.assertEqual(verify_execution_bundle(bundle, capability=capability()), expected)
+            self.assertEqual((foreign / "FOREIGN").read_text(), "foreign\n")
+            self.assertTrue(stolen.is_dir())
 
     def test_rejects_evidence_root_alias(self) -> None:
         request, response, input_tensor, output = self.completed_inference()
@@ -127,7 +226,6 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
                     "analytics_execution_evidence.tempfile.mkdtemp",
                     return_value=str(root),
                 ),
-                mock.patch("analytics_execution_evidence.shutil.rmtree") as remove_tree,
                 self.assertRaisesRegex(EvidenceError, "staging.*parent"),
             ):
                 persist_execution_bundle(
@@ -138,8 +236,6 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
                     output_tensor=output,
                     capability=capability(),
                 )
-
-            remove_tree.assert_not_called()
             self.assertTrue(root.is_dir())
 
     def test_replaced_staging_symlink_is_never_recursively_removed(self) -> None:
@@ -158,8 +254,10 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
                 staging_holder.append(staging)
                 return str(staging)
 
-            def replace_with_symlink(source: Path, destination: Path) -> None:
-                staging = Path(source)
+            def replace_with_symlink(step: str) -> None:
+                if step != "mid_write":
+                    return
+                staging = staging_holder[-1]
                 saved = staging.with_name(staging.name + ".saved")
                 real_replace(staging, saved)
                 staging.symlink_to(canary, target_is_directory=True)
@@ -170,12 +268,9 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
                     "analytics_execution_evidence.tempfile.mkdtemp",
                     side_effect=tracked_mkdtemp,
                 ),
-                mock.patch(
-                    "analytics_execution_evidence.os.replace",
-                    side_effect=replace_with_symlink,
+                self.assertRaisesRegex(
+                    EvidenceError, "symlink|junction|reparse|mutated|rebound"
                 ),
-                mock.patch("analytics_execution_evidence.shutil.rmtree") as remove_tree,
-                self.assertRaisesRegex(EvidenceError, "symlink|junction|reparse"),
             ):
                 persist_execution_bundle(
                     root,
@@ -184,10 +279,10 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
                     input_tensor=input_tensor,
                     output_tensor=output,
                     capability=capability(),
+                    after_directory_publish_step=replace_with_symlink,
                 )
 
             self.assertEqual(len(staging_holder), 1)
-            remove_tree.assert_not_called()
             self.assertEqual((canary / "KEEP").read_text(encoding="utf-8"), "keep\n")
 
     def test_evidence_root_must_not_be_the_current_directory(self) -> None:
@@ -212,6 +307,37 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
                     capability=capability(),
                 )
 
+    def test_unlinked_ambient_cwd_does_not_block_project_bound_bundle(self) -> None:
+        request, response, input_tensor, output = self.completed_inference()
+        with tempfile.TemporaryDirectory() as tmp:
+            project_root = Path(tmp) / "project"
+            project_root.mkdir()
+            root = project_root / "evidence"
+            vanished_cwd = Path(tmp) / "vanished-cwd"
+            vanished_cwd.mkdir()
+            original_cwd = os.open(".", os.O_RDONLY)
+            try:
+                os.chdir(vanished_cwd)
+                vanished_cwd.rmdir()
+                manifest = persist_execution_bundle(
+                    root,
+                    request=request,
+                    response=response,
+                    input_tensor=input_tensor,
+                    output_tensor=output,
+                    capability=capability(),
+                    project_root=project_root,
+                )
+            finally:
+                os.fchdir(original_cwd)
+                os.close(original_cwd)
+
+            self.assertEqual(manifest["request_id"], request["request_id"])
+            self.assertEqual(
+                verify_execution_bundle(root / request["request_id"], capability=capability()),
+                manifest,
+            )
+
     def test_broken_symlink_bundle_collision_is_preserved(self) -> None:
         request, response, input_tensor, output = self.completed_inference()
         with tempfile.TemporaryDirectory() as tmp:
@@ -223,10 +349,7 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
             except (NotImplementedError, OSError) as error:
                 self.skipTest(f"directory symlinks unavailable: {error}")
 
-            with (
-                mock.patch("analytics_execution_evidence.shutil.rmtree") as remove_tree,
-                self.assertRaisesRegex(EvidenceError, "already exists or is unsafe"),
-            ):
+            with self.assertRaisesRegex(EvidenceError, "already exists or is unsafe"):
                 persist_execution_bundle(
                     root,
                     request=request,
@@ -235,8 +358,6 @@ class AnalyticsExecutionEvidenceTests(unittest.TestCase):
                     output_tensor=output,
                     capability=capability(),
                 )
-
-            remove_tree.assert_not_called()
             self.assertTrue(target.is_symlink())
 
 

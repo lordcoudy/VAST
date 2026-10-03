@@ -33,20 +33,30 @@ from backend_publication_dispatch_v3 import (
 )
 from backend_publication_process_supervisor_v3 import (
     BackendPublicationProcessSupervisorV3Error,
-    run_backend_publication_process_v3,
+    _run_backend_publication_process_durable_v3 as run_backend_publication_process_v3,
+)
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
+from publication_immutable_directory_v1 import (
+    JOURNAL_ROOT as IMMUTABLE_DIRECTORY_JOURNAL_ROOT,
+    PublicationImmutableDirectoryV1Error,
+    commit_or_adopt_immutable_directory_v1,
 )
 
 
 SCHEMA_VERSION = 3
+DURABLE_OUTPUT_SCHEMA_VERSION = 4
 NONPUBLICATION_ENGINEERING_SCOPE = (
     "externally_pinned_synthetic_nonpublication_only"
 )
 ARM_AUTHORITY_KIND = "vast_backend_publication_arm_contract_file_authority_v3"
-FENCE_KIND = "vast_backend_publication_launch_fence_v3"
-RESULT_KIND = "vast_backend_publication_launcher_result_v3"
-RECEIPT_KIND = "vast_backend_publication_output_receipt_v3"
+FENCE_KIND = "vast_backend_publication_launch_fence_v4"
+RESULT_KIND = "vast_backend_publication_launcher_result_v4"
+RECEIPT_KIND = "vast_backend_publication_output_receipt_v4"
 RECEIPT_AUTHORITY_KIND = (
-    "vast_backend_publication_output_receipt_authority_v3"
+    "vast_backend_publication_output_receipt_authority_v4"
 )
 MAX_CONTROL_JSON_BYTES = 4 * 1024 * 1024
 MAX_EVIDENCE_FILE_BYTES = 64 * 1024 * 1024
@@ -56,6 +66,9 @@ MAX_TRANSACTION_NAMESPACE_ENTRIES = MAX_EVIDENCE_FILES + 6
 READ_CHUNK_BYTES = 1024 * 1024
 PROCESS_OBSERVATION_KIND = "vast_backend_publication_process_observation_v3"
 PROCESS_OBSERVATION_DOMAIN = b"VAST:backend-publication-process-observation:v3\0"
+BOOTSTRAP_JOURNAL_ROOT = ".backend-publication-transaction-bootstrap-v1"
+BOOTSTRAP_INTENT_KIND = "vast_backend_publication_transaction_bootstrap_intent_v1"
+BOOTSTRAP_RECEIPT_KIND = "vast_backend_publication_transaction_bootstrap_receipt_v1"
 PROCESS_OBSERVATION_FIELDS = frozenset(
     {
         "schema_version",
@@ -236,6 +249,18 @@ def _directory_file_id_stat(info: os.stat_result) -> tuple[int, ...]:
         int(info.st_ino),
         int(stat.S_IFMT(info.st_mode)),
         int(getattr(info, "st_file_attributes", 0)),
+    )
+
+
+def _physical_directory_identity_stat(info: os.stat_result) -> tuple[int, ...]:
+    """Match the exact directory identity returned by PhysicalRootCustodyV1."""
+
+    return (
+        int(info.st_dev),
+        int(info.st_ino),
+        int(info.st_mode),
+        int(getattr(info, "st_uid", 0)),
+        int(getattr(info, "st_gid", 0)),
     )
 
 
@@ -748,6 +773,7 @@ def _create_new_held(
     label: str,
     limit: int,
     allow_empty: bool,
+    after_publish_step: Callable[[str], None] | None = None,
 ) -> _HeldFile:
     child = _direct_child_name(name, label=label)
     if type(payload) is not bytes or len(payload) > limit:
@@ -758,80 +784,43 @@ def _create_new_held(
         raise BackendPublicationOutputTransactionV3Error(
             f"{label} payload is unexpectedly empty"
         )
-    descriptor: int | None = None
     try:
-        flags = os.O_RDWR | os.O_CREAT | os.O_EXCL
-        flags |= int(getattr(os, "O_BINARY", 0))
-        flags |= int(getattr(os, "O_NOFOLLOW", 0))
-        flags |= int(getattr(os, "O_CLOEXEC", 0))
-        if os.name == "nt":
-            from ctypes import wintypes
-            import msvcrt
-
-            kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-            create = kernel32.CreateFileW
-            create.argtypes = [
-                wintypes.LPCWSTR,
-                wintypes.DWORD,
-                wintypes.DWORD,
-                ctypes.c_void_p,
-                wintypes.DWORD,
-                wintypes.DWORD,
-                wintypes.HANDLE,
-            ]
-            create.restype = wintypes.HANDLE
-            handle = create(
-                str(root.path / child),
-                0x80000000 | 0x40000000,
-                0x00000001,
-                None,
-                1,
-                0x00200000 | 0x80000000,
-                None,
-            )
-            invalid = ctypes.c_void_p(-1).value
-            if not handle or int(handle) == invalid:
-                code = ctypes.get_last_error()
-                if code in {80, 183}:
-                    raise FileExistsError(code, "CREATE_NEW collision", child)
-                raise OSError(code, "CREATE_NEW failed", child)
-            try:
-                descriptor = msvcrt.open_osfhandle(
-                    int(handle), os.O_RDWR | int(getattr(os, "O_BINARY", 0))
+        with PhysicalRootCustodyV1.open(
+            root.path.parent, label=f"{label} atomic publication parent"
+        ) as custody:
+            atomic_relative = f"{root.path.name}/{child}"
+            observed, _identity, _disposition = (
+                custody.commit_or_adopt_exact_identity(
+                    atomic_relative,
+                    payload,
+                    label=label,
+                    mode=0o600,
+                    create_parents=False,
+                    after_publish_step=after_publish_step,
+                    allow_empty=allow_empty,
                 )
-            except BaseException:
-                kernel32.CloseHandle(wintypes.HANDLE(handle))
-                raise
-        else:
-            descriptor = os.open(child, flags, 0o600, dir_fd=root.descriptor)
-        _write_all(descriptor, payload)
-        os.fsync(descriptor)
+            )
+            expected = {
+                "path": atomic_relative,
+                "size_bytes": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+            }
+            if observed != expected:
+                raise BackendPublicationOutputTransactionV3Error(
+                    f"{label} atomic descriptor drifted"
+                )
         root.sync_created_entry()
-        os.lseek(descriptor, 0, os.SEEK_SET)
-        held = _HeldFile(
+        return _HeldFile(
             root,
             child,
             label=label,
             limit=limit,
             allow_empty=allow_empty,
-            existing_descriptor=descriptor,
         )
-        descriptor = None
-        return held
-    except FileExistsError as error:
+    except PublicationPhysicalIoV1Error as error:
         raise BackendPublicationOutputTransactionV3Error(
-            f"immutable backend publication transaction file already exists: {child}"
+            f"immutable backend publication transaction file cannot be atomically committed: {child}"
         ) from error
-    except OSError as error:
-        raise BackendPublicationOutputTransactionV3Error(
-            f"immutable backend publication transaction file cannot be created: {child}"
-        ) from error
-    finally:
-        if descriptor is not None:
-            try:
-                os.close(descriptor)
-            except OSError:
-                pass
 
 
 def _close_holds(holds: Iterable[_HeldFile], *, primary: BaseException | None) -> None:
@@ -987,7 +976,7 @@ def _fence_material(
     dispatch = arm["dispatch_resolution"]
     execution = arm["full_publication_execution_binding"]
     value: dict[str, Any] = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": DURABLE_OUTPUT_SCHEMA_VERSION,
         "artifact_kind": FENCE_KIND,
         "status": "launch_fenced_nonpublication_engineering",
         "execution_scope": NONPUBLICATION_ENGINEERING_SCOPE,
@@ -1149,13 +1138,14 @@ def _result_material(
     stderr_descriptor: Mapping[str, Any],
     process_observation: Mapping[str, Any],
     evidence_descriptors: Sequence[Mapping[str, Any]],
+    durable_journal_response: Mapping[str, Any],
 ) -> dict[str, Any]:
     dispatch = arm["dispatch_resolution"]
     execution = arm["full_publication_execution_binding"]
     evidence = [_descriptor(dict(item), label="launcher evidence", allow_empty=False)
                 for item in evidence_descriptors]
     value: dict[str, Any] = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": DURABLE_OUTPUT_SCHEMA_VERSION,
         "artifact_kind": RESULT_KIND,
         "status": "completed_nonpublication_engineering_process",
         "execution_scope": NONPUBLICATION_ENGINEERING_SCOPE,
@@ -1164,6 +1154,9 @@ def _result_material(
         "launch_fence": _descriptor(dict(fence_descriptor), label="launch fence", allow_empty=False),
         "launch_fence_content_sha256": fence["fence_sha256"],
         "process_observation": copy.deepcopy(dict(process_observation)),
+        "durable_process_journal_response": copy.deepcopy(
+            dict(durable_journal_response)
+        ),
         "stdout_capture": _descriptor(dict(stdout_descriptor), label="stdout capture"),
         "stderr_capture": _descriptor(dict(stderr_descriptor), label="stderr capture"),
         "evidence_files": evidence,
@@ -1204,7 +1197,7 @@ def _receipt_material(
     evidence = [_descriptor(dict(item), label="launcher evidence", allow_empty=False)
                 for item in evidence_descriptors]
     value: dict[str, Any] = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": DURABLE_OUTPUT_SCHEMA_VERSION,
         "artifact_kind": RECEIPT_KIND,
         "status": "committed_launcher_output_not_accepted",
         "execution_scope": NONPUBLICATION_ENGINEERING_SCOPE,
@@ -1212,6 +1205,9 @@ def _receipt_material(
         "arm_contract_content_sha256": arm["contract_sha256"],
         "launch_fence": _descriptor(dict(fence_descriptor), label="launch fence", allow_empty=False),
         "launch_fence_content_sha256": fence["fence_sha256"],
+        "durable_process_journal_response": copy.deepcopy(
+            result["durable_process_journal_response"]
+        ),
         "stdout_capture": _descriptor(dict(stdout_descriptor), label="stdout capture"),
         "stderr_capture": _descriptor(dict(stderr_descriptor), label="stderr capture"),
         "launcher_result": _descriptor(dict(result_descriptor), label="launcher result", allow_empty=False),
@@ -1245,7 +1241,7 @@ def _authority_material(
 ) -> dict[str, Any]:
     execution = arm["full_publication_execution_binding"]
     value: dict[str, Any] = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": DURABLE_OUTPUT_SCHEMA_VERSION,
         "artifact_kind": RECEIPT_AUTHORITY_KIND,
         "status": "committed_nonpublication_engineering_output",
         "execution_scope": NONPUBLICATION_ENGINEERING_SCOPE,
@@ -1253,6 +1249,9 @@ def _authority_material(
         "content_sha256": receipt["receipt_sha256"],
         "arm_contract": copy.deepcopy(receipt["arm_contract"]),
         "launcher_result": copy.deepcopy(receipt["launcher_result"]),
+        "durable_process_journal_response": copy.deepcopy(
+            receipt["durable_process_journal_response"]
+        ),
         "evidence_files": copy.deepcopy(receipt["evidence_files"]),
         "evidence_aggregate_sha256": receipt["evidence_aggregate_sha256"],
         "full_publication_execution_binding": copy.deepcopy(execution),
@@ -1314,10 +1313,325 @@ def _arm_file_authority(
     return _seal(value, "authority_sha256")
 
 
+def _bootstrap_paths_v1(
+    *, custody_root: Path, output_dir: Path
+) -> dict[str, str]:
+    try:
+        target = output_dir.relative_to(custody_root).as_posix()
+        parent = output_dir.parent.relative_to(custody_root).as_posix()
+    except ValueError as error:
+        raise BackendPublicationOutputTransactionV3Error(
+            "backend publication bootstrap escaped project root"
+        ) from error
+    key = hashlib.sha256(target.encode("utf-8")).hexdigest()
+    stage_name = f".backend-publication-bootstrap-stage-v1-{key}"
+    stage = stage_name if parent == "." else f"{parent}/{stage_name}"
+    return {
+        "target": target,
+        "arm": f"{target}/{ARM_CONTRACT_FILENAME}",
+        "stage": stage,
+        "stage_arm": f"{stage}/{ARM_CONTRACT_FILENAME}",
+        "intent": f"{BOOTSTRAP_JOURNAL_ROOT}/{key}.intent.json",
+        "receipt": f"{BOOTSTRAP_JOURNAL_ROOT}/{key}.receipt.json",
+        "directory_intent": (
+            f"{IMMUTABLE_DIRECTORY_JOURNAL_ROOT}/{key}.json"
+        ),
+    }
+
+
+def _bootstrap_intent_v1(
+    *, paths: Mapping[str, str], arm: Mapping[str, Any], payload: bytes
+) -> dict[str, Any]:
+    value: dict[str, Any] = {
+        "schema_version": 1,
+        "artifact_kind": BOOTSTRAP_INTENT_KIND,
+        "target_output_dir": paths["target"],
+        "staging_dir": paths["stage"],
+        "arm_contract_path": paths["arm"],
+        "arm_contract_size_bytes": len(payload),
+        "arm_contract_sha256": hashlib.sha256(payload).hexdigest(),
+        "arm_contract_content_sha256": arm["contract_sha256"],
+    }
+    return _seal(value, "intent_sha256")
+
+
+def _bootstrap_fault_callback_v1(
+    callback: Callable[[str], None] | None, prefix: str
+) -> Callable[[str], None] | None:
+    if callback is None:
+        return None
+
+    def invoke(step: str) -> None:
+        callback(f"{prefix}:{step}")
+
+    return invoke
+
+
+def _bootstrap_receipt_v1(
+    *,
+    paths: Mapping[str, str],
+    arm: Mapping[str, Any],
+    payload: bytes,
+    bootstrap_intent: Mapping[str, Any],
+    bootstrap_intent_descriptor: Mapping[str, Any],
+    bootstrap_intent_identity: tuple[int, int],
+    directory_intent_descriptor: Mapping[str, Any],
+    directory_intent_identity: tuple[int, int],
+    output_directory_identity: tuple[int, ...],
+    arm_descriptor: Mapping[str, Any],
+    arm_identity: tuple[int, int],
+) -> dict[str, Any]:
+    value: dict[str, Any] = {
+        "schema_version": 1,
+        "artifact_kind": BOOTSTRAP_RECEIPT_KIND,
+        "target_output_dir": paths["target"],
+        "arm_contract_path": paths["arm"],
+        "arm_contract_size_bytes": len(payload),
+        "arm_contract_sha256": hashlib.sha256(payload).hexdigest(),
+        "arm_contract_content_sha256": arm["contract_sha256"],
+        "bootstrap_intent_sha256": bootstrap_intent["intent_sha256"],
+        "bootstrap_intent": copy.deepcopy(dict(bootstrap_intent_descriptor)),
+        "bootstrap_intent_identity": list(bootstrap_intent_identity),
+        "immutable_directory_intent": copy.deepcopy(
+            dict(directory_intent_descriptor)
+        ),
+        "immutable_directory_intent_identity": list(
+            directory_intent_identity
+        ),
+        "output_directory_identity": list(output_directory_identity),
+        "arm_contract": copy.deepcopy(dict(arm_descriptor)),
+        "arm_contract_identity": list(arm_identity),
+    }
+    return _seal(value, "receipt_sha256")
+
+
+def _remove_exact_bootstrap_stage_v1(
+    custody: PhysicalRootCustodyV1,
+    *,
+    paths: Mapping[str, str],
+    stage_path: Path,
+    expected_directory_identity: tuple[int, ...],
+    expected_arm_identity: tuple[int, int],
+) -> None:
+    """Remove one exact adopted stage without partially deleting foreign state."""
+
+    stage = Path(stage_path)
+    stage_name = _direct_child_name(
+        stage.name, label="backend publication bootstrap staging directory"
+    )
+    expected_stage_name = Path(paths["stage"]).name
+    if stage_name != expected_stage_name:
+        raise BackendPublicationOutputTransactionV3Error(
+            "backend publication bootstrap staging path drifted"
+        )
+
+    # POSIX deletion stays anchored to held parent/stage descriptors.  Validate
+    # the complete namespace and both exact identities before the first unlink;
+    # a rebind, extra sibling, or hardlink therefore leaves the stage untouched.
+    if os.name != "nt":
+        parent_hold: _DirectoryHold | None = None
+        stage_fd = -1
+        arm_fd = -1
+        try:
+            parent_hold = _DirectoryHold(stage.parent)
+            named_stage = os.stat(
+                stage_name,
+                dir_fd=parent_hold.descriptor,
+                follow_symlinks=False,
+            )
+            if (
+                not stat.S_ISDIR(named_stage.st_mode)
+                or _is_link_or_reparse(named_stage)
+                or _physical_directory_identity_stat(named_stage)
+                != expected_directory_identity
+            ):
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap staging directory was rebound"
+                )
+            stage_fd = os.open(
+                stage_name,
+                os.O_RDONLY
+                | int(getattr(os, "O_DIRECTORY", 0))
+                | int(getattr(os, "O_NOFOLLOW", 0))
+                | int(getattr(os, "O_CLOEXEC", 0)),
+                dir_fd=parent_hold.descriptor,
+            )
+            opened_stage = os.fstat(stage_fd)
+            if (
+                not stat.S_ISDIR(opened_stage.st_mode)
+                or _physical_directory_identity_stat(opened_stage)
+                != expected_directory_identity
+            ):
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap staging directory changed while opening"
+                )
+            if set(os.listdir(stage_fd)) != {ARM_CONTRACT_FILENAME}:
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap staging namespace is foreign"
+                )
+            named_arm = os.stat(
+                ARM_CONTRACT_FILENAME,
+                dir_fd=stage_fd,
+                follow_symlinks=False,
+            )
+            if (
+                not stat.S_ISREG(named_arm.st_mode)
+                or stat.S_ISLNK(named_arm.st_mode)
+                or int(named_arm.st_nlink) != 1
+                or (int(named_arm.st_dev), int(named_arm.st_ino))
+                != expected_arm_identity
+            ):
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap staging arm is not uniquely owned"
+                )
+            arm_fd = os.open(
+                ARM_CONTRACT_FILENAME,
+                os.O_RDONLY
+                | int(getattr(os, "O_NOFOLLOW", 0))
+                | int(getattr(os, "O_CLOEXEC", 0)),
+                dir_fd=stage_fd,
+            )
+            opened_arm = os.fstat(arm_fd)
+            if (
+                not stat.S_ISREG(opened_arm.st_mode)
+                or int(opened_arm.st_nlink) != 1
+                or (int(opened_arm.st_dev), int(opened_arm.st_ino))
+                != expected_arm_identity
+            ):
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap staging arm changed while opening"
+                )
+
+            # Repeat every name/identity check at the mutation boundary while
+            # both directory descriptors and the exact arm inode remain held.
+            current_stage = os.stat(
+                stage_name,
+                dir_fd=parent_hold.descriptor,
+                follow_symlinks=False,
+            )
+            current_arm = os.stat(
+                ARM_CONTRACT_FILENAME,
+                dir_fd=stage_fd,
+                follow_symlinks=False,
+            )
+            if (
+                _physical_directory_identity_stat(current_stage)
+                != expected_directory_identity
+                or _physical_directory_identity_stat(os.fstat(stage_fd))
+                != expected_directory_identity
+                or set(os.listdir(stage_fd)) != {ARM_CONTRACT_FILENAME}
+                or not stat.S_ISREG(current_arm.st_mode)
+                or int(current_arm.st_nlink) != 1
+                or (int(current_arm.st_dev), int(current_arm.st_ino))
+                != expected_arm_identity
+            ):
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap staging custody drifted"
+                )
+
+            os.unlink(ARM_CONTRACT_FILENAME, dir_fd=stage_fd)
+            os.fsync(stage_fd)
+            if os.listdir(stage_fd) != [] or int(os.fstat(arm_fd).st_nlink) != 0:
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap staging arm removal was ambiguous"
+                )
+            named_before_rmdir = os.stat(
+                stage_name,
+                dir_fd=parent_hold.descriptor,
+                follow_symlinks=False,
+            )
+            if (
+                _physical_directory_identity_stat(named_before_rmdir)
+                != expected_directory_identity
+                or _physical_directory_identity_stat(os.fstat(stage_fd))
+                != expected_directory_identity
+            ):
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap staging directory rebound before removal"
+                )
+            os.rmdir(stage_name, dir_fd=parent_hold.descriptor)
+            os.fsync(parent_hold.descriptor)
+            current_parent_handle = os.fstat(parent_hold.descriptor)
+            current_parent_path = stage.parent.lstat()
+            if (
+                _directory_file_id_stat(current_parent_handle)
+                != _directory_file_id_stat(parent_hold.before)
+                or _directory_file_id_stat(current_parent_path)
+                != _directory_file_id_stat(parent_hold.before)
+            ):
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap staging parent changed during removal"
+                )
+            return
+        except BackendPublicationOutputTransactionV3Error:
+            raise
+        except OSError as error:
+            raise BackendPublicationOutputTransactionV3Error(
+                "backend publication bootstrap staging cleanup failed"
+            ) from error
+        finally:
+            if arm_fd >= 0:
+                try:
+                    os.close(arm_fd)
+                except OSError:
+                    pass
+            if stage_fd >= 0:
+                try:
+                    os.close(stage_fd)
+                except OSError:
+                    pass
+            if parent_hold is not None:
+                parent_hold.close(suppress=True)
+
+    # Native Windows keeps the existing custody primitives, but now performs
+    # the same complete prevalidation before either destructive operation.
+    with _DirectoryHold(stage) as stage_hold:
+        if _physical_directory_identity_stat(stage_hold.before) != expected_directory_identity:
+            raise BackendPublicationOutputTransactionV3Error(
+                "backend publication bootstrap staging directory was rebound"
+            )
+        _assert_exact_namespace(
+            stage_hold,
+            {ARM_CONTRACT_FILENAME},
+            label="bootstrap staging cleanup",
+        )
+        arm = _HeldFile(
+            stage_hold,
+            ARM_CONTRACT_FILENAME,
+            label="backend publication bootstrap staging arm",
+            limit=MAX_CONTROL_JSON_BYTES,
+            allow_empty=False,
+        )
+        try:
+            if (
+                int(arm.handle_after_read.st_nlink) != 1
+                or (int(arm.handle_after_read.st_dev), int(arm.handle_after_read.st_ino))
+                != expected_arm_identity
+            ):
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap staging arm is not uniquely owned"
+                )
+            arm.verify()
+            stage_hold.verify()
+        finally:
+            arm.close(suppress=True)
+    custody.unlink_owned_identity(
+        paths["stage_arm"],
+        expected_arm_identity,
+        label="backend publication bootstrap staging arm",
+    )
+    custody.rmdir_owned_identity(
+        paths["stage"],
+        expected_directory_identity,
+        label="backend publication bootstrap staging directory",
+    )
+
+
 def prepare_backend_publication_engineering_transaction_v3(
     *,
     output_dir: Path,
     arm_contract: Mapping[str, Any],
+    after_bootstrap_step: Callable[[str], None] | None = None,
 ) -> dict[str, Any]:
     """Create a fresh private-ish namespace and its immutable v3 arm contract.
 
@@ -1349,45 +1663,260 @@ def prepare_backend_publication_engineering_transaction_v3(
             "backend publication transaction path differs from its arm contract"
         )
     _assert_plain_output_chain(root, output)
-    parent: _DirectoryHold | None = None
+    root = root.resolve(strict=True)
+    bootstrap_root = output.parent
+    paths = _bootstrap_paths_v1(custody_root=bootstrap_root, output_dir=output)
+    bootstrap_intent = _bootstrap_intent_v1(
+        paths=paths, arm=arm, payload=payload
+    )
+    bootstrap_intent_payload = _canonical_file_bytes(bootstrap_intent)
+    receipt_path = bootstrap_root.joinpath(*Path(paths["receipt"]).parts)
+    intent_path = bootstrap_root.joinpath(*Path(paths["intent"]).parts)
+    receipt_preexisting = os.path.lexists(receipt_path)
+    intent_preexisting = os.path.lexists(intent_path)
+    if receipt_preexisting and not intent_preexisting:
+        raise BackendPublicationOutputTransactionV3Error(
+            "backend publication bootstrap receipt exists without its parent intent"
+        )
+
     try:
-        parent = _DirectoryHold(output.parent)
-        if os.name == "nt":
-            os.mkdir(output, 0o700)
-        else:
-            os.mkdir(output.name, 0o700, dir_fd=parent.descriptor)
-            parent.sync_created_entry()
-    except FileExistsError as error:
-        if parent is not None:
-            parent.close(suppress=True)
+        with PhysicalRootCustodyV1.open(
+            bootstrap_root, label="backend publication bootstrap parent root"
+        ) as custody:
+            (
+                bootstrap_intent_descriptor,
+                bootstrap_intent_identity,
+                bootstrap_intent_disposition,
+            ) = custody.commit_or_adopt_exact_identity(
+                paths["intent"],
+                bootstrap_intent_payload,
+                label="backend publication bootstrap intent",
+                mode=0o444,
+                create_parents=True,
+                after_publish_step=_bootstrap_fault_callback_v1(
+                    after_bootstrap_step, "bootstrap_intent"
+                ),
+            )
+
+            if not receipt_preexisting:
+                stage_path, created_directories = custody.ensure_directory_owned(
+                    paths["stage"],
+                    label="backend publication bootstrap staging directory",
+                )
+                stage_mode, stage_identity = custody.stat_directory_identity(
+                    paths["stage"],
+                    label="backend publication bootstrap staging directory",
+                )
+                if os.name != "nt" and stage_mode != 0o700:
+                    raise BackendPublicationOutputTransactionV3Error(
+                        "backend publication bootstrap staging mode drifted"
+                    )
+                created = dict(created_directories)
+                if bootstrap_intent_disposition == "published" and (
+                    created.get(paths["stage"]) != stage_identity
+                ):
+                    raise BackendPublicationOutputTransactionV3Error(
+                        "foreign backend publication bootstrap staging directory preexisted its intent"
+                    )
+                if after_bootstrap_step is not None:
+                    after_bootstrap_step("bootstrap_directory:post_create_fsync")
+                _stage_mode_after, stage_identity_after = (
+                    custody.stat_directory_identity(
+                        paths["stage"],
+                        label="backend publication bootstrap staging directory",
+                    )
+                )
+                if stage_identity_after != stage_identity:
+                    raise BackendPublicationOutputTransactionV3Error(
+                        "backend publication bootstrap staging directory was rebound"
+                    )
+
+                stage_hold = _DirectoryHold(stage_path)
+                contract_hold: _HeldFile | None = None
+                stage_arm_identity: tuple[int, int] | None = None
+                try:
+                    names = stage_hold.names()
+                    if names not in (set(), {ARM_CONTRACT_FILENAME}):
+                        raise BackendPublicationOutputTransactionV3Error(
+                            "backend publication bootstrap staging namespace is foreign"
+                        )
+                    contract_hold = _create_new_held(
+                        stage_hold,
+                        ARM_CONTRACT_FILENAME,
+                        payload,
+                        label="bootstrap arm contract",
+                        limit=MAX_CONTROL_JSON_BYTES,
+                        allow_empty=False,
+                        after_publish_step=_bootstrap_fault_callback_v1(
+                            after_bootstrap_step, "arm_contract"
+                        ),
+                    )
+                    parsed = parse_backend_publication_arm_contract_v3_bytes(
+                        contract_hold.payload,
+                        expected_file_sha256=contract_hold.digest,
+                    )
+                    if parsed != arm:
+                        raise BackendPublicationOutputTransactionV3Error(
+                            "persisted bootstrap arm contract differs"
+                        )
+                    contract_hold.verify()
+                    _assert_exact_namespace(
+                        stage_hold,
+                        {ARM_CONTRACT_FILENAME},
+                        label="bootstrap staging transaction",
+                    )
+                    _stage_arm_descriptor, stage_arm_identity = (
+                        custody.adopt_exact_durable_identity(
+                            paths["stage_arm"],
+                            payload,
+                            label="bootstrap staging arm contract",
+                            mode=0o600,
+                        )
+                    )
+                finally:
+                    if contract_hold is not None:
+                        contract_hold.close(suppress=True)
+                    stage_hold.close(suppress=True)
+
+                try:
+                    publication = commit_or_adopt_immutable_directory_v1(
+                        project_root=bootstrap_root,
+                        staging=stage_path,
+                        target=output,
+                        after_publish_step=_bootstrap_fault_callback_v1(
+                            after_bootstrap_step, "transaction_directory"
+                        ),
+                    )
+                except PublicationImmutableDirectoryV1Error as error:
+                    raise BackendPublicationOutputTransactionV3Error(
+                        "backend publication bootstrap directory commit/adoption failed"
+                    ) from error
+                if publication.get("disposition") == "adopted":
+                    if stage_arm_identity is None or not os.path.lexists(stage_path):
+                        raise BackendPublicationOutputTransactionV3Error(
+                            "adopted backend publication bootstrap lost its supplied staging"
+                        )
+                    # The final directory was adopted from the immutable
+                    # journal's previously anchored staging tree.  This newly
+                    # supplied, independently validated twin is not needed for
+                    # authority.  Preserve it instead of performing any
+                    # check-then-unlink cleanup against a same-UID mutable
+                    # namespace; the deterministic path is reused and
+                    # revalidated on every later retry.
+                elif publication.get("disposition") == "published":
+                    if os.path.lexists(stage_path):
+                        raise BackendPublicationOutputTransactionV3Error(
+                            "published backend publication bootstrap retained its staging name"
+                        )
+                else:
+                    raise BackendPublicationOutputTransactionV3Error(
+                        "backend publication bootstrap directory disposition drifted"
+                    )
+
+                with _DirectoryHold(output) as prepared_directory:
+                    _assert_exact_namespace(
+                        prepared_directory,
+                        {ARM_CONTRACT_FILENAME},
+                        label="newly prepared transaction",
+                    )
+
+            output_mode, output_identity = custody.stat_directory_identity(
+                paths["target"], label="prepared backend publication transaction"
+            )
+            if os.name != "nt" and output_mode != 0o700:
+                raise BackendPublicationOutputTransactionV3Error(
+                    "prepared backend publication transaction mode drifted"
+                )
+            arm_descriptor, arm_identity = custody.adopt_exact_durable_identity(
+                paths["arm"],
+                payload,
+                label="prepared backend publication arm contract",
+                mode=0o600,
+            )
+            (
+                directory_intent_descriptor,
+                directory_intent_payload,
+                directory_intent_identity,
+            ) = (
+                custody.read_descriptor_identity(
+                    paths["directory_intent"],
+                    label="backend publication immutable directory intent",
+                    maximum=MAX_CONTROL_JSON_BYTES,
+                    capture=True,
+                )
+            )
+            if directory_intent_payload is None:
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication immutable directory intent was not captured"
+                )
+            with _DirectoryHold(output.parent) as parent:
+                parent.sync_created_entry()
+
+            bootstrap_receipt = _bootstrap_receipt_v1(
+                paths=paths,
+                arm=arm,
+                payload=payload,
+                bootstrap_intent=bootstrap_intent,
+                bootstrap_intent_descriptor=bootstrap_intent_descriptor,
+                bootstrap_intent_identity=bootstrap_intent_identity,
+                directory_intent_descriptor=directory_intent_descriptor,
+                directory_intent_identity=directory_intent_identity,
+                output_directory_identity=output_identity,
+                arm_descriptor=arm_descriptor,
+                arm_identity=arm_identity,
+            )
+            bootstrap_receipt_payload = _canonical_file_bytes(bootstrap_receipt)
+            custody.commit_or_adopt_exact_identity(
+                paths["receipt"],
+                bootstrap_receipt_payload,
+                label="backend publication bootstrap receipt",
+                mode=0o444,
+                create_parents=False,
+                after_publish_step=_bootstrap_fault_callback_v1(
+                    after_bootstrap_step, "bootstrap_receipt"
+                ),
+            )
+            _receipt_descriptor, observed_receipt_payload = custody.read_descriptor(
+                paths["receipt"],
+                label="backend publication bootstrap receipt",
+                maximum=MAX_CONTROL_JSON_BYTES,
+                capture=True,
+            )
+            if observed_receipt_payload != bootstrap_receipt_payload:
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap receipt changed after commit"
+                )
+            output_mode_after, output_identity_after = custody.stat_directory_identity(
+                paths["target"], label="prepared backend publication transaction"
+            )
+            _arm_after, arm_identity_after = custody.adopt_exact_durable_identity(
+                paths["arm"],
+                payload,
+                label="prepared backend publication arm contract",
+                mode=0o600,
+                expected_identity=arm_identity,
+            )
+            if (
+                output_mode_after != output_mode
+                or output_identity_after != output_identity
+                or arm_identity_after != arm_identity
+            ):
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend publication bootstrap changed across its receipt commit"
+                )
+    except PublicationPhysicalIoV1Error as error:
         raise BackendPublicationOutputTransactionV3Error(
-            "backend publication transaction directory already exists"
+            "backend publication bootstrap physical custody failed"
         ) from error
-    except BackendPublicationOutputTransactionV3Error:
-        if parent is not None:
-            parent.close(suppress=True)
-        raise
-    except OSError as error:
-        if parent is not None:
-            parent.close(suppress=True)
-        raise BackendPublicationOutputTransactionV3Error(
-            "backend publication transaction directory cannot be created"
-        ) from error
-    except BaseException:
-        if parent is not None:
-            parent.close(suppress=True)
-        raise
-    primary: BaseException | None = None
-    prepared = False
+
     directory: _DirectoryHold | None = None
     contract_hold: _HeldFile | None = None
+    primary: BaseException | None = None
     try:
         directory = _DirectoryHold(output)
-        _assert_exact_namespace(directory, set(), label="new transaction")
-        contract_hold = _create_new_held(
+        contract_hold = _HeldFile(
             directory,
             ARM_CONTRACT_FILENAME,
-            payload,
             label="arm contract",
             limit=MAX_CONTROL_JSON_BYTES,
             allow_empty=False,
@@ -1401,23 +1930,32 @@ def prepare_backend_publication_engineering_transaction_v3(
                 "persisted backend publication arm contract differs"
             )
         contract_hold.verify()
-        _assert_exact_namespace(
-            directory, {ARM_CONTRACT_FILENAME}, label="prepared transaction"
+        journal_name = (
+            ".backend-publication-process-journal-v1-"
+            + str(arm["contract_sha256"])
         )
-        authority = _arm_file_authority(arm, contract_hold.file_descriptor())
-        prepared = True
-        return authority
+        try:
+            with PhysicalRootCustodyV1.open(
+                output.parent,
+                label="prepared backend process journal parent",
+            ) as journal_parent:
+                journal_parent.ensure_directory_owned(
+                    journal_name,
+                    label="prepared backend process journal",
+                )
+        except PublicationPhysicalIoV1Error as error:
+            raise BackendPublicationOutputTransactionV3Error(
+                "prepared backend process journal cannot be created"
+            ) from error
+        return _arm_file_authority(arm, contract_hold.file_descriptor())
     except BaseException as error:
         primary = error
         raise
     finally:
-        suppress_cleanup = primary is not None or prepared
         if contract_hold is not None:
-            contract_hold.close(suppress=suppress_cleanup)
+            contract_hold.close(suppress=primary is not None)
         if directory is not None:
-            directory.close(suppress=suppress_cleanup)
-        if parent is not None:
-            parent.close(suppress=suppress_cleanup)
+            directory.close(suppress=primary is not None)
 
 
 def _load_control(held: _HeldFile, *, label: str) -> dict[str, Any]:
@@ -1451,6 +1989,69 @@ def _open_evidence(
         raise
 
 
+def _validate_durable_journal_response(
+    value: Any,
+    *,
+    arm: Mapping[str, Any],
+) -> dict[str, Any]:
+    if type(value) is not dict or set(value) != {
+        "path",
+        "size_bytes",
+        "sha256",
+        "session_sha256",
+        "terminal_intent",
+    }:
+        raise BackendPublicationOutputTransactionV3Error(
+            "durable process journal response descriptor drifted"
+        )
+    output = Path(str(arm["runtime_inputs"]["output_dir"]))
+    journal = output.parent / (
+        ".backend-publication-process-journal-v1-"
+        + str(arm["contract_sha256"])
+    )
+    expected_path = journal / "terminal-response.frame"
+    terminal_path = journal / "terminal-intent.json"
+    terminal = value.get("terminal_intent")
+    if (
+        value.get("path") != str(expected_path)
+        or type(value.get("size_bytes")) is not int
+        or type(value.get("sha256")) is not str
+        or _SHA256_RE.fullmatch(value["sha256"]) is None
+        or type(value.get("session_sha256")) is not str
+        or _SHA256_RE.fullmatch(value["session_sha256"]) is None
+        or type(terminal) is not dict
+        or set(terminal) != {"path", "size_bytes", "sha256"}
+        or terminal.get("path") != str(terminal_path)
+        or type(terminal.get("size_bytes")) is not int
+        or type(terminal.get("sha256")) is not str
+        or _SHA256_RE.fullmatch(terminal["sha256"]) is None
+    ):
+        raise BackendPublicationOutputTransactionV3Error(
+            "durable process journal response crossbinding drifted"
+        )
+    for descriptor, path in ((value, expected_path), (terminal, terminal_path)):
+        try:
+            before = path.lstat()
+            payload = path.read_bytes()
+            after = path.lstat()
+        except OSError as error:
+            raise BackendPublicationOutputTransactionV3Error(
+                "durable process journal response cannot be cold-validated"
+            ) from error
+        if (
+            not stat.S_ISREG(before.st_mode)
+            or stat.S_ISLNK(before.st_mode)
+            or int(before.st_nlink) != 1
+            or _stable_stat(before) != _stable_stat(after)
+            or descriptor["size_bytes"] != len(payload)
+            or descriptor["sha256"] != hashlib.sha256(payload).hexdigest()
+        ):
+            raise BackendPublicationOutputTransactionV3Error(
+                "durable process journal response changed under cold validation"
+            )
+    return copy.deepcopy(value)
+
+
 def _validate_result_material(
     observed: Any,
     *,
@@ -1477,6 +2078,9 @@ def _validate_result_material(
         cwd=cwd,
         process_contract=process_contract,
     )
+    journal_response = _validate_durable_journal_response(
+        observed.get("durable_process_journal_response"), arm=arm
+    )
     expected = _result_material(
         arm,
         arm_descriptor=arm_descriptor,
@@ -1486,6 +2090,7 @@ def _validate_result_material(
         stderr_descriptor=stderr.file_descriptor(),
         process_observation=process,
         evidence_descriptors=_evidence_descriptors(evidence),
+        durable_journal_response=journal_response,
     )
     if observed != expected:
         raise BackendPublicationOutputTransactionV3Error(
@@ -1696,32 +2301,81 @@ def run_or_resume_backend_publication_engineering_transaction_v3(
         states = _expected_sets(evidence_names)
         observed_names = output_hold.names()
 
-        if observed_names == states["prepared"]:
+        def leaf_fault(label: str) -> Callable[[str], None] | None:
+            if _fault_hook is None:
+                return None
+            return lambda step: _fault_hook(f"{label}:{step}")
+
+        resumable_partial = (
+            LAUNCH_FENCE_FILENAME in observed_names
+            and observed_names < states["result"]
+            and observed_names <= states["result"]
+        )
+        if observed_names == states["prepared"] or resumable_partial:
             if _allow_spawn is not True:
                 raise BackendPublicationOutputTransactionV3Error(
-                    "backend publication read-only validation cannot spawn a prepared arm"
+                    "backend publication read-only validation cannot spawn or attach a pending arm"
                 )
             fence = _fence_material(arm, arm_descriptor=arm_descriptor)
-            fence_hold = _create_new_held(
-                output_hold,
-                LAUNCH_FENCE_FILENAME,
-                _canonical_file_bytes(fence),
-                label="launch fence",
-                limit=MAX_CONTROL_JSON_BYTES,
-                allow_empty=False,
+            fence_payload = _canonical_file_bytes(fence)
+            fence_hold: _HeldFile | None = None
+
+            def commit_launch_barrier() -> None:
+                nonlocal fence_hold
+                if fence_hold is not None:
+                    fence_hold.verify()
+                    return
+                fence_hold = _create_new_held(
+                    output_hold,
+                    LAUNCH_FENCE_FILENAME,
+                    fence_payload,
+                    label="launch fence",
+                    limit=MAX_CONTROL_JSON_BYTES,
+                    allow_empty=False,
+                    after_publish_step=leaf_fault("launch_fence"),
+                )
+                file_holds.append(fence_hold)
+                if _fault_hook is not None:
+                    _fault_hook("after_fence_commit")
+
+            journal_name = (
+                ".backend-publication-process-journal-v1-"
+                + str(arm["contract_sha256"])
             )
-            file_holds.append(fence_hold)
-            _assert_exact_namespace(output_hold, states["fenced"], label="fenced transaction")
-            if _fault_hook is not None:
-                _fault_hook("after_fence_commit")
+            try:
+                with PhysicalRootCustodyV1.open(
+                    output_path.parent,
+                    label="backend process journal parent",
+                ) as journal_parent:
+                    journal_path, _created = journal_parent.ensure_directory_owned(
+                        journal_name,
+                        label="backend process journal",
+                    )
+            except PublicationPhysicalIoV1Error as error:
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend process journal cannot be held"
+                ) from error
             try:
                 process_run = run_backend_publication_process_v3(
-                    command, cwd=root_path
+                    command,
+                    cwd=root_path,
+                    durable_journal_directory=journal_path,
+                    launch_authorization_path=(
+                        output_path / LAUNCH_FENCE_FILENAME
+                    ),
+                    launch_authorization_sha256=hashlib.sha256(
+                        fence_payload
+                    ).hexdigest(),
+                    launch_barrier=commit_launch_barrier,
                 )
             except BackendPublicationProcessSupervisorV3Error as error:
                 raise BackendPublicationOutputTransactionV3Error(
                     f"backend publication synthetic v3 process failed: {error}"
                 ) from error
+            if fence_hold is None:
+                raise BackendPublicationOutputTransactionV3Error(
+                    "backend process journal returned without launch fence custody"
+                )
             process_observation = _validate_process_observation(
                 process_run.observation,
                 stdout=process_run.stdout,
@@ -1740,9 +2394,14 @@ def run_or_resume_backend_publication_engineering_transaction_v3(
             python_parent.verify()
             launcher_parent.verify()
             expected_after_child = states["fenced"] | set(evidence_names)
-            _assert_exact_namespace(
-                output_hold, expected_after_child, label="launcher-completed transaction"
-            )
+            current_after_child = output_hold.names()
+            if not (
+                expected_after_child <= current_after_child
+                and current_after_child <= states["captured"]
+            ):
+                raise BackendPublicationOutputTransactionV3Error(
+                    "launcher-completed transaction namespace drifted"
+                )
             evidence_holds = _open_evidence(output_hold, evidence_names)
             file_holds.extend(evidence_holds)
             evidence_descriptors = _evidence_descriptors(evidence_holds)
@@ -1753,6 +2412,7 @@ def run_or_resume_backend_publication_engineering_transaction_v3(
                 label="stdout capture",
                 limit=MAX_CONTROL_JSON_BYTES,
                 allow_empty=True,
+                after_publish_step=leaf_fault("stdout_capture"),
             )
             stderr_hold = _create_new_held(
                 output_hold,
@@ -1761,6 +2421,7 @@ def run_or_resume_backend_publication_engineering_transaction_v3(
                 label="stderr capture",
                 limit=MAX_CONTROL_JSON_BYTES,
                 allow_empty=True,
+                after_publish_step=leaf_fault("stderr_capture"),
             )
             file_holds.extend([stdout_hold, stderr_hold])
             _assert_exact_namespace(output_hold, states["captured"], label="captured transaction")
@@ -1775,6 +2436,10 @@ def run_or_resume_backend_publication_engineering_transaction_v3(
                 stderr_descriptor=stderr_hold.file_descriptor(),
                 process_observation=process_observation,
                 evidence_descriptors=evidence_descriptors,
+                durable_journal_response=_validate_durable_journal_response(
+                    process_run.durable_journal_response,
+                    arm=arm,
+                ),
             )
             result_hold = _create_new_held(
                 output_hold,
@@ -1783,6 +2448,7 @@ def run_or_resume_backend_publication_engineering_transaction_v3(
                 label="launcher result",
                 limit=MAX_CONTROL_JSON_BYTES,
                 allow_empty=False,
+                after_publish_step=leaf_fault("launcher_result"),
             )
             file_holds.append(result_hold)
             _assert_exact_namespace(output_hold, states["result"], label="result transaction")
@@ -1903,6 +2569,7 @@ def run_or_resume_backend_publication_engineering_transaction_v3(
                 label="output receipt",
                 limit=MAX_CONTROL_JSON_BYTES,
                 allow_empty=False,
+                after_publish_step=leaf_fault("output_receipt"),
             )
             file_holds.append(receipt_hold)
             semantic_commit = True

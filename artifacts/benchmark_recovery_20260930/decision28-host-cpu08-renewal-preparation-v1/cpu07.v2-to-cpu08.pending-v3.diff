@@ -1,0 +1,32 @@
+--- immutable-original
++++ prepared-successor
+@@ -2,22 +2,23 @@
+ import hashlib,json,os,selectors,signal,stat,subprocess,sys,time
+ from pathlib import Path
+ ROOT=Path('/home/s-a-balashov/work/vast-component-release-20260930-d27')
+-assert len(sys.argv)==3,'usage: driver SOURCE_COMMIT HOST_CLOSURE_EXT4_V1_SHA256'
++assert len(sys.argv)==3,'usage: driver SOURCE_COMMIT HOST_CLOSURE_EXT4_DECISION28_V3_SHA256'
+ COMMIT=sys.argv[1]
+ CLOSURE_SHA256=sys.argv[2]
+ assert len(COMMIT)==40 and all(char in '0123456789abcdef' for char in COMMIT)
+ assert len(CLOSURE_SHA256)==64 and all(char in '0123456789abcdef' for char in CLOSURE_SHA256)
+-IMAGE='sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6'
++IMAGE=None
+ BASE=ROOT/'artifacts/gstreamer_component_release_20260930_a4e145b7'
+-PAIR=BASE/'cpu-pair-07'
+-DEST=BASE/'cpu-pair-07-original-controller'
++PAIR=BASE/'cpu-pair-08'
++DEST=BASE/'cpu-pair-08-original-controller'
+ EXPECTED={
+  'capability_manifest_path':('artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json','3c921a062345d571c836eed6e40de6b3bf4b7be798e24b792c10c1d1df3c1494'),
+  'calibration_path':('artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json','8f984df897f12f6269e68a2a1dda6ffe5fc112c5729f5f46fd9f7079bde96b15'),
+  'model_parity_receipt_path':('configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json','6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169'),
+- 'runtime_image_receipt_path':('artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json','61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7'),
++ 'runtime_image_receipt_path':(None,None),
+  'worker_freeze_receipt_path':('artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json','ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96'),
+- 'execution_code_closure_path':('artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-supervisor.v2.json',CLOSURE_SHA256)}
++ 'execution_code_closure_path':('artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v3.json',CLOSURE_SHA256)}
++assert IMAGE is not None and all(value is not None for value in EXPECTED['runtime_image_receipt_path']), 'prepared CPU08 has no genuine new image/runtime-receipt binding; ROOT must bind actual stock capture before dispatch'
+ START=time.monotonic();DEADLINE=START+2250
+ pins=[];source_pins=[];input_pins={};primary=None;cleanup_errors=[];timed_out=False;exceeded=False
+ child=None;child_owner=None;argv=None;signals=[];before=[];after=[];group_members=[]

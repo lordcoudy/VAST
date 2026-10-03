@@ -11,6 +11,26 @@ int main(int argc, char** argv) {
     return 2;
   }
   try {
+    const std::uint64_t unclamped_submillisecond_end =
+        vast::CheckpointResourceIntervalEmitter::canonical_interval_end_ns(
+            1'000'000'001,
+            1'000'000'321,
+            1000,
+            1000);
+    if (unclamped_submillisecond_end != 1'000'000'321) {
+      std::cerr << "unclamped sub-millisecond endpoint lost precision\n";
+      return 5;
+    }
+    const std::uint64_t causally_serialized_end =
+        vast::CheckpointResourceIntervalEmitter::canonical_interval_end_ns(
+            999'900'000,
+            999'950'000,
+            999,
+            1002);
+    if (causally_serialized_end != 1'002'000'000) {
+      std::cerr << "clamped topology timestamp was not shared with fanout interval\n";
+      return 6;
+    }
     vast::CheckpointResourceIntervalEmitter emitter(argv[1]);
     vast::CheckpointFanoutWorkCounterEmitter work_emitter(argv[2]);
     emitter.emit_fanout(

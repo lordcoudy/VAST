@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu",
+    "-u",
+    "s-a-balashov",
+    "--exec",
+    "/usr/bin/setsid",
+    "--wait",
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current95-post-setup-audit-preparation-v1/audit_actual95_post_setup_v2.py"
+  ],
+  "authority": "Standing explicit user carte-blanche and independently reviewed observer source",
+  "future_original_outcome": null,
+  "future_original_owner": null,
+  "future_tool_returncode": null,
+  "grant_time_utc": "2026-10-03T10:15:15.431361+00:00",
+  "output_namespace_unused_before_grant": true,
+  "review": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current95-post-setup-audit-preparation-v1\\root-independent-source-review.v2.json",
+    "sha256": "18a8924342bca23cc9b8fc691d674f6d14cf7cd50db89354b75047e1c9274eb9",
+    "size_bytes": 2525
+  },
+  "schema_version": 1
+}

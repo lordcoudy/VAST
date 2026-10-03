@@ -1,0 +1,97 @@
+{
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "-c",
+    "core.longpaths=true",
+    "-c",
+    "core.hooksPath=/dev/null",
+    "-C",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "rev-parse",
+    "HEAD"
+  ],
+  "counts": {
+    "stderr": 0,
+    "stdout": 41
+  },
+  "eof": [
+    "stderr",
+    "stdout"
+  ],
+  "fault": null,
+  "original_child_reaped": true,
+  "original_group_absent": true,
+  "original_pid_absent": true,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 73567,
+    "pid": 73567,
+    "ppid": 73529,
+    "session": 73567,
+    "startticks": 49605258,
+    "uid": 1000
+  },
+  "returncode": 0,
+  "signals": [],
+  "stderr": {
+    "epoch7": [
+      69,
+      1407374885979507,
+      33279,
+      1,
+      0,
+      1791013723090245200,
+      1791013723090245200
+    ],
+    "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/original-host-binding-checkout-renewal-attempt01/new-head.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "epoch7": [
+      69,
+      1407374885979506,
+      33279,
+      1,
+      41,
+      1791013723099664600,
+      1791013723099664600
+    ],
+    "git_blob_sha1": "28c40df2db3f17788d7cffa2803fcaf6260fa7ec",
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-host-ext4-renewal-preparation-v1/original-host-binding-checkout-renewal-attempt01/new-head.stdout.raw",
+    "sha256": "40400ec4a92b244401f6f9130b03a78f4c866798d9d845df0ed273487af783fa",
+    "size_bytes": 41
+  },
+  "two_original_process_scans": [
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "finished_at_ns": 1791013723107187519,
+      "members": [],
+      "original_pgid": 73567,
+      "original_pid": 73567,
+      "original_pid_identity": "absent",
+      "original_startticks": 49605258,
+      "started_at_ns": 1791013723105764421,
+      "vanished_during_scan": 0
+    },
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "finished_at_ns": 1791013723108470046,
+      "members": [],
+      "original_pgid": 73567,
+      "original_pid": 73567,
+      "original_pid_identity": "absent",
+      "original_startticks": 49605258,
+      "started_at_ns": 1791013723107190856,
+      "vanished_during_scan": 0
+    }
+  ]
+}

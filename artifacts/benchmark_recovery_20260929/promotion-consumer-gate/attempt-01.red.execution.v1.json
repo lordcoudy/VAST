@@ -1,0 +1,48 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_qualification_complete_operational_promotion_gate_v1.py",
+    "-v"
+  ],
+  "artifact_kind": "vast_qualification_promotion_consumer_gate_execution_v1",
+  "exit_code": 1,
+  "finished_unix_ns": 1790718927523722790,
+  "outputs": {
+    "stderr": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260929/promotion-consumer-gate/attempt-01.red.stderr.log",
+      "sha256": "b3e4e3a573fbe2916acdfd3c4a0d681718d61d0877d4b9ad0e82be443077ece0",
+      "size_bytes": 10072
+    },
+    "stdout": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260929/promotion-consumer-gate/attempt-01.red.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  },
+  "purpose": "red_before_mandatory_strict_loader_delegation",
+  "source_stable": true,
+  "sources_after": {
+    "scripts/full_resource_qualification.py": "f9ee0e204f95186c007edc1c9c080c2cc10f05cd533bc2e229f40d9863670a10",
+    "scripts/full_resource_qualification_index_v1.py": "48031b09f1da269ac6343ddd07d6fd94b93ceb72cd438ecab4213a4d6cadbdcc",
+    "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py": "d82820781337c216145dd0b761703b52da8513b8d6eee95151671e3343fc0bd6",
+    "scripts/publication_policy_qualification.py": "72b2ea5eb6a87c6771915de70eb6dea7513ba2e13428ffdb2e6227bf435f29e2",
+    "scripts/publication_policy_qualification_index_v2.py": "9138311b8503958df47bb51d6eaa83f77d21d73e7ef542f01395121ad071b2bd",
+    "tests/test_qualification_complete_operational_promotion_gate_v1.py": "bf382dd9729e7418173d3bb34cf11577d94c2f4ad2d8fe34c644700cdb5fd90b"
+  },
+  "sources_before": {
+    "scripts/full_resource_qualification.py": "f9ee0e204f95186c007edc1c9c080c2cc10f05cd533bc2e229f40d9863670a10",
+    "scripts/full_resource_qualification_index_v1.py": "48031b09f1da269ac6343ddd07d6fd94b93ceb72cd438ecab4213a4d6cadbdcc",
+    "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py": "d82820781337c216145dd0b761703b52da8513b8d6eee95151671e3343fc0bd6",
+    "scripts/publication_policy_qualification.py": "72b2ea5eb6a87c6771915de70eb6dea7513ba2e13428ffdb2e6227bf435f29e2",
+    "scripts/publication_policy_qualification_index_v2.py": "9138311b8503958df47bb51d6eaa83f77d21d73e7ef542f01395121ad071b2bd",
+    "tests/test_qualification_complete_operational_promotion_gate_v1.py": "bf382dd9729e7418173d3bb34cf11577d94c2f4ad2d8fe34c644700cdb5fd90b"
+  },
+  "started_unix_ns": 1790718926926113734
+}

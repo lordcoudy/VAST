@@ -1,0 +1,145 @@
+{
+  "artifact_kind": "vast_cpu05_pure_reader_adaptation_provenance_v1",
+  "authorized_reader_correction": {
+    "all_helper_delta": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/original-helper-adaptation.diff",
+      "sha256": "1210ccbd90959dfbca9455d06fc14722dd54e5bb61c355854cd1ca704ce77953",
+      "size_bytes": 15480
+    },
+    "correct_join": "Exact held physical bytes of component_cli_terminal.v1.json",
+    "descriptor_field": "late.original_terminal_sha256",
+    "diff": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/reader-correction.diff",
+      "sha256": "8e77fbca75dc7a5abd6ea84e5a0a91b988c861a0fbc248cbe277a97fbd9f5372",
+      "size_bytes": 1474
+    },
+    "internal_body_check": "Actual stock payload_with_sha256_v1 reproduces CLI and late companion body seals separately. No raw reference was altered."
+  },
+  "benchmark_accepted": false,
+  "full_ci_accepted": false,
+  "limits": [
+    "Stock unchanged summarize_sidecars and full_resource_contract operate on raw sidecars; payload SHA helper additionally authenticates the existing CLI metadata.",
+    "72 candidate/72 arm/72 cold summary fields per arm match. Descriptive metrics and14 CSV fields independently recomputed; original SVG descriptor only, no new rendering/curve geometry validation.",
+    "All completed CPU05 frames miss100ms. Completed-only percentages exclude drops; absolute drops/censor/coverage remain explicit.",
+    "C_obs is partial attributed stage elapsed. NVDEC factory and device_sample counters are not actual decoder busy time, compute work, energy, quality or population evidence."
+  ],
+  "no_original_producer_or_root_source_or_git_edit": true,
+  "original_cpu04_helper_report": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu04-sidecar-independent-reduction-v1/scientific-report.v1.json",
+    "sha256": "218b23bf7f0484ac9432f945b8839fff386f1865954308682e8c8d173f0875cf",
+    "size_bytes": 6211
+  },
+  "original_cpu05_cli_exit_code": 78,
+  "original_failed_reader": {
+    "before_after_source_equal": true,
+    "both_eof": [
+      "stderr",
+      "stdout"
+    ],
+    "cause": "Author reader incorrectly compared physical terminal SHA reference with internal sealed body SHA. Original data/reference is correct; no numeric reduction had occurred. Original failed source/outputs remain immutable.",
+    "child": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "pgid": 40915,
+      "pid": 40915,
+      "ppid": 40914,
+      "session": 40915,
+      "startticks": 27681189
+    },
+    "custody": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v1/attempt01/custody-and-comparison.v1.json",
+      "sha256": "9f7173ba21880e7230ad253d85b6a85d5ab0e173a792936d81ea6963fc20f554",
+      "size_bytes": 29827
+    },
+    "elapsed_s": 0.7981480269809254,
+    "original_child_current": null,
+    "original_group_members": [],
+    "reduced_arms": 0,
+    "returncode": 78,
+    "stderr": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v1/attempt01/stderr.raw",
+      "sha256": "ab45693a101f9324250a1bae929a3690821de61d58cdf103df59d646e2424cb0",
+      "size_bytes": 449
+    },
+    "terminal": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v1/attempt01/terminal.v1.json",
+      "sha256": "073bedfe50b2036d4b0ecabe30aa5a2f3b50abe8523b84b9c9eee841931fb950",
+      "size_bytes": 3011
+    },
+    "v1_helper_diff_is_prelaunch_draft_only": true
+  },
+  "original_successful_reduction": {
+    "all73_fd_held_leaf_bytes_and_full7_epochs_equal": true,
+    "child": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "pgid": 40977,
+      "pid": 40977,
+      "ppid": 40976,
+      "session": 40977,
+      "startticks": 27706117
+    },
+    "custody": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/attempt01/custody-and-comparison.v1.json",
+      "sha256": "3441e30a5c798b42c5687f871ecf9bf6754d96898cf3054e7c1bc9a754516c22",
+      "size_bytes": 72863
+    },
+    "elapsed_s": 29.71588769200025,
+    "input_namespace_memberships_unchanged": true,
+    "no_current87_or_allphase_authority_claim": true,
+    "original_returncode": 0,
+    "reducer_project_source_count": 25,
+    "scientific_report": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/scientific-report.v1.json",
+      "sha256": "c9fdc0483b439cadeea1edf22ac75eb223db1a040943b38cc3bf1d2accc22fc4",
+      "size_bytes": 8481
+    },
+    "summaries": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/attempt01/recomputed-summaries.v1.json",
+      "sha256": "9b132977b21b62aec3a68913e866c353a339b035d506f10d2535880a543b986c",
+      "size_bytes": 30015
+    },
+    "terminal": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/attempt01/terminal.v1.json",
+      "sha256": "6fcf9924373bd71368f0290dfe1a73215b082891cbf653ff7e29d123377d32f3",
+      "size_bytes": 3326
+    },
+    "two_postterminal_process_scans": [
+      {
+        "observed_at_ns": 1790794901438085486,
+        "original_child_group_members": [],
+        "original_processes": {
+          "40976": null,
+          "40977": null
+        }
+      },
+      {
+        "observed_at_ns": 1790794901490505590,
+        "original_child_group_members": [],
+        "original_processes": {
+          "40976": null,
+          "40977": null
+        }
+      }
+    ]
+  },
+  "original_task18_8_complete": false,
+  "schema_version": 1,
+  "scope": "Closed raw scientific arithmetic only; no producer/public cold/full CLI acceptance.",
+  "source_checkpoint_current_after_release": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/reduce.py",
+      "sha256": "f0855b5c2d1f587b795684766a6682d5e62e890b7f321a5dbe6d9f7713a71a87",
+      "size_bytes": 16508
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/run.py",
+      "sha256": "6a9863de810ea22bdb4a23f0368771c616b750ffc46fce3b83f06dfc0cabe62f",
+      "size_bytes": 6414
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v2/close.py",
+      "sha256": "302802b3f6c5a4db362450458ca5719d80ddbe2a6506d969a8c7f143ba604898",
+      "size_bytes": 7717
+    }
+  ]
+}

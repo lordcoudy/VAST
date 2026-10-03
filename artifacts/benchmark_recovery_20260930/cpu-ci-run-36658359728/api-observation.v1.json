@@ -1,0 +1,140 @@
+{
+  "kind": "vast_closed_hosted_ci_artifact_observation_v1",
+  "repository": "lordcoudy/VAST",
+  "run_id": 36658359728,
+  "job_response": {
+    "jobs": [
+      {
+        "id": 109707431358,
+        "name": "cpu-checks",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_id": 36658359728,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Check out the actual PR head or push commit",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Preserve exact source bytes",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Install the agreed OpenSpec version in this ephemeral runner",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Validate OpenSpec structure, including completed archives",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Install CPU build prerequisites in this ephemeral runner",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Install the recorded CPU test dependencies",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Verify installed dependency consistency",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10
+          },
+          {
+            "name": "Check source, build six CPU targets and execute test discovery",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "number": 11
+          },
+          {
+            "name": "Preserve original CPU logs and explicit hardware gaps",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12
+          },
+          {
+            "name": "Post Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 22
+          },
+          {
+            "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 23
+          },
+          {
+            "name": "Post Check out the actual PR head or push commit",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25
+          }
+        ]
+      }
+    ]
+  },
+  "artifact_response": {
+    "artifacts": [
+      {
+        "id": 11075822955,
+        "name": "vast-cpu-checks-a045b8874ad15b2fa05f1a5d7fc9f331e8b04a47",
+        "size_in_bytes": 896292,
+        "url": "https://api.github.com/repos/lordcoudy/VAST/actions/artifacts/11075822955",
+        "archive_download_url": "https://api.github.com/repos/lordcoudy/VAST/actions/artifacts/11075822955/zip",
+        "expired": false,
+        "created_at": "2026-09-30T03:37:44Z",
+        "expires_at": "2026-10-07T03:37:43Z",
+        "updated_at": "2026-09-30T03:37:44Z",
+        "digest": "sha256:5f856c45eebe33d59b6e84c6dbc496442892891f5cbc01a85b2cbc9264ad0fae",
+        "workflow_run": {
+          "id": 36658359728,
+          "repository_id": 1189703654,
+          "head_repository_id": 1189703654,
+          "head_branch": "codex/fix-benchmark-preparations-spec",
+          "head_sha": "a045b8874ad15b2fa05f1a5d7fc9f331e8b04a47"
+        }
+      }
+    ]
+  },
+  "original_zip": "original-artifact.zip",
+  "full_suite_completion": false
+}

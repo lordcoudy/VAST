@@ -1,0 +1,86 @@
+{
+  "scripts/checkpoint_gstreamer_publication_runtime_v3.py": {
+    "after": {
+      "epoch7": [
+        2096,
+        549395,
+        33188,
+        1,
+        59624,
+        1791013722788657883,
+        1791013722788657883
+      ],
+      "git_blob_sha1": "78ed240ea3b0619ef58504c9e30c8deedbe957c0",
+      "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c",
+      "size_bytes": 59624
+    },
+    "before": {
+      "epoch7": [
+        2096,
+        549395,
+        33188,
+        1,
+        59640,
+        1790800678428026024,
+        1790800678428026024
+      ],
+      "git_blob_sha1": "6de16adbbb062ca5d12196120e2e8fdfa1bbbb85",
+      "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "ee0476b574e012b213bdc603a7a930234c0bb27d929859ef03acfdb99eb7a241",
+      "size_bytes": 59640
+    },
+    "new_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+    "new_git": {
+      "mode": "100644",
+      "sha1": "78ed240ea3b0619ef58504c9e30c8deedbe957c0"
+    },
+    "old_commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+    "old_git": {
+      "mode": "100644",
+      "sha1": "6de16adbbb062ca5d12196120e2e8fdfa1bbbb85"
+    }
+  },
+  "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py": {
+    "after": {
+      "epoch7": [
+        2096,
+        549649,
+        33188,
+        1,
+        25066,
+        1791013722788657883,
+        1791013722788657883
+      ],
+      "git_blob_sha1": "57b9d3fd0325117838334ab855c314568c9589f4",
+      "path": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+      "sha256": "b6bc88d91a11eda378cb079ade41e473164db39f2dcb224e29f607dc106fd02c",
+      "size_bytes": 25066
+    },
+    "before": {
+      "epoch7": [
+        2096,
+        549649,
+        33188,
+        1,
+        25082,
+        1790800678468028209,
+        1790800678468028209
+      ],
+      "git_blob_sha1": "091d87589ac390937116513d54c3b2e4155aae46",
+      "path": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+      "sha256": "5013163d54512a48702198b4778bf9d7eaf047a6f3d94a5d3f4cb1091d8c5910",
+      "size_bytes": 25082
+    },
+    "new_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+    "new_git": {
+      "mode": "100644",
+      "sha1": "57b9d3fd0325117838334ab855c314568c9589f4"
+    },
+    "old_commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+    "old_git": {
+      "mode": "100644",
+      "sha1": "091d87589ac390937116513d54c3b2e4155aae46"
+    }
+  }
+}

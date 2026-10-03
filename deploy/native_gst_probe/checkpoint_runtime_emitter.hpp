@@ -80,7 +80,7 @@ class CheckpointRuntimeEmitter {
         "");
   }
 
-  void emit_with_admission(
+  std::uint64_t emit_with_admission(
       const std::string& trace_id,
       std::uint64_t frame_id,
       const std::string& input_frame_key,
@@ -95,7 +95,7 @@ class CheckpointRuntimeEmitter {
     if (!valid_sha256(payload_sha256)) {
       throw std::runtime_error("checkpoint admission payload SHA-256 must be lowercase hexadecimal");
     }
-    emit_impl(
+    return emit_impl(
         kProtocolVersionWithAdmission,
         trace_id,
         frame_id,
@@ -173,7 +173,7 @@ class CheckpointRuntimeEmitter {
   std::uint64_t sequence_ = 0;
   std::uint64_t last_timestamp_ms_ = 0;
 
-  void emit_impl(
+  std::uint64_t emit_impl(
       int protocol_version,
       const std::string& trace_id,
       std::uint64_t frame_id,
@@ -230,6 +230,7 @@ class CheckpointRuntimeEmitter {
     }
     row << ",\"timestamp_ms\":" << timestamp_ms << "}\n";
     write_all(row.str());
+    return timestamp_ms;
   }
 
   static std::string required_env(const char* name) {

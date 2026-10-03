@@ -1,0 +1,257 @@
+{
+  "author_receipt_claims": {
+    "all_function_ASTs_confirmed": true,
+    "first_cause_and_receipt_last_and_FD_closure_claim_insufficient": true,
+    "literal_inverses_confirmed": true,
+    "reason": "Preserving the original code preserves the concrete inherited gaps above; AST equality is not closure approval."
+  },
+  "baseline_basis": "Exact pushed source checkpointA supplied by ROOT; this review does not inspect Git or the running ext4 renewal.",
+  "baseline_commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "blocking_findings": [
+    {
+      "finding": "If OUTPUT already exists, the initial assertion fails but finally tests only OUTPUT.is_dir() and can publish execution.v1.json into an unowned existing namespace.",
+      "id": "H1",
+      "lines": [
+        176,
+        179,
+        214,
+        215
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/capture_selected_host_closure_ext4_decision28_v3.py",
+      "priority": 1,
+      "required_minimal_fix": "Track exclusive directory creation; publish only when this invocation owns it."
+    },
+    {
+      "finding": "A command body error is retained locally, but an exception from killpg, selector.close, stream.close, channel facts or terminal write escapes finally and replaces the command cause in primary. Serial cleanup can skip later resources. facts() and write() also permit close failures to replace original failures.",
+      "id": "H2",
+      "lines": [
+        116,
+        164,
+        206,
+        207
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/capture_selected_host_closure_ext4_decision28_v3.py",
+      "priority": 1,
+      "required_minimal_fix": "Latch first cause immediately; independently attempt every cleanup and close; keep cleanup errors secondary and finite."
+    },
+    {
+      "finding": "Each of the87 before/after source facts closes its FD and returns only size/SHA. Replacing a leaf between these observations with identical bytes passes before==after; no held source epochs or controller FD baseline restoration is proven.",
+      "id": "H3",
+      "lines": [
+        43,
+        64,
+        193,
+        203
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/capture_selected_host_closure_ext4_decision28_v3.py",
+      "priority": 1,
+      "required_minimal_fix": "Hold source FDs across original capture, retain full seven-field epoch, reobserve full SHA and named/held epochs, release all pins before final receipt, and require actual FD baseline restoration."
+    },
+    {
+      "finding": "Group absence uses one killpg check without an error-aware original identity/group scan or explicit EOF facts. Final execution publication/print/deadline exceptions can escape without a truthful failure companion.",
+      "id": "H4",
+      "lines": [
+        153,
+        166,
+        209,
+        222
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/capture_selected_host_closure_ext4_decision28_v3.py",
+      "priority": 1,
+      "required_minimal_fix": "Retain per-channel actual EOF and reap facts; require two zero-error process scans; publish terminal after closure and preserve first cause in an exclusive bounded late/failure companion."
+    },
+    {
+      "finding": "Selector creation and both channel acquisitions precede the main try. Collision or second channel open failure leaks already acquired resources and skips the closure receipt path.",
+      "id": "C1",
+      "lines": [
+        25,
+        64,
+        67
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/run_original_cpu_component_pair_ext4_decision28_v3.pending.py",
+      "priority": 1,
+      "required_minimal_fix": "Place every acquisition inside protected try; immediately register ownership and independently release partial acquisitions."
+    },
+    {
+      "finding": "Bare selector/pipe/stream closes can abort source observation and held-pin cleanup; the final pin loop stops on first close error. original.terminal.v1.json is published before held pins close and before late-bound status. A terminal write/close error can escape without a truthful companion or mask an earlier cause.",
+      "id": "C2",
+      "lines": [
+        43,
+        48,
+        156,
+        162,
+        181,
+        195
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/run_original_cpu_component_pair_ext4_decision28_v3.pending.py",
+      "priority": 1,
+      "required_minimal_fix": "Preserve first cause, independently attempt every close and all95 pin releases, require FD baseline restoration, then publish terminal last with an exclusive bounded failure/late companion."
+    },
+    {
+      "finding": "The process-group scan silently ignores OSError/ValueError, allowing uncertain observation to look empty; only one scan is performed. Read-error unregistration is distinguishable from EOF only through a general primary error, and raw_desc does not compare held/named seven-field epochs across its full hash.",
+      "id": "C3",
+      "lines": [
+        105,
+        107,
+        166,
+        176
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/run_original_cpu_component_pair_ext4_decision28_v3.pending.py",
+      "priority": 1,
+      "required_minimal_fix": "Use two error-aware zero-error scans with original owner/PID/reap and explicit channel EOF facts; seal captured descriptors through nofollow FDs and full epoch/SHA observations."
+    }
+  ],
+  "exact_preservation_checks": [
+    {
+      "all_original_function_ASTs_equal": true,
+      "guard_removal_only": false,
+      "kind": "stock_host",
+      "original_subprocess_call_ASTs_equal": true,
+      "raw_inverse_exact": true,
+      "replacement_count": 2,
+      "unchanged_function_names": [
+        "clock",
+        "hard_clock",
+        "error",
+        "canonical_directory",
+        "facts",
+        "write",
+        "owner",
+        "command"
+      ]
+    },
+    {
+      "all_original_function_ASTs_equal": true,
+      "guard_removal_only": true,
+      "kind": "cpu08",
+      "original_subprocess_call_ASTs_equal": true,
+      "raw_inverse_exact": true,
+      "replacement_count": 6,
+      "unchanged_function_names": [
+        "epoch",
+        "error",
+        "clock",
+        "descriptor",
+        "write",
+        "pin",
+        "observe",
+        "owner",
+        "latch",
+        "raw_desc"
+      ]
+    }
+  ],
+  "limits": [
+    "Static review only; no runtime closure, image, host, model/device/worker, container or benchmark acceptance inferred.",
+    "ROOT may author a distinct minimal successor preserving original scientific arguments and bounds; this blocked preparation remains immutable."
+  ],
+  "null_guard": {
+    "before_clock_selector_namespace_or_channel_acquisition": true,
+    "current_image": null,
+    "current_runtime_receipt": null,
+    "line": 21,
+    "unbound_dispatch_refused": true
+  },
+  "operations": {
+    "Git_commands_or_mutation": false,
+    "production_or_existing_artifact_mutation": false,
+    "running_ext4_output_or_session_inspection": false,
+    "target_import_compile_execute": false,
+    "tests_or_engines": false
+  },
+  "owned_source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/author-review.v1.json",
+      "sha256": "dce30d3db9091bee2524245500b6c2e9d49dd18e3757a57e63ccee298bcbd7da",
+      "size_bytes": 4467
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/capture_selected_host_closure_ext4_decision28_v3.py",
+      "sha256": "721441bff4f99454bfffab54c1fae258d3b704aada02ff6ec7631773c32ce430",
+      "size_bytes": 10658
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/cpu07.v2-to-cpu08.pending-v3.diff",
+      "sha256": "b1456986a629d3015a3f9b8487e271706d6625693d646f27eca5b8a24fc1d47b",
+      "size_bytes": 2870
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/original-cpu07-controller.v2.raw",
+      "sha256": "b4488d87a4c0feb500d7fdbca77af76e4745efeafb4927003ea1e932227ec8fd",
+      "size_bytes": 15100
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/original-stock-host-collector.v2.raw",
+      "sha256": "658af2e3c400c232e107af8c3cc5469a372dcf446dff3ac454a34bec9189c187",
+      "size_bytes": 10668
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/preparation.v1.json",
+      "sha256": "5878cde5d5c4b5f9830e52393b9e80645a429ae330e00396c2ac433076f62646",
+      "size_bytes": 10792
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/README.pending.md",
+      "sha256": "4c00b6c67c637a0633c8608679044f7922c9d524549c8fef739517c2027772d3",
+      "size_bytes": 1917
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/run_original_cpu_component_pair_ext4_decision28_v3.pending.py",
+      "sha256": "617a2ca5c4344d077db35c2d950a899b25b667b4b73a8b0f9ce293ab927d576b",
+      "size_bytes": 15095
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/stock-host.v2-to-decision28-v3.diff",
+      "sha256": "305c901af5b72d31fc3f9fdb783d27929c837b1b078e7cde0b76b6744a4e1b37",
+      "size_bytes": 831
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/capture_selected_host_closure_ext4_supervisor_v2.py",
+      "sha256": "658af2e3c400c232e107af8c3cc5469a372dcf446dff3ac454a34bec9189c187",
+      "size_bytes": 10668
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_cpu_component_pair_ext4_supervisor_v2.py",
+      "sha256": "b4488d87a4c0feb500d7fdbca77af76e4745efeafb4927003ea1e932227ec8fd",
+      "size_bytes": 15100
+    }
+  ],
+  "physical_pins_stable_after_review": true,
+  "planning_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "preserved_semantics": [
+    "Stock original runpy CLI bodies and Popen arguments unchanged.",
+    "Host historical adb receipt supplies only87 canonical path names.",
+    "CPU original six roles,87 source files plus interpreter/controller total95; four existing capability/calibration/model/worker SHA pins unchanged.",
+    "CPU07 remains original FAILED78; no retry acceptance, model or numeric change."
+  ],
+  "reviewable": false,
+  "reviewer_handles_released": true,
+  "runtime_facts": {
+    "CPU08_cold_descriptor": null,
+    "CPU08_owner": null,
+    "CPU08_terminal": null,
+    "checkpoint_B": null,
+    "current95_manifest": null,
+    "host_original_owner": null,
+    "host_original_terminal": null,
+    "new_host_receipt": null,
+    "new_image_id": null,
+    "runtime_receipt": null
+  },
+  "schema_version": 1,
+  "scope": "Independent finite source-only review of pending Decision28 stock87 host collector and CPU08 controller; original and pending sources fully read; no target execution.",
+  "status": "BLOCKED_inherited_closure_gaps",
+  "unchanged_bounds": {
+    "CLI_pair_s": 2100,
+    "CPU_channel_bytes": 1048576,
+    "held_input_roles": 6,
+    "held_source_count": 87,
+    "held_total_source_input_interpreter_controller_files": 95,
+    "outer_s": 2250,
+    "stock_channel_bytes": 1048576,
+    "stock_hard_s": 130,
+    "stock_required_volume_reserve_bytes": 21474836480,
+    "stock_work_s": 120,
+    "teardown_s": 15
+  }
+}

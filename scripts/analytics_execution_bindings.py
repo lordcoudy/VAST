@@ -7,11 +7,19 @@ import argparse
 import hashlib
 import os
 import re
-import shutil
 import tempfile
 from collections.abc import Mapping, Sequence
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import Any, Callable
+
+from publication_immutable_directory_v1 import (
+    JOURNAL_ROOT,
+    commit_or_adopt_immutable_directory_v1,
+)
+from publication_owned_staging_cleanup_v1 import (
+    OwnedStagingCleanupV1Error,
+    OwnedStagingDirectoryV1,
+)
 
 from analytics_execution_protocol import (
     BRANCHES,
@@ -236,34 +244,11 @@ def build_worker_bindings(
     return result
 
 
-def _remove_materialization_staging(
-    staging: Path,
-    *,
-    expected_parent: Path,
-    expected_prefix: str,
-) -> None:
-    """Remove only the exact temporary child created for one materialization."""
-
-    parent = expected_parent.resolve()
-    lexical = Path(os.path.abspath(os.fspath(staging)))
-    _require(lexical.is_absolute(), "analytics binding staging path is not absolute")
-    _require(lexical.parent == parent, "analytics binding staging path escaped its parent")
-    _require(
-        lexical.name.startswith(expected_prefix) and lexical.name != expected_prefix,
-        "analytics binding staging path has an unexpected name",
-    )
-    _require(lexical != Path.cwd().resolve(), "refusing to remove the current directory")
-    _require(lexical != parent, "refusing to remove the staging parent")
-    if not lexical.exists() and not lexical.is_symlink():
-        return
-    is_junction = getattr(os.path, "isjunction", lambda _path: False)
-    _require(
-        not lexical.is_symlink() and not is_junction(lexical),
-        "analytics binding staging path is a symlink or junction",
-    )
-    _require(lexical.resolve() == lexical, "analytics binding staging path is an alias")
-    _require(lexical.is_dir(), "analytics binding staging path is not a directory")
-    shutil.rmtree(lexical)
+def _directory_intent_exists(project_root: Path | str, target: Path) -> bool:
+    root = Path(project_root).resolve(strict=True)
+    relative = target.relative_to(root).as_posix()
+    key = hashlib.sha256(relative.encode("utf-8")).hexdigest()
+    return os.path.lexists(root / JOURNAL_ROOT / f"{key}.json")
 
 
 def materialize_worker_bindings(
@@ -273,9 +258,9 @@ def materialize_worker_bindings(
     execution_config: Mapping[str, Any],
     project_root: Path | str,
     worker_project_root: str = "/workspace",
+    after_directory_publish_step: Callable[[str], None] | None = None,
 ) -> dict[str, Any]:
     target = Path(output_dir).resolve()
-    _require(not target.exists(), f"analytics execution binding output already exists: {target}")
     target.parent.mkdir(parents=True, exist_ok=True)
     bindings = build_worker_bindings(
         manifest, execution_config, project_root=project_root,
@@ -285,7 +270,17 @@ def materialize_worker_bindings(
     temporary: Path | None = Path(
         tempfile.mkdtemp(prefix=staging_prefix, dir=target.parent)
     )
+    cleanup_anchor: OwnedStagingDirectoryV1 | None = None
     try:
+        try:
+            cleanup_anchor = OwnedStagingDirectoryV1.capture(
+                temporary,
+                expected_parent=target.parent,
+                expected_prefix=staging_prefix,
+                label="analytics binding staging",
+            )
+        except OwnedStagingCleanupV1Error as error:
+            raise ProtocolError(str(error)) from error
         files: list[dict[str, Any]] = []
         binding_identity: dict[str, Any] = {}
         for branch in BRANCHES:
@@ -317,16 +312,41 @@ def materialize_worker_bindings(
         index_path.write_bytes(canonical_json_bytes(index) + b"\n")
         with index_path.open("rb") as source:
             os.fsync(source.fileno())
-        os.replace(temporary, target)
+        for path in temporary.iterdir():
+            path.chmod(0o444)
+        temporary.chmod(0o755)
+        try:
+            cleanup_anchor.seal_tree()
+        except OwnedStagingCleanupV1Error as error:
+            raise ProtocolError(str(error)) from error
+        publication = commit_or_adopt_immutable_directory_v1(
+            project_root=project_root,
+            staging=temporary,
+            target=target,
+            after_publish_step=after_directory_publish_step,
+        )
+        try:
+            cleanup_anchor.cleanup_after_publication(final_target=target)
+        except OwnedStagingCleanupV1Error as error:
+            raise ProtocolError(str(error)) from error
         temporary = None
         return index
     finally:
-        if temporary is not None:
-            _remove_materialization_staging(
-                temporary,
-                expected_parent=target.parent,
-                expected_prefix=staging_prefix,
-            )
+        try:
+            if (
+                temporary is not None
+                and cleanup_anchor is not None
+                and not _directory_intent_exists(project_root, target)
+            ):
+                try:
+                    if not cleanup_anchor.sealed:
+                        cleanup_anchor.seal_tree()
+                    cleanup_anchor.cleanup_after_publication(final_target=target)
+                except OwnedStagingCleanupV1Error as error:
+                    raise ProtocolError(str(error)) from error
+        finally:
+            if cleanup_anchor is not None:
+                cleanup_anchor.close()
 
 
 def build_parser() -> argparse.ArgumentParser:

@@ -1,0 +1,136 @@
+{
+  "actual_original_provider_bytes_retained": false,
+  "actual_provider_D_outcome": null,
+  "all_functions_classes_and_nested_functions_AST_unchanged": true,
+  "all_occurrences_equal_one": true,
+  "author_handles_released": true,
+  "cpu_job_id": 111184814376,
+  "definitions": [
+    {
+      "kind": "ClassDef",
+      "name": "Redirect"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "clock"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "save"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "redirect_request"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "request"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "data"
+    }
+  ],
+  "dispatch_precondition": "ROOT independently reviews source and separately grants retention only after genuine D provider completion. This prior-success retainer requires actual success; a live/failed run is not retained or relabeled as success.",
+  "evidence_acceptance_reviewed": false,
+  "exact_raw_forward_inverse": true,
+  "exactly_five_bindings": [
+    [
+      "ci-9d47-original-host-retention-v1",
+      "decision29-ci-D-original-retention-v1"
+    ],
+    [
+      "RUN=36802923013",
+      "RUN=37116707816"
+    ],
+    [
+      "CPU=110181019042",
+      "CPU=111184814376"
+    ],
+    [
+      "HOST=110181019292",
+      "HOST=111184814522"
+    ],
+    [
+      "EXPECTED='9d47e99b623df44816f7b0a0b73b249a940f7723'",
+      "EXPECTED='3c025b29b3c1d5275c2ec693410e4b83700583de'"
+    ]
+  ],
+  "future_dispatch_argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "180s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/retain_originals_v1.py"
+  ],
+  "future_original_owner": null,
+  "future_original_retention_result": null,
+  "future_original_tool_terminal": null,
+  "host_job_id": 111184814522,
+  "image_changes": [],
+  "independent_source_review_required_before_execution": true,
+  "kind": "decision29_D_hosted_original_retainer_source_preparation_v1",
+  "literal_diff": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/retainer-literal.diff",
+    "sha256": "f4590911bbaa05a4f0cbda2ab5273f50c3123554a6a9038c6790e5b62a31bd4f",
+    "size_bytes": 1036
+  },
+  "new_Popen_call_count": 0,
+  "original_Popen_call_count": 0,
+  "original_bounds": {
+    "HTTP_block_bytes": 65536,
+    "HTTP_timeout_seconds_max": 45,
+    "JSON_record_bytes": 8388608,
+    "ZIP_bytes": 8388608,
+    "ZIP_members": 4096,
+    "artifact_count_max": 8,
+    "artifact_metadata_bytes": 1048576,
+    "credential_seconds": 20,
+    "decoded_ZIP_bytes": 67108864,
+    "each_original_job_log_bytes": 33554432,
+    "external_teardown_seconds": 10,
+    "jobs_metadata_bytes": 4194304,
+    "run_metadata_bytes": 1048576,
+    "work_seconds": 180
+  },
+  "original_genuine_success_terminal": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-9d47-original-host-retention-v1/original-retention-terminal.v1.json",
+    "sha256": "4a9290e7fa7d1bc45d7112db7f985b24933b4a268c34e725cbcced9ddbbe8090",
+    "size_bytes": 59784
+  },
+  "original_guards_retained": [
+    "Exact run/head commit and completed/success run plus two exact successful jobs are required before originals are fetched.",
+    "GCM secrets and signed redirect URLs stay in memory; Authorization is removed outside api.github.com.",
+    "Only readonly provider GETs. Logs/ZIP/metadata/terminal use exclusive leaves; ZIP provider size/SHA, CRC, safe member modes/paths, decoded and member counts unchanged.",
+    "No extraction, workflow rerun/cancel/retry, Git mutation, CI/test/model/inference/engine/namespace operation."
+  ],
+  "original_subprocess_run_call_count": 1,
+  "original_success_retainer": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-9d47-original-host-retention-v1/retain_originals_v1.py",
+    "sha256": "51e9206f45236b1ca18b9c344f472c597376a4d974d93a39cbca2aecdb13d01d",
+    "size_bytes": 5912
+  },
+  "preserved_original_raw": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/original-success-retainer.raw",
+    "sha256": "51e9206f45236b1ca18b9c344f472c597376a4d974d93a39cbca2aecdb13d01d",
+    "size_bytes": 5912
+  },
+  "production_source_changes": [],
+  "provider_fetch_executed": false,
+  "retainer_imported_or_executed": false,
+  "run_id": 37116707816,
+  "schema_version": 1,
+  "source": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-retention-v1/retain_originals_v1.py",
+    "sha256": "fd64baad9301accae368f8316c22bf87ea7420d94d7b37562ba2a3b584b2c276",
+    "size_bytes": 5915
+  },
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "source_only_scope": "Five raw literal substitutions only; original line endings and all other bytes preserved. No current provider observation made.",
+  "status": "prepared_only_unexecuted",
+  "subprocess_call_AST_unchanged": true,
+  "test_source_changes": []
+}

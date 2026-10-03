@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import csv
 import importlib
+import io
 import subprocess
 import threading
 import time
@@ -18,6 +19,14 @@ from full_resource_contract import (
     HARDWARE_SAMPLE_PROVENANCE,
     TELEMETRY_SCHEMA_VERSION,
 )
+
+
+# NVML reports a decoder-utilization aggregation period, not a scheduling
+# deadline.  Polling at the edge of that period made otherwise valid evidence
+# vulnerable to ordinary host scheduling jitter during GPU initialization.
+# Keep the full-resource validator strict and collect four times per reported
+# period so consecutive NVML coverage intervals retain deterministic headroom.
+NVML_POLL_INTERVAL_FRACTION = 0.25
 
 
 @dataclass
@@ -142,16 +151,25 @@ class HardwareResourceCollector(threading.Thread):
         device_ids: list[str],
         sequences: dict[str, int],
     ) -> float:
-        timestamp_ns = time.time_ns()
         wait_s = self.interval_s
         for device_id in device_ids:
             sample = self.backend.sample(device_id)
+            # The NVML aggregation interval ends when the native query returns.
+            # Timestamping before the query can manufacture a gap whenever one
+            # query is delayed even though the returned native windows overlap.
+            timestamp_ns = time.time_ns()
             if sample.sample_period_us <= 0:
                 raise RuntimeError(
                     f"NVML backend returned a non-positive sample period for {device_id}"
                 )
-            # Poll before the shortest NVML aggregation window ends, leaving margin for jitter.
-            wait_s = min(wait_s, sample.sample_period_us / 1_000_000.0 * 0.9)
+            # Poll well before the shortest NVML aggregation window ends,
+            # leaving publication-safe headroom for host scheduling jitter.
+            wait_s = min(
+                wait_s,
+                sample.sample_period_us
+                / 1_000_000.0
+                * NVML_POLL_INTERVAL_FRACTION,
+            )
             if sample.device_id != device_id:
                 raise RuntimeError(
                     f"NVML backend device identity drift: expected {device_id}, got {sample.device_id}"
@@ -181,19 +199,23 @@ class HardwareResourceCollector(threading.Thread):
     def run(self) -> None:
         self.output_csv.parent.mkdir(parents=True, exist_ok=True)
         try:
-            with self.output_csv.open("w", newline="", encoding="utf-8") as handle:
-                writer = csv.DictWriter(handle, fieldnames=HARDWARE_RESOURCE_SAMPLE_COLUMNS)
-                writer.writeheader()
-                device_ids = self.backend.initialize()
-                sequences = {device_id: 0 for device_id in device_ids}
+            # Sampling must not share its timing-critical thread with DrvFS I/O.
+            # One arm produces only a few MiB, so retain its rows in memory and
+            # publish them after sampling stops. A crash still fails closed: no
+            # completed hardware evidence is exposed to the acceptance stage.
+            buffer = io.StringIO(newline="")
+            writer = csv.DictWriter(buffer, fieldnames=HARDWARE_RESOURCE_SAMPLE_COLUMNS)
+            writer.writeheader()
+            device_ids = self.backend.initialize()
+            sequences = {device_id: 0 for device_id in device_ids}
+            wait_s = self._write_samples(writer, device_ids, sequences)
+            self._ready_event.set()
+            while not self._stop_event.wait(wait_s):
                 wait_s = self._write_samples(writer, device_ids, sequences)
-                handle.flush()
-                self._ready_event.set()
-                while not self._stop_event.wait(wait_s):
-                    wait_s = self._write_samples(writer, device_ids, sequences)
-                    handle.flush()
-                # Capture a sample whose NVML interval reaches past process completion.
-                self._write_samples(writer, device_ids, sequences)
+            # Capture a sample whose NVML interval reaches past process completion.
+            self._write_samples(writer, device_ids, sequences)
+            with self.output_csv.open("w", newline="", encoding="utf-8") as handle:
+                handle.write(buffer.getvalue())
                 handle.flush()
         except BaseException as exc:
             self._failure = exc

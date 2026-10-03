@@ -32,6 +32,10 @@ from checkpoint_savant_sdk_runtime_v3 import (  # noqa: E402
     SavantSdkCallbackRuntime,
     materialize_worker_module_config,
 )
+from checkpoint_savant_native_module import (  # noqa: E402
+    SavantNativeModuleBinding,
+    build_native_module_artifact,
+)
 
 
 BRANCHES = ("plate_number", "vehicle_type", "damage", "foreign_object")
@@ -60,6 +64,35 @@ def plan(topology: str, codec: str = "h264") -> dict:
 
 
 class SavantSdkRuntimeV3Tests(unittest.TestCase):
+    def test_worker_uses_race_safe_monotonic_start_wait(self) -> None:
+        source = (SCRIPTS / "checkpoint_savant_sdk_runtime_v3.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "_sleep_until_monotonic_ns(window.common_start_monotonic_ns)",
+            source,
+        )
+        self.assertNotIn("time.sleep(min(", source)
+
+    def test_epoch_nanoseconds_use_exact_integer_millisecond_ceiling(self) -> None:
+        epoch_ns = 1_800_000_000_000_000_001
+        self.assertEqual(
+            savant_sdk_runtime_v3._ceil_epoch_ns_to_ms(epoch_ns),
+            1_800_000_000_001,
+        )
+        self.assertEqual(
+            savant_sdk_runtime_v3._ceil_epoch_ns_to_ms(
+                1_800_000_000_000_000_000
+            ),
+            1_800_000_000_000,
+        )
+
+        with self.assertRaisesRegex(
+            savant_sdk_runtime_v3.SavantSdkRuntimeV3Error,
+            "non-negative integer",
+        ):
+            savant_sdk_runtime_v3._ceil_epoch_ns_to_ms(-1)
+
     def test_google_api_core_python_eol_warning_is_suppressed(self) -> None:
         expected = (
             "You are using a Python version (3.10.12) which Google will stop "
@@ -136,6 +169,7 @@ class SavantSdkRuntimeV3Tests(unittest.TestCase):
                     )
                     self.assertEqual(descriptor["module_id"], spec.worker_id)
                     self.assertEqual(source["stream_id"], spec.stream_id)
+                    self.assertGreater(source["source_duration_ns"], 0)
                     self.assertEqual(
                         source["source_id"],
                         (
@@ -200,6 +234,7 @@ class SavantSdkRuntimeV3Tests(unittest.TestCase):
                 stream_id=0,
                 topology_kind="shared_video_dag",
                 branches=BRANCHES,
+                decoder_gpu_index=0,
             )
             recorder.record_nvdec(
                 frame_id=7, input_frame_key="input-key-7",
@@ -210,6 +245,7 @@ class SavantSdkRuntimeV3Tests(unittest.TestCase):
                 frame_id=7, input_frame_key="input-key-7",
                 branch="plate_number", payload_bytes=8192,
                 start_timestamp_ns=21, end_timestamp_ns=25,
+                serialized_topology_timestamp_ms=1,
                 thread_cpu_time_ns=3,
             )
             recorder.record_analytics_transfers(
@@ -250,7 +286,7 @@ class SavantSdkRuntimeV3Tests(unittest.TestCase):
                             "host_end_monotonic_ns": 120,
                             "device_elapsed_ns": 8,
                             "bytes": 2_048,
-                            "device_id": "GPU-test-uuid",
+                            "device_id": "GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
                             "timing_source": "cudaEventElapsedTime",
                         },
                         {
@@ -259,7 +295,7 @@ class SavantSdkRuntimeV3Tests(unittest.TestCase):
                             "host_end_monotonic_ns": 145,
                             "device_elapsed_ns": 11,
                             "bytes": 1_024,
-                            "device_id": "GPU-test-uuid",
+                            "device_id": "GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
                             "timing_source": "cudaEventElapsedTime",
                         },
                     ],
@@ -340,8 +376,9 @@ class SavantSdkRuntimeV3Tests(unittest.TestCase):
                 def observe_preprocessed_frame(self, identity, **values) -> None:
                     self.preprocessed.append((identity, values))
 
-                def observe_fanout(self, identity, **values) -> None:
+                def observe_fanout(self, identity, **values) -> int:
                     self.fanout.append((identity, values))
+                    return int(values["observed_timestamp_ms"]) + 1
 
                 def execute_branch_sample(self, identity, **values) -> None:
                     self.terminals.append((identity, values))
@@ -371,7 +408,11 @@ class SavantSdkRuntimeV3Tests(unittest.TestCase):
                 input_frame_key="input-key-0",
                 payload=b"encoded-access-unit",
             )
-            runtime.admit_transport_frame(frame)
+            with mock.patch(
+                "checkpoint_savant_sdk_runtime_v3.time.time_ns",
+                side_effect=[1_000_001, 2_000_000],
+            ):
+                runtime.admit_transport_frame(frame)
             identity = {
                 "transport_pts_ns": 100,
                 "frame_id": 0,
@@ -389,6 +430,9 @@ class SavantSdkRuntimeV3Tests(unittest.TestCase):
             runtime.capture_preprocess_caps = lambda _caps: None
             buffer = SimpleNamespace(pts=100, get_size=lambda: 8192)
             for branch in BRANCHES:
+                runtime.observe_queue_buffer(
+                    buffer, materialized["binding"], branch, caps=object(),
+                )
                 runtime.observe_route_buffer(
                     buffer,
                     materialized["binding"],
@@ -398,6 +442,9 @@ class SavantSdkRuntimeV3Tests(unittest.TestCase):
                 )
             runtime.assert_drained()
             self.assertEqual(len(callbacks.admissions), 1)
+            self.assertEqual(
+                callbacks.admissions[0][1]["observed_timestamp_ms"], 2
+            )
             self.assertEqual(len(recorder.nvdec), 1)
             self.assertEqual(len(recorder.fanout), 4)
             self.assertEqual(recorder.nvdec[0]["frame_id"], 0)
@@ -412,6 +459,216 @@ class SavantSdkRuntimeV3Tests(unittest.TestCase):
             self.assertTrue(
                 all(row["thread_cpu_time_ns"] > 0 for row in recorder.fanout)
             )
+            self.assertTrue(
+                all(
+                    row["serialized_topology_timestamp_ms"] > 0
+                    for row in recorder.fanout
+                )
+            )
+
+
+class SavantQueueDropTests(unittest.TestCase):
+    def test_first_shared_fanout_interval_follows_delayed_preprocess_parent(self):
+        runtime, binding, _, _ = self.runtime_with_decoded_frames("shared_video_dag")
+        intervals, parent_times = [], []
+        clock_ns = [10_000_000]
+
+        def now_ns():
+            clock_ns[0] += 100_000
+            return clock_ns[0]
+
+        def delayed_preprocess_observation():
+            clock_ns[0] += 5_000_000
+            return clock_ns[0] // 1_000_000
+
+        runtime.callbacks.observe_preprocessed_frame = (
+            lambda identity, **values: parent_times.append(values["observed_timestamp_ms"])
+        )
+        runtime.resource_recorder.record_fanout = lambda **values: intervals.append(values)
+        with mock.patch.object(savant_sdk_runtime_v3.time, "time_ns", side_effect=now_ns), \
+                mock.patch.object(savant_sdk_runtime_v3, "_now_ms",
+                                  side_effect=delayed_preprocess_observation):
+            for branch in binding.branches:
+                runtime.observe_queue_buffer(
+                    SimpleNamespace(pts=100, get_size=lambda: 8192),
+                    binding, branch, caps=object(),
+                )
+        self.assertEqual(len(parent_times), 1)
+        self.assertEqual(len(intervals), 4)
+        for interval in intervals:
+            self.assertGreaterEqual(
+                interval["start_timestamp_ns"] + 1_000_000,
+                parent_times[0] * 1_000_000,
+            )
+            self.assertGreater(interval["end_timestamp_ns"], interval["start_timestamp_ns"])
+
+    def test_shared_queue_entry_covers_routed_and_dropped_fanout_once(self):
+        runtime, binding, drops, terminals = self.runtime_with_decoded_frames("shared_video_dag")
+        events, intervals = [], []
+        original = runtime.callbacks.observe_fanout
+
+        def observe(identity, **values):
+            events.append((identity["frame_id"], values["branch"]))
+            return original(identity, **values)
+
+        runtime.callbacks.observe_fanout = observe
+        runtime.resource_recorder.record_fanout = lambda **values: intervals.append(values)
+        for frame in (1, 2, 3, 4):
+            for branch in binding.branches:
+                buffer = SimpleNamespace(pts=frame * 100, get_size=lambda: 8192)
+                runtime.observe_queue_buffer(buffer, binding, branch, caps=object())
+                before = len(intervals)
+                if (frame, branch) == (3, "damage"):
+                    runtime.queue_dropped(branch=branch,
+                        queue_name=f"vast_savant_route_queue_{branch}",
+                        transport_pts_ns=frame * 100, binding=binding)
+                else:
+                    runtime.observe_route_buffer(buffer, binding, branch,
+                        sample=object(), caps=object())
+                self.assertEqual(len(intervals), before)
+        runtime.assert_drained()
+        self.assertEqual(len(events), 16)
+        self.assertEqual(len(intervals), 16)
+        self.assertEqual(set(events), {(row["frame_id"], row["branch"]) for row in intervals})
+        self.assertTrue(all(row["payload_bytes"] == 8192 for row in intervals))
+        self.assertTrue(all(row["end_timestamp_ns"] > row["start_timestamp_ns"]
+                            and row["thread_cpu_time_ns"] > 0 for row in intervals))
+        self.assertEqual(drops, [("input-key-3", "damage")])
+        self.assertEqual(len(terminals), 15)
+
+    def test_shared_terminals_cannot_invent_unobserved_fanout(self):
+        runtime, binding, drops, terminals = self.runtime_with_decoded_frames("shared_video_dag")
+        before = list(runtime._pending_by_branch["damage"])
+        with self.assertRaisesRegex(savant_sdk_runtime_v3.SavantSdkRuntimeV3Error, "queue-entry"):
+            self.route(runtime, binding, 1, "damage")
+        with self.assertRaisesRegex(savant_sdk_runtime_v3.SavantSdkRuntimeV3Error, "queue-entry"):
+            runtime.queue_dropped(branch="damage", queue_name="vast_savant_route_queue_damage",
+                transport_pts_ns=100, binding=binding)
+        self.assertEqual(runtime._pending_by_branch["damage"], before)
+        self.assertEqual(drops, [])
+        self.assertEqual(terminals, [])
+
+    def test_queue_entry_rejects_duplicate_unknown_and_invalid_payload(self):
+        runtime, binding, _, _ = self.runtime_with_decoded_frames("shared_video_dag")
+        intervals = []
+        runtime.resource_recorder.record_fanout = lambda **values: intervals.append(values)
+        buffer = SimpleNamespace(pts=100, get_size=lambda: 8192)
+        runtime.observe_queue_buffer(buffer, binding, "damage", caps=object())
+        with self.assertRaisesRegex(savant_sdk_runtime_v3.SavantSdkRuntimeV3Error, "duplicated"):
+            runtime.observe_queue_buffer(buffer, binding, "damage", caps=object())
+        with self.assertRaises(savant_sdk_runtime_v3.SavantSdkRuntimeV3Error):
+            runtime.observe_queue_buffer(SimpleNamespace(pts=999, get_size=lambda: 8192),
+                binding, "damage", caps=object())
+        for size in (0, -1):
+            with self.assertRaises(savant_sdk_runtime_v3.SavantSdkRuntimeV3Error):
+                runtime.observe_queue_buffer(SimpleNamespace(pts=200, get_size=lambda: size),
+                    binding, "damage", caps=object())
+        self.assertEqual(len(intervals), 1)
+        self.assertNotIn((200, "damage"), runtime._fanout)
+        self.assertEqual(runtime._pending_by_branch["damage"], [100, 200, 300, 400])
+
+    def runtime_with_decoded_frames(self, topology="independent_processes"):
+        specs = build_savant_publication_worker_specs(
+            plan(topology), run_id="queue-drop-regression", arm_id="queue-drop-regression",
+            adapter_config_path="/opt/vast/input/adapter.json",
+            output_root=Path("/opt/vast/output/native_runtime"),
+        )
+        spec = next(spec for spec in specs if spec.stream_id == 0 and (
+            topology == "shared_video_dag" or spec.worker_id.endswith("-damage")))
+        artifact = build_native_module_artifact(
+            json.loads(spec.environment["VAST_SAVANT_MODULE_DESCRIPTOR_JSON"]),
+            json.loads(spec.environment["VAST_SAVANT_SOURCE_BINDING_JSON"]),
+        )
+        binding = SavantNativeModuleBinding.from_json(artifact["binding_json"])
+        drops, terminals = [], []
+        callbacks = SimpleNamespace(
+            admit_transport_frame=lambda *args, **kwargs: None,
+            observe_decoded_frame=lambda *args, **kwargs: None,
+            observe_preprocessed_frame=lambda *args, **kwargs: None,
+            observe_fanout=lambda identity, **kwargs: kwargs["observed_timestamp_ms"],
+            execute_branch_sample=lambda identity, **kwargs: terminals.append(
+                (identity["frame_id"], kwargs["branch"])),
+            drop_branch=lambda key, branch, **kwargs: drops.append((key, branch)),
+        )
+        runtime = SavantSdkCallbackRuntime(
+            binding=binding, callbacks=callbacks,
+            resource_recorder=SimpleNamespace(
+                record_nvdec=lambda **kwargs: None, record_fanout=lambda **kwargs: None),
+        )
+        runtime.bind_decoder("nvv4l2decoder", 0)
+        runtime.capture_preprocess_caps = lambda caps: None
+        for frame in (1, 2, 3, 4):
+            identity = {"frame_id": frame, "transport_pts_ns": frame * 100,
+                        "input_frame_key": f"input-key-{frame}"}
+            runtime.admit_transport_frame(SimpleNamespace(**identity, payload=b"access-unit"))
+            with mock.patch.object(savant_sdk_runtime_v3, "build_native_frame_identity",
+                                   return_value=identity):
+                runtime.observe_prefix(SimpleNamespace(pts=frame * 100), object(), binding)
+        return runtime, binding, drops, terminals
+
+    def route(self, runtime, binding, frame, branch):
+        runtime.observe_route_buffer(
+            SimpleNamespace(pts=frame * 100, get_size=lambda: 4), binding, branch,
+            sample=object(), caps=object(),
+        )
+
+    def test_drop_identifies_the_incoming_queue_buffer_when_decode_is_ahead(self):
+        for topology in ("independent_processes", "shared_video_dag"):
+            with self.subTest(topology=topology):
+                runtime, binding, drops, terminals = self.runtime_with_decoded_frames(topology)
+                for branch in binding.branches:
+                    if topology == "shared_video_dag":
+                        runtime.observe_queue_buffer(SimpleNamespace(pts=100, get_size=lambda: 4),
+                            binding, branch, caps=object())
+                    self.route(runtime, binding, 1, branch)
+                if topology == "shared_video_dag":
+                    for frame in (2, 3, 4):
+                        for branch in binding.branches:
+                            runtime.observe_queue_buffer(SimpleNamespace(pts=frame * 100, get_size=lambda: 4),
+                                binding, branch, caps=object())
+                # Frame 4 is already decoded, but the physical queue discards 3.
+                runtime.queue_dropped(
+                    branch="damage", queue_name="vast_savant_route_queue_damage",
+                    transport_pts_ns=300, binding=binding,
+                )
+                for frame in (2, 3, 4):
+                    for branch in binding.branches:
+                        if (frame, branch) != (3, "damage"):
+                            self.route(runtime, binding, frame, branch)
+                runtime.assert_drained()
+                self.assertEqual(drops, [("input-key-3", "damage")])
+                self.assertEqual(set(terminals), {
+                    (frame, branch) for frame in (1, 2, 3, 4)
+                    for branch in binding.branches if (frame, branch) != (3, "damage")})
+
+    def test_invalid_or_duplicate_drop_does_not_consume_another_identity(self):
+        runtime, binding, drops, _ = self.runtime_with_decoded_frames()
+        runtime.queue_dropped(
+            branch="damage", queue_name="vast_savant_route_queue_damage",
+            transport_pts_ns=300, binding=binding,
+        )
+        for pts in (300, 999, -1, True):
+            with self.subTest(pts=pts):
+                before = list(runtime._pending_by_branch["damage"])
+                with self.assertRaises(savant_sdk_runtime_v3.SavantSdkRuntimeV3Error):
+                    runtime.queue_dropped(
+                        branch="damage", queue_name="vast_savant_route_queue_damage",
+                        transport_pts_ns=pts, binding=binding,
+                    )
+                self.assertEqual(runtime._pending_by_branch["damage"], before)
+        for frame in (1, 2, 4):
+            self.route(runtime, binding, frame, "damage")
+        runtime.assert_drained()
+        self.assertEqual(drops, [("input-key-3", "damage")])
+
+    def test_out_of_order_route_rejection_preserves_the_pending_head(self):
+        runtime, binding, _, terminals = self.runtime_with_decoded_frames()
+        with self.assertRaisesRegex(savant_sdk_runtime_v3.SavantSdkRuntimeV3Error, "PTS/order"):
+            self.route(runtime, binding, 2, "damage")
+        for frame in (1, 2, 3, 4):
+            self.route(runtime, binding, frame, "damage")
+        runtime.assert_drained()
+        self.assertEqual(terminals, [(frame, "damage") for frame in (1, 2, 3, 4)])
 
 
 if __name__ == "__main__":

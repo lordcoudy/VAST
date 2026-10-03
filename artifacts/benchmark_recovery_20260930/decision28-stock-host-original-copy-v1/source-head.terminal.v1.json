@@ -1,0 +1,74 @@
+{
+  "EOF": {
+    "stderr": true,
+    "stdout": true
+  },
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "core.longpaths=true",
+    "-C",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "rev-parse",
+    "HEAD"
+  ],
+  "capture_exceeded": false,
+  "channels": {
+    "stderr": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-closure-ext4-v4-original/source-head.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-closure-ext4-v4-original/source-head.stdout.raw",
+      "sha256": "40400ec4a92b244401f6f9130b03a78f4c866798d9d845df0ed273487af783fa",
+      "size_bytes": 41
+    }
+  },
+  "error_overflow": 0,
+  "errors": [],
+  "fd_after": 8,
+  "fd_before": 8,
+  "original_group_absent": true,
+  "original_pid_absent": true,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 73595,
+    "pid": 73595,
+    "ppid": 73594,
+    "startticks": 49621385,
+    "uid": 1000
+  },
+  "process_group_scans": [
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "finished_at_ns": 1791013884369772968,
+      "member_overflow": 0,
+      "members": [],
+      "original_pgid": 73595,
+      "original_pid": 73595,
+      "original_pid_identity": "absent",
+      "original_startticks": 49621385,
+      "started_at_ns": 1791013884368062452,
+      "vanished_during_scan": 0
+    },
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "finished_at_ns": 1791013884371085269,
+      "member_overflow": 0,
+      "members": [],
+      "original_pgid": 73595,
+      "original_pid": 73595,
+      "original_pid_identity": "absent",
+      "original_startticks": 49621385,
+      "started_at_ns": 1791013884369778379,
+      "vanished_during_scan": 0
+    }
+  ],
+  "reaped": true,
+  "returncode": 0,
+  "timed_out": false
+}

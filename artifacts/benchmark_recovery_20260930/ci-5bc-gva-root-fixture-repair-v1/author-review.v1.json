@@ -1,0 +1,49 @@
+{
+  "actual_elapsed_s": 22.582258704002015,
+  "actual_original_execution": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc-gva-root-fixture-repair-v1/attempt01/execution.json",
+    "sha256": "658dbce304148c7de3ff00c358da70eb26358d5fe8bb1120446fc93ac9e54899",
+    "size_bytes": 587
+  },
+  "actual_original_results": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc-gva-root-fixture-repair-v1/attempt01/test-results.json",
+    "sha256": "afeb1490b4910775209d3414378e741bf3b5331ead6daf9482796b5393c335dc",
+    "size_bytes": 866
+  },
+  "actual_successes": 4,
+  "actual_tests": 4,
+  "all_four_original_methods_and_assertions_preserved": true,
+  "artifact_kind": "vast_gva_pure_fixture_root_author_review_v1",
+  "benchmark_acceptance": false,
+  "changed_source": {
+    "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+    "sha256": "7ffdbe0d1aed76bbb1da0251cbae86bf968396b998f3899f5c29ace7e9d3793b",
+    "size_bytes": 11557
+  },
+  "full_ci_acceptance": false,
+  "original_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 41357,
+    "pid": 41357,
+    "startticks": 28155377,
+    "uid": 1000
+  },
+  "original_physical_test_equals_commit": true,
+  "original_red": "retained original5bc CPU ZIP8b03433f, exact failure-index6cbd1526: helper read globalROOT instead of already-materialized owned fixture project",
+  "original_source": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc-gva-root-fixture-repair-v1/original-test.raw",
+    "sha256": "62f91b0a8480e11ae018bb31c53cbc167dca78fbe8fe7de23f6a6133723cb87f",
+    "size_bytes": 11502
+  },
+  "original_stderr": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-5bc-gva-root-fixture-repair-v1/attempt01/stderr.raw",
+    "sha256": "ff166685f5bf66047b91e582800d0ae98613e440cbd3cf16d59a5a7257576121",
+    "size_bytes": 3128
+  },
+  "review_required": true,
+  "scope": "one test module; no production/image/dependency/receipt/skip/native/model/hardware change",
+  "source_before_after_equal_count": 522,
+  "source_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "whole_module_AST_equal_after_exact_four_location_reversal": true
+}

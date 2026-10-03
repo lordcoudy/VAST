@@ -1,0 +1,60 @@
+{
+  "author": "/root/decision28_source_peer",
+  "blocking_findings": [],
+  "bounds": {
+    "CLI_pair_s": 2100,
+    "channel_bytes": 1048576,
+    "failure_companion_bytes": 65536,
+    "host_cleanup_s": 10,
+    "host_work_s": 120,
+    "outer_s": 2250,
+    "teardown_s": 15
+  },
+  "findings": [
+    "Both full successor sources independently read. Original Popen/check_output and scientific CLI/body preserved; exact raw inverses to frozen pendingv3 verified.",
+    "Exclusive ownership precedes all output. Partial acquisitions registered, first error sticky, all resource close attempts independent, held full SHA and seven epochs checked and released before terminal.",
+    "Actual EOF/reap and two error-aware zero-error original PID/group scans, restored FD baseline, exclusive bounded finalization/late companions block uncertain success.",
+    "Six original roles/87 source files plus interpreter/controller95, original CPU2100/outer2250/teardown15, host120+10 and oneMiB channels preserved. Genuine original CLI owns guardian/model/device/container cleanup.",
+    "Pending CPU null image/receipt guard precedes all resources. Only literal actual image/receipt binding is authorized next; actual B/newhost/current95 and original owner/result remain future gates."
+  ],
+  "full_source_and_preparation_read": true,
+  "future_checkpoint_B": null,
+  "future_current95": null,
+  "future_host_closure": null,
+  "future_original_owner": null,
+  "future_original_result": null,
+  "hardware_acceptance": false,
+  "publication_ready": false,
+  "reviewable": true,
+  "reviewer": "/root",
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "source_checkpoint_A": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "source_pins": [
+    {
+      "exact_inverse_verified": true,
+      "original_Popen_and_check_output_AST_unchanged": true,
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/capture_selected_host_closure_ext4_decision28_v4.py",
+      "sha256": "d0cf043a71ebbc19d23f2bccf5f7a6abc5cfeb0452af7dcb4e1d21db61998e82",
+      "size_bytes": 21481
+    },
+    {
+      "exact_inverse_verified": true,
+      "original_Popen_and_check_output_AST_unchanged": true,
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/run_original_cpu_component_pair_ext4_decision28_v4.pending.py",
+      "sha256": "741ba26e2f04e970cc51be5a4dff93798e369f2d6d3dd53566f27be976cb77ec",
+      "size_bytes": 23389
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/preparation.v1.json",
+      "sha256": "d783ad662720fe087b44898de33f777d51cc0dcdab33a26d6e69f0013c4342a8",
+      "size_bytes": 5580
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v2/author-review.v1.json",
+      "sha256": "2bb9f690586a8c900a1ddec7b6480c4f1e3b6257cd728c5cc6394e8d5d146375",
+      "size_bytes": 2894
+    }
+  ],
+  "targets_imported_compiled_or_executed": false
+}

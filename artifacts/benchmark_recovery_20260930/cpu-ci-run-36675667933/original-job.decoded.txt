@@ -1,0 +1,875 @@
+﻿2026-09-30T05:55:35.8068241Z Current runner version: '2.337.0'
+2026-09-30T05:55:35.8094127Z ##[group]Runner Image Provisioner
+2026-09-30T05:55:35.8095148Z Hosted Compute Agent
+2026-09-30T05:55:35.8095794Z Version: 20260828.587
+2026-09-30T05:55:35.8096517Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-30T05:55:35.8097247Z Build Date: 2026-08-28T16:44:25Z
+2026-09-30T05:55:35.8097952Z Worker ID: {4a3c65fd-c11e-48ab-b814-41c11e06efd8}
+2026-09-30T05:55:35.8098724Z Azure Region: eastus
+2026-09-30T05:55:35.8099281Z ##[endgroup]
+2026-09-30T05:55:35.8102591Z ##[group]Operating System
+2026-09-30T05:55:35.8103620Z Ubuntu
+2026-09-30T05:55:35.8104472Z 24.04.5
+2026-09-30T05:55:35.8105322Z LTS
+2026-09-30T05:55:35.8106013Z ##[endgroup]
+2026-09-30T05:55:35.8106608Z ##[group]Runner Image
+2026-09-30T05:55:35.8107210Z Image: ubuntu-24.04
+2026-09-30T05:55:35.8107803Z Version: 20260920.314.1
+2026-09-30T05:55:35.8109117Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-30T05:55:35.8110704Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+2026-09-30T05:55:35.8112089Z ##[endgroup]
+2026-09-30T05:55:35.8113233Z ##[group]GITHUB_TOKEN Permissions
+2026-09-30T05:55:35.8115544Z Contents: read
+2026-09-30T05:55:35.8116137Z Metadata: read
+2026-09-30T05:55:35.8116759Z ##[endgroup]
+2026-09-30T05:55:35.8118852Z Secret source: Actions
+2026-09-30T05:55:35.8119935Z Cache mode: write
+2026-09-30T05:55:35.8121282Z Prepare workflow directory
+2026-09-30T05:55:35.8514275Z Prepare all required actions
+2026-09-30T05:55:35.8562849Z Getting action download info
+2026-09-30T05:55:36.1174740Z Download action repository 'actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-09-30T05:55:36.2178365Z Download action repository 'actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1' (SHA:ece7cb06caefa5fff74198d8649806c4678c61a1)
+2026-09-30T05:55:36.2916971Z Download action repository 'actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+2026-09-30T05:55:36.3846374Z Download action repository 'actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
+2026-09-30T05:55:36.5823696Z Complete job name: cpu-checks
+2026-09-30T05:55:36.6625136Z ##[group]Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-09-30T05:55:36.6626189Z with:
+2026-09-30T05:55:36.6626651Z   ref: 53a0dcf61b5b5764880878cbe0138c9d965dfb85
+2026-09-30T05:55:36.6627245Z   persist-credentials: false
+2026-09-30T05:55:36.6627757Z   repository: lordcoudy/VAST
+2026-09-30T05:55:36.6631773Z   token: ***
+2026-09-30T05:55:36.6632199Z   ssh-strict: true
+2026-09-30T05:55:36.6632629Z   ssh-user: git
+2026-09-30T05:55:36.6633035Z   clean: true
+2026-09-30T05:55:36.6633474Z   sparse-checkout-cone-mode: true
+2026-09-30T05:55:36.6633991Z   fetch-depth: 1
+2026-09-30T05:55:36.6634412Z   fetch-tags: false
+2026-09-30T05:55:36.6634854Z   show-progress: true
+2026-09-30T05:55:36.6635308Z   lfs: false
+2026-09-30T05:55:36.6635714Z   submodules: false
+2026-09-30T05:55:36.6636153Z   set-safe-directory: true
+2026-09-30T05:55:36.6636649Z   allow-unsafe-pr-checkout: false
+2026-09-30T05:55:36.6637395Z env:
+2026-09-30T05:55:36.6637809Z   PYTHONDONTWRITEBYTECODE: 1
+2026-09-30T05:55:36.6638348Z   MPLBACKEND: Agg
+2026-09-30T05:55:36.6638787Z   OPENSPEC_TELEMETRY: 0
+2026-09-30T05:55:36.6639239Z ##[endgroup]
+2026-09-30T05:55:36.7663065Z Syncing repository: lordcoudy/VAST
+2026-09-30T05:55:36.7665707Z ##[group]Getting Git version info
+2026-09-30T05:55:36.7666769Z Working directory is '/home/runner/work/VAST/VAST'
+2026-09-30T05:55:36.7668339Z [command]/usr/bin/git version
+2026-09-30T05:55:36.7721577Z git version 2.55.0
+2026-09-30T05:55:36.7747642Z ##[endgroup]
+2026-09-30T05:55:36.7764471Z Temporarily overriding HOME='/home/runner/work/_temp/8abdf661-f012-4477-99f7-452fde58517f' before making global git config changes
+2026-09-30T05:55:36.7767220Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-30T05:55:36.7773221Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/VAST/VAST
+2026-09-30T05:55:36.7841502Z Deleting the contents of '/home/runner/work/VAST/VAST'
+2026-09-30T05:55:36.7846420Z ##[group]Determining repository object format
+2026-09-30T05:55:36.7932759Z ##[endgroup]
+2026-09-30T05:55:36.7934310Z ##[group]Initializing the repository
+2026-09-30T05:55:36.7935631Z [command]/usr/bin/git init /home/runner/work/VAST/VAST
+2026-09-30T05:55:36.7984174Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-30T05:55:36.7986113Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-30T05:55:36.7988180Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-30T05:55:36.7989890Z hint: call:
+2026-09-30T05:55:36.7991222Z hint:
+2026-09-30T05:55:36.7992357Z hint: 	git config --global init.defaultBranch <name>
+2026-09-30T05:55:36.7993603Z hint:
+2026-09-30T05:55:36.7994785Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-30T05:55:36.7996719Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-30T05:55:36.7998356Z hint:
+2026-09-30T05:55:36.7999364Z hint: 	git branch -m <name>
+2026-09-30T05:55:36.8000453Z hint:
+2026-09-30T05:55:36.8002535Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-30T05:55:36.8004588Z Initialized empty Git repository in /home/runner/work/VAST/VAST/.git/
+2026-09-30T05:55:36.8007836Z [command]/usr/bin/git remote add origin https://github.com/lordcoudy/VAST
+2026-09-30T05:55:36.8081276Z ##[endgroup]
+2026-09-30T05:55:36.8082684Z ##[group]Disabling automatic garbage collection
+2026-09-30T05:55:36.8087044Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-30T05:55:36.8133442Z ##[endgroup]
+2026-09-30T05:55:36.8135192Z ##[group]Setting up auth
+2026-09-30T05:55:36.8136758Z Removing SSH command configuration
+2026-09-30T05:55:36.8143086Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-30T05:55:36.8205605Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-30T05:55:36.8603826Z Removing HTTP extra header
+2026-09-30T05:55:36.8643839Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-30T05:55:36.8715554Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-30T05:55:36.8987836Z Removing includeIf entries pointing to credentials config files
+2026-09-30T05:55:36.8999438Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-30T05:55:36.9045951Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-30T05:55:36.9286107Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-30T05:55:36.9332564Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/VAST/VAST/.git.path /home/runner/work/_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:36.9369249Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/VAST/VAST/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:36.9410584Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:36.9446198Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:36.9477090Z ##[endgroup]
+2026-09-30T05:55:36.9477855Z ##[group]Fetching the repository
+2026-09-30T05:55:36.9485422Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 53a0dcf61b5b5764880878cbe0138c9d965dfb85
+2026-09-30T05:55:38.7103651Z From https://github.com/lordcoudy/VAST
+2026-09-30T05:55:38.7106337Z  * branch            53a0dcf61b5b5764880878cbe0138c9d965dfb85 -> FETCH_HEAD
+2026-09-30T05:55:38.7115129Z [command]/usr/bin/git rev-parse --verify --quiet 53a0dcf61b5b5764880878cbe0138c9d965dfb85^{object}
+2026-09-30T05:55:38.7144789Z 53a0dcf61b5b5764880878cbe0138c9d965dfb85
+2026-09-30T05:55:38.7151160Z ##[endgroup]
+2026-09-30T05:55:38.7152647Z ##[group]Determining the checkout info
+2026-09-30T05:55:38.7153947Z ##[endgroup]
+2026-09-30T05:55:38.7159947Z [command]/usr/bin/git sparse-checkout disable
+2026-09-30T05:55:38.7220560Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-30T05:55:38.7255370Z ##[group]Checking out the ref
+2026-09-30T05:55:38.7259377Z [command]/usr/bin/git checkout --progress --force 53a0dcf61b5b5764880878cbe0138c9d965dfb85
+2026-09-30T05:55:39.0364727Z Note: switching to '53a0dcf61b5b5764880878cbe0138c9d965dfb85'.
+2026-09-30T05:55:39.0365784Z 
+2026-09-30T05:55:39.0366444Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-30T05:55:39.0367915Z changes and commit them, and you can discard any commits you make in this
+2026-09-30T05:55:39.0369362Z state without impacting any branches by switching back to a branch.
+2026-09-30T05:55:39.0370176Z 
+2026-09-30T05:55:39.0370737Z If you want to create a new branch to retain commits you create, you may
+2026-09-30T05:55:39.0372344Z do so (now or later) by using -c with the switch command. Example:
+2026-09-30T05:55:39.0373232Z 
+2026-09-30T05:55:39.0373615Z   git switch -c <new-branch-name>
+2026-09-30T05:55:39.0374235Z 
+2026-09-30T05:55:39.0374724Z Or undo this operation with:
+2026-09-30T05:55:39.0375290Z 
+2026-09-30T05:55:39.0375614Z   git switch -
+2026-09-30T05:55:39.0376056Z 
+2026-09-30T05:55:39.0376752Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-30T05:55:39.0377828Z 
+2026-09-30T05:55:39.0379008Z HEAD is now at 53a0dcf ci: acquire frozen model inputs and preserve immediate host failures
+2026-09-30T05:55:39.0411611Z ##[endgroup]
+2026-09-30T05:55:39.0459414Z [command]/usr/bin/git log -1 --format=%H
+2026-09-30T05:55:39.0488857Z 53a0dcf61b5b5764880878cbe0138c9d965dfb85
+2026-09-30T05:55:39.0500681Z ##[group]Removing auth
+2026-09-30T05:55:39.0502503Z Removing SSH command configuration
+2026-09-30T05:55:39.0505326Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-30T05:55:39.0543857Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-30T05:55:39.0776094Z Removing HTTP extra header
+2026-09-30T05:55:39.0782256Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-30T05:55:39.0826689Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-30T05:55:39.1055825Z Removing includeIf entries pointing to credentials config files
+2026-09-30T05:55:39.1060476Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-30T05:55:39.1091682Z includeif.gitdir:/home/runner/work/VAST/VAST/.git.path
+2026-09-30T05:55:39.1094046Z includeif.gitdir:/home/runner/work/VAST/VAST/.git/worktrees/*.path
+2026-09-30T05:55:39.1096195Z includeif.gitdir:/github/workspace/.git.path
+2026-09-30T05:55:39.1098218Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-30T05:55:39.1104377Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/VAST/VAST/.git.path
+2026-09-30T05:55:39.1128977Z /home/runner/work/_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:39.1141320Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/VAST/VAST/.git.path /home/runner/work/_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:39.1178329Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/VAST/VAST/.git/worktrees/*.path
+2026-09-30T05:55:39.1204053Z /home/runner/work/_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:39.1215937Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/VAST/VAST/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:39.1254686Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-30T05:55:39.1281356Z /github/runner_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:39.1289439Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:39.1330481Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-30T05:55:39.1355821Z /github/runner_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:39.1367246Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config
+2026-09-30T05:55:39.1404257Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-30T05:55:39.1627982Z Removing credentials config '/home/runner/work/_temp/git-credentials-8657dc79-01d4-465c-b74b-1c4dd750fd6a.config'
+2026-09-30T05:55:39.1636747Z ##[endgroup]
+2026-09-30T05:55:39.1893439Z ##[group]Run git config core.autocrlf false
+2026-09-30T05:55:39.1895022Z [36;1mgit config core.autocrlf false[0m
+2026-09-30T05:55:39.2158219Z shell: /usr/bin/bash -e {0}
+2026-09-30T05:55:39.2159378Z env:
+2026-09-30T05:55:39.2160303Z   PYTHONDONTWRITEBYTECODE: 1
+2026-09-30T05:55:39.2161725Z   MPLBACKEND: Agg
+2026-09-30T05:55:39.2162714Z   OPENSPEC_TELEMETRY: 0
+2026-09-30T05:55:39.2163714Z ##[endgroup]
+2026-09-30T05:55:39.2562832Z ##[group]Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+2026-09-30T05:55:39.2564562Z with:
+2026-09-30T05:55:39.2565477Z   python-version: 3.12.3
+2026-09-30T05:55:39.2566543Z   check-latest: false
+2026-09-30T05:55:39.2576328Z   token: ***
+2026-09-30T05:55:39.2577309Z   update-environment: true
+2026-09-30T05:55:39.2578435Z   allow-prereleases: false
+2026-09-30T05:55:39.2579531Z   freethreaded: false
+2026-09-30T05:55:39.2580513Z env:
+2026-09-30T05:55:39.2581720Z   PYTHONDONTWRITEBYTECODE: 1
+2026-09-30T05:55:39.2582841Z   MPLBACKEND: Agg
+2026-09-30T05:55:39.2583814Z   OPENSPEC_TELEMETRY: 0
+2026-09-30T05:55:39.2584859Z ##[endgroup]
+2026-09-30T05:55:39.3924310Z ##[group]Installed versions
+2026-09-30T05:55:39.3944615Z Version 3.12.3 was not found in the local cache
+2026-09-30T05:55:39.9130076Z Version 3.12.3 is available for downloading
+2026-09-30T05:55:39.9132368Z Download from "https://github.com/actions/python-versions/releases/download/3.12.3-11057844995/python-3.12.3-linux-24.04-x64.tar.gz"
+2026-09-30T05:55:40.5362596Z Extract downloaded archive
+2026-09-30T05:55:40.5487093Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/a8d6fe1c-6050-4bbd-b553-86bd7ad21cf7 -f /home/runner/work/_temp/0ade85fb-8e8d-449a-8b95-0b1e8592e3b3
+2026-09-30T05:55:42.5965935Z Execute installation script
+2026-09-30T05:55:42.6059096Z Check if Python hostedtoolcache folder exist...
+2026-09-30T05:55:42.6060070Z Create Python 3.12.3 folder
+2026-09-30T05:55:42.6073616Z Copy Python binaries to hostedtoolcache folder
+2026-09-30T05:55:43.1064154Z Create additional symlinks (Required for the UsePythonVersion Azure Pipelines task and the setup-python GitHub Action)
+2026-09-30T05:55:43.1104263Z Upgrading pip...
+2026-09-30T05:55:45.8310670Z Looking in links: /tmp/tmpr_v9n_bp
+2026-09-30T05:55:45.8319307Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.12.3/x64/lib/python3.12/site-packages (24.0)
+2026-09-30T05:55:47.5969272Z Collecting pip
+2026-09-30T05:55:47.7702142Z Downloading pip-26.2.1-py3-none-any.whl.metadata (4.6 kB)
+2026-09-30T05:55:47.7781723Z Downloading pip-26.2.1-py3-none-any.whl (1.8 MB)
+2026-09-30T05:55:47.8235174Z ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 42.7 MB/s eta 0:00:00
+2026-09-30T05:55:47.8235806Z 
+2026-09-30T05:55:47.8420213Z Installing collected packages: pip
+2026-09-30T05:55:47.8422118Z Attempting uninstall: pip
+2026-09-30T05:55:47.8447600Z Found existing installation: pip 24.0
+2026-09-30T05:55:47.8880381Z Uninstalling pip-24.0:
+2026-09-30T05:55:47.8961634Z Successfully uninstalled pip-24.0
+2026-09-30T05:55:49.0980858Z Successfully installed pip-26.2.1
+2026-09-30T05:55:49.1576461Z Create complete file
+2026-09-30T05:55:49.1614801Z Successfully set up CPython (3.12.3)
+2026-09-30T05:55:49.1616185Z ##[endgroup]
+2026-09-30T05:55:49.2129659Z ##[group]Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+2026-09-30T05:55:49.2130134Z with:
+2026-09-30T05:55:49.2130338Z   node-version: 25.2.1
+2026-09-30T05:55:49.2130643Z   check-latest: false
+2026-09-30T05:55:49.2133580Z   token: ***
+2026-09-30T05:55:49.2133840Z   package-manager-cache: true
+2026-09-30T05:55:49.2134096Z env:
+2026-09-30T05:55:49.2134297Z   PYTHONDONTWRITEBYTECODE: 1
+2026-09-30T05:55:49.2134556Z   MPLBACKEND: Agg
+2026-09-30T05:55:49.2134765Z   OPENSPEC_TELEMETRY: 0
+2026-09-30T05:55:49.2135052Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:49.2135497Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-09-30T05:55:49.2135939Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:49.2136318Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:49.2136685Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:49.2137106Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-09-30T05:55:49.2137428Z ##[endgroup]
+2026-09-30T05:55:49.3539034Z Attempting to download 25.2.1...
+2026-09-30T05:55:49.8677064Z Not found in manifest. Falling back to download directly from Node
+2026-09-30T05:55:49.9258514Z Acquiring 25.2.1 - x64 from https://nodejs.org/dist/v25.2.1/node-v25.2.1-linux-x64.tar.gz
+2026-09-30T05:55:50.2212092Z Extracting ...
+2026-09-30T05:55:50.2338529Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/50f717bd-9457-432e-8ccc-6d16690de396 -f /home/runner/work/_temp/f67229f6-f92e-4acd-bc80-a3688a1650c6
+2026-09-30T05:55:51.4354016Z Adding to the cache ...
+2026-09-30T05:55:53.5508615Z Done
+2026-09-30T05:55:53.5514543Z ##[group]Environment details
+2026-09-30T05:55:53.7869460Z node: v25.2.1
+2026-09-30T05:55:53.7869877Z npm: 11.6.2
+2026-09-30T05:55:53.7870205Z yarn: 1.22.22
+2026-09-30T05:55:53.7871159Z ##[endgroup]
+2026-09-30T05:55:53.8063831Z ##[group]Run npm install --global @fission-ai/openspec@1.13.0
+2026-09-30T05:55:53.8064318Z [36;1mnpm install --global @fission-ai/openspec@1.13.0[0m
+2026-09-30T05:55:53.8130790Z shell: /usr/bin/bash -e {0}
+2026-09-30T05:55:53.8131274Z env:
+2026-09-30T05:55:53.8131491Z   PYTHONDONTWRITEBYTECODE: 1
+2026-09-30T05:55:53.8131748Z   MPLBACKEND: Agg
+2026-09-30T05:55:53.8131960Z   OPENSPEC_TELEMETRY: 0
+2026-09-30T05:55:53.8132278Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:53.8132714Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-09-30T05:55:53.8133133Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:53.8133506Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:53.8134071Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:53.8134459Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-09-30T05:55:53.8134786Z ##[endgroup]
+2026-09-30T05:55:56.7359781Z 
+2026-09-30T05:55:56.7368605Z added 80 packages in 3s
+2026-09-30T05:55:56.7368964Z 
+2026-09-30T05:55:56.7369309Z 23 packages are looking for funding
+2026-09-30T05:55:56.7369862Z   run `npm fund` for details
+2026-09-30T05:55:56.7876854Z ##[group]Run openspec validate --all --strict --no-interactive
+2026-09-30T05:55:56.7877332Z [36;1mopenspec validate --all --strict --no-interactive[0m
+2026-09-30T05:55:56.7877735Z [36;1mopenspec validate --archived --strict --no-interactive[0m
+2026-09-30T05:55:56.7945929Z shell: /usr/bin/bash -e {0}
+2026-09-30T05:55:56.7946175Z env:
+2026-09-30T05:55:56.7946376Z   PYTHONDONTWRITEBYTECODE: 1
+2026-09-30T05:55:56.7946616Z   MPLBACKEND: Agg
+2026-09-30T05:55:56.7946820Z   OPENSPEC_TELEMETRY: 0
+2026-09-30T05:55:56.7947123Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:56.7947543Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-09-30T05:55:56.7947953Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:56.7948315Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:56.7948679Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:56.7949073Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-09-30T05:55:56.7949386Z ##[endgroup]
+2026-09-30T05:55:57.1542332Z ✓ change/fix-benchmark-preparations-spec
+2026-09-30T05:55:57.1543891Z Totals: 1 passed, 0 failed (1 items)
+2026-09-30T05:55:57.4800221Z No archived changes found.
+2026-09-30T05:55:57.4904517Z ##[group]Run sudo apt-get update
+2026-09-30T05:55:57.4904832Z [36;1msudo apt-get update[0m
+2026-09-30T05:55:57.4905507Z [36;1msudo apt-get install --no-install-recommends -y build-essential cmake pkg-config libglib2.0-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev[0m
+2026-09-30T05:55:57.4971182Z shell: /usr/bin/bash -e {0}
+2026-09-30T05:55:57.4971441Z env:
+2026-09-30T05:55:57.4971652Z   PYTHONDONTWRITEBYTECODE: 1
+2026-09-30T05:55:57.4971899Z   MPLBACKEND: Agg
+2026-09-30T05:55:57.4972105Z   OPENSPEC_TELEMETRY: 0
+2026-09-30T05:55:57.4972395Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:57.4972831Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-09-30T05:55:57.4973260Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:57.4973637Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:57.4974021Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:55:57.4974439Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-09-30T05:55:57.4974763Z ##[endgroup]
+2026-09-30T05:55:57.5880602Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-09-30T05:55:57.6194901Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-09-30T05:55:57.6203754Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-09-30T05:55:57.6208716Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-09-30T05:55:57.6248083Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-09-30T05:55:57.6289177Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-09-30T05:55:57.7692972Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [503 kB]
+2026-09-30T05:55:57.7862142Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [454 kB]
+2026-09-30T05:55:57.8241302Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1322 kB]
+2026-09-30T05:55:57.8322974Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [299 kB]
+2026-09-30T05:55:57.8356896Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [181 kB]
+2026-09-30T05:55:57.8392169Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1699 kB]
+2026-09-30T05:55:57.8467196Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [341 kB]
+2026-09-30T05:55:57.8493830Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [388 kB]
+2026-09-30T05:55:57.8524743Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1662 kB]
+2026-09-30T05:55:57.8633898Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [379 kB]
+2026-09-30T05:55:57.8662097Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+2026-09-30T05:55:57.8804617Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [40.6 kB]
+2026-09-30T05:55:57.9268148Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [5760 B]
+2026-09-30T05:55:57.9309464Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [31.0 kB]
+2026-09-30T05:55:57.9312847Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe Translation-en [18.6 kB]
+2026-09-30T05:55:57.9314353Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [12.6 kB]
+2026-09-30T05:55:57.9328629Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1063 kB]
+2026-09-30T05:55:57.9393841Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [220 kB]
+2026-09-30T05:55:57.9414404Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Components [46.4 kB]
+2026-09-30T05:55:57.9429112Z Get:26 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1216 kB]
+2026-09-30T05:55:57.9499497Z Get:27 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [244 kB]
+2026-09-30T05:55:57.9518970Z Get:28 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Components [76.3 kB]
+2026-09-30T05:55:57.9534496Z Get:29 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1559 kB]
+2026-09-30T05:55:57.9623285Z Get:30 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [359 kB]
+2026-09-30T05:56:02.3942428Z Fetched 12.5 MB in 1s (9055 kB/s)
+2026-09-30T05:56:03.2419014Z Reading package lists...
+2026-09-30T05:56:03.2732681Z Reading package lists...
+2026-09-30T05:56:03.4793142Z Building dependency tree...
+2026-09-30T05:56:03.4800455Z Reading state information...
+2026-09-30T05:56:03.6252494Z pkg-config is already the newest version (1.8.1-2build1).
+2026-09-30T05:56:03.6253405Z The following additional packages will be installed:
+2026-09-30T05:56:03.6254336Z   cmake-data gir1.2-glib-2.0 gir1.2-gst-plugins-base-1.0 gir1.2-gstreamer-1.0
+2026-09-30T05:56:03.6255500Z   gir1.2-gudev-1.0 libblkid-dev libdrm-dev libdrm-nouveau2 libdrm-radeon1
+2026-09-30T05:56:03.6256470Z   libdw-dev libegl-dev libegl-mesa0 libegl1 libelf-dev libgbm-dev libgbm1
+2026-09-30T05:56:03.6257452Z   libgirepository-2.0-0 libgl-dev libgl1-mesa-dri libgles-dev libgles1
+2026-09-30T05:56:03.6258429Z   libgles2 libglib2.0-0t64 libglib2.0-bin libglib2.0-data libglib2.0-dev-bin
+2026-09-30T05:56:03.6259432Z   libglx-dev libglx-mesa0 libgstreamer-gl1.0-0 libgstreamer-plugins-base1.0-0
+2026-09-30T05:56:03.6260452Z   libgudev-1.0-dev libjsoncpp25 liblzma-dev libmount-dev liborc-0.4-0t64
+2026-09-30T05:56:03.6261550Z   liborc-0.4-dev liborc-0.4-dev-bin libpciaccess-dev libpciaccess0
+2026-09-30T05:56:03.6262485Z   libpthread-stubs0-dev librhash0 libselinux1-dev libsepol-dev libudev-dev
+2026-09-30T05:56:03.6263642Z   libunwind-dev libwayland-bin libwayland-dev libwayland-server0 libx11-dev
+2026-09-30T05:56:03.6264901Z   libx11-xcb-dev libxau-dev libxcb1-dev libxdmcp-dev mesa-libgallium uuid-dev
+2026-09-30T05:56:03.6265733Z   x11proto-dev xorg-sgml-doctools xtrans-dev
+2026-09-30T05:56:03.6266806Z Suggested packages:
+2026-09-30T05:56:03.6267819Z   cmake-doc cmake-format elpa-cmake-mode ninja-build low-memory-monitor
+2026-09-30T05:56:03.6268350Z   gir1.2-glib-2.0-dev libglib2.0-doc libgdk-pixbuf2.0-bin libxml2-utils
+2026-09-30T05:56:03.6268855Z   libvisual-0.4-plugins gstreamer1.0-doc liblzma-doc liborc-0.4-doc
+2026-09-30T05:56:03.6269258Z   libwayland-doc libx11-doc libxcb-doc
+2026-09-30T05:56:03.6269711Z Recommended packages:
+2026-09-30T05:56:03.6270217Z   gstreamer1.0-gl gstreamer1.0-plugins-base
+2026-09-30T05:56:03.6697648Z The following NEW packages will be installed:
+2026-09-30T05:56:03.6698547Z   build-essential cmake cmake-data gir1.2-gst-plugins-base-1.0
+2026-09-30T05:56:03.6699436Z   gir1.2-gstreamer-1.0 gir1.2-gudev-1.0 libblkid-dev libdrm-dev
+2026-09-30T05:56:03.6700425Z   libdrm-nouveau2 libdrm-radeon1 libdw-dev libegl-dev libegl-mesa0 libegl1
+2026-09-30T05:56:03.6701788Z   libelf-dev libgbm-dev libgirepository-2.0-0 libgl-dev libgles-dev libgles1
+2026-09-30T05:56:03.6702949Z   libgles2 libglib2.0-dev libglib2.0-dev-bin libglx-dev libgstreamer-gl1.0-0
+2026-09-30T05:56:03.6704013Z   libgstreamer-plugins-base1.0-0 libgstreamer-plugins-base1.0-dev
+2026-09-30T05:56:03.6705079Z   libgstreamer1.0-dev libgudev-1.0-dev libjsoncpp25 liblzma-dev libmount-dev
+2026-09-30T05:56:03.6706077Z   liborc-0.4-0t64 liborc-0.4-dev liborc-0.4-dev-bin libpciaccess-dev
+2026-09-30T05:56:03.6707091Z   libpthread-stubs0-dev librhash0 libselinux1-dev libsepol-dev libudev-dev
+2026-09-30T05:56:03.6708162Z   libunwind-dev libwayland-bin libwayland-dev libwayland-server0 libx11-dev
+2026-09-30T05:56:03.6709256Z   libx11-xcb-dev libxau-dev libxcb1-dev libxdmcp-dev uuid-dev x11proto-dev
+2026-09-30T05:56:03.6710127Z   xorg-sgml-doctools xtrans-dev
+2026-09-30T05:56:03.6713754Z The following packages will be upgraded:
+2026-09-30T05:56:03.6722340Z   gir1.2-glib-2.0 libgbm1 libgl1-mesa-dri libglib2.0-0t64 libglib2.0-bin
+2026-09-30T05:56:03.6723205Z   libglib2.0-data libglx-mesa0 libpciaccess0 mesa-libgallium
+2026-09-30T05:56:03.6902119Z 9 upgraded, 54 newly installed, 0 to remove and 37 not upgraded.
+2026-09-30T05:56:03.6902898Z Need to get 36.8 MB of archives.
+2026-09-30T05:56:03.6903656Z After this operation, 104 MB of additional disk space will be used.
+2026-09-30T05:56:03.6904500Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-09-30T05:56:03.7123628Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-data all 2.80.0-6ubuntu3.9 [50.1 kB]
+2026-09-30T05:56:03.7217947Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-bin amd64 2.80.0-6ubuntu3.9 [97.9 kB]
+2026-09-30T05:56:03.7324666Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gir1.2-glib-2.0 amd64 2.80.0-6ubuntu3.9 [183 kB]
+2026-09-30T05:56:03.7476560Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-0t64 amd64 2.80.0-6ubuntu3.9 [1547 kB]
+2026-09-30T05:56:03.7881382Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 build-essential amd64 12.10ubuntu1 [4928 B]
+2026-09-30T05:56:03.7959650Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libjsoncpp25 amd64 1.9.5-6build1 [82.8 kB]
+2026-09-30T05:56:03.8046460Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 librhash0 amd64 1.4.3-3build1 [129 kB]
+2026-09-30T05:56:03.8162637Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 cmake-data all 3.28.3-1build7 [2155 kB]
+2026-09-30T05:56:03.8688964Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 cmake amd64 3.28.3-1build7 [11.2 MB]
+2026-09-30T05:56:04.2250064Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gir1.2-gstreamer-1.0 amd64 1.24.2-1ubuntu0.1 [88.4 kB]
+2026-09-30T05:56:04.2345006Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgl1-mesa-dri amd64 25.2.8-0ubuntu0.24.04.3 [37.9 kB]
+2026-09-30T05:56:04.2426640Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libwayland-server0 amd64 1.22.0-2.1build1 [33.9 kB]
+2026-09-30T05:56:04.2508721Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglx-mesa0 amd64 25.2.8-0ubuntu0.24.04.3 [110 kB]
+2026-09-30T05:56:04.2602336Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgbm1 amd64 25.2.8-0ubuntu0.24.04.3 [34.3 kB]
+2026-09-30T05:56:04.2679225Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 mesa-libgallium amd64 25.2.8-0ubuntu0.24.04.3 [10.8 MB]
+2026-09-30T05:56:04.4960079Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libegl-mesa0 amd64 25.2.8-0ubuntu0.24.04.3 [121 kB]
+2026-09-30T05:56:04.5060803Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libegl1 amd64 1.7.0-1build1 [28.7 kB]
+2026-09-30T05:56:04.5135817Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 liborc-0.4-0t64 amd64 1:0.4.38-1ubuntu0.1 [207 kB]
+2026-09-30T05:56:04.5695174Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgstreamer-plugins-base1.0-0 amd64 1.24.2-1ubuntu0.5 [862 kB]
+2026-09-30T05:56:04.5961696Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgstreamer-gl1.0-0 amd64 1.24.2-1ubuntu0.5 [214 kB]
+2026-09-30T05:56:04.6079247Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gir1.2-gst-plugins-base-1.0 amd64 1.24.2-1ubuntu0.5 [115 kB]
+2026-09-30T05:56:04.6175044Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 gir1.2-gudev-1.0 amd64 1:238-5ubuntu1 [3806 B]
+2026-09-30T05:56:04.6287265Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libdrm-radeon1 amd64 2.4.125-1ubuntu0.1~24.04.2 [20.8 kB]
+2026-09-30T05:56:04.6364790Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libdrm-nouveau2 amd64 2.4.125-1ubuntu0.1~24.04.2 [17.6 kB]
+2026-09-30T05:56:04.6440858Z Get:26 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libpciaccess0 amd64 0.17-3ubuntu0.24.04.3 [19.2 kB]
+2026-09-30T05:56:04.6524397Z Get:27 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libpciaccess-dev amd64 0.17-3ubuntu0.24.04.3 [22.0 kB]
+2026-09-30T05:56:04.6604934Z Get:28 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libdrm-dev amd64 2.4.125-1ubuntu0.1~24.04.2 [314 kB]
+2026-09-30T05:56:04.6740648Z Get:29 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libelf-dev amd64 0.190-1.1ubuntu0.1 [68.5 kB]
+2026-09-30T05:56:04.6834589Z Get:30 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 liblzma-dev amd64 5.6.1+really5.4.5-1ubuntu0.3 [176 kB]
+2026-09-30T05:56:04.6945542Z Get:31 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libdw-dev amd64 0.190-1.1ubuntu0.1 [340 kB]
+2026-09-30T05:56:04.7080327Z Get:32 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xorg-sgml-doctools all 1:1.11-1.1 [10.9 kB]
+2026-09-30T05:56:04.7159226Z Get:33 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 x11proto-dev all 2023.2-1 [602 kB]
+2026-09-30T05:56:04.7359069Z Get:34 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libxau-dev amd64 1:1.0.9-1build6 [9570 B]
+2026-09-30T05:56:04.7432655Z Get:35 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libxdmcp-dev amd64 1:1.1.3-0ubuntu6 [26.5 kB]
+2026-09-30T05:56:04.7521431Z Get:36 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xtrans-dev all 1.4.0-1 [68.9 kB]
+2026-09-30T05:56:04.7596726Z Get:37 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libpthread-stubs0-dev amd64 0.4-1build3 [4746 B]
+2026-09-30T05:56:04.8094360Z Get:38 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libxcb1-dev amd64 1.15-1ubuntu2 [85.8 kB]
+2026-09-30T05:56:04.8184892Z Get:39 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libx11-dev amd64 2:1.8.7-1build1 [732 kB]
+2026-09-30T05:56:04.8427293Z Get:40 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libglx-dev amd64 1.7.0-1build1 [14.2 kB]
+2026-09-30T05:56:04.8496353Z Get:41 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libgl-dev amd64 1.7.0-1build1 [102 kB]
+2026-09-30T05:56:04.8587098Z Get:42 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libegl-dev amd64 1.7.0-1build1 [18.2 kB]
+2026-09-30T05:56:04.8667008Z Get:43 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgbm-dev amd64 25.2.8-0ubuntu0.24.04.3 [12.7 kB]
+2026-09-30T05:56:04.8734873Z Get:44 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgirepository-2.0-0 amd64 2.80.0-6ubuntu3.9 [73.5 kB]
+2026-09-30T05:56:04.8824510Z Get:45 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libgles1 amd64 1.7.0-1build1 [11.6 kB]
+2026-09-30T05:56:04.8900063Z Get:46 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libgles2 amd64 1.7.0-1build1 [17.1 kB]
+2026-09-30T05:56:04.8975226Z Get:47 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libgles-dev amd64 1.7.0-1build1 [50.5 kB]
+2026-09-30T05:56:04.9056118Z Get:48 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-dev-bin amd64 2.80.0-6ubuntu3.9 [138 kB]
+2026-09-30T05:56:04.9189123Z Get:49 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 uuid-dev amd64 2.39.3-9ubuntu6.6 [33.5 kB]
+2026-09-30T05:56:04.9269190Z Get:50 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libblkid-dev amd64 2.39.3-9ubuntu6.6 [205 kB]
+2026-09-30T05:56:04.9424439Z Get:51 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libsepol-dev amd64 3.5-2build1 [384 kB]
+2026-09-30T05:56:04.9653262Z Get:52 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libselinux1-dev amd64 3.5-2ubuntu2.1 [164 kB]
+2026-09-30T05:56:04.9776878Z Get:53 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libmount-dev amd64 2.39.3-9ubuntu6.6 [14.9 kB]
+2026-09-30T05:56:04.9849889Z Get:54 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-dev amd64 2.80.0-6ubuntu3.9 [1860 kB]
+2026-09-30T05:56:05.0396418Z Get:55 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libunwind-dev amd64 1.6.2-3build1.1 [1906 kB]
+2026-09-30T05:56:05.0758597Z Get:56 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgstreamer1.0-dev amd64 1.24.2-1ubuntu0.1 [525 kB]
+2026-09-30T05:56:05.1352551Z Get:57 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 liborc-0.4-dev-bin amd64 1:0.4.38-1ubuntu0.1 [20.9 kB]
+2026-09-30T05:56:05.1424900Z Get:58 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 liborc-0.4-dev amd64 1:0.4.38-1ubuntu0.1 [30.3 kB]
+2026-09-30T05:56:05.1498723Z Get:59 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libx11-xcb-dev amd64 2:1.8.7-1build1 [9950 B]
+2026-09-30T05:56:05.1566332Z Get:60 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libwayland-bin amd64 1.22.0-2.1build1 [20.6 kB]
+2026-09-30T05:56:05.1642704Z Get:61 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libwayland-dev amd64 1.22.0-2.1build1 [71.3 kB]
+2026-09-30T05:56:05.1726834Z Get:62 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libudev-dev amd64 255.4-1ubuntu8.17 [22.0 kB]
+2026-09-30T05:56:05.1796572Z Get:63 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libgudev-1.0-dev amd64 1:238-5ubuntu1 [27.2 kB]
+2026-09-30T05:56:05.1866816Z Get:64 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgstreamer-plugins-base1.0-dev amd64 1.24.2-1ubuntu0.5 [466 kB]
+2026-09-30T05:56:05.4892833Z Fetched 36.8 MB in 2s (24.3 MB/s)
+2026-09-30T05:56:05.5376667Z (Reading database ... 
+2026-09-30T05:56:05.5377025Z (Reading database ... 5%
+2026-09-30T05:56:05.5377357Z (Reading database ... 10%
+2026-09-30T05:56:05.5377660Z (Reading database ... 15%
+2026-09-30T05:56:05.5377951Z (Reading database ... 20%
+2026-09-30T05:56:05.5378849Z (Reading database ... 25%
+2026-09-30T05:56:05.5379175Z (Reading database ... 30%
+2026-09-30T05:56:05.5379482Z (Reading database ... 35%
+2026-09-30T05:56:05.5379787Z (Reading database ... 40%
+2026-09-30T05:56:05.5380115Z (Reading database ... 45%
+2026-09-30T05:56:05.5380409Z (Reading database ... 50%
+2026-09-30T05:56:05.5435780Z (Reading database ... 55%
+2026-09-30T05:56:05.6150813Z (Reading database ... 60%
+2026-09-30T05:56:05.8217378Z (Reading database ... 65%
+2026-09-30T05:56:06.0105435Z (Reading database ... 70%
+2026-09-30T05:56:06.2118264Z (Reading database ... 75%
+2026-09-30T05:56:06.3242990Z (Reading database ... 80%
+2026-09-30T05:56:06.4769880Z (Reading database ... 85%
+2026-09-30T05:56:06.5731706Z (Reading database ... 90%
+2026-09-30T05:56:06.7281912Z (Reading database ... 95%
+2026-09-30T05:56:06.7282479Z (Reading database ... 100%
+2026-09-30T05:56:06.7283279Z (Reading database ... 202190 files and directories currently installed.)
+2026-09-30T05:56:06.7323417Z Preparing to unpack .../00-libglib2.0-data_2.80.0-6ubuntu3.9_all.deb ...
+2026-09-30T05:56:06.7362784Z Unpacking libglib2.0-data (2.80.0-6ubuntu3.9) over (2.80.0-6ubuntu3.8) ...
+2026-09-30T05:56:06.7687543Z Preparing to unpack .../01-libglib2.0-bin_2.80.0-6ubuntu3.9_amd64.deb ...
+2026-09-30T05:56:06.7706976Z Unpacking libglib2.0-bin (2.80.0-6ubuntu3.9) over (2.80.0-6ubuntu3.8) ...
+2026-09-30T05:56:06.8231657Z Preparing to unpack .../02-gir1.2-glib-2.0_2.80.0-6ubuntu3.9_amd64.deb ...
+2026-09-30T05:56:06.8249897Z Unpacking gir1.2-glib-2.0:amd64 (2.80.0-6ubuntu3.9) over (2.80.0-6ubuntu3.8) ...
+2026-09-30T05:56:06.8637679Z Preparing to unpack .../03-libglib2.0-0t64_2.80.0-6ubuntu3.9_amd64.deb ...
+2026-09-30T05:56:06.8702406Z Unpacking libglib2.0-0t64:amd64 (2.80.0-6ubuntu3.9) over (2.80.0-6ubuntu3.8) ...
+2026-09-30T05:56:06.9156354Z Selecting previously unselected package build-essential.
+2026-09-30T05:56:06.9284586Z Preparing to unpack .../04-build-essential_12.10ubuntu1_amd64.deb ...
+2026-09-30T05:56:06.9291180Z Unpacking build-essential (12.10ubuntu1) ...
+2026-09-30T05:56:06.9488557Z Selecting previously unselected package libjsoncpp25:amd64.
+2026-09-30T05:56:06.9613085Z Preparing to unpack .../05-libjsoncpp25_1.9.5-6build1_amd64.deb ...
+2026-09-30T05:56:06.9620184Z Unpacking libjsoncpp25:amd64 (1.9.5-6build1) ...
+2026-09-30T05:56:06.9829420Z Selecting previously unselected package librhash0:amd64.
+2026-09-30T05:56:06.9966025Z Preparing to unpack .../06-librhash0_1.4.3-3build1_amd64.deb ...
+2026-09-30T05:56:06.9973266Z Unpacking librhash0:amd64 (1.4.3-3build1) ...
+2026-09-30T05:56:07.0219960Z Selecting previously unselected package cmake-data.
+2026-09-30T05:56:07.0345744Z Preparing to unpack .../07-cmake-data_3.28.3-1build7_all.deb ...
+2026-09-30T05:56:07.0413947Z Unpacking cmake-data (3.28.3-1build7) ...
+2026-09-30T05:56:07.5496656Z Selecting previously unselected package cmake.
+2026-09-30T05:56:07.5631732Z Preparing to unpack .../08-cmake_3.28.3-1build7_amd64.deb ...
+2026-09-30T05:56:07.5638807Z Unpacking cmake (3.28.3-1build7) ...
+2026-09-30T05:56:07.7093937Z Selecting previously unselected package gir1.2-gstreamer-1.0:amd64.
+2026-09-30T05:56:07.7220299Z Preparing to unpack .../09-gir1.2-gstreamer-1.0_1.24.2-1ubuntu0.1_amd64.deb ...
+2026-09-30T05:56:07.7227526Z Unpacking gir1.2-gstreamer-1.0:amd64 (1.24.2-1ubuntu0.1) ...
+2026-09-30T05:56:07.7566532Z Preparing to unpack .../10-libgl1-mesa-dri_25.2.8-0ubuntu0.24.04.3_amd64.deb ...
+2026-09-30T05:56:07.7707055Z Unpacking libgl1-mesa-dri:amd64 (25.2.8-0ubuntu0.24.04.3) over (25.2.8-0ubuntu0.24.04.2) ...
+2026-09-30T05:56:07.8069647Z Selecting previously unselected package libwayland-server0:amd64.
+2026-09-30T05:56:07.8203798Z Preparing to unpack .../11-libwayland-server0_1.22.0-2.1build1_amd64.deb ...
+2026-09-30T05:56:07.8212905Z Unpacking libwayland-server0:amd64 (1.22.0-2.1build1) ...
+2026-09-30T05:56:07.8538032Z Preparing to unpack .../12-libglx-mesa0_25.2.8-0ubuntu0.24.04.3_amd64.deb ...
+2026-09-30T05:56:07.8558927Z Unpacking libglx-mesa0:amd64 (25.2.8-0ubuntu0.24.04.3) over (25.2.8-0ubuntu0.24.04.2) ...
+2026-09-30T05:56:07.8915296Z Preparing to unpack .../13-libgbm1_25.2.8-0ubuntu0.24.04.3_amd64.deb ...
+2026-09-30T05:56:07.8936637Z Unpacking libgbm1:amd64 (25.2.8-0ubuntu0.24.04.3) over (25.2.8-0ubuntu0.24.04.2) ...
+2026-09-30T05:56:07.9293117Z Preparing to unpack .../14-mesa-libgallium_25.2.8-0ubuntu0.24.04.3_amd64.deb ...
+2026-09-30T05:56:07.9316753Z Unpacking mesa-libgallium:amd64 (25.2.8-0ubuntu0.24.04.3) over (25.2.8-0ubuntu0.24.04.2) ...
+2026-09-30T05:56:08.0946949Z Selecting previously unselected package libegl-mesa0:amd64.
+2026-09-30T05:56:08.1076079Z Preparing to unpack .../15-libegl-mesa0_25.2.8-0ubuntu0.24.04.3_amd64.deb ...
+2026-09-30T05:56:08.1083113Z Unpacking libegl-mesa0:amd64 (25.2.8-0ubuntu0.24.04.3) ...
+2026-09-30T05:56:08.1302341Z Selecting previously unselected package libegl1:amd64.
+2026-09-30T05:56:08.1426894Z Preparing to unpack .../16-libegl1_1.7.0-1build1_amd64.deb ...
+2026-09-30T05:56:08.1433512Z Unpacking libegl1:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:08.1657674Z Selecting previously unselected package liborc-0.4-0t64:amd64.
+2026-09-30T05:56:08.1783176Z Preparing to unpack .../17-liborc-0.4-0t64_1%3a0.4.38-1ubuntu0.1_amd64.deb ...
+2026-09-30T05:56:08.1790635Z Unpacking liborc-0.4-0t64:amd64 (1:0.4.38-1ubuntu0.1) ...
+2026-09-30T05:56:08.2020305Z Selecting previously unselected package libgstreamer-plugins-base1.0-0:amd64.
+2026-09-30T05:56:08.2144818Z Preparing to unpack .../18-libgstreamer-plugins-base1.0-0_1.24.2-1ubuntu0.5_amd64.deb ...
+2026-09-30T05:56:08.2151981Z Unpacking libgstreamer-plugins-base1.0-0:amd64 (1.24.2-1ubuntu0.5) ...
+2026-09-30T05:56:08.2478516Z Selecting previously unselected package libgstreamer-gl1.0-0:amd64.
+2026-09-30T05:56:08.2606354Z Preparing to unpack .../19-libgstreamer-gl1.0-0_1.24.2-1ubuntu0.5_amd64.deb ...
+2026-09-30T05:56:08.2615423Z Unpacking libgstreamer-gl1.0-0:amd64 (1.24.2-1ubuntu0.5) ...
+2026-09-30T05:56:08.2837846Z Selecting previously unselected package gir1.2-gst-plugins-base-1.0:amd64.
+2026-09-30T05:56:08.2964531Z Preparing to unpack .../20-gir1.2-gst-plugins-base-1.0_1.24.2-1ubuntu0.5_amd64.deb ...
+2026-09-30T05:56:08.2971704Z Unpacking gir1.2-gst-plugins-base-1.0:amd64 (1.24.2-1ubuntu0.5) ...
+2026-09-30T05:56:08.3191719Z Selecting previously unselected package gir1.2-gudev-1.0:amd64.
+2026-09-30T05:56:08.3319627Z Preparing to unpack .../21-gir1.2-gudev-1.0_1%3a238-5ubuntu1_amd64.deb ...
+2026-09-30T05:56:08.3328522Z Unpacking gir1.2-gudev-1.0:amd64 (1:238-5ubuntu1) ...
+2026-09-30T05:56:08.3532011Z Selecting previously unselected package libdrm-radeon1:amd64.
+2026-09-30T05:56:08.3657870Z Preparing to unpack .../22-libdrm-radeon1_2.4.125-1ubuntu0.1~24.04.2_amd64.deb ...
+2026-09-30T05:56:08.3717654Z Unpacking libdrm-radeon1:amd64 (2.4.125-1ubuntu0.1~24.04.2) ...
+2026-09-30T05:56:08.3914801Z Selecting previously unselected package libdrm-nouveau2:amd64.
+2026-09-30T05:56:08.4039459Z Preparing to unpack .../23-libdrm-nouveau2_2.4.125-1ubuntu0.1~24.04.2_amd64.deb ...
+2026-09-30T05:56:08.4047675Z Unpacking libdrm-nouveau2:amd64 (2.4.125-1ubuntu0.1~24.04.2) ...
+2026-09-30T05:56:08.4368742Z Preparing to unpack .../24-libpciaccess0_0.17-3ubuntu0.24.04.3_amd64.deb ...
+2026-09-30T05:56:08.4391606Z Unpacking libpciaccess0:amd64 (0.17-3ubuntu0.24.04.3) over (0.17-3ubuntu0.24.04.2) ...
+2026-09-30T05:56:08.4590141Z Selecting previously unselected package libpciaccess-dev:amd64.
+2026-09-30T05:56:08.4715150Z Preparing to unpack .../25-libpciaccess-dev_0.17-3ubuntu0.24.04.3_amd64.deb ...
+2026-09-30T05:56:08.4721735Z Unpacking libpciaccess-dev:amd64 (0.17-3ubuntu0.24.04.3) ...
+2026-09-30T05:56:08.4918151Z Selecting previously unselected package libdrm-dev:amd64.
+2026-09-30T05:56:08.5042986Z Preparing to unpack .../26-libdrm-dev_2.4.125-1ubuntu0.1~24.04.2_amd64.deb ...
+2026-09-30T05:56:08.5050734Z Unpacking libdrm-dev:amd64 (2.4.125-1ubuntu0.1~24.04.2) ...
+2026-09-30T05:56:08.5374773Z Selecting previously unselected package libelf-dev:amd64.
+2026-09-30T05:56:08.5500543Z Preparing to unpack .../27-libelf-dev_0.190-1.1ubuntu0.1_amd64.deb ...
+2026-09-30T05:56:08.5507725Z Unpacking libelf-dev:amd64 (0.190-1.1ubuntu0.1) ...
+2026-09-30T05:56:08.5738116Z Selecting previously unselected package liblzma-dev:amd64.
+2026-09-30T05:56:08.5870454Z Preparing to unpack .../28-liblzma-dev_5.6.1+really5.4.5-1ubuntu0.3_amd64.deb ...
+2026-09-30T05:56:08.5877171Z Unpacking liblzma-dev:amd64 (5.6.1+really5.4.5-1ubuntu0.3) ...
+2026-09-30T05:56:08.6128224Z Selecting previously unselected package libdw-dev:amd64.
+2026-09-30T05:56:08.6253942Z Preparing to unpack .../29-libdw-dev_0.190-1.1ubuntu0.1_amd64.deb ...
+2026-09-30T05:56:08.6260628Z Unpacking libdw-dev:amd64 (0.190-1.1ubuntu0.1) ...
+2026-09-30T05:56:08.6504946Z Selecting previously unselected package xorg-sgml-doctools.
+2026-09-30T05:56:08.6630181Z Preparing to unpack .../30-xorg-sgml-doctools_1%3a1.11-1.1_all.deb ...
+2026-09-30T05:56:08.6636673Z Unpacking xorg-sgml-doctools (1:1.11-1.1) ...
+2026-09-30T05:56:08.6925667Z Selecting previously unselected package x11proto-dev.
+2026-09-30T05:56:08.7052001Z Preparing to unpack .../31-x11proto-dev_2023.2-1_all.deb ...
+2026-09-30T05:56:08.8134744Z Unpacking x11proto-dev (2023.2-1) ...
+2026-09-30T05:56:08.8696509Z Selecting previously unselected package libxau-dev:amd64.
+2026-09-30T05:56:08.8823187Z Preparing to unpack .../32-libxau-dev_1%3a1.0.9-1build6_amd64.deb ...
+2026-09-30T05:56:08.8830239Z Unpacking libxau-dev:amd64 (1:1.0.9-1build6) ...
+2026-09-30T05:56:08.9041388Z Selecting previously unselected package libxdmcp-dev:amd64.
+2026-09-30T05:56:08.9167353Z Preparing to unpack .../33-libxdmcp-dev_1%3a1.1.3-0ubuntu6_amd64.deb ...
+2026-09-30T05:56:08.9174574Z Unpacking libxdmcp-dev:amd64 (1:1.1.3-0ubuntu6) ...
+2026-09-30T05:56:08.9364387Z Selecting previously unselected package xtrans-dev.
+2026-09-30T05:56:08.9489842Z Preparing to unpack .../34-xtrans-dev_1.4.0-1_all.deb ...
+2026-09-30T05:56:08.9498037Z Unpacking xtrans-dev (1.4.0-1) ...
+2026-09-30T05:56:08.9726758Z Selecting previously unselected package libpthread-stubs0-dev:amd64.
+2026-09-30T05:56:08.9851479Z Preparing to unpack .../35-libpthread-stubs0-dev_0.4-1build3_amd64.deb ...
+2026-09-30T05:56:08.9857815Z Unpacking libpthread-stubs0-dev:amd64 (0.4-1build3) ...
+2026-09-30T05:56:09.0037498Z Selecting previously unselected package libxcb1-dev:amd64.
+2026-09-30T05:56:09.0162662Z Preparing to unpack .../36-libxcb1-dev_1.15-1ubuntu2_amd64.deb ...
+2026-09-30T05:56:09.0182118Z Unpacking libxcb1-dev:amd64 (1.15-1ubuntu2) ...
+2026-09-30T05:56:09.0394056Z Selecting previously unselected package libx11-dev:amd64.
+2026-09-30T05:56:09.0521556Z Preparing to unpack .../37-libx11-dev_2%3a1.8.7-1build1_amd64.deb ...
+2026-09-30T05:56:09.0528646Z Unpacking libx11-dev:amd64 (2:1.8.7-1build1) ...
+2026-09-30T05:56:09.0819438Z Selecting previously unselected package libglx-dev:amd64.
+2026-09-30T05:56:09.0946227Z Preparing to unpack .../38-libglx-dev_1.7.0-1build1_amd64.deb ...
+2026-09-30T05:56:09.0953739Z Unpacking libglx-dev:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:09.1143644Z Selecting previously unselected package libgl-dev:amd64.
+2026-09-30T05:56:09.1267990Z Preparing to unpack .../39-libgl-dev_1.7.0-1build1_amd64.deb ...
+2026-09-30T05:56:09.1274553Z Unpacking libgl-dev:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:09.1499626Z Selecting previously unselected package libegl-dev:amd64.
+2026-09-30T05:56:09.1626074Z Preparing to unpack .../40-libegl-dev_1.7.0-1build1_amd64.deb ...
+2026-09-30T05:56:09.1634420Z Unpacking libegl-dev:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:09.1824487Z Selecting previously unselected package libgbm-dev:amd64.
+2026-09-30T05:56:09.1948387Z Preparing to unpack .../41-libgbm-dev_25.2.8-0ubuntu0.24.04.3_amd64.deb ...
+2026-09-30T05:56:09.1955187Z Unpacking libgbm-dev:amd64 (25.2.8-0ubuntu0.24.04.3) ...
+2026-09-30T05:56:09.2151986Z Selecting previously unselected package libgirepository-2.0-0:amd64.
+2026-09-30T05:56:09.2276306Z Preparing to unpack .../42-libgirepository-2.0-0_2.80.0-6ubuntu3.9_amd64.deb ...
+2026-09-30T05:56:09.2283755Z Unpacking libgirepository-2.0-0:amd64 (2.80.0-6ubuntu3.9) ...
+2026-09-30T05:56:09.2480608Z Selecting previously unselected package libgles1:amd64.
+2026-09-30T05:56:09.2605892Z Preparing to unpack .../43-libgles1_1.7.0-1build1_amd64.deb ...
+2026-09-30T05:56:09.2613119Z Unpacking libgles1:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:09.2914123Z Selecting previously unselected package libgles2:amd64.
+2026-09-30T05:56:09.3039354Z Preparing to unpack .../44-libgles2_1.7.0-1build1_amd64.deb ...
+2026-09-30T05:56:09.3045751Z Unpacking libgles2:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:09.3236474Z Selecting previously unselected package libgles-dev:amd64.
+2026-09-30T05:56:09.3363402Z Preparing to unpack .../45-libgles-dev_1.7.0-1build1_amd64.deb ...
+2026-09-30T05:56:09.3370070Z Unpacking libgles-dev:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:09.3603714Z Selecting previously unselected package libglib2.0-dev-bin.
+2026-09-30T05:56:09.3731217Z Preparing to unpack .../46-libglib2.0-dev-bin_2.80.0-6ubuntu3.9_amd64.deb ...
+2026-09-30T05:56:09.3737368Z Unpacking libglib2.0-dev-bin (2.80.0-6ubuntu3.9) ...
+2026-09-30T05:56:09.4027845Z Selecting previously unselected package uuid-dev:amd64.
+2026-09-30T05:56:09.4154160Z Preparing to unpack .../47-uuid-dev_2.39.3-9ubuntu6.6_amd64.deb ...
+2026-09-30T05:56:09.4161007Z Unpacking uuid-dev:amd64 (2.39.3-9ubuntu6.6) ...
+2026-09-30T05:56:09.4370307Z Selecting previously unselected package libblkid-dev:amd64.
+2026-09-30T05:56:09.4495774Z Preparing to unpack .../48-libblkid-dev_2.39.3-9ubuntu6.6_amd64.deb ...
+2026-09-30T05:56:09.4503094Z Unpacking libblkid-dev:amd64 (2.39.3-9ubuntu6.6) ...
+2026-09-30T05:56:09.4720324Z Selecting previously unselected package libsepol-dev:amd64.
+2026-09-30T05:56:09.4845911Z Preparing to unpack .../49-libsepol-dev_3.5-2build1_amd64.deb ...
+2026-09-30T05:56:09.4852913Z Unpacking libsepol-dev:amd64 (3.5-2build1) ...
+2026-09-30T05:56:09.5150462Z Selecting previously unselected package libselinux1-dev:amd64.
+2026-09-30T05:56:09.5275497Z Preparing to unpack .../50-libselinux1-dev_3.5-2ubuntu2.1_amd64.deb ...
+2026-09-30T05:56:09.5282179Z Unpacking libselinux1-dev:amd64 (3.5-2ubuntu2.1) ...
+2026-09-30T05:56:09.5698909Z Selecting previously unselected package libmount-dev:amd64.
+2026-09-30T05:56:09.5826315Z Preparing to unpack .../51-libmount-dev_2.39.3-9ubuntu6.6_amd64.deb ...
+2026-09-30T05:56:09.5833709Z Unpacking libmount-dev:amd64 (2.39.3-9ubuntu6.6) ...
+2026-09-30T05:56:09.6036479Z Selecting previously unselected package libglib2.0-dev:amd64.
+2026-09-30T05:56:09.6162396Z Preparing to unpack .../52-libglib2.0-dev_2.80.0-6ubuntu3.9_amd64.deb ...
+2026-09-30T05:56:09.6173034Z Unpacking libglib2.0-dev:amd64 (2.80.0-6ubuntu3.9) ...
+2026-09-30T05:56:09.7122796Z Selecting previously unselected package libunwind-dev:amd64.
+2026-09-30T05:56:09.7249759Z Preparing to unpack .../53-libunwind-dev_1.6.2-3build1.1_amd64.deb ...
+2026-09-30T05:56:09.7257380Z Unpacking libunwind-dev:amd64 (1.6.2-3build1.1) ...
+2026-09-30T05:56:09.7678615Z Selecting previously unselected package libgstreamer1.0-dev:amd64.
+2026-09-30T05:56:09.7805054Z Preparing to unpack .../54-libgstreamer1.0-dev_1.24.2-1ubuntu0.1_amd64.deb ...
+2026-09-30T05:56:09.7812822Z Unpacking libgstreamer1.0-dev:amd64 (1.24.2-1ubuntu0.1) ...
+2026-09-30T05:56:09.8347658Z Selecting previously unselected package liborc-0.4-dev-bin.
+2026-09-30T05:56:09.8477271Z Preparing to unpack .../55-liborc-0.4-dev-bin_1%3a0.4.38-1ubuntu0.1_amd64.deb ...
+2026-09-30T05:56:09.8487302Z Unpacking liborc-0.4-dev-bin (1:0.4.38-1ubuntu0.1) ...
+2026-09-30T05:56:09.8678669Z Selecting previously unselected package liborc-0.4-dev:amd64.
+2026-09-30T05:56:09.8805222Z Preparing to unpack .../56-liborc-0.4-dev_1%3a0.4.38-1ubuntu0.1_amd64.deb ...
+2026-09-30T05:56:09.8813003Z Unpacking liborc-0.4-dev:amd64 (1:0.4.38-1ubuntu0.1) ...
+2026-09-30T05:56:09.9067658Z Selecting previously unselected package libx11-xcb-dev:amd64.
+2026-09-30T05:56:09.9193901Z Preparing to unpack .../57-libx11-xcb-dev_2%3a1.8.7-1build1_amd64.deb ...
+2026-09-30T05:56:09.9200471Z Unpacking libx11-xcb-dev:amd64 (2:1.8.7-1build1) ...
+2026-09-30T05:56:09.9393038Z Selecting previously unselected package libwayland-bin.
+2026-09-30T05:56:09.9520017Z Preparing to unpack .../58-libwayland-bin_1.22.0-2.1build1_amd64.deb ...
+2026-09-30T05:56:09.9527072Z Unpacking libwayland-bin (1.22.0-2.1build1) ...
+2026-09-30T05:56:09.9721434Z Selecting previously unselected package libwayland-dev:amd64.
+2026-09-30T05:56:09.9847601Z Preparing to unpack .../59-libwayland-dev_1.22.0-2.1build1_amd64.deb ...
+2026-09-30T05:56:09.9854875Z Unpacking libwayland-dev:amd64 (1.22.0-2.1build1) ...
+2026-09-30T05:56:10.0080209Z Selecting previously unselected package libudev-dev:amd64.
+2026-09-30T05:56:10.0208246Z Preparing to unpack .../60-libudev-dev_255.4-1ubuntu8.17_amd64.deb ...
+2026-09-30T05:56:10.0214676Z Unpacking libudev-dev:amd64 (255.4-1ubuntu8.17) ...
+2026-09-30T05:56:10.0813969Z Selecting previously unselected package libgudev-1.0-dev:amd64.
+2026-09-30T05:56:10.0942629Z Preparing to unpack .../61-libgudev-1.0-dev_1%3a238-5ubuntu1_amd64.deb ...
+2026-09-30T05:56:10.0952910Z Unpacking libgudev-1.0-dev:amd64 (1:238-5ubuntu1) ...
+2026-09-30T05:56:10.1192037Z Selecting previously unselected package libgstreamer-plugins-base1.0-dev.
+2026-09-30T05:56:10.1318864Z Preparing to unpack .../62-libgstreamer-plugins-base1.0-dev_1.24.2-1ubuntu0.5_amd64.deb ...
+2026-09-30T05:56:10.1325991Z Unpacking libgstreamer-plugins-base1.0-dev (1.24.2-1ubuntu0.5) ...
+2026-09-30T05:56:10.2389481Z Setting up libwayland-server0:amd64 (1.22.0-2.1build1) ...
+2026-09-30T05:56:10.2409655Z Setting up libpciaccess0:amd64 (0.17-3ubuntu0.24.04.3) ...
+2026-09-30T05:56:10.2426465Z Setting up mesa-libgallium:amd64 (25.2.8-0ubuntu0.24.04.3) ...
+2026-09-30T05:56:10.2442842Z Setting up libdrm-nouveau2:amd64 (2.4.125-1ubuntu0.1~24.04.2) ...
+2026-09-30T05:56:10.2458175Z Setting up libpciaccess-dev:amd64 (0.17-3ubuntu0.24.04.3) ...
+2026-09-30T05:56:10.2473747Z Setting up libgbm1:amd64 (25.2.8-0ubuntu0.24.04.3) ...
+2026-09-30T05:56:10.2491392Z Setting up libdrm-radeon1:amd64 (2.4.125-1ubuntu0.1~24.04.2) ...
+2026-09-30T05:56:10.2508469Z Setting up libgl1-mesa-dri:amd64 (25.2.8-0ubuntu0.24.04.3) ...
+2026-09-30T05:56:10.2580825Z Setting up libpthread-stubs0-dev:amd64 (0.4-1build3) ...
+2026-09-30T05:56:10.2597917Z Setting up libgbm-dev:amd64 (25.2.8-0ubuntu0.24.04.3) ...
+2026-09-30T05:56:10.2616720Z Setting up liborc-0.4-0t64:amd64 (1:0.4.38-1ubuntu0.1) ...
+2026-09-30T05:56:10.2632870Z Setting up xtrans-dev (1.4.0-1) ...
+2026-09-30T05:56:10.2648344Z Setting up libwayland-bin (1.22.0-2.1build1) ...
+2026-09-30T05:56:10.2664515Z Setting up libglib2.0-0t64:amd64 (2.80.0-6ubuntu3.9) ...
+2026-09-30T05:56:10.2765124Z Setting up libegl-mesa0:amd64 (25.2.8-0ubuntu0.24.04.3) ...
+2026-09-30T05:56:10.2782519Z Setting up libglib2.0-data (2.80.0-6ubuntu3.9) ...
+2026-09-30T05:56:10.2800172Z Setting up libgles2:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:10.2818361Z Setting up uuid-dev:amd64 (2.39.3-9ubuntu6.6) ...
+2026-09-30T05:56:10.2836510Z Setting up libgles1:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:10.2857910Z Setting up libelf-dev:amd64 (0.190-1.1ubuntu0.1) ...
+2026-09-30T05:56:10.2876372Z Setting up libjsoncpp25:amd64 (1.9.5-6build1) ...
+2026-09-30T05:56:10.2894213Z Setting up libudev-dev:amd64 (255.4-1ubuntu8.17) ...
+2026-09-30T05:56:10.2911839Z Setting up libsepol-dev:amd64 (3.5-2build1) ...
+2026-09-30T05:56:10.2927975Z Setting up gir1.2-glib-2.0:amd64 (2.80.0-6ubuntu3.9) ...
+2026-09-30T05:56:10.2945902Z Setting up liblzma-dev:amd64 (5.6.1+really5.4.5-1ubuntu0.3) ...
+2026-09-30T05:56:10.2988832Z Setting up librhash0:amd64 (1.4.3-3build1) ...
+2026-09-30T05:56:10.3006500Z Setting up libegl1:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:10.3043047Z Setting up build-essential (12.10ubuntu1) ...
+2026-09-30T05:56:10.3060797Z Setting up xorg-sgml-doctools (1:1.11-1.1) ...
+2026-09-30T05:56:10.3108044Z Setting up cmake-data (3.28.3-1build7) ...
+2026-09-30T05:56:10.3176547Z Setting up libglib2.0-dev-bin (2.80.0-6ubuntu3.9) ...
+2026-09-30T05:56:10.4749603Z Setting up libblkid-dev:amd64 (2.39.3-9ubuntu6.6) ...
+2026-09-30T05:56:10.4766192Z Setting up gir1.2-gstreamer-1.0:amd64 (1.24.2-1ubuntu0.1) ...
+2026-09-30T05:56:10.4782997Z Setting up libdrm-dev:amd64 (2.4.125-1ubuntu0.1~24.04.2) ...
+2026-09-30T05:56:10.4799720Z Setting up libglx-mesa0:amd64 (25.2.8-0ubuntu0.24.04.3) ...
+2026-09-30T05:56:10.4816271Z Setting up libunwind-dev:amd64 (1.6.2-3build1.1) ...
+2026-09-30T05:56:10.4834681Z Setting up libgirepository-2.0-0:amd64 (2.80.0-6ubuntu3.9) ...
+2026-09-30T05:56:10.4851877Z Setting up libselinux1-dev:amd64 (3.5-2ubuntu2.1) ...
+2026-09-30T05:56:10.4868197Z Setting up libglib2.0-bin (2.80.0-6ubuntu3.9) ...
+2026-09-30T05:56:10.4885851Z Setting up liborc-0.4-dev-bin (1:0.4.38-1ubuntu0.1) ...
+2026-09-30T05:56:10.4908972Z Setting up libgstreamer-plugins-base1.0-0:amd64 (1.24.2-1ubuntu0.5) ...
+2026-09-30T05:56:10.4926462Z Setting up libwayland-dev:amd64 (1.22.0-2.1build1) ...
+2026-09-30T05:56:10.4945915Z Setting up libdw-dev:amd64 (0.190-1.1ubuntu0.1) ...
+2026-09-30T05:56:10.4964666Z Setting up libgstreamer-gl1.0-0:amd64 (1.24.2-1ubuntu0.5) ...
+2026-09-30T05:56:10.4980692Z Setting up gir1.2-gudev-1.0:amd64 (1:238-5ubuntu1) ...
+2026-09-30T05:56:10.5001474Z Setting up cmake (3.28.3-1build7) ...
+2026-09-30T05:56:10.5018100Z Setting up liborc-0.4-dev:amd64 (1:0.4.38-1ubuntu0.1) ...
+2026-09-30T05:56:10.5034119Z Setting up libmount-dev:amd64 (2.39.3-9ubuntu6.6) ...
+2026-09-30T05:56:10.5051199Z Setting up gir1.2-gst-plugins-base-1.0:amd64 (1.24.2-1ubuntu0.5) ...
+2026-09-30T05:56:10.5069710Z Setting up libglib2.0-dev:amd64 (2.80.0-6ubuntu3.9) ...
+2026-09-30T05:56:10.5086020Z Setting up libgstreamer1.0-dev:amd64 (1.24.2-1ubuntu0.1) ...
+2026-09-30T05:56:10.5131439Z Setting up libgudev-1.0-dev:amd64 (1:238-5ubuntu1) ...
+2026-09-30T05:56:10.5214861Z Processing triggers for man-db (2.12.0-4build2) ...
+2026-09-30T05:56:10.5236576Z Not building database; man-db/auto-update is not 'true'.
+2026-09-30T05:56:10.5258299Z Processing triggers for sgml-base (1.31) ...
+2026-09-30T05:56:10.5463683Z Setting up x11proto-dev (2023.2-1) ...
+2026-09-30T05:56:10.5486709Z Setting up libxau-dev:amd64 (1:1.0.9-1build6) ...
+2026-09-30T05:56:10.5511612Z Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
+2026-09-30T05:56:10.5842974Z Setting up libxdmcp-dev:amd64 (1:1.1.3-0ubuntu6) ...
+2026-09-30T05:56:10.5875918Z Setting up libxcb1-dev:amd64 (1.15-1ubuntu2) ...
+2026-09-30T05:56:10.5930541Z Setting up libx11-dev:amd64 (2:1.8.7-1build1) ...
+2026-09-30T05:56:10.5958782Z Setting up libglx-dev:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:10.5982779Z Setting up libgl-dev:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:10.6000065Z Setting up libx11-xcb-dev:amd64 (2:1.8.7-1build1) ...
+2026-09-30T05:56:10.6021635Z Setting up libegl-dev:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:10.6050073Z Setting up libgles-dev:amd64 (1.7.0-1build1) ...
+2026-09-30T05:56:10.6073784Z Setting up libgstreamer-plugins-base1.0-dev (1.24.2-1ubuntu0.5) ...
+2026-09-30T05:56:11.1700609Z 
+2026-09-30T05:56:11.1701712Z Running kernel seems to be up-to-date.
+2026-09-30T05:56:11.1702070Z 
+2026-09-30T05:56:11.1702244Z Restarting services...
+2026-09-30T05:56:11.2160741Z  systemctl restart packagekit.service php8.3-fpm.service polkit.service udisks2.service
+2026-09-30T05:56:11.3804343Z 
+2026-09-30T05:56:11.3805114Z Service restarts being deferred:
+2026-09-30T05:56:11.3805840Z  systemctl restart ModemManager.service
+2026-09-30T05:56:11.3806349Z  systemctl restart networkd-dispatcher.service
+2026-09-30T05:56:11.3806745Z 
+2026-09-30T05:56:11.3807162Z No containers need to be restarted.
+2026-09-30T05:56:11.3807618Z 
+2026-09-30T05:56:11.3808019Z No user sessions are running outdated binaries.
+2026-09-30T05:56:11.3808259Z 
+2026-09-30T05:56:11.3808582Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-09-30T05:56:12.2670257Z ##[group]Run python -m pip install --no-deps --requirement .ci/requirements.txt
+2026-09-30T05:56:12.2670858Z [36;1mpython -m pip install --no-deps --requirement .ci/requirements.txt[0m
+2026-09-30T05:56:12.2734976Z shell: /usr/bin/bash -e {0}
+2026-09-30T05:56:12.2735227Z env:
+2026-09-30T05:56:12.2735444Z   PYTHONDONTWRITEBYTECODE: 1
+2026-09-30T05:56:12.2735697Z   MPLBACKEND: Agg
+2026-09-30T05:56:12.2735904Z   OPENSPEC_TELEMETRY: 0
+2026-09-30T05:56:12.2736196Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:12.2736642Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-09-30T05:56:12.2737083Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:12.2737458Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:12.2737824Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:12.2738396Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-09-30T05:56:12.2738757Z ##[endgroup]
+2026-09-30T05:56:13.2075440Z Collecting PyYAML==6.0.3 (from -r .ci/requirements.txt (line 3))
+2026-09-30T05:56:13.2525335Z   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+2026-09-30T05:56:13.3165343Z Collecting contourpy==1.3.3 (from -r .ci/requirements.txt (line 4))
+2026-09-30T05:56:13.3198636Z   Downloading contourpy-1.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (5.5 kB)
+2026-09-30T05:56:13.3324734Z Collecting cycler==0.12.1 (from -r .ci/requirements.txt (line 5))
+2026-09-30T05:56:13.3354316Z   Downloading cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+2026-09-30T05:56:13.4847471Z Collecting fonttools==4.63.0 (from -r .ci/requirements.txt (line 6))
+2026-09-30T05:56:13.4885525Z   Downloading fonttools-4.63.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (118 kB)
+2026-09-30T05:56:13.5695611Z Collecting kiwisolver==1.5.0 (from -r .ci/requirements.txt (line 7))
+2026-09-30T05:56:13.5724050Z   Downloading kiwisolver-1.5.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.1 kB)
+2026-09-30T05:56:13.6968585Z Collecting matplotlib==3.11.1 (from -r .ci/requirements.txt (line 8))
+2026-09-30T05:56:13.6998520Z   Downloading matplotlib-3.11.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (80 kB)
+2026-09-30T05:56:13.9005461Z Collecting numpy==2.5.2 (from -r .ci/requirements.txt (line 9))
+2026-09-30T05:56:13.9038730Z   Downloading numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+2026-09-30T05:56:13.9169303Z Collecting nvidia-ml-py==13.610.43 (from -r .ci/requirements.txt (line 10))
+2026-09-30T05:56:13.9205265Z   Downloading nvidia_ml_py-13.610.43-py3-none-any.whl.metadata (9.7 kB)
+2026-09-30T05:56:13.9340080Z Collecting packaging==26.3 (from -r .ci/requirements.txt (line 11))
+2026-09-30T05:56:13.9365765Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+2026-09-30T05:56:14.0493986Z Collecting pandas==3.0.5 (from -r .ci/requirements.txt (line 12))
+2026-09-30T05:56:14.0525874Z   Downloading pandas-3.0.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (79 kB)
+2026-09-30T05:56:14.2490313Z Collecting pillow==12.3.0 (from -r .ci/requirements.txt (line 13))
+2026-09-30T05:56:14.2519311Z   Downloading pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.1 kB)
+2026-09-30T05:56:14.3147012Z Collecting psutil==7.2.2 (from -r .ci/requirements.txt (line 14))
+2026-09-30T05:56:14.3176367Z   Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl.metadata (22 kB)
+2026-09-30T05:56:14.3418238Z Collecting pyparsing==3.3.2 (from -r .ci/requirements.txt (line 15))
+2026-09-30T05:56:14.3444513Z   Downloading pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)
+2026-09-30T05:56:14.3559350Z Collecting python-dateutil==2.9.0.post0 (from -r .ci/requirements.txt (line 16))
+2026-09-30T05:56:14.3585009Z   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+2026-09-30T05:56:14.3696505Z Collecting seaborn==0.13.2 (from -r .ci/requirements.txt (line 17))
+2026-09-30T05:56:14.3722197Z   Downloading seaborn-0.13.2-py3-none-any.whl.metadata (5.4 kB)
+2026-09-30T05:56:14.3841535Z Collecting six==1.17.0 (from -r .ci/requirements.txt (line 18))
+2026-09-30T05:56:14.3867241Z   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+2026-09-30T05:56:14.4470789Z Collecting zstandard==0.25.0 (from -r .ci/requirements.txt (line 19))
+2026-09-30T05:56:14.4507845Z   Downloading zstandard-0.25.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.3 kB)
+2026-09-30T05:56:14.4617293Z Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+2026-09-30T05:56:14.4696482Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 128.2 MB/s  0:00:00
+2026-09-30T05:56:14.4726508Z Downloading contourpy-1.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (362 kB)
+2026-09-30T05:56:14.4775163Z Downloading cycler-0.12.1-py3-none-any.whl (8.3 kB)
+2026-09-30T05:56:14.4817582Z Downloading fonttools-4.63.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.0 MB)
+2026-09-30T05:56:14.5105935Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.0/5.0 MB 179.6 MB/s  0:00:00
+2026-09-30T05:56:14.5139597Z Downloading kiwisolver-1.5.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.5 MB)
+2026-09-30T05:56:14.5239783Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 191.6 MB/s  0:00:00
+2026-09-30T05:56:14.5271660Z Downloading matplotlib-3.11.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (10.0 MB)
+2026-09-30T05:56:14.5719099Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.0/10.0 MB 239.5 MB/s  0:00:00
+2026-09-30T05:56:14.5754416Z Downloading numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
+2026-09-30T05:56:14.6368174Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.7/16.7 MB 280.1 MB/s  0:00:00
+2026-09-30T05:56:14.6399100Z Downloading nvidia_ml_py-13.610.43-py3-none-any.whl (53 kB)
+2026-09-30T05:56:14.6446062Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+2026-09-30T05:56:14.6493798Z Downloading pandas-3.0.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (11.0 MB)
+2026-09-30T05:56:14.7173728Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.0/11.0 MB 165.1 MB/s  0:00:00
+2026-09-30T05:56:14.7208286Z Downloading pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (6.9 MB)
+2026-09-30T05:56:14.7441693Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.9/6.9 MB 318.6 MB/s  0:00:00
+2026-09-30T05:56:14.7473825Z Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl (155 kB)
+2026-09-30T05:56:14.7525799Z Downloading pyparsing-3.3.2-py3-none-any.whl (122 kB)
+2026-09-30T05:56:14.7574076Z Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+2026-09-30T05:56:14.7620217Z Downloading seaborn-0.13.2-py3-none-any.whl (294 kB)
+2026-09-30T05:56:14.7669180Z Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+2026-09-30T05:56:14.7713536Z Downloading zstandard-0.25.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.5 MB)
+2026-09-30T05:56:14.7918803Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.5/5.5 MB 290.2 MB/s  0:00:00
+2026-09-30T05:56:14.9673966Z Installing collected packages: nvidia-ml-py, zstandard, six, seaborn, PyYAML, python-dateutil, pyparsing, psutil, pillow, pandas, packaging, numpy, matplotlib, kiwisolver, fonttools, cycler, contourpy
+2026-09-30T05:56:25.2566824Z 
+2026-09-30T05:56:25.2590462Z Successfully installed PyYAML-6.0.3 contourpy-1.3.3 cycler-0.12.1 fonttools-4.63.0 kiwisolver-1.5.0 matplotlib-3.11.1 numpy-2.5.2 nvidia-ml-py-13.610.43 packaging-26.3 pandas-3.0.5 pillow-12.3.0 psutil-7.2.2 pyparsing-3.3.2 python-dateutil-2.9.0.post0 seaborn-0.13.2 six-1.17.0 zstandard-0.25.0
+2026-09-30T05:56:25.3507837Z ##[group]Run python -m pip check
+2026-09-30T05:56:25.3508150Z [36;1mpython -m pip check[0m
+2026-09-30T05:56:25.3571389Z shell: /usr/bin/bash -e {0}
+2026-09-30T05:56:25.3571638Z env:
+2026-09-30T05:56:25.3571842Z   PYTHONDONTWRITEBYTECODE: 1
+2026-09-30T05:56:25.3572086Z   MPLBACKEND: Agg
+2026-09-30T05:56:25.3572295Z   OPENSPEC_TELEMETRY: 0
+2026-09-30T05:56:25.3572597Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:25.3573043Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-09-30T05:56:25.3573471Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:25.3573857Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:25.3574235Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:25.3574615Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-09-30T05:56:25.3574936Z ##[endgroup]
+2026-09-30T05:56:26.0042236Z No broken requirements found.
+2026-09-30T05:56:26.0355703Z ##[group]Run python -B scripts/run_ci_checks.py --expected-commit "53a0dcf61b5b5764880878cbe0138c9d965dfb85" --output-dir "$RUNNER_TEMP/vast-cpu-checks"
+2026-09-30T05:56:26.0356798Z [36;1mpython -B scripts/run_ci_checks.py --expected-commit "53a0dcf61b5b5764880878cbe0138c9d965dfb85" --output-dir "$RUNNER_TEMP/vast-cpu-checks"[0m
+2026-09-30T05:56:26.0419725Z shell: /usr/bin/bash -e {0}
+2026-09-30T05:56:26.0419961Z env:
+2026-09-30T05:56:26.0420158Z   PYTHONDONTWRITEBYTECODE: 1
+2026-09-30T05:56:26.0420405Z   MPLBACKEND: Agg
+2026-09-30T05:56:26.0420612Z   OPENSPEC_TELEMETRY: 0
+2026-09-30T05:56:26.0421159Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:26.0421597Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-09-30T05:56:26.0422015Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:26.0422402Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:26.0422825Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T05:56:26.0423210Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-09-30T05:56:26.0423527Z ##[endgroup]
+2026-09-30T07:25:50.4145400Z ##[error]The operation was canceled.
+2026-09-30T07:25:50.4210201Z ##[group]Run actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+2026-09-30T07:25:50.4210629Z with:
+2026-09-30T07:25:50.4211221Z   name: vast-cpu-checks-53a0dcf61b5b5764880878cbe0138c9d965dfb85
+2026-09-30T07:25:50.4211616Z   path: /home/runner/work/_temp/vast-cpu-checks
+2026-09-30T07:25:50.4211916Z   if-no-files-found: warn
+2026-09-30T07:25:50.4212144Z   retention-days: 7
+2026-09-30T07:25:50.4212349Z   compression-level: 6
+2026-09-30T07:25:50.4212556Z   overwrite: false
+2026-09-30T07:25:50.4212760Z   include-hidden-files: false
+2026-09-30T07:25:50.4212987Z env:
+2026-09-30T07:25:50.4213177Z   PYTHONDONTWRITEBYTECODE: 1
+2026-09-30T07:25:50.4213413Z   MPLBACKEND: Agg
+2026-09-30T07:25:50.4213613Z   OPENSPEC_TELEMETRY: 0
+2026-09-30T07:25:50.4213886Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T07:25:50.4214310Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib/pkgconfig
+2026-09-30T07:25:50.4214777Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T07:25:50.4215142Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T07:25:50.4215501Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.3/x64
+2026-09-30T07:25:50.4215864Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.3/x64/lib
+2026-09-30T07:25:50.4216171Z ##[endgroup]
+2026-09-30T07:25:50.6502675Z With the provided path, there will be 152 files uploaded
+2026-09-30T07:25:50.6503626Z Artifact name is valid!
+2026-09-30T07:25:50.6504220Z Root directory input is valid!
+2026-09-30T07:25:51.0162752Z Beginning upload of artifact content to blob storage
+2026-09-30T07:25:51.1944262Z Uploaded bytes 940648
+2026-09-30T07:25:51.2081601Z Finished uploading artifact content to blob storage!
+2026-09-30T07:25:51.2082776Z SHA256 digest of uploaded artifact zip is 9bf2259f9eca622624c0a62a70bb2fbd457cb31012a7200d4019bff62a789d64
+2026-09-30T07:25:51.2083592Z Finalizing artifact upload
+2026-09-30T07:25:51.4402215Z Artifact vast-cpu-checks-53a0dcf61b5b5764880878cbe0138c9d965dfb85.zip successfully finalized. Artifact ID 11082613835
+2026-09-30T07:25:51.4404929Z Artifact vast-cpu-checks-53a0dcf61b5b5764880878cbe0138c9d965dfb85 has been successfully uploaded! Final size is 940648 bytes. Artifact ID is 11082613835
+2026-09-30T07:25:51.4407196Z Artifact download URL: https://github.com/lordcoudy/VAST/actions/runs/36675667933/artifacts/11082613835
+2026-09-30T07:25:51.4577218Z Post job cleanup.
+2026-09-30T07:25:51.5524214Z [command]/usr/bin/git version
+2026-09-30T07:25:51.5575342Z git version 2.55.0
+2026-09-30T07:25:51.5619064Z Temporarily overriding HOME='/home/runner/work/_temp/0752c681-6b11-4e48-bfa3-83a0fe1f2734' before making global git config changes
+2026-09-30T07:25:51.5621787Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-30T07:25:51.5626729Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/VAST/VAST
+2026-09-30T07:25:51.5712887Z Removing SSH command configuration
+2026-09-30T07:25:51.5714021Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-30T07:25:51.5728037Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-30T07:25:51.5996826Z Removing HTTP extra header
+2026-09-30T07:25:51.6003584Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-30T07:25:51.6050057Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-30T07:25:51.6334219Z Removing includeIf entries pointing to credentials config files
+2026-09-30T07:25:51.6343039Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-30T07:25:51.6391479Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-30T07:25:51.6820045Z Cleaning up orphan processes
+2026-09-30T07:25:51.7139934Z Terminate orphan process: pid (3652) (python)

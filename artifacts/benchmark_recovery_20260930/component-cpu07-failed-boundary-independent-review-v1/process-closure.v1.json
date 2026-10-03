@@ -1,0 +1,78 @@
+{
+  "active_worker_container_absence_not_inferred": true,
+  "container_quiescence_verified": false,
+  "elapsed_s": 0.006073541007936001,
+  "original95_hold_release": true,
+  "original_reader_launch": {
+    "argv": [
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/audit_failed_cpu07_v1.py"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 64501,
+    "pid": 64502,
+    "ppid": 64501,
+    "source": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/audit_failed_cpu07_v1.py",
+      "sha256": "74807a616dc612de0b6dd6c01f3e41b67d1e9e36abec1c76ded57c4549fb7c83",
+      "size_bytes": 11378
+    },
+    "startticks": 30648309,
+    "uid": 1000
+  },
+  "original_review": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/review.v1.json",
+    "sha256": "85b668c7510641ab3d7fd2455b1f7cd0f9e7b83ae9ef37531a6949ed46403d3d",
+    "size_bytes": 16997
+  },
+  "same_boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+  "scanner_pid": 64834,
+  "scanner_ppid": 64833,
+  "schema_version": 1,
+  "status": "closed_failed_original_host_processes_and_review_FDs_released",
+  "task_18_8_complete": false,
+  "two_actual_later_scans": [
+    {
+      "at_ns": 1790824262553327840,
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "59894": true,
+        "59896": true,
+        "60156": true,
+        "63720": true,
+        "63736": true,
+        "63751": true,
+        "63767": true,
+        "63783": true,
+        "63967": true,
+        "63980": true,
+        "64081": true,
+        "64096": true,
+        "64501": true,
+        "64502": true
+      }
+    },
+    {
+      "at_ns": 1790824262554823680,
+      "errors": [],
+      "members": [],
+      "pids_absent": {
+        "59894": true,
+        "59896": true,
+        "60156": true,
+        "63720": true,
+        "63736": true,
+        "63751": true,
+        "63767": true,
+        "63783": true,
+        "63967": true,
+        "63980": true,
+        "64081": true,
+        "64096": true,
+        "64501": true,
+        "64502": true
+      }
+    }
+  ]
+}

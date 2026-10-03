@@ -1,0 +1,170 @@
+test_original_terminal_hook_uses_actual_wait_status_and_original_bytes (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_original_terminal_hook_uses_actual_wait_status_and_original_bytes) ... 
+  test_original_terminal_hook_uses_actual_wait_status_and_original_bytes (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_original_terminal_hook_uses_actual_wait_status_and_original_bytes) (runtime='checkpoint_gstreamer_publication_runtime_v3') ... ERROR
+  test_original_terminal_hook_uses_actual_wait_status_and_original_bytes (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_original_terminal_hook_uses_actual_wait_status_and_original_bytes) (runtime='checkpoint_openvino_gva_publication_runtime_v3') ... ERROR
+  test_original_terminal_hook_uses_actual_wait_status_and_original_bytes (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_original_terminal_hook_uses_actual_wait_status_and_original_bytes) (runtime='checkpoint_deepstream_publication_runtime_v3') ... ERROR
+  test_original_terminal_hook_uses_actual_wait_status_and_original_bytes (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_original_terminal_hook_uses_actual_wait_status_and_original_bytes) (runtime='checkpoint_savant_publication_runtime_v3') ... ERROR
+test_start_persistence_failure_reaps_original_child (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_start_persistence_failure_reaps_original_child) ... 
+  test_start_persistence_failure_reaps_original_child (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_start_persistence_failure_reaps_original_child) (runtime='checkpoint_gstreamer_publication_runtime_v3') ... ERROR
+  test_start_persistence_failure_reaps_original_child (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_start_persistence_failure_reaps_original_child) (runtime='checkpoint_openvino_gva_publication_runtime_v3') ... ERROR
+  test_start_persistence_failure_reaps_original_child (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_start_persistence_failure_reaps_original_child) (runtime='checkpoint_deepstream_publication_runtime_v3') ... ERROR
+  test_start_persistence_failure_reaps_original_child (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_start_persistence_failure_reaps_original_child) (runtime='checkpoint_savant_publication_runtime_v3') ... ERROR
+test_timeout_records_original_killed_status_before_existing_error (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_timeout_records_original_killed_status_before_existing_error) ... 
+  test_timeout_records_original_killed_status_before_existing_error (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_timeout_records_original_killed_status_before_existing_error) (runtime='checkpoint_gstreamer_publication_runtime_v3') ... ERROR
+  test_timeout_records_original_killed_status_before_existing_error (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_timeout_records_original_killed_status_before_existing_error) (runtime='checkpoint_openvino_gva_publication_runtime_v3') ... ERROR
+  test_timeout_records_original_killed_status_before_existing_error (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_timeout_records_original_killed_status_before_existing_error) (runtime='checkpoint_deepstream_publication_runtime_v3') ... ERROR
+  test_timeout_records_original_killed_status_before_existing_error (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_timeout_records_original_killed_status_before_existing_error) (runtime='checkpoint_savant_publication_runtime_v3') ... ERROR
+
+======================================================================
+ERROR: test_original_terminal_hook_uses_actual_wait_status_and_original_bytes (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_original_terminal_hook_uses_actual_wait_status_and_original_bytes) (runtime='checkpoint_gstreamer_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 33, in test_original_terminal_hook_uses_actual_wait_status_and_original_bytes
+    with mock.patch.object(runtime, "engine_process_started_v1", return_value=token) as started, mock.patch.object(runtime, "engine_process_terminal_v1") as terminal:
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'checkpoint_gstreamer_publication_runtime_v3' from '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_publication_runtime_v3.py'> does not have the attribute 'engine_process_started_v1'
+
+======================================================================
+ERROR: test_original_terminal_hook_uses_actual_wait_status_and_original_bytes (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_original_terminal_hook_uses_actual_wait_status_and_original_bytes) (runtime='checkpoint_openvino_gva_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 33, in test_original_terminal_hook_uses_actual_wait_status_and_original_bytes
+    with mock.patch.object(runtime, "engine_process_started_v1", return_value=token) as started, mock.patch.object(runtime, "engine_process_terminal_v1") as terminal:
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'checkpoint_openvino_gva_publication_runtime_v3' from '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_publication_runtime_v3.py'> does not have the attribute 'engine_process_started_v1'
+
+======================================================================
+ERROR: test_original_terminal_hook_uses_actual_wait_status_and_original_bytes (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_original_terminal_hook_uses_actual_wait_status_and_original_bytes) (runtime='checkpoint_deepstream_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 30, in test_original_terminal_hook_uses_actual_wait_status_and_original_bytes
+    pin = self._pin(runtime)
+          ^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 23, in _pin
+    return runtime._Pin(role="container_engine", path=path, fd=fd,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _Pin.__init__() missing 1 required positional argument: 'container_path'
+
+======================================================================
+ERROR: test_original_terminal_hook_uses_actual_wait_status_and_original_bytes (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_original_terminal_hook_uses_actual_wait_status_and_original_bytes) (runtime='checkpoint_savant_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 30, in test_original_terminal_hook_uses_actual_wait_status_and_original_bytes
+    pin = self._pin(runtime)
+          ^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 23, in _pin
+    return runtime._Pin(role="container_engine", path=path, fd=fd,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _Pin.__init__() missing 1 required positional argument: 'container_path'
+
+======================================================================
+ERROR: test_start_persistence_failure_reaps_original_child (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_start_persistence_failure_reaps_original_child) (runtime='checkpoint_gstreamer_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 58, in test_start_persistence_failure_reaps_original_child
+    with mock.patch.object(runtime, "engine_process_started_v1", side_effect=fail_started), mock.patch.object(runtime, "engine_process_terminal_v1") as terminal:
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'checkpoint_gstreamer_publication_runtime_v3' from '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_publication_runtime_v3.py'> does not have the attribute 'engine_process_started_v1'
+
+======================================================================
+ERROR: test_start_persistence_failure_reaps_original_child (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_start_persistence_failure_reaps_original_child) (runtime='checkpoint_openvino_gva_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 58, in test_start_persistence_failure_reaps_original_child
+    with mock.patch.object(runtime, "engine_process_started_v1", side_effect=fail_started), mock.patch.object(runtime, "engine_process_terminal_v1") as terminal:
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'checkpoint_openvino_gva_publication_runtime_v3' from '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_publication_runtime_v3.py'> does not have the attribute 'engine_process_started_v1'
+
+======================================================================
+ERROR: test_start_persistence_failure_reaps_original_child (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_start_persistence_failure_reaps_original_child) (runtime='checkpoint_deepstream_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 52, in test_start_persistence_failure_reaps_original_child
+    pin = self._pin(runtime)
+          ^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 23, in _pin
+    return runtime._Pin(role="container_engine", path=path, fd=fd,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _Pin.__init__() missing 1 required positional argument: 'container_path'
+
+======================================================================
+ERROR: test_start_persistence_failure_reaps_original_child (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_start_persistence_failure_reaps_original_child) (runtime='checkpoint_savant_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 52, in test_start_persistence_failure_reaps_original_child
+    pin = self._pin(runtime)
+          ^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 23, in _pin
+    return runtime._Pin(role="container_engine", path=path, fd=fd,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _Pin.__init__() missing 1 required positional argument: 'container_path'
+
+======================================================================
+ERROR: test_timeout_records_original_killed_status_before_existing_error (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_timeout_records_original_killed_status_before_existing_error) (runtime='checkpoint_gstreamer_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 75, in test_timeout_records_original_killed_status_before_existing_error
+    with mock.patch.object(runtime, "engine_process_started_v1", return_value=token), mock.patch.object(runtime, "engine_process_terminal_v1") as terminal:
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'checkpoint_gstreamer_publication_runtime_v3' from '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_publication_runtime_v3.py'> does not have the attribute 'engine_process_started_v1'
+
+======================================================================
+ERROR: test_timeout_records_original_killed_status_before_existing_error (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_timeout_records_original_killed_status_before_existing_error) (runtime='checkpoint_openvino_gva_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 75, in test_timeout_records_original_killed_status_before_existing_error
+    with mock.patch.object(runtime, "engine_process_started_v1", return_value=token), mock.patch.object(runtime, "engine_process_terminal_v1") as terminal:
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'checkpoint_openvino_gva_publication_runtime_v3' from '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_openvino_gva_publication_runtime_v3.py'> does not have the attribute 'engine_process_started_v1'
+
+======================================================================
+ERROR: test_timeout_records_original_killed_status_before_existing_error (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_timeout_records_original_killed_status_before_existing_error) (runtime='checkpoint_deepstream_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 72, in test_timeout_records_original_killed_status_before_existing_error
+    pin = self._pin(runtime)
+          ^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 23, in _pin
+    return runtime._Pin(role="container_engine", path=path, fd=fd,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _Pin.__init__() missing 1 required positional argument: 'container_path'
+
+======================================================================
+ERROR: test_timeout_records_original_killed_status_before_existing_error (test_publication_runtime_original_process_hooks_v1.OriginalProcessHookTests.test_timeout_records_original_killed_status_before_existing_error) (runtime='checkpoint_savant_publication_runtime_v3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 72, in test_timeout_records_original_killed_status_before_existing_error
+    pin = self._pin(runtime)
+          ^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_runtime_original_process_hooks_v1.py", line 23, in _pin
+    return runtime._Pin(role="container_engine", path=path, fd=fd,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _Pin.__init__() missing 1 required positional argument: 'container_path'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.463s
+
+FAILED (errors=12)

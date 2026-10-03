@@ -1,0 +1,101 @@
+{
+  "artifact_kind": "vast_decision25_ci_root_independent_scope_review_v1",
+  "attributes": {
+    "LF_rules": 15,
+    "additional_new_rules_not_reviewed": true,
+    "before": {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-finite-attributes-v1/before.gitattributes.raw",
+      "sha256": "79e42213435848c0819abaa92e7c3a429621205b5dc7c180bc34f85cbb0c791e",
+      "size_bytes": 11867
+    },
+    "current": {
+      "path": ".gitattributes",
+      "sha256": "4bae413de383da6ac2371e643b5b4e1d975378b2f8b8f83444055447ffab632a",
+      "size_bytes": 13456
+    },
+    "finite_rules": 22,
+    "fresh_checkout_pending": true,
+    "original_prefix_unchanged": true,
+    "raw_rules": 7,
+    "verdict": "approved finite rules only"
+  },
+  "engine_queries": 0,
+  "executed_tests": 0,
+  "hardware_acceptance": false,
+  "namespace_calls": 0,
+  "notes": [
+    "Five integration source.line values are historical descriptive coordinates; exactmethod IDs and paths remain valid. Lines do not grant authority.",
+    "Retired10 schema migration skips remain nonexecution and need final conformance disposition; they are never successes.",
+    "Two initial finite audits failed before any evidence was written because they guessed a different ZIP member name then skipped instead of the original skips key. Actual central/member inventory identified unittest-child.report.json and its skips field; failed source versions are retained, tool failures were not saved as separate raw logs.",
+    "Reviewer authored the separate CI prerequisite slice; this receipt independently reviews root-owned selection evidence/packaging/attributes."
+  ],
+  "packaging": {
+    "historical_scope": {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-sibling-packaging-v1/current-scope.v1.json",
+      "sha256": "63146780531c7fd84de8c49803e8260af6ebab46684f013139045695ce4d7490",
+      "size_bytes": 4769
+    },
+    "limitation": "Scope63146780 is the original packaging checkpoint; subsequent packaged authority repair can invalidate selected887. No current image or sibling grant is inferred.",
+    "only_two_required_modules_inserted": true,
+    "original_green": {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-sibling-packaging-v1/green-01/terminal.v1.json",
+      "sha256": "2593850e7fd0022d38d7d4e3a1fe6055ff4ae4bb1f2b5694cc991b1859abf6ec",
+      "size_bytes": 5246
+    },
+    "original_raw_stderr": {
+      "path": "artifacts/benchmark_recovery_20260930/decision25-sibling-packaging-v1/green-01/stderr.raw",
+      "sha256": "8e4adb25df56e29abbe1d8b4cb7d6d0366e676f1864c6e023f18b76643728352",
+      "size_bytes": 4731
+    },
+    "sources": [
+      {
+        "path": "deploy/deepstream/checkpoint/Dockerfile.runtime",
+        "sha256": "2235b11c12e4bd84656a986c0064200fabc964b16a42a83ea6090e70e9e3fd30",
+        "size_bytes": 7720
+      },
+      {
+        "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+        "sha256": "43b41dee019fc730704d3c176a753d0e26c8f871da59714ce97e70e9209396cc",
+        "size_bytes": 3780
+      },
+      {
+        "path": "deploy/openvino_gva/publication/Dockerfile",
+        "sha256": "594dc1f55c8249b1767324d110f84af605b4237b9589d0baa980df617919101f",
+        "size_bytes": 8291
+      },
+      {
+        "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+        "sha256": "f91760d199bf72651be9ea71bcec2effa43d0afdd7a7f89202f1885308fd6624",
+        "size_bytes": 3457
+      },
+      {
+        "path": "deploy/savant/publication/Dockerfile",
+        "sha256": "8ec0991d4af832aff22fc0699b80b8cc68725d892b99cc7376f923ffac218672",
+        "size_bytes": 7955
+      },
+      {
+        "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+        "sha256": "691feca866c3bfdd09fced300659f1f7888c2bdb298c427fa4f4204ce9eba9b4",
+        "size_bytes": 3841
+      }
+    ],
+    "tests": 23,
+    "verdict": "approved source scope only"
+  },
+  "schema_version": 1,
+  "scope": "Original9/80/10 selection evidence, six sibling COPY/allowlists and current22 finite attribute rules. No tests/discovery/engine/probe run.",
+  "selection_evidence": {
+    "allowed_existing_skips": 80,
+    "integrations": 9,
+    "manifest": {
+      "path": ".ci/integration-test-selection.v1.json",
+      "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+      "size_bytes": 31541
+    },
+    "original_a3_skips": 82,
+    "original_child_report_member": "unittest-child.report.json",
+    "original_report_sha256": "586dbca95cdd8a63b89502ab6441b189352846b651404881f38c3a5207539bad",
+    "source_attested_retired_nonexecution": 10,
+    "verdict": "Current declarations preserve exact historical skip IDs/reasons and nine physical obligations. Mandatory protection expansion is pending separate root repair."
+  }
+}

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu05-sidecar-independent-reduction-v1/reduce.py", line 120, in <module>
+    assert late['original_terminal_sha256'] == cli['sha256'] and cold['publication_ready'] is False
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

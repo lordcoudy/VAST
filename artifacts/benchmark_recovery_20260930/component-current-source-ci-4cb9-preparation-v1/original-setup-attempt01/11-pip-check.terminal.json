@@ -1,0 +1,53 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-m",
+    "pip",
+    "check"
+  ],
+  "child_reaped": true,
+  "cwd": null,
+  "elapsed_s": 0.221015201008413,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 52992,
+    "pid": 53014,
+    "ppid": 52993,
+    "startticks": 29012108,
+    "state": "R",
+    "uid": 1000
+  },
+  "returncode": 0,
+  "started_at_ns": 1790807806531040910,
+  "stderr": {
+    "epoch7": [
+      69,
+      2533274792816180,
+      33279,
+      1,
+      0,
+      1790807806529527500,
+      1790807806529527500
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-4cb9-preparation-v1/original-setup-attempt01/11-pip-check.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "epoch7": [
+      69,
+      4503599629790771,
+      33279,
+      1,
+      30,
+      1790807806713925700,
+      1790807806713925700
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-4cb9-preparation-v1/original-setup-attempt01/11-pip-check.stdout.raw",
+    "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "size_bytes": 30
+  }
+}

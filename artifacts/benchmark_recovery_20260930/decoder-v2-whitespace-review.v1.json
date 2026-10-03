@@ -1,0 +1,14 @@
+{
+  "kind": "vast_decoder_v2_preserved_binding_diff_whitespace_review_v1",
+  "path": "artifacts/benchmark_recovery_20260930/decoder-research-v2-binding-review/binding-only.diff",
+  "physical_and_index_sha256": "484372591278d1fcf4906d4bda59de7330e5d3daae753caca5726dde1ca20325",
+  "warning_count": 3,
+  "warning_lines": [
+    10,
+    13,
+    25
+  ],
+  "decision": "Preserve original unified diff context blank-space lines. All other staged artifact-v2 code/test/fixture/review paths pass the CR-aware whitespace check. No behavior/test/build check is waived.",
+  "research_attempt02_started": false,
+  "benchmark_complete": false
+}

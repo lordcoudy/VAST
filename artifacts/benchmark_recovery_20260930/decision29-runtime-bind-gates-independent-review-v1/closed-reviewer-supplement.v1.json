@@ -1,0 +1,86 @@
+{
+  "accepted_review": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/review.v3.json",
+    "sha256": "524f12a1b3aabbabc39b580e8ed4b7ee3e56dd82bf9f3f8381dc8a9fc147203d",
+    "size_bytes": 26021
+  },
+  "artifact_kind": "closed_runtime_bind_prerequisite_reviewer_supplement_v1",
+  "full_CI_acceptance": false,
+  "late_companion_absent": true,
+  "later_two_reviewer_scans": [
+    {
+      "errors": [],
+      "members": [],
+      "monotonic_ns": 512692317981554,
+      "original_PID_absent": {
+        "7541": true,
+        "7580": true,
+        "7596": true
+      }
+    },
+    {
+      "errors": [],
+      "members": [],
+      "monotonic_ns": 512692319526633,
+      "original_PID_absent": {
+        "7541": true,
+        "7580": true,
+        "7596": true
+      }
+    }
+  ],
+  "limits": [
+    "Only the exact scoped prerequisite gates passed; original failed localD remains failed",
+    "Original fresh95 producer full-byte proof was joined; only current named95 epochs rechecked here",
+    "No global process absence or unobserved original outer-timeout PID is invented",
+    "The scanner PID is alive during this receipt; its completion is the original metadata tool EOF/exit, not a claimed self-absence"
+  ],
+  "metadata_scanner_FD_after": 6,
+  "metadata_scanner_FD_before": 6,
+  "new95_bytes_rehashed_by_reviewer": false,
+  "original_metadata_tool": "b9a3f4 exit0",
+  "original_reader_PID": 7596,
+  "originals_mutated": false,
+  "preserved_initial_failures": [
+    {
+      "cause": "Single pread incorrectly expected a full127794 bytes; observed65512 short read; legitimate bounded loop required",
+      "original_PID": 7541,
+      "receipt": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/review.v1.json",
+        "sha256": "948567cd39b831a8a59f8673325d6e3d8d16ce0d8d4f6fc716be29a903a1e86c",
+        "size_bytes": 7276
+      },
+      "source": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/review_closed_gates_v1.py",
+        "sha256": "9863691362561f154df6a4de520ec2bc1a928e262b05bf28929a809325d43c4c",
+        "size_bytes": 12794
+      }
+    },
+    {
+      "cause": "Artifact-only output-version replacement also changed original input filename; original path restored in v3",
+      "original_PID": 7580,
+      "receipt": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/review.v2.json",
+        "sha256": "b3ac5257a8431d3b19f908fc5a83e0e83d0fb3b41da6e7a036e727eb7dc70d95",
+        "size_bytes": 6957
+      },
+      "source": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/review_closed_gates_v2.py",
+        "sha256": "7d70bfc457e1c9ec0a522c6acac77f759afb123ace796839724e1fc3e6ef05bb",
+        "size_bytes": 13073
+      }
+    }
+  ],
+  "reader_FD_after": 6,
+  "reader_FD_before": 6,
+  "reader_elapsed_s": 0.05942212895024568,
+  "reader_handles_released": true,
+  "review_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/review_closed_gates_v3.py",
+    "sha256": "45f30509a009719dcf7769f9dcd39abb900f54649e3c5cf48a12abb51250264f",
+    "size_bytes": 13073
+  },
+  "schema_version": 1,
+  "status": "closed_scoped_pass",
+  "tests_or_audits_rerun": false
+}

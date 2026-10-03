@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "/usr/bin/docker",
+    "container",
+    "inspect",
+    "--format",
+    "{\"Id\":{{json .Id}},\"Name\":{{json .Name}},\"Image\":{{json .Image}},\"Created\":{{json .Created}},\"Running\":{{json .State.Running}},\"OOMKilled\":{{json .State.OOMKilled}},\"ExitCode\":{{json .State.ExitCode}},\"Pid\":{{json .State.Pid}},\"StartedAt\":{{json .State.StartedAt}},\"FinishedAt\":{{json .State.FinishedAt}},\"Operation\":{{json (index .Config.Labels \"vast.operational-custody\")}}}",
+    "81f65def164e822f5edc84f977e4e4f619b6c02617a1a27f4e7e64979842ad03"
+  ],
+  "returncode": 1,
+  "started_at_ns": 1790727963064602724,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/engine_03.stderr",
+    "sha256": "ce27d5236f75d11bccff470edda6fae3e5ba2323c5c0bfefd5c9a316dc3216a7",
+    "size_bytes": 112
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/engine_03.stdout",
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "size_bytes": 1
+  },
+  "terminal_at_ns": 1790727963085411180
+}

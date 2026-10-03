@@ -1,0 +1,376 @@
+--- immutable-v3/controller.py
++++ artifact-v4/controller.py
+@@ -20,7 +20,7 @@
+ from research_protocol import (CHANNEL_MAX, Evidence, METADATA_MAX, Pin, ResearchError,
+     canonical, epoch, owner, physical_descriptor, post_receipt_deadline, require, strict_object, verify_seal)
+ 
+-PLANNING_COMMIT = 'a84e0e734678aa9ecc9e0a4f16dcc3036c5c8f02'
++PLANNING_COMMIT = '8a0bdb4b4ed1a09593ab054537766c0970d722df'
+ IMAGE_ID = 'sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a'
+ DAEMON_ID = 'aa8f3d33-e1dc-4ed2-ad06-488b46b332d0'
+ ENGINE_SHA = 'a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d'
+--- immutable-v3/guest_consumer.py
++++ artifact-v4/guest_consumer.py
+@@ -19,6 +19,7 @@
+     LineReader, METADATA_MAX, MISSING, PAYLOAD_MAX, Pin, RAW_MAX, ResearchError, canonical,
+     compare_outputs, decoder_timings, active_rgb_digest, owner, physical_descriptor, read_line,
+     post_receipt_deadline, require, seal, strict_object, verify_seal)
++from research_protocol import read_process_maps, mapped_library_rows
+ 
+ FIXED_ORDER = [('front_gate', 'default'), ('front_gate', 'zero'),
+     ('underbody', 'zero'), ('underbody', 'default')]
+@@ -57,7 +58,7 @@
+         self.plan_pin = Pin(plan_path, maximum=METADATA_MAX, deadline=self.phase_deadline)
+         self.plan = verify_seal(strict_object(os.pread(self.plan_pin.fd, METADATA_MAX, 0), METADATA_MAX))
+         require(self.plan['artifact_kind'] == 'vast_decoder_research_plan_v1' and
+-            self.plan['planning_commit'] == 'a84e0e734678aa9ecc9e0a4f16dcc3036c5c8f02', 'unreviewed research plan')
++            self.plan['planning_commit'] == '8a0bdb4b4ed1a09593ab054537766c0970d722df', 'unreviewed research plan')
+         require(self.plan['fixed_order'] == [list(x) for x in FIXED_ORDER], 'fixed four-run order differs')
+         require(type(self.plan['guest_prelaunch_budget_s']) in (float,int) and
+             0 < self.plan['guest_prelaunch_budget_s'] <= 120, 'guest shared-prelaunch budget invalid')
+@@ -69,16 +70,18 @@
+         self.active_abort = None
+         self.pins = [self.plan_pin]
+         self.packages = {}
++        self.mapping_snapshot_count = 0
++        self.last_mapped_inputs = None
+         self.media = {}
+         self.runs = []
+         self.Gst = self.GstVideo = None
+         self.failure_stage = 'preflight_inputs'
+ 
+-    def pin(self, path, expected=None):
++    def pin(self, path, expected=None, *, mapped_identity=None):
+         resolved = str(Path(path).resolve(strict=True))
+         if resolved not in self.packages:
+             try:
+-                pin = Pin(resolved, expected, deadline=self.phase_deadline)
++                pin = Pin(resolved, expected, deadline=self.phase_deadline, mapped_identity=mapped_identity)
+             except BaseException as exc:
+                 facts = getattr(exc, 'pin_rejection', None)
+                 if facts is not None:
+@@ -86,20 +89,50 @@
+                 raise
+             self.pins.append(pin)
+             self.packages[resolved] = pin
+-        elif expected is not None:
+-            require(self.packages[resolved].descriptor['sha256'] == expected['sha256'], 'pin expected SHA differs')
++        else:
++            pin = self.packages[resolved]
++            pin.verify()
++            info = os.fstat(pin.fd)
++            if mapped_identity is None:
++                require(info.st_nlink == 1, 'pin is not a bounded single-link regular file')
++            else:
++                require(type(mapped_identity) is tuple and len(mapped_identity) == 2 and
++                    all(type(value) is int for value in mapped_identity) and
++                    mapped_identity[0] >= 0 and mapped_identity[1] > 0, 'invalid original mapped identity')
++                named = pin.path.lstat()
++                require((info.st_dev, info.st_ino) == mapped_identity == (named.st_dev, named.st_ino),
++                    'mapped input identity differs')
++            if expected is not None:
++                require(pin.descriptor['sha256'] == expected['sha256'], 'pin expected SHA differs')
+         return self.packages[resolved]
+ 
++    def mapped_library_pins(self, pid, selectors):
++        raw = read_process_maps(pid)
++        identities, rows = mapped_library_rows(raw, selectors)
++        self.mapping_snapshot_count += 1
++        snapshot = self.metadata.document(f'mapped-inputs-{self.mapping_snapshot_count:02d}.v1.json', {
++            'artifact_kind': 'vast_decoder_research_original_mapped_inputs_v1', 'process': owner(pid),
++            'proc_path': f'/proc/{pid}/maps', 'observed_at_ns': time.time_ns(),
++            'snapshot_size_bytes': len(raw), 'snapshot_sha256': hashlib.sha256(raw).hexdigest(),
++            'selectors': selectors, 'selected_original_rows': rows,
++            'limitation': 'original backing-file identity, not mapped memory bytes',
++            'accepted': False, 'publication_ready': False})
++        self.last_mapped_inputs = snapshot
++        libraries = []
++        for path in sorted(identities):
++            try:
++                libraries.append(self.pin(path, mapped_identity=identities[path]).descriptor)
++            except BaseException as exc:
++                facts = getattr(exc, 'pin_rejection', None)
++                if facts is not None:
++                    facts['mapping_snapshot'] = snapshot
++                    facts['original_mapping_row'] = next(row for row in rows if row['path'] == path)
++                raise
++        return libraries
++
+     def loaded_pins(self):
+-        paths = set()
+-        for line in Path('/proc/self/maps').read_text().splitlines():
+-            fields = line.split()
+-            if len(fields) >= 6 and fields[-1].startswith('/') and any(s in fields[-1]
+-                    for s in ('libgst', 'libglib', 'libgobject', 'libgirepository', '_gi.',
+-                        'libcuda', 'libnvcuvid', 'libnvidia')):
+-                paths.add(fields[-1])
+-        for path in sorted(paths):
+-            self.pin(path)
++        self.mapped_library_pins(os.getpid(), ('libgst', 'libglib', 'libgobject', 'libgirepository', '_gi.',
++            'libcuda', 'libnvcuvid', 'libnvidia'))
+         return [self.packages[path].descriptor for path in sorted(self.packages)]
+ 
+     def drain(self, fd, evidence, name, aborted, failure):
+@@ -312,7 +345,8 @@
+             run_stage = 'pipeline_created.loaded_pins'
+             evidence.event('pipeline_created', text=PIPELINE, setting=setting,
+                 property_default_readback=default, property_readback=decoder.get_property('max-display-delay'),
+-                default_was_unset=setting == 'default', packages=self.loaded_pins())
++                default_was_unset=setting == 'default', packages=self.loaded_pins(),
++                mapped_inputs=self.last_mapped_inputs)
+             def probe(pad, info, phase):
+                 observed = time.monotonic_ns()
+                 try:
+@@ -417,15 +451,9 @@
+                 require(not abort.is_set() and process.poll() is None and time.monotonic() < startup_deadline,
+                     'source READY startup failure/deadline')
+             require(time.monotonic() < startup_deadline, 'source READY arrived beyond45s startup')
+-            source_libraries = []
+-            maps_raw = Path(f'/proc/{process.pid}/maps').read_bytes()
+-            require(len(maps_raw) <= CHANNEL_MAX, 'source process maps cap')
+-            for line in maps_raw.decode().splitlines():
+-                fields = line.split()
+-                if len(fields) >= 6 and fields[-1].startswith('/') and any(s in fields[-1]
+-                        for s in ('libgst', 'libglib', 'libgobject')):
+-                    source_libraries.append(self.pin(fields[-1]).descriptor)
+-            evidence.event('actual_source_loaded_libraries', libraries=source_libraries)
++            source_libraries = self.mapped_library_pins(process.pid, ('libgst', 'libglib', 'libgobject'))
++            evidence.event('actual_source_loaded_libraries', libraries=source_libraries,
++                mapped_inputs=self.last_mapped_inputs)
+             mono = time.monotonic_ns()
+             realtime = time.time_ns()
+             future_mono = mono + 2_000_000_000
+--- immutable-v3/research_protocol.py
++++ artifact-v4/research_protocol.py
+@@ -6,6 +6,7 @@
+ import json
+ import os
+ from pathlib import Path
++import re
+ import select
+ import stat
+ import struct
+@@ -89,14 +90,21 @@
+ 
+ class Pin:
+     """Keep the actual file and every resolved ancestor's identity until close."""
+-    def __init__(self, path, expected=None, maximum=2 * 1024 * 1024 * 1024, deadline=None):
++    def __init__(self, path, expected=None, maximum=2 * 1024 * 1024 * 1024, deadline=None, *, mapped_identity=None):
+         self.deadline = deadline
+         self.path = None
+         self.fd = None
+         self.directories = []
+         info = None
++        mapped_named_info = None
+         stage = 'resolve'
+         try:
++            if mapped_identity is not None:
++                stage = 'mapped_identity'
++                require(type(mapped_identity) is tuple and len(mapped_identity) == 2 and
++                    all(type(value) is int for value in mapped_identity) and
++                    mapped_identity[0] >= 0 and mapped_identity[1] > 0, 'invalid original mapped identity')
++            stage = 'resolve'
+             self.path = Path(path).resolve(strict=True)
+             stage = 'open'
+             self.fd = os.open(self.path, os.O_RDONLY | os.O_NOFOLLOW)
+@@ -107,8 +115,16 @@
+                 self.directories.append((parent, fd, (ancestor_info.st_dev, ancestor_info.st_ino, ancestor_info.st_mode)))
+             stage = 'fstat_predicate'
+             info = os.fstat(self.fd)
+-            require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1 and info.st_size <= maximum,
+-                'pin is not a bounded single-link regular file')
++            if mapped_identity is None:
++                require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1 and info.st_size <= maximum,
++                    'pin is not a bounded single-link regular file')
++            else:
++                require(stat.S_ISREG(info.st_mode) and info.st_nlink > 0 and info.st_size <= maximum,
++                    'mapped pin is not a bounded positive-link regular file')
++                stage = 'mapped_identity_join'
++                mapped_named_info = self.path.lstat()
++                require((info.st_dev, info.st_ino) == mapped_identity ==
++                    (mapped_named_info.st_dev, mapped_named_info.st_ino), 'mapped input identity differs')
+             self.initial_epoch = epoch(info)
+             stage = 'digest_and_descriptor'
+             self.descriptor = {'path': str(self.path), 'size_bytes': info.st_size,
+@@ -125,6 +141,7 @@
+                 facts = {'requested_path': os.fspath(path),
+                     'resolved_path': None if self.path is None else str(self.path), 'pin_stage': stage,
+                     'maximum_size_bytes': maximum, 'fstat': _pin_stat(info),
++                    'mapped_identity': mapped_identity, 'mapped_named_lstat': _pin_stat(mapped_named_info),
+                     'observed_at_ns': time.time_ns(), 'unavailable': {},
+                     'predicate_results': None if info is None else {'regular_file': stat.S_ISREG(info.st_mode),
+                         'single_link': info.st_nlink == 1, 'within_size_cap': info.st_size <= maximum}}
+@@ -170,6 +187,40 @@
+         for _, fd, _ in getattr(self, 'directories', []):
+             os.close(fd)
+         self.directories = []
++
++
++def read_process_maps(pid):
++    with Path(f'/proc/{pid}/maps').open('rb') as file:
++        raw = file.read(CHANNEL_MAX + 1)
++    require(len(raw) <= CHANNEL_MAX, 'original process maps1MiB cap exceeded')
++    return raw
++
++
++def mapped_library_rows(raw, selectors):
++    require(type(raw) is bytes and len(raw) <= CHANNEL_MAX, 'original process maps1MiB cap exceeded')
++    identities, aliases, selected = {}, {}, []
++    for line in raw.decode('utf8').splitlines():
++        fields = line.split(None, 5)
++        if len(fields) < 6:
++            require(not ('/' in line and any(s in line for s in selectors)), 'malformed selected mapped row')
++            continue
++        if not fields[5].startswith('/') or not any(s in fields[5] for s in selectors):
++            continue
++        path = fields[5]
++        require(not path.endswith(' (deleted)') and '\\012' not in path and '\x00' not in path,
++            'deleted or ambiguous selected mapped pathname')
++        require(re.fullmatch('[0-9a-fA-F]+:[0-9a-fA-F]+', fields[3]) is not None and
++            re.fullmatch('[0-9]+', fields[4]) is not None, 'malformed selected mapped identity')
++        major, minor = (int(value, 16) for value in fields[3].split(':'))
++        identity = (os.makedev(major, minor), int(fields[4]))
++        require(identity[1] > 0, 'selected mapped inode absent')
++        resolved = str(Path(path).resolve(strict=True))
++        for mapping, key in ((identities, path), (aliases, resolved)):
++            require(key not in mapping or mapping[key] == identity, 'conflicting selected mapped identity')
++            mapping[key] = identity
++        selected.append({'original_row': line, 'path': path, 'resolved_path': resolved,
++            'mapped_identity': identity})
++    return identities, selected
+ 
+ 
+ def physical_descriptor(path):
+--- immutable-v3/test_pin_diagnostics_v3.py
++++ artifact-v4/test_pin_diagnostics_v3.py
+@@ -1,4 +1,4 @@
+-"""Real files, mappings and FDs; pipeline fixture only, no GI/decoder/source acceptance."""
++"""Real files/maps/FDs; inner tests inject a strict-default collector fault, no GI/decoder."""
+ import hashlib
+ import json
+ import mmap
+@@ -132,9 +132,19 @@
+         guest.packages = {str(media): self.media_pin}
+         guest.pins = [self.media_pin]
+         guest.runs = []
++        guest.metadata = p.Evidence(output / 'metadata', p.METADATA_MAX // 2)
++        guest.metadata.close()
++        guest.mapping_snapshot_count = 0
++        guest.last_mapped_inputs = None
++        original_pin = guest.pin
++        def default_policy_fault(path, expected=None, *, mapped_identity=None):
++            # V4 correctly allows this actual mapping; force the strict default to test the old first-error contract.
++            return original_pin(path, expected)
++        guest.pin = default_policy_fault
+         self.clip = {'role': 'front_gate'}
+ 
+     def tearDown(self):
++        self.g.metadata.close()
+         for pin in self.g.pins:
+             pin.close()
+         self.mapping.close()
+@@ -145,6 +155,7 @@
+         before = fd_count()
+         with self.assertRaisesRegex(p.ResearchError, 'original research run failed'):
+             self.g.run(1, self.clip, 'default')
++        self.g.metadata.close()
+         self.assertEqual(fd_count(), before)
+         self.assertEqual(self.g.runs, [])
+         directory = self.g.output / 'run-01-front_gate-default'
+--- immutable-v3/README.md
++++ artifact-v4/README.md
+@@ -1,19 +1,32 @@
+-Artifact-v3 applies decision19 at exact a84e0e734678aa9ecc9e0a4f16dcc3036c5c8f02,
+-reviewed in PR comment5904141981 before implementation. V1/v2 and original failed
+-attempt01/02 remain immutable. This directory has no dispatch authorization by itself.
+-
+-The only behavior addition is bounded original Pin-rejection/inner-failure evidence.
+-Regular-file/single-link/size/identity/hash predicates, source protocol, pipeline,
+-properties, cadence, fixed four runs/32 AUs, clock and byte caps remain unchanged.
+-The first original run error survives cleanup; capture failure is itself nonaccepting.
+-Future attempt03 requires exact final code review, commit/PR record and root dispatch.
+-
+-The inherited v2 setup and output contract follows; historical review/test receipts
+-remain evidence only for their recorded snapshots. No v3 hardware run has occurred.
+-The original v2 attempt02 failed at the strict Pin predicate after pipeline creation,
+-before source launch. Its rejected path/type/link count/size were not retained; v3
+-does not infer any of them or relax the predicate. V2's reviewed setup behavior and
+-35-test receipt remain historical evidence, not a v3 hardware or science result.
++Artifact-v4 applies reviewed decision20 at planning8a0bdb4b4ed1a09593ab054537766c0970d722df,
++PR comment5905513846. Decision21 is a CI-only planning amendment; the mapped-input
++behavior remains reviewed decision20. The47-test behavioral receipt records the
++prebinding065 snapshot, with no functional rerun required for these literals. Immutable v1-v3 and failed original attempts01-03 stay unchanged.
++No launch authorization is implied by these files. Future attempt04 requires exact final
++source/dispatcher review, commit/PR record and explicit once-only root dispatch.
++
++Original attempt03 identified a regular187984B libcuda.so.1 with4hardlinks. V4 changes
++only mapped-library input identity: keyword-only mapped_identity=None keeps the strict
++single-link default; an exact observed device/inode tuple permits positive links only
++for existing selected process-map library inputs. Actual held/named identities must
++match before hash. Full epochs including nlink, size, hash, ancestor FDs, O_NOFOLLOW,
++expected descriptors and reread checks remain; later link-count changes still fail.
++Cached mapped pins cannot supply an allowance to default callers. Code, plans, media,
++CID files and evidence retain the strict default. No pathname/count4 special case exists.
++
++Both original guest/source-PID collectors use the same bounded1MiB+one-sentinel maps
++reader and parser. Selected rows preserve original text and actual process identity,
++snapshot digest and observed device/inode in bounded metadata. Repeated-path and
++resolved-alias identities must agree; malformed/deleted/ambiguous/absent backing names
++fail. This observes backing-file identity, not mapped memory contents. Existing metadata
++and16KiB first-failure caps remain; recording overflow never authorizes continuation.
++
++First-failure tests retain an explicit strict-default collector fault fixture so the
++old primary/cap/persistence behavior remains tested; the new mapped-input tests use
++real hardlinks/mmap and a genuine small CPython child. No installed GI, decoder, source,
++Docker daemon or model is exercised by these fixtures. V3's34-test and v2's35-test receipts
++remain historical evidence only. Pipeline/properties/wire/cadence/four32/cohorts and
++600/120/45/10/15s plus byte/cleanup caps remain unchanged.
+ 
+ CID publication is observed through one held inode. Missing/0-63B valid prefixes
+ remain pending; complete64hex/optionalLF is stable and pinned, also after fast CLI
+@@ -31,7 +44,7 @@
+ Upstream1.28.2 also acceptsNone; the failed original packaged call stays unproven.
+ No pipeline, source cadence, cohort, library, image or numeric research cap changes.
+ 
+-Focused v3 tests exercise actual hardlinks, file types/sizes, symlinks, inode replacement,
++Focused mapped-input tests additionally exercise actual hardlinks, file types/sizes, symlinks, inode replacement,
+ real `/proc/self/maps` selection, first-stack retention, FD cleanup, exclusive write
+ collision, the16KiB diagnostic cap and an actual read-only-FD write failure. They use
+ an explicitly synthetic pipeline, with no GI/decoder/source launch. The original20
+@@ -40,14 +53,14 @@
+ two real15s outer-boundary tests are not repeated merely for this diagnostic change.
+ 
+ Artifact-only decoder mechanism experiment for reviewed planning commit
+-`a84e0e734678aa9ecc9e0a4f16dcc3036c5c8f02` (PR comment5904141981).
++`8a0bdb4b4ed1a09593ab054537766c0970d722df` (PR comment5905513846).
+ No production runtime source, image, model, guardian or benchmark authority is changed.
+-Original attempt01/02 failed during setup and retained no source/decoder cohort. V3
+-attempt03 has not been started. Root and independent controller review, then a separate
++Original attempts01-03 failed during setup and retained no source/decoder cohort. V4
++attempt04 has not been started. Root and independent controller review, then a separate
+ exact dispatch authorization, must finish before executing this command once:
+ 
+ ```
+-/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v3/controller.py --project-root /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec --output-dir /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-attempt-03
++/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v4/controller.py --project-root /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec --output-dir /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-attempt-04
+ ```
+ 
+ The exclusively created output directory consumes that attempt. An existing directory
+@@ -63,7 +76,7 @@
+ The original output layout is fixed:
+ 
+ ```
+-decoder-research-attempt-03/
++decoder-research-attempt-04/
+   controller/
+     execution-plan.v1.json
+     reservation.v1.json
+@@ -179,7 +192,7 @@
+ and engine-fixture processes, exact reap/remove/absence ordering and setup metadata/
+ traceback limits. They do not import installed GI or execute the packaged source,
+ Docker daemon or decoder, and do not grant engine/socket or research acceptance.
+-V3 focused original receipts are retained under `decoder-research-v3-focused-tests/`.
++V4 focused original receipts are retained under `decoder-research-v4-focused-tests/`.
+ Historical v2 receipts are retained under `decoder-research-v2-focused-tests/`;
+ attempt01 is the preserved32/33 failure before the publication-settle budget
+ correction; attempt02 is the earlier33-test green snapshot. Attempt03 preserves the

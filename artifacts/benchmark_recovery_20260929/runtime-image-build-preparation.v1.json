@@ -1,0 +1,203 @@
+{
+  "artifact_kind": "vast_read_only_runtime_image_build_preparation_v1",
+  "authority_inputs": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/native-a/native_probe.freeze.json",
+      "sha256": "901e5e3188fae6867b6dbb29b723cfccab1f9133e91715a7055afa30e284fce6",
+      "size_bytes": 6094
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/native-b/native_probe.freeze.json",
+      "sha256": "901e5e3188fae6867b6dbb29b723cfccab1f9133e91715a7055afa30e284fce6",
+      "size_bytes": 6094
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+      "sha256": "ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96",
+      "size_bytes": 3963
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/publication_image_build_v1.json",
+      "sha256": "c13f12001048471e20400e5a0bb37df5efa01e6c936772ae9aaea5de548a6b22",
+      "size_bytes": 4953
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/publication_qualification_image_refreeze_v1.json",
+      "sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+      "size_bytes": 12401
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_publication_runtime_images_after_refreeze_v1.py",
+      "sha256": "78cba98af399779f49cc840f87d9591aa70784b88f2f3f366d746870eeed903f",
+      "size_bytes": 13089
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "sha256": "f67847932047a8668af196732b626ebb15c02291f0896db190846791c48e2616",
+      "size_bytes": 3656
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/deepstream/checkpoint/Dockerfile.runtime",
+      "sha256": "04602cce368fa74b80ec2b88fd16af5463d711d05a0df372acf006e8fdc119f8",
+      "size_bytes": 7588
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_deepstream_publication_runtime_v3.sh",
+      "sha256": "a21f29f455c803154713f7825795fbf821d6abc8bb645e3552aa6dd1049e6d3a",
+      "size_bytes": 6302
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/runtime-source-allowlist.txt",
+      "sha256": "7bcd8019d027682d1b8040aa5257aa8e476d6a629e943c628deb7b460b2d9bc6",
+      "size_bytes": 3717
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/Dockerfile",
+      "sha256": "60761a018ced6561ae190cdac11866d8b0ea5962bd7e4f927262f2593100ee0f",
+      "size_bytes": 7823
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_savant_publication_runtime_v3.sh",
+      "sha256": "9ff46e6aabea8ddb082255b504cdfce1a8d400b743ff11460866ab2d2214b437",
+      "size_bytes": 7694
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "sha256": "e042a9423a8e28b3caaba0bd18a6e6e2dfeea367a293dff6edb4704f9f97e590",
+      "size_bytes": 3333
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/openvino_gva/publication/Dockerfile",
+      "sha256": "a8397f9a3e9eb9b5a67ff91b57800694910f9e599ac5b43bb54cb9341933e4b6",
+      "size_bytes": 8159
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_openvino_gva_publication_runtime_v3.sh",
+      "sha256": "0a0e51e5271768be52f1937c7d65cfa2e23f25ac51707ec224f2d160bee43401",
+      "size_bytes": 9478
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "sha256": "691ea8a474fe1ce2653cf40246f3bd9ea3c0c2d9ea62c1f86c18825364f9e538",
+      "size_bytes": 3414
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/Dockerfile",
+      "sha256": "8e50a76ad65566ecc68318f01f55332be2e59a411b409b399e8f990f83046682",
+      "size_bytes": 8037
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_gstreamer_custom_publication_runtime_v3.sh",
+      "sha256": "dfd5412560adeb9002cd137f64d2e98a99fee9ec25f9d00ef2247b5d22dfa73c",
+      "size_bytes": 8668
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt",
+      "sha256": "c63c495e89b109abca372f1b43047ed989f0e5a95779b9004e47ce657635f3c2",
+      "size_bytes": 670
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/deepstream/checkpoint/requirements.lock",
+      "sha256": "3a72778f6b2bbb4f81fc3fa63330d5da557e38a655da6f86f0daf5d8242ebdcb",
+      "size_bytes": 735
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt",
+      "sha256": "f4655c4dbd7eee1da21267a9e3f08cbddc4a18d8e69fda2a8a0fcc4898119072",
+      "size_bytes": 589
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/gstreamer_custom/publication/requirements.lock",
+      "sha256": "e5ac36aa2ad9cbd78636a2a317d4c19ac04392124e7f70ad8936f0a6472642ef",
+      "size_bytes": 554
+    }
+  ],
+  "build_argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_publication_runtime_images_after_refreeze_v1.py",
+    "build",
+    "--project-root",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "--native-receipt",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/native-a/native_probe.freeze.json",
+    "--artifact-dir",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/runtime-images"
+  ],
+  "executed": false,
+  "handoff_error": null,
+  "handoff_pure_validation": {
+    "artifact_dir": "artifacts/benchmark_recovery_20260929/native-diagnostic-adapter",
+    "artifact_kind": "vast_publication_runtime_image_refreeze_handoff_plan_v1",
+    "build_registry_sha256": "c13f12001048471e20400e5a0bb37df5efa01e6c936772ae9aaea5de548a6b22",
+    "native_probe_receipt_sha256": "26705bb069d0e8190d3bb0ad217a98b623a29b5a37350abbd98f396849573c69",
+    "refreeze_registry_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+    "runtime_builds": [
+      {
+        "command": [
+          "/usr/bin/bash",
+          "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_deepstream_publication_runtime_v3.sh"
+        ],
+        "environment": {
+          "VAST_DEEPSTREAM_BASE_IMAGE_ID": "sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+        },
+        "system": "deepstream"
+      },
+      {
+        "command": [
+          "/usr/bin/bash",
+          "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_savant_publication_runtime_v3.sh"
+        ],
+        "environment": {
+          "VAST_SAVANT_BASE_IMAGE_ID": "sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6",
+          "VAST_SAVANT_NATIVE_PROBE_IMAGE": "vast/savant-native-probe:0.5.17-7.0",
+          "VAST_SAVANT_NATIVE_PROBE_IMAGE_ID": "sha256:1db529d2d35a875b35d36e9a764a52a8f41a3ed419e4341f096ac7c2aeaf6185",
+          "VAST_SAVANT_NATIVE_PROBE_SOURCE_SHA256": "c82559189b544d144e25fb88339d2e91fe110cf3f3ba86551e491c5933a17c94",
+          "VAST_SAVANT_RUNTIME_IMAGE_MANIFEST": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260929/native-diagnostic-adapter/savant.runtime_image.materialized.v3.json"
+        },
+        "system": "savant"
+      },
+      {
+        "command": [
+          "/usr/bin/bash",
+          "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_openvino_gva_publication_runtime_v3.sh"
+        ],
+        "environment": {
+          "VAST_OPENVINO_NATIVE_PROBE_IMAGE": "vast/openvino-native-probe:dlstreamer-2026.1",
+          "VAST_OPENVINO_NATIVE_PROBE_IMAGE_ID": "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c"
+        },
+        "system": "openvino_gva"
+      },
+      {
+        "command": [
+          "/usr/bin/bash",
+          "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/build_gstreamer_custom_publication_runtime_v3.sh"
+        ],
+        "environment": {
+          "VAST_OPENVINO_NATIVE_PROBE_IMAGE": "vast/openvino-native-probe:dlstreamer-2026.1",
+          "VAST_OPENVINO_NATIVE_PROBE_IMAGE_ID": "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c"
+        },
+        "system": "gstreamer_custom"
+      }
+    ],
+    "schema_version": 1
+  },
+  "historical_native_receipts_identical": true,
+  "limits": [
+    "No image build, container, service, benchmark, model workload or source mutation was executed by this preparation.",
+    "Pure handoff target was an existing evidence directory for validation only; the build argv uses the distinct fresh proposed directory."
+  ],
+  "preconditions": [
+    "Create one new physical artifact directory and retain original stdout/stderr/terminal observation; do not invoke historical g build scripts whose output paths are occupied.",
+    "Use the same pinned CLI/socket daemon and recheck resource/foreign-process state before building; Docker CLI return does not prove model acceptance.",
+    "Four stock builders perform two deterministic builds per image, compare image IDs and embedded bytes, and run their stock packaged regressions/help checks; no independent replacement engine.",
+    "Do not rebuild three native probes or two analytics workers if their exact source/dependency closure and producer receipts remain unchanged.",
+    "After builds renew actual runtime image projections and host contract source pins, source inventory/full execution closure, fresh 480/32 model parity authority and current candidate/index/transaction/bootstrap/preprocessing inputs before new guardian/runtime bundles.",
+    "Then prepare two original diagnostic operation sources per CPU/GPU context, original guardian authority and all32 stock bundles; invoke the new diagnostic adapter once per original, stop original guardian, cold reconcile complete operational identities; do not infer acceptance from adapter outcome."
+  ],
+  "proposed_artifact_dir": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/runtime-images",
+  "proposed_dir_currently_absent": true,
+  "publication_ready": false,
+  "schema_version": 1,
+  "source_graph_state": "provisional until root finalizes all owned host and source coverage changes"
+}

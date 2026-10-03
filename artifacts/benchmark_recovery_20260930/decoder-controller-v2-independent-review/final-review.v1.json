@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_independent_decoder_v2_final_source_review_v1",
+  "created_at_utc": "2026-09-30T03:37:16.683566+00:00",
+  "reviewer": "/root/adversarial_review",
+  "planning_commit": "47e432f2b5c09f750a55f7eb0164d84cc4d7e658",
+  "review_reference": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5903081964",
+  "disposition": "pass_source_scope_pending_final_exact_binding_commit_PR_and_physical_preflight",
+  "files": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/controller.py",
+      "size_bytes": 36891,
+      "sha256": "336d7ac77f3f793e1c50630180eb47fe1349e375736fd56346342588303a4a59"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/guest_consumer.py",
+      "size_bytes": 46887,
+      "sha256": "3039a880a5e30fc92a1876367d0ea273c8f28d4344fce17b67e09bc1b1ba9adf"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/research_protocol.py",
+      "size_bytes": 21298,
+      "sha256": "fcb8a16bbb100fa13c3ff5584913d318f25f95a8205751107790be5086b02c63"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/test_research_protocol.py",
+      "size_bytes": 17449,
+      "sha256": "2dbcec646c9d641f93ccbac4b633ad3513f5e2eb37161f6f9abdb39717255a45"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/test_setup_v2.py",
+      "size_bytes": 17070,
+      "sha256": "f2b44bb02e30abfa502d61dcd754900149a009d62b51f7558839c9a760a79f23"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v2/README.md",
+      "size_bytes": 10379,
+      "sha256": "4ef4720990209f9ad13db693257977a459d6305dd1b6fac29c132b6d51f16a6f"
+    }
+  ],
+  "focused_receipt": {
+    "path": "artifacts/benchmark_recovery_20260930/decoder-research-v2-focused-tests/attempt-04/terminal.v1.json",
+    "size_bytes": 5239,
+    "sha256": "d39ec97b8e32bf9a4a144d85fd010853fb77cebb2a63673a46a622bd9ee6d87f",
+    "returncode": 0,
+    "tests_reported": 35,
+    "scope": "original parser/pipe tests plus real files and genuine small CPython children with explicit synthetic engine/GI fixtures; no Docker/GI/source/decoder/model acceptance",
+    "saved_original_logs_and_prelaunch_dispatch": {
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v2-focused-tests/attempt-04/original.stdout",
+        "sha256": "03383621ff78dc06b7cd11e3c7e8a8329a348f91fdc0e9f2f8bfd4af05502822",
+        "size_bytes": 1298
+      },
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v2-focused-tests/attempt-04/original.stderr",
+        "sha256": "71c9fcae424c24e2733b78883ef86a520292cd267013804e4099cb7e84d938e9",
+        "size_bytes": 6172
+      },
+      "dispatch_source": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v2-focused-tests/attempt-04/dispatch.py",
+        "sha256": "951a5ab6224d5e2ce568aae9803a37e5b3c26b38e60778aff69ecdc1e9e15324",
+        "size_bytes": 3134
+      }
+    }
+  },
+  "preserved_negative": {
+    "path": "artifacts/benchmark_recovery_20260930/decoder-research-v2-focused-tests/attempt-03/terminal.v1.json",
+    "size_bytes": 5235,
+    "sha256": "008fea7c8328dde404f27b6768a3891847ac5d3f5a061c2efdc527e89c1513da",
+    "returncode": 1,
+    "finding": "Genuine15s outer composition crossing reproduced former successful-body false success, missing failed-body late companion and missing named inode witness; original failed receipt remains unchanged."
+  },
+  "resolved_findings": [
+    {
+      "topic": "One cleanup clock through receipt-last",
+      "assessment": "Existing absolute15s deadline now applies to commands even after in_cleanupFalse, outer input/leaf hashes, final pin/stream close and post_receipt_deadline. Real15s successful and failed fixture crossings while600s remains return1, keep immutable late companion and original body cause. No clock is restarted."
+    },
+    {
+      "topic": "Actual path and held CID witnesses",
+      "assessment": "Missing/partial CID remains pending, completed stable CID is pinned and checked after fast launcher exit. Refusal rows now retain named/current lstat as well as held before/after fstat epochs; substituted original path is not presented as held inode. Positive exact original owner/terminal state precedes nonforce removal and subsequent CID/name absence; unresolved/forced cleanup remains failed."
+    },
+    {
+      "topic": "Initialization and failure diagnosis",
+      "assessment": "One Gst.init([]), actual callable/module/available override and typelib metadata, before/after stages and bounded retained failure trace are implemented without fallback. Upstream list validity does not prove the prior packaged failure call."
+    },
+    {
+      "topic": "Experiment scope",
+      "assessment": "Protocol/original20 tests remain byte-identicalv1. Guest diff affects setup evidence only; fixedfour32-AU order, original packet source flags/PTS/DTS/durations/cadence, decoder sink/src monotonic events, RGB observations, central9-24 and actual sinkEOS classification are unchanged. No new decoder or production path."
+    }
+  ],
+  "blocking_findings": [],
+  "remaining_gates": [
+    "Any progress-only planning commit and necessary controller/guest constant binding must be checked as an exact narrow diff before final code commit/PR dispatch. This review pins47e; no later constant/file hash is silently approved.",
+    "Original physical engine/socket/daemon/image/media/quiet-state preflight, one fresh attempt02 and independent cold raw research validation remain required. Provisional run success is not scientific/model/parity/pair/qualification/full acceptance."
+  ],
+  "self_review": "The first v2 audit caught an outer composition error missed by direct cleanup tests. Its source correction and real-clock regression are now checked. Source/fixture review still cannot establish installed GI initialization, actual CID publication or decoder causality.",
+  "reviewer_save_limitation": "An initial attempt to save the first blocked review stopped on source-hash equality because the author had begun the parent-authorized repair; it created no review file and claimed no current old-source custody. The original reviewed source/negative fixture receipts remain retained.",
+  "workloads_launched": false,
+  "reviewer_tests_run": false,
+  "accepted": false,
+  "publication_ready": false,
+  "sha256": "686fe6bc66d7187da4d93ad77d934b00417f39a0df07bb7ea839e94d10365dd2"
+}

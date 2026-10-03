@@ -8,13 +8,16 @@ import sys
 import tempfile
 import threading
 import unittest
+from contextlib import ExitStack
 from pathlib import Path
+from types import SimpleNamespace
 from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
+import checkpoint_deepstream_sdk_runtime as sdk_runtime  # noqa: E402
 from checkpoint_deepstream_sdk_runtime import (  # noqa: E402
     AdmissionTransportFrame,
     AdmissionTransportError,
@@ -82,6 +85,35 @@ def _read_once(payload: bytes):
 
 
 class DeepStreamAdmissionTransportTests(unittest.TestCase):
+    def test_monotonic_start_wait_cannot_request_negative_sleep(self) -> None:
+        observed_sleeps: list[float] = []
+        clock = mock.Mock(side_effect=[100, 1_001])
+
+        sdk_runtime._sleep_until_monotonic_ns(
+            1_000,
+            monotonic_ns=clock,
+            sleep=observed_sleeps.append,
+        )
+
+        self.assertEqual(observed_sleeps, [0.0000009])
+        self.assertTrue(all(delay >= 0 for delay in observed_sleeps))
+
+    def test_epoch_nanoseconds_use_exact_integer_millisecond_ceiling(self) -> None:
+        epoch_ns = 1_800_000_000_000_000_001
+        self.assertEqual(
+            sdk_runtime._ceil_epoch_ns_to_ms(epoch_ns),
+            1_800_000_000_001,
+        )
+        self.assertEqual(
+            sdk_runtime._ceil_epoch_ns_to_ms(1_800_000_000_000_000_000),
+            1_800_000_000_000,
+        )
+
+        with self.assertRaisesRegex(
+            DeepStreamSdkRuntimeError, "non-negative integer"
+        ):
+            sdk_runtime._ceil_epoch_ns_to_ms(-1)
+
     def test_exact_native_vastau01_frame_preserves_access_and_transport_pts(self) -> None:
         frame = _read_once(_transport_frame())
         self.assertIsNotNone(frame)
@@ -133,18 +165,41 @@ class DeepStreamAdmissionTransportTests(unittest.TestCase):
             sequence=7,
             keyframe=False,
             source_cycle=2,
-            access_unit_pts_ns=54_000_000_000,
+            access_unit_pts_ns=90_000_000,
             transport_pts_ns=163_200_000_000,
             access_unit_dts_ns=53_998_000_000,
             duration_ns=1_000_000_000,
             admission_id="run:0:admission:7",
-            input_frame_key="dataset:0:" + "a" * 64 + ":2:54000000000",
+            input_frame_key="dataset:0:" + "a" * 64 + ":2:90000000",
             payload_sha256=hashlib.sha256(b"au").hexdigest(),
             payload=b"au",
         )
         self.assertEqual(
-            deepstream_buffer_timestamps(frame),
+            deepstream_buffer_timestamps(
+                frame, source_duration_ns=54_600_000_000
+            ),
             (163_200_000_000, 163_198_000_000, 1_000_000_000),
+        )
+
+    def test_b_frame_dts_does_not_mix_unscaled_access_pts_with_scaled_dts(self) -> None:
+        frame = AdmissionTransportFrame(
+            sequence=7,
+            keyframe=False,
+            source_cycle=0,
+            access_unit_pts_ns=10_000_000,
+            transport_pts_ns=6_000_000_000,
+            access_unit_dts_ns=4_000_000_000,
+            duration_ns=1_000_000_000,
+            admission_id="run:0:admission:7",
+            input_frame_key="dataset:0:" + "a" * 64 + ":0:10000000",
+            payload_sha256=hashlib.sha256(b"au").hexdigest(),
+            payload=b"au",
+        )
+        self.assertEqual(
+            deepstream_buffer_timestamps(
+                frame, source_duration_ns=54_600_000_000
+            ),
+            (6_000_000_000, 4_000_000_000, 1_000_000_000),
         )
 
     def test_missing_dts_and_impossible_scaled_mapping_fail_closed(self) -> None:
@@ -162,14 +217,16 @@ class DeepStreamAdmissionTransportTests(unittest.TestCase):
             payload=b"au",
         )
         self.assertEqual(
-            deepstream_buffer_timestamps(missing, clock_time_none=999),
+            deepstream_buffer_timestamps(
+                missing, source_duration_ns=1, clock_time_none=999
+            ),
             (0, 999, 999),
         )
         invalid = AdmissionTransportFrame(
             **{**missing.__dict__, "access_unit_pts_ns": 100, "transport_pts_ns": 50}
         )
         with self.assertRaisesRegex(DeepStreamSdkRuntimeError, "precedes"):
-            deepstream_buffer_timestamps(invalid)
+            deepstream_buffer_timestamps(invalid, source_duration_ns=1)
 
 
 class DeepStreamPhysicalGraphTests(unittest.TestCase):
@@ -181,6 +238,7 @@ class DeepStreamPhysicalGraphTests(unittest.TestCase):
             branches=("damage",),
         )
         self.assertEqual(graph.process_graph_count, 1)
+        self.assertEqual(graph.decoder_gpu_id, 0)
         self.assertEqual(
             graph.shared_prefix_factories,
             (
@@ -381,6 +439,184 @@ class DeepStreamPhysicalGraphTests(unittest.TestCase):
 
 
 class DeepStreamFdAndQueueTests(unittest.TestCase):
+    def _run_buffered_stop(self, *, stop_after: int, close_source: bool = True):
+        import checkpoint_deepstream_resource_runtime_v3 as resources
+
+        read_fd, write_fd = os.pipe()
+        os.write(write_fd, _transport_frame(sequence=3, transport_pts=2090000)
+                 + _transport_frame(sequence=4, transport_pts=3090000))
+        if close_source:
+            os.close(write_fd)
+            write_fd = -1
+        release_stop = threading.Event()
+        pushed = []
+        pipeline = mock.Mock()
+        pipeline.decoded_seen = threading.Event()
+        lifecycle = mock.Mock()
+        lifecycle.await_start.return_value = SimpleNamespace(
+            common_start_monotonic_ns=0, drain_end_timestamp_ms=4000)
+
+        def stop():
+            if not release_stop.wait(2):
+                raise AssertionError("fixture did not release STOP")
+            return 3000
+
+        def push(frame):
+            pushed.append(frame.sequence)
+            pipeline.decoded_seen.set()
+            if len(pushed) == stop_after:
+                workers = [thread for thread in threading.enumerate()
+                           if thread.name == "deepstream-stop-buffered-stop-fixture"]
+                self.assertEqual(len(workers), 1)
+                release_stop.set()
+                workers[0].join(2)
+                self.assertFalse(workers[0].is_alive())
+
+        lifecycle.await_stop.side_effect = stop
+        pipeline.push.side_effect = push
+        result, error = None, None
+        try:
+            with tempfile.TemporaryDirectory() as name, ExitStack() as stack:
+                directory = Path(name).resolve()
+                environment = {
+                    sdk_runtime.WORKER_ID_ENV: "buffered-stop-fixture",
+                    sdk_runtime.RUN_ID_ENV: "fixture-run",
+                    sdk_runtime.TOPOLOGY_KIND_ENV: "independent_processes",
+                    sdk_runtime.STREAM_ID_ENV: "2",
+                    sdk_runtime.SOURCE_DURATION_NS_ENV: "1000000000",
+                    sdk_runtime.ADMISSION_DATA_FD_ENV: str(read_fd),
+                    sdk_runtime.EVENT_FD_ENV: "0", sdk_runtime.CONTROL_FD_ENV: "0",
+                    sdk_runtime.STATUS_FD_ENV: "0", sdk_runtime.POLICY_FD_ENV: "0",
+                }
+                stack.enter_context(mock.patch.dict(os.environ, environment))
+                recorder = mock.Mock()
+                recorder.close.return_value = {"resource_intervals": directory / "resources.csv"}
+                replacements = {
+                    "CanonicalEventFdSink": mock.Mock(),
+                    "LifecycleChannel": mock.Mock(return_value=lifecycle),
+                    "SeqpacketPolicyExchange": mock.Mock(), "_load_callback_factory": mock.Mock(),
+                    "NvDsMetaBridge": mock.Mock(),
+                    "DeepStreamSdkPipeline": mock.Mock(return_value=pipeline),
+                    "_sleep_until_monotonic_ns": mock.Mock(),
+                    "write_deepstream_stage_contracts": mock.Mock(return_value=directory / "stages.csv"),
+                }
+                for key, value in replacements.items():
+                    stack.enter_context(mock.patch.object(sdk_runtime, key, value))
+                stack.enter_context(mock.patch.object(
+                    resources, "DeepStreamNativeResourceRecorderV3", return_value=recorder))
+                args = SimpleNamespace(topology_kind="independent_processes", stream_id=2,
+                    output_dir=str(directory), branches="damage", codec="h265", arm_id="fixture-arm",
+                    callback_factory="fixture:create", nvds_meta_library="fixture", drain_timeout_s=0.15)
+                try:
+                    result = sdk_runtime.run_fd_worker(args)
+                except DeepStreamSdkRuntimeError as exc:
+                    error = exc
+                return result, error, pushed, pipeline, lifecycle
+        finally:
+            os.close(read_fd)
+            if write_fd >= 0:
+                os.close(write_fd)
+
+    def test_stop_drains_already_buffered_admissions_before_graph_eos(self) -> None:
+        result, error, pushed, pipeline, lifecycle = self._run_buffered_stop(stop_after=1)
+        self.assertIsNone(error)
+        self.assertEqual(pushed, [3, 4])
+        self.assertEqual(result["admission_frames"], 2)
+        lifecycle.drained.assert_called_once()
+        lifecycle.censored.assert_not_called()
+        self.assertGreater(pipeline.finish.call_args.kwargs["timeout_s"], 0)
+        self.assertLess(pipeline.finish.call_args.kwargs["timeout_s"], 0.15)
+
+    def test_stop_after_last_admission_still_requires_source_eof(self) -> None:
+        result, error, pushed, pipeline, lifecycle = self._run_buffered_stop(stop_after=2)
+        self.assertIsNone(error)
+        self.assertEqual(result["admission_frames"], 2)
+        self.assertEqual(pushed, [3, 4])
+        lifecycle.drained.assert_called_once()
+
+    def test_stop_without_source_eof_expires_without_claiming_drained(self) -> None:
+        result, error, pushed, pipeline, lifecycle = self._run_buffered_stop(
+            stop_after=1, close_source=False)
+        self.assertIsNone(result)
+        self.assertIsInstance(error, DeepStreamSdkRuntimeError)
+        self.assertIn("admission pipe drain timed out", str(error))
+        self.assertEqual(pushed, [3, 4])
+        pipeline.finish.assert_not_called()
+        lifecycle.drained.assert_not_called()
+        lifecycle.censored.assert_called_once()
+
+    def test_run_cli_reserves_stdout_for_native_nvstreammux_audit(self) -> None:
+        receipt = {"artifact_kind": "deepstream_sdk_worker_exit"}
+        with mock.patch.object(
+            sdk_runtime, "run_fd_worker", return_value=receipt
+        ) as run_worker, mock.patch.object(sdk_runtime, "_print_json") as print_json:
+            result = sdk_runtime.main(
+                [
+                    "run",
+                    "--codec", "h264",
+                    "--topology-kind", "independent_processes",
+                    "--stream-id", "0",
+                    "--branches", "damage",
+                    "--arm-id", "arm-stdout-contract",
+                    "--output-dir", "/tmp/deepstream-stdout-contract",
+                    "--callback-factory", "fixture:create",
+                ]
+            )
+        self.assertEqual(result, 0)
+        run_worker.assert_called_once()
+        print_json.assert_not_called()
+
+    def test_pending_lookup_uses_nvds_frame_pts_not_batched_gst_buffer_pts(self) -> None:
+        frame = _read_once(_transport_frame(transport_pts=2_090_000))
+        assert frame is not None
+        pipeline = object.__new__(DeepStreamSdkPipeline)
+        pipeline.graph = DeepStreamGraphSpec.build(
+            topology_kind="independent_processes",
+            codec="h264",
+            stream_id=2,
+            branches=("damage",),
+        )
+        pipeline._pending_lock = threading.RLock()
+        pending = _PendingFrame(
+            frame=frame,
+            identity_sha256=admission_identity_sha256(frame),
+        )
+        pipeline._pending = {frame.transport_pts_ns: pending}
+        pipeline.meta_bridge = mock.Mock()
+        pipeline.meta_bridge.observe.return_value = mock.Mock(
+            buf_pts_ns=frame.transport_pts_ns
+        )
+        batched_buffer = mock.Mock(pts=999_999_999)
+        with mock.patch(
+            "checkpoint_deepstream_sdk_runtime._gst_buffer_pointer",
+            return_value=1234,
+        ):
+            self.assertIs(
+                pipeline._pending_for_buffer(batched_buffer, stage="mux"), pending
+            )
+        pipeline.meta_bridge.observe.assert_called_once_with(
+            buffer_pointer=1234,
+            source_id=0,
+        )
+
+    def test_missing_pending_pts_reports_stage_both_pts_and_pending_range(self) -> None:
+        pipeline = object.__new__(DeepStreamSdkPipeline)
+        pipeline._pending_lock = threading.RLock()
+        pipeline._pending = {7: object(), 11: object()}
+        pipeline.meta_bridge = mock.Mock()
+        pipeline.meta_bridge.observe.return_value = mock.Mock(buf_pts_ns=5)
+        buffer = mock.Mock(pts=13)
+        with mock.patch(
+            "checkpoint_deepstream_sdk_runtime._gst_buffer_pointer",
+            return_value=1234,
+        ):
+            with self.assertRaisesRegex(
+                DeepStreamSdkRuntimeError,
+                "stage=preprocess nvds_buf_pts_ns=5 gst_buffer_pts_ns=13 "
+                "pending_count=2 pending_min_pts_ns=7 pending_max_pts_ns=11",
+            ):
+                pipeline._pending_for_buffer(buffer, stage="preprocess")
+
     def test_event_sink_writes_one_canonical_json_line_to_exact_fd(self) -> None:
         read_fd, write_fd = os.pipe()
         try:
@@ -427,6 +663,56 @@ class DeepStreamFdAndQueueTests(unittest.TestCase):
             for fd in (control_read, control_write, status_read, status_write):
                 if fd >= 0:
                     os.close(fd)
+
+    def test_admission_eof_accepts_only_concurrent_valid_stop(self) -> None:
+        stop_event = threading.Event()
+        stop_timestamp: list[int] = []
+
+        def receive_valid_stop() -> None:
+            stop_timestamp.append(3000)
+            stop_event.set()
+
+        stop_thread = threading.Thread(target=receive_valid_stop)
+        stop_thread.start()
+        sdk_runtime._await_coordinated_stop_after_admission_eof(
+            stop_event=stop_event,
+            stop_thread=stop_thread,
+            stop_timestamp=stop_timestamp,
+            timeout_s=1.0,
+        )
+        self.assertFalse(stop_thread.is_alive())
+        self.assertEqual(stop_timestamp, [3000])
+
+    def test_admission_eof_without_valid_stop_remains_fail_closed(self) -> None:
+        stop_event = threading.Event()
+        stop_thread = threading.Thread(target=lambda: None)
+        stop_thread.start()
+        with self.assertRaisesRegex(
+            DeepStreamSdkRuntimeError,
+            "admission FD closed before STOP",
+        ):
+            sdk_runtime._await_coordinated_stop_after_admission_eof(
+                stop_event=stop_event,
+                stop_thread=stop_thread,
+                stop_timestamp=[],
+                timeout_s=0.0,
+            )
+        stop_thread.join()
+
+        stop_event.set()
+        completed_thread = threading.Thread(target=lambda: None)
+        completed_thread.start()
+        completed_thread.join()
+        with self.assertRaisesRegex(
+            DeepStreamSdkRuntimeError,
+            "admission FD closed before STOP",
+        ):
+            sdk_runtime._await_coordinated_stop_after_admission_eof(
+                stop_event=stop_event,
+                stop_thread=completed_thread,
+                stop_timestamp=[],
+                timeout_s=0.0,
+            )
 
     def test_native_queue_drops_the_newest_buffer_at_capacity(self) -> None:
         drops: list[tuple[str, str]] = []
@@ -513,7 +799,7 @@ class DeepStreamFdAndQueueTests(unittest.TestCase):
         class _Callbacks:
             def admit_transport_frame(self, observed: object, *, observed_timestamp_ms: int) -> None:
                 self_outer.assertIs(observed, frame)
-                self_outer.assertEqual(observed_timestamp_ms, 1)
+                self_outer.assertEqual(observed_timestamp_ms, 2)
 
         class _Buffer:
             pts = None
@@ -568,9 +854,10 @@ class DeepStreamFdAndQueueTests(unittest.TestCase):
         pipeline.callbacks = _Callbacks()
         pipeline.Gst = _Gst
         pipeline.appsrc = _AppSrc()
+        pipeline.source_duration_ns = 54_600_000_000
         with mock.patch(
             "checkpoint_deepstream_sdk_runtime.time.time_ns",
-            side_effect=[1_000_000, 2_000_000],
+            side_effect=[1_000_001, 2_000_000],
         ):
             pipeline.push(frame)
 

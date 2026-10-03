@@ -1,0 +1,12 @@
+{
+  "CI_mapper_result_replay": false,
+  "author_first_error": "AssertionError comparing literal-changed function AST before applying inverse",
+  "correction": "Exact complete raw inverse of declared path/PID/PGID/birth literals instead of incorrect unchanged-AST assertion",
+  "kind": "metadata-authoring-and-missing-helper-startup-failure",
+  "later_command_in_same_tool": "Python startup reported source file absent; no helper body or scans executed",
+  "original_PID_birth_and_FD": "not observed for failed startup",
+  "original_primary_mapper_owner_observation_d7ff31_success_unchanged": true,
+  "original_tool_chunk": "f11bd2",
+  "original_tool_exit_code": 1,
+  "schema_version": 1
+}

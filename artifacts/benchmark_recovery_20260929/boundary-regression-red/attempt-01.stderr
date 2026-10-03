@@ -1,0 +1,24 @@
+test_complete_cold_workload_includes_warmup_measurement_and_drain (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_complete_cold_workload_includes_warmup_measurement_and_drain) ... FAIL
+test_duplicate_actual_terminal_is_rejected_without_an_extra_front_call (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_duplicate_actual_terminal_is_rejected_without_an_extra_front_call) ... ok
+test_same_count_foreign_front_frame_cannot_pass_complete_cold_join (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_same_count_foreign_front_frame_cannot_pass_complete_cold_join) ... FAIL
+
+======================================================================
+FAIL: test_complete_cold_workload_includes_warmup_measurement_and_drain (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_complete_cold_workload_includes_warmup_measurement_and_drain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_boundary_v1.py", line 364, in test_complete_cold_workload_includes_warmup_measurement_and_drain
+    self.assertEqual(workload["request_count"], counters["requests_completed"], "complete cold closure must include the eight excluded original executions; legacy measurement scanner returns only four")
+AssertionError: 4 != 12 : complete cold closure must include the eight excluded original executions; legacy measurement scanner returns only four
+
+======================================================================
+FAIL: test_same_count_foreign_front_frame_cannot_pass_complete_cold_join (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_same_count_foreign_front_frame_cannot_pass_complete_cold_join)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_boundary_v1.py", line 384, in test_same_count_foreign_front_frame_cannot_pass_complete_cold_join
+    with self.assertRaises(closure.QualificationExecutionClosureV1Error, msg="same-count foreign front identity must be rejected by complete cold join"):
+AssertionError: QualificationExecutionClosureV1Error not raised : same-count foreign front identity must be rejected by complete cold join
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.338s
+
+FAILED (failures=2)

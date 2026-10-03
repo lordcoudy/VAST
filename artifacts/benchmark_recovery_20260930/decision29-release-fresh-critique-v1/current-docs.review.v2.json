@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_current_docs_closed_independent_review_v2",
+  "stage": "current_docs",
+  "reviewer": "/root/release_critique",
+  "reviewed_at_utc": "2026-10-03T13:24:23.3077187Z",
+  "reviewable": true,
+  "blocking": [],
+  "reviewer_handles_released": true,
+  "scope": "Actual physical current documents v4 plus the two authorized v5 dating/PR2-link line amendments; closed retained original CI metadata. Preserves immutable prior fresh critique.",
+  "prior_receipt_preserved": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-release-fresh-critique-v1/review.v1.json",
+    "size_bytes": 15142,
+    "sha256": "580fa7776362dd59393e53810be63462a2c965d3abb5670487e8ce4a1836ae71"
+  },
+  "current_docs_pins": [
+    {
+      "path": "README.md",
+      "size_bytes": 59379,
+      "sha256": "0c6d45685e7fe0fc025c902be3cdaedcbceb61b4f1d6b181b66e0e7cd167b875"
+    },
+    {
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "size_bytes": 14690,
+      "sha256": "96665a3730508d2f708e3634bf944d357859da93571e3d1b9ff9404aa6bcdf4e"
+    },
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "size_bytes": 137502,
+      "sha256": "2677e85865bd63dee5de24fb9017c7abd716396355a22a2d5d63af5cb9bdb987"
+    },
+    {
+      "path": "progress.md",
+      "size_bytes": 1239979,
+      "sha256": "e93049786410beff6d512b9ebac515c74368a5f8b25e37097abd3424a4826f2e"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/own-reassessment.v4.md",
+      "size_bytes": 7155,
+      "sha256": "eb7defa5d09b9d838ab206d1c539bcf065ac1e2987562a097e399a84bbdb70f9"
+    }
+  ],
+  "finite_diff_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/current-docs.v4.diff",
+      "size_bytes": 19156,
+      "sha256": "558d5d88d528c9ead040bd77cfa9d5f245ee8f6cf1d9612f240220467f946dae"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/current-docs.checkpoint-label.v5.diff",
+      "size_bytes": 4929,
+      "sha256": "6e4298ae75c391ddc681f11bbe3691b829cf5279ea9e0cc2c0d97e72162178ee"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/current-docs.checkpoint-label-author.v5.json",
+      "size_bytes": 2347,
+      "sha256": "e4db8bdde82dc2490082592ff16c9ebf3535077dd1576d20e9f8acfc25edf8cd"
+    }
+  ],
+  "original_local_review": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/original-prerequisite-review-attempt01/review.v1.json",
+    "size_bytes": 119285,
+    "sha256": "5a58508acf35f71d3c2934a022de1bff2e60eb44a39b6f85bd48cc3715ab7c60"
+  },
+  "CI_source_D": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "measured_source_B": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "actual_local_original_review_facts": {
+    "original_terminal_cell": "3db5dc",
+    "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+    "disposition": "SUCCESS",
+    "counts": {
+      "deferred_integration": 9,
+      "discovered": 3001,
+      "error": 0,
+      "expected_failure": 0,
+      "failure": 0,
+      "selected": 2992,
+      "skip": 86,
+      "success": 2906,
+      "unexpected_success": 0
+    },
+    "native_success_ids": [
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+    ],
+    "build_target_count": 6,
+    "source_rows": 5577,
+    "source_tables_equal": true,
+    "source_changed": [],
+    "namespace_succeeded": true,
+    "profile_status": "not_required",
+    "wrapper_returncode": 0,
+    "wrapper_elapsed_s": 2115.37338894,
+    "wrapper_eof": [
+      "stderr",
+      "stdout"
+    ],
+    "wrapper_close_errors": [],
+    "wrapper_holds_released": true,
+    "wrapper_process_scan_count": 2,
+    "fresh_owned_scan_count": 2,
+    "reviewer_FD_baseline": [
+      6,
+      6
+    ],
+    "reviewer_handles_closed": true
+  },
+  "hosted_distinct_original_counts": {
+    "run_id": 37116707816,
+    "discovered": 3001,
+    "selected": 2992,
+    "success": 2904,
+    "approved_skip": 88,
+    "deferred_integration": 9,
+    "failure": 0,
+    "error": 0
+  },
+  "preservation": {
+    "prior_v1_receipt_full_size_sha_match": true,
+    "v4_all_six_supplied_document_diff_pins_checked": true,
+    "plan_prior134920_byte_suffix_exact": true,
+    "plan_new_prefix_bytes": 2582,
+    "progress_prior1238564_byte_suffix_exact": true,
+    "progress_new_prefix_bytes": 1415,
+    "plan_progress_own_v4_unchanged_after_v5": true,
+    "v5_readme_changed_only_physical_line3": true,
+    "v5_runbook_changed_only_physical_line7": true,
+    "v5_before_readme_size": 59212,
+    "v5_before_readme_sha256": "746e1946b1c60d662f5bc8c1f584ab890fb224a023b7d7591ebf273a2abf0687",
+    "v5_before_runbook_size": 14543,
+    "v5_before_runbook_sha256": "4e2d733b6816bc6aadcb8c8759a29d4e0783f3308d8f4863f4c35c02f483c407",
+    "runbook_prerequisites_command_progress_science_tail_unchanged_since_prior_v1": true,
+    "final_against_before_v4_or_own_v3_line_comparison": [
+      {
+        "path": "README.md",
+        "before": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/before-v4/README.md.raw",
+        "changed_physical_lines": [
+          3
+        ],
+        "other_physical_lines_exact": true
+      },
+      {
+        "path": "docs/gstreamer-component-benchmark-runbook.md",
+        "before": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/before-v4/docs__gstreamer-component-benchmark-runbook.md.raw",
+        "changed_physical_lines": [
+          7,
+          13
+        ],
+        "other_physical_lines_exact": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/own-reassessment.v4.md",
+        "before": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/own-reassessment.v3.md",
+        "changed_physical_lines": [
+          3,
+          15,
+          25
+        ],
+        "other_physical_lines_exact": true
+      }
+    ]
+  },
+  "meaningful_critique": [
+    "The original local missing-bind failure remains failed. The new independent original review supports the prerequisite-corrected D lane SUCCESS2906/86/9 with native3/build6/5577-source equality; hosted2904/88 is explicitly distinct. No test success or absent profile is converted to hardware/full-campaign acceptance.",
+    "The operating command, physical stand/root/input/image/host-closure prerequisites, fresh output requirement and CPU/GPU sequencing are unchanged. Existing source-reviewed repeatability and physical epoch invalidation remain visible. No new benchmark run or syntax/test execution occurred in this review.",
+    "Science stays a largely negative100ms descriptive four-arm fixed case: CPU0/0 and GPU3/1 on-time among1080 admissions/arm, completed-only latency, ingress denominator/drops, two-recording replicas,NVDEC in both analytics modes, baseline-first order and partial C_obs remain explicit. No causal speedup, accuracy, energy, unknown EPIPE-cause or full32/1120/5600-campaign claim is added.",
+    "Manual source evidence and incomplete direct negative coverage for every full consumer remain disclosed, including work-directory side effects before rejection. The substantial control/evidence layer remains a maintenance limitation; no additional speculative wrapper/framework is warranted for this release.",
+    "A bounded usability issue was identified: undated README/runbook pending status could read as current after repository closure. ROOT authorized exactly two line amendments; both now label the3 October2026 D implementation snapshot and link the same already-reviewed PR2 ledger for subsequent process facts. This resolves the issue without a bookkeeping commit loop.",
+    "Standing user authorization permits continued work but these documents do not substitute for actual conformance, archive, latest-archived-commit CI, exact final review or a successful merge. The dated pending status and PR2 ledger preserve that boundary."
+  ],
+  "resolved_finding": {
+    "id": "DOC1",
+    "subject": "Date the implementation checkpoint and link final process ledger",
+    "v4_status": "bounded usability ambiguity",
+    "v5_status": "resolved in READMEline3 and runbookline7",
+    "same_verified_PR2_target": "https://github.com/lordcoudy/VAST/pull/2",
+    "sourcepeer_edit_after_notified_hold_release": true
+  },
+  "pending_release_gates": [
+    "actual independent20-requirement118-scenario conformance with preserved82-scenario72-task historical register and manual gaps",
+    "supported same-change sync/archive and finite committed/pushed preservation",
+    "actual CI on eventual archived commit",
+    "exact final review and user-authorized merge only after actual gates",
+    "owned temporary runtime-bind retirement after its consumers close"
+  ],
+  "acceptance_limits": {
+    "document_stage_review_only": true,
+    "CI_acceptance_grant": false,
+    "new_hardware_or_measurement_acceptance": false,
+    "conformance_accepted": false,
+    "archive_completed": false,
+    "final_merge_approval": false,
+    "future_final_commit_source_review_separate": true,
+    "production_test_engine_CI_Git_reducer_execution": false,
+    "original_results_or_prior_review_mutated": false,
+    "additional_reviewers_spawned": false,
+    "numeric_FD_balance_independently_measured_by_this_Windows_reviewer": false
+  },
+  "closed_read_basis": "Every Get-Content/Get-FileHash/ReadAllBytes/ReadAllText call completed in an exited foreground command; no persistent reader FD or running process was created. This exclusive receipt uses FileStream with Dispose in finally. Linux numeric FD/process evidence is attributed to the retained original independent review, not recreated here."
+}

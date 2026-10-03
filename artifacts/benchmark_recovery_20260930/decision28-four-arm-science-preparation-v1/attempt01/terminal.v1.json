@@ -1,0 +1,89 @@
+{
+  "additional_errors": [],
+  "capture_exceeded": false,
+  "child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 84773,
+    "pid": 84773,
+    "ppid": 84772,
+    "session": 84773,
+    "startticks": 50244807,
+    "uid": 1000
+  },
+  "completed_pure_reduction": true,
+  "custody": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/custody-and-comparison.v1.json",
+    "sha256": "ca10b71ea56d6ad29ce1b060699ff37b79341ddb911b88168a58e73b3d0e4cd9",
+    "size_bytes": 206365
+  },
+  "elapsed_s": 60.22327962401323,
+  "exports": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/exports-and-interpretation.v1.json",
+    "sha256": "eec885d67f1d1aaf88ec932bf696790ea247e551caa0798341cc216f9eccf3bc",
+    "size_bytes": 11420
+  },
+  "measurement_acceptance": false,
+  "observed_eof": [
+    "stderr",
+    "stdout"
+  ],
+  "original_child_current": null,
+  "original_child_returncode": 0,
+  "original_group_members": [],
+  "outputs": {
+    "stderr": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/stdout.raw",
+      "sha256": "7bcf8c7669d1c30fc89efd662e9036dbd47ee41bbd9141c11906c610196b2087",
+      "size_bytes": 454
+    }
+  },
+  "primary_error": null,
+  "recomputed_summaries": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/recomputed-summaries.v1.json",
+    "sha256": "2a7a70ddfd9f00c37bfd92ab3681ee7040cbd56e6942d8d7ecbce4424c4a4c98",
+    "size_bytes": 70771
+  },
+  "schema_version": 1,
+  "scope": "Pure sidecar reduction only; Original CPU08/GPU02 receipts required; pure reduction grants no hardware/full authority",
+  "source_after": {
+    "reduce.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/reduce.py",
+      "sha256": "6fe50289ce88225a39fdc7721b23449a01b6dd54e966375571b8982d69e75610",
+      "size_bytes": 24239
+    },
+    "render.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/render.py",
+      "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+      "size_bytes": 9184
+    },
+    "run.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/run.py",
+      "sha256": "2fade68fb199777f71e4e210e101a0a394725bd2570976f4ad33665d321d65fe",
+      "size_bytes": 7853
+    }
+  },
+  "source_before": {
+    "reduce.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/reduce.py",
+      "sha256": "6fe50289ce88225a39fdc7721b23449a01b6dd54e966375571b8982d69e75610",
+      "size_bytes": 24239
+    },
+    "render.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/render.py",
+      "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+      "size_bytes": 9184
+    },
+    "run.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/run.py",
+      "sha256": "2fade68fb199777f71e4e210e101a0a394725bd2570976f4ad33665d321d65fe",
+      "size_bytes": 7853
+    }
+  },
+  "timed_out": false
+}

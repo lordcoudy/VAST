@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "-c",
+    "core.longpaths=true",
+    "-c",
+    "core.hooksPath=/dev/null",
+    "-C",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "merge-base",
+    "--is-ancestor",
+    "9d47e99b623df44816f7b0a0b73b249a940f7723",
+    "2a6a42c924ae3447ceda4bd9d1b6db33765c6466"
+  ],
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 72293,
+    "pid": 72293,
+    "ppid": 72279,
+    "session": 72293,
+    "startticks": 49370846,
+    "uid": 1000
+  }
+}

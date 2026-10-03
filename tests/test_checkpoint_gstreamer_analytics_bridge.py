@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import hashlib
 import os
 import socket
@@ -26,9 +27,11 @@ from analytics_execution_protocol import (  # noqa: E402
     send_packet,
 )
 from analytics_execution_worker import BackendInference, WorkerHarness  # noqa: E402
+from checkpoint_deepstream_protocol_bridge import analytics_backend_identity  # noqa: E402
 from checkpoint_gstreamer_analytics_bridge import (  # noqa: E402
     AnalyticsExecutionBridge,
     BRIDGE_MESSAGE_TYPE,
+    _policy_binding,
     open_bridge_listener,
     preprocess_gstreamer_frame,
 )
@@ -129,25 +132,37 @@ def _binding(capability: dict[str, object]) -> dict[str, object]:
 
 
 def _policy_manifest() -> dict[str, object]:
+    return {
+        "systems": {
+            system: {"branches": _system_policy_bindings(prefix)}
+            for system, prefix in (("gstreamer_custom", "gstreamer"), ("openvino_gva", "openvino-gva"))
+        }
+    }
+
+
+def _system_policy_bindings(prefix: str) -> dict[str, object]:
     branch_bindings: dict[str, object] = {}
     for branch in BRANCHES:
         resources: dict[str, object] = {}
         for resource in ("cpu", "gpu"):
+            capability = _capability(
+                branch,
+                ENGINE_OPENVINO_CPU if resource == "cpu" else ENGINE_TENSORRT_CUDA,
+            )
             resources[resource] = {
-                "implementation_id": f"gstreamer-{branch}-{resource}-implementation-v1",
-                "terminal_detector": f"gstreamer-{branch}-{resource}-detector-v1",
-                "terminal_backend": (
-                    "openvino-dlstreamer:sidecar;device=CPU"
-                    if resource == "cpu"
-                    else "cuda-tensorrt:sidecar;device=NVIDIA_CUDA:0"
+                "implementation_id": f"{prefix}-{branch}-{resource}-implementation-v1",
+                "terminal_detector": (
+                    f"{capability['model_id']};"
+                    f"model_sha256={capability['source_model_sha256']}"
                 ),
+                "terminal_backend": analytics_backend_identity(capability),
                 "native_evidence": {
-                    "emitter_id": f"gstreamer-{branch}-{resource}-emitter-v1",
-                    "emitter_sha256": _sha(f"emitter-{branch}-{resource}"),
+                    "emitter_id": f"{prefix}-{branch}-{resource}-emitter-v1",
+                    "emitter_sha256": _sha(f"{prefix}-emitter-{branch}-{resource}"),
                 },
             }
         branch_bindings[branch] = resources
-    return {"systems": {"gstreamer_custom": {"branches": branch_bindings}}}
+    return branch_bindings
 
 
 class _FixedBackend:
@@ -206,8 +221,11 @@ class _FixedBackend:
         )
 
 
-def _request(branch: str, resource: str, payload: bytes, *, sequence: int) -> dict[str, object]:
-    policy = _policy_manifest()["systems"]["gstreamer_custom"]["branches"][branch][resource]
+def _request(
+    branch: str, resource: str, payload: bytes, *, sequence: int,
+    system: str = "gstreamer_custom",
+) -> dict[str, object]:
+    policy = _policy_manifest()["systems"][system]["branches"][branch][resource]
     return {
         "schema_version": 1,
         "message_type": BRIDGE_MESSAGE_TYPE,
@@ -298,6 +316,120 @@ class GStreamerAnalyticsBridgeTests(unittest.TestCase):
             server.close()
         self.assertEqual(self.worker_errors, [])
 
+    def test_policy_terminal_identity_is_exactly_worker_capability_bound(self) -> None:
+        manifest = _policy_manifest()
+        for branch in BRANCHES:
+            for resource, engine in (
+                ("cpu", ENGINE_OPENVINO_CPU),
+                ("gpu", ENGINE_TENSORRT_CUDA),
+            ):
+                capability = _capability(branch, engine)
+                policy = _policy_binding(manifest, branch, resource, capability)
+                self.assertEqual(
+                    policy["terminal_detector"],
+                    (
+                        f"{capability['model_id']};"
+                        f"model_sha256={capability['source_model_sha256']}"
+                    ),
+                )
+                self.assertEqual(
+                    policy["terminal_backend"],
+                    analytics_backend_identity(capability),
+                )
+
+        abbreviated = copy.deepcopy(manifest)
+        abbreviated["systems"]["gstreamer_custom"]["branches"]["plate_number"][
+            "gpu"
+        ]["terminal_backend"] = (
+            "analytics-execution:tensorrt_cuda;device=NVIDIA_CUDA:0"
+        )
+        with self.assertRaisesRegex(
+            ProtocolError, "policy terminal identity differs from worker capability"
+        ):
+            _policy_binding(
+                abbreviated,
+                "plate_number",
+                "gpu",
+                _capability("plate_number", ENGINE_TENSORRT_CUDA),
+            )
+
+    def test_worker_protocol_proxy_binds_hello_route_and_forwards_one_memfd(self) -> None:
+        capability = _capability("damage", ENGINE_OPENVINO_CPU)
+        nonce = "a" * 64
+        route, acknowledgement = self.bridge.worker_protocol_handshake(
+            {
+                "schema_version": 1,
+                "message_type": "hello",
+                "protocol_identity_sha256": PROTOCOL_IDENTITY_SHA256,
+                "nonce": nonce,
+                "expected_capability_sha256": canonical_sha256(capability),
+            }
+        )
+        self.assertEqual(route, ("damage", "cpu"))
+        self.assertEqual(acknowledgement["nonce"], nonce)
+        self.assertEqual(acknowledgement["capability"], capability)
+
+        payload = b"\x01\x02\x03\x04"
+        request = {
+            "schema_version": 1,
+            "message_type": "infer_request",
+            "request_id": "proxy-request-0001",
+            "run_id": "proxy-run-0001",
+            "arm_id": "proxy-arm-0001",
+            "worker_id": capability["worker_id"],
+            "frame": {
+                "input_frame_key": "dataset:stream-0:frame-1",
+                "stream_id": 0,
+                "frame_id": 1,
+                "transport_pts_ns": 33_333_333,
+                "branch": "damage",
+            },
+            "engine": capability["engine"],
+            "deadline_monotonic_ns": time.monotonic_ns() + 10_000_000_000,
+            "model": {
+                "model_id": capability["model_id"],
+                "source_sha256": capability["source_model_sha256"],
+                "runtime_artifact_sha256": capability[
+                    "model_artifact_sha256"
+                ],
+                "runtime_weights_sha256": capability[
+                    "runtime_weights_sha256"
+                ],
+            },
+            "tensor": {
+                "name": "input",
+                "dtype": "uint8",
+                "layout": "NCHW",
+                "shape": [1, 1, 1, 4],
+                "byte_length": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                "preprocessing_contract_sha256": capability[
+                    "preprocessing_contract_sha256"
+                ],
+            },
+            "expected_output_contract_sha256": capability[
+                "output_contract_sha256"
+            ],
+        }
+        response, output = self.bridge.execute_worker_protocol(
+            request, payload, route=route
+        )
+        self.assertEqual(response["message_type"], "infer_response")
+        self.assertEqual(response["request_id"], "proxy-request-0001")
+        self.assertEqual(hashlib.sha256(output).hexdigest(), response["output"]["sha256"])
+        self.assertEqual(self.backends[route].seen, [payload])
+
+        with self.assertRaisesRegex(ProtocolError, "absent or ambiguous"):
+            self.bridge.worker_protocol_handshake(
+                {
+                    "schema_version": 1,
+                    "message_type": "hello",
+                    "protocol_identity_sha256": PROTOCOL_IDENTITY_SHA256,
+                    "nonce": "b" * 64,
+                    "expected_capability_sha256": "0" * 64,
+                }
+            )
+
     def test_routes_all_eight_branch_resource_bindings_through_real_memfd_worker_roundtrip(self) -> None:
         sequence = 1
         for branch in BRANCHES:
@@ -375,6 +507,23 @@ class GStreamerAnalyticsBridgeTests(unittest.TestCase):
         relabelled["decision"]["selected_implementation_id"] = "forged-gpu-implementation"
         with self.assertRaisesRegex(ProtocolError, "implementation"):
             self.bridge.execute(relabelled, payload)
+
+    def test_decision_binds_to_the_native_probe_system_it_names(self) -> None:
+        payload = b""
+        openvino = _request("damage", "cpu", payload, sequence=11, system="openvino_gva")
+        response = self.bridge.execute(openvino, payload)
+        self.assertEqual(response["message_type"], "analytics_execute_response")
+        self.assertEqual(response["decision_id"], "decision-0011")
+
+        mixed = _request("damage", "gpu", payload, sequence=12, system="openvino_gva")
+        gstreamer = _policy_manifest()["systems"]["gstreamer_custom"]["branches"]["damage"]["gpu"]
+        mixed["decision"]["emitter_id"] = gstreamer["native_evidence"]["emitter_id"]
+        with self.assertRaisesRegex(ProtocolError, "bridge decision emitter_id mismatch"):
+            self.bridge.execute(mixed, payload)
+        forged = _request("damage", "gpu", payload, sequence=13, system="openvino_gva")
+        forged["decision"]["selected_implementation_id"] = "savant-damage-gpu-implementation-v1"
+        with self.assertRaisesRegex(ProtocolError, "selected_implementation_id mismatch"):
+            self.bridge.execute(forged, payload)
 
     def test_absolute_unix_socket_listener_accepts_a_real_path_client(self) -> None:
         import tempfile

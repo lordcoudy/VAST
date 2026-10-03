@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "dpkg-query",
+    "-W",
+    "-f=${Package}=${Version}\n",
+    "gstreamer1.0-plugins-base",
+    "gstreamer1.0-tools"
+  ],
+  "cleanup_error": null,
+  "elapsed_s": 0.01580100494902581,
+  "returncode": 0,
+  "timed_out": false
+}

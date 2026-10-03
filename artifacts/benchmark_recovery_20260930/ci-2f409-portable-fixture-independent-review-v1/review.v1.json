@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_portable_fixture_independent_review_v1",
+  "disposition": "approved_exact_frozen_test_and_manifest_scope",
+  "reviewed_at_utc": "2026-09-30T17:48:27.2261223Z",
+  "source_checkpoint": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "author": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/author-review.v1.json",
+    "size_bytes": 31669,
+    "sha256": "d2472259e91df4571de8da0fa27195de5836f15f0fc7e810e2320bddfe29fdaf"
+  },
+  "patch": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/owned-source.diff",
+    "size_bytes": 33932,
+    "sha256": "28e51e885d73294692ea3d467c421c45933ceef149d4b1563502c282ddcd86ec"
+  },
+  "independent_static_audit": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-independent-review-v1/static-audit.v1.json",
+    "size_bytes": 11039,
+    "sha256": "4187a3b4ae3343c91f3b348b6d25947a5060c208b1eac7f5e37245591d071a82"
+  },
+  "static_audit_source": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-independent-review-v1/static_audit.py",
+    "size_bytes": 7464,
+    "sha256": "0b59d22add9c4798c81b6238ded5393b0b76c730389b2f56b455dad39e88e729"
+  },
+  "owned_after": [
+    {
+      "path": "tests/test_backend_runtime_replay_runner_authority_v2.py",
+      "sha256": "20a903cb40910b6f4c2981798e1456f6932b80ce0e916c2576cd1afc6f7cc6dc",
+      "size_bytes": 30675
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_qualification_fragment_v1.py",
+      "sha256": "0f82dcfa8525ae459d482ae672fd4fd779a1dfeec22d160aded9d3d0cee86f73",
+      "size_bytes": 17673
+    },
+    {
+      "path": "tests/test_checkpoint_model_parity_materializer_v4.py",
+      "sha256": "2aa4d4e8aedde6ca30ad178e7ff7d2fec13ed1d840f122e851075afa77000ac4",
+      "size_bytes": 15690
+    },
+    {
+      "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "sha256": "62f91b0a8480e11ae018bb31c53cbc167dca78fbe8fe7de23f6a6133723cb87f",
+      "size_bytes": 11502
+    },
+    {
+      "path": "tests/test_checkpoint_savant_qualification_fragment_v3.py",
+      "sha256": "75feb1788871e4f70f25b08d23020bf6fab9be250ce4b87034d262d42e9ce7fe",
+      "size_bytes": 10069
+    },
+    {
+      "path": "tests/test_checkpoint_source_runtime_closure_authority_v1.py",
+      "sha256": "7a3e36a1cb642a5e914b9483261cc95ad3861d7752b0d47019d338bbbb6cfd95",
+      "size_bytes": 88905
+    },
+    {
+      "path": "tests/test_ci_test_selection_v1.py",
+      "sha256": "3d35114149e44d50f6d762fd6c05d4a903bbd9f1b5afc01c0bae4278b1933024",
+      "size_bytes": 11499
+    },
+    {
+      "path": "tests/test_publication_operational_container_custody_v1.py",
+      "sha256": "6fd45b43fe0a5acc0cc59951d9c4bafa0496780110f89b59950c3bbd420d9cee",
+      "size_bytes": 21792
+    },
+    {
+      "path": "tests/test_publication_policy_qualification_fragments_from_authority_v2.py",
+      "sha256": "cf7574d817dd416d0886a25b9f559975f39aa58c2fa32cfe9f6729f0ea48a72d",
+      "size_bytes": 19287
+    },
+    {
+      "path": "tests/test_replay_broker_artifact_bytes_observation_v4.py",
+      "sha256": "2b484a675fb4808ccb8ab6340a7e53bad17a1d04c60cf2e35552036b2298314c",
+      "size_bytes": 6787
+    },
+    {
+      "path": ".ci/integration-test-selection.v1.json",
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    }
+  ],
+  "actual_original_execution": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/execution.json",
+    "sha256": "db8167780b4e44c58d0dfae2e69060c7ae7eec4d60a9f783873ce0742e2f64d3",
+    "size_bytes": 587
+  },
+  "original_results": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/test-results.json",
+    "sha256": "1d73e6f990c8263b9cff876aaeaa77a2f2ed476317e39c8ea11258a2b113d592",
+    "size_bytes": 15036
+  },
+  "findings": [
+    "All ten pre-edit physical test snapshots equal the exact current checkpoint Git blobs. The owned diff contains exactly those ten tests plus the finite selection manifest: no unrelated dirty baseline or production change is included.",
+    "All96 original source test IDs, decorator ASTs and assertion counts remain. The current99 cases consist of those96 plus three lexical-token regression cases; actual final closed results report96 successes,3 original Windows-only skips,0 failures/errors,136.829s unittest and138.368526925s original capture. Closed531 source hash maps match before/after; original35344/group absence and bothEOF are retained.",
+    "The six fixture corrections preserve original validators/refusal assertions: existing artifacts parent replaces absent staging; original historical worker metadata and current required source/model files inhabit actual fresh project roots; GVA allowlist pin is test-local; Savant copies seven already tracked wheel bytes without installing; dangling-child rejection uses the same held temporary project; mutable fake-daemon state lives in a separate preowned subdirectory. The local C ELF remains fixture transport rather than a Docker/model grant.",
+    "The no-consumer scans continue traversing executable source and remove only exact test identity tokens; generated artifacts/OpenSpec/CI metadata are pruned before expensive traversal. Production import/from/function reference strings remain visible. The three new regressions exercise lexical classification, not actual import execution, and no stronger dynamic-import proof is claimed.",
+    "The exact nine integration declarations and all non-skip manifest fields are unchanged. All original80 allowed skip rows remain verbatim; exactly8 additions match unchanged original2f decorated methods/IDs/reasons. Seven are existing Windows paths and one is existing absent-AVI prerequisite. They remain nonexecution with acceptance_claim=false; no new decorator, wildcard, failure-based exclusion or retired migration is introduced.",
+    "The selector unit changes only two derived80-to88 literals and retains zero-integration/nonexecution assertions. Every owned path is disjoint from current host87 and all nine image source allowlists, checked without holding or executing active benchmark sources."
+  ],
+  "blockers": [],
+  "limits": [
+    "No reviewer tests, suite discovery, real engine/model/native/guardian/namespace or hosted job were invoked. One2.56s pinned Python script parsed source AST, read immutable closed result/metadata and original Git blobs only, with no project imports.",
+    "Reviewer did not independently rerun kernel or hardware acceptance. Original99 is a fixture-focused result, not full hosted/portable CI or benchmark acceptance.",
+    "Exact lexical-import examples are deliberately narrower than executing an imported module. Original scan and AST safety assertions remain the production-source guards.",
+    "The original failed99 and targeted8 captures remain failed and unchanged. Windows skips are not successes; historical fixture receipts never become current qualification/image grants.",
+    "No long-held source descriptors were acquired; CPU05 source/inputs/HEAD were not changed."
+  ],
+  "benchmark_accepted": false,
+  "full_ci_successful": false
+}

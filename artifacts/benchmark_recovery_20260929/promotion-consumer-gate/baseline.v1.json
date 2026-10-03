@@ -1,0 +1,38 @@
+{
+  "artifact_kind": "vast_qualification_promotion_consumer_gate_baseline_v1",
+  "head": "0cf5f946100db8d3844ae1b6352058eada5f6f92",
+  "original_path_status": "",
+  "read_only_baseline": true,
+  "sources": [
+    {
+      "sha256": "72b2ea5eb6a87c6771915de70eb6dea7513ba2e13428ffdb2e6227bf435f29e2",
+      "size_bytes": 63221,
+      "snapshot_path": "artifacts/benchmark_recovery_20260929/promotion-consumer-gate/publication_policy_qualification.py.before",
+      "source_path": "scripts/publication_policy_qualification.py"
+    },
+    {
+      "sha256": "f9ee0e204f95186c007edc1c9c080c2cc10f05cd533bc2e229f40d9863670a10",
+      "size_bytes": 56972,
+      "snapshot_path": "artifacts/benchmark_recovery_20260929/promotion-consumer-gate/full_resource_qualification.py.before",
+      "source_path": "scripts/full_resource_qualification.py"
+    },
+    {
+      "sha256": "9138311b8503958df47bb51d6eaa83f77d21d73e7ef542f01395121ad071b2bd",
+      "size_bytes": 31672,
+      "snapshot_path": "artifacts/benchmark_recovery_20260929/promotion-consumer-gate/publication_policy_qualification_index_v2.py.before",
+      "source_path": "scripts/publication_policy_qualification_index_v2.py"
+    },
+    {
+      "sha256": "48031b09f1da269ac6343ddd07d6fd94b93ceb72cd438ecab4213a4d6cadbdcc",
+      "size_bytes": 26582,
+      "snapshot_path": "artifacts/benchmark_recovery_20260929/promotion-consumer-gate/full_resource_qualification_index_v1.py.before",
+      "source_path": "scripts/full_resource_qualification_index_v1.py"
+    },
+    {
+      "sha256": "d82820781337c216145dd0b761703b52da8513b8d6eee95151671e3343fc0bd6",
+      "size_bytes": 48909,
+      "snapshot_path": "artifacts/benchmark_recovery_20260929/promotion-consumer-gate/publication_guardian_accepted_policy_preprocessing_contract_v1.py.before",
+      "source_path": "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py"
+    }
+  ]
+}

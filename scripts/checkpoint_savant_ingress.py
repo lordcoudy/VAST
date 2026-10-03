@@ -58,6 +58,7 @@ def _require(condition: bool, message: str) -> None:
 class SavantSourceRunner(Protocol):
     def send(self, source: Any, send_eos: bool = True) -> Any: ...
     def send_eos(self, source_id: str) -> Any: ...
+    def send_shutdown(self, zmq_topic: str, auth: str) -> Any: ...
 
 
 @dataclass(frozen=True)
@@ -70,6 +71,7 @@ class SavantSourceBinding:
     framerate: str
     dataset_id: str
     source_sha256: str
+    source_duration_ns: int
     socket: str
 
     def validate(self) -> "SavantSourceBinding":
@@ -89,6 +91,10 @@ class SavantSourceBinding:
         _require(self.framerate == "600/1", "Savant ingress framerate drifted")
         _require(_SHA256_RE.fullmatch(self.source_sha256) is not None,
                  "Savant ingress source SHA-256 is invalid")
+        _require(
+            type(self.source_duration_ns) is int and self.source_duration_ns > 0,
+            "Savant ingress source duration is invalid",
+        )
         _require(_LOCAL_SOCKET_RE.fullmatch(self.socket) is not None,
                  "Savant ingress socket must be a dedicated local IPC endpoint")
         return self
@@ -135,9 +141,8 @@ def build_savant_video_frame_record(
     dts: int | None = None
     if frame.access_unit_dts_ns != MISSING_TIMESTAMP:
         dts = (
-            int(frame.transport_pts_ns)
+            int(frame.source_cycle) * checked.source_duration_ns
             + int(frame.access_unit_dts_ns)
-            - int(frame.access_unit_pts_ns)
         )
         _require(dts >= 0, "Savant ingress scaled DTS is negative")
     duration = None if frame.duration_ns == 0 else int(frame.duration_ns)
@@ -180,14 +185,24 @@ class SavantNativeIngress:
         binding: SavantSourceBinding,
         runner: SavantSourceRunner,
         frame_builder: Callable[..., Any],
+        shutdown_auth: str | None = None,
     ) -> None:
         self.binding = binding.validate()
         _require(callable(getattr(runner, "send", None))
                  and callable(getattr(runner, "send_eos", None)),
                  "Savant SourceRunner is invalid")
         _require(callable(frame_builder), "Savant VideoFrame builder is invalid")
+        if shutdown_auth is not None:
+            _require(
+                type(shutdown_auth) is str
+                and re.fullmatch(r"vast-savant-[0-9a-f]{64}", shutdown_auth) is not None,
+                "Savant module shutdown authority is invalid",
+            )
+            _require(callable(getattr(runner, "send_shutdown", None)),
+                     "Savant SourceRunner shutdown capability is missing")
         self.runner = runner
         self.frame_builder = frame_builder
+        self._shutdown_auth = shutdown_auth
         self._last_sequence = 0
         self._finished = False
 
@@ -229,22 +244,69 @@ class SavantNativeIngress:
         )
         _require(status == "ok", "Savant SourceRunner rejected EOS")
         self._finished = True
+        if self._shutdown_auth is not None:
+            # EOS ends one source, not the official Savant module. An owned
+            # worker must request authenticated shutdown after that EOS so its
+            # main thread can return and commit DRAINED before the deadline.
+            # Never replay EOS if the shutdown transport subsequently fails.
+            result = self.runner.send_shutdown(
+                self.binding.source_id, self._shutdown_auth
+            )
+            status = (
+                result.get("status")
+                if isinstance(result, Mapping)
+                else getattr(result, "status", None)
+            )
+            _require(status == "ok", "Savant SourceRunner rejected Shutdown")
+
+
+class _CheckedSavantWriter:
+    """Keep the pinned SDK from turning a native send timeout into status=ok."""
+
+    def __init__(self, writer: Any, *, successful_result_types: tuple[type, ...]) -> None:
+        self._writer = writer
+        self._successful_result_types = successful_result_types
+
+    def send_message(self, topic: str, message: Any, content: bytes = b"") -> Any:
+        result = self._writer.send_message(topic, message, content)
+        # Savant 0.5.17 SourceRunner discards this return value and reports ok.
+        # Check the actual Rust outcome for frames, EOS, and Shutdown alike.
+        # Do not retry an ambiguous delivery or fabricate a successful receipt.
+        _require(
+            type(result) in self._successful_result_types,
+            "Savant ZeroMQ writer did not confirm delivery: " + type(result).__name__,
+        )
+        return result
+
+    def shutdown(self) -> None:
+        self._writer.shutdown()
 
 
 def _native_dependencies() -> tuple[Callable[..., Any], Callable[[str], SavantSourceRunner]]:
     try:
         from savant.api.builder import build_video_frame
         from savant.client import SourceBuilder
+        from savant_rs.zmq import WriterResultAck, WriterResultSuccess
     except ImportError as exc:
         raise SavantIngressError("Savant 0.5.17 native client API is unavailable") from exc
 
     def source(socket: str) -> SavantSourceRunner:
-        return (
+        runner = (
             SourceBuilder()
             .with_socket(socket)
             .with_telemetry_disabled()
             .build()
         )
+        # Instance-local adapter for the exact pinned 0.5.17 SDK, not a global
+        # patch. Its initialized writer and transport settings stay unchanged.
+        writer = getattr(runner, "_writer", None)
+        _require(callable(getattr(writer, "send_message", None))
+                 and callable(getattr(writer, "shutdown", None)),
+                 "Savant SourceRunner native writer contract drifted")
+        runner._writer = _CheckedSavantWriter(
+            writer, successful_result_types=(WriterResultAck, WriterResultSuccess)
+        )
+        return runner
 
     return build_video_frame, source
 

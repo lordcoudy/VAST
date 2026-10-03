@@ -1,0 +1,513 @@
+{
+  "accepted": false,
+  "actual_package_files": {
+    "nvcodec_plugin": {
+      "path": "/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstnvcodec.so",
+      "sha256": "4c304568aacf80ce7710022217130183be398b83c0201361fa62c404877e1255",
+      "size_bytes": 960072
+    },
+    "pkg_config": {
+      "path": "/usr/bin/pkgconf",
+      "sha256": "7e8152db1b0c7e49d47b4b82a70dc9997b557951c5d4d938b0e7f208ce9eb10b",
+      "size_bytes": 45168
+    },
+    "source_binary": {
+      "path": "/usr/local/bin/vast_checkpoint_source",
+      "sha256": "7501479ccb90dc1e322386126c372a7650f40e5c7b76bfb29f4495470bd185df",
+      "size_bytes": 116224
+    }
+  },
+  "actual_source_linked_libraries": [
+    {
+      "path": "/opt/intel/dlstreamer/gstreamer/lib/libgstapp-1.0.so.0.2802.0",
+      "sha256": "edc7dba5afb816a710bee8e172c240f008a19f3bf40ee77c598b2c2fdd114b08",
+      "size_bytes": 124936
+    },
+    {
+      "path": "/opt/intel/dlstreamer/gstreamer/lib/libgstreamer-1.0.so.0.2802.0",
+      "sha256": "ca7d0fdbb04c4d9fc42f0c69241feea87cfe0f462ef8be0c2955fd6a3fa15545",
+      "size_bytes": 1843168
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.8000.0",
+      "sha256": "99bf0727e0ca4faf12ab09b753b3d03294562c29c559b970c4dad435f9ec2bc6",
+      "size_bytes": 399752
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8000.0",
+      "sha256": "42467d0dbcc0a6c9e0a31f05a5944095504ce98f093c3fe0825f0a1533fa8207",
+      "size_bytes": 1343056
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+      "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+      "size_bytes": 2592224
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+      "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+      "size_bytes": 183024
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "d8db8739a1633c972cec6a4fe0566bdcec6fd088f98723492ab0361f66238f75",
+      "size_bytes": 2125328
+    },
+    {
+      "path": "/opt/intel/dlstreamer/gstreamer/lib/libgstbase-1.0.so.0.2802.0",
+      "sha256": "ad59d43742706241af597b500a03914ac82aef5c93171ac0deba385562ffd517",
+      "size_bytes": 661840
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.8000.0",
+      "sha256": "f8445c01952fd3ff0bb4f17f73be821af3e4b9b61546ff517392e9baeb8f2126",
+      "size_bytes": 22736
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+      "sha256": "1b87a1a50b496cfead2b0ad134c2ff536705c82608db240c7e8aa48d6c0e4217",
+      "size_bytes": 952616
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libffi.so.8.1.4",
+      "sha256": "00f593fe192f2851b8ce23b25cec2488d769beb5a8f63e8c9e563071e1075153",
+      "size_bytes": 47672
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.11.2",
+      "sha256": "e00576d71d81d3ba0cfa4903c835a44a8723aac96f72f79ff75200b4cff9071b",
+      "size_bytes": 625344
+    }
+  ],
+  "artifact_kind": "vast_decoder_research_prerequisite_recipe_ledger_v2",
+  "available_route": {
+    "compiler_needed": false,
+    "cpp_fallback_status": "Not the minimum route: no c++ on PATH; default pkg-config metadata is unavailable. Header absence outside that search path was not inferred. No compiler was executed.",
+    "dependency_installation_needed": false,
+    "gi": {
+      "api": {
+        "appsink_try_pull_sample": true,
+        "appsrc_push_buffer": true,
+        "video_frame_map": true
+      },
+      "available": true,
+      "gi_path": "/usr/local/lib/python3.12/dist-packages/gi/__init__.py",
+      "gi_version": "3.50.0",
+      "gst_app_module": "<IntrospectionModule 'GstApp' from '/opt/intel/dlstreamer/gstreamer/lib/girepository-1.0/GstApp-1.0.typelib'>",
+      "gst_version": [
+        1,
+        28,
+        2,
+        0
+      ],
+      "gst_video_module": "<IntrospectionModule 'GstVideo' from '/opt/intel/dlstreamer/gstreamer/lib/girepository-1.0/GstVideo-1.0.typelib'>",
+      "loaded_libraries": [
+        {
+          "path": "/opt/intel/dlstreamer/gstreamer/lib/libgstapp-1.0.so.0.2802.0",
+          "sha256": "edc7dba5afb816a710bee8e172c240f008a19f3bf40ee77c598b2c2fdd114b08",
+          "size_bytes": 124936
+        },
+        {
+          "path": "/opt/intel/dlstreamer/gstreamer/lib/libgstreamer-1.0.so.0.2802.0",
+          "sha256": "ca7d0fdbb04c4d9fc42f0c69241feea87cfe0f462ef8be0c2955fd6a3fa15545",
+          "size_bytes": 1843168
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8000.0",
+          "sha256": "42467d0dbcc0a6c9e0a31f05a5944095504ce98f093c3fe0825f0a1533fa8207",
+          "size_bytes": 1343056
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.8000.0",
+          "sha256": "99bf0727e0ca4faf12ab09b753b3d03294562c29c559b970c4dad435f9ec2bc6",
+          "size_bytes": 399752
+        }
+      ],
+      "route": "isolated",
+      "sys_path": [
+        "/usr/lib/python312.zip",
+        "/usr/lib/python3.12",
+        "/usr/lib/python3.12/lib-dynload",
+        "/usr/local/lib/python3.12/dist-packages",
+        "/usr/lib/python3/dist-packages"
+      ]
+    },
+    "kind": "existing_packaged_python_gi",
+    "launch_isolation_flags": [
+      "-I",
+      "-B"
+    ],
+    "must_initialize": "Gst.init(None) before factory/buffer/version use under stock overrides",
+    "python": "/usr/bin/python3"
+  },
+  "benchmark_arm_count": 0,
+  "cohorts": {
+    "central_eos": "Label any central output emitted only after decoder EOS separately; it provides insufficient steady-state timing and must not be replaced by a favorable alternate cohort.",
+    "central_source_sequences": [
+      9,
+      24
+    ],
+    "correctness": "All32 exact original source observations and all32 output PTS multiset/pixels/caps/completeness/order, including EOS outputs. No sorting away output order.",
+    "startup_source_sequences": [
+      1,
+      8
+    ],
+    "tail_source_sequences": [
+      25,
+      32
+    ]
+  },
+  "compiler_executed": false,
+  "completion_scope": "External completion is only original process/container and guest-reported bounded completion. Independent physical cold recomputation of retained source/events/transport/outputs/timing remains required; observed RGB hashes are not pixels redecoded.",
+  "consumer_created": true,
+  "decoder_control": {
+    "caps_memory": "Record actual negotiated caps/features at decoder input/output and RGB sink; validate original byte-bound geometry before bounded pixel map",
+    "default": "Leave property unset; record original actual readback",
+    "factory": "Original stock selected nvh264dec; reject unavailable/mismatched factory rather than select a substitute",
+    "fresh_registry": "Existing stock GPU-aware refresh mechanism, original template left immutable",
+    "zero": "Set max-display-delay=0 before state transition and require actual readback0"
+  },
+  "decoder_pipeline_launched": false,
+  "decoder_properties": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-properties-review.v1.json",
+    "sha256": "403fd914b9a685d59ddf15c9d689f017494aa043fecb1ed8c3d3a35f324734e8",
+    "size_bytes": 9054
+  },
+  "future_cli": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "<artifact-only research controller>",
+    "--input",
+    "<immutable physical research plan>",
+    "--output-dir",
+    "<fresh exclusively owned research namespace>"
+  ],
+  "image_id": "sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a",
+  "implementation": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decoder-research-implementation-v1\\controller.py",
+      "sha256": "a04e28fe0a3c2b31121e023dc2b1c9b5a1d0bd2aa8349811f6b847d930c23cf4",
+      "size_bytes": 28059
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decoder-research-implementation-v1\\guest_consumer.py",
+      "sha256": "d7f6ac8117960983edae4171cbffc257b5b384b82ab742cb74342035d0a7eec6",
+      "size_bytes": 42502
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decoder-research-implementation-v1\\research_protocol.py",
+      "sha256": "8b716c170da596a013b820ab0adf3ac1374bcb1513cd0a9819cf6770800c2e56",
+      "size_bytes": 20167
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decoder-research-implementation-v1\\test_research_protocol.py",
+      "sha256": "79ebd995c8103fdeda22f3da6f7dc615441c7bf710755dedf507a454514a308a",
+      "size_bytes": 15983
+    }
+  ],
+  "media_byte_observation": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/original-media-physical-observation.v1.json",
+    "sha256": "1c0be813ac9c62e34a8a633cc566603e8af203ddfcffd4f76cb0d4f4eef843cf",
+    "size_bytes": 3430
+  },
+  "metadata_cid_quiescence": true,
+  "metadata_execution": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/package_metadata.terminal.v1.json",
+    "sha256": "2b4d8373c6b4f7e9c2c9a38e6bf0a41c9a778b579952c4053b91910d7c14793d",
+    "size_bytes": 6687
+  },
+  "metadata_observer": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/run_gstreamer_research_package_metadata_v1.py",
+    "sha256": "c7031128b22651dffe81685d98026da9a4ac67a6ae15bb6e540d167ba7f06447",
+    "size_bytes": 13415
+  },
+  "metadata_raw_stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/package_metadata.stderr",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "metadata_raw_stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-experiment-prerequisites/package_metadata.stdout",
+    "sha256": "7579d69964297817a7b47d4a191e164a383ea347f9814a2efb2dec8db78d7776",
+    "size_bytes": 20940
+  },
+  "missing_before_consumer_implementation": [],
+  "missing_before_research_execution": [
+    "Root and independent critic exact-byte controller review/grant",
+    "Fresh full-media/package prelaunch/after pins and actual guest GI/API/caps negotiation",
+    "Original source/GPU execution not yet performed",
+    "Independent physical post-run cold replay of complete original leaves and observed RGB hash/caps/order/PTS/timing comparisons"
+  ],
+  "model_or_parity_evidence": false,
+  "native_pair_count": 0,
+  "ordering_obligations": {
+    "after_ack": "Receive actual original80B header. Retain every consumed raw block including malformed/truncated prefixes; guard lengths and remaining raw capture before allocation/body read. Cross-match actual text/size/sequence/cycle/nativePTS/600scale transportPTS, retain original unsigned/missing DTS/keyframe/duration and independently hash full payload before FIFO submission or next ACK.",
+    "before_ack": "Validate current exact JSON fields/declared identity, actual window/count/sequence, declared payload/hash/text lengths; reserve full declared raw packet including80B header and bounded UTF8 texts. For n>1 wait for complete validated binary n-1 and use its actual duration to verify schedule cadence. Persist declaration before exact ACKn.",
+    "eof_and_eos": "Source pipeEOF starts10s bounded feeder/decoder drain. EOS after all validated32 packets submitted. Actual decoder-sink downstream EOS pad probe determines flush classification; appsrc request/sourceEOF is not substituted.",
+    "next_declaration": "Event n+1 may arrive while binary n is still delivered. Retain it as bounded pending declaration and wait; this arrival alone is not a sequence fault.",
+    "original_source_order": "checkpoint_source_coordinator.cpp673-678: write current admission JSON, synchronously read exact ACK, then enqueue binary AU; independent sender393 writes outside admission_mutex.",
+    "raw_failure_reserve": "80B within128MiB raw cap is reserved beforeACK for a rejected next fixed header, plus final/failure namespace capacity. No generic wire change or arbitrary number/string clamp.",
+    "separate_paths": "Bounded admission/control reader, independent binary reader, FIFO appsrc feeder, RGB sink reader. FIFO maximum32 units/128MiB total admitted payload. Binary validation releases next ACK before any blocking push. No decoder/hash/output dependency in ACK gate.",
+    "stop_and_failure": "After ACK32 send exactSTOP with original window-end. Source holds admission mutex while sleeping/waiting forACK;STOP is not instantaneous. An invalid preACK event is not ACKed for cleanup; terminate only original source ownership and preserve failed original status/returncode."
+  },
+  "original_container_terminal": "One unique exactname/hashlabel reserved before launch, no --rm. Observe original64hexCID matching reservation/image/Created time; require actual Runningfalse/Pid0/ExitCode0/OOMfalse and Created<=Started<=Finished<=observed, then remove only exact verified nonrunningCID and confirm identifier-bound absence. Unknown/unavailable state rejects completion; never infer OOM/quiescence from CLI exit.",
+  "ownership_and_failure": {
+    "before_launch": "Fresh exclusive namespace and consumed once-only controller marker bound to physical research plan/source/media/image/package descriptors; original CLI/CID name/label reserved.",
+    "on_any_failure": "Keep original failed prefix/status/stderr; stop only exact owned source PID/group/CID; no retry/limit increase/replacement/restart/cohort search, and do not run remaining settings after an original research failure.",
+    "processes": "Original existing source ELF PID/startticks/boot/argv and each fresh guest GI controller, plus original external Docker CLI/CID/terminal and same held engine/socket.",
+    "terminal": "Immutable receipt last after all originals terminate and original CID quiescence is actually observed; unavailable process/daemon state means failed research, not inferred completion."
+  },
+  "pixel_hashing": "One active mapped RGB frame. Use actual GstVideoMeta stride/offset when present, otherwise negotiated VideoInfo; validate every active row inside actual mapped bounds, hash width*3 bytes/row without padding, release promptly, record sink-hold/hash duration. Source/probe timestamps precede locks/hash/I/O. Mapping/caps/pixels/completeness/order mismatch is original invalid research.",
+  "planned_finite_research_caps": {
+    "admission_window_s": 31.5,
+    "appsink_max_buffers": 1,
+    "appsrc_max_buffers": 1,
+    "drain_clock": "10s begins at actual binary sourceEOF, includes outstanding FIFO/push and decoder EOS. A separately sealed completed-drain marker ends that phase; actual decoder-sink EOS still classifies central outputs.",
+    "eos_drain_s": 10,
+    "event_record_max_bytes": 16384,
+    "event_records_per_run": 512,
+    "four_run_namespaces_max_bytes": 1073741824,
+    "future_start_lead_s": 2,
+    "metadata_max_bytes": 33554432,
+    "metadata_partition": "Guest<=16MiB and controller<=16MiB (controller reserves128B externalCID); combined<=32MiB. Four complete run namespaces<=4*256MiB.",
+    "namespace_max_bytes_per_run": 268435456,
+    "overall_four_run_and_prelaunch_s": 600,
+    "owned_cleanup_s": 15,
+    "per_run_overall_s": 120,
+    "per_run_startup_s": 45,
+    "prelaunch_clock": "One host+guest120s prelaunch budget, residual carried in original sealedplan and original external owner watchdog. Hash operations use actual phase deadline.",
+    "prelaunch_media_package_pin_s": 120,
+    "raw_packet_aggregate_max_bytes_per_run": 134217728,
+    "raw_packet_gate": "Check actual original event.payload_size_bytes and aggregate before writing/ACK; protocol64MiB remains unchanged",
+    "run_clock": "Original guest elapsed durations anchored conservatively at earlier hostCLI launch for watchdog; no subtraction of absolute host/guest monotonic clocks. Sealed receipt-last ends a run with recorded elapsed<=120; sequential starts require prior successful sealed terminal. Whole600s covers later finalization.",
+    "scope": "Explicit fail-closed research acceptance caps, not a generic producer/RSS theorem. Reserve final/failure receipt/log capacity before append. No arbitrary extra CPU/PID/memory cgroup caps or wire clamps.",
+    "single_active_mapped_rgb_max_bytes": 67108864,
+    "stdout_stderr_max_bytes_per_original_channel": 1048576
+  },
+  "planned_fixed_order": [
+    {
+      "clip": "front_gate",
+      "run": 1,
+      "setting": "default"
+    },
+    {
+      "clip": "front_gate",
+      "run": 2,
+      "setting": "zero"
+    },
+    {
+      "clip": "underbody",
+      "run": 3,
+      "setting": "zero"
+    },
+    {
+      "clip": "underbody",
+      "run": 4,
+      "setting": "default"
+    }
+  ],
+  "planned_pipeline": "appsrc is-live=true format=time do-timestamp=false block=true max-buffers=1 max-bytes=0 max-time=0 leaky-type=none caps=video/x-h264,stream-format=byte-stream,alignment=au ! h264parse ! video/x-h264,stream-format=byte-stream,alignment=au ! identity ! nvh264dec ! videoconvert ! video/x-raw,format=RGB ! appsink sync=false async=false drop=false max-buffers=1 emit-signals=false",
+  "planned_timing": {
+    "controller_kernel": "Guest source/controller/decoder share container kernel; do not use host WSL monotonic as scientific time",
+    "mutex_race": "Source admission holds its mutex while sleeping/waiting for ACK; STOP is not instantaneous. The second window check excludes a raced33rd event after31.5s, contingent on actual clocks/cadence. Require actual32 consecutive events and frames; any observed count/cadence difference invalidates original run.",
+    "planned_schedule": "Retain original schedule_offset_ns separately; never infer actual admission from it",
+    "primary": "Actual decoder sink steady/monotonic ns to matched actual decoder src steady/monotonic ns",
+    "secondary": "Optional decoder src CLOCK_REALTIME ns minus original source system_clock ms*1e6, with1ms floor quantization interval and observed clock-step/mapping limitations; omit unsupported secondary timing",
+    "separate_actual_stamps": [
+      "transport_receive_monotonic_ns",
+      "appsrc_submission_monotonic_ns",
+      "source_event_admission_realtime_ms",
+      "decoder_sink_monotonic_ns",
+      "decoder_src_monotonic_ns",
+      "decoder_src_realtime_ns"
+    ],
+    "source_control": "1 START <guest_future_monotonic_ns> <corresponding_guest_wall_start_ms> <start_ms+31500> <end_ms+10000>; after original persisted event/ACK32 send1 STOP <end_ms>. Close unused pipe ends; drain source channel to EOF then appsrc EOS."
+  },
+  "planned_transport": {
+    "big_endian_struct": ">8sHHQQQQQQIIIQ",
+    "fixed_header_bytes": 80,
+    "known_flag_keyframe": 1,
+    "magic": "VASTAU01",
+    "payload_protocol_max_bytes": 67108864,
+    "retention": "Exact original header/text/payload bytes, source event/status/control/ACK bytes and actual observe timestamps. No header rewrite, payload change, retiming, reorder or source subset search.",
+    "source_missing_timestamp": 18446744073709551615,
+    "text_field_protocol_max_bytes": 8192,
+    "version": 1
+  },
+  "planning_exact_commit_approval": {
+    "authorization_source": "Parent implementation grant after recorded user delegation; no independent GitHub approval invented",
+    "exact_reviewed_commit": "b1ad01c09b4e21f542f971b9dc794548245719b0",
+    "pr_comment_id": 5901895914
+  },
+  "predecessor": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decoder-experiment-prerequisites\\prerequisite-recipe-ledger.v1.json",
+    "sha256": "8e99036f2d9e2e21ccf27b9d7f92989b22b7d9d9e7f7b7923e99b9b390fe2654",
+    "size_bytes": 20245
+  },
+  "publication_ready": false,
+  "qualification_count": 0,
+  "revision_purpose": "Clarify original event-before-ACK/binary-after-ACK causality, and bind artifact-only implementation/meaningful synthetic tests before first research execution. Historical v1 is unchanged.",
+  "schema_version": 1,
+  "sha256": "9afd2070b727311693de51c6830ade5d07bc62d8d2842421ba8618490c4bc863",
+  "source_citations": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/datasets.yaml",
+        "sha256": "6f16a46c6a92c6aecd51cf669e4c5731f182a58b6a0f40dac7eff9b26d9d6086",
+        "size_bytes": 74277
+      },
+      "lines": [
+        1129,
+        1249
+      ],
+      "purpose": "Original fixed media bytes/600fps/geometries and stream0/5 identities"
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_runtime_plan.py",
+        "sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+        "size_bytes": 30727
+      },
+      "lines": [
+        195,
+        211
+      ],
+      "purpose": "Stock native source duration multiplied by original timestamp scale600"
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_runtime.py",
+        "sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+        "size_bytes": 156160
+      },
+      "lines": [
+        978,
+        1045
+      ],
+      "purpose": "Original stock source command flags and environment"
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
+        "sha256": "03f69a8e1be20c03a9044d0a478e52b8721bed18b3f61170e35f899ff9708fc4",
+        "size_bytes": 27391
+      },
+      "lines": [
+        475,
+        558
+      ],
+      "purpose": "Original source pipeline/START/STOP/realtime boundary and mutex"
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
+        "sha256": "03f69a8e1be20c03a9044d0a478e52b8721bed18b3f61170e35f899ff9708fc4",
+        "size_bytes": 27391
+      },
+      "lines": [
+        600,
+        687
+      ],
+      "purpose": "Original duration-paced admissions, actual event/ACK then unchanged broadcast"
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/checkpoint_admission_transport.hpp",
+        "sha256": "54e9aa0a05b50aacd9372fa6a2a660fb7f31f37d68b76d349362dad34e87e48d",
+        "size_bytes": 9551
+      },
+      "lines": [
+        18,
+        109
+      ],
+      "purpose": "Actual binary transport1 magic/header/fields/64MiB payload and missing timestamp"
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/vast_native_gst_probe.cpp",
+        "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+        "size_bytes": 167521
+      },
+      "lines": [
+        2099,
+        2119
+      ],
+      "purpose": "Exact stock appsrc payload/PTS/DTS/duration/keyframe handling"
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/vast_native_gst_probe.cpp",
+        "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+        "size_bytes": 167521
+      },
+      "lines": [
+        3605,
+        3620
+      ],
+      "purpose": "Exact stock appsrc/parse/caps/identity prefix"
+    }
+  ],
+  "source_commit": "a5b3812457cc2eddfd19eaf7687a4e868a7d085b",
+  "source_decoder_runs_executed": 0,
+  "stock_sources": [
+    {
+      "actual_first_32_au_max_bytes": null,
+      "actual_negotiated_caps": null,
+      "all_32_raw_payload_bytes": null,
+      "dataset_id": "kpp_iss_publication_v3_h264",
+      "encoded_geometry": {
+        "height": 1080,
+        "pix_fmt": "yuv420p",
+        "width": 1920
+      },
+      "expected_rgb_active_bytes": 6220800,
+      "role": "front_gate",
+      "stock_source_parameters": {
+        "continuous_replay_required": false,
+        "input_path": "data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_front_gate.mp4",
+        "native_source_duration_ns": 55200000000,
+        "playback_fps": 1,
+        "playback_timestamp_scale": 600,
+        "source_codec": "h264",
+        "source_container": "mp4",
+        "source_duration_ns": 33120000000000,
+        "source_frame_count": 33120,
+        "source_sha256": "08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273"
+      },
+      "stream_id": 0
+    },
+    {
+      "actual_first_32_au_max_bytes": null,
+      "actual_negotiated_caps": null,
+      "all_32_raw_payload_bytes": null,
+      "dataset_id": "kpp_iss_publication_v3_h264",
+      "encoded_geometry": {
+        "height": 236,
+        "pix_fmt": "yuv420p",
+        "width": 1700
+      },
+      "expected_rgb_active_bytes": 1203600,
+      "role": "underbody",
+      "stock_source_parameters": {
+        "continuous_replay_required": false,
+        "input_path": "data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_underbody.mp4",
+        "native_source_duration_ns": 59410000000,
+        "playback_fps": 1,
+        "playback_timestamp_scale": 600,
+        "source_codec": "h264",
+        "source_container": "mp4",
+        "source_duration_ns": 35646000000000,
+        "source_frame_count": 35646,
+        "source_sha256": "b7e5165549172266a5617ff7bbca6e5b888775b0a2490e27b7cbe17640e3b102"
+      },
+      "stream_id": 5
+    }
+  ],
+  "synthetic_execution": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decoder-research-controller-tests\\attempt-04\\terminal.v1.json",
+    "sha256": "4155e77a48f53e83ecfba246e754cde7744b1ae3fbfb28022116946e6ff09299",
+    "size_bytes": 4148
+  },
+  "synthetic_scope": "19 parser/real-pipe/cap/active-row/cohort and genuine small Python-child EOF/timeout tests; no GI import, original source, Docker/daemon or decoder. Synthetic child fixtures do not establish original engine/socket authority."
+}

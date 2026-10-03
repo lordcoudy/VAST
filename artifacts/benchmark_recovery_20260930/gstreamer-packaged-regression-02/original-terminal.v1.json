@@ -1,0 +1,125 @@
+{
+  "accepted": false,
+  "child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pid": 8670,
+    "ppid": 8467,
+    "proc_stat_starttime_ticks": 20918774,
+    "uid": 1000
+  },
+  "cidfile": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/original.cid",
+    "sha256": "39abf09eda78b5c9a05c8fe3ed9ac2f4c40fa76e33e4f5ffe2f80c4cc4f34808",
+    "size_bytes": 64
+  },
+  "classification": "real packaged Python and front socket/memfd accounting tests with local inference fixture; no model or benchmark acceptance",
+  "commit": "a5b3812457cc2eddfd19eaf7687a4e868a7d085b",
+  "container_id": "6ac82feab881bcf8787ff48a7ceadedc4e97576fb47e89553d92b7615bcc3434",
+  "container_not_found_after_rm": true,
+  "elapsed_s": 3.0562312249967363,
+  "finished_at_ns": 1790726880891418738,
+  "image_id": "sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a",
+  "observed_state": null,
+  "oom_killed": null,
+  "publication_ready": false,
+  "returncode": 0,
+  "schema_version": 1,
+  "sources_after": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_boundary_v1.py",
+      "sha256": "e27cd10161224dbd6faf4a23f696f46922c782e71b762b894e0b61ce2e38eff6",
+      "size_bytes": 37440
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "08aecf8478eb3148ab5e4a051eb4ae81529f79a778e11c30383832a94e64e1b6",
+      "size_bytes": 126015
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_native_policy_runtime.py",
+      "sha256": "5dd6730460e04f34a2b394409e4a38c21d8cf178ba57149fa168a810dee0ff77",
+      "size_bytes": 35893
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/analytics_execution_layer.yaml",
+      "sha256": "d9bec961f22395c005ac6866633aeeb8b9a829fd39bd776776a3b0cd84526033",
+      "size_bytes": 1453
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/checkpoint_analytics_models_openvino.yaml",
+      "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+      "size_bytes": 7885
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/packaged_test_loader.v1.py",
+      "sha256": "886f92db8696c6f8d2f0c91cd32df60e61bebc71b0a3a6469270b9ab4d182d26",
+      "size_bytes": 1883
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/run_gstreamer_packaged_regression_v1.py",
+      "sha256": "b5ba24635e8a5a6d07087932cb5cd9333ee0e4b61e945f3c0b1f3091cd7c6058",
+      "size_bytes": 12503
+    }
+  ],
+  "sources_before": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_boundary_v1.py",
+      "sha256": "e27cd10161224dbd6faf4a23f696f46922c782e71b762b894e0b61ce2e38eff6",
+      "size_bytes": 37440
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "08aecf8478eb3148ab5e4a051eb4ae81529f79a778e11c30383832a94e64e1b6",
+      "size_bytes": 126015
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_native_policy_runtime.py",
+      "sha256": "5dd6730460e04f34a2b394409e4a38c21d8cf178ba57149fa168a810dee0ff77",
+      "size_bytes": 35893
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/analytics_execution_layer.yaml",
+      "sha256": "d9bec961f22395c005ac6866633aeeb8b9a829fd39bd776776a3b0cd84526033",
+      "size_bytes": 1453
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/checkpoint_analytics_models_openvino.yaml",
+      "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+      "size_bytes": 7885
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/packaged_test_loader.v1.py",
+      "sha256": "886f92db8696c6f8d2f0c91cd32df60e61bebc71b0a3a6469270b9ab4d182d26",
+      "size_bytes": 1883
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/run_gstreamer_packaged_regression_v1.py",
+      "sha256": "b5ba24635e8a5a6d07087932cb5cd9333ee0e4b61e945f3c0b1f3091cd7c6058",
+      "size_bytes": 12503
+    }
+  ],
+  "sources_engine_socket_stable": true,
+  "started_at_ns": 1790726877835187719,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/original.stderr",
+    "sha256": "0b8d69966424db0345087381ab97b2eb3335a346d5ca2b1c10805651c53cf3f8",
+    "size_bytes": 2409
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/original.stdout",
+    "sha256": "8b3c9ba5c63a86fb4dcb3e8a02b199b53a25d0bcb70707e176eda78c1a675e24",
+    "size_bytes": 2795
+  },
+  "timed_out": false
+}

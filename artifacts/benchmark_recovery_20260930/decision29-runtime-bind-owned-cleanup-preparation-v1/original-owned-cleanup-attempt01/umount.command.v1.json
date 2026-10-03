@@ -1,0 +1,95 @@
+{
+  "EOF": {
+    "stderr": true,
+    "stdout": true
+  },
+  "argv": [
+    "/usr/bin/umount",
+    "--",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"
+  ],
+  "failure": null,
+  "finished_at_ns": 1791036320263434814,
+  "observed_descendants": [],
+  "owner": {
+    "argv": [
+      "/usr/bin/umount",
+      "--",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "cmdline_empty_observed": false,
+    "gid": 0,
+    "pgid": 11314,
+    "pid": 11314,
+    "ppid": 11313,
+    "session": 11314,
+    "startticks": 51865117,
+    "state": "R",
+    "uid": 0
+  },
+  "raw_channels": {
+    "stderr": {
+      "EOF_observed": true,
+      "acknowledged_bytes": 0,
+      "acknowledged_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stored_descriptor_verified": true,
+      "stored_original_descriptor": {
+        "epoch7": [
+          69,
+          1407374885980595,
+          33279,
+          1,
+          0,
+          1791036320257830900,
+          1791036320257830900
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/original-owned-cleanup-attempt01/umount.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    "stdout": {
+      "EOF_observed": true,
+      "acknowledged_bytes": 0,
+      "acknowledged_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stored_descriptor_verified": true,
+      "stored_original_descriptor": {
+        "epoch7": [
+          69,
+          1407374885980594,
+          33279,
+          1,
+          0,
+          1791036320257830900,
+          1791036320257830900
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/original-owned-cleanup-attempt01/umount.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    }
+  },
+  "reaped": true,
+  "returncode": 0,
+  "signals": [],
+  "started_at_ns": 1791036320257095717,
+  "two_owned_process_scans": [
+    {
+      "at_ns": 1791036320265102734,
+      "errors": [],
+      "members": [],
+      "original_pid_absent": {
+        "11314": true
+      }
+    },
+    {
+      "at_ns": 1791036320266545521,
+      "errors": [],
+      "members": [],
+      "original_pid_absent": {
+        "11314": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+test_exact_two_original_operations_one_guardian_stop_before_cold (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_exact_two_original_operations_one_guardian_stop_before_cold) ... ok
+test_occupied_output_rejects_before_reserve_or_source (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_occupied_output_rejects_before_reserve_or_source) ... ok
+test_original_failure_no_second_operation_and_authenticated_stop (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_failure_no_second_operation_and_authenticated_stop) ... ok
+test_original_pre_authority_child_exit_retains_logs_and_unknown_worker_cleanup (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_pre_authority_child_exit_retains_logs_and_unknown_worker_cleanup) ... ok
+test_oversized_authority_is_rejected_before_full_read (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_oversized_authority_is_rejected_before_full_read) ... ok
+test_pidfd_open_failure_still_reaps_only_original_child (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_pidfd_open_failure_still_reaps_only_original_child) ... FAIL
+test_real_bounded_reserve_release_checks_original_inode (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_real_bounded_reserve_release_checks_original_inode) ... ok
+test_reordered_runtime_pair_rejects_before_inference (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_reordered_runtime_pair_rejects_before_inference) ... ok
+test_reserve_cleanup_never_overwrites_original_body_failure (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_reserve_cleanup_never_overwrites_original_body_failure) ... ok
+test_reserve_replacement_is_preserved_and_fails (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_reserve_replacement_is_preserved_and_fails) ... ok
+test_source_drift_during_original_terminal_commit_creates_failed_companion (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_source_drift_during_original_terminal_commit_creates_failed_companion) ... FAIL
+test_source_mutation_before_receipt_last_is_failure (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_source_mutation_before_receipt_last_is_failure) ... ok
+test_stop_failure_preserves_original_body_cause_and_is_not_clean (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_stop_failure_preserves_original_body_cause_and_is_not_clean) ... ok
+test_symlink_input_rejects_before_source (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_symlink_input_rejects_before_source) ... ok
+
+======================================================================
+FAIL: test_pidfd_open_failure_still_reaps_only_original_child (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_pidfd_open_failure_still_reaps_only_original_child)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 295, in test_pidfd_open_failure_still_reaps_only_original_child
+    self.assertIsNotNone(guardian.process.returncode)
+AssertionError: unexpectedly None
+
+======================================================================
+FAIL: test_source_drift_during_original_terminal_commit_creates_failed_companion (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_source_drift_during_original_terminal_commit_creates_failed_companion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 314, in test_source_drift_during_original_terminal_commit_creates_failed_companion
+    with self.assertRaises((RuntimeError, ValueError)):
+AssertionError: (<class 'RuntimeError'>, <class 'ValueError'>) not raised
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.593s
+
+FAILED (failures=2)

@@ -17,18 +17,11 @@ from checkpoint_publication_launcher_adapter_v3 import (
 )
 
 
-PUBLICATION_READY = False
+PUBLICATION_READY = True
 NATIVE_RUNTIME_ENTRYPOINT = (
     "checkpoint_gstreamer_publication_runtime_v3."
     "run_checkpoint_gstreamer_publication_runtime_v3"
 )
-MISSING_RUNTIME_PINS = (
-    "gstreamer_custom_publication_v3_accepted_model_policy_sidecars_not_materialized",
-    "gstreamer_custom_publication_v3_endpoint_bound_h264_h265_24_6_gpu_pilots_not_complete",
-)
-BLOCKER = MISSING_RUNTIME_PINS[0]
-
-
 NATIVE_TOPOLOGY_RUNNERS = {
     "independent_processes": run_checkpoint_gstreamer_publication_runtime_v3,
     "shared_video_dag": run_checkpoint_gstreamer_publication_runtime_v3,
@@ -40,7 +33,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         argv,
         expected_system="gstreamer_custom",
         native_topology_runners=NATIVE_TOPOLOGY_RUNNERS,
-        readiness_blockers=MISSING_RUNTIME_PINS,
     )
 
 

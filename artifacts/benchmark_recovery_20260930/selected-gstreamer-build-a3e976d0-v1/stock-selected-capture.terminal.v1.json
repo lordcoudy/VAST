@@ -1,0 +1,52 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_qualification_image_refreeze_v1.py",
+    "capture",
+    "--project-root",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "--registry",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/configs/publication_qualification_image_refreeze_v1.json",
+    "--system",
+    "gstreamer_custom",
+    "--native-receipt",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/native-a/native_probe.freeze.json",
+    "--candidate-final-reference",
+    "vast/gstreamer-custom-publication-runtime-v3:component-release-20260930-a3e976d0",
+    "--receipt-output",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/gstreamer_custom.runtime.freeze.json",
+    "--docker",
+    "/usr/bin/docker"
+  ],
+  "capture_exceeded": false,
+  "cleanup_error": null,
+  "elapsed_s": 3.385702913015848,
+  "engine_backend_quiescence": "not inferred from original CLI status",
+  "failure": null,
+  "finished_at_ns": 1790767013643898518,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable_realpath": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "gid": 1000,
+    "pgid": 24432,
+    "pid": 24432,
+    "ppid": 23785,
+    "startticks": 24932258,
+    "uid": 1000
+  },
+  "process_group_members_at_terminal": [],
+  "returncode": 0,
+  "started_at_ns": 1790767010259619301,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/stock-selected-capture.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/stock-selected-capture.stdout.raw",
+    "sha256": "7807fc43cf4f706d2756baefcbdd4887798b04168db06f7acbdbea4a8541cc8c",
+    "size_bytes": 7049
+  },
+  "timed_out": false
+}

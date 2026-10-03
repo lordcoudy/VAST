@@ -316,39 +316,45 @@ class FullPublicationIdentityRuntimeAuthorityV3Tests(unittest.TestCase):
         leaf = self.root / "shared-leaf.bin"
         leaf.write_bytes(b"physical-shared-leaf")
         leaf_descriptor = descriptor(self.root, leaf)
-        registry = target._Registry(self.root)
-        first, _ = registry.add_shared(leaf_descriptor, "first shared leaf")
-        second, _ = registry.add_shared(
-            copy.deepcopy(leaf_descriptor), "recurring shared leaf"
-        )
-        self.assertEqual(first, second)
-        self.assertEqual(list(registry.files), ["shared-leaf.bin"])
-
-        drifted = copy.deepcopy(leaf_descriptor)
-        drifted["sha256"] = "0" * 64
-        with self.assertRaisesRegex(target.IdentityArtifactError, "size/SHA drift"):
-            registry.add_shared(drifted, "drifted shared leaf")
-
-        alias = self.root / "shared-leaf-alias.bin"
-        try:
-            os.link(leaf, alias)
-        except OSError as error:
-            self.skipTest(f"hardlinks unavailable: {error}")
-        with self.assertRaisesRegex(target.IdentityArtifactError, "hardlink alias"):
-            registry.add_shared(
-                descriptor(self.root, alias), "hardlinked shared leaf alias"
+        with target.PhysicalRootCustodyV1.open(self.root) as custody:
+            registry = target._Registry(self.root, custody)
+            first, _ = registry.add_shared(leaf_descriptor, "first shared leaf")
+            second, _ = registry.add_shared(
+                copy.deepcopy(leaf_descriptor), "recurring shared leaf"
             )
+            self.assertEqual(first, second)
+            self.assertEqual(list(registry.files), ["shared-leaf.bin"])
+
+            drifted = copy.deepcopy(leaf_descriptor)
+            drifted["sha256"] = "0" * 64
+            with self.assertRaisesRegex(
+                target.IdentityArtifactError, "size/SHA drift"
+            ):
+                registry.add_shared(drifted, "drifted shared leaf")
+
+            alias = self.root / "shared-leaf-alias.bin"
+            try:
+                os.link(leaf, alias)
+            except OSError as error:
+                self.skipTest(f"hardlinks unavailable: {error}")
+            with self.assertRaisesRegex(
+                target.IdentityArtifactError, "hardlink alias"
+            ):
+                registry.add_shared(
+                    descriptor(self.root, alias), "hardlinked shared leaf alias"
+                )
 
     def test_launcher_registration_never_uses_shared_leaf_exception(self) -> None:
         launcher = self.root / "launcher.py"
         launcher.write_bytes(b"publication-launcher")
         launcher_descriptor = descriptor(self.root, launcher)
-        registry = target._Registry(self.root)
-        registry.add(launcher_descriptor, "first system launcher")
-        with self.assertRaisesRegex(
-            target.IdentityArtifactError, "duplicates another artifact path"
-        ):
-            registry.add(launcher_descriptor, "second system launcher")
+        with target.PhysicalRootCustodyV1.open(self.root) as custody:
+            registry = target._Registry(self.root, custody)
+            registry.add(launcher_descriptor, "first system launcher")
+            with self.assertRaisesRegex(
+                target.IdentityArtifactError, "duplicates another artifact path"
+            ):
+                registry.add(launcher_descriptor, "second system launcher")
 
     def test_identity_descriptor_grammar_rejects_windows_and_root_escapes(self) -> None:
         for unsafe in (

@@ -17,6 +17,12 @@ import re
 from typing import Any, Mapping, Sequence
 
 from benchmark_contract import ContractError
+from publication_policy_frozen_replay_v1 import (
+    FrozenPolicyReplayError,
+    advance_frozen_feedback_v1,
+    evaluate_frozen_policy_v1,
+    normalize_frozen_request_v1,
+)
 
 
 POLICY_CONTRACT_SCHEMA_VERSION = 1
@@ -74,6 +80,16 @@ _RUNTIME_IDENTITY_FIELDS = frozenset(
         "terminal_backend",
     }
 )
+_TERMINAL_BACKEND_PATTERNS = {
+    "cpu": re.compile(
+        r"^analytics-execution:openvino_cpu;runtime=[^;\r\n]+;"
+        r"native_api=[^;\r\n]+;device=CPU:[^;\r\n]+$"
+    ),
+    "gpu": re.compile(
+        r"^analytics-execution:tensorrt_cuda;runtime=[^;\r\n]+;"
+        r"native_api=[^;\r\n]+;device=NVIDIA_CUDA:[^;\r\n]+$"
+    ),
+}
 
 
 class PolicyContractError(ContractError):
@@ -150,8 +166,8 @@ def _assess_runtime_identity(
             device_api == "CPU"
             and gpu_id is None
             and type(terminal_backend) is str
-            and "device=CPU" in terminal_backend
-            and "NVIDIA_CUDA" not in terminal_backend
+            and _TERMINAL_BACKEND_PATTERNS[resource].fullmatch(terminal_backend)
+            is not None
         )
     else:
         matches_resource = (
@@ -159,7 +175,8 @@ def _assess_runtime_identity(
             and type(gpu_id) is int
             and gpu_id == 0
             and type(terminal_backend) is str
-            and "device=NVIDIA_CUDA:0" in terminal_backend
+            and _TERMINAL_BACKEND_PATTERNS[resource].fullmatch(terminal_backend)
+            is not None
         )
     if not matches_resource:
         blockers.append(f"{prefix}:runtime_identity_resource_mismatch")
@@ -563,80 +580,20 @@ def _normalize_request(
     system: str,
     capability_manifest: Mapping[str, Any],
 ) -> dict[str, Any]:
-    expected = {
-        "decision_id",
-        "decision_seq",
-        "trace_id",
-        "branch",
-        "arrival_ms",
-        "decision_time_ms",
-        "deadline_ms",
-        "rank_u_ms",
-        "candidates",
-    }
-    if set(request) != expected:
-        raise PolicyContractError("decision request fields have drifted")
-    decision_id = str(request.get("decision_id", ""))
-    trace_id = str(request.get("trace_id", ""))
-    if not _real_id(decision_id) or not _real_id(trace_id):
-        raise PolicyContractError("decision_id and trace_id must be real stable IDs")
-    decision_seq = request.get("decision_seq")
-    if isinstance(decision_seq, bool) or not isinstance(decision_seq, int) or decision_seq <= 0:
-        raise PolicyContractError("decision_seq must be a positive integer")
-    branch = str(request.get("branch", ""))
-    if branch not in ANALYTICS_BRANCHES:
-        raise PolicyContractError("decision branch is outside policy_scope=analytics_only")
-    candidates = request.get("candidates")
-    if not isinstance(candidates, Mapping) or set(candidates) != set(RESOURCES):
-        raise PolicyContractError("decision candidates must contain exactly cpu and gpu")
-
-    normalized_candidates: dict[str, dict[str, Any]] = {}
+    # Structural/equation replay is separate from this actual capability grant.
+    try:
+        normalized = normalize_frozen_request_v1(request)
+    except FrozenPolicyReplayError as exc:
+        raise PolicyContractError(str(exc)) from exc
     for resource in RESOURCES:
-        candidate = candidates.get(resource)
-        fields = {
-            "allowed",
-            "implementation_id",
-            "available_ms",
-            "queue_depth",
-            "estimated_service_ms",
-            "transfer_ms",
-        }
-        if not isinstance(candidate, Mapping) or set(candidate) != fields:
-            raise PolicyContractError(f"{resource} candidate fields have drifted")
-        if not isinstance(candidate.get("allowed"), bool):
-            raise PolicyContractError(f"{resource}.allowed must be boolean")
-        expected_id = str(
-            _binding(capability_manifest, system, branch, resource)["implementation_id"]
-        )
-        if candidate.get("implementation_id") != expected_id:
+        expected_id = str(_binding(
+            capability_manifest, system, normalized["branch"], resource
+        )["implementation_id"])
+        if normalized["candidates"][resource]["implementation_id"] != expected_id:
             raise PolicyContractError(
                 f"{resource} candidate implementation_id does not match capability binding"
             )
-        queue_depth = candidate.get("queue_depth")
-        if isinstance(queue_depth, bool) or not isinstance(queue_depth, int) or queue_depth < 0:
-            raise PolicyContractError(f"{resource}.queue_depth must be a nonnegative integer")
-        normalized_candidates[resource] = {
-            "allowed": candidate["allowed"],
-            "implementation_id": expected_id,
-            "available_ms": _nonnegative(candidate.get("available_ms"), f"{resource}.available_ms"),
-            "queue_depth": queue_depth,
-            "estimated_service_ms": _positive(
-                candidate.get("estimated_service_ms"), f"{resource}.estimated_service_ms"
-            ),
-            "transfer_ms": _nonnegative(candidate.get("transfer_ms"), f"{resource}.transfer_ms"),
-        }
-
-    return {
-        "decision_id": decision_id,
-        "decision_seq": decision_seq,
-        "trace_id": trace_id,
-        "branch": branch,
-        "arrival_ms": _nonnegative(request.get("arrival_ms"), "arrival_ms"),
-        "decision_time_ms": _nonnegative(request.get("decision_time_ms"), "decision_time_ms"),
-        "deadline_ms": _positive(request.get("deadline_ms"), "deadline_ms"),
-        "rank_u_ms": _nonnegative(request.get("rank_u_ms"), "rank_u_ms"),
-        "candidates": normalized_candidates,
-    }
+    return normalized
 
 
 def _evaluate_policy(
@@ -646,118 +603,12 @@ def _evaluate_policy(
     static_placement: Mapping[str, str] | None,
     state_before: Mapping[str, Any],
 ) -> dict[str, Any]:
-    candidates = request["candidates"]
-    decision_time = float(request["decision_time_ms"])
-    deadline = float(request["deadline_ms"])
-    branch = str(request["branch"])
-    resource_index = {resource: index for index, resource in enumerate(RESOURCES)}
-    evaluations: dict[str, dict[str, Any]] = {}
-    for resource in RESOURCES:
-        candidate = candidates[resource]
-        start = max(decision_time, float(candidate["available_ms"]))
-        service = float(candidate["estimated_service_ms"])
-        transfer = float(candidate["transfer_ms"])
-        finish = start + service + transfer
-        evaluations[resource] = {
-            "allowed": bool(candidate["allowed"]),
-            "implementation_id": str(candidate["implementation_id"]),
-            "available_ms": float(candidate["available_ms"]),
-            "queue_depth": int(candidate["queue_depth"]),
-            "estimated_service_ms": service,
-            "transfer_ms": transfer,
-            "predicted_start_ms": start,
-            "predicted_finish_ms": finish,
-            "predicted_lateness_ms": max(0.0, finish - deadline),
-        }
-
-    allowed = [resource for resource in RESOURCES if evaluations[resource]["allowed"]]
-    if not allowed:
-        raise PolicyContractError("decision has no allowed real execution resource")
-
-    def tie_tail(resource: str) -> tuple[Any, ...]:
-        value = evaluations[resource]
-        return (value["transfer_ms"], value["queue_depth"], resource_index[resource])
-
-    if policy in {"cpu_only", "gpu_only"}:
-        selected = "cpu" if policy == "cpu_only" else "gpu"
-        if selected not in allowed:
-            raise PolicyContractError(f"{policy} required resource is not allowed")
-        reason = "forced_policy_resource"
-    elif policy == "static_hybrid":
-        if static_placement is None:
-            raise PolicyContractError("static_hybrid placement is missing")
-        selected = str(static_placement[branch])
-        if selected not in allowed:
-            raise PolicyContractError("static_hybrid selected resource is not allowed")
-        reason = "frozen_calibrated_mixed_map"
-    elif policy == "heft":
-        selected = min(
-            allowed,
-            key=lambda resource: (evaluations[resource]["predicted_finish_ms"],) + tie_tail(resource),
+    try:
+        return evaluate_frozen_policy_v1(
+            policy, request, static_placement=static_placement, state_before=state_before
         )
-        reason = "minimum_earliest_finish_time"
-    elif policy == "deadline_aware_heft":
-        selected = min(
-            allowed,
-            key=lambda resource: (
-                evaluations[resource]["predicted_finish_ms"] > deadline,
-                evaluations[resource]["predicted_lateness_ms"],
-                evaluations[resource]["predicted_finish_ms"],
-            )
-            + tie_tail(resource),
-        )
-        reason = (
-            "minimum_feasible_finish_time"
-            if evaluations[selected]["predicted_finish_ms"] <= deadline
-            else "minimum_predicted_lateness"
-        )
-    elif policy == "queue_aware_edf":
-        for resource in RESOURCES:
-            value = evaluations[resource]
-            value["queue_completion_ms"] = max(
-                decision_time, float(value["available_ms"])
-            ) + (value["queue_depth"] + 1) * value["estimated_service_ms"] + value["transfer_ms"]
-        selected = min(
-            allowed,
-            key=lambda resource: (evaluations[resource]["queue_completion_ms"],) + tie_tail(resource),
-        )
-        reason = "edf_task_minimum_queue_completion"
-    elif policy == "adaptive_weights":
-        weights = state_before.get("weights")
-        ewma = state_before.get("service_ewma_ms")
-        if not isinstance(weights, Mapping) or set(weights) != set(RESOURCES):
-            raise PolicyContractError("adaptive state weights have drifted")
-        if not isinstance(ewma, Mapping):
-            raise PolicyContractError("adaptive EWMA state has drifted")
-        branch_ewma = ewma.get(branch, {})
-        if not isinstance(branch_ewma, Mapping):
-            raise PolicyContractError("adaptive branch EWMA state has drifted")
-        for resource in RESOURCES:
-            value = evaluations[resource]
-            service_basis = float(
-                branch_ewma.get(resource, value["estimated_service_ms"])
-            )
-            weight = float(weights[resource])
-            value["service_basis_ms"] = service_basis
-            value["adaptive_weight"] = weight
-            value["adaptive_score_ms"] = (
-                (value["queue_depth"] + 1) * service_basis * weight
-                + value["transfer_ms"]
-            )
-        selected = min(
-            allowed,
-            key=lambda resource: (evaluations[resource]["adaptive_score_ms"],) + tie_tail(resource),
-        )
-        reason = "minimum_bounded_queue_ewma_cost"
-    else:
-        raise PolicyContractError(f"unknown policy: {policy}")
-
-    return {
-        "evaluations": evaluations,
-        "selected_resource": selected,
-        "selected_implementation_id": evaluations[selected]["implementation_id"],
-        "reason": reason,
-    }
+    except FrozenPolicyReplayError as exc:
+        raise PolicyContractError(str(exc)) from exc
 
 
 class PolicyEngine:
@@ -874,37 +725,18 @@ class PolicyEngine:
             raise PolicyContractError("feedback decision is not an issued arm decision")
         if decision_id in self._feedback_applied:
             raise PolicyContractError("feedback was already applied for this decision")
-        actual = _positive(actual_service_ms, "actual_service_ms")
-        completed = _nonnegative(completed_at_ms, "completed_at_ms")
-        state_before = self.state_snapshot()
-        branch = str(decision_record["branch"])
-        resource = str(decision_record["selected_resource"])
-        branch_state = self._service_ewma_ms.setdefault(branch, {})
-        previous = branch_state.get(resource)
-        branch_state[resource] = actual if previous is None else 0.1 * actual + 0.9 * previous
-        deadline = float(decision_record["request"]["deadline_ms"])
-        late = completed > deadline
-        delta = 0.002 if late else -0.0002
-        self._weights[resource] = min(1.5, max(0.5, self._weights[resource] + delta))
-        state_after = self.state_snapshot()
-        payload = {
-            "schema_version": 1,
-            "artifact_kind": "vast_publication_policy_feedback",
-            "policy_contract_sha256": self._contract_sha256,
-            "engine_implementation_id": ENGINE_IMPLEMENTATION_ID,
-            "policy": self.policy,
-            "system": self.system,
-            "arm_id": self._arm_id,
-            "decision_id": decision_id,
-            "actual_service_ms": actual,
-            "completed_at_ms": completed,
-            "deadline_ms": deadline,
-            "outcome": "late" if late else "on_time",
-            "state_before": state_before,
-            "state_after": state_after,
-        }
+        try:
+            feedback = advance_frozen_feedback_v1(
+                decision_record, self.state_snapshot(),
+                actual_service_ms=actual_service_ms, completed_at_ms=completed_at_ms,
+            )
+        except FrozenPolicyReplayError as exc:
+            raise PolicyContractError(str(exc)) from exc
+        self._weights = copy.deepcopy(feedback["state_after"]["weights"])
+        self._service_ewma_ms = copy.deepcopy(feedback["state_after"]["service_ewma_ms"])
         self._feedback_applied.add(decision_id)
-        return _payload_with_sha256(payload)
+        return feedback
+
 
 
 def select_ready_task(policy: str, tasks: Sequence[Mapping[str, Any]]) -> dict[str, Any]:

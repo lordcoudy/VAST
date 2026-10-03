@@ -1,0 +1,116 @@
+{
+  "artifact_kind": "vast_publication_image_build_registry_v1",
+  "images": [
+    {
+      "accepted_image_id": "sha256:16d284eb311f04a95f148746f0dc5637d54d527cc42be9a6cced5fcf0240770c",
+      "base": {
+        "kind": "remote_digest",
+        "reference": "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+      },
+      "builder": {
+        "kind": "remote_digest",
+        "reference": "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+      },
+      "dependency_allowlist": "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt",
+      "dockerfile": "deploy/native_gst_probe/Dockerfile.deepstream",
+      "entrypoint": [
+        "/usr/local/bin/vast_native_gst_probe"
+      ],
+      "group": "native_probe",
+      "name": "native_probe_deepstream",
+      "source_allowlist": "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt",
+      "source_date_epoch": 1722470400,
+      "target_reference": "vast/deepstream-native-probe:7.0",
+      "user": "root"
+    },
+    {
+      "accepted_image_id": "sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1",
+      "base": {
+        "kind": "remote_digest",
+        "reference": "intel/dlstreamer@sha256:355435d2bdb986fe1d51f443d366da3ac1eb0c7175aa03ce2b31e4485f36b3bd"
+      },
+      "builder": {
+        "kind": "remote_digest",
+        "reference": "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+      },
+      "dependency_allowlist": "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt",
+      "dockerfile": "deploy/native_gst_probe/Dockerfile.openvino",
+      "entrypoint": [
+        "/usr/local/bin/vast_native_gst_probe"
+      ],
+      "group": "native_probe",
+      "name": "native_probe_openvino",
+      "source_allowlist": "deploy/native_gst_probe/publication/openvino-source-allowlist.txt",
+      "source_date_epoch": 1722470400,
+      "target_reference": "vast/openvino-native-probe:dlstreamer-2026.1",
+      "user": "dlstreamer"
+    },
+    {
+      "accepted_image_id": "sha256:ef70f6fae0558d1d90ae32fc931256bc71169749c15ae00b70a8ca00c0b70513",
+      "base": {
+        "kind": "remote_digest",
+        "reference": "ghcr.io/insight-platform/savant-deepstream@sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6"
+      },
+      "builder": {
+        "kind": "remote_digest",
+        "reference": "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+      },
+      "dependency_allowlist": "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt",
+      "dockerfile": "deploy/native_gst_probe/Dockerfile.savant",
+      "entrypoint": [
+        "/usr/local/bin/vast_native_gst_probe"
+      ],
+      "group": "native_probe",
+      "name": "native_probe_savant",
+      "source_allowlist": "deploy/native_gst_probe/publication/savant-source-allowlist.txt",
+      "source_date_epoch": 1722470400,
+      "target_reference": "vast/savant-native-probe:0.5.17-7.0",
+      "user": "root"
+    },
+    {
+      "accepted_image_id": "sha256:e2b01f8f40da08fc59d671e19a7f4eca6dd7d46678de0138ab7af51b09cb9b03",
+      "base": {
+        "kind": "produced_image",
+        "producer": "native_probe_openvino",
+        "reference": "vast/openvino-native-probe:dlstreamer-2026.1"
+      },
+      "builder": {
+        "kind": "base"
+      },
+      "dependency_allowlist": "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt",
+      "dockerfile": "deploy/analytics_execution/Dockerfile.openvino",
+      "entrypoint": [
+        "/opt/vast/analytics/openvino_worker.py"
+      ],
+      "group": "analytics_worker",
+      "name": "analytics_worker_openvino",
+      "source_allowlist": "deploy/analytics_execution/publication/openvino-source-allowlist.txt",
+      "source_date_epoch": 0,
+      "target_reference": "vast/analytics-openvino-worker:publication-v3",
+      "user": "dlstreamer"
+    },
+    {
+      "accepted_image_id": "sha256:2ff600e743e6fc089ace1ea40894d73581fcda8007fa758fd0f32eb9b1c72f09",
+      "base": {
+        "kind": "produced_image",
+        "producer": "native_probe_deepstream",
+        "reference": "vast/deepstream-native-probe:7.0"
+      },
+      "builder": {
+        "kind": "base"
+      },
+      "dependency_allowlist": "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt",
+      "dockerfile": "deploy/analytics_execution/Dockerfile.tensorrt",
+      "entrypoint": [
+        "/opt/vast/bin/vast_tensorrt_worker"
+      ],
+      "group": "analytics_worker",
+      "name": "analytics_worker_tensorrt",
+      "source_allowlist": "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt",
+      "source_date_epoch": 0,
+      "target_reference": "vast/analytics-tensorrt-worker:publication-v3",
+      "user": "root"
+    }
+  ],
+  "schema_version": 1
+}

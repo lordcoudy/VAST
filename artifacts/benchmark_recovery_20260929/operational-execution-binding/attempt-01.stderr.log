@@ -1,0 +1,43 @@
+setUpClass (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests) ... ERROR
+
+======================================================================
+ERROR: setUpClass (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_capture_plan_v1.py", line 128, in _custody
+    yield custody, pins
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_capture_plan_v1.py", line 285, in build_operational_capture_plan_v1
+    custody.stat_directory_identity(guardian_output_dir.parent, label="future guardian output parent")
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py", line 748, in stat_directory_identity
+    relative = self._relative(value, label=label)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py", line 377, in _relative
+    return canonical_relative_path_v1(relative, label=label)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py", line 174, in canonical_relative_path_v1
+    _require(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py", line 92, in _require
+    raise PublicationPhysicalIoV1Error(message)
+publication_physical_io_v1.PublicationPhysicalIoV1Error: future guardian output parent path is unsafe
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 308, in setUpClass
+    cls.fixture = _OriginalBindingFixture(Path(cls.temporary.name))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 116, in __init__
+    self.plan = build_operational_capture_plan_v1(project_root=root, output_dir=root / "outputs/capture-plan",
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_capture_plan_v1.py", line 284, in build_operational_capture_plan_v1
+    with _custody(project_root) as (custody, pins):
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_capture_plan_v1.py", line 132, in _custody
+    raise ValueError("operational capture plan custody failed: " + str(error)) from error
+ValueError: operational capture plan custody failed: future guardian output parent path is unsafe
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.179s
+
+FAILED (errors=1)

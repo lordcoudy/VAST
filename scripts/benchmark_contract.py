@@ -48,6 +48,7 @@ from formal_aw_heft_reference import FormalAwHeftError, validate_reference_artif
 from publication_acceptance_evidence import (
     FROZEN_POLICY_DECISIONS_JSONL,
     FROZEN_POLICY_FEEDBACK_JSONL,
+    FROZEN_POLICY_RUNTIME_HISTORY_JSONL,
     FROZEN_PUBLICATION_FEEDBACK_POLICIES,
     accepted_arm_evidence_files,
     frozen_policy_requires_feedback,
@@ -63,7 +64,7 @@ DATASET_MANIFEST_IDENTITY_VERSION = 1
 SCENARIO_CONTRACT_IDENTITY_VERSION = 1
 PUBLICATION_RUN_CONTRACT_IDENTITY_VERSION = 1
 PUBLICATION_EVIDENCE_BUNDLE_IDENTITY_VERSION = 1
-BRANCH_ANALYTICS_CONTRACT_VERSION = 1
+BRANCH_ANALYTICS_CONTRACT_VERSION = 2
 FRAME_COLUMNS = [
     "schema_version",
     "run_id",
@@ -2139,9 +2140,20 @@ _BRANCH_TERMINAL_PROVENANCE = {
     "drop": "native_drop_event",
 }
 _VERIFIED_ANALYTICS_BACKENDS = {
+    "deepstream:native_pre_detector_queue",
     "openvino-dlstreamer:gvadetect",
     "openvino-dlstreamer:object_detect",
 }
+_VERIFIED_ANALYTICS_BACKEND_PATTERNS = (
+    re.compile(
+        r"^analytics-execution:openvino_cpu;runtime=[^;\r\n]+;"
+        r"native_api=[^;\r\n]+;device=CPU:[^;\r\n]+$"
+    ),
+    re.compile(
+        r"^analytics-execution:tensorrt_cuda;runtime=[^;\r\n]+;"
+        r"native_api=[^;\r\n]+;device=NVIDIA_CUDA:[^;\r\n]+$"
+    ),
+)
 _STAGE_CONTRACT_PROVENANCE = {"runtime_loaded_configuration"}
 _STAGE_ARTIFACT_PROVENANCE = {"runtime_loaded_artifacts_v1"}
 _STAGE_ARTIFACT_KINDS = {
@@ -2803,6 +2815,7 @@ def publication_evidence_bundle_files(
     scope: str,
     *,
     policy: str | None = None,
+    runtime_history: bool = False,
 ) -> tuple[str, ...]:
     """Return the exact, ordered raw-file set for one publication scope."""
 
@@ -2825,14 +2838,19 @@ def publication_evidence_bundle_files(
         files = accepted_arm_evidence_files(
             normalized_policy,
             full_resource=True,
+            runtime_history=runtime_history,
         )
     elif scope in {
         PUBLICATION_EVIDENCE_BUNDLE_POLICY_FROZEN_SCOPE,
         PUBLICATION_EVIDENCE_BUNDLE_POLICY_ONLINE_SCOPE,
     }:
-        files = pre_finalization_acceptance_evidence_files(normalized_policy)
+        files = pre_finalization_acceptance_evidence_files(
+            normalized_policy, runtime_history=runtime_history,
+        )
     else:
-        files = pre_finalization_acceptance_evidence_files(normalized_policy)
+        files = pre_finalization_acceptance_evidence_files(
+            normalized_policy, runtime_history=runtime_history,
+        )
     return tuple(sorted(files))
 
 
@@ -2845,7 +2863,10 @@ def build_publication_evidence_bundle(
     """Hash the exact claim-critical raw files after accepted-sidecar validation."""
 
     records: list[dict[str, Any]] = []
-    for relative_name in publication_evidence_bundle_files(scope, policy=policy):
+    for relative_name in publication_evidence_bundle_files(
+        scope, policy=policy,
+        runtime_history=(run_dir / FROZEN_POLICY_RUNTIME_HISTORY_JSONL).is_file(),
+    ):
         path = run_dir / relative_name
         if path.is_symlink():
             raise ContractError(
@@ -3746,7 +3767,15 @@ def _validate_policy_causal_trace_fields(
                 row_number=row_number,
                 field=f"feature_provenance_json.{feature_name}.age_ms",
             )
-            if observed_timestamp <= 0 or observed_timestamp > decision_timestamp:
+            # pandas parses the scalar CSV column and the nested JSON number
+            # through different float paths.  At Unix-epoch millisecond
+            # magnitudes, an identical decimal can differ by one binary64 ULP
+            # (~0.000244 ms) after round-trip.  Keep the causal gate strict
+            # beyond the same 1 microsecond tolerance used by the age check.
+            if (
+                observed_timestamp <= 0
+                or observed_timestamp - decision_timestamp > 1e-3
+            ):
                 raise ContractError(
                     f"{path}:{row_number}: feature {feature_name} must be observed no later than the decision"
                 )
@@ -4205,12 +4234,63 @@ def _adaptive_states_close(left: Any, right: Any) -> bool:
     return left == right
 
 
+def _projected_native_policy_report(
+    path: Path,
+    *,
+    records: list[dict[str, Any]],
+    decisions: pd.DataFrame,
+    ingress_rows: Any = None,
+    runtime_history_path: Path | None = None,
+    feedback_records: list[dict[str, Any]] | None = None,
+) -> dict[str, Any] | None:
+    """Validate the new projection without granting capability authority."""
+    history_path = runtime_history_path or path.parent / FROZEN_POLICY_RUNTIME_HISTORY_JSONL
+    if not any("publication_projection" in record for record in records):
+        if history_path.exists():
+            raise ContractError(f"{path}: unprojected evidence cannot expose runtime history")
+        return None
+    # Lazy imports keep the policy-contract/benchmark-contract dependency acyclic.
+    from publication_policy_contract import policy_contract_identity
+    from publication_policy_projection_v1 import validate_published_decisions_v1
+
+    if ingress_rows is None:
+        frames = canonicalize_frames_csv(
+            path.parent / "frames.csv", mode="benchmark", run_id="", detector="", backend="",
+        )
+        ingress_rows = validate_ingress_ledger(
+            path.parent / "ingress_ledger.csv", frames=frames,
+        )
+    if isinstance(ingress_rows, pd.DataFrame):
+        ingress_rows = ingress_rows.to_dict(orient="records")
+    policies = {str(record.get("policy", "")) for record in records}
+    if policies != {"adaptive_weights"} and (path.parent / FROZEN_POLICY_FEEDBACK_JSONL).exists():
+        raise ContractError(f"{path}: projected nonadaptive evidence cannot expose feedback")
+    if policies == {"adaptive_weights"} and feedback_records is None:
+        feedback_records = _read_canonical_policy_jsonl(
+            path.parent / FROZEN_POLICY_FEEDBACK_JSONL,
+            artifact_kind="vast_publication_policy_feedback",
+        )
+    try:
+        return validate_published_decisions_v1(
+            records,
+            decisions.to_dict(orient="records"),
+            ingress_rows=ingress_rows,
+            history_path=history_path if history_path.exists() else None,
+            feedback_records=feedback_records,
+            expected_policy_contract_sha256=policy_contract_identity()["sha256"],
+        )
+    except (ValueError, TypeError, KeyError, OSError) as exc:
+        raise ContractError(f"{path}: canonical policy projection rejected: {exc}") from exc
+
+
 def validate_frozen_policy_feedback(
     path: Path,
     *,
     decisions: pd.DataFrame,
     decision_records_path: Path | None = None,
     require_complete: bool = False,
+    ingress_rows: Any = None,
+    runtime_history_path: Path | None = None,
 ) -> pd.DataFrame:
     """Validate canonical native feedback for frozen adaptive_weights."""
 
@@ -4240,6 +4320,18 @@ def validate_frozen_policy_feedback(
     }
     if len(csv_by_id) != len(adaptive):
         raise ContractError(f"{path}: adaptive_weights decision IDs are not unique")
+    projected = _projected_native_policy_report(
+        resolved_decisions_path,
+        records=decision_records,
+        decisions=decisions,
+        ingress_rows=ingress_rows,
+        runtime_history_path=runtime_history_path,
+        feedback_records=feedback_records,
+    )
+    if projected is not None:
+        if not projected.get("projected") or not projected.get("runtime_history_verified"):
+            raise ContractError(f"{path}: projected feedback lacks verified actual history")
+        return pd.DataFrame(projected["feedback_rows"])
 
     canonical_by_id: dict[str, dict[str, Any]] = {}
     for line_number, record in enumerate(decision_records, start=1):
@@ -4405,6 +4497,8 @@ def validate_frozen_policy_decisions(
     *,
     decisions: pd.DataFrame,
     expected_policy: str,
+    ingress_rows: Any = None,
+    runtime_history_path: Path | None = None,
 ) -> list[dict[str, Any]]:
     """Validate canonical native decision JSONL and its CSV identity projection."""
 
@@ -4451,6 +4545,10 @@ def validate_frozen_policy_decisions(
     sequence = [int(record["decision_seq"]) for record in records]
     if sorted(sequence) != list(range(1, len(records) + 1)):
         raise ContractError(f"{path}: canonical decision sequence is not contiguous")
+    _projected_native_policy_report(
+        path, records=records, decisions=decisions,
+        ingress_rows=ingress_rows, runtime_history_path=runtime_history_path,
+    )
     return records
 
 
@@ -5867,9 +5965,15 @@ def _branch_analytics_contract_entries(
             raise ContractError(
                 f"{source}:{row_number}: detector weights identity is invalid"
             )
-        if backend not in _VERIFIED_ANALYTICS_BACKENDS:
+        if (
+            backend not in _VERIFIED_ANALYTICS_BACKENDS
+            and not any(
+                pattern.fullmatch(backend)
+                for pattern in _VERIFIED_ANALYTICS_BACKEND_PATTERNS
+            )
+        ):
             raise ContractError(
-                f"{source}:{row_number}: backend is not a verified OpenVINO/DL Streamer detector factory"
+                f"{source}:{row_number}: backend is not a verified native analytics execution identity"
             )
 
         entry = {
@@ -5879,12 +5983,11 @@ def _branch_analytics_contract_entries(
             "weights_sha256": (
                 detector_parts[2].split("=", 1)[1] if len(detector_parts) == 3 else ""
             ),
-            "backend": backend,
         }
         previous = identities.get(branch_id)
         if previous is not None and previous != entry:
             raise ContractError(
-                f"{source}:{row_number}: analytics identity changed within branch {branch_id}"
+                f"{source}:{row_number}: analytics model identity changed within branch {branch_id}"
             )
         identities[branch_id] = entry
     if not identities:
@@ -6034,7 +6137,7 @@ def _canonical_json_sha256(value: Any) -> str:
 
 
 def branch_analytics_contract_sha256(branch_terminals: pd.DataFrame) -> str:
-    """Hash the stable per-branch detector artifact and backend identities."""
+    """Hash stable per-branch model identities after validating every backend row."""
     payload = {
         "contract_version": BRANCH_ANALYTICS_CONTRACT_VERSION,
         "branches": _branch_analytics_contract_entries(
@@ -6630,6 +6733,18 @@ def validate_required_sidecars(
         sidecars["resource_intervals"].attrs["full_resource_summary"] = full_resource[
             "summary"
         ]
+    frozen_decisions_path = run_dir / FROZEN_POLICY_DECISIONS_JSONL
+    if frozen_decisions_path.exists():
+        if len(decision_policies) != 1:
+            raise ContractError(f"{run_dir}: canonical policy evidence must belong to one policy")
+        validate_frozen_policy_decisions(
+            frozen_decisions_path,
+            decisions=sidecars["policy_decisions"],
+            expected_policy=next(iter(decision_policies)),
+            ingress_rows=sidecars.get("ingress_ledger"),
+        )
+    elif (run_dir / FROZEN_POLICY_RUNTIME_HISTORY_JSONL).exists():
+        raise ContractError(f"{run_dir}: runtime history lacks canonical policy decisions")
     return sidecars
 
 
@@ -6828,21 +6943,36 @@ def _provenance_supports(
     return bool(values) and values.issubset(accepted) and (require_observed is None or require_observed in values)
 
 
-MEASUREMENT_PASSPORT_CONTRACT_VERSION = 4
-RESOURCE_ATTRIBUTION_RULE = "native_per_trace_bounded_stage_interval_ingress_cohort_v3"
-MEASUREMENT_STAGE_REDUCTION_RULE = "decode_preprocess_suffix_reduction_v1"
+MEASUREMENT_PASSPORT_CONTRACT_VERSION = 6
+LEGACY_MEASUREMENT_PASSPORT_CONTRACT_VERSION = 5
+RESOURCE_ATTRIBUTION_RULE = "native_per_trace_bounded_stage_interval_ingress_cohort_v4"
+MEASUREMENT_STAGE_REDUCTION_RULE = "verified_branch_terminal_stage_reduction_v2"
+LEGACY_MEASUREMENT_STAGE_REDUCTION_RULE = "decode_preprocess_suffix_reduction_v1"
+POSTDECODE_PREFIX_DROP_REASON = "native_postdecode_preprocess_queue_full_drop_newest"
+PRE_DETECTOR_DROP_REASON = "native_pre_detector_queue_full_drop_newest"
 MEASUREMENT_RESOURCE_TIME_PROVENANCE = {
     "native_hardware_counter",
     "derived_from_native_stage_timestamps",
 }
+MEASUREMENT_CPU_COMPONENT_RESOURCES = {"cpu", "nvdec"}
 
 
-def build_measurement_signature_payload(time_provenance: list[str]) -> dict[str, Any]:
-    """Return the complete canonical semantics of measurement passport v4."""
+def build_measurement_signature_payload(
+    time_provenance: list[str], *, branch_terminal_aware: bool = False,
+) -> dict[str, Any]:
+    """Return exact legacy or verified-branch measurement semantics."""
     return {
-        "contract_version": MEASUREMENT_PASSPORT_CONTRACT_VERSION,
+        "contract_version": (
+            MEASUREMENT_PASSPORT_CONTRACT_VERSION if branch_terminal_aware
+            else LEGACY_MEASUREMENT_PASSPORT_CONTRACT_VERSION
+        ),
         "resource_attribution": RESOURCE_ATTRIBUTION_RULE,
         "resource_time_components": ["cpu_time_ms", "gpu_time_ms"],
+        "resource_time_component_mapping": {
+            "cpu": "cpu_time_ms",
+            "gpu": "gpu_time_ms",
+            "nvdec": "cpu_time_ms_host_stage_elapsed_not_nvdec_busy_time",
+        },
         "resource_time_aggregation": (
             "unweighted_sum_of_attributed_device_milliseconds_v1"
         ),
@@ -6859,7 +6989,10 @@ def build_measurement_signature_payload(time_provenance: list[str]) -> dict[str,
         "transfer_time_components": [],
         "nvdec_busy_time_included": False,
         "fanout_time_included": False,
-        "stage_reduction_rule": MEASUREMENT_STAGE_REDUCTION_RULE,
+        "stage_reduction_rule": (
+            MEASUREMENT_STAGE_REDUCTION_RULE if branch_terminal_aware
+            else LEGACY_MEASUREMENT_STAGE_REDUCTION_RULE
+        ),
         "cohort_terminal_rule": "completed_or_native_drop_no_censored",
     }
 
@@ -6882,7 +7015,10 @@ def measurement_signature_payload_is_valid(
         or resource_attribution != RESOURCE_ATTRIBUTION_RULE
     ):
         return False
-    return payload == build_measurement_signature_payload(time_provenance)
+    return payload in (
+        build_measurement_signature_payload(time_provenance),
+        build_measurement_signature_payload(time_provenance, branch_terminal_aware=True),
+    )
 
 
 def measurement_signature_identity_is_valid(
@@ -6948,10 +7084,109 @@ def input_frame_key_sequence_sha256(ingress: pd.DataFrame) -> str:
     return _canonical_json_sha256(rows)
 
 
+def _verified_branch_stage_coverage(
+    ledger: pd.DataFrame,
+    branch_terminals: pd.DataFrame,
+    *,
+    topology_kind: str,
+    required_branches: list[str] | tuple[str, ...],
+    stages_by_key: dict[tuple[Any, ...], set[str]],
+) -> bool:
+    """Check physical prefix work against validated, frame-linked branch outcomes."""
+    if topology_kind not in {"independent_processes", "shared_video_dag"}:
+        return False
+    branches = tuple(required_branches)
+    if not branches or len(set(branches)) != len(branches):
+        return False
+    if topology_kind == "shared_video_dag" and len(branches) != 4:
+        return False
+    required = set(BRANCH_TERMINAL_COLUMNS) | {"branch_terminal_claim_eligible"}
+    if not required.issubset(branch_terminals.columns):
+        return False
+    frame_columns = ("run_id", "trace_id", "stream_id", "frame_id")
+    ledger_by_key = {
+        tuple(row[column] for column in frame_columns): row
+        for row in ledger.to_dict(orient="records")
+    }
+    if len(ledger_by_key) != len(ledger):
+        return False
+    by_key: dict[tuple[Any, ...], dict[str, dict[str, Any]]] = {}
+    for row in branch_terminals.to_dict(orient="records"):
+        key = tuple(row[column] for column in frame_columns)
+        ingress = ledger_by_key.get(key)
+        branch = str(row["branch_id"])
+        if (
+            ingress is None
+            or branch not in branches
+            or branch in by_key.get(key, {})
+            or not bool(row["branch_terminal_claim_eligible"])
+            or str(row["telemetry_source"]) != "native"
+            or str(row["input_frame_key"]) != str(ingress["input_frame_key"])
+            or str(row["cohort_id"]) != str(ingress["cohort_id"])
+        ):
+            return False
+        status = str(row["terminal_status"])
+        reason = str(row["terminal_reason"])
+        if status == "drop":
+            if reason not in {POSTDECODE_PREFIX_DROP_REASON, PRE_DETECTOR_DROP_REASON}:
+                return False
+            if str(row["terminal_provenance"]) != "native_drop_event":
+                return False
+        elif status == "completed":
+            if not reason or reason in {POSTDECODE_PREFIX_DROP_REASON, PRE_DETECTOR_DROP_REASON}:
+                return False
+            if str(row["terminal_provenance"]) != "native_completion_event":
+                return False
+        else:
+            return False
+        by_key.setdefault(key, {})[branch] = row
+    if set(by_key) != set(ledger_by_key):
+        return False
+    for key, ingress in ledger_by_key.items():
+        outcomes = by_key[key]
+        if set(outcomes) != set(branches):
+            return False
+        statuses = {str(row["terminal_status"]) for row in outcomes.values()}
+        if str(ingress["terminal_status"]) == "completed":
+            if statuses != {"completed"}:
+                return False
+        elif str(ingress["terminal_status"]) == "drop":
+            if "drop" not in statuses:
+                return False
+        else:
+            return False
+        stages = stages_by_key.get(key, set())
+        if topology_kind == "independent_processes":
+            for branch, row in outcomes.items():
+                if f"decode_{branch}" not in stages:
+                    return False
+                prefix_drop = (
+                    str(row["terminal_status"]) == "drop"
+                    and str(row["terminal_reason"]) == POSTDECODE_PREFIX_DROP_REASON
+                )
+                if (f"preprocess_{branch}" in stages) == prefix_drop:
+                    return False
+        else:
+            prefix_drops = [
+                row for row in outcomes.values()
+                if str(row["terminal_status"]) == "drop"
+                and str(row["terminal_reason"]) == POSTDECODE_PREFIX_DROP_REASON
+            ]
+            if "decode" not in stages or (prefix_drops and len(prefix_drops) != len(branches)):
+                return False
+            if ("preprocess" in stages) == bool(prefix_drops):
+                return False
+    return True
+
+
 def summarize_measurement_passport(
     resources: pd.DataFrame,
     ingress: pd.DataFrame,
     frame_events: pd.DataFrame | None = None,
+    *,
+    branch_terminals: pd.DataFrame | None = None,
+    topology_kind: str | None = None,
+    required_branches: list[str] | tuple[str, ...] | None = None,
 ) -> dict[str, Any]:
     """Derive a claim-gating passport from accepted native sidecars only."""
     unavailable = {
@@ -7040,7 +7275,7 @@ def summarize_measurement_passport(
         resource_frame_keys,
         strict=True,
     ):
-        stages_by_key.setdefault(key, set()).add(stage_base_name(str(row["stage"])))
+        stages_by_key.setdefault(key, set()).add(str(row["stage"]))
         bounds = ledger_bounds.get(key)
         if bounds is None:
             timestamps_in_bounds = False
@@ -7049,10 +7284,29 @@ def summarize_measurement_passport(
         if timestamp < bounds[0] or timestamp > bounds[1]:
             timestamps_in_bounds = False
 
-    prefix_covered = all(
-        {"decode", "preprocess"}.issubset(stages_by_key.get(key, set()))
-        for key in ledger_keys
+    branch_terminal_aware = (
+        branch_terminals is not None or topology_kind is not None or required_branches is not None
     )
+    if branch_terminal_aware:
+        prefix_covered = bool(
+            branch_terminals is not None
+            and topology_kind is not None
+            and required_branches is not None
+            and _verified_branch_stage_coverage(
+                ledger,
+                branch_terminals,
+                topology_kind=topology_kind,
+                required_branches=required_branches,
+                stages_by_key=stages_by_key,
+            )
+        )
+    else:
+        prefix_covered = all(
+            {"decode", "preprocess"}.issubset(
+                {stage_base_name(stage) for stage in stages_by_key.get(key, set())}
+            )
+            for key in ledger_keys
+        )
     cpu_time = pd.to_numeric(resource_rows["cpu_time_ms"], errors="coerce")
     gpu_time = pd.to_numeric(resource_rows["gpu_time_ms"], errors="coerce")
     finite_nonnegative_time = bool(
@@ -7104,7 +7358,7 @@ def summarize_measurement_passport(
             ):
                 interval_time_consistent = False
                 break
-            if resource_name == "cpu":
+            if resource_name in MEASUREMENT_CPU_COMPONENT_RESOURCES:
                 resource_component_consistent = math.isclose(
                     gpu_value,
                     0.0,
@@ -7155,7 +7409,9 @@ def summarize_measurement_passport(
     if not attribution_complete:
         return unavailable
 
-    signature_payload = build_measurement_signature_payload(time_provenance)
+    signature_payload = build_measurement_signature_payload(
+        time_provenance, branch_terminal_aware=branch_terminal_aware,
+    )
     signature_json = json.dumps(
         signature_payload,
         sort_keys=True,
@@ -7391,6 +7647,13 @@ def summarize_sidecars(
                 resources,
                 ingress,
                 sidecars["frame_events"],
+                branch_terminals=(
+                    sidecars.get("branch_terminals")
+                    if topology_kind is not None or required_branches is not None
+                    else None
+                ),
+                topology_kind=topology_kind,
+                required_branches=required_branches,
             )
         )
 

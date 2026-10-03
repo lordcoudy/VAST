@@ -1,0 +1,602 @@
+{
+  "accepted_original_preparation": {
+    "author_FD_view_epoch7": [
+      17601399781211216820,
+      1407374885980232,
+      33206,
+      1,
+      10887,
+      1791024719163683200,
+      1791024719163683200
+    ],
+    "author_named_view_epoch7": [
+      17601399781211216820,
+      1407374885980232,
+      33206,
+      1,
+      10887,
+      1791024719163683200,
+      1791024719163683200
+    ],
+    "both_views_independently_stable": true,
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-current95-post-D-setup-audit-preparation-v1\\preparation.v1.json",
+    "sha256": "c501f7a08f966cecccaa15ee410add1337cde3120a141e2dcf1ba0dba1f95ed4",
+    "size_bytes": 10887
+  },
+  "accepted_original_source": {
+    "author_FD_view_epoch7": [
+      17601399781211216820,
+      2533274792822855,
+      33206,
+      1,
+      15426,
+      1791024719157568900,
+      1791024719157568900
+    ],
+    "author_named_view_epoch7": [
+      17601399781211216820,
+      2533274792822855,
+      33206,
+      1,
+      15426,
+      1791024719157568900,
+      1791024719157568900
+    ],
+    "both_views_independently_stable": true,
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-current95-post-D-setup-audit-preparation-v1\\audit_actual95_post_setup_v1.py",
+    "sha256": "b754a2dd850d2b921cb4d3348d06e5c70ac8b3c4cd43b06f1b999943f97bc1fc",
+    "size_bytes": 15426
+  },
+  "actual_D_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "actual_existing_focused_test": null,
+  "actual_runtime_bind_review": null,
+  "actual_sealed_D_setup_inputs": [
+    {
+      "author_FD_view_epoch7": [
+        17601399781211216820,
+        1407374885980139,
+        33206,
+        1,
+        11220,
+        1791024018828069300,
+        1791024018828069300
+      ],
+      "author_named_view_epoch7": [
+        17601399781211216820,
+        1407374885980139,
+        33206,
+        1,
+        11220,
+        1791024018828069300,
+        1791024018828069300
+      ],
+      "both_views_independently_stable": true,
+      "path": "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\recipe.bound.v1.json",
+      "sha256": "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5",
+      "size_bytes": 11220
+    },
+    {
+      "author_FD_view_epoch7": [
+        17601399781211216820,
+        1407374885980219,
+        33206,
+        1,
+        4639,
+        1791024496452810200,
+        1791024496452810200
+      ],
+      "author_named_view_epoch7": [
+        17601399781211216820,
+        1407374885980219,
+        33206,
+        1,
+        4639,
+        1791024496452810200,
+        1791024496451438300
+      ],
+      "both_views_independently_stable": true,
+      "path": "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\original-setup.capture-terminal.v1.json",
+      "sha256": "7d3ed43ad2ae5d4a60b8ae2e6ae47ae36338f3b147cf39a8ca278e280a8e622c",
+      "size_bytes": 4639
+    },
+    {
+      "author_FD_view_epoch7": [
+        17601399781211216820,
+        1407374885980218,
+        33206,
+        1,
+        29015,
+        1791024496418861600,
+        1791024496418861600
+      ],
+      "author_named_view_epoch7": [
+        17601399781211216820,
+        1407374885980218,
+        33206,
+        1,
+        29015,
+        1791024496418861600,
+        1791024496417862500
+      ],
+      "both_views_independently_stable": true,
+      "path": "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\original-setup-attempt01\\execution.v1.json",
+      "sha256": "96ed65f0d6e59acf5ee75400b43d11b5312741e446883fcdb64cf93d041043e4",
+      "size_bytes": 29015
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-setup-attempt01/tracked-raw-source.v1.json",
+      "physical_rehash_this_preparation": false,
+      "scope": "Retained original tracked-tree proof pointer; auditor itself does not read this 2.4MiB inventory.",
+      "sha256": "2aa2d4a507a0e0676b0afaadbc2b6b269c038431dc9ea79228fdc8a9f6b7451d",
+      "size_bytes": 2423045
+    }
+  ],
+  "all_author_input_handles_released": true,
+  "all_twelve_module_and_one_nested_function_ASTs_unchanged": true,
+  "author": "/root/adversarial_review",
+  "author_elapsed_before_receipt_s": 0.029632500023581088,
+  "author_input_views": {
+    "artifacts\\benchmark_recovery_20260930\\decision28-current95-preparation-v1\\decision28-current95-original-attempt01\\current95-inputs.v1.json": {
+      "author_FD_view_epoch7": [
+        17601399781211216820,
+        1407374885979560,
+        33206,
+        1,
+        44579,
+        1791015323990275000,
+        1791015323990275000
+      ],
+      "author_named_view_epoch7": [
+        17601399781211216820,
+        1407374885979560,
+        33206,
+        1,
+        44579,
+        1791015323990275000,
+        1791015323989270100
+      ],
+      "both_views_independently_stable": true,
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-current95-preparation-v1\\decision28-current95-original-attempt01\\current95-inputs.v1.json",
+      "sha256": "3c9b7eca9c9b33e01624764b7ccfccb9d748c3ac9623389f7e12447f0085b150",
+      "size_bytes": 44579
+    },
+    "artifacts\\benchmark_recovery_20260930\\decision29-current95-post-D-setup-audit-preparation-v1\\audit_actual95_post_setup_v1.py": {
+      "author_FD_view_epoch7": [
+        17601399781211216820,
+        2533274792822855,
+        33206,
+        1,
+        15426,
+        1791024719157568900,
+        1791024719157568900
+      ],
+      "author_named_view_epoch7": [
+        17601399781211216820,
+        2533274792822855,
+        33206,
+        1,
+        15426,
+        1791024719157568900,
+        1791024719157568900
+      ],
+      "both_views_independently_stable": true,
+      "path": "artifacts\\benchmark_recovery_20260930\\decision29-current95-post-D-setup-audit-preparation-v1\\audit_actual95_post_setup_v1.py",
+      "sha256": "b754a2dd850d2b921cb4d3348d06e5c70ac8b3c4cd43b06f1b999943f97bc1fc",
+      "size_bytes": 15426
+    },
+    "artifacts\\benchmark_recovery_20260930\\decision29-current95-post-D-setup-audit-preparation-v1\\preparation.v1.json": {
+      "author_FD_view_epoch7": [
+        17601399781211216820,
+        1407374885980232,
+        33206,
+        1,
+        10887,
+        1791024719163683200,
+        1791024719163683200
+      ],
+      "author_named_view_epoch7": [
+        17601399781211216820,
+        1407374885980232,
+        33206,
+        1,
+        10887,
+        1791024719163683200,
+        1791024719163683200
+      ],
+      "both_views_independently_stable": true,
+      "path": "artifacts\\benchmark_recovery_20260930\\decision29-current95-post-D-setup-audit-preparation-v1\\preparation.v1.json",
+      "sha256": "c501f7a08f966cecccaa15ee410add1337cde3120a141e2dcf1ba0dba1f95ed4",
+      "size_bytes": 10887
+    },
+    "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\original-setup-attempt01\\execution.v1.json": {
+      "author_FD_view_epoch7": [
+        17601399781211216820,
+        1407374885980218,
+        33206,
+        1,
+        29015,
+        1791024496418861600,
+        1791024496418861600
+      ],
+      "author_named_view_epoch7": [
+        17601399781211216820,
+        1407374885980218,
+        33206,
+        1,
+        29015,
+        1791024496418861600,
+        1791024496417862500
+      ],
+      "both_views_independently_stable": true,
+      "path": "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\original-setup-attempt01\\execution.v1.json",
+      "sha256": "96ed65f0d6e59acf5ee75400b43d11b5312741e446883fcdb64cf93d041043e4",
+      "size_bytes": 29015
+    },
+    "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\original-setup.capture-terminal.v1.json": {
+      "author_FD_view_epoch7": [
+        17601399781211216820,
+        1407374885980219,
+        33206,
+        1,
+        4639,
+        1791024496452810200,
+        1791024496452810200
+      ],
+      "author_named_view_epoch7": [
+        17601399781211216820,
+        1407374885980219,
+        33206,
+        1,
+        4639,
+        1791024496452810200,
+        1791024496451438300
+      ],
+      "both_views_independently_stable": true,
+      "path": "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\original-setup.capture-terminal.v1.json",
+      "sha256": "7d3ed43ad2ae5d4a60b8ae2e6ae47ae36338f3b147cf39a8ca278e280a8e622c",
+      "size_bytes": 4639
+    },
+    "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\recipe.bound.v1.json": {
+      "author_FD_view_epoch7": [
+        17601399781211216820,
+        1407374885980139,
+        33206,
+        1,
+        11220,
+        1791024018828069300,
+        1791024018828069300
+      ],
+      "author_named_view_epoch7": [
+        17601399781211216820,
+        1407374885980139,
+        33206,
+        1,
+        11220,
+        1791024018828069300,
+        1791024018828069300
+      ],
+      "both_views_independently_stable": true,
+      "path": "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-preparation-v1\\recipe.bound.v1.json",
+      "sha256": "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5",
+      "size_bytes": 11220
+    },
+    "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\preparation.v2.json": {
+      "author_FD_view_epoch7": [
+        17601399781211216820,
+        1407374885980368,
+        33206,
+        1,
+        19616,
+        1791028220872451000,
+        1791028220872451000
+      ],
+      "author_named_view_epoch7": [
+        17601399781211216820,
+        1407374885980368,
+        33206,
+        1,
+        19616,
+        1791028220872451000,
+        1791028220872451000
+      ],
+      "both_views_independently_stable": true,
+      "path": "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\preparation.v2.json",
+      "sha256": "17e89696bdb7a684e7791238377ed616673eab690a6bc5bbe63a51a679df4d39",
+      "size_bytes": 19616
+    }
+  },
+  "author_view_limitation": "Separate stable Windows FD/named seven-field views; no claim that Windows ctime equals the original Linux epochs. Original auditor Linux strict equality is unchanged.",
+  "benchmark_checkpoint_B": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "exact_forward_and_inverse_bytes": true,
+  "fresh_WSL_output_absence_observed": null,
+  "fresh_audit_output": "original-post-runtime-bind-audit-attempt01",
+  "full_CI_acceptance": false,
+  "future_fresh95_result": null,
+  "future_original_auditor_owner": null,
+  "future_original_auditor_terminal": null,
+  "genuine_B95_manifest_unchanged": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/decision28-current95-original-attempt01/current95-inputs.v1.json",
+    "sha256": "3c9b7eca9c9b33e01624764b7ccfccb9d748c3ac9623389f7e12447f0085b150",
+    "size_bytes": 44579
+  },
+  "hardware_acceptance": false,
+  "literal_diff": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-current95-post-runtime-bind-audit-preparation-v1\\literal-only.delta.v1.patch",
+    "sha256": "81720e113b402ec11a55a5271d890ce2bea3f113bab416aa150a9e78ae9858c9",
+    "size_bytes": 516
+  },
+  "only_literal_pair": [
+    "OUT=HERE/'original-audit-attempt01'",
+    "OUT=HERE/'original-post-runtime-bind-audit-attempt01'"
+  ],
+  "outer_envelope_required": "/usr/bin/timeout --verbose --signal=TERM --kill-after=10s 120s ORIGINAL_PINNED_CP312_AUDITOR_ARGV; actual tool outcome/ownership/FD/process closure retained separately",
+  "prepared_cli_argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current95-post-runtime-bind-audit-preparation-v1/audit_actual95_post_runtime_bind_v1.py"
+  ],
+  "prerequisite_full_CI_preparation": {
+    "author_FD_view_epoch7": [
+      17601399781211216820,
+      1407374885980368,
+      33206,
+      1,
+      19616,
+      1791028220872451000,
+      1791028220872451000
+    ],
+    "author_named_view_epoch7": [
+      17601399781211216820,
+      1407374885980368,
+      33206,
+      1,
+      19616,
+      1791028220872451000,
+      1791028220872451000
+    ],
+    "both_views_independently_stable": true,
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\preparation.v2.json",
+    "sha256": "17e89696bdb7a684e7791238377ed616673eab690a6bc5bbe63a51a679df4d39",
+    "size_bytes": 19616
+  },
+  "preserved_accepted_source": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-current95-post-runtime-bind-audit-preparation-v1\\accepted-D-audit.before.raw",
+    "sha256": "b754a2dd850d2b921cb4d3348d06e5c70ac8b3c4cd43b06f1b999943f97bc1fc",
+    "size_bytes": 15426
+  },
+  "required_order": [
+    "Root independently reads and approves this exact source.",
+    "Genuine stock runtime-bind materialization/check-only and the existing focused test close successfully with independent physical and owner/FD release joins.",
+    "Root grants this ONE fresh full95 hash/seven-original-Linux-epoch auditor observation; original D setup/owners/95 inputs remain unchanged.",
+    "Join actual auditor rc0, all original95 bytes/epochs, independent closes, original/tool-owner absence and no failure/late companion before any separate fullCI grant."
+  ],
+  "same_original_17_setup_owners_derived_from_sealed_capture": [
+    {
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/capture_original_setup_v2.py",
+        "11220",
+        "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95664,
+      "pid": 95664,
+      "ppid": 95663,
+      "session": 95664,
+      "startticks": 50681901,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "argv": [
+        ""
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95665,
+      "ppid": 95664,
+      "session": 95665,
+      "startticks": 50681904,
+      "state": "D",
+      "uid": 1000
+    },
+    {
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/setup_original_current_ci_v2.py",
+        "11220",
+        "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95666,
+      "ppid": 95665,
+      "session": 95665,
+      "startticks": 50681904,
+      "state": "D",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95667,
+      "ppid": 95666,
+      "startticks": 50681911,
+      "state": "D",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95668,
+      "ppid": 95666,
+      "startticks": 50681913,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95669,
+      "ppid": 95666,
+      "startticks": 50681918,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95672,
+      "ppid": 95666,
+      "startticks": 50681927,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95673,
+      "ppid": 95666,
+      "startticks": 50681928,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95674,
+      "ppid": 95666,
+      "startticks": 50681930,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95675,
+      "ppid": 95666,
+      "startticks": 50682249,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95676,
+      "ppid": 95666,
+      "startticks": 50682252,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95688,
+      "ppid": 95666,
+      "startticks": 50682254,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95689,
+      "ppid": 95666,
+      "startticks": 50682256,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95690,
+      "ppid": 95666,
+      "startticks": 50682289,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95691,
+      "ppid": 95666,
+      "startticks": 50682624,
+      "state": "R",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95692,
+      "ppid": 95666,
+      "startticks": 50682648,
+      "state": "D",
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 95665,
+      "pid": 95693,
+      "ppid": 95666,
+      "startticks": 50682650,
+      "state": "R",
+      "uid": 1000
+    }
+  ],
+  "schema_version": 1,
+  "scope": "One fresh95 gate only. No clone/cache/native/image/model authority; no Git/stock-loader/CI/test/engine/bind/copy/measurement execution or original artifact mutation. Same preserved B95 and original D setup process scopes; runtime-bind/test resource closure must come from their own genuine observers.",
+  "source": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-current95-post-runtime-bind-audit-preparation-v1\\audit_actual95_post_runtime_bind_v1.py",
+    "sha256": "8f776b44adad34aca05b1534ed66a3b96451e761af49e4e316f09f848d8557fb",
+    "size_bytes": 15444
+  },
+  "status": "prepared_unexecuted_requires_root_source_review_and_genuine_runtime_bind_prerequisites",
+  "target_imported_compiled_or_executed": false,
+  "unchanged_bounds": {
+    "cleanup_s": 10,
+    "each_regular_leaf_bytes": 16777216,
+    "error_records": 64,
+    "exclusive_failure_companion_bytes": 65536,
+    "held_leaf_count": 128,
+    "metadata_or_report_bytes": 1048576,
+    "total95_bytes": 67108864,
+    "work_s": 120
+  },
+  "unchanged_function_names": [
+    "epoch",
+    "identity",
+    "clock",
+    "fail",
+    "fd_count",
+    "owner",
+    "hold_ancestors",
+    "digest",
+    "hold",
+    "doc",
+    "scan_originals",
+    "save",
+    "problem"
+  ]
+}

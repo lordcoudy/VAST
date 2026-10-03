@@ -25,6 +25,7 @@ CONFIG_KIND = "vast_deepstream_protocol_adapter_config"
 CONFIG_CLAIM_STATUS = "native_sdk_adapter_requires_external_acceptance"
 RESOURCES = ("cpu", "gpu")
 BRANCHES = ("plate_number", "vehicle_type", "damage", "foreign_object")
+ANALYTICS_EXECUTION_TRANSPORT_TIMEOUT_NS = 300_000_000_000
 _CONFIG_FIELDS = {
     "schema_version",
     "artifact_kind",
@@ -145,6 +146,21 @@ def _structure_integer(structure: Any, name: str) -> int:
     return int(value)
 
 
+def _gst_map_read_flag() -> Any:
+    """Resolve the GI enum object required by Gst.Buffer.map()."""
+
+    try:
+        import gi  # type: ignore
+
+        gi.require_version("Gst", "1.0")
+        from gi.repository import Gst  # type: ignore
+    except Exception as exc:
+        raise DeepStreamProtocolAdapterError(
+            "DeepStream GStreamer bindings are unavailable"
+        ) from exc
+    return Gst.MapFlags.READ
+
+
 class DeepStreamProtocolCallbacks:
     """Direct SDK callback surface consumed by ``DeepStreamSdkPipeline``."""
 
@@ -158,17 +174,34 @@ class DeepStreamProtocolCallbacks:
         deadline_ms: float,
         sockets: tuple[socket.socket, ...] = (),
         monotonic_ns: Callable[[], int] = time.monotonic_ns,
+        gst_map_read_flag: Any | None = None,
+        rgb_sample_pts_field: str = "mux_gst_buffer_pts_ns",
     ) -> None:
         _require(callable(preprocess), "DeepStream preprocessing callback is missing")
         _require(math.isfinite(deadline_ms) and deadline_ms > 0, "DeepStream deadline is invalid")
         _require(bool(input_bindings), "DeepStream input binding set is empty")
+        _require(
+            rgb_sample_pts_field in {"mux_gst_buffer_pts_ns", "nvds_buf_pts_ns"},
+            "native RGB sample PTS identity field is invalid",
+        )
+        # nvstreamdemux restores per-frame PTS; a non-demuxed DeepStream
+        # sample still carries the batched mux PTS. Both observations remain
+        # in the unmodified identity sent to the bridge.
+        self._rgb_sample_pts_field = rgb_sample_pts_field
         self._bridge = bridge
         self._input_bindings = {str(key): dict(value) for key, value in input_bindings.items()}
         self._preprocessing_contract = dict(preprocessing_contract)
         self._preprocess = preprocess
-        self._deadline_ns = int(math.ceil(deadline_ms * 1_000_000.0))
+        # The benchmark SLO remains bound in the policy/runtime evidence.  The
+        # worker protocol deadline is an operational anti-hang bound and must
+        # not turn an ordinary benchmark SLO miss into an unreportable RPC
+        # rejection before a native terminal can be emitted.
+        self._execution_transport_timeout_ns = ANALYTICS_EXECUTION_TRANSPORT_TIMEOUT_NS
         self._sockets = sockets
         self._monotonic_ns = monotonic_ns
+        self._gst_map_read_flag = (
+            _gst_map_read_flag() if gst_map_read_flag is None else gst_map_read_flag
+        )
 
     def admit_transport_frame(self, frame: Any, *, observed_timestamp_ms: int) -> None:
         self._bridge.admit_transport_frame(frame, observed_timestamp_ms=observed_timestamp_ms)
@@ -179,8 +212,12 @@ class DeepStreamProtocolCallbacks:
     def observe_preprocessed_frame(self, identity: Mapping[str, Any], *, observed_timestamp_ms: int) -> None:
         self._bridge.observe_preprocessed_frame(identity, observed_timestamp_ms=observed_timestamp_ms)
 
-    def observe_fanout(self, identity: Mapping[str, Any], *, branch: str, observed_timestamp_ms: int) -> None:
-        self._bridge.observe_fanout(identity, branch=branch, observed_timestamp_ms=observed_timestamp_ms)
+    def observe_fanout(self, identity: Mapping[str, Any], *, branch: str, observed_timestamp_ms: int) -> int:
+        return self._bridge.observe_fanout(
+            identity,
+            branch=branch,
+            observed_timestamp_ms=observed_timestamp_ms,
+        )
 
     def execute_branch_sample(self, identity: Mapping[str, Any], *, branch: str, sample: Any) -> None:
         binding = self._input_bindings.get(branch)
@@ -194,8 +231,11 @@ class DeepStreamProtocolCallbacks:
         height = _structure_integer(structure, "height")
         buffer = sample.get_buffer()
         _require(buffer is not None, "DeepStream sample has no GstBuffer")
-        _require(int(buffer.pts) == int(identity["nvds_buf_pts_ns"]), "DeepStream RGB GstBuffer PTS identity drifted")
-        mapped, map_info = buffer.map(1)  # Gst.MapFlags.READ == 1; avoids a pyds dependency.
+        _require(
+            int(buffer.pts) == int(identity[self._rgb_sample_pts_field]),
+            f"DeepStream RGB GstBuffer PTS drifted from {self._rgb_sample_pts_field}",
+        )
+        mapped, map_info = buffer.map(self._gst_map_read_flag)
         _require(mapped, "DeepStream RGB GstBuffer read map failed")
         try:
             payload = bytes(map_info.data)
@@ -219,7 +259,9 @@ class DeepStreamProtocolCallbacks:
             branch,
             tensor_payload=tensor,
             queue_depths={"cpu": 0, "gpu": 0},
-            deadline_monotonic_ns=self._monotonic_ns() + self._deadline_ns,
+            deadline_monotonic_ns=(
+                self._monotonic_ns() + self._execution_transport_timeout_ns
+            ),
         )
 
     def drop_branch(
@@ -272,21 +314,6 @@ def create_callbacks(*, context: Mapping[str, Any], event_sink: Any, policy_exch
     manifest_path = _absolute_path(
         config["preprocessing_manifest_path"], "DeepStream preprocessing manifest"
     )
-    if manifest_path.suffix.lower() == ".json":
-        manifest = _load_json(manifest_path, "DeepStream preprocessing manifest")
-        _require(
-            manifest.get("schema_version") == 3
-            and manifest.get("artifact_kind") == "checkpoint_analytics_model_parity_manifest",
-            "DeepStream preprocessing manifest contract drifted",
-        )
-    else:
-        # Source-tree engineering runs may point at the canonical YAML.  Offline
-        # production images should ship its exact JSON rendering and therefore
-        # need no PyYAML package or network installation.
-        from checkpoint_model_parity import load_parity_manifest
-
-        manifest = load_parity_manifest(manifest_path)
-    preprocessing = dict(manifest["preprocessing_contract"])
     sockets: list[socket.socket] = []
     endpoints: dict[str, dict[str, Any]] = {}
     input_bindings: dict[str, dict[str, Any]] = {}
@@ -337,6 +364,20 @@ def create_callbacks(*, context: Mapping[str, Any], event_sink: Any, policy_exch
                         },
                         f"{branch}: CPU/GPU input contracts differ",
                     )
+        preprocessing_hashes = {
+            str(value["preprocessing_contract_sha256"])
+            for value in input_bindings.values()
+        }
+        _require(
+            len(preprocessing_hashes) == 1,
+            "DeepStream branches do not share one preprocessing contract",
+        )
+        from checkpoint_model_parity import load_parity_preprocessing_contract
+
+        preprocessing = load_parity_preprocessing_contract(
+            manifest_path,
+            expected_sha256=next(iter(preprocessing_hashes)),
+        )
         bridge = DeepStreamProtocolBridge(
             run_id=str(context["run_id"]),
             arm_id=str(context["arm_id"]),

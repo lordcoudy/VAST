@@ -1,0 +1,41 @@
+{
+  "exact_diff": {
+    "path": "v3-v4.diagnostic-root.diff",
+    "sha256": "b6f7cfc89b761d7dd15e0c0639a4bad21da1d7ae16ebdb3cefcc51e18f314353",
+    "size_bytes": 12479
+  },
+  "execution_performed": false,
+  "hardware_acceptance": false,
+  "no_source_test_or_original_bytes_modified": true,
+  "only_changed_function": "pin adds only two exact allowed ext4 physical leaf paths + original expected/observed rejection facts; all original regular/singlelink/canonical/epoch/size/hash/final ancestor guards retained",
+  "only_top_level_changes": [
+    "Fresh exclusive attempt02",
+    "One original logical control anchor uses genuine ext4 original raw bytes plus exact current .git/HEAD; other37 Windows anchors unchanged",
+    "All38 raw Git blob IDs now explicitly compared to sealed samecommit5039 table",
+    "Capture literal adds setsid --wait so actual child exit status propagates"
+  ],
+  "preparation": {
+    "path": "preparation.v4.json",
+    "sha256": "56bd93e825f2eb443d1e52b3c922591655b93d4d0f0a783d6c5284d2a9ac611b",
+    "size_bytes": 3820
+  },
+  "preserved_failed_original_status": "failed_no_CI_evidence_acceptance",
+  "schema_version": 1,
+  "source": {
+    "path": "inspect_hosted34_v4.py",
+    "sha256": "809941650bda699e28a3e39e50af59b4102a2533bca47d534721c3ae9342ea47",
+    "size_bytes": 24668
+  },
+  "source_before": {
+    "path": "inspect_hosted34_v3.py",
+    "sha256": "629ad711d0b1fe4de83eb5626d54cbdeddb5fe1e2d4a5725b183ca1889e5c61a",
+    "size_bytes": 23380
+  },
+  "status": "author_static_prepared_unexecuted_successor_review",
+  "unchanged_helper_functions": [
+    "clock",
+    "epoch",
+    "doc",
+    "save"
+  ]
+}

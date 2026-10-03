@@ -1,0 +1,73 @@
+{
+  "accepted": false,
+  "actual_runtime_contexts": [
+    {
+      "auxiliary_count": 0,
+      "build_context_sha256": "fba1a36ddd92c6b62ce39fc0c2432daf4a7ba808e9690f31dc7285868e94a55c",
+      "member_count": 85,
+      "system": "deepstream"
+    },
+    {
+      "auxiliary_count": 0,
+      "build_context_sha256": "3198f77ee524c1d048294d1f8e500dc8f36db98e63aef0fddc28fbfd028185f7",
+      "member_count": 89,
+      "system": "savant"
+    },
+    {
+      "auxiliary_count": 6,
+      "build_context_sha256": "0eb0c2355c201b005309cfc0291f611db10f8e9bb23981314422419476d4d399",
+      "member_count": 82,
+      "system": "openvino_gva"
+    },
+    {
+      "auxiliary_count": 5,
+      "build_context_sha256": "065ec4d0c667792de70c6fa00661bd6b66ba91fd6f58bc6bddee3f6c833ab203",
+      "member_count": 82,
+      "system": "gstreamer_custom"
+    }
+  ],
+  "artifact_kind": "vast_independent_packaging_source_rollforward_review_v4",
+  "compared_original_commit": "7f3dfa42858c85d6e3db2cb1274dd13af35696c9",
+  "current_165_category_counts": {
+    "absent_from_HEAD": 0,
+    "tracked_CR_at_EOL_only": 22,
+    "tracked_exact_bytes": 141,
+    "tracked_semantic_uncommitted": 2
+  },
+  "findings": [
+    "Independently streamed all165 actual source leaves and original7f3dfa42 blob bytes; exact/raw and CR-LF-only comparison matches all v4 categories.",
+    "The CR-at-EOL normalizer preserves every other byte, including lone CR; review does not use Git name-only output as semantic evidence.",
+    "Native Gst/GVA build scripts actually pass source, dependency and auxiliary context manifests to the materializer. Historical157 omitted eight existing inventory members; this scope correction introduces no new production/dependency bytes.",
+    "All four actual context aggregates match physically pinned members. Three native and two worker contexts remain equal to original frozen source/dependency/context hashes, subject to fresh actual image inspection.",
+    "Only reviewed GVA3 contract preservation and exact single-LF Docker absence handling are semantic source changes relative to original commit. Physical CR-LF bytes still affect build hashes and need actual image/source identity; normalization is solely review classification.",
+    "This audit is not image/model acceptance or a launch grant. The fresh packaged boundary remains the next physical gate."
+  ],
+  "historical_157_category_counts": {
+    "absent_from_HEAD": 0,
+    "tracked_CR_at_EOL_only": 22,
+    "tracked_exact_bytes": 133,
+    "tracked_semantic_uncommitted": 2
+  },
+  "launch_or_publication_grant": false,
+  "only_semantic_changes": [
+    "scripts/publication_operational_container_custody_v1.py",
+    "scripts/publication_operational_process_custody_v1.py"
+  ],
+  "publication_ready": false,
+  "reviewed_artifact": {
+    "path": "artifacts/benchmark_recovery_20260930/packaging-source-rollforward.v4.json",
+    "sha256": "6199d98a4496a7c54d5a45ff80687786f5bf7ad43c90f0d2a1129cf2ba007c31",
+    "size_bytes": 281341
+  },
+  "reviewed_at_utc": "2026-09-30T00:04:34.856399+00:00",
+  "reviewed_derivation_script": {
+    "path": "artifacts/benchmark_recovery_20260930/refresh_packaging_source_rollforward_v4.py",
+    "sha256": "f9b54dd94da3ea62aeadd13bbd4f9011080dc053e0f9c0c9ba8a778c64343976",
+    "size_bytes": 20453
+  },
+  "reviewer": "/root/adversarial_review",
+  "schema_version": 1,
+  "scope": "Read-only physical165 source pins, original commit blob byte comparison, context digests and source-recipe review; no image/model/test execution.",
+  "sha256": "226205a6b860e10f5662804cf4e1cbf42a14f127aa846c0bfc7e8765577ba0b7",
+  "verdict": "v4 resolves the historical metadata inventory and Git-classification deficiencies; source/context arithmetic and the two narrow repairs are consistent."
+}

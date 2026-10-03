@@ -1,0 +1,120 @@
+{
+  "claim_limits": [
+    "Selected authority fixture intentionally replaces held source materializer, not real model/image acceptance.",
+    "Actual front socket, sealed memfd, recorder, native request guard execute; local inference backend fixture only.",
+    "No source/input/pipeline/worker/image or numerical changes from legacy checks."
+  ],
+  "failed_refresh_reason": "author supplied wrong nonexistent filename; zero tests/rc1 retained, correct original target freshly executed",
+  "failed_refresh_retained": {
+    "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/legacy-boundary-final-01/terminal.v1.json",
+    "sha256": "b9f63a78abb6d20a5c448dc9fc604e03e70b191a3ebc342b54a6c1d5c96512d7",
+    "size_bytes": 1482
+  },
+  "full_suite_acceptance": false,
+  "hardware_acceptance": false,
+  "kind": "vast_component_seam2_final_author_review_v1",
+  "planning_commit": "9ad1a52b38cd5028de6b04bcc08192309ef192cf",
+  "shared_dependency": {
+    "path": "scripts/publication_gstreamer_component_authority_v1.py",
+    "sha256": "3be5c65c2b60573eef177df7adfb32643e196f80c5c9850ef140f4dd1ce9bf83",
+    "size_bytes": 27033
+  },
+  "source_files": [
+    {
+      "path": "scripts/publication_guardian_component_preprocessing_contract_v1.py",
+      "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+      "size_bytes": 19178
+    },
+    {
+      "path": "scripts/publication_guardian_runtime_expectations_v1.py",
+      "sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+      "size_bytes": 7872
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+      "size_bytes": 296398
+    },
+    {
+      "path": "tests/test_publication_guardian_component_preprocessing_contract_v1.py",
+      "sha256": "0593be7a09359ba0b0cc99db8dd3836167d3bf64fc33341f3243ca954a9e0ebe",
+      "size_bytes": 23592
+    }
+  ],
+  "source_scope": "four owned seam2 files frozen; shared seven-role/front validator joins original physical roles before activation",
+  "tests": [
+    {
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/component-final-01/stderr.raw",
+        "sha256": "846cb8d42d4e6bbdfc119a8afccc0b683e08890beefb64d90e75dfa7c632e37b",
+        "size_bytes": 2539
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/component-final-01/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/component-final-01/terminal.v1.json",
+        "sha256": "bf1e5ab934fb83b11aaaaad851248eef1a1c1b4909a378113c7f8cff8a2d3ca0",
+        "size_bytes": 1475
+      },
+      "test_count": 10
+    },
+    {
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/legacy-sidecar-final-01/stderr.raw",
+        "sha256": "f028a4f238733c66966f1fdf5a1bd23a9d08130cab65ad5bc32abab13b429cc9",
+        "size_bytes": 10567
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/legacy-sidecar-final-01/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/legacy-sidecar-final-01/terminal.v1.json",
+        "sha256": "44100c89b576f998358c66df3a688a72f2aad473d757d633df10c74b9def156f",
+        "size_bytes": 1481
+      },
+      "test_count": 50
+    },
+    {
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/legacy-runtime-final-01/stderr.raw",
+        "sha256": "0733af064e5341c73784863527a6ef083a900725e76b45941e17fc1333ae2ca0",
+        "size_bytes": 524
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/legacy-runtime-final-01/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/legacy-runtime-final-01/terminal.v1.json",
+        "sha256": "362af35d5de733a45ffd2ea427bd3464efb324aaecf6395e3ca413cf1f081daa",
+        "size_bytes": 1481
+      },
+      "test_count": 2
+    },
+    {
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/legacy-boundary-final-02/stderr.raw",
+        "sha256": "e4b6dda53fb9deb97838fc7d6d1c50eee4e742aa4ca37099240800b9ddcf9938",
+        "size_bytes": 2409
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/legacy-boundary-final-02/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/component-seam2-focused-v1/legacy-boundary-final-02/terminal.v1.json",
+        "sha256": "e8d8b89182e269e337a880c7781aef3a1b1e56a3d5b6549d2e5f622bd8997e23",
+        "size_bytes": 1480
+      },
+      "test_count": 10
+    }
+  ],
+  "total_tests": 72
+}

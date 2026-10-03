@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "decision29_D_runtime_bind_prerequisite_source_plan_v1",
+  "status": "source_reviewed_plan_unexecuted",
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewer_handles_released": true,
+  "reviewed_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "benchmark_commit_untouched": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "source_runtime": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+  "project_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+  "project_runtime_mount": ".publication-runtime/full-publication-cp312-v1",
+  "owned_source_pins": [
+    {"path": "scripts/mount_publication_runtime_wsl.sh", "size_bytes": 6112, "sha256": "5f68ab843ba5022b78242ce50de708f9b387bc817ee3a81cc2cc6f37096a0e6c"},
+    {"path": "scripts/backend_publication_output_transaction_production_v3.py", "size_bytes": 77939, "sha256": "028b7bab8f2e860dc59eda9f2727e8f56230d353c69ab07d4943b4487cce5dee"},
+    {"path": "tests/test_backend_publication_output_transaction_production_v3.py", "size_bytes": 54261, "sha256": "f78c2fa070e672f3777aca28f5d5043a19fca63987afa5fd8300d1582334812d"},
+    {"path": "scripts/ci_test_selection_v1.py", "size_bytes": 9978, "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d"},
+    {"path": ".ci/integration-test-selection.v1.json", "size_bytes": 34014, "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805"}
+  ],
+  "source_join": {
+    "all_five_clean_D_full_bytes_equal_control": true,
+    "all_five_clean_D_sizes_and_full_SHA_equal_original_5577_raw_source_manifest": true,
+    "original_manifest": {"path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-setup-attempt01/tracked-raw-source.v1.json", "size_bytes": 2423045, "sha256": "2aa2d4a507a0e0676b0afaadbc2b6b269c038431dc9ea79228fdc8a9f6b7451d"},
+    "independent_metadata_tool": "ae918b CLOSED0",
+    "Linux_mount_and_epoch_observation_by_this_reviewer": false
+  },
+  "actual_failure_preserved": {
+    "original_D_full_CI": "ROOT ed413d/session68257 -> 9d7cd5 CLOSED1, elapsed2141.443891322s; never reclassified as success",
+    "cause_scope": "ROOT44b474/316afe identified final portable-skip audit rejection after2992 tests,2904 successes,88 skips and zero test failures/errors. The unexpected reason was canonical WSL publication venv bind is not mounted.",
+    "source_predicate": "The existing canonical test at1087-1124 distinguishes absent source runtime from installed runtime with missing project bind. Selection at160-171 requires exact allowed identity/reason. Only the absent-source reason is allowed for this test.",
+    "acceptance": false
+  },
+  "contract_source_review": {
+    "stock_materializer": "Entire6112B script read. Existing exact source RO branch only verifies the source. Absent target ancestry is created, empty target is bound, target is remounted RO, exact ext4 RO records plus directory identity and Python SHA are verified. Its failure trap attempts only newly created mounts.",
+    "production_contract": "Functions195-475 read: unique plain --copies Python; sealed source size/SHA and project descriptor crossbinding; exactly one source and target mount record with ro/ext4; source/target directory dev/inode/type equality; held Python dev/inode/type and full byte verification. Copies fail the real bind predicate.",
+    "read_only_meaning": "The exact per-mount options must contain ro. An underlying ext4 superblock reported rw is compatible with a read-only bind. No writable-path test or write attempt is proposed.",
+    "test_coverage_limit": "Existing source includes real canonical preflight, copied-runtime rejection and mocked writable-source rejection. This review executes none of them. Source/manual review and any later original targeted result have separate scopes."
+  },
+  "root_reported_boundary_to_revalidate_before_dispatch": {
+    "reference": "ROOT bf0cdd read-only observation; these are root-reported current observations, not reviewer execution",
+    "source_mount": {"mount_id": 331, "parent_mount_id": 80, "device": "8:48", "root_field": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1", "options": "ro,relatime", "filesystem": "ext4", "source": "/dev/sdd", "superblock_rw_is_not_a_failure": true},
+    "source_directory": {"dev": 2096, "inode": 71429, "type": "directory"},
+    "source_python": {"dev": 2096, "inode": 87545, "mode": 33261, "nlink": 1, "size_bytes": 8020928},
+    "both_D_target_directories_absent": true,
+    "required_fresh_checks": ["Exact source mount331 remains the only source row and remains ext4/ro in the actual execution mount namespace.", "Canonical source/Python full SHA and seven Linux epochs equal the held original B95 interpreter descriptor; source directory identity remains unchanged.", "D root raw HEAD equals D, held directory identity is unchanged, stock materializer bytes equal its exact pin, and both intended target ancestors remain absent without symlinks.", "Retain original /proc/self/mountinfo and /proc/self/ns/mnt identity plus actual boot/controller/child PID/start/PGID. Acquire independently closeable source/metadata holds before mutation."]
+  },
+  "materialize_argv": [
+    "/usr/bin/timeout", "--signal=TERM", "--kill-after=10s", "30s", "/usr/bin/bash",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/mount_publication_runtime_wsl.sh",
+    "--source-runtime", "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+    "--project-root", "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+    "--project-runtime-mount", ".publication-runtime/full-publication-cp312-v1"
+  ],
+  "check_only_argv": [
+    "/usr/bin/timeout", "--signal=TERM", "--kill-after=10s", "30s", "/usr/bin/bash",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/mount_publication_runtime_wsl.sh",
+    "--check-only", "--source-runtime", "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+    "--project-root", "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+    "--project-runtime-mount", ".publication-runtime/full-publication-cp312-v1"
+  ],
+  "original_execution_capture_contract": {
+    "dispatch": "Root independently reviews this finite plan, binds an exclusive new owner/output, and dispatches the exact stock materializer once with root mount privileges. No new mount implementation or source changes.",
+    "per_command_work_cleanup_s": [30, 10],
+    "normal_stdout_stderr_cap_bytes_each": 1048576,
+    "mountinfo_cap_bytes": 4194304,
+    "closure": "Retain true return code, original raw stdout/stderr, actual command/controller PID/start/PGID/boot, EOF observation, reaping, first failure, source before/after full hashes/epochs, all independent close attempts, FD baseline and two error-free actual process/group absence scans. Receipt is last; any late/persistence/close failure remains nonaccepting with exclusive bounded companion.",
+    "source_boundary_limit": "The stock script checks and mutates names without held-FD atomic mount operations. Its source_created branch must not be reached under the pinned already-mounted source precondition. Any changed source mount/namespace or unexpected source-created cleanup is a failed boundary requiring diagnosis, never successful prerequisite repair.",
+    "stock_failure_cleanup_limit": "The stock failure trap suppresses unmount errors. A failed invocation alone cannot prove rollback: independently inspect the exact target mount afterward and retain unresolved cleanup. Its unchanged source behavior is the expected existing-RO branch, not an adversarial race guarantee."
+  },
+  "success_gate_before_any_separately_authorized_CI_attempt": [
+    "Materializer original0 and stock check-only original0 with matching source/script held pins and no closure failures.",
+    "New D target has exactly one ext4 RO mount row; retain its actual mount ID/parent/root/device/options and execution mount-namespace identity. Source row331 and source descriptor remain unchanged.",
+    "Target and source directory dev/inode/type are equal, and target/plain Python dev/inode/type,size,full SHA match the canonical held interpreter. Verify actual native Linux epochs rather than Windows UNC timestamps.",
+    "All original B95 full descriptors and seven Linux epochs remain equal. Record fresh absence/closure and keep benchmark B directories, source and receipts untouched.",
+    "The existing canonical runtime test may be run only under a separate exact root grant/capture; it must execute successfully rather than skip. It does not alone grant whole CI.",
+    "A fresh full-CI attempt, if separately authorized, uses new output/owner and unchanged D source, stock test selection, policy and budgets; the original failed attempt stays failed."
+  ],
+  "owned_target_cleanup_plan": {
+    "when": "After all authorized D users of this mount have closed, or after failed prerequisite materialization. No cleanup while a granted target consumer is active.",
+    "identity_gate": "Require actual creator ownership, same boot and mount namespace, exact recorded D target mount ID,root,device,RO ext4 flags and source directory/Python identity. Refuse changed, stacked, foreign or uncertain mount identities.",
+    "argv": ["/usr/bin/umount", "--", "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"],
+    "bounds": "Outer30s work plus10s process cleanup, same finite capture/first-failure/FD/process/receipt contracts.",
+    "directories": "After genuine unmount0 and exact target-mount absence, verify the previously recorded underlying newly-created directory identities; rmdir only that empty target and its empty newly-created .publication-runtime parent. A nonempty or replaced directory blocks removal.",
+    "global_source": "Never remount or unmount the canonical source, benchmark B target or any other mount. Never use force, lazy, recursive unmount, reboot, fstab or global policy changes.",
+    "final_gate": "Source mount331/identity and all original B95 full SHA/seven epochs unchanged; exact D target absent, owned empty directories removed, command groups absent twice, handles released and genuine nonlate original0. Failed cleanup remains explicit."
+  },
+  "actual_materialization": null,
+  "actual_check_only": null,
+  "actual_targeted_test": null,
+  "actual_new_D_target_mount": null,
+  "actual_cleanup": null,
+  "full_CI_retry_authorized_or_executed_by_this_reviewer": false,
+  "conformance_accepted": false,
+  "operations_by_reviewer": {"source_metadata_read_only": true, "target_imports": 0, "target_execution": 0, "tests": 0, "mount_or_unmount": 0, "Git": 0, "model_engine_device": 0, "production_test_CI_mutations": 0},
+  "limits": ["A source plan and root-reported prerequisite facts do not prove an actual mount, test success, cleanup, local CI success or conformance.", "Only Windows metadata byte reads were used to independently join clean D source pins; no Linux mount/epoch observation is claimed.", "No acceptance criteria, portable skip policy, scientific settings or benchmark source inputs are relaxed."]
+}

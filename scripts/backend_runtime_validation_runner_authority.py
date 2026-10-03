@@ -404,6 +404,22 @@ def _root(project_root: Path) -> tuple[Path, tuple[int, int]]:
     return resolved, (int(info.st_dev), int(info.st_ino))
 
 
+def _posix_file_fingerprint(info: os.stat_result) -> tuple[int, ...]:
+    """Track security/content identity while deliberately excluding atime."""
+
+    return (
+        int(info.st_dev),
+        int(info.st_ino),
+        int(info.st_mode),
+        int(info.st_nlink),
+        int(info.st_uid),
+        int(info.st_gid),
+        int(info.st_size),
+        int(info.st_mtime_ns),
+        int(info.st_ctime_ns),
+    )
+
+
 def _win_open(path: Path, *, directory: bool) -> int:
     access = (_LIST_DIRECTORY | _READ_ATTRIBUTES) if directory else (
         _GENERIC_READ | _READ_ATTRIBUTES
@@ -626,7 +642,10 @@ def _read_posix(
                      "runner artifact exceeds size limit")
             chunks.append(chunk)
         after = os.fstat(descriptor_fd)
-        _require(opened == after, "runner artifact changed while reading")
+        _require(
+            _posix_file_fingerprint(opened) == _posix_file_fingerprint(after),
+            "runner artifact changed while reading",
+        )
         verify_parent = os.open(root, directory_flags)
         verification.append(verify_parent)
         verify_root = os.fstat(verify_parent)
@@ -641,8 +660,11 @@ def _read_posix(
             verify_parent = child_fd
         verify_fd = os.open(relative.parts[-1], flags, dir_fd=verify_parent)
         verification.append(verify_fd)
-        _require(os.fstat(verify_fd) == after,
-                 "runner artifact path changed while reading")
+        _require(
+            _posix_file_fingerprint(os.fstat(verify_fd))
+            == _posix_file_fingerprint(after),
+            "runner artifact path changed while reading",
+        )
         payload = b"".join(chunks)
         return ({"path": relative.as_posix(), "size_bytes": len(payload),
                  "sha256": hashlib.sha256(payload).hexdigest()}, identity, payload)

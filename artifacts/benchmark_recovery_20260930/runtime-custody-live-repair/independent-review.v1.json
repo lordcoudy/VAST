@@ -1,0 +1,54 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_independent_runtime_custody_live_repair_review_v1",
+  "findings": [
+    {
+      "evidence": "Pinned real Docker inspect standard exact NotFound has returncode1, original stdout single0a byte; helper now permits onlyempty orsingleLF and exact full identifier-bound standard stderr templates. No strip/whitespace normalization or arbitrary lookup. Exactint returncode excludes bool/float.",
+      "location": "scripts/publication_operational_container_custody_v1.py:132",
+      "repair": "Docker confirmed absence stdout formatting",
+      "verdict": "no blocker in reviewed narrow change"
+    },
+    {
+      "evidence": "Stock runtime-input inspector OpenVINO branch1511\u20131515 returns exactimage_id/repository_digest/inspect_projection_sha256. Added exact3 shape, retaining Gstexact4 andSDKexact5; selects inspect_sha256 onlySDK, validates nativeprojection unchanged, base_image onlyGst, deepcopy retains originalfields. Existing caller compares originalstockvalidatedimage context; this helper accepts shape without granting imageauthority.",
+      "location": "scripts/publication_operational_process_custody_v1.py:135",
+      "repair": "OpenVINO GVA original image3-field shape",
+      "verdict": "no blocker in reviewed narrow change"
+    }
+  ],
+  "observed_receipts": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/runtime-custody-live-repair/original-inspect.execution.v1.json",
+      "sha256": "3ad2ddce81b3c7cd6a77da3db86fb4ece6ebd6bd7518d9a4ab809756d3ac1b77",
+      "size_bytes": 2404
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/runtime-custody-live-repair/focused-process-container.execution.v1.json",
+      "sha256": "892026dde8d96527aeaa973d0dde784c09893a0edb583df886969d1ba7f15424",
+      "size_bytes": 3586
+    }
+  ],
+  "publication_ready": false,
+  "reported_checks": "Execution agent existingfocused receipt records33tests,18.786s,source stable; original-inspect receipt records genuine readonlyCLI formatting plusnegative cases. These are limitedlocal/source checks and do not grant image/model/pair/publication acceptance.",
+  "reviewed_at_utc": "2026-09-29T23:42:27.723173+00:00",
+  "schema_version": 1,
+  "scope": "read-only two narrow source repairs, actual original stock image schema and execution-agent existing evidence; independent reviewer ran no tests or Docker calls",
+  "self_critique": "Earlier ELF fixtures assumed empty absent stdout and reused aGStreamer4-field image shape forGVA. Actual stock/CLI boundaries exposed both wrong assumptions before measurement. Preserve original failures, keep repairs literal, and continue genuine packaged execution instead of adding broad synthetic matrices.",
+  "sha256": "6c1a86b600236545f5567a70a995aa06ea558dddfe19f0d891d534e36503ddc6",
+  "sources": [
+    {
+      "path": "scripts/publication_operational_container_custody_v1.py",
+      "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+      "size_bytes": 38235
+    },
+    {
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "size_bytes": 47271
+    },
+    {
+      "path": "scripts/publication_policy_qualification_runtime_inputs_v2.py",
+      "sha256": "8397821a2412b47be170d29d943f52b86b921a8cae5b6a37876bdf5a72c69fc4",
+      "size_bytes": 134987
+    }
+  ]
+}

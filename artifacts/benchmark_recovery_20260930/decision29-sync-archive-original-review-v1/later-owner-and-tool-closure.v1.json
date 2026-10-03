@@ -1,0 +1,73 @@
+{
+  "actual_review_tool": {
+    "after_report_and_FD_close_elapsed_s": 0.26340602,
+    "chunk_id": "cf372f",
+    "exit_code": 0,
+    "wall_time_seconds": 1.2737324
+  },
+  "fd_after": 6,
+  "fd_before": 6,
+  "late_companion_absent": true,
+  "limit": "Known original reader/timeout only; no live scanner self-absence/global-process claim.",
+  "original_actors": [
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "observed_parent": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 11346,
+        "pid": 11346,
+        "ppid": 11343,
+        "session": 11346,
+        "startticks": 51917338,
+        "uid": 1000
+      },
+      "pgid": 11346,
+      "pid": 11347,
+      "ppid": 11346,
+      "session": 11346,
+      "startticks": 51917341,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 11346,
+      "pid": 11346,
+      "ppid": 11343,
+      "session": 11346,
+      "startticks": 51917338,
+      "uid": 1000
+    }
+  ],
+  "review_ref": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-sync-archive-original-review-v1/review.v1.json",
+    "sha256": "0265c63fab9a43e6a482350d8b581f8e7875f95f7a9d8e95eeef6d58c418b07a",
+    "size_bytes": 12571
+  },
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "two_later_actual_scans": [
+    {
+      "group_members": [],
+      "monotonic_ns": 519243841921678,
+      "original_actor_paths_absent": {
+        "11346": true,
+        "11347": true
+      },
+      "scan_errors": [],
+      "sequence": 1
+    },
+    {
+      "group_members": [],
+      "monotonic_ns": 519243894159781,
+      "original_actor_paths_absent": {
+        "11346": true,
+        "11347": true
+      },
+      "scan_errors": [],
+      "sequence": 2
+    }
+  ]
+}

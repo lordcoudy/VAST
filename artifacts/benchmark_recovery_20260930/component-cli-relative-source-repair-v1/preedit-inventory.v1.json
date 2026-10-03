@@ -1,0 +1,28 @@
+{
+  "owned_existing_paths": [
+    {
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "sha256": "7602c041f76a46b0854efee69ec49c447ffec981180fa4bfb8e2b7280225abbc",
+      "size_bytes": 33159,
+      "snapshot": {
+        "st_ctime_ns": 1790762884304634900,
+        "st_mtime_ns": 1790763669288760700,
+        "st_size": 33159
+      },
+      "snapshot_path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cli-relative-source-repair-v1\\before\\publication_gstreamer_component_cli_v1.py"
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_cli_v1.py",
+      "sha256": "cc6c17dd122e6230cd81bd3c9d3256df53c73b83d42920da9cd93520aac71178",
+      "size_bytes": 17141,
+      "snapshot": {
+        "st_ctime_ns": 1790762373305307900,
+        "st_mtime_ns": 1790763582413057800,
+        "st_size": 17141
+      },
+      "snapshot_path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cli-relative-source-repair-v1\\before\\test_publication_gstreamer_component_cli_v1.py"
+    }
+  ],
+  "scope": "Decision23 CLI source-call normalization and actual stock path-pin regression only; all originals and strict stock source validator unchanged",
+  "source_checkpoint": "f51273005165281e290a791d794902f3e722086d"
+}

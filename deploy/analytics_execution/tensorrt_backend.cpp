@@ -496,6 +496,13 @@ int vast_trt_infer(
     check_cuda(cudaMemcpyAsync(session->input.device, input, static_cast<std::size_t>(input_bytes), cudaMemcpyHostToDevice, session->stream), "cudaMemcpyAsync H2D");
     check_cuda(cudaEventRecord(session->h2d_end_event, session->stream),
                "cudaEventRecord H2D end");
+    // Close the H2D host envelope at the native H2D completion boundary.
+    // Reusing the later whole-stream synchronization timestamp here makes the
+    // H2D envelope cover inference and D2H as well, so the two transfer
+    // intervals overlap even though their CUDA events are correctly ordered.
+    check_cuda(cudaEventSynchronize(session->h2d_end_event),
+               "cudaEventSynchronize H2D end");
+    const std::uint64_t h2d_host_end_ns = monotonic_ns();
     if (!session->context->enqueueV3(session->stream)) {
       throw std::runtime_error("TensorRT enqueueV3 failed");
     }
@@ -511,19 +518,21 @@ int vast_trt_infer(
     check_cuda(cudaEventRecord(session->d2h_end_event, session->stream),
                "cudaEventRecord D2H end");
     check_cuda(cudaStreamSynchronize(session->stream), "cudaStreamSynchronize");
-    const std::uint64_t host_end_ns = monotonic_ns();
+    const std::uint64_t d2h_host_end_ns = monotonic_ns();
     transfer_timing->h2d_host_start_monotonic_ns = h2d_host_start_ns;
-    transfer_timing->h2d_host_end_monotonic_ns = host_end_ns;
+    transfer_timing->h2d_host_end_monotonic_ns = h2d_host_end_ns;
     transfer_timing->h2d_device_elapsed_ns = cuda_event_elapsed_ns(
         session->h2d_start_event, session->h2d_end_event,
         "cudaEventElapsedTime H2D");
     transfer_timing->d2h_host_start_monotonic_ns = d2h_host_start_ns;
-    transfer_timing->d2h_host_end_monotonic_ns = host_end_ns;
+    transfer_timing->d2h_host_end_monotonic_ns = d2h_host_end_ns;
     transfer_timing->d2h_device_elapsed_ns = cuda_event_elapsed_ns(
         session->d2h_start_event, session->d2h_end_event,
         "cudaEventElapsedTime D2H");
     if (transfer_timing->h2d_host_start_monotonic_ns >=
             transfer_timing->h2d_host_end_monotonic_ns ||
+        transfer_timing->h2d_host_end_monotonic_ns >
+            transfer_timing->d2h_host_start_monotonic_ns ||
         transfer_timing->d2h_host_start_monotonic_ns >=
             transfer_timing->d2h_host_end_monotonic_ns ||
         transfer_timing->h2d_device_elapsed_ns >

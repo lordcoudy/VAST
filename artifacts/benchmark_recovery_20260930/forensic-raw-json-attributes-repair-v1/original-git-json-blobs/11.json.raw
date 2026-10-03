@@ -1,0 +1,27 @@
+{
+  "builds_started": false,
+  "artifact_kind": "vast_component_selected_packaging_before_edit_v1",
+  "native_three_worker_two_changed": false,
+  "selected_only": true,
+  "authorization_comment": 5907711751,
+  "new_imports": [
+    "scripts/publication_gstreamer_component_authority_v1.py",
+    "scripts/publication_guardian_component_preprocessing_contract_v1.py"
+  ],
+  "planning_commit": "9ad1a52b38cd5028de6b04bcc08192309ef192cf",
+  "schema_version": 1,
+  "originals": [
+    {
+      "sha256": "8e50a76ad65566ecc68318f01f55332be2e59a411b409b399e8f990f83046682",
+      "size_bytes": 8037,
+      "path": "deploy/gstreamer_custom/publication/Dockerfile",
+      "original_snapshot": "deploy__gstreamer_custom__publication__Dockerfile.raw"
+    },
+    {
+      "sha256": "691ea8a474fe1ce2653cf40246f3bd9ea3c0c2d9ea62c1f86c18825364f9e538",
+      "size_bytes": 3414,
+      "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "original_snapshot": "deploy__gstreamer_custom__publication__runtime-source-allowlist.txt.raw"
+    }
+  ]
+}

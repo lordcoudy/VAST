@@ -1,0 +1,124 @@
+{
+  "approval_url": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5924440005",
+  "before": [
+    {
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "size_bytes": 47271,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/before/scripts/publication_operational_process_custody_v1.py"
+    },
+    {
+      "path": "tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "8ba4f9b93e00b368712cc3f84855b648ff98d54ff887de25f99d4208e11a97d1",
+      "size_bytes": 30982,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/before/tests/test_publication_operational_process_custody_v1.py"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "5971d2a50337373c70f2414946976aabe51cb54223ca7c1f0acd29e099494c5e",
+      "size_bytes": 16049,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/before/openspec/changes/fix-benchmark-preparations-spec/proposal.md"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "83d73b96d9f2b6dac10043633b7108afe2549d6304fa798f62fedd7095d57ebb",
+      "size_bytes": 40041,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/before/openspec/changes/fix-benchmark-preparations-spec/design.md"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "3eb2dc17f30b24fa0be14ef77fdf8ca46d00c75d19a9160754f98b58e7211a26",
+      "size_bytes": 32821,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/before/openspec/changes/fix-benchmark-preparations-spec/tasks.md"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "e42fa4a5c5931aaf82c0e2fac408c5a3930d80a4a110c6c4fcc1a889d455ec90",
+      "size_bytes": 72946,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/before/openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md"
+    }
+  ],
+  "hardware_acceptance": false,
+  "original_functions": [
+    {
+      "functions": {
+        "__init__": "46ac216c659fa4e4c103100bd9c7efb0165c925cf4292a6f2034ca24f6b0d77f",
+        "_argument": "59ae2aabc6ed4923206f9845b9db829bcef4027f6464a5518da16ab185eac376",
+        "_argv_mounts": "64b40bed3fb32245e42856fba3644d9abfa6b6da8e5ee59d914167e5e8339a7e",
+        "_epoch": "328028fd2df976b7f12cb8aafdb168f2588086f16f04eba2bb56092154779d03",
+        "_hash_fd": "ab848ad32b49a958e36f1b126949035b1d0fcae19b5ead4990a7281f7a76a023",
+        "_held": "0596b0e983f2442058c1a0d7a16b23e1e4cbcaccc3c5983bb06f37fca4481f17",
+        "_image": "021afea52042749f5af4b885df33054f1d5ff21ada91cead71db3e39a0890d49",
+        "_original_input": "1bb68f74400433a66a397e125a2747c4f6b296f968f35038592b0d203470360f",
+        "_owner": "1a85011b384efe5b0c9e350ee83f2dc45c3be0342a878f8b1c46994f4c025f72",
+        "_owner_with_state": "2e83b941b17b2b40880f646d72ca337093dbaeb1a63e476939833ff26d97bad0",
+        "_path": "5a1870033b3eec50d4f261c4bc83f71cbe0d8a611a914fb98d4c9fd9c6deec55",
+        "_read_record": "b5cb319fc04865c2d55ad975e48e10bcd3b8195e2c797f166b9d53e2e1bd3eee",
+        "_require": "d892ad19fcf1ccd533df6b91c359fdbe2e51c3d1662d54065a28636f2f0e03a1",
+        "_socket": "4cecbd2ca4a9cd3e0ddf549cb0ddde70cfa75eb25db9f2b16a948389e975f730",
+        "_transfer_metadata": "fbf17fbbb99f63d9cb30cc8e009cf8e0819866be79ad8cc57319c22d5500f4c1",
+        "_validate_owner": "802377dffc896b41bc5c6e0cd36db74bef8e9d109fbfbde64afbc33b82625fea",
+        "_write": "6119c9ef7ec4ac47aaece61eda55d9638855a8268da4b63c259390d010327883",
+        "capture_original_engine_processes_v1": "c805c82f941f37f0f59d85324e2f9c88ee328bd35071116decd598a9ef194e37",
+        "close": "4eaaf5c2b6af28390f9680f6ecfdc4f6628e43fae7a21814308755446625d0c0",
+        "current_original_engine_capture_v1": "651409a6625700371846cfba31f27bf90a8af434560a8bdba31819667aeabcaa",
+        "engine_process_started_v1": "fdc9c34953b1a3b1734fef6e9deb3db4554e45c0a04e7cad7fa1ab9cc3f2473e",
+        "engine_process_terminal_v1": "0ae9b0cd9143d3058789f2bebc0b9865763c76ad3b2647bec8b3054ef4bb86ef",
+        "fail": "b223bfd50fc58ef335d17b7d3be77aee5fa56bdf94fce2d4efd733a5d40ef477",
+        "finish": "5b2e6abaccb17ad770275ad82a24e6e76a824197f4fdbe14e092527562887054",
+        "original_engine_phase_v1": "eb7acfb893edebca3b9dec40b8711b67b32ac25d9a1bcc1c8a05c862d73e5d8c",
+        "original_process_validator_v1": "369921fc2cfcbfad7986fbb05569618b51a26d671874a36aa5751a361d942967",
+        "parse": "04776cb812e6063c9e47a7ef3414823cc4c12f763a38dde286925294f4d92e15",
+        "read": "29249a11e7b680b98b879bc8c1670f71fbef17b8ec7eac5f45f54f216c7b82b7",
+        "record_original_native_transfer_v1": "68e5a671a53bd400be0b89d0875454b507f7cd2e54c69a59cba5b128459678e8",
+        "validate_original_measurement_argv_v1": "1abfc8c66ed4ccea53d344448bc01cfb7c34acad2ce2959ffd46f0e3cb705b61",
+        "validate_original_native_transfer_chain_v1": "b8013b2ffe91f231379afe439a5102065f24a16b413acbc0667e1e252c594b8f",
+        "verify": "91c7b85e1f310010ecfa202a4de994ada77fb2252eb44e40df718df51ac53a89"
+      },
+      "path": "scripts/publication_operational_process_custody_v1.py"
+    },
+    {
+      "functions": {
+        "_capacity_ready": "8a9f5ccdaed416488bcd5b84e2be34f72d8cb6b7ebe1fde112d95d480f4efef6",
+        "_run_capacity_child": "7197e87cdf3cd337a15dada08132f801ac7f767f03946c0d53eff548c931194b",
+        "capture": "e7ecf2db588b02bad176051aff39ae882ac25fd0d68301714991caf870581c45",
+        "materialize": "9bbf8ee40af9f05f0d164cbdd8a5cbd6143d8be8b2210a261bfcd086f2a774b5",
+        "process": "ab4e6311207604d7a32b769a1e141b20ffd129474b64be26391f970de2877e0c",
+        "repin_record": "73af7f01b59f0652bf414d2a1676caeea8c77bd8b1315772c26cd51a27d1d368",
+        "run_child": "d7ac283ef6f878382cfcaa63be27527cddb4e0941aea1f1708bf530df992acb8",
+        "setUp": "8edc932bc74ab0a896cb8bdc6a33ebd7c9e1c228084f30a97422a79e2088e4ce",
+        "test_actual_measurement_rejects_detached_context_bytes_before_launch_record": "cf91cc2a998fb3478024b471d31d6c7aeb537e2c35c38bf3cc7e52a1b1ec5408",
+        "test_actual_stock_inspector_image_contracts_survive_original_capture": "42c66ea8928a0eba4da8773b87dcf2494448bf5bdf8d29b1f8abd51d1179c47f",
+        "test_capacity_fixture_failed_ready_child_never_registers": "50d322c1b7f6ec92ed6a0f79bde1034a2cfba816099a2863e1eca2eba17b7f5c",
+        "test_capture_bound_and_foreign_receipt_descriptor_are_rejected": "0871a560ff4457ddadd18f67dbd6e186e919dff755b04cdcb5781b2dcb5f5176",
+        "test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded": "bc2da4e4bc18b3ceee4303d6db2297481ea8a454b69f4a26fb2faea52aec60b3",
+        "test_cold_native_transfer_hash_is_streamed_above_supplemental_memory_budget": "ce47d7fe14e3947e19e4c9d5ae07bd810328b1a3fc1f38e1b8765eddf8d3866c",
+        "test_cold_rejects_resealed_detached_context_mount_and_executable_enum": "472171e113505a0c620b64ce5cc8d724ed9730e1467f0a5057af86324a5a5b1d",
+        "test_cold_validator_rejects_resealed_timeout_and_owner_substitution": "da0dd7f35cd95a37bdb8106f5ad5ed3a2dbe8538901d1f918e2cfe16d09e2523",
+        "test_genuine_original_process_launch_and_terminal_are_physically_bound": "8a3ff6b8d4053bfb8612360802e004dc1d4648d28eeff26189202186cd0dfecd",
+        "test_gva_three_field_contract_rejects_missing_extra_and_invalid_projection": "e189dd87a76b98ecf35416563cf4da9bb27be5152f83d331f1c6abb66d106f87",
+        "test_inactive_observer_changes_nothing_and_does_not_require_mock_identity": "bb172bb58f1e8496e95a905af9aaa1de610807b7bb2e52402e03e8b71a5db7d5",
+        "test_legitimate_output_sibling_does_not_change_declared_original_custody": "65aeb3f800397adea7ebf4ba811e5162834c36c9891eb9b42775d1154becfa8d",
+        "test_missing_native_transfer_cannot_emit_success": "da459093baf1328371f8dd415e86d4dbb5657fa5a2dc1fadb3f3c7d9d84e5a7b",
+        "test_missing_phase_and_mock_pid_are_failures": "4d065d0e46f0091f4c1f43b2aa521a210809964deab6935811c246d56de0ae5d",
+        "test_missing_terminal_duplicate_measurement_and_source_drift_are_rejected": "ea353a166c95a0d5fc0bbcd108831a6b41f0f0c10d4bbbc87811e8df15f57ec0",
+        "test_nonzero_and_timeout_cannot_emit_success": "6e4015b98256770521437c0c0234993391cd8c2083e959abcdb672e9ac895a67",
+        "test_phase_probe_then_exactly_one_measurement_and_duplicate_terminal": "d951bea7fdad1aefded980d2f2f3fc90883a93aba007c3614a96d471551f2f2a",
+        "test_real_fast_zombie_preserves_actual_owner_without_inventing_executable_match": "217030c36fcccc1849e4edad4209f82ea693294fc5d42038a9596dd7d879ca62",
+        "test_sdk_image_contract_survives_original_capture_and_cold_validation": "9e1d9650ca5df5de432b18871ed2946b4d8742e6e5044a3c37b1ecb1fb5de2d7",
+        "test_sticky_launch_persistence_failure_preserves_original_body_error": "a375e94dfa3c01a79512c998af3c288b2fddf6355c14743fe0a535a2ed760b3b",
+        "test_stock_two_transfer_chain_accepts_retired_first_output_and_rejects_foreign_source": "05cc56ef627d68c39e8222104c94885b1d12bdc96401a5a6453cc957a46f1928",
+        "transfer": "ddafb3bb68141cfdf735afd46dd23d899ca4f3e0458a6dc500adab291a636c6b",
+        "validate": "27469060422d80a832ca78ee141a8f558f2aba9ab41db3bb47c0fb225d02f5b8",
+        "write": "30aaf21d9a5bd6b15e1746757e0da6ff9b32b6c2b1070dde53025b5e8686a9c7"
+      },
+      "path": "tests/test_publication_operational_process_custody_v1.py"
+    }
+  ],
+  "owned_existing_paths": [
+    "scripts/publication_operational_process_custody_v1.py",
+    "tests/test_publication_operational_process_custody_v1.py"
+  ],
+  "planning_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "scope": "Decision28 task23.3 only; actual original small-process fixtures; no engine query/model/namespace/hardware"
+}

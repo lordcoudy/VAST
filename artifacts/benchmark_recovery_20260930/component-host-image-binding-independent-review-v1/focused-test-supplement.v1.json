@@ -1,0 +1,110 @@
+{
+  "artifact_kind": "vast_component_host_image_binding_independent_test_supplement_v1",
+  "direct_gate": {
+    "actual_inspect_projections_checked": 3,
+    "actual_retained_image_contract_accepted": true,
+    "hardware_acceptance": false,
+    "historical_image_contract_rejected": true,
+    "image_id": "sha256:88778ac8b7b91ca90b8d0f03c48823898fc8438ab9b0ad1df7548746792e2f4f",
+    "live_inspection_executed": false,
+    "original_embedded_files_match": true,
+    "runtime_receipt_sha256": "7807fc43cf4f706d2756baefcbdd4887798b04168db06f7acbdbea4a8541cc8c"
+  },
+  "hardware_acceptance": false,
+  "limits": [
+    "Reviewer did not rerun tests or engine/image/model/guardian/benchmark work. Parent originals are local fixture tests, not image/model/scientific acceptance.",
+    "Six host bindings remain the exact reviewedc81e40d0 source; selected image/native3/worker2 source scope unaffected. New physical hostclosurev2 remains required before current component authority."
+  ],
+  "literal_changes": [
+    {
+      "line": 47,
+      "new": "vast/gstreamer-custom-publication-runtime-v3:component-release-20260930-a3e976d0",
+      "old": "vast/gstreamer-custom-publication-runtime-v3:materialized"
+    },
+    {
+      "line": 51,
+      "new": "sha256:88778ac8b7b91ca90b8d0f03c48823898fc8438ab9b0ad1df7548746792e2f4f",
+      "old": "sha256:8d7b55fb1c4b11310dcbf7f2601681e28dc9fb0ba1e459f257b0545aad961626"
+    },
+    {
+      "line": 55,
+      "new": "68ce24371c674a936c82b0ef183b34103f1904f237d162cf1f99e31730fd559d",
+      "old": "5b3552dc1f9d0a7c0fdf256fb99cfb90aaa02a07c487556a487439d29ae7b1db"
+    }
+  ],
+  "original_evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-focused-v1/attempt01/execution.json",
+      "sha256": "5ac07f3e1138977ef41418960355b00276b9f20fdb111020210006167c41e550",
+      "size_bytes": 8199
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-focused-v1/attempt01/stderr.bin",
+      "sha256": "e5e94542ed3ad4cf18576b895b9c86d22faf69eba163fbecd8969fabecc06461",
+      "size_bytes": 5167
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-focused-v1/attempt01/stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-focused-v1/direct-image-gate.v1.json",
+      "sha256": "4dc0d013b56f0ce3d27000f0d87f4bffdf0aac996913dcc44a0aa952b1a0a070",
+      "size_bytes": 420
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-focused-v1/direct_image_gate_v1.py",
+      "sha256": "ef8239c851a15ff6751aefcc48061b4db6d09d051ab57cba8aeef26d642d971e",
+      "size_bytes": 3477
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-focused-v1/focused.v1.py",
+      "sha256": "61b39a8a78939ec0effb10512a831b9874186ba3ebf1ec5e4b9af66df7048861",
+      "size_bytes": 4466
+    }
+  ],
+  "original_result": {
+    "component": 12,
+    "controller_elapsed_s": 4.754558183980407,
+    "original_host_closure": 3,
+    "original_wrapper": 8,
+    "pid_and_group": 25413,
+    "quiescence": {
+      "original_group_absent": true,
+      "original_pid_absent": true
+    },
+    "returncode": 0,
+    "source_before_after_equal_count": 20,
+    "tests": 23,
+    "timed_out": false,
+    "unittest_elapsed_s": 3.687
+  },
+  "original_test_snapshot": {
+    "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-renewal-focused-v1/original-runtime-test.raw",
+    "sha256": "5db8a58771304bb7963bb045f1ee5539b5352f44039235b3af10568779729302",
+    "size_bytes": 25059
+  },
+  "proof": {
+    "changed_string_literal_count": 3,
+    "masked_test_bytes_sha256": "5ae6d564e32fd35b3ea5370adb5ae6daa4932e529fe3ab31c59033b7eeb88b47",
+    "nonchanged_ast_equal": true,
+    "outside_changed_literal_bytes_equal": true,
+    "tests_selection_or_predicates_or_skips_changed": false
+  },
+  "publication_ready": false,
+  "qualification_ready": false,
+  "schema_version": 1,
+  "sha256": "3cc05c52973d3fa23e6946e0ceca924c392613c1a57d4076c7d7acb0993c21b8",
+  "source_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-host-image-binding-independent-review-v1/review.v1.json",
+    "sha256": "7b5cadf302091f91097a1ed8f830fb8daf74104279d21c2825f0bb5bd3fa877b",
+    "size_bytes": 5145
+  },
+  "status": "approved_exact_test_literal_renewal_and_original_focused_evidence",
+  "test_source": {
+    "path": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+    "sha256": "f59410fd2af9ecd42d9740323b93f0efd0f5c4421e3503be70f1438aa9dc1fe8",
+    "size_bytes": 25082
+  }
+}

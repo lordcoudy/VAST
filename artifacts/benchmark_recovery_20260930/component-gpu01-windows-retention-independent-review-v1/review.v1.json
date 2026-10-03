@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "kind": "vast_gpu01_output_retention_independent_source_review_v1",
+  "reviewer": "/root/adversarial_review",
+  "status": "prepared_unexecuted_source_gate_passed",
+  "reviewable": true,
+  "concrete_blockers": [],
+  "pins": {
+    "pack_original_outputs_v2.py": {"size_bytes": 10516, "sha256": "6e60e0b8c88cb94ba9590bad617b8fa1d29715d6c58fa4ba3bdfc90987e21b44"},
+    "inventory.v1.json": {"size_bytes": 100145, "sha256": "aa750080acc6da6d66b9e5f9e2b52a9f9952a5f587d9f6cbe00c9d576650d371"},
+    "preparation.v2.json": {"size_bytes": 4764, "sha256": "0766d9b1c09e7733165bba89673b6d56ea291871d4048c0843b07e0fa539e9c1"},
+    "original-launch-recipe.v1.json": {"size_bytes": 2254, "sha256": "786ef09ec7db39e9d624bc84241084b29a7951d36a6a81cb418e786d018eda0a"},
+    "cpu06-pack_original_outputs_v2.original.py": {"size_bytes": 10516, "sha256": "43088e67d8f470033be6f4fa07ed109c718e047c4e61615b3d979ee1e784d929"},
+    "literal-only-delta.v1.diff": {"size_bytes": 6400, "sha256": "a0debd05d5aa0c59740b343fa9391aa9bf983f62e5f259533bb4466e6a6fa15e"}
+  },
+  "pin_directory": "artifacts/benchmark_recovery_20260930/component-gpu01-windows-retention-preparation-v1",
+  "independent_source_checks": {
+    "all_nine_function_asts_equal_original_cpu_source": true,
+    "whole_ast_equal_exact_forward_declared_literal_transformation": true,
+    "changes": "GPU labels/output names, fixed inventory SHA, byte totals, and acceptance-proof metadata key only; no control, budget, FD, namespace, CRC, SHA, or receipt-last changes.",
+    "historical_author_reverse_normalization_failure": "Preserved and disclosed metadata-only comparison error; exact forward transformation passes. No packer or producer retry.",
+    "original_cpu_completed_retention_receipt": {"size_bytes": 2059, "sha256": "fc0c3f64522153022614ba8b7b5c951bbf9bf24dd2059781bd20411645c98373"}
+  },
+  "finite_inventory": {
+    "namespaces": ["gpu-pair-01", "gpu-pair-01-original-controller"],
+    "all_file_count": 129,
+    "directory_count": 29,
+    "all_bytes": 266274388,
+    "retained_file_count": 128,
+    "retained_bytes": 220703683,
+    "largest_retained_leaf_bytes": 38210066,
+    "unique_safe_relative_paths_and_uri_joins": true,
+    "sum_sizes_and_epoch_sizes_match_declared_counts": true,
+    "excluded_only": "gpu-pair-01/runtime/container-engine/docker",
+    "excluded_bytes": 45570705,
+    "exclusion_identity_join": "Original source-authority engine a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d/45570705 agrees with both original native Popen launch engine descriptors and current device2096/inode553095/mode33133 metadata. Current duplicate payload was not rehashed in preparation or by this reviewer.",
+    "inventory_is_metadata_only": true,
+    "future_retained_payload_full_sha256_required_by_packer": true
+  },
+  "original_terminal_and_closed_boundary": {
+    "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+    "gpu_original_terminal_size_bytes": 88102,
+    "gpu_original_terminal_sha256": "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+    "actual_gpu_audit_closure_size_bytes": 16564,
+    "actual_gpu_audit_closure_sha256": "6c25127270763cf47a03291be9b2115671ea7d6df3d4d8c19fb7f59932b79768",
+    "scope": "Recipe and inventory bind these exact original descriptors. Root's already closed UID/boot/startticks/95-FD/process proof remains the runtime authorization prerequisite; the packer's numeric PID/PGID absence check is not a replacement independent reconstruction."
+  },
+  "runtime_guards_read": {
+    "work_seconds": 120,
+    "outer_term_cleanup_seconds": 10,
+    "outer_maximum_seconds": 130,
+    "pinned_cpython_isolated_no_bytecode_argv": true,
+    "fresh_exclusive_output_directory_and_xb_archive": true,
+    "future_output_namespace_currently_absent": true,
+    "held_original_terminal_and_inventory_rechecked": true,
+    "exact_129_file_29_directory_membership_before_after": true,
+    "held_ancestor_directory_identity_checks": true,
+    "source_full_epoch7_and_named_identity_before_after": true,
+    "stream_chunk_bytes": 1048576,
+    "maximum_source_leaf_bytes": 67108864,
+    "maximum_archive_bytes": 268435456,
+    "maximum_metadata_bytes": 1048576,
+    "streamed_member_crc_full_sha256_and_decompressed_reread": true,
+    "metadata_and_directory_fds_retired_before_final_receipt": true,
+    "original_partial_failure_preserved": true,
+    "post_receipt_120_second_late_companion_is_sticky_nonzero": true
+  },
+  "conclusion": "The exact prepared GPU adaptation can receive root's one-dispatch retention grant. A successful transfer would preserve original data and URI/hash/epoch provenance; it cannot create benchmark, source, model, full-CI, or publication authority.",
+  "review_limits": "Only source, small closed metadata, ASTs and declared file records were read. No packing, payload stream, test, source import, model, engine, namespace, policy, or hardware execution. No original file or author source changed; no long-lived descriptors remain held."
+}

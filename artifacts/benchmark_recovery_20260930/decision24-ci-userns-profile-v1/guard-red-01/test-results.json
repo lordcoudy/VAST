@@ -1,0 +1,22 @@
+{
+  "errors": [],
+  "failures": [
+    {
+      "test_id": "test_ci_userns_profile_v1.UsernsProfileTests.test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline (phase='slow_verify_inventory')",
+      "traceback": "Traceback (most recent call last):\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py\", line 273, in test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline\n    self.assertEqual(phase,'post_suite_verify','insufficient load budget yielded suite')\nAssertionError: 'slow_verify_inventory' != 'post_suite_verify'\n- slow_verify_inventory\n+ post_suite_verify\n : insufficient load budget yielded suite\n"
+    },
+    {
+      "test_id": "test_ci_userns_profile_v1.UsernsProfileTests.test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline (phase='preceding_inventory_parser')",
+      "traceback": "Traceback (most recent call last):\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py\", line 273, in test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline\n    self.assertEqual(phase,'post_suite_verify','insufficient load budget yielded suite')\nAssertionError: 'preceding_inventory_parser' != 'post_suite_verify'\n- preceding_inventory_parser\n+ post_suite_verify\n : insufficient load budget yielded suite\n"
+    },
+    {
+      "test_id": "test_ci_userns_profile_v1.UsernsProfileTests.test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline (phase='post_suite_verify')",
+      "traceback": "Traceback (most recent call last):\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py\", line 271, in test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline\n    with self.assertRaisesRegex(RuntimeError,'self-timeout.*closing reserve'):\nAssertionError: RuntimeError not raised\n"
+    }
+  ],
+  "no_profile_namespace_or_journal_operation": true,
+  "skips": [],
+  "successful": false,
+  "successful_test_ids": [],
+  "tests_run": 1
+}

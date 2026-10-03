@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import hashlib
+import importlib.util
 import json
+import shutil
 import stat
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -14,6 +18,30 @@ if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
 import checkpoint_openvino_gva_qualification_fragment_v3 as target  # noqa: E402
+from test_checkpoint_gstreamer_custom_qualification_fragment_v3 import unit_fragment_project
+from analytics_execution_endpoint import (  # noqa: E402
+    expected_capability_from_binding_and_probe,
+    terminal_detector_identity,
+)
+
+
+def expected_terminal_detector(artifact: dict[str, object], resource: str, project_root: Path) -> str:
+    binding_descriptor = artifact["analytics_execution_worker_binding"]
+    probe_descriptor = artifact["analytics_runtime_probe"]
+    assert isinstance(binding_descriptor, dict)
+    assert isinstance(probe_descriptor, dict)
+    binding = json.loads(
+        (project_root / str(binding_descriptor["path"])).read_text(encoding="utf-8")
+    )
+    probe = json.loads(
+        (project_root / str(probe_descriptor["path"])).read_text(encoding="utf-8")
+    )
+    capability = expected_capability_from_binding_and_probe(
+        binding=binding,
+        runtime_probe=probe,
+        resource=resource,
+    )
+    return terminal_detector_identity(capability)
 
 
 RESOURCE_FIELDS = {
@@ -37,10 +65,69 @@ INTERVAL_FIELDS = {
 
 
 class OpenVINOGVAQualificationFragmentV3Tests(unittest.TestCase):
+    def setUp(self) -> None:
+        # These unit tests exercise binding serialization, not image acceptance.
+        # Pin the physical local source fixture for this test only. Production
+        # keeps its historical frozen pin; current image authority is tested by
+        # test_publication_runtime_frozen_identity_constants_v1.
+        validator = ROOT / "deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py"
+        specification = importlib.util.spec_from_file_location(
+            "qualification_openvino_source_fixture_validator", validator,
+        )
+        if specification is None or specification.loader is None:
+            raise RuntimeError("failed to load OpenVINO source closure validator")
+        module = importlib.util.module_from_spec(specification)
+        specification.loader.exec_module(module)
+        self.allowlist = validator.with_name("runtime-source-allowlist.txt")
+        closure = module.validate_runtime_source_closure(
+            project_root=ROOT, manifest_path=self.allowlist,
+        )
+        self.sources = tuple(closure["all_sources"])
+        rows = b"".join(
+            f"{hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()}  {relative}\n".encode("ascii")
+            for relative in self.sources
+        )
+        source_pin = mock.patch.object(
+            target, "OPENVINO_GVA_RUNTIME_SOURCE_SHA256", hashlib.sha256(rows).hexdigest(),
+        )
+        source_pin.start()
+        self.addCleanup(source_pin.stop)
+        allowlist_pin = mock.patch.object(
+            target, "OPENVINO_GVA_SOURCE_ALLOWLIST_SHA256",
+            hashlib.sha256(self.allowlist.read_bytes()).hexdigest(),
+        )
+        allowlist_pin.start()
+        self.addCleanup(allowlist_pin.stop)
+
+    def test_physical_source_drift_is_rejected_after_fixture_is_pinned(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            for relative in (*self.sources, self.allowlist.relative_to(ROOT).as_posix()):
+                destination = root / relative
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(ROOT / relative, destination)
+            expected = target._source_set_identity(root)
+            self.assertEqual(expected["runtime_source_sha256"], target.OPENVINO_GVA_RUNTIME_SOURCE_SHA256)
+            source = root / "deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp"
+            source.write_bytes(source.read_bytes() + b"\n// deliberate source drift\n")
+            with self.assertRaisesRegex(target.QualificationFragmentError, "transitive runtime source identity drifted"):
+                target._source_set_identity(root)
+
     def _materialize(self, temporary: str) -> tuple[Path, dict[str, object]]:
-        output = Path(temporary).resolve() / "qualification"
+        project_root = unit_fragment_project(Path(temporary).resolve() / "project")
+        output = project_root / "qualification"
+        fixture_sources = set(self.sources)
+        fixture_sources.update(row["path"] for row in target._runtime_sources(ROOT).values())
+        for relative in sorted(fixture_sources):
+            destination = project_root / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / relative, destination)
+        manifest = project_root / self.allowlist.relative_to(ROOT)
+        manifest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(self.allowlist, manifest)
+        self.project_root = project_root
         result = target.materialize_qualification_fragment(
-            project_root=ROOT,
+            project_root=project_root,
             output_dir=output,
         )
         return output, result
@@ -67,7 +154,7 @@ class OpenVINOGVAQualificationFragmentV3Tests(unittest.TestCase):
             inodes: set[tuple[int, int]] = set()
             for row in (*fragment["policy_bindings"], *fragment["resource_bindings"]):
                 self.assertEqual(set(row), target.ROW_FIELDS)
-                path = ROOT / row["path"]
+                path = self.project_root / row["path"]
                 info = path.lstat()
                 self.assertTrue(stat.S_ISREG(info.st_mode))
                 self.assertFalse(path.is_symlink())
@@ -77,7 +164,7 @@ class OpenVINOGVAQualificationFragmentV3Tests(unittest.TestCase):
                 paths.add(row["path"])
                 inodes.add((info.st_dev, info.st_ino))
             assessment = target.assess_qualification_fragment(
-                project_root=ROOT,
+                project_root=self.project_root,
                 fragment_path=fragment_path,
             )
             self.assertTrue(assessment["passed"], assessment["blockers"])
@@ -89,12 +176,15 @@ class OpenVINOGVAQualificationFragmentV3Tests(unittest.TestCase):
                 (output / target.FRAGMENT_FILENAME).read_text(encoding="utf-8")
             )
             for row in fragment["policy_bindings"]:
-                artifact = json.loads((ROOT / row["path"]).read_text(encoding="utf-8"))
+                artifact = json.loads((self.project_root / row["path"]).read_text(encoding="utf-8"))
                 binding = artifact["analytics_execution_worker_binding_identity"]
                 identity = row["runtime_identity"]
                 self.assertEqual(set(identity), target.POLICY_RUNTIME_FIELDS)
                 self.assertEqual(identity["worker_image_digest"], binding["worker_image_id"])
-                self.assertEqual(identity["terminal_detector"], binding["model_id"])
+                self.assertEqual(
+                    identity["terminal_detector"],
+                    expected_terminal_detector(artifact, row["resource"], self.project_root),
+                )
                 self.assertIn("analytics-execution:", identity["terminal_backend"])
                 self.assertNotIn("gvadetect", identity["terminal_backend"].lower())
                 if row["resource"] == "cpu":
@@ -123,7 +213,7 @@ class OpenVINOGVAQualificationFragmentV3Tests(unittest.TestCase):
                 (output / target.FRAGMENT_FILENAME).read_text(encoding="utf-8")
             )
             for row in fragment["policy_bindings"]:
-                artifact = json.loads((ROOT / row["path"]).read_text(encoding="utf-8"))
+                artifact = json.loads((self.project_root / row["path"]).read_text(encoding="utf-8"))
                 receipt = artifact["analytics_execution_resource_receipt_contract"]
                 self.assertEqual(set(receipt["fields"]), RESOURCE_FIELDS)
                 self.assertEqual(set(receipt["cuda_interval_fields"]), INTERVAL_FIELDS)
@@ -136,7 +226,7 @@ class OpenVINOGVAQualificationFragmentV3Tests(unittest.TestCase):
                         {"h2d": row["branch"], "d2h": f"postprocess_{row['branch']}"},
                     )
             for row in fragment["resource_bindings"]:
-                artifact = json.loads((ROOT / row["path"]).read_text(encoding="utf-8"))
+                artifact = json.loads((self.project_root / row["path"]).read_text(encoding="utf-8"))
                 evidence = artifact["resource_v2_evidence"]
                 self.assertEqual(evidence["contract_version"], 2)
                 self.assertEqual(evidence["decoder_device_api"], "NVIDIA_NVDEC")

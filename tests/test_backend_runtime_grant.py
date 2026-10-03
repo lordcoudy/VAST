@@ -312,16 +312,16 @@ def v3_identity() -> dict[str, object]:
             *(item["raw_evidence"] for item in cells),
         ])
     protocol = {
-        "schema_version": 3,
+        "schema_version": 4,
         "artifact_kind": (
-            "vast_backend_publication_production_output_receipt_protocol_binding_v3"
+            "vast_backend_publication_production_output_receipt_protocol_binding_v4"
         ),
         "execution_scope": "full_publication_measurement_v3",
-        "receipt_kind": "vast_backend_publication_production_output_receipt_v3",
+        "receipt_kind": "vast_backend_publication_production_output_receipt_v4",
         "receipt_authority_kind": (
-            "vast_backend_publication_production_output_receipt_authority_v3"
+            "vast_backend_publication_production_output_receipt_authority_v4"
         ),
-        "atomicity": "launcher_result_then_output_receipt_last_v3",
+        "atomicity": "durable_journal_then_launcher_result_then_output_receipt_last_v4",
         "parent_owned_transaction_required": True,
         "semantic_evidence_validation_required": True,
         "protocol_files": protocol_files,

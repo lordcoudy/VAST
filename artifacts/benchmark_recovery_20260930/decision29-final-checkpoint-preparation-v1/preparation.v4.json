@@ -1,0 +1,136 @@
+{
+  "actual_archive_gate": null,
+  "actual_cleanup_gate": null,
+  "actual_conformance_gate": null,
+  "actual_final_inventory": null,
+  "actual_observed_boundary_rationale": {
+    "already_tracked_unchanged_leaves": 19,
+    "basis": "ROOT supplied genuine read-only metadata command outputs; these counts are recorded as those observations, not an independently executed inventory or a sealed final set.",
+    "classification": "Finite private metadata checkpoint path-count correction only; no runtime/test/experiment/time/byte-cap increase.",
+    "demonstrated_old_bound_insufficient": "510 new leaves plus6 doc candidates plus18 eventual archive counterparts already exceeds512 before future actual conformance and cleanup closures. Preserve original forensic and source evidence instead of omitting it to fit the old guard.",
+    "exact_namespace_dirs": 34,
+    "observed_largest_leaf_bytes": 4907163,
+    "observed_leaves_including_five_docs": 534,
+    "observed_namespace_leaves": 529,
+    "observed_total_bytes": 55099819,
+    "present_namespace_dirs": 32,
+    "raw_prospective_SHA1_vs_5577_HEADtree_tool_cell": "d66d73",
+    "scoped_rg_tool_cell": "a6e7a6",
+    "untracked_bytes": 52995575,
+    "untracked_leaves": 510
+  },
+  "actual_staging": null,
+  "all11_functions_raw_and_AST_identical": true,
+  "all_Git_primitives_index_object_argv_modes_receipt_failure_paths_unchanged": true,
+  "artifact_kind": "final_checkpoint_staging_observed_finite_file_count_correction_v4",
+  "exact_change": {
+    "after": 640,
+    "before": 512,
+    "module_AST_inverse_identical_to_v3": true,
+    "module_literal": "MAX_PATHS",
+    "raw_inverse_identical_to_v3": true,
+    "replacement_occurrences": 1
+  },
+  "final_inventory_guard": "Seal at most638 explicit listed rows plus2 supplemental leaves (typed sealed inventory and generated freeze), at most640 paths and64MiB total. Actual final count/bytes/leaf caps must independently pass. No automatic widening or unsafe forensic omission.",
+  "function_preservation": [
+    {
+      "name": "clock",
+      "original_raw_function_sha256": "f49d20d46e02864c6efec8f4e384a8991fc3e9f880a0cbfc4f87e3b5b9fa5d00",
+      "raw_and_AST_unchanged": true
+    },
+    {
+      "name": "run",
+      "original_raw_function_sha256": "4eb2924dd4a42c6c289620ad56fdc7bf91b732644d4d7c25c69a81e5329a48d3",
+      "raw_and_AST_unchanged": true
+    },
+    {
+      "name": "epoch",
+      "original_raw_function_sha256": "d1665b2abeabc38e86fe049905eba30f783d69421648a4d895588f79a04a978f",
+      "raw_and_AST_unchanged": true
+    },
+    {
+      "name": "canonical",
+      "original_raw_function_sha256": "fb3d2882e099a7607a4f91294953be839dd6269b36a58b501eddb8a45fd3db20",
+      "raw_and_AST_unchanged": true
+    },
+    {
+      "name": "read",
+      "original_raw_function_sha256": "7080b95e66b18dd0a5bfb4a8d4f4290cb4e97211839cf19a1d1b1322a507281d",
+      "raw_and_AST_unchanged": true
+    },
+    {
+      "name": "load_ref",
+      "original_raw_function_sha256": "1d8b901545396ae651ed2a06a69e3c0d697a290abbc0d9903d1402a733d6f88c",
+      "raw_and_AST_unchanged": true
+    },
+    {
+      "name": "raw_oid",
+      "original_raw_function_sha256": "64343a4d4c6351938c897c81e07a37ddb763c0ba5b0b9699868d742c29da4a8f",
+      "raw_and_AST_unchanged": true
+    },
+    {
+      "name": "allowed",
+      "original_raw_function_sha256": "3cf8102dc5777e9ad560dade145502f398833f6eb4bedf742bb26f4f2d4a69a6",
+      "raw_and_AST_unchanged": true
+    },
+    {
+      "name": "normative",
+      "original_raw_function_sha256": "a73ea3cf30971c7d97f8facd0254901c6b9becd40b5d53956830e57bf17157bf",
+      "raw_and_AST_unchanged": true
+    },
+    {
+      "name": "prospective",
+      "original_raw_function_sha256": "2176c020e9a850151357f318d4efde39fb35c8c7ce6adcff29fe865c6acc3582",
+      "raw_and_AST_unchanged": true
+    },
+    {
+      "name": "stage",
+      "original_raw_function_sha256": "f515db7e2b4df97e77c618e08bd238770aa6d59be393841fb7b4ad01092e4b79",
+      "raw_and_AST_unchanged": true
+    }
+  ],
+  "independent_v4_source_review": null,
+  "no_new_functions_or_namespace_changes": true,
+  "operations": {
+    "CI_tests_engine_model_cleanup": 0,
+    "Git": 0,
+    "archive": 0,
+    "prior_source_or_review_mutations": 0,
+    "staging_source_import_compile_execution": 0
+  },
+  "prior_only_independent_source_review": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-independent-review-v1/root-staging-source-review.v1.json",
+    "sha256": "bcc51d68017b2db487ab5e7c5471da5fc917212b42068a050f7c37d5ebbdc61f",
+    "size_bytes": 1179
+  },
+  "prior_v3_preparation": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/preparation.v3.json",
+    "sha256": "2c86ecebfdcd12e14932a18f82d02e505c28e1e7d6e8d67a2d2a94b293f5138f",
+    "size_bytes": 3226
+  },
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v3.py",
+      "sha256": "449eb1ca438865de62b95e2cfcd35fc389f38006bbaf56aeb8809722a6452f38",
+      "size_bytes": 21647
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v4.py",
+      "sha256": "f947fea05bdae89f25bcad686f422e3d59b869f6d160a86ee102700ff4c42fcf",
+      "size_bytes": 21647
+    }
+  ],
+  "status": "source_only_unexecuted_root_independent_review_pending",
+  "unchanged_boundaries": {
+    "Git_call_seconds": 15,
+    "Git_stderr_bytes": 65536,
+    "Git_stdout_bytes": 16777216,
+    "JSON_bytes": 1048576,
+    "leaf_bytes": 8388608,
+    "namespace_count": 34,
+    "owned_total_bytes": 67108864,
+    "whole_seconds": 300
+  }
+}

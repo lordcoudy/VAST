@@ -1,0 +1,83 @@
+{
+  "capture_owner": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/capture_owned_runtime_bind_cleanup_v2.py",
+      "9530",
+      "059f4057bf7d6f550d59064c06e4e785b687ec1998e9625dfb2c6a3c2b148cee",
+      "e4321413fb7a9613a362bd544347de8d552c1ebd50615beb78d3b82dbce98921"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "cmdline_empty_observed": false,
+    "gid": 0,
+    "observed_parent": {
+      "argv": [
+        "/usr/bin/timeout",
+        "--verbose",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "30s",
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/capture_owned_runtime_bind_cleanup_v2.py",
+        "9530",
+        "059f4057bf7d6f550d59064c06e4e785b687ec1998e9625dfb2c6a3c2b148cee",
+        "e4321413fb7a9613a362bd544347de8d552c1ebd50615beb78d3b82dbce98921"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "cmdline_empty_observed": false,
+      "gid": 0,
+      "pgid": 11312,
+      "pid": 11312,
+      "ppid": 11308,
+      "session": 11312,
+      "startticks": 51865093,
+      "state": "S",
+      "uid": 0
+    },
+    "pgid": 11312,
+    "pid": 11313,
+    "ppid": 11312,
+    "session": 11312,
+    "startticks": 51865096,
+    "state": "R",
+    "uid": 0
+  },
+  "command": {
+    "EOF": {
+      "stderr": false,
+      "stdout": false
+    },
+    "argv": [
+      "/usr/bin/umount",
+      "--",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"
+    ],
+    "failure": null,
+    "observed_descendants": [],
+    "owner": {
+      "argv": [
+        "/usr/bin/umount",
+        "--",
+        "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "cmdline_empty_observed": false,
+      "gid": 0,
+      "pgid": 11314,
+      "pid": 11314,
+      "ppid": 11313,
+      "session": 11314,
+      "startticks": 51865117,
+      "state": "R",
+      "uid": 0
+    },
+    "reaped": false,
+    "returncode": null,
+    "signals": [],
+    "started_at_ns": 1791036320257095717
+  }
+}

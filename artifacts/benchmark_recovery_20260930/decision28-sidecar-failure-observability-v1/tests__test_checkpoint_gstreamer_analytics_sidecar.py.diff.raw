@@ -1,0 +1,202 @@
+--- before/tests/test_checkpoint_gstreamer_analytics_sidecar.py
++++ current/tests/test_checkpoint_gstreamer_analytics_sidecar.py
+@@ -1608,6 +1608,199 @@
+             finally:
+                 close_fds((oversized, read_fd, write_fd))
+ 
++    def test_response_send_epipe_captures_live_validated_worker_before_teardown(self) -> None:
++        # Real seqpacket/memfd front and original fixture socket children; the
++        # bridge returns fixture inference only, never a model/hardware grant.
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            factory = _ProcessFactory(self.config)
++            service = self._production_service(root, factory)
++            service.start()
++            client = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
++            client.connect(str(service.front_socket))
++            descriptor = create_sealed_memfd("front-send-epipe", b"abc")
++            entered, release = threading.Event(), threading.Event()
++            route = ("damage", "gpu")
++            snapshots = []
++            original_execute = service._bridge.execute
++            def execute(request, payload):
++                response = original_execute(request, payload)
++                entered.set()
++                if not release.wait(5):
++                    raise AssertionError("fixture front-close gate was not released")
++                return response
++            def observe():
++                snapshots.append((factory.handles[route].poll(),
++                                  service._bridge.connections[route].fileno()))
++                return {"fixture_only": True, "engine_state": {"status": "unavailable"},
++                        "frontend_process": {"exit_code": factory.handles[route].poll()}}
++            try:
++                with mock.patch.object(service._bridge, "execute", side_effect=execute) as invoke, \
++                     mock.patch.object(factory.handles[route], "termination_facts", side_effect=observe, create=True) as observe_call:
++                    send_packet(client, _request(b"abc"), fds=(descriptor,))
++                    self.assertTrue(entered.wait(5))
++                    client.close()
++                    release.set()
++                    self.assertTrue(service._stop.wait(5))
++                    lifecycle = service.stop()
++                    invoke.assert_called_once()
++                    observe_call.assert_called_once()
++                self.assertEqual(len(snapshots), 1)
++                self.assertIsNone(snapshots[0][0])
++                self.assertGreaterEqual(snapshots[0][1], 0)
++                diagnostic = json.loads((root / "production-evidence" / "protocol_failure_diagnostic.v1.json").read_bytes())
++                self.assertEqual(diagnostic["failure_stage"], "response_send")
++                self.assertEqual((diagnostic["branch"], diagnostic["resource"]), route)
++                self.assertEqual(lifecycle["status"], "failed_stop_nonpublication")
++                self.assertEqual(lifecycle["failure"]["type"], "ProtocolError")
++                self.assertIn("failed to send", lifecycle["failure"]["message"])
++                self.assertEqual(lifecycle["counters"]["requests_completed"], 0)
++                self.assertEqual(lifecycle["counters"]["requests_failed"], 1)
++                facts_path = root / "production-evidence" / "worker_termination-damage-gpu.v1.json"
++                facts = json.loads(facts_path.read_bytes())
++                self.assertEqual(facts["observed_service_phase"], "first_validated_failure_before_teardown")
++                self.assertIsNone(facts["frontend_process"]["exit_code"])
++                self.assertEqual(facts["engine_state"]["status"], "unavailable")
++                self.assertEqual(facts["worker_capability"]["branch"], route[0])
++                self.assertEqual(len(list(facts_path.parent.glob("worker_termination-*.v1.json"))), 1)
++            finally:
++                release.set()
++                close_fds((descriptor,))
++                client.close()
++                if service._production_lifecycle is None:
++                    service.stop()
++            self.assertTrue(factory.all_stopped())
++
++    def test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails(self) -> None:
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            factory = _ProcessFactory(self.config)
++            service = self._production_service(root, factory, fail_execute=True)
++            service.start()
++            client = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
++            client.connect(str(service.front_socket))
++            descriptor = create_sealed_memfd("inference-refusal", b"abc")
++            route = ("damage", "gpu")
++            try:
++                with mock.patch.object(service.evidence, "persist_protocol_failure", side_effect=OSError("fixture diagnostic storage failure")), \
++                     mock.patch.object(factory.handles[route], "termination_facts", return_value={"fixture_only": True, "frontend_process": {"exit_code": None}}, create=True) as observer:
++                    send_packet(client, _request(b"abc"), fds=(descriptor,))
++                    self.assertTrue(service._stop.wait(5))
++                    lifecycle = service.stop()
++                    observer.assert_called_once()
++                self.assertEqual(lifecycle["failure"]["type"], "RuntimeError")
++                self.assertIn("injected bridge failure", lifecycle["failure"]["message"])
++                self.assertNotIn("fixture diagnostic storage failure", lifecycle["failure"]["message"])
++                self.assertEqual(lifecycle["counters"]["requests_failed"], 1)
++                self.assertTrue((root / "production-evidence" / "worker_termination-damage-gpu.v1.json").is_file())
++            finally:
++                close_fds((descriptor,))
++                client.close()
++                if service._production_lifecycle is None:
++                    service.stop()
++            self.assertTrue(factory.all_stopped())
++
++    def test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure(self) -> None:
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            factory = _ProcessFactory(self.config)
++            service = self._production_service(root, factory, fail_execute=True)
++            service.start()
++            client = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
++            client.connect(str(service.front_socket))
++            descriptor = create_sealed_memfd("observer-refusal", b"abc")
++            route = ("damage", "gpu")
++            try:
++                with mock.patch.object(factory.handles[route], "termination_facts", side_effect=OSError("fixture observer failure"), create=True) as observer:
++                    send_packet(client, _request(b"abc"), fds=(descriptor,))
++                    self.assertTrue(service._stop.wait(5))
++                    lifecycle = service.stop()
++                    self.assertIsNone(service._capture_worker_termination(route, factory.handles[route], phase="later_failure"))
++                    observer.assert_called_once()
++                diagnostic = json.loads((root / "production-evidence" / "protocol_failure_diagnostic.v1.json").read_bytes())
++                self.assertEqual(diagnostic["failure_stage"], "inference")
++                self.assertEqual(lifecycle["failure"]["type"], "RuntimeError")
++                self.assertIn("injected bridge failure", lifecycle["failure"]["message"])
++                self.assertNotIn("fixture observer failure", lifecycle["failure"]["message"])
++                self.assertEqual(lifecycle["status"], "failed_stop_nonpublication")
++                self.assertFalse((root / "production-evidence" / "worker_termination-damage-gpu.v1.json").exists())
++            finally:
++                close_fds((descriptor,))
++                client.close()
++                if service._production_lifecycle is None:
++                    service.stop()
++            self.assertTrue(factory.all_stopped())
++
++    def test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed(self) -> None:
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            factory = _ProcessFactory(self.config)
++            service = self._production_service(root, factory)
++            service.start()
++            entered, release = threading.Event(), threading.Event()
++            first = RuntimeError("first validated fixture failure")
++            later = RuntimeError("later fixture failure")
++            errors = []
++            original_persist = service.evidence.persist_protocol_failure
++            def persist(value):
++                entered.set()
++                if not release.wait(5):
++                    raise AssertionError("persistence gate was not released")
++                return original_persist(value)
++            first_route, later_route = ("damage", "gpu"), ("plate_number", "cpu")
++            first_diagnostic = service._protocol_failure_diagnostic(protocol_mode="gstreamer", request=_request(b"abc"), route=first_route, descriptors=(), stage="inference")
++            def record(error, route, diagnostic=None):
++                self._capture_error(lambda: service._record_production_failure(error, diagnostic=diagnostic, validated_route=route), errors)
++            threads = [threading.Thread(target=record, args=(first, first_route, first_diagnostic)),
++                       threading.Thread(target=record, args=(later, later_route))]
++            try:
++                with mock.patch.object(service.evidence, "persist_protocol_failure", side_effect=persist), \
++                     mock.patch.object(factory.handles[first_route], "termination_facts", return_value={"fixture_only": True}, create=True) as first_observer, \
++                     mock.patch.object(factory.handles[later_route], "termination_facts", return_value={"fixture_only": True}, create=True) as later_observer:
++                    threads[0].start()
++                    self.assertTrue(entered.wait(5))
++                    threads[1].start()
++                    release.set()
++                    for thread in threads:
++                        thread.join(5)
++                        self.assertFalse(thread.is_alive())
++                    lifecycle = service.stop()
++                    first_observer.assert_called_once()
++                    later_observer.assert_not_called()
++                self.assertFalse(errors)
++                self.assertIs(service._production_failure, first)
++                self.assertIn(str(first), lifecycle["failure"]["message"])
++            finally:
++                release.set()
++                for thread in threads:
++                    if thread.ident is not None:
++                        thread.join(5)
++                if service._production_lifecycle is None:
++                    service.stop()
++            self.assertTrue(factory.all_stopped())
++
++    def test_unattributed_first_failure_does_not_borrow_later_validated_route(self) -> None:
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            factory = _ProcessFactory(self.config)
++            service = self._production_service(root, factory)
++            service.start()
++            route = ("damage", "gpu")
++            first = RuntimeError("unattributed fixture failure")
++            try:
++                with mock.patch.object(factory.handles[route], "termination_facts", return_value={"fixture_only": True}, create=True) as observer:
++                    service._record_production_failure(first)
++                    service._record_production_failure(RuntimeError("later validated fixture failure"), validated_route=route)
++                    lifecycle = service.stop()
++                    observer.assert_not_called()
++                self.assertIs(service._production_failure, first)
++                self.assertEqual(lifecycle["status"], "failed_stop_nonpublication")
++                self.assertFalse(list((root / "production-evidence").glob("worker_termination-*.v1.json")))
++            finally:
++                if service._production_lifecycle is None:
++                    service.stop()
++            self.assertTrue(factory.all_stopped())
++
+     def test_concurrent_terminal_failures_commit_only_first_diagnostic(self) -> None:
+         with tempfile.TemporaryDirectory() as temporary:
+             root = Path(temporary)

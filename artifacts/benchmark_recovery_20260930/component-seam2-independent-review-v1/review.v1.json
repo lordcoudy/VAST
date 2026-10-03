@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_component_seam2_independent_review_v1",
+  "planning_commit": "9ad1a52b38cd5028de6b04bcc08192309ef192cf",
+  "reviewable": true,
+  "blockers": [],
+  "source_files": [
+    {"path": "scripts/publication_guardian_component_preprocessing_contract_v1.py", "size_bytes": 19178, "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990"},
+    {"path": "scripts/publication_guardian_runtime_expectations_v1.py", "size_bytes": 7872, "sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f"},
+    {"path": "scripts/checkpoint_gstreamer_analytics_sidecar.py", "size_bytes": 296398, "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef"},
+    {"path": "tests/test_publication_guardian_component_preprocessing_contract_v1.py", "size_bytes": 23592, "sha256": "0593be7a09359ba0b0cc99db8dd3836167d3bf64fc33341f3243ca954a9e0ebe"}
+  ],
+  "shared_dependency": {"path": "scripts/publication_gstreamer_component_authority_v1.py", "size_bytes": 27033, "sha256": "3be5c65c2b60573eef177df7adfb32643e196f80c5c9850ef140f4dd1ce9bf83"},
+  "author_review": {"path": "artifacts/benchmark_recovery_20260930/component-seam2-final-review-v1/review.v1.json", "size_bytes": 5407, "sha256": "989a8d5f721e985a8611c15ca2bc229353aa6136cce0811d347bd180c49607ee"},
+  "findings": [
+    "The previously reported source/context gap is repaired: _scope calls the shared original-row validator for each physically held source plan. That validator checks both selected cells, exact coordinates/windows, six selected descriptor roles, original source-plan content and actual per-route front worker/stream identities.",
+    "The guardian six-role inputs and reconstructed exact eight-route context are joined to selected source authority; contract and receipt are physically recomputed at load. Resealed foreign workers and each selected native descriptor-role substitution have explicit negatives.",
+    "The third preprocessing kind remains isolated. Legacy full loaders reject it. Activation requires production mode and exact active operational context, and native scope validation rejects foreign run/arm, resource and implementation/emitter before inference.",
+    "The component worker-projection branch preserves original runtime expectations without manufacturing an aggregate image patch. Existing legacy receipt branch remains strict. Source-scope acceptance does not renew physical runtime images."
+  ],
+  "original_evidence_checked": {
+    "physical_references_verified": 18,
+    "original_test_count": 72,
+    "breakdown": {"component": 10, "legacy_sidecar": 50, "legacy_runtime": 2, "actual_boundary": 10},
+    "terminal_returncodes": [0, 0, 0, 0],
+    "all_source_before_after_stable": true,
+    "all_original_channels_size_and_sha_verified": true,
+    "raw_unittest_counts_and_OK_verified": true,
+    "wrong_filename_zero_test_failure_preserved": true
+  },
+  "limits": [
+    "Review only; no reviewer test or Docker/build/guardian/model/inference workload ran.",
+    "The physical source loader is replaced in the preprocessing fixture. Real transport/memfd/accounting tests use declared local inference fixtures. These local proofs do not accept current model numerics, actual images, parity, hardware or the full suite.",
+    "Integrated host execution closure, selected packaged build and the first genuine resource pair remain separate gates. Sibling runtime source closures are invalidated by the shared sidecar change; historical sibling grants cannot be relabeled as current."
+  ],
+  "hardware_acceptance": false,
+  "full_qualification_acceptance": false,
+  "publication_ready": false
+}

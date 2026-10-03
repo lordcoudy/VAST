@@ -1,0 +1,81 @@
+test_actual_37_originals_join_32_selected_cells_and_all_three_phases (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_actual_37_originals_join_32_selected_cells_and_all_three_phases) ... ERROR
+test_same_count_32_cell_workload_substitution_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_32_cell_workload_substitution_is_rejected) ... ERROR
+test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority) ... ERROR
+
+======================================================================
+ERROR: test_actual_37_originals_join_32_selected_cells_and_all_three_phases (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_actual_37_originals_join_32_selected_cells_and_all_three_phases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 324, in test_actual_37_originals_join_32_selected_cells_and_all_three_phases
+    result, mapped, processes, containers = self.fixture.reconcile()
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 310, in reconcile
+    result = closure.reconcile_operational_capture_binding_v1(**args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 2208, in reconcile_operational_capture_binding_v1
+    return _reconcile_operational_capture_binding_v1(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 2094, in _reconcile_operational_capture_binding_v1
+    execution_config=load_execution_config(config_path), runtime_probes=probes)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 6560, in load_execution_config
+    raw = _exact(
+          ^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 287, in _exact
+    _require(set(result) == fields, f"{label} fields have drifted")
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 277, in _require
+    raise SidecarError(message)
+checkpoint_gstreamer_analytics_sidecar.SidecarError: analytics execution layer config fields have drifted
+
+======================================================================
+ERROR: test_same_count_32_cell_workload_substitution_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_32_cell_workload_substitution_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 347, in test_same_count_32_cell_workload_substitution_is_rejected
+    self.fixture.reconcile(pilot_execution=pilot)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 310, in reconcile
+    result = closure.reconcile_operational_capture_binding_v1(**args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 2208, in reconcile_operational_capture_binding_v1
+    return _reconcile_operational_capture_binding_v1(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 2094, in _reconcile_operational_capture_binding_v1
+    execution_config=load_execution_config(config_path), runtime_probes=probes)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 6560, in load_execution_config
+    raw = _exact(
+          ^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 287, in _exact
+    _require(set(result) == fields, f"{label} fields have drifted")
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 277, in _require
+    raise SidecarError(message)
+checkpoint_gstreamer_analytics_sidecar.SidecarError: analytics execution layer config fields have drifted
+
+======================================================================
+ERROR: test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 340, in test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority
+    self.fixture.reconcile(preprocessing_receipt=foreign)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 310, in reconcile
+    result = closure.reconcile_operational_capture_binding_v1(**args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 2208, in reconcile_operational_capture_binding_v1
+    return _reconcile_operational_capture_binding_v1(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 2094, in _reconcile_operational_capture_binding_v1
+    execution_config=load_execution_config(config_path), runtime_probes=probes)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 6560, in load_execution_config
+    raw = _exact(
+          ^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 287, in _exact
+    _require(set(result) == fields, f"{label} fields have drifted")
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 277, in _require
+    raise SidecarError(message)
+checkpoint_gstreamer_analytics_sidecar.SidecarError: analytics execution layer config fields have drifted
+
+----------------------------------------------------------------------
+Ran 3 tests in 3.785s
+
+FAILED (errors=3)

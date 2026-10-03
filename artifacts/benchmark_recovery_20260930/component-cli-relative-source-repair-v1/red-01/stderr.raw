@@ -1,0 +1,31 @@
+test_absolute_cli_inputs_cross_real_stock_source_pin_boundary (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_absolute_cli_inputs_cross_real_stock_source_pin_boundary) ... ERROR
+
+======================================================================
+ERROR: test_absolute_cli_inputs_cross_real_stock_source_pin_boundary (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_absolute_cli_inputs_cross_real_stock_source_pin_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 173, in test_absolute_cli_inputs_cross_real_stock_source_pin_boundary
+    result = self.cli.run_component_pair_v1(**self.arguments, _dependencies=dependencies)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py", line 556, in run_component_pair_v1
+    raise primary
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py", line 440, in run_component_pair_v1
+    source = deps.source(project_root=root, resource=resource, output_dir=output / "source",
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 162, in strict_source
+    raise rejected[0]
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 156, in strict_source
+    pin = stock._project_pin(arguments["project_root"], arguments[name],
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 241, in _project_pin
+    _require(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 189, in _require
+    _fail(message)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 184, in _fail
+    raise QualificationRuntimeInputMaterializationV2Error(message)
+publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputMaterializationV2Error: selected component original input path is not a canonical project-relative path
+
+----------------------------------------------------------------------
+Ran 1 test in 0.647s
+
+FAILED (errors=1)

@@ -1,0 +1,186 @@
+{
+  "actual_raw_scope": {
+    "all_four_namespaces_closed": true,
+    "leaves": 60,
+    "maximum_leaf_bytes": 20718621,
+    "size_bytes": 229747508
+  },
+  "closed_metadata_inventory": {
+    "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/closed-input-size-inventory.v1.json",
+    "sha256": "cd98f1e9afed36614e50563862e9a364ca8592ff01fa872e22587e71c877aac3",
+    "size_bytes": 10058
+  },
+  "cpu_original": {
+    "cli": {
+      "sha256": "325b61a733baaa6b304131d6b45e4b612d29d7e4212521d0f7d4a0ef231f5b99",
+      "size_bytes": 8836
+    },
+    "cold": {
+      "sha256": "a44e07d2f943de47789ce2fd7eb6f20610da1849268a18603aed5a6a80251841",
+      "size_bytes": 18461
+    },
+    "outer": {
+      "sha256": "e87c878c725f309cf344f27926cb6e12647e839a8f5745084b69619c090d3db9",
+      "size_bytes": 88066
+    },
+    "owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 42153,
+      "pid": 42153,
+      "ppid": 42151,
+      "startticks": 28495618,
+      "uid": 1000
+    }
+  },
+  "final_sources": {
+    "reduce.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/reduce.py",
+      "sha256": "f4332d703d94dd54e7b856f12d04300bc95d99ec1eb456f87d24b8f98813ccff",
+      "size_bytes": 24264
+    },
+    "render.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/render.py",
+      "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+      "size_bytes": 9184
+    },
+    "run.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/run.py",
+      "sha256": "b88c9e78b0ba8f075ab8934810f67de903af49dd3ef87181f896d59b2b5cf91e",
+      "size_bytes": 7853
+    }
+  },
+  "full_campaign_acceptance": false,
+  "gpu_original": {
+    "cli": {
+      "sha256": "abea1a00a5cb5c68e56657b78bea0683461bed121cce61afb11f2f1cd046460e",
+      "size_bytes": 8836
+    },
+    "cold": {
+      "sha256": "a28af5697096df8a468be6c04cf6307c4a425778a3b9b83f6dfae1c54025562d",
+      "size_bytes": 18450
+    },
+    "outer": {
+      "sha256": "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+      "size_bytes": 88102
+    },
+    "owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 47763,
+      "pid": 47763,
+      "ppid": 47761,
+      "startticks": 28764548,
+      "uid": 1000
+    }
+  },
+  "interpretation_constraints": [
+    "100ms SLO/drop/completion balance is descriptive; no causal overload claim",
+    "1fps per stream/6fps total, timestamp600/encoded600, six logical replicas of two recordings; baseline-first single pair/resource",
+    "Completed-only ECDF must accompany absolute admitted/dropped/censored and on-time/admitted coverage; drops have no invented latency",
+    "C_obs partial attributed host-stage elapsed, not processor work/energy/trueNVDECbusy; decoder NVDEC for both CPU/GPU analytics placements",
+    "No accuracy/noninferiority/population confidence interval or full-campaign eligibility; no cross-clock subtraction by this reader"
+  ],
+  "joins": [
+    "Both authentic original outer physical hashes, CLI sealed physical descriptor/status0/cleanup/reserve, exact resource/root/argv/source0ad and original owner",
+    "Exact physical cold descriptor, typed72 candidate/arm/cold raw re-reductions and16 descriptive metrics,14 original CSV columns for each arm",
+    "All4 recomputed source schedule/order/measurement-semantics/window fingerprints; cohort IDs remain arm-local",
+    "All raw leaves full held FD bytes/seven epochs/name and ancestor identity before/after, actual project import files match original hostclosure and original95 epochs",
+    "Existing actual Matplotlib3.11.0 package entry/font_manager and compatible font-cache pinned before import, actual loaded Matplotlib leaves/defaultfont held afterward",
+    "CSV/SVG physical hashes retained; raw reduction, observer original return/EOF/group closure and FD release recorded"
+  ],
+  "measurement_acceptance": false,
+  "missing_actual_gates": [
+    "Independent exact source peer approval",
+    "Root authorization of this exact original command",
+    "Actual original data re-reduction/renderer process terminal and all equality/FD/EOF/group evidence",
+    "Independent closed scientific result review"
+  ],
+  "original_sources_preserved": {
+    "preparation.v1.json": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/before-source-review-v1/preparation.v1.json",
+      "sha256": "733072f08bad061f7d92aad4accb7023de04ee82c9e60e39fc6231db6cddde87",
+      "size_bytes": 5270
+    },
+    "reduce.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/before-source-review-v1/reduce.py",
+      "sha256": "00e2e38b7e7543dea31cb578671b1ab84a37bc70b44dc11813df77c8e950ff41",
+      "size_bytes": 21712
+    },
+    "render.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/before-source-review-v1/render.py",
+      "sha256": "287cb19148988e43ec981536d5f3395209bf2ce6d3614a5595f596d8b1c67129",
+      "size_bytes": 7283
+    },
+    "run.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/before-source-review-v1/run.py",
+      "sha256": "99e2d68d8add7114869e1b637ac5f3090126f7341435b1865ccbab868a82bbeb",
+      "size_bytes": 7494
+    }
+  },
+  "postterminal_references": {
+    "cpu_review": "e2b54ad5",
+    "cpu_witness": "2ac07423",
+    "gpu_second_gate": "6c25127270763cf47a03291be9b2115671ea7d6df3d4d8c19fb7f59932b79768"
+  },
+  "prepared_command": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/run.py",
+    "--project-root",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "--font-cache",
+    "/home/s-a-balashov/.cache/matplotlib/fontlist-v3.11.0.json",
+    "--cpu-original-terminal",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/original.terminal.v1.json",
+    "--cpu-original-terminal-sha256",
+    "e87c878c725f309cf344f27926cb6e12647e839a8f5745084b69619c090d3db9",
+    "--cpu-original-terminal-size",
+    "88066",
+    "--gpu-original-terminal",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01-original-controller/original.terminal.v1.json",
+    "--gpu-original-terminal-sha256",
+    "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+    "--gpu-original-terminal-size",
+    "88102"
+  ],
+  "previous_preparation": {
+    "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/preparation.v1.json",
+    "sha256": "733072f08bad061f7d92aad4accb7023de04ee82c9e60e39fc6231db6cddde87",
+    "size_bytes": 5270
+  },
+  "proposed_original_capture_bounds": {
+    "channel_bytes": 1048576,
+    "containment_seconds": 10,
+    "csv_and_svg_bytes_each": 1048576,
+    "execution_seconds": 110,
+    "font_cache_bytes": 1048576,
+    "held_inputs_count_maximum": 512,
+    "leaf_bytes_maximum": 67108864,
+    "metadata_output_bytes": 1048576,
+    "old_CPU05_29_7_seconds": "context only, not prediction or guarantee",
+    "single_inherited_execution_clock": true,
+    "whole_seconds": 120
+  },
+  "schema_version": 1,
+  "scope": "Prepared unexecuted pure four-arm raw reduction and standard rendering; no hardware/new cold grant",
+  "source_only_validation": {
+    "AST_parse_three": true,
+    "engine_model_namespace_native_operation": false,
+    "producer_reducer_import_or_execution": false,
+    "raw_payload_hash_or_reduction": false,
+    "test_execution": false
+  },
+  "status": "source_frozen_peer_review_pending",
+  "stock_APIs": [
+    "benchmark_contract.canonicalize_frames_csv",
+    "validate_frame_events",
+    "validate_stage_trace_coverage",
+    "validate_topology_events",
+    "validate_required_sidecars",
+    "summarize_sidecars",
+    "summarize_frames",
+    "full_resource_contract.validate_full_resource_evidence"
+  ]
+}

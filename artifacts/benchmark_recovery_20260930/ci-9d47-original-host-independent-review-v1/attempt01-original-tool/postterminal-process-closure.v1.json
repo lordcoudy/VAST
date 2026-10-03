@@ -1,0 +1,152 @@
+{
+  "CI_evidence_acceptance": false,
+  "all_original_reader_timeout_pids_and_groups_absent": true,
+  "capture_limit": "Tool360ca4 exit0 is the setsid launcher status without --wait, not a captured child CLI status. Original reader writes failed status and exited; exact child returncode was not captured.",
+  "fd_count_after": 6,
+  "fd_count_before": 6,
+  "hardware_acceptance": false,
+  "late_companion_absent": true,
+  "original_all_FDs_released": true,
+  "original_artifact_rows": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v3.py",
+        "sha256": "629ad711d0b1fe4de83eb5626d54cbdeddb5fe1e2d4a5725b183ca1889e5c61a",
+        "size_bytes": 23380
+      },
+      "epoch": [
+        69,
+        1407374885978522,
+        33279,
+        1,
+        23380,
+        1790824289029109800,
+        1790824289029109800
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/root-grant.v1.json",
+        "sha256": "52247cb044da5f6b2d48fbf8b278e16a33e01625b291fb3a42f1629c74366780",
+        "size_bytes": 2292
+      },
+      "epoch": [
+        69,
+        1407374885978533,
+        33279,
+        1,
+        2292,
+        1790824672439868000,
+        1790824672439868000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/attempt01/launch.v1.json",
+        "sha256": "0deb2b1b930c475ced23ee0a8efb40b4fc1126477ce1d47a28940841d3629975",
+        "size_bytes": 727
+      },
+      "epoch": [
+        69,
+        1407374885978540,
+        33279,
+        1,
+        727,
+        1790824688705552500,
+        1790824688705552500
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/attempt01/review.v1.json",
+        "sha256": "25210033883eb9d72cf097953c562ba770db030efb655aba0901a96aac3a32eb",
+        "size_bytes": 1353
+      },
+      "epoch": [
+        69,
+        1407374885978541,
+        33279,
+        1,
+        1353,
+        1790824688952625000,
+        1790824688952625000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/attempt01-original-tool/stdout.raw",
+        "sha256": "8bb4b5f555be44775be3b756a581eabb3d3ae402c44ffcddf45abfd9fa684e2e",
+        "size_bytes": 378
+      },
+      "epoch": [
+        69,
+        1407374885978536,
+        33279,
+        1,
+        378,
+        1790824688957364600,
+        1790824688957364600
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/attempt01-original-tool/stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "epoch": [
+        69,
+        1688849862689193,
+        33279,
+        1,
+        0,
+        1790824688649454900,
+        1790824688649454900
+      ]
+    }
+  ],
+  "original_reader": {
+    "argv": [
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v3.py"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "mode": "closed retained original metadata only",
+    "pgid": 65366,
+    "pid": 65367,
+    "ppid": 65366,
+    "source": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v3.py",
+      "sha256": "629ad711d0b1fe4de83eb5626d54cbdeddb5fe1e2d4a5725b183ca1889e5c61a",
+      "size_bytes": 23380
+    },
+    "startticks": 30700406,
+    "uid": 1000
+  },
+  "original_reader_status": "failed_no_CI_evidence_acceptance",
+  "postterminal_scans": [
+    {
+      "matching_original_pids_or_pgid": [],
+      "monotonic_ns": 307114166039244,
+      "proc_rows_observed": 107,
+      "read_errors": [],
+      "wall_time_ns": 1790824798749256234
+    },
+    {
+      "matching_original_pids_or_pgid": [],
+      "monotonic_ns": 307114667745832,
+      "proc_rows_observed": 107,
+      "read_errors": [],
+      "wall_time_ns": 1790824799250978842
+    }
+  ],
+  "scanner_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65390,
+    "pid": 65390,
+    "uid": 1000
+  },
+  "schema_version": 1,
+  "status": "closed_original_failed_metadata_reader_retained"
+}

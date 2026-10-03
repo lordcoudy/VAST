@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "independent-source-review-before-focused-GREEN",
+  "reviewer": "/root/decision28_source_peer",
+  "author_of_reviewed_production_profile_test_and_runner": "/root",
+  "change": "fix-benchmark-preparations-spec",
+  "reviewed_planning_commit": "56dd56bcc80519b99357546a49dbd65377e0db22",
+  "baseline_benchmark_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "implementation_authorization": {
+    "PR_record": 5967478840,
+    "URL": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5967478840",
+    "retained_grant": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/implementation-grant.v1.json"
+  },
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewer_handles_released": true,
+  "target_import_compile_execution_or_test_execution": false,
+  "Git_engine_model_device_policy_namespace_or_journal_operations": false,
+  "owned_source_pins": [
+    {"path": "scripts/ci_namespace_diagnostic_v1.py", "size_bytes": 25359, "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292"},
+    {"path": "scripts/ci_userns_profile_v1.py", "size_bytes": 28890, "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43"},
+    {"path": "tests/test_ci_userns_profile_v1.py", "size_bytes": 41955, "sha256": "dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/run_focused_v1.py", "size_bytes": 6901, "sha256": "03d722b05e54eaaf2149a29043b36aed3b86e7e3ccd3a4055da9f62ec2cf41a5"}
+  ],
+  "original_physical_source_basis": "The three reviewed current files were fully read and compared with preserved decision29-ci-clock-repair-v1/before raw snapshots. The focused runner was fully read and compared with original-focused-controller.raw. All source pins are actual current physical bytes, not asserted commit contents.",
+  "findings": [
+    {
+      "id": "D29-clock-producer",
+      "result": "PASS-source",
+      "detail": "The new observer samples genuine Linux clock ID 5 immediately before the original exact CLONE_NEWUSER unshare and after the original /proc/self/setgroups open failure with errno13. The same pre-sample is copied into started/completed rows; ordinary sampling Exceptions produce an explicit unavailable fact and do not replace the original syscall or its bare-raised error. Cancellation BaseExceptions propagate. No other original wrapper/delegate, resource flags, original errno extraction or binding restoration is changed. The ready record declares contract2 and capture adds its actual terminal monotonic timestamp. Partial/unavailable samples cannot satisfy the consumer."
+    },
+    {
+      "id": "D29-clock-consumer",
+      "result": "PASS-source",
+      "detail": "The new join validates exact nonboolean integer version/clock/value/monotonic/PID fields, availability, CLOCK_REALTIME_COARSE name, both phases and current boot/PID. It requires unchanged before-copy equality, ready/pre-sample/unshare ordering, failed-open/post-sample/capture/now ordering, and nondecreasing sampled coarse realtime. Audit MESSAGE milliseconds must lie within the inclusive millisecond-floored actually observed coarse bracket. It retains the original owner, interpreter/stat, current-job, start-gate, unconfined label, exact one completed USER-unshare and one untolerated setgroups errno13 failure, kernel transport/boot/PID/capability/profile/operation, journal receive wall interval and journal monotonic plus/minus2ms checks. No guessed coarse tolerance, kernel timestamp rewrite, retry or denial inference was added."
+    },
+    {
+      "id": "D29-live-version-gate",
+      "result": "PASS-source",
+      "detail": "The pure join defaults to expected2 and accepts only typed expected1/2. The physically held live lifecycle explicitly supplies expected2 from trusted source context. Missing version or samples cannot select legacy behavior. Explicit legacy1 requires no new declaration and no new samples and retains the original strict fine2ms predicate. Removing all new fields from a current live record still rejects before profile inventory/add. Original B remains failed and cannot be retroactively accepted."
+    },
+    {
+      "id": "D29-preserved-policy-and-bounds",
+      "result": "PASS-source",
+      "detail": "Thirteen of fifteen original profile module functions have identical ASTs. The held lifecycle returns to the original AST after removing only its explicit expected-version2 join keyword. Seven of ten original diagnostic functions have identical ASTs; its three changes are wrapper sample facts, one capture terminal monotonic field and one ready-version field. All module constant ASTs and original Popen call ASTs are unchanged. Exact profile attachment/content, fixed sudo/root timeout/add/remove shapes, held/no-follow/single-link/full-SHA/epoch checks, collision/refusal, owned removal, first error preservation, FD retirement and receipt-last deadline gates remain as before. Original20+10s,16KiB channels,12KiB emission/report reserves,4KiB denial and32 journal rows are unchanged."
+    },
+    {
+      "id": "D29-profile-tests",
+      "result": "PASS-source-not-executed",
+      "detail": "All21 original runnable profile test methods retain their assertions and behavior: nineteen method ASTs are identical, and two are identical after removing only the explicit legacy1 keyword. Both original module helper ASTs and the policy-command fixture AST are unchanged. The physical metadata fixture is explicitly synthetic contract2 and shifts all new sample/capture clocks consistently. Eight new clock tests cover an8ms coarse lag, equal/inclusive/adjacent bins, malformed/missing/unavailable/foreign/reversed samples, explicit legacy isolation, original B relative clock operands187040ns below its old lower bound, unknown expected context, unchanged journal/owner rejection and live anti-downgrade before any profile command. The finalized anti-downgrade test rewrites both retained kernel fixture leaves to the same fine audit bin, explicitly demonstrates legacy1 acceptance, then requires live expected2 rejection and commands[]. This distinguishes version-gate rejection from an incidental8ms legacy rejection."
+    },
+    {
+      "id": "D29-focused-runner",
+      "result": "PASS-source-not-executed",
+      "detail": "All six original runner function/method ASTs and its original Popen call AST are identical. Changes are only the source list, exact red/full test selection and truthful synthetic clock classification/docstring. Original CP312 -I -B delegation,120+10s,1MiB each channel, original owner/private group, original channel EOF facts, reaping, two error-aware absence scans, source before/after full SHA and seven-epoch recording, FD recording and exclusive final/late leaves remain unchanged. ROOT must join the actual focused child/unit result and original capture status, EOF, FD and process records before claiming GREEN."
+    },
+    {
+      "id": "D29-runtime-source-impact",
+      "result": "PASS-physical-source-bytes",
+      "detail": "The four exact current CI scripts/tests are absent from all ten original source-group path inventories, the actual selected73 inventory and the actual current95 path inventory. All95 currently named physical inputs, all73 selected source paths and all native-three/worker-two source members were read without execution and matched their retained full SHA and size descriptors. This includes all87 actual stock host project sources.123 distinct ext4 project paths were read. Consequently these CI-only source edits do not alter the selected stock source set, current95 inputs or native/worker byte sets. Linux seven-epoch/process closure is retained in the genuine CPU08/GPU02 evidence; this Windows UNC read does not claim to reproduce Linux stat epochs or attest a new Git HEAD."
+    }
+  ],
+  "proofs": [
+    {"path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/static-source-proofs.v1.json", "size_bytes": 5106, "sha256": "90f0fbeb30f15e5f198f314751e9f1dc797f749ed37f1bdb18272c990c324a57"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/source-impact.v1.json", "size_bytes": 160709, "sha256": "dcdc63621620f579653574d0a1380baac2d683c117d83b8b194b46e67abb2a41"}
+  ],
+  "retained_cause_and_design_basis": [
+    {"path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/diagnosis.v1.json", "size_bytes": 61088, "sha256": "51b9a6ed2b924848f590fc19564b7a7620ee5e911c91fab3ae1c898be201d639"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-research-v1/critique.v1.json", "size_bytes": 8153, "sha256": "ab9465ceb25558d608d66fa56ffa8f70034538657bb46f80edd086ccbd1b740e"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision29-planning-independent-review-v1/review.v1.json", "size_bytes": 21877, "sha256": "ebd0e5164f8d2e650ecd5ebeb4520c825e87e11541941bb4083824f4194c15aa"}
+  ],
+  "limits": [
+    "This is independent static source review and physical metadata equality, not focused GREEN, live hosted denial sampling, complete CI, scientific acceptance or merge approval.",
+    "The reviewer authored only the separate namespace test additions; their independent raw/AST review belongs to ROOT. Their current pin appears solely in the four-path source-impact inventory and is excluded from independently approved owned_source_pins.",
+    "The actual A/B provider conclusions, B first predicate failure and primary upstream coarse-clock rationale remain preserved; no historical result or clock value was rewritten.",
+    "No tested behavior or unavailable clock implementation is inferred from source alone. Actual focused original closure and later mandatory checks remain required."
+  ],
+  "future_focused_GREEN_result": null,
+  "future_hosted_CI_result": null,
+  "hardware_acceptance": false
+}

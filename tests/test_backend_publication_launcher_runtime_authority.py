@@ -267,6 +267,26 @@ class BackendPublicationLauncherRuntimeAuthorityTests(unittest.TestCase):
                 ):
                     self.assertIs(assessment[field], False, field)
 
+    @unittest.skipUnless(os.name == "posix", "POSIX atime regression")
+    def test_posix_physical_read_accepts_forced_old_atime(self) -> None:
+        old_atime_ns = 946684800 * 1_000_000_000
+        for path in self.root.rglob("*"):
+            if path.is_file():
+                observed = path.stat()
+                os.utime(
+                    path,
+                    ns=(old_atime_ns, int(observed.st_mtime_ns)),
+                    follow_symlinks=False,
+                )
+
+        authority = self.build()
+        assessment = assess_backend_publication_launcher_runtime_authority(
+            authority,
+            project_root=self.root,
+            **self.expected(),
+        )
+        self.assertEqual(assessment["status"], "physically_valid")
+
     def test_all_external_pins_are_required_and_builder_never_self_pins(self) -> None:
         expected_names = tuple(self.expected())
         for function in (

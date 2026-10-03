@@ -1,0 +1,92 @@
+{
+  "accepted": false,
+  "after": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/.github/workflows/ci.yml",
+      "sha256": "d0b4ef041f76acdb91417b5a93c7bd82f27e87eeb5bc4d0cb91675bc9147bafc",
+      "size_bytes": 2407
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/.ci/requirements.txt",
+      "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+      "size_bytes": 454
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/run_ci_checks.py",
+      "sha256": "4e9c786d7f324a2a90e5a612597eaabf7350f44cb58ad9a367b71f6e55e317e7",
+      "size_bytes": 11765
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_run_ci_checks.py",
+      "sha256": "4e9c589af87985c2ced011690714c036d13183d0daacb486a6d913d321b0887c",
+      "size_bytes": 2666
+    }
+  ],
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_run_ci_checks.py",
+    "-v"
+  ],
+  "artifact_kind": "vast_cpu_ci_scoped_unit_preflight_v1",
+  "before": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/.github/workflows/ci.yml",
+      "sha256": "d0b4ef041f76acdb91417b5a93c7bd82f27e87eeb5bc4d0cb91675bc9147bafc",
+      "size_bytes": 2407
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/.ci/requirements.txt",
+      "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+      "size_bytes": 454
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/run_ci_checks.py",
+      "sha256": "4e9c786d7f324a2a90e5a612597eaabf7350f44cb58ad9a367b71f6e55e317e7",
+      "size_bytes": 11765
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_run_ci_checks.py",
+      "sha256": "4e9c589af87985c2ced011690714c036d13183d0daacb486a6d913d321b0887c",
+      "size_bytes": 2666
+    }
+  ],
+  "controller": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pid": 12309,
+    "ppid": 12306,
+    "starttime_ticks": 21472701,
+    "uid": 1000
+  },
+  "elapsed_s": 0.12951637199148536,
+  "full_suite_executed": false,
+  "hardware_acceptance": false,
+  "hosted_workflow_executed": false,
+  "native_build_executed": false,
+  "original_child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pid": 12310,
+    "ppid": 12309,
+    "starttime_ticks": 21472707,
+    "uid": 1000
+  },
+  "original_returncode": 0,
+  "original_stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/cpu-ci-preflight-v1/original.stderr",
+    "sha256": "876481077bd20f7f57b107cf9a2cc0606ee93fbd55784227f8b7d05f23a5285f",
+    "size_bytes": 749
+  },
+  "original_stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/cpu-ci-preflight-v1/original.stdout",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "publication_ready": false,
+  "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "scoped_successful": true,
+  "sha256": "5efcd2a36678ffc23646bc3451530d61871ad2310b4fe66bcde6182e28ecc0d1",
+  "source_unchanged": true
+}

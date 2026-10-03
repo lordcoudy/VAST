@@ -1,0 +1,285 @@
+{
+  "accuracy_or_population_claim": false,
+  "c_obs_scope": "partial_observed_attributed_stage_elapsed",
+  "clock_and_timing_limit": "Stock frame/interval evidence is validated without mixing admission wall clocks, scaled media PTS or decoder monotonic envelopes. C_obs remains attributed host-stage elapsed; no new cross-clock differences are derived.",
+  "comparison_design": "one baseline-first pair per analytics resource; logical replicas of two recordings",
+  "comparisons": {
+    "cpu": {
+      "c_obs_comp_ms_per_completed": {
+        "baseline": 29902.158914729,
+        "ratio_reason": null,
+        "shared": 12382.756024096,
+        "shared_minus_baseline": -17519.402890633,
+        "shared_over_baseline": 0.41410909691863707
+      },
+      "c_obs_in_ms_per_ingress": {
+        "baseline": 14286.587037037,
+        "ratio_reason": null,
+        "shared": 7613.101851852,
+        "shared_minus_baseline": -6673.485185184999,
+        "shared_over_baseline": 0.532884574329443
+      },
+      "completion_coverage": {
+        "baseline": 0.4777777777777778,
+        "ratio_reason": null,
+        "shared": 0.6148148148148148,
+        "shared_minus_baseline": 0.137037037037037,
+        "shared_over_baseline": 1.2868217054263564
+      },
+      "on_time_ingress_coverage": {
+        "baseline": 0.0,
+        "ratio_reason": "baseline_is_not_positive_or_metric_unavailable",
+        "shared": 0.0,
+        "shared_minus_baseline": 0.0,
+        "shared_over_baseline": null
+      }
+    },
+    "gpu": {
+      "c_obs_comp_ms_per_completed": {
+        "baseline": 10387.493457944,
+        "ratio_reason": null,
+        "shared": 2998.044651163,
+        "shared_minus_baseline": -7389.448806781,
+        "shared_over_baseline": 0.2886206054714959
+      },
+      "c_obs_in_ms_per_ingress": {
+        "baseline": 10291.312962963,
+        "ratio_reason": null,
+        "shared": 2984.164814815,
+        "shared_minus_baseline": -7307.1481481480005,
+        "shared_over_baseline": 0.2899692998895858
+      },
+      "completion_coverage": {
+        "baseline": 0.9907407407407407,
+        "ratio_reason": null,
+        "shared": 0.9953703703703703,
+        "shared_minus_baseline": 0.00462962962962965,
+        "shared_over_baseline": 1.0046728971962617
+      },
+      "on_time_ingress_coverage": {
+        "baseline": 0.002777777777777778,
+        "ratio_reason": null,
+        "shared": 0.000925925925925926,
+        "shared_minus_baseline": -0.001851851851851852,
+        "shared_over_baseline": 0.3333333333333333
+      }
+    }
+  },
+  "confidence_interval": null,
+  "confidence_interval_reason": "one_original_descriptive_pair_per_resource",
+  "drops_have_no_latency": true,
+  "exports": {
+    "four_arm_latency_coverage_cobs.svg": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_latency_coverage_cobs.svg",
+      "sha256": "3e923b67105ae316d1a6bb18df3301770d83c3364b0d2fdfa247f310fca87744",
+      "size_bytes": 175581
+    },
+    "four_arm_metrics.csv": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_metrics.csv",
+      "sha256": "75e6346d518cc382003070e4c82dc2695b04bb4a5b6866fccf8d009ad2ecd0d4",
+      "size_bytes": 1914
+    }
+  },
+  "font_cache": "/home/s-a-balashov/.cache/matplotlib/fontlist-v3.11.0.json",
+  "full_campaign_acceptance": false,
+  "latency_population": "completed_measurement_frames",
+  "logical_offered_fps_total": 6,
+  "logical_stream_recordings": [
+    {
+      "source_id": "kpp_iss_publication_v3_front_gate",
+      "stream_id": 0
+    },
+    {
+      "source_id": "kpp_iss_publication_v3_front_gate",
+      "stream_id": 1
+    },
+    {
+      "source_id": "kpp_iss_publication_v3_front_gate",
+      "stream_id": 2
+    },
+    {
+      "source_id": "kpp_iss_publication_v3_front_gate",
+      "stream_id": 3
+    },
+    {
+      "source_id": "kpp_iss_publication_v3_front_gate",
+      "stream_id": 4
+    },
+    {
+      "source_id": "kpp_iss_publication_v3_underbody",
+      "stream_id": 5
+    }
+  ],
+  "matplotlib_version": "3.11.1",
+  "measurement_acceptance": false,
+  "observed_deadline_failure_is_not_causal_overload_proof": true,
+  "original_cpu_on_time_completed_zero": true,
+  "package_scope": "Actual loaded matplotlib package leaves plus cache/default font held; no whole Python dependency claim",
+  "processor_work_or_energy_claim": false,
+  "python_version": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "rows": [
+    {
+      "c_obs_comp_ms_per_completed": 29902.158914729,
+      "c_obs_cpu_total_ms": 15429514.0,
+      "c_obs_gpu_total_ms": 0.0,
+      "c_obs_in_ms_per_ingress": 14286.587037037,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 15429514.0,
+      "completed_deadline_miss_percent": 100.0,
+      "completed_deadline_misses": 516,
+      "completion_coverage": 0.4777777777777778,
+      "confidence_interval": null,
+      "confidence_interval_reason": "one_original_descriptive_pair_per_resource",
+      "deadline_ms": 100.0,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "frames": 516,
+      "latency_max_ms": 10171.0,
+      "latency_p50_ms": 5727.5,
+      "latency_p95_ms": 9713.25,
+      "latency_p999_ms": 10166.365,
+      "latency_p99_ms": 9976.2,
+      "latency_population": "completed_measurement_frames",
+      "measurement_admitted": 1080,
+      "measurement_censored": 0,
+      "measurement_dropped": 564,
+      "on_time_completed": 0,
+      "on_time_ingress_coverage": 0.0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-independent-processes",
+      "resource": "cpu",
+      "scenario": "checkpoint_independent_processes_baseline",
+      "slo_violation_rate_percent": 100.0,
+      "telemetry_source": "native",
+      "throughput_fps": 2.867
+    },
+    {
+      "c_obs_comp_ms_per_completed": 12382.756024096,
+      "c_obs_cpu_total_ms": 8222150.0,
+      "c_obs_gpu_total_ms": 0.0,
+      "c_obs_in_ms_per_ingress": 7613.101851852,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 8222150.0,
+      "completed_deadline_miss_percent": 100.0,
+      "completed_deadline_misses": 664,
+      "completion_coverage": 0.6148148148148148,
+      "confidence_interval": null,
+      "confidence_interval_reason": "one_original_descriptive_pair_per_resource",
+      "deadline_ms": 100.0,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "frames": 664,
+      "latency_max_ms": 8483.0,
+      "latency_p50_ms": 3621.0,
+      "latency_p95_ms": 8026.85,
+      "latency_p999_ms": 8423.33,
+      "latency_p99_ms": 8160.37,
+      "latency_population": "completed_measurement_frames",
+      "measurement_admitted": 1080,
+      "measurement_censored": 0,
+      "measurement_dropped": 416,
+      "on_time_completed": 0,
+      "on_time_ingress_coverage": 0.0,
+      "operation_id": "component-gstreamer_custom-cpu-h264-shared-video-dag",
+      "resource": "cpu",
+      "scenario": "checkpoint_video_dag_shared",
+      "slo_violation_rate_percent": 100.0,
+      "telemetry_source": "native",
+      "throughput_fps": 3.689
+    },
+    {
+      "c_obs_comp_ms_per_completed": 10387.493457944,
+      "c_obs_cpu_total_ms": 10705790.0,
+      "c_obs_gpu_total_ms": 408828.0,
+      "c_obs_in_ms_per_ingress": 10291.312962963,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 11114618.0,
+      "completed_deadline_miss_percent": 99.7196261682243,
+      "completed_deadline_misses": 1067,
+      "completion_coverage": 0.9907407407407407,
+      "confidence_interval": null,
+      "confidence_interval_reason": "one_original_descriptive_pair_per_resource",
+      "deadline_ms": 100.0,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "frames": 1070,
+      "latency_max_ms": 6330.0,
+      "latency_p50_ms": 2127.0,
+      "latency_p95_ms": 6301.0,
+      "latency_p999_ms": 6327.931,
+      "latency_p99_ms": 6320.0,
+      "latency_population": "completed_measurement_frames",
+      "measurement_admitted": 1080,
+      "measurement_censored": 0,
+      "measurement_dropped": 10,
+      "on_time_completed": 3,
+      "on_time_ingress_coverage": 0.002777777777777778,
+      "operation_id": "component-gstreamer_custom-gpu-h264-independent-processes",
+      "resource": "gpu",
+      "scenario": "checkpoint_independent_processes_baseline",
+      "slo_violation_rate_percent": 99.72,
+      "telemetry_source": "native",
+      "throughput_fps": 5.944
+    },
+    {
+      "c_obs_comp_ms_per_completed": 2998.044651163,
+      "c_obs_cpu_total_ms": 2701772.0,
+      "c_obs_gpu_total_ms": 521126.0,
+      "c_obs_in_ms_per_ingress": 2984.164814815,
+      "c_obs_is_partial": true,
+      "c_obs_total_ms": 3222898.0,
+      "completed_deadline_miss_percent": 99.90697674418605,
+      "completed_deadline_misses": 1074,
+      "completion_coverage": 0.9953703703703703,
+      "confidence_interval": null,
+      "confidence_interval_reason": "one_original_descriptive_pair_per_resource",
+      "deadline_ms": 100.0,
+      "decoder_factory": "nvh264dec",
+      "decoder_required_resource": "nvdec",
+      "frames": 1075,
+      "latency_max_ms": 6406.0,
+      "latency_p50_ms": 2168.0,
+      "latency_p95_ms": 6364.0,
+      "latency_p999_ms": 6403.778,
+      "latency_p99_ms": 6391.26,
+      "latency_population": "completed_measurement_frames",
+      "measurement_admitted": 1080,
+      "measurement_censored": 0,
+      "measurement_dropped": 5,
+      "on_time_completed": 1,
+      "on_time_ingress_coverage": 0.000925925925925926,
+      "operation_id": "component-gstreamer_custom-gpu-h264-shared-video-dag",
+      "resource": "gpu",
+      "scenario": "checkpoint_video_dag_shared",
+      "slo_violation_rate_percent": 99.907,
+      "telemetry_source": "native",
+      "throughput_fps": 5.972
+    }
+  ],
+  "schema_version": 1,
+  "scope": "topology_load_proxy_only",
+  "source_playback": {
+    "common_start_barrier_required": true,
+    "compressed_timestamp_order": "native_pts_may_reorder_for_b_frames",
+    "consumer_payload": "same_compressed_access_unit_bytes",
+    "contract_version": 6,
+    "cycle_boundary": "native_pipeline_eos_then_flush_seek_zero",
+    "delivery_order": "gap_free_admission_sequence",
+    "drain_required": true,
+    "encoded_timeline_fps": 600,
+    "frame_identity_timestamp": "unscaled_native_pts",
+    "independent_worker_file_readers_pair_eligible": false,
+    "measurement_end_boundary_guard_ns": 1000000,
+    "measurement_end_boundary_guard_semantics": "exclude_scaled_decode_order_coordinates_within_one_millisecond_of_stop_admission",
+    "measurement_schedule_interval": "[warmup_ns,total_window_ns_minus_boundary_guard_ns)",
+    "mode": "common_source_coordinator_continuous_replay",
+    "offered_playback_fps": 1,
+    "predecode_ingress_required": true,
+    "selection_basis": "discarded_prebenchmark_capacity_pilots_positive_completed_frames_guardrail_no_effect_estimation",
+    "source_coordinator_per_logical_stream": 1,
+    "stop_admission_at_measurement_end_required": true,
+    "timestamp_scale": 600,
+    "timestamp_scale_semantics": "multiply_native_pts_dts_duration_and_cycle_duration_by_exact_integer",
+    "worker_timestamp_mapping": "native_pts_dts_duration_scaled_then_source_cycle_offset"
+  },
+  "true_nvdec_busy_time_claim": false
+}

@@ -1,0 +1,14 @@
+{
+  "actual_command": "wsl.exe -d Ubuntu -- /usr/bin/timeout --signal=TERM --kill-after=2s 10s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/observe_reader_closure_v1.py",
+  "artifact_kind": "vast_cpu07_failed_audit_scanner_original_tool_return_v1",
+  "original_tool_result": {
+    "chunk_id": "3a6fec",
+    "exit_code": 0,
+    "original_token_count": 139,
+    "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000{\"path\": \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/process-closure.v1.json\", \"size_bytes\": 2415, \"sha256\": \"4353e833ed21153f31299cb1f4cf658829ab49e2f389768b9822edf247fc0036\"}\n",
+    "wall_time_seconds": 0.9464634
+  },
+  "provenance_limit": "Combined original tool text, including NUL-bearing WSL proxy warning, is retained exactly in JSON. No separately observed raw channel bytes or saved external wrapper are fabricated.",
+  "schema_version": 1,
+  "source_sha256": "d1557d876b3ce1958ad914b5e1f97596880b7926673fa301a6d306ab80e96201"
+}

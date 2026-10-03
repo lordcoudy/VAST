@@ -1,0 +1,146 @@
+{
+  "archive_root": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/",
+  "artifact_kind": "sealed_prearchive_physical_move_inventory_v1",
+  "change_name": "fix-benchmark-preparations-spec",
+  "checked_tasks": 69,
+  "files": [
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/.openspec.yaml",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/.openspec.yaml",
+      "sha256": "af129b9ee15d74d62153581b8fddf3076a708f08915261aabfb9e78ea334de0f",
+      "size_bytes": 40
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/conformance-progress.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/conformance-progress.md",
+      "sha256": "449563678e1c6392e1955246ff67fc8003a34bcead58c9bd47d45d61cd9aaf2f",
+      "size_bytes": 77152
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/design.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "112ec56dca4445e3e753899ff116203604094b37ffafcac4f7e8d28ea350afce",
+      "size_bytes": 44659
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/image-invalidation.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/image-invalidation.md",
+      "sha256": "b75d31a3c24ed0d2b50f2272ea26d62c466bb65df700446832648248e074888d",
+      "size_bytes": 66507
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-approval.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/implementation-approval.md",
+      "sha256": "9d4db75c7dbe4b2b9d37a61223c4a108117040b4757c128c45680c69c7ad1d32",
+      "size_bytes": 2887
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-baseline.json",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/implementation-baseline.json",
+      "sha256": "845b6722746da92d83d16bf2b11c926250f6bad3d1fe01994e64f849bc6a6ace",
+      "size_bytes": 119189
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-closure.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/implementation-closure.md",
+      "sha256": "c4d5f2f5b50707ba0062e43440bfb4e894df2962c030036e4eb81b6f609c2735",
+      "size_bytes": 9219
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-evidence.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/implementation-evidence.md",
+      "sha256": "8d01a13734499e51e2e35cb5cff8f8a90798e5550bc1f1c7f680629e6f4dd970",
+      "size_bytes": 17896
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-validation.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/implementation-validation.md",
+      "sha256": "77cd4b0e8f2e6d23c08818a3cd46941e294da4a261bf1280b66ae55c815a8935",
+      "size_bytes": 161617
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/preparation-plan.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/preparation-plan.md",
+      "sha256": "9d14c3524cccbd6fed0f08146d4874209ba6fdf97c464c1ac62422316ffa8f8c",
+      "size_bytes": 25014
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/proposal-validation.json",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/proposal-validation.json",
+      "sha256": "0bdf3ec4cf8724731aceef4d3b3babd604864aa3b85c232071f8b5dd6b3582c3",
+      "size_bytes": 1382
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/proposal.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "969aa4ac3bae9b742b268333070b1266c22abc5c7bce9b204a63b6f750c0f6d6",
+      "size_bytes": 17599
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/review-context.json",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/review-context.json",
+      "sha256": "bb4a5818a15ee1f32b29087f4b52fe5a1f4207c117b73a094250d7bd7f57a3f0",
+      "size_bytes": 10129
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.json",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.json",
+      "sha256": "4602f4cf68024b16a54455a36111252498369ca65c8310fe6ee1ea133f5953e4",
+      "size_bytes": 54707
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.lf-check.json",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.lf-check.json",
+      "sha256": "c3be1addf1ca2845d8de683943edd411f9a324438c2092355675825da5cc9a5a",
+      "size_bytes": 14971
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "383e90694a5f4a2ed81ff8d53fc7ee4a35dc67767f17b35fd8e5bffde4751ed9",
+      "size_bytes": 75100
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/tasks.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "4dadfcb3e06881211cc188f2f017cf1bb490421c1dd81107cc7fbe41432d4bf8",
+      "size_bytes": 36740
+    },
+    {
+      "git_mode": "100644",
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/verification-plan.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+      "sha256": "b3db56c13e3a5c7157820f4e60f459455c5a83706b207c308f7af09716c8f73d",
+      "size_bytes": 48891
+    }
+  ],
+  "new_implementation_closure_snapshot": true,
+  "no_implementation_task_marked_before_evidence": true,
+  "observed_before_supported_archive": true,
+  "pending_process_task_ids": [
+    "18.13",
+    "18.14",
+    "22.3",
+    "23.5",
+    "24.4"
+  ],
+  "schema_version": 1,
+  "standing_user_authorization_to_proceed_with_future_process_snapshot": true
+}

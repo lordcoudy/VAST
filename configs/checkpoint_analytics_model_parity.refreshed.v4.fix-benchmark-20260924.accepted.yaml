@@ -1,0 +1,728 @@
+artifact_kind: checkpoint_analytics_model_parity_manifest_v4
+claim_scope: cpu_openvino_vs_nvidia_cuda_tensorrt
+classification_contract:
+  argmax_tie_break: lowest_class_index
+  class_count: 1000
+  contract_id: imagenet_1000_raw_logits_fp32_v2
+  dtype: float32
+  semantics: raw_logits_pre_softmax
+  softmax_applied: false
+evidence_policy:
+  calibration_and_evaluation_disjoint: true
+  claimed_aggregates_accepted: false
+  max_evidence_json_bytes: 67108864
+  minimum_calibration_samples_per_branch_resource: 30
+  minimum_parity_samples_per_branch: 30
+  relative_error_floor: 0.02
+  tolerances:
+    raw_max_abs_error: 0.02
+    raw_max_cosine_distance: 0.001
+    raw_max_rel_error: 0.05
+    raw_mean_abs_error: 0.005
+    top1_mismatch_rate: 0.0
+manifest_id: checkpoint-analytics-model-parity-8237c580b330de41-v4
+matrix_binding:
+  cpu:
+    device_api: OPENVINO_CPU
+    device_id: CPU
+    image: vast/openvino-native-probe:dlstreamer-2026.1
+    image_id: sha256:78542c81f39242130114db7e7e82ada655b911f1b64559d6b52ea8d1b5d3f99b
+    runtime: openvino
+  gpu:
+    device_api: NVIDIA_CUDA
+    device_id_prefix: GPU-
+    image: vast/deepstream-native-probe:7.0
+    image_id: sha256:6e988ee4873df64db0669d984127aa38d6466170f2ead5a5c469495427c8e68b
+    runtime: tensorrt
+  network_download_allowed: false
+  openvino_gpu_accepted: false
+  same_source_semantics_required: true
+preprocessing_contract:
+  border_mode: edge_clamp
+  center_crop:
+  - 224
+  - 224
+  channel_transform: HWC_RGB_to_CHW_RGB
+  contract_id: imagenet_resnet_fp32_center_crop_v2
+  decode_dtype: uint8
+  decoded_color_order: RGB
+  execution_shape:
+  - 1
+  - 3
+  - 224
+  - 224
+  half_pixel_coordinate_formula: src=(dst+0.5)*src_size/dst_size-0.5
+  interpolation_accumulator_dtype: float32
+  interpolation_output_dtype: float32
+  interpolation_rounding: none
+  normalization_accumulator_dtype: float32
+  normalization_evaluation_order: float32((float32(pixel)*scale-mean[channel])/std[channel])
+  normalization_mean:
+  - 0.485
+  - 0.456
+  - 0.406
+  normalization_scale: 0.00392156862745098
+  normalization_std:
+  - 0.229
+  - 0.224
+  - 0.225
+  output_dtype: float32
+  output_layout: NCHW
+  resize_algorithm: bilinear
+  resize_coordinate_transform: half_pixel
+  resize_long_side_formula: floor(long_side*256/short_side+0.5)
+  resize_rounding: round_half_up
+  resize_shorter_side: 256
+  tensor_color_order: RGB
+  tensor_endianness: little
+  tensor_header: none
+  tensor_memory_order: C
+  tensor_serialization: raw_f32_le_c_contiguous_v1
+refresh_authority:
+  execution_config:
+    content_identity_sha256: 64f0eba6342c017a88cad878beed7da2eef143c978c26deeab118f74cd16ee7e
+    path: configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260924.json
+    sha256: 665588a868fedcc892a0ec8612d86ca473237330affe02f9d61d3f19bc46e927
+    size_bytes: 1507
+    worker_projection_sha256: addf64dc3a7ae0938175a504c1d3080f87ffd6c10dba9569e25e641031f87c9f
+  image_identity_patch:
+    patch_sha256: 8237c580b330de415b0d5f6f947163406e9b644283b588c705d8ac7fc23b5785
+    path: artifacts/fix_benchmark_preparations_20260924/qualification_image_identity_patch.json
+    refresh_blockers:
+    - analytics_worker:cpu_identity_changed_requires_parity_refresh
+    - analytics_worker:gpu_identity_changed_requires_parity_refresh
+    resolved_blockers: []
+    sha256: 368ff85ad9b42f9256506c31837b518f3535d5da10b03933bd8db0d930238fb5
+    size_bytes: 29979
+    workers:
+      cpu:
+        base_image: vast/openvino-native-probe:dlstreamer-2026.1
+        base_image_id: sha256:78542c81f39242130114db7e7e82ada655b911f1b64559d6b52ea8d1b5d3f99b
+        image: vast/analytics-openvino-worker:publication-v3
+        image_id: sha256:9830bbd88ab9f2b41e19da0a19ee12d67d5de198a1bc3bbd2a81bd0c9d3dbf75
+        previous_accepted_image_id: sha256:e2b01f8f40da08fc59d671e19a7f4eca6dd7d46678de0138ab7af51b09cb9b03
+        receipt_sha256: ae01e133c1bfb833b4a75339c775686f04fc7b9e23536f17588d984c8eda160b
+        source_set_sha256: d32933bb7791ee49f940d3abd1b82401a277cf27752ed2d5d93554a6123dbc2f
+      gpu:
+        base_image: vast/deepstream-native-probe:7.0
+        base_image_id: sha256:6e988ee4873df64db0669d984127aa38d6466170f2ead5a5c469495427c8e68b
+        image: vast/analytics-tensorrt-worker:publication-v3
+        image_id: sha256:846aebb3584b4afaa0b16e3ee1a9081ab3c1936a724d5f11c6c3360a9e03d478
+        previous_accepted_image_id: sha256:2ff600e743e6fc089ace1ea40894d73581fcda8007fa758fd0f32eb9b1c72f09
+        receipt_sha256: ae01e133c1bfb833b4a75339c775686f04fc7b9e23536f17588d984c8eda160b
+        source_set_sha256: f9932be124aba0f51ec973618e05f93a45c662a741805dc299df9177de7a5909
+  runtime_probes:
+    cpu:
+      path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/runtime_probes/cpu_runtime_probe.json
+      sha256: 0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874
+      size_bytes: 659
+      worker_implementation_sha256: b5782c91b6bdab9958a4f63485acae8975b4930843453a61e2fbe61b2c4da63b
+    gpu:
+      path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/runtime_probes/gpu_runtime_probe.json
+      sha256: b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962
+      size_bytes: 654
+      worker_implementation_sha256: b8e6250e6f3871a2ffa5753a62300aeea77f132194b4309728ff74f49fbb9feb
+  source_manifest:
+    content_identity_sha256: 4065e9a766bbdf82771534ec1f5f13f32f4d6ab6de9ac27143663cc27634fd80
+    path: configs/checkpoint_analytics_model_parity.yaml
+    sha256: 09b749d53c3a4842b3a376730f1403866962cba0ecd77e8f41f5a366bd7f009b
+    size_bytes: 18564
+required_branches:
+- plate_number
+- vehicle_type
+- damage
+- foreign_object
+schema_version: 4
+semantic_claim: topology_load_proxy_only
+source_registry:
+  resnet101_v1_7:
+    filename: resnet101-v1-7.onnx
+    format: onnx
+    input:
+      dtype: float32
+      dynamic_shape_binding:
+        batch_dynamic: true
+        max:
+        - 1
+        - 3
+        - 224
+        - 224
+        min:
+        - 1
+        - 3
+        - 224
+        - 224
+        opt:
+        - 1
+        - 3
+        - 224
+        - 224
+      execution_shape:
+      - 1
+      - 3
+      - 224
+      - 224
+      layout: NCHW
+      name: data
+      source_shape:
+      - batch
+      - 3
+      - 224
+      - 224
+    license: Apache-2.0
+    onnx_ir_version: 0.0.3
+    onnx_opset: 8
+    output:
+      contract_ref: imagenet_1000_raw_logits_fp32_v2
+      dtype: float32
+      execution_shape:
+      - 1
+      - 1000
+      name: resnetv18_dense0_fwd
+      source_shape:
+      - batch
+      - 1000
+    path: models/parity/sources/resnet101-v1-7.onnx
+    repository: https://huggingface.co/onnxmodelzoo/resnet101-v1-7
+    repository_revision: 524206ecbf2cefaa7654d6e6ff29f9a921f2b1d5
+    resolve_url: https://huggingface.co/onnxmodelzoo/resnet101-v1-7/resolve/524206ecbf2cefaa7654d6e6ff29f9a921f2b1d5/resnet101-v1-7.onnx
+    sha256: 760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c
+    size_bytes: 178914043
+  resnet18_v1_7:
+    filename: resnet18-v1-7.onnx
+    format: onnx
+    input:
+      dtype: float32
+      dynamic_shape_binding:
+        batch_dynamic: true
+        max:
+        - 1
+        - 3
+        - 224
+        - 224
+        min:
+        - 1
+        - 3
+        - 224
+        - 224
+        opt:
+        - 1
+        - 3
+        - 224
+        - 224
+      execution_shape:
+      - 1
+      - 3
+      - 224
+      - 224
+      layout: NCHW
+      name: data
+      source_shape:
+      - batch
+      - 3
+      - 224
+      - 224
+    license: Apache-2.0
+    onnx_ir_version: 0.0.3
+    onnx_opset: 8
+    output:
+      contract_ref: imagenet_1000_raw_logits_fp32_v2
+      dtype: float32
+      execution_shape:
+      - 1
+      - 1000
+      name: resnetv15_dense0_fwd
+      source_shape:
+      - batch
+      - 1000
+    path: models/parity/sources/resnet18-v1-7.onnx
+    repository: https://huggingface.co/onnxmodelzoo/resnet18-v1-7
+    repository_revision: e7cb849a949bdceba02356b8b923d53cc01108e1
+    resolve_url: https://huggingface.co/onnxmodelzoo/resnet18-v1-7/resolve/e7cb849a949bdceba02356b8b923d53cc01108e1/resnet18-v1-7.onnx
+    sha256: 4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c
+    size_bytes: 46820737
+  resnet34_v1_7:
+    filename: resnet34-v1-7.onnx
+    format: onnx
+    input:
+      dtype: float32
+      dynamic_shape_binding:
+        batch_dynamic: true
+        max:
+        - 1
+        - 3
+        - 224
+        - 224
+        min:
+        - 1
+        - 3
+        - 224
+        - 224
+        opt:
+        - 1
+        - 3
+        - 224
+        - 224
+      execution_shape:
+      - 1
+      - 3
+      - 224
+      - 224
+      layout: NCHW
+      name: data
+      source_shape:
+      - batch
+      - 3
+      - 224
+      - 224
+    license: Apache-2.0
+    onnx_ir_version: 0.0.3
+    onnx_opset: 8
+    output:
+      contract_ref: imagenet_1000_raw_logits_fp32_v2
+      dtype: float32
+      execution_shape:
+      - 1
+      - 1000
+      name: resnetv16_dense0_fwd
+      source_shape:
+      - batch
+      - 1000
+    path: models/parity/sources/resnet34-v1-7.onnx
+    repository: https://huggingface.co/onnxmodelzoo/resnet34-v1-7
+    repository_revision: 9019d62c2f74b941ae6ce05de1d4013732703765
+    resolve_url: https://huggingface.co/onnxmodelzoo/resnet34-v1-7/resolve/9019d62c2f74b941ae6ce05de1d4013732703765/resnet34-v1-7.onnx
+    sha256: 883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc
+    size_bytes: 87302588
+  resnet50_v1_12:
+    filename: resnet50-v1-12.onnx
+    format: onnx
+    input:
+      dtype: float32
+      dynamic_shape_binding:
+        batch_dynamic: true
+        max:
+        - 1
+        - 3
+        - 224
+        - 224
+        min:
+        - 1
+        - 3
+        - 224
+        - 224
+        opt:
+        - 1
+        - 3
+        - 224
+        - 224
+      execution_shape:
+      - 1
+      - 3
+      - 224
+      - 224
+      layout: NCHW
+      name: data
+      source_shape:
+      - batch
+      - 3
+      - 224
+      - 224
+    license: Apache-2.0
+    onnx_ir_version: 0.0.4
+    onnx_opset: 12
+    output:
+      contract_ref: imagenet_1000_raw_logits_fp32_v2
+      dtype: float32
+      execution_shape:
+      - 1
+      - 1000
+      name: resnetv17_dense0_fwd
+      source_shape:
+      - batch
+      - 1000
+    path: models/parity/sources/resnet50-v1-12.onnx
+    repository: https://huggingface.co/onnxmodelzoo/resnet50-v1-12
+    repository_revision: 1f95315d8bd3b3ca2ceabe54d274e0cdf5a83bbe
+    resolve_url: https://huggingface.co/onnxmodelzoo/resnet50-v1-12/resolve/1f95315d8bd3b3ca2ceabe54d274e0cdf5a83bbe/resnet50-v1-12.onnx
+    sha256: 3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526
+    size_bytes: 102576593
+toolchain_registry:
+  openvino_cpu:
+    converter: ovc
+    device: CPU
+    image: vast/openvino-native-probe:dlstreamer-2026.1
+    image_id: sha256:78542c81f39242130114db7e7e82ada655b911f1b64559d6b52ea8d1b5d3f99b
+    precision: float32
+    runtime: openvino
+    version: 2026.1.0-21367-63e31528c62-releases/2026/1
+  tensorrt_cuda:
+    builder: trtexec
+    compute_capability: '8.6'
+    cuda_version: 12.2.2
+    device_api: NVIDIA_CUDA
+    driver_version: '610.47'
+    gpu_name: NVIDIA GeForce RTX 3060
+    gpu_uuid: GPU-00bb784b-60f3-8bf6-bbd3-5a0c09805266
+    image: vast/deepstream-native-probe:7.0
+    image_id: sha256:6e988ee4873df64db0669d984127aa38d6466170f2ead5a5c469495427c8e68b
+    pci_bus_id: '00000000:01:00.0'
+    precision: float32
+    runtime: tensorrt
+    tf32: false
+    version: 8.6.1.6
+worker_runtime_registry:
+  execution_config:
+    content_identity_sha256: 64f0eba6342c017a88cad878beed7da2eef143c978c26deeab118f74cd16ee7e
+    path: configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260924.json
+    sha256: 665588a868fedcc892a0ec8612d86ca473237330affe02f9d61d3f19bc46e927
+    worker_projection_sha256: addf64dc3a7ae0938175a504c1d3080f87ffd6c10dba9569e25e641031f87c9f
+  openvino_cpu:
+    base_image: vast/openvino-native-probe:dlstreamer-2026.1
+    base_image_id: sha256:78542c81f39242130114db7e7e82ada655b911f1b64559d6b52ea8d1b5d3f99b
+    execution_resource: cpu
+    image: vast/analytics-openvino-worker:publication-v3
+    image_id: sha256:9830bbd88ab9f2b41e19da0a19ee12d67d5de198a1bc3bbd2a81bd0c9d3dbf75
+    toolchain_ref: openvino_cpu
+    worker_implementation_sha256: b5782c91b6bdab9958a4f63485acae8975b4930843453a61e2fbe61b2c4da63b
+  tensorrt_cuda:
+    base_image: vast/deepstream-native-probe:7.0
+    base_image_id: sha256:6e988ee4873df64db0669d984127aa38d6466170f2ead5a5c469495427c8e68b
+    execution_resource: gpu
+    image: vast/analytics-tensorrt-worker:publication-v3
+    image_id: sha256:846aebb3584b4afaa0b16e3ee1a9081ab3c1936a724d5f11c6c3360a9e03d478
+    toolchain_ref: tensorrt_cuda
+    worker_implementation_sha256: b8e6250e6f3871a2ffa5753a62300aeea77f132194b4309728ff74f49fbb9feb
+workload_slots:
+  damage:
+    evidence:
+      calibration_corpus:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/damage/calibration_corpus.json
+        sha256: 5a01b46eaf34efb26c2c99c5f8130c9a9073a4cfb6995c1488956bc6f0b0efac
+      cpu_execution_probe:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/damage/cpu_execution_probe.json
+        sha256: 5b970a127c568cbfffa4ff711e322ef02f3aed7447fb7beb8fbf88d611ddd27b
+      cpu_policy_calibration:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/damage/cpu_policy_calibration.json
+        sha256: 2d22caf23f345bda79a33fb81c3e424eecac37237bfa76308d44dee3aa9281b9
+      cpu_raw_output_bundle:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/damage/cpu_raw_output_bundle.json
+        sha256: a91318a8bf2fcccfb5386eb8cd7b9611d432c98375304aacd76cf0cef64298dd
+      cuda_execution_probe:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/damage/cuda_execution_probe.json
+        sha256: ff80ab383fd7194c65a3a264d1bba5ad9b90c2da871923e4929e9af2da9d7994
+      cuda_policy_calibration:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/damage/cuda_policy_calibration.json
+        sha256: e362a9e03cd91f01eefa90eca01f75dc22332ee5089b623aff0564bf2647146a
+      cuda_raw_output_bundle:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/damage/cuda_raw_output_bundle.json
+        sha256: 62a9c2ddc8d6e5767e91be9ae00be2b869e14ce802506417032c1ca8be5d22a3
+      evaluation_corpus:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/damage/evaluation_corpus.json
+        sha256: cb6e205306efdc000ba6eab6440eebc7013fbf75f1cb52dec700147473261956
+    openvino_ir:
+      canonical_argv:
+      - ovc
+      - SOURCE.onnx
+      - --output_model
+      - DEST.xml
+      - --input
+      - data[1,3,224,224]
+      - --output
+      - resnetv17_dense0_fwd
+      - --compress_to_fp16=False
+      canonical_argv_sha256: e2b5ff1e6f3aeb677346174ca9db6ddfccd050a028baa2da7c9514337c791927
+      derived_from_source_sha256: 3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526
+      model:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet50-v1-12.xml
+        sha256: 8ddf516c52c140d33277aaaa9b2d7ed80b038f1940de30ac5e27c43d54f1e5c9
+        size_bytes: 151074
+      reproducibility: byte_reproducible_observed
+      toolchain_ref: openvino_cpu
+      weights:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet50-v1-12.bin
+        sha256: 703fbee2cc2684970b1748115589ce51c1e788099a995faba0f6a30801b3ad64
+        size_bytes: 102121920
+    semantic_claim: topology_load_proxy_only
+    slot_id: opaque_rn50
+    source_ref: resnet50_v1_12
+    tensorrt_engine:
+      artifact:
+        path: models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet50-v1-12.engine
+        sha256: ecd41a7f7037a233da5629f87ff8d51e455b582c996963815a085cd139c3a7a5
+        size_bytes: 118354276
+      canonical_argv:
+      - trtexec
+      - --onnx=SOURCE.onnx
+      - --saveEngine=DEST.engine
+      - --minShapes=data:1x3x224x224
+      - --optShapes=data:1x3x224x224
+      - --maxShapes=data:1x3x224x224
+      - --inputIOFormats=fp32:chw
+      - --outputIOFormats=fp32:chw
+      - --noTF32
+      - --memPoolSize=workspace:2048
+      - --builderOptimizationLevel=3
+      - --minTiming=1
+      - --avgTiming=8
+      - --noBuilderCache
+      - --skipInference
+      - --profilingVerbosity=detailed
+      - --tempfileControls=in_memory:allow,temporary:deny
+      canonical_argv_sha256: e146eb86d0c63617459a9165f2f04b708008370ffdd36695b40e796d68789221
+      derived_from_source_sha256: 3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526
+      engine_authority: archived_exact_engine_artifact
+      parser_facts:
+        int64_initializers_cast_to_int32: true
+        warning_disposition: non_blocking_if_numeric_parity_passes
+      rebuild_sha_expected: false
+      toolchain_ref: tensorrt_cuda
+  foreign_object:
+    evidence:
+      calibration_corpus:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/foreign_object/calibration_corpus.json
+        sha256: 5cbe28c8dee63a7d9d7c781715ac03cdf00704aab275a95cdc3040303a25bc4f
+      cpu_execution_probe:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/foreign_object/cpu_execution_probe.json
+        sha256: ba6064cf250c9e45f08f4be91be5fffa160b618f179f5fadeb36051b2e2c3a4a
+      cpu_policy_calibration:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/foreign_object/cpu_policy_calibration.json
+        sha256: 3fb8a23c44118dab625f6a0097f25fe93325e509a3a43fdef3122dccf52569f9
+      cpu_raw_output_bundle:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/foreign_object/cpu_raw_output_bundle.json
+        sha256: 969b9da432155616bd535b3c59722a4886d7118b37d9a98f76675329b1b37420
+      cuda_execution_probe:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/foreign_object/cuda_execution_probe.json
+        sha256: 333223bb74bb3e9a6c2f67cb0b25c8a6e703b445810379801341c6ef7e7c6ed6
+      cuda_policy_calibration:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/foreign_object/cuda_policy_calibration.json
+        sha256: 185c8b399ad6de1f152c7d37706a75832f05768a61fa90fc8cf70629f34cb016
+      cuda_raw_output_bundle:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/foreign_object/cuda_raw_output_bundle.json
+        sha256: c35928e4a7b67741914d2d953cd5c9c712870f09d281198d8685a4172085b388
+      evaluation_corpus:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/foreign_object/evaluation_corpus.json
+        sha256: 0ed018e176735ea64f6e60b59fff9adc4d9968a94ffa692fe6e5caf80d63a172
+    openvino_ir:
+      canonical_argv:
+      - ovc
+      - SOURCE.onnx
+      - --output_model
+      - DEST.xml
+      - --input
+      - data[1,3,224,224]
+      - --output
+      - resnetv18_dense0_fwd
+      - --compress_to_fp16=False
+      canonical_argv_sha256: 19a506d1fa85b8fb22020c278b78d229f05c0497e48330aeb155d9322f7f01cf
+      derived_from_source_sha256: 760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c
+      model:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet101-v1-7.xml
+        sha256: c1b9fc3d0c56f9574dd195f10461f4c640167523764a4470225ef2be9cc74124
+        size_bytes: 295738
+      reproducibility: byte_reproducible_observed
+      toolchain_ref: openvino_cpu
+      weights:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet101-v1-7.bin
+        sha256: 788c9ab3de09c18b234314adb6eddf212754a93e579e1396d9aee2cd2255c4ba
+        size_bytes: 177985984
+    semantic_claim: topology_load_proxy_only
+    slot_id: opaque_rn101
+    source_ref: resnet101_v1_7
+    tensorrt_engine:
+      artifact:
+        path: models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet101-v1-7.engine
+        sha256: f981e1da75813ae30d18b03d422c37d6047245962d2b5552eb54c4deedb48f97
+        size_bytes: 225698788
+      canonical_argv:
+      - trtexec
+      - --onnx=SOURCE.onnx
+      - --saveEngine=DEST.engine
+      - --minShapes=data:1x3x224x224
+      - --optShapes=data:1x3x224x224
+      - --maxShapes=data:1x3x224x224
+      - --inputIOFormats=fp32:chw
+      - --outputIOFormats=fp32:chw
+      - --noTF32
+      - --memPoolSize=workspace:2048
+      - --builderOptimizationLevel=3
+      - --minTiming=1
+      - --avgTiming=8
+      - --noBuilderCache
+      - --skipInference
+      - --profilingVerbosity=detailed
+      - --tempfileControls=in_memory:allow,temporary:deny
+      canonical_argv_sha256: e146eb86d0c63617459a9165f2f04b708008370ffdd36695b40e796d68789221
+      derived_from_source_sha256: 760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c
+      engine_authority: archived_exact_engine_artifact
+      parser_facts:
+        int64_initializers_cast_to_int32: true
+        warning_disposition: non_blocking_if_numeric_parity_passes
+      rebuild_sha_expected: false
+      toolchain_ref: tensorrt_cuda
+  plate_number:
+    evidence:
+      calibration_corpus:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/plate_number/calibration_corpus.json
+        sha256: fc2b1f0a5bc8e30dfea8d8b2fea6665e2e66455dd08ac0b180e5a3c0ca1a07e9
+      cpu_execution_probe:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/plate_number/cpu_execution_probe.json
+        sha256: da6ac51755ad39016c4ee83d643bae6ec3e6e78f61dd501468cd2ef62b4932b9
+      cpu_policy_calibration:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/plate_number/cpu_policy_calibration.json
+        sha256: 169e5b8c8edfd84c16af09bfbd3ea19de1e06c9dbeb1a8dd96b1064a4c69f51a
+      cpu_raw_output_bundle:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/plate_number/cpu_raw_output_bundle.json
+        sha256: c9a4924b81e2fb18224551293330809b5d85cc7e6c61680d2edee865d9b689be
+      cuda_execution_probe:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/plate_number/cuda_execution_probe.json
+        sha256: e27f6add2987fc99ce21ce3658f043229ed5cbdfcd8a78f6730004ac87b1f02b
+      cuda_policy_calibration:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/plate_number/cuda_policy_calibration.json
+        sha256: bbc4fc67bb3fd21748cc06f45e0eddb50ba7e78c11243a64df87ab9f26246fb1
+      cuda_raw_output_bundle:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/plate_number/cuda_raw_output_bundle.json
+        sha256: ef3d88cae68ee9f065c38632f83df1d4d52d3a7c5ed4736a960e2ba2f187a367
+      evaluation_corpus:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/plate_number/evaluation_corpus.json
+        sha256: f9d00736db9753cf09b307782cce75b2e8635431c522d7caadc148d91231877d
+    openvino_ir:
+      canonical_argv:
+      - ovc
+      - SOURCE.onnx
+      - --output_model
+      - DEST.xml
+      - --input
+      - data[1,3,224,224]
+      - --output
+      - resnetv15_dense0_fwd
+      - --compress_to_fp16=False
+      canonical_argv_sha256: 5534e81997924867ac20f15f1167c262d6dabe59b3b2932ca683b535bc822ab6
+      derived_from_source_sha256: 4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c
+      model:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet18-v1-7.xml
+        sha256: c77b4b18c61da5a7c66b9b0b1be940afa81de1bd419b608cd4c8c3e1d4cbb579
+        size_bytes: 60599
+      reproducibility: byte_reproducible_observed
+      toolchain_ref: openvino_cpu
+      weights:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet18-v1-7.bin
+        sha256: 5495508a114ecb2fb6abd4c2fa1cc523fc2181459f108aa60d6d02bc05d17d0b
+        size_bytes: 46738880
+    semantic_claim: topology_load_proxy_only
+    slot_id: opaque_rn18
+    source_ref: resnet18_v1_7
+    tensorrt_engine:
+      artifact:
+        path: models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet18-v1-7.engine
+        sha256: 07031b0493b5f1d9e27beffd51e622b74cc204505536f8a1618bde3e904d8fbe
+        size_bytes: 62258620
+      canonical_argv:
+      - trtexec
+      - --onnx=SOURCE.onnx
+      - --saveEngine=DEST.engine
+      - --minShapes=data:1x3x224x224
+      - --optShapes=data:1x3x224x224
+      - --maxShapes=data:1x3x224x224
+      - --inputIOFormats=fp32:chw
+      - --outputIOFormats=fp32:chw
+      - --noTF32
+      - --memPoolSize=workspace:2048
+      - --builderOptimizationLevel=3
+      - --minTiming=1
+      - --avgTiming=8
+      - --noBuilderCache
+      - --skipInference
+      - --profilingVerbosity=detailed
+      - --tempfileControls=in_memory:allow,temporary:deny
+      canonical_argv_sha256: e146eb86d0c63617459a9165f2f04b708008370ffdd36695b40e796d68789221
+      derived_from_source_sha256: 4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c
+      engine_authority: archived_exact_engine_artifact
+      parser_facts:
+        int64_initializers_cast_to_int32: true
+        warning_disposition: non_blocking_if_numeric_parity_passes
+      rebuild_sha_expected: false
+      toolchain_ref: tensorrt_cuda
+  vehicle_type:
+    evidence:
+      calibration_corpus:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/vehicle_type/calibration_corpus.json
+        sha256: 1f7a025c971b47762abd58b6caa438436cf071e4a93e99d60e9e0205ad58f960
+      cpu_execution_probe:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/vehicle_type/cpu_execution_probe.json
+        sha256: 9907138673e05f9986019645765436ba05b31b4bb8a7ca60a1e7dc57cc0d3556
+      cpu_policy_calibration:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/vehicle_type/cpu_policy_calibration.json
+        sha256: d3c987f210d083cc0c8b262e0f59e84a86145489d373eb97363accf5fab33bc1
+      cpu_raw_output_bundle:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/vehicle_type/cpu_raw_output_bundle.json
+        sha256: 9b6805443857ea51e9079e6d360a3f1d57a29ed1d22f12f494451f1fd1579d6d
+      cuda_execution_probe:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/vehicle_type/cuda_execution_probe.json
+        sha256: 1dd447c63c7df5f6ca4086f800b3248207ebf83d8eac6af5e4b26d856a814103
+      cuda_policy_calibration:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/vehicle_type/cuda_policy_calibration.json
+        sha256: 1ae0a457e0aacff97a24d909ab278f42ba46ed28ddb046bc19c4b37772ea0986
+      cuda_raw_output_bundle:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/vehicle_type/cuda_raw_output_bundle.json
+        sha256: 166936528c0b059ac6168e01d83b638799bbf3d0be111f76beb0bcf24fb63987
+      evaluation_corpus:
+        path: artifacts/fix_benchmark_preparations_20260924/model_parity_v4/materialization/documents/vehicle_type/evaluation_corpus.json
+        sha256: 3ec79f0cffc06c43bc63c806808b13af00d265f4a55b3dacc1dd8582ef83dbbe
+    openvino_ir:
+      canonical_argv:
+      - ovc
+      - SOURCE.onnx
+      - --output_model
+      - DEST.xml
+      - --input
+      - data[1,3,224,224]
+      - --output
+      - resnetv16_dense0_fwd
+      - --compress_to_fp16=False
+      canonical_argv_sha256: ee643db4c7cd0735b58bee4b2d158cc1c565a2291e51153115b4324894c147c3
+      derived_from_source_sha256: 883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc
+      model:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet34-v1-7.xml
+        sha256: 0f22a937abe289a5278c7e628145a6545e98c4857e2b196eb0a983eec1c07147
+        size_bytes: 107535
+      reproducibility: byte_reproducible_observed
+      toolchain_ref: openvino_cpu
+      weights:
+        path: models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet34-v1-7.bin
+        sha256: 957e1783c07a712c12bc61a22d359ee8fddf7b6e34bdd4bf2a5c09a6f8f212cf
+        size_bytes: 87156672
+    semantic_claim: topology_load_proxy_only
+    slot_id: opaque_rn34
+    source_ref: resnet34_v1_7
+    tensorrt_engine:
+      artifact:
+        path: models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet34-v1-7.engine
+        sha256: bfa8303f89639d4033ee71389e77c009bf3bf1ab7e526e91949e0e0870f885d9
+        size_bytes: 126793356
+      canonical_argv:
+      - trtexec
+      - --onnx=SOURCE.onnx
+      - --saveEngine=DEST.engine
+      - --minShapes=data:1x3x224x224
+      - --optShapes=data:1x3x224x224
+      - --maxShapes=data:1x3x224x224
+      - --inputIOFormats=fp32:chw
+      - --outputIOFormats=fp32:chw
+      - --noTF32
+      - --memPoolSize=workspace:2048
+      - --builderOptimizationLevel=3
+      - --minTiming=1
+      - --avgTiming=8
+      - --noBuilderCache
+      - --skipInference
+      - --profilingVerbosity=detailed
+      - --tempfileControls=in_memory:allow,temporary:deny
+      canonical_argv_sha256: e146eb86d0c63617459a9165f2f04b708008370ffdd36695b40e796d68789221
+      derived_from_source_sha256: 883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc
+      engine_authority: archived_exact_engine_artifact
+      parser_facts:
+        int64_initializers_cast_to_int32: true
+        warning_disposition: non_blocking_if_numeric_parity_passes
+      rebuild_sha_expected: false
+      toolchain_ref: tensorrt_cuda

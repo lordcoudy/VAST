@@ -1,0 +1,44 @@
+{
+  "CI_dispatch_granted": true,
+  "actual_focused_execution": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-prerequisite-capture-preparation-v1\\original-focused-test-attempt01\\execution.v1.json",
+    "sha256": "6d1f2d1052185420ea57ee08fdfafe75708759606847ec45ac6ec525ab7b033a",
+    "size_bytes": 5468
+  },
+  "actual_focused_unit_result": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-prerequisite-capture-preparation-v1\\original-focused-test-attempt01\\unit-result.v1.json",
+    "sha256": "9c328ba749686acd9c35511da33e9ff0321b5f0baafa6e619ddd2751185eae89",
+    "size_bytes": 8336
+  },
+  "actual_fresh95_review": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-current95-post-runtime-bind-audit-preparation-v1\\original-post-runtime-bind-audit-attempt01\\review.v1.json",
+    "sha256": "56de11220a59b9138488210713d9ee58a3ba60fd9b9f1dd06bafda6ffd871e37",
+    "size_bytes": 127794
+  },
+  "actual_mount_closure": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-runtime-bind-prerequisite-capture-preparation-v1\\original-bind-attempt01\\root-original-closure.v1.json",
+    "sha256": "3cf93ba8891604fdaddb2689ed3400ab5ce4ae50a8c6eac723466bff6815275b",
+    "size_bytes": 5037
+  },
+  "current_source_commit_D": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "future_CI_acceptance": null,
+  "future_original_returncode": null,
+  "grant_scope": "ONE prerequisite-corrected original full CI, same D source, existing bounded recipe, fresh output only",
+  "job_cleanup_s": [
+    5400,
+    10
+  ],
+  "kind": "root_actual_prerequisites_and_one_full_ci_grant_v1",
+  "limits": "Mount, unchanged focused test and fresh95 are prerequisite observations. No measurement, image, model or code authority renewal; independent metadata closure supplement pending before final acceptance. Failed grant-authoring attempt c35729 stopped on missing metadata path before grant or dispatch; corrected only path.",
+  "old_failed_D_preserved": true,
+  "original_tool_results": {
+    "focused": "509856 CLOSED0; root93a93a/667f00",
+    "fresh95": "ae608c CLOSED0; root6f0ec6 CLOSED0",
+    "mount": "8cdd3e CLOSED0; root0a7ac2 CLOSED0"
+  },
+  "recipe_sha256": "9489cf0d5b8ff835bc7278f7261b63c4dd8c96d96b1ef8ac8e86870811e36edb",
+  "schema_version": 1,
+  "skip_count_not_forced": true,
+  "source_review": "f4f2d5 exact8 function and inverse review; 223af9/0532d8 full source diff and preparation read",
+  "source_sha256": "ddd9145d3359c8b174cd4cdfd82bf38cbc01ae128761e3b910a57c1a825e691a"
+}

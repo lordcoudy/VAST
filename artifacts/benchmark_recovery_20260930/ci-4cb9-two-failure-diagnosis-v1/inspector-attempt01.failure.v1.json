@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "scope": "read-only archive inspector command only",
+  "tool_chunk": "1c9ab7",
+  "returncode": 1,
+  "failure": "SyntaxError: unterminated string literal in the backslash path guard after Windows-to-WSL -c argument quoting",
+  "archive_or_source_mutation": false,
+  "test_or_native_execution": false,
+  "correction": "Use chr(92) for the identical backslash membership guard. Preserve this original failure; it does not change any original CI outcome."
+}

@@ -1,0 +1,1845 @@
+{
+  "aggregate_bytes_read": 11210744,
+  "all_review_fds_closed": true,
+  "elapsed_s": 2.000099012,
+  "files": [
+    {
+      "epoch": [
+        69,
+        1970324839397924,
+        33279,
+        1,
+        2410674,
+        1790813264468299000,
+        1790813264468299000
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/mapping.v1.json",
+      "sha256": "9a59c87aa90adf6f5e60fceda42b6deb336ecb8ea7f099c28fba30ee44fff7b1",
+      "size_bytes": 2410674
+    },
+    {
+      "epoch": [
+        69,
+        1970324839397926,
+        33279,
+        1,
+        2489,
+        1790813264495470200,
+        1790813264495470200
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/review.v1.json",
+      "sha256": "e1698268cc316f0d1d494d2190c85ac6e3ae4766436c72e0753a70f82b21698d",
+      "size_bytes": 2489
+    },
+    {
+      "epoch": [
+        69,
+        2533274792816727,
+        33279,
+        1,
+        867128,
+        1790808817309895300,
+        1790808817309895300
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/original-member-copies-v1/tracked-source.before.json.original.raw",
+      "sha256": "2bfeedc946da7429e417365224538bb48575df54878fffefd33b3f8f34293e1d",
+      "size_bytes": 867128
+    },
+    {
+      "epoch": [
+        69,
+        2251799816107691,
+        33279,
+        1,
+        10581,
+        1790771842150642000,
+        1790771842150642000
+      ],
+      "path": ".ci/fixtures/origin-manifest.v1.json",
+      "sha256": "6e14bd04cc172000858ec9dce213520cd01f62575ece7f7e3340d83d3077a28c",
+      "size_bytes": 10581
+    },
+    {
+      "epoch": [
+        69,
+        1970324839397180,
+        33279,
+        1,
+        34014,
+        1790787333660435700,
+        1790787333660435700
+      ],
+      "path": ".ci/integration-test-selection.v1.json",
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    },
+    {
+      "epoch": [
+        69,
+        55450570413844846,
+        33279,
+        1,
+        14272,
+        1790777890216861500,
+        1790777890216861500
+      ],
+      "path": ".gitattributes",
+      "sha256": "77481d872c88a645984de5e1f5751e93ee0435361d223579f93426b4022cde6d",
+      "size_bytes": 14272
+    },
+    {
+      "epoch": [
+        69,
+        1407374885974063,
+        33279,
+        1,
+        4251,
+        1790772335241614800,
+        1790772335241614800
+      ],
+      "path": ".github/workflows/ci.yml",
+      "sha256": "0ec268a98e6f61e1db860c1455d1970f714d1abe7d0dd8da483ca13fbcb8d95a",
+      "size_bytes": 4251
+    },
+    {
+      "epoch": [
+        69,
+        15762598696836240,
+        33133,
+        1,
+        9441,
+        1790588948293398700,
+        1790588948293398700
+      ],
+      "path": "artifacts/benchmark_recovery_20260929/original-g-service_lifecycle.v1.json",
+      "sha256": "3add3b849e0b5a3e491a1bf51d583202f88862f4c3f0f8db32151c85ce2f56ae",
+      "size_bytes": 9441
+    },
+    {
+      "epoch": [
+        69,
+        3940649676372240,
+        33279,
+        1,
+        26675,
+        1790799410662060600,
+        1790799410662060600
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/setup_finite_ext4_root_v1.py",
+      "sha256": "c7306eefd8dce58fefd81e7fabb8a46a85c3910eb45993e897f7b7f5df48b979",
+      "size_bytes": 26675
+    },
+    {
+      "epoch": [
+        69,
+        1970324839340542,
+        33279,
+        1,
+        36891,
+        1790753192193298900,
+        1790753192193298900
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/controller.py",
+      "sha256": "aeb2b5d8a87b98855c1e7170eb12c0622f080592fad6d4292507f830e76ec852",
+      "size_bytes": 36891
+    },
+    {
+      "epoch": [
+        69,
+        6473924466714866,
+        33279,
+        1,
+        53980,
+        1790753454986554500,
+        1790753454986554500
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/guest_consumer.py",
+      "sha256": "0c2457e022fac923a04b970bb838a2bbac921d39a608c0171a5869606ce163fa",
+      "size_bytes": 53980
+    },
+    {
+      "epoch": [
+        69,
+        5066549583161588,
+        33279,
+        1,
+        26513,
+        1790753192182607200,
+        1790753192182607200
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/research_protocol.py",
+      "sha256": "cbf5820bfc0cccc129ff02f6c14c1e724983843a4576e506f25075b70624a8fe",
+      "size_bytes": 26513
+    },
+    {
+      "epoch": [
+        69,
+        5066549583161589,
+        33279,
+        1,
+        11433,
+        1790753192182607200,
+        1790753192182607200
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_mapped_inputs_v4.py",
+      "sha256": "831cbd07388af9994d2684ab2248e299c95b29ee4ad799f26375d603b2f2f986",
+      "size_bytes": 11433
+    },
+    {
+      "epoch": [
+        69,
+        5066549583161590,
+        33279,
+        1,
+        11350,
+        1790753192192295400,
+        1790753192192295400
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_pin_diagnostics_v3.py",
+      "sha256": "87a79b11e9b6861bb24aed5b05597e72d267b94931cfddfc474e5c4957983935",
+      "size_bytes": 11350
+    },
+    {
+      "epoch": [
+        69,
+        3659174699626603,
+        33279,
+        1,
+        11787,
+        1790753520339245900,
+        1790753520339245900
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_preflight_diagnostics_v5.py",
+      "sha256": "a6fb3f264fbc41be2f92ac1a9991a98f7b0779039a66ed77d310c49a124cae23",
+      "size_bytes": 11787
+    },
+    {
+      "epoch": [
+        69,
+        1125899909227132,
+        33279,
+        1,
+        17449,
+        1790753192192295400,
+        1790753192192295400
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_research_protocol.py",
+      "sha256": "2dbcec646c9d641f93ccbac4b633ad3513f5e2eb37161f6f9abdb39717255a45",
+      "size_bytes": 17449
+    },
+    {
+      "epoch": [
+        69,
+        53480245576870303,
+        33279,
+        1,
+        3780,
+        1790772593262736800,
+        1790772593262736800
+      ],
+      "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "sha256": "43b41dee019fc730704d3c176a753d0e26c8f871da59714ce97e70e9209396cc",
+      "size_bytes": 3780
+    },
+    {
+      "epoch": [
+        69,
+        1407374885931551,
+        33279,
+        1,
+        41004,
+        1790443442272598900,
+        1790443442272598900
+      ],
+      "path": "deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+      "sha256": "d531893e2586bb02432d69edfae7bb2ec08a04711c2c8e22353efda678ae461a",
+      "size_bytes": 41004
+    },
+    {
+      "epoch": [
+        69,
+        4785074605942998,
+        33279,
+        1,
+        22257,
+        1790451238964350800,
+        1790451238964350800
+      ],
+      "path": "deploy/native_gst_probe/checkpoint_native_policy_client.hpp",
+      "sha256": "85d2b64ccc977a76b6a9c250fd77ea8f02029382cc6121c52ff7ec3bc57acc0c",
+      "size_bytes": 22257
+    },
+    {
+      "epoch": [
+        69,
+        5066549582659426,
+        33279,
+        1,
+        167521,
+        1790541355711583500,
+        1790541355711583500
+      ],
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    {
+      "epoch": [
+        69,
+        3096224745679076,
+        33279,
+        1,
+        3457,
+        1790772593265737200,
+        1790772593265737200
+      ],
+      "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "sha256": "f91760d199bf72651be9ea71bcec2effa43d0afdd7a7f89202f1885308fd6624",
+      "size_bytes": 3457
+    },
+    {
+      "epoch": [
+        69,
+        63331869761759484,
+        33279,
+        1,
+        3841,
+        1790772593264737000,
+        1790772593264737000
+      ],
+      "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+      "sha256": "691feca866c3bfdd09fced300659f1f7888c2bdb298c427fa4f4204ce9eba9b4",
+      "size_bytes": 3841
+    },
+    {
+      "epoch": [
+        69,
+        3096224746240023,
+        33279,
+        1,
+        11712,
+        1790809224205712200,
+        1790809224205712200
+      ],
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "sha256": "be0f47eb43a8746f1753ba175f96cabc15e3992ac39c95d7505c0f0804287a8b",
+      "size_bytes": 11712
+    },
+    {
+      "epoch": [
+        69,
+        4785074605948779,
+        33279,
+        1,
+        35324,
+        1790794918311892000,
+        1790794918311892000
+      ],
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "5303b985449c32598099bdde7594ce3805f257bea7d59f7058fc96716231a12a",
+      "size_bytes": 35324
+    },
+    {
+      "epoch": [
+        69,
+        844424932501986,
+        33279,
+        1,
+        30373,
+        1790810488478045700,
+        1790810488478045700
+      ],
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "792f5b3b78c068008312c136794bb1272af7600726c1e3c7ab0329e25b2eb9cc",
+      "size_bytes": 30373
+    },
+    {
+      "epoch": [
+        69,
+        3096224745679184,
+        33279,
+        1,
+        124707,
+        1790809978827636100,
+        1790809978827636100
+      ],
+      "path": "scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+      "size_bytes": 124707
+    },
+    {
+      "epoch": [
+        69,
+        6192449489496422,
+        33279,
+        1,
+        344569,
+        1790563066473064100,
+        1790563066473064100
+      ],
+      "path": "scripts/benchmark_contract.py",
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "size_bytes": 344569
+    },
+    {
+      "epoch": [
+        69,
+        9007199256611197,
+        33279,
+        1,
+        15705,
+        1789994687454713600,
+        1789994687454713600
+      ],
+      "path": "scripts/benchmark_preparation_evidence_v1.py",
+      "sha256": "ffd982925a97875e8edc0698ce1689d5a6668c29c795d9619b88d07be1b92a57",
+      "size_bytes": 15705
+    },
+    {
+      "epoch": [
+        69,
+        128071114405210518,
+        33279,
+        1,
+        296398,
+        1790760390702448700,
+        1790760390702448700
+      ],
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+      "size_bytes": 296398
+    },
+    {
+      "epoch": [
+        69,
+        1125899909260130,
+        33279,
+        1,
+        59640,
+        1790777339945227700,
+        1790777339945227700
+      ],
+      "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "ee0476b574e012b213bdc603a7a930234c0bb27d929859ef03acfdb99eb7a241",
+      "size_bytes": 59640
+    },
+    {
+      "epoch": [
+        69,
+        1125899909208532,
+        33279,
+        1,
+        156160,
+        1790716435510438500,
+        1790716435510438500
+      ],
+      "path": "scripts/checkpoint_gstreamer_runtime.py",
+      "sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+      "size_bytes": 156160
+    },
+    {
+      "epoch": [
+        69,
+        844424932497875,
+        33279,
+        1,
+        73421,
+        1790716694835216900,
+        1790716694835216900
+      ],
+      "path": "scripts/checkpoint_native_policy_runtime.py",
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "size_bytes": 73421
+    },
+    {
+      "epoch": [
+        69,
+        4222124652521929,
+        33279,
+        1,
+        55785,
+        1790565347931105800,
+        1790565347931105800
+      ],
+      "path": "scripts/checkpoint_publication_runtime.py",
+      "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+      "size_bytes": 55785
+    },
+    {
+      "epoch": [
+        69,
+        1688849862683379,
+        33279,
+        1,
+        20916,
+        1790764891240741100,
+        1790764891240741100
+      ],
+      "path": "scripts/ci_external_test_observer_v1.py",
+      "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+      "size_bytes": 20916
+    },
+    {
+      "epoch": [
+        69,
+        2533274792818481,
+        33279,
+        1,
+        23980,
+        1790804617823763700,
+        1790804617823763700
+      ],
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "4f7e10d2decd1411f4c31281ceda4374d4d8cf1971fcb36497d11cfca10d8cc0",
+      "size_bytes": 23980
+    },
+    {
+      "epoch": [
+        69,
+        1407374885975880,
+        33279,
+        1,
+        9978,
+        1790802037424976300,
+        1790802037424976300
+      ],
+      "path": "scripts/ci_test_selection_v1.py",
+      "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d",
+      "size_bytes": 9978
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977088,
+        33279,
+        1,
+        25945,
+        1790804617836836400,
+        1790804617836836400
+      ],
+      "path": "scripts/ci_userns_profile_v1.py",
+      "sha256": "2b268daa1f6b1c7095e2ad35aa333cfc88998dfc7f024e39cee04d178334a578",
+      "size_bytes": 25945
+    },
+    {
+      "epoch": [
+        69,
+        2533274792258051,
+        33279,
+        1,
+        23051,
+        1789990792057767400,
+        1789990792057767400
+      ],
+      "path": "scripts/full_publication_results.py",
+      "sha256": "dde01c5bb9e88e036e0dc9de11f233efd6504b46c99dae4df53a3fa9ef98c8ca",
+      "size_bytes": 23051
+    },
+    {
+      "epoch": [
+        69,
+        4785074605943300,
+        33279,
+        1,
+        69380,
+        1789990792058767500,
+        1789990792058767500
+      ],
+      "path": "scripts/full_publication_runner.py",
+      "sha256": "f8cde9e4e285b9a554d07f56e8f4dc140ec5113e9795eee41d1971b4ff026c3c",
+      "size_bytes": 69380
+    },
+    {
+      "epoch": [
+        69,
+        2533274792258053,
+        33279,
+        1,
+        46139,
+        1790565863353858600,
+        1790565863353858600
+      ],
+      "path": "scripts/full_publication_runtime.py",
+      "sha256": "e9027470592b94b3a4435cf7ac035c2f46a22b24929e99b0209ac06ddf553285",
+      "size_bytes": 46139
+    },
+    {
+      "epoch": [
+        69,
+        3659174699100678,
+        33279,
+        1,
+        26854,
+        1789991428846968800,
+        1789991428846968800
+      ],
+      "path": "scripts/full_publication_supervisor.py",
+      "sha256": "8018ea0badcbc5a936703100870144f1fe1dbb8a9fcff8e17710d21ec90e45f9",
+      "size_bytes": 26854
+    },
+    {
+      "epoch": [
+        69,
+        9007199256611228,
+        33279,
+        1,
+        92641,
+        1789991428846968800,
+        1789991428846968800
+      ],
+      "path": "scripts/full_publication_wsl_user_service_v1.py",
+      "sha256": "ff0ce9d15c8bf390f99e7bb0238e9a24db3dfade31b6a76eec2e89eef28cdc90",
+      "size_bytes": 92641
+    },
+    {
+      "epoch": [
+        69,
+        2814749769527988,
+        33279,
+        1,
+        30314,
+        1790746854776998800,
+        1790746854776998800
+      ],
+      "path": "scripts/prepare_ci_model_assets.py",
+      "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+      "size_bytes": 30314
+    },
+    {
+      "epoch": [
+        69,
+        123848989754550888,
+        33279,
+        1,
+        125767,
+        1789990792086600600,
+        1789990792086600600
+      ],
+      "path": "scripts/publication_cloud_transaction.py",
+      "sha256": "9fdeae5019ac66f32b6cd3dac49bb0f1b224aadeeaf78c8fc61afba730ddedff",
+      "size_bytes": 125767
+    },
+    {
+      "epoch": [
+        69,
+        1688849862685551,
+        33279,
+        1,
+        27355,
+        1790776279874326400,
+        1790776279874326400
+      ],
+      "path": "scripts/publication_gstreamer_component_authority_v1.py",
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+      "size_bytes": 27355
+    },
+    {
+      "epoch": [
+        69,
+        1688849862683365,
+        33279,
+        1,
+        40969,
+        1790787192130955900,
+        1790787192130955900
+      ],
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b",
+      "size_bytes": 40969
+    },
+    {
+      "epoch": [
+        69,
+        6473924466727331,
+        33279,
+        1,
+        34510,
+        1790786043668628200,
+        1790786043668628200
+      ],
+      "path": "scripts/publication_gstreamer_component_inputs_v1.py",
+      "sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1",
+      "size_bytes": 34510
+    },
+    {
+      "epoch": [
+        69,
+        2533274792817426,
+        33279,
+        1,
+        69372,
+        1790787192130955900,
+        1790787192130955900
+      ],
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014",
+      "size_bytes": 69372
+    },
+    {
+      "epoch": [
+        69,
+        8444249303189921,
+        33279,
+        1,
+        48963,
+        1790718945532359800,
+        1790718945532359800
+      ],
+      "path": "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+      "size_bytes": 48963
+    },
+    {
+      "epoch": [
+        69,
+        2251799816106852,
+        33279,
+        1,
+        19178,
+        1790762045037961000,
+        1790762045037961000
+      ],
+      "path": "scripts/publication_guardian_component_preprocessing_contract_v1.py",
+      "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+      "size_bytes": 19178
+    },
+    {
+      "epoch": [
+        69,
+        1688849862683727,
+        33279,
+        1,
+        24563,
+        1790717016996480200,
+        1790717016996480200
+      ],
+      "path": "scripts/publication_guardian_operational_recorder_v1.py",
+      "sha256": "130130ba64079f6a80ef4762a45c9969f4b3a425432a70d082ecc5a59004169d",
+      "size_bytes": 24563
+    },
+    {
+      "epoch": [
+        69,
+        7881299349768610,
+        33279,
+        1,
+        68402,
+        1789990792088100300,
+        1789990792088100300
+      ],
+      "path": "scripts/publication_guardian_preprocessing_contract_v1.py",
+      "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+      "size_bytes": 68402
+    },
+    {
+      "epoch": [
+        69,
+        1688849862683839,
+        33279,
+        1,
+        38235,
+        1790724883677447100,
+        1790724883677447100
+      ],
+      "path": "scripts/publication_operational_container_custody_v1.py",
+      "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+      "size_bytes": 38235
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973073,
+        33279,
+        1,
+        25997,
+        1790716534106631500,
+        1790716534106631500
+      ],
+      "path": "scripts/publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973075,
+        33279,
+        1,
+        28069,
+        1790722242405170400,
+        1790722242405170400
+      ],
+      "path": "scripts/publication_operational_request_reconciliation_v1.py",
+      "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+      "size_bytes": 28069
+    },
+    {
+      "epoch": [
+        69,
+        65865144552155755,
+        33279,
+        1,
+        40143,
+        1790561797286787400,
+        1790561797286787400
+      ],
+      "path": "scripts/publication_policy_contract.py",
+      "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "size_bytes": 40143
+    },
+    {
+      "epoch": [
+        69,
+        1407374885966691,
+        33279,
+        1,
+        29622,
+        1790563087868790200,
+        1790563087868790200
+      ],
+      "path": "scripts/publication_policy_projection_v1.py",
+      "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+      "size_bytes": 29622
+    },
+    {
+      "epoch": [
+        69,
+        69242844272691674,
+        33279,
+        1,
+        147846,
+        1790722751628690600,
+        1790722751628690600
+      ],
+      "path": "scripts/publication_policy_qualification_execution_closure_v1.py",
+      "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "size_bytes": 147846
+    },
+    {
+      "epoch": [
+        69,
+        6473924466215391,
+        33279,
+        1,
+        19176,
+        1790763624854544200,
+        1790763624854544200
+      ],
+      "path": "scripts/publication_policy_qualification_execution_code_closure_v1.py",
+      "sha256": "984dd840a768b08462db82ea96cb7cdce4b9f6e3e1ca20605b258771f665a30c",
+      "size_bytes": 19176
+    },
+    {
+      "epoch": [
+        69,
+        5910974512794088,
+        33279,
+        1,
+        118920,
+        1790563996682470900,
+        1790563996682470900
+      ],
+      "path": "scripts/publication_q4_evidence_validator_v4.py",
+      "sha256": "d45abf6c9d894cf5c85a4ec7f3d8ae37640b550a7d2ee19c9f1d7155fbc85dfd",
+      "size_bytes": 118920
+    },
+    {
+      "epoch": [
+        69,
+        1407374885974064,
+        33279,
+        1,
+        29477,
+        1790801829184547900,
+        1790801829184547900
+      ],
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+      "size_bytes": 29477
+    },
+    {
+      "epoch": [
+        69,
+        55732045390572156,
+        33279,
+        1,
+        68085,
+        1789990792111820800,
+        1789990792111820800
+      ],
+      "path": "scripts/seafile_artifact_store.py",
+      "sha256": "889290040ff2398b4984462a0c283b819ed8862a30e9bdf623be3d047b4ee693",
+      "size_bytes": 68085
+    },
+    {
+      "epoch": [
+        69,
+        120471290034023039,
+        33279,
+        1,
+        23342,
+        1789990792112820700,
+        1789990792112820700
+      ],
+      "path": "scripts/seafile_capacity_attestation_v1.py",
+      "sha256": "084bc9bce9caea87866cb72dacfa6d6530ea69e97955a20fb0771b7f0bb9bf51",
+      "size_bytes": 23342
+    },
+    {
+      "epoch": [
+        69,
+        13229323907271150,
+        33279,
+        1,
+        25493,
+        1789990792114046000,
+        1789990792114046000
+      ],
+      "path": "scripts/seafile_operator_capacity_attestation_v2.py",
+      "sha256": "fe0d4f3731038f2c7b7f2c09b3487a6e7999c89f33defc5770db194a7d4037cd",
+      "size_bytes": 25493
+    },
+    {
+      "epoch": [
+        69,
+        3096224745679502,
+        33279,
+        1,
+        20456,
+        1790443472599401600,
+        1790443472599401600
+      ],
+      "path": "tests/cpp/checkpoint_analytics_execution_client_test.cpp",
+      "sha256": "f949f2373978ea01fdd1c6169935ea0f786c064f7ec5bd07915e5f8d0ead8e40",
+      "size_bytes": 20456
+    },
+    {
+      "epoch": [
+        69,
+        3940649675811034,
+        33279,
+        1,
+        3835,
+        1790409223960260700,
+        1790409223973368200
+      ],
+      "path": "tests/cpp/checkpoint_native_policy_identity_test.cpp",
+      "sha256": "e04606dc424faca0f4867117b1a9fa6ad0cb121e8c6cecdea7e2eb06de371096",
+      "size_bytes": 3835
+    },
+    {
+      "epoch": [
+        69,
+        4222124652873921,
+        33279,
+        1,
+        7413,
+        1790328701594591400,
+        1790328701604686900
+      ],
+      "path": "tests/cpp/checkpoint_native_reset_queue_level_test.cpp",
+      "sha256": "ee64191ed62cb497f078f0adfb5e6886d887bfc885557867b835a0b66e4e1f1d",
+      "size_bytes": 7413
+    },
+    {
+      "epoch": [
+        69,
+        11821949023717873,
+        33279,
+        1,
+        21089,
+        1790750083842842200,
+        1790750083842842200
+      ],
+      "path": "tests/test_analytics_peer_identity.py",
+      "sha256": "3f9876f3b494c8d3579f8017893c9db349ce361b6c76cfe2e3858978b94280a8",
+      "size_bytes": 21089
+    },
+    {
+      "epoch": [
+        69,
+        3659174699626610,
+        33279,
+        1,
+        22598,
+        1790810656596529500,
+        1790810656596529500
+      ],
+      "path": "tests/test_backend_publication_broker_terminal_v3.py",
+      "sha256": "1e632d43c6a8361b7483ef9d160832e5993760f48103a8a22527c3bac1cbe1fa",
+      "size_bytes": 22598
+    },
+    {
+      "epoch": [
+        69,
+        2814749768968919,
+        33279,
+        1,
+        254120,
+        1790496747900481700,
+        1790496747900481700
+      ],
+      "path": "tests/test_benchmark_contract.py",
+      "sha256": "9918a25c4eb94f6b60323360bbbfed1a579b542b306e4f46024b17f74e991abc",
+      "size_bytes": 254120
+    },
+    {
+      "epoch": [
+        69,
+        6473924466215800,
+        33279,
+        1,
+        16150,
+        1789996320494537300,
+        1789996320494537300
+      ],
+      "path": "tests/test_benchmark_preparation_evidence_v1.py",
+      "sha256": "2864638a607121af6547406caf1d479bceacd93130e38e9f784f85a5ad3a4632",
+      "size_bytes": 16150
+    },
+    {
+      "epoch": [
+        69,
+        844424932502017,
+        33279,
+        1,
+        6311,
+        1790432748379581700,
+        1790432748383466800
+      ],
+      "path": "tests/test_checkpoint_analytics_execution_client_cpp.py",
+      "sha256": "2bd19ff7d010fd400cf15a4074a2a5a44fec5b4e52b6640dff8961cf3afbbf26",
+      "size_bytes": 6311
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390245,
+        33279,
+        1,
+        8575,
+        1789990792166330200,
+        1789990792166330200
+      ],
+      "path": "tests/test_checkpoint_deepstream_runtime_source_closure_v3.py",
+      "sha256": "2b74544af58b0876554e3573b3e80069e30f2974923a6d36aabd3a590162174f",
+      "size_bytes": 8575
+    },
+    {
+      "epoch": [
+        69,
+        13510798883981813,
+        33279,
+        1,
+        10149,
+        1790771994212750700,
+        1790771994212750700
+      ],
+      "path": "tests/test_checkpoint_external_execution_manifest.py",
+      "sha256": "90a48b1343fd6f5b1dbeca2aa424458ebe9cffb64055da0e581736c3add6a628",
+      "size_bytes": 10149
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390247,
+        33279,
+        1,
+        126015,
+        1790426050020714500,
+        1790426050033660700
+      ],
+      "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "08aecf8478eb3148ab5e4a051eb4ae81529f79a778e11c30383832a94e64e1b6",
+      "size_bytes": 126015
+    },
+    {
+      "epoch": [
+        69,
+        2251799816102764,
+        33279,
+        1,
+        25082,
+        1790777504948909100,
+        1790777504948909100
+      ],
+      "path": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+      "sha256": "5013163d54512a48702198b4778bf9d7eaf047a6f3d94a5d3f4cb1091d8c5910",
+      "size_bytes": 25082
+    },
+    {
+      "epoch": [
+        69,
+        1125899909256015,
+        33279,
+        1,
+        27442,
+        1790563087870218400,
+        1790563087870218400
+      ],
+      "path": "tests/test_checkpoint_native_policy_publication_projection_v1.py",
+      "sha256": "ae6fc39ddfc3c13068e88f90aa76662c64a0a8927c6cbe0561b940c37ef0bf5c",
+      "size_bytes": 27442
+    },
+    {
+      "epoch": [
+        69,
+        2533274792258291,
+        33279,
+        1,
+        35893,
+        1790562339623586700,
+        1790562339623586700
+      ],
+      "path": "tests/test_checkpoint_native_policy_runtime.py",
+      "sha256": "5dd6730460e04f34a2b394409e4a38c21d8cf178ba57149fa168a810dee0ff77",
+      "size_bytes": 35893
+    },
+    {
+      "epoch": [
+        69,
+        3940649675811818,
+        33279,
+        1,
+        2853,
+        1789990792183124300,
+        1789990792183124300
+      ],
+      "path": "tests/test_checkpoint_openvino_gva_runtime_source_closure_v3.py",
+      "sha256": "bdaa1b1b834da822ecff99190081f8e2f4d49012517f7aa7c2f4d5f04533d26c",
+      "size_bytes": 2853
+    },
+    {
+      "epoch": [
+        69,
+        3940649675811823,
+        33279,
+        1,
+        39030,
+        1790531007996930200,
+        1790531007996930200
+      ],
+      "path": "tests/test_checkpoint_publication_runtime.py",
+      "sha256": "530a111a58860e8078bd8f6e411b6143ec47620c495b3b6ad634caa18116b1c2",
+      "size_bytes": 39030
+    },
+    {
+      "epoch": [
+        69,
+        1407374885919184,
+        33279,
+        1,
+        126014,
+        1790541321315655000,
+        1790541321315655000
+      ],
+      "path": "tests/test_checkpoint_runtime.py",
+      "sha256": "3df16f8e926c3e89cba6e0f8c1c8eaad9293e18ab10d446a9d63279c8c673408",
+      "size_bytes": 126014
+    },
+    {
+      "epoch": [
+        69,
+        4785074605943806,
+        33279,
+        1,
+        10062,
+        1790004282843897300,
+        1790004282843897300
+      ],
+      "path": "tests/test_checkpoint_savant_runtime_source_closure_v3.py",
+      "sha256": "9e53f57c6f83839be66363813e2de6f1a8b7ed74530832a77f4ef9d2f70afd4c",
+      "size_bytes": 10062
+    },
+    {
+      "epoch": [
+        69,
+        2533274792815358,
+        33279,
+        1,
+        12475,
+        1790764858292306000,
+        1790764858292306000
+      ],
+      "path": "tests/test_ci_external_test_observer_v1.py",
+      "sha256": "cbd9be309e2092d66e68403432a7162ca00d77ca1408d6c7b600fa77458be9c4",
+      "size_bytes": 12475
+    },
+    {
+      "epoch": [
+        69,
+        2533274792818468,
+        33279,
+        1,
+        20805,
+        1790791967454610100,
+        1790791967454610100
+      ],
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "37d771d553a76cbbaf6d878ab10cc2a7f409bb054c41ada8f36daba16da91223",
+      "size_bytes": 20805
+    },
+    {
+      "epoch": [
+        69,
+        3096224746239805,
+        33279,
+        1,
+        12157,
+        1790801999407797600,
+        1790801999407797600
+      ],
+      "path": "tests/test_ci_test_selection_v1.py",
+      "sha256": "eda164526e44f8084ed28ecceb6d99e0d7887c22750007aa1a04d8181f520b7a",
+      "size_bytes": 12157
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977064,
+        33279,
+        1,
+        31429,
+        1790804708314991100,
+        1790804708314991100
+      ],
+      "path": "tests/test_ci_userns_profile_v1.py",
+      "sha256": "74ea52a30432ce759b88cb7ec0bcdf94b7bb0f8904f8188df1e55a7fcf3a2804",
+      "size_bytes": 31429
+    },
+    {
+      "epoch": [
+        69,
+        3659174699101210,
+        33279,
+        1,
+        14223,
+        1789990792205648500,
+        1789990792205648500
+      ],
+      "path": "tests/test_full_publication_results.py",
+      "sha256": "680235b031de3e2e0b4116111863ec1e9a0ed9440dfb74d6734ebfaac76f2ab7",
+      "size_bytes": 14223
+    },
+    {
+      "epoch": [
+        69,
+        4503599629233179,
+        33279,
+        1,
+        45697,
+        1789990792206723900,
+        1789990792206723900
+      ],
+      "path": "tests/test_full_publication_runner.py",
+      "sha256": "ce52c794a71d86f789603338ad66ec150b23fd8209558f462ba2e81015f66732",
+      "size_bytes": 45697
+    },
+    {
+      "epoch": [
+        69,
+        3940649675816735,
+        33279,
+        1,
+        34218,
+        1789990792206723900,
+        1789990792206723900
+      ],
+      "path": "tests/test_full_publication_runtime.py",
+      "sha256": "dab1eea8a9b0d433b7c4a47a9017c769f0c853345d3c0327c8e7dd7cfb2c17e7",
+      "size_bytes": 34218
+    },
+    {
+      "epoch": [
+        69,
+        4785074605948704,
+        33279,
+        1,
+        8377,
+        1789990792207724400,
+        1789990792207724400
+      ],
+      "path": "tests/test_full_publication_seafile_capacity_binding.py",
+      "sha256": "88a4560bc533beb4d250975f411cb64e7f965ca895b9d90b346acc88c512cb0d",
+      "size_bytes": 8377
+    },
+    {
+      "epoch": [
+        69,
+        5629499536080673,
+        33279,
+        1,
+        14337,
+        1789991856741337000,
+        1789991856741337000
+      ],
+      "path": "tests/test_full_publication_supervisor.py",
+      "sha256": "6f71bed2c315551119f1c5496e47f14eda37260074dd149dab8fe505530dfc0f",
+      "size_bytes": 14337
+    },
+    {
+      "epoch": [
+        69,
+        4503599629240219,
+        33279,
+        1,
+        37360,
+        1789991586431589700,
+        1789991586431589700
+      ],
+      "path": "tests/test_full_publication_wsl_user_service_v1.py",
+      "sha256": "5b025c7fbdaccecf3fc04252e8e94707f35f75cd14d9f796aef6e541c2c5752d",
+      "size_bytes": 37360
+    },
+    {
+      "epoch": [
+        69,
+        3659174699106094,
+        33279,
+        1,
+        456217,
+        1790771994224830100,
+        1790771994224830100
+      ],
+      "path": "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+      "sha256": "965195e425d13d6c2047127d807db1f3c973624ad1d063bb78f8f169ba150ba8",
+      "size_bytes": 456217
+    },
+    {
+      "epoch": [
+        69,
+        1407374885974710,
+        33279,
+        1,
+        23773,
+        1790746854781492200,
+        1790746854781492200
+      ],
+      "path": "tests/test_prepare_ci_model_assets.py",
+      "sha256": "cbbbb4fe9ba0f5890966023ed28a8663f9b4f7f8c660d8fe8ad885b4e7718e3c",
+      "size_bytes": 23773
+    },
+    {
+      "epoch": [
+        69,
+        4222124652527422,
+        33279,
+        1,
+        66183,
+        1789990792235638400,
+        1789990792235638400
+      ],
+      "path": "tests/test_publication_cloud_transaction.py",
+      "sha256": "82c6764caadae7c1ff992c52e5432ce69be107676ecd8fe4635dc7cc723956b8",
+      "size_bytes": 66183
+    },
+    {
+      "epoch": [
+        69,
+        1970324839357349,
+        33279,
+        1,
+        27148,
+        1790787623935838300,
+        1790787623935838300
+      ],
+      "path": "tests/test_publication_gstreamer_component_cli_v1.py",
+      "sha256": "f8204fe8b4c45ef4a0dce6cafc3bed8242dc33e67468e6e35767fd42e752e125",
+      "size_bytes": 27148
+    },
+    {
+      "epoch": [
+        69,
+        2251799816106842,
+        33279,
+        1,
+        54712,
+        1790787370463884400,
+        1790787370463884400
+      ],
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "sha256": "678aee8e50b780950c86c13b8e76871d4e4b5496fadff5e2cc883af841b54368",
+      "size_bytes": 54712
+    },
+    {
+      "epoch": [
+        69,
+        2251799816068012,
+        33279,
+        1,
+        25105,
+        1790787562022992700,
+        1790787562022992700
+      ],
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "18d72265cbed3d4d88f013f83922f458053329a22b1a10c04b1aa5938c34ef50",
+      "size_bytes": 25105
+    },
+    {
+      "epoch": [
+        69,
+        1688849862685552,
+        33279,
+        1,
+        23592,
+        1790762133101602600,
+        1790762133101602600
+      ],
+      "path": "tests/test_publication_guardian_component_preprocessing_contract_v1.py",
+      "sha256": "0593be7a09359ba0b0cc99db8dd3836167d3bf64fc33341f3243ca954a9e0ebe",
+      "size_bytes": 23592
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973072,
+        33279,
+        1,
+        10737,
+        1790716702630209400,
+        1790716702630209400
+      ],
+      "path": "tests/test_publication_guardian_operational_recorder_v1.py",
+      "sha256": "b6fa92900384dd6a761959fdbb3ff0b697e1b36b1b4aa352fae59b2443a1b8d6",
+      "size_bytes": 10737
+    },
+    {
+      "epoch": [
+        69,
+        2533274792792593,
+        33279,
+        1,
+        37440,
+        1790718837258781200,
+        1790718837258781200
+      ],
+      "path": "tests/test_publication_operational_boundary_v1.py",
+      "sha256": "e27cd10161224dbd6faf4a23f696f46922c782e71b762b894e0b61ce2e38eff6",
+      "size_bytes": 37440
+    },
+    {
+      "epoch": [
+        69,
+        1970324839394505,
+        33279,
+        1,
+        21792,
+        1790789041374415000,
+        1790789041374415000
+      ],
+      "path": "tests/test_publication_operational_container_custody_v1.py",
+      "sha256": "6fd45b43fe0a5acc0cc59951d9c4bafa0496780110f89b59950c3bbd420d9cee",
+      "size_bytes": 21792
+    },
+    {
+      "epoch": [
+        69,
+        2533274792814082,
+        33279,
+        1,
+        26735,
+        1790716831513461700,
+        1790716831513461700
+      ],
+      "path": "tests/test_publication_operational_request_domain_v1.py",
+      "sha256": "d61e2e106bd9ee06cb618add74fb8b70d621408b5596dd961969bad0e0252ed5",
+      "size_bytes": 26735
+    },
+    {
+      "epoch": [
+        69,
+        3940649675816769,
+        33279,
+        1,
+        17621,
+        1789990792240165300,
+        1789990792240165300
+      ],
+      "path": "tests/test_publication_policy_contract.py",
+      "sha256": "bdf6fecb70524ae919d15541bd689baa9c03c1f4f11677f79eb68e5eb56a0105",
+      "size_bytes": 17621
+    },
+    {
+      "epoch": [
+        69,
+        2251799816098664,
+        33279,
+        1,
+        16523,
+        1790565479283658500,
+        1790565479283658500
+      ],
+      "path": "tests/test_publication_policy_history_acceptance_v1.py",
+      "sha256": "3c7417b653f293977a7255513b5dc17acef9be94b491ead21b8166fc5e5e79c5",
+      "size_bytes": 16523
+    },
+    {
+      "epoch": [
+        69,
+        1407374885966694,
+        33279,
+        1,
+        5325,
+        1790563197103023900,
+        1790563197103023900
+      ],
+      "path": "tests/test_publication_policy_history_namespace_v1.py",
+      "sha256": "565a7d269e254d90da1c2aefa7c6a1b8ded6012dc37bde5b66de615a63b2c7a6",
+      "size_bytes": 5325
+    },
+    {
+      "epoch": [
+        69,
+        8162774326479372,
+        33279,
+        1,
+        6123,
+        1789990792242474600,
+        1789990792242474600
+      ],
+      "path": "tests/test_publication_policy_qualification_execution_code_closure_v1.py",
+      "sha256": "c4156e8e358a069d353888170a72631bcd6addaf9f2a15dbc725ea9f5698d0a8",
+      "size_bytes": 6123
+    },
+    {
+      "epoch": [
+        69,
+        8444249303190037,
+        33279,
+        1,
+        37543,
+        1789990792248925800,
+        1789990792248925800
+      ],
+      "path": "tests/test_publication_q4_evidence_validator_v4.py",
+      "sha256": "bc0146af52f8f055a8a06922681753329259638d971917c90e28f1b01141ebfc",
+      "size_bytes": 37543
+    },
+    {
+      "epoch": [
+        69,
+        1688849862677326,
+        33279,
+        1,
+        37912,
+        1790563979997322500,
+        1790563979997322500
+      ],
+      "path": "tests/test_publication_q4_policy_projection_v1.py",
+      "sha256": "a7893ed4a2dab1b934e503baf1882921ccbbe42bf13ec083ddb0dc002da409f7",
+      "size_bytes": 37912
+    },
+    {
+      "epoch": [
+        69,
+        1125899909260136,
+        33279,
+        1,
+        23561,
+        1790777575359739400,
+        1790777575359739400
+      ],
+      "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+      "sha256": "ba158ae63c8e8c3fea9ff65c36d11d2dbe0d82046eef2e9407a4364e4bc5db8a",
+      "size_bytes": 23561
+    },
+    {
+      "epoch": [
+        69,
+        9570149210032670,
+        33279,
+        1,
+        14936,
+        1789990792252432600,
+        1789990792252432600
+      ],
+      "path": "tests/test_publication_storage_recovery.py",
+      "sha256": "206a8606353e81a23f5c40eb2945ffcbce760cdccfb29d910a4ff5901f627761",
+      "size_bytes": 14936
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973086,
+        33279,
+        1,
+        3296,
+        1790716475513294600,
+        1790716475513294600
+      ],
+      "path": "tests/test_publication_worker_termination_facts_v1.py",
+      "sha256": "698c118aa705f66b3f58e97e29392ab4be7d371c15a489068991b5567242b55e",
+      "size_bytes": 3296
+    },
+    {
+      "epoch": [
+        69,
+        1970324839394478,
+        33279,
+        1,
+        4960,
+        1790718896939496100,
+        1790718896939496100
+      ],
+      "path": "tests/test_qualification_complete_operational_promotion_gate_v1.py",
+      "sha256": "bf382dd9729e7418173d3bb34cf11577d94c2f4ad2d8fe34c644700cdb5fd90b",
+      "size_bytes": 4960
+    },
+    {
+      "epoch": [
+        69,
+        2814749769526496,
+        33279,
+        1,
+        5818,
+        1790720539768666300,
+        1790720539768666300
+      ],
+      "path": "tests/test_qualification_operational_closure_cold_gate_v1.py",
+      "sha256": "f853db53e3bc23bf1c4366d0d1cd366746f8b97542eafd25adf6b5a1ad39b8c2",
+      "size_bytes": 5818
+    },
+    {
+      "epoch": [
+        69,
+        2251799816106027,
+        33279,
+        1,
+        15813,
+        1790801829185550800,
+        1790801829185550800
+      ],
+      "path": "tests/test_run_ci_checks.py",
+      "sha256": "c622b17d500d6f13094b304d2da3ae4284592502fdd49cfe3d3b1d4da034b201",
+      "size_bytes": 15813
+    },
+    {
+      "epoch": [
+        69,
+        3377699722395476,
+        33279,
+        1,
+        9054,
+        1789990792263708000,
+        1789990792263708000
+      ],
+      "path": "tests/test_seafile_capacity_attestation_v1.py",
+      "sha256": "b64738d345ae0a044dcaebf00bd25af2a439bd3adc3d0bd58fb56b83cdb4bdb0",
+      "size_bytes": 9054
+    },
+    {
+      "epoch": [
+        69,
+        7318349396347433,
+        33279,
+        1,
+        15314,
+        1789990792265710000,
+        1789990792265710000
+      ],
+      "path": "tests/test_seafile_operator_capacity_attestation_v2.py",
+      "sha256": "d89c39584b1584a1603ff3a263b8c08cd9fcfa92bcb3e0122fccc01120a365b1",
+      "size_bytes": 15314
+    },
+    {
+      "epoch": [
+        69,
+        3659174699626609,
+        33279,
+        1,
+        8049,
+        1790753626000309900,
+        1790753626000309900
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-v5-focused-tests/attempt-01/terminal.v1.json",
+      "sha256": "1ace10e9260f5081dc791775d8aea6bee6817d6f92f9e83b61876deba3d33132",
+      "size_bytes": 8049
+    },
+    {
+      "epoch": [
+        69,
+        3659174699626608,
+        33279,
+        1,
+        10131,
+        1790753625983194800,
+        1790753625983194800
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-v5-focused-tests/attempt-01/original.stderr",
+      "sha256": "08e0e245cc5bdc7b7e6e864bb103a8f3d7fdff721cd7deb8ec67c36b1e523e4b",
+      "size_bytes": 10131
+    },
+    {
+      "epoch": [
+        69,
+        4222124653083017,
+        33279,
+        1,
+        46915,
+        1790809998735632400,
+        1790809998735632400
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-02-green/execution.v1.json",
+      "sha256": "5dfe8f71dc58457795612128f82451f5859e6ae64d56859b5a8d047ea7b559cf",
+      "size_bytes": 46915
+    },
+    {
+      "epoch": [
+        69,
+        5348024559923862,
+        33279,
+        1,
+        2795,
+        1790809998663000100,
+        1790809998663000100
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-02-green/stderr.raw",
+      "sha256": "f138dbe4e89e62ed006e79d36b92ee72a02ec4a38afc66f770ab3b9e4cae0a0b",
+      "size_bytes": 2795
+    },
+    {
+      "epoch": [
+        69,
+        1688849862687202,
+        33279,
+        1,
+        16285,
+        1790810659457207700,
+        1790810659457207700
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-03-observation-cleanup-green/execution.v1.json",
+      "sha256": "a0e393716e8fa979b1e1813da466033881206d7740ed4f823e089aaa28499346",
+      "size_bytes": 16285
+    },
+    {
+      "epoch": [
+        69,
+        2533274792819125,
+        33279,
+        1,
+        552,
+        1790810659394519200,
+        1790810659394519200
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/attempt-03-observation-cleanup-green/stderr.raw",
+      "sha256": "109b948b765be35956e9a967f58ec0e94f25f753856a2be25c3f68351afc58b7",
+      "size_bytes": 552
+    },
+    {
+      "epoch": [
+        69,
+        1688849862687221,
+        33279,
+        1,
+        6917,
+        1790810780290641800,
+        1790810780290641800
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/terminal.v1.json",
+      "sha256": "ce03d8fd70705e2a1c0b17f9effc87eec6100e6976c101d2f9ae1fc30c0287b6",
+      "size_bytes": 6917
+    },
+    {
+      "epoch": [
+        69,
+        1688849862687212,
+        33279,
+        1,
+        1354,
+        1790810780267274900,
+        1790810780267274900
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/stderr.raw",
+      "sha256": "16eaf6eb0875011708588b5852c1fa6de824558f780c52ccf2f664d3aaf06caf",
+      "size_bytes": 1354
+    },
+    {
+      "epoch": [
+        69,
+        2533274792819120,
+        33279,
+        1,
+        22542,
+        1790810656595026600,
+        1790810656595026600
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/test_before_observation_cleanup_fix.raw",
+      "sha256": "aa427e5e4ecd2e9e787516c85580d7d9b4dd5fda5e3ae9d26f73fca24d11fec8",
+      "size_bytes": 22542
+    },
+    {
+      "epoch": [
+        69,
+        3096224746199928,
+        33279,
+        1,
+        24148,
+        1790813221936274900,
+        1790813221936274900
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/generate_mapping_v1.py",
+      "sha256": "d74411e3e5451ff278127c0b9325a92ed9a9372409f37b2b6f2e1b1585ea7a2c",
+      "size_bytes": 24148
+    },
+    {
+      "epoch": [
+        69,
+        2533274792819286,
+        33279,
+        1,
+        12298,
+        1790813470965111900,
+        1790813470965111900
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/complete_mapping_v2.py",
+      "sha256": "92bda76023f627583923d41b753508c72a963c2e21ec5bda55fc27c4468b7fd0",
+      "size_bytes": 12298
+    },
+    {
+      "epoch": [
+        69,
+        1688849862687243,
+        33279,
+        1,
+        60253,
+        1790812761530946900,
+        1790812761530946900
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/scenario_reviews_v1.py",
+      "sha256": "c71c8f88f3a9bdd09f6a8fa8d8c2dae15d75a1fb4bcc477ab721622840fa7224",
+      "size_bytes": 60253
+    },
+    {
+      "epoch": [
+        69,
+        1688849862687258,
+        33279,
+        1,
+        22347,
+        1790812913558425800,
+        1790812913558425800
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/behavior_notes_v1.py",
+      "sha256": "4a48b1b168ae65a97567c91111fec0ae28b2f1a9530248e44e36372dd745c46d",
+      "size_bytes": 22347
+    },
+    {
+      "epoch": [
+        69,
+        2251799816108537,
+        33279,
+        1,
+        6086,
+        1790810892375934500,
+        1790810892375934500
+      ],
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-repair-v1/author-review.v1.json",
+      "sha256": "fea8e3f0e16e6a8c8cac229b1ed39b8babab9c993f7e1ec1aed47ba9c9d30193",
+      "size_bytes": 6086
+    }
+  ],
+  "hardware_queries": 0,
+  "project_imports": 0,
+  "schema_version": 1,
+  "tests_executed": 0
+}

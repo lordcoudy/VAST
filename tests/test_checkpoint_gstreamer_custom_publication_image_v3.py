@@ -20,19 +20,29 @@ COORDINATOR = (
 )
 BUILD = ROOT / "scripts" / "build_gstreamer_custom_publication_runtime_v3.sh"
 BASE_ID = (
-    "sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1"
+    "sha256:fc26a96b600484da32fc304461a0484225b931e0e1ddfc9a1f112414d737b16a"
+)
+FROZEN_NATIVE_ARTIFACTS = (
+    "/usr/local/bin/vast_native_gst_probe",
+    "/usr/local/bin/vast_checkpoint_source",
+    "/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so",
+    "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so",
+    "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so",
+    "/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so",
+    "/opt/vast/share/gstreamer-registry.bin",
 )
 
 
 class GStreamerCustomPublicationImageV3Tests(unittest.TestCase):
     def test_image_has_exact_offline_normalized_final_stage(self) -> None:
         source = DOCKERFILE.read_text(encoding="utf-8")
-        self.assertEqual(source.count("FROM ${BASE_IMAGE}"), 2)
+        self.assertEqual(source.count("FROM ${BASE_IMAGE}"), 3)
         self.assertIn(
             "ARG BASE_IMAGE=vast/openvino-native-probe@" + BASE_ID,
             source,
         )
         self.assertIn("ARG SOURCE_DATE_EPOCH=0", source)
+        self.assertIn("FROM ${BASE_IMAGE} AS native-provider", source)
         self.assertIn("AS runtime_builder", source)
         self.assertIn("-m pip install", source)
         self.assertIn("--no-index", source)
@@ -44,13 +54,21 @@ class GStreamerCustomPublicationImageV3Tests(unittest.TestCase):
         )
         self.assertNotIn("COPY deploy/native_gst_probe/ /opt/vast/native-src/", source)
         self.assertNotIn("COPY scripts/*.py", source)
-        self.assertIn("/usr/bin/c++", source)
-        self.assertIn("-ffile-prefix-map=/opt/vast/native-src=.", source)
+        for forbidden in (
+            "/usr/bin/c++",
+            "/usr/bin/pkg-config",
+            "/usr/bin/strip",
+            "-ffile-prefix-map=/opt/vast/native-src=.",
+            "-fdebug-prefix-map=/opt/vast/native-src=.",
+        ):
+            self.assertNotIn(forbidden, source)
         self.assertIn("vast_native_gst_probe.cpp", source)
-        self.assertIn(
-            "/opt/vast/runtime-root/usr/local/bin/vast_native_gst_probe",
-            source,
-        )
+        for artifact in FROZEN_NATIVE_ARTIFACTS:
+            self.assertIn(
+                f"COPY --from=native-provider {artifact} "
+                f"/opt/vast/runtime-root{artifact}",
+                source,
+            )
         self.assertIn('touch -h -d "@${SOURCE_DATE_EPOCH}"', source)
         final_stage = source.rsplit("FROM ${BASE_IMAGE}", maxsplit=1)[1]
         self.assertNotIn("\nRUN ", final_stage)
@@ -58,7 +76,7 @@ class GStreamerCustomPublicationImageV3Tests(unittest.TestCase):
         for label in (
             'org.vast.component="gstreamer-custom-checkpoint-publication-runtime"',
             'org.vast.publication-runtime-abi="3"',
-            f'org.vast.base-image-id="{BASE_ID}"',
+            'org.vast.base-image-id="${VAST_BASE_IMAGE_ID}"',
             'org.vast.native_probe.source_sha="${VAST_NATIVE_PROBE_SOURCE_SHA256}"',
         ):
             self.assertIn(label, final_stage)
@@ -134,7 +152,8 @@ class GStreamerCustomPublicationImageV3Tests(unittest.TestCase):
     def test_builder_is_offline_and_proves_repeated_image_identity(self) -> None:
         source = BUILD.read_text(encoding="utf-8")
         for token in (
-            'base_image="vast/openvino-native-probe@' + BASE_ID + '"',
+            "VAST_OPENVINO_NATIVE_PROBE_IMAGE",
+            "VAST_OPENVINO_NATIVE_PROBE_IMAGE_ID",
             "--pull=false",
             "--no-cache",
             "--network=none",
@@ -157,6 +176,7 @@ class GStreamerCustomPublicationImageV3Tests(unittest.TestCase):
             'mapfile -t runtime_sources < "$source_allowlist"',
             'native_probe_source_sha256="$(',
             '--build-arg "VAST_NATIVE_PROBE_SOURCE_SHA256=$native_probe_source_sha256"',
+            '--build-arg "VAST_BASE_IMAGE_ID=$expected_base_id"',
             'native_source_label="$(docker image inspect',
         ):
             self.assertIn(token, source)

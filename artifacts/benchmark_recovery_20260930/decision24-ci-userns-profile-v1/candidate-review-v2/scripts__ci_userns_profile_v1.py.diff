@@ -1,0 +1,33 @@
+--- artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/guard-repair-v1/before/scripts/ci_userns_profile_v1.py
++++ scripts/ci_userns_profile_v1.py
+@@ -97,6 +97,16 @@
+              'parser source is not this original controller held FD')
+     return ['/usr/bin/sudo','-n','--','/usr/bin/timeout','--signal=TERM','--kill-after=1s','19s',
+             '/usr/sbin/apparmor_parser',action,'--skip-cache','--jobs=0','--',fdpath]
++
++
++def fixed_root_timeout_budget_v1(command):
++    """Only these fixed commands may use the privileged gated capture."""
++    if isinstance(command,list) and len(command)==13 and command[8] in ('--add','--remove') and        command==parser_command_v1(command[8],command[-1]):
++        return 21_000_000_000  #19s TERM+1s KILL+1s closing within existing cleanup.
++    if command==['/usr/bin/sudo','-n','--','/usr/bin/timeout','--signal=TERM','--kill-after=1s','1s',
++                  '/usr/bin/cat',KERNEL_PROFILES]:
++        return 3_000_000_000
++    raise RuntimeError('unknown privileged command shape; no dispatch')
+ 
+ 
+ def kernel_profile_present_v1(raw,name):
+@@ -215,9 +225,12 @@
+     def run(command,path,deadline,execution_s):
+         _require(time.monotonic_ns()<deadline,'original policy command deadline already elapsed')
+         verify(deadline)
++        minimum=fixed_root_timeout_budget_v1(command)
++        _require(deadline-time.monotonic_ns()>=minimum,
++                 'original root command self-timeout plus closing reserve does not fit after verify')
+         capture=_diagnostic.capture_original_child(_diagnostic._gated_execv_argv(python,command),path,
+             deadline,execution_s=execution_s,cleanup_s=min(10,max(.001,(deadline-time.monotonic_ns())/1e9)),
+-            start_gate=True,raw_limit=8192,report_limit=8192)
++            start_gate=True,raw_limit=8192,report_limit=8192,minimum_start_budget_ns=minimum)
+         verify(deadline)
+         return capture
+     def inventory(path,deadline):

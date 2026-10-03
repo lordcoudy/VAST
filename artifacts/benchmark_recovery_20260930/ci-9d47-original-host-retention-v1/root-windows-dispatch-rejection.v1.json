@@ -1,0 +1,14 @@
+{
+  "CI_workflow_action": null,
+  "benchmark_or_test_retry": false,
+  "cause": "Linux-only ROOT and git credential helper paths were passed to Windows Python. Credential child creation failed before network or original download, then terminal save failed because Linux OUT was not a Windows directory.",
+  "correction": "Invoke the unchanged exact5912B51e9206f read-only source in its required Linux environment; original hosted jobs already completed successfully.",
+  "credentials_or_redirects_printed_or_saved": false,
+  "incorrect_interpreter": "C:/Python314/python.exe",
+  "original_tool_chunk": "654477",
+  "original_tool_exit_code": 1,
+  "originals_downloaded": [],
+  "required_environment": "WSL Ubuntu, canonical publication CP312 -I -B",
+  "source_changed": false,
+  "status": "failed_before_original_retention"
+}

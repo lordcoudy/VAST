@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_component_dispatch_review_original_tool_capture_v1",
+  "original_command": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu",
+    "--",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-held-session-dispatch-independent-review-v1/audit.py"
+  ],
+  "original_tool_session_id": 97343,
+  "original_tool_chunks": [
+    "7f9338",
+    "2b7e9f"
+  ],
+  "original_returncode": 0,
+  "actual_audit_elapsed_s": 11.820126812031958,
+  "helper": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-dispatch-independent-review-v1/audit.py",
+    "size_bytes": 8037,
+    "sha256": "fcbced738110e1dae2cbb3301923dfbbd6ad6e96e167d38d451cce3e1ee5ecea"
+  },
+  "report": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-dispatch-independent-review-v1/review.v1.json",
+    "size_bytes": 46415,
+    "sha256": "71ed26a1f4d3003c89fc77dec32f31e3e9a238843e312115b2932ff8b1953fb5"
+  },
+  "process_identity_limit": "The synchronous tool process completed with exit0; its Linux PID and independent postterminal /proc witness were not captured. No PID or raw channel descriptors are invented.",
+  "physical_stdio_saved": false,
+  "tool_output_facts": [
+    "First tool chunk yielded a running session and original WSL UTF16 localhost-proxy warning.",
+    "Final tool chunk reported approved_original_dispatch_gate,87 sources,temporary_fds_released=true and reportSHA71ed26a1f4d3003c89fc77dec32f31e3e9a238843e312115b2932ff8b1953fb5.",
+    "Final tool output also returned original audit source SHAFCBCED738110E1DAE2CBB3301923DFBBD6AD6E96E167D38D451CCE3E1EE5ECEA."
+  ],
+  "hardware_workload": false
+}

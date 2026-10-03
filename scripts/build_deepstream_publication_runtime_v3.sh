@@ -3,7 +3,7 @@ set -euo pipefail
 
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 base_image="nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
-expected_base_id="sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+expected_base_id="${VAST_DEEPSTREAM_BASE_IMAGE_ID:-sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759}"
 image_ref="${VAST_DEEPSTREAM_RUNTIME_IMAGE:-vast/deepstream-publication-runtime-v3:materialized}"
 first_ref="${image_ref}-determinism-a"
 second_ref="${image_ref}-determinism-b"
@@ -146,4 +146,3 @@ printf 'image_ref=%s\nimage_id=%s\nruntime_source_sha256=%s\n' \
   "$image_ref" "$image_id" "$runtime_source_sha256"
 printf 'runtime_bundle_sha256=%s\nrepo_digests=%s\n' \
   "$runtime_bundle_sha256" "$repo_digests"
-

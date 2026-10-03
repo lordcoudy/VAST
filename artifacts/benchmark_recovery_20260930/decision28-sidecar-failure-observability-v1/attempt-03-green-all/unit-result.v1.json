@@ -1,0 +1,1544 @@
+{
+  "classification": "local real seqpacket/memfd/pipe/shared FD and controlled original socket children; fixture inference and injected engine observations only",
+  "errors": [],
+  "failures": [],
+  "fd_timing_facts": [
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_atomic_front_publish_collision_preserves_canary_and_hidden_node_absent",
+      "start_monotonic_ns": 310331556385018,
+      "terminal_monotonic_ns": 310331566368669
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_atomic_front_publish_post_bind_failure_never_unlinks_node",
+      "start_monotonic_ns": 310331571003253,
+      "terminal_monotonic_ns": 310331579221425
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_atomic_front_publish_uses_direct_bind_without_link_cleanup",
+      "start_monotonic_ns": 310331583678567,
+      "terminal_monotonic_ns": 310331590865948
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_authority_loader_rejects_named_file_swap_during_fd_read",
+      "start_monotonic_ns": 310331595518213,
+      "terminal_monotonic_ns": 310331602976978
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_binding_index_digest_drift_is_rejected",
+      "start_monotonic_ns": 310331607756744,
+      "terminal_monotonic_ns": 310331616923123
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_bridge_failure_is_fatal_and_raw_socket_nodes_are_removed",
+      "start_monotonic_ns": 310331621725421,
+      "terminal_monotonic_ns": 310331698700602
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_cached_stop_cold_revalidates_retired_socket_ledger",
+      "start_monotonic_ns": 310331703201105,
+      "terminal_monotonic_ns": 310331807704428
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_cli_contract_is_explicit_and_requires_bounded_counts",
+      "start_monotonic_ns": 310331812719710,
+      "terminal_monotonic_ns": 310331820695760
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_cli_modes_reject_incompatible_arguments_before_input_reads",
+      "start_monotonic_ns": 310331825378469,
+      "terminal_monotonic_ns": 310331832940157
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_concurrent_terminal_failures_commit_only_first_diagnostic",
+      "start_monotonic_ns": 310331837506236,
+      "terminal_monotonic_ns": 310331914269758
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_diagnostic_does_not_read_oversized_or_unsafe_descriptors",
+      "start_monotonic_ns": 310331919058794,
+      "terminal_monotonic_ns": 310331932295812
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_diagnostic_persistence_failure_preserves_original_integrity_error",
+      "start_monotonic_ns": 310331937050404,
+      "terminal_monotonic_ns": 310332014671457
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_docker_factory_plan_is_pinned_no_network_and_gpu_explicit",
+      "start_monotonic_ns": 310332019230407,
+      "terminal_monotonic_ns": 310332026705268
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed",
+      "start_monotonic_ns": 310332031182244,
+      "terminal_monotonic_ns": 310332107426621
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_foreground_guardian_cli_commits_readiness_then_waits_for_stop",
+      "start_monotonic_ns": 310332111966264,
+      "terminal_monotonic_ns": 310332290438904
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_foreground_guardian_cli_requires_preprocessing_receipt",
+      "start_monotonic_ns": 310332295821244,
+      "terminal_monotonic_ns": 310332304071929
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_front_collision_is_preserved_and_workers_are_drained",
+      "start_monotonic_ns": 310332309880920,
+      "terminal_monotonic_ns": 310332368228985
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_front_socket_is_requested_as_atomic_publish_only_after_bridge",
+      "start_monotonic_ns": 310332372854606,
+      "terminal_monotonic_ns": 310332458661120
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_full_lifecycle_attests_exact_eight_and_persists_raw_call",
+      "start_monotonic_ns": 310332463923198,
+      "terminal_monotonic_ns": 310332549058046
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_guardian_authenticated_stop_unblocks_foreground_wait",
+      "start_monotonic_ns": 310332553493392,
+      "terminal_monotonic_ns": 310332632099736
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_guardian_status_and_bounded_stop_cli_use_readiness_authority",
+      "start_monotonic_ns": 310332636545928,
+      "terminal_monotonic_ns": 310332725219814
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_guardian_status_fails_closed_after_any_worker_dies",
+      "start_monotonic_ns": 310332730338926,
+      "terminal_monotonic_ns": 310332809788583
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_guardian_stop_attestation_tamper_fails_closed",
+      "start_monotonic_ns": 310332814282699,
+      "terminal_monotonic_ns": 310332895222675
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_guardian_stop_cli_rejects_acknowledgement_binding_drift",
+      "start_monotonic_ns": 310332899749383,
+      "terminal_monotonic_ns": 310333194968943
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_guardian_stores_stop_attestation_before_acknowledgement",
+      "start_monotonic_ns": 310333199614662,
+      "terminal_monotonic_ns": 310333276594772
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_incomplete_materialized_binding_set_fails_before_process_start",
+      "start_monotonic_ns": 310333281110758,
+      "terminal_monotonic_ns": 310333299866455
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails",
+      "start_monotonic_ns": 310333304384351,
+      "terminal_monotonic_ns": 310333382482953
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure",
+      "start_monotonic_ns": 310333387029940,
+      "terminal_monotonic_ns": 310333471503800
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_owned_socket_retirement_never_deletes_raced_node",
+      "start_monotonic_ns": 310333476377546,
+      "terminal_monotonic_ns": 310333495792214
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_peer_pid_drift_fails_closed_and_cleans_every_owned_node",
+      "start_monotonic_ns": 310333500720170,
+      "terminal_monotonic_ns": 310334562952529
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_pre_authority_failure_cannot_commit_an_orphan_diagnostic",
+      "start_monotonic_ns": 310334568080132,
+      "terminal_monotonic_ns": 310334582074659
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_authority_rejects_hash_inode_and_owner_drift",
+      "start_monotonic_ns": 310334586701569,
+      "terminal_monotonic_ns": 310334665525536
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_capacity_is_contract_derived_and_not_one_million",
+      "start_monotonic_ns": 310334670014607,
+      "terminal_monotonic_ns": 310334691021998
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_integrity_failure_keeps_request_diagnostic",
+      "start_monotonic_ns": 310334695446183,
+      "terminal_monotonic_ns": 310334776619343
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_lifecycle_parent_swap_preserves_attacker_canary",
+      "start_monotonic_ns": 310334781238624,
+      "terminal_monotonic_ns": 310334797492487
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_per_connection_bound_exhaustion_fails_closed",
+      "start_monotonic_ns": 310334801995291,
+      "terminal_monotonic_ns": 310334876905782
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_preprocessing_contract_checks_all_bindings_before_worker_start",
+      "start_monotonic_ns": 310334881674869,
+      "terminal_monotonic_ns": 310334896268473
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_preprocessing_receipt_binds_runtime_candidate_manifest",
+      "start_monotonic_ns": 310334900895644,
+      "terminal_monotonic_ns": 310334912903834
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_readiness_parent_swap_never_redirects_write",
+      "start_monotonic_ns": 310334917630644,
+      "terminal_monotonic_ns": 310334940141919
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_rejection_diagnostics_keep_untrusted_fields_unattributed",
+      "start_monotonic_ns": 310334944888027,
+      "terminal_monotonic_ns": 310335585579562
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_rejects_external_runtime_expectation_drift_before_worker_start",
+      "start_monotonic_ns": 310335590099745,
+      "terminal_monotonic_ns": 310335626329643
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_service_has_stable_authority_clean_eof_and_rolling_lifecycle",
+      "start_monotonic_ns": 310335630908178,
+      "terminal_monotonic_ns": 310335714479248
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_start_is_one_shot_and_does_not_replace_front_inode",
+      "start_monotonic_ns": 310335719419977,
+      "terminal_monotonic_ns": 310335796604193
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_response_send_epipe_captures_live_validated_worker_before_teardown",
+      "start_monotonic_ns": 310335801330529,
+      "terminal_monotonic_ns": 310335879574521
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_retired_socket_post_stat_swap_is_nondestructive_and_fails_cold",
+      "start_monotonic_ns": 310335884019871,
+      "terminal_monotonic_ns": 310335897323064
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_retired_socket_validator_binds_exact_count_and_sibling_path",
+      "start_monotonic_ns": 310335902044542,
+      "terminal_monotonic_ns": 310335980079217
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_running_guardian_fails_closed_if_runtime_directory_is_rebound",
+      "start_monotonic_ns": 310335984757811,
+      "terminal_monotonic_ns": 310336056382472
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_runtime_symlink_is_rejected_without_touching_canary",
+      "start_monotonic_ns": 310336060985646,
+      "terminal_monotonic_ns": 310336068886528
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_runtime_worker_crash_interrupts_front_service",
+      "start_monotonic_ns": 310336073318491,
+      "terminal_monotonic_ns": 310336144589608
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_signal_or_direct_stop_is_failed_and_non_authorizing",
+      "start_monotonic_ns": 310336149265161,
+      "terminal_monotonic_ns": 310336296187781
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_startup_worker_crash_fails_closed",
+      "start_monotonic_ns": 310336301162558,
+      "terminal_monotonic_ns": 310336356765089
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_strict_authority_assert_rejects_distinct_valid_expected_identities",
+      "start_monotonic_ns": 310336361283913,
+      "terminal_monotonic_ns": 310336438194503
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_unattributed_first_failure_does_not_borrow_later_validated_route",
+      "start_monotonic_ns": 310336443268411,
+      "terminal_monotonic_ns": 310336521082006
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_worker_crash_interrupts_idle_client_and_leaves_no_service_thread",
+      "start_monotonic_ns": 310336525995870,
+      "terminal_monotonic_ns": 310336611745871
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_worker_protocol_integrity_failure_is_attributed",
+      "start_monotonic_ns": 310336616566006,
+      "terminal_monotonic_ns": 310336693975070
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_publication_worker_termination_facts_v1.TerminationTests.test137_engine_removed_retains_original_id_and_oom_unknown",
+      "start_monotonic_ns": 310336698523634,
+      "terminal_monotonic_ns": 310336703171610
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_publication_worker_termination_facts_v1.TerminationTests.test_bytesio_capture_does_not_change_fixture_cursor_and_pipe_is_unavailable",
+      "start_monotonic_ns": 310336707644613,
+      "terminal_monotonic_ns": 310336712483761
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_publication_worker_termination_facts_v1.TerminationTests.test_engine_reported_oom_false_does_not_infer_actor",
+      "start_monotonic_ns": 310336717334431,
+      "terminal_monotonic_ns": 310336722674083
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_publication_worker_termination_facts_v1.TerminationTests.test_engine_reported_oom_true_retained_as_fact",
+      "start_monotonic_ns": 310336727416142,
+      "terminal_monotonic_ns": 310336732623105
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_publication_worker_termination_facts_v1.TerminationTests.test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal",
+      "start_monotonic_ns": 310336737535479,
+      "terminal_monotonic_ns": 310336742681201
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_publication_worker_termination_facts_v1.TerminationTests.test_real_shared_capture_offset_is_preserved_for_the_original_writer",
+      "start_monotonic_ns": 310336747675363,
+      "terminal_monotonic_ns": 310336752587871
+    },
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_publication_worker_termination_facts_v1.TerminationTests.test_terminal_event_argv_is_original_cid_only_and_unchanged_bounded",
+      "start_monotonic_ns": 310336757617939,
+      "terminal_monotonic_ns": 310336763974014
+    }
+  ],
+  "ids": [
+    "test_checkpoint_gstreamer_analytics_sidecar",
+    "test_publication_worker_termination_facts_v1"
+  ],
+  "skips": [],
+  "source_after": [
+    {
+      "epoch": [
+        69,
+        1688849862689342,
+        33279,
+        1,
+        7749,
+        1790827756521336600,
+        1790827756521336600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/run_focused_v1.py",
+      "sha256": "313641c51248d2733af9cdc9373903fc9c6daab75fed7d056acecd18d7098c2a",
+      "size_bytes": 7749
+    },
+    {
+      "epoch": [
+        69,
+        3940649675811141,
+        33279,
+        1,
+        18555,
+        1789990791972351600,
+        1789990791972351600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_protocol.py",
+      "sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "size_bytes": 18555
+    },
+    {
+      "epoch": [
+        69,
+        4503599629232454,
+        33279,
+        1,
+        38433,
+        1789990791973065300,
+        1789990791973065300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_worker.py",
+      "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "size_bytes": 38433
+    },
+    {
+      "epoch": [
+        69,
+        4785074605943107,
+        33279,
+        1,
+        6756,
+        1789990791970347800,
+        1789990791970347800
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_endpoint.py",
+      "sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+      "size_bytes": 6756
+    },
+    {
+      "epoch": [
+        69,
+        3659174699100532,
+        33279,
+        1,
+        53754,
+        1789990792009643000,
+        1789990792009643000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_deepstream_protocol_bridge.py",
+      "sha256": "356e9171fb772f217c785632d3f57e96430da7138a146fe8720c56b1decd68ae",
+      "size_bytes": 53754
+    },
+    {
+      "epoch": [
+        69,
+        97953291897170325,
+        33279,
+        1,
+        39243,
+        1790426050141766800,
+        1790426050141766800
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_bridge.py",
+      "sha256": "d0ff1e5910e41815e116988757ad5eb3b6c9ea6bc1cc56219d00be0b23e2da43",
+      "size_bytes": 39243
+    },
+    {
+      "epoch": [
+        69,
+        4503599629240788,
+        33279,
+        1,
+        132238,
+        1789990792092103700,
+        1789990792092103700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "epoch": [
+        69,
+        7881299349768610,
+        33279,
+        1,
+        68402,
+        1789990792088100300,
+        1789990792088100300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_preprocessing_contract_v1.py",
+      "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+      "size_bytes": 68402
+    },
+    {
+      "epoch": [
+        69,
+        7881299349768611,
+        33279,
+        1,
+        7872,
+        1790760284235983700,
+        1790760284235983700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_runtime_expectations_v1.py",
+      "sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+      "size_bytes": 7872
+    },
+    {
+      "epoch": [
+        69,
+        8444249303189921,
+        33279,
+        1,
+        48963,
+        1790718945532359800,
+        1790718945532359800
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+      "size_bytes": 48963
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390031,
+        33279,
+        1,
+        29663,
+        1789990792067463600,
+        1789990792067463600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_legacy_iss_v2_manifest.py",
+      "sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+      "size_bytes": 29663
+    },
+    {
+      "epoch": [
+        69,
+        3096224745679336,
+        33279,
+        1,
+        73654,
+        1789990792051642700,
+        1789990792051642700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/extract_kpp_legacy_iss.py",
+      "sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+      "size_bytes": 73654
+    },
+    {
+      "epoch": [
+        69,
+        2814749768968703,
+        33279,
+        1,
+        69386,
+        1789990792055244300,
+        1789990792055244300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+      "sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+      "size_bytes": 69386
+    },
+    {
+      "epoch": [
+        69,
+        3096224745679358,
+        33279,
+        1,
+        43081,
+        1789990792054210000,
+        1789990792054210000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_iss_publication_v3.py",
+      "sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+      "size_bytes": 43081
+    },
+    {
+      "epoch": [
+        69,
+        2533274792258062,
+        33279,
+        1,
+        23901,
+        1789990792066464000,
+        1789990792066464000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_iss_publication_v3_dataset.py",
+      "sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+      "size_bytes": 23901
+    },
+    {
+      "epoch": [
+        69,
+        2814749768968701,
+        33279,
+        1,
+        28006,
+        1789990792053187600,
+        1789990792053187600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_frozen_reconstruction_v1.py",
+      "sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+      "size_bytes": 28006
+    },
+    {
+      "epoch": [
+        69,
+        3659174699100685,
+        33279,
+        1,
+        15206,
+        1789990792065458000,
+        1789990792065458000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_frozen_reconstruction_v1_dataset.py",
+      "sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+      "size_bytes": 15206
+    },
+    {
+      "epoch": [
+        69,
+        2814749768968521,
+        33279,
+        1,
+        17104,
+        1789990791975691100,
+        1789990791975691100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_dispatch.py",
+      "sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+      "size_bytes": 17104
+    },
+    {
+      "epoch": [
+        69,
+        3940649675811147,
+        33279,
+        1,
+        7230,
+        1789990791976691000,
+        1789990791976691000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_launcher_invocation_v3.py",
+      "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "size_bytes": 7230
+    },
+    {
+      "epoch": [
+        69,
+        3377699722389843,
+        33279,
+        1,
+        51402,
+        1789990791984482300,
+        1789990791984482300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_runtime_grant.py",
+      "sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+      "size_bytes": 51402
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390039,
+        33279,
+        1,
+        14740,
+        1789990792078371300,
+        1789990792078371300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/model_parity_grant.py",
+      "sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+      "size_bytes": 14740
+    },
+    {
+      "epoch": [
+        69,
+        54887620460440166,
+        33279,
+        1,
+        2263,
+        1790561403599170400,
+        1790561403599170400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_acceptance_evidence.py",
+      "sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+      "size_bytes": 2263
+    },
+    {
+      "epoch": [
+        69,
+        4503599629232461,
+        33279,
+        1,
+        34431,
+        1790562955710759600,
+        1790562955710759600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_output_receipt.py",
+      "sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+      "size_bytes": 34431
+    },
+    {
+      "epoch": [
+        69,
+        3377699722389871,
+        33279,
+        1,
+        20605,
+        1789990792007643700,
+        1789990792007643700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_acceptance_metadata_binding.py",
+      "sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+      "size_bytes": 20605
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390012,
+        33279,
+        1,
+        70898,
+        1789989848377436000,
+        1789989848377436000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/formal_aw_heft_reference.py",
+      "sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+      "size_bytes": 70898
+    },
+    {
+      "epoch": [
+        69,
+        6192449489496422,
+        33279,
+        1,
+        344569,
+        1790563066473064100,
+        1790563066473064100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/benchmark_contract.py",
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "size_bytes": 344569
+    },
+    {
+      "epoch": [
+        69,
+        1125899909256034,
+        33279,
+        1,
+        21538,
+        1790562675599688600,
+        1790562675599688600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_frozen_replay_v1.py",
+      "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "size_bytes": 21538
+    },
+    {
+      "epoch": [
+        69,
+        65865144552155755,
+        33279,
+        1,
+        40143,
+        1790561797286787400,
+        1790561797286787400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_contract.py",
+      "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "size_bytes": 40143
+    },
+    {
+      "epoch": [
+        69,
+        1407374885966691,
+        33279,
+        1,
+        29622,
+        1790563087868790200,
+        1790563087868790200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_projection_v1.py",
+      "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+      "size_bytes": 29622
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973073,
+        33279,
+        1,
+        25997,
+        1790716534106631500,
+        1790716534106631500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    },
+    {
+      "epoch": [
+        69,
+        844424932497875,
+        33279,
+        1,
+        73421,
+        1790716694835216900,
+        1790716694835216900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_native_policy_runtime.py",
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "size_bytes": 73421
+    },
+    {
+      "epoch": [
+        69,
+        53198770600176079,
+        33279,
+        1,
+        30727,
+        1789990792036437700,
+        1789990792036437700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_runtime_plan.py",
+      "sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+      "size_bytes": 30727
+    },
+    {
+      "epoch": [
+        69,
+        1688849862685551,
+        33279,
+        1,
+        27355,
+        1790776279874326400,
+        1790776279874326400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_authority_v1.py",
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+      "size_bytes": 27355
+    },
+    {
+      "epoch": [
+        69,
+        1688849862683727,
+        33279,
+        1,
+        24563,
+        1790717016996480200,
+        1790717016996480200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_operational_recorder_v1.py",
+      "sha256": "130130ba64079f6a80ef4762a45c9969f4b3a425432a70d082ecc5a59004169d",
+      "size_bytes": 24563
+    },
+    {
+      "epoch": [
+        69,
+        1688849862683802,
+        33279,
+        1,
+        25882,
+        1790719952039075100,
+        1790719952039075100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_capture_plan_v1.py",
+      "sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+      "size_bytes": 25882
+    },
+    {
+      "epoch": [
+        69,
+        2251799816106852,
+        33279,
+        1,
+        19178,
+        1790762045037961000,
+        1790762045037961000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_component_preprocessing_contract_v1.py",
+      "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+      "size_bytes": 19178
+    },
+    {
+      "epoch": [
+        69,
+        128071114405210518,
+        33279,
+        1,
+        299261,
+        1790828014824708900,
+        1790828014824708900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+      "size_bytes": 299261
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390247,
+        33279,
+        1,
+        138071,
+        1790828014826710000,
+        1790828014826710000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "47f74ffd43d81dff567b7f04576446fab9f246fb3937d6c97a92b73bff90a78d",
+      "size_bytes": 138071
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973086,
+        33279,
+        1,
+        6599,
+        1790827656401511500,
+        1790827656401511500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_worker_termination_facts_v1.py",
+      "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+      "size_bytes": 6599
+    }
+  ],
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        1688849862689342,
+        33279,
+        1,
+        7749,
+        1790827756521336600,
+        1790827756521336600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/run_focused_v1.py",
+      "sha256": "313641c51248d2733af9cdc9373903fc9c6daab75fed7d056acecd18d7098c2a",
+      "size_bytes": 7749
+    },
+    {
+      "epoch": [
+        69,
+        3940649675811141,
+        33279,
+        1,
+        18555,
+        1789990791972351600,
+        1789990791972351600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_protocol.py",
+      "sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "size_bytes": 18555
+    },
+    {
+      "epoch": [
+        69,
+        4503599629232454,
+        33279,
+        1,
+        38433,
+        1789990791973065300,
+        1789990791973065300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_worker.py",
+      "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "size_bytes": 38433
+    },
+    {
+      "epoch": [
+        69,
+        4785074605943107,
+        33279,
+        1,
+        6756,
+        1789990791970347800,
+        1789990791970347800
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/analytics_execution_endpoint.py",
+      "sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+      "size_bytes": 6756
+    },
+    {
+      "epoch": [
+        69,
+        3659174699100532,
+        33279,
+        1,
+        53754,
+        1789990792009643000,
+        1789990792009643000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_deepstream_protocol_bridge.py",
+      "sha256": "356e9171fb772f217c785632d3f57e96430da7138a146fe8720c56b1decd68ae",
+      "size_bytes": 53754
+    },
+    {
+      "epoch": [
+        69,
+        97953291897170325,
+        33279,
+        1,
+        39243,
+        1790426050141766800,
+        1790426050141766800
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_bridge.py",
+      "sha256": "d0ff1e5910e41815e116988757ad5eb3b6c9ea6bc1cc56219d00be0b23e2da43",
+      "size_bytes": 39243
+    },
+    {
+      "epoch": [
+        69,
+        4503599629240788,
+        33279,
+        1,
+        132238,
+        1789990792092103700,
+        1789990792092103700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "epoch": [
+        69,
+        7881299349768610,
+        33279,
+        1,
+        68402,
+        1789990792088100300,
+        1789990792088100300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_preprocessing_contract_v1.py",
+      "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+      "size_bytes": 68402
+    },
+    {
+      "epoch": [
+        69,
+        7881299349768611,
+        33279,
+        1,
+        7872,
+        1790760284235983700,
+        1790760284235983700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_runtime_expectations_v1.py",
+      "sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+      "size_bytes": 7872
+    },
+    {
+      "epoch": [
+        69,
+        8444249303189921,
+        33279,
+        1,
+        48963,
+        1790718945532359800,
+        1790718945532359800
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+      "size_bytes": 48963
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390031,
+        33279,
+        1,
+        29663,
+        1789990792067463600,
+        1789990792067463600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_legacy_iss_v2_manifest.py",
+      "sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+      "size_bytes": 29663
+    },
+    {
+      "epoch": [
+        69,
+        3096224745679336,
+        33279,
+        1,
+        73654,
+        1789990792051642700,
+        1789990792051642700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/extract_kpp_legacy_iss.py",
+      "sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+      "size_bytes": 73654
+    },
+    {
+      "epoch": [
+        69,
+        2814749768968703,
+        33279,
+        1,
+        69386,
+        1789990792055244300,
+        1789990792055244300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+      "sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+      "size_bytes": 69386
+    },
+    {
+      "epoch": [
+        69,
+        3096224745679358,
+        33279,
+        1,
+        43081,
+        1789990792054210000,
+        1789990792054210000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_iss_publication_v3.py",
+      "sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+      "size_bytes": 43081
+    },
+    {
+      "epoch": [
+        69,
+        2533274792258062,
+        33279,
+        1,
+        23901,
+        1789990792066464000,
+        1789990792066464000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_iss_publication_v3_dataset.py",
+      "sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+      "size_bytes": 23901
+    },
+    {
+      "epoch": [
+        69,
+        2814749768968701,
+        33279,
+        1,
+        28006,
+        1789990792053187600,
+        1789990792053187600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/freeze_kpp_frozen_reconstruction_v1.py",
+      "sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+      "size_bytes": 28006
+    },
+    {
+      "epoch": [
+        69,
+        3659174699100685,
+        33279,
+        1,
+        15206,
+        1789990792065458000,
+        1789990792065458000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/kpp_frozen_reconstruction_v1_dataset.py",
+      "sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+      "size_bytes": 15206
+    },
+    {
+      "epoch": [
+        69,
+        2814749768968521,
+        33279,
+        1,
+        17104,
+        1789990791975691100,
+        1789990791975691100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_dispatch.py",
+      "sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+      "size_bytes": 17104
+    },
+    {
+      "epoch": [
+        69,
+        3940649675811147,
+        33279,
+        1,
+        7230,
+        1789990791976691000,
+        1789990791976691000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_launcher_invocation_v3.py",
+      "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "size_bytes": 7230
+    },
+    {
+      "epoch": [
+        69,
+        3377699722389843,
+        33279,
+        1,
+        51402,
+        1789990791984482300,
+        1789990791984482300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_runtime_grant.py",
+      "sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+      "size_bytes": 51402
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390039,
+        33279,
+        1,
+        14740,
+        1789990792078371300,
+        1789990792078371300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/model_parity_grant.py",
+      "sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+      "size_bytes": 14740
+    },
+    {
+      "epoch": [
+        69,
+        54887620460440166,
+        33279,
+        1,
+        2263,
+        1790561403599170400,
+        1790561403599170400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_acceptance_evidence.py",
+      "sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+      "size_bytes": 2263
+    },
+    {
+      "epoch": [
+        69,
+        4503599629232461,
+        33279,
+        1,
+        34431,
+        1790562955710759600,
+        1790562955710759600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_output_receipt.py",
+      "sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+      "size_bytes": 34431
+    },
+    {
+      "epoch": [
+        69,
+        3377699722389871,
+        33279,
+        1,
+        20605,
+        1789990792007643700,
+        1789990792007643700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_acceptance_metadata_binding.py",
+      "sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+      "size_bytes": 20605
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390012,
+        33279,
+        1,
+        70898,
+        1789989848377436000,
+        1789989848377436000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/formal_aw_heft_reference.py",
+      "sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+      "size_bytes": 70898
+    },
+    {
+      "epoch": [
+        69,
+        6192449489496422,
+        33279,
+        1,
+        344569,
+        1790563066473064100,
+        1790563066473064100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/benchmark_contract.py",
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "size_bytes": 344569
+    },
+    {
+      "epoch": [
+        69,
+        1125899909256034,
+        33279,
+        1,
+        21538,
+        1790562675599688600,
+        1790562675599688600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_frozen_replay_v1.py",
+      "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "size_bytes": 21538
+    },
+    {
+      "epoch": [
+        69,
+        65865144552155755,
+        33279,
+        1,
+        40143,
+        1790561797286787400,
+        1790561797286787400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_contract.py",
+      "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "size_bytes": 40143
+    },
+    {
+      "epoch": [
+        69,
+        1407374885966691,
+        33279,
+        1,
+        29622,
+        1790563087868790200,
+        1790563087868790200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_projection_v1.py",
+      "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+      "size_bytes": 29622
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973073,
+        33279,
+        1,
+        25997,
+        1790716534106631500,
+        1790716534106631500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    },
+    {
+      "epoch": [
+        69,
+        844424932497875,
+        33279,
+        1,
+        73421,
+        1790716694835216900,
+        1790716694835216900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_native_policy_runtime.py",
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "size_bytes": 73421
+    },
+    {
+      "epoch": [
+        69,
+        53198770600176079,
+        33279,
+        1,
+        30727,
+        1789990792036437700,
+        1789990792036437700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_runtime_plan.py",
+      "sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+      "size_bytes": 30727
+    },
+    {
+      "epoch": [
+        69,
+        1688849862685551,
+        33279,
+        1,
+        27355,
+        1790776279874326400,
+        1790776279874326400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_authority_v1.py",
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+      "size_bytes": 27355
+    },
+    {
+      "epoch": [
+        69,
+        1688849862683727,
+        33279,
+        1,
+        24563,
+        1790717016996480200,
+        1790717016996480200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_operational_recorder_v1.py",
+      "sha256": "130130ba64079f6a80ef4762a45c9969f4b3a425432a70d082ecc5a59004169d",
+      "size_bytes": 24563
+    },
+    {
+      "epoch": [
+        69,
+        1688849862683802,
+        33279,
+        1,
+        25882,
+        1790719952039075100,
+        1790719952039075100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_capture_plan_v1.py",
+      "sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+      "size_bytes": 25882
+    },
+    {
+      "epoch": [
+        69,
+        2251799816106852,
+        33279,
+        1,
+        19178,
+        1790762045037961000,
+        1790762045037961000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_component_preprocessing_contract_v1.py",
+      "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+      "size_bytes": 19178
+    },
+    {
+      "epoch": [
+        69,
+        128071114405210518,
+        33279,
+        1,
+        299261,
+        1790828014824708900,
+        1790828014824708900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+      "size_bytes": 299261
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390247,
+        33279,
+        1,
+        138071,
+        1790828014826710000,
+        1790828014826710000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "47f74ffd43d81dff567b7f04576446fab9f246fb3937d6c97a92b73bff90a78d",
+      "size_bytes": 138071
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973086,
+        33279,
+        1,
+        6599,
+        1790827656401511500,
+        1790827656401511500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_worker_termination_facts_v1.py",
+      "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+      "size_bytes": 6599
+    }
+  ],
+  "source_stable": true,
+  "tests_run": 62
+}

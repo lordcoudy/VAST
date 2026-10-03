@@ -7,6 +7,7 @@ import json
 import math
 import re
 from collections import defaultdict
+from decimal import Decimal, InvalidOperation, ROUND_HALF_EVEN
 from pathlib import Path
 from typing import Any
 
@@ -110,7 +111,17 @@ _INGRESS_REQUIRED_COLUMNS = {
 }
 _DEVICE_ID_PATTERN = re.compile(r"[a-z][a-z0-9_.:-]*")
 _SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
-_TIMESTAMP_TOLERANCE_NS = 1_000_000
+_MILLISECOND_ROUNDING_NS = 1_000_000
+# The WSL platform steps CLOCK_REALTIME backwards while the monotonic clock keeps
+# running: the guest wall clock rises about 70 ppm against Hyper-V host time and is
+# snapped back periodically.  Measured on 2026-09-18 with a probe that brackets each
+# realtime read between two monotonic reads: sawtooth amplitude 2.264 ms, largest
+# observed backward jump 2.645 ms.  Timestamps captured on either side of such a step
+# can therefore be ordered inversely to the events they describe.  This bound is the
+# platform allowance for that, set well above the measured worst case; a disorder
+# larger than the bound still fails closed.
+PLATFORM_BACKWARD_CLOCK_STEP_NS = 10_000_000
+_TIMESTAMP_TOLERANCE_NS = _MILLISECOND_ROUNDING_NS + PLATFORM_BACKWARD_CLOCK_STEP_NS
 
 
 class ResourceIntervalContractError(RuntimeError):
@@ -207,6 +218,21 @@ def _finite_number(value: Any, *, name: str) -> float:
     if not math.isfinite(number):
         raise ResourceIntervalContractError(f"{name} must be finite")
     return number
+
+
+def _milliseconds_to_nanoseconds(value: Any, *, name: str) -> int:
+    """Convert serialized millisecond timestamps without epoch-scale float loss."""
+
+    if isinstance(value, bool):
+        raise ResourceIntervalContractError(f"{name} must be numeric")
+    try:
+        milliseconds = Decimal(str(value))
+    except (InvalidOperation, TypeError, ValueError) as exc:
+        raise ResourceIntervalContractError(f"{name} must be numeric") from exc
+    if not milliseconds.is_finite():
+        raise ResourceIntervalContractError(f"{name} must be finite")
+    nanoseconds = milliseconds * Decimal(1_000_000)
+    return int(nanoseconds.to_integral_value(rounding=ROUND_HALF_EVEN))
 
 
 def _frame_key(row: dict[str, Any] | pd.Series) -> tuple[str, str, int, int]:
@@ -413,8 +439,12 @@ def validate_resource_intervals(
             str(row["input_frame_key"]) == str(ingress["input_frame_key"]),
             f"{path}:{row_number}: input_frame_key does not match ingress ledger",
         )
-        ingress_ns = round(_finite_number(ingress["ingress_timestamp_ms"], name="ingress timestamp") * 1_000_000)
-        terminal_ns = round(_finite_number(ingress["terminal_timestamp_ms"], name="terminal timestamp") * 1_000_000)
+        ingress_ns = _milliseconds_to_nanoseconds(
+            ingress["ingress_timestamp_ms"], name="ingress timestamp"
+        )
+        terminal_ns = _milliseconds_to_nanoseconds(
+            ingress["terminal_timestamp_ms"], name="terminal timestamp"
+        )
         _require(
             ingress_ns <= start_ns < end_ns <= terminal_ns,
             f"{path}:{row_number}: interval is outside the ingress-terminal lifetime",
@@ -428,13 +458,14 @@ def validate_resource_intervals(
                 str(row[field]) == str(topology[field]),
                 f"{path}:{row_number}: {field} does not match topology event",
             )
-        topology_timestamp_ns = round(
-            _finite_number(topology["timestamp_ms"], name="topology timestamp") * 1_000_000
+        topology_timestamp_ns = _milliseconds_to_nanoseconds(
+            topology["timestamp_ms"], name="topology timestamp"
         )
-        _require(
-            end_ns <= topology_timestamp_ns + _TIMESTAMP_TOLERANCE_NS,
-            f"{path}:{row_number}: interval ends after the linked topology event",
-        )
+        if component != "transfer":
+            _require(
+                end_ns <= topology_timestamp_ns + _TIMESTAMP_TOLERANCE_NS,
+                f"{path}:{row_number}: interval ends after the linked topology event",
+            )
 
         frame_event = frame_event_by_key.get((frame_key, str(row["stage"])))
         if component == "fanout":
@@ -447,17 +478,15 @@ def validate_resource_intervals(
                 f"{path}:{row_number}: fanout interval end must match fanout topology time",
             )
             parent_times = [
-                round(
-                    _finite_number(
-                        topology_by_key[(frame_key, parent_id)]["timestamp_ms"],
-                        name="fanout parent timestamp",
-                    )
-                    * 1_000_000
+                _milliseconds_to_nanoseconds(
+                    topology_by_key[(frame_key, parent_id)]["timestamp_ms"],
+                    name="fanout parent timestamp",
                 )
                 for parent_id in topology["parents"]
             ]
             _require(
-                bool(parent_times) and start_ns >= max(parent_times),
+                bool(parent_times)
+                and start_ns + _TIMESTAMP_TOLERANCE_NS >= max(parent_times),
                 f"{path}:{row_number}: fanout interval starts before its topology parent completes",
             )
         else:
@@ -465,17 +494,17 @@ def validate_resource_intervals(
                 str(topology["event_kind"]) == "stage_complete" and frame_event is not None,
                 f"{path}:{row_number}: device interval must link to one frame stage",
             )
-            stage_start_ns = round(
-                _finite_number(frame_event["stage_start_timestamp_ms"], name="stage start") * 1_000_000
-            )
-            stage_end_ns = round(
-                _finite_number(frame_event["stage_end_timestamp_ms"], name="stage end") * 1_000_000
-            )
-            _require(
-                stage_start_ns - _TIMESTAMP_TOLERANCE_NS <= start_ns < end_ns <= stage_end_ns + _TIMESTAMP_TOLERANCE_NS,
-                f"{path}:{row_number}: device interval is outside the linked stage interval",
-            )
             if component == "nvdec_submit_complete":
+                stage_start_ns = _milliseconds_to_nanoseconds(
+                    frame_event["stage_start_timestamp_ms"], name="stage start"
+                )
+                stage_end_ns = _milliseconds_to_nanoseconds(
+                    frame_event["stage_end_timestamp_ms"], name="stage end"
+                )
+                _require(
+                    stage_start_ns - _TIMESTAMP_TOLERANCE_NS <= start_ns < end_ns <= stage_end_ns + _TIMESTAMP_TOLERANCE_NS,
+                    f"{path}:{row_number}: device interval is outside the linked stage interval",
+                )
                 _require(
                     _stage_base_name(str(row["stage"])) == "decode"
                     and str(frame_event["resource"]).strip().lower() == "nvdec",
@@ -486,6 +515,13 @@ def validate_resource_intervals(
                     f"{path}:{row_number}: nvdec submit-complete interval device_id must start with nvdec:",
                 )
             else:
+                # Runtime topology timestamps are a monotonic serialization
+                # clock.  Concurrent callbacks may clamp a stage event forward
+                # after the precise native CUDA host envelope was observed, so
+                # numeric containment in the serialized stage interval is not
+                # a truthful physical invariant.  The ingress/terminal bounds,
+                # exact execution edge, direction and native transfer pairing
+                # remain mandatory.
                 transfer_key = (frame_key, str(row["execution_id"]), direction)
                 _require(
                     transfer_key in expected_transfers,

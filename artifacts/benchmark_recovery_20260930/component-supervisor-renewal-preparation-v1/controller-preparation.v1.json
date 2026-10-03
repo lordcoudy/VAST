@@ -1,0 +1,58 @@
+{
+  "scope": "Prepared one-shot controllers only; no new runtime authority or dispatch",
+  "source_commit": null,
+  "new_stock_host_closure": null,
+  "source_frozen_unexecuted": true,
+  "controllers": [
+    {
+      "resource": "cpu",
+      "source_original": {
+        "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_cpu_component_pair_ext4_v1.py",
+        "size_bytes": 15089,
+        "sha256": "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559"
+      },
+      "prepared_controller": {
+        "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_cpu_component_pair_ext4_supervisor_v2.py",
+        "size_bytes": 15100,
+        "sha256": "b4488d87a4c0feb500d7fdbca77af76e4745efeafb4927003ea1e932227ec8fd"
+      },
+      "all_functions_and_classes_AST_equal": true,
+      "literal_changes": {
+        "cpu-pair-06": "cpu-pair-07",
+        "execution-code-closure.ext4.v1.json": "execution-code-closure.ext4-supervisor.v2.json"
+      }
+    },
+    {
+      "resource": "gpu",
+      "source_original": {
+        "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_gpu_component_pair_ext4_v3.py",
+        "size_bytes": 15089,
+        "sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2"
+      },
+      "prepared_controller": {
+        "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_gpu_component_pair_ext4_supervisor_v4.py",
+        "size_bytes": 15100,
+        "sha256": "4c37f05c80777ffa4b9932441a1301cef66a8fd38fbb986e4f1eae40e6b00831"
+      },
+      "all_functions_and_classes_AST_equal": true,
+      "literal_changes": {
+        "gpu-pair-01": "gpu-pair-02",
+        "execution-code-closure.ext4.v1.json": "execution-code-closure.ext4-supervisor.v2.json"
+      }
+    }
+  ],
+  "bounds_unchanged": {
+    "CLI": 2100,
+    "outer_capture": 2250,
+    "teardown": 15,
+    "held_source_input_interpreter_controller_files": 95
+  },
+  "required_next_gates": [
+    "exact supervisor/test review and committed source",
+    "closed actual checkout/input/image source-scope refresh",
+    "new original stock87 host closure and independentphysical review",
+    "exact source peer",
+    "root separate one-shot CPU and GPU grants"
+  ],
+  "original_CPU06_GPU01_preserved": true
+}

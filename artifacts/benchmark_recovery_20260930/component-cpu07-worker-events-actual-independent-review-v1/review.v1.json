@@ -1,0 +1,153 @@
+{
+  "CPU07_accepted": false,
+  "benchmark_accepted": false,
+  "closure": {
+    "all_author_held_FDs_released": true,
+    "close_errors": [],
+    "closure_reader_FD_count": [
+      6,
+      6
+    ],
+    "each_original_PID_absent": true,
+    "original_groups_empty": true,
+    "original_owner_pids": [
+      65511,
+      65512,
+      65513,
+      65514
+    ],
+    "outer_FD_count": [
+      6,
+      6
+    ],
+    "query_FD_count": [
+      4,
+      4
+    ],
+    "scan_errors": [],
+    "two_saved_actual_scans": true
+  },
+  "independent_prefix_reduction": {
+    "actions": {
+      "attach": 1,
+      "create": 1,
+      "exec_create: bash -c pgrep bash > /dev/null || exit 1": 7,
+      "exec_die": 6,
+      "exec_start: bash -c pgrep bash > /dev/null || exit 1": 7,
+      "health_status: healthy": 1,
+      "start": 1
+    },
+    "complete_rows": 24,
+    "exact_container_id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+    "exact_image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+    "exact_name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+    "first_event_ns": 1790823317990468390,
+    "last_complete_event_ns": 1790823503302104101,
+    "observed_worker_cause": null,
+    "truncated_tail_bytes": 20
+  },
+  "new_query_executed_by_reviewer": false,
+  "original_outer": {
+    "capture_failure": null,
+    "elapsed_s": 0.13982611597748473,
+    "forced_outer_signals": [],
+    "returncode": 78,
+    "source_before_after_equal": true
+  },
+  "original_query": {
+    "additional_errors": [
+      {
+        "message": "original query channel cap exceeded",
+        "type": "ValueError"
+      }
+    ],
+    "elapsed_s": 0.09541910502593964,
+    "eof": {
+      "stderr": true,
+      "stdout": true
+    },
+    "original_failure": {
+      "message": "original drain channel cap",
+      "type": "ValueError"
+    },
+    "overflow": true,
+    "returncode": -9,
+    "signal": [
+      {
+        "at_ns": 1790825363368465340,
+        "signal": "SIGKILL"
+      }
+    ],
+    "status": "failed_observation",
+    "stderr_bytes": 0,
+    "stdout_retained_bytes": 8192,
+    "timed_out": false
+  },
+  "pins": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-observation-attempt01\\execution.v1.json",
+      "sha256": "59b1c28d8da847811b33f6edaed3b7e07862eaf382de679bdb43bffb6c16a81f",
+      "size_bytes": 2391
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-observation-attempt01\\launch.v1.json",
+      "sha256": "52721462a76f05f28463ab57ab8a002aa1e3712d10ac9968f119552d35c87f0d",
+      "size_bytes": 939
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-observation-attempt01\\dispatch.v1.json",
+      "sha256": "f08774868f2d41d64e1494731657792f321a0fe6069ddcce383779ad7b08ce91",
+      "size_bytes": 6081
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-observation-attempt01\\stdout.raw",
+      "sha256": "9deb990e0bb431026ca5781c8cbf4c3d3898545806a9c9dd5052280e45e05978",
+      "size_bytes": 8192
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-observation-attempt01\\stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-observation-outer-attempt01\\capture.v1.json",
+      "sha256": "ceb1f793656a2ab22303b122c053bec13838e5afcb5e46828d29cb7d018e904a",
+      "size_bytes": 3876
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-observation-outer-attempt01\\launch.v1.json",
+      "sha256": "c35745a3eb1f371b498ceea24dde7663509d75567122fb0be76a02c0f9a2de80",
+      "size_bytes": 1938
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-observation-outer-attempt01\\stdout.raw",
+      "sha256": "f64a5fd708d204a261cccf3027fc721fcbb1a50dfbcf5a4aaf9edf15d6bc9f3d",
+      "size_bytes": 412
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-observation-outer-attempt01\\stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\original-observation-closure-review.v1.json",
+      "sha256": "a944ac4dc1be3307f2912fc1b3501eb29cdba11f2f388f2be8c67e16a86f596b",
+      "size_bytes": 23272
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\root-one-primary-events-grant.v1.json",
+      "sha256": "5bc63b2fbadb327305e4edf3df0cf9dfe46d962b1d8c1032ec3ddef8c8fb7d9a",
+      "size_bytes": 1468
+    }
+  ],
+  "reviewer_read_handles_released": true,
+  "scope_limits": [
+    "Channel cap failure remains failure; complete valid prefix rows may bind exact original worker CID but do not validate truncated query as a whole.",
+    "Retained prefix ends before original inference failure and proves no death/OOM cause. Healthcheck exec event volume explains cap use, not benchmark failure.",
+    "Cleanup drain error precedes outer original-query cap latch in stored primary; both original errors retained. No correct first-cause ordering claim.",
+    "Original outer inline capture source was not saved before dispatch; no fabricated external prelaunch wrapper.",
+    "Saved scans cover four original query/capture owners, not global daemon/container quiescence.",
+    "Original daemon ID retained; current daemon ID unqueried. Empty future events/die137 alone cannot prove absence/OOM."
+  ],
+  "status": "closed_failed_original_query_metadata_verified"
+}

@@ -24,7 +24,7 @@ import time
 from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import Any, Callable
 
 sys.dont_write_bytecode = True
 
@@ -33,79 +33,53 @@ from checkpoint_publication_launcher_adapter_v3 import (
     NativePublicationPermanentErrorV3,
     NativePublicationRequestV3,
     NativePublicationTransientErrorV3,
+    deterministic_numeric_thread_environment_argv_v1,
+)
+from publication_child_evidence_materializer_v1 import (
+    PublicationChildEvidenceMaterializerV1Error,
+    materialize_publication_child_evidence_group_v1,
 )
 
+
+from publication_operational_container_custody_v1 import measurement_container_custody_v1
+from publication_operational_process_custody_v1 import (
+    original_engine_phase_v1, engine_process_started_v1, engine_process_terminal_v1,
+)
+from publication_operational_runtime_context_v1 import (
+    CAPTURE_KEY, runtime_file_roles_v1, prepare_operational_child_dir_v1,
+    operational_mount_arguments_v1, operational_launch_arguments_v1,
+    copy_operational_child_v1, operational_runtime_scratch_v1,
+)
 
 RUNTIME_INPUT_KEY = "openvino_gva_publication_runtime_v3"
 RUNTIME_INPUT_KIND = "vast_openvino_gva_publication_runtime_inputs_v3"
-EXPECTED_IMAGE_ID = (
-    "sha256:6ded3d8dbe94782c8c8132bfde1edb3670167165324b40dc8f6da63909fc485c"
-)
-EXPECTED_REPOSITORY_DIGEST = (
-    "vast/openvino-gva-publication-runtime-v3@"
-    "sha256:6ded3d8dbe94782c8c8132bfde1edb3670167165324b40dc8f6da63909fc485c"
-)
-EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = (
-    "b364a3a900f9ebd52106630e5bcab7cead102778323973d3db9d167d06a463fc"
-)
-EXPECTED_IMAGE_LABELS = {
-    "org.vast.base-image-id": (
-        "sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1"
-    ),
-    "org.vast.component": "openvino-gva-checkpoint-publication-runtime",
-    "org.vast.native_probe.kind": "openvino-dlstreamer-publication-v3",
-    "org.vast.native_probe.source_sha": (
-        "676c1d301a5a0913efec17b60a444a35b588036737d68fa113fef4f6c28922d7"
-    ),
-    "org.vast.publication-ready": "false",
-    "org.vast.publication-runtime-abi": "3",
-    "org.vast.runtime-dependency-set-sha256": (
-        "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
-    ),
-    "org.vast.runtime-source-allowlist-sha256": (
-        "4c5449aa2e43cf63268dc77c4eb7c7fc288a88828d228199c672c37c280ed5a9"
-    ),
-    "org.vast.runtime-source-sha256": (
-        "4b7d6fcb2cdd29eff66dc7c166367bb731c451d81b1bf2ed1a64de0d9b1e0e4e"
-    ),
-}
+EXPECTED_IMAGE_REFERENCE = 'vast/openvino-gva-publication-runtime-v3:materialized'
+EXPECTED_IMAGE_ID = 'sha256:05515dcfa87c932e46447c39f56abc69bb04b0aeef9566ae646adeb70be024b2'
+EXPECTED_REPOSITORY_DIGEST = 'vast/openvino-gva-publication-runtime-v3@sha256:05515dcfa87c932e46447c39f56abc69bb04b0aeef9566ae646adeb70be024b2'
+EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256 = 'cdf7a015fad0050d4a13ccbcdac00ccdb59a6ac3c4b0b824ada3c14865c392ef'
+EXPECTED_BASE_IMAGE_ID = 'sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c'
+EXPECTED_IMAGE_LABELS = {'org.vast.base-image-id': 'sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c',
+ 'org.vast.component': 'openvino-gva-checkpoint-publication-runtime',
+ 'org.vast.native_probe.kind': 'openvino-dlstreamer-publication-v3',
+ 'org.vast.native_probe.source_sha': 'b9b350163f4d030ee4a182e06edd9b5f49ed809501d5e64de632dcff24ca8fab',
+ 'org.vast.publication-ready': 'false',
+ 'org.vast.publication-runtime-abi': '3',
+ 'org.vast.runtime-dependency-set-sha256': '0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e',
+ 'org.vast.runtime-source-allowlist-sha256': '4dafc88777988a36db1d9f9f7e13b033630e67e19556da1d6fc07b65ea7a69eb',
+ 'org.vast.runtime-source-sha256': '2855cfabe17ef9b3e4338805a6a4f5a34f3e2fe51abe1cf57cc1b0b5dd2c46af'}
 EXPECTED_IMAGE_ENTRYPOINT = "/usr/local/bin/vast_openvino_gva_publication_runtime_v3"
 EXPECTED_IMAGE_USER = "dlstreamer"
-EXPECTED_EMBEDDED_ARTIFACTS = {
-    "/usr/local/bin/vast_openvino_gva_publication_runtime_v3": (
-        "3871aeb3037d041deb1722bfb6523125416a8939d204c21f2b9e8c906e9815ae"
-    ),
-    "/usr/local/bin/vast_native_gst_probe": (
-        "7df65e53a8f80721c6d432fab1fc405e99894d08f163fb802749dd7e1e3db6f1"
-    ),
-    "/usr/local/bin/vast_checkpoint_source": (
-        "e0570213d7287825dd7703659460242997ff5365921786e173ab8b43df723df7"
-    ),
-    "/opt/vast/share/gstreamer-registry.bin": (
-        "cd0e455e28112001956304b9c46e7e56cc33075476a09efd6cfb0ee9250ef43b"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so": (
-        "8a22b9dfb1d48337503530f47badaf6ee1bb9fcc2eeb76c80856026b98edb550"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so": (
-        "eb53eed6fcb49586cad6dd9266052f519db2f30c00fcf1476a2579cf760b0d55"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so": (
-        "16cc7d633b952c5496d8f1ed81c73be2afefaf64d68fc917c257f4188483ced4"
-    ),
-    "/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so": (
-        "371676a5737d5f1f7912cfdd20da247242c77a7031a6abb2773fe530cac2b0ec"
-    ),
-    "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py": (
-        "f3ee866b847b8fdcf052275b620b5e583d7fa00427ac9f4498920cc919996a2a"
-    ),
-    "/opt/vast/checkpoint/checkpoint_openvino_gva_container_coordinator_v3.py": (
-        "33a94d90919880c8f04b9e49a9841cda21ceceee1bb36ef1489e9103d2b4b583"
-    ),
-    "/opt/vast/runtime-source-allowlist.txt": (
-        "4c5449aa2e43cf63268dc77c4eb7c7fc288a88828d228199c672c37c280ed5a9"
-    ),
-}
+EXPECTED_EMBEDDED_ARTIFACTS = {'/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py': '5cb5e273831286f333c3647633bc50c445103b8ee62f9e6b99db08f33884f4cc',
+ '/opt/vast/checkpoint/checkpoint_openvino_gva_container_coordinator_v3.py': '33a94d90919880c8f04b9e49a9841cda21ceceee1bb36ef1489e9103d2b4b583',
+ '/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so': 'd36642c99d55fac7d834c75b500c7ffd086f022e671cb2b38aecaf38b8d0ad9f',
+ '/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so': '9909f2b19adc3f7e82dcf8923a3e719f8546cd4e5126663deafdce04121d2258',
+ '/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so': '04962e14523cc570ce1b24735e76334820ed730b5aee72beac0685a4704f9e45',
+ '/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so': '797a9311f06cc60ce3768dfc2b3a191525a8577dd8ce2a4eca057aa4fcefdabf',
+ '/opt/vast/runtime-source-allowlist.txt': '4dafc88777988a36db1d9f9f7e13b033630e67e19556da1d6fc07b65ea7a69eb',
+ '/opt/vast/share/gstreamer-registry.bin': '18b3fb289de3a7c101b12854beaabb38a8edb72c1ecaf6fc5deea39d307508bc',
+ '/usr/local/bin/vast_checkpoint_source': '7501479ccb90dc1e322386126c372a7650f40e5c7b76bfb29f4495470bd185df',
+ '/usr/local/bin/vast_native_gst_probe': 'ead77a6b055e6ebe5ecb4a5876496652c58d1e47df699e61c691d06362869de6',
+ '/usr/local/bin/vast_openvino_gva_publication_runtime_v3': '3871aeb3037d041deb1722bfb6523125416a8939d204c21f2b9e8c906e9815ae'}
 DATASET_BY_CODEC = {
     "h264": "kpp_iss_publication_v3_h264",
     "h265": "kpp_iss_publication_v3_h265",
@@ -148,6 +122,10 @@ FILE_ROLES = {
     "policy_capability_manifest", "policy_calibration",
 }
 CONTAINER_PROJECT_ROOT = PurePosixPath("/workspace/project")
+# Six streams x four branches run 24 native workers plus their decoder and
+# OpenVINO inference threads; the Sep25 CPU/H.264 cell peaked at 579 tasks.
+# Match the Savant ceiling; this does not change CPU or memory allocation.
+MAX_CONTAINER_PIDS = 4096
 ROLE_CONTAINER_PATHS = {
     "checkpoint_runtime": "/workspace/project/scripts/checkpoint_gstreamer_runtime.py",
     "publication_coordinator": (
@@ -162,9 +140,6 @@ ROLE_CONTAINER_PATHS = {
     "datasets_config": "/workspace/project/configs/datasets.yaml",
     "analytics_model_manifest": (
         "/workspace/project/configs/checkpoint_analytics_models_openvino.yaml"
-    ),
-    "analytics_execution_manifest": (
-        "/workspace/project/configs/analytics_execution_layer.yaml"
     ),
 }
 ROLE_PROJECT_PATHS = {
@@ -186,6 +161,7 @@ ANALYTICS_RESOURCE_FIELDS = {"runtime", "device", "capability_sha256"}
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 GPU_UUID_RE = re.compile(r"^GPU-[0-9a-fA-F-]{36}$")
 DRIVER_RE = re.compile(r"^[0-9]+(?:\.[0-9]+){1,3}$")
+OBSERVED_DEVICE_PROBE_FILENAME = "openvino_device_probe.observed.json"
 CONTAINER_OUTPUT_ROOT = "/opt/vast/output"
 ANALYTICS_SOCKET_TARGET = "/run/vast/analytics-execution.sock"
 MAX_FILES = 192
@@ -220,6 +196,18 @@ def _canonical(value: object) -> bytes:
         ).encode("ascii")
     except (TypeError, ValueError, UnicodeError):
         _fail("openvino_gva_canonical_json_invalid")
+
+
+def image_projection_sha256(value: Mapping[str, Any]) -> str:
+    """Hash the exact refreeze-v1 projection encoding (without JSONL LF)."""
+    try:
+        canonical = json.dumps(
+            value, sort_keys=True, separators=(",", ":"),
+            ensure_ascii=True, allow_nan=False,
+        ).encode("ascii")
+    except (TypeError, ValueError, UnicodeError):
+        _fail("openvino_gva_container_image_projection_invalid")
+    return hashlib.sha256(canonical).hexdigest()
 
 
 def _snapshot(info: os.stat_result) -> tuple[int, ...]:
@@ -647,15 +635,19 @@ def _validate_contract(request: NativePublicationRequestV3) -> _Contract:
     value = dataset.get(RUNTIME_INPUT_KEY) if isinstance(dataset, Mapping) else None
     if type(value) is not dict:
         _fail("openvino_gva_runtime_input_contract_missing")
-    if set(value) != RUNTIME_FIELDS:
+    if set(value) not in (RUNTIME_FIELDS, RUNTIME_FIELDS | {CAPTURE_KEY}):
         _fail("openvino_gva_runtime_input_contract_fields_drifted")
     if (
         value.get("schema_version") != 3
         or value.get("artifact_kind") != RUNTIME_INPUT_KIND
     ):
         _fail("openvino_gva_runtime_input_contract_identity_invalid")
+    try:
+        expected_file_roles = runtime_file_roles_v1(request, value, FILE_ROLES)
+    except (ValueError, TypeError, OSError):
+        _fail("openvino_gva_operational_capture_contract_invalid")
     files = value.get("files")
-    if type(files) is not dict or set(files) != FILE_ROLES:
+    if type(files) is not dict or set(files) != expected_file_roles:
         _fail("openvino_gva_runtime_file_role_set_drifted")
     if runtime.get("system") != request.system or request.system != "openvino_gva":
         _fail("openvino_gva_runtime_system_binding_invalid")
@@ -760,7 +752,7 @@ def _open_pins(request: NativePublicationRequestV3, contract: _Contract) -> _Pin
     support: tuple[_Pin, ...] = ()
     static_map: _Pin | None = None
     try:
-        for role in sorted(FILE_ROLES):
+        for role in sorted(raw["files"]):
             roles[role] = _open_pin(
                 root, role, raw["files"][role],
                 executable=role == "container_engine",
@@ -831,7 +823,7 @@ def _invoke_engine(
     argv: tuple[str, ...],
     timeout_s: float,
 ) -> _Completed:
-    """Execute the held Docker CLI with bounded captures and pass_fds."""
+    """Run the held CLI, preserving original status and bounded captures."""
 
     if (
         not argv or any(type(value) is not str or "\x00" in value for value in argv)
@@ -855,50 +847,96 @@ def _invoke_engine(
         ) from error
     captures = {"stdout": bytearray(), "stderr": bytearray()}
     exceeded = threading.Event()
+    stop_readers = threading.Event()
+    reader_failed = threading.Event()
 
     def reader(name: str, stream: Any) -> None:
         observed = 0
-        while True:
-            chunk = stream.read(64 * 1024)
-            if not chunk:
-                return
-            observed += len(chunk)
-            if observed > MAX_CAPTURE_BYTES:
-                exceeded.set()
-            target = captures[name]
-            if len(target) < MAX_CAPTURE_BYTES:
-                target.extend(chunk[: MAX_CAPTURE_BYTES - len(target)])
+        try:
+            try:
+                descriptor = stream.fileno()
+                os.set_blocking(descriptor, False)
+            except (AttributeError, OSError, ValueError):
+                descriptor = None  # Only inactive in-memory fixtures lack a pipe.
+            while not stop_readers.is_set():
+                try:
+                    chunk = os.read(descriptor, 64 * 1024) if descriptor is not None else stream.read(64 * 1024)
+                except BlockingIOError:
+                    stop_readers.wait(0.01)
+                    continue
+                if not chunk:
+                    return
+                observed += len(chunk)
+                if observed > MAX_CAPTURE_BYTES:
+                    exceeded.set()
+                target = captures[name]
+                if len(target) < MAX_CAPTURE_BYTES:
+                    target.extend(chunk[: MAX_CAPTURE_BYTES - len(target)])
+        except (OSError, ValueError):
+            reader_failed.set()
 
     threads = [
-        threading.Thread(target=reader, args=("stdout", process.stdout), daemon=True),
-        threading.Thread(target=reader, args=("stderr", process.stderr), daemon=True),
+        threading.Thread(target=reader, args=(name, stream), daemon=True)
+        for name, stream in (("stdout", process.stdout), ("stderr", process.stderr))
     ]
-    for thread in threads:
-        thread.start()
-    deadline = time.monotonic() + timeout_s
+    started_threads = []
+    token = None
     timed_out = False
-    while process.poll() is None:
-        if exceeded.is_set() or time.monotonic() >= deadline:
-            timed_out = not exceeded.is_set()
-            try:
-                os.killpg(process.pid, signal.SIGKILL)
-            except OSError:
-                process.kill()
-            break
-        time.sleep(0.01)
+    drain_failed = False
+    body_error = None
     try:
-        process.wait(timeout=10)
-    except subprocess.TimeoutExpired:
-        process.kill()
-        process.wait()
-    for thread in threads:
-        thread.join(timeout=10)
-    for stream in (process.stdout, process.stderr):
+        for thread in threads:
+            thread.start()
+            started_threads.append(thread)
+        # Persistence can fail after Popen; the original child is still ours.
+        token = engine_process_started_v1(process, engine, engine_socket, argv)
+        deadline = time.monotonic() + timeout_s
+        while process.poll() is None:
+            if exceeded.is_set() or time.monotonic() >= deadline:
+                timed_out = not exceeded.is_set()
+                break
+            time.sleep(0.01)
+    except BaseException as error:
+        body_error = error
+        raise
+    finally:
         try:
-            stream.close()
-        except OSError:
-            pass
-    if any(thread.is_alive() for thread in threads):
+            try:
+                if process.poll() is None:
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except OSError:
+                        process.kill()
+                try:
+                    process.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait(timeout=10)
+                for thread in started_threads:
+                    thread.join(timeout=10)
+            finally:
+                drain_failed = reader_failed.is_set() or any(thread.is_alive() for thread in started_threads)
+                stop_readers.set()
+                try:
+                    for thread in started_threads:
+                        thread.join(timeout=1)
+                    drain_failed = drain_failed or any(thread.is_alive() for thread in started_threads)
+                finally:
+                    for stream in (process.stdout, process.stderr):
+                        try:
+                            stream.close()
+                        except OSError:
+                            pass
+            if token is not None:
+                engine_process_terminal_v1(
+                    token, process, bytes(captures["stdout"]), bytes(captures["stderr"]),
+                    timed_out, exceeded.is_set(), drain_failed,
+                )
+        except BaseException as cleanup_error:
+            if body_error is None:
+                raise
+            body_error.add_note("Original engine child cleanup failed: " + str(cleanup_error))
+    if drain_failed:
         _fail("openvino_gva_container_capture_drain_failed")
     if exceeded.is_set():
         _fail("openvino_gva_container_capture_limit_exceeded")
@@ -907,8 +945,7 @@ def _invoke_engine(
             "openvino_gva_container_execution_timed_out"
         )
     return _Completed(
-        int(process.returncode), bytes(captures["stdout"]),
-        bytes(captures["stderr"]),
+        int(process.returncode), bytes(captures["stdout"]), bytes(captures["stderr"])
     )
 
 
@@ -933,10 +970,11 @@ def _image_projection(value: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _inspect_image(pins: _Pins, contract: _Contract) -> dict[str, Any]:
-    completed = _invoke_engine(
-        pins.roles["container_engine"], contract.engine_socket,
-        ("image", "inspect", EXPECTED_IMAGE_ID), 60.0,
-    )
+    with original_engine_phase_v1("image_inspect"):
+        completed = _invoke_engine(
+            pins.roles["container_engine"], contract.engine_socket,
+            ("image", "inspect", EXPECTED_IMAGE_REFERENCE), 60.0,
+        )
     if completed.returncode != 0 or completed.stderr:
         _fail("openvino_gva_container_image_inspect_failed")
     try:
@@ -954,7 +992,7 @@ def _inspect_image(pins: _Pins, contract: _Contract) -> dict[str, Any]:
         or projection["Config"]["Entrypoint"] != [EXPECTED_IMAGE_ENTRYPOINT]
         or projection["Config"]["User"] != EXPECTED_IMAGE_USER
         or projection["Config"]["Labels"] != EXPECTED_IMAGE_LABELS
-        or hashlib.sha256(_canonical(projection)).hexdigest()
+        or image_projection_sha256(projection)
         != EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256
     ):
         _fail("openvino_gva_container_image_identity_changed")
@@ -1136,7 +1174,7 @@ def _security_argv(contract: _Contract) -> list[str]:
     return [
         "run", "--rm", "--network", "none", "--read-only",
         "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
-        "--pids-limit", "512", "--ipc", "none", "--gpus",
+        "--pids-limit", str(MAX_CONTAINER_PIDS), "--ipc", "none", "--gpus",
         str(contract.device["docker_gpus_request"]),
         "--tmpfs", "/tmp:rw,nosuid,nodev,noexec,size=1073741824",
         "--tmpfs", "/run/vast:rw,nosuid,nodev,noexec,size=16777216",
@@ -1148,10 +1186,11 @@ def _probe_embedded_artifacts(pins: _Pins, contract: _Contract) -> None:
         *_security_argv(contract), "--entrypoint", "/usr/bin/sha256sum",
         EXPECTED_IMAGE_ID, *EXPECTED_EMBEDDED_ARTIFACTS,
     ]
-    completed = _invoke_engine(
-        pins.roles["container_engine"], contract.engine_socket,
-        tuple(arguments), 120.0,
-    )
+    with original_engine_phase_v1("embedded_artifact_probe"):
+        completed = _invoke_engine(
+            pins.roles["container_engine"], contract.engine_socket,
+            tuple(arguments), 120.0,
+        )
     if completed.returncode != 0 or completed.stderr:
         _fail("openvino_gva_embedded_artifact_probe_failed")
     try:
@@ -1168,8 +1207,30 @@ def _probe_embedded_artifacts(pins: _Pins, contract: _Contract) -> None:
         _fail("openvino_gva_embedded_artifact_identity_changed")
 
 
+def _retain_observed_device_probe(output_dir: Path, probe: Mapping[str, Any]) -> None:
+    destination = output_dir / OBSERVED_DEVICE_PROBE_FILENAME
+    try:
+        payload = _canonical(probe)
+        if destination.exists() or os.path.lexists(destination):
+            return
+        partial = destination.with_name(destination.name + ".partial")
+        if partial.exists() or os.path.lexists(partial):
+            return
+        with partial.open("xb") as handle:
+            handle.write(payload)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(partial, destination)
+    except OSError:
+        return
+
+
 def _probe_openvino_devices(
-    pins: _Pins, contract: _Contract, materialized: _MaterializedInputs,
+    pins: _Pins,
+    contract: _Contract,
+    materialized: _MaterializedInputs,
+    *,
+    output_dir: Path,
 ) -> None:
     probe_path = str(pins.roles["device_probe"].container_path)
     arguments = [
@@ -1179,10 +1240,11 @@ def _probe_openvino_devices(
         "--entrypoint", "/usr/bin/python3", EXPECTED_IMAGE_ID,
         "-B", probe_path,
     ]
-    completed = _invoke_engine(
-        pins.roles["container_engine"], contract.engine_socket,
-        tuple(arguments), 180.0,
-    )
+    with original_engine_phase_v1("openvino_device_probe"):
+        completed = _invoke_engine(
+            pins.roles["container_engine"], contract.engine_socket,
+            tuple(arguments), 180.0,
+        )
     if completed.returncode != 0 or completed.stderr:
         _fail("openvino_gva_device_probe_failed")
     try:
@@ -1196,6 +1258,8 @@ def _probe_openvino_devices(
         or hashlib.sha256(_canonical(probe)).hexdigest()
         != contract.device["openvino_device_probe_sha256"]
     ):
+        if type(probe) is dict:
+            _retain_observed_device_probe(output_dir, probe)
         _fail("openvino_gva_device_probe_identity_changed")
     devices, elements = probe.get("available_devices"), probe.get("gstreamer_elements")
     if type(devices) is not list or type(elements) is not dict:
@@ -1228,10 +1292,11 @@ def _probe_nvidia_device(pins: _Pins, contract: _Contract) -> None:
         EXPECTED_IMAGE_ID, "--query-gpu=name,uuid,driver_version",
         "--format=csv,noheader,nounits",
     ]
-    completed = _invoke_engine(
-        pins.roles["container_engine"], contract.engine_socket,
-        tuple(arguments), 120.0,
-    )
+    with original_engine_phase_v1("nvidia_device_probe"):
+        completed = _invoke_engine(
+            pins.roles["container_engine"], contract.engine_socket,
+            tuple(arguments), 120.0,
+        )
     if completed.returncode != 0 or completed.stderr:
         _fail("openvino_gva_nvidia_device_probe_failed")
     try:
@@ -1257,13 +1322,17 @@ def _container_argv(
 ) -> tuple[str, ...]:
     runtime, files = request.runtime_inputs, pins.roles
     arguments = [
-        *_security_argv(contract), *_input_mounts(materialized),
+        *_security_argv(contract),
+        "--user", f"{os.getuid()}:{os.getgid()}",
+        *_input_mounts(materialized),
         *_mount(runtime_output.as_posix(), CONTAINER_OUTPUT_ROOT, readonly=False),
+        *operational_mount_arguments_v1(contract.raw, runtime_output, _mount),
         *_mount(
             str(contract.analytics_socket["path"]), ANALYTICS_SOCKET_TARGET,
             readonly=True,
         ),
         "--workdir", str(CONTAINER_PROJECT_ROOT),
+        *deterministic_numeric_thread_environment_argv_v1(),
         "--env", "PYTHONDONTWRITEBYTECODE=1",
         "--env", (
             "VAST_NATIVE_PYTHONPATH="
@@ -1316,6 +1385,7 @@ def _container_argv(
         arguments.extend(("--static-hybrid-map", str(pins.static_map.container_path)))
     if contract.raw["defer_full_resource_acceptance"]:
         arguments.append("--defer-full-resource-acceptance")
+    arguments.extend(operational_launch_arguments_v1(contract.raw, files))
     return tuple(arguments)
 
 
@@ -1361,121 +1431,31 @@ def _validate_status(
         _fail("openvino_gva_native_runtime_terminal_status_invalid")
 
 
-def _copy_one_evidence(source: Path, temporary: Path) -> tuple[int, int]:
-    source_fd = target_fd = -1
-    try:
-        before = source.lstat()
-        if (
-            not stat.S_ISREG(before.st_mode) or _is_link(before)
-            or int(before.st_nlink) != 1
-            or not 0 < int(before.st_size) <= MAX_EVIDENCE_BYTES
-        ):
-            raise OSError("invalid")
-        source_fd = os.open(
-            source, os.O_RDONLY | getattr(os, "O_CLOEXEC", 0)
-            | getattr(os, "O_NOFOLLOW", 0),
-        )
-        opened = os.fstat(source_fd)
-        if _snapshot(before) != _snapshot(opened):
-            raise OSError("changed")
-        target_fd = os.open(
-            temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600,
-        )
-        observed = 0
-        while True:
-            chunk = os.read(source_fd, 1024 * 1024)
-            if not chunk:
-                break
-            observed += len(chunk)
-            offset = 0
-            while offset < len(chunk):
-                written = os.write(target_fd, chunk[offset:])
-                if written <= 0:
-                    raise OSError("short write")
-                offset += written
-        os.fsync(target_fd)
-        after, opened_after = source.lstat(), os.fstat(source_fd)
-        target_info = os.fstat(target_fd)
-        if (
-            _snapshot(before) != _snapshot(after)
-            or _snapshot(after) != _snapshot(opened_after)
-            or observed != int(after.st_size)
-            or observed != int(target_info.st_size)
-            or not stat.S_ISREG(target_info.st_mode)
-            or int(target_info.st_nlink) != 1
-        ):
-            raise OSError("changed")
-        return int(target_info.st_dev), int(target_info.st_ino)
-    except OSError:
-        try:
-            temporary.unlink(missing_ok=True)
-        except OSError:
-            pass
-        _fail("openvino_gva_child_evidence_materialization_failed")
-    finally:
-        for descriptor in (source_fd, target_fd):
-            if descriptor >= 0:
-                os.close(descriptor)
-
-
 def _copy_evidence(
     runtime_output: Path,
     request: NativePublicationRequestV3,
     mapping: Mapping[str, str],
+    *,
+    _fault_hook: Callable[[str], None] | None = None,
 ) -> None:
-    staged: list[tuple[Path, Path, tuple[int, int]]] = []
-    committed: list[tuple[Path, tuple[int, int]]] = []
-    failed = False
     try:
-        for target_name in request.launcher_evidence_files:
-            source = runtime_output / mapping[target_name]
-            target = request.output_dir / target_name
-            temporary = target.with_name(
-                f".{target.name}.openvino-gva-v3.{os.getpid()}.tmp"
-            )
-            if target.exists() or temporary.exists():
-                raise OSError("collision")
-            identity = _copy_one_evidence(source, temporary)
-            staged.append((temporary, target, identity))
-        if any(target.exists() for _, target, _ in staged):
-            raise OSError("collision")
-        for temporary, target, identity in staged:
-            os.link(temporary, target, follow_symlinks=False)
-            committed.append((target, identity))
-            info = target.lstat()
-            if (
-                (int(info.st_dev), int(info.st_ino)) != identity
-                or not stat.S_ISREG(info.st_mode) or _is_link(info)
-                or int(info.st_nlink) != 2
-            ):
-                raise OSError("commit changed")
-        for temporary, _, _ in staged:
-            temporary.unlink()
-        for target, identity in committed:
-            info = target.lstat()
-            if (
-                (int(info.st_dev), int(info.st_ino)) != identity
-                or not stat.S_ISREG(info.st_mode) or _is_link(info)
-                or int(info.st_nlink) != 1
-            ):
-                raise OSError("committed changed")
-    except (OSError, OpenVINOGVAPublicationRuntimeV3Error):
-        failed = True
-    finally:
-        if failed:
-            for target, identity in reversed(committed):
-                try:
-                    info = target.lstat()
-                    if (int(info.st_dev), int(info.st_ino)) == identity:
-                        target.unlink()
-                except (FileNotFoundError, OSError):
-                    pass
-        for temporary, _, _ in staged:
-            try:
-                temporary.unlink(missing_ok=True)
-            except OSError:
-                pass
-    if failed:
+        materialize_publication_child_evidence_group_v1(
+            project_root=request.project_root,
+            source_dir=runtime_output,
+            output_dir=request.output_dir,
+            target_names=request.launcher_evidence_files,
+            evidence_mapping=dict(mapping),
+            allowed_preexisting_names=(
+                (Path(os.path.abspath(request.arm_contract_path)).name,)
+                if Path(os.path.abspath(request.arm_contract_path)).parent
+                == Path(os.path.abspath(request.output_dir))
+                else ()
+            ),
+            maximum_bytes=MAX_EVIDENCE_BYTES,
+            label="OpenVINO GVA child evidence",
+            after_physical_commit_step=_fault_hook,
+        )
+    except PublicationChildEvidenceMaterializerV1Error:
         _fail("openvino_gva_child_evidence_materialization_failed")
 
 
@@ -1493,7 +1473,7 @@ def run_checkpoint_openvino_gva_publication_runtime_v3(
         _require_pins_unchanged(pins)
         _probe_embedded_artifacts(pins, contract)
         _require_pins_unchanged(pins)
-        with tempfile.TemporaryDirectory(
+        with operational_runtime_scratch_v1(contract.raw, request=request,
             prefix=f"vast-openvino-gva-v3-{request.arm_id}-",
             dir=str(contract.raw["scratch_root"]),
         ) as name:
@@ -1504,10 +1484,13 @@ def run_checkpoint_openvino_gva_publication_runtime_v3(
             materialized = _materialize_inputs(pins, project)
             try:
                 runtime_output.mkdir(mode=0o700)
+                prepare_operational_child_dir_v1(contract.raw, runtime_output)
                 _require_materialized_unchanged(materialized)
                 _require_pins_unchanged(pins)
                 _require_sockets_unchanged(contract)
-                _probe_openvino_devices(pins, contract, materialized)
+                _probe_openvino_devices(
+                    pins, contract, materialized, output_dir=request.output_dir
+                )
                 _require_materialized_unchanged(materialized)
                 _require_pins_unchanged(pins)
                 _require_sockets_unchanged(contract)
@@ -1517,10 +1500,14 @@ def run_checkpoint_openvino_gva_publication_runtime_v3(
                 arguments = _container_argv(
                     request, contract, pins, materialized, runtime_output
                 )
-                completed = _invoke_engine(
-                    pins.roles["container_engine"], contract.engine_socket,
-                    arguments, float(contract.raw["container_timeout_s"]),
-                )
+                with original_engine_phase_v1("measurement"), measurement_container_custody_v1(
+                    pins.roles["container_engine"], contract.engine_socket, arguments,
+                ) as owned_container:
+                    completed = _invoke_engine(
+                        pins.roles["container_engine"], contract.engine_socket,
+                        owned_container.argv, float(contract.raw["container_timeout_s"]),
+                    )
+                    owned_container.completed(completed.returncode)
                 _require_materialized_unchanged(materialized)
                 _require_pins_unchanged(pins)
                 _require_sockets_unchanged(contract)
@@ -1536,6 +1523,7 @@ def run_checkpoint_openvino_gva_publication_runtime_v3(
                 _copy_evidence(
                     runtime_output, request, contract.evidence_mapping
                 )
+                copy_operational_child_v1(contract.raw, runtime_output, request)
                 _require_materialized_unchanged(materialized)
             finally:
                 materialized.close()
@@ -1547,8 +1535,9 @@ def run_checkpoint_openvino_gva_publication_runtime_v3(
 
 
 __all__ = [
-    "EXPECTED_IMAGE_ID",
+    "EXPECTED_BASE_IMAGE_ID", "EXPECTED_IMAGE_ID", "EXPECTED_IMAGE_REFERENCE",
     "EXPECTED_REPOSITORY_DIGEST",
+    "image_projection_sha256",
     "OpenVINOGVAPublicationRuntimeV3Error",
     "RUNTIME_INPUT_KEY",
     "RUNTIME_INPUT_KIND",

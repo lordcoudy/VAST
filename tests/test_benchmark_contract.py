@@ -296,6 +296,69 @@ def branch_terminal_row(**overrides):
     return row
 
 
+PASSPORT_BRANCHES = ("damage", "plate_number", "vehicle", "face")
+
+
+def branch_aware_passport_fixture(
+    topology_kind: str,
+    outcomes: dict[str, str],
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Make matching physical stage intervals and verified branch terminals."""
+    shared = topology_kind == "shared_video_dag"
+    status = "completed" if all(value == "completed" for value in outcomes.values()) else "drop"
+    ingress = pd.DataFrame(
+        [ingress_ledger_row(terminal_status=status, terminal_reason="native_branch_drop" if status == "drop"
+                            else "native_output_committed")],
+        columns=INGRESS_LEDGER_COLUMNS,
+    )
+    stages = ["decode"] if shared else [f"decode_{branch}" for branch in PASSPORT_BRANCHES]
+    if shared:
+        if any(value != "prefix" for value in outcomes.values()):
+            stages.append("preprocess")
+    else:
+        stages.extend(f"preprocess_{branch}" for branch in PASSPORT_BRANCHES
+                      if outcomes[branch] != "prefix")
+    events = []
+    resources = []
+    for stage in stages:
+        preprocessing = stage.startswith("preprocess")
+        start, end = (110.0, 120.0) if preprocessing else (100.0, 110.0)
+        resource = "cpu" if preprocessing else "nvdec"
+        events.append(
+            native_event_row(stage=stage, resource=resource, queue_enter_timestamp_ms=start,
+                             stage_start_timestamp_ms=start, stage_end_timestamp_ms=end)
+        )
+        resources.append(
+            resource_event_row(stage=stage, resource=resource, timestamp_ms=end,
+                               cpu_time_ms=end - start)
+        )
+    terminals = []
+    for branch in PASSPORT_BRANCHES:
+        outcome = outcomes[branch]
+        completed = outcome == "completed"
+        terminals.append(
+            branch_terminal_row(
+                branch_id=branch,
+                terminal_status="completed" if completed else "drop",
+                terminal_reason=(
+                    "native_result_committed" if completed else
+                    "native_postdecode_preprocess_queue_full_drop_newest" if outcome == "prefix" else
+                    "native_pre_detector_queue_full_drop_newest"
+                ),
+                terminal_provenance="native_completion_event" if completed else "native_drop_event",
+                objects=1 if completed else 0,
+            )
+        )
+    branch_df = pd.DataFrame(terminals, columns=BRANCH_TERMINAL_COLUMNS)
+    branch_df["branch_terminal_claim_eligible"] = True
+    return (
+        pd.DataFrame(resources, columns=RESOURCE_EVENT_COLUMNS),
+        ingress,
+        pd.DataFrame(events, columns=FRAME_EVENT_COLUMNS),
+        branch_df,
+    )
+
+
 def stage_contract_row(**overrides):
     stage = str(overrides.get("stage", "decode"))
     base_stage = stage_base_name(stage)
@@ -1396,7 +1459,7 @@ class BenchmarkContractTests(unittest.TestCase):
         self.assertTrue(passport["resource_attribution_complete"])
         self.assertEqual(
             passport["resource_attribution"],
-            "native_per_trace_bounded_stage_interval_ingress_cohort_v3",
+            "native_per_trace_bounded_stage_interval_ingress_cohort_v4",
         )
         self.assertRegex(passport["input_schedule_sha256"], r"^[0-9a-f]{64}$")
         self.assertRegex(passport["input_frame_key_sequence_sha256"], r"^[0-9a-f]{64}$")
@@ -1420,7 +1483,15 @@ class BenchmarkContractTests(unittest.TestCase):
                 ensure_ascii=True,
             ),
         )
-        self.assertEqual(signature_payload["contract_version"], 4)
+        self.assertEqual(signature_payload["contract_version"], 5)
+        self.assertEqual(
+            signature_payload["stage_reduction_rule"],
+            "decode_preprocess_suffix_reduction_v1",
+        )
+        self.assertEqual(
+            signature_payload["resource_time_component_mapping"]["nvdec"],
+            "cpu_time_ms_host_stage_elapsed_not_nvdec_busy_time",
+        )
         self.assertEqual(
             signature_payload["resource_time_aggregation"],
             "unweighted_sum_of_attributed_device_milliseconds_v1",
@@ -1437,6 +1508,55 @@ class BenchmarkContractTests(unittest.TestCase):
         self.assertEqual(
             passport["input_frame_key_sequence_sha256"],
             drifted_passport["input_frame_key_sequence_sha256"],
+        )
+
+    def test_measurement_passport_accepts_nvdec_stage_elapsed_as_cpu_component(self) -> None:
+        ingress = pd.DataFrame([ingress_ledger_row()], columns=INGRESS_LEDGER_COLUMNS)
+        events = pd.DataFrame(
+            [
+                native_event_row(
+                    resource="nvdec",
+                    queue_enter_timestamp_ms=100.0,
+                    stage_start_timestamp_ms=102.0,
+                    stage_end_timestamp_ms=112.0,
+                ),
+                native_event_row(
+                    stage="preprocess",
+                    resource="cpu",
+                    queue_enter_timestamp_ms=110.0,
+                    stage_start_timestamp_ms=112.0,
+                    stage_end_timestamp_ms=120.0,
+                ),
+            ],
+            columns=FRAME_EVENT_COLUMNS,
+        )
+        resources = pd.DataFrame(
+            [
+                resource_event_row(resource="nvdec"),
+                resource_event_row(
+                    stage="preprocess",
+                    resource="cpu",
+                    timestamp_ms=120.0,
+                    cpu_time_ms=8.0,
+                ),
+            ],
+            columns=RESOURCE_EVENT_COLUMNS,
+        )
+
+        passport = summarize_measurement_passport(resources, ingress, events)
+
+        self.assertTrue(passport["resource_attribution_complete"])
+        self.assertEqual(passport["c_obs_cpu_total_ms"], 18.0)
+        self.assertEqual(passport["c_obs_gpu_total_ms"], 0.0)
+        self.assertTrue(json.loads(passport["measurement_signature_payload_json"])["nvdec_busy_time_included"] is False)
+
+        wrong_component = resources.copy()
+        wrong_component.loc[0, "cpu_time_ms"] = 0.0
+        wrong_component.loc[0, "gpu_time_ms"] = 10.0
+        self.assertFalse(
+            summarize_measurement_passport(wrong_component, ingress, events)[
+                "resource_attribution_complete"
+            ]
         )
 
     def test_measurement_passport_rejects_unattributed_or_incomplete_resource_work(self) -> None:
@@ -1582,6 +1702,126 @@ class BenchmarkContractTests(unittest.TestCase):
                 ends_after_terminal,
             )["resource_attribution_complete"]
         )
+
+    def test_branch_aware_passport_accepts_independent_mixed_and_all_prefix_intervals(self) -> None:
+        for outcomes in (
+            {"damage": "prefix", "plate_number": "pre_detector",
+             "vehicle": "completed", "face": "completed"},
+            {branch: "prefix" for branch in PASSPORT_BRANCHES},
+        ):
+            with self.subTest(outcomes=outcomes):
+                resources, ingress, events, branches = branch_aware_passport_fixture(
+                    "independent_processes", outcomes
+                )
+                passport = summarize_measurement_passport(
+                    resources, ingress, events, branch_terminals=branches,
+                    topology_kind="independent_processes", required_branches=PASSPORT_BRANCHES,
+                )
+                self.assertTrue(passport["resource_attribution_complete"])
+                self.assertEqual(
+                    json.loads(passport["measurement_signature_payload_json"])["contract_version"],
+                    6,
+                )
+                self.assertEqual(
+                    json.loads(passport["measurement_signature_payload_json"])["stage_reduction_rule"],
+                    "verified_branch_terminal_stage_reduction_v2",
+                )
+
+    def test_branch_aware_passport_accepts_shared_all_prefix_and_rejects_partial(self) -> None:
+        all_prefix = {branch: "prefix" for branch in PASSPORT_BRANCHES}
+        resources, ingress, events, branches = branch_aware_passport_fixture(
+            "shared_video_dag", all_prefix
+        )
+        accepted = summarize_measurement_passport(
+            resources, ingress, events, branch_terminals=branches,
+            topology_kind="shared_video_dag", required_branches=PASSPORT_BRANCHES,
+        )
+        self.assertTrue(accepted["resource_attribution_complete"])
+        self.assertEqual(set(events["stage"]), {"decode"})
+
+        partial = dict(all_prefix)
+        partial["damage"] = "pre_detector"
+        resources, ingress, events, branches = branch_aware_passport_fixture(
+            "shared_video_dag", partial
+        )
+        rejected = summarize_measurement_passport(
+            resources, ingress, events, branch_terminals=branches,
+            topology_kind="shared_video_dag", required_branches=PASSPORT_BRANCHES,
+        )
+        self.assertFalse(rejected["resource_attribution_complete"])
+
+    def test_branch_aware_passport_rejects_missing_fabricated_and_unlinked_intervals(self) -> None:
+        outcomes = {"damage": "prefix", "plate_number": "pre_detector",
+                    "vehicle": "completed", "face": "completed"}
+        resources, ingress, events, branches = branch_aware_passport_fixture(
+            "independent_processes", outcomes
+        )
+
+        def complete(
+            r: pd.DataFrame, e: pd.DataFrame, b: pd.DataFrame | None = branches,
+        ) -> bool:
+            return bool(summarize_measurement_passport(
+                r, ingress, e, branch_terminals=b,
+                topology_kind="independent_processes", required_branches=PASSPORT_BRANCHES,
+            )["resource_attribution_complete"])
+
+        self.assertTrue(complete(resources, events))
+        self.assertFalse(complete(resources, events, None))
+        self.assertFalse(complete(resources, events, branches.iloc[:-1].copy()))
+        forged = branches.copy()
+        forged.loc[forged["branch_id"] == "damage", "terminal_reason"] = "native_result_committed"
+        self.assertFalse(complete(resources, events, forged))
+        untrusted = branches.copy()
+        untrusted.loc[0, "branch_terminal_claim_eligible"] = False
+        self.assertFalse(complete(resources, events, untrusted))
+
+        for branch in ("plate_number", "vehicle"):
+            stage = f"preprocess_{branch}"
+            self.assertFalse(complete(
+                resources[resources["stage"] != stage].copy(),
+                events[events["stage"] != stage].copy(),
+            ))
+        extra_event = pd.concat(
+            [events, pd.DataFrame([native_event_row(stage="preprocess_damage", resource="cpu",
+                                                    queue_enter_timestamp_ms=110.0,
+                                                    stage_start_timestamp_ms=110.0,
+                                                    stage_end_timestamp_ms=120.0)])],
+            ignore_index=True,
+        )
+        extra_resource = pd.concat(
+            [resources, pd.DataFrame([resource_event_row(stage="preprocess_damage", resource="cpu",
+                                                        timestamp_ms=120.0)])],
+            ignore_index=True,
+        )
+        self.assertFalse(complete(extra_resource, extra_event))
+        self.assertFalse(complete(resources.iloc[:-1].copy(), events))
+        self.assertFalse(complete(resources, events.iloc[:-1].copy()))
+
+    def test_sidecar_summary_does_not_erase_partial_topology_bindings(self) -> None:
+        resources, ingress, events, _ = branch_aware_passport_fixture(
+            "shared_video_dag", {branch: "completed" for branch in PASSPORT_BRANCHES}
+        )
+        ingress["ingress_claim_eligible"] = True
+        sidecars = {
+            "resource_events": resources,
+            "frame_events": events,
+            "ingress_ledger": ingress,
+            "policy_decisions": pd.DataFrame(
+                {"policy_claim_eligible": [True], "causal_policy_claim_eligible": [True]}
+            ),
+            "drop_counters": pd.DataFrame(
+                {"drop_provenance": ["native_drop_event"],
+                 "late_provenance": ["native_deadline_event"],
+                 "drop_rate_percent": [0.0], "late_rate_percent": [0.0]}
+            ),
+        }
+        with mock.patch("benchmark_contract.validate_required_sidecars", return_value=sidecars):
+            legacy = summarize_sidecars(Path("unused"))
+            topology_only = summarize_sidecars(Path("unused"), topology_kind="shared_video_dag")
+            branches_only = summarize_sidecars(Path("unused"), required_branches=PASSPORT_BRANCHES)
+        self.assertTrue(legacy["resource_attribution_complete"])
+        self.assertFalse(topology_only["resource_attribution_complete"])
+        self.assertFalse(branches_only["resource_attribution_complete"])
 
     def test_strict_sidecar_validation_requires_native_ingress_ledger(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -1881,6 +2121,77 @@ class BenchmarkContractTests(unittest.TestCase):
             branch_analytics_contract_sha256(terminals.iloc[::-1].reset_index(drop=True)),
         )
 
+        attested_backends = (
+            "analytics-execution:openvino_cpu;runtime=OpenVINO;"
+            "native_api=openvino.CompiledModel.__call__;device=CPU:fixture-cpu",
+            "analytics-execution:tensorrt_cuda;runtime=TensorRT;"
+            "native_api=nvinfer1::IExecutionContext::enqueueV3;"
+            "device=NVIDIA_CUDA:GPU-fixture",
+        )
+        for backend in attested_backends:
+            attested = [dict(row, backend=backend) for row in rows]
+            with tempfile.TemporaryDirectory() as tmp:
+                path = Path(tmp) / "branch_terminals.csv"
+                pd.DataFrame(attested, columns=BRANCH_TERMINAL_COLUMNS).to_csv(
+                    path, index=False
+                )
+                result = validate_branch_terminals(
+                    path,
+                    ingress_ledger=ledger,
+                    frames=frames,
+                    required_branches=branches,
+                )
+            self.assertTrue(bool(result["branch_terminal_claim_eligible"].all()))
+
+        dynamic_backends = [
+            dict(
+                row,
+                backend=(
+                    "deepstream:native_pre_detector_queue"
+                    if row["terminal_status"] == "drop"
+                    else attested_backends[index % len(attested_backends)]
+                ),
+            )
+            for index, row in enumerate(rows)
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "branch_terminals.csv"
+            pd.DataFrame(dynamic_backends, columns=BRANCH_TERMINAL_COLUMNS).to_csv(
+                path, index=False
+            )
+            dynamic_result = validate_branch_terminals(
+                path,
+                ingress_ledger=ledger,
+                frames=frames,
+                required_branches=branches,
+            )
+        self.assertTrue(bool(dynamic_result["branch_terminal_claim_eligible"].all()))
+        self.assertEqual(
+            identity_hash,
+            branch_analytics_contract_sha256(dynamic_result),
+        )
+
+        invalid_backend = [dict(row) for row in rows]
+        invalid_backend[0]["backend"] = (
+            "analytics-execution:openvino_cpu;runtime=OpenVINO;"
+            "native_api=openvino.CompiledModel.__call__;"
+            "device=NVIDIA_CUDA:GPU-fixture"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "branch_terminals.csv"
+            pd.DataFrame(invalid_backend, columns=BRANCH_TERMINAL_COLUMNS).to_csv(
+                path, index=False
+            )
+            with self.assertRaisesRegex(
+                ContractError, "verified native analytics execution identity"
+            ):
+                validate_branch_terminals(
+                    path,
+                    ingress_ledger=ledger,
+                    frames=frames,
+                    required_branches=branches,
+                )
+
         malformed = [dict(row) for row in rows]
         malformed[0]["detector"] = "native-damage-v1"
         with tempfile.TemporaryDirectory() as tmp:
@@ -1902,7 +2213,9 @@ class BenchmarkContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "branch_terminals.csv"
             pd.DataFrame(drifted, columns=BRANCH_TERMINAL_COLUMNS).to_csv(path, index=False)
-            with self.assertRaisesRegex(ContractError, "analytics identity changed within branch damage"):
+            with self.assertRaisesRegex(
+                ContractError, "analytics model identity changed within branch damage"
+            ):
                 validate_branch_terminals(
                     path,
                     ingress_ledger=ledger,
@@ -2267,6 +2580,35 @@ class BenchmarkContractTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ContractError, "must be observed no later than the decision"):
                 validate_policy_decisions(path, require_causal_trace=True)
+
+    def test_causal_policy_trace_accepts_identical_epoch_timestamp_csv_json_ulp(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "policy_decisions.csv"
+            timestamp = 1_787_916_516_901.2573
+            row = causal_policy_decision_row(
+                decision_timestamp_ms=timestamp,
+                terminal_timestamp_ms=timestamp + 20.0,
+                feature_provenance_json=json.dumps(
+                    {
+                        "native_queue_depths": {
+                            "source": "native_worker_socket:fixture",
+                            "source_trace_id": "r:0:1",
+                            "observed_timestamp_ms": timestamp,
+                            "age_ms": 0.0,
+                            "estimator_version": "native-fixture-queue-snapshot-v1",
+                        }
+                    },
+                    separators=(",", ":"),
+                ),
+            )
+            pd.DataFrame([row], columns=POLICY_DECISION_COLUMNS).to_csv(
+                path, index=False
+            )
+
+            validated = validate_policy_decisions(
+                path, require_causal_trace=True
+            )
+            self.assertEqual(len(validated), 1)
 
     def test_causal_policy_trace_rejects_censored_feedback_update(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -3098,14 +3440,23 @@ class BenchmarkContractTests(unittest.TestCase):
                 ],
                 columns=RESOURCE_EVENT_COLUMNS,
             )
+            required_branches = metadata_scenario["topology"]["required_branches"]
             branch_terminals = pd.DataFrame(
-                {
-                    "branch_id": ["damage"],
-                    "terminal_status": ["completed"],
-                    "detector": [verified_detector_identity("native-damage-v1")],
-                    "backend": ["openvino-dlstreamer:gvadetect"],
-                    "branch_terminal_claim_eligible": [True],
-                }
+                [
+                    {
+                        **branch_terminal_row(
+                            trace_id=f"r:{stream_id}:1",
+                            input_frame_key=f"source:{stream_id}:1",
+                            stream_id=stream_id,
+                            branch_id=branch,
+                            detector=verified_detector_identity(f"native-{branch}-v1"),
+                            objects=1 if branch == "damage" else 0,
+                        ),
+                        "branch_terminal_claim_eligible": True,
+                    }
+                    for stream_id in range(6)
+                    for branch in required_branches
+                ]
             )
             stage_contracts = pd.DataFrame(
                 [
@@ -3141,7 +3492,10 @@ class BenchmarkContractTests(unittest.TestCase):
                     "reset_claim_eligible": [True],
                 }
             )
-            passport = summarize_measurement_passport(resources, ingress, events)
+            passport = summarize_measurement_passport(
+                resources, ingress, events, branch_terminals=branch_terminals,
+                topology_kind="shared_video_dag", required_branches=required_branches,
+            )
             semantic_hash = semantic_prefix_contract_sha256(stage_contracts)
             branch_analytics_hash = branch_analytics_contract_sha256(branch_terminals)
             row = pd.Series(
@@ -3166,7 +3520,7 @@ class BenchmarkContractTests(unittest.TestCase):
                     "ingress_ledger_complete": True,
                     "ingress_cohort_closed": True,
                     "branch_terminal_trace_complete": True,
-                    "branch_terminal_event_count": 1,
+                    "branch_terminal_event_count": 24,
                     "native_branch_drop_event_count": 0,
                     "checkpoint_frame_aggregation_complete": True,
                     "stage_semantic_contract_complete": True,
@@ -3835,7 +4189,7 @@ class BenchmarkContractTests(unittest.TestCase):
                 "input_frame_key_sequence_sha256": f"{repeat + 100:064x}",
                 "measurement_window_duration_ms": 180000.0,
                 "drain_rule": "drain_to_empty",
-                "resource_attribution": "native_per_trace_bounded_stage_interval_ingress_cohort_v3",
+                "resource_attribution": "native_per_trace_bounded_stage_interval_ingress_cohort_v4",
                 "measurement_signature": "a" * 64,
                 "semantic_prefix_contract_sha256": "b" * 64,
                 "decoder_factory": "nvh264dec",

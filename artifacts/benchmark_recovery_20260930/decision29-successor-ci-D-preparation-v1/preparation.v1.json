@@ -1,0 +1,302 @@
+{
+  "actual_D_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "all_twelve_source_pin_predicates_unchanged": true,
+  "author": "/root/decision28_source_peer",
+  "author_handles_released": true,
+  "benchmark_B_untouched": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "cache_copy_action_included": false,
+  "cache_copy_scope": "Separate architecture-review-owned offline exact8 setup-copy preparation; no copy, model, network, policy or runtime operation occurs in this author action. Unchanged stock strict_existing validation remains mandatory.",
+  "future_actual_outcomes": null,
+  "future_original_full_CI_owner": null,
+  "future_original_full_CI_terminal": null,
+  "future_original_setup_owner": null,
+  "future_original_setup_terminal": null,
+  "independent_root_source_review_required_before_execution": true,
+  "limits": [
+    "Actual D commit is supplied by ROOT; this preparation performs no Git or setup. Recipe binding authorizes no execution without independent ROOT review/grant.",
+    "C/P/local original failures remain retained failed attempts. New-D destinations are distinct; no historical namespace is resumed or replaced.",
+    "Before full CI, fresh actual95 full-SHA/size/seven-Linux-epoch closure must still be genuinely observed and joined; setup epoch-only custody is not relabeled as hashing95."
+  ],
+  "original_C_recipe": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/recipe.bound.v1.json",
+    "sha256": "7507d429ba5a57fa25e5fd1fcf9d106d9b743c53f84346366230569d9b7c938b",
+    "size_bytes": 10644
+  },
+  "preserved_original_C_recipe": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/before/recipe.bound.C.v1.json.raw",
+    "sha256": "7507d429ba5a57fa25e5fd1fcf9d106d9b743c53f84346366230569d9b7c938b",
+    "size_bytes": 10644
+  },
+  "recipe_bound_source_only": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/recipe.bound.v1.json",
+    "sha256": "e8df0e735c27bd282eee9692144fb0e42ab7491259bedb2626e1714fe64865c5",
+    "size_bytes": 11220
+  },
+  "recipe_exact_structured_inverse": true,
+  "recipe_structured_deltas": [
+    {
+      "after": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+      "before": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "path": [
+        "checkout"
+      ]
+    },
+    {
+      "after": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output",
+      "before": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output",
+      "path": [
+        "output"
+      ]
+    },
+    {
+      "after": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+      "before": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+      "path": [
+        "source_commit"
+      ]
+    },
+    {
+      "after": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+      "before": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "path": [
+        "setup_commands",
+        0,
+        7
+      ]
+    },
+    {
+      "after": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+      "before": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "path": [
+        "setup_commands",
+        1,
+        4
+      ]
+    },
+    {
+      "after": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+      "before": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "path": [
+        "setup_commands",
+        2,
+        4
+      ]
+    },
+    {
+      "after": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+      "before": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "path": [
+        "setup_commands",
+        3,
+        4
+      ]
+    },
+    {
+      "after": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+      "before": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+      "path": [
+        "setup_commands",
+        3,
+        7
+      ]
+    },
+    {
+      "after": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+      "before": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "path": [
+        "setup_commands",
+        4,
+        4
+      ]
+    },
+    {
+      "after": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+      "before": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "path": [
+        "setup_commands",
+        5,
+        4
+      ]
+    },
+    {
+      "after": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/run_ci_checks.py",
+      "before": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/run_ci_checks.py",
+      "path": [
+        "stock_cli_argv",
+        3
+      ]
+    },
+    {
+      "after": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+      "before": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+      "path": [
+        "stock_cli_argv",
+        5
+      ]
+    },
+    {
+      "after": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output",
+      "before": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output",
+      "path": [
+        "stock_cli_argv",
+        7
+      ]
+    },
+    {
+      "after": "Source-only actual-D bound preparation. Benchmark B and genuine closed B95/host/source-impact descriptors remain actual retained inputs. D3c025b29 is the actual committed/pushed successor supplied by ROOT; new clone/setup/full-CI owners, clocks and outcomes remain null. Preserve every historical checkout/output; no force/reset/clean/prune/resume/retry. ROOT must independently review these sources and the exact bound recipe before one new setup and one stock full-CI grant. A separately reviewed offline exact8 donor-copy setup action is outside these helpers; the unchanged stock strict_existing verifier remains mandatory.",
+      "before": "Source-only template. Benchmark B and genuine closed B95/host/source-impact descriptors are actual retained inputs. CI checkpoint C, recipe.bound descriptor, clone/setup/full-CI owners, clocks and outcomes remain unbound/null. Preserve every historical checkout/output; no force/reset/clean/prune/resume/retry. ROOT must independently review source and bind actual C before one setup and one stock full-CI grant.",
+      "path": [
+        "limitations"
+      ]
+    },
+    {
+      "after": "Actual CPU08/GPU02 at benchmark B are closed and independently audited. Genuine Decision28 B95 manifest/stock87 closure remain physically unchanged; the exact closed CI source-impact review joins95/73/native3/worker2 preservation and excludes the four reviewed CI paths. Distinct actual CI checkpoint D is committed/pushed and must be exactly bound before dispatch. The narrowly corrected existing selected-image static test is independently reviewed with all95/73 unchanged; it grants no runtime/image/native/worker/source95 renewal.",
+      "before": "Actual CPU08/GPU02 at benchmark B are closed and independently audited. Genuine Decision28 B95 manifest/stock87 closure remain physically unchanged; the exact closed CI source-impact review joins95/73/native3/worker2 preservation and excludes the four reviewed CI paths. Distinct future CI checkpoint C must be committed/pushed and exactly bound before dispatch.",
+      "path": [
+        "preconditions",
+        0
+      ]
+    },
+    {
+      "after": "The unchanged stock driver validates exact canonical8 model assets through its bounded acquisition or supported strict_existing path. Any separately reviewed exact8 donor setup copy occurs only after genuine new-D setup and outside these helpers; no asset/policy/hash/size/epoch predicate is bypassed or relaxed.",
+      "before": "Stock driver alone acquires exact canonical8 model assets with bounded streaming metadata; no pre-copy from the benchmark/model authority root.",
+      "path": [
+        "stock_checks",
+        1
+      ]
+    },
+    {
+      "after": "This local current-D-source CPU lane is distinct from hosted CI and the genuinely closed benchmark B CPU08/GPU02. It grants neither a benchmark replay/root renewal nor GPU/model parity or full publication/Q4/campaign acceptance.",
+      "before": "This local current-C-source CPU lane is distinct from hosted CI and the genuinely closed benchmark B CPU08/GPU02. It grants neither a benchmark replay/root renewal nor GPU/model parity or full publication/Q4/campaign acceptance.",
+      "path": [
+        "stock_checks",
+        5
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "selected_test_independent_review": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-selected-image-test-independent-review-v1/review.v1.json",
+    "sha256": "39b914dfc1ebf13f4bf80b370c8849894f257a6b82208ced56ee18dbb43f61e9",
+    "size_bytes": 38697
+  },
+  "source_only_target_imported_compiled_or_executed": false,
+  "sources": [
+    {
+      "Popen_AST_count_unchanged": 2,
+      "all_function_and_class_ASTs_unchanged": true,
+      "byte_identical": true,
+      "exact_forward_and_inverse": true,
+      "function_and_class_names": [
+        "clock",
+        "epoch",
+        "identity",
+        "descriptor",
+        "save",
+        "owner",
+        "command",
+        "scan"
+      ],
+      "literal_pairs": [],
+      "original_C_source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/setup_original_current_ci_v2.py",
+        "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+        "size_bytes": 16786
+      },
+      "preserved_before_raw": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/before/setup_original_current_ci_v2.py.raw",
+        "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+        "size_bytes": 16786
+      },
+      "source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/setup_original_current_ci_v2.py",
+        "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+        "size_bytes": 16786
+      }
+    },
+    {
+      "Popen_AST_count_unchanged": 1,
+      "all_function_and_class_ASTs_unchanged": true,
+      "byte_identical": false,
+      "exact_forward_and_inverse": true,
+      "function_and_class_names": [
+        "descriptor",
+        "save",
+        "owner",
+        "scan"
+      ],
+      "literal_pairs": [
+        [
+          "decision29-current-ci-preparation-v1",
+          "decision29-successor-ci-D-preparation-v1"
+        ]
+      ],
+      "original_C_source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_setup_v2.py",
+        "sha256": "60de16c4355b60636c85f1630eb00722a958f625b73f7326b367a3e373f45406",
+        "size_bytes": 4931
+      },
+      "preserved_before_raw": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/before/capture_original_setup_v2.py.raw",
+        "sha256": "60de16c4355b60636c85f1630eb00722a958f625b73f7326b367a3e373f45406",
+        "size_bytes": 4931
+      },
+      "source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/capture_original_setup_v2.py",
+        "sha256": "930a40eb19dc00d289cbd1e38207933f459dd7a7bcf4d889cd086fb74b3b6cfe",
+        "size_bytes": 4935
+      }
+    },
+    {
+      "Popen_AST_count_unchanged": 1,
+      "all_function_and_class_ASTs_unchanged": true,
+      "byte_identical": false,
+      "exact_forward_and_inverse": true,
+      "function_and_class_names": [
+        "clock",
+        "epoch",
+        "err",
+        "owner",
+        "write",
+        "digest",
+        "pin",
+        "scan"
+      ],
+      "literal_pairs": [
+        [
+          "ROOT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29')",
+          "ROOT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D')"
+        ],
+        [
+          "RESULT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output')",
+          "RESULT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output')"
+        ]
+      ],
+      "original_C_source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_full_ci_v1.py",
+        "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+        "size_bytes": 12429
+      },
+      "preserved_before_raw": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/before/capture_original_full_ci_v1.py.raw",
+        "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+        "size_bytes": 12429
+      },
+      "source": {
+        "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/capture_original_full_ci_v1.py",
+        "sha256": "b41ab243053aea3be149f01801490e84623fa11efedcf0e706f2111090769b97",
+        "size_bytes": 12433
+      }
+    }
+  ],
+  "status": "source_only_unexecuted_requires_independent_root_review",
+  "unchanged_bounds": {
+    "full_CI_cleanup_s": 10,
+    "full_CI_each_channel_bytes": 4194304,
+    "full_CI_work_s": 5400,
+    "setup_cleanup_s": 10,
+    "setup_work_s": 300
+  },
+  "unchanged_full_CI": "Same stock driver argv, six builds, required successes, discovery/9 integration declarations/88 audited skip criteria and exact source/capture/EOF/reap/FD/process/receipt behavior. Only D checkout/output literal paths change in capture.",
+  "unchanged_setup": "Byte-identical C v2 source; the original eight source pins plus four reviewed CI predicates are independently traversed. Same14 original commands, complete raw Git equality, manifest and held95 original seven-epoch custody, prerequisite and source/final/late checks."
+}

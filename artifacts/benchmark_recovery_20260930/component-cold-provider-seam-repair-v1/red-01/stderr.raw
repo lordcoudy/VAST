@@ -1,0 +1,17 @@
+test_actual_operational_header_reader_binds_physical_bytes (test_publication_gstreamer_component_runtime_v1.ColdProviderBoundaryTests.test_actual_operational_header_reader_binds_physical_bytes) ... ok
+test_real_cold_provider_resolves_before_two_arm_cardinality_guard (test_publication_gstreamer_component_runtime_v1.ColdProviderBoundaryTests.test_real_cold_provider_resolves_before_two_arm_cardinality_guard) ... ERROR
+
+======================================================================
+ERROR: test_real_cold_provider_resolves_before_two_arm_cardinality_guard (test_publication_gstreamer_component_runtime_v1.ColdProviderBoundaryTests.test_real_cold_provider_resolves_before_two_arm_cardinality_guard)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_runtime_v1.py", line 309, in test_real_cold_provider_resolves_before_two_arm_cardinality_guard
+    target._cold_component_pair_from_held_v1(selected={}, project_root=root,
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_runtime_v1.py", line 650, in _cold_component_pair_from_held_v1
+    from publication_operational_request_domain_v1 import load_operational_jsonl_header_v1
+ImportError: cannot import name 'load_operational_jsonl_header_v1' from 'publication_operational_request_domain_v1' (/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_domain_v1.py)
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.008s
+
+FAILED (errors=1)

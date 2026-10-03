@@ -1,0 +1,217 @@
+{
+  "CPU07_disposition": "original failed78; no accepted cold pair; unchanged failed evidence retained",
+  "GPU02_preparations": "remain unexecuted; no readiness or hardware grant follows from this preparation",
+  "Git_engine_models_tests_or_hardware_operations": false,
+  "before_snapshots": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/original-stock-host-collector.v2.raw",
+      "sha256": "658af2e3c400c232e107af8c3cc5469a372dcf446dff3ac454a34bec9189c187",
+      "size_bytes": 10668
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/original-cpu07-controller.v2.raw",
+      "sha256": "b4488d87a4c0feb500d7fdbca77af76e4745efeafb4927003ea1e932227ec8fd",
+      "size_bytes": 15100
+    }
+  ],
+  "bound_runtime_fields": {
+    "A_to_B_selected73_same_bytes_proof": null,
+    "actual_host_constants_checkpoint_B": null,
+    "image_id": null,
+    "original_selected_build_capture": null,
+    "original_selected_image_checkpoint_A": null,
+    "runtime_image_receipt_root_relative_path": null,
+    "runtime_image_receipt_sealed_sha256": null,
+    "runtime_image_receipt_sha256": null,
+    "runtime_image_receipt_size_bytes": null
+  },
+  "budgets_unchanged": {
+    "CLI_pair_s": 2100,
+    "CPU_channel_bytes": 1048576,
+    "held_input_roles": 6,
+    "held_source_count": 87,
+    "held_total_source_input_interpreter_controller_files": 95,
+    "outer_s": 2250,
+    "stock_channel_bytes": 1048576,
+    "stock_hard_s": 130,
+    "stock_required_volume_reserve_bytes": 21474836480,
+    "stock_work_s": 120,
+    "teardown_s": 15
+  },
+  "cpu08_cold_descriptor": null,
+  "cpu08_command_pending": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/run_original_cpu_component_pair_ext4_decision28_v3.pending.py",
+    null,
+    null
+  ],
+  "cpu08_controller_namespace": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08-original-controller",
+  "cpu08_original_owner": null,
+  "cpu08_original_terminal": null,
+  "cpu08_pair_namespace": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08",
+  "cpu08_pending_controller": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/run_original_cpu_component_pair_ext4_decision28_v3.pending.py",
+    "sha256": "617a2ca5c4344d077db35c2d950a899b25b667b4b73a8b0f9ce293ab927d576b",
+    "size_bytes": 15095
+  },
+  "diffs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/stock-host.v2-to-decision28-v3.diff",
+      "sha256": "305c901af5b72d31fc3f9fdb783d27929c837b1b078e7cde0b76b6744a4e1b37",
+      "size_bytes": 831
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/cpu07.v2-to-cpu08.pending-v3.diff",
+      "sha256": "b1456986a629d3015a3f9b8487e271706d6625693d646f27eca5b8a24fc1d47b",
+      "size_bytes": 2870
+    }
+  ],
+  "early_unbound_guard": "assert IMAGE is not None and all(value is not None for value in EXPECTED['runtime_image_receipt_path']), 'prepared CPU08 has no genuine new image/runtime-receipt binding; ROOT must bind actual stock capture before dispatch'",
+  "exact_raw_literal_inverse": {
+    "cpu08_after_removing_only_unbound_dispatch_guard": true,
+    "stock_host": true
+  },
+  "function_ASTs_unchanged": {
+    "cpu_controller_all_including_raw_desc": 10,
+    "stock_host_all": 8
+  },
+  "future_current95_manifest": null,
+  "future_native3_worker2_current_identity_proof": null,
+  "future_stock_host_closure": {
+    "original_owner": null,
+    "original_terminal": null,
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v3.json",
+    "semantic_sha256": null,
+    "sha256": null,
+    "size_bytes": null
+  },
+  "gates_before_dispatch": [
+    "independent native/sidecar source review and exact checkpointA",
+    "genuine one selected deterministic stock build/capture atA and current embedded/source receipt",
+    "host six constants renewed from genuine original capture; exact checkpointB; physicalA-to-B selected73 equality",
+    "controlled ROOT literal binding of IMAGE and new runtime-receipt canonical path/SHA from original capture; no arbitrary caller-authored receipt grant",
+    "existing ext4 root protected originals/source checkout renewal at actualB and independent original closure",
+    "one new stock87 capture atB and full stock loader/body/physical source epochs/owner/FD audit",
+    "fresh current95 and exact six genuine role/worker/device/model source barriers; controller final-bound exact source peer",
+    "ROOT separate once-only CPU08 execution grant; a later GPU grant requires genuinely accepted and released CPU08"
+  ],
+  "historical_adb_host_document_only_path_inventory": true,
+  "historical_host_authority_reused": false,
+  "immutable_origins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/capture_selected_host_closure_ext4_supervisor_v2.py",
+      "sha256": "658af2e3c400c232e107af8c3cc5469a372dcf446dff3ac454a34bec9189c187",
+      "size_bytes": 10668
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_cpu_component_pair_ext4_supervisor_v2.py",
+      "sha256": "b4488d87a4c0feb500d7fdbca77af76e4745efeafb4927003ea1e932227ec8fd",
+      "size_bytes": 15100
+    }
+  ],
+  "limits": [
+    "All runtime image/checkpointB/host receipt facts remain missing, not inferred from preparation.",
+    "The old adb inventory supplies exactly87 canonical path names and its original physical hash only. Its historical authority is never loaded as current.",
+    "Existing controller holds exact raw six input roles plus87 source files/interpreter/self and verifies stock runtime eligibility and image ID before originalCLI. All function bodies, original first-cause/final receipt, channel/FD/epoch and original process-group behavior are byte/AST-preserved.",
+    "The 20GiB reserve is the unchanged stock CLI requirement; this preparation does not allocate it or prove resource readiness.",
+    "No acceptance, full CI, scientific cohort, guardian/container quiescence or future GPU permission is claimed."
+  ],
+  "literal_relocations": {
+    "cpu08": [
+      [
+        "HOST_CLOSURE_EXT4_V1_SHA256",
+        "HOST_CLOSURE_EXT4_DECISION28_V3_SHA256"
+      ],
+      [
+        "IMAGE='sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6'",
+        "IMAGE=None"
+      ],
+      [
+        "PAIR=BASE/'cpu-pair-07'",
+        "PAIR=BASE/'cpu-pair-08'"
+      ],
+      [
+        "DEST=BASE/'cpu-pair-07-original-controller'",
+        "DEST=BASE/'cpu-pair-08-original-controller'"
+      ],
+      [
+        " 'runtime_image_receipt_path':('artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json','61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7'),",
+        " 'runtime_image_receipt_path':(None,None),"
+      ],
+      [
+        "execution-code-closure.ext4-supervisor.v2.json",
+        "execution-code-closure.ext4-decision28.v3.json"
+      ]
+    ],
+    "stock_host": [
+      [
+        "component-supervisor-host-closure-ext4-v2-original",
+        "decision28-host-closure-ext4-v3-original"
+      ],
+      [
+        "execution-code-closure.ext4-supervisor.v2.json",
+        "execution-code-closure.ext4-decision28.v3.json"
+      ]
+    ]
+  },
+  "metadata_reader_handles_closed": true,
+  "new_original_namespaces_created": false,
+  "old_selected_image_or_61874_runtime_role_retained": false,
+  "planning_PR": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5924440005",
+  "planning_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "production_tests_docs_tasks_or_old_artifacts_modified": false,
+  "read_metadata": [
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "db6e2ac4535d5fc572ee02b2dd9761de6fa01ba26e56c8147789fcf110323305",
+      "size_bytes": 113257
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/controller-preparation.v1.json",
+      "sha256": "33d3f96be4cc377b08b42757b60593c1b49dcec3a0bc992f908762a5f5591a8a",
+      "size_bytes": 2413
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-source-independent-review-v1/review.v1.json",
+      "sha256": "ce23c737db6974ec2be06068caf3b509beb8046d2209bd54f36ddc17567d1107",
+      "size_bytes": 11106
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/review.v1.json",
+      "sha256": "85b668c7510641ab3d7fd2455b1f7cd0f9e7b83ae9ef37531a6949ed46403d3d",
+      "size_bytes": 16997
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v2/preparation.v2.json",
+      "sha256": "2d27d19d8c7c0fd0a8961e02e6576a4487cd6ab74227511a79a5b1a7d66dc114",
+      "size_bytes": 5756
+    }
+  ],
+  "schema_version": 1,
+  "scope": "Decision28 source-only immutable stock87 host collector and CPU08 pending original controller; no execution grant",
+  "six_input_roles": [
+    "capability_manifest_path",
+    "calibration_path",
+    "model_parity_receipt_path",
+    "runtime_image_receipt_path",
+    "worker_freeze_receipt_path",
+    "execution_code_closure_path"
+  ],
+  "status": "prepared_unexecuted_pending_genuine_A_image_B_host_binding_and_source_peer",
+  "stock_command_pending": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/capture_selected_host_closure_ext4_decision28_v3.py",
+    null
+  ],
+  "stock_host_collector": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/capture_selected_host_closure_ext4_decision28_v3.py",
+    "sha256": "721441bff4f99454bfffab54c1fae258d3b704aada02ff6ec7631773c32ce430",
+    "size_bytes": 10658
+  },
+  "stock_original_output_namespace": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-closure-ext4-v3-original",
+  "target_sources_imported_or_executed": false
+}

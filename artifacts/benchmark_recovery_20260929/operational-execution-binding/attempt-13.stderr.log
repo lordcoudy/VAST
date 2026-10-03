@@ -1,0 +1,61 @@
+test_actual_37_originals_join_32_selected_cells_and_all_three_phases (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_actual_37_originals_join_32_selected_cells_and_all_three_phases) ... ok
+test_original_binding_drift_during_full_cold_validation_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_binding_drift_during_full_cold_validation_is_rejected) ... ok
+test_original_validator_ancestor_alias_after_return_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_ancestor_alias_after_return_is_rejected) ... FAIL
+test_original_validator_empty_output_witness_is_held (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_empty_output_witness_is_held) ... ok
+test_original_validator_external_engine_witness_is_held (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_external_engine_witness_is_held) ... ERROR
+test_original_validator_leaf_drift_after_validator_return_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_leaf_drift_after_validator_return_is_rejected) ... ok
+test_original_validator_malformed_epoch_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_malformed_epoch_is_rejected) ... ok
+test_physically_resealed_runtime_bundle_cannot_detach_original_capture_or_authority (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_physically_resealed_runtime_bundle_cannot_detach_original_capture_or_authority) ... ok
+test_resealed_equal_count_original_operation_substitution_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_resealed_equal_count_original_operation_substitution_is_rejected) ... ok
+test_same_bytes_original_binding_replacement_is_not_held_custody (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_bytes_original_binding_replacement_is_not_held_custody) ... ok
+test_same_bytes_original_validator_leaf_replacement_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_bytes_original_validator_leaf_replacement_is_rejected) ... ok
+test_same_count_32_cell_workload_substitution_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_32_cell_workload_substitution_is_rejected) ... ok
+test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority) ... ok
+
+======================================================================
+ERROR: test_original_validator_external_engine_witness_is_held (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_external_engine_witness_is_held)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 510, in _under_root
+    relative = path.relative_to(root)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/tmp/vast-original-external-engine-u1jgql1e/fixture-only-original-engine' is not in the subpath of '/tmp/vast-original-37-shyoqpfu'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 495, in test_original_validator_external_engine_witness_is_held
+    result, _, _, _ = self.fixture.reconcile(
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 321, in reconcile
+    result = closure.reconcile_operational_capture_binding_v1(**args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 2261, in reconcile_operational_capture_binding_v1
+    return _reconcile_operational_capture_binding_v1(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 2214, in _reconcile_operational_capture_binding_v1
+    custody.hold_validated_inputs(process_summary)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 1942, in hold_validated_inputs
+    absolute = _operational_absolute_descriptor(root, witness["descriptor"])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 1923, in _operational_absolute_descriptor
+    value["path"] = str(_under_root(root, value["path"], label="original operational descriptor"))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py", line 512, in _under_root
+    raise QualificationExecutionClosureV1Error(
+publication_policy_qualification_execution_closure_v1.QualificationExecutionClosureV1Error: original operational descriptor escaped project_root
+
+======================================================================
+FAIL: test_original_validator_ancestor_alias_after_return_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_ancestor_alias_after_return_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_execution_binding_v1.py", line 510, in test_original_validator_ancestor_alias_after_return_is_rejected
+    with self.assertRaisesRegex(closure.QualificationExecutionClosureV1Error,
+AssertionError: QualificationExecutionClosureV1Error not raised
+
+----------------------------------------------------------------------
+Ran 13 tests in 11.451s
+
+FAILED (failures=1, errors=1)

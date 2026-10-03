@@ -1,0 +1,17 @@
+test_complete_cold_workload_includes_warmup_measurement_and_drain (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_complete_cold_workload_includes_warmup_measurement_and_drain) ... ok
+test_duplicate_actual_terminal_is_rejected_without_an_extra_front_call (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_duplicate_actual_terminal_is_rejected_without_an_extra_front_call) ... ok
+test_observed_stream_substitution_is_rejected_before_inference (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_observed_stream_substitution_is_rejected_before_inference) ... FAIL
+test_same_count_foreign_front_frame_cannot_pass_complete_cold_join (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_same_count_foreign_front_frame_cannot_pass_complete_cold_join) ... ok
+
+======================================================================
+FAIL: test_observed_stream_substitution_is_rejected_before_inference (test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_observed_stream_substitution_is_rejected_before_inference)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_boundary_v1.py", line 498, in test_observed_stream_substitution_is_rejected_before_inference
+    self.assertEqual(fixture.lifecycle["counters"]["requests_started"], 0)
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.878s
+
+FAILED (failures=1)

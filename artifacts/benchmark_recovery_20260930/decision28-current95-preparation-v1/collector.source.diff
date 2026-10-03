@@ -1,0 +1,329 @@
+--- immutable-original-current95
++++ decision28-custody-successor
+@@ -1,80 +1,189 @@
+ """Collect current setup metadata only, after a real renewed stock closure/root grant."""
+-import hashlib,json,os,stat,subprocess,sys,time
++import hashlib,json,os,selectors,signal,stat,subprocess,sys,time
+ from pathlib import Path
+ ROOT=Path('/home/s-a-balashov/work/vast-component-release-20260930-d27')
+ HERE=Path(__file__).resolve().parent
+ BINDING=HERE/'collection.bound.v1.json'
+-OUT=HERE/'current95-original-attempt01'
++OUT=HERE/'decision28-current95-original-attempt01'
+ assert len(sys.argv)==3,'usage: collector ACTUAL_BINDING_SIZE ACTUAL_BINDING_SHA256'
+ BINDING_SIZE=int(sys.argv[1]);BINDING_SHA=sys.argv[2]
+ assert 0<BINDING_SIZE<=1048576 and len(BINDING_SHA)==64 and all(c in '0123456789abcdef' for c in BINDING_SHA)
+-START=time.monotonic();END=START+120
++START=time.monotonic();END=START+120;HARD=END+10
+ held=[];directories={};commands=[];first=None;close_errors=[];manifest=None
++error_records=[];error_overflow=0;output_owned=False;fd_before=fd_after=None;collector_owner=None
+ ROLE_PATHS={
+  'capability_manifest_path':'artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json',
+  'calibration_path':'artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json',
+  'model_parity_receipt_path':'configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json',
+- 'runtime_image_receipt_path':'artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json',
++ 'runtime_image_receipt_path':'artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/gstreamer_custom.runtime.freeze.json',
+  'worker_freeze_receipt_path':'artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json',
+- 'execution_code_closure_path':'artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-supervisor.v2.json'}
+-CONTROLLER=ROOT/'artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_cpu_component_pair_ext4_supervisor_v2.py'
+-EXPECTED_CONTROLLER={'path':str(CONTROLLER),'size_bytes':15100,'sha256':'b4488d87a4c0feb500d7fdbca77af76e4745efeafb4927003ea1e932227ec8fd'}
++ 'execution_code_closure_path':'artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json'}
++CONTROLLER=ROOT/'artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py'
++EXPECTED_CONTROLLER={'path':str(CONTROLLER),'size_bytes':23631,'sha256':'445535a2ea9176effbe97e5de1db53aae614645e40db65bc1debf74489371f36'}
+ EXPECTED_ROLE_SHA={
+  'capability_manifest_path':'3c921a062345d571c836eed6e40de6b3bf4b7be798e24b792c10c1d1df3c1494',
+  'calibration_path':'8f984df897f12f6269e68a2a1dda6ffe5fc112c5729f5f46fd9f7079bde96b15',
+  'model_parity_receipt_path':'6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169',
+- 'runtime_image_receipt_path':'61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7',
++ 'runtime_image_receipt_path':'0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca',
+  'worker_freeze_receipt_path':'ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96'}
++def error(exc):
++ return {'type':type(exc).__name__,'message':str(exc)[:4096]}
++def fail(phase,exc,closing=False):
++ global first,error_overflow
++ row={'phase':phase,**error(exc)}
++ if first is None:first=error(exc)
++ if len(error_records)<64:error_records.append(row)
++ else:error_overflow+=1
++ if closing and len(close_errors)<64:close_errors.append(row)
++def fd_count():return len(os.listdir('/proc/self/fd'))
++def scan_original_group(original, cleanup_deadline):
++    observed = {'original_pid':original['pid'],'original_pgid':original['pgid'],
++        'original_startticks':original.get('startticks'),'original_pid_identity':'absent',
++        'members':[],'member_overflow':0,'errors':[],'error_overflow':0,
++        'vanished_during_scan':0,'started_at_ns':time.time_ns()}
++    def scan_error(phase, exc):
++        if len(observed['errors']) < 64:
++            observed['errors'].append({'phase':phase,'error':error(exc)})
++        else:
++            observed['error_overflow'] += 1
++    try:
++        entries = os.listdir('/proc')
++    except BaseException as exc:
++        scan_error('enumeration',exc)
++        entries = []
++    for entry in entries:
++        if not entry.isdigit():
++            continue
++        if time.monotonic() >= cleanup_deadline:
++            scan_error('deadline',TimeoutError('original bounded cleanup deadline during group scan'))
++            break
++        try:
++            parts = Path('/proc',entry,'stat').read_text().rsplit(')',1)[1].split()
++            pid, pgid, startticks = int(entry), int(parts[2]), int(parts[19])
++            if pid == original['pid']:
++                observed['original_pid_identity'] = (
++                    'original_present' if startticks==original.get('startticks') else 'different_startticks')
++            if pgid == original['pgid']:
++                if len(observed['members']) < 64:
++                    observed['members'].append({'pid':pid,'startticks':startticks,'state':parts[0]})
++                else:
++                    observed['member_overflow'] += 1
++        except (FileNotFoundError,ProcessLookupError):
++            observed['vanished_during_scan'] += 1
++        except BaseException as exc:
++            scan_error('pid:'+entry,exc)
++    observed['finished_at_ns'] = time.time_ns()
++    return observed
++def hard_clock():
++ if time.monotonic()>=HARD:raise TimeoutError('current95 metadata original120+10s cleanup bound')
+ def clock():
+  if time.monotonic()>=END:raise TimeoutError('current95 metadata collection120s')
+ def epoch(s):return [s.st_dev,s.st_ino,s.st_mode,s.st_nlink,s.st_size,s.st_mtime_ns,s.st_ctime_ns]
+ def identity(s):return [s.st_dev,s.st_ino,s.st_mode,s.st_uid,s.st_gid]
+ def ancestors(p):
+  for q in reversed(p.parents):
+-  if q in directories:continue
+-  assert q.resolve(strict=True)==q
+-  fd=os.open(q,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+-  s=os.fstat(fd)
+-  try:assert stat.S_ISDIR(s.st_mode) and identity(s)==identity(q.lstat())
+-  except BaseException:os.close(fd);raise
+-  directories[q]=(fd,identity(s))
++  clock();assert q.resolve(strict=True)==q
++  if q not in directories:
++   directories[q]=(None,None)
++   fd=os.open(q,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC)
++   directories[q]=(fd,None)
++   s=os.fstat(fd);assert stat.S_ISDIR(s.st_mode) and identity(s)==identity(q.lstat())
++   directories[q]=(fd,identity(s))
++  fd,before=directories[q]
++  assert fd is not None and before is not None and identity(os.fstat(fd))==before==identity(q.lstat())
+ def observe(fd,p):
+  clock();s=os.fstat(fd);assert stat.S_ISREG(s.st_mode) and s.st_nlink==1 and 0<s.st_size<=16*1048576
+  os.lseek(fd,0,os.SEEK_SET);h=hashlib.sha256();size=0
+- while block:=os.read(fd,65536):clock();h.update(block);size+=len(block)
++ while block:=os.read(fd,65536):clock();h.update(block);size+=len(block);assert size<=16*1048576
+  assert size==s.st_size and epoch(s)==epoch(os.fstat(fd))==epoch(p.lstat()) and p.resolve(strict=True)==p
+  return {'descriptor':{'path':str(p),'size_bytes':size,'sha256':h.hexdigest()},'epoch':epoch(s)}
+ def hold(p,expected=None):
+  p=Path(p);assert p.is_absolute() and p.resolve(strict=True)==p
+  assert p not in {x[1] for x in held},'current95/control duplicate path'
+- ancestors(p);fd=os.open(p,os.O_RDONLY|os.O_NOFOLLOW)
+- try:
+-  row=observe(fd,p)
+-  if expected is not None:assert row['descriptor']==expected,'current physical descriptor mismatch:'+str(p)
+-  held.append((fd,p,row));return row
+- except BaseException:os.close(fd);raise
++ ancestors(p);index=len(held);held.append((None,p,None))
++ fd=os.open(p,os.O_RDONLY|os.O_NOFOLLOW|os.O_CLOEXEC|os.O_NONBLOCK);held[index]=(fd,p,None)
++ row=observe(fd,p)
++ if expected is not None:assert row['descriptor']==expected,'current physical descriptor mismatch:'+str(p)
++ held[index]=(fd,p,row);return row
+ def owner(pid):
+  p=Path('/proc',str(pid));v=(p/'stat').read_text().rsplit(')',1)[1].split();status=dict(x.split(':',1) for x in (p/'status').read_text().splitlines() if ':' in x)
+  return {'pid':pid,'ppid':int(v[1]),'pgid':int(v[2]),'startticks':int(v[19]),'uid':int(status['Uid'].split()[0]),'gid':int(status['Gid'].split()[0]),'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip()}
+ def head(label):
+  clock();argv=['/usr/bin/git','-c','core.longpaths=true','-C',str(ROOT),'rev-parse','HEAD']
+- child=subprocess.Popen(argv,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
+- try:
+-  actual=owner(child.pid);stdout,stderr=child.communicate(timeout=max(.001,min(10,END-time.monotonic())))
+- except BaseException:child.kill();child.wait(timeout=5);raise
++ child=None;actual=None;selector=None;stdout=bytearray();stderr=bytearray();scans=[];eof=set();fault=None;reaped=False
++ command_fd_before=fd_count();deadline=min(END,time.monotonic()+10)
++ try:
++  selector=selectors.DefaultSelector()
++  child=subprocess.Popen(argv,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
++  actual=owner(child.pid)
++  for name,pipe in (('stdout',child.stdout),('stderr',child.stderr)):
++   os.set_blocking(pipe.fileno(),False);selector.register(pipe,selectors.EVENT_READ,name)
++  while selector.get_map() or child.poll() is None:
++   clock();assert time.monotonic()<deadline,'original Git-head10s timeout'
++   for key,_ in selector.select(.02):
++    raw=os.read(key.fd,65536)
++    if not raw:eof.add(key.data);selector.unregister(key.fileobj);continue
++    target=stdout if key.data=='stdout' else stderr
++    maximum=128 if key.data=='stdout' else 0
++    assert len(target)+len(raw)<=maximum,'original Git-head stdout128/stderr-empty cap'
++    target.extend(raw)
++  child.wait(timeout=max(.001,deadline-time.monotonic()));reaped=True
++  assert child.returncode==0,'original Git-head nonzero'
++ except BaseException as exc:fault=error(exc);fail(label+':body',exc)
+  finally:
+-  for f in (child.stdout,child.stderr):
+-   if f is not None and not f.closed:f.close()
+- assert child.returncode==0 and len(stdout)<=128 and stderr==b''
+- commands.append({'label':label,'argv':argv,'owner':actual,'returncode':child.returncode,'reaped':True,'stdout_ascii':stdout.decode('ascii'),'stderr_hex':stderr.hex()})
++  cleanup_deadline=min(HARD,time.monotonic()+10)
++  if child is not None:
++   try:
++    if child.poll() is None:os.killpg(child.pid,signal.SIGKILL)
++   except ProcessLookupError:pass
++   except BaseException as exc:fail(label+':owned_kill',exc)
++   try:child.wait(timeout=max(.001,min(5,cleanup_deadline-time.monotonic())));reaped=True
++   except BaseException as exc:fail(label+':reap',exc)
++  if selector is not None:
++   try:selector.close()
++   except BaseException as exc:fail(label+':selector_close',exc,closing=True)
++  if child is not None:
++   for name,pipe in (('stdout',child.stdout),('stderr',child.stderr)):
++    if pipe is not None:
++     try:pipe.close()
++     except BaseException as exc:fail(label+':'+name+'_close',exc,closing=True)
++   original=actual or {'pid':child.pid,'pgid':child.pid,'startticks':None}
++   if actual is None:fail(label+':owner',RuntimeError('original Git owner unavailable'))
++   for index in range(2):
++    try:
++     scan=scan_original_group(original,cleanup_deadline);scans.append(scan)
++     assert not scan['members'] and not scan['member_overflow'] and not scan['errors'] and not scan['error_overflow'] and scan['original_pid_identity']=='absent','original Git PID/group absence uncertain'
++    except BaseException as exc:fail(label+':scan'+str(index),exc)
++  try:
++   assert fd_count()==command_fd_before,'original Git-head FD baseline not restored'
++   assert time.monotonic()<cleanup_deadline,'original Git-head cleanup10s elapsed'
++  except BaseException as exc:fail(label+':closure',exc)
++ commands.append({'label':label,'argv':argv,'owner':actual,'returncode':None if child is None else child.returncode,
++  'reaped':reaped,'stdout_ascii':stdout.decode('ascii'),'stderr_hex':stderr.hex(),'EOF':sorted(eof),'process_scans':scans,'failure':fault})
++ assert first is None and reaped and len(scans)==2 and eof=={'stdout','stderr'},'original Git-head closure failed'
+  return stdout.decode('ascii').strip()
+-def save(name,value):
+- raw=(json.dumps(value,sort_keys=True,indent=2,allow_nan=False)+'\n').encode('ascii');assert len(raw)<=1048576
+- with (OUT/name).open('xb') as f:assert f.write(raw)==len(raw);f.flush();os.fsync(f.fileno())
++def save(name,value,late_metadata=False):
++ if not late_metadata:clock()
++ raw=(json.dumps(value,sort_keys=True,indent=2,allow_nan=False)+'\n').encode('ascii');assert len(raw)<=(65536 if late_metadata else 1048576)
++ stream=None;failed=None
++ try:
++  assert output_owned,'collector does not own exclusive output'
++  stream=(OUT/name).open('xb');assert stream.write(raw)==len(raw);stream.flush();os.fsync(stream.fileno())
++ except BaseException as exc:failed=exc;fail('save:'+name,exc)
++ finally:
++  if stream is not None:
++   try:stream.close()
++   except BaseException as exc:
++    fail('save_close:'+name,exc,closing=True)
++    if failed is None:failed=exc
++ if failed is not None:raise failed
++ if not late_metadata:clock()
+  return {'path':str(OUT/name),'size_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+ try:
++ fd_before=fd_count();collector_owner=owner(os.getpid())
+  assert os.getuid()==os.getgid()==1000 and sys.version_info[:3]==(3,12,3)
+- assert ROOT.resolve(strict=True)==ROOT and identity(ROOT.lstat())[3:]==[1000,1000] and not OUT.exists()
++ assert ROOT.resolve(strict=True)==ROOT and identity(ROOT.lstat())[3:]==[1000,1000] and not os.path.lexists(OUT)
++ OUT.mkdir(mode=0o700);output_owned=True
+  control=hold(BINDING,{'path':str(BINDING),'size_bytes':BINDING_SIZE,'sha256':BINDING_SHA})
+  fd=held[0][0];os.lseek(fd,0,os.SEEK_SET);binding=json.loads(os.read(fd,BINDING_SIZE+1))
+  assert set(binding)=={'schema_version','artifact_kind','source_commit','project_root','stock_closure_descriptor','current_controller_descriptor','role_descriptors'}
+@@ -86,6 +195,7 @@
+   if role in EXPECTED_ROLE_SHA:assert binding['role_descriptors'][role]['sha256']==EXPECTED_ROLE_SHA[role]
+  assert binding['stock_closure_descriptor']==binding['role_descriptors']['execution_code_closure_path']
+  assert binding['current_controller_descriptor']==EXPECTED_CONTROLLER
++ assert binding['role_descriptors']['runtime_image_receipt_path']['size_bytes']==7001
+  before_head=head('before');assert before_head==commit
+  sys.path.insert(0,str(ROOT/'scripts'))
+  from publication_policy_qualification_execution_code_closure_v1 import load_execution_code_closure_v1
+@@ -95,6 +205,13 @@
+  sources=closure['project_sources'];assert len(sources)==len({r['path'] for r in sources})==87
+  rows=[]
+  for role in ROLE_PATHS:rows.append(hold(ROOT/ROLE_PATHS[role],binding['role_descriptors'][role]))
++ runtime_fd=next(fd for fd,p,_ in held if p==ROOT/ROLE_PATHS['runtime_image_receipt_path'])
++ os.lseek(runtime_fd,0,os.SEEK_SET);runtime_raw=os.read(runtime_fd,7002)
++ assert len(runtime_raw)==7001 and hashlib.sha256(runtime_raw).hexdigest()==EXPECTED_ROLE_SHA['runtime_image_receipt_path']
++ runtime=json.loads(runtime_raw)
++ assert runtime['candidate_binding_eligible'] is True and runtime['blockers']==[] and runtime['physical_identity']['image_id']=='sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1'
++ unsigned=dict(runtime);del unsigned['receipt_sha256']
++ assert hashlib.sha256(json.dumps(unsigned,sort_keys=True,separators=(',',':'),ensure_ascii=True).encode()).hexdigest()==runtime['receipt_sha256']=='8dbd48381495beddc23abab774055ebb3ce89af7f8d56901580da2612092e093'
+  snapshot_keys=('st_dev','st_ino','st_mode','st_nlink','st_size','st_mtime_ns','st_ctime_ns')
+  for source in sources:
+   relative=Path(source['path']);assert not relative.is_absolute() and '..' not in relative.parts
+@@ -108,17 +225,68 @@
+  for fd,p,row in held:assert observe(fd,p)==row
+  for p,(fd,before) in directories.items():assert identity(os.fstat(fd))==before==identity(p.lstat()) and p.resolve(strict=True)==p
+  manifest={'schema_version':1,'artifact_kind':'vast_current_selected_setup95_metadata_v1','source_commit':commit,'project_root':str(ROOT),'fresh_stock_closure_descriptor':binding['stock_closure_descriptor'],'current_controller_descriptor':binding['current_controller_descriptor'],'role_paths':ROLE_PATHS,'composition':{'role_documents':6,'fresh_project_sources':87,'canonical_interpreter':1,'exact_current_controller':1,'unique_total':95},'actual_current95':rows,'all_collection_fds_released':True,'metadata_only_no_model_image_runtime_acceptance':True,'binding_descriptor':control['descriptor']}
+-except BaseException as exc:first={'type':type(exc).__name__,'message':str(exc)[:4096]}
++except BaseException as exc:fail('collection_body',exc)
+ finally:
+- for fd in [x[0] for x in held]+[x[0] for x in directories.values()]:
+-  try:os.close(fd)
+-  except OSError as exc:close_errors.append({'type':type(exc).__name__,'errno':exc.errno})
+- OUT.mkdir(mode=0o700)
+- report={'schema_version':1,'status':'current95_collected' if first is None and not close_errors else 'failed_no_current95_grant','first_error':first,'close_errors':close_errors,'owner':owner(os.getpid()),'commands':commands,'held_input_count':len(held),'held_ancestor_count':len(directories),'all_collection_fds_released':not close_errors,'work_limit_s':120,'cleanup_s':10,'elapsed_before_final_report_s':time.monotonic()-START,'manifest':None}
+- if first is None and not close_errors:
+-  clock();report['manifest']=save('current95-inputs.v1.json',manifest)
+- ref=save('execution.v1.json',report)
+-late=time.monotonic()>=END
+-if late:save('late-failure.v1.json',{'closed_report':ref,'first_error':first,'elapsed_after_receipts_and_fdclose_s':time.monotonic()-START})
+-print(json.dumps({'report':ref,'manifest':report['manifest'],'late':late}),flush=True)
++ source_checks=[];pin_closes=[];directory_closes=[]
++ for fd,p,row in held:
++  try:
++   assert fd is not None and row is not None,'current held acquisition incomplete'
++   assert observe(fd,p)==row,'current held full SHA/epoch drift at finalization'
++   source_checks.append({'path':str(p),'verified':True})
++  except BaseException as exc:source_checks.append({'path':str(p),'verified':False});fail('source_final:'+str(p),exc)
++ for p,(fd,before) in directories.items():
++  try:assert fd is not None and before is not None and identity(os.fstat(fd))==before==identity(p.lstat()) and p.resolve(strict=True)==p
++  except BaseException as exc:fail('directory_final:'+str(p),exc)
++ for fd,p,_ in held:
++  if fd is None:continue
++  try:os.close(fd);pin_closes.append({'path':str(p),'closed':True})
++  except BaseException as exc:pin_closes.append({'path':str(p),'closed':False});fail('held_close:'+str(p),exc,closing=True)
++ for p,(fd,_) in directories.items():
++  if fd is None:continue
++  try:os.close(fd);directory_closes.append({'path':str(p),'closed':True})
++  except BaseException as exc:directory_closes.append({'path':str(p),'closed':False});fail('directory_close:'+str(p),exc,closing=True)
++ try:
++  fd_after=fd_count();assert fd_before is not None and fd_after==fd_before,'current95 FD baseline not restored'
++ except BaseException as exc:fail('FD_baseline',exc,closing=True)
++ late=time.monotonic()>=END
++ if late:fail('whole_deadline_before_manifest',TimeoutError('current95 collection120s elapsed'))
++ manifest_ref=None;report_ref=None;terminal_error=first;terminal_count=len(error_records);terminal_overflow=error_overflow
++ if output_owned:
++  if first is None and not close_errors:
++   try:manifest_ref=save('current95-inputs.v1.json',manifest)
++   except BaseException as exc:fail('manifest_persist',exc)
++  report={'schema_version':1,'status':'current95_collected' if first is None and not close_errors else 'failed_no_current95_grant',
++   'first_error':first,'close_errors':close_errors,'error_records':error_records,'error_overflow':error_overflow,'owner':collector_owner,'commands':commands,
++   'held_input_count':len(held),'held_ancestor_count':len(directories),'all_collection_fds_released':not close_errors and fd_before is not None and fd_before==fd_after,
++   'all_close_attempts_finished':True,'fd_before':fd_before,'fd_after':fd_after,'source_checks':source_checks,'pin_closes':pin_closes,'directory_closes':directory_closes,
++   'work_limit_s':120,'cleanup_s':10,'elapsed_before_final_report_s':time.monotonic()-START,'manifest':manifest_ref}
++  terminal_error=first;terminal_count=len(error_records);terminal_overflow=error_overflow
++  try:
++   report_ref=save('execution.v1.json',report)
++   print(json.dumps({'report':report_ref,'manifest':manifest_ref,'late':late}),flush=True)
++  except BaseException as exc:fail('report_persist_or_print',exc)
++ try:
++  fd_after=fd_count();assert fd_before is not None and fd_after==fd_before,'current95 final metadata FD baseline not restored'
++ except BaseException as exc:fail('post_terminal_FD',exc,closing=True)
++ if time.monotonic()>=END:
++  if not late:fail('whole_deadline_after_report',TimeoutError('current95 collection120s closed late'))
++  late=True
++ if output_owned and (first is not None or report_ref is None or first!=terminal_error or len(error_records)!=terminal_count or error_overflow!=terminal_overflow or late):
++  try:
++   save('failure.v1.json',{'status':'failed_no_current95_grant','first_error':first,'report':report_ref,'manifest':manifest_ref,
++    'terminal_path':str(OUT/'execution.v1.json'),'late':late,'recent_errors':error_records[-8:],'error_overflow':error_overflow,
++    'fd_before':fd_before,'fd_after':fd_after,'all_close_attempts_finished':True,'metadata_only_no_model_image_runtime_acceptance':True},late_metadata=True)
++  except BaseException as exc:
++   fail('failure_companion',exc)
++   try:print(json.dumps({'status':'failed_no_current95_grant','first_error':first,'companion_error':error(exc)}),file=sys.stderr,flush=True)
++   except BaseException as report_exc:fail('failure_companion_report',report_exc)
++ if output_owned and time.monotonic()>=END and not late:
++  late=True;fail('whole_deadline_after_companion',TimeoutError('current95 collection120s final metadata elapsed'))
++  try:save('late-failure.v1.json',{'status':'failed_no_current95_grant','first_error':first,'late':True,'report':report_ref,'manifest':manifest_ref},late_metadata=True)
++  except BaseException as exc:fail('late_companion',exc)
++ if not output_owned:
++  try:print(json.dumps({'status':'failed_no_current95_grant','first_error':first,'output_namespace_owned':False}),file=sys.stderr,flush=True)
++  except BaseException as exc:fail('unowned_failure_report',exc)
++ try:hard_clock()
++ except BaseException as exc:fail('absolute120+10_bound',exc)
+ sys.exit(0 if first is None and not close_errors and not late else 1)

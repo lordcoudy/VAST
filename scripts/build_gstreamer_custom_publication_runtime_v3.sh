@@ -2,8 +2,8 @@
 set -euo pipefail
 
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
-base_image="vast/openvino-native-probe@sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1"
-expected_base_id="sha256:5c43c6c1f95b3fbb4a95957d1d293b1272c1db6a44a7a2063aad3aeba7c951d1"
+base_image="${VAST_OPENVINO_NATIVE_PROBE_IMAGE:-vast/openvino-native-probe@sha256:fc26a96b600484da32fc304461a0484225b931e0e1ddfc9a1f112414d737b16a}"
+expected_base_id="${VAST_OPENVINO_NATIVE_PROBE_IMAGE_ID:-sha256:fc26a96b600484da32fc304461a0484225b931e0e1ddfc9a1f112414d737b16a}"
 image_ref="${VAST_GSTREAMER_RUNTIME_IMAGE:-vast/gstreamer-custom-publication-runtime-v3:materialized}"
 first_ref="${image_ref}-determinism-a"
 second_ref="${image_ref}-determinism-b"
@@ -108,6 +108,7 @@ build_one() {
     --build-arg "VAST_RUNTIME_SOURCE_SHA256=$runtime_source_sha256" \
     --build-arg "VAST_NATIVE_PROBE_SOURCE_SHA256=$native_probe_source_sha256" \
     --build-arg "VAST_DEPENDENCY_SET_SHA256=$dependency_set_sha256" \
+    --build-arg "VAST_BASE_IMAGE_ID=$expected_base_id" \
     --tag "$target" \
     --file "$build_context/deploy/gstreamer_custom/publication/Dockerfile" \
     "$build_context"

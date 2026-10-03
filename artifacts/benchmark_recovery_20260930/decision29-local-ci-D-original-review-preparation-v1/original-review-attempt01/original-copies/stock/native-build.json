@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "cmake",
+    "--build",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/build",
+    "--parallel",
+    "2",
+    "--target",
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "cleanup_error": null,
+  "elapsed_s": 9.985924470995087,
+  "returncode": 0,
+  "timed_out": false
+}

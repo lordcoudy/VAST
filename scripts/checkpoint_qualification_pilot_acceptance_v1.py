@@ -13,7 +13,6 @@ import math
 import os
 import re
 import stat
-import tempfile
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -27,6 +26,10 @@ from publication_acceptance_evidence import (
     FULL_RESOURCE_EVIDENCE_FILES,
     accepted_arm_evidence_files,
 )
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
 
 
 SCHEMA_VERSION = 1
@@ -37,6 +40,7 @@ NONAUTHORITY_BLOCKER = "qualification_pilot_is_not_full_publication_arm"
 ACCEPTANCE_FILENAME = "checkpoint_qualification_pilot_acceptance.json"
 
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+_IMAGE_ID_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 _SYSTEMS = frozenset(
     {"deepstream", "savant", "openvino_gva", "gstreamer_custom"}
 )
@@ -55,6 +59,19 @@ _BOOTSTRAP_BINDING_FIELDS = {
     "bootstrap_calibration",
     "bootstrap_receipt",
     "model_parity_acceptance_binding_sha256",
+}
+_OPERATIONAL_BINDING_FIELDS = {
+    "hardware_resource_collector",
+    "qualification_input_transaction_receipt",
+    "qualification_input_transaction_receipt_identity_sha256",
+    "runtime_input_materialization_receipt",
+    "runtime_input_materialization_receipt_identity_sha256",
+    "runtime_input_bundle",
+    "runtime_input_bundle_identity_sha256",
+    "guardian_service_authority",
+    "guardian_service_authority_identity_sha256",
+    "guardian_preprocessing_contract_receipt",
+    "guardian_preprocessing_contract_receipt_identity_sha256",
 }
 _ACCEPTANCE_FIELDS = {
     "schema_version",
@@ -81,6 +98,7 @@ _ACCEPTANCE_FIELDS = {
     "full_resource_summary",
     "full_resource_finalization",
     "bootstrap_binding",
+    "operational_binding",
     "sha256",
 }
 _PREPARED_FIELDS = {
@@ -135,6 +153,7 @@ _BOOTSTRAP_MAPPING_FIELDS = {
     "physical_response_evidence_sha256",
     "calibrations",
 }
+_MODEL_PARITY_REFRESH_FIELD = "model_parity_refresh_authority"
 _BOOTSTRAP_CALIBRATION_FIELDS = {
     "schema_version",
     "artifact_kind",
@@ -177,6 +196,21 @@ _BOOTSTRAP_RECEIPT_FIELDS = {
     "calibrations",
     "blockers",
     "receipt_sha256",
+}
+_INPUT_TRANSACTION_KIND = (
+    "vast_publication_policy_qualification_input_transaction_v2"
+)
+_RUNTIME_MATERIALIZATION_KIND = (
+    "vast_qualification_native_runtime_input_materialization_v2"
+)
+_RUNTIME_BUNDLE_KIND = "vast_qualification_native_runtime_input_bundle_v2"
+_RUNTIME_EXPECTATION_FIELDS = {
+    "execution_config_identity_sha256",
+    "binding_set_identity_sha256",
+    "bindings_identity_sha256",
+    "worker_image_ids",
+    "policy_contract_sha256",
+    "preprocessing_contract_content_sha256",
 }
 
 
@@ -363,6 +397,91 @@ def _validate_nonaccepted_identity(
     )
 
 
+def _validate_bootstrap_refresh_authority(
+    *,
+    root: Path,
+    mapping: Mapping[str, Any],
+    receipt: Mapping[str, Any],
+) -> dict[str, Any] | None:
+    mapping_has_refresh = _MODEL_PARITY_REFRESH_FIELD in mapping
+    receipt_has_refresh = _MODEL_PARITY_REFRESH_FIELD in receipt
+    _require(
+        mapping_has_refresh == receipt_has_refresh,
+        "bootstrap model-parity refresh authority coverage drifted",
+    )
+    if not mapping_has_refresh:
+        return None
+    try:
+        from checkpoint_model_parity_acceptance_v4 import (
+            validate_refresh_authority_v4,
+        )
+
+        refresh = validate_refresh_authority_v4(
+            mapping[_MODEL_PARITY_REFRESH_FIELD]
+        )
+    except Exception as exc:
+        raise QualificationPilotAcceptanceV1Error(
+            f"bootstrap model-parity v4 refresh authority failed: {exc}"
+        ) from exc
+    _require(
+        refresh
+        == mapping[_MODEL_PARITY_REFRESH_FIELD]
+        == receipt[_MODEL_PARITY_REFRESH_FIELD],
+        "bootstrap model-parity v4 refresh authority cross-binding drifted",
+    )
+    descriptors = [
+        ("image identity patch", refresh["image_identity_patch"]),
+        ("execution config", refresh["execution_config"]),
+        ("binding-set index", refresh["binding_set"]["index"]),
+        *(
+            (f"{resource} runtime probe", refresh["runtime_probes"][resource])
+            for resource in ("cpu", "gpu")
+        ),
+        *(
+            (f"endpoint binding {coordinate}", item)
+            for coordinate, item in sorted(
+                refresh["binding_set"]["bindings"].items()
+            )
+        ),
+    ]
+    for label, item in descriptors:
+        declared = {key: item[key] for key in _DESCRIPTOR_FIELDS}
+        _require(
+            _verify_declared_descriptor(
+                root, declared, f"model-parity refresh {label}"
+            )
+            == declared,
+            f"model-parity refresh {label} descriptor drifted",
+        )
+    return refresh
+
+
+def _load_verified_model_parity_binding(
+    *, root: Path, receipt_path: Path
+) -> dict[str, Any]:
+    receipt = _read_canonical_json(receipt_path, "accepted model-parity receipt")
+    try:
+        if (
+            receipt.get("schema_version") == 4
+            and receipt.get("artifact_kind")
+            == "vast_checkpoint_model_parity_acceptance_receipt_v4"
+        ):
+            from checkpoint_model_parity_acceptance_v4 import (
+                load_verified_model_parity_acceptance_v4,
+            )
+
+            return load_verified_model_parity_acceptance_v4(
+                project_root=root, receipt_path=receipt_path
+            )
+        return model_parity_acceptance.load_verified_model_parity_acceptance(
+            project_root=root, receipt_path=receipt_path
+        )
+    except Exception as exc:
+        raise QualificationPilotAcceptanceV1Error(
+            f"model-parity binding revalidation failed: {exc}"
+        ) from exc
+
+
 def _bootstrap_material(
     *,
     root: Path,
@@ -480,7 +599,11 @@ def _bootstrap_material(
         "bootstrap mapping",
     )
     _require(
-        set(mapping) == _BOOTSTRAP_MAPPING_FIELDS
+        frozenset(mapping)
+        in {
+            frozenset(_BOOTSTRAP_MAPPING_FIELDS),
+            frozenset(_BOOTSTRAP_MAPPING_FIELDS | {_MODEL_PARITY_REFRESH_FIELD}),
+        }
         and mapping.get("schema_version") == 2
         and mapping.get("artifact_kind")
         == "vast_publication_policy_qualification_bootstrap_calibration_mapping",
@@ -525,7 +648,11 @@ def _bootstrap_material(
         "bootstrap receipt",
     )
     _require(
-        set(receipt) == _BOOTSTRAP_RECEIPT_FIELDS
+        frozenset(receipt)
+        in {
+            frozenset(_BOOTSTRAP_RECEIPT_FIELDS),
+            frozenset(_BOOTSTRAP_RECEIPT_FIELDS | {_MODEL_PARITY_REFRESH_FIELD}),
+        }
         and receipt.get("schema_version") == 2
         and receipt.get("artifact_kind")
         == "vast_publication_policy_qualification_bootstrap_receipt",
@@ -580,6 +707,9 @@ def _bootstrap_material(
         ),
         "bootstrap receipt evidence/self-hash drifted",
     )
+    refresh = _validate_bootstrap_refresh_authority(
+        root=root, mapping=mapping, receipt=receipt
+    )
 
     accepted_receipt = _verify_declared_descriptor(
         root,
@@ -596,20 +726,21 @@ def _bootstrap_material(
         receipt.get("accepted_model_parity_assessment"),
         "accepted model-parity assessment",
     )
-    try:
-        parity_binding = model_parity_acceptance.load_verified_model_parity_acceptance(
-            project_root=root,
-            receipt_path=root / accepted_receipt["path"],
-        )
-    except Exception as exc:
-        raise QualificationPilotAcceptanceV1Error(
-            f"model-parity v2 binding revalidation failed: {exc}"
-        ) from exc
+    parity_binding = _load_verified_model_parity_binding(
+        root=root, receipt_path=root / accepted_receipt["path"]
+    )
+    parity_coordinate = (
+        parity_binding.get("schema_version"),
+        parity_binding.get("artifact_kind"),
+    ) if type(parity_binding) is dict else None
     _require(
         type(parity_binding) is dict
-        and parity_binding.get("schema_version") == 2
-        and parity_binding.get("artifact_kind")
-        == "vast_verified_model_parity_acceptance_binding"
+        and parity_coordinate
+        in {
+            (2, "vast_verified_model_parity_acceptance_binding"),
+            (4, "vast_verified_model_parity_acceptance_binding_v4"),
+        }
+        and (refresh is None) == (parity_coordinate[0] == 2)
         and _valid_sha(parity_binding.get("binding_sha256"))
         and parity_binding["binding_sha256"]
         == _canonical_sha(
@@ -619,12 +750,16 @@ def _bootstrap_material(
                 if key != "binding_sha256"
             }
         ),
-        "model-parity schema-v2 binding identity/self-hash drifted",
+        "model-parity binding identity/self-hash drifted",
     )
     parity_sha = parity_binding["binding_sha256"]
     _require(
         receipt.get("model_parity_acceptance_binding_sha256") == parity_sha
         and mapping.get("model_parity_acceptance_binding_sha256") == parity_sha
+        and (
+            refresh is None
+            or parity_binding.get("refresh_authority") == refresh
+        )
         and calibration.get("source_model_parity_acceptance_binding_sha256")
         == parity_sha
         and receipt.get("accepted_model_parity_evidence_sha256")
@@ -668,6 +803,391 @@ def _bootstrap_material(
     return {
         **descriptors,
         "model_parity_acceptance_binding_sha256": parity_sha,
+    }
+
+
+def _validate_guardian_service_authority(
+    value: Mapping[str, Any],
+    *,
+    require_live: bool,
+    expected_preprocessing_contract_authority: Mapping[str, Any],
+    expected_runtime_expectations: Mapping[str, Any],
+) -> dict[str, Any]:
+    try:
+        from checkpoint_gstreamer_analytics_sidecar import (
+            assert_publication_sidecar_service_authority_identity_v1,
+            assert_publication_sidecar_service_authority_v1,
+            validate_publication_sidecar_service_authority_v1,
+        )
+
+        checked = validate_publication_sidecar_service_authority_v1(value)
+        assertion = (
+            assert_publication_sidecar_service_authority_v1
+            if require_live
+            else assert_publication_sidecar_service_authority_identity_v1
+        )
+        checked = assertion(
+            value,
+            expected_front_socket=checked["front_socket"]["path"],
+            expected_execution_config_identity_sha256=expected_runtime_expectations[
+                "execution_config_identity_sha256"
+            ],
+            expected_binding_set_identity_sha256=expected_runtime_expectations[
+                "binding_set_identity_sha256"
+            ],
+            expected_worker_image_ids=expected_runtime_expectations[
+                "worker_image_ids"
+            ],
+            expected_preprocessing_contract_authority=(
+                expected_preprocessing_contract_authority
+            ),
+            expected_service_identity_sha256=checked[
+                "service_identity_sha256"
+            ],
+            expected_policy_contract_sha256=(
+                expected_preprocessing_contract_authority[
+                    "policy_contract_sha256"
+                ]
+            ),
+        )
+        return checked
+    except Exception as exc:
+        raise QualificationPilotAcceptanceV1Error(
+            f"guardian service authority validation failed: {exc}"
+        ) from exc
+
+
+def _load_guardian_preprocessing(**kwargs: Any) -> dict[str, Any]:
+    try:
+        from publication_guardian_preprocessing_contract_v1 import (
+            load_guardian_preprocessing_contract_v1,
+        )
+
+        return load_guardian_preprocessing_contract_v1(**kwargs)
+    except Exception as exc:
+        raise QualificationPilotAcceptanceV1Error(
+            f"guardian preprocessing receipt validation failed: {exc}"
+        ) from exc
+
+
+def _runtime_expectations_from_preprocessing_receipt(
+    receipt: Mapping[str, Any],
+) -> dict[str, Any]:
+    try:
+        from publication_guardian_runtime_expectations_v1 import (
+            runtime_expectations_from_preprocessing_receipt_v1,
+        )
+
+        return runtime_expectations_from_preprocessing_receipt_v1(receipt)
+    except Exception as exc:
+        raise QualificationPilotAcceptanceV1Error(
+            f"guardian runtime expectations validation failed: {exc}"
+        ) from exc
+
+
+def _operational_material(
+    *,
+    root: Path,
+    expected_system: str,
+    expected_resource: str,
+    expected_codec: str,
+    expected_topology_kind: str,
+    expected_run_id: str,
+    expected_arm_id: str,
+    candidate_manifest_path: Path | str,
+    qualification_transaction_receipt_path: Path | str,
+    runtime_input_materialization_receipt_path: Path | str,
+    runtime_input_bundle_path: Path | str,
+    guardian_service_authority_path: Path | str,
+    preprocessing_contract_path: Path | str,
+    preprocessing_contract_receipt_path: Path | str,
+    require_live_service: bool,
+) -> dict[str, Any]:
+    paths = {
+        "qualification_input_transaction_receipt": (
+            qualification_transaction_receipt_path
+        ),
+        "runtime_input_materialization_receipt": (
+            runtime_input_materialization_receipt_path
+        ),
+        "runtime_input_bundle": runtime_input_bundle_path,
+        "guardian_service_authority": guardian_service_authority_path,
+        "guardian_preprocessing_contract": preprocessing_contract_path,
+        "guardian_preprocessing_contract_receipt": (
+            preprocessing_contract_receipt_path
+        ),
+    }
+    descriptors: dict[str, dict[str, Any]] = {}
+    identities: set[tuple[int, int]] = set()
+    for role, path_value in paths.items():
+        descriptor = _stable_descriptor(root, path_value, role)
+        info = (root / descriptor["path"]).stat()
+        identity = (int(info.st_dev), int(info.st_ino))
+        _require(
+            identity not in identities,
+            "qualification operational artifacts contain an alias",
+        )
+        identities.add(identity)
+        descriptors[role] = descriptor
+
+    transaction = _read_canonical_json(
+        root / descriptors["qualification_input_transaction_receipt"]["path"],
+        "qualification input transaction receipt",
+    )
+    transaction_identity = transaction.get("receipt_sha256")
+    _require(
+        transaction.get("schema_version") == 2
+        and transaction.get("artifact_kind") == _INPUT_TRANSACTION_KIND
+        and transaction.get("status")
+        == "qualification_inputs_materialized_nonaccepted"
+        and transaction.get("accepted") is False
+        and transaction.get("publication_ready") is False
+        and transaction.get("authorization_eligible") is False
+        and _valid_sha(transaction_identity)
+        and transaction_identity
+        == _canonical_sha(
+            {
+                key: value
+                for key, value in transaction.items()
+                if key != "receipt_sha256"
+            }
+        ),
+        "qualification input transaction operational identity drifted",
+    )
+    hardware_resource_collector = _descriptor_fields(
+        transaction.get("hardware_resource_collector"),
+        "qualification hardware resource collector",
+    )
+    _require(
+        hardware_resource_collector["path"] == "scripts/collect_metrics.py"
+        and _stable_descriptor(
+            root,
+            hardware_resource_collector["path"],
+            "qualification hardware resource collector",
+        )
+        == hardware_resource_collector,
+        "qualification hardware resource collector binding drifted",
+    )
+    materialization = _read_canonical_json(
+        root / descriptors["runtime_input_materialization_receipt"]["path"],
+        "runtime-input materialization receipt",
+    )
+    materialization_identity = materialization.get("receipt_sha256")
+    runtime_inputs = materialization.get("inputs")
+    bundle_rows = materialization.get("bundles")
+    _require(
+        materialization.get("schema_version") == 2
+        and materialization.get("artifact_kind")
+        == _RUNTIME_MATERIALIZATION_KIND
+        and materialization.get("status")
+        == "materialized_for_native_qualification_only"
+        and materialization.get("accepted") is False
+        and materialization.get("publication_ready") is False
+        and materialization.get("authorization_eligible") is False
+        and type(runtime_inputs) is dict
+        and runtime_inputs.get(
+            "qualification_input_transaction_receipt_sha256"
+        )
+        == descriptors["qualification_input_transaction_receipt"]["sha256"]
+        and runtime_inputs.get("hardware_resource_collector")
+        == hardware_resource_collector
+        and type(bundle_rows) is list
+        and _valid_sha(materialization_identity)
+        and materialization_identity
+        == _canonical_sha(
+            {
+                key: value
+                for key, value in materialization.items()
+                if key != "receipt_sha256"
+            }
+        ),
+        "runtime-input materialization operational identity drifted",
+    )
+    bundle = _read_canonical_json(
+        root / descriptors["runtime_input_bundle"]["path"],
+        "cell runtime-input bundle",
+    )
+    bundle_identity = bundle.get("bundle_sha256")
+    _require(
+        bundle.get("schema_version") == 2
+        and bundle.get("artifact_kind") == _RUNTIME_BUNDLE_KIND
+        and bundle.get("status") == "materialized_for_native_qualification_only"
+        and bundle.get("accepted") is False
+        and bundle.get("publication_ready") is False
+        and bundle.get("authorization_eligible") is False
+        and bundle.get("system") == expected_system
+        and bundle.get("resource") == expected_resource
+        and bundle.get("codec") == expected_codec
+        and bundle.get("topology_kind") == expected_topology_kind
+        and bundle.get("run_id") == expected_run_id
+        and bundle.get("arm_id") == expected_arm_id
+        and bundle.get("hardware_resource_collector")
+        == hardware_resource_collector
+        and _valid_sha(bundle_identity)
+        and bundle_identity
+        == _canonical_sha(
+            {
+                key: value
+                for key, value in bundle.items()
+                if key != "bundle_sha256"
+            }
+        ),
+        "cell runtime-input bundle operational identity drifted",
+    )
+    expected_bundle_record = {
+        "arm_id": expected_arm_id,
+        "run_id": expected_run_id,
+        "path": Path(
+            descriptors["runtime_input_bundle"]["path"]
+        ).relative_to(
+            Path(
+                descriptors["runtime_input_materialization_receipt"]["path"]
+            ).parent
+        ).as_posix(),
+        "size_bytes": descriptors["runtime_input_bundle"]["size_bytes"],
+        "sha256": descriptors["runtime_input_bundle"]["sha256"],
+        "bundle_sha256": bundle_identity,
+    }
+    _require(
+        bundle_rows.count(expected_bundle_record) == 1,
+        "cell runtime-input bundle is absent from materialization receipt",
+    )
+    service_value = _read_canonical_json(
+        root / descriptors["guardian_service_authority"]["path"],
+        "guardian service authority",
+    )
+    live_sockets = materialization.get("live_sockets")
+    preprocessing = _load_guardian_preprocessing(
+        project_root=root,
+        preprocessing_contract_path=(
+            root / descriptors["guardian_preprocessing_contract"]["path"]
+        ),
+        materialization_receipt_path=(
+            root
+            / descriptors["guardian_preprocessing_contract_receipt"]["path"]
+        ),
+        candidate_manifest_path=candidate_manifest_path,
+    )
+    preprocessing_receipt = (
+        preprocessing.get("receipt") if type(preprocessing) is dict else None
+    )
+    preprocessing_authority = (
+        preprocessing.get("authority") if type(preprocessing) is dict else None
+    )
+    _require(
+        type(preprocessing) is dict
+        and set(preprocessing)
+        == {"preprocessing_contract", "receipt", "authority"}
+        and type(preprocessing_receipt) is dict
+        and type(preprocessing_authority) is dict
+        and preprocessing_receipt
+        == _read_canonical_json(
+            root
+            / descriptors["guardian_preprocessing_contract_receipt"]["path"],
+            "guardian preprocessing materialization receipt",
+        )
+        and preprocessing_authority.get(
+            "materialization_receipt_file_sha256"
+        )
+        == descriptors["guardian_preprocessing_contract_receipt"]["sha256"]
+        and preprocessing_authority.get(
+            "qualification_transaction_receipt_sha256"
+        )
+        == transaction_identity
+        and _valid_sha(
+            preprocessing_authority.get(
+                "materialization_receipt_identity_sha256"
+            )
+        ),
+        "guardian preprocessing operational binding drifted",
+    )
+    runtime_expectations = _runtime_expectations_from_preprocessing_receipt(
+        preprocessing_receipt
+    )
+    worker_image_ids = (
+        runtime_expectations.get("worker_image_ids")
+        if type(runtime_expectations) is dict
+        else None
+    )
+    _require(
+        type(runtime_expectations) is dict
+        and set(runtime_expectations) == _RUNTIME_EXPECTATION_FIELDS
+        and all(
+            _valid_sha(runtime_expectations.get(field))
+            for field in (
+                "execution_config_identity_sha256",
+                "binding_set_identity_sha256",
+                "bindings_identity_sha256",
+                "policy_contract_sha256",
+                "preprocessing_contract_content_sha256",
+            )
+        )
+        and type(worker_image_ids) is dict
+        and set(worker_image_ids) == set(_RESOURCE_POLICIES)
+        and all(
+            type(worker_image_ids.get(resource)) is str
+            and _IMAGE_ID_RE.fullmatch(worker_image_ids[resource]) is not None
+            for resource in _RESOURCE_POLICIES
+        )
+        and runtime_expectations["policy_contract_sha256"]
+        == preprocessing_authority.get("policy_contract_sha256")
+        and runtime_expectations["preprocessing_contract_content_sha256"]
+        == preprocessing_authority.get(
+            "preprocessing_contract_content_sha256"
+        ),
+        "guardian runtime expectations/preprocessing authority binding drifted",
+    )
+    service = _validate_guardian_service_authority(
+        service_value,
+        require_live=require_live_service,
+        expected_preprocessing_contract_authority=preprocessing_authority,
+        expected_runtime_expectations=runtime_expectations,
+    )
+    _require(
+        service == service_value
+        and _valid_sha(service.get("service_authority_sha256"))
+        and service.get("preprocessing_contract_authority")
+        == preprocessing_authority
+        and service.get("execution_config_identity_sha256")
+        == runtime_expectations["execution_config_identity_sha256"]
+        and service.get("binding_set_identity_sha256")
+        == runtime_expectations["binding_set_identity_sha256"]
+        and service.get("worker_image_ids") == worker_image_ids
+        and type(live_sockets) is dict
+        and service.get("front_socket")
+        == live_sockets.get("analytics_execution"),
+        "guardian service/runtime expectations/socket binding drifted",
+    )
+    return {
+        "hardware_resource_collector": hardware_resource_collector,
+        "qualification_input_transaction_receipt": descriptors[
+            "qualification_input_transaction_receipt"
+        ],
+        "qualification_input_transaction_receipt_identity_sha256": (
+            transaction_identity
+        ),
+        "runtime_input_materialization_receipt": descriptors[
+            "runtime_input_materialization_receipt"
+        ],
+        "runtime_input_materialization_receipt_identity_sha256": (
+            materialization_identity
+        ),
+        "runtime_input_bundle": descriptors["runtime_input_bundle"],
+        "runtime_input_bundle_identity_sha256": bundle_identity,
+        "guardian_service_authority": descriptors[
+            "guardian_service_authority"
+        ],
+        "guardian_service_authority_identity_sha256": service[
+            "service_authority_sha256"
+        ],
+        "guardian_preprocessing_contract_receipt": descriptors[
+            "guardian_preprocessing_contract_receipt"
+        ],
+        "guardian_preprocessing_contract_receipt_identity_sha256": (
+            preprocessing_authority[
+                "materialization_receipt_identity_sha256"
+            ]
+        ),
     }
 
 
@@ -878,6 +1398,60 @@ def _validate_acceptance_value(
         )["path"],
     )
     _require(material == binding, "qualification bootstrap cross-binding drifted")
+    operational = acceptance.get("operational_binding")
+    _require(
+        type(operational) is dict
+        and set(operational) == _OPERATIONAL_BINDING_FIELDS,
+        "qualification operational binding fields drifted",
+    )
+    bound_preprocessing_receipt = _read_canonical_json(
+        root
+        / _descriptor_fields(
+            operational["guardian_preprocessing_contract_receipt"],
+            "bound guardian preprocessing receipt",
+        )["path"],
+        "bound guardian preprocessing receipt",
+    )
+    bound_preprocessing_contract = _descriptor_fields(
+        bound_preprocessing_receipt.get("preprocessing_contract"),
+        "bound guardian preprocessing contract",
+    )
+    operational_material = _operational_material(
+        root=root,
+        expected_system=coordinate["system"],
+        expected_resource=coordinate["resource"],
+        expected_codec=coordinate["codec"],
+        expected_topology_kind=coordinate["topology_kind"],
+        expected_run_id=run_id,
+        expected_arm_id=arm_id,
+        candidate_manifest_path=binding["candidate_manifest"]["path"],
+        qualification_transaction_receipt_path=_descriptor_fields(
+            operational["qualification_input_transaction_receipt"],
+            "bound qualification input transaction receipt",
+        )["path"],
+        runtime_input_materialization_receipt_path=_descriptor_fields(
+            operational["runtime_input_materialization_receipt"],
+            "bound runtime-input materialization receipt",
+        )["path"],
+        runtime_input_bundle_path=_descriptor_fields(
+            operational["runtime_input_bundle"],
+            "bound cell runtime-input bundle",
+        )["path"],
+        guardian_service_authority_path=_descriptor_fields(
+            operational["guardian_service_authority"],
+            "bound guardian service authority",
+        )["path"],
+        preprocessing_contract_path=bound_preprocessing_contract["path"],
+        preprocessing_contract_receipt_path=_descriptor_fields(
+            operational["guardian_preprocessing_contract_receipt"],
+            "bound guardian preprocessing receipt",
+        )["path"],
+        require_live_service=False,
+    )
+    _require(
+        operational_material == operational,
+        "qualification operational cross-binding drifted",
+    )
     claimed_sha = acceptance.get("sha256")
     _require(
         _valid_sha(claimed_sha)
@@ -932,42 +1506,31 @@ def validate_checkpoint_qualification_pilot_acceptance_v1(
     )
 
 
-def _write_immutable_json(path: Path, value: dict[str, Any]) -> None:
+def _write_immutable_json(
+    root: Path,
+    path: Path,
+    value: dict[str, Any],
+    *,
+    _fault_hook: Any | None = None,
+) -> None:
     payload = _canonical_bytes(value) + b"\n"
-    if path.exists():
-        _require(
-            not _is_link(path)
-            and path.is_file()
-            and int(path.stat().st_nlink) == 1
-            and path.read_bytes() == payload,
-            "immutable qualification acceptance collision",
-        )
-        return
-    descriptor, temporary_name = tempfile.mkstemp(
-        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
-    )
-    temporary = Path(temporary_name)
     try:
-        with os.fdopen(descriptor, "wb") as output:
-            output.write(payload)
-            output.flush()
-            os.fsync(output.fileno())
-        os.replace(temporary, path)
-        if os.name != "nt":
-            directory_descriptor: int | None = None
-            try:
-                directory_descriptor = os.open(
-                    path.parent,
-                    os.O_RDONLY | int(getattr(os, "O_DIRECTORY", 0)),
-                )
-                os.fsync(directory_descriptor)
-            except OSError:
-                pass
-            finally:
-                if directory_descriptor is not None:
-                    os.close(directory_descriptor)
-    finally:
-        temporary.unlink(missing_ok=True)
+        relative = path.relative_to(root).as_posix()
+        with PhysicalRootCustodyV1.open(
+            root, label="qualification acceptance project root"
+        ) as custody:
+            custody.commit_or_adopt_exact_identity(
+                relative,
+                payload,
+                label="qualification pilot acceptance",
+                mode=0o444,
+                create_parents=False,
+                after_publish_step=_fault_hook,
+            )
+    except (ValueError, PublicationPhysicalIoV1Error) as error:
+        raise QualificationPilotAcceptanceV1Error(
+            "immutable qualification acceptance collision"
+        ) from error
 
 
 def finalize_checkpoint_qualification_pilot_acceptance_v1(
@@ -990,6 +1553,12 @@ def finalize_checkpoint_qualification_pilot_acceptance_v1(
     bootstrap_mapping_path: Path | str,
     bootstrap_calibration_path: Path | str,
     bootstrap_receipt_path: Path | str,
+    qualification_transaction_receipt_path: Path | str,
+    runtime_input_materialization_receipt_path: Path | str,
+    runtime_input_bundle_path: Path | str,
+    guardian_service_authority_path: Path | str,
+    preprocessing_contract_path: Path | str,
+    preprocessing_contract_receipt_path: Path | str,
 ) -> dict[str, Any]:
     """Prepare physical evidence, transform it, and commit only pilot authority."""
 
@@ -1033,6 +1602,29 @@ def finalize_checkpoint_qualification_pilot_acceptance_v1(
         bootstrap_mapping_path=bootstrap_mapping_path,
         bootstrap_calibration_path=bootstrap_calibration_path,
         bootstrap_receipt_path=bootstrap_receipt_path,
+    )
+    first_operational = _operational_material(
+        root=root,
+        expected_system=coordinate["system"],
+        expected_resource=coordinate["resource"],
+        expected_codec=coordinate["codec"],
+        expected_topology_kind=coordinate["topology_kind"],
+        expected_run_id=expected_run_id,
+        expected_arm_id=expected_arm_id,
+        candidate_manifest_path=candidate_manifest_path,
+        qualification_transaction_receipt_path=(
+            qualification_transaction_receipt_path
+        ),
+        runtime_input_materialization_receipt_path=(
+            runtime_input_materialization_receipt_path
+        ),
+        runtime_input_bundle_path=runtime_input_bundle_path,
+        guardian_service_authority_path=guardian_service_authority_path,
+        preprocessing_contract_path=preprocessing_contract_path,
+        preprocessing_contract_receipt_path=(
+            preprocessing_contract_receipt_path
+        ),
+        require_live_service=True,
     )
     try:
         prepared = prepare_checkpoint_publication_acceptance(
@@ -1104,9 +1696,36 @@ def finalize_checkpoint_qualification_pilot_acceptance_v1(
         bootstrap_calibration_path=bootstrap_calibration_path,
         bootstrap_receipt_path=bootstrap_receipt_path,
     )
+    second_operational = _operational_material(
+        root=root,
+        expected_system=coordinate["system"],
+        expected_resource=coordinate["resource"],
+        expected_codec=coordinate["codec"],
+        expected_topology_kind=coordinate["topology_kind"],
+        expected_run_id=expected_run_id,
+        expected_arm_id=expected_arm_id,
+        candidate_manifest_path=candidate_manifest_path,
+        qualification_transaction_receipt_path=(
+            qualification_transaction_receipt_path
+        ),
+        runtime_input_materialization_receipt_path=(
+            runtime_input_materialization_receipt_path
+        ),
+        runtime_input_bundle_path=runtime_input_bundle_path,
+        guardian_service_authority_path=guardian_service_authority_path,
+        preprocessing_contract_path=preprocessing_contract_path,
+        preprocessing_contract_receipt_path=(
+            preprocessing_contract_receipt_path
+        ),
+        require_live_service=True,
+    )
     _require(
         second_material == first_material,
         "bootstrap/model-parity inputs changed during physical preparation",
+    )
+    _require(
+        second_operational == first_operational,
+        "qualification operational inputs changed during physical preparation",
     )
     acceptance: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
@@ -1143,6 +1762,7 @@ def finalize_checkpoint_qualification_pilot_acceptance_v1(
             "prepared_by": "prepare_checkpoint_publication_acceptance",
         },
         "bootstrap_binding": second_material,
+        "operational_binding": second_operational,
     }
     acceptance["sha256"] = _canonical_sha(acceptance)
     acceptance_path = output / ACCEPTANCE_FILENAME
@@ -1157,7 +1777,7 @@ def finalize_checkpoint_qualification_pilot_acceptance_v1(
         expected_run_id=expected_run_id,
         expected_arm_id=expected_arm_id,
     )
-    _write_immutable_json(acceptance_path, acceptance)
+    _write_immutable_json(root, acceptance_path, acceptance)
     return json.loads(_canonical_bytes(acceptance))
 
 

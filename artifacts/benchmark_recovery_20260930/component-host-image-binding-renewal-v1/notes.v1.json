@@ -1,0 +1,57 @@
+{
+  "actual_new_image_receipt_pending": "artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/gstreamer_custom.runtime.freeze.json",
+  "after_update_gates": [
+    "Review exact constant-only diff and meaningful original wrapper image/contract tests; no live pair before source freeze.",
+    "Capture NEW host execution-code-closure.v2.json from final actual host bytes/interpreter and pass its physical descriptor to selected source CLI, original7roles and all later contexts. Do not overwrite v1 or relabel old custody.",
+    "Keep original accepted v4 model association, canonical all-system image tags, raw numeric evidence and worker receipts unchanged. Component and full publication/Q4 grants remain isolated."
+  ],
+  "alternatives": "No existing stock dynamic binding API found. A fresh immutable static host freeze preserves all existing runtime checks and avoids monkeypatching globals or adding an image override framework.",
+  "artifact_kind": "vast_component_host_image_binding_readonly_renewal_note_v1",
+  "before_write_gates": [
+    "Use existing stock load_runtime_image_receipt and current-source/registry checks; candidate_binding_eligible true/blockers empty/deterministic pair equality must be actual closed facts.",
+    "Require observed_repository_digests == [canonical_repository_digest], because original wrapper is stricter than receipt membership. Do not relax this check.",
+    "Require existing baseID sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c, original entrypoint, dlstreamer user, amd64/linux and epoch Created match. Renew only listed constants; unexpected change is a separate actual failure.",
+    "Require actual wrapper inspect projection matches receipt digest and all actual embedded hashes agree with closed capture, preserving exact key sets."
+  ],
+  "dependency_result": {
+    "host_execution_closure_changes": true,
+    "receipt_of_existing_host_v1_becomes_historical": true,
+    "selected_runtime_native3_worker2_source_bytes_change": false,
+    "wrapper_is_selected_docker_copy": false,
+    "wrapper_is_selected_runtime_source_member": false
+  },
+  "hardware_acceptance": false,
+  "host_current_receipt": {
+    "path": "artifacts/gstreamer_component_release_20260930_a3e976d0/host/execution-code-closure.v1.json",
+    "sha256": "938c49afbc1c06984e73d39d46bac828dd9a7d69e9180808f6ac42f80778a66e",
+    "size_bytes": 30986
+  },
+  "limits": "Readonly recommendation only; no source/Git/image/engine/model/worker/guardian/benchmark mutation or query by this review. Actual image receipt is still pending.",
+  "minimum_update_mapping": {
+    "EXPECTED_EMBEDDED_ARTIFACTS": "receipt.physical_identity.embedded_files, exact existing11 embedded path domain",
+    "EXPECTED_IMAGE_ID": "receipt.physical_identity.image_id",
+    "EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256": "receipt.physical_identity.inspect_projection_sha256, independently recomputed by original wrapper projection over retained actual image inspect",
+    "EXPECTED_IMAGE_LABELS": "receipt.physical_identity.labels; exact selected projection key domain, not arbitrary additional Docker labels",
+    "EXPECTED_IMAGE_REFERENCE": "receipt.physical_identity.final_reference (unique selected tag)",
+    "EXPECTED_REPOSITORY_DIGEST": "receipt.physical_identity.canonical_repository_digest"
+  },
+  "original_wrapper": {
+    "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+    "sha256": "7fcbb1767cecdd9b9555df29d511c2b95a0c36a021f8fe574b383472d6a6df83",
+    "size_bytes": 59617
+  },
+  "schema_version": 1,
+  "selected_source_allowlist": {
+    "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+    "sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+    "size_bytes": 3538
+  },
+  "sha256": "41140c7661e7a4780b807e14c8f04febf8b8c3dcab18b149fbd297e4e38c639a",
+  "source_findings": [
+    "Host wrapper:53\u201381 fixes reference/ID/digest/inspect/base/labels/embedded values. _validate_image:486 rejects any different exact4 image contract.",
+    "Host wrapper:941/953 inspects the fixed reference and exact one RepoDigest/entrypoint/user/label/Created projection.",
+    "Host wrapper:1150/1183/1224/1273 uses fixed immutable ID for embedded/device/measurement commands. No runtime image override or dynamic binding API is exposed by the original public entrypoint:1383.",
+    "Original runtime-input factory:2401 copies wrapper EXPECTED_EMBEDDED_ARTIFACTS, so new contract construction also requires the same renewed constants."
+  ],
+  "status": "minimum_existing_constant_renewal_recommended_after_actual_image_receipt"
+}

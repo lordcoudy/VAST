@@ -608,6 +608,22 @@ def _read_windows(root: Path, relative: PurePosixPath,
                 "handle ABI protocol handle cleanup failed") from close_error
 
 
+def _stable_posix_file_fingerprint(info: os.stat_result) -> tuple[int, ...]:
+    """Mutation fingerprint excluding read-driven access time."""
+
+    return (
+        int(info.st_dev),
+        int(info.st_ino),
+        int(info.st_mode),
+        int(info.st_nlink),
+        int(info.st_uid),
+        int(info.st_gid),
+        int(info.st_size),
+        int(info.st_mtime_ns),
+        int(info.st_ctime_ns),
+    )
+
+
 def _read_posix(root: Path, relative: PurePosixPath,
                 root_identity: tuple[int, int]) -> tuple[dict[str, Any], bytes]:
     _require(os.open in os.supports_dir_fd
@@ -661,7 +677,8 @@ def _read_posix(root: Path, relative: PurePosixPath,
                      "handle ABI protocol artifact exceeds size limit")
             chunks.append(chunk)
         after = os.fstat(descriptor_fd)
-        _require(opened == after,
+        _require(_stable_posix_file_fingerprint(opened)
+                 == _stable_posix_file_fingerprint(after),
                  "handle ABI protocol artifact changed while reading")
         verify_parent = os.open(root, directory_flags)
         verification.append(verify_parent)
@@ -677,7 +694,8 @@ def _read_posix(root: Path, relative: PurePosixPath,
             verify_parent = child_fd
         verify_fd = os.open(relative.parts[-1], flags, dir_fd=verify_parent)
         verification.append(verify_fd)
-        _require(os.fstat(verify_fd) == after,
+        _require(_stable_posix_file_fingerprint(os.fstat(verify_fd))
+                 == _stable_posix_file_fingerprint(after),
                  "handle ABI protocol path changed while reading")
         payload = b"".join(chunks)
         return ({"path": relative.as_posix(), "size_bytes": len(payload),

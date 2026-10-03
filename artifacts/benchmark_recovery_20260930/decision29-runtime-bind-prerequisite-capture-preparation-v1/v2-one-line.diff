@@ -1,0 +1,10 @@
+--- capture_stock_runtime_bind_v1.py
++++ capture_stock_runtime_bind_v2.py
+@@ -291,6 +291,7 @@
+     OUT.mkdir()
+     owned_output = True
+     controller = owner(os.getpid())
++    controller['observed_parent'] = owner(controller['ppid'])
+     script_pin, _ = hold(SCRIPT, 6112, SCRIPT_SHA)
+     head_pin, head_fd = hold(ROOT / '.git/HEAD', 41, hashlib.sha256((COMMIT + '\n').encode('ascii')).hexdigest())
+     assert os.pread(head_fd, 42, 0) == (COMMIT + '\n').encode('ascii')

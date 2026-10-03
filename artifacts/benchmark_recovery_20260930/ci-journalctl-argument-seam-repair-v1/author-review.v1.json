@@ -1,0 +1,497 @@
+{
+  "accepted_full_ci": false,
+  "accepted_namespace_or_policy_causality": false,
+  "artifact_kind": "vast_ci_journalctl_argument_seam_author_review_v1",
+  "before": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/ci_namespace_diagnostic_v1.py",
+      "sha256": "c27e5fde456c0448cee9e7ea20a5861e66e5f0636c56fe207995993549dbcff8",
+      "size_bytes": 22271
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "fe07668ac4b3c2f1f7c1af8c668b0d86e1b74d3f0d1cfc085074050ab6010832",
+      "size_bytes": 17886
+    }
+  ],
+  "diff": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/owned-source.diff",
+    "sha256": "0db2a33816639b5fdc44a93456fa9256ceed9a95358725364810b78f7d609d56",
+    "size_bytes": 4658
+  },
+  "dispatch": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/dispatch.py",
+    "sha256": "b73fa3711ac80a8ed94f0f5d4c269f809139eb2a4dac60cc74d8377b96ac9e01",
+    "size_bytes": 5698
+  },
+  "final_owned_sources": [
+    {
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "7bb96d3dba712f8c47c2afc2984628ccee7cca03e827895e95f1461c3479bbe5",
+      "size_bytes": 22270
+    },
+    {
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "37d771d553a76cbbaf6d878ab10cc2a7f409bb054c41ada8f36daba16da91223",
+      "size_bytes": 20805
+    }
+  ],
+  "limitations": [
+    "Parser-help success proves accepted option spelling, not actual hosted journal access, namespace success, policy denial, native139 cause, full CI success or benchmark acceptance.",
+    "The actual capture observes the initial original Python owner before same-PID execv. It does not claim a post-exec executable observation.",
+    "Original hosted query remains failed and immutable. No query retry was performed.",
+    "Previous unrelated fixture99-method scope was96 successes plus3 existing Windows skips, not99 successes."
+  ],
+  "original_hosted_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "original_hosted_unsupported_option_snapshots": [
+    {
+      "crc32": 1648172205,
+      "sha256": "3d39c6af4077e23e2db39c453844a91e9dba55167c8f44e0e0424778f743e81c",
+      "size_bytes": 787,
+      "snapshot": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-denial.json",
+      "zip_entry": "namespace-diagnostic/kernel-denial.json"
+    },
+    {
+      "crc32": 981826371,
+      "sha256": "2580fd5fee1d89d2d95066e6cacbcd76d79f79f48d8b70c9740d2c8499a6d881",
+      "size_bytes": 1239,
+      "snapshot": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-query/capture.json",
+      "zip_entry": "namespace-diagnostic/kernel-query/capture.json"
+    },
+    {
+      "crc32": 3747570814,
+      "sha256": "963927d51742f917c06dd2a466f3c19a3b4ab2f6485c76f1cb707d5ea3244db3",
+      "size_bytes": 52,
+      "snapshot": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-query/stderr.raw",
+      "zip_entry": "namespace-diagnostic/kernel-query/stderr.raw"
+    },
+    {
+      "crc32": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "snapshot": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-query/stdout.raw",
+      "zip_entry": "namespace-diagnostic/kernel-query/stdout.raw"
+    }
+  ],
+  "original_runs": [
+    {
+      "actual_parser": {
+        "argv": [
+          "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+          "-I",
+          "-B",
+          "-c",
+          "import os,sys;position=sys.argv.index(\"--start-gate-fd\");fd=int(sys.argv[position+1]);command=sys.argv[1:position];assert os.read(fd,1)==b\"1\";os.close(fd);os.execv(command[0],command)",
+          "/usr/bin/journalctl",
+          "--kernel",
+          "--since",
+          "@1790791885",
+          "--until",
+          "@1790791887",
+          "--no-pager",
+          "--output=json",
+          "--lines=32",
+          "--case-sensitive=no",
+          "--grep=apparmor=.*DENIED.*(userns|unshare|capable)",
+          "--help",
+          "--start-gate-fd",
+          "3"
+        ],
+        "capture_completed": true,
+        "capture_exceeded": false,
+        "cleanup_deadline_ns": 274201122313228,
+        "command_after_original_start_gate": [
+          "/usr/bin/journalctl",
+          "--kernel",
+          "--since",
+          "@1790791885",
+          "--until",
+          "@1790791887",
+          "--no-pager",
+          "--output=json",
+          "--lines=32",
+          "--case-sensitive=no",
+          "--grep=apparmor=.*DENIED.*(userns|unshare|capable)"
+        ],
+        "elapsed_s": 0.021145742,
+        "eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "execution_deadline_ns": 274202111691440,
+        "failure": null,
+        "gate_owner_executable_is_initial_python": true,
+        "original_group_absent": true,
+        "original_group_members": [],
+        "owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "executable_realpath": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+          "executable_stat": {
+            "st_dev": 2096,
+            "st_gid": 1000,
+            "st_ino": 87545,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 8020928,
+            "st_uid": 1000
+          },
+          "gid": 1000,
+          "pgid": 40714,
+          "pid": 40714,
+          "ppid": 40713,
+          "startticks": 27420011,
+          "uid": 1000
+        },
+        "post_exec_executable_observed": false,
+        "returncode": 1,
+        "started_monotonic_ns": 274200111691440,
+        "started_wall_time_ns": 1790791886448907590,
+        "terminal_wall_time_ns": 1790791886470052678,
+        "timed_out": false
+      },
+      "errors": 0,
+      "failures": 1,
+      "original_capture": {
+        "channel_bytes": {
+          "stderr": 1061,
+          "stdout": 0
+        },
+        "elapsed_s": 0.13343453500419855,
+        "failure": null,
+        "original_capture_completed": true,
+        "original_group_members": [],
+        "original_pid_absent": true,
+        "owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "gid": 1000,
+          "pgid": 40713,
+          "pid": 40713,
+          "startticks": 27420003,
+          "uid": 1000
+        },
+        "pipe_eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "returncode": 1,
+        "scope": "Parser-only --help and ordinary unit fixtures; no real namespace, kernel journal query, engine or model.",
+        "source_stable": true,
+        "successful": false,
+        "timed_out": false
+      },
+      "original_physical_leaves": [
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/actual-parser-00/capture.json",
+          "sha256": "077847251c88f4bc4770bb81d5d38de8f1e14290ec5bb1e5a4561961a17e6930",
+          "size_bytes": 1343
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/actual-parser-00/stderr.raw",
+          "sha256": "963927d51742f917c06dd2a466f3c19a3b4ab2f6485c76f1cb707d5ea3244db3",
+          "size_bytes": 52
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/actual-parser-00/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/execution.json",
+          "sha256": "c5884dd7e6ac435f9af9e6b91de9f6a453bf3f70ba48b8ce1148bec1bceeafb1",
+          "size_bytes": 660
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/launch.json",
+          "sha256": "85fad26557b33a2327d408be5812011668a36d525aeaaa891f6c9bd7a8e266f3",
+          "size_bytes": 2508
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/source.after.json",
+          "sha256": "076d2d25fb54e172ff399fcd16e84cdb81eb70be30123c8abeb417bd90c02bf7",
+          "size_bytes": 476
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/source.before.json",
+          "sha256": "076d2d25fb54e172ff399fcd16e84cdb81eb70be30123c8abeb417bd90c02bf7",
+          "size_bytes": 476
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/stderr.raw",
+          "sha256": "3573fbf948a9f775cab1f7168dd32dd6268d811084bde8a4ab91a2c39a3d638b",
+          "size_bytes": 1061
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/test-results.json",
+          "sha256": "0acdf3c0c2f161a90dd446b4ad4aef817a1d5cc896140ed86e58cfa863185126",
+          "size_bytes": 3234
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/tested-source/scripts/ci_external_test_observer_v1.py",
+          "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+          "size_bytes": 20916
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/tested-source/scripts/ci_namespace_diagnostic_v1.py",
+          "sha256": "c27e5fde456c0448cee9e7ea20a5861e66e5f0636c56fe207995993549dbcff8",
+          "size_bytes": 22271
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/tested-source/tests/test_ci_namespace_diagnostic_v1.py",
+          "sha256": "55c5b687a88ef5ea68ecce35778e41a805f9cbf5b2484870976d638c89000ae8",
+          "size_bytes": 20806
+        }
+      ],
+      "selection": "red",
+      "skips": 0,
+      "tests_run": 1
+    },
+    {
+      "actual_parser": {
+        "argv": [
+          "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+          "-I",
+          "-B",
+          "-c",
+          "import os,sys;position=sys.argv.index(\"--start-gate-fd\");fd=int(sys.argv[position+1]);command=sys.argv[1:position];assert os.read(fd,1)==b\"1\";os.close(fd);os.execv(command[0],command)",
+          "/usr/bin/journalctl",
+          "--dmesg",
+          "--since",
+          "@1790791968",
+          "--until",
+          "@1790791970",
+          "--no-pager",
+          "--output=json",
+          "--lines=32",
+          "--case-sensitive=no",
+          "--grep=apparmor=.*DENIED.*(userns|unshare|capable)",
+          "--help",
+          "--start-gate-fd",
+          "3"
+        ],
+        "capture_completed": true,
+        "capture_exceeded": false,
+        "cleanup_deadline_ns": 274283778582105,
+        "command_after_original_start_gate": [
+          "/usr/bin/journalctl",
+          "--dmesg",
+          "--since",
+          "@1790791968",
+          "--until",
+          "@1790791970",
+          "--no-pager",
+          "--output=json",
+          "--lines=32",
+          "--case-sensitive=no",
+          "--grep=apparmor=.*DENIED.*(userns|unshare|capable)"
+        ],
+        "elapsed_s": 0.014977133,
+        "eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "execution_deadline_ns": 274284768953132,
+        "failure": null,
+        "gate_owner_executable_is_initial_python": true,
+        "original_group_absent": true,
+        "original_group_members": [],
+        "owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "executable_realpath": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+          "executable_stat": {
+            "st_dev": 2096,
+            "st_gid": 1000,
+            "st_ino": 87545,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 8020928,
+            "st_uid": 1000
+          },
+          "gid": 1000,
+          "pgid": 40725,
+          "pid": 40725,
+          "ppid": 40724,
+          "startticks": 27428276,
+          "uid": 1000
+        },
+        "post_exec_executable_observed": false,
+        "returncode": 0,
+        "started_monotonic_ns": 274282768953132,
+        "started_wall_time_ns": 1790791969102501937,
+        "terminal_wall_time_ns": 1790791969117478515,
+        "timed_out": false
+      },
+      "errors": 0,
+      "failures": 0,
+      "original_capture": {
+        "channel_bytes": {
+          "stderr": 3441,
+          "stdout": 0
+        },
+        "elapsed_s": 0.6376387400086969,
+        "failure": null,
+        "original_capture_completed": true,
+        "original_group_members": [],
+        "original_pid_absent": true,
+        "owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "gid": 1000,
+          "pgid": 40724,
+          "pid": 40724,
+          "startticks": 27428270,
+          "uid": 1000
+        },
+        "pipe_eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "returncode": 0,
+        "scope": "Parser-only --help and ordinary unit fixtures; no real namespace, kernel journal query, engine or model.",
+        "source_stable": true,
+        "successful": true,
+        "timed_out": false
+      },
+      "original_physical_leaves": [
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/actual-parser-00/capture.json",
+          "sha256": "38656d379a1fb56c70454fb7c2afaade72c2e60a45b72827afe59a8fb6f16193",
+          "size_bytes": 1342
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/actual-parser-00/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/actual-parser-00/stdout.raw",
+          "sha256": "53c8bdb604840415ad3cc6680cdb09b46ecc7e99cc9d2a9c7c563fc87a5a89db",
+          "size_bytes": 4844
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/execution.json",
+          "sha256": "4cb9bf54167c28e5a9d1a2984db7bfb87baf2d2c8e4e844b39066e7bacfb494e",
+          "size_bytes": 658
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/launch.json",
+          "sha256": "af1df16ce7b10669dd60fedfe91b52c4625332abdbfe9ec49608e2a6c99ab195",
+          "size_bytes": 2514
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/source.after.json",
+          "sha256": "3f331703f0ecb915f41f9c276d841cf62b96d594a0c366c0e180902ad33f5c03",
+          "size_bytes": 476
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/source.before.json",
+          "sha256": "3f331703f0ecb915f41f9c276d841cf62b96d594a0c366c0e180902ad33f5c03",
+          "size_bytes": 476
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/stderr.raw",
+          "sha256": "25ed94f7e0afce937f8f2f2d0e8943e2b56f91d358c86824819bfad8b037e258",
+          "size_bytes": 3441
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/test-results.json",
+          "sha256": "ce3303871d8e0447b8188b3c2d2660444c532a49fb49b7cd600e8106f1d6dd5d",
+          "size_bytes": 2699
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/tested-source/scripts/ci_external_test_observer_v1.py",
+          "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+          "size_bytes": 20916
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/tested-source/scripts/ci_namespace_diagnostic_v1.py",
+          "sha256": "7bb96d3dba712f8c47c2afc2984628ccee7cca03e827895e95f1461c3479bbe5",
+          "size_bytes": 22270
+        },
+        {
+          "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/tested-source/tests/test_ci_namespace_diagnostic_v1.py",
+          "sha256": "37d771d553a76cbbaf6d878ab10cc2a7f409bb054c41ada8f36daba16da91223",
+          "size_bytes": 20805
+        }
+      ],
+      "selection": "green",
+      "skips": 0,
+      "tests_run": 16
+    }
+  ],
+  "preedit_inventory": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/preedit-inventory.v1.json",
+    "sha256": "d5dc3ae7b30f394cb4a18f920a32a22b57896c738e4983b8c12e687b22c7d1ee",
+    "size_bytes": 2549
+  },
+  "primary_source": {
+    "actual_binary_version_not_queried": true,
+    "claim": "Official systemd v255 documents -k/--dmesg since v205. Actual retained RED parser rejected --kernel; actual GREEN parser accepts --dmesg with --help.",
+    "lines": [
+      376,
+      382
+    ],
+    "url": "https://raw.githubusercontent.com/systemd/systemd/v255/man/journalctl.xml"
+  },
+  "production_delta": "Exactly one literal --kernel\u2192--dmesg; inverse byte equality to the complete original script verified. No deadlines, owner checks, query count, filters or denial predicates changed.",
+  "schema_version": 1,
+  "scope": {
+    "actual_commands": "One actual journalctl --help in RED and one in GREEN, through original same-PID gated Python execv; namespace invocation is an explicit fixture and /dev/kmsg open is mocked unavailable. The helper generates the production argv; --help parses and exits without reading journals.",
+    "hardware_outputs_not_read": true,
+    "head_and_index_not_mutated": true,
+    "host_v6": {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.v6.json",
+      "sha256": "fedf5d8c85c5e435d4bfab21b4c8851db1e07fd9a982f428f91621314b3a8805",
+      "size_bytes": 30986
+    },
+    "no_engine_model_install_or_profile": true,
+    "no_real_namespace_or_journal_query": true,
+    "no_sudo": true,
+    "original_capture_budget_s": {
+      "cleanup": 1,
+      "execution": 2
+    },
+    "outer_unit_capture_limit_s": 60,
+    "outer_unit_channel_limit_bytes": 16384,
+    "owned_source_and_test_intersection": [],
+    "parser_channel_limit_bytes": 16384,
+    "project_sources": 87,
+    "source87_not_edited": true
+  },
+  "status": "focused_parser_and_fixture_behavior_verified",
+  "test_delta": {
+    "existing_expected_literal_only": true,
+    "existing_method_changes": [
+      "test_kernel_query_is_read_only_once_and_rejects_foreign_pid_prefix"
+    ],
+    "new_methods": [
+      "test_actual_journalctl_parser_accepts_original_query_options_without_reading_journals"
+    ],
+    "original_methods_retained": [
+      "test_exact_first_unshare_failure_delegates_once_and_retains_original_errno",
+      "test_kernel_query_explicitly_captures_capability_denials_without_claiming_cause",
+      "test_kernel_query_is_read_only_once_and_rejects_foreign_pid_prefix",
+      "test_mapping_open_failure_identifies_actual_path_and_flags",
+      "test_namespace_denial_candidate_retains_original_pid_capability_and_case",
+      "test_original_capture_flush_failure_closes_fd_and_preserves_failed_status",
+      "test_original_child_exit_does_not_extend_descendant_pipe_cleanup_to_execution_budget",
+      "test_original_cleanup_deadline_includes_capture_close",
+      "test_original_mount_cause_and_flags_are_retained_without_policy_inference",
+      "test_original_pidfd_failure_contains_exact_child_and_leaves_no_parent_fds",
+      "test_prepared_namespace_and_kernel_capture_share_the_reviewed_64kib_domain",
+      "test_real_gated_exec_keeps_original_pid_and_truthful_initial_owner",
+      "test_real_ordinary_child_nonzero_and_raw_eof_are_preserved",
+      "test_real_ordinary_child_overflow_retains_bounded_prefix_and_fails",
+      "test_real_ordinary_child_timeout_reaps_original_and_never_reports_success"
+    ],
+    "original_skip_decorators_unchanged": true
+  }
+}

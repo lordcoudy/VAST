@@ -1,0 +1,119 @@
+{
+  "artifact_kind": "vast_component_probe_authority_schema_author_review_v1",
+  "ast_proof": {
+    "all13_original_test_method_AST_identical": true,
+    "all_other_top_level_AST_identical": true,
+    "fixture_change": "remove content_identity_sha256 from probe authorities, matching stock exact4; no original assertion removed",
+    "green_total": 14,
+    "new_regressions": 1,
+    "only_production_function_changed": "_worker_material"
+  },
+  "before": {
+    "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/preedit-inventory.v1.json",
+    "sha256": "1ae253bcfdcba4172df0038d6dbb3415486213f36e407432579278e98dd61d9d",
+    "size_bytes": 755
+  },
+  "green": {
+    "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/green-01/terminal.v1.json",
+    "sha256": "853929706dfe43ab742a5ea44dbfa61fcfb4a879384b761545c063a6217f804f",
+    "size_bytes": 4905
+  },
+  "host_inputs_unchanged": {
+    "path": "scripts/publication_gstreamer_component_inputs_v1.py",
+    "sha256": "1fd0076ae65d363b2c247789927b17250c529d5069500655a3148db59d64d706",
+    "size_bytes": 28197
+  },
+  "native_three_worker_two_physical_contexts_unchanged": true,
+  "next_required": [
+    "Reviewed source commit before root-owned new selected deterministic build/capture",
+    "Renew host wrapper fixed expected identities from genuine selected receipt",
+    "Capture fresh host execution closurev5 before one separately authorized CPU04"
+  ],
+  "no_builder_or_CPU04_launched": true,
+  "no_engine_model_hardware_calls_by_this_repair": true,
+  "no_git_mutations": true,
+  "original_cpu03": {
+    "diagnosis": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu03-probe-schema-diagnosis-v1/diagnosis.v1.json",
+      "sha256": "2dff8658ca89298477bb77a8ded754a5691b215b49581f7e3a73442cfb8f5a70",
+      "size_bytes": 9207
+    },
+    "original_failure_preserved": true,
+    "original_live_engine_scope": "Original stock native device probe returned before source_inputs310. No guardian/native measurement reached. Original per-call payload/CID not retained; current container quiescence is not inferred.",
+    "quiescence95": {
+      "path": "artifacts/gstreamer_component_release_20260930_a3e976d0/cpu-pair-03-original-controller/postterminal-process-reserve-and-pins.v1.json",
+      "sha256": "5ca9177816e1ccde418f7bcc7fb5510eb2cca357a5d1feb8371ad816d3a524a5",
+      "size_bytes": 47177
+    }
+  },
+  "owned_final": {
+    "scripts\\publication_gstreamer_component_authority_v1.py": {
+      "path": "scripts/publication_gstreamer_component_authority_v1.py",
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+      "size_bytes": 27355
+    },
+    "tests\\test_publication_gstreamer_component_inputs_v1.py": {
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "sha256": "3d90d2e684251a98df4d3156eccf5deb56ffaab480c9a2ec3ea7c1606f104d38",
+      "size_bytes": 42256
+    }
+  },
+  "raw": {
+    "green-01": {
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/green-01/stderr.raw",
+        "sha256": "7efd19176dc23f3f05d370faefcacf1fc36d719f31c8fb04b19b1c2afd1cc4e7",
+        "size_bytes": 3286
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/green-01/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    "red-01": {
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/red-01/stderr.raw",
+        "sha256": "9df0674bfa0bacdae858484e16af71b4a2650a48a9a309b918af662b40fe58ba",
+        "size_bytes": 2717
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/red-01/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    }
+  },
+  "red": {
+    "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/red-01/terminal.v1.json",
+    "sha256": "65caf74aa3da463d0d868624456cce5d640b674956e9dd378db4a4b524729d37",
+    "size_bytes": 5004
+  },
+  "schema_evidence": {
+    "actual_stock_validator": "checkpoint_model_parity_acceptance_v4.validate_refresh_authority_v4 invoked on committed original accepted receipt.refresh_authority without assessor/query",
+    "exact_receipt_projection_equality_preserved": true,
+    "no_fake_canonical_content_identity": true,
+    "raw_content_custody_preserved": "ComponentPinsV1.object/read physically verifies every original serialized byte against path,size,SHA and held full epoch; validate_runtime_probe checks actual schema/engine; explicit original authority implementation joins checked probe and existing config/worker equality",
+    "readiness_flags_false_preserved": true,
+    "real_return_fields": [
+      "path",
+      "size_bytes",
+      "sha256",
+      "worker_implementation_sha256"
+    ],
+    "resealed_negatives": [
+      "invented extra content field rejected at exact4 authority guard",
+      "foreign original implementation rejected against physically held validated probe after local fixture receipt+authority reseals"
+    ],
+    "scope_of_tests": "Genuine local metadata/pins/socket/ELF and actual pure loader; expensive model/image/device/closure outputs remain explicit existing fixtures, no current model/hardware acceptance"
+  },
+  "schema_version": 1,
+  "scope": "Only pure _worker_material exact stock4 probe authority and original implementation join; existing unit fixture correction plus one real stock-schema regression",
+  "self_review": "The fixture fabricated a field forbidden by the real stock authority schema and masked a packaged consumer error. The repair translates the existing original authority contract directly while retaining full serialized-byte custody and all original config/worker/receipt joins. A host-only enrichment would violate exact original provenance; renewed selected packaging is necessary. Focused old and new tests pass, but this does not prove the later pair or grant hardware/model acceptance.",
+  "source_commit_before": "30ae1a400595e049cfdb3585629134630fe0f25b",
+  "source_image_audit": {
+    "path": "artifacts/benchmark_recovery_20260930/component-probe-authority-schema-repair-v1/source-image-scope.v1.json",
+    "sha256": "44e6c73ce8b29af057e116ddf3545fb5d9215705e14addb8b637baa2f16c1568",
+    "size_bytes": 9136
+  }
+}

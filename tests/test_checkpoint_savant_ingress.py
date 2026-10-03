@@ -5,12 +5,15 @@ import sys
 import unittest
 from dataclasses import dataclass
 from pathlib import Path
+from types import SimpleNamespace
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from checkpoint_deepstream_sdk_runtime import AdmissionTransportFrame, MISSING_TIMESTAMP  # noqa: E402
+import checkpoint_savant_ingress as ingress_module  # noqa: E402
 from checkpoint_savant_ingress import (  # noqa: E402
     SAVANT_ADMISSION_TAGS,
     SavantIngressError,
@@ -52,6 +55,23 @@ class FakeRunner:
         return {"status": "ok"}
 
 
+class ShutdownRunner(FakeRunner):
+    def __init__(self, *, eos_status="ok", shutdown_status="ok") -> None:
+        super().__init__()
+        self.events = []
+        self.eos_status = eos_status
+        self.shutdown_status = shutdown_status
+
+    def send_eos(self, source_id: str):
+        self.events.append(("eos", source_id))
+        super().send_eos(source_id)
+        return {"status": self.eos_status}
+
+    def send_shutdown(self, zmq_topic: str, auth: str):
+        self.events.append(("shutdown", zmq_topic, auth))
+        return {"status": self.shutdown_status}
+
+
 def frame(*, keyframe: bool = True, dts: int = MISSING_TIMESTAMP) -> AdmissionTransportFrame:
     payload = b"\x00\x00\x00\x01\x65native-savant"
     return AdmissionTransportFrame(
@@ -59,7 +79,7 @@ def frame(*, keyframe: bool = True, dts: int = MISSING_TIMESTAMP) -> AdmissionTr
         keyframe=keyframe,
         source_cycle=2,
         access_unit_pts_ns=90_000,
-        transport_pts_ns=20_000_090_000,
+        transport_pts_ns=20_054_000_000,
         access_unit_dts_ns=dts,
         duration_ns=33_333_333,
         admission_id="run-savant:3:admission:1",
@@ -81,16 +101,69 @@ def binding() -> SavantSourceBinding:
         framerate="600/1",
         dataset_id="kpp_iss_publication_v3_h264",
         source_sha256="a" * 64,
+        source_duration_ns=10_000_000_000,
         socket="dealer+connect:ipc:///tmp/vast-savant-run/module-3.ipc",
     )
 
 
 class SavantIngressTests(unittest.TestCase):
+    def test_checked_writer_preserves_exact_native_success_and_payload(self) -> None:
+        class Ack:
+            pass
+
+        class Success:
+            pass
+
+        for result in (Ack(), Success()):
+            native = mock.Mock()
+            native.send_message.return_value = result
+            writer = ingress_module._CheckedSavantWriter(
+                native, successful_result_types=(Ack, Success)
+            )
+            message = object()
+            self.assertIs(writer.send_message("topic", message, b"exact"), result)
+            native.send_message.assert_called_once_with("topic", message, b"exact")
+            writer.shutdown()
+            native.shutdown.assert_called_once_with()
+
+    def test_checked_writer_rejects_timeout_and_unrecognized_results(self) -> None:
+        class Success:
+            pass
+
+        class WriterResultSendTimeout:
+            pass
+
+        class WriterResultAckTimeout:
+            pass
+
+        for result in (WriterResultSendTimeout(), WriterResultAckTimeout(),
+                       None, True, SimpleNamespace(status="ok")):
+            native = mock.Mock()
+            native.send_message.return_value = result
+            writer = ingress_module._CheckedSavantWriter(
+                native, successful_result_types=(Success,)
+            )
+            with self.subTest(result=type(result).__name__), self.assertRaisesRegex(
+                SavantIngressError, "ZeroMQ writer did not confirm delivery"
+            ):
+                writer.send_message("topic", object(), b"exact")
+            self.assertEqual(native.send_message.call_count, 1)
+
+    def test_checked_writer_never_retries_a_native_exception(self) -> None:
+        native = mock.Mock()
+        native.send_message.side_effect = RuntimeError("native transport failure")
+        writer = ingress_module._CheckedSavantWriter(
+            native, successful_result_types=(object,)
+        )
+        with self.assertRaisesRegex(RuntimeError, "native transport failure"):
+            writer.send_message("topic", object(), b"exact")
+        self.assertEqual(native.send_message.call_count, 1)
+
     def test_vastau01_maps_byte_exactly_to_native_savant_frame(self) -> None:
         value = build_savant_video_frame_record(frame(), binding())
         self.assertEqual(value.source_id, "kpp_plate_avi-stream-3")
         self.assertEqual(value.codec, "h264")
-        self.assertEqual(value.pts, 20_000_090_000)
+        self.assertEqual(value.pts, 20_054_000_000)
         self.assertIsNone(value.dts)
         self.assertEqual(value.duration, 33_333_333)
         self.assertEqual(value.time_base, (1, 1_000_000_000))
@@ -124,7 +197,7 @@ class SavantIngressTests(unittest.TestCase):
         self.assertEqual(native.content, ("zeromq", None))
         self.assertFalse(native.keyframe)
         self.assertEqual(native.dts, 20_000_080_000)
-        self.assertEqual(native.pts, 20_000_090_000)
+        self.assertEqual(native.pts, 20_054_000_000)
         ingress.finish()
         self.assertEqual(runner.eos, ["kpp_plate_avi-stream-3"])
 
@@ -157,6 +230,71 @@ class SavantIngressTests(unittest.TestCase):
             build_savant_video_frame_record(value, SavantSourceBinding(
                 **{**binding().__dict__, "codec": "h265"}
             ))
+
+    def test_owned_module_shutdown_follows_successful_eos_exactly_once(self) -> None:
+        runner = ShutdownRunner()
+        auth = "vast-savant-" + "b" * 64
+        ingress = SavantNativeIngress(
+            binding=binding(), runner=runner,
+            frame_builder=lambda **kwargs: FakeVideoFrame(**kwargs),
+            shutdown_auth=auth,
+        )
+        ingress.send_frame(frame())
+        ingress.finish()
+        self.assertEqual(runner.events, [
+            ("eos", binding().source_id),
+            ("shutdown", binding().source_id, auth),
+        ])
+        with self.assertRaisesRegex(SavantIngressError, "EOS was duplicated"):
+            ingress.finish()
+        self.assertEqual(len(runner.events), 2)
+
+    def test_shutdown_authority_is_validated_before_any_send(self) -> None:
+        for auth in ("", "vast-savant-" + "g" * 64, "wrong-" + "b" * 64, 123):
+            runner = ShutdownRunner()
+            with self.subTest(auth=auth), self.assertRaisesRegex(
+                SavantIngressError, "shutdown authority"
+            ):
+                SavantNativeIngress(
+                    binding=binding(), runner=runner,
+                    frame_builder=lambda **kwargs: FakeVideoFrame(**kwargs),
+                    shutdown_auth=auth,
+                )
+            self.assertEqual(runner.events, [])
+
+    def test_owned_module_requires_shutdown_capable_runner(self) -> None:
+        runner = FakeRunner()
+        with self.assertRaisesRegex(SavantIngressError, "shutdown capability"):
+            SavantNativeIngress(
+                binding=binding(), runner=runner,
+                frame_builder=lambda **kwargs: FakeVideoFrame(**kwargs),
+                shutdown_auth="vast-savant-" + "b" * 64,
+            )
+        self.assertEqual(runner.eos, [])
+
+    def test_rejected_eos_never_sends_shutdown(self) -> None:
+        runner = ShutdownRunner(eos_status="failed")
+        ingress = SavantNativeIngress(
+            binding=binding(), runner=runner,
+            frame_builder=lambda **kwargs: FakeVideoFrame(**kwargs),
+            shutdown_auth="vast-savant-" + "b" * 64,
+        )
+        with self.assertRaisesRegex(SavantIngressError, "rejected EOS"):
+            ingress.finish()
+        self.assertEqual(runner.events, [("eos", binding().source_id)])
+
+    def test_rejected_shutdown_is_not_success_and_does_not_replay_eos(self) -> None:
+        runner = ShutdownRunner(shutdown_status="failed")
+        ingress = SavantNativeIngress(
+            binding=binding(), runner=runner,
+            frame_builder=lambda **kwargs: FakeVideoFrame(**kwargs),
+            shutdown_auth="vast-savant-" + "b" * 64,
+        )
+        with self.assertRaisesRegex(SavantIngressError, "rejected Shutdown"):
+            ingress.finish()
+        with self.assertRaisesRegex(SavantIngressError, "EOS was duplicated"):
+            ingress.finish()
+        self.assertEqual(len(runner.events), 2)
 
     def test_binding_rejects_nonlocal_or_alias_socket_and_invalid_source(self) -> None:
         for socket in (

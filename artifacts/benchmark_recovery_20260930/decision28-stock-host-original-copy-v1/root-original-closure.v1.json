@@ -1,0 +1,100 @@
+{
+  "FD_before_after": [
+    6,
+    6
+  ],
+  "blocking_findings": [],
+  "dispatch_bookkeeping_failure_retained": true,
+  "elapsed_s": 1.963636319967918,
+  "hardware_acceptance": false,
+  "held89_verified_closed": true,
+  "host_receipt": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\gstreamer_component_release_20260930_a4e145b7\\host\\execution-code-closure.ext4-decision28.v4.json",
+    "sealed_sha256": "792f7c8369f2aced26fe5b32282999cb625ed168e20df5e8f40ed369d6e8b754",
+    "sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+    "size_bytes": 30266
+  },
+  "original_tool_chunk_id": "da658b",
+  "original_tool_exit_code": 0,
+  "pre_dispatch_grant_file_claimed": false,
+  "retained_originals": [
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-closure-ext4-v4-original\\dispatch.v1.json",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/dispatch.v1.json",
+      "sha256": "9a4a8f43d8f36476bd3f607a9e35fbcbb9639707ee88eb5aab81f82949e6aa91",
+      "size_bytes": 591
+    },
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-closure-ext4-v4-original\\execution.v1.json",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/execution.v1.json",
+      "sha256": "9c5007d1f80fac889bb8fd9a4038e56bea645194b851a7a9cfd98bd9fd8f9f03",
+      "size_bytes": 73010
+    },
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-closure-ext4-v4-original\\source-head.launch.v1.json",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/source-head.launch.v1.json",
+      "sha256": "68f664d809003d55a3f675ad11a9ef1dc7335276b5d43007b7ade896129636ef",
+      "size_bytes": 567
+    },
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-closure-ext4-v4-original\\source-head.stderr.raw",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/source-head.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-closure-ext4-v4-original\\source-head.stdout.raw",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/source-head.stdout.raw",
+      "sha256": "40400ec4a92b244401f6f9130b03a78f4c866798d9d845df0ed273487af783fa",
+      "size_bytes": 41
+    },
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-closure-ext4-v4-original\\source-head.terminal.v1.json",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/source-head.terminal.v1.json",
+      "sha256": "f2c5a6c079336d159ab3deda6e1ac7aa743b9046e782679d3663ee6d839a01d9",
+      "size_bytes": 2059
+    },
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-closure-ext4-v4-original\\stock-closure.launch.v1.json",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/stock-closure.launch.v1.json",
+      "sha256": "5147873893a149c1df83c2aefb74877d823517d650641a3a723f348ee483e554",
+      "size_bytes": 1099
+    },
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-closure-ext4-v4-original\\stock-closure.stderr.raw",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/stock-closure.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-closure-ext4-v4-original\\stock-closure.stdout.raw",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/stock-closure.stdout.raw",
+      "sha256": "dc67cddcf4d7ab2fe2b418a217746ebae6b03aa074dacb085c97835a794f1934",
+      "size_bytes": 318
+    },
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-closure-ext4-v4-original\\stock-closure.terminal.v1.json",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/stock-closure.terminal.v1.json",
+      "sha256": "3f399057c8abf829c2741dcf49d5cb8a387944635a4496dcbe5adf624cbb7ba7",
+      "size_bytes": 2598
+    },
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\benchmark_recovery_20260930\\decision28-host-closure-ext4-v4-original\\stock-dispatch.v1.json",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/stock-dispatch.v1.json",
+      "sha256": "26b40ca28060934498ce85a83d6f75a1b854c74620d2e1ed84771905b6a6e241",
+      "size_bytes": 16264
+    },
+    {
+      "original_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-component-release-20260930-d27\\artifacts\\gstreamer_component_release_20260930_a4e145b7\\host\\execution-code-closure.ext4-decision28.v4.json",
+      "retained_path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/execution-code-closure.ext4-decision28.v4.json",
+      "sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+      "size_bytes": 30266
+    }
+  ],
+  "reviewable": true,
+  "reviewer": "/root",
+  "schema_version": 1,
+  "source87_before_after_equal": true,
+  "source_commit_B": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "stock_two_commands_EOF_reaped_absent_and_FD_restored": true
+}

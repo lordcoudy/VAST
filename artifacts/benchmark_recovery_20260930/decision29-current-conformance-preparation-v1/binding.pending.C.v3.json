@@ -1,0 +1,217 @@
+{
+  "ci_binding_contract": "Each lane requires report/terminal/source_before/source_after physical refs, explicit test outcomes, original source table and original process/FD closure. Null means pending; reported remote status or focused success is never inferred as whole current CI.",
+  "current_ci": {
+    "ext4": null,
+    "hosted": null
+  },
+  "current_counts": {
+    "requirements": 20,
+    "scenarios": 118
+  },
+  "documents": [
+    {
+      "domain": "control",
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "sha256": "00b590d0b000ab1b3cade27b8618761d0f9cfc1042484f8e13879167148e0257",
+      "size_bytes": 12618
+    },
+    {
+      "domain": "control",
+      "path": "README.md",
+      "sha256": "84a5dd70a679b49c034a345893cac6d07b8b21d906748f629e87c2014e3fcb25",
+      "size_bytes": 59084
+    },
+    {
+      "domain": "control",
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "d02fe477db39aef0d430262b387e3ca86c9c4bf0bc60a808aa87cea895fde411",
+      "size_bytes": 126887
+    }
+  ],
+  "evidence": {
+    "ci_clock_closure": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/green01/root-original-closure.v1.json",
+      "sha256": "b5bc6e4c3593f43bd4b7d247e0a4dfecb31510c16d9d1af57e19c7cf820f55d5",
+      "size_bytes": 1040
+    },
+    "ci_clock_green": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/green01/execution.v1.json",
+      "sha256": "8cc733fe929b8d6d8efb5c6d00dcba5ca2c25d1e287d51384be46bd89b0478d9",
+      "size_bytes": 6020
+    },
+    "ci_clock_peer": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/review.v1.json",
+      "sha256": "835bf6c7c991c78062adc39459b34f51eab7c598c71185a7b00fe777f62f9d6d",
+      "size_bytes": 9951
+    },
+    "ci_clock_unit": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/green01/unit-result.v1.json",
+      "sha256": "7e04c13762aef0f6d5f40f26b4c8ab3e5a5a60464f7d2eab5a9084c595cfa8a5",
+      "size_bytes": 17487
+    },
+    "cpu08": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision28-cpu08-independent-audit-v1/review.v1.json",
+      "sha256": "1f5abb9e8b2c5c2fdd9898bd121ab365a9719513b361486833612e4fca151330",
+      "size_bytes": 51656
+    },
+    "gpu02": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision28-gpu02-independent-audit-v1/review.v1.json",
+      "sha256": "a125010eae25262ead16a37ae4b47f6e21e637cc15da89399242f824e5b21283",
+      "size_bytes": 51657
+    },
+    "native_author": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/author-review.v1.json",
+      "sha256": "9356d0f8d36af2e9c79b7ca87303bfafc6cbd3e60e900e8eb17a18917c38bad5",
+      "size_bytes": 10155
+    },
+    "science": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-independent-actual-review-v1/review.v1.json",
+      "sha256": "93acbd3a82afbaf6ca796d34ff1907dc868bd5605df9c0dcb4101d287350947b",
+      "size_bytes": 81663
+    },
+    "science_csv": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_metrics.csv",
+      "sha256": "75e6346d518cc382003070e4c82dc2695b04bb4a5b6866fccf8d009ad2ecd0d4",
+      "size_bytes": 1914
+    },
+    "science_export": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/exports-and-interpretation.v1.json",
+      "sha256": "eec885d67f1d1aaf88ec932bf696790ea247e551caa0798341cc216f9eccf3bc",
+      "size_bytes": 11420
+    },
+    "science_root": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/root-original-science-closure.v1.json",
+      "sha256": "0d8c6dab6237e9e1d7b16197c9000bb4da2343bf2f61d8dcbd7e3d397e6da199",
+      "size_bytes": 7398
+    },
+    "science_svg": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_latency_coverage_cobs.svg",
+      "sha256": "3e923b67105ae316d1a6bb18df3301770d83c3364b0d2fdfa247f310fca87744",
+      "size_bytes": 175581
+    },
+    "sidecar_author": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/author-review.v1.json",
+      "sha256": "a71d828c420a1935c7ff1b2e6c91f1d7f0977eb582d68c1bda84ed0055d4920e",
+      "size_bytes": 23576
+    }
+  },
+  "finalization": {
+    "archive": "pending",
+    "conformance_review": "pending",
+    "latest_final_review": "pending",
+    "merge": "not_granted"
+  },
+  "kind": "decision29_current_conformance_input_binding_v1",
+  "measurement_source_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "notes": {
+    "domain": "control",
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/scenario-notes.v3.json",
+    "sha256": "63c095a8933c106b8d6964710b3468674c430a4a110fb753946631c0d776db48",
+    "size_bytes": 13925
+  },
+  "old_generators": [
+    {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/generate_mapping_v1.py",
+      "sha256": "d74411e3e5451ff278127c0b9325a92ed9a9372409f37b2b6f2e1b1585ea7a2c",
+      "size_bytes": 24148
+    },
+    {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/scenario_reviews_v1.py",
+      "sha256": "c71c8f88f3a9bdd09f6a8fa8d8c2dae15d75a1fb4bcc477ab721622840fa7224",
+      "size_bytes": 60253
+    },
+    {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/behavior_notes_v1.py",
+      "sha256": "4a48b1b168ae65a97567c91111fec0ae28b2f1a9530248e44e36372dd745c46d",
+      "size_bytes": 22347
+    },
+    {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/complete_mapping_v2.py",
+      "sha256": "92bda76023f627583923d41b753508c72a963c2e21ec5bda55fc27c4468b7fd0",
+      "size_bytes": 12298
+    }
+  ],
+  "old_mapping": {
+    "domain": "control",
+    "path": "artifacts/benchmark_recovery_20260930/current-conformance-preparation-v1/mapping.v2.json",
+    "sha256": "0b184bfb7c7ebc88dd030a57ec7095dc61edc9123aaca8f50308ba5fbb875ec8",
+    "size_bytes": 3111449
+  },
+  "original_spec": {
+    "domain": "control",
+    "path": "artifacts/benchmark_recovery_20260930/decision22-planning-originals-v1/spec.md",
+    "sha256": "02125ddcf5f49b356c69f77c84ec28c790fe36fcd5146a6522f8c772f31797a7",
+    "size_bytes": 50037
+  },
+  "original_task_register": {
+    "checked": 31,
+    "count": 72,
+    "scenarios": 82,
+    "unchecked": 41
+  },
+  "original_tasks": {
+    "domain": "control",
+    "path": "artifacts/benchmark_recovery_20260930/decision22-planning-originals-v1/tasks.md",
+    "sha256": "a504e7272e1a3fcad369a5b8f9430e438e91b7c6e42ac6b8c23cd8881c7a7e77",
+    "size_bytes": 46947
+  },
+  "output_leaf": "attempt01",
+  "planning": [
+    {
+      "domain": "control",
+      "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "969aa4ac3bae9b742b268333070b1266c22abc5c7bce9b204a63b6f750c0f6d6",
+      "size_bytes": 17599
+    },
+    {
+      "domain": "control",
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "112ec56dca4445e3e753899ff116203604094b37ffafcac4f7e8d28ea350afce",
+      "size_bytes": 44659
+    },
+    {
+      "domain": "control",
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "ee2518562588198019189d8bbe6471e9bc93a0858c09dc8ecd8dd736dd09e0ab",
+      "size_bytes": 36740
+    },
+    {
+      "domain": "control",
+      "path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+      "sha256": "b3db56c13e3a5c7157820f4e60f459455c5a83706b207c308f7af09716c8f73d",
+      "size_bytes": 48891
+    },
+    {
+      "domain": "control",
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "383e90694a5f4a2ed81ff8d53fc7ee4a35dc67767f17b35fd8e5bffde4751ed9",
+      "size_bytes": 75100
+    }
+  ],
+  "reported_current_CI_state_not_a_terminal_join": {
+    "ext4_C": "Root reports FAILED before build/test at model-assets; original receipt not supplied yet.",
+    "hosted_C39": "Root reports FAILED: sole stale selected-image fixture test; original receipt not supplied to this generator yet.",
+    "successor": "Pending separately reviewed three-literal test correction, actual tested successor raw source binding and real CI results; never reuse C evidence as its acceptance."
+  },
+  "schema_version": 1,
+  "source_commit": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+  "source_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+  "status": "prepared_unexecuted_C_only"
+}

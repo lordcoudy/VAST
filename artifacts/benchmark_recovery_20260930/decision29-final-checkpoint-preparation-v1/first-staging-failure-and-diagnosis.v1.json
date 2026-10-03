@@ -1,0 +1,46 @@
+{
+  "HEAD_D_and_index_empty_actual_after_diagnosis": true,
+  "actual_readonly_diagnosis_tool": "a4bae0",
+  "all_bytes_reconstructed_and_verified": true,
+  "diagnosis": "git check-attr -z --stdin was erroneously passed LF path separators; installed help779abe and official Git manual confirm NUL input separators.",
+  "lossless_committable_chunks": [
+    {
+      "offset_bytes": 0,
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/check-attr.actual-stderr.part01.raw",
+      "sha256": "4a6ee21ea08d69fe02e2c9f63f04f1c063387343964f2a4d1c37e10ebcba4283",
+      "size_bytes": 4194304
+    },
+    {
+      "offset_bytes": 4194304,
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/check-attr.actual-stderr.part02.raw",
+      "sha256": "7f63fb5840cdf1f7669ed10dc84d20a05a555fc61d879b3d20bf4b1aa33aa484",
+      "size_bytes": 4194304
+    },
+    {
+      "offset_bytes": 8388608,
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/check-attr.actual-stderr.part03.raw",
+      "sha256": "f8ce1b8e856c2f1cd68093438f57f772c8991834dff77cb7b7456b2ee0597f13",
+      "size_bytes": 299005
+    }
+  ],
+  "official_primary_source": "https://git-scm.com/docs/git-check-attr",
+  "original_failed_staging_tool": {
+    "chunk": "110abe",
+    "close_errors": [],
+    "elapsed_s": 0.48868329997640103,
+    "exit_code": 1,
+    "index_mutation_started": false,
+    "objects_written": false,
+    "open_read_FDs": 0
+  },
+  "original_stderr": {
+    "path": "tmp/final-checkpoint-over-bound-originals/check-attr.actual-stderr.v1.raw",
+    "retained_unmodified": true,
+    "sha256": "7c33bdcfe46b6d165d6fcb33ae27033f8b2f5e3dfc568156bf7824ed1eb0c2d1",
+    "size_bytes": 8687613,
+    "uncommitted_reason": "Original exceeds private8MiB leaf bound; complete lossless consecutive chunks fit unchanged bound."
+  },
+  "runtime_tests_measurements_spec_scope_unchanged": true,
+  "schema_version": 1,
+  "stderr_not_truncated_or_normalized": true
+}

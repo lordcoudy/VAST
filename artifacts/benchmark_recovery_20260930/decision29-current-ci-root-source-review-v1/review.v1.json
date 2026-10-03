@@ -1,0 +1,89 @@
+{
+  "all12_pin_predicates_preserved": true,
+  "author": "/root/decision28_source_peer",
+  "benchmark_B_vs_C_distinction_source_impact_proven": true,
+  "blocking_findings": [],
+  "exact_forward_inverse_and_original_function_ASTs": [
+    {
+      "original_functions_preserved": [
+        "clock",
+        "epoch",
+        "identity",
+        "descriptor",
+        "save",
+        "owner",
+        "command",
+        "scan"
+      ],
+      "source": "setup_original_current_ci_v1.py"
+    },
+    {
+      "original_functions_preserved": [
+        "descriptor",
+        "save",
+        "owner",
+        "scan"
+      ],
+      "source": "capture_original_setup_v1.py"
+    },
+    {
+      "original_functions_preserved": [
+        "clock",
+        "epoch",
+        "err",
+        "owner",
+        "write",
+        "digest",
+        "pin",
+        "scan"
+      ],
+      "source": "capture_original_full_ci_v1.py"
+    }
+  ],
+  "fully_read_source_cells": [
+    "89b124",
+    "2117a6",
+    "7a5f76",
+    "743825"
+  ],
+  "future_full_CI_outcome": null,
+  "future_setup_outcome": null,
+  "limits": [
+    "Source-only review, not actual setup or CI success",
+    "Setup verifies95 epochs and manifest SHA; fresh full95 SHA/epoch audit is mandatory before full CI",
+    "Original helper acquisition/cleanup/size semantics remain unchanged; original tool/capture/final/late/process outcomes must be joined"
+  ],
+  "preparation": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/preparation.v2.json",
+    "sha256": "47c8840346340ed24d384dff679a24d31442e326614095b80aeea4d9e5c17416",
+    "size_bytes": 11175
+  },
+  "recipe_template": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/recipe.template.v1.json",
+    "sha256": "dcda3e04500cb662a7011adea5460a9959be6d9bc831dbfd58937fe457310a3e",
+    "size_bytes": 10530
+  },
+  "reviewable": true,
+  "reviewer": "/root",
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "source_pins": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/setup_original_current_ci_v2.py",
+      "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+      "size_bytes": 16786
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_setup_v2.py",
+      "sha256": "60de16c4355b60636c85f1630eb00722a958f625b73f7326b367a3e373f45406",
+      "size_bytes": 4931
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_full_ci_v1.py",
+      "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+      "size_bytes": 12429
+    }
+  ],
+  "stock_commands_native_selection_skips_policies_budgets_unchanged": true,
+  "v1_preserved_and_ineligible": true
+}

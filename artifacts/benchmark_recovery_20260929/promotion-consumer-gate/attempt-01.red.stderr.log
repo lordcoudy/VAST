@@ -1,0 +1,113 @@
+test_completed_policy_index_requires_strict_cold_accounting (test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_completed_policy_index_requires_strict_cold_accounting) ... ERROR
+test_completed_resource_index_requires_strict_cold_accounting (test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_completed_resource_index_requires_strict_cold_accounting) ... ERROR
+test_current_accepted_policy_guardian_requires_strict_cold_accounting (test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_current_accepted_policy_guardian_requires_strict_cold_accounting) ... ERROR
+test_full_resource_assessment_requires_strict_cold_accounting (test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_full_resource_assessment_requires_strict_cold_accounting) ... ERROR
+test_policy_assessment_requires_strict_cold_accounting (test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_policy_assessment_requires_strict_cold_accounting) ... ERROR
+
+======================================================================
+ERROR: test_completed_policy_index_requires_strict_cold_accounting (test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_completed_policy_index_requires_strict_cold_accounting)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_index_v2.py", line 412, in _validated_execution_closure_descriptor
+    loaded = loader(project_root=root, receipt_path=root / descriptor["path"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_qualification_complete_operational_promotion_gate_v1.py", line 28, in strict_loader
+    self.assertIs(kwargs.get("require_complete_operational_accounting"), True)
+AssertionError: None is not True
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_qualification_complete_operational_promotion_gate_v1.py", line 66, in test_completed_policy_index_requires_strict_cold_accounting
+    policy_index._validated_execution_closure_descriptor(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_index_v2.py", line 416, in _validated_execution_closure_descriptor
+    raise PolicyQualificationIndexV2Error(
+publication_policy_qualification_index_v2.PolicyQualificationIndexV2Error: qualification execution closure validation failed: None is not True
+
+======================================================================
+ERROR: test_completed_resource_index_requires_strict_cold_accounting (test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_completed_resource_index_requires_strict_cold_accounting)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/full_resource_qualification_index_v1.py", line 414, in _validated_execution_closure_descriptor
+    loaded = loader(project_root=root, receipt_path=root / descriptor["path"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_qualification_complete_operational_promotion_gate_v1.py", line 28, in strict_loader
+    self.assertIs(kwargs.get("require_complete_operational_accounting"), True)
+AssertionError: None is not True
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_qualification_complete_operational_promotion_gate_v1.py", line 78, in test_completed_resource_index_requires_strict_cold_accounting
+    resource_index._validated_execution_closure_descriptor(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/full_resource_qualification_index_v1.py", line 418, in _validated_execution_closure_descriptor
+    raise FullResourceQualificationIndexV1Error(
+full_resource_qualification_index_v1.FullResourceQualificationIndexV1Error: qualification execution closure validation failed: None is not True
+
+======================================================================
+ERROR: test_current_accepted_policy_guardian_requires_strict_cold_accounting (test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_current_accepted_policy_guardian_requires_strict_cold_accounting)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py", line 336, in _call
+    return function(**kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_qualification_complete_operational_promotion_gate_v1.py", line 28, in strict_loader
+    self.assertIs(kwargs.get("require_complete_operational_accounting"), True)
+AssertionError: None is not True
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_qualification_complete_operational_promotion_gate_v1.py", line 91, in test_current_accepted_policy_guardian_requires_strict_cold_accounting
+    accepted._source_material(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py", line 478, in _source_material
+    closure = _call(
+              ^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py", line 340, in _call
+    raise _translate(error, f"{label} rejected input") from error
+publication_guardian_accepted_policy_preprocessing_contract_v1.AcceptedPolicyGuardianPreprocessingContractV1Error: qualification execution closure loader rejected input: None is not True
+
+======================================================================
+ERROR: test_full_resource_assessment_requires_strict_cold_accounting (test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_full_resource_assessment_requires_strict_cold_accounting)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/full_resource_qualification.py", line 93, in _verify_execution_closure
+    loaded = _load_execution_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_qualification_complete_operational_promotion_gate_v1.py", line 28, in strict_loader
+    self.assertIs(kwargs.get("require_complete_operational_accounting"), True)
+AssertionError: None is not True
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_qualification_complete_operational_promotion_gate_v1.py", line 57, in test_full_resource_assessment_requires_strict_cold_accounting
+    resource._verify_execution_closure(root, descriptor)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/full_resource_qualification.py", line 100, in _verify_execution_closure
+    raise FullResourceQualificationError(
+full_resource_qualification.FullResourceQualificationError: qualification execution closure validation failed: None is not True
+
+======================================================================
+ERROR: test_policy_assessment_requires_strict_cold_accounting (test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_policy_assessment_requires_strict_cold_accounting)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification.py", line 100, in _verify_execution_closure
+    loaded = _load_execution_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_qualification_complete_operational_promotion_gate_v1.py", line 28, in strict_loader
+    self.assertIs(kwargs.get("require_complete_operational_accounting"), True)
+AssertionError: None is not True
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_qualification_complete_operational_promotion_gate_v1.py", line 48, in test_policy_assessment_requires_strict_cold_accounting
+    policy._verify_execution_closure(root, descriptor)
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification.py", line 107, in _verify_execution_closure
+    raise QualificationError(
+publication_policy_qualification.QualificationError: qualification execution closure validation failed: None is not True
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.025s
+
+FAILED (errors=5)

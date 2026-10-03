@@ -1,0 +1,47 @@
+{
+  "all_existing_file_bytes_preserved_by_exact_inverse": true,
+  "all_original_assertions_preserved_in_method_ASTs": true,
+  "all_original_class_method_ASTs_unchanged": true,
+  "author": "/root/decision28_source_peer",
+  "authorization_PR_comment": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5967478840",
+  "first_cause_or_hardware_acceptance_not_invented": true,
+  "future_test_result": null,
+  "new_fixture_helpers": [
+    "coarse_fixture_stock",
+    "assert_coarse_fixture_sample"
+  ],
+  "new_test_method_count": 6,
+  "new_test_methods": [
+    "test_coarse_samples_enclose_original_user_unshare_and_failed_setgroups_once",
+    "test_failed_user_unshare_retains_pre_sample_and_same_original_exception",
+    "test_coarse_sampling_oserror_is_unavailable_without_replacing_original_denial",
+    "test_coarse_pre_sample_cancellation_propagates_and_restores_original_delegates",
+    "test_coarse_post_sample_cancellation_keeps_original_open_error_in_context",
+    "test_unrelated_unshare_control_files_and_successful_open_add_no_coarse_samples"
+  ],
+  "original_snapshot": {
+    "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/before/tests__test_ci_namespace_diagnostic_v1.py.raw",
+    "sha256": "37d771d553a76cbbaf6d878ab10cc2a7f409bb054c41ada8f36daba16da91223",
+    "size_bytes": 20805
+  },
+  "original_test_method_count": 16,
+  "owned_source_pins": [
+    {
+      "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64",
+      "size_bytes": 33264
+    }
+  ],
+  "reviewed_planning_commit": "56dd56bcc80519b99357546a49dbd65377e0db22",
+  "schema_version": 1,
+  "scope": "Source-only namespace wrapper tests author; no test execution or real namespace/policy/journal/child operations.",
+  "synthetic_only": true,
+  "test_behaviors": [
+    "Exact USER-unshare pre-sample on start+completed, failed-setgroups-open post-sample after original terminal; genuine-format synthetic value/clock/phase/PID/boot/time fields and ordered exactly-once delegates.",
+    "Failed USER-unshare retains one pre sample and identical original exception.",
+    "Clock OSError yields explicit unavailable facts; both original delegates execute once and original open error remains identical. Unavailable terminal clock is not fabricated.",
+    "Pre/post KeyboardInterrupt and SystemExit propagate; bindings restore, and post-cancellation retains original denial in its exception context.",
+    "Non-USER unshare, uid_map/unrelated opens, successful setgroups open, pipe2 and mount do not sample coarse time."
+  ],
+  "tests_executed": false
+}

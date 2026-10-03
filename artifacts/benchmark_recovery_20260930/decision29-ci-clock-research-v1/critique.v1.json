@@ -1,0 +1,66 @@
+{
+  "schema": "decision29-ci-clock-source-research-v1",
+  "author": "/root/decision28_source_peer",
+  "scope": "Read-only primary-source research and design critique. No implementation, test, CI, workflow, model, device, engine, or Git mutation.",
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewer_handles_released": true,
+  "implementation_authorized_by_this_record": false,
+  "considered_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "original_diagnosis": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/diagnosis.v1.json",
+    "size_bytes": 61088,
+    "sha256": "51b9a6ed2b924848f590fc19564b7a7620ee5e911c91fab3ae1c898be201d639",
+    "A_run": 37105302376,
+    "B_run": 37107524802,
+    "observed_A_B_kernel_release": "6.17.0-1022-azure",
+    "B_remains_failed": true,
+    "B_original_PID": 3944,
+    "B_original_failure": "unshare(CLONE_NEWUSER) succeeded; open(/proc/self/setgroups) failed with errno13; conditional-profile join then raised RuntimeError: original kernel denial outside exact syscall/clock interval.",
+    "exact_rejecting_predicate": "MESSAGE audit milliseconds converted to ns are 187040ns below unshare high-resolution realtime start minus the original 2ms lower allowance.",
+    "journal_receive_clocks": "Both original journal reception realtime and monotonic predicates pass. The 301257ns reception lag after failed-open terminal is not the rejecting predicate.",
+    "nonexecuted_B_checks": "No conditional profile admission/load/remove, external full-suite observer, or unittest suite dispatch is evidenced. A successful original suite cannot substitute for B.",
+    "selected_benchmark_source_affected": false,
+    "latest_mandatory_B_CI_success_blocked": true
+  },
+  "considered_source_pins": [
+    {"path": "scripts/ci_userns_profile_v1.py", "size_bytes": 25945, "sha256": "2b268daa1f6b1c7095e2ad35aa333cfc88998dfc7f024e39cee04d178334a578"},
+    {"path": "scripts/ci_namespace_diagnostic_v1.py", "size_bytes": 23980, "sha256": "4f7e10d2decd1411f4c31281ceda4374d4d8cf1971fcb36497d11cfca10d8cc0"},
+    {"path": "scripts/run_ci_checks.py", "size_bytes": 29477, "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c"}
+  ],
+  "primary_sources": [
+    {"url": "https://github.com/torvalds/linux/blob/v6.17/kernel/audit.c#L1724-L1730", "claim": "The audit_get_stamp fallback obtains ktime_get_coarse_real_ts64."},
+    {"url": "https://github.com/torvalds/linux/blob/v6.17/kernel/audit.c#L1802-L1807", "claim": "Audit serialization divides tv_nsec by 1000000 and emits three fractional digits; this floors the coarse timestamp to milliseconds."},
+    {"url": "https://github.com/torvalds/linux/blob/v6.17/kernel/auditsc.c#L1905-L1938", "claim": "The syscall audit context timestamp is sampled at syscall entry using ktime_get_coarse_real_ts64."},
+    {"url": "https://github.com/torvalds/linux/blob/v6.17/include/uapi/linux/time.h#L43-L51", "claim": "Linux UAPI assigns CLOCK_REALTIME_COARSE clock ID5."},
+    {"url": "https://www.kernel.org/doc/html/v6.17/core-api/timekeeping.html#coarse-and-fast-ns-access", "claim": "The coarse realtime accessor corresponds to CLOCK_REALTIME_COARSE and returns the last timer-tick cached value. The documented possible age is not evidence of this runner's actual HZ or a permitted arbitrary tolerance."},
+    {"url": "https://github.com/systemd/systemd/blob/v255/man/systemd.journal-fields.xml#L567-L589", "claim": "__REALTIME_TIMESTAMP and __MONOTONIC_TIMESTAMP are microsecond journal reception timestamps, not the audit event timestamp."},
+    {"url": "https://github.com/systemd/systemd/blob/v255/src/journal/journald-kmsg.c#L236-L239", "claim": "_SOURCE_MONOTONIC_TIMESTAMP is taken from the kmsg timestamp; replacing the current reception clock with it requires its own provenance and interval contract."}
+  ],
+  "recommended_contract": {
+    "status": "Candidate design requiring planning delta and independent review before code.",
+    "basis": "Retain the original audit MESSAGE and all existing high-resolution and journal reception facts. Observe the same Linux CLOCK_REALTIME_COARSE basis before original unshare and after the actual failed setgroups open; compare unmodified audit milliseconds against the inclusive millisecond-floored observed coarse bracket.",
+    "versioning": "The live consumer must require the new version from its known producer/source/capture contract. Missing both new fields, or stripping both fields and the record's version, must not downgrade an expected-new execution to legacy. Legacy strict2ms joins remain only for explicitly identified historical v1 context, without retroaccepting B.",
+    "sampling_order": "Take the pre sample before the original unshare high-resolution start samples. Take the post sample after the existing failed-call terminal samples and first errno have been retained. Link samples to the existing original PID, boot, owner and operation chronology. Preserve the original syscall and exception when sampling fails.",
+    "typing": "Require the exact expected version, clock ID5 and clock basis; both sample records must explicitly be available and contain positive integer ns values with booleans excluded. Partial, unavailable, malformed, wrong-clock, or reversed samples cannot authorize profile admission. Equal coarse endpoints are valid.",
+    "join": "Floor both genuine sample endpoints to milliseconds and require lower_ms <= original_audit_ms <= upper_ms. Do not rewrite the audit timestamp or add a guessed fine-clock tolerance.",
+    "sampling_failure": "Record bounded typed unavailability for clock sampling errors while retaining original call/error facts. Do not turn sampling failure into admission, retry the namespace operation, or swallow cancellation exceptions.",
+    "unchanged_guards": "Preserve exact PID/start gate/boot/executable/label/operation/capability joins, original high-resolution chronology, journal reception wall and monotonic interval guards, and existing20s work+10s cleanup, rows/channels/report limits. Do not widen any cap or waive physical provenance.",
+    "clock_getres": "Not needed to authorize the observed bracket: resolution does not prove event age or reception delay. It may be bounded informational metadata if independently justified, but must not generate a tolerance or replace genuine endpoint samples.",
+    "alternative": "Using journal reception clocks alone loses audit-event provenance. _SOURCE_MONOTONIC_TIMESTAMP is not a drop-in replacement: its kmsg timing and transport differ and need a separately reviewed physical join. An arbitrary 2ms-to10ms widening is unsupported."
+  },
+  "requirements_considered": {
+    "change": "fix-benchmark-preparations-spec",
+    "schema": "spec-driven",
+    "proposal": "CI-only per-execution profile requires a physically joined original denial and reviewed exact source.",
+    "design": "Preserve bounded namespace diagnosis, exact owner/syscall/errno facts, no global sysctl changes, privileged bypass, blanket skips, runtime bump or automatic retry.",
+    "delta_spec": "Preserve CPU selection, six native targets, ABI/scientific settings, one fresh suite child, existing trace/report/channel bounds. Generic errno13 cannot authorize a profile; diagnostic success is not full CI or benchmark acceptance."
+  },
+  "limits": [
+    "The retained A/B executions contain no CLOCK_REALTIME_COARSE endpoint samples; they cannot be retroactively reconstructed or admitted under the candidate contract.",
+    "Upstream v6.17 semantics are consistent with the observed original B discrepancy. This is an inference, not a verified source-to-binary proof of the exact Ubuntu azure1022 kernel patch set.",
+    "The retained kernel release is exact; installed systemd version, actual HZ and exact Ubuntu kernel source build provenance are not attested here.",
+    "Future journal reception guards may independently reject a delayed record; this candidate does not establish that every future CI timing failure will pass.",
+    "No implementation, tests, CI rerun, suite acceptance, selected benchmark grant or merge approval is provided."
+  ]
+}

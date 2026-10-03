@@ -1,0 +1,18 @@
+--- before
++++ after
+@@ -326,13 +326,13 @@
+         # The two original full-patch equality methods keep their real domain.
+         receipt_path = ROOT / (
+             "artifacts/benchmark_recovery_20260930/"
+-            "selected-gstreamer-build-a3e976d0-v1/gstreamer_custom.runtime.freeze.json"
++            "selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json"
+         )
+         payload = receipt_path.read_bytes()
+         self.assertEqual(len(payload), 7049)
+         self.assertEqual(
+             hashlib.sha256(payload).hexdigest(),
+-            "7807fc43cf4f706d2756baefcbdd4887798b04168db06f7acbdbea4a8541cc8c",
++            "61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7",
+         )
+         receipt = json.loads(payload)
+         self.assertEqual(receipt["schema_version"], 1)

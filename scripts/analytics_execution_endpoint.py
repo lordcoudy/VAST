@@ -194,8 +194,19 @@ def expected_capability_from_binding_and_probe(
     return validate_worker_capability(capability)
 
 
+def terminal_detector_identity(capability: Mapping[str, Any]) -> str:
+    """Return the stable semantic model identity used by terminal evidence."""
+
+    checked = validate_worker_capability(capability)
+    return (
+        f"{checked['model_id']};"
+        f"model_sha256={checked['source_model_sha256']}"
+    )
+
+
 __all__ = [
     "ExecutionEndpoint",
     "expected_capability_from_binding_and_probe",
     "execution_endpoint_from_socket",
+    "terminal_detector_identity",
 ]

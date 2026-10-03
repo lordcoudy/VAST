@@ -1,0 +1,44 @@
+test_hardlink_preserves_original_rejection_and_actual_predicate_facts (test_pin_diagnostics_v3.PinDiagnosticsTests.test_hardlink_preserves_original_rejection_and_actual_predicate_facts) ... ERROR
+test_actual_directory_type_rejects_and_closes_fds (test_pin_diagnostics_v3.PinDiagnosticsTests.test_actual_directory_type_rejects_and_closes_fds) ... ERROR
+test_actual_oversize_retains_original_size_and_limit_before_hash (test_pin_diagnostics_v3.PinDiagnosticsTests.test_actual_oversize_retains_original_size_and_limit_before_hash) ... ERROR
+
+======================================================================
+ERROR: test_hardlink_preserves_original_rejection_and_actual_predicate_facts (test_pin_diagnostics_v3.PinDiagnosticsTests.test_hardlink_preserves_original_rejection_and_actual_predicate_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v3/test_pin_diagnostics_v3.py", line 46, in test_hardlink_preserves_original_rejection_and_actual_predicate_facts
+    exc, facts = self.rejected(self.path, 'pin is not a bounded single-link regular file')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v3/test_pin_diagnostics_v3.py", line 39, in rejected
+    facts = caught.exception.pin_rejection
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ResearchError' object has no attribute 'pin_rejection'
+
+======================================================================
+ERROR: test_actual_directory_type_rejects_and_closes_fds (test_pin_diagnostics_v3.PinDiagnosticsTests.test_actual_directory_type_rejects_and_closes_fds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v3/test_pin_diagnostics_v3.py", line 56, in test_actual_directory_type_rejects_and_closes_fds
+    _, facts = self.rejected(self.base, 'pin is not a bounded single-link regular file')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v3/test_pin_diagnostics_v3.py", line 39, in rejected
+    facts = caught.exception.pin_rejection
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ResearchError' object has no attribute 'pin_rejection'
+
+======================================================================
+ERROR: test_actual_oversize_retains_original_size_and_limit_before_hash (test_pin_diagnostics_v3.PinDiagnosticsTests.test_actual_oversize_retains_original_size_and_limit_before_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v3/test_pin_diagnostics_v3.py", line 62, in test_actual_oversize_retains_original_size_and_limit_before_hash
+    _, facts = self.rejected(self.path, 'pin is not a bounded single-link regular file', maximum=7)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v3/test_pin_diagnostics_v3.py", line 39, in rejected
+    facts = caught.exception.pin_rejection
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ResearchError' object has no attribute 'pin_rejection'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.005s
+
+FAILED (errors=3)

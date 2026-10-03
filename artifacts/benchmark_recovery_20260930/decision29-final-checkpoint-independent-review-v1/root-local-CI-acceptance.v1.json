@@ -1,0 +1,69 @@
+{
+  "actual_counts": {
+    "deferred_integration": 9,
+    "discovered": 3001,
+    "error": 0,
+    "expected_failure": 0,
+    "failure": 0,
+    "selected": 2992,
+    "skip": 86,
+    "success": 2906,
+    "unexpected_success": 0
+  },
+  "artifact_kind": "root_actual_local_D_CI_closed_review_join_v1",
+  "blocking": [],
+  "mandatory_local_CI_pass": true,
+  "native_successes": [
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+  ],
+  "original_refs": {
+    "actual_metadata_closure": {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/independent-owner-late-closure-v1/original-observation-attempt01/closure.v1.json",
+      "sha256": "ca21c181c230f17d6a8201187f8e6eb41f6173bb97ce555393ed868f3ffaf530",
+      "size_bytes": 6809
+    },
+    "later_observer_closure": {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/independent-owner-late-closure-v1/original-observation-attempt01/later-observer-process-closure.v1.json",
+      "sha256": "243877ffa848c4d113b76daf2899c533a8abff53d8e39cc7aea94b22aa17a3a6",
+      "size_bytes": 909
+    },
+    "review": {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/original-prerequisite-review-attempt01/review.v1.json",
+      "sha256": "5a58508acf35f71d3c2934a022de1bff2e60eb44a39b6f85bd48cc3715ab7c60",
+      "size_bytes": 119285
+    },
+    "tool_owner_closure": {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/independent-owner-late-closure-v1/actual-tool-and-owner-closure-supplement.v1.json",
+      "sha256": "45957c4900ec9edd6d0712bfbb8cf94c07401a01457bea09106938e95f1ccd45",
+      "size_bytes": 5410
+    }
+  },
+  "original_tool_cell": "3db5dc",
+  "original_tool_exit": 0,
+  "reader_tool_cell": "35ac22",
+  "reader_tool_exit": 0,
+  "reviewable": true,
+  "reviewer": "/root",
+  "reviewer_handles_released": true,
+  "root_full_source_and_fact_reads": [
+    "0521d5",
+    "067e4c",
+    "fc73ce",
+    "e688be"
+  ],
+  "schema_version": 1,
+  "scope_limit": "Selected portable full-source CI success at D. Audited skips/deferred integrations are nonexecution; numeric FD facts belong to actual readers, wrapper release is separately reported. Observer6999 session and reader10965 birth/group were unobserved. No global descendant absence/hardware/SLO/conformance/archive/merge claim.",
+  "six_targets": [
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "source_table_rows": 5577,
+  "source_tables_equal": true
+}

@@ -1,0 +1,61 @@
+{
+  "CI_tests_Git_mapper_archive_execution": false,
+  "all_original_historical_suffixes_unchanged": true,
+  "before_v4_refs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/before-checkpoint-label-v5/README.md.raw",
+      "sha256": "746e1946b1c60d662f5bc8c1f584ab890fb224a023b7d7591ebf273a2abf0687",
+      "size_bytes": 59212
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/before-checkpoint-label-v5/docs__gstreamer-component-benchmark-runbook.md.raw",
+      "sha256": "4e2d733b6816bc6aadcb8c8759a29d4e0783f3308d8f4863f4c35c02f483c407",
+      "size_bytes": 14543
+    }
+  ],
+  "exact_changed_paths": [
+    "README.md",
+    "docs/gstreamer-component-benchmark-runbook.md"
+  ],
+  "final_refs": [
+    {
+      "path": "README.md",
+      "sha256": "0c6d45685e7fe0fc025c902be3cdaedcbceb61b4f1d6b181b66e0e7cd167b875",
+      "size_bytes": 59379
+    },
+    {
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "sha256": "96665a3730508d2f708e3634bf944d357859da93571e3d1b9ff9404aa6bcdf4e",
+      "size_bytes": 14690
+    }
+  ],
+  "finite_diff": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/current-docs.checkpoint-label.v5.diff",
+    "sha256": "6e4298ae75c391ddc681f11bbe3691b829cf5279ea9e0cc2c0d97e72162178ee",
+    "size_bytes": 4929
+  },
+  "kind": "two_line_dated_implementation_checkpoint_author_v5",
+  "no_result_or_scientific_claim_changed": true,
+  "one_existing_physical_line_per_path_changed": true,
+  "only_date_D_snapshot_and_PR2_final_process_ledger_text_added": true,
+  "reviewer_holds_released_before_edit": true,
+  "schema_version": 1,
+  "status": "source_document_only_root_and_critic_final_review_pending",
+  "unchanged_plan_progress_own_v4_refs": [
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "2677e85865bd63dee5de24fb9017c7abd716396355a22a2d5d63af5cb9bdb987",
+      "size_bytes": 137502
+    },
+    {
+      "path": "progress.md",
+      "sha256": "e93049786410beff6d512b9ebac515c74368a5f8b25e37097abd3424a4826f2e",
+      "size_bytes": 1239979
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/own-reassessment.v4.md",
+      "sha256": "eb7defa5d09b9d838ab206d1c539bcf065ac1e2987562a097e399a84bbdb70f9",
+      "size_bytes": 7155
+    }
+  ]
+}

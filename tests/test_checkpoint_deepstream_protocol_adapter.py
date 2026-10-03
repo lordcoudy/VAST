@@ -40,11 +40,14 @@ class FakeMap:
     data = bytes(range(12))
 
 
+FAKE_GST_MAP_READ = object()
+
+
 class FakeBuffer:
     pts = 123
 
     def map(self, flags):
-        if flags != 1:
+        if flags is not FAKE_GST_MAP_READ:
             raise AssertionError(flags)
         return True, FakeMap()
 
@@ -90,12 +93,18 @@ def config() -> dict:
 
 
 class DeepStreamProtocolAdapterTests(unittest.TestCase):
-    def test_json_preprocessing_manifest_contract_is_schema_v3(self) -> None:
-        source = (
+    def test_sdk_adapters_bind_v3_or_v4_preprocessing_to_endpoint_hashes(self) -> None:
+        deepstream_source = (
             ROOT / "scripts" / "checkpoint_deepstream_protocol_adapter.py"
         ).read_text(encoding="utf-8")
-        self.assertIn('manifest.get("schema_version") == 3', source)
-        self.assertNotIn('manifest.get("schema_version") == 2', source)
+        savant_source = (
+            ROOT / "scripts" / "checkpoint_savant_protocol_adapter_v3.py"
+        ).read_text(encoding="utf-8")
+        for source in (deepstream_source, savant_source):
+            self.assertIn("load_parity_preprocessing_contract", source)
+            self.assertIn("len(preprocessing_hashes) == 1", source)
+            self.assertIn("expected_sha256=next(iter(preprocessing_hashes))", source)
+            self.assertNotIn('manifest.get("schema_version") == 3', source)
 
     def test_config_requires_exact_cpu_gpu_endpoint_material(self) -> None:
         self.assertEqual(validate_adapter_config(config()), config())
@@ -146,17 +155,19 @@ class DeepStreamProtocolAdapterTests(unittest.TestCase):
             preprocess=preprocess,
             deadline_ms=33.3,
             monotonic_ns=lambda: 1_000_000,
+            gst_map_read_flag=FAKE_GST_MAP_READ,
         )
         identity = {
             "input_frame_key": "dataset:0:source:0:0",
-            "nvds_buf_pts_ns": 123,
+            "nvds_buf_pts_ns": 90,
+            "mux_gst_buffer_pts_ns": 123,
         }
         callbacks.execute_branch_sample(identity, branch="plate_number", sample=FakeSample())
         self.assertEqual([value[0] for value in bridge.calls], ["bind_branch_tensor", "execute_branch"])
         execute = bridge.calls[1]
         self.assertEqual(execute[1][:2], (identity["input_frame_key"], "plate_number"))
         self.assertEqual(execute[2]["queue_depths"], {"cpu": 0, "gpu": 0})
-        self.assertEqual(execute[2]["deadline_monotonic_ns"], 34_300_000)
+        self.assertEqual(execute[2]["deadline_monotonic_ns"], 300_001_000_000)
 
     def test_factory_fails_before_linux_endpoint_imports_without_config(self) -> None:
         previous = os.environ.pop("VAST_DEEPSTREAM_ADAPTER_CONFIG", None)

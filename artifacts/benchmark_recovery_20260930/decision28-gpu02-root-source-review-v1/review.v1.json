@@ -1,0 +1,32 @@
+{
+  "all10_module_function_ASTs_equal": true,
+  "baseline": {
+    "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-cpu08-independent-audit-v1/audit_cpu08_v1.py",
+    "sha256": "5f2d62e67ed2414d6b09826ade9362b1acbeabb4db4fd71a248b34e667351a06",
+    "size_bytes": 22413
+  },
+  "blocking_findings": [],
+  "bounds": {
+    "audit_s": 120,
+    "decoded_document_bytes": 1048576,
+    "external_containment_s": 135,
+    "external_kill_after_s": 5,
+    "late_companion_bytes": 65536,
+    "leaf_bytes": 67108864,
+    "report_bytes": 1048576
+  },
+  "changed_scope": "GPU resource, output/controller names, exact GPU source hash and task18.9 reporting only",
+  "disposition": "pass_for_one_original_read_only_audit",
+  "exact_raw_forward_inverse": true,
+  "full_previously_reviewed_CPU08_source_logic_and_exact_GPU_literals_reviewed": true,
+  "future_original_result": null,
+  "no_benchmark_acceptance_before_actual_audit": true,
+  "original_B_and_host_bindings_unchanged": true,
+  "reviewer": "/root",
+  "schema_version": 1,
+  "source": {
+    "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-gpu02-independent-audit-v1/audit_gpu02_v1.py",
+    "sha256": "5744050e4d9464fc24103fe2a1667a41261f24fdf2a05887096e07536e0548cf",
+    "size_bytes": 22413
+  }
+}

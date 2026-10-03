@@ -1,0 +1,20 @@
+{
+  "artifact_kind": "vast_readonly_archive_inspector_original_failed_invocations_v1",
+  "original_invocations": [
+    {
+      "failure": "Windows absolute path incorrectly passed to WSL; no inspector execution or archive output.",
+      "returncode": 1,
+      "stage": "before script open",
+      "tool_chunk": "4d514a"
+    },
+    {
+      "failure": "AssertionError at cat-file batch header: explicitly requested absent .github/workflows/spec-driven.yml; actual original workflow path is .github/workflows/ci.yml. Existing original-inspection-v1/cpu-failure-index.v1.json retained unchanged. No original CI failure was changed.",
+      "returncode": 1,
+      "source_sha256": "e9ac9c89ef30f78fcda8ee4f8cf3b73e8049d172027d1951db4ce730e8cad941",
+      "tool_chunk": "2a387b"
+    }
+  ],
+  "read_only_correction": "New inspector_v3 changes only exact actual workflow path and a fresh O_EXCL output directory. Original scripts and partial failed output preserved.",
+  "schema_version": 1,
+  "source_changes_or_test_workloads": false
+}

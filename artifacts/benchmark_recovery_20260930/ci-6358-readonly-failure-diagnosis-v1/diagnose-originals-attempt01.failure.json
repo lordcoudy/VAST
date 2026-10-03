@@ -1,0 +1,10 @@
+{
+  "false_acceptance_report_written": false,
+  "reason": "Broad native-client module prefix includes additional successful unit methods; mandatory native ABI requires the exact three original IDs",
+  "source_sha256": "853f349f50f2e6e44c72675dc85f5233a024cf40a8d21e1dd51a6be37808fd7a",
+  "exception_type": "AssertionError",
+  "original_ci_or_zip_mutated": false,
+  "original_line": 114,
+  "kind": "readonly_artifact_diagnosis_prototype_failure",
+  "original_helper": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/diagnose_originals.py"
+}

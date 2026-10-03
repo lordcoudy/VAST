@@ -1,0 +1,4325 @@
+{
+  "CI_checkpoint_C": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+  "acceptance_requires_original_tool_rc0_and_final_FD_baseline_and_no_companion": true,
+  "actual95_count": 95,
+  "actual95_full_SHA_and_original_Linux_seven_epochs_current_equal": true,
+  "after": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current95-post-setup-audit-preparation-v1/audit_actual95_post_setup_v2.py",
+        "sha256": "0cc5510cc406b5848c41089818027163b88a8b92d5acf4434af3ce50131de86d",
+        "size_bytes": 15422
+      },
+      "epoch": [
+        69,
+        1407374885980033,
+        33279,
+        1,
+        15422,
+        1791022052577629400,
+        1791022052577629400
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/recipe.bound.v1.json",
+        "sha256": "7507d429ba5a57fa25e5fd1fcf9d106d9b743c53f84346366230569d9b7c938b",
+        "size_bytes": 10644
+      },
+      "epoch": [
+        69,
+        1407374885979948,
+        33279,
+        1,
+        10644,
+        1791020956227429200,
+        1791020956227429200
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/decision28-current95-original-attempt01/current95-inputs.v1.json",
+        "sha256": "3c9b7eca9c9b33e01624764b7ccfccb9d748c3ac9623389f7e12447f0085b150",
+        "size_bytes": 44579
+      },
+      "epoch": [
+        69,
+        1407374885979562,
+        33279,
+        1,
+        44579,
+        1791015323990275000,
+        1791015323990275000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup.capture-terminal.v1.json",
+        "sha256": "274e44f624c8356fda99a4132ae9d30e062987d9cae510210d12c2f31669abd2",
+        "size_bytes": 4610
+      },
+      "epoch": [
+        69,
+        3096224746243948,
+        33279,
+        1,
+        4610,
+        1791020981866044700,
+        1791020981866044700
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup-attempt01/execution.v1.json",
+        "sha256": "a14e8d81871fd24ce16910526a031c9aeab2aa0a30ccb387871291fa5babd69e",
+        "size_bytes": 28880
+      },
+      "epoch": [
+        69,
+        1688849862690667,
+        33279,
+        1,
+        28880,
+        1791020981838650800,
+        1791020981838650800
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/setup_original_current_ci_v2.py",
+        "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+        "size_bytes": 16786
+      },
+      "epoch": [
+        69,
+        1407374885979942,
+        33279,
+        1,
+        16786,
+        1791020826858140900,
+        1791020826858140900
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup.stdout.raw",
+        "sha256": "e6039716600e880fbc5579d893575a3f752520e5a03d899482337bd6803998e9",
+        "size_bytes": 299
+      },
+      "epoch": [
+        69,
+        1688849862690606,
+        33279,
+        1,
+        299,
+        1791020981841652200,
+        1791020981841652200
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "epoch": [
+        69,
+        1407374885979951,
+        33279,
+        1,
+        0,
+        1791020971796669000,
+        1791020971796669000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup-attempt01/00-benchmark-head.stdout.raw",
+        "sha256": "40400ec4a92b244401f6f9130b03a78f4c866798d9d845df0ed273487af783fa",
+        "size_bytes": 41
+      },
+      "epoch": [
+        69,
+        1407374885979956,
+        33279,
+        1,
+        41,
+        1791020971881076100,
+        1791020971881076100
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup-attempt01/13-benchmark-head.stdout.raw",
+        "sha256": "40400ec4a92b244401f6f9130b03a78f4c866798d9d845df0ed273487af783fa",
+        "size_bytes": 41
+      },
+      "epoch": [
+        69,
+        1407374885980007,
+        33279,
+        1,
+        41,
+        1791020981806073000,
+        1791020981806073000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+        "sha256": "3c921a062345d571c836eed6e40de6b3bf4b7be798e24b792c10c1d1df3c1494",
+        "size_bytes": 63455
+      },
+      "epoch": [
+        2096,
+        552810,
+        33188,
+        1,
+        63455,
+        1790800729864924639,
+        1790800729864924639
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+        "sha256": "8f984df897f12f6269e68a2a1dda6ffe5fc112c5729f5f46fd9f7079bde96b15",
+        "size_bytes": 2512
+      },
+      "epoch": [
+        2096,
+        552808,
+        33188,
+        1,
+        2512,
+        1790800729852923923,
+        1790800729852923923
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+        "sha256": "6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169",
+        "size_bytes": 20686
+      },
+      "epoch": [
+        2096,
+        549144,
+        33188,
+        1,
+        20686,
+        1790800678072006564,
+        1790800678072006564
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/gstreamer_custom.runtime.freeze.json",
+        "sha256": "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+        "size_bytes": 7001
+      },
+      "epoch": [
+        2096,
+        534854,
+        33060,
+        1,
+        7001,
+        1791011539930588470,
+        1791011539934588758
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+        "sha256": "ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96",
+        "size_bytes": 3963
+      },
+      "epoch": [
+        2096,
+        552805,
+        33188,
+        1,
+        3963,
+        1790800729836922968,
+        1790800729836922968
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json",
+        "sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+        "size_bytes": 30266
+      },
+      "epoch": [
+        2096,
+        577844,
+        33060,
+        1,
+        30266,
+        1791013886195088095,
+        1791013886215089241
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_bindings.py",
+        "sha256": "d356f9a945bde5e1d6a6753b89e551a14371aa27e84886014f3c2807d98b2ff2",
+        "size_bytes": 17341
+      },
+      "epoch": [
+        2096,
+        549323,
+        33188,
+        1,
+        17341,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_capability.py",
+        "sha256": "5622726cb4a261b42509678c1ec6fd6c065923515a4d25ee6cb5b5f2d0824279",
+        "size_bytes": 16264
+      },
+      "epoch": [
+        2096,
+        549324,
+        33188,
+        1,
+        16264,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_endpoint.py",
+        "sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+        "size_bytes": 6756
+      },
+      "epoch": [
+        2096,
+        549325,
+        33188,
+        1,
+        6756,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_protocol.py",
+        "sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+        "size_bytes": 18555
+      },
+      "epoch": [
+        2096,
+        549327,
+        33188,
+        1,
+        18555,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_worker.py",
+        "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+        "size_bytes": 38433
+      },
+      "epoch": [
+        2096,
+        549328,
+        33188,
+        1,
+        38433,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_model_contract.py",
+        "sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62",
+        "size_bytes": 15765
+      },
+      "epoch": [
+        2096,
+        549329,
+        33188,
+        1,
+        15765,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch.py",
+        "sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+        "size_bytes": 17104
+      },
+      "epoch": [
+        2096,
+        549332,
+        33188,
+        1,
+        17104,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch_v3.py",
+        "sha256": "b755230a19c8ab3e46dbe49aa2fa3e7054a79a7e7e4e98f91ceed560fada2740",
+        "size_bytes": 41765
+      },
+      "epoch": [
+        2096,
+        549333,
+        33188,
+        1,
+        41765,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_launcher_invocation_v3.py",
+        "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+        "size_bytes": 7230
+      },
+      "epoch": [
+        2096,
+        549334,
+        33188,
+        1,
+        7230,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_output_receipt.py",
+        "sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+        "size_bytes": 34431
+      },
+      "epoch": [
+        2096,
+        549336,
+        33188,
+        1,
+        34431,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_process_supervisor_v3.py",
+        "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+        "size_bytes": 124707
+      },
+      "epoch": [
+        2096,
+        549339,
+        33188,
+        1,
+        124707,
+        1790816337696917023,
+        1790816337696917023
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_runtime_authority.py",
+        "sha256": "ba633140e27fe78cb6bfec97093f60e476f2bd8c43f50a0998a6b80532ffb56c",
+        "size_bytes": 44628
+      },
+      "epoch": [
+        2096,
+        549340,
+        33188,
+        1,
+        44628,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_grant.py",
+        "sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+        "size_bytes": 51402
+      },
+      "epoch": [
+        2096,
+        549344,
+        33188,
+        1,
+        51402,
+        1790800678424025806,
+        1790800678424025806
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_qualification_v3.py",
+        "sha256": "c4fbd3e2afa99d5ca83130622857bbbaa3ceb0d60796d3d5a761345a32f764a4",
+        "size_bytes": 54917
+      },
+      "epoch": [
+        2096,
+        549347,
+        33188,
+        1,
+        54917,
+        1790800678424025806,
+        1790800678424025806
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/benchmark_contract.py",
+        "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+        "size_bytes": 344569
+      },
+      "epoch": [
+        2096,
+        549363,
+        33188,
+        1,
+        344569,
+        1790800678424025806,
+        1790800678424025806
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_acceptance_metadata_binding.py",
+        "sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+        "size_bytes": 20605
+      },
+      "epoch": [
+        2096,
+        549375,
+        33188,
+        1,
+        20605,
+        1790800678424025806,
+        1790800678424025806
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_admission.py",
+        "sha256": "4db82ea10118d942457901393f447ebcf7602577b77fd1c0be9084f54366b7f7",
+        "size_bytes": 19971
+      },
+      "epoch": [
+        2096,
+        549376,
+        33188,
+        1,
+        19971,
+        1790800678424025806,
+        1790800678424025806
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_protocol_bridge.py",
+        "sha256": "356e9171fb772f217c785632d3f57e96430da7138a146fe8720c56b1decd68ae",
+        "size_bytes": 53754
+      },
+      "epoch": [
+        2096,
+        549380,
+        33188,
+        1,
+        53754,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_publication_runtime_v3.py",
+        "sha256": "d3c1753df6d7ddcf40e3971066a5dfc9d4f71572c5bd3f18961460903b5aef0a",
+        "size_bytes": 41888
+      },
+      "epoch": [
+        2096,
+        549383,
+        33188,
+        1,
+        41888,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_qualification_fragment_v1.py",
+        "sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe",
+        "size_bytes": 40419
+      },
+      "epoch": [
+        2096,
+        549384,
+        33188,
+        1,
+        40419,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_bridge.py",
+        "sha256": "d0ff1e5910e41815e116988757ad5eb3b6c9ea6bc1cc56219d00be0b23e2da43",
+        "size_bytes": 39243
+      },
+      "epoch": [
+        2096,
+        549388,
+        33188,
+        1,
+        39243,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+        "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+        "size_bytes": 299261
+      },
+      "epoch": [
+        2096,
+        174360,
+        33188,
+        1,
+        299261,
+        1791011392779716929,
+        1791011392779716929
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+        "sha256": "0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c",
+        "size_bytes": 59624
+      },
+      "epoch": [
+        2096,
+        549395,
+        33188,
+        1,
+        59624,
+        1791013722788657883,
+        1791013722788657883
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_runtime.py",
+        "sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+        "size_bytes": 156160
+      },
+      "epoch": [
+        2096,
+        549396,
+        33188,
+        1,
+        156160,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity.py",
+        "sha256": "ecb4d10ee878fe77fef30ca7df9990e5e2cc8a959c6aa6e285736a489b71d17c",
+        "size_bytes": 97548
+      },
+      "epoch": [
+        2096,
+        549397,
+        33188,
+        1,
+        97548,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance.py",
+        "sha256": "660071f68ae3378f704c497aab78ffa3b2c6d20a976ca52402ebe2c7b4bbeea4",
+        "size_bytes": 39938
+      },
+      "epoch": [
+        2096,
+        549398,
+        33188,
+        1,
+        39938,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance_v4.py",
+        "sha256": "cda34465993fccd9acff9833b4db52292e7e58fce5286eda44ceb62dcab71cda",
+        "size_bytes": 31392
+      },
+      "epoch": [
+        2096,
+        549399,
+        33188,
+        1,
+        31392,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_v4.py",
+        "sha256": "34474de61e19a8f3b1167ff8b52f11f33514e1d9483220abf693456ec840cf9c",
+        "size_bytes": 35800
+      },
+      "epoch": [
+        2096,
+        549402,
+        33188,
+        1,
+        35800,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_native_policy_runtime.py",
+        "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+        "size_bytes": 73421
+      },
+      "epoch": [
+        2096,
+        549403,
+        33188,
+        1,
+        73421,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+        "sha256": "428e600aca23616e6e43e49331c54ac7b1f58e7784f5f79a03fdf8392a34b17d",
+        "size_bytes": 62909
+      },
+      "epoch": [
+        2096,
+        549410,
+        33188,
+        1,
+        62909,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_adapter_v3.py",
+        "sha256": "ddb0779a0142962fbdd5dbada6127f748d854204b4b1939734ee64eddb60e12d",
+        "size_bytes": 30501
+      },
+      "epoch": [
+        2096,
+        549413,
+        33188,
+        1,
+        30501,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_guard_v3.py",
+        "sha256": "29dcbd607858118ad7e5e4a221a58034ac07ea4f819bede4831d23852f41a97f",
+        "size_bytes": 13961
+      },
+      "epoch": [
+        2096,
+        549415,
+        33188,
+        1,
+        13961,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_runtime.py",
+        "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+        "size_bytes": 55785
+      },
+      "epoch": [
+        2096,
+        549416,
+        33188,
+        1,
+        55785,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+        "sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+        "size_bytes": 65596
+      },
+      "epoch": [
+        2096,
+        549417,
+        33188,
+        1,
+        65596,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime.py",
+        "sha256": "fb91d24e69385d37fc59b68c116829163cc3e29ed6b1403276b0b0676af90135",
+        "size_bytes": 94557
+      },
+      "epoch": [
+        2096,
+        549418,
+        33188,
+        1,
+        94557,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime_plan.py",
+        "sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+        "size_bytes": 30727
+      },
+      "epoch": [
+        2096,
+        549419,
+        33188,
+        1,
+        30727,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_savant_publication_runtime_v3.py",
+        "sha256": "1bb0a25726543870d4e7705c1148ebaa1028fb6ab7d05e0ab2cc3b85eac8bba7",
+        "size_bytes": 42019
+      },
+      "epoch": [
+        2096,
+        549428,
+        33188,
+        1,
+        42019,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/collect_metrics.py",
+        "sha256": "f2db6624aa56970dd09cd8cf3dcb97c5c55ab47f3c20c54cf5c26cc2263d70dc",
+        "size_bytes": 13324
+      },
+      "epoch": [
+        2096,
+        549440,
+        33188,
+        1,
+        13324,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/extract_kpp_legacy_iss.py",
+        "sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+        "size_bytes": 73654
+      },
+      "epoch": [
+        2096,
+        549444,
+        33188,
+        1,
+        73654,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/formal_aw_heft_reference.py",
+        "sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+        "size_bytes": 70898
+      },
+      "epoch": [
+        2096,
+        549445,
+        33188,
+        1,
+        70898,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_frozen_reconstruction_v1.py",
+        "sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+        "size_bytes": 28006
+      },
+      "epoch": [
+        2096,
+        549446,
+        33188,
+        1,
+        28006,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_iss_publication_v3.py",
+        "sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+        "size_bytes": 43081
+      },
+      "epoch": [
+        2096,
+        549447,
+        33188,
+        1,
+        43081,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+        "sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+        "size_bytes": 69386
+      },
+      "epoch": [
+        2096,
+        549448,
+        33188,
+        1,
+        69386,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/full_resource_contract.py",
+        "sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+        "size_bytes": 21340
+      },
+      "epoch": [
+        2096,
+        549457,
+        33188,
+        1,
+        21340,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_frozen_reconstruction_v1_dataset.py",
+        "sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+        "size_bytes": 15206
+      },
+      "epoch": [
+        2096,
+        549463,
+        33188,
+        1,
+        15206,
+        1790800678440026680,
+        1790800678440026680
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_iss_publication_v3_dataset.py",
+        "sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+        "size_bytes": 23901
+      },
+      "epoch": [
+        2096,
+        549464,
+        33188,
+        1,
+        23901,
+        1790800678440026680,
+        1790800678440026680
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_legacy_iss_v2_manifest.py",
+        "sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+        "size_bytes": 29663
+      },
+      "epoch": [
+        2096,
+        549465,
+        33188,
+        1,
+        29663,
+        1790800678440026680,
+        1790800678440026680
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/model_parity_grant.py",
+        "sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+        "size_bytes": 14740
+      },
+      "epoch": [
+        2096,
+        549473,
+        33188,
+        1,
+        14740,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/production_arm_evidence_finalizer_v1.py",
+        "sha256": "e360b386f94712c0737b56f0a224b7979bbab1865e7cbffaebcc72462209f193",
+        "size_bytes": 27296
+      },
+      "epoch": [
+        2096,
+        549481,
+        33188,
+        1,
+        27296,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_acceptance_evidence.py",
+        "sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+        "size_bytes": 2263
+      },
+      "epoch": [
+        2096,
+        549483,
+        33188,
+        1,
+        2263,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_benchmark_native_diagnostic_v1.py",
+        "sha256": "4b308d6727168b211b4eca7917e18c7516247e77d41329856566e343b9bd9c53",
+        "size_bytes": 13329
+      },
+      "epoch": [
+        2096,
+        549486,
+        33188,
+        1,
+        13329,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_child_evidence_materializer_v1.py",
+        "sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+        "size_bytes": 21544
+      },
+      "epoch": [
+        2096,
+        549487,
+        33188,
+        1,
+        21544,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_authority_v1.py",
+        "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+        "size_bytes": 27355
+      },
+      "epoch": [
+        2096,
+        549489,
+        33188,
+        1,
+        27355,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_cli_v1.py",
+        "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b",
+        "size_bytes": 40969
+      },
+      "epoch": [
+        2096,
+        549490,
+        33188,
+        1,
+        40969,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_inputs_v1.py",
+        "sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1",
+        "size_bytes": 34510
+      },
+      "epoch": [
+        2096,
+        549491,
+        33188,
+        1,
+        34510,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_runtime_v1.py",
+        "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014",
+        "size_bytes": 69372
+      },
+      "epoch": [
+        2096,
+        549492,
+        33188,
+        1,
+        69372,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+        "size_bytes": 48963
+      },
+      "epoch": [
+        2096,
+        549493,
+        33188,
+        1,
+        48963,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_component_preprocessing_contract_v1.py",
+        "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+        "size_bytes": 19178
+      },
+      "epoch": [
+        2096,
+        549494,
+        33188,
+        1,
+        19178,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_operational_recorder_v1.py",
+        "sha256": "130130ba64079f6a80ef4762a45c9969f4b3a425432a70d082ecc5a59004169d",
+        "size_bytes": 24563
+      },
+      "epoch": [
+        2096,
+        549495,
+        33188,
+        1,
+        24563,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_preprocessing_contract_v1.py",
+        "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+        "size_bytes": 68402
+      },
+      "epoch": [
+        2096,
+        549496,
+        33188,
+        1,
+        68402,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_runtime_expectations_v1.py",
+        "sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+        "size_bytes": 7872
+      },
+      "epoch": [
+        2096,
+        549497,
+        33188,
+        1,
+        7872,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_image_build_v1.py",
+        "sha256": "a27c2daaebb8fe8cad0fecfbcc60dc29f041835f8ae01e673dd321b3df1ea50e",
+        "size_bytes": 32116
+      },
+      "epoch": [
+        2096,
+        549498,
+        33188,
+        1,
+        32116,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_immutable_directory_v1.py",
+        "sha256": "3154cae593782ca64adf7318d615c7c5185ff1d8b06098647e50f00940edcd42",
+        "size_bytes": 11639
+      },
+      "epoch": [
+        2096,
+        549499,
+        33188,
+        1,
+        11639,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_capture_plan_v1.py",
+        "sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+        "size_bytes": 25882
+      },
+      "epoch": [
+        2096,
+        549501,
+        33188,
+        1,
+        25882,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_container_custody_v1.py",
+        "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+        "size_bytes": 38235
+      },
+      "epoch": [
+        2096,
+        549502,
+        33188,
+        1,
+        38235,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_process_custody_v1.py",
+        "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+        "size_bytes": 51141
+      },
+      "epoch": [
+        2096,
+        174362,
+        33188,
+        1,
+        51141,
+        1791011392783717178,
+        1791011392783717178
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_domain_v1.py",
+        "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+        "size_bytes": 25997
+      },
+      "epoch": [
+        2096,
+        549504,
+        33188,
+        1,
+        25997,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_reconciliation_v1.py",
+        "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+        "size_bytes": 28069
+      },
+      "epoch": [
+        2096,
+        549505,
+        33188,
+        1,
+        28069,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_runtime_context_v1.py",
+        "sha256": "20a470135fef1d6fc37b76585623197f18b2b20e4f192ba61ace45fcac5bdb51",
+        "size_bytes": 11192
+      },
+      "epoch": [
+        2096,
+        549506,
+        33188,
+        1,
+        11192,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_stock_operations_v1.py",
+        "sha256": "1edcd2813f3bedbac4416d7e7d69b9e959ecc044aee710f248721b06e81f0689",
+        "size_bytes": 24380
+      },
+      "epoch": [
+        2096,
+        549507,
+        33188,
+        1,
+        24380,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_owned_staging_cleanup_v1.py",
+        "sha256": "d601fb4460bc44b27cb2d38fd70e73a388fb137c95139fa10d4eefca944def92",
+        "size_bytes": 39390
+      },
+      "epoch": [
+        2096,
+        549508,
+        33188,
+        1,
+        39390,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_physical_io_v1.py",
+        "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+        "size_bytes": 132238
+      },
+      "epoch": [
+        2096,
+        549509,
+        33188,
+        1,
+        132238,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_contract.py",
+        "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+        "size_bytes": 40143
+      },
+      "epoch": [
+        2096,
+        549510,
+        33188,
+        1,
+        40143,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_frozen_replay_v1.py",
+        "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+        "size_bytes": 21538
+      },
+      "epoch": [
+        2096,
+        549511,
+        33188,
+        1,
+        21538,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_projection_v1.py",
+        "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+        "size_bytes": 29622
+      },
+      "epoch": [
+        2096,
+        549512,
+        33188,
+        1,
+        29622,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification.py",
+        "sha256": "529a5ed62e57dba014dd781fa8e2a6b1a24b63812cd5a53aefb8ae279d9948e3",
+        "size_bytes": 63279
+      },
+      "epoch": [
+        2096,
+        549513,
+        33188,
+        1,
+        63279,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_bootstrap_v2.py",
+        "sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6",
+        "size_bytes": 82531
+      },
+      "epoch": [
+        2096,
+        549514,
+        33188,
+        1,
+        82531,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_closure_v1.py",
+        "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+        "size_bytes": 147846
+      },
+      "epoch": [
+        2096,
+        549515,
+        33188,
+        1,
+        147846,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_code_closure_v1.py",
+        "sha256": "984dd840a768b08462db82ea96cb7cdce4b9f6e3e1ca20605b258771f665a30c",
+        "size_bytes": 19176
+      },
+      "epoch": [
+        2096,
+        549516,
+        33188,
+        1,
+        19176,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_fragments_from_authority_v2.py",
+        "sha256": "ac2857c78d2069a5641b7ec73c4dbf5a9e067c069b3b22d7ebef205e169e45c4",
+        "size_bytes": 67876
+      },
+      "epoch": [
+        2096,
+        549517,
+        33188,
+        1,
+        67876,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_index_v2.py",
+        "sha256": "16326c3b793b0535a34e6ee7995146388456011eabdb2454b5a1e2ed45a59a27",
+        "size_bytes": 31765
+      },
+      "epoch": [
+        2096,
+        549518,
+        33188,
+        1,
+        31765,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_pilot_executor_v2.py",
+        "sha256": "419074d4cb65c6170f3cb33922d769b3c781cb1f24609e762c955dca72d0a09a",
+        "size_bytes": 179864
+      },
+      "epoch": [
+        2096,
+        549519,
+        33188,
+        1,
+        179864,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_runtime_inputs_v2.py",
+        "sha256": "a4358e759a24cbf49652cecbbb7a30199476d0c3539be5e1c9dd87b972aeb2f8",
+        "size_bytes": 136988
+      },
+      "epoch": [
+        2096,
+        549520,
+        33188,
+        1,
+        136988,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_transaction_v2.py",
+        "sha256": "b85710fc0277339773775e8082f518026b14493b53330d7b142b4aa42d2bb14b",
+        "size_bytes": 45015
+      },
+      "epoch": [
+        2096,
+        549521,
+        33188,
+        1,
+        45015,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_qualification_image_refreeze_v1.py",
+        "sha256": "38757bd592fed2c137325f0f4b320812145ac64a2a78550a85e549bf0a0cbb8a",
+        "size_bytes": 65676
+      },
+      "epoch": [
+        2096,
+        549529,
+        33188,
+        1,
+        65676,
+        1790800678456027555,
+        1790800678456027555
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/resource_interval_contract.py",
+        "sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+        "size_bytes": 33557
+      },
+      "epoch": [
+        2096,
+        549531,
+        33188,
+        1,
+        33557,
+        1790800678456027555,
+        1790800678456027555
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/topology_contract.py",
+        "sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+        "size_bytes": 18707
+      },
+      "epoch": [
+        2096,
+        549546,
+        33188,
+        1,
+        18707,
+        1790800678456027555,
+        1790800678456027555
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+        "size_bytes": 8020928
+      },
+      "epoch": [
+        2096,
+        87545,
+        33261,
+        1,
+        8020928,
+        1787574148546271435,
+        1787574148546271435
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py",
+        "sha256": "445535a2ea9176effbe97e5de1db53aae614645e40db65bc1debf74489371f36",
+        "size_bytes": 23631
+      },
+      "epoch": [
+        2096,
+        577697,
+        33188,
+        1,
+        23631,
+        1791013722684652619,
+        1791013722684652619
+      ]
+    }
+  ],
+  "all_read_handles_released": true,
+  "all_source_and_metadata_before_after_equal": true,
+  "artifact_kind": "post_setup_original95_full_sha_and_seven_epoch_custody_v1",
+  "before": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current95-post-setup-audit-preparation-v1/audit_actual95_post_setup_v2.py",
+        "sha256": "0cc5510cc406b5848c41089818027163b88a8b92d5acf4434af3ce50131de86d",
+        "size_bytes": 15422
+      },
+      "epoch": [
+        69,
+        1407374885980033,
+        33279,
+        1,
+        15422,
+        1791022052577629400,
+        1791022052577629400
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/recipe.bound.v1.json",
+        "sha256": "7507d429ba5a57fa25e5fd1fcf9d106d9b743c53f84346366230569d9b7c938b",
+        "size_bytes": 10644
+      },
+      "epoch": [
+        69,
+        1407374885979948,
+        33279,
+        1,
+        10644,
+        1791020956227429200,
+        1791020956227429200
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/decision28-current95-original-attempt01/current95-inputs.v1.json",
+        "sha256": "3c9b7eca9c9b33e01624764b7ccfccb9d748c3ac9623389f7e12447f0085b150",
+        "size_bytes": 44579
+      },
+      "epoch": [
+        69,
+        1407374885979562,
+        33279,
+        1,
+        44579,
+        1791015323990275000,
+        1791015323990275000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup.capture-terminal.v1.json",
+        "sha256": "274e44f624c8356fda99a4132ae9d30e062987d9cae510210d12c2f31669abd2",
+        "size_bytes": 4610
+      },
+      "epoch": [
+        69,
+        3096224746243948,
+        33279,
+        1,
+        4610,
+        1791020981866044700,
+        1791020981866044700
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup-attempt01/execution.v1.json",
+        "sha256": "a14e8d81871fd24ce16910526a031c9aeab2aa0a30ccb387871291fa5babd69e",
+        "size_bytes": 28880
+      },
+      "epoch": [
+        69,
+        1688849862690667,
+        33279,
+        1,
+        28880,
+        1791020981838650800,
+        1791020981838650800
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/setup_original_current_ci_v2.py",
+        "sha256": "9aca35df5b1d4c87a555ac3d32d99c1a05b4772cf5bd841d778fec4e330ed3d3",
+        "size_bytes": 16786
+      },
+      "epoch": [
+        69,
+        1407374885979942,
+        33279,
+        1,
+        16786,
+        1791020826858140900,
+        1791020826858140900
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup.stdout.raw",
+        "sha256": "e6039716600e880fbc5579d893575a3f752520e5a03d899482337bd6803998e9",
+        "size_bytes": 299
+      },
+      "epoch": [
+        69,
+        1688849862690606,
+        33279,
+        1,
+        299,
+        1791020981841652200,
+        1791020981841652200
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup.stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "epoch": [
+        69,
+        1407374885979951,
+        33279,
+        1,
+        0,
+        1791020971796669000,
+        1791020971796669000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup-attempt01/00-benchmark-head.stdout.raw",
+        "sha256": "40400ec4a92b244401f6f9130b03a78f4c866798d9d845df0ed273487af783fa",
+        "size_bytes": 41
+      },
+      "epoch": [
+        69,
+        1407374885979956,
+        33279,
+        1,
+        41,
+        1791020971881076100,
+        1791020971881076100
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup-attempt01/13-benchmark-head.stdout.raw",
+        "sha256": "40400ec4a92b244401f6f9130b03a78f4c866798d9d845df0ed273487af783fa",
+        "size_bytes": 41
+      },
+      "epoch": [
+        69,
+        1407374885980007,
+        33279,
+        1,
+        41,
+        1791020981806073000,
+        1791020981806073000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+        "sha256": "3c921a062345d571c836eed6e40de6b3bf4b7be798e24b792c10c1d1df3c1494",
+        "size_bytes": 63455
+      },
+      "epoch": [
+        2096,
+        552810,
+        33188,
+        1,
+        63455,
+        1790800729864924639,
+        1790800729864924639
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+        "sha256": "8f984df897f12f6269e68a2a1dda6ffe5fc112c5729f5f46fd9f7079bde96b15",
+        "size_bytes": 2512
+      },
+      "epoch": [
+        2096,
+        552808,
+        33188,
+        1,
+        2512,
+        1790800729852923923,
+        1790800729852923923
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+        "sha256": "6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169",
+        "size_bytes": 20686
+      },
+      "epoch": [
+        2096,
+        549144,
+        33188,
+        1,
+        20686,
+        1790800678072006564,
+        1790800678072006564
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/gstreamer_custom.runtime.freeze.json",
+        "sha256": "0b8a34e67773572a27885b931c50427de8bbd59b23eba837c5d2319ea7e9abca",
+        "size_bytes": 7001
+      },
+      "epoch": [
+        2096,
+        534854,
+        33060,
+        1,
+        7001,
+        1791011539930588470,
+        1791011539934588758
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+        "sha256": "ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96",
+        "size_bytes": 3963
+      },
+      "epoch": [
+        2096,
+        552805,
+        33188,
+        1,
+        3963,
+        1790800729836922968,
+        1790800729836922968
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json",
+        "sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+        "size_bytes": 30266
+      },
+      "epoch": [
+        2096,
+        577844,
+        33060,
+        1,
+        30266,
+        1791013886195088095,
+        1791013886215089241
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_bindings.py",
+        "sha256": "d356f9a945bde5e1d6a6753b89e551a14371aa27e84886014f3c2807d98b2ff2",
+        "size_bytes": 17341
+      },
+      "epoch": [
+        2096,
+        549323,
+        33188,
+        1,
+        17341,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_capability.py",
+        "sha256": "5622726cb4a261b42509678c1ec6fd6c065923515a4d25ee6cb5b5f2d0824279",
+        "size_bytes": 16264
+      },
+      "epoch": [
+        2096,
+        549324,
+        33188,
+        1,
+        16264,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_endpoint.py",
+        "sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+        "size_bytes": 6756
+      },
+      "epoch": [
+        2096,
+        549325,
+        33188,
+        1,
+        6756,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_protocol.py",
+        "sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+        "size_bytes": 18555
+      },
+      "epoch": [
+        2096,
+        549327,
+        33188,
+        1,
+        18555,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_worker.py",
+        "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+        "size_bytes": 38433
+      },
+      "epoch": [
+        2096,
+        549328,
+        33188,
+        1,
+        38433,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_model_contract.py",
+        "sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62",
+        "size_bytes": 15765
+      },
+      "epoch": [
+        2096,
+        549329,
+        33188,
+        1,
+        15765,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch.py",
+        "sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+        "size_bytes": 17104
+      },
+      "epoch": [
+        2096,
+        549332,
+        33188,
+        1,
+        17104,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch_v3.py",
+        "sha256": "b755230a19c8ab3e46dbe49aa2fa3e7054a79a7e7e4e98f91ceed560fada2740",
+        "size_bytes": 41765
+      },
+      "epoch": [
+        2096,
+        549333,
+        33188,
+        1,
+        41765,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_launcher_invocation_v3.py",
+        "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+        "size_bytes": 7230
+      },
+      "epoch": [
+        2096,
+        549334,
+        33188,
+        1,
+        7230,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_output_receipt.py",
+        "sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+        "size_bytes": 34431
+      },
+      "epoch": [
+        2096,
+        549336,
+        33188,
+        1,
+        34431,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_process_supervisor_v3.py",
+        "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+        "size_bytes": 124707
+      },
+      "epoch": [
+        2096,
+        549339,
+        33188,
+        1,
+        124707,
+        1790816337696917023,
+        1790816337696917023
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_runtime_authority.py",
+        "sha256": "ba633140e27fe78cb6bfec97093f60e476f2bd8c43f50a0998a6b80532ffb56c",
+        "size_bytes": 44628
+      },
+      "epoch": [
+        2096,
+        549340,
+        33188,
+        1,
+        44628,
+        1790800678420025587,
+        1790800678420025587
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_grant.py",
+        "sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+        "size_bytes": 51402
+      },
+      "epoch": [
+        2096,
+        549344,
+        33188,
+        1,
+        51402,
+        1790800678424025806,
+        1790800678424025806
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_qualification_v3.py",
+        "sha256": "c4fbd3e2afa99d5ca83130622857bbbaa3ceb0d60796d3d5a761345a32f764a4",
+        "size_bytes": 54917
+      },
+      "epoch": [
+        2096,
+        549347,
+        33188,
+        1,
+        54917,
+        1790800678424025806,
+        1790800678424025806
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/benchmark_contract.py",
+        "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+        "size_bytes": 344569
+      },
+      "epoch": [
+        2096,
+        549363,
+        33188,
+        1,
+        344569,
+        1790800678424025806,
+        1790800678424025806
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_acceptance_metadata_binding.py",
+        "sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+        "size_bytes": 20605
+      },
+      "epoch": [
+        2096,
+        549375,
+        33188,
+        1,
+        20605,
+        1790800678424025806,
+        1790800678424025806
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_admission.py",
+        "sha256": "4db82ea10118d942457901393f447ebcf7602577b77fd1c0be9084f54366b7f7",
+        "size_bytes": 19971
+      },
+      "epoch": [
+        2096,
+        549376,
+        33188,
+        1,
+        19971,
+        1790800678424025806,
+        1790800678424025806
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_protocol_bridge.py",
+        "sha256": "356e9171fb772f217c785632d3f57e96430da7138a146fe8720c56b1decd68ae",
+        "size_bytes": 53754
+      },
+      "epoch": [
+        2096,
+        549380,
+        33188,
+        1,
+        53754,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_publication_runtime_v3.py",
+        "sha256": "d3c1753df6d7ddcf40e3971066a5dfc9d4f71572c5bd3f18961460903b5aef0a",
+        "size_bytes": 41888
+      },
+      "epoch": [
+        2096,
+        549383,
+        33188,
+        1,
+        41888,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_qualification_fragment_v1.py",
+        "sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe",
+        "size_bytes": 40419
+      },
+      "epoch": [
+        2096,
+        549384,
+        33188,
+        1,
+        40419,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_bridge.py",
+        "sha256": "d0ff1e5910e41815e116988757ad5eb3b6c9ea6bc1cc56219d00be0b23e2da43",
+        "size_bytes": 39243
+      },
+      "epoch": [
+        2096,
+        549388,
+        33188,
+        1,
+        39243,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+        "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+        "size_bytes": 299261
+      },
+      "epoch": [
+        2096,
+        174360,
+        33188,
+        1,
+        299261,
+        1791011392779716929,
+        1791011392779716929
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+        "sha256": "0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c",
+        "size_bytes": 59624
+      },
+      "epoch": [
+        2096,
+        549395,
+        33188,
+        1,
+        59624,
+        1791013722788657883,
+        1791013722788657883
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_runtime.py",
+        "sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+        "size_bytes": 156160
+      },
+      "epoch": [
+        2096,
+        549396,
+        33188,
+        1,
+        156160,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity.py",
+        "sha256": "ecb4d10ee878fe77fef30ca7df9990e5e2cc8a959c6aa6e285736a489b71d17c",
+        "size_bytes": 97548
+      },
+      "epoch": [
+        2096,
+        549397,
+        33188,
+        1,
+        97548,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance.py",
+        "sha256": "660071f68ae3378f704c497aab78ffa3b2c6d20a976ca52402ebe2c7b4bbeea4",
+        "size_bytes": 39938
+      },
+      "epoch": [
+        2096,
+        549398,
+        33188,
+        1,
+        39938,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance_v4.py",
+        "sha256": "cda34465993fccd9acff9833b4db52292e7e58fce5286eda44ceb62dcab71cda",
+        "size_bytes": 31392
+      },
+      "epoch": [
+        2096,
+        549399,
+        33188,
+        1,
+        31392,
+        1790800678428026024,
+        1790800678428026024
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_v4.py",
+        "sha256": "34474de61e19a8f3b1167ff8b52f11f33514e1d9483220abf693456ec840cf9c",
+        "size_bytes": 35800
+      },
+      "epoch": [
+        2096,
+        549402,
+        33188,
+        1,
+        35800,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_native_policy_runtime.py",
+        "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+        "size_bytes": 73421
+      },
+      "epoch": [
+        2096,
+        549403,
+        33188,
+        1,
+        73421,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+        "sha256": "428e600aca23616e6e43e49331c54ac7b1f58e7784f5f79a03fdf8392a34b17d",
+        "size_bytes": 62909
+      },
+      "epoch": [
+        2096,
+        549410,
+        33188,
+        1,
+        62909,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_adapter_v3.py",
+        "sha256": "ddb0779a0142962fbdd5dbada6127f748d854204b4b1939734ee64eddb60e12d",
+        "size_bytes": 30501
+      },
+      "epoch": [
+        2096,
+        549413,
+        33188,
+        1,
+        30501,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_guard_v3.py",
+        "sha256": "29dcbd607858118ad7e5e4a221a58034ac07ea4f819bede4831d23852f41a97f",
+        "size_bytes": 13961
+      },
+      "epoch": [
+        2096,
+        549415,
+        33188,
+        1,
+        13961,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_runtime.py",
+        "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+        "size_bytes": 55785
+      },
+      "epoch": [
+        2096,
+        549416,
+        33188,
+        1,
+        55785,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+        "sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+        "size_bytes": 65596
+      },
+      "epoch": [
+        2096,
+        549417,
+        33188,
+        1,
+        65596,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime.py",
+        "sha256": "fb91d24e69385d37fc59b68c116829163cc3e29ed6b1403276b0b0676af90135",
+        "size_bytes": 94557
+      },
+      "epoch": [
+        2096,
+        549418,
+        33188,
+        1,
+        94557,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime_plan.py",
+        "sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+        "size_bytes": 30727
+      },
+      "epoch": [
+        2096,
+        549419,
+        33188,
+        1,
+        30727,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_savant_publication_runtime_v3.py",
+        "sha256": "1bb0a25726543870d4e7705c1148ebaa1028fb6ab7d05e0ab2cc3b85eac8bba7",
+        "size_bytes": 42019
+      },
+      "epoch": [
+        2096,
+        549428,
+        33188,
+        1,
+        42019,
+        1790800678432026242,
+        1790800678432026242
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/collect_metrics.py",
+        "sha256": "f2db6624aa56970dd09cd8cf3dcb97c5c55ab47f3c20c54cf5c26cc2263d70dc",
+        "size_bytes": 13324
+      },
+      "epoch": [
+        2096,
+        549440,
+        33188,
+        1,
+        13324,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/extract_kpp_legacy_iss.py",
+        "sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+        "size_bytes": 73654
+      },
+      "epoch": [
+        2096,
+        549444,
+        33188,
+        1,
+        73654,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/formal_aw_heft_reference.py",
+        "sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+        "size_bytes": 70898
+      },
+      "epoch": [
+        2096,
+        549445,
+        33188,
+        1,
+        70898,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_frozen_reconstruction_v1.py",
+        "sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+        "size_bytes": 28006
+      },
+      "epoch": [
+        2096,
+        549446,
+        33188,
+        1,
+        28006,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_iss_publication_v3.py",
+        "sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+        "size_bytes": 43081
+      },
+      "epoch": [
+        2096,
+        549447,
+        33188,
+        1,
+        43081,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+        "sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+        "size_bytes": 69386
+      },
+      "epoch": [
+        2096,
+        549448,
+        33188,
+        1,
+        69386,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/full_resource_contract.py",
+        "sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+        "size_bytes": 21340
+      },
+      "epoch": [
+        2096,
+        549457,
+        33188,
+        1,
+        21340,
+        1790800678436026462,
+        1790800678436026462
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_frozen_reconstruction_v1_dataset.py",
+        "sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+        "size_bytes": 15206
+      },
+      "epoch": [
+        2096,
+        549463,
+        33188,
+        1,
+        15206,
+        1790800678440026680,
+        1790800678440026680
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_iss_publication_v3_dataset.py",
+        "sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+        "size_bytes": 23901
+      },
+      "epoch": [
+        2096,
+        549464,
+        33188,
+        1,
+        23901,
+        1790800678440026680,
+        1790800678440026680
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_legacy_iss_v2_manifest.py",
+        "sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+        "size_bytes": 29663
+      },
+      "epoch": [
+        2096,
+        549465,
+        33188,
+        1,
+        29663,
+        1790800678440026680,
+        1790800678440026680
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/model_parity_grant.py",
+        "sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+        "size_bytes": 14740
+      },
+      "epoch": [
+        2096,
+        549473,
+        33188,
+        1,
+        14740,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/production_arm_evidence_finalizer_v1.py",
+        "sha256": "e360b386f94712c0737b56f0a224b7979bbab1865e7cbffaebcc72462209f193",
+        "size_bytes": 27296
+      },
+      "epoch": [
+        2096,
+        549481,
+        33188,
+        1,
+        27296,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_acceptance_evidence.py",
+        "sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+        "size_bytes": 2263
+      },
+      "epoch": [
+        2096,
+        549483,
+        33188,
+        1,
+        2263,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_benchmark_native_diagnostic_v1.py",
+        "sha256": "4b308d6727168b211b4eca7917e18c7516247e77d41329856566e343b9bd9c53",
+        "size_bytes": 13329
+      },
+      "epoch": [
+        2096,
+        549486,
+        33188,
+        1,
+        13329,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_child_evidence_materializer_v1.py",
+        "sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+        "size_bytes": 21544
+      },
+      "epoch": [
+        2096,
+        549487,
+        33188,
+        1,
+        21544,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_authority_v1.py",
+        "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+        "size_bytes": 27355
+      },
+      "epoch": [
+        2096,
+        549489,
+        33188,
+        1,
+        27355,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_cli_v1.py",
+        "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b",
+        "size_bytes": 40969
+      },
+      "epoch": [
+        2096,
+        549490,
+        33188,
+        1,
+        40969,
+        1790800678444026899,
+        1790800678444026899
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_inputs_v1.py",
+        "sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1",
+        "size_bytes": 34510
+      },
+      "epoch": [
+        2096,
+        549491,
+        33188,
+        1,
+        34510,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_runtime_v1.py",
+        "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014",
+        "size_bytes": 69372
+      },
+      "epoch": [
+        2096,
+        549492,
+        33188,
+        1,
+        69372,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+        "size_bytes": 48963
+      },
+      "epoch": [
+        2096,
+        549493,
+        33188,
+        1,
+        48963,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_component_preprocessing_contract_v1.py",
+        "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+        "size_bytes": 19178
+      },
+      "epoch": [
+        2096,
+        549494,
+        33188,
+        1,
+        19178,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_operational_recorder_v1.py",
+        "sha256": "130130ba64079f6a80ef4762a45c9969f4b3a425432a70d082ecc5a59004169d",
+        "size_bytes": 24563
+      },
+      "epoch": [
+        2096,
+        549495,
+        33188,
+        1,
+        24563,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_preprocessing_contract_v1.py",
+        "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+        "size_bytes": 68402
+      },
+      "epoch": [
+        2096,
+        549496,
+        33188,
+        1,
+        68402,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_runtime_expectations_v1.py",
+        "sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+        "size_bytes": 7872
+      },
+      "epoch": [
+        2096,
+        549497,
+        33188,
+        1,
+        7872,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_image_build_v1.py",
+        "sha256": "a27c2daaebb8fe8cad0fecfbcc60dc29f041835f8ae01e673dd321b3df1ea50e",
+        "size_bytes": 32116
+      },
+      "epoch": [
+        2096,
+        549498,
+        33188,
+        1,
+        32116,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_immutable_directory_v1.py",
+        "sha256": "3154cae593782ca64adf7318d615c7c5185ff1d8b06098647e50f00940edcd42",
+        "size_bytes": 11639
+      },
+      "epoch": [
+        2096,
+        549499,
+        33188,
+        1,
+        11639,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_capture_plan_v1.py",
+        "sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+        "size_bytes": 25882
+      },
+      "epoch": [
+        2096,
+        549501,
+        33188,
+        1,
+        25882,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_container_custody_v1.py",
+        "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+        "size_bytes": 38235
+      },
+      "epoch": [
+        2096,
+        549502,
+        33188,
+        1,
+        38235,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_process_custody_v1.py",
+        "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+        "size_bytes": 51141
+      },
+      "epoch": [
+        2096,
+        174362,
+        33188,
+        1,
+        51141,
+        1791011392783717178,
+        1791011392783717178
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_domain_v1.py",
+        "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+        "size_bytes": 25997
+      },
+      "epoch": [
+        2096,
+        549504,
+        33188,
+        1,
+        25997,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_reconciliation_v1.py",
+        "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+        "size_bytes": 28069
+      },
+      "epoch": [
+        2096,
+        549505,
+        33188,
+        1,
+        28069,
+        1790800678448027116,
+        1790800678448027116
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_runtime_context_v1.py",
+        "sha256": "20a470135fef1d6fc37b76585623197f18b2b20e4f192ba61ace45fcac5bdb51",
+        "size_bytes": 11192
+      },
+      "epoch": [
+        2096,
+        549506,
+        33188,
+        1,
+        11192,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_stock_operations_v1.py",
+        "sha256": "1edcd2813f3bedbac4416d7e7d69b9e959ecc044aee710f248721b06e81f0689",
+        "size_bytes": 24380
+      },
+      "epoch": [
+        2096,
+        549507,
+        33188,
+        1,
+        24380,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_owned_staging_cleanup_v1.py",
+        "sha256": "d601fb4460bc44b27cb2d38fd70e73a388fb137c95139fa10d4eefca944def92",
+        "size_bytes": 39390
+      },
+      "epoch": [
+        2096,
+        549508,
+        33188,
+        1,
+        39390,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_physical_io_v1.py",
+        "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+        "size_bytes": 132238
+      },
+      "epoch": [
+        2096,
+        549509,
+        33188,
+        1,
+        132238,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_contract.py",
+        "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+        "size_bytes": 40143
+      },
+      "epoch": [
+        2096,
+        549510,
+        33188,
+        1,
+        40143,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_frozen_replay_v1.py",
+        "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+        "size_bytes": 21538
+      },
+      "epoch": [
+        2096,
+        549511,
+        33188,
+        1,
+        21538,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_projection_v1.py",
+        "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+        "size_bytes": 29622
+      },
+      "epoch": [
+        2096,
+        549512,
+        33188,
+        1,
+        29622,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification.py",
+        "sha256": "529a5ed62e57dba014dd781fa8e2a6b1a24b63812cd5a53aefb8ae279d9948e3",
+        "size_bytes": 63279
+      },
+      "epoch": [
+        2096,
+        549513,
+        33188,
+        1,
+        63279,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_bootstrap_v2.py",
+        "sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6",
+        "size_bytes": 82531
+      },
+      "epoch": [
+        2096,
+        549514,
+        33188,
+        1,
+        82531,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_closure_v1.py",
+        "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+        "size_bytes": 147846
+      },
+      "epoch": [
+        2096,
+        549515,
+        33188,
+        1,
+        147846,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_code_closure_v1.py",
+        "sha256": "984dd840a768b08462db82ea96cb7cdce4b9f6e3e1ca20605b258771f665a30c",
+        "size_bytes": 19176
+      },
+      "epoch": [
+        2096,
+        549516,
+        33188,
+        1,
+        19176,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_fragments_from_authority_v2.py",
+        "sha256": "ac2857c78d2069a5641b7ec73c4dbf5a9e067c069b3b22d7ebef205e169e45c4",
+        "size_bytes": 67876
+      },
+      "epoch": [
+        2096,
+        549517,
+        33188,
+        1,
+        67876,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_index_v2.py",
+        "sha256": "16326c3b793b0535a34e6ee7995146388456011eabdb2454b5a1e2ed45a59a27",
+        "size_bytes": 31765
+      },
+      "epoch": [
+        2096,
+        549518,
+        33188,
+        1,
+        31765,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_pilot_executor_v2.py",
+        "sha256": "419074d4cb65c6170f3cb33922d769b3c781cb1f24609e762c955dca72d0a09a",
+        "size_bytes": 179864
+      },
+      "epoch": [
+        2096,
+        549519,
+        33188,
+        1,
+        179864,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_runtime_inputs_v2.py",
+        "sha256": "a4358e759a24cbf49652cecbbb7a30199476d0c3539be5e1c9dd87b972aeb2f8",
+        "size_bytes": 136988
+      },
+      "epoch": [
+        2096,
+        549520,
+        33188,
+        1,
+        136988,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_transaction_v2.py",
+        "sha256": "b85710fc0277339773775e8082f518026b14493b53330d7b142b4aa42d2bb14b",
+        "size_bytes": 45015
+      },
+      "epoch": [
+        2096,
+        549521,
+        33188,
+        1,
+        45015,
+        1790800678452027336,
+        1790800678452027336
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_qualification_image_refreeze_v1.py",
+        "sha256": "38757bd592fed2c137325f0f4b320812145ac64a2a78550a85e549bf0a0cbb8a",
+        "size_bytes": 65676
+      },
+      "epoch": [
+        2096,
+        549529,
+        33188,
+        1,
+        65676,
+        1790800678456027555,
+        1790800678456027555
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/resource_interval_contract.py",
+        "sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+        "size_bytes": 33557
+      },
+      "epoch": [
+        2096,
+        549531,
+        33188,
+        1,
+        33557,
+        1790800678456027555,
+        1790800678456027555
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/topology_contract.py",
+        "sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+        "size_bytes": 18707
+      },
+      "epoch": [
+        2096,
+        549546,
+        33188,
+        1,
+        18707,
+        1790800678456027555,
+        1790800678456027555
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+        "size_bytes": 8020928
+      },
+      "epoch": [
+        2096,
+        87545,
+        33261,
+        1,
+        8020928,
+        1787574148546271435,
+        1787574148546271435
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py",
+        "sha256": "445535a2ea9176effbe97e5de1db53aae614645e40db65bc1debf74489371f36",
+        "size_bytes": 23631
+      },
+      "epoch": [
+        2096,
+        577697,
+        33188,
+        1,
+        23631,
+        1791013722684652619,
+        1791013722684652619
+      ]
+    }
+  ],
+  "benchmark_checkpoint_B": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "blocking_findings": [],
+  "close_errors": [],
+  "elapsed_s": 0.1512005309923552,
+  "error_overflow": 0,
+  "errors": [],
+  "fd_after": 6,
+  "fd_before": 6,
+  "first_error": null,
+  "fresh_process_scans": [
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "member_overflow": 0,
+      "members": [],
+      "pids_absent": {
+        "89061": true,
+        "89062": true,
+        "89063": true,
+        "89064": true,
+        "89065": true,
+        "89066": true,
+        "89069": true,
+        "89070": true,
+        "89071": true,
+        "89072": true,
+        "89073": true,
+        "89085": true,
+        "89086": true,
+        "89087": true,
+        "89088": true,
+        "89089": true,
+        "89090": true
+      },
+      "started_monotonic_ns": 504854395467234,
+      "terminal_monotonic_ns": 504854397428890,
+      "vanished_during_scan": 0
+    },
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "member_overflow": 0,
+      "members": [],
+      "pids_absent": {
+        "89061": true,
+        "89062": true,
+        "89063": true,
+        "89064": true,
+        "89065": true,
+        "89066": true,
+        "89069": true,
+        "89070": true,
+        "89071": true,
+        "89072": true,
+        "89073": true,
+        "89085": true,
+        "89086": true,
+        "89087": true,
+        "89088": true,
+        "89089": true,
+        "89090": true
+      },
+      "started_monotonic_ns": 504854397434567,
+      "terminal_monotonic_ns": 504854398951589,
+      "vanished_during_scan": 0
+    }
+  ],
+  "full_ci_acceptance": false,
+  "hardware_acceptance": false,
+  "independent_close_attempts": [
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current95-post-setup-audit-preparation-v1/audit_actual95_post_setup_v2.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/recipe.bound.v1.json",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/decision28-current95-original-attempt01/current95-inputs.v1.json",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup.capture-terminal.v1.json",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup-attempt01/execution.v1.json",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/setup_original_current_ci_v2.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup.stdout.raw",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup.stderr.raw",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup-attempt01/00-benchmark-head.stdout.raw",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup-attempt01/13-benchmark-head.stdout.raw",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/gstreamer_custom.runtime.freeze.json",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_bindings.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_capability.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_endpoint.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_protocol.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_execution_worker.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/analytics_model_contract.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_dispatch_v3.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_launcher_invocation_v3.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_output_receipt.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_process_supervisor_v3.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_publication_runtime_authority.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_grant.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/backend_runtime_qualification_v3.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/benchmark_contract.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_acceptance_metadata_binding.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_admission.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_protocol_bridge.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_publication_runtime_v3.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_deepstream_qualification_fragment_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_bridge.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_gstreamer_runtime.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_acceptance_v4.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_model_parity_v4.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_native_policy_runtime.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_adapter_v3.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_launcher_guard_v3.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_publication_runtime.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_runtime_plan.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/checkpoint_savant_publication_runtime_v3.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/collect_metrics.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/extract_kpp_legacy_iss.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/formal_aw_heft_reference.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_frozen_reconstruction_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_iss_publication_v3.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/full_resource_contract.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_frozen_reconstruction_v1_dataset.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_iss_publication_v3_dataset.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/kpp_legacy_iss_v2_manifest.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/model_parity_grant.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/production_arm_evidence_finalizer_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_acceptance_evidence.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_benchmark_native_diagnostic_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_child_evidence_materializer_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_authority_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_cli_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_inputs_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_gstreamer_component_runtime_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_component_preprocessing_contract_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_operational_recorder_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_preprocessing_contract_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_guardian_runtime_expectations_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_image_build_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_immutable_directory_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_capture_plan_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_container_custody_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_process_custody_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_domain_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_request_reconciliation_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_runtime_context_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_operational_stock_operations_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_owned_staging_cleanup_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_physical_io_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_contract.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_frozen_replay_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_projection_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_bootstrap_v2.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_closure_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_code_closure_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_fragments_from_authority_v2.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_index_v2.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_pilot_executor_v2.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_runtime_inputs_v2.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_transaction_v2.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_qualification_image_refreeze_v1.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/resource_interval_contract.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/topology_contract.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "leaf",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/.local/state/vast/publication",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/.local/state/vast",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/.local/state",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/.local",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/worker_images",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov/work",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home/s-a-balashov",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/home",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-setup-attempt01",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/decision28-current95-original-attempt01",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current95-post-setup-audit-preparation-v1",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY/VAST/tmp",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY/VAST",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e/STUDY",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt/e",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/mnt",
+      "released": true
+    },
+    {
+      "acquired": true,
+      "kind": "ancestor",
+      "path": "/",
+      "released": true
+    }
+  ],
+  "limits": [
+    "Read-only95 descriptors/full bytes and original Linux epochs plus exact sealed setup metadata. No Git/engine/model/native/test/setup replay or stock loader execution.",
+    "Original setup raw5561/280645127 equality is retained metadata, not independently repeated raw Git. No new benchmark HEAD query or CI success is claimed.",
+    "Original timeout initial argv empty remains unobserved; actual PID/startticks/boot/UID/GID/process group are retained and must be absent twice."
+  ],
+  "reviewable": true,
+  "reviewer": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 93987,
+    "pid": 93988,
+    "ppid": 93987,
+    "session": 93987,
+    "startticks": 50485419,
+    "uid": 1000
+  },
+  "schema_version": 1
+}

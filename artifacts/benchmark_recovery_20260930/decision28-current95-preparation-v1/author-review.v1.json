@@ -1,0 +1,154 @@
+{
+  "actual_closed_stock_evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/root-original-closure.v1.json",
+      "sha256": "c7c5fd83d6745ad9fabeccf9cff0c73ba42e229406a47e07669a19e2dab30af4",
+      "size_bytes": 6720
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/execution.v1.json",
+      "sha256": "9c5007d1f80fac889bb8fd9a4038e56bea645194b851a7a9cfd98bd9fd8f9f03",
+      "size_bytes": 73010
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/execution-code-closure.ext4-decision28.v4.json",
+      "sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+      "size_bytes": 30266
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/source-head.stdout.raw",
+      "sha256": "40400ec4a92b244401f6f9130b03a78f4c866798d9d845df0ed273487af783fa",
+      "size_bytes": 41
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/source-head.terminal.v1.json",
+      "sha256": "f2c5a6c079336d159ab3deda6e1ac7aa743b9046e782679d3663ee6d839a01d9",
+      "size_bytes": 2059
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-stock-host-original-copy-v1/stock-closure.terminal.v1.json",
+      "sha256": "3f399057c8abf829c2741dcf49d5cb8a387944635a4496dcbe5adf624cbb7ba7",
+      "size_bytes": 2598
+    }
+  ],
+  "actual_source_commit_B": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "audits": [
+    {
+      "Popen_AST_exact_except_capture_stdout_stderr_pipe_plumbing": true,
+      "added_functions": [
+        "error",
+        "fail",
+        "fd_count",
+        "scan_original_group",
+        "hard_clock",
+        "scan_error"
+      ],
+      "changed_original_functions": [
+        "ancestors",
+        "observe",
+        "hold",
+        "head",
+        "save"
+      ],
+      "exact_raw_inverse": true,
+      "kind": "collector",
+      "literal_replacement_count": 18,
+      "original_all_argv_assignment_ASTs_unchanged": true,
+      "removed_original_functions": [],
+      "unchanged_original_functions": [
+        "clock",
+        "epoch",
+        "identity",
+        "owner"
+      ]
+    },
+    {
+      "Popen_AST_exact_except_capture_stdout_stderr_pipe_plumbing": true,
+      "added_functions": [
+        "error",
+        "fail",
+        "fd_count",
+        "clock",
+        "hold",
+        "scan_original_group",
+        "scan_error"
+      ],
+      "changed_original_functions": [
+        "descriptor",
+        "save",
+        "scan"
+      ],
+      "exact_raw_inverse": true,
+      "kind": "capture",
+      "literal_replacement_count": 4,
+      "original_all_argv_assignment_ASTs_unchanged": true,
+      "removed_original_functions": [
+        "scan"
+      ],
+      "unchanged_original_functions": [
+        "owner"
+      ]
+    }
+  ],
+  "concrete_inherited_gaps_repaired": [
+    "Partial acquisitions register FDs before risky observations.",
+    "First cause latched before cleanup; every close attempted independently.",
+    "Original Git-head channels remain128/empty and prove EOF/reap/two zero-error scans.",
+    "Source/current95 full SHA and fresh seven-field epochs checked while held.",
+    "FD baseline restored before and after receipt publication.",
+    "Manifest and terminal after held/ancestor release; late/exclusive failure companion denies grant.",
+    "Outer capture retains argv120+10, bounded raw pipes, held source epochs and original timeout/collector identities."
+  ],
+  "four_fixed_role_SHA_values_exact": true,
+  "fresh87_interpreter_controller95_snapshot_manifest_block_exact": true,
+  "limits": [
+    "Actual B and v4 stock-host descriptors joined only from retained genuinely closed ROOT evidence; no new current95/owner/terminal fact exists.",
+    "collection.bound.v1.json is uncreated; its original seven-field schema and two physical size/SHA arguments require controlled ROOT binding after independent source review.",
+    "No setup or full CI changes; metadata95 is not model/image/runtime/benchmark acceptance."
+  ],
+  "literal_ledger": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/literal-replacements.v1.json",
+    "sha256": "d405f96aa15e2fd9be0f7a0e1db2f038a97c2d90a4f8e22cb5c6fea0a13265e0",
+    "size_bytes": 39084
+  },
+  "metadata_handles_released": true,
+  "original_metadata_only_author_and_source_reviews": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current95-ci-successor-preparation-v1/source-preparation.v1.json",
+      "sha256": "c47723cd81b4c6fb665ce94cf485e025a25dc5203d66dd4e108c383fcc350694",
+      "size_bytes": 9015
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current95-ci-successor-preparation-v1/actual-current95-setup-author-review.v1.json",
+      "sha256": "5c1d729177079115859d8ad4b2c52be5591b1b5c48b76eb4191ed54077d97ccb",
+      "size_bytes": 8631
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-current95-ci-successor-independent-source-review-v1/review.v1.json",
+      "sha256": "5f4ed776de857bacc70cccb95e54c52547544ab6fbe61fd88d7f3dff9a2b4ed5",
+      "size_bytes": 4715
+    }
+  ],
+  "original_stock_loader_call_and87_cardinality_block_exact": true,
+  "preparation": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/preparation.v1.json",
+    "sha256": "32d6a5d8ab0a8467d39f05147b92ebe8dbd21540e6f78d071913567be2b94072",
+    "size_bytes": 5905
+  },
+  "schema_version": 1,
+  "scope": "Source-only author static audit; independent ROOT review required.",
+  "source_descriptors": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/collect_current95_v1.py",
+      "sha256": "7492e2d836dd0ed0f9192923a8cb3b7060ac0d1afc834aacaf730245dc1b2749",
+      "size_bytes": 20616
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/capture_original_current95_v1.py",
+      "sha256": "5daacc183a34c4906ad7db102cc2a5fbbd39e2aaacd67237f709fdbf5c3539bd",
+      "size_bytes": 15819
+    }
+  ],
+  "target_helpers_imported_compiled_executed": false,
+  "tests_Git_engine_model_hardware_or_CI_operations": false
+}

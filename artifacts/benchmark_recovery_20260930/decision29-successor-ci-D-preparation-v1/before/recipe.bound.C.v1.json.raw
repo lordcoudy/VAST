@@ -1,0 +1,188 @@
+{
+  "actual_ci_success": null,
+  "actual_ci_terminal": null,
+  "actual_clone": null,
+  "artifact_kind": "vast_current_source_ext4_cpu_ci_preparation_v1",
+  "benchmark_root_commit_untouched": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "benchmark_root_untouched": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "benchmark_source_impact_inventory": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/source-impact.v1.json",
+    "sha256": "dcdc63621620f579653574d0a1380baac2d683c117d83b8b194b46e67abb2a41",
+    "size_bytes": 160709
+  },
+  "benchmark_source_impact_review": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-independent-source-review-v1/review.v1.json",
+    "sha256": "835bf6c7c991c78062adc39459b34f51eab7c598c71185a7b00fe777f62f9d6d",
+    "size_bytes": 9951
+  },
+  "checkout": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+  "current95_manifest": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-current95-preparation-v1/decision28-current95-original-attempt01/current95-inputs.v1.json",
+    "sha256": "3c9b7eca9c9b33e01624764b7ccfccb9d748c3ac9623389f7e12447f0085b150",
+    "size_bytes": 44579
+  },
+  "current_controller_descriptor": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-host-cpu08-final-binding-v1/run_original_cpu_component_pair_ext4_decision28_v4.py",
+    "sha256": "445535a2ea9176effbe97e5de1db53aae614645e40db65bc1debf74489371f36",
+    "size_bytes": 23631
+  },
+  "fresh_stock_closure_descriptor": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json",
+    "sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+    "size_bytes": 30266
+  },
+  "limitations": "Source-only template. Benchmark B and genuine closed B95/host/source-impact descriptors are actual retained inputs. CI checkpoint C, recipe.bound descriptor, clone/setup/full-CI owners, clocks and outcomes remain unbound/null. Preserve every historical checkout/output; no force/reset/clean/prune/resume/retry. ROOT must independently review source and bind actual C before one setup and one stock full-CI grant.",
+  "outer_cleanup_s": 10,
+  "outer_containment": "/usr/bin/timeout --signal=TERM --kill-after=10s 5400s ORIGINAL_STOCK_CLI_ARGV; actual job clock supplied once at original dispatch. Do not reset the clock or increase original90-minute acceptance. Capture original stdout/stderr with exclusive noclobber names and actual PID/startticks/UID/GID/process group; on failure retain source/outcome/terminal and quiescence, no rerun.",
+  "output": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output",
+  "preconditions": [
+    "Actual CPU08/GPU02 at benchmark B are closed and independently audited. Genuine Decision28 B95 manifest/stock87 closure remain physically unchanged; the exact closed CI source-impact review joins95/73/native3/worker2 preservation and excludes the four reviewed CI paths. Distinct future CI checkpoint C must be committed/pushed and exactly bound before dispatch.",
+    "Exclusive absent checkout/output/capture namespaces; canonical real parent directories, UID/GID1000, ext4 and available space at least20GiB before clone. Refuse aliases/symlinks or occupied destinations; no cleanup/resume/automatic retry.",
+    "Record actual original common Git directory/commit/ancestry, canonical CPython3.12.3 executable inode/nlink1 and hash, new-root UID/GID/mode/filesystem and statvfs. Preserve source and benchmark root identity before/after.",
+    "Existing pinned Python packages equal .ci/requirements.txt and pip check succeeds; actual build-essential/cmake/pkg-config/GLib/GStreamer development packages and gst-inspect-1.0 present. Record versions/paths; missing prerequisites fail setup rather than installing on the benchmark host.",
+    "Only clone/config/checkout/Git and metadata prerequisite operations during setup; no model/input/source corpus copy or namespace/profile/kernel experiment in setup. The unchanged original CI driver owns its later actual diagnostics/optional strictly authorized profile fate.",
+    "The original setup verifies all95 held seven epochs, manifest full SHA and new CI checkout full raw Git bytes. Before any full-CI grant, ROOT must perform and independently join the original fresh full95 SHA/size plus seven-epoch author/peer witness, original setup tool rc/process/FD/final/late closure. Do not relabel the setup epoch-only loop as a full95 hash."
+  ],
+  "python": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+  "reviewed_ci_path_pins": {
+    "scripts/ci_namespace_diagnostic_v1.py": {
+      "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292",
+      "size_bytes": 25359
+    },
+    "scripts/ci_userns_profile_v1.py": {
+      "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+      "size_bytes": 28890
+    },
+    "tests/test_ci_namespace_diagnostic_v1.py": {
+      "sha256": "5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64",
+      "size_bytes": 33264
+    },
+    "tests/test_ci_userns_profile_v1.py": {
+      "sha256": "dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695",
+      "size_bytes": 41955
+    }
+  },
+  "schema_version": 1,
+  "setup_cleanup_s": 10,
+  "setup_commands": [
+    [
+      "/usr/bin/git",
+      "-c",
+      "core.longpaths=true",
+      "clone",
+      "--shared",
+      "--no-checkout",
+      "/mnt/e/STUDY/VAST",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29"
+    ],
+    [
+      "/usr/bin/git",
+      "-c",
+      "core.longpaths=true",
+      "-C",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "config",
+      "core.autocrlf",
+      "false"
+    ],
+    [
+      "/usr/bin/git",
+      "-c",
+      "core.longpaths=true",
+      "-C",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "config",
+      "core.longpaths",
+      "true"
+    ],
+    [
+      "/usr/bin/git",
+      "-c",
+      "core.longpaths=true",
+      "-C",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "checkout",
+      "--detach",
+      "04a5d1c7b90274af71f4ff2456ec3013107c2bb3"
+    ],
+    [
+      "/usr/bin/git",
+      "-c",
+      "core.longpaths=true",
+      "-C",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "rev-parse",
+      "HEAD"
+    ],
+    [
+      "/usr/bin/git",
+      "-c",
+      "core.longpaths=true",
+      "-C",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+      "status",
+      "--porcelain=v1",
+      "-z"
+    ]
+  ],
+  "setup_work_limit_s": 300,
+  "source_checkout_dependency": "Independent checkout and index; shared Git objects depend on this original common repository. No prune/delete/object rewrite while retained. Exact detached commit; no branch-tip dependency.",
+  "source_commit": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+  "source_git_common_dir": "/mnt/e/STUDY/VAST/.git",
+  "source_pins": {
+    ".ci/integration-test-selection.v1.json": {
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    },
+    ".ci/requirements.txt": {
+      "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+      "size_bytes": 454
+    },
+    "scripts/ci_external_test_observer_v1.py": {
+      "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+      "size_bytes": 20916
+    },
+    "scripts/ci_namespace_diagnostic_v1.py": {
+      "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292",
+      "size_bytes": 25359
+    },
+    "scripts/ci_test_selection_v1.py": {
+      "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d",
+      "size_bytes": 9978
+    },
+    "scripts/ci_userns_profile_v1.py": {
+      "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+      "size_bytes": 28890
+    },
+    "scripts/prepare_ci_model_assets.py": {
+      "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+      "size_bytes": 30314
+    },
+    "scripts/run_ci_checks.py": {
+      "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+      "size_bytes": 29477
+    }
+  },
+  "status": "prepared_unexecuted_requires_root_review",
+  "stock_checks": [
+    "Stock driver hashes every actual tracked path before/after and independently verifies Git HEAD raw blob equality; any checkout conversion is an original failure, never normalized/rebound.",
+    "Stock driver alone acquires exact canonical8 model assets with bounded streaming metadata; no pre-copy from the benchmark/model authority root.",
+    "Build all6 required native targets and load actual appsrc/queue/videoconvert factory facts. Require all3 exact original native regression methods to succeed.",
+    "Full unchanged default discovery and finite original9 integration-method exceptions. Validate actual skip outcomes against the unchanged88-declaration audit; never force an expected result count, blanket skip or treat integration as executed.",
+    "Require original full report successful, native and unit terminals, complete original capture/namespace/profile fate, raw source before/after equality, actual0 exit and final90-minute deadline. Failure or missing metadata remains failure.",
+    "This local current-C-source CPU lane is distinct from hosted CI and the genuinely closed benchmark B CPU08/GPU02. It grants neither a benchmark replay/root renewal nor GPU/model parity or full publication/Q4/campaign acceptance."
+  ],
+  "stock_cli_argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/run_ci_checks.py",
+    "--expected-commit",
+    "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+    "--output-dir",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output",
+    "--job-started-monotonic-ns",
+    "ACTUAL_ORIGINAL_DISPATCH_MONOTONIC_NS"
+  ],
+  "stock_original_job_limit_s": 5400
+}

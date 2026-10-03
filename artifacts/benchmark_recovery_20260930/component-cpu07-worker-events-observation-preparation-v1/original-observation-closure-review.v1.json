@@ -1,0 +1,626 @@
+{
+  "all_held_fds_released": true,
+  "close_errors": [],
+  "elapsed_s": 0.07306714699370787,
+  "failure_ordering_limitation": "The inner cleanup drain latched its cap error before the outer handler latched the earlier query cap error; both original errors are retained. No correct first-cause ordering claim.",
+  "fd_after": 6,
+  "fd_before": 6,
+  "input_witnesses": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-outer-attempt01/capture.v1.json",
+        "sha256": "ceb1f793656a2ab22303b122c053bec13838e5afcb5e46828d29cb7d018e904a",
+        "size_bytes": 3876
+      },
+      "epoch": [
+        69,
+        1407374885978573,
+        33279,
+        1,
+        3876,
+        1790825363422319900,
+        1790825363422319900
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-outer-attempt01/launch.v1.json",
+        "sha256": "c35745a3eb1f371b498ceea24dde7663509d75567122fb0be76a02c0f9a2de80",
+        "size_bytes": 1938
+      },
+      "epoch": [
+        69,
+        1407374885978566,
+        33279,
+        1,
+        1938,
+        1790825363297572300,
+        1790825363297572300
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01/execution.v1.json",
+        "sha256": "59b1c28d8da847811b33f6edaed3b7e07862eaf382de679bdb43bffb6c16a81f",
+        "size_bytes": 2391
+      },
+      "epoch": [
+        69,
+        1407374885978572,
+        33279,
+        1,
+        2391,
+        1790825363406421800,
+        1790825363406421800
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01/launch.v1.json",
+        "sha256": "52721462a76f05f28463ab57ab8a002aa1e3712d10ac9968f119552d35c87f0d",
+        "size_bytes": 939
+      },
+      "epoch": [
+        69,
+        1407374885978571,
+        33279,
+        1,
+        939,
+        1790825363353443500,
+        1790825363353443500
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01/dispatch.v1.json",
+        "sha256": "f08774868f2d41d64e1494731657792f321a0fe6069ddcce383779ad7b08ce91",
+        "size_bytes": 6081
+      },
+      "epoch": [
+        69,
+        2251799816110536,
+        33279,
+        1,
+        6081,
+        1790825363348567100,
+        1790825363348567100
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/root-one-primary-events-grant.v1.json",
+        "sha256": "5bc63b2fbadb327305e4edf3df0cf9dfe46d962b1d8c1032ec3ddef8c8fb7d9a",
+        "size_bytes": 1468
+      },
+      "epoch": [
+        69,
+        1407374885978558,
+        33279,
+        1,
+        1468,
+        1790825248501306400,
+        1790825248501306400
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/preparation.v3.json",
+        "sha256": "11d39a83a9873b290af9aec79139783b3809c7d6475f14f66fba0b1ce2b74801",
+        "size_bytes": 7609
+      },
+      "epoch": [
+        69,
+        1688849862689211,
+        33279,
+        1,
+        7609,
+        1790825127018076800,
+        1790825127018076800
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/observe_original_primary_worker_events_v4.py",
+        "sha256": "dfe892ea547de7fa8c4a1f24b2da0d9299ab2cad6deb8ef7212c6b7117583d5a",
+        "size_bytes": 14053
+      },
+      "epoch": [
+        69,
+        1407374885978554,
+        33279,
+        1,
+        14053,
+        1790825127013567500,
+        1790825127013567500
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01/stdout.raw",
+        "sha256": "9deb990e0bb431026ca5781c8cbf4c3d3898545806a9c9dd5052280e45e05978",
+        "size_bytes": 8192
+      },
+      "epoch": [
+        69,
+        1407374885978569,
+        33279,
+        1,
+        8192,
+        1790825363370540800,
+        1790825363370540800
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01/stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "epoch": [
+        69,
+        1407374885978570,
+        33279,
+        1,
+        0,
+        1790825363350567900,
+        1790825363350567900
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-outer-attempt01/stdout.raw",
+        "sha256": "f64a5fd708d204a261cccf3027fc721fcbb1a50dfbcf5a4aaf9edf15d6bc9f3d",
+        "size_bytes": 412
+      },
+      "epoch": [
+        69,
+        1407374885978564,
+        33279,
+        1,
+        412,
+        1790825363408286700,
+        1790825363408286700
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-outer-attempt01/stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "epoch": [
+        69,
+        1688849862689221,
+        33279,
+        1,
+        0,
+        1790825363286179300,
+        1790825363286179300
+      ]
+    }
+  ],
+  "late_failure_absent": [
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01/late-failure.v1.json",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-outer-attempt01/late-failure.v1.json"
+  ],
+  "limitations": [
+    "The prefix stops before the original inference failure; no absence or OOM conclusion is possible.",
+    "Only later historical daemon events were queried; original contemporaneous worker terminal raw bytes are unavailable.",
+    "The daemon retains at most 256 events; filtered future absence would not prove original absence.",
+    "The outer inline capture source was not saved before dispatch; original argv/channel/owner/source facts are retained in its actual capture."
+  ],
+  "metadata_closure_passed": true,
+  "observed_worker_cause": null,
+  "original_outer_returncode": 78,
+  "original_query_additional_errors": [
+    {
+      "message": "original query channel cap exceeded",
+      "type": "ValueError"
+    }
+  ],
+  "original_query_failure": {
+    "message": "original drain channel cap",
+    "type": "ValueError"
+  },
+  "original_query_returncode": -9,
+  "process_scans": [
+    {
+      "at_ns": 1790825824699623025,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "group_members": [],
+      "owners": [
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65511,
+            "pid": 65511,
+            "ppid": 65507,
+            "startticks": 30767868,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65512,
+            "pid": 65512,
+            "ppid": 65511,
+            "startticks": 30767872,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65512,
+            "pid": 65513,
+            "ppid": 65512,
+            "startticks": 30767873,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65514,
+            "pid": 65514,
+            "ppid": 65513,
+            "startticks": 30767879,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        }
+      ],
+      "scan_errors": []
+    },
+    {
+      "at_ns": 1790825824751391535,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "group_members": [],
+      "owners": [
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65511,
+            "pid": 65511,
+            "ppid": 65507,
+            "startticks": 30767868,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65512,
+            "pid": 65512,
+            "ppid": 65511,
+            "startticks": 30767872,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65512,
+            "pid": 65513,
+            "ppid": 65512,
+            "startticks": 30767873,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65514,
+            "pid": 65514,
+            "ppid": 65513,
+            "startticks": 30767879,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        }
+      ],
+      "scan_errors": []
+    }
+  ],
+  "query_accepted": false,
+  "retained_prefix": {
+    "actions": {
+      "attach": 1,
+      "create": 1,
+      "exec_create: bash -c pgrep bash > /dev/null || exit 1": 7,
+      "exec_die": 6,
+      "exec_start: bash -c pgrep bash > /dev/null || exit 1": 7,
+      "health_status: healthy": 1,
+      "start": 1
+    },
+    "bytes": 8192,
+    "complete_rows": 24,
+    "container_id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+    "events": [
+      {
+        "action": "create",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823317990468390,
+        "type": "container"
+      },
+      {
+        "action": "attach",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823317997374057,
+        "type": "container"
+      },
+      {
+        "action": "start",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823318172462120,
+        "type": "container"
+      },
+      {
+        "action": "exec_create: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823323173240201,
+        "type": "container"
+      },
+      {
+        "action": "exec_start: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823323173321587,
+        "type": "container"
+      },
+      {
+        "action": "exec_die",
+        "exit_code": "0",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823323194682927,
+        "type": "container"
+      },
+      {
+        "action": "health_status: healthy",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823323194992511,
+        "type": "container"
+      },
+      {
+        "action": "exec_create: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823353193232734,
+        "type": "container"
+      },
+      {
+        "action": "exec_start: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823353193309363,
+        "type": "container"
+      },
+      {
+        "action": "exec_die",
+        "exit_code": "0",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823353216114392,
+        "type": "container"
+      },
+      {
+        "action": "exec_create: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823383215412407,
+        "type": "container"
+      },
+      {
+        "action": "exec_start: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823383215688886,
+        "type": "container"
+      },
+      {
+        "action": "exec_die",
+        "exit_code": "0",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823383237992876,
+        "type": "container"
+      },
+      {
+        "action": "exec_create: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823413236907419,
+        "type": "container"
+      },
+      {
+        "action": "exec_start: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823413237042944,
+        "type": "container"
+      },
+      {
+        "action": "exec_die",
+        "exit_code": "0",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823413258617931,
+        "type": "container"
+      },
+      {
+        "action": "exec_create: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823443257535540,
+        "type": "container"
+      },
+      {
+        "action": "exec_start: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823443257649575,
+        "type": "container"
+      },
+      {
+        "action": "exec_die",
+        "exit_code": "0",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823443279981174,
+        "type": "container"
+      },
+      {
+        "action": "exec_create: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823473279482950,
+        "type": "container"
+      },
+      {
+        "action": "exec_start: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823473279624619,
+        "type": "container"
+      },
+      {
+        "action": "exec_die",
+        "exit_code": "0",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823473302295532,
+        "type": "container"
+      },
+      {
+        "action": "exec_create: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823503301997861,
+        "type": "container"
+      },
+      {
+        "action": "exec_start: bash -c pgrep bash > /dev/null || exit 1",
+        "exit_code": "",
+        "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+        "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+        "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+        "signal": "",
+        "time_ns": 1790823503302104101,
+        "type": "container"
+      }
+    ],
+    "first_event_at_ns": 1790823317990468390,
+    "image_id": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+    "last_complete_event_at_ns": 1790823503302104101,
+    "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+    "truncated_tail_bytes": 20
+  },
+  "scanner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65550,
+    "pid": 65551,
+    "ppid": 65550,
+    "startticks": 30814010,
+    "state": "R",
+    "uid": 1000
+  },
+  "schema_version": 1,
+  "scope": "metadata-only closure of original failed historical query; no repeated Docker command"
+}

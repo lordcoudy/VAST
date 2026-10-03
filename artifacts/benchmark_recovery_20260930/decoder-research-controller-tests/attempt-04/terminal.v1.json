@@ -1,0 +1,80 @@
+{
+  "accepted": false,
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py"
+  ],
+  "artifact_kind": "vast_decoder_research_synthetic_test_execution_v1",
+  "benchmark_arm_count": 0,
+  "child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "pid": 12418,
+    "ppid": 12415,
+    "starttime_ticks": 21494569
+  },
+  "classification": "Synthetic parser/real pipes/bounds/pixel-layout/EOS and genuine small Python child EOF/timeout fixtures only; no GI, original source, Docker or decoder execution; synthetic observer does not claim engine/socket ownership",
+  "model_or_parity_evidence": false,
+  "native_pair_count": 0,
+  "publication_ready": false,
+  "returncode": 0,
+  "schema_version": 1,
+  "source_after": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/controller.py",
+      "sha256": "a04e28fe0a3c2b31121e023dc2b1c9b5a1d0bd2aa8349811f6b847d930c23cf4",
+      "size_bytes": 28059
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/guest_consumer.py",
+      "sha256": "d7f6ac8117960983edae4171cbffc257b5b384b82ab742cb74342035d0a7eec6",
+      "size_bytes": 42502
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/research_protocol.py",
+      "sha256": "8b716c170da596a013b820ab0adf3ac1374bcb1513cd0a9819cf6770800c2e56",
+      "size_bytes": 20167
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py",
+      "sha256": "79ebd995c8103fdeda22f3da6f7dc615441c7bf710755dedf507a454514a308a",
+      "size_bytes": 15983
+    }
+  ],
+  "source_before": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/controller.py",
+      "sha256": "a04e28fe0a3c2b31121e023dc2b1c9b5a1d0bd2aa8349811f6b847d930c23cf4",
+      "size_bytes": 28059
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/guest_consumer.py",
+      "sha256": "d7f6ac8117960983edae4171cbffc257b5b384b82ab742cb74342035d0a7eec6",
+      "size_bytes": 42502
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/research_protocol.py",
+      "sha256": "8b716c170da596a013b820ab0adf3ac1374bcb1513cd0a9819cf6770800c2e56",
+      "size_bytes": 20167
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py",
+      "sha256": "79ebd995c8103fdeda22f3da6f7dc615441c7bf710755dedf507a454514a308a",
+      "size_bytes": 15983
+    }
+  ],
+  "source_stable": true,
+  "started_at_ns": 1790732635411368413,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-controller-tests/attempt-04/original.stderr",
+    "sha256": "2c819c3f403d72991b27a32c1106266b5a27bb66cd668b318b29fa0e59be11ba",
+    "size_bytes": 3109
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-controller-tests/attempt-04/original.stdout",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "terminal_at_ns": 1790732635793807801
+}

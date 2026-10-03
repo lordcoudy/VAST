@@ -392,7 +392,16 @@ class FullResourceRuntimeV2Tests(unittest.TestCase):
             }
             write_csv(root / "fanout_work_counters.csv", FANOUT_WORK_COUNTER_COLUMNS, [fanout_work])
             ingress = pd.DataFrame(
-                [{"window_start_timestamp_ms": 0, "window_end_timestamp_ms": 3000}]
+                [
+                    {
+                        "run_id": "run-1",
+                        "trace_id": "run-1:0:7",
+                        "stream_id": 0,
+                        "frame_id": 7,
+                        "window_start_timestamp_ms": 0,
+                        "window_end_timestamp_ms": 3000,
+                    }
+                ]
             )
             topology = pd.DataFrame(
                 [
@@ -510,6 +519,152 @@ class FullResourceRuntimeV2Tests(unittest.TestCase):
             self.assertFalse((accepted / "hardware_resource_samples.csv").exists())
             self.assertFalse((accepted / "fanout_work_counters.csv").exists())
 
+    def test_shared_promotion_filters_expected_fanout_to_accepted_cohort(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            runtime = root / "native_runtime"
+            accepted = root / "accepted"
+            measurement_trace = "run-1:0:7"
+            warmup_trace = "run-1:0:6"
+            measurement_counter = {
+                "schema_version": 2,
+                "resource_contract_version": 2,
+                "run_id": "run-1",
+                "trace_id": measurement_trace,
+                "stream_id": 0,
+                "frame_id": 7,
+                "input_frame_key": "kpp_real_h265:0:source:0:7",
+                "branch_id": "damage",
+                "execution_id": f"{measurement_trace}:damage:fanout",
+                "thread_cpu_time_ns": 25_000,
+                "work_units": 1,
+                "device_id": "host:fanout",
+                "counter_scope": "per_trace_resource_work",
+                "counter_provenance": "native_thread_cpu_time_v1",
+                "telemetry_source": "native",
+            }
+            warmup_counter = dict(measurement_counter)
+            warmup_counter.update(
+                {
+                    "trace_id": warmup_trace,
+                    "frame_id": 6,
+                    "input_frame_key": "kpp_real_h265:0:source:0:6",
+                    "execution_id": f"{warmup_trace}:damage:fanout",
+                }
+            )
+            excluded_branch_counter = dict(measurement_counter)
+            excluded_branch_counter.update(
+                {
+                    "branch_id": "vehicle_type",
+                    "execution_id": f"{measurement_trace}:vehicle_type:fanout",
+                }
+            )
+            write_csv(
+                runtime / "resource_intervals.runtime.csv",
+                RESOURCE_INTERVAL_COLUMNS,
+                [
+                    nvdec_row(frame_id=6, trace_id=warmup_trace),
+                    fanout_row(frame_id=6, trace_id=warmup_trace),
+                    nvdec_row(),
+                    fanout_row(),
+                ],
+            )
+            write_csv(
+                runtime / "fanout_work_counters.runtime.csv",
+                FANOUT_WORK_COUNTER_COLUMNS,
+                [warmup_counter, measurement_counter, excluded_branch_counter],
+            )
+            write_csv(
+                runtime / "hardware_resource_samples.runtime.csv",
+                HARDWARE_RESOURCE_SAMPLE_COLUMNS,
+                [],
+            )
+            ingress = pd.DataFrame(
+                [
+                    {
+                        "run_id": "run-1",
+                        "trace_id": measurement_trace,
+                        "stream_id": 0,
+                        "frame_id": 7,
+                        "input_frame_key": "kpp_real_h265:0:source:0:7",
+                    }
+                ]
+            )
+            measurement_topology = topology_rows()
+            warmup_topology = []
+            for row in measurement_topology:
+                copy_row = dict(row)
+                copy_row["trace_id"] = warmup_trace
+                copy_row["frame_id"] = 6
+                copy_row["input_frame_key"] = "kpp_real_h265:0:source:0:6"
+                copy_row["execution_id"] = str(copy_row["execution_id"]).replace(
+                    measurement_trace, warmup_trace
+                )
+                copy_row["parent_execution_ids_json"] = str(
+                    copy_row["parent_execution_ids_json"]
+                ).replace(measurement_trace, warmup_trace)
+                warmup_topology.append(copy_row)
+
+            with (
+                mock.patch(
+                    "checkpoint_gstreamer_runtime.validate_resource_intervals",
+                    return_value=pd.DataFrame(),
+                ),
+                mock.patch(
+                    "checkpoint_gstreamer_runtime.summarize_resource_interval_extension",
+                    return_value={"coverage_complete": True},
+                ),
+            ):
+                result = promote_runtime_interval_and_fanout_evidence(
+                    runtime_resource_intervals=runtime / "resource_intervals.runtime.csv",
+                    runtime_fanout_work_counters=runtime / "fanout_work_counters.runtime.csv",
+                    output_root=accepted,
+                    expected_run_id="run-1",
+                    ingress_ledger=ingress,
+                    topology_events=pd.DataFrame(warmup_topology + measurement_topology),
+                    frame_events=pd.DataFrame(),
+                    topology_kind="shared_video_dag",
+                )
+                with mock.patch(
+                    "checkpoint_gstreamer_runtime.validate_full_resource_evidence",
+                    return_value={"summary": {"evidence_accepted": True}},
+                ):
+                    full_result = promote_runtime_full_resource_evidence(
+                        runtime_resource_intervals=(
+                            runtime / "resource_intervals.runtime.csv"
+                        ),
+                        runtime_hardware_samples=(
+                            runtime / "hardware_resource_samples.runtime.csv"
+                        ),
+                        runtime_fanout_work_counters=(
+                            runtime / "fanout_work_counters.runtime.csv"
+                        ),
+                        output_root=root / "accepted_full",
+                        expected_run_id="run-1",
+                        ingress_ledger=ingress,
+                        topology_events=pd.DataFrame(
+                            warmup_topology + measurement_topology
+                        ),
+                        frame_events=pd.DataFrame(),
+                        topology_kind="shared_video_dag",
+                    )
+
+            with (accepted / "fanout_work_counters.csv").open(
+                newline="", encoding="utf-8"
+            ) as source:
+                accepted_rows = list(csv.DictReader(source))
+            self.assertEqual(result["accepted_fanout_work_count"], 1)
+            self.assertEqual([row["frame_id"] for row in accepted_rows], ["7"])
+            self.assertEqual(full_result["accepted_fanout_work_count"], 1)
+            with (root / "accepted_full" / "fanout_work_counters.csv").open(
+                newline="", encoding="utf-8"
+            ) as source:
+                full_accepted_rows = list(csv.DictReader(source))
+            self.assertEqual(
+                [(row["frame_id"], row["branch_id"]) for row in full_accepted_rows],
+                [("7", "damage")],
+            )
+
     def test_promotion_accepts_only_a_fully_valid_native_measurement_cohort(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -533,7 +688,23 @@ class FullResourceRuntimeV2Tests(unittest.TestCase):
                     "native_event_id": hashlib.sha256(b"warmup-nvdec-6").hexdigest(),
                 }
             )
-            write_csv(runtime / "resource_intervals.runtime.csv", RESOURCE_INTERVAL_COLUMNS, [warmup, measurement])
+            unlinked_measurement = dict(measurement)
+            unlinked_measurement.update(
+                {
+                    "trace_id": "run-1:0:8",
+                    "frame_id": 8,
+                    "input_frame_key": "kpp_real_h265:0:source:0:8",
+                    "execution_id": "run-1:0:8:damage:decode",
+                    "native_event_id": hashlib.sha256(
+                        b"unlinked-measurement-nvdec-8"
+                    ).hexdigest(),
+                }
+            )
+            write_csv(
+                runtime / "resource_intervals.runtime.csv",
+                RESOURCE_INTERVAL_COLUMNS,
+                [warmup, unlinked_measurement, measurement],
+            )
             write_csv(runtime / "fanout_work_counters.runtime.csv", FANOUT_WORK_COUNTER_COLUMNS, [])
             samples = []
             for sequence, utilization in ((1, 25), (2, 50), (3, 25)):
@@ -569,6 +740,17 @@ class FullResourceRuntimeV2Tests(unittest.TestCase):
                         "stream_id": 0,
                         "frame_id": 7,
                         "input_frame_key": input_key,
+                        "ingress_timestamp_ms": 999,
+                        "terminal_timestamp_ms": 1002,
+                        "window_start_timestamp_ms": 0,
+                        "window_end_timestamp_ms": 3000,
+                    },
+                    {
+                        "run_id": "run-1",
+                        "trace_id": "run-1:0:8",
+                        "stream_id": 0,
+                        "frame_id": 8,
+                        "input_frame_key": "kpp_real_h265:0:source:0:8",
                         "ingress_timestamp_ms": 999,
                         "terminal_timestamp_ms": 1002,
                         "window_start_timestamp_ms": 0,

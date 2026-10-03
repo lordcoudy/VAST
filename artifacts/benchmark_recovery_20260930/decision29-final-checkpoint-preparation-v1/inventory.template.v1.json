@@ -1,0 +1,32 @@
+{
+  "CI_source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "archive_root": null,
+  "artifact_kind": "sealed_final_checkpoint_inventory_v1",
+  "authored_whitespace_check_paths": null,
+  "base_commit": null,
+  "benchmark_commit_untouched": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "closed_prerequisite_facts": {
+    "current_conformance_accepted": null,
+    "current_docs_independently_reviewed": null,
+    "hosted_D_CI_accepted": null,
+    "latest_local_D_CI_accepted": null,
+    "supported_sync_archive_closed": null,
+    "unexecuted_campaign_limits_preserved": null
+  },
+  "closed_review_refs": {
+    "conformance": null,
+    "current_docs": null,
+    "hosted_CI": null,
+    "local_CI": null,
+    "staging_source": null,
+    "sync_archive": null
+  },
+  "deletions": null,
+  "files": null,
+  "index_staging_authorized": false,
+  "prearchive_move_manifest": null,
+  "progress_preservation_ref": null,
+  "schema_version": 1,
+  "sealing_note": "Create a new exact sealed manifest after all genuine closures and supported archive. Each files row is path,size_bytes,sha256,git_mode. Do not put this manifest itself in files: its typed runtime reference is an explicit staged supplement, avoiding a self-hash cycle. Independently review complete exact path set and all source/evidence pins first.",
+  "status": "UNSEALED_SOURCE_PREPARATION_ONLY"
+}

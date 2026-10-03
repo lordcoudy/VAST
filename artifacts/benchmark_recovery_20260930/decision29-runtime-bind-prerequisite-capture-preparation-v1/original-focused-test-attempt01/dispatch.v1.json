@@ -1,0 +1,81 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/run_canonical_runtime_focused_v1.py",
+    "child",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/original-focused-test-attempt01",
+    "canonical_readonly_runtime_bind"
+  ],
+  "cleanup_s": 10,
+  "execution_s": 120,
+  "original_scope": "canonical_readonly_runtime_bind",
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 6619,
+    "pid": 6619,
+    "ppid": 6616,
+    "startticks": 51215597,
+    "uid": 1000
+  },
+  "source_before": [
+    {
+      "epoch": [
+        2096,
+        591125,
+        33188,
+        1,
+        77939,
+        1791024491662374761,
+        1791024491662374761
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/backend_publication_output_transaction_production_v3.py",
+      "sha256": "028b7bab8f2e860dc59eda9f2727e8f56230d353c69ab07d4943b4487cce5dee",
+      "size_bytes": 77939
+    },
+    {
+      "epoch": [
+        2096,
+        591388,
+        33188,
+        1,
+        54261,
+        1791024491702378010,
+        1791024491702378010
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/tests/test_backend_publication_output_transaction_production_v3.py",
+      "sha256": "f78c2fa070e672f3777aca28f5d5043a19fca63987afa5fd8300d1582334812d",
+      "size_bytes": 54261
+    },
+    {
+      "epoch": [
+        2096,
+        591264,
+        33188,
+        1,
+        6112,
+        1791024491690377036,
+        1791024491690377036
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/mount_publication_runtime_wsl.sh",
+      "sha256": "5f68ab843ba5022b78242ce50de708f9b387bc817ee3a81cc2cc6f37096a0e6c",
+      "size_bytes": 6112
+    },
+    {
+      "epoch": [
+        69,
+        1407374885980401,
+        33279,
+        1,
+        6905,
+        1791029416085838400,
+        1791029416085838400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/run_canonical_runtime_focused_v1.py",
+      "sha256": "0565533e5ae299e0f0a154e1cb52f9b4f8758a06e50fe1bba67c616361ecac7e",
+      "size_bytes": 6905
+    }
+  ]
+}

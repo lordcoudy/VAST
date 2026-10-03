@@ -1,0 +1,364 @@
+{
+  "crlf_only_mismatches": 55,
+  "real_content_mismatches": [
+    {
+      "path": "README.md",
+      "commit_lf_bytes": 57909,
+      "source_lf_bytes": 70385,
+      "commit_lf_sha256": "5ec2d0f14ebc0811fba908d4a716eddde63a12dec2e6f8429e2a413ad24528e1",
+      "source_lf_sha256": "8049af15c3f7f579f2a9e1c92813d0b84d8a7bdd0211f7de982162be815e7bb6"
+    },
+    {
+      "path": "progress.md",
+      "commit_lf_bytes": 1206382,
+      "source_lf_bytes": 13298,
+      "commit_lf_sha256": "35a77799cb22fe06d0860550239cb77319dbc3a38e70b0096d111375eae0cf08",
+      "source_lf_sha256": "b7aa9278d83557a45f871f0088ef4bfd2a8319b8ed90f364b3cf6507ed03888b"
+    },
+    {
+      "path": "scripts/backend_runtime_replay_handle_abi_authority_v1.py",
+      "commit_lf_bytes": 41780,
+      "source_lf_bytes": 42355,
+      "commit_lf_sha256": "4f77ee6a195567e9cdf5c1ee10cf116ad981c639f22baac4f39bfb95f34cd552",
+      "source_lf_sha256": "8bed92778257388e059bb588adc3cf7fcc874cccdac2d8cb75a870397585aa8e"
+    },
+    {
+      "path": "scripts/backend_runtime_replay_runner_authority_v3.py",
+      "commit_lf_bytes": 47145,
+      "source_lf_bytes": 47720,
+      "commit_lf_sha256": "f31a94dde955e8a8be1a11d1d45c05921ece7bd0faa102af86147c87b57afd74",
+      "source_lf_sha256": "b0ad61d2b4bec93fe4d35251a4d9320b79472d9ebe80ce1bbd262d5a5a9f9fd6"
+    },
+    {
+      "path": "scripts/build_native_probe_images.sh",
+      "commit_lf_bytes": 3542,
+      "source_lf_bytes": 169,
+      "commit_lf_sha256": "e02243c11fb485ca04f8d40b05b47fbf42048c57dffda4d8c23edfe16da97239",
+      "source_lf_sha256": "6564c3bf092c3fe9d01c40cf988457ba58da79a5707d8eb42e937c7edfede9fc"
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+      "commit_lf_bytes": 38884,
+      "source_lf_bytes": 39201,
+      "commit_lf_sha256": "5b0c34390dc7ca90da6ec01e0e9a9009b0c01288fa09f46a3f7d1f2167456149",
+      "source_lf_sha256": "be8387b34cc36ba7c23dde41b0deb5bbb9258cc150d25978a2d0c65b49c0a402"
+    },
+    {
+      "path": "scripts/checkpoint_openvino_execution_bridge.py",
+      "commit_lf_bytes": 29789,
+      "source_lf_bytes": 29873,
+      "commit_lf_sha256": "228689026a89dde4a5e3bfdfbde7a40913cad56d5b9001eeaee6ed7f247ff0a8",
+      "source_lf_sha256": "f39aafb554d1942a85a4ff6b5efde0b36d02846720befdc8c132c86b0d0e9ded"
+    },
+    {
+      "path": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "commit_lf_bytes": 23891,
+      "source_lf_bytes": 24165,
+      "commit_lf_sha256": "631914b01532e70a12b1de63bf82248e519cdeb6944ced6e865f8c59ab989549",
+      "source_lf_sha256": "3d9b2fb88f9146dd4dae0d696c5edcf22670c1bffe6cae69ebe28fce2824bfbc"
+    },
+    {
+      "path": "scripts/checkpoint_savant_qualification_fragment_v3.py",
+      "commit_lf_bytes": 31917,
+      "source_lf_bytes": 31911,
+      "commit_lf_sha256": "dbd49a97c22b580abfb5d1e9d535e0107603267375fbae8411c29d7e9c4d59f1",
+      "source_lf_sha256": "79bf05a46af44b80c14e10b4964cfaf05344794cc4917068ce7a5b592f65eb02"
+    },
+    {
+      "path": "scripts/kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+      "commit_lf_bytes": 569470,
+      "source_lf_bytes": 573548,
+      "commit_lf_sha256": "cd98fef7d1f6cacfd886743f95f7124b93706b5377be9443461f5152f6f9e894",
+      "source_lf_sha256": "b84b6b1505e1b15e897ff9ea2368564ff7bc34cc21b977fce6fe8d646d5d7b39"
+    },
+    {
+      "path": "scripts/setup_target.sh",
+      "commit_lf_bytes": 13428,
+      "source_lf_bytes": 13437,
+      "commit_lf_sha256": "3e2c23b07cfb85b533de0dc8b2189747225ae42a0a19db92587afdff42ace042",
+      "source_lf_sha256": "e77bd6a51401e23fb0ac6c0b18b829e54ff8cd041cac58e0255dfaeff26a0a89"
+    },
+    {
+      "path": "tests/test_backend_runtime_qualification.py",
+      "commit_lf_bytes": 33269,
+      "source_lf_bytes": 33504,
+      "commit_lf_sha256": "9b9881edf7b3eec3a21058081e0a346c17acf3755a8e0735255f2c473d117e86",
+      "source_lf_sha256": "10b1e4659e40fb5bbdd916d68bce1bb5727f92b3ba381831ef3e4910724d30bd"
+    },
+    {
+      "path": "tests/test_backend_runtime_replay_handle_abi_authority_v1.py",
+      "commit_lf_bytes": 23509,
+      "source_lf_bytes": 23903,
+      "commit_lf_sha256": "1cdd6e874880da8ebacbe252b968248dbce5b2cf5ffa91d07f285eda8d23f1b6",
+      "source_lf_sha256": "01e88374b025f5acfdb894988f5084d1cf7852e347978b14b051aa6c7dce9167"
+    },
+    {
+      "path": "tests/test_backend_runtime_replay_runner_authority_v3.py",
+      "commit_lf_bytes": 23207,
+      "source_lf_bytes": 23916,
+      "commit_lf_sha256": "21264e6bd7c549d5dc9951e702cce16ec153f01cfaefa113e3a2d187ce278ca5",
+      "source_lf_sha256": "e84d5e17b3f72af336dc079d462e262df30cbca1c9d18f5152a01bcb57a4cfa8"
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_container_runtime_v3.py",
+      "commit_lf_bytes": 11355,
+      "source_lf_bytes": 13662,
+      "commit_lf_sha256": "56ce56713920f187c90ca127d1419f56ac4dcdc65d524c550d789d332fd943c3",
+      "source_lf_sha256": "e758ac8f4094d0bec2498b0f01f7f3752fefcd0ad9af293a4f1e2aca8e927cc0"
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_protocol_adapter.py",
+      "commit_lf_bytes": 5585,
+      "source_lf_bytes": 6109,
+      "commit_lf_sha256": "b8884788c10dfc3f6a0e30e03add7cd7cc920c3abf01120b788ebbce376b6ff7",
+      "source_lf_sha256": "0a49bfb696ec4bc1326a7b3d0f61ac1f1c5e41f530627e1d53d638a0f15b815b"
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_resource_runtime_v3.py",
+      "commit_lf_bytes": 15001,
+      "source_lf_bytes": 25414,
+      "commit_lf_sha256": "4b8035cb6572ef3e72afdf439a65c8c3617af52e65dcf187d42d9a5692b2a0eb",
+      "source_lf_sha256": "0f9796ab128363619948d6e654092f937bd8a9e8a8e09c6e4070d29f0c5def9b"
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_sdk_runtime.py",
+      "commit_lf_bytes": 24793,
+      "source_lf_bytes": 37312,
+      "commit_lf_sha256": "2985b279e8b7c872bec29f6edb035d00c86d60b6af4a3d8e9fb703d64fd7d9bf",
+      "source_lf_sha256": "71baedb60827ceb0890c995f1fd6b711cc87a9ab5ebdd9e7b770d1aa54058c09"
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+      "commit_lf_bytes": 11360,
+      "source_lf_bytes": 12178,
+      "commit_lf_sha256": "e086331c61afa492f81e48656e9a27a28f97a089c93565e911097b1a7f5038b9",
+      "source_lf_sha256": "c1faa4998c32555d94806e607b5f15a417458602bbeb3a783e8777e30c20e1e8"
+    },
+    {
+      "path": "tests/test_checkpoint_openvino_execution_bridge.py",
+      "commit_lf_bytes": 36630,
+      "source_lf_bytes": 36753,
+      "commit_lf_sha256": "c701583c476f7d6fcba13f92192da8cb5c943f6d6cb731864709b5ab530688bd",
+      "source_lf_sha256": "b027d89e0a4a3d043318084f61ccff3d90a4e6ccf58fad8b69d87efb9b54b2e1"
+    },
+    {
+      "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "commit_lf_bytes": 6929,
+      "source_lf_bytes": 10431,
+      "commit_lf_sha256": "f1304f908c9fb1f1b7450e71de514132c275d3d8086c61205e1c7e22105a694a",
+      "source_lf_sha256": "dee0a7e1418dba5ec4206b4f8f65646f13e9348fd4230beac8e3cde78d37013e"
+    },
+    {
+      "path": "tests/test_checkpoint_savant_container_runtime_v3.py",
+      "commit_lf_bytes": 8516,
+      "source_lf_bytes": 10719,
+      "commit_lf_sha256": "b5de9b46a7e025876af0fd10455a1e98c04354799c5cfd130594c5a248ef8b1d",
+      "source_lf_sha256": "a60955e103502559370b62dde348d4a266901c736d1a99eb0ce8f09a3b6bcd31"
+    },
+    {
+      "path": "tests/test_checkpoint_savant_ingress.py",
+      "commit_lf_bytes": 6430,
+      "source_lf_bytes": 12210,
+      "commit_lf_sha256": "33839893c6670f4b4ff93b13c5f6d8f7a46151646213602c496948f3683f6d24",
+      "source_lf_sha256": "562467ee9cd4f9cd3973166ed31c9a3c128409eddf9f46297b6acf46d9db64ff"
+    },
+    {
+      "path": "tests/test_checkpoint_savant_native_module.py",
+      "commit_lf_bytes": 12789,
+      "source_lf_bytes": 29589,
+      "commit_lf_sha256": "a916eb3865e4b8d9cf61230b76772ad323c61482ada13e688352fc5127375ca4",
+      "source_lf_sha256": "eb7f606dc97818367a9fafc001c7833e7de8e7e03fd122e0921fc81549457a93"
+    },
+    {
+      "path": "tests/test_checkpoint_savant_protocol_bridge.py",
+      "commit_lf_bytes": 8566,
+      "source_lf_bytes": 8653,
+      "commit_lf_sha256": "bcb8a4bb4a37df3a9b9a6033ee14a5b263ecb61def8fbfe92d68908de4296a06",
+      "source_lf_sha256": "ad7e1a0869d17bf8f80bebe553aa6c5936b21d9f4413f9aa7eb198569a2d3189"
+    },
+    {
+      "path": "tests/test_checkpoint_savant_sdk_runtime_v3.py",
+      "commit_lf_bytes": 16944,
+      "source_lf_bytes": 30365,
+      "commit_lf_sha256": "05c65447c466e5c79d0ced7d1371ede6223c005517223f0ba8d03cd1e304e591",
+      "source_lf_sha256": "819521181fa4d638ee28a9cf445c4359428cbea0d51e789321b9b236fd4bcc41"
+    },
+    {
+      "path": "tests/test_full_publication_identity_runtime_authority_v3.py",
+      "commit_lf_bytes": 14770,
+      "source_lf_bytes": 15092,
+      "commit_lf_sha256": "ed6c2de874186194867ab67c307daf04f2ff49c9d0de0f2e4962cbc16f6182c6",
+      "source_lf_sha256": "e20048ca2918a90b610a5ebf7d79a53077a5161b43af8db65ceb54dcb17fe441"
+    },
+    {
+      "path": "tests/test_full_publication_seafile_capacity_binding.py",
+      "commit_lf_bytes": 4340,
+      "source_lf_bytes": 8377,
+      "commit_lf_sha256": "98a3d6ff95e54d0fcfd36df26f273cff1eb708c8da0b0d752110f9a17fc786b5",
+      "source_lf_sha256": "88a4560bc533beb4d250975f411cb64e7f965ca895b9d90b346acc88c512cb0d"
+    },
+    {
+      "path": "tests/test_full_resource_publication.py",
+      "commit_lf_bytes": 14783,
+      "source_lf_bytes": 14776,
+      "commit_lf_sha256": "aa210f8d1c7da6749a898e6c7e6810c138e7282b42c2a6e028708abba0cd707d",
+      "source_lf_sha256": "db6f26d4884ac88ea73f2cf6873ffcfa87d34b19024eb52ccfdaa9cf974c175b"
+    },
+    {
+      "path": "tests/test_full_resource_runtime_v2.py",
+      "commit_lf_bytes": 28303,
+      "source_lf_bytes": 36274,
+      "commit_lf_sha256": "e4f3d617d1c1ed14eaa023f77beb3d1a1b6467c087c63cc6b2a61bd9f0f8beea",
+      "source_lf_sha256": "7e9e20f183c8a4ce74bfc40b404393990aaf7492f47213afd5b218a5cc04b6bb"
+    },
+    {
+      "path": "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+      "commit_lf_bytes": 453473,
+      "source_lf_bytes": 457130,
+      "commit_lf_sha256": "86bb1b79ec580ea2503143e1b6f98a0df77fbdcf897f06b039a90f093fb81f3e",
+      "source_lf_sha256": "c0bcbe3e5ca973878fe6b8c43ea8e9d847bc3fbc4845a670936749f465ba0bee"
+    },
+    {
+      "path": "tests/test_run_experiments_resume.py",
+      "commit_lf_bytes": 24439,
+      "source_lf_bytes": 24517,
+      "commit_lf_sha256": "d87ddc3ffa51086167e319a85d213932a164393b7d5a40ddc67b08290e339940",
+      "source_lf_sha256": "af9b7b8a03c873ad4c79947150aae9e39f5ba58ff5a0544c5bdb17bf70c6b45c"
+    },
+    {
+      "path": "tests/test_scenario_planning.py",
+      "commit_lf_bytes": 93744,
+      "source_lf_bytes": 93666,
+      "commit_lf_sha256": "158584a1899b0567df303ebeaef05ad19cc8cc67c9a1ceae75cf9271f03313be",
+      "source_lf_sha256": "7d4f0a72c7277f589fe53601542cd05f97e98f442924de9248891fe842035420"
+    }
+  ],
+  "missing_status": [
+    {
+      "path": "PLAN.md",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "scripts/diagnose_deepstream_publication_bundle_v3.py",
+      "in_reconciliation_commit": false,
+      "in_head": false,
+      "source_exists": true,
+      "worktree_exists": false
+    },
+    {
+      "path": "scripts/refreeze_publication_qualification_images_v1.sh",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/run_publication_durable_process_split_gate_v1.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_analytics_peer_identity.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_service_clock.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_checkpoint_model_parity_socket_namespace.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_checkpoint_publication_system_backends.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_checkpoint_savant_native_identity_integration_v3.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_checkpoint_savant_stop_race.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_full_publication_identity_parity_v4_dispatch.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_model_parity_grant_v4.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_publication_runtime_refreeze_handoff_v1.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_publication_runtime_source_closure_guardian_v1.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_savant_native_stdio_contract_v3.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_savant_stage_geometry_contract_v3.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    },
+    {
+      "path": "tests/test_savant_worker_stdout_atomicity.py",
+      "in_reconciliation_commit": false,
+      "in_head": true,
+      "source_exists": true,
+      "worktree_exists": true
+    }
+  ]
+}

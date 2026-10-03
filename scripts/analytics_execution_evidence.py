@@ -6,12 +6,21 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-import shutil
 import stat
 import tempfile
 from collections.abc import Mapping
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
+
+from publication_immutable_directory_v1 import (
+    JOURNAL_ROOT,
+    PublicationImmutableDirectoryV1Error,
+    commit_or_adopt_immutable_directory_v1,
+)
+from publication_owned_staging_cleanup_v1 import (
+    OwnedStagingCleanupV1Error,
+    OwnedStagingDirectoryV1,
+)
 
 from analytics_execution_protocol import (
     PROTOCOL_IDENTITY_SHA256,
@@ -73,6 +82,13 @@ def _directory_identity(path: Path) -> tuple[int, int, int]:
     return _stable_identity(path.lstat())
 
 
+def _resolved_ambient_cwd() -> Path | None:
+    try:
+        return Path.cwd().resolve()
+    except FileNotFoundError:
+        return None
+
+
 def _assert_canonical_directory(
     path: Path | str,
     *,
@@ -82,11 +98,12 @@ def _assert_canonical_directory(
     lexical = _absolute_lexical(path)
     _require(lexical != Path(lexical.anchor), f"{label} must not be a filesystem root")
     if reject_cwd_or_parent:
-        cwd = Path.cwd().resolve()
-        _require(
-            lexical != cwd and lexical not in cwd.parents,
-            f"{label} must not be the current directory or its parent",
-        )
+        cwd = _resolved_ambient_cwd()
+        if cwd is not None:
+            _require(
+                lexical != cwd and lexical not in cwd.parents,
+                f"{label} must not be the current directory or its parent",
+            )
     _require(
         not _is_reparse_point(lexical),
         f"{label} must not be a symlink, junction, or reparse point",
@@ -122,11 +139,12 @@ def _guard_staging_directory(
         lexical.name.startswith(expected_prefix) and lexical.name != expected_prefix,
         "execution evidence staging path has an unexpected name",
     )
-    cwd = Path.cwd().resolve()
-    _require(
-        lexical != cwd and lexical not in cwd.parents,
-        "execution evidence staging path must not be the current directory or its parent",
-    )
+    cwd = _resolved_ambient_cwd()
+    if cwd is not None:
+        _require(
+            lexical != cwd and lexical not in cwd.parents,
+            "execution evidence staging path must not be the current directory or its parent",
+        )
     _require(lexical != parent, "execution evidence staging path equals its parent")
     _require(
         not _is_reparse_point(lexical),
@@ -260,6 +278,8 @@ def persist_execution_bundle(
     input_tensor: bytes | bytearray | memoryview,
     output_tensor: bytes | bytearray | memoryview,
     capability: Mapping[str, Any],
+    project_root: Path | str | None = None,
+    after_directory_publish_step: Callable[[str], None] | None = None,
 ) -> dict[str, Any]:
     checked_request, checked_response, input_bytes, output_bytes, checked_capability = _validate_inputs(
         request=request,
@@ -294,26 +314,26 @@ def persist_execution_bundle(
     target = evidence_root / request_id
     _require(target.parent == evidence_root, "execution evidence target escaped its root")
     lock_path = evidence_root / ".execution-evidence.lock"
-    lock_flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | int(getattr(os, "O_CLOEXEC", 0))
-    try:
-        lock_fd = os.open(lock_path, lock_flags, 0o600)
-    except FileExistsError as error:
-        raise EvidenceError("execution evidence writer lock already exists") from error
+    _require(not os.path.lexists(lock_path), "foreign legacy execution evidence writer lock exists")
     temporary: Path | None = None
-    temporary_identity: tuple[int, int, int] | None = None
-    lock_identity: tuple[int, int, int] | None = None
-    try:
-        os.write(lock_fd, f"pid={os.getpid()}\n".encode("ascii"))
-        os.fsync(lock_fd)
-        lock_identity = _stable_identity(os.fstat(lock_fd))
-        os.close(lock_fd)
-        lock_fd = -1
-        _require(
-            not target.exists()
-            and not target.is_symlink()
-            and not _is_reparse_point(target),
-            f"execution evidence bundle already exists or is unsafe: {request_id}",
+    cleanup_anchor: OwnedStagingDirectoryV1 | None = None
+    publication_root = (
+        _assert_canonical_directory(
+            _absolute_lexical(project_root),
+            label="execution evidence project root",
+            reject_cwd_or_parent=False,
         )
+        if project_root is not None
+        else evidence_root.parent
+    )
+    target_relative = target.relative_to(publication_root).as_posix()
+    target_intent_key = hashlib.sha256(target_relative.encode("utf-8")).hexdigest()
+    target_intent = publication_root / JOURNAL_ROOT / f"{target_intent_key}.json"
+    _require(
+        not os.path.lexists(target) or os.path.lexists(target_intent),
+        f"execution evidence bundle already exists or is unsafe: {request_id}",
+    )
+    try:
         staging_prefix = f".{request_id}."
         created_staging = Path(
             tempfile.mkdtemp(prefix=staging_prefix, dir=evidence_root)
@@ -324,7 +344,15 @@ def persist_execution_bundle(
             expected_parent_identity=evidence_root_identity,
             expected_prefix=staging_prefix,
         )
-        temporary_identity = _directory_identity(temporary)
+        try:
+            cleanup_anchor = OwnedStagingDirectoryV1.capture(
+                temporary,
+                expected_parent=evidence_root,
+                expected_prefix=staging_prefix,
+                label="execution evidence staging",
+            )
+        except OwnedStagingCleanupV1Error as error:
+            raise EvidenceError(str(error)) from error
         request_payload = _json_payload(checked_request)
         response_payload = _json_payload(checked_response)
         payloads = {
@@ -354,9 +382,24 @@ def persist_execution_bundle(
             _write_immutable(temporary / _FILENAMES[name], payload)
         _write_immutable(temporary / "manifest.json", _json_payload(manifest))
         _fsync_directory(temporary)
-        os.replace(temporary, target)
+        try:
+            cleanup_anchor.seal_tree()
+        except OwnedStagingCleanupV1Error as error:
+            raise EvidenceError(str(error)) from error
+        try:
+            publication = commit_or_adopt_immutable_directory_v1(
+                project_root=publication_root,
+                staging=temporary,
+                target=target,
+                after_publish_step=after_directory_publish_step,
+            )
+        except PublicationImmutableDirectoryV1Error as error:
+            raise EvidenceError(str(error)) from error
+        try:
+            cleanup_anchor.cleanup_after_publication(final_target=target)
+        except OwnedStagingCleanupV1Error as error:
+            raise EvidenceError(str(error)) from error
         temporary = None
-        temporary_identity = None
         checked_target = _assert_canonical_directory(
             target,
             label="execution evidence bundle target",
@@ -369,33 +412,23 @@ def persist_execution_bundle(
         _fsync_directory(evidence_root)
         return manifest
     finally:
-        if "lock_fd" in locals() and lock_fd >= 0:
-            os.close(lock_fd)
         try:
             if temporary is not None:
-                _require(
-                    temporary_identity is not None,
-                    "execution evidence staging cleanup lacks an identity binding",
+                relative = target.relative_to(publication_root).as_posix()
+                intent_key = hashlib.sha256(relative.encode("utf-8")).hexdigest()
+                intent_exists = os.path.lexists(
+                    publication_root / JOURNAL_ROOT / f"{intent_key}.json"
                 )
-                guarded_staging = _guard_staging_directory(
-                    temporary,
-                    expected_parent=evidence_root,
-                    expected_parent_identity=evidence_root_identity,
-                    expected_prefix=f".{request_id}.",
-                    expected_identity=temporary_identity,
-                )
-                shutil.rmtree(guarded_staging)
+                if not intent_exists and cleanup_anchor is not None:
+                    try:
+                        if not cleanup_anchor.sealed:
+                            cleanup_anchor.seal_tree()
+                        cleanup_anchor.cleanup_after_publication(final_target=target)
+                    except OwnedStagingCleanupV1Error as error:
+                        raise EvidenceError(str(error)) from error
         finally:
-            if lock_identity is not None:
-                guarded_lock = _guard_writer_lock(
-                    lock_path,
-                    expected_parent=evidence_root,
-                    expected_parent_identity=evidence_root_identity,
-                    expected_identity=lock_identity,
-                )
-                if guarded_lock is not None:
-                    guarded_lock.unlink()
-                    _fsync_directory(evidence_root)
+            if cleanup_anchor is not None:
+                cleanup_anchor.close()
 
 
 def _read_canonical_json(path: Path) -> dict[str, Any]:

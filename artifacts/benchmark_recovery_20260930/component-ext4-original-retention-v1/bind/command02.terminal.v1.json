@@ -1,0 +1,51 @@
+{
+  "argv": [
+    "/usr/bin/docker",
+    "--host",
+    "unix:///run/docker.sock",
+    "image",
+    "inspect",
+    "--format",
+    "{{.Id}}",
+    "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6"
+  ],
+  "both_eof": true,
+  "captured_bytes_counter": {
+    "stderr": 0,
+    "stdout": 72
+  },
+  "channels": {
+    "stderr": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command02.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command02.stdout.raw",
+      "sha256": "6c2564fea2eeb5bbbf69228810bea9b05645c99a16e243f08c4b1528ad089a59",
+      "size_bytes": 72
+    }
+  },
+  "cleanup_errors": [],
+  "eof": {
+    "stderr": true,
+    "stdout": true
+  },
+  "failure": null,
+  "original_group_absent": true,
+  "original_pid": 41554,
+  "original_pid_absent": true,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable": "/usr/bin/docker",
+    "executable_unavailable": null,
+    "gid": 1000,
+    "pgid": 41554,
+    "pid": 41554,
+    "ppid": 41539,
+    "startticks": 28329030,
+    "uid": 1000
+  },
+  "returncode": 0,
+  "signals": []
+}

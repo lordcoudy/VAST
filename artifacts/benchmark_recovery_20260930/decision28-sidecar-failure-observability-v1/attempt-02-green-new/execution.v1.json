@@ -1,0 +1,188 @@
+{
+  "channels": {
+    "stderr": {
+      "epoch": [
+        69,
+        1688849862689362,
+        33279,
+        1,
+        2948,
+        1790827944032799200,
+        1790827944032799200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/attempt-02-green-new/stderr.raw",
+      "sha256": "2f15734099d85ddcb8a9f2ff99c638b95f34b345afef0bce2159971fb5f87094",
+      "size_bytes": 2948
+    },
+    "stdout": {
+      "epoch": [
+        69,
+        1688849862689361,
+        33279,
+        1,
+        0,
+        1790827942586343700,
+        1790827942586343700
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/attempt-02-green-new/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  },
+  "elapsed_s": 1.5048860490205698,
+  "eof": {
+    "stderr": true,
+    "stdout": true
+  },
+  "failure": null,
+  "fd_after": 6,
+  "fd_before": 6,
+  "flags": {
+    "overflow": false,
+    "reader_errors": [],
+    "timed_out": false
+  },
+  "hardware_acceptance": false,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 66035,
+    "pid": 66035,
+    "ppid": 66034,
+    "startticks": 31025816,
+    "uid": 1000
+  },
+  "process_scans": [
+    {
+      "monotonic_ns": 310259626482624,
+      "original_pid_absent": true,
+      "owned_group_members": [],
+      "read_errors": []
+    },
+    {
+      "monotonic_ns": 310259639318179,
+      "original_pid_absent": true,
+      "owned_group_members": [],
+      "read_errors": []
+    }
+  ],
+  "readers_alive": false,
+  "returncode": 1,
+  "source_after": [
+    {
+      "epoch": [
+        69,
+        128071114405210518,
+        33279,
+        1,
+        299297,
+        1790827921541744500,
+        1790827921541744500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "d1b92834c68bbb331d75327922d0da3bea2aa12ac0d8debeb839a67ecb288885",
+      "size_bytes": 299297
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390247,
+        33279,
+        1,
+        138081,
+        1790827656400008200,
+        1790827656400008200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "7fcbdd3b18d6554c2067cd583a57ea7d0345e100bff6bf2734f6ddc31857ee4d",
+      "size_bytes": 138081
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973086,
+        33279,
+        1,
+        6599,
+        1790827656401511500,
+        1790827656401511500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_worker_termination_facts_v1.py",
+      "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+      "size_bytes": 6599
+    },
+    {
+      "epoch": [
+        69,
+        1688849862689342,
+        33279,
+        1,
+        7749,
+        1790827756521336600,
+        1790827756521336600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/run_focused_v1.py",
+      "sha256": "313641c51248d2733af9cdc9373903fc9c6daab75fed7d056acecd18d7098c2a",
+      "size_bytes": 7749
+    }
+  ],
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        128071114405210518,
+        33279,
+        1,
+        299297,
+        1790827921541744500,
+        1790827921541744500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "d1b92834c68bbb331d75327922d0da3bea2aa12ac0d8debeb839a67ecb288885",
+      "size_bytes": 299297
+    },
+    {
+      "epoch": [
+        69,
+        3377699722390247,
+        33279,
+        1,
+        138081,
+        1790827656400008200,
+        1790827656400008200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "7fcbdd3b18d6554c2067cd583a57ea7d0345e100bff6bf2734f6ddc31857ee4d",
+      "size_bytes": 138081
+    },
+    {
+      "epoch": [
+        69,
+        1407374885973086,
+        33279,
+        1,
+        6599,
+        1790827656401511500,
+        1790827656401511500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_worker_termination_facts_v1.py",
+      "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+      "size_bytes": 6599
+    },
+    {
+      "epoch": [
+        69,
+        1688849862689342,
+        33279,
+        1,
+        7749,
+        1790827756521336600,
+        1790827756521336600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-sidecar-failure-observability-v1/run_focused_v1.py",
+      "sha256": "313641c51248d2733af9cdc9373903fc9c6daab75fed7d056acecd18d7098c2a",
+      "size_bytes": 7749
+    }
+  ],
+  "source_stable": true
+}

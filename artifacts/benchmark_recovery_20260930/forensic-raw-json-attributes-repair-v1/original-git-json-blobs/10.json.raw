@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_component_runbook_independent_source_review_v2",
+  "disposition": "approved_current_failed_CPU05_status_and_source_commands",
+  "document": {
+    "path": "docs/gstreamer-component-benchmark-runbook.md",
+    "size_bytes": 8802,
+    "sha256": "8051aaaab0a6e52c09beafc0ad91cf39a80322269880fdd783d1e777db896361"
+  },
+  "source_checkpoint": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "previous_review": {
+    "path": "artifacts\\benchmark_recovery_20260930\\component-runbook-independent-review-v1\\review.v1.json",
+    "size_bytes": 4709,
+    "sha256": "09ebcef7a1ce399e6a50a97c27d57c91d93c4cab26d46f7e80bea76965a42cff"
+  },
+  "reviewed_sources": [
+    {
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "size_bytes": 40969,
+      "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b"
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "size_bytes": 69372,
+      "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014"
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_authority_v1.py",
+      "size_bytes": 27355,
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f"
+    },
+    {
+      "path": "scripts/benchmark_contract.py",
+      "size_bytes": 344569,
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b"
+    },
+    {
+      "path": "configs/experiments.yaml",
+      "size_bytes": 23078,
+      "sha256": "18b69285690cdb6ad2f8e9fa528122a05fd3e4abe647a776e60c8e5eed4344e0"
+    }
+  ],
+  "actual_CPU05_audit": {
+    "path": "artifacts\\benchmark_recovery_20260930\\component-cpu05-postterminal-audit-preparation-v1\\review.v1.json",
+    "size_bytes": 18217,
+    "sha256": "d192102f51e1ab92652541c22ac7a532fcb9f656cd3ffb9af9f51d9ae4cadda8"
+  },
+  "actual_v6": {
+    "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.v6.json",
+    "size_bytes": 30986,
+    "sha256": "fedf5d8c85c5e435d4bfab21b4c8851db1e07fd9a982f428f91621314b3a8805"
+  },
+  "checks": [
+    "Current status correctly states CPU05 two native arms plus full cold result, originalCLI78 final deadline failure2125.861>2100; physical acceptance incomplete/GPU01 unexecuted.",
+    "Current commands use actual CLI flags, fixedROOT isolated runpy imports, default production dependencies and original exact six selected input paths. No fixture or replacement authority.",
+    "Retainedv6 identity and source/interpreter epoch dependency are explicit. Fresh exclusive closure is required after actual physical source changes. The consumedCPU05 controller/output cannot be reused; preparedGPU01 dispatch remains gated on deadline issue resolution.",
+    "Selected fixed H264/sixstreams/fourbranches/seed20260323/100ms/30/180/10,CPUanalytics versus NVDEC and actual20GiB allocation plus20GiB freefloor remain correct.",
+    "Actual CSV columns/source paths and ECDF completed-measurement population/dropped-censored coverage are accurately described. OriginalC_obs requires independent raw reduction and has no compute/busy-time/energy/quality/population claim.",
+    "Retained valid cold receipt cannot override original failedCLI. Fullcampaign,CI,archive and18.8 acceptance remain unclaimed."
+  ],
+  "blockers": [],
+  "execution_scope": "Read current runbook, actual production argv/output/reserve/deadline source and previously closedCPU05 independent audit. No CLI/capture/model/engine/native/guardian/test/namespace/cold replay; no source FD holds.",
+  "benchmark_accepted": false,
+  "task_18_8_complete": false,
+  "scope_limits": [
+    "Runbook command was source-validated only, not executed.",
+    "OriginalCPU05 source/input before/after/current equality is established by the separately closed independent audit; this documentation review is not a new acceptance or rawscientific reduction.",
+    "Existing bounded timingJSONL is diagnostic only; deadline issue needs reviewed correction before new approved physical attempt."
+  ]
+}

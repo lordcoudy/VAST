@@ -1,0 +1,105 @@
+{
+  "all_failed_route_terminals": [
+    {
+      "at_ns": 1790823582124427921,
+      "begin_seq": 8422,
+      "outcome": "failed",
+      "response": "4c4103dca211a7d3fd1393cd849c872243b2638ce91ec2d1831deeba0964353c",
+      "send": "failed",
+      "seq": 8455,
+      "sha256": "3681b6b4a015e696db35e305e48371e3350664be320b10d7eb78aa71525e77a3"
+    },
+    {
+      "at_ns": 1790823582522014811,
+      "begin_seq": 8433,
+      "outcome": "failed",
+      "response": "0eefb523626f3e9268e73cd41053af66662c8ef0b8b626efb79964a85ba20595",
+      "send": "failed",
+      "seq": 8464,
+      "sha256": "5a74cd0bcb9ecec22d2fda17f0a6084f546fe6c4bf45b56814ae28cbcac66874"
+    },
+    {
+      "at_ns": 1790823582666405079,
+      "begin_seq": 8441,
+      "outcome": "failed",
+      "response": "eb5681f25accb4b136f2445e2af9b6011655f773914b4b7ab0b49d2c34e2c162",
+      "send": "failed",
+      "seq": 8467,
+      "sha256": "ee8cf0d0b01e9dde2c793d2467a83bad304534e45f7d2c17f1098b567319d443"
+    },
+    {
+      "at_ns": 1790823582820109077,
+      "begin_seq": 8451,
+      "outcome": "failed",
+      "response": "07c581fc79f01f13168569b91c44652bd99cc9d45ef5bfe4dd157fbb3c2e9811",
+      "send": "failed",
+      "seq": 8469,
+      "sha256": "325c051ee51c0937e9aeef2a15edd263c6bd8cc89278505c79d9e172e4b9b36f"
+    }
+  ],
+  "benchmark_accepted": false,
+  "elapsed_s": 0.021803925978019834,
+  "event_chain_valid": true,
+  "fd_after": 6,
+  "fd_before": 6,
+  "group": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/guardian-operational/operational_group.v1.json",
+    "sha256": "4f0f0088f3f1ab7ad5709dd4eecc86b42ecb57f4a993a0082d04c79bea3503f8",
+    "size_bytes": 4665
+  },
+  "held_fd_released": true,
+  "interpretation": "The per-request response was reset to None at sidecar5339 and assigned only after bridge.execute returns at5494. A nonnull response digest plus send=failed proves that this retained failure occurred during delivery of a constructed response to the native front; stage=inference currently includes that response-send block. It does not by itself identify why the native front closed.",
+  "journal": {
+    "event_count": 2104,
+    "final_event_sha256": "325c051ee51c0937e9aeef2a15edd263c6bd8cc89278505c79d9e172e4b9b36f",
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-07/guardian-operational/vehicle_type-cpu.jsonl",
+    "requests_completed": 1048,
+    "requests_failed": 4,
+    "requests_started": 1052,
+    "route": "vehicle_type:cpu",
+    "sha256": "f24d0fe6e5710b5564be30849dd5599801ef7894de76062221c252c60549ee91",
+    "size_bytes": 970514,
+    "unfinished_requests": 0
+  },
+  "journal_epoch": [
+    2096,
+    577354,
+    33152,
+    1,
+    970514,
+    1790823582817201898,
+    1790823582817201898
+  ],
+  "limits": [
+    "No response payload is retained or reconstructed by this reader.",
+    "No model/inference/native/engine work and no full cold acceptance are performed.",
+    "The failed original CLI remains failed; this record is diagnostic only."
+  ],
+  "matching_begin": {
+    "at_ns": 1790823581409064495,
+    "binding": 1,
+    "connection": 7,
+    "control_sha256": "9a024d445d8cb356105593d7a32b5481dc2a9b8096d7b1af51a31444ebbf7a97",
+    "decision_id": "qualification-v2-gstreamer_custom-cpu-h264-independent-processes:native-policy:4221:stream-1-branch-vehicle_type:210000000000:vehicle_type",
+    "frame_id": 205,
+    "input_key": "kpp_iss_publication_v3_h264:1:08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273:0:350000000",
+    "local_seq": 198,
+    "pts_ns": 210000000000,
+    "request_id": "edf739962630fd9cc16e41d5291746d57060c2af31bb5d4f90de4ec8db97328f",
+    "request_seq": 4220,
+    "seq": 8422,
+    "sha256": "0bdce0950174084a448731f004df72c4d568c51490f94cd218416bad2d9a06f2",
+    "type": "begin"
+  },
+  "matching_terminal": {
+    "at_ns": 1790823582124427921,
+    "begin_seq": 8422,
+    "outcome": "failed",
+    "response": "4c4103dca211a7d3fd1393cd849c872243b2638ce91ec2d1831deeba0964353c",
+    "send": "failed",
+    "seq": 8455,
+    "sha256": "3681b6b4a015e696db35e305e48371e3350664be320b10d7eb78aa71525e77a3"
+  },
+  "schema_version": 1,
+  "scope": "one physically bounded closed vehicle_type/cpu operational journal; chain and exact failed request join only"
+}

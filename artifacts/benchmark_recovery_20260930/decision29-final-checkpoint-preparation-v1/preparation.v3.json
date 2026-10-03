@@ -1,0 +1,74 @@
+{
+  "Git_primitive_argv_modes_deletion_sets_and_all_budgets_unchanged": true,
+  "actual_cleanup": null,
+  "actual_final_inventory": null,
+  "actual_staging": null,
+  "all11_function_ASTs_identical": true,
+  "all_five_added_namespace_literals_from_v1": [
+    "decision29-ci-P-original-retention-v1",
+    "decision29-ci-C-original-retention-v1",
+    "decision29-local-ci-D-prerequisite-result-review-preparation-v1",
+    "decision29-release-fresh-critique-v1",
+    "decision29-runtime-bind-owned-cleanup-preparation-v1"
+  ],
+  "artifact_kind": "final_checkpoint_staging_source_namespace_addendum_v3",
+  "closed_review_join_semantics": "Root supplies truthful normalized closed-review joins pointing to immutable originals; this namespace change fabricates no result or lifecycle closure.",
+  "exact_added_namespace_from_v2": "decision29-runtime-bind-owned-cleanup-preparation-v1",
+  "final_inventory_count_guard": "Root must seal at most510 listed owned rows when both sealed inventory and generated freeze are additional leaves: combined total remains at most512 paths and64MiB. No speculative widening; actual final inventory remains unsealed.",
+  "independent_source_review": null,
+  "joins_original_preparations": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/preparation.v1.json",
+      "sha256": "333a149819b7942ee726c68005d14a99c29013e88df559653a4383ef00901190",
+      "size_bytes": 10326
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/preparation.v2.json",
+      "sha256": "d00f41f9233e5c49c151e38e34745c3df81607b661e9063484dbca7e592f6b47",
+      "size_bytes": 2559
+    }
+  ],
+  "limits_unchanged": {
+    "Git_call_seconds": 15,
+    "leaf_bytes": 8388608,
+    "owned_total_bytes": 67108864,
+    "paths_including_two_supplements": 512,
+    "whole_seconds": 300
+  },
+  "namespace_counts": {
+    "v1": 29,
+    "v2": 33,
+    "v3": 34
+  },
+  "no_new_functions": true,
+  "only_Namespaces_literal_values_changed": true,
+  "operations": {
+    "CI_live_output_reads": 0,
+    "Git": 0,
+    "cleanup_mount_or_tests": 0,
+    "existing_original_mutations": 0,
+    "staging_source_import_compile_execution": 0
+  },
+  "raw_inverse_remove_exact5_literals_v1_identical": true,
+  "raw_inverse_v2_identical": true,
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v1.py",
+      "sha256": "cb0a45f7dae8b1ba45df6d46b398112bbaf7d6fcf866940ff6a4971f71fcd653",
+      "size_bytes": 21386
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v2.py",
+      "sha256": "39dbd7236899905aba09dc85c910e0d13706bbc9ba4e3e072d64bbb7186b5538",
+      "size_bytes": 21587
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v3.py",
+      "sha256": "449eb1ca438865de62b95e2cfcd35fc389f38006bbaf56aeb8809722a6452f38",
+      "size_bytes": 21647
+    }
+  ],
+  "status": "source_only_unexecuted_root_independent_review_pending"
+}

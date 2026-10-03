@@ -1,0 +1,135 @@
+{
+  "actual_evidence": {
+    "capacity_body_error": "original engine phase missing or call capacity exhausted",
+    "capacity_calls": 32,
+    "capture_fds_closed": true,
+    "current_test_count": 21,
+    "failed_ready_calls": 0,
+    "focused_test_count": 6,
+    "original_process_scans": [
+      {
+        "group_members": [],
+        "read_errors": []
+      },
+      {
+        "group_members": [],
+        "read_errors": []
+      }
+    ],
+    "original_test_count": 20,
+    "outer_seconds": 6.801124601974152,
+    "owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 53687,
+      "pid": 53687,
+      "ppid": 53685,
+      "startticks": 29308824,
+      "uid": 1000
+    },
+    "unit_seconds": 5.771
+  },
+  "artifact_kind": "vast_capacity_fixture_independent_source_review_v1",
+  "blockers": [],
+  "checks": [
+    "All20 original test IDs retained;19 other original test method ASTs and process()/run_child() ASTs identical. Whole original module AST equals current after the exact finite capacity delta inverse.",
+    "Original invalid-phase sticky assertions retained. Capacity loop now registers a genuine pipe-gated child before releasing input; no fabricated process identity or mocked acceptance.",
+    "Observed READY bytes are prefixed back into the actual stdout passed to original terminal capture. Finally kills/reaps a blocked child when real registration refuses.",
+    "Exact original33rd-call capacity error verified with32 retained calls and failed capture status. New child-exit-before-READY case retains zero calls, failed capture and no native transfer.",
+    "Observation wrapper forwards unchanged real require/start/finish functions. Seven retained fixture receipt bytes match their original descriptors; wrappers may alter race timing and are disclosed.",
+    "Original six-case focused capture genuinely rc0/Ran6/OK5.771s,6.801124602s outer; six source descriptors before==after and current physical SHA/size match. Both raw channels verified; EOF/capture FD closure and two empty original group scans retained.",
+    "Existing intentional fast/zombie, genuine process, nonzero/timeout and inactive observer cases passed in this original focused capture; no reviewer rerun.",
+    "Test path is outside host87/selected73/native3/worker2 package sources; unchanged production helper physical5ea8477e matches the original focused input. No production capacity or liveness waiver."
+  ],
+  "disposition": "approved_scoped_test_fixture",
+  "evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-repair-v1/author-review.v1.json",
+      "sha256": "fea8e3f0e16e6a8c8cac229b1ed39b8babab9c993f7e1ec1aed47ba9c9d30193",
+      "size_bytes": 6086
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-repair-v1/preedit-authorization.v1.json",
+      "sha256": "3d169892941822a5d256e5682d7c18ad4071583a934dca1b28abfc711a11fe3b",
+      "size_bytes": 888
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/diagnosis.v1.json",
+      "sha256": "7fefc4c56bf55f704c5e2cd846baf17cb852f16683f7193f4827c5ad94e9a9ee",
+      "size_bytes": 13817
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/terminal.v1.json",
+      "sha256": "ce03d8fd70705e2a1c0b17f9effc87eec6100e6976c101d2f9ae1fc30c0287b6",
+      "size_bytes": 6917
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/original-observations.v1.json",
+      "sha256": "44696b596c82aa46c75eca63bff0f90f57e4134cce9bae0dc383a57be95ac6aa",
+      "size_bytes": 57905
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/stderr.raw",
+      "sha256": "16eaf6eb0875011708588b5852c1fa6de824558f780c52ccf2f664d3aaf06caf",
+      "size_bytes": 1354
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/original-fixture-receipt-02.json",
+      "sha256": "8eb0930045eb6130d2be923658d1b4bbc75228cf1e4facab00657ba7df68bb25",
+      "size_bytes": 14529
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt02/original-fixture-receipt-03.json",
+      "sha256": "a7cfc9a25fca2b5ee13428fa51e367d1e946e7e6a28cb5cc31170b88aaf2fdb0",
+      "size_bytes": 1472
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-original-reproduction-attempt01/terminal.v1.json",
+      "sha256": "16f36aaff64bed199691b08cf7bb9ccb9f27e13333f4fed0e8498fe707313271",
+      "size_bytes": 6805
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-controlled-lifecycle-attempt01/terminal.v1.json",
+      "sha256": "8534547568bd8c7a34af1c46e45e8cd4e4b9203531ea7faea105b468cb6257f9",
+      "size_bytes": 6820
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-controlled-lifecycle-attempt01/original-lifecycle-probe.v1.json",
+      "sha256": "70fff181e85e979fffe1677e88b85211fad7ffa765cb3ea3fe365a1c61075cf0",
+      "size_bytes": 3322
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt01/prelaunch-failure.v1.json",
+      "sha256": "91e2b89824a60b1fa84e961f0e93f309477e1d367ccc9818907d83a01bf30497",
+      "size_bytes": 1015
+    }
+  ],
+  "full_ci_successful": false,
+  "limits": [
+    "Original unchanged local capacity unit passed. Original hosted first swallowed ValueError remains UNKNOWN; controlled reaped-child refusal was FileNotFoundError errno2 and does not establish the hosted cause.",
+    "Readiness controls this fixture lifecycle only. Production support for unreaped zombies and strict source/child/cold validators remain unchanged.",
+    "Source/evidence peer approval permits the narrow test correction checkpoint; it does not establish fresh hosted full-CI success, actual Docker/container quiescence, benchmark or model acceptance.",
+    "Reviewer read source/AST/raw JSON/logs and hashed closed retained files with Windows Python3.14 -I -B only. No new tests, process/engine/model/native/namespace/cold execution or source edits; no physical saved reviewer-dispatch source is asserted."
+  ],
+  "original_source": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-repair-v1/test_publication_operational_process_custody_v1.py.before.raw",
+    "sha256": "161938214d28727a633838108b95777e363bf4c516bd4c49a37baf897d3fe95d",
+    "size_bytes": 27795
+  },
+  "reviewable": true,
+  "reviewed_at_utc": "2026-09-30T23:39:53.215893+00:00",
+  "reviewer_reran_tests": false,
+  "schema_version": 1,
+  "scientific_or_hardware_acceptance": false,
+  "scope": "Test-only capacity-loop readiness/real-registration/release helper and one failed-READY negative; production observer, capacity, zombie and cold predicates unchanged.",
+  "source": {
+    "path": "tests/test_publication_operational_process_custody_v1.py",
+    "sha256": "8ba4f9b93e00b368712cc3f84855b648ff98d54ff887de25f99d4208e11a97d1",
+    "size_bytes": 30982
+  },
+  "unchanged_production": {
+    "path": "scripts/publication_operational_process_custody_v1.py",
+    "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+    "size_bytes": 47271
+  }
+}

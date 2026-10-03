@@ -1,0 +1,940 @@
+{
+  "events": [
+    {
+      "capture": {
+        "call_count": 0,
+        "failure": "original_engine_phase_invalid",
+        "output_dir": "/tmp/tmpftj_f46r/outputs/process",
+        "phase": "measurement"
+      },
+      "event": "original_require_refused",
+      "message": "original engine capture already failed",
+      "original_stack": [
+        "  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 75, in <module>\n    result = unittest.TextTestRunner(verbosity=2).run(suite)\n",
+        "  File \"/usr/lib/python3.12/unittest/runner.py\", line 240, in run\n    test(result)\n",
+        "  File \"/usr/lib/python3.12/unittest/suite.py\", line 84, in __call__\n    return self.run(*args, **kwds)\n",
+        "  File \"/usr/lib/python3.12/unittest/suite.py\", line 122, in run\n    test(result)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 690, in __call__\n    return self.run(*args, **kwds)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/tests/test_publication_operational_process_custody_v1.py\", line 277, in test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded\n    self.run_child()\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/tests/test_publication_operational_process_custody_v1.py\", line 104, in run_child\n    token = engine_process_started_v1(process, self.engine, self.socket_pin, argv)\n",
+        "  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 42, in observe_started\n    token = real_started(*args, **kwargs)\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py\", line 531, in engine_process_started_v1\n    _require(capture.failure is None, \"original engine capture already failed\")\n",
+        "  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 35, in observe_require\n    'capture': current(), 'original_stack': traceback.format_stack(limit=12)})\n"
+      ]
+    },
+    {
+      "after": {
+        "call_count": 0,
+        "failure": "original_engine_phase_invalid",
+        "output_dir": "/tmp/tmpftj_f46r/outputs/process",
+        "phase": "measurement"
+      },
+      "before": {
+        "call_count": 0,
+        "failure": "original_engine_phase_invalid",
+        "output_dir": "/tmp/tmpftj_f46r/outputs/process",
+        "phase": "measurement"
+      },
+      "error": "original engine capture already failed",
+      "error_type": "ValueError",
+      "event": "original_start_raised",
+      "original_traceback": "Traceback (most recent call last):\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 42, in observe_started\n    token = real_started(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py\", line 531, in engine_process_started_v1\n    _require(capture.failure is None, \"original engine capture already failed\")\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 36, in observe_require\n    return real_require(condition, message)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py\", line 54, in _require\n    raise ValueError(message)\nValueError: original engine capture already failed\n",
+      "pid": 53320
+    },
+    {
+      "capture": {
+        "call_count": 0,
+        "failure": "original_engine_phase_invalid",
+        "output_dir": "/tmp/tmpftj_f46r/outputs/process",
+        "phase": null
+      },
+      "event": "original_require_refused",
+      "message": "original engine capture failed: original_engine_phase_invalid",
+      "original_stack": [
+        "  File \"/usr/lib/python3.12/unittest/runner.py\", line 240, in run\n    test(result)\n",
+        "  File \"/usr/lib/python3.12/unittest/suite.py\", line 84, in __call__\n    return self.run(*args, **kwds)\n",
+        "  File \"/usr/lib/python3.12/unittest/suite.py\", line 122, in run\n    test(result)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 690, in __call__\n    return self.run(*args, **kwds)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/tests/test_publication_operational_process_custody_v1.py\", line 272, in test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded\n    with self.capture() as capture:\n",
+        "  File \"/usr/lib/python3.12/contextlib.py\", line 144, in __exit__\n    next(self.gen)\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py\", line 501, in capture_original_engine_processes_v1\n    capture.finish(error)\n",
+        "  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 55, in observe_finish\n    return real_finish(capture, body_error)\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py\", line 472, in finish\n    _require(self.failure is None, \"original engine capture failed: \" + str(self.failure))\n",
+        "  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 35, in observe_require\n    'capture': current(), 'original_stack': traceback.format_stack(limit=12)})\n"
+      ]
+    },
+    {
+      "after": {
+        "call_count": 1,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 0,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53321
+    },
+    {
+      "after": {
+        "call_count": 2,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 1,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53322
+    },
+    {
+      "after": {
+        "call_count": 3,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 2,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53323
+    },
+    {
+      "after": {
+        "call_count": 4,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 3,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53324
+    },
+    {
+      "after": {
+        "call_count": 5,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 4,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53325
+    },
+    {
+      "after": {
+        "call_count": 6,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 5,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53326
+    },
+    {
+      "after": {
+        "call_count": 7,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 6,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53327
+    },
+    {
+      "after": {
+        "call_count": 8,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 7,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53328
+    },
+    {
+      "after": {
+        "call_count": 9,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 8,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53329
+    },
+    {
+      "after": {
+        "call_count": 10,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 9,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53330
+    },
+    {
+      "after": {
+        "call_count": 11,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 10,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53331
+    },
+    {
+      "after": {
+        "call_count": 12,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 11,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53332
+    },
+    {
+      "after": {
+        "call_count": 13,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 12,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53333
+    },
+    {
+      "after": {
+        "call_count": 14,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 13,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53334
+    },
+    {
+      "after": {
+        "call_count": 15,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 14,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53335
+    },
+    {
+      "after": {
+        "call_count": 16,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 15,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53336
+    },
+    {
+      "after": {
+        "call_count": 17,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 16,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53337
+    },
+    {
+      "after": {
+        "call_count": 18,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 17,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53338
+    },
+    {
+      "after": {
+        "call_count": 19,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 18,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53339
+    },
+    {
+      "after": {
+        "call_count": 20,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 19,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53340
+    },
+    {
+      "after": {
+        "call_count": 21,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 20,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53341
+    },
+    {
+      "after": {
+        "call_count": 22,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 21,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53342
+    },
+    {
+      "after": {
+        "call_count": 23,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 22,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53343
+    },
+    {
+      "after": {
+        "call_count": 24,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 23,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53344
+    },
+    {
+      "after": {
+        "call_count": 25,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 24,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53345
+    },
+    {
+      "after": {
+        "call_count": 26,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 25,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53346
+    },
+    {
+      "after": {
+        "call_count": 27,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 26,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53347
+    },
+    {
+      "after": {
+        "call_count": 28,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 27,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53348
+    },
+    {
+      "after": {
+        "call_count": 29,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 28,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53349
+    },
+    {
+      "after": {
+        "call_count": 30,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 29,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53350
+    },
+    {
+      "after": {
+        "call_count": 31,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 30,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_start_returned",
+      "pid": 53351
+    },
+    {
+      "after": {
+        "call_count": 32,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "measurement"
+      },
+      "before": {
+        "call_count": 31,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "measurement"
+      },
+      "event": "original_start_returned",
+      "pid": 53352
+    },
+    {
+      "capture": {
+        "call_count": 32,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "event": "original_require_refused",
+      "message": "original engine phase missing or call capacity exhausted",
+      "original_stack": [
+        "  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 75, in <module>\n    result = unittest.TextTestRunner(verbosity=2).run(suite)\n",
+        "  File \"/usr/lib/python3.12/unittest/runner.py\", line 240, in run\n    test(result)\n",
+        "  File \"/usr/lib/python3.12/unittest/suite.py\", line 84, in __call__\n    return self.run(*args, **kwds)\n",
+        "  File \"/usr/lib/python3.12/unittest/suite.py\", line 122, in run\n    test(result)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 690, in __call__\n    return self.run(*args, **kwds)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/tests/test_publication_operational_process_custody_v1.py\", line 284, in test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded\n    self.run_child(phase=\"image_inspect\")\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/tests/test_publication_operational_process_custody_v1.py\", line 104, in run_child\n    token = engine_process_started_v1(process, self.engine, self.socket_pin, argv)\n",
+        "  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 42, in observe_started\n    token = real_started(*args, **kwargs)\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py\", line 534, in engine_process_started_v1\n    _require(phase in PHASES and len(capture.calls) < MAX_CALLS, \"original engine phase missing or call capacity exhausted\")\n",
+        "  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 35, in observe_require\n    'capture': current(), 'original_stack': traceback.format_stack(limit=12)})\n"
+      ]
+    },
+    {
+      "after": {
+        "call_count": 32,
+        "failure": "original_engine_start_observation_failed",
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "before": {
+        "call_count": 32,
+        "failure": null,
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": "image_inspect"
+      },
+      "error": "original engine phase missing or call capacity exhausted",
+      "error_type": "ValueError",
+      "event": "original_start_raised",
+      "original_traceback": "Traceback (most recent call last):\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 42, in observe_started\n    token = real_started(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py\", line 534, in engine_process_started_v1\n    _require(phase in PHASES and len(capture.calls) < MAX_CALLS, \"original engine phase missing or call capacity exhausted\")\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 36, in observe_require\n    return real_require(condition, message)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py\", line 54, in _require\n    raise ValueError(message)\nValueError: original engine phase missing or call capacity exhausted\n",
+      "pid": 53353
+    },
+    {
+      "capture": {
+        "call_count": 32,
+        "failure": "original_engine_start_observation_failed",
+        "output_dir": "/tmp/tmpftj_f46r/outputs/capacity",
+        "phase": null
+      },
+      "event": "original_require_refused",
+      "message": "original engine capture failed: original_engine_start_observation_failed",
+      "original_stack": [
+        "  File \"/usr/lib/python3.12/unittest/runner.py\", line 240, in run\n    test(result)\n",
+        "  File \"/usr/lib/python3.12/unittest/suite.py\", line 84, in __call__\n    return self.run(*args, **kwds)\n",
+        "  File \"/usr/lib/python3.12/unittest/suite.py\", line 122, in run\n    test(result)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 690, in __call__\n    return self.run(*args, **kwds)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n",
+        "  File \"/usr/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/tests/test_publication_operational_process_custody_v1.py\", line 280, in test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded\n    with self.capture(output_dir=self.root / \"outputs/capacity\") as capture:\n",
+        "  File \"/usr/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py\", line 501, in capture_original_engine_processes_v1\n    capture.finish(error)\n",
+        "  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 55, in observe_finish\n    return real_finish(capture, body_error)\n",
+        "  File \"/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py\", line 472, in finish\n    _require(self.failure is None, \"original engine capture failed: \" + str(self.failure))\n",
+        "  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/reproduce_capacity_child_v1.py\", line 35, in observe_require\n    'capture': current(), 'original_stack': traceback.format_stack(limit=12)})\n"
+      ]
+    }
+  ],
+  "limitation": "Observation wrappers forward unchanged real validators; their cost can change race timing. Local behavior is not the hosted cause.",
+  "loaded_sources": [
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/analytics_execution_endpoint.py",
+      "sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+      "size_bytes": 6756
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/analytics_execution_protocol.py",
+      "sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "size_bytes": 18555
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/analytics_execution_worker.py",
+      "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "size_bytes": 38433
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/backend_publication_dispatch.py",
+      "sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+      "size_bytes": 17104
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/backend_publication_dispatch_v3.py",
+      "sha256": "b755230a19c8ab3e46dbe49aa2fa3e7054a79a7e7e4e98f91ceed560fada2740",
+      "size_bytes": 41765
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/backend_publication_launcher_invocation_v3.py",
+      "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+      "size_bytes": 7230
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/backend_publication_output_receipt.py",
+      "sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+      "size_bytes": 34431
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/backend_runtime_grant.py",
+      "sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+      "size_bytes": 51402
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/benchmark_contract.py",
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "size_bytes": 344569
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_acceptance_metadata_binding.py",
+      "sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+      "size_bytes": 20605
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_admission.py",
+      "sha256": "4db82ea10118d942457901393f447ebcf7602577b77fd1c0be9084f54366b7f7",
+      "size_bytes": 19971
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_deepstream_publication_runtime_v3.py",
+      "sha256": "d3c1753df6d7ddcf40e3971066a5dfc9d4f71572c5bd3f18961460903b5aef0a",
+      "size_bytes": 41888
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "ee0476b574e012b213bdc603a7a930234c0bb27d929859ef03acfdb99eb7a241",
+      "size_bytes": 59640
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_model_parity_acceptance.py",
+      "sha256": "660071f68ae3378f704c497aab78ffa3b2c6d20a976ca52402ebe2c7b4bbeea4",
+      "size_bytes": 39938
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+      "sha256": "428e600aca23616e6e43e49331c54ac7b1f58e7784f5f79a03fdf8392a34b17d",
+      "size_bytes": 62909
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_publication_launcher_adapter_v3.py",
+      "sha256": "ddb0779a0142962fbdd5dbada6127f748d854204b4b1939734ee64eddb60e12d",
+      "size_bytes": 30501
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_publication_launcher_guard_v3.py",
+      "sha256": "29dcbd607858118ad7e5e4a221a58034ac07ea4f819bede4831d23852f41a97f",
+      "size_bytes": 13961
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_publication_runtime.py",
+      "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+      "size_bytes": 55785
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+      "sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+      "size_bytes": 65596
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_runtime.py",
+      "sha256": "fb91d24e69385d37fc59b68c116829163cc3e29ed6b1403276b0b0676af90135",
+      "size_bytes": 94557
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_runtime_plan.py",
+      "sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+      "size_bytes": 30727
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/checkpoint_savant_publication_runtime_v3.py",
+      "sha256": "1bb0a25726543870d4e7705c1148ebaa1028fb6ab7d05e0ab2cc3b85eac8bba7",
+      "size_bytes": 42019
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/collect_metrics.py",
+      "sha256": "f2db6624aa56970dd09cd8cf3dcb97c5c55ab47f3c20c54cf5c26cc2263d70dc",
+      "size_bytes": 13324
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/extract_kpp_legacy_iss.py",
+      "sha256": "4a491283963629f6c3ed2f1649d62b1a2945241edeb1e735b90144eb3f41f6fe",
+      "size_bytes": 73654
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/formal_aw_heft_reference.py",
+      "sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+      "size_bytes": 70898
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/freeze_kpp_frozen_reconstruction_v1.py",
+      "sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+      "size_bytes": 28006
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/freeze_kpp_iss_publication_v3.py",
+      "sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+      "size_bytes": 43081
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+      "sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+      "size_bytes": 69386
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/full_resource_contract.py",
+      "sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+      "size_bytes": 21340
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/kpp_frozen_reconstruction_v1_dataset.py",
+      "sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+      "size_bytes": 15206
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/kpp_iss_publication_v3_dataset.py",
+      "sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+      "size_bytes": 23901
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/kpp_legacy_iss_v2_manifest.py",
+      "sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+      "size_bytes": 29663
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/model_parity_grant.py",
+      "sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+      "size_bytes": 14740
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_acceptance_evidence.py",
+      "sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+      "size_bytes": 2263
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_child_evidence_materializer_v1.py",
+      "sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+      "size_bytes": 21544
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_guardian_preprocessing_contract_v1.py",
+      "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+      "size_bytes": 68402
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_container_custody_v1.py",
+      "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+      "size_bytes": 38235
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "size_bytes": 47271
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_operational_runtime_context_v1.py",
+      "sha256": "20a470135fef1d6fc37b76585623197f18b2b20e4f192ba61ace45fcac5bdb51",
+      "size_bytes": 11192
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_owned_staging_cleanup_v1.py",
+      "sha256": "d601fb4460bc44b27cb2d38fd70e73a388fb137c95139fa10d4eefca944def92",
+      "size_bytes": 39390
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_policy_contract.py",
+      "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "size_bytes": 40143
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_policy_frozen_replay_v1.py",
+      "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+      "size_bytes": 21538
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_policy_qualification_bootstrap_v2.py",
+      "sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6",
+      "size_bytes": 82531
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_policy_qualification_execution_code_closure_v1.py",
+      "sha256": "984dd840a768b08462db82ea96cb7cdce4b9f6e3e1ca20605b258771f665a30c",
+      "size_bytes": 19176
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_policy_qualification_pilot_executor_v2.py",
+      "sha256": "419074d4cb65c6170f3cb33922d769b3c781cb1f24609e762c955dca72d0a09a",
+      "size_bytes": 179864
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_policy_qualification_runtime_inputs_v2.py",
+      "sha256": "a4358e759a24cbf49652cecbbb7a30199476d0c3539be5e1c9dd87b972aeb2f8",
+      "size_bytes": 136988
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/publication_policy_qualification_transaction_v2.py",
+      "sha256": "b85710fc0277339773775e8082f518026b14493b53330d7b142b4aa42d2bb14b",
+      "size_bytes": 45015
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/resource_interval_contract.py",
+      "sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+      "size_bytes": 33557
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/scripts/topology_contract.py",
+      "sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+      "size_bytes": 18707
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831/tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "161938214d28727a633838108b95777e363bf4c516bd4c49a37baf897d3fe95d",
+      "size_bytes": 27795
+    }
+  ],
+  "receipts": [
+    {
+      "body_error": null,
+      "body_error_type": null,
+      "call_count": 0,
+      "failure": "original_engine_phase_invalid",
+      "original_descriptor": {
+        "path": "/tmp/tmpftj_f46r/outputs/process/original_engine_process_capture.v1.json",
+        "sha256": "376b075866ae4ff4e86e806338297747e890121bc8a1837c6fbb713c6d943640",
+        "size_bytes": 1375
+      },
+      "retained_name": "original-fixture-receipt-01.json"
+    },
+    {
+      "body_error": "original engine phase missing or call capacity exhausted",
+      "body_error_type": "ValueError",
+      "call_count": 32,
+      "failure": "original_engine_start_observation_failed",
+      "original_descriptor": {
+        "path": "/tmp/tmpftj_f46r/outputs/capacity/original_engine_process_capture.v1.json",
+        "sha256": "598545e874bd34b8612811e92259ec01ba6605c437211b17f844c7b22a63fd33",
+        "size_bytes": 14529
+      },
+      "retained_name": "original-fixture-receipt-02.json"
+    }
+  ],
+  "test_id": "test_publication_operational_process_custody_v1.ProcessCustodyTests.test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded"
+}

@@ -1,0 +1,400 @@
+{
+  "acceptance": false,
+  "all_original_evidence": [
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\front-disconnect-source-diagnosis.v1.json",
+      "sha256": "30297716e354a8c2d73360d980c9ed15bdd01507474f94e8cd32ad55ac0d4149",
+      "size_bytes": 2727
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\front-disconnect-source-diagnosis.v2.json",
+      "sha256": "17fd79e9b2a2f376edf7bd88a42c9d8afe0a8c0582f9001ed7a6bb524b52f2fa",
+      "size_bytes": 3399
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\historical-sidecar-patch-before-line-ending-restoration.raw",
+      "sha256": "d1b92834c68bbb331d75327922d0da3bea2aa12ac0d8debeb839a67ecb288885",
+      "size_bytes": 299297
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\preedit.v1.json",
+      "sha256": "3785f85b0ddac9e0f00609dc87d4b3f956101ef651f3354d5b13f488675109d4",
+      "size_bytes": 1995
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\run_focused_v1.py",
+      "sha256": "313641c51248d2733af9cdc9373903fc9c6daab75fed7d056acecd18d7098c2a",
+      "size_bytes": 7749
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\scripts__checkpoint_gstreamer_analytics_sidecar.py.diff.raw",
+      "sha256": "21365445cb64665407d4419c31ae0d2f7fe51ad6de3345b169a901a40b6c02c5",
+      "size_bytes": 9156
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\tests__test_checkpoint_gstreamer_analytics_sidecar.py.diff.raw",
+      "sha256": "b4c96c31dba16cc0e6d84023df11c6f79c3675ed1915d9ce03108295ffe6467a",
+      "size_bytes": 12666
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\tests__test_publication_worker_termination_facts_v1.py.diff.raw",
+      "sha256": "8dd38fead455b1f745dda231c30aec867938f3de94a00f3afb05c68da8bbff4e",
+      "size_bytes": 3685
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-01-red\\dispatch.v1.json",
+      "sha256": "27d453ca99b54b486a5035484327f562f2817c6a24902e182e5e17a9ec95bd3e",
+      "size_bytes": 2545
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-01-red\\execution.v1.json",
+      "sha256": "55c886d43980c5f5c2f51e49c2fdb609af7997976d26bc5873343767f8e3157e",
+      "size_bytes": 5374
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-01-red\\launch.v1.json",
+      "sha256": "82ae784bdda124169727e8a5c15176f9e3c9de65d7374ff3ed97cb27bee87ded",
+      "size_bytes": 705
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-01-red\\stderr.raw",
+      "sha256": "7b03e38f2f0185fd6707d27e8e04982862c2f2445363f38b013dda81fdee4368",
+      "size_bytes": 10745
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-01-red\\stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-01-red\\unit-result.v1.json",
+      "sha256": "10df03ca112bf95c67355a819af65d95fc44135d2eddbc50cae779dbe53eecb9",
+      "size_bytes": 44275
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-02-green-new\\dispatch.v1.json",
+      "sha256": "2b1dc44561573529f4c328e0eaaa28353a8c8971c9bc437d82fda8ce67de2a1b",
+      "size_bytes": 2551
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-02-green-new\\execution.v1.json",
+      "sha256": "f1b405295999f045b8a96dfad166e88911d12d7c7cbf7bd7b9c41b47cdf6cb3d",
+      "size_bytes": 5386
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-02-green-new\\launch.v1.json",
+      "sha256": "91afaf8c378ee54da22aa177c7cfffdfe56c8586697f39002ecd29e0d6618a41",
+      "size_bytes": 711
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-02-green-new\\stderr.raw",
+      "sha256": "2f15734099d85ddcb8a9f2ff99c638b95f34b345afef0bce2159971fb5f87094",
+      "size_bytes": 2948
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-02-green-new\\stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-02-green-new\\unit-result.v1.json",
+      "sha256": "e094fb9839e1c96b3f9b8fae04f0c8febc67ea1a3a9a9e6b3247967ce357d90f",
+      "size_bytes": 37813
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-03-green-all\\dispatch.v1.json",
+      "sha256": "6c813f178cbd095b0859463ed2b23415457a6e246c7f23080eb9f7235653b44a",
+      "size_bytes": 2551
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-03-green-all\\execution.v1.json",
+      "sha256": "75f8e96e4e9805934b9d268eb54cd85d65aff0e3fe44382ab15ca6db756d822d",
+      "size_bytes": 5387
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-03-green-all\\launch.v1.json",
+      "sha256": "ee83fded68b4a338b374c810fcc31c106990e63ba7c9bcd7d8ab9be73b672f22",
+      "size_bytes": 711
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-03-green-all\\stderr.raw",
+      "sha256": "27bf3695c12d9ed84ba85d94e66c16e48fce2c262eb8acaf38a9f5ba414ee5fd",
+      "size_bytes": 13158
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-03-green-all\\stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-03-green-all\\unit-result.v1.json",
+      "sha256": "c76b777004a54b2ecaba578d90f452c997892cd69ab2fdd5ae444e6d825bd0e4",
+      "size_bytes": 51808
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\before\\scripts\\checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+      "size_bytes": 296398
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\before\\tests\\test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "08aecf8478eb3148ab5e4a051eb4ae81529f79a778e11c30383832a94e64e1b6",
+      "size_bytes": 126015
+    },
+    {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\before\\tests\\test_publication_worker_termination_facts_v1.py",
+      "sha256": "698c118aa705f66b3f58e97e29392ab4be7d371c15a489068991b5567242b55e",
+      "size_bytes": 3296
+    }
+  ],
+  "artifact_kind": "decision28_sidecar_author_review_v1",
+  "authorization": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5924440005",
+  "automatic_verification_limits": [
+    "Inference/model values and engine observations are explicitly local fixtures; genuine socket children/memfd/shared file description/process cleanup are exercised.",
+    "No actual engine query, worker image/model/hardware execution or new selected packaging/host authority was performed.",
+    "Original CPU07 remains failed and earliest native-front disconnection cause remains unknown; this change retains future diagnostic facts without changing successful acceptance."
+  ],
+  "design_choices": [
+    "First internal validated route is retained under the same first-error lock before diagnostic persistence. Receive errors cannot inherit a previous request route.",
+    "Snapshot runs before stop thread join may force-close front transport and at shutdown fallback before worker/bridge teardown. Attempt dedup includes observer/persistence failures; no retry or unknown-to-terminal promotion.",
+    "response_send is selected before response transmission; invocation failures retain inference. Failed counters and operational fates are unchanged.",
+    "Real regular capture tails use fstat/pread; BytesIO getvalue is cursor-neutral and pipe captures remain unavailable.",
+    "Original CID event query filters type=container and die/oom/kill/destroy; unexpected exec rows remain unavailable under original caps."
+  ],
+  "final_execution": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-03-green-all\\execution.v1.json",
+    "sha256": "75f8e96e4e9805934b9d268eb54cd85d65aff0e3fe44382ab15ca6db756d822d",
+    "size_bytes": 5387
+  },
+  "final_unit_result": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-03-green-all\\unit-result.v1.json",
+    "sha256": "c76b777004a54b2ecaba578d90f452c997892cd69ab2fdd5ae444e6d825bd0e4",
+    "size_bytes": 51808
+  },
+  "full_ci_run": false,
+  "hardware_workload": false,
+  "historical_line_ending_delta": {
+    "descriptor": {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\historical-sidecar-patch-before-line-ending-restoration.raw",
+      "sha256": "d1b92834c68bbb331d75327922d0da3bea2aa12ac0d8debeb839a67ecb288885",
+      "size_bytes": 299297
+    },
+    "fact": "Initial writer converted36 unrelated mixed-LF lines to CRLF. All equal source-line bytes were restored before final GREEN; no semantics or old methods changed."
+  },
+  "interim_result_retained": {
+    "descriptor": {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-02-green-new\\execution.v1.json",
+      "sha256": "f1b405295999f045b8a96dfad166e88911d12d7c7cbf7bd7b9c41b47cdf6cb3d",
+      "size_bytes": 5386
+    },
+    "fact": "8 passed and one new assertion used nonexistent route field. Only that new assertion corrected to original branch/resource fields."
+  },
+  "meaningful_original_red": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-01-red\\execution.v1.json",
+    "sha256": "55c886d43980c5f5c2f51e49c2fdb609af7997976d26bc5873343767f8e3157e",
+    "size_bytes": 5374
+  },
+  "new_methods": [
+    "GStreamerAnalyticsSidecarTests.test_response_send_epipe_captures_live_validated_worker_before_teardown",
+    "GStreamerAnalyticsSidecarTests.test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails",
+    "GStreamerAnalyticsSidecarTests.test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure",
+    "GStreamerAnalyticsSidecarTests.test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed",
+    "GStreamerAnalyticsSidecarTests.test_unattributed_first_failure_does_not_borrow_later_validated_route",
+    "TerminationTests.test_real_shared_capture_offset_is_preserved_for_the_original_writer",
+    "TerminationTests.test_bytesio_capture_does_not_change_fixture_cursor_and_pipe_is_unavailable",
+    "TerminationTests.test_terminal_event_argv_is_original_cid_only_and_unchanged_bounded",
+    "TerminationTests.test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal"
+  ],
+  "original_methods": [
+    "GStreamerAnalyticsSidecarTests.test_production_readiness_parent_swap_never_redirects_write",
+    "GStreamerAnalyticsSidecarTests.test_production_lifecycle_parent_swap_preserves_attacker_canary",
+    "GStreamerAnalyticsSidecarTests.test_full_lifecycle_attests_exact_eight_and_persists_raw_call",
+    "GStreamerAnalyticsSidecarTests.test_incomplete_materialized_binding_set_fails_before_process_start",
+    "GStreamerAnalyticsSidecarTests.test_binding_index_digest_drift_is_rejected",
+    "GStreamerAnalyticsSidecarTests.test_peer_pid_drift_fails_closed_and_cleans_every_owned_node",
+    "GStreamerAnalyticsSidecarTests.test_startup_worker_crash_fails_closed",
+    "GStreamerAnalyticsSidecarTests.test_runtime_worker_crash_interrupts_front_service",
+    "GStreamerAnalyticsSidecarTests.test_worker_crash_interrupts_idle_client_and_leaves_no_service_thread",
+    "GStreamerAnalyticsSidecarTests.test_bridge_failure_is_fatal_and_raw_socket_nodes_are_removed",
+    "GStreamerAnalyticsSidecarTests.test_front_collision_is_preserved_and_workers_are_drained",
+    "GStreamerAnalyticsSidecarTests.test_atomic_front_publish_collision_preserves_canary_and_hidden_node_absent",
+    "GStreamerAnalyticsSidecarTests.test_atomic_front_publish_uses_direct_bind_without_link_cleanup",
+    "GStreamerAnalyticsSidecarTests.test_atomic_front_publish_post_bind_failure_never_unlinks_node",
+    "GStreamerAnalyticsSidecarTests.test_owned_socket_retirement_never_deletes_raced_node",
+    "GStreamerAnalyticsSidecarTests.test_retired_socket_post_stat_swap_is_nondestructive_and_fails_cold",
+    "GStreamerAnalyticsSidecarTests.test_runtime_symlink_is_rejected_without_touching_canary",
+    "GStreamerAnalyticsSidecarTests.test_running_guardian_fails_closed_if_runtime_directory_is_rebound",
+    "GStreamerAnalyticsSidecarTests.test_production_integrity_failure_keeps_request_diagnostic",
+    "GStreamerAnalyticsSidecarTests.test_production_rejection_diagnostics_keep_untrusted_fields_unattributed",
+    "GStreamerAnalyticsSidecarTests.test_worker_protocol_integrity_failure_is_attributed",
+    "GStreamerAnalyticsSidecarTests.test_diagnostic_persistence_failure_preserves_original_integrity_error",
+    "GStreamerAnalyticsSidecarTests.test_pre_authority_failure_cannot_commit_an_orphan_diagnostic",
+    "GStreamerAnalyticsSidecarTests.test_diagnostic_does_not_read_oversized_or_unsafe_descriptors",
+    "GStreamerAnalyticsSidecarTests.test_concurrent_terminal_failures_commit_only_first_diagnostic",
+    "GStreamerAnalyticsSidecarTests.test_production_service_has_stable_authority_clean_eof_and_rolling_lifecycle",
+    "GStreamerAnalyticsSidecarTests.test_retired_socket_validator_binds_exact_count_and_sibling_path",
+    "GStreamerAnalyticsSidecarTests.test_cached_stop_cold_revalidates_retired_socket_ledger",
+    "GStreamerAnalyticsSidecarTests.test_strict_authority_assert_rejects_distinct_valid_expected_identities",
+    "GStreamerAnalyticsSidecarTests.test_production_preprocessing_contract_checks_all_bindings_before_worker_start",
+    "GStreamerAnalyticsSidecarTests.test_production_rejects_external_runtime_expectation_drift_before_worker_start",
+    "GStreamerAnalyticsSidecarTests.test_production_preprocessing_receipt_binds_runtime_candidate_manifest",
+    "GStreamerAnalyticsSidecarTests.test_production_capacity_is_contract_derived_and_not_one_million",
+    "GStreamerAnalyticsSidecarTests.test_production_per_connection_bound_exhaustion_fails_closed",
+    "GStreamerAnalyticsSidecarTests.test_production_authority_rejects_hash_inode_and_owner_drift",
+    "GStreamerAnalyticsSidecarTests.test_production_start_is_one_shot_and_does_not_replace_front_inode",
+    "GStreamerAnalyticsSidecarTests.test_guardian_authenticated_stop_unblocks_foreground_wait",
+    "GStreamerAnalyticsSidecarTests.test_guardian_stores_stop_attestation_before_acknowledgement",
+    "GStreamerAnalyticsSidecarTests.test_guardian_stop_attestation_tamper_fails_closed",
+    "GStreamerAnalyticsSidecarTests.test_signal_or_direct_stop_is_failed_and_non_authorizing",
+    "GStreamerAnalyticsSidecarTests.test_guardian_status_fails_closed_after_any_worker_dies",
+    "GStreamerAnalyticsSidecarTests.test_guardian_status_and_bounded_stop_cli_use_readiness_authority",
+    "GStreamerAnalyticsSidecarTests.test_guardian_stop_cli_rejects_acknowledgement_binding_drift",
+    "GStreamerAnalyticsSidecarTests.test_foreground_guardian_cli_commits_readiness_then_waits_for_stop",
+    "GStreamerAnalyticsSidecarTests.test_foreground_guardian_cli_requires_preprocessing_receipt",
+    "GStreamerAnalyticsSidecarTests.test_authority_loader_rejects_named_file_swap_during_fd_read",
+    "GStreamerAnalyticsSidecarTests.test_cli_contract_is_explicit_and_requires_bounded_counts",
+    "GStreamerAnalyticsSidecarTests.test_cli_modes_reject_incompatible_arguments_before_input_reads",
+    "GStreamerAnalyticsSidecarTests.test_front_socket_is_requested_as_atomic_publish_only_after_bridge",
+    "GStreamerAnalyticsSidecarTests.test_docker_factory_plan_is_pinned_no_network_and_gpu_explicit",
+    "TerminationTests.test137_engine_removed_retains_original_id_and_oom_unknown",
+    "TerminationTests.test_engine_reported_oom_true_retained_as_fact",
+    "TerminationTests.test_engine_reported_oom_false_does_not_infer_actor"
+  ],
+  "owned_source_audit": [
+    {
+      "before": {
+        "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\before\\scripts\\checkpoint_gstreamer_analytics_sidecar.py",
+        "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+        "size_bytes": 296398
+      },
+      "changed_original_functions": [
+        "DockerWorkerHandle._capture_tail",
+        "DockerWorkerHandle.termination_facts",
+        "GStreamerAnalyticsSidecar.__init__",
+        "GStreamerAnalyticsSidecar._capture_worker_termination",
+        "GStreamerAnalyticsSidecar._record_production_failure",
+        "GStreamerAnalyticsSidecar._serve_connection",
+        "GStreamerAnalyticsSidecar._shutdown",
+        "GStreamerAnalyticsProductionService.stop"
+      ],
+      "diff": {
+        "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\scripts__checkpoint_gstreamer_analytics_sidecar.py.diff.raw",
+        "sha256": "21365445cb64665407d4419c31ae0d2f7fe51ad6de3345b169a901a40b6c02c5",
+        "size_bytes": 9156
+      },
+      "new_functions": [
+        "GStreamerAnalyticsSidecar._capture_first_failed_worker"
+      ],
+      "source": {
+        "path": "scripts\\checkpoint_gstreamer_analytics_sidecar.py",
+        "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+        "size_bytes": 299261
+      }
+    },
+    {
+      "before": {
+        "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\before\\tests\\test_checkpoint_gstreamer_analytics_sidecar.py",
+        "sha256": "08aecf8478eb3148ab5e4a051eb4ae81529f79a778e11c30383832a94e64e1b6",
+        "size_bytes": 126015
+      },
+      "changed_original_functions": [],
+      "diff": {
+        "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\tests__test_checkpoint_gstreamer_analytics_sidecar.py.diff.raw",
+        "sha256": "b4c96c31dba16cc0e6d84023df11c6f79c3675ed1915d9ce03108295ffe6467a",
+        "size_bytes": 12666
+      },
+      "new_functions": [
+        "GStreamerAnalyticsSidecarTests.test_response_send_epipe_captures_live_validated_worker_before_teardown",
+        "GStreamerAnalyticsSidecarTests.test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails",
+        "GStreamerAnalyticsSidecarTests.test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure",
+        "GStreamerAnalyticsSidecarTests.test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed",
+        "GStreamerAnalyticsSidecarTests.test_unattributed_first_failure_does_not_borrow_later_validated_route"
+      ],
+      "source": {
+        "path": "tests\\test_checkpoint_gstreamer_analytics_sidecar.py",
+        "sha256": "47f74ffd43d81dff567b7f04576446fab9f246fb3937d6c97a92b73bff90a78d",
+        "size_bytes": 138071
+      }
+    },
+    {
+      "before": {
+        "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\before\\tests\\test_publication_worker_termination_facts_v1.py",
+        "sha256": "698c118aa705f66b3f58e97e29392ab4be7d371c15a489068991b5567242b55e",
+        "size_bytes": 3296
+      },
+      "changed_original_functions": [],
+      "diff": {
+        "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\tests__test_publication_worker_termination_facts_v1.py.diff.raw",
+        "sha256": "8dd38fead455b1f745dda231c30aec867938f3de94a00f3afb05c68da8bbff4e",
+        "size_bytes": 3685
+      },
+      "new_functions": [
+        "TerminationTests.test_real_shared_capture_offset_is_preserved_for_the_original_writer",
+        "TerminationTests.test_bytesio_capture_does_not_change_fixture_cursor_and_pipe_is_unavailable",
+        "TerminationTests.test_terminal_event_argv_is_original_cid_only_and_unchanged_bounded",
+        "TerminationTests.test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal"
+      ],
+      "source": {
+        "path": "tests\\test_publication_worker_termination_facts_v1.py",
+        "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+        "size_bytes": 6599
+      }
+    }
+  ],
+  "preserved_limits": {
+    "component_cli_s": 2100,
+    "drain_s": 10,
+    "engine_command_s": 2,
+    "native_measurement_s": 180,
+    "outer_s": 2250,
+    "stderr_bytes": 1024,
+    "stdout_bytes": 8192,
+    "terminal_events": 32,
+    "warmup_s": 30,
+    "worker_artifact_bytes": 16384
+  },
+  "production_scope": [
+    "scripts/checkpoint_gstreamer_analytics_sidecar.py"
+  ],
+  "proof": {
+    "all62_fd_counts_unchanged": true,
+    "both_channels_eof": true,
+    "final_capture_fd_counts": [
+      6,
+      6
+    ],
+    "late_companion_absent": true,
+    "original_group_two_scans_absent": true,
+    "original_methods_ast_identical": true,
+    "source_before_after_equal": true,
+    "tests_run": 62,
+    "unmodified_function_asts_identical": true,
+    "unmodified_raw_line_bytes_identical": true
+  },
+  "raw_stderr": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-03-green-all\\stderr.raw",
+    "sha256": "27bf3695c12d9ed84ba85d94e66c16e48fce2c262eb8acaf38a9f5ba414ee5fd",
+    "size_bytes": 13158
+  },
+  "raw_stdout": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision28-sidecar-failure-observability-v1\\attempt-03-green-all\\stdout.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "schema_version": 1,
+  "scope_reference": {
+    "path": "artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\source-observability-review.v1.json",
+    "sha256": "3dd7a896179d83f9f51862556c5dee5a4787ba274020b52771f244d28fa764e3",
+    "size_bytes": 7495
+  },
+  "source_commit_before": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "source_membership": {
+    "all_four_runtime_copy_closures": true,
+    "host87": true,
+    "native_three": false,
+    "original2693": true,
+    "selected73": true,
+    "worker_two": false
+  },
+  "unchanged_original_test_method_count": 53
+}

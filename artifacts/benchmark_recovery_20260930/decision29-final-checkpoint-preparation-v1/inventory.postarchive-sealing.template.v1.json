@@ -1,0 +1,46 @@
+{
+  "CI_source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "actual_cleanup_closed": false,
+  "actual_cleanup_review_ref": null,
+  "archive_root": null,
+  "artifact_kind": "sealed_final_checkpoint_inventory_v1",
+  "authored_whitespace_check_paths": null,
+  "base_commit": null,
+  "benchmark_commit_untouched": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "closed_prerequisite_facts": {
+    "current_conformance_accepted": null,
+    "current_docs_independently_reviewed": null,
+    "hosted_D_CI_accepted": null,
+    "latest_local_D_CI_accepted": null,
+    "supported_sync_archive_closed": null,
+    "unexecuted_campaign_limits_preserved": null
+  },
+  "closed_review_refs": {
+    "conformance": {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/review.v1.json",
+      "sha256": "af861006d56d00e466648cf2479f1536925f7b33f5a246916e924c067abec202",
+      "size_bytes": 434057
+    },
+    "current_docs": null,
+    "hosted_CI": null,
+    "local_CI": null,
+    "staging_source": {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-independent-review-v1/root-staging-source-review.v3.json",
+      "sha256": "a56840f6eeb2392b67843c31ced6048c7953d608ee7a28ae4c73764ce33620f5",
+      "size_bytes": 949
+    },
+    "sync_archive": null
+  },
+  "deletions": null,
+  "files": null,
+  "index_staging_authorized": false,
+  "prearchive_move_manifest": null,
+  "progress_preservation_ref": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/progress-original-suffix-preservation.v1.json",
+    "sha256": "b5709c341243b8c75a01c95d743c14d763b2c292df6366f1327a9fa801cf2f69",
+    "size_bytes": 1719
+  },
+  "schema_version": 1,
+  "sealing_note": "Do not execute staging with this template. Root creates a distinct sealed final manifest only after actual archive and owned cleanup are independently closed, final explicit path/mode/pins count passes and the final inventory is reviewed. Latest archived-commit CI/final review/merge remain future PR-ledger gates, never prerequisites falsely marked passed in this dated snapshot.",
+  "status": "UNSEALED_PENDING_ACTUAL_ARCHIVE_CLEANUP_AND_FINAL_EXPLICIT_REVIEW"
+}

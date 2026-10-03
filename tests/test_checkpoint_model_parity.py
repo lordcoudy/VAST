@@ -29,6 +29,7 @@ from checkpoint_model_parity import (  # noqa: E402
     build_image_inspect_command,
     build_parser,
     load_parity_manifest,
+    load_parity_preprocessing_contract,
     main,
     validate_manifest_identity,
 )
@@ -978,6 +979,67 @@ class ManifestContractTests(unittest.TestCase):
         tampered["evidence_policy"]["minimum_calibration_samples_per_branch"] = 1
         with self.assertRaisesRegex(ContractError, "identity|calibration"):
             validate_manifest_identity(tampered)
+
+    def test_preprocessing_projection_accepts_frozen_v3_and_v4_by_binding_hash(self) -> None:
+        source = ROOT / "configs" / "checkpoint_analytics_model_parity.yaml"
+        raw = yaml.safe_load(source.read_text(encoding="utf-8"))
+        expected = canonical_sha(raw["preprocessing_contract"])
+        self.assertEqual(
+            load_parity_preprocessing_contract(
+                source, expected_sha256=expected
+            ),
+            raw["preprocessing_contract"],
+        )
+
+        raw["schema_version"] = 4
+        raw["artifact_kind"] = "checkpoint_analytics_model_parity_manifest_v4"
+        raw["manifest_id"] = str(raw["manifest_id"]).removesuffix("-v3") + "-v4"
+        raw["refresh_authority"] = {
+            "source_manifest": {},
+            "image_identity_patch": {},
+            "runtime_probes": {},
+            "execution_config": {},
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp).resolve() / "accepted-v4.yaml"
+            path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+            self.assertEqual(
+                load_parity_preprocessing_contract(
+                    path, expected_sha256=expected
+                ),
+                raw["preprocessing_contract"],
+            )
+            with self.assertRaisesRegex(
+                ContractError, "differs from execution bindings"
+            ):
+                load_parity_preprocessing_contract(
+                    path, expected_sha256="0" * 64
+                )
+
+    def test_preprocessing_projection_rejects_v4_schema_and_contract_drift(self) -> None:
+        raw = yaml.safe_load(
+            (
+                ROOT / "configs" / "checkpoint_analytics_model_parity.yaml"
+            ).read_text(encoding="utf-8")
+        )
+        expected = canonical_sha(raw["preprocessing_contract"])
+        raw["schema_version"] = 4
+        raw["artifact_kind"] = "checkpoint_analytics_model_parity_manifest_v4"
+        raw["manifest_id"] = str(raw["manifest_id"]).removesuffix("-v3") + "-v4"
+        raw["refresh_authority"] = {
+            "source_manifest": {},
+            "image_identity_patch": {},
+            "runtime_probes": {},
+            "execution_config": {},
+        }
+        raw["preprocessing_contract"]["resize_shorter_side"] = 255
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp).resolve() / "drifted-v4.yaml"
+            path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+            with self.assertRaisesRegex(ContractError, "geometry drifted"):
+                load_parity_preprocessing_contract(
+                    path, expected_sha256=expected
+                )
 
     def test_rejects_fake_openvino_gpu_matrix_binding(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

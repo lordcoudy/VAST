@@ -1,0 +1,1046 @@
+{
+  "accepted": false,
+  "actionable_new_differences": [
+    "Two committed cold-provider/header boundary tests were newly discovered and passed; they do not execute a physical benchmark.",
+    "The previously failing GVA-three-field container fixture passed this original run with identical test bytes. This is an original outcome difference, not proof its prior parent-epoch race was fixed.",
+    "The same 88 actual skips still include eight undeclared identity/reason pairs under the original 80-row manifest; the original child fails that exact gate. Pending new 88-row declarations are not used retroactively.",
+    "No new failing method appeared: all remaining fixture and namespace/broker rows are already in the finite 2f diagnosis; keep the current owned finite repairs, no additional blanket skip or broad rewrite."
+  ],
+  "causality_limits": [
+    "This independent namespace probe again completed CLONE_NEWUSER unshare, then failed opening /proc/self/setgroups with EACCES13. It is not evidence unshare itself failed.",
+    "The original sudo/journalctl query was killed after immediate /proc/3990/exe owner observation EACCES; original stdout/stderr are empty and timeout is false. Longer execution time would not repair that demonstrated ownership boundary.",
+    "No original kernel denial records were obtained; unconfined was observed before setup, with no exact post-unshare policy/denial join. AppArmor/usernamespace policy cause is unproven.",
+    "The original suite child exited1 without signal139, no forcedSIGTERM/SIGKILL; original observer does not establish all descendant quiescence. Earlier139 cause remains unproven.",
+    "Per-test durable journals/setup syscalls for the 45 namespace/broker rows were not retained in this ZIP. Do not attribute every row to the independent probe's errno.",
+    "The current uncommitted direct-journal/privilege-aware diagnostic repair is absent from source6358 and supplies no evidence about this run."
+  ],
+  "comparison": {
+    "current_cpu_elapsed_s": 1486.353939112,
+    "elapsed_difference_s": 529.086432389,
+    "new_discovered_and_successful_ids": [
+      "test_publication_gstreamer_component_runtime_v1.ColdProviderBoundaryTests.test_actual_operational_header_reader_binds_physical_bytes",
+      "test_publication_gstreamer_component_runtime_v1.ColdProviderBoundaryTests.test_real_cold_provider_resolves_before_two_arm_cardinality_guard"
+    ],
+    "nine_integration_declarations_identical": true,
+    "no_new_error_or_failure_method_ids": true,
+    "no_removed_discovered_ids": true,
+    "prior_cpu_elapsed_s": 957.267506723,
+    "prior_error_now_original_success": [
+      "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_gva_three_field_image_is_preserved_without_fabricated_base"
+    ],
+    "prior_error_now_success_source_bytes_identical": true,
+    "timing_limitation": "This is original hosted-job elapsed time; no storage, namespace, model or benchmark timing cause is inferred.",
+    "unapproved_skip_id_reason_pairs_identical": true
+  },
+  "counts": {
+    "discovered": 2925,
+    "distinct_error_method_ids": 38,
+    "error_rows": 40,
+    "failure_rows": 24,
+    "groups": {
+      "fixture_allowlist_not_rebound_to_current_physical_manifest": 1,
+      "missing_historical_binding_metadata_in_checkout": 9,
+      "missing_owned_temporary_parent_ROOT_staging": 6,
+      "namespace_broker_boundary_or_earlier_masked_expectation": 45,
+      "text_occurrence_mistaken_for_runtime_consumer": 3
+    },
+    "integrations_unexecuted": 9,
+    "original_allowed_skip_declarations": 80,
+    "original_unapproved_skips": 8,
+    "portable": 2916,
+    "skip_rows": 88,
+    "successful_method_ids": 2766,
+    "tests_run": 2916
+  },
+  "decoded_original_job_logs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/cpu-decoded-job.log",
+      "sha256": "c716b7c8dfa3ef159b683028183d2417b02358ad2c0db3fe00204b75b5a2d658",
+      "size_bytes": 91889
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/host-decoded-job.log",
+      "sha256": "bfe0e49135eaac82abc447e99fdec3252fc0f6bd53b34477b4f8ec7d4b07205c",
+      "size_bytes": 33969
+    }
+  ],
+  "failure_index": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/failure-index.v1.json",
+    "sha256": "889f6a4e41a7070dec87f5ed1e67e44ac19576d9e47a609a834a82699a383c29",
+    "size_bytes": 228239
+  },
+  "kind": "vast_ci6358_readonly_finite_diagnosis_v1",
+  "mandatory_native_actual_success_ids": [
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+  ],
+  "missing_required_successes": [],
+  "model_acquisition_originals": {
+    "cpu": {
+      "assets": [
+        {
+          "index": 0,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+          "sha256": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed",
+          "sha384": "f9f35961bc5cffbb0d663bfc1e8b02efab0fbc4c9270578dad2bedac2634bd33428acde64f2e080347c2417948a690ee",
+          "size_bytes": 254351,
+          "status": "downloaded"
+        },
+        {
+          "index": 1,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin",
+          "sha256": "7f9344e41167d14179a0da136f87f2570a30ac5399e0363fd6787a9ae18d0fa0",
+          "sha384": "5f76bab11f3fd97d4313fa6e9d9f1fce0fc669aacfba9e688161c90c89baeb5f9a89a9f68e4ace49c180af35133fbda3",
+          "size_bytes": 3691778,
+          "status": "downloaded"
+        },
+        {
+          "index": 2,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml",
+          "sha256": "baed27b9dde81b75590a382d2aa458d63391cdb146e7ef20c12577c4cb0617d8",
+          "sha384": "812a89ced16938bb32c6648f5278cb4a34940912199de4c9644bbb0e63d5b0728f7f0e0e0f1c0bae6eab36c28b724c3b",
+          "size_bytes": 292640,
+          "status": "downloaded"
+        },
+        {
+          "index": 3,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin",
+          "sha256": "a7f04e3243aae3099a00c5276074bdbe57bc8bf91986093dfeafb3b065843f45",
+          "sha384": "fc945d7885733f86cef916b91e2791761abaa56bc005f6426ec48e7aa573e1529f479f723713944d4a81773a9140df9f",
+          "size_bytes": 5774062,
+          "status": "downloaded"
+        },
+        {
+          "index": 4,
+          "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml",
+          "sha256": "69ed174cee70e19b098215f53d1fe6f27edc5b417790bbc44cde7f37cc082fae",
+          "sha384": "b0a70cfc4ccbe85dd5ba5549c2d142d7f922a0a1116657cdcc9f48cb6afc7cc40a596a655b9e6566396c48b72232ff65",
+          "size_bytes": 325452,
+          "status": "downloaded"
+        },
+        {
+          "index": 5,
+          "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin",
+          "sha256": "7f96bfaa0ac3af65d136f6a185d1d78d68d03bab2e1f2faafe1d27ccd94b0dc1",
+          "sha384": "0406e296c9822f4a5e8ee300ad40e5c0a0eeeaf9206f829556cb836cb8f10a4f8a4dd94d1bb16a60562bf1568fd12618",
+          "size_bytes": 1286772,
+          "status": "downloaded"
+        },
+        {
+          "index": 6,
+          "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml",
+          "sha256": "08b844a402a615605a626261fd9e27161a044845426ece5aa0872203c50bb5a2",
+          "sha384": "397543ce3a53c629df7794fc13b919092a9e788003fb6bdf8ef1dafa77392b72732fe408c9d0d13e05ce4af4a7833b74",
+          "size_bytes": 254888,
+          "status": "downloaded"
+        },
+        {
+          "index": 7,
+          "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin",
+          "sha256": "c0a602428cfd71ac63a533c23b7cdb8c83e144f118a81001420246701daf0c78",
+          "sha384": "467802734ab235cf653d13707501fa3c44fb025a7ad02921ea958b3032865fce43bbafe4dfabbb2acfb18b0bcd6c0180",
+          "size_bytes": 3634654,
+          "status": "downloaded"
+        }
+      ],
+      "elapsed_s": 8.514661680000017,
+      "hardware_acceptance": false,
+      "inputs": [
+        {
+          "epoch": [
+            2049,
+            2422676,
+            33188,
+            1,
+            5124,
+            1790785193699909540,
+            1790785193699909540
+          ],
+          "path": ".ci/model-assets.v1.json",
+          "sha256": "225db21da5943a34d35c41e61c4fcda9623dd4e5eb973d7975d450ff421edab7",
+          "size_bytes": 5124
+        },
+        {
+          "epoch": [
+            2049,
+            2426315,
+            33188,
+            1,
+            7885,
+            1790785193876019686,
+            1790785193876019686
+          ],
+          "path": "configs/checkpoint_analytics_models_openvino.yaml",
+          "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+          "size_bytes": 7885
+        }
+      ],
+      "requires_original_exit_zero": true,
+      "schema_version": 1,
+      "status": "complete"
+    },
+    "host": {
+      "assets": [
+        {
+          "index": 0,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+          "sha256": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed",
+          "sha384": "f9f35961bc5cffbb0d663bfc1e8b02efab0fbc4c9270578dad2bedac2634bd33428acde64f2e080347c2417948a690ee",
+          "size_bytes": 254351,
+          "status": "downloaded"
+        },
+        {
+          "index": 1,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin",
+          "sha256": "7f9344e41167d14179a0da136f87f2570a30ac5399e0363fd6787a9ae18d0fa0",
+          "sha384": "5f76bab11f3fd97d4313fa6e9d9f1fce0fc669aacfba9e688161c90c89baeb5f9a89a9f68e4ace49c180af35133fbda3",
+          "size_bytes": 3691778,
+          "status": "downloaded"
+        },
+        {
+          "index": 2,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml",
+          "sha256": "baed27b9dde81b75590a382d2aa458d63391cdb146e7ef20c12577c4cb0617d8",
+          "sha384": "812a89ced16938bb32c6648f5278cb4a34940912199de4c9644bbb0e63d5b0728f7f0e0e0f1c0bae6eab36c28b724c3b",
+          "size_bytes": 292640,
+          "status": "downloaded"
+        },
+        {
+          "index": 3,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin",
+          "sha256": "a7f04e3243aae3099a00c5276074bdbe57bc8bf91986093dfeafb3b065843f45",
+          "sha384": "fc945d7885733f86cef916b91e2791761abaa56bc005f6426ec48e7aa573e1529f479f723713944d4a81773a9140df9f",
+          "size_bytes": 5774062,
+          "status": "downloaded"
+        },
+        {
+          "index": 4,
+          "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml",
+          "sha256": "69ed174cee70e19b098215f53d1fe6f27edc5b417790bbc44cde7f37cc082fae",
+          "sha384": "b0a70cfc4ccbe85dd5ba5549c2d142d7f922a0a1116657cdcc9f48cb6afc7cc40a596a655b9e6566396c48b72232ff65",
+          "size_bytes": 325452,
+          "status": "downloaded"
+        },
+        {
+          "index": 5,
+          "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin",
+          "sha256": "7f96bfaa0ac3af65d136f6a185d1d78d68d03bab2e1f2faafe1d27ccd94b0dc1",
+          "sha384": "0406e296c9822f4a5e8ee300ad40e5c0a0eeeaf9206f829556cb836cb8f10a4f8a4dd94d1bb16a60562bf1568fd12618",
+          "size_bytes": 1286772,
+          "status": "downloaded"
+        },
+        {
+          "index": 6,
+          "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml",
+          "sha256": "08b844a402a615605a626261fd9e27161a044845426ece5aa0872203c50bb5a2",
+          "sha384": "397543ce3a53c629df7794fc13b919092a9e788003fb6bdf8ef1dafa77392b72732fe408c9d0d13e05ce4af4a7833b74",
+          "size_bytes": 254888,
+          "status": "downloaded"
+        },
+        {
+          "index": 7,
+          "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin",
+          "sha256": "c0a602428cfd71ac63a533c23b7cdb8c83e144f118a81001420246701daf0c78",
+          "sha384": "467802734ab235cf653d13707501fa3c44fb025a7ad02921ea958b3032865fce43bbafe4dfabbb2acfb18b0bcd6c0180",
+          "size_bytes": 3634654,
+          "status": "downloaded"
+        }
+      ],
+      "elapsed_s": 8.861973500000033,
+      "hardware_acceptance": false,
+      "inputs": [
+        {
+          "epoch": [
+            2049,
+            9175457,
+            33188,
+            1,
+            5124,
+            1790785193364581094,
+            1790785193364581094
+          ],
+          "path": ".ci/model-assets.v1.json",
+          "sha256": "225db21da5943a34d35c41e61c4fcda9623dd4e5eb973d7975d450ff421edab7",
+          "size_bytes": 5124
+        },
+        {
+          "epoch": [
+            2049,
+            9178905,
+            33188,
+            1,
+            7885,
+            1790785193491580459,
+            1790785193491580459
+          ],
+          "path": "configs/checkpoint_analytics_models_openvino.yaml",
+          "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+          "size_bytes": 7885
+        }
+      ],
+      "requires_original_exit_zero": true,
+      "schema_version": 1,
+      "status": "complete"
+    }
+  },
+  "original_archive_descriptors": {
+    "cpu": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+      "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+      "size_bytes": 1902949
+    },
+    "host": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-host/original-artifact.zip",
+      "sha256": "b5b2dd9b54a1e2974969bb8a53d449ced217f0f9703b2440ae9311a93f3d3c2e",
+      "size_bytes": 287778
+    },
+    "prior_cpu": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-original-retention-v1/36735694943-cpu/original-artifact.zip",
+      "sha256": "91dc59e7be790e0515259c424d5ae8ab956f6c931b7df383897a7f225ae36a33",
+      "size_bytes": 1894786
+    }
+  },
+  "original_child_failure": "ValueError: unapproved portable skip identity/reason: test_benchmark_contract.BenchmarkContractTests.test_kpp_real_avi_manifest_validates_real_files_and_fps_policy",
+  "original_cpu": {
+    "built_targets": [
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ],
+    "canonical_python": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+    "changed_tracked_paths": [],
+    "commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+    "elapsed_s": 1486.353939112,
+    "failure": "RuntimeError: original full-suite child/observer failed; see original lifecycle/trace",
+    "hardware_acceptance": false,
+    "python": "3.12.3 (main, Sep 26 2024, 18:18:55) [GCC 13.2.0]",
+    "raw_checkout_bytes_match_commit": true,
+    "successful": false
+  },
+  "original_entry_descriptors": {
+    "cpu": {
+      "external-test-observer/events.original.jsonl": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 528456282,
+        "entry": "external-test-observer/events.original.jsonl",
+        "sha256": "2a94a6e44d0f7b9f5997038bd7f774506e64db6dfe6601c5e2024e7bda321786",
+        "size_bytes": 24068
+      },
+      "external-test-observer/launch.v1.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 1352601484,
+        "entry": "external-test-observer/launch.v1.json",
+        "sha256": "a817a3333d9b40e8826489a3eeda7c4f0eb1dc255da252129ac34939b1d645cd",
+        "size_bytes": 701
+      },
+      "external-test-observer/responses.original.jsonl": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 2851218069,
+        "entry": "external-test-observer/responses.original.jsonl",
+        "sha256": "f7da809de8c970212b89edc6f542f6fbb47463d646d336ba41657b03ff93d90d",
+        "size_bytes": 4910
+      },
+      "external-test-observer/terminal.v1.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 2416608634,
+        "entry": "external-test-observer/terminal.v1.json",
+        "sha256": "6afe844ccdfde8061a462cf59e0a4c1f891e6a7d0b00703d5862bc3107b3f211",
+        "size_bytes": 1433
+      },
+      "external-test-observer/trace.original.log": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 889152075,
+        "entry": "external-test-observer/trace.original.log",
+        "sha256": "bfd398da2086e20459288e86448a13997e234a7850ae5c969b55b3d85dfe1ca6",
+        "size_bytes": 55131
+      },
+      "model-acquisition/report.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 3369796168,
+        "entry": "model-acquisition/report.json",
+        "sha256": "46e6bf57823468ca51d0edc84128ee05e68ec1a5a6971e0bd6cf6816546165c7",
+        "size_bytes": 3469
+      },
+      "namespace-diagnostic/capture.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 2418033476,
+        "entry": "namespace-diagnostic/capture.json",
+        "sha256": "be76c210556767fae307b5baa43615848fa9044a31487ad6aaf141e0a4348e9e",
+        "size_bytes": 925
+      },
+      "namespace-diagnostic/kernel-denial.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 3898742097,
+        "entry": "namespace-diagnostic/kernel-denial.json",
+        "sha256": "5956417719ae827d9f9ee2cb5734dca4dcdd58581ceda06e6e93be5d5aa1b9c3",
+        "size_bytes": 365
+      },
+      "namespace-diagnostic/kernel-query/capture.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 128044487,
+        "entry": "namespace-diagnostic/kernel-query/capture.json",
+        "sha256": "93c6f989e5b175cbe5ed462d5505fa2c890779378ef0c04bdb2d881d58f52c94",
+        "size_bytes": 725
+      },
+      "namespace-diagnostic/kernel-query/stderr.raw": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 0,
+        "entry": "namespace-diagnostic/kernel-query/stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "namespace-diagnostic/kernel-query/stdout.raw": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 0,
+        "entry": "namespace-diagnostic/kernel-query/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "namespace-diagnostic/stderr.raw": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 0,
+        "entry": "namespace-diagnostic/stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "namespace-diagnostic/stdout.raw": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 2011022777,
+        "entry": "namespace-diagnostic/stdout.raw",
+        "sha256": "23815876e3899dbedd775ced6102e87507d20e2b87fbb1dc1056fd95c63de700",
+        "size_bytes": 1410
+      },
+      "native-build.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 2725585149,
+        "entry": "native-build.json",
+        "sha256": "623a98a22caa774be0cc73f174a66a7bb857d243f08d2370420d0e25038a7e6b",
+        "size_bytes": 427
+      },
+      "native-configure.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 532285916,
+        "entry": "native-configure.json",
+        "sha256": "7f52c35a6dfbf086678b18a310b6511b4d053caef590a36f1df19df883ece7c0",
+        "size_bytes": 494
+      },
+      "report.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 768120207,
+        "entry": "report.json",
+        "sha256": "058f3c85d6352ef0e4e65256576d3dac5dccf7792d2a5920db9191cbec73a9e0",
+        "size_bytes": 1857054
+      },
+      "tracked-source.after.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 3616359764,
+        "entry": "tracked-source.after.json",
+        "sha256": "c8348fa74f63edf46d555a3f8a9ddeb1ca4cf0db801ab58c466eda1559da7c68",
+        "size_bytes": 667163
+      },
+      "tracked-source.before.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 3616359764,
+        "entry": "tracked-source.before.json",
+        "sha256": "c8348fa74f63edf46d555a3f8a9ddeb1ca4cf0db801ab58c466eda1559da7c68",
+        "size_bytes": 667163
+      },
+      "unittest-child.report.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 3806030515,
+        "entry": "unittest-child.report.json",
+        "sha256": "688efc89a7c8afe6ddad785320c23d28811e22947c9d881499521f507f24fb1e",
+        "size_bytes": 1792873
+      },
+      "unittest.original.log": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-cpu/original-artifact.zip",
+          "sha256": "8d2eef0bcdcf0dbfcf3dad801deb91c9c4c3ab525ebd0453d797f9e29fdcbf8f",
+          "size_bytes": 1902949
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 3732933299,
+        "entry": "unittest.original.log",
+        "sha256": "918fc28764e765ef5f0cc833f3d5e7d1ddb7338ae8c322705cd1fb136e91c4a8",
+        "size_bytes": 2191793
+      }
+    },
+    "host": {
+      "model-acquisition/report.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-host/original-artifact.zip",
+          "sha256": "b5b2dd9b54a1e2974969bb8a53d449ced217f0f9703b2440ae9311a93f3d3c2e",
+          "size_bytes": 287778
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 1638604486,
+        "entry": "model-acquisition/report.json",
+        "sha256": "299964d77e4004f6448052c1526f5481355e70a8d261c68982e96f3bbac4a26e",
+        "size_bytes": 3469
+      },
+      "report.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-host/original-artifact.zip",
+          "sha256": "b5b2dd9b54a1e2974969bb8a53d449ced217f0f9703b2440ae9311a93f3d3c2e",
+          "size_bytes": 287778
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 1170206277,
+        "entry": "report.json",
+        "sha256": "7571b9b362164914e6c5ec7fb263cabd8520ab14c4414050bc6723c5bef4283f",
+        "size_bytes": 1487
+      },
+      "tracked-source.after.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-host/original-artifact.zip",
+          "sha256": "b5b2dd9b54a1e2974969bb8a53d449ced217f0f9703b2440ae9311a93f3d3c2e",
+          "size_bytes": 287778
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 3616359764,
+        "entry": "tracked-source.after.json",
+        "sha256": "c8348fa74f63edf46d555a3f8a9ddeb1ca4cf0db801ab58c466eda1559da7c68",
+        "size_bytes": 667163
+      },
+      "tracked-source.before.json": {
+        "archive": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/36743387786-host/original-artifact.zip",
+          "sha256": "b5b2dd9b54a1e2974969bb8a53d449ced217f0f9703b2440ae9311a93f3d3c2e",
+          "size_bytes": 287778
+        },
+        "complete_original_read_crc_verified": true,
+        "crc32": 3616359764,
+        "entry": "tracked-source.before.json",
+        "sha256": "c8348fa74f63edf46d555a3f8a9ddeb1ca4cf0db801ab58c466eda1559da7c68",
+        "size_bytes": 667163
+      }
+    }
+  },
+  "original_external_observer": {
+    "absolute_deadline_ns": 5611897159243,
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "-I",
+      "-B",
+      "/home/runner/work/VAST/VAST/scripts/run_ci_checks.py",
+      "--suite-child",
+      "--output-dir",
+      "/home/runner/work/_temp/vast-cpu-checks",
+      "--trace-fd",
+      "5",
+      "--event-fd",
+      "7",
+      "--stop-fd",
+      "8"
+    ],
+    "cleanup_deadline_ns": 1773016570166,
+    "clock": "same_kernel_monotonic_ns",
+    "descendant_quiescence": "not established by original-child status",
+    "failure": "original suite child did not exit zero",
+    "finished_monotonic_ns": 1758016896628,
+    "forced_sigkill": false,
+    "forced_sigterm": false,
+    "kind": "vast_external_ci_test_observer_v1",
+    "owner": {
+      "boot_id": "695104c7-e03a-4667-851a-c6d87f2ae43f",
+      "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "executable_stat": {
+        "st_dev": 2049,
+        "st_gid": 1001,
+        "st_ino": 2436386,
+        "st_mode": 33261,
+        "st_nlink": 1,
+        "st_size": 17744,
+        "st_uid": 1001
+      },
+      "gid": 1001,
+      "pgid": 3991,
+      "pid": 3991,
+      "ppid": 3677,
+      "startticks": 30302,
+      "uid": 1001
+    },
+    "pidfd_acquisition_failed": false,
+    "pidfd_failure": null,
+    "pipe_eof": {
+      "control": true,
+      "trace": true
+    },
+    "ready": true,
+    "requests_sent": 24,
+    "requests_stopped_before_disposition_restore": true,
+    "response_channel_bytes": 4910,
+    "response_matching": "ordinary signals may coalesce; no one-to-one or timely claim",
+    "responses_completed": 24,
+    "responses_started": 24,
+    "returncode": 1,
+    "signal": null,
+    "started_monotonic_ns": 303024626858,
+    "successful": false,
+    "trace_bytes": 55131,
+    "unmatched_or_coalesced_requests_possible": 0
+  },
+  "original_host_report": {
+    "changed_tracked_paths": [],
+    "commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+    "diagnostic_passed": true,
+    "diagnostic_tests_only": true,
+    "full_ci_successful": false,
+    "hardware_acceptance": false,
+    "kind": "vast_cpu_host_diagnostics_v1",
+    "original_process": {
+      "argv": [
+        "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "import sys,unittest; sys.path[:0]=sys.argv[1:3]; import run_ci_checks as checks; suite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[3:]); result=unittest.TextTestRunner(verbosity=2,resultclass=checks.RecordedResult).run(suite); sys.exit(0 if result.wasSuccessful() and result.testsRun==2 and set(sys.argv[3:])<=set(result.successes) else 1)",
+        "/home/runner/work/VAST/VAST/tests",
+        "/home/runner/work/VAST/VAST/scripts",
+        "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+        "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+      ],
+      "cleanup_error": null,
+      "elapsed_s": 1.2160379160000048,
+      "returncode": 0,
+      "timed_out": false
+    },
+    "test_ids": [
+      "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+      "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+    ]
+  },
+  "original_kernel_query": {
+    "argv": [
+      "/usr/bin/sudo",
+      "-n",
+      "--",
+      "/usr/bin/journalctl",
+      "--kernel",
+      "--since",
+      "@1790785280",
+      "--until",
+      "@1790785283",
+      "--no-pager",
+      "--output=json",
+      "--lines=32",
+      "--grep=apparmor=.*DENIED.*(userns|unshare)"
+    ],
+    "capture_completed": false,
+    "capture_exceeded": false,
+    "cleanup_deadline_ns": 304002054347,
+    "elapsed_s": 0.021179523,
+    "eof": {
+      "stderr": true,
+      "stdout": true
+    },
+    "execution_deadline_ns": 304996712724,
+    "failure": "original owner/pidfd unavailable: PermissionError: [Errno 13] Permission denied: '/proc/3990/exe'",
+    "original_group_absent": true,
+    "original_group_members": [],
+    "owner": null,
+    "returncode": -9,
+    "started_monotonic_ns": 302996712724,
+    "started_wall_time_ns": 1790785282127481977,
+    "terminal_wall_time_ns": 1790785282148659777,
+    "timed_out": false
+  },
+  "original_kernel_query_stderr_bytes": 0,
+  "original_kernel_query_stdout_bytes": 0,
+  "original_namespace": {
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "-I",
+      "-B",
+      "/home/runner/work/VAST/VAST/scripts/ci_namespace_diagnostic_v1.py",
+      "--worker",
+      "--start-gate-fd",
+      "3"
+    ],
+    "capture_completed": true,
+    "capture_exceeded": false,
+    "cleanup_deadline_ns": 312980233796,
+    "elapsed_s": 0.368920003,
+    "eof": {
+      "stderr": true,
+      "stdout": true
+    },
+    "execution_deadline_ns": 322626952057,
+    "failure": null,
+    "original_group_absent": true,
+    "original_group_members": [],
+    "owner": {
+      "boot_id": "695104c7-e03a-4667-851a-c6d87f2ae43f",
+      "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "executable_stat": {
+        "st_dev": 2049,
+        "st_gid": 1001,
+        "st_ino": 2436386,
+        "st_mode": 33261,
+        "st_nlink": 1,
+        "st_size": 17744,
+        "st_uid": 1001
+      },
+      "gid": 1001,
+      "pgid": 3988,
+      "pid": 3988,
+      "ppid": 3677,
+      "startticks": 30262,
+      "uid": 1001
+    },
+    "returncode": 1,
+    "started_monotonic_ns": 302626952057,
+    "started_wall_time_ns": 1790785281757723875,
+    "terminal_wall_time_ns": 1790785282126639369,
+    "timed_out": false
+  },
+  "original_namespace_source_anchors": [
+    {
+      "line": 64,
+      "text": "'stock_tolerated_missing_setgroups': syscall == 'open'"
+    },
+    {
+      "line": 65,
+      "text": "and facts.get('path') == '/proc/self/setgroups' and isinstance(error, FileNotFoundError)})"
+    },
+    {
+      "line": 72,
+      "text": "if path not in ('/proc/self/setgroups', '/proc/self/uid_map', '/proc/self/gid_map'):"
+    },
+    {
+      "line": 348,
+      "text": "and not row.get('stock_tolerated_missing_setgroups')]"
+    },
+    {
+      "line": 355,
+      "text": "sudo, journal = Path('/usr/bin/sudo'), Path('/usr/bin/journalctl')"
+    },
+    {
+      "line": 356,
+      "text": "if sudo.is_file() and journal.is_file():"
+    },
+    {
+      "line": 359,
+      "text": "argv = [str(sudo.resolve(strict=True)), '-n', '--', str(journal.resolve(strict=True)),"
+    },
+    {
+      "line": 361,
+      "text": "'--output=json', '--lines=32', '--grep=apparmor=.*DENIED.*(userns|unshare)']"
+    }
+  ],
+  "original_observer_counts": {
+    "event_types": {
+      "pipe_eof": 2,
+      "request_sent": 24,
+      "requests_stop_acknowledged": 1,
+      "response_received": 51,
+      "response_timing": 24
+    },
+    "no_one_to_one_or_timely_signal_claim": true,
+    "response_records": 51,
+    "trace_bytes": 55131
+  },
+  "original_policy_denial": {
+    "original_kernel_query": {
+      "capture_completed": false,
+      "path": "kernel-query/capture.json",
+      "returncode": -9,
+      "started_wall_time_ns": 1790785282127481977,
+      "terminal_wall_time_ns": 1790785282148659777
+    },
+    "path": "/dev/kmsg",
+    "policy_denial_proven": false,
+    "records": [],
+    "unavailable": "Original read-only kernel query failed or capture was incomplete; see original channels/status."
+  },
+  "original_retention_terminal": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/download-terminal.v1.json",
+    "sha256": "5d36d2486c184001ef935d157725980d41242e13bf623e3dcb808a487d8df321",
+    "size_bytes": 482
+  },
+  "original_setup_events": [
+    {
+      "event": "original_ready",
+      "executable": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "label": {
+        "path": "/proc/self/attr/current",
+        "value": "unconfined"
+      },
+      "monotonic_ns": 302970072533,
+      "original_pid": 3988,
+      "wall_time_ns": 1790785282100838540
+    },
+    {
+      "event": "syscall_started",
+      "flags": 268435456,
+      "monotonic_ns": 302970149397,
+      "original_pid": 3988,
+      "pid": 3988,
+      "syscall": "unshare",
+      "wall_time_ns": 1790785282100917938
+    },
+    {
+      "event": "syscall_completed",
+      "flags": 268435456,
+      "monotonic_ns": 302970149397,
+      "original_pid": 3988,
+      "pid": 3988,
+      "syscall": "unshare",
+      "terminal_monotonic_ns": 302970226701,
+      "wall_time_ns": 1790785282100917938
+    },
+    {
+      "event": "syscall_started",
+      "flags": 655361,
+      "monotonic_ns": 302970252620,
+      "original_pid": 3988,
+      "path": "/proc/self/setgroups",
+      "pid": 3988,
+      "syscall": "open",
+      "wall_time_ns": 1790785282101021111
+    },
+    {
+      "errno": 13,
+      "error": "[Errno 13] Permission denied: '/proc/self/setgroups'",
+      "error_type": "PermissionError",
+      "event": "syscall_failed",
+      "flags": 655361,
+      "monotonic_ns": 302970252620,
+      "original_pid": 3988,
+      "path": "/proc/self/setgroups",
+      "pid": 3988,
+      "stock_tolerated_missing_setgroups": false,
+      "syscall": "open",
+      "terminal_monotonic_ns": 302970297253,
+      "terminal_wall_time_ns": 1790785282101065645,
+      "wall_time_ns": 1790785282101021111
+    },
+    {
+      "errno": 13,
+      "error": "backend publication Linux namespace mapping failed",
+      "error_type": "BackendPublicationProcessSupervisorV3Error",
+      "event": "namespace_setup_failed",
+      "monotonic_ns": 302970355833,
+      "original_pid": 3988
+    }
+  ],
+  "original_source_before_after_equal": true,
+  "original_tracked_source_count": 3096,
+  "prior_diagnosis": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-readonly-failure-diagnosis-v1/review.v1.json",
+    "sha256": "34df4e5f82757632d67c595b5e4723d9fbc1f33033904f8e020ad6f7c6335337",
+    "size_bytes": 30549
+  },
+  "prior_failure_index": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-readonly-failure-diagnosis-v1/failure-index.v1.json",
+    "sha256": "419a34def3a1dc3a9927a83bbf802554c3a1dc26bbabf2c3b16cb57344a51a61",
+    "size_bytes": 177284
+  },
+  "provider_metadata": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-6358-original-retention-v1/provider-metadata.v1.json",
+    "sha256": "680fdb098d15eb891b4ceab88c4b0d2e5deca9137d9a62ccf940068e0317e580",
+    "size_bytes": 7041
+  },
+  "retention_tool_observations": [
+    "Metadata btoa helper failed before its filesystem call; no original metadata file was created by that failed invocation.",
+    "Decoded-log helper failed on unavailable TextEncoder after its first host chunk was written. The 7002-byte prefix was retained, then remaining same retrieved original text was appended with length guards; no log prefix or ZIP was overwritten."
+  ],
+  "run_id": 36743387786,
+  "schema_version": 1,
+  "scope": {
+    "engine_namespace_model_or_native_query": false,
+    "full_ci_success_claim": false,
+    "hardware_acceptance_claim": false,
+    "production_or_test_source_edited": false,
+    "tests_executed_by_reviewer": false,
+    "workflow_retry_cancel_or_mutation": null
+  },
+  "sha256": "fc7d2c4baeeb75099f494c273e9ef558afafa6c9f534633eeb00d0d121d39ed6",
+  "source_commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+  "source_evidence": [
+    {
+      "git_commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+      "matches_original_hosted_before_after": true,
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/scripts/run_ci_checks.py",
+        "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+        "size_bytes": 28237
+      }
+    },
+    {
+      "git_commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+      "matches_original_hosted_before_after": true,
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "a5533d76516844e308179f86f13a4326849fed8617b5f28fcfcf7ab7e1067ffa",
+      "size_bytes": 20708,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/scripts/ci_namespace_diagnostic_v1.py",
+        "sha256": "a5533d76516844e308179f86f13a4326849fed8617b5f28fcfcf7ab7e1067ffa",
+        "size_bytes": 20708
+      }
+    },
+    {
+      "git_commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+      "matches_original_hosted_before_after": true,
+      "path": "scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+      "size_bytes": 124499,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/scripts/backend_publication_process_supervisor_v3.py",
+        "sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+        "size_bytes": 124499
+      }
+    },
+    {
+      "git_commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+      "matches_original_hosted_before_after": true,
+      "path": "scripts/ci_test_selection_v1.py",
+      "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+      "size_bytes": 9945,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/scripts/ci_test_selection_v1.py",
+        "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+        "size_bytes": 9945
+      }
+    },
+    {
+      "git_commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+      "matches_original_hosted_before_after": true,
+      "path": ".ci/integration-test-selection.v1.json",
+      "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+      "size_bytes": 31541,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/.ci/integration-test-selection.v1.json",
+        "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+        "size_bytes": 31541
+      }
+    },
+    {
+      "git_commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+      "matches_original_hosted_before_after": true,
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "b71447895a9b4e9f50d3893242c3be4e1d5bbea9516813df0dd54d66bbeb96b3",
+      "size_bytes": 21225,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/tests/test_publication_gstreamer_component_runtime_v1.py",
+        "sha256": "b71447895a9b4e9f50d3893242c3be4e1d5bbea9516813df0dd54d66bbeb96b3",
+        "size_bytes": 21225
+      }
+    },
+    {
+      "git_commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+      "matches_original_hosted_before_after": true,
+      "path": "tests/test_publication_operational_container_custody_v1.py",
+      "sha256": "9cb286476e38d7045c4d5e4537ebaa4efef2d508703c7f165e0350639794e4c0",
+      "size_bytes": 21620,
+      "snapshot": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-6358-readonly-failure-diagnosis-v1/committed-source/tests/test_publication_operational_container_custody_v1.py",
+        "sha256": "9cb286476e38d7045c4d5e4537ebaa4efef2d508703c7f165e0350639794e4c0",
+        "size_bytes": 21620
+      }
+    }
+  ],
+  "status": "closed_original_source_and_archive_review_only"
+}

@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "/usr/bin/dpkg-query",
+    "-W",
+    "-f=${Package}\t${Version}\t${Status}\n",
+    "build-essential",
+    "cmake",
+    "pkg-config",
+    "libglib2.0-dev",
+    "libgstreamer1.0-dev",
+    "libgstreamer-plugins-base1.0-dev",
+    "gstreamer1.0-plugins-base",
+    "gstreamer1.0-tools"
+  ],
+  "cwd": null,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 89062,
+    "pid": 89089,
+    "ppid": 89063,
+    "startticks": 50331164,
+    "state": "D",
+    "uid": 1000
+  },
+  "started_at_ns": 1791020981775458030
+}

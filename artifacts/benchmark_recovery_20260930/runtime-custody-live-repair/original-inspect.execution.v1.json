@@ -1,0 +1,60 @@
+{
+  "accepted": false,
+  "actual_absence_accepted": true,
+  "actual_stdout_hex": "0a",
+  "all_negatives_rejected": true,
+  "argv": [
+    "/proc/self/fd/3",
+    "container",
+    "inspect",
+    "--format",
+    "{\"Id\":{{json .Id}},\"Name\":{{json .Name}},\"Image\":{{json .Image}},\"Created\":{{json .Created}},\"Running\":{{json .State.Running}},\"OOMKilled\":{{json .State.OOMKilled}},\"ExitCode\":{{json .State.ExitCode}},\"Pid\":{{json .State.Pid}},\"StartedAt\":{{json .State.StartedAt}},\"FinishedAt\":{{json .State.FinishedAt}},\"Operation\":{{json (index .Config.Labels \"vast.operational-custody\")}}}",
+    "vast-absence-repair-3732a8e0dc0143bc9f394673a6201117"
+  ],
+  "artifact_kind": "vast_original_pinned_docker_absence_repair_observation_v1",
+  "container_helper": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_container_custody_v1.py",
+    "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+    "size_bytes": 38235
+  },
+  "container_started": false,
+  "engine": {
+    "path": "/usr/bin/docker",
+    "sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+    "size_bytes": 45570705
+  },
+  "engine_socket": {
+    "device": 61,
+    "inode": 1944,
+    "owner_gid": 1001,
+    "owner_uid": 0,
+    "path": "/run/docker.sock"
+  },
+  "exact_identifier_stderr": true,
+  "foreign_nonempty_ambiguous_negative_count": 14,
+  "original_child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pid": 7250,
+    "ppid": 7249,
+    "proc_stat_starttime_ticks": 20725678,
+    "uid": 1000
+  },
+  "outputs": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/runtime-custody-live-repair/original-inspect.stdout",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_bytes": 1
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/runtime-custody-live-repair/original-inspect.stderr",
+      "sha256": "5698b3caecee47e29a2d9a3c60dc3e54c49e359fef20a1a49e8cbefd387e2024",
+      "size_bytes": 100
+    }
+  ],
+  "publication_ready": false,
+  "returncode": 1,
+  "schema_version": 1,
+  "started_at_ns": 1790724946994949115,
+  "terminal_at_ns": 1790724947059652145
+}

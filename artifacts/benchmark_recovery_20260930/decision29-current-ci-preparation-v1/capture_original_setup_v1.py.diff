@@ -1,0 +1,19 @@
+--- capture_original_setup_v1.py original
++++ capture_original_setup_v1.py Decision29
+@@ -1,6 +1,6 @@
+ import hashlib,json,os,signal,stat,subprocess,sys,time
+ from pathlib import Path
+-here=Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current95-ci-successor-preparation-v1')
++here=Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1')
+ source=here/'setup_original_current_ci_v1.py';python='/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python'
+ assert len(sys.argv)==3,'usage: capture ACTUAL_RECIPE_SIZE ACTUAL_RECIPE_SHA256'
+ argv=['/usr/bin/timeout','--signal=TERM','--kill-after=10s','300s',python,'-I','-B',str(source),*sys.argv[1:]]
+@@ -22,7 +22,7 @@
+   except FileNotFoundError:pass
+   except (OSError,ValueError) as exc:errors.append({'pid':int(p.name),'type':type(exc).__name__,'errno':getattr(exc,'errno',None)})
+  return {'at_ns':time.time_ns(),'members':rows,'errors':errors,'pids_absent':{str(p):not Path('/proc',str(p)).exists() for p in sorted(ids)}}
+-before=descriptor(source);assert before['size_bytes']==15174 and before['sha256']=='8bddfb1ceccd736ebf1ab260b0f83637e950995666ced6db63167eff98234571'
++before=descriptor(source);assert before['size_bytes']==16780 and before['sha256']=='aee8876b15a54fbeb222ac6999536ef49be1eaa115e01ccd1a72f860021b547c'
+ start=time.monotonic();started=time.time_ns();child=None;actual=None;failure=None;signals=[]
+ with (here/'original-setup.stdout.raw').open('xb') as stdout,(here/'original-setup.stderr.raw').open('xb') as stderr:
+  child=subprocess.Popen(argv,stdout=stdout,stderr=stderr,start_new_session=True)

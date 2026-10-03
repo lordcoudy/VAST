@@ -1,0 +1,78 @@
+{
+  "accepted": false,
+  "additional_errors": [
+    {
+      "message": "original query channel cap exceeded",
+      "type": "ValueError"
+    }
+  ],
+  "channels": {
+    "stderr": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01/stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-attempt01/stdout.raw",
+      "sha256": "9deb990e0bb431026ca5781c8cbf4c3d3898545806a9c9dd5052280e45e05978",
+      "size_bytes": 8192
+    }
+  },
+  "elapsed_s": 0.09541910502593964,
+  "eof": {
+    "stderr": true,
+    "stdout": true
+  },
+  "events": [],
+  "failure": {
+    "message": "original drain channel cap",
+    "type": "ValueError"
+  },
+  "fd_after": 4,
+  "fd_before": 4,
+  "limitations": [
+    "only last256 daemon events available; empty is not proof of no death/OOM",
+    "query is later historical daemon observation, not original contemporaneous worker terminal",
+    "original daemon-ID aa8f3d33-e1dc-4ed2-ad06-488b46b332d0 retained; current ID not requeried; pinned CLI and same original socket observed",
+    "die137 alone cannot prove OOM; causal ordering requires exact name/image/CID/time and oom event"
+  ],
+  "original_pid": 65514,
+  "overflow": true,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65514,
+    "pid": 65514,
+    "ppid": 65513,
+    "startticks": 30767879,
+    "state": "R",
+    "uid": 1000
+  },
+  "process_scans": [
+    {
+      "at_ns": 1790825363402599206,
+      "group_members": [],
+      "original_pid": 65514,
+      "original_pid_absent": true,
+      "scan_errors": []
+    },
+    {
+      "at_ns": 1790825363404037239,
+      "group_members": [],
+      "original_pid": 65514,
+      "original_pid_absent": true,
+      "scan_errors": []
+    }
+  ],
+  "publication_ready": false,
+  "returncode": -9,
+  "signals": [
+    {
+      "at_ns": 1790825363368465340,
+      "signal": "SIGKILL"
+    }
+  ],
+  "status": "failed_observation",
+  "timed_out": false,
+  "validation_errors": []
+}

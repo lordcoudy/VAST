@@ -1,0 +1,41 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-c",
+    "import sys,unittest;sys.path[:0]=['/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests', '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts'];s=unittest.defaultTestLoader.loadTestsFromNames(['test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_pair_retains_bounded_phase_starts_and_real_terminals', 'test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_failed_original_arm_timeline_does_not_invent_later_phases']);r=unittest.TextTestRunner(verbosity=2).run(s);sys.exit(0 if r.wasSuccessful() else 1)"
+  ],
+  "classification": "local controlled unit fixtures only",
+  "original_ids": [
+    "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_pair_retains_bounded_phase_starts_and_real_terminals",
+    "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_failed_original_arm_timeline_does_not_invent_later_phases"
+  ],
+  "source_before": {
+    "scripts/publication_gstreamer_component_cli_v1.py": {
+      "sha256": "7fdd977cab1f290998627a83ad425b762c188f3d9956cf752167ac284ccbbb40",
+      "size_bytes": 33247
+    },
+    "scripts/publication_gstreamer_component_inputs_v1.py": {
+      "sha256": "1fd0076ae65d363b2c247789927b17250c529d5069500655a3148db59d64d706",
+      "size_bytes": 28197
+    },
+    "scripts/publication_gstreamer_component_runtime_v1.py": {
+      "sha256": "23202bc466cd53f60cc0b78eb7902b5cdb1be4c6242c04e5ed81d13609a0d49e",
+      "size_bytes": 65291
+    },
+    "tests/test_publication_gstreamer_component_cli_v1.py": {
+      "sha256": "ed63baf9ba110975aa4e81402115a8cc4eebf07a0af628ec1a2a6bbdb98ec733",
+      "size_bytes": 21373
+    },
+    "tests/test_publication_gstreamer_component_inputs_v1.py": {
+      "sha256": "3d90d2e684251a98df4d3156eccf5deb56ffaab480c9a2ec3ea7c1606f104d38",
+      "size_bytes": 42256
+    },
+    "tests/test_publication_gstreamer_component_runtime_v1.py": {
+      "sha256": "b71447895a9b4e9f50d3893242c3be4e1d5bbea9516813df0dd54d66bbeb96b3",
+      "size_bytes": 21225
+    }
+  },
+  "timeout_s": 120
+}

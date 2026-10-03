@@ -1,0 +1,26 @@
+{
+  "author_PID_and_numeric_FD_count": "not observed",
+  "close_truth": "Original exited process cannot retain live FDs; each acquired input FD close is in the original finally. No numeric baseline was captured.",
+  "diagnostic_observation": "Five retained JSON leaves differed only in Windows fstat/lstat st_ctime_ns; other six fields equal. No source95 Linux epoch authority used or weakened.",
+  "diagnostic_tool_chunk": "ea3a63",
+  "fresh_metadata_successor": "prepare_literal_capture_v2.py",
+  "mount_performed": false,
+  "original_artifacts_rewritten": false,
+  "original_authoring_source": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision29-successor-ci-D-prerequisite-capture-preparation-v1\\prepare_literal_capture_v1.py",
+    "sha256": "2d112bb506ce1e0274a194752fd187698af40e28f4e79f13c505d857c8bb602e",
+    "size_bytes": 12404
+  },
+  "original_exit_code": 1,
+  "original_first_error": {
+    "expression": "epoch(s) == epoch(p.lstat())",
+    "message": "",
+    "source_line": 32,
+    "type": "AssertionError"
+  },
+  "preserve_owned_partial_literal_files": true,
+  "schema_version": 1,
+  "status": "failed_metadata_authoring_only",
+  "target_capture_or_CI_executed": false,
+  "tool_output_chunk": "85ea80"
+}

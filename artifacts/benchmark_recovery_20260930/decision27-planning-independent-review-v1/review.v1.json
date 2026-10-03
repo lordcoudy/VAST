@@ -1,0 +1,105 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_decision27_independent_planning_review_v1",
+  "blockers": [],
+  "change": "fix-benchmark-preparations-spec",
+  "closed_feasibility": {
+    "git-input-classification.v1.json": {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/git-input-classification.v1.json",
+      "sha256": "ed2858413c0dca784f05bff2ca4551b0d6f7879baf6624d07a54c1227a320e3c",
+      "size_bytes": 469891
+    },
+    "inventory.v1.json": {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/inventory.v1.json",
+      "sha256": "8a03751c4f3e18a2590d04874496559cc77dab7ffebc8184269c0b9bb81dc364",
+      "size_bytes": 2087679
+    },
+    "review.v1.json": {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-feasibility-v1/review.v1.json",
+      "sha256": "08f057794b0a4033d4b52853bbc0420e7d4cb6674b4a6fa03779e4f515b4f58e",
+      "size_bytes": 12127
+    }
+  },
+  "disposition": "approved_planning_only",
+  "findings": [
+    "Existing project_root and strict project-relative descriptor APIs permit genuine relocation without a production API delta. Historical transaction stable_stat stays sealed history; physical readers freshly verify relocated names, bytes and epochs.",
+    "Original19 requirements/109 scenarios/62 tasks and37 checked states remain byte-exact prefixes. One requirement, three scenarios and three unchecked22.x tasks are appended; preserved legacy82/72 campaign obligations remain unexecuted.",
+    "CPU05 original late CLI78 after2125.861229s remains failed despite authentic cold/CSV output. Independent95 custody release is retained;18.8 and21.4 are not completed by setup or relocation.",
+    "New stock87-source/interpreter closure and newly produced selected/capture/preprocessing/runtime/guardian/arm/cold authority are mandatory. No oldv6 epoch or CPU05 execution receipt is rebound.",
+    "Setup600/10 and stock capture120/10 are preparation-only. Original2100/2250/15 and fixed6stream/4branch/seed100ms/30-180-10 experiment, source/image/model/device/full cold/CI/campaign predicates remain unchanged.",
+    "Original daemon access to /tmp does not prove future /home bind reachability. Actual destination root/UID/ext4/space/byte closure and a bounded genuine bind check remain setup gates; no daemon facts are inferred by this review.",
+    "The shared Git clone is an explicit retained-object dependency with isolated HEAD/index. It is not a model hardlink or source validation shortcut; retained same-PR source ancestry must not be pruned."
+  ],
+  "independently_recomputed_inventory": {
+    "declared_bytes": 4379009017,
+    "exclusive_untracked_bytes": 4311301443,
+    "exclusive_untracked_leaves": 2504,
+    "leaves": 2693,
+    "no_descriptor_or_tracked_byte_conflicts": true,
+    "source_dependency_controller_bytes": 67504578,
+    "source_dependency_controller_leaves": 180,
+    "terminal_model_count": 24,
+    "tracked_bytes": 67707574,
+    "tracked_identical_leaves": 189
+  },
+  "limitations": [
+    "Reviewed metadata inventories and recorded180 actual raw Git comparisons; this reviewer did not freshly stream4.38GB media/numeric bytes. Their declared hashes/current size/epoch are provisional until genuine setup transfer/rechecks.",
+    "No destination created, copy/clone/helper/capture executed, image/model/daemon queried, native/GPU/workload or behavior test launched by this review.",
+    "No ext4 speedup, storage causal attribution, current model/image grant, green CI, accepted pair, archive or merge approval follows from this planning review.",
+    "Future artifact-only setup/controller implementations and exact final source/closure binding need their own review before original one-shot CPU then separately authorized GPU dispatch."
+  ],
+  "original_snapshot_inventory": {
+    "path": "artifacts/benchmark_recovery_20260930/decision27-planning-originals-v1/inventory.json",
+    "sha256": "101e41acaf92cb9197ae1835b6c6089e1d6d1201feacb1913daa9e49f79adf00",
+    "size_bytes": 1714
+  },
+  "preservation_audit": {
+    "path": "artifacts/benchmark_recovery_20260930/decision27-planning-independent-review-v1/static-prefix-audit.v2.json",
+    "sha256": "36114beb9ff521e08fe8bcd57aeb5c83a8826c9c76d8bc4f95427bc077c11780",
+    "size_bytes": 4229
+  },
+  "publication_ready": false,
+  "reviewable": true,
+  "schema_version": 1,
+  "six_reviewed_documents": [
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "e4235e246b2d148dd73b8f749e1dd217efa3b7610d58e2c4daf6a3a51d6544a7",
+      "size_bytes": 13792
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "576821b3fd057becb7735b70affba8001e3e70a15308c4783928e7f9c5471be3",
+      "size_bytes": 71033
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "5303b985449c32598099bdde7594ce3805f257bea7d59f7058fc96716231a12a",
+      "size_bytes": 35324
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "40db3b81948c0954f7fb46a557ffad0b02c1eb2a9c846a8b385a009dd0e3332e",
+      "size_bytes": 24286
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+      "sha256": "b3db56c13e3a5c7157820f4e60f459455c5a83706b207c308f7af09716c8f73d",
+      "size_bytes": 48891
+    },
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "448c2a3653b2426f8e7bb30c5c2cb4a45cf0c9e396cbe300bf6917dcd2b7f231",
+      "size_bytes": 52297
+    }
+  ],
+  "source_anchors": [
+    "scripts/checkpoint_model_parity_acceptance.py:403-450 (historical source_inventory seal versus fresh descriptor registry)",
+    "scripts/checkpoint_model_parity_v4.py:138-224 (canonical physical root, strict relative descriptors and current verification)",
+    "scripts/checkpoint_model_parity_acceptance_v4.py:545-598 (unchanged full transaction/numeric assessment and accepted binding)",
+    "scripts/publication_gstreamer_component_inputs_v1.py:_proof_inputs (full original accepted binding and current recipe inputs)",
+    "https://git-scm.com/docs/git-clone (shared alternates and source object dependency)"
+  ],
+  "source_basis_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "workloads_started_by_reviewer": []
+}

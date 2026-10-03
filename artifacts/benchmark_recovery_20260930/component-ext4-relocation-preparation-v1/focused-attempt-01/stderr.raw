@@ -1,0 +1,17 @@
+test_actual_ancestor_symlink_rejects_even_same_original_leaf_inode (__main__.FiniteTransferFixtureTests.test_actual_ancestor_symlink_rejects_even_same_original_leaf_inode) ... ok
+test_actual_original_stream_copy_has_new_inode_and_exact_bytes (__main__.FiniteTransferFixtureTests.test_actual_original_stream_copy_has_new_inode_and_exact_bytes) ... ok
+test_actual_source_byte_change_is_not_accepted (__main__.FiniteTransferFixtureTests.test_actual_source_byte_change_is_not_accepted) ... ok
+test_actual_target_name_substitution_during_fsync_is_rejected (__main__.FiniteTransferFixtureTests.test_actual_target_name_substitution_during_fsync_is_rejected) ... ok
+test_expired_original_deadline_is_failed_not_a_successful_copy (__main__.FiniteTransferFixtureTests.test_expired_original_deadline_is_failed_not_a_successful_copy) ... ok
+test_hardlinked_leaf_is_rejected (__main__.FiniteTransferFixtureTests.test_hardlinked_leaf_is_rejected) ... ok
+test_legitimate_sibling_creation_preserves_actual_ancestor_identity (__main__.FiniteTransferFixtureTests.test_legitimate_sibling_creation_preserves_actual_ancestor_identity) ... ok
+test_occupied_target_is_not_replaced (__main__.FiniteTransferFixtureTests.test_occupied_target_is_not_replaced) ... ok
+test_relative_escape_is_rejected_before_any_output (__main__.FiniteTransferFixtureTests.test_relative_escape_is_rejected_before_any_output) ... ok
+test_same_bytes_source_leaf_replacement_rejects_real_fd_name_mismatch (__main__.FiniteTransferFixtureTests.test_same_bytes_source_leaf_replacement_rejects_real_fd_name_mismatch) ... ok
+test_same_bytes_target_leaf_replacement_rejects (__main__.FiniteTransferFixtureTests.test_same_bytes_target_leaf_replacement_rejects) ... ok
+test_wrong_declared_raw_hash_leaves_failed_prefix_without_success (__main__.FiniteTransferFixtureTests.test_wrong_declared_raw_hash_leaves_failed_prefix_without_success) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.064s
+
+OK

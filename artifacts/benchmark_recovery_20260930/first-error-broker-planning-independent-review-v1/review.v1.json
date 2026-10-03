@@ -1,0 +1,74 @@
+{
+  "artifact_kind": "vast_independent_decision22_planning_review_v1",
+  "base_implementation_commit": "c9566dffeeb9d50fcc1e95766481f74e8cb0d5c9",
+  "checked_tasks": 31,
+  "disposition": "approved narrow planning amendment; implementation/physical attempt still gated on exact committed review",
+  "findings_resolved": [
+    {
+      "issue": "Rejected Pin snapshots original stats then closes its FD before raising; outer serialization cannot precede that close.",
+      "resolution": "Final design/spec/verification distinguish capture of original rejection snapshot before rejected-FD close from outer persistence before remaining guest Pins/teardown. FD retirement and predicates remain unchanged.",
+      "source": "research_protocol.py:138-163"
+    }
+  ],
+  "original_supporting_evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-attempt04-independent-failed-review-v1/review.v1.json",
+      "sha256": "53e4c97f828d44cae7bef1dd8be832243b3f84b61212a7efecbb945225c48fea"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/cpu-ci-065-source-forensics-v1/source-bound-forensic.v1.json",
+      "sha256": "f5491e86e9b0ed85fb9280c6e907f0feb4a00f4b4e1b8a1354537fd8572fe8bc"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/cpu-ci-065-source-forensics-v1/broker-terminal-remedy-proposal.v1.md",
+      "sha256": "3d38ea827ccdb270cee033682565e2f1292e6ab0c2e8524e7eb1dfce6d08b05e"
+    }
+  ],
+  "owned_documents": [
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "323f091caffe14f95bc9f6a32e35ba4b148e5863d4b8f01f5c3ad89b61fcc0f9",
+      "size_bytes": 15678
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "d623ecb2fbdd60e727fb9ef7aa933ee9e42726720d464e841d4f07181942f740",
+      "size_bytes": 97506
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "a504e7272e1a3fcad369a5b8f9430e438e91b7c6e42ac6b8c23cd8881c7a7e77",
+      "size_bytes": 46947
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "02125ddcf5f49b356c69f77c84ec28c790fe36fcd5146a6522f8c772f31797a7",
+      "size_bytes": 50037
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+      "sha256": "930b6f01e0120add4dec5918b1079f54641918e3afdfaeaddf83aa56181649ad",
+      "size_bytes": 41953
+    },
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "fbb9de44fc9ee227765c17208da74149dc122aa17b2c093a790181575ead2afe",
+      "size_bytes": 9208
+    }
+  ],
+  "requirements": 16,
+  "review_conclusions": [
+    "Fresh artifactv5 reuses bounded first-original-error persistence in preflight; actual attached path/stat/predicate/map facts and unavailable facts retain provenance, primary error wins, persistence failure remains failed. One independently frozen attempt05 retains the original four32-AU prefixes, caps, controls, cleanup and null scientific/publication counts; all original failures remain immutable.",
+    "Shared broker terminal writer is extracted from existing intent/settle/response behavior, closing the two source-demonstrated stdout-only setup fallbacks. Validation, physical session/journal, sole-writer owner/auth order and unchanged600000/615000ms remain mandatory; failed terminals before owner/auth cannot certify either.",
+    "Prompt missing-response failure is conditioned on existing original process/capture/exit/quiescence checks. It does not bypass containment, accept stdout as durable authority or increase timeout/provision namespaces. Tests require genuine journal/isolated-child evidence and unchanged success paths.",
+    "Original hosted065139 cause/setup errno remain unknown. The newly closed hosted two-unit success is narrow; full CI and physical decoder output remain uncompleted. No tasks were newly checked and no full5600/scientific scope was relabelled.",
+    "Affected host/image/source dependency intersections must be audited and renewed before acceptance; old receipts remain historical. Selected component release/campaign design is pending separately and is not smuggled into this amendment."
+  ],
+  "reviewed_at_utc": "2026-09-30T07:11:53.389654+00:00",
+  "reviewer": "adversarial_review",
+  "scenarios": 82,
+  "schema_version": 1,
+  "scope": "Read-only exact six-document diff and original source/closed ZIP inspection, plus two exclusive review artifacts; no implementation, test/workload, namespace/GPU/Docker/network operation or fixture execution.",
+  "sha256": "92b1d3fd6e4a708695bec30a2f6cc1ef7774826a6dcd0fa1267642747cf49daf",
+  "total_tasks": 72
+}

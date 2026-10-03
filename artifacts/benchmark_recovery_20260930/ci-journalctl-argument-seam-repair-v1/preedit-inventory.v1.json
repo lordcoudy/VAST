@@ -1,0 +1,54 @@
+{
+  "before": [
+    {
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "c27e5fde456c0448cee9e7ea20a5861e66e5f0636c56fe207995993549dbcff8",
+      "size_bytes": 22271
+    },
+    {
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "fe07668ac4b3c2f1f7c1af8c668b0d86e1b74d3f0d1cfc085074050ab6010832",
+      "size_bytes": 17886
+    }
+  ],
+  "original_denial_or_profile_authorization": false,
+  "original_hosted_commit": "8fefa4ba0c5b135c66f85a6eb7f4fd1aaebfdc21",
+  "original_hosted_zip": "artifacts/benchmark_recovery_20260930/ci-8fefa-original-retention-v1/36751014399-cpu/original-artifact.zip",
+  "original_query_failure_snapshots": [
+    {
+      "crc32": 1648172205,
+      "sha256": "3d39c6af4077e23e2db39c453844a91e9dba55167c8f44e0e0424778f743e81c",
+      "size_bytes": 787,
+      "snapshot": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-denial.json",
+      "zip_entry": "namespace-diagnostic/kernel-denial.json"
+    },
+    {
+      "crc32": 981826371,
+      "sha256": "2580fd5fee1d89d2d95066e6cacbcd76d79f79f48d8b70c9740d2c8499a6d881",
+      "size_bytes": 1239,
+      "snapshot": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-query/capture.json",
+      "zip_entry": "namespace-diagnostic/kernel-query/capture.json"
+    },
+    {
+      "crc32": 3747570814,
+      "sha256": "963927d51742f917c06dd2a466f3c19a3b4ab2f6485c76f1cb707d5ea3244db3",
+      "size_bytes": 52,
+      "snapshot": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-query/stderr.raw",
+      "zip_entry": "namespace-diagnostic/kernel-query/stderr.raw"
+    },
+    {
+      "crc32": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "snapshot": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/original-hosted-query/namespace-diagnostic/kernel-query/stdout.raw",
+      "zip_entry": "namespace-diagnostic/kernel-query/stdout.raw"
+    }
+  ],
+  "primary_lines": [
+    376,
+    382
+  ],
+  "primary_option": "-k/--dmesg documented sincev205; unsupported --kernel not a valid option",
+  "primary_source": "https://raw.githubusercontent.com/systemd/systemd/v255/man/journalctl.xml",
+  "source_and_test_outside_current_v6_87": true
+}

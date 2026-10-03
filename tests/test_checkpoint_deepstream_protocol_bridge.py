@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import itertools
 import json
 import sys
 import unittest
+from unittest import mock
 from pathlib import Path
 
 
@@ -22,6 +24,7 @@ from analytics_execution_protocol import (  # noqa: E402
     ENGINE_TENSORRT_CUDA,
     PROTOCOL_IDENTITY_SHA256,
 )
+from analytics_execution_endpoint import terminal_detector_identity  # noqa: E402
 from checkpoint_runtime import DirectRuntimeJoinCoordinator, WorkerBinding  # noqa: E402
 from publication_policy_contract import ANALYTICS_BRANCHES  # noqa: E402
 from topology_contract import INDEPENDENT_PROCESSES, SHARED_VIDEO_DAG  # noqa: E402
@@ -52,17 +55,34 @@ class StepClock:
         return self.value
 
 
-def admission(run_id: str) -> dict[str, object]:
+class SequenceClock:
+    def __init__(self, *values: float) -> None:
+        self.values = iter(values)
+
+    def __call__(self) -> float:
+        return next(self.values)
+
+
+def mock_service_clock(test_case: unittest.TestCase) -> None:
+    # Pair the synthetic worker's 1 ms envelope with a deterministic elapsed
+    # clock. Epoch timestamps remain independently controlled by each test.
+    test_case.enterContext(mock.patch(
+        "checkpoint_deepstream_protocol_bridge.time.monotonic_ns",
+        side_effect=itertools.count(1_000_000, 1_000_000),
+    ))
+
+
+def admission(run_id: str, *, stream_id: int = 0) -> dict[str, object]:
     dataset, pts = "kpp-real-h264", 90_000
     return {
         "protocol_version": 1,
-        "source_process_id": "stream-0-source-coordinator",
+        "source_process_id": f"stream-{stream_id}-source-coordinator",
         "sequence": 1,
         "run_id": run_id,
         "dataset_id": dataset,
-        "stream_id": 0,
-        "admission_id": f"{run_id}:0:admission:1",
-        "input_frame_key": f"{dataset}:0:{VIDEO_SHA}:0:{pts}",
+        "stream_id": stream_id,
+        "admission_id": f"{run_id}:{stream_id}:admission:1",
+        "input_frame_key": f"{dataset}:{stream_id}:{VIDEO_SHA}:0:{pts}",
         "source_sha256": VIDEO_SHA,
         "source_cycle": 0,
         "access_unit_pts_ns": pts,
@@ -80,13 +100,14 @@ def nvds_identity(value: dict[str, object]) -> dict[str, object]:
         "artifact_kind": "deepstream_nvds_frame_identity",
         "admission_id": value["admission_id"],
         "input_frame_key": value["input_frame_key"],
-        "stream_id": 0,
+        "stream_id": value["stream_id"],
         "frame_id": 0,
         "transport_pts_ns": value["access_unit_pts_ns"],
         "payload_sha256": value["payload_sha256"],
         "nvds_source_id": 0,
         "nvds_frame_num": 0,
         "nvds_buf_pts_ns": value["access_unit_pts_ns"],
+        "mux_gst_buffer_pts_ns": 123,
         "decoder_factory": "nvv4l2decoder",
         "decoder_gpu_id": 0,
     }
@@ -212,9 +233,9 @@ class FakeExecutionClient:
             "timing": {
                 "worker_received_monotonic_ns": 1_000_000,
                 "inference_started_monotonic_ns": 1_100_000,
-                "inference_finished_monotonic_ns": 1_300_000,
-                "worker_completed_monotonic_ns": 1_400_000,
-                "inference_latency_ns": 200_000,
+                "inference_finished_monotonic_ns": 1_900_000,
+                "worker_completed_monotonic_ns": 2_000_000,
+                "inference_latency_ns": 800_000,
             },
             "resource": {
                 "process_cpu_time_ns": 100_000,
@@ -287,11 +308,224 @@ def endpoints(
 
 
 class DeepStreamProtocolBridgeContractTests(unittest.TestCase):
+    def setUp(self) -> None:
+        mock_service_clock(self)
+
     def test_public_bridge_surface_exists(self) -> None:
         self.assertTrue(DeepStreamExecutionEndpoint)
         self.assertTrue(DeepStreamProtocolBridge)
         self.assertTrue(DeepStreamProtocolBridgeError)
         self.assertTrue(analytics_backend_identity)
+
+    def test_nonzero_logical_stream_uses_physical_single_mux_source_zero(self) -> None:
+        run_id = "run-deepstream-logical-stream-5"
+        admitted = admission(run_id, stream_id=5)
+        identity = nvds_identity(admitted)
+        bridge = DeepStreamProtocolBridge(
+            run_id=run_id,
+            arm_id="arm-logical-stream-5",
+            worker_id="deepstream-stream-5-branch-damage",
+            topology_kind=INDEPENDENT_PROCESSES,
+            stream_id=5,
+            branch_id="damage",
+            event_sink=lambda _line: None,
+            policy_exchange=FakePolicyExchange({"damage": "cpu"}),
+            analytics_endpoints=endpoints(("damage",)),
+            clock_ms=StepClock(),
+        )
+        bridge.admit_access_unit(json.dumps(admitted))
+        bridge.observe_decoded_frame(identity)
+
+    def test_serialized_events_clamp_prelock_observation_timestamp_race(self) -> None:
+        run_id = "run-deepstream-observation-race"
+        admitted = admission(run_id)
+        identity = nvds_identity(admitted)
+        rows: list[dict[str, object]] = []
+        bridge = DeepStreamProtocolBridge(
+            run_id=run_id,
+            arm_id="arm-observation-race",
+            worker_id="deepstream-stream-0-branch-damage",
+            topology_kind=INDEPENDENT_PROCESSES,
+            stream_id=0,
+            branch_id="damage",
+            event_sink=lambda line: rows.append(json.loads(line)),
+            policy_exchange=FakePolicyExchange({"damage": "cpu"}),
+            analytics_endpoints=endpoints(("damage",)),
+            clock_ms=StepClock(),
+        )
+        bridge.admit_access_unit(
+            json.dumps(admitted), observed_timestamp_ms=1_000
+        )
+        bridge.observe_decoded_frame(identity, observed_timestamp_ms=1_002)
+        bridge.observe_preprocessed_frame(identity, observed_timestamp_ms=1_001)
+        self.assertEqual(
+            [row["timestamp_ms"] for row in rows],
+            [1_000, 1_002, 1_002],
+        )
+
+    def test_shared_fanout_returns_clamped_serialized_timestamp(self) -> None:
+        run_id = "run-deepstream-fanout-observation-race"
+        admitted = admission(run_id)
+        identity = nvds_identity(admitted)
+        rows: list[dict[str, object]] = []
+        bridge = DeepStreamProtocolBridge(
+            run_id=run_id,
+            arm_id="arm-fanout-observation-race",
+            worker_id="deepstream-shared-stream-0",
+            topology_kind=SHARED_VIDEO_DAG,
+            stream_id=0,
+            branch_id=None,
+            event_sink=lambda line: rows.append(json.loads(line)),
+            policy_exchange=FakePolicyExchange(
+                {branch: "cpu" for branch in ANALYTICS_BRANCHES}
+            ),
+            analytics_endpoints=endpoints(tuple(ANALYTICS_BRANCHES)),
+            clock_ms=StepClock(),
+        )
+        bridge.admit_access_unit(
+            json.dumps(admitted), observed_timestamp_ms=1_000
+        )
+        bridge.observe_decoded_frame(identity, observed_timestamp_ms=1_005)
+        bridge.observe_preprocessed_frame(identity, observed_timestamp_ms=1_004)
+        serialized = bridge.observe_fanout(
+            identity,
+            branch="damage",
+            observed_timestamp_ms=1_001,
+        )
+        self.assertEqual(serialized, 1_005)
+        self.assertEqual(rows[-1]["timestamp_ms"], 1_005)
+
+    def test_policy_path_clamps_wall_clock_regression_after_decision_ack(self) -> None:
+        run_id = "run-deepstream-policy-clock-regression"
+        branch = "damage"
+        admitted = admission(run_id)
+        identity = nvds_identity(admitted)
+        policy = FakePolicyExchange(
+            {item: "cpu" for item in ANALYTICS_BRANCHES}
+        )
+        bridge = DeepStreamProtocolBridge(
+            run_id=run_id,
+            arm_id="arm-policy-clock-regression",
+            worker_id="deepstream-shared-stream-0",
+            topology_kind=SHARED_VIDEO_DAG,
+            stream_id=0,
+            branch_id=None,
+            event_sink=lambda _line: None,
+            policy_exchange=policy,
+            analytics_endpoints=endpoints(tuple(ANALYTICS_BRANCHES)),
+            clock_ms=SequenceClock(2_000.5, 1_999.5, 2_003.0),
+        )
+        spec, payload = tensor(branch)
+        bridge.admit_access_unit(
+            json.dumps(admitted), observed_timestamp_ms=1_000
+        )
+        bridge.observe_decoded_frame(identity, observed_timestamp_ms=1_001)
+        bridge.observe_preprocessed_frame(
+            identity, observed_timestamp_ms=1_002
+        )
+        bridge.observe_fanout(
+            identity,
+            branch=branch,
+            tensor_spec=spec,
+            observed_timestamp_ms=1_003,
+        )
+
+        result = bridge.execute_branch(
+            str(admitted["input_frame_key"]),
+            branch,
+            tensor_payload=payload,
+            queue_depths={"cpu": 0, "gpu": 0},
+            deadline_monotonic_ns=10_000_000_000,
+        )
+
+        self.assertEqual(result.selected_resource, "cpu")
+        decision = next(
+            message
+            for message in policy.messages
+            if message["message_type"] == "decision_request"
+        )
+        path = next(
+            message
+            for message in policy.messages
+            if message["message_type"] == "path_enter"
+        )
+        self.assertEqual(decision["decision_time_ms"], 2_000.5)
+        self.assertEqual(path["timestamp_ms"], 2_000.5)
+
+    def test_gpu_topology_uses_native_d2h_boundaries(self) -> None:
+        run_id = "run-deepstream-gpu-transfer-boundaries"
+        branch = "damage"
+        admitted = admission(run_id)
+        identity = nvds_identity(admitted)
+        rows: list[dict[str, object]] = []
+        bridge = DeepStreamProtocolBridge(
+            run_id=run_id,
+            arm_id="arm-gpu-transfer-boundaries",
+            worker_id="deepstream-stream-0-branch-damage",
+            topology_kind=INDEPENDENT_PROCESSES,
+            stream_id=0,
+            branch_id=branch,
+            event_sink=lambda line: rows.append(json.loads(line)),
+            policy_exchange=FakePolicyExchange({branch: "gpu"}),
+            analytics_endpoints=endpoints((branch,)),
+            clock_ms=StepClock(),
+        )
+        spec, payload = tensor(branch)
+        bridge.admit_access_unit(json.dumps(admitted))
+        bridge.observe_decoded_frame(identity)
+        bridge.observe_preprocessed_frame(identity, tensor_spec=spec)
+        bridge.execute_branch(
+            str(admitted["input_frame_key"]),
+            branch,
+            tensor_payload=payload,
+            queue_depths={"cpu": 0, "gpu": 0},
+            deadline_monotonic_ns=10_000_000_000,
+        )
+
+        analytics = next(row for row in rows if row["stage"] == branch)
+        postprocess = next(
+            row for row in rows if row["stage"] == f"postprocess_{branch}"
+        )
+        self.assertEqual(analytics["timestamp_ms"], 1_006)
+        self.assertEqual(postprocess["timestamp_ms"], 1_006)
+        self.assertEqual(
+            postprocess["parent_execution_ids"], [analytics["execution_id"]]
+        )
+
+    def test_pre_detector_queue_drop_retains_verified_branch_model_identity(self) -> None:
+        run_id = "run-deepstream-queue-drop-model-identity"
+        admitted = admission(run_id)
+        identity = nvds_identity(admitted)
+        rows: list[dict[str, object]] = []
+        bridge = DeepStreamProtocolBridge(
+            run_id=run_id,
+            arm_id="arm-queue-drop-model-identity",
+            worker_id="deepstream-stream-0-branch-damage",
+            topology_kind=INDEPENDENT_PROCESSES,
+            stream_id=0,
+            branch_id="damage",
+            event_sink=lambda line: rows.append(json.loads(line)),
+            policy_exchange=FakePolicyExchange({"damage": "cpu"}),
+            analytics_endpoints=endpoints(("damage",)),
+            clock_ms=StepClock(),
+        )
+        spec, _payload = tensor("damage")
+        bridge.admit_access_unit(json.dumps(admitted))
+        bridge.observe_decoded_frame(identity)
+        bridge.observe_preprocessed_frame(identity, tensor_spec=spec)
+        bridge.drop_branch(
+            str(admitted["input_frame_key"]),
+            "damage",
+            reason="native_pre_detector_queue_full_drop_newest",
+        )
+
+        terminal = rows[-1]
+        self.assertEqual(terminal["event_kind"], "branch_drop")
+        self.assertEqual(
+            terminal["detector"],
+            terminal_detector_identity(capability("damage", "cpu")),
+        )
+        self.assertEqual(terminal["backend"], "deepstream:native_pre_detector_queue")
 
     def test_baseline_four_independent_workers_form_one_causal_join(self) -> None:
         run_id = "run-deepstream-baseline"
@@ -497,7 +731,13 @@ class DeepStreamProtocolBridgeContractTests(unittest.TestCase):
             branch = str(message["branch"])
             expected = capability(branch, placements[branch])
             self.assertEqual(message["selected_resource"], placements[branch])
-            self.assertEqual(message["detector"], expected["model_id"])
+            self.assertEqual(
+                message["detector"],
+                (
+                    f"{expected['model_id']};"
+                    f"model_sha256={expected['source_model_sha256']}"
+                ),
+            )
             self.assertEqual(message["backend"], analytics_backend_identity(expected))
 
     def test_corrupt_provenance_cannot_be_relabelled_as_branch_terminal(self) -> None:

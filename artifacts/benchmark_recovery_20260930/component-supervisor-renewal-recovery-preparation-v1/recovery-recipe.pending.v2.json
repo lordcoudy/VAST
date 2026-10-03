@@ -1,0 +1,110 @@
+{
+  "actual_current_root_HEAD": "78b869e4f8bc101413ed00776bd89d1089a8318d",
+  "actual_filter_diagnosis": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-two-status-forensic.v1.json",
+    "sha256": "c5defe652e6402fa9a01e7db42a5b335d57be6aca32614ade570705838752613",
+    "size_bytes": 9704
+  },
+  "actual_full_preserved_byte_reconciliation": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-preserved-input-reconciliation-attempt01/review.v1.json",
+    "sha256": "3478c3386b325483aaa0478dc1a60932f90900912f68c2fd8feb8c051f0a15c2",
+    "size_bytes": 1879
+  },
+  "actual_reconciliation_FD_process_closure": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-reconciliation-capture.v1.json",
+    "sha256": "2d8f51c5d61ed615fd74093c82697115b14945a464fef0a8d77eaec9b7878882",
+    "size_bytes": 1383
+  },
+  "after_gate": "NewHEAD exactfuturecommit; status strictlyEMPTY; allrawGitblob+execute modes exact; completeprotectedfullSHA+7epochs beforeafter exact. Source180 scope_changes=[] and broker old/current99f124707B unchanged. Bothoriginalmetadatapayloads retain rawIDs while cleanIDs becomeequal undertext=unset/eol=unspecified.",
+  "artifact_kind": "vast_component_existing_ext4_metadata_recovery_prepared_recipe_v2",
+  "before_gate": "Actual78b and EXACT2 original M status bytes only; all currenttracked rawblob+execute modes exactGit and both known rawIDs+cleanIDs+text=set/eol=lf exactlymatch closeddiagnosis. Any otherdirtypath/type/status/filter/blob/mode fails.",
+  "bounds_s": [
+    600,
+    10
+  ],
+  "current_CI_setup_successor_strategy": {
+    "adapter_scope": "Literal-adapt the reviewed freshCIsetup fixedclone/source/prerequisite steps to the concrete futurecommit and a separate exclusive CI root. Replace old benchmarkHEAD constant and oldGPU01 proof-row input with physically closed freshcurrent95 witness and its expectedHEAD, no old-closureloader or fake epoch rows. Compare everyfreshrow before/after setup; actualprofile/fullCI separately.",
+    "fresh_reference_needed": "Once metadata recovery and actualnew stockclosure succeed, capture fresh95 physicalFD rows: actualnew6 controller-declared inputs (including NEW hostclosure), current87sources, pinnedCP interpreter, actualCPU07 orGPU02 controller. Bind exactnewHEAD and actualepoch7; never mutate/relabel oldGPU01/0ad95 proof.",
+    "historical_setup_limit": "Originalsetup hardcoded old0ad and held originalGPU01 95rows. It cannot be reused as current-root/current-host proof after actual78b checkout.",
+    "ordering": "Root coordinates new current-root/newreceipt readiness and freshCIsetup beforehardware; initialsuccessful78bsetup remainshistorical0ad-preservation proof. No setup/stock/hardware execution by this preparedrecipe."
+  },
+  "execution_claim": {
+    "checkout_stock_CI_engine_native_model_test_or_hardware": false
+  },
+  "future_host_closure": null,
+  "future_original_CPU07_GPU02_owners_terminals_and_closure": null,
+  "future_source_commit": null,
+  "helper": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/recover_existing_ext4_checkout_v2.py",
+    "sha256": "897f2fb5082d1a3521bc99f8aeed6db94c5bb9c8061c2343fa1b92dfdae86b23",
+    "size_bytes": 18538
+  },
+  "historical_recipe": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/recovery-recipe.pending.v1.json",
+    "sha256": "5c77af5efd0d14494e3497dd4f3a39af49e21b006aff9117e5ec8269e766dd0a",
+    "size_bytes": 6118
+  },
+  "no_retry_or_force_reset_clean_rewrite": "Originalfailed9d retained; this preparednewhelper is not a retrygrant. Only new exactreviewedattrscheckpoint/rootexplicitoneexecution may authorize it. No payloadrewrite/reset/clean/force/automaticrollback.",
+  "original_failed_terminal": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/original-checkout-renewal-attempt01/execution.v1.json",
+    "sha256": "588f23dad4097608741a2068112fb0e56dec76488dda21903a971193716cea13",
+    "size_bytes": 5724
+  },
+  "prepared_checkout_argv": [
+    "/usr/bin/timeout",
+    "--verbose",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "600s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-supervisor-renewal-recovery-preparation-v1/recover_existing_ext4_checkout_v2.py",
+    "<EXACT_NEW_REVIEWED_ATTRS_CHECKPOINT_COMMIT>"
+  ],
+  "protection": "ALL2693 original inventory paths INCLUDING current99f broker, all actualuntracked and both introduced filtermetadata leaves heldfullbytes/7epochs/ancestorFDs across ordinarycheckout. Pre-refuse futureadoption of ANYuntracked leaf and changes to ANYprotected trackedblob+mode, even identicaluntracked adoption.",
+  "schema_version": 1,
+  "sealed_original_before_gate": {
+    "closed_FD_process_capture": {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-reconciliation-capture.v1.json",
+      "sha256": "2d8f51c5d61ed615fd74093c82697115b14945a464fef0a8d77eaec9b7878882",
+      "size_bytes": 1383
+    },
+    "preserved3024_current_map": {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-preserved-input-reconciliation-attempt01/preserved-current.v1.json",
+      "sha256": "4532d7e1b5740d5c6b5d44024c7095b5547c41ccbc0d06ebcd903319a4a92267",
+      "size_bytes": 1964699
+    },
+    "reconciliation_report": {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-preserved-input-reconciliation-attempt01/review.v1.json",
+      "sha256": "3478c3386b325483aaa0478dc1a60932f90900912f68c2fd8feb8c051f0a15c2",
+      "size_bytes": 1879
+    },
+    "rule": "All4 exact SHA/size references are FD-held through checkout. Every actual4721 oldraw row equals sealed trackedmap fullbyte/epoch fields; all sealed3024 original rows equal actual held before rows. Currentbroker99f and2introduced metadata rows explicitly equal sealed trackedmap before checkout. No newly adopted drifting baseline.",
+    "tracked4721_current_map": {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/failed-renewal-preserved-input-reconciliation-attempt01/tracked-current.v1.json",
+      "sha256": "88400bf3105f55284cd88a1e41a3edc89e0e7a7a38375a81b8507216718d0e8e",
+      "size_bytes": 2600094
+    }
+  },
+  "source_origin": {
+    "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/renew_existing_ext4_checkout_v1.py",
+    "sha256": "9d60472768809a770b2a3056aa83b19c3f8e6e50882879e60ffd33425553d77c",
+    "size_bytes": 14035
+  },
+  "status": "prepared_unexecuted",
+  "stock_capture_after_success_only": {
+    "bounds_s": [
+      120,
+      10
+    ],
+    "exclusive_receipt": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-supervisor.v2.json",
+    "fresh_output_namespace": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-supervisor-host-closure-ext4-v2-original",
+    "old_receipt_role": "Frozen658 capture consumes actuallegacy adbcb closure only as physically pinned87 source-path inventory. Never invoke old publicloader; produce actualnewHEAD/interpreter/current87 receipt. No stockcapture executed by failed9d attempt.",
+    "source": {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/capture_selected_host_closure_ext4_supervisor_v2.py",
+      "sha256": "658af2e3c400c232e107af8c3cc5469a372dcf446dff3ac454a34bec9189c187",
+      "size_bytes": 10668
+    }
+  }
+}

@@ -1,0 +1,1855 @@
+{
+  "all_eight_physical_input_documents_equal_requested_committed_basis": false,
+  "committed_input_document_pins": {
+    "artifacts/benchmark_recovery_20260930/gstreamer-component-release-proposal-v2/design-notes.v2.corrected.md": {
+      "sha256": "8f139969a81cef133f0b4a748758c8b4e230b04034e5e85fd05135d28bccc104",
+      "size_bytes": 6077
+    },
+    "artifacts/benchmark_recovery_20260930/recovery-self-review.v2.md": {
+      "sha256": "cf4eec1bdf20791e1d55f23b539179a7f3a73648a7d37db64102d6a38b7a1aad",
+      "size_bytes": 3883
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/design.md": {
+      "sha256": "25fb99b3b92bc7ebfbcf3d5d0708a339a05cf64800b501d70292e0d9893a2662",
+      "size_bytes": 92551
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/preparation-plan.md": {
+      "sha256": "9d14c3524cccbd6fed0f08146d4874209ba6fdf97c464c1ac62422316ffa8f8c",
+      "size_bytes": 25014
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/proposal.md": {
+      "sha256": "64195309fe125980ce93946fa4f3a81dc0baa83c3357b6cf64414bde1124fbde",
+      "size_bytes": 14105
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md": {
+      "sha256": "c128324d5647a42c6893d5962b5cbc1a320e5a5add5e34eb15dc4f2da295f262",
+      "size_bytes": 48427
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/tasks.md": {
+      "sha256": "36932aa1ad63ec93af8dfc87f24fc355449ba503d477e58cd91945def74da023",
+      "size_bytes": 46379
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md": {
+      "sha256": "c7c4be2e9d8f60c02a972e0f6dc1d33bc664efb8ee9057d375e23211dcf991d4",
+      "size_bytes": 40294
+    }
+  },
+  "core_documents_or_task_states_modified": false,
+  "count_contract": {
+    "historical_checked_tasks": 31,
+    "requirements": 16,
+    "scenarios": 79,
+    "tasks": 72,
+    "unchecked_future_only": 17,
+    "unchecked_mixed_release_and_future": 9,
+    "unchecked_release_only": 15,
+    "unchecked_tasks": 41
+  },
+  "nonnegotiable_original_scope": {
+    "Q4": "560 phaseA + boundary +560 phaseB +280 sizing pairs remain unexecuted",
+    "archive": "Only after reviewed active release scope is complete with current CI/conformance/final review; never check deferred original boxes or claim the future campaign complete.",
+    "full_campaign": "four systems/two codecs/two topologies/seven policies/five deadlines/ten repeats;5600 arms/2800 pairs, stock storage/verify/finalize/export gates remain",
+    "qualification": "exact37 original invocations and32 cells unchanged; component pair uses existing explicit two-operation mode without promotion",
+    "scientific_adoption": "No intake amendment until actual reviewed decoder evidence and explicit scientific scope review; mechanism prefixes are not benchmark arms."
+  },
+  "note": {
+    "path": "artifacts/benchmark_recovery_20260930/gstreamer-release-contract-proposal-v1/design-notes.v1.md",
+    "sha256": "979b17550b9c08e2c3e5e4ecbe65407c1236ac51556b5b7e02304a480d8b292b",
+    "size_bytes": 4921
+  },
+  "observed_head": "1f600aeb248a105d670010965051f5d9ba0cd7b4",
+  "physical_input_document_pins": {
+    "artifacts/benchmark_recovery_20260930/gstreamer-component-release-proposal-v2/design-notes.v2.corrected.md": {
+      "equal_requested_committed_basis": true,
+      "sha256": "8f139969a81cef133f0b4a748758c8b4e230b04034e5e85fd05135d28bccc104",
+      "size_bytes": 6077
+    },
+    "artifacts/benchmark_recovery_20260930/recovery-self-review.v2.md": {
+      "equal_requested_committed_basis": true,
+      "sha256": "cf4eec1bdf20791e1d55f23b539179a7f3a73648a7d37db64102d6a38b7a1aad",
+      "size_bytes": 3883
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/design.md": {
+      "equal_requested_committed_basis": false,
+      "sha256": "d623ecb2fbdd60e727fb9ef7aa933ee9e42726720d464e841d4f07181942f740",
+      "size_bytes": 97506
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/preparation-plan.md": {
+      "equal_requested_committed_basis": true,
+      "sha256": "9d14c3524cccbd6fed0f08146d4874209ba6fdf97c464c1ac62422316ffa8f8c",
+      "size_bytes": 25014
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/proposal.md": {
+      "equal_requested_committed_basis": false,
+      "sha256": "323f091caffe14f95bc9f6a32e35ba4b148e5863d4b8f01f5c3ad89b61fcc0f9",
+      "size_bytes": 15678
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md": {
+      "equal_requested_committed_basis": false,
+      "sha256": "02125ddcf5f49b356c69f77c84ec28c790fe36fcd5146a6522f8c772f31797a7",
+      "size_bytes": 50037
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/tasks.md": {
+      "equal_requested_committed_basis": false,
+      "sha256": "a504e7272e1a3fcad369a5b8f9430e438e91b7c6e42ac6b8c23cd8881c7a7e77",
+      "size_bytes": 46947
+    },
+    "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md": {
+      "equal_requested_committed_basis": false,
+      "sha256": "930b6f01e0120add4dec5918b1079f54641918e3afdfaeaddf83aa56181649ad",
+      "size_bytes": 41953
+    }
+  },
+  "requested_committed_basis": "c9566dffeeb9d50fcc1e95766481f74e8cb0d5c9",
+  "requirements": [
+    {
+      "id": "R1",
+      "line": 7,
+      "name": "Benchmark recovery has explicit execution and completion gates",
+      "proposed_scope_tags": [
+        "F",
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R1S1",
+          "line": 10,
+          "name": "Preparation succeeds",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R1S2",
+          "line": 14,
+          "name": "Readiness ages or inputs change",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R2",
+      "line": 18,
+      "name": "Native payload descriptors match immutable bytes",
+      "proposed_scope_tags": [
+        "I",
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R2S1",
+          "line": 21,
+          "name": "Correct payload and reuse",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R2S2",
+          "line": 25,
+          "name": "Incorrect digest",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R2S3",
+          "line": 29,
+          "name": "Payload bounds",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R3",
+      "line": 33,
+      "name": "Guardian preserves rejection and diagnostic evidence",
+      "proposed_scope_tags": [
+        "I",
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R3S1",
+          "line": 38,
+          "name": "Routed sealed wrong-content request",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R3S2",
+          "line": 42,
+          "name": "Invalid attribution or descriptor",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R3S3",
+          "line": 46,
+          "name": "Concurrent failures or diagnostic persistence error",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R3S4",
+          "line": 50,
+          "name": "Historical lifecycle",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R4",
+      "line": 54,
+      "name": "Retry and recovery policy is predictable",
+      "proposed_scope_tags": [
+        "F",
+        "I",
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R4S1",
+          "line": 57,
+          "name": "Retry option omitted",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R4S2",
+          "line": 61,
+          "name": "Transient offload or low storage",
+          "proposed_scope_tags": [
+            "I",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R4S3",
+          "line": 65,
+          "name": "Remote integrity mismatch",
+          "proposed_scope_tags": [
+            "I",
+            "F"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R5",
+      "line": 69,
+      "name": "Baselines and affected evidence are reproducible",
+      "proposed_scope_tags": [
+        "F",
+        "I",
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R5S1",
+          "line": 72,
+          "name": "Existing working tree differs from clean checkout",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R5S2",
+          "line": 76,
+          "name": "Packaged source changes",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R5S3",
+          "line": 80,
+          "name": "Deterministic planning replay",
+          "proposed_scope_tags": [
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R5S4",
+          "line": 84,
+          "name": "Exact source identity depends on inherited line endings",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R5S5",
+          "line": 88,
+          "name": "Stock build controller requires canonical LF metadata",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R5S6",
+          "line": 92,
+          "name": "Peer-observer unit runs on a non-WSL Linux CI host",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R5S7",
+          "line": 96,
+          "name": "Portable unit fixture preserves non-WSL rejection",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R6",
+      "line": 100,
+      "name": "Native-probe qualification path is integrated before qualification",
+      "proposed_scope_tags": [
+        "F",
+        "I",
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R6S1",
+          "line": 103,
+          "name": "Mixed-width queue properties",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R6S2",
+          "line": 107,
+          "name": "Branch identifier shorter than eight bytes",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R6S3",
+          "line": 111,
+          "name": "Policy decision names a manifest identity",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R6S4",
+          "line": 115,
+          "name": "Loaded path differs from manifest backend",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R6S5",
+          "line": 119,
+          "name": "Qualification bundle supplies a copied engine client",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R6S6",
+          "line": 123,
+          "name": "Postdecode prefix queue overflows before policy entry",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R6S7",
+          "line": 127,
+          "name": "Pre-detector queue overflows before policy entry",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R6S8",
+          "line": 131,
+          "name": "Queue-drop identity or ordering is invalid",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R6S9",
+          "line": 135,
+          "name": "Preprocessing evidence is missing without a verified prefix drop",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R6S10",
+          "line": 139,
+          "name": "Independent and shared prefix-drop coverage",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R6S11",
+          "line": 143,
+          "name": "Native stage resource sidecar",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R6S12",
+          "line": 147,
+          "name": "Pre-check fails",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R7",
+      "line": 151,
+      "name": "Published policy decisions preserve canonical linkage and actual runtime history",
+      "proposed_scope_tags": [
+        "F",
+        "I",
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R7S1",
+          "line": 154,
+          "name": "Worker traces and runtime sequence gaps enter a measurement cohort",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R7S2",
+          "line": 158,
+          "name": "Publication preserves live decision and feedback authority",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R7S3",
+          "line": 162,
+          "name": "Excluded feedback influences a measured adaptive decision",
+          "proposed_scope_tags": [
+            "I",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R7S4",
+          "line": 166,
+          "name": "Nonadaptive publication preserves strict closure without adaptive history",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R7S5",
+          "line": 170,
+          "name": "Publication mapping or original proof is corrupt",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R7S6",
+          "line": 174,
+          "name": "Runtime history or projected ordering is incomplete",
+          "proposed_scope_tags": [
+            "I",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R7S7",
+          "line": 178,
+          "name": "History input exceeds its bound or is malformed",
+          "proposed_scope_tags": [
+            "I",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R7S8",
+          "line": 182,
+          "name": "Existing strict historical records are read",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R7S9",
+          "line": 186,
+          "name": "Independent Q4 reader runs under its isolated loader",
+          "proposed_scope_tags": [
+            "I",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R7S10",
+          "line": 190,
+          "name": "Original producer success has rejected cold evidence",
+          "proposed_scope_tags": [
+            "R",
+            "I"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R8",
+      "line": 194,
+      "name": "Qualification reconciles the complete operational request domain",
+      "proposed_scope_tags": [
+        "F",
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R8S1",
+          "line": 199,
+          "name": "Allowed predecessor and pilot traffic completes",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R8S2",
+          "line": 203,
+          "name": "Unknown traffic preserves aggregate totals",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R8S3",
+          "line": 207,
+          "name": "Separate invocations repeat a wire identity",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R8S4",
+          "line": 211,
+          "name": "A measurement request finishes during drain",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R8S5",
+          "line": 215,
+          "name": "Request or terminal capture is incomplete",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R8S6",
+          "line": 219,
+          "name": "Operational evidence exceeds bounds or cannot persist",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R8S7",
+          "line": 223,
+          "name": "Domain custody or schema is invalid",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R8S8",
+          "line": 227,
+          "name": "Only legacy aggregate evidence exists",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R8S9",
+          "line": 231,
+          "name": "Source accounting defect is found before pilots",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R9",
+      "line": 235,
+      "name": "Qualification and Q4 are complete before launch readiness",
+      "proposed_scope_tags": [
+        "F"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R9S1",
+          "line": 238,
+          "name": "A269 has eight historical cells",
+          "proposed_scope_tags": [
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R9S2",
+          "line": 242,
+          "name": "Fresh qualification and Q4 succeed",
+          "proposed_scope_tags": [
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R9S3",
+          "line": 246,
+          "name": "A prerequisite is missing or fails",
+          "proposed_scope_tags": [
+            "F"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R10",
+      "line": 250,
+      "name": "Cloud admission uses an actual dated guarantee",
+      "proposed_scope_tags": [
+        "F"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R10S1",
+          "line": 253,
+          "name": "Confirmation missing",
+          "proposed_scope_tags": [
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R10S2",
+          "line": 257,
+          "name": "Sizing or readback exceeds the guarantee",
+          "proposed_scope_tags": [
+            "F"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R11",
+      "line": 261,
+      "name": "Launch handoff preserves the full experiment",
+      "proposed_scope_tags": [
+        "F"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R11S1",
+          "line": 264,
+          "name": "Unstarted package validates",
+          "proposed_scope_tags": [
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R11S2",
+          "line": 268,
+          "name": "Altered matrix or malformed command",
+          "proposed_scope_tags": [
+            "F"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R12",
+      "line": 272,
+      "name": "Documentation and conformance are truthful",
+      "proposed_scope_tags": [
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R12S1",
+          "line": 275,
+          "name": "Documentation reviewed",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R12S2",
+          "line": 279,
+          "name": "Required CI is unavailable",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R12S3",
+          "line": 283,
+          "name": "Clean checkout lacks the frozen model assets",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R12S4",
+          "line": 287,
+          "name": "Hosted test failure or interruption occurs before the suite report",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R13",
+      "line": 291,
+      "name": "Recovery first proves a bounded genuine native pair",
+      "proposed_scope_tags": [
+        "F",
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R13S1",
+          "line": 294,
+          "name": "Forced-resource diagnostic pair completes",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R13S2",
+          "line": 298,
+          "name": "Static-hybrid inputs are not yet materialized",
+          "proposed_scope_tags": [
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R13S3",
+          "line": 302,
+          "name": "Diagnostic authority or accounting is incomplete",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R14",
+      "line": 306,
+      "name": "Operations retain bounded ownership and worker termination facts",
+      "proposed_scope_tags": [
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R14S1",
+          "line": 309,
+          "name": "Worker exits during a diagnostic",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R14S2",
+          "line": 313,
+          "name": "Historical guardian already failed",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R14S3",
+          "line": 317,
+          "name": "Original launcher terminates during container ID publication",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R15",
+      "line": 321,
+      "name": "Scientific interpretation matches the executed workload",
+      "proposed_scope_tags": [
+        "F",
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R15S1",
+          "line": 324,
+          "name": "Relative quality passes despite absolute deadline misses",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R15S2",
+          "line": 328,
+          "name": "Only proxy or partial resource evidence exists",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R15S3",
+          "line": 332,
+          "name": "Frozen policy labels are placement aliases",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R15S4",
+          "line": 336,
+          "name": "Deadline and attributed elapsed measurements are saturated or confounded",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R15S5",
+          "line": 340,
+          "name": "Decoder mechanism research precedes an adopted regime",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R15S6",
+          "line": 344,
+          "name": "Research fails before source or decoder admission",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R15S7",
+          "line": 348,
+          "name": "A strict research file pin fails without original path facts",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R15S8",
+          "line": 352,
+          "name": "A mapped library has several hard links",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R15S9",
+          "line": 356,
+          "name": "Reviewed mapped-input correction precedes another research attempt",
+          "proposed_scope_tags": [
+            "R"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R16",
+      "line": 360,
+      "name": "Authorized full execution closes durable results and repository evidence",
+      "proposed_scope_tags": [
+        "F",
+        "I",
+        "R"
+      ],
+      "scenarios": [
+        {
+          "completion_claim": false,
+          "id": "R16S1",
+          "line": 363,
+          "name": "Full benchmark finishes with valid negative results",
+          "proposed_scope_tags": [
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R16S2",
+          "line": 367,
+          "name": "Accepted pairs exist when transient offload fails",
+          "proposed_scope_tags": [
+            "I",
+            "F"
+          ]
+        },
+        {
+          "completion_claim": false,
+          "id": "R16S3",
+          "line": 371,
+          "name": "Completion or final repository gate is missing",
+          "proposed_scope_tags": [
+            "R",
+            "F"
+          ]
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "scope_tag_definitions": {
+    "F": "Preserve exact full-entrypoint contract and/or original campaign clause in an explicitly unexecuted separately provisioned register; not a release completion gate.",
+    "I": "Checked original task or inherited implementation/compatibility evidence at original scope only; not current component hardware acceptance.",
+    "R": "Retain current safety/meaningful execution obligation for selected release; tag does not assert it has passed."
+  },
+  "status": "read-only unadopted acceptance-contract proposal; no authority or completion grant",
+  "tasks": [
+    {
+      "id": "1.1",
+      "line": 35,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Verify approval of this change's exact planning commit in its Draft PR and a separate apply request; record both in the implementation evidence record before code changes.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "1.2",
+      "line": 36,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Reconcile the reviewed dirty runtime into the same implementation branch without unrelated changes; verify the inspected-file manifest and record a complete source/fixture/configuration baseline and reviewed diff.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "1.3",
+      "line": 37,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Capture environment, resource settings, image/data/model identities and current process ownership; verify A269 remains retired and no duplicate worker, verifier or active stage is created.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "2.1",
+      "line": 41,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Validate envelope and 1..67,108,864-byte bounds before snapshot allocation, hash one owned snapshot, reject a mismatched supplied digest and seal that snapshot; verify correct payload, wrong digest, zero and oversized input regressions.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "2.2",
+      "line": 42,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Verify synchronized caller-buffer reuse after capture preserves transmitted bytes, upper-bound acceptance and exception/FD cleanup; ensure no test introduces an unsynchronized C++ data race.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "2.3",
+      "line": 43,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Integrate the standalone C++ client regression into normal Linux test discovery with existing GLib tooling; verify the runner actually executes it and fails on the pre-fix digest defect.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "3.1",
+      "line": 47,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Validate the control envelope and route before reserving a request, then verify payload integrity; verify exactly-once failed accounting for attributable wrong-content requests and connection-only accounting before attribution.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "3.2",
+      "line": 48,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Add the bounded immutable diagnostic and lifecycle-message/evidence hash binding described in design.md; verify safe expected/observed facts, null unknowns, no raw payload/credentials and the 8-KiB limit.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "3.3",
+      "line": 49,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Preserve original failures under concurrency or diagnostic-write failure and close received descriptors; verify no inference, retries or successful lifecycle outcome after terminal rejection.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "3.4",
+      "line": 50,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Verify existing lifecycle v1 fixtures remain valid unchanged and new evidence remains consumable by closure/snapshot validators; add focused compatibility regressions where needed.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "4.1",
+      "line": 54,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Set all four supervisor/service API/CLI unexpected-retry defaults to zero; verify omission in each interface yields one launch, no retry sleep and failed_permanent (exit 78) for unknown exits/exceptions.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "4.2",
+      "line": 55,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Verify transport/low-space transient exit 75 recovery retains the same checkpoint, accepted pairs are not remeasured, and remote integrity failures remain permanent with raw evidence retained; preserve existing reserve and offload-order coverage.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "5.1",
+      "line": 59,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Map the complete operational request-domain repair through actual source dependencies, native foundations and publication/worker image allowlists; verify every affected image, parity and downstream receipt, preserving the first three native and two worker images only if their actual closures are unchanged. Final source audit: `artifacts/benchmark_recovery_20260929/packaging-final-capture-custody-invalidation.v1.json`, physical SHA-256 `a04f31facf42591db7b3b2fa78fb1b15995c2d8803006e93a6baf2a7a046eb08`, 157 current files and 78 host sources. All four runtime images and dependent parity/host/input receipts require fresh renewal; actual native-three/worker-two source, dependency and build-context hashes equal the original freezes. This completes mapping and invalidation only; tasks 5.2-5.4 remain uncompleted.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "5.2",
+      "line": 60,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Rebuild affected images deterministically and execute packaged regressions; verify source/image receipt hashes and preserved unaffected identities after all prior repairs and the complete operational request-domain repair.",
+      "proposed_scope_tags": [
+        "R",
+        "F"
+      ]
+    },
+    {
+      "id": "5.3",
+      "line": 61,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Renew required physical parity and identity fixtures, including all 480 executions/32 groups when that closure is affected; verify original successful invocations and complete accepted receipts after all prior repairs and the complete operational request-domain repair.",
+      "proposed_scope_tags": [
+        "R",
+        "F"
+      ]
+    },
+    {
+      "id": "5.4",
+      "line": 62,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Run affected native builds/tests and one final full ext4 suite on the final source/fixture/mirror bytes; verify before/after manifests, original exit status and reviewed skip-identity differences against the historical 87 skips after all prior repairs and the complete operational request-domain repair.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "6.1",
+      "line": 82,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Produce fresh input/preprocessing receipts and canonical mount/identity checks; start one new guardian with eight authenticated workers and materialize 32 bundles/four assets, explicitly binding the complete operational accounting mode and current source/recorder custody for the new chain.",
+      "proposed_scope_tags": [
+        "R",
+        "F"
+      ]
+    },
+    {
+      "id": "6.2",
+      "line": 83,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Run the gated 180-second Savant video diagnostic for the new chain; verify its original successful terminal and physical evidence including stock canonical policy/history cold validation and the complete original operational domain before qualification.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "6.3",
+      "line": 84,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Launch the single fresh 32-cell qualification under its supported owner and record invocation identity/checkpoint; verify no A269 cells or helpers are reused.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "6.4",
+      "line": 85,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Collect all 32 successful cells, authenticated stop/lifecycle/closure and policy/resource promotion; verify every physical descriptor and accepted validator result before Q4.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "10.1",
+      "line": 89,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Read reset-check queue levels at their declared width and add a discovered native regression that fails on the pre-fix read (c61328db).",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "10.2",
+      "line": 90,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Raise the OpenVINO GVA and GStreamer Custom container task ceiling to 4096 with runtime tests (0f25cb41).",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "10.3",
+      "line": 91,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Limit decode-stage artifacts to loaded GStreamer factories with a regression that fails on the pre-fix list (0f25cb41).",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "10.4",
+      "line": 92,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Validate native policy identifiers by manifest grammar and frozen branch membership; verify `damage` is accepted and invalid names still rejected.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "10.5",
+      "line": 93,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Bind CPU and GPU native policy identities to the frozen qualification-v2 manifest per design decision 8 and verify the loaded analytics path matches the manifest backend; add positive and fail-closed regressions.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "10.6",
+      "line": 94,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Accept the qualification bundle's copied, hash-verified container-engine client in the GStreamer Custom runtime; verify containment and byte mismatches are rejected.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "10.7",
+      "line": 95,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Handle only verified native queue drops before policy entry as one correctly linked branch drop with no policy/inference call; add executable native or deterministic adapter-level regressions for both queues and topologies and fail-closed regressions for wrong provenance/reason, orphan/duplicate PTS before emission and post-entry drop.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "10.8",
+      "line": 96,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Bind publication stage and resource-attribution checks to verified branch-level drop provenance: require decode but not fabricated preprocessing for a postdecode prefix drop, require both for pre-detector drops and completed branches, enforce shared all-or-none prefix drops, and version the changed measurement stage-reduction signature; verify independent mixed/all-prefix and shared all-prefix outcomes plus malformed provenance and missing/extra intervals with executable positive/negative tests.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "10.8.1",
+      "line": 97,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Produce and validate the native-probe `resource_events.csv` from accepted physical frame-stage intervals before publication for both OpenVINO GVA and GStreamer Custom; verify exact stage/duration/provenance coverage, prefix-drop omission, malformed/duplicate/unmatched accepted-ingress interval rejection, existing-file rejection and call order, while excluding warmup and drain events.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "10.9",
+      "line": 98,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Renew affected images, parity, identity fixtures and the final exact-byte suite after all prior repairs and the complete operational request-domain repair, then run one fresh nonpromoting CPU and GPU pre-check per native-probe system to its original successful terminal with its complete original operational domain before 6.2-6.4; preserve all historical failed and passed chains and each guardian's actual lifecycle without reuse.",
+      "proposed_scope_tags": [
+        "R",
+        "F"
+      ]
+    },
+    {
+      "id": "11.1",
+      "line": 102,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Implement reversible versioned measurement projection using native input-frame/accepted-ingress mapping, original CSV feature provenance and dense decision ordinals in CSV/JSONL/request; verify original issued/accepted hashes, evaluations and native worker/branch/PTS evidence while keeping live engine records and wire decisions unchanged.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "11.2",
+      "line": 103,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Capture, exclusively write and bind bounded actual adaptive issuance/feedback history from the actual initial reset, including excluded predecessors and interleaved feedback; preserve raw feedback payloads/hashes and nonadaptive evidence namespaces, and verify complete terminal closure, strict schema/count/byte bounds and no duplicate/orphan events.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "11.3",
+      "line": 104,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Integrate strict reconstruction/history replay into generic frozen decision/feedback validation, qualification and the self-contained independent Q4 v4 reader, preserving legacy strict behavior and actual capability authority; run discovered positive/negative coordinator-to-cold-validator regressions for trace/sequence filtering, adaptive predecessor/interleaving, immutable issued-hash authority, corrupt mapping/hashes/history and malformed/oversized evidence, including the actual isolated Q4 verified-byte loader.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "11.4",
+      "line": 105,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Independently review projection/history conformance, map the exact changed modules through all image/source allowlists and update the invalidation/verification evidence; verify no old f receipt is rebound to changed bytes before 5.2-5.4, 6.1 and 10.9 renewal.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "12.1",
+      "line": 109,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Independently review the coherent amended planning artifacts, commit/push them in the same Draft PR and record delegated approval at that exact planning commit; prove source-derived recorder-budget feasibility and preserve original g's already-failed nonpublication terminal, actual lifecycle/manager and eight-worker cleanup evidence together with its successful historical producer/cold checks. Verify current ownership before new source edits; never fabricate a retrospective clean stop or OOM cause. Evidence: planning commit `0cf5f946100db8d3844ae1b6352058eada5f6f92`, delegated PR review 5358138056, frozen ordinary-JSON budget proof SHA-256 `4d2aa0945fb0a6aeb55d90579efcdbe8f55c45033467afc5a3eb45a9d92d34ed` and conditional review `b5861cab32c262f92f81cfc62db9f05ca607dba6856f91a46c2493106b46e5be`, original stop investigation `a2369f3548ae908313c984c86e1f3c7219d94ada2a95d16341e140688bef6eaf`. This completes planning/feasibility/custody only, not runtime acceptance.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "12.2",
+      "line": 110,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Retain and exclusively write complete all-policy original native operational domains as ordinary canonical JSONL accepted/request/path/terminal records, verifying exact issued reconstruction and unchanged native-binding hashes; implement bounded ordinary JSON guardian front begin/terminal journals with independently validated immutable constant references. Prove 9,216-byte producer and 768/256-byte guardian record caps from actual constructors, sticky recording failures, terminal reservations and authenticated-stop flush/join without changing lifetime counters, native wire decisions or adaptive history semantics.",
+      "proposed_scope_tags": [
+        "R",
+        "F"
+      ]
+    },
+    {
+      "id": "12.3",
+      "line": 111,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Bind explicit complete-qualification mode, exact original operation/output reservations and actual terminal/domain custody; implement strict bounded cold multiset reconciliation of all 37 allowed producing invocations with guardian begin/completion and all eight lifetime worker totals, separately preserving strict 32-cell measurement projection and legacy/inactive readers. Add a separately bound exactly-two-operation diagnostic context with identical identity/multiplicity rules and proved lower bounds; it cannot satisfy qualification by fabricated entries or file-presence activation.",
+      "proposed_scope_tags": [
+        "R",
+        "F"
+      ]
+    },
+    {
+      "id": "12.4",
+      "line": 112,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Run discovered positive, negative, compatibility, bound and custody regressions from verification-plan.md section 5C and independent source/conformance review; prove missing/extra/duplicate/wrong-domain identities, incomplete stops and malformed/oversized evidence fail closed before renewed 5.1-5.4, 6.1 and 10.9 are completed.",
+      "proposed_scope_tags": [
+        "R",
+        "F"
+      ]
+    },
+    {
+      "id": "7.1",
+      "line": 116,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Start the accepted-policy guardian and generate Q4 source request/material, phase1 plan/runtime registry, phase2 and two-phase source registry; verify exact receipt file/semantic hashes and reviewed ordered executor argv.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "7.2",
+      "line": 117,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Launch phase A under one recorded owner/checkpoint; verify persistent invocation identity and supported observation/resume procedures without duplicate launch.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "7.3",
+      "line": 118,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Observe phase A to its original terminal and verify all 560 accepted records; preserve failures and block boundary on incompleteness.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "7.4",
+      "line": 119,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Execute the identity/grant boundary in the same Q4 work directory; verify accepted identities, grants and checkpoint transition.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "7.5",
+      "line": 120,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Launch phase B with the same owner/checkpoint; verify persistent invocation identity and no phase-A remeasurement.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "7.6",
+      "line": 121,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Observe phase B to its original terminal and verify all 560 records, 280 derived sizing pairs and persisted backend binding; reject partial or substituted historical evidence.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "8.1",
+      "line": 125,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Obtain current dated operator capacity confirmation for the existing destination and materialize attestation from actual Q4 sizing; verify the stock capacity formula and successful live upload/readback without exposing capability links.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "8.2",
+      "line": 126,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Generate and replay the canonical full-run plan from accepted identities; verify frozen hashes, 2,800 pairs/5,600 arms, order/seeds/durations/analysis settings and zero executed full-run arms.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "8.3",
+      "line": 127,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Complete live preflight with current guardian/backend identities and storage/memory checks; verify every prerequisite and the 20-GiB reserve on required volumes, recording observation time and expiry conditions.",
+      "proposed_scope_tags": [
+        "R",
+        "F"
+      ]
+    },
+    {
+      "id": "8.4",
+      "line": 128,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Materialize and validate the initially unstarted service package using canonical paths and explicit zero unexpected retries; verify receipt hashes and record actual non-starting state at that gate. Installation/start is authorized after all current prerequisite gates and belongs to task 15, not package validation alone.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "9.1",
+      "line": 132,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Publish the checked preparation runbook and link README/PLAN/progress while preserving historical facts and PLAN obligations; verify Bash syntax, variable allowlist, current flags and the stopping boundary.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "9.2",
+      "line": 133,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Deliver and maintain the evidence packet from design.md with actual accepted gates, observation times, dependency identities, arm/pair/offload counts and original outcomes. Before launch record full_run_started=false/publication_ready=false; after authorized execution record actual state. Never grant readiness/completion from a generated package or leave unresolved gates marked complete.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "9.3",
+      "line": 134,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Complete requirement/scenario conformance using verification-plan.md and review the final diff; verify each implementation/evidence location, actual test result, remaining manual limitation and latest commit. Reconcile the runbook's historical stopping boundary with the newly authorized full scope; completion depends on tasks 15-16 and actual final results, CI and archive.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "13.1",
+      "line": 138,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Build one coherent capability/source fixture shared by the real NativePolicyCoordinator and guardian front transport; reproduce warmup/measurement/drain closure failure before repair and pass after it without mocking the validators being tested. Execute the packaged regression in the first affected runtime image and audit actual image/import authority dependencies before renewal.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "13.2",
+      "line": 139,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Add a narrow nonpromoting two-entry diagnostic adapter selecting GStreamer baseline/shared NativePublicationRequestV3 contracts from existing current candidate/bootstrap/preprocessing/runtime-input materialization and invoking run_checkpoint_gstreamer_publication_runtime_v3/stock cold validators. Bind explicit two-operation accounting, actual source/model/preprocessing/capability/reset evidence and cold-validated measurements. Preserve six streams/four models, seed 20260323, 30-second warmup/180-second measurement and graph semantics; no ad hoc runner, parity-reuse authority framework or qualification/production grant.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "13.3",
+      "line": 140,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "After all four affected runtime builds and normal fresh patch-bound 480-execution/32-group parity satisfy the stock authority spine, execute one forced-CPU independent/shared pair and one separately scoped forced-GPU pair with one owned guardian per pair and symmetric worker warmup. Preserve native-three/worker-two identities only with exact unchanged-closure proof. Verify original terminals, complete operational union, strict measured evidence, actual resource/model provenance and bounded cold replay; keep results diagnostic-only and outside all qualification/Q4/full counts, without rebinding old aggregate acceptance.",
+      "proposed_scope_tags": [
+        "R",
+        "F"
+      ]
+    },
+    {
+      "id": "13.4",
+      "line": 141,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Implement/review the missing nonpromoting static diagnostic policy/context, narrowly scoped guardian preprocessing loader and runtime-input authority. Reuse existing physically current branch/resource calibration with at least 30 samples and existing exhaustive 14 mixed assignments/exact map equality; keep coordinator/math/lower-hook validators unchanged. Original forced candidate/bootstrap/preprocessing receipts retain their scope and are never rebound/relabelled. Execute a genuine static-hybrid pair only after its actual new context passes; never use a hand-selected map, forced receipt as static grant or manufactured qualification/production grant.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "13.5",
+      "line": 142,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Record scientific interpretation and durable diagnostic results: common external inference workers imply topology/scheduling/transport comparison, topology_load_proxy_only remains explicit, absolute deadline misses and quality/noninferiority remain separate, and valid negative effects remain publishable. Review the chosen recovery approach again against observed evidence before generalization.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "13.6",
+      "line": 143,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Preserve immutable failed attempt01/v1,02/v2 and03/v3 with independently verified owned cleanup; retain original diagnostics and corrected CID/cleanup/explicit[] initialization. Apply decision20 only after exact planning review: explicit mapped-library device/inode join with positive links, unchanged strict default Pins/cache roles and every size/hash/epoch/ancestor/first-error/cap check. Pass genuine mmap/file/tiny-process acceptance and mutation/mismatch/deleted/conflict/limit negatives; independently freeze exact artifact-v4 and saved dispatcher before one fresh attempt04 of the same four original-media/packaged-source/decoder32-AU prefixes/central9-24 and all original limits. Require complete output correctness/order, original binary/plugin/library/process/container receipts and independent raw validation before completion. No automatic retry, cohort search, scientific adoption or model/parity/pair/qualification count is granted by setup repair.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "13.7",
+      "line": 144,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Record the global HEFT/deadline-aware HEFT placement equivalence in analysis/claim interpretation as an alias/expected algorithmic null control, retaining frozen labels/coordinates and real run noise. Report saturated guardrail sensitivity and C_obs partial wall-stage attribution without compute/energy/SLO or distinct-policy claims; preserve raw estimands/formulas unless separately amended.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "14.1",
+      "line": 148,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Map supported launch/owner/checkpoint/stop paths and implement receipt-last operation custody, bounded startup/drain and original process/container/lifecycle evidence; verify duplicate-owner rejection and cleanup limited to authenticated resources owned by the operation.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "14.2",
+      "line": 149,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Capture bounded original worker termination facts, engine exit/signal and actual OOMKilled/cgroup/kernel evidence when available, with explicit unknowns and bounded stderr tails. Verify abrupt worker death remains failed/nonpublication, all owned handlers/workers close within reviewed limits and the original cause is retained without a replacement worker or automatic unrecognized retry.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "14.3",
+      "line": 150,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Exercise startup failure, drain timeout, worker exit 137, missing engine/kernel observations and recorder persistence failure through real supported ownership boundaries. Preserve original g's observed failure separately; verify no diagnostic result implies OOM or clean retirement without the corresponding original evidence.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "15.1",
+      "line": 154,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Complete current factual capacity admission from actual Q4 sizing and successful live upload/readback, renewing only expired affected gates. If the actual dated guarantee is unavailable, record the concrete blocker; any local-storage alternative requires reviewed destination/reserve/offload design and measured capacity before use.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "15.2",
+      "line": 155,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Install/start the exact validated service receipt after current live preflight and record its supported original owner/checkpoint. Execute the frozen 5,600 arms/2,800 pairs without shortening the matrix, substituting diagnostics or remeasuring accepted pairs; observe original outcomes and supported same-checkpoint recovery through transient exit 75 while permanent identity/integrity failures stay 78.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "15.3",
+      "line": 156,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Verify every accepted arm/pair, paired ingress/model/resource/analysis identity and verified upload/readback/cleanup ledger with stock verify and finalize; preserve valid negative effects and missed absolute SLOs. Require complete durable manifests/tables/plots and zero unresolved operational or storage acceptance gaps.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "15.4",
+      "line": 157,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Run finalized-only stock export, independently reproduce frozen deterministic analysis and reconcile factual completion/publication fields with all 5,600/2,800 results, verified transactions and original terminals. Update the durable recovery plan and final evidence packet; partial results remain explicitly partial.",
+      "proposed_scope_tags": [
+        "F"
+      ]
+    },
+    {
+      "id": "16.1",
+      "line": 161,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Configure and execute actual required CI structure/format/build/test/conformance gates. Apply decision21 portable peer read fixture with genuine proc FD custody/bounds/close and direct non-WSL rejection, leaving production byte-identical; retain actual hosted53 original failure and scope. Apply decision19 exact eight-model ephemeral acquisition and immediate per-test/traceback/elapsed,60s stacks and16KiB hosted facts; pass bounded acquisition/corrupt-cache/redirect/timeout/diagnostic regressions. Preserve full discovery, required three native successes,90-minute job and broker600000/615000-ms constraints. Diagnose actual hosted peer/production exceptions before a separately reviewed platform remedy; prove CI-only dependency scope. Latest-source complete hosted build/suite/source-after/report is required, with physical GPU evidence distinct and remaining hardware/conformance limitations explicit.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "16.2",
+      "line": 162,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Verify final implementation against every requirement/scenario and reviewed design/task, run required checks on final bytes and resolve critical failures; record warnings and manual/hardware evidence with exact commit identities.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "16.3",
+      "line": 163,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "After every implementation/completion task passes, use the supported OpenSpec sync/archive workflow in this same branch/PR; preserve unaffected main requirements and all archived documents including .openspec.yaml, inspect the actual archive path, commit/push and verify latest-commit CI/conformance against archived requirements.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "16.4",
+      "line": 164,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": false,
+      "original_completion_state_changed": false,
+      "original_text": "Obtain delegated exact-commit final review under the user's authorization, reconcile any amendments before dependent work, and remove Draft/merge only after actual required checks, archived source and final approval are present. No incomplete change is archived as achieved and no unavailable CI is claimed as green.",
+      "proposed_scope_tags": [
+        "R"
+      ]
+    },
+    {
+      "id": "17.1",
+      "line": 168,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Retain the reviewed finite156-path `-text !eol` block, nine source LF contracts and22 original raw replacements at79ff. After exact amendment review, append only the ten separately pinned controller `text eol=lf` rules, staging attributes alone without rewriting/staging their already canonical manifests. Reverify165 physical/index/source descriptors and original aggregate separately from ten LF controller descriptors, unchanged native3/worker2/four-runtime/78-host closures and effective attributes; preserve unrelated dirty files and original evidence.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "17.2",
+      "line": 169,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Prove two fresh initial checkouts of the exact corrected source commit with autocrlf false and true reproduce165 raw bytes/original aggregate plus ten canonical-LF controller inputs, clean175 declared inputs/attributes and unchanged stock all9/78 contexts. Bind original-repository planning ancestry, exact shallow source commit, actual new checkout identities/effective attributes, original command terminals and immutable proof; record legitimate directory nlink changes separately and parser line-ending equivalence outside165. Preserve the original failed true checkout and every prior failure; no prior inode witness is rebound.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    },
+    {
+      "id": "17.3",
+      "line": 170,
+      "mixed_task_original_complete_from_selected_slice": false,
+      "original_checked": true,
+      "original_completion_state_changed": false,
+      "original_text": "Record independent review and conformance of byte reproducibility, retain current image evidence only within unchanged stock scope with required live inspection, and update the durable plan/continuation checkpoint before broad renewal.",
+      "proposed_scope_tags": [
+        "I"
+      ]
+    }
+  ],
+  "workloads_launched": false
+}

@@ -1,0 +1,155 @@
+{
+  "artifact_kind": "vast_independent_hosted_two_unit_review_v1",
+  "commit": "1f600aeb248a105d670010965051f5d9ba0cd7b4",
+  "disposition": "confirmed two original hosted diagnostic units passed; no full CI acceptance",
+  "inputs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/cpu-host-diagnostics-run-36680835900/original-artifact.zip",
+      "sha256": "2d52f35fd5319c1c937d85964b558e867291756dc62e0d1b280b5e9d10b20950",
+      "size_bytes": 166750
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/cpu-host-diagnostics-run-36680835900/artifact-api.original.json",
+      "sha256": "1da04ce5ff3c7309f8f1cccfc9436c11bf946d1a889836e9d8dc98cf0657ea86",
+      "size_bytes": 886
+    }
+  ],
+  "job_id_reported_by_root": 109775696125,
+  "limits": [
+    "The report and original test logs directly establish exactly two unit successes on the recorded Ubuntu host; unit fixture bytes are not actual WSL platform authority.",
+    "Downloaded model bytes are not in this ZIP. This review checks original successful acquisition/model-unit records, not an independent hash of the absent raw assets or model inference.",
+    "The artifact API binds the original archive/run/commit; no new job/status/network query or test/workload was performed. Root independently observed job success.",
+    "Full discovery/build/conformance and GPU/scientific benchmark acceptance remain separate and are not granted by this diagnostic success."
+  ],
+  "original_members": [
+    {
+      "name": "report.json",
+      "sha256": "7c5a24689838f24a3268699f267b71d15496460a2f14de20a71e869cc372c373",
+      "size_bytes": 1460
+    },
+    {
+      "name": "host-prerequisites.json",
+      "sha256": "7940e7342a262ce14a02733fb1ad3b8951d37f6ee903ee209f8daf2aa018272b",
+      "size_bytes": 877
+    },
+    {
+      "name": "host-prerequisites.stderr",
+      "sha256": "09b7f2eb4f8b8901ddeb58597be48bd1a8599afd164a0bd279186972693bbd4f",
+      "size_bytes": 1346
+    },
+    {
+      "name": "tracked-source.before.json",
+      "sha256": "7c13aea1c9186cbab25d6a14bd95a92e2c6aa93a2402ae3a6b1abf950970e612",
+      "size_bytes": 296688
+    },
+    {
+      "name": "tracked-source.after.json",
+      "sha256": "7c13aea1c9186cbab25d6a14bd95a92e2c6aa93a2402ae3a6b1abf950970e612",
+      "size_bytes": 296688
+    },
+    {
+      "name": "model-acquisition/report.json",
+      "sha256": "f1d34fd5def87bc366c3e59bad32dac759954f1a65b38ce107c505688aa2acb3",
+      "size_bytes": 3469
+    }
+  ],
+  "reviewed_at_utc": "2026-09-30T07:11:53.382131+00:00",
+  "reviewer": "adversarial_review",
+  "run_id": 36680835900,
+  "schema_version": 1,
+  "selected_source_pins": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "ca182d794d66a14091cf64d95474e3359efa0d8490692086505bfa11a258aba2",
+      "size_bytes": 3969
+    },
+    {
+      "path": ".ci/model-assets.v1.json",
+      "sha256": "225db21da5943a34d35c41e61c4fcda9623dd4e5eb973d7975d450ff421edab7",
+      "size_bytes": 5124
+    },
+    {
+      "path": ".ci/requirements.txt",
+      "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+      "size_bytes": 454
+    },
+    {
+      "path": "scripts/prepare_ci_model_assets.py",
+      "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+      "size_bytes": 30314
+    },
+    {
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "61c356c6bfae8d808ff4db1becee7385cd5ccebc9505b9a482e691c1a89d56ea",
+      "size_bytes": 17273
+    },
+    {
+      "path": "scripts/run_ci_host_diagnostics.py",
+      "sha256": "d71dc7dbed53be1a10db8a27af5cce43158c2114f95670fe1d0b4c6a3aa99875",
+      "size_bytes": 3588
+    },
+    {
+      "path": "scripts/analytics_model_contract.py",
+      "sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62",
+      "size_bytes": 15765
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "05c958f75564577465f5031dcb52010be990516c01f9e7b0504926abe9ccf55a",
+      "size_bytes": 293953
+    },
+    {
+      "path": "configs/checkpoint_analytics_models_openvino.yaml",
+      "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+      "size_bytes": 7885
+    },
+    {
+      "path": "tests/test_analytics_peer_identity.py",
+      "sha256": "3f9876f3b494c8d3579f8017893c9db349ce361b6c76cfe2e3858978b94280a8",
+      "size_bytes": 21089
+    },
+    {
+      "path": "tests/test_analytics_model_contract.py",
+      "sha256": "40eaeec0e15d484ace73a47b8f5e58b6553addf775511ca2a9aec165a9e2f505",
+      "size_bytes": 9249
+    },
+    {
+      "path": "tests/test_run_ci_checks.py",
+      "sha256": "c96381a8ceea61844d403104d68cc17192ba1007b2ee9a04503195bdae4b05e2",
+      "size_bytes": 7769
+    },
+    {
+      "path": "tests/test_prepare_ci_model_assets.py",
+      "sha256": "cbbbb4fe9ba0f5890966023ed28a8663f9b4f7f8c660d8fe8ad885b4e7718e3c",
+      "size_bytes": 23773
+    }
+  ],
+  "sha256": "646968ea407c11d3a4f14fbde47efbfcbd3bfec4d665323d9468904bac5c6cda",
+  "verification": {
+    "actual_successful_tests": [
+      {
+        "elapsed_s": 0.021999170000000845,
+        "event": "test_terminal",
+        "monotonic_ns": 67414227703,
+        "outcome": "success",
+        "test_id": "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound"
+      },
+      {
+        "elapsed_s": 0.0010252750000034894,
+        "event": "test_terminal",
+        "monotonic_ns": 67415329165,
+        "outcome": "success",
+        "test_id": "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+      }
+    ],
+    "before_after_raw_bytes_equal": true,
+    "decoded_bytes": 628725,
+    "eight_assets_downloaded_report_elapsed_s": 8.128806876999995,
+    "original_process_elapsed_s": 1.1168754389999975,
+    "original_process_returncode": 0,
+    "original_process_timed_out": false,
+    "safe_unique_CRC_read_members": 51,
+    "selected_original_git_blob_bindings": 13,
+    "tracked_before_after_records": 1547
+  }
+}

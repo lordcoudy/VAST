@@ -1,0 +1,364 @@
+{
+  "actual_original_cli_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 42153,
+    "pid": 42153,
+    "ppid": 42151,
+    "startticks": 28495618,
+    "uid": 1000
+  },
+  "actual_original_guardian_owner": {
+    "gid": 1000,
+    "pid": 42412,
+    "proc_stat_starttime_ticks": 28504575,
+    "uid": 1000
+  },
+  "actual_original_outer_elapsed_s": 804.3636947160121,
+  "all_phase_reconciliation": {
+    "artifact_kind": "vast_complete_operational_reconciliation_v1",
+    "comparison_sha256": "f4f3dc3c0d74ff769b557d4c26f61c2d6ac6e80a37a222788717f4d5f65967fe",
+    "connections_accepted": 31,
+    "excluded_request_count": 1262,
+    "measurement_request_count": 7097,
+    "mode": "bounded_native_diagnostic_operational_v1",
+    "operations": [
+      {
+        "excluded_request_count": 646,
+        "measurement_request_count": 3659,
+        "ordinal": 0,
+        "request_count": 4305
+      },
+      {
+        "excluded_request_count": 616,
+        "measurement_request_count": 3438,
+        "ordinal": 1,
+        "request_count": 4054
+      }
+    ],
+    "original_operation_count": 2,
+    "publication_authority": false,
+    "request_count": 8359,
+    "requests_by_worker": {
+      "damage:cpu": 2193,
+      "damage:gpu": 0,
+      "foreign_object:cpu": 1651,
+      "foreign_object:gpu": 0,
+      "plate_number:cpu": 2311,
+      "plate_number:gpu": 0,
+      "vehicle_type:cpu": 2204,
+      "vehicle_type:gpu": 0
+    },
+    "schema_version": 1
+  },
+  "artifact_kind": "vast_cpu06_ext4_actual_closed_audit_metadata_review_v1",
+  "benchmark_accepted_cpu_component_only": true,
+  "cold_pair": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/cold-pair/component_pair_result.v1.json",
+    "sha256": "a44e07d2f943de47789ce2fd7eb6f20610da1849268a18603aed5a6a80251841",
+    "size_bytes": 18461
+  },
+  "elapsed_after_release_s": 0.03805263701360673,
+  "first_reviewer_failure": {
+    "cause": "Wrong observer schema assumptions: source controller intentionally records accepted:false,6 document inputs and87 sources; actual CLI status component_pair_complete. Original producer/auditor success unchanged. Finally closed all reviewer FDs.",
+    "returncode": 1,
+    "scope": "metadata reviewer only",
+    "tool_chunk": "50091e"
+  },
+  "fresh_two_actual_process_scans": [
+    {
+      "actual_pid_absence": {
+        "42151": true,
+        "42153": true,
+        "42412": true,
+        "47414": true,
+        "47415": true
+      },
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "errors": [],
+      "members": [],
+      "observed_at_ns": 1790804167128308414
+    },
+    {
+      "actual_pid_absence": {
+        "42151": true,
+        "42153": true,
+        "42412": true,
+        "47414": true,
+        "47415": true
+      },
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "errors": [],
+      "members": [],
+      "observed_at_ns": 1790804167129667555
+    }
+  ],
+  "full_publication_q4_accepted": false,
+  "gpu_accepted": false,
+  "guardian_authenticated_stop": true,
+  "late_companion_absent": true,
+  "limitation": "Second gate checks original closed metadata/source and actual process absence; reviewed original auditor already verified95 full bytes/7epochs. No repeated weight reads/cold/native/engine/model/test operation.",
+  "metadata_witnesses": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/review.v1.json",
+        "sha256": "e2b54ad5c3cb06850a63b7a74cf6d60ff0f3e421c5fc6ddefdd30e8646f5cb37",
+        "size_bytes": 18004
+      },
+      "epoch": [
+        69,
+        1407374885977267,
+        33279,
+        1,
+        18004,
+        1790803668564513500,
+        1790803668564513500
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/held-inputs-and-processes.v1.json",
+        "sha256": "2ac074233e8c322215127de44b35d4e149d5652e416f7bafeac50baaf5e23a4c",
+        "size_bytes": 128254
+      },
+      "epoch": [
+        69,
+        1407374885977266,
+        33279,
+        1,
+        128254,
+        1790803668561554200,
+        1790803668561554200
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/dispatch.terminal.v1.json",
+        "sha256": "ea39ddfca7075300bdd9f746cfafecd0f9a1c5aa2ee6f6a75c28ca7138c0b202",
+        "size_bytes": 1619
+      },
+      "epoch": [
+        69,
+        1407374885977268,
+        33279,
+        1,
+        1619,
+        1790803668617477300,
+        1790803668617477300
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/dispatch.launch.v1.json",
+        "sha256": "774827c619226e497eff5fad1f6131d1a64cab630d0a718658d1bec92df0112e",
+        "size_bytes": 1174
+      },
+      "epoch": [
+        69,
+        1407374885977262,
+        33279,
+        1,
+        1174,
+        1790803668491573300,
+        1790803668491573300
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/audit_v2.py",
+        "sha256": "e8e7e72280d2971d677763f512b0bede8710550c7a9518b6f19e779ad12e1d98",
+        "size_bytes": 17876
+      },
+      "epoch": [
+        69,
+        1407374885977216,
+        33279,
+        1,
+        17876,
+        1790803172523495000,
+        1790803172523495000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/dispatch_v2.py",
+        "sha256": "2264e57b2b012b6a4ed6b5b7bf8935939b1ba2a9086e1fe175b77b02ee67f33a",
+        "size_bytes": 1998
+      },
+      "epoch": [
+        69,
+        1407374885977217,
+        33279,
+        1,
+        1998,
+        1790803172535425000,
+        1790803172535425000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/audit.stdout.v1.raw",
+        "sha256": "44195615a299b1259699e7a3a067466cdc57f4667e71fa3a383e3aa81d1611ea",
+        "size_bytes": 289
+      },
+      "epoch": [
+        69,
+        1407374885977263,
+        33279,
+        1,
+        289,
+        1790803668565914000,
+        1790803668565914000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/audit.stderr.v1.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "epoch": [
+        69,
+        1407374885977264,
+        33279,
+        1,
+        0,
+        1790803668494039700,
+        1790803668494039700
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/original.terminal.v1.json",
+        "sha256": "e87c878c725f309cf344f27926cb6e12647e839a8f5745084b69619c090d3db9",
+        "size_bytes": 88066
+      },
+      "epoch": [
+        2096,
+        552972,
+        33188,
+        1,
+        88066,
+        1790803446181261888,
+        1790803446181261888
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/component_cli_terminal.v1.json",
+        "sha256": "325b61a733baaa6b304131d6b45e4b612d29d7e4212521d0f7d4a0ef231f5b99",
+        "size_bytes": 8836
+      },
+      "epoch": [
+        2096,
+        552971,
+        33060,
+        1,
+        8836,
+        1790803445977250060,
+        1790803445977250060
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/cold-pair/component_pair_result.v1.json",
+        "sha256": "a44e07d2f943de47789ce2fd7eb6f20610da1849268a18603aed5a6a80251841",
+        "size_bytes": 18461
+      },
+      "epoch": [
+        2096,
+        552968,
+        33060,
+        1,
+        18461,
+        1790803440944960098,
+        1790803440944960098
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/cold-pair/component_pair_metrics.csv",
+        "sha256": "5c6920d63c5b10b29e75fbb07697670c9bbb4a06c1b1c2c6b931022a6a607107",
+        "size_bytes": 617
+      },
+      "epoch": [
+        2096,
+        552965,
+        33060,
+        1,
+        617,
+        1790803439600884288,
+        1790803439600884288
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/cold-pair/component_pair_latency_ecdf.svg",
+        "sha256": "adcdde3d39907ec488a76060860068c3352a2747fa2b00abe5bf0971e63892c9",
+        "size_bytes": 89272
+      },
+      "epoch": [
+        2096,
+        552966,
+        33060,
+        1,
+        89272,
+        1790803439680888801,
+        1790803439680888801
+      ]
+    }
+  ],
+  "original_audit95_before_after_current_equal": true,
+  "original_audit_dispatcher": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/dispatch_v2.py",
+    "sha256": "2264e57b2b012b6a4ed6b5b7bf8935939b1ba2a9086e1fe175b77b02ee67f33a",
+    "size_bytes": 1998
+  },
+  "original_audit_elapsed_s": 0.1327674980275333,
+  "original_audit_fds_released": true,
+  "original_audit_reader": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/audit_v2.py",
+    "sha256": "e8e7e72280d2971d677763f512b0bede8710550c7a9518b6f19e779ad12e1d98",
+    "size_bytes": 17876
+  },
+  "original_auditor_retained_inputs_count": 149,
+  "original_cli_status": "component_pair_complete",
+  "original_cli_terminal": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/component_cli_terminal.v1.json",
+    "sha256": "325b61a733baaa6b304131d6b45e4b612d29d7e4212521d0f7d4a0ef231f5b99",
+    "size_bytes": 8836
+  },
+  "original_completed_frames_per_arm": [
+    559,
+    676
+  ],
+  "original_dispatch_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/dispatch.terminal.v1.json",
+    "sha256": "ea39ddfca7075300bdd9f746cfafecd0f9a1c5aa2ee6f6a75c28ca7138c0b202",
+    "size_bytes": 1619
+  },
+  "original_ingress_per_arm": 1080,
+  "original_outer_capture_accepted_false_preserved": true,
+  "original_outer_capture_input_count6_source_count87_preserved": true,
+  "original_outer_terminal": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/original.terminal.v1.json",
+    "sha256": "e87c878c725f309cf344f27926cb6e12647e839a8f5745084b69619c090d3db9",
+    "size_bytes": 88066
+  },
+  "original_review": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/review.v1.json",
+    "sha256": "e2b54ad5c3cb06850a63b7a74cf6d60ff0f3e421c5fc6ddefdd30e8646f5cb37",
+    "size_bytes": 18004
+  },
+  "original_witness": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-ext4-postterminal-audit-preparation-v1/held-inputs-and-processes.v1.json",
+    "sha256": "2ac074233e8c322215127de44b35d4e149d5652e416f7bafeac50baaf5e23a4c",
+    "size_bytes": 128254
+  },
+  "reserve_absent": true,
+  "reviewer_metadata_fds_released": true,
+  "schema_version": 1,
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "status": "accepted_original_cpu_component_boundary",
+  "task_18_8_complete": true
+}

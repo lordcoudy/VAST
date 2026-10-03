@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_cpu05_audit_preparation_source_correction_v2",
+  "state": "prepared_unexecuted",
+  "prior_helper": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/audit.py",
+    "size_bytes": 14872,
+    "sha256": "00896057c77dad21da13170094d8c0111b90084a06d774406aa837459cac09c7"
+  },
+  "current_helper": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/audit_v2.py",
+    "size_bytes": 14934,
+    "sha256": "f427ad804ffaeeca941dc7e07d87bc4344ccad8f717c45742a0d65ab685dffef"
+  },
+  "prior_preparation": {
+    "path": "artifacts/benchmark_recovery_20260930/component-cpu05-postterminal-audit-preparation-v1/preparation.v1.json",
+    "size_bytes": 2471,
+    "sha256": "1d2cf24a0c22283a2e9b64fd75f138518a0e87ea4c1ef0024cee6409c0eaf375"
+  },
+  "correction": "Source reread found that the shared native leaf seals canonical JSON with ensure_ascii=True and allow_nan=False. V2 uses that unchanged exact canonical encoding for seal verification and derives hold_release from actual FD-close success. Original prepared v1 was never executed and remains preserved.",
+  "production_reference": {
+    "path": "scripts/publication_operational_request_domain_v1.py",
+    "lines": [
+      73,
+      75,
+      81,
+      84
+    ]
+  },
+  "dispatch_condition": "Root must first report original CPU05 terminal/closed outputs and actual original outer SHA/size. No active original output was read."
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "vast_four_arm_science_version_precision_addendum_v1",
+  "reviewer": "/root/adversarial_review",
+  "original_result_review_sha256": "21af3b2aefc8d1a8eb5c4785253843e0b950b94bcbd3536fda5e2e3f8346ddd7",
+  "actual_export": {
+    "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/attempt01/exports-and-interpretation.v1.json",
+    "size_bytes": 11407,
+    "sha256": "0700a387be61f1bbd6c8cb9f71d32d6b1182aa4e8ce79815037cdf10b07aa88c",
+    "matplotlib_package_version": "3.11.1",
+    "font_manager_cache_format_version": "3.11.0",
+    "font_cache_filename": "fontlist-v3.11.0.json",
+    "font_cache_size_bytes": 64333,
+    "font_cache_sha256": "0724fda53f218ca775dcb998f0b27f587d5f0cc9cbcfbb0540fd718857d82e18"
+  },
+  "clarification": "Prepared review prose that calls the Matplotlib package 3.11.0 conflated its compatible FontManager/cache format with the actual package version 3.11.1. Actual export metadata was already correct. The numeric/export result review, source and cache byte pins, and acceptance limits remain unchanged.",
+  "scope": "Two closed JSON metadata files were read. No renderer, reducer, import, test, install, engine, or hardware replay; all original files preserved."
+}

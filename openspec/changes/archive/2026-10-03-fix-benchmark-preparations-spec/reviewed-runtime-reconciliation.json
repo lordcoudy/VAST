@@ -1,0 +1,1112 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_benchmark_preparation_reviewed_runtime_reconciliation_v1",
+  "change": "fix-benchmark-preparations-spec",
+  "reconciliation_commit": "067fa429ab05d0ede56807af0c65e383ca9f5088",
+  "reconciliation_subject": "067fa429ab05d0ede56807af0c65e383ca9f5088 chore: reconcile required benchmark runtime baseline",
+  "shortstat": "243 files changed, 110268 insertions(+), 3965 deletions(-)",
+  "commit_path_count": 243,
+  "review_context_files": 44,
+  "review_source_matches": 44,
+  "review_worktree_matches": 24,
+  "inspected_files": [
+    {
+      "path": "AGENTS.md",
+      "review_sha256": "43e640ec4c6b0b39b7b33265f186e41b8c21503190b35eca3b3a5d48588fe956",
+      "review_size_bytes": 4334,
+      "source_sha256": "43e640ec4c6b0b39b7b33265f186e41b8c21503190b35eca3b3a5d48588fe956",
+      "worktree_sha256": null,
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "PLAN.md",
+      "review_sha256": "3e5449bfd43b9455a38cceaa4c7f2f639bd1e2c472bde5c5bf722311f394e5bf",
+      "review_size_bytes": 12027,
+      "source_sha256": "3e5449bfd43b9455a38cceaa4c7f2f639bd1e2c472bde5c5bf722311f394e5bf",
+      "worktree_sha256": "7f1775e3516f4a30a5b67c8f3b42e45a5949567a2f04df872584faaee40a1834",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "progress.md",
+      "review_sha256": "b7aa9278d83557a45f871f0088ef4bfd2a8319b8ed90f364b3cf6507ed03888b",
+      "review_size_bytes": 13298,
+      "source_sha256": "b7aa9278d83557a45f871f0088ef4bfd2a8319b8ed90f364b3cf6507ed03888b",
+      "worktree_sha256": "59a512dd4495542aa0081399c8ba5469164ff53b014fb085cb029d4bac890124",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "README.md",
+      "review_sha256": "21bf7cee7575199e65f3c8e32c55d56dc91611cb7d55b185f0cc7373ca04fc8e",
+      "review_size_bytes": 71369,
+      "source_sha256": "21bf7cee7575199e65f3c8e32c55d56dc91611cb7d55b185f0cc7373ca04fc8e",
+      "worktree_sha256": "13998d45eccf4763ab1ef1355976d76dff54a8cd0654e12c69efcf7e2f3d1867",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "INSTRUCTIONS.md",
+      "review_sha256": "f84dd81c5b2c9eda69f00c116115348dbfea267705ac7d54a0a5a49c24bb3f9a",
+      "review_size_bytes": 82272,
+      "source_sha256": "f84dd81c5b2c9eda69f00c116115348dbfea267705ac7d54a0a5a49c24bb3f9a",
+      "worktree_sha256": "86d1ef1189048438bc12d48e840143c06e1b9f2953ed21748853e5c5e709121d",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "requirements.txt",
+      "review_sha256": "432acf6ad1c8a0c05677d44c599e1554de06460e8dc3804e48ca94261a5d1577",
+      "review_size_bytes": 126,
+      "source_sha256": "432acf6ad1c8a0c05677d44c599e1554de06460e8dc3804e48ca94261a5d1577",
+      "worktree_sha256": "432acf6ad1c8a0c05677d44c599e1554de06460e8dc3804e48ca94261a5d1577",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "review_sha256": "26a63a9a8115c8da1e48fbe36002d2e9aee1fc8a85122b480a55e8052ebe1758",
+      "review_size_bytes": 16661,
+      "source_sha256": "26a63a9a8115c8da1e48fbe36002d2e9aee1fc8a85122b480a55e8052ebe1758",
+      "worktree_sha256": "26a63a9a8115c8da1e48fbe36002d2e9aee1fc8a85122b480a55e8052ebe1758",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "openspec/config.yaml",
+      "review_sha256": "20cfc682ff1ae5b955082e9ccd2af80b772848cbfcdba3f7184936d551059f8d",
+      "review_size_bytes": 1127,
+      "source_sha256": "20cfc682ff1ae5b955082e9ccd2af80b772848cbfcdba3f7184936d551059f8d",
+      "worktree_sha256": null,
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "configs/experiments.yaml",
+      "review_sha256": "e3922a46986db473d6d67cffd67132d403395b116d09970520b480d60e699b7d",
+      "review_size_bytes": 23617,
+      "source_sha256": "e3922a46986db473d6d67cffd67132d403395b116d09970520b480d60e699b7d",
+      "worktree_sha256": "6acf69410702b3baee841bb192ebfd89a32b39dba4312f38bd373bda5e7f6c5f",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+      "review_sha256": "6fd0f0ec3eb6aaf91470235a1d20ecca6d42155080cccb3691b3cc8195d51c98",
+      "review_size_bytes": 37687,
+      "source_sha256": "6fd0f0ec3eb6aaf91470235a1d20ecca6d42155080cccb3691b3cc8195d51c98",
+      "worktree_sha256": "6118baefcc070b8a6c6a160f137846aac6816a81ded9f8be6607ae291eb70bb3",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "review_sha256": "6852e27b0e44f84068bf56d6797d4c951ba6fe91be1deb03c1a19b1dbd796a44",
+      "review_size_bytes": 157467,
+      "source_sha256": "6852e27b0e44f84068bf56d6797d4c951ba6fe91be1deb03c1a19b1dbd796a44",
+      "worktree_sha256": "6852e27b0e44f84068bf56d6797d4c951ba6fe91be1deb03c1a19b1dbd796a44",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "deploy/native_gst_probe/Dockerfile.savant",
+      "review_sha256": "f40e637c2054e125faaedc8baba4bd2fa0e95ca641a22fec9750c353ddd08787",
+      "review_size_bytes": 4679,
+      "source_sha256": "f40e637c2054e125faaedc8baba4bd2fa0e95ca641a22fec9750c353ddd08787",
+      "worktree_sha256": "f40e637c2054e125faaedc8baba4bd2fa0e95ca641a22fec9750c353ddd08787",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "review_sha256": "a939481caca88bcfd6f298ddadc4f2f427d13c51acdc962685e3fe4bf5d00bf2",
+      "review_size_bytes": 3126,
+      "source_sha256": "a939481caca88bcfd6f298ddadc4f2f427d13c51acdc962685e3fe4bf5d00bf2",
+      "worktree_sha256": "a939481caca88bcfd6f298ddadc4f2f427d13c51acdc962685e3fe4bf5d00bf2",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+      "review_sha256": "3790ccae8f82709d70a11c8762c7c4f6ce2bec8a1edfbeb3c256465f0cfa2201",
+      "review_size_bytes": 3187,
+      "source_sha256": "3790ccae8f82709d70a11c8762c7c4f6ce2bec8a1edfbeb3c256465f0cfa2201",
+      "worktree_sha256": "3790ccae8f82709d70a11c8762c7c4f6ce2bec8a1edfbeb3c256465f0cfa2201",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "review_sha256": "c6ac2d9b54b2a9f9ba883ba814a35c39f319fba9c923497a4fe46432fce7cff9",
+      "review_size_bytes": 2803,
+      "source_sha256": "c6ac2d9b54b2a9f9ba883ba814a35c39f319fba9c923497a4fe46432fce7cff9",
+      "worktree_sha256": "c6ac2d9b54b2a9f9ba883ba814a35c39f319fba9c923497a4fe46432fce7cff9",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "review_sha256": "dea819344804486529aeb32c0076690b42acfd8f5f861c2651d02b01c54608dc",
+      "review_size_bytes": 2884,
+      "source_sha256": "dea819344804486529aeb32c0076690b42acfd8f5f861c2651d02b01c54608dc",
+      "worktree_sha256": "dea819344804486529aeb32c0076690b42acfd8f5f861c2651d02b01c54608dc",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/analytics_execution_protocol.py",
+      "review_sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "review_size_bytes": 18555,
+      "source_sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "worktree_sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/analytics_execution_worker.py",
+      "review_sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "review_size_bytes": 38433,
+      "source_sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "worktree_sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "review_sha256": "c3144ecc007960135bffeb6be4371950f4a76e9c7af0f8ba02d2c500a0de9821",
+      "review_size_bytes": 258705,
+      "source_sha256": "c3144ecc007960135bffeb6be4371950f4a76e9c7af0f8ba02d2c500a0de9821",
+      "worktree_sha256": "d35c61248edf779efb6ab5ba7c5d88f7e37a3faffea9a6c0680344d27d41aec2",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "scripts/full_publication_supervisor.py",
+      "review_sha256": "1217d4a84d7d66832301c39fa4e5f750b3772d5620e26fa68b5d97e855ad987a",
+      "review_size_bytes": 26190,
+      "source_sha256": "1217d4a84d7d66832301c39fa4e5f750b3772d5620e26fa68b5d97e855ad987a",
+      "worktree_sha256": "8018ea0badcbc5a936703100870144f1fe1dbb8a9fcff8e17710d21ec90e45f9",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "scripts/full_publication_wsl_user_service_v1.py",
+      "review_sha256": "e7a010503cb7cd9b37276b1b00ad40cb0514a16a30bef82d5cff684a26d7e0b4",
+      "review_size_bytes": 92640,
+      "source_sha256": "e7a010503cb7cd9b37276b1b00ad40cb0514a16a30bef82d5cff684a26d7e0b4",
+      "worktree_sha256": "ff0ce9d15c8bf390f99e7bb0238e9a24db3dfade31b6a76eec2e89eef28cdc90",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "scripts/publication_matrix.py",
+      "review_sha256": "704ca2153ffeefbe6a0edd68c68a7b83162e3d0439ed9fc1fd5595b4878db25e",
+      "review_size_bytes": 17407,
+      "source_sha256": "704ca2153ffeefbe6a0edd68c68a7b83162e3d0439ed9fc1fd5595b4878db25e",
+      "worktree_sha256": "704ca2153ffeefbe6a0edd68c68a7b83162e3d0439ed9fc1fd5595b4878db25e",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/publication_policy_contract.py",
+      "review_sha256": "3bfb5b16e3caf754156082732bf53df716a3dc273fcef405e6953d66ce013286",
+      "review_size_bytes": 49564,
+      "source_sha256": "3bfb5b16e3caf754156082732bf53df716a3dc273fcef405e6953d66ce013286",
+      "worktree_sha256": "3bfb5b16e3caf754156082732bf53df716a3dc273fcef405e6953d66ce013286",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/full_publication_entrypoint.py",
+      "review_sha256": "c81536e91ed3290949eedd60c343fea69e99ed75822f5ff42fad5ca8d8c559cf",
+      "review_size_bytes": 151859,
+      "source_sha256": "c81536e91ed3290949eedd60c343fea69e99ed75822f5ff42fad5ca8d8c559cf",
+      "worktree_sha256": "c81536e91ed3290949eedd60c343fea69e99ed75822f5ff42fad5ca8d8c559cf",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/full_publication_runner.py",
+      "review_sha256": "f8cde9e4e285b9a554d07f56e8f4dc140ec5113e9795eee41d1971b4ff026c3c",
+      "review_size_bytes": 69380,
+      "source_sha256": "f8cde9e4e285b9a554d07f56e8f4dc140ec5113e9795eee41d1971b4ff026c3c",
+      "worktree_sha256": "f8cde9e4e285b9a554d07f56e8f4dc140ec5113e9795eee41d1971b4ff026c3c",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/full_publication_runtime.py",
+      "review_sha256": "45e0f713776ee7e8aa76f80d995579f80179cf07c414f6ddfc33db7b36e52f91",
+      "review_size_bytes": 45821,
+      "source_sha256": "45e0f713776ee7e8aa76f80d995579f80179cf07c414f6ddfc33db7b36e52f91",
+      "worktree_sha256": "45e0f713776ee7e8aa76f80d995579f80179cf07c414f6ddfc33db7b36e52f91",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/full_publication_results.py",
+      "review_sha256": "dde01c5bb9e88e036e0dc9de11f233efd6504b46c99dae4df53a3fa9ef98c8ca",
+      "review_size_bytes": 23051,
+      "source_sha256": "dde01c5bb9e88e036e0dc9de11f233efd6504b46c99dae4df53a3fa9ef98c8ca",
+      "worktree_sha256": "dde01c5bb9e88e036e0dc9de11f233efd6504b46c99dae4df53a3fa9ef98c8ca",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/publication_article_statistics_v1.py",
+      "review_sha256": "b7efaeffaed34f14fe920a359090ae86c8c6afdb37cb4475fa7819c0c1a746c6",
+      "review_size_bytes": 94240,
+      "source_sha256": "b7efaeffaed34f14fe920a359090ae86c8c6afdb37cb4475fa7819c0c1a746c6",
+      "worktree_sha256": "b7efaeffaed34f14fe920a359090ae86c8c6afdb37cb4475fa7819c0c1a746c6",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/backend_q4_two_phase_executor_v1.py",
+      "review_sha256": "a950c9634ab36bf0e819940c01e7ea905c7482c8c7fd96521bba45ae723d15ee",
+      "review_size_bytes": 256141,
+      "source_sha256": "a950c9634ab36bf0e819940c01e7ea905c7482c8c7fd96521bba45ae723d15ee",
+      "worktree_sha256": "a950c9634ab36bf0e819940c01e7ea905c7482c8c7fd96521bba45ae723d15ee",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/backend_pair_archive_sizing_receipts_v1.py",
+      "review_sha256": "52168497e207d8b510dfcd51fa3160f328dcc8a1a4ffcb2efb4e6dd4fe7f866c",
+      "review_size_bytes": 82690,
+      "source_sha256": "52168497e207d8b510dfcd51fa3160f328dcc8a1a4ffcb2efb4e6dd4fe7f866c",
+      "worktree_sha256": "52168497e207d8b510dfcd51fa3160f328dcc8a1a4ffcb2efb4e6dd4fe7f866c",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/seafile_artifact_store.py",
+      "review_sha256": "889290040ff2398b4984462a0c283b819ed8862a30e9bdf623be3d047b4ee693",
+      "review_size_bytes": 68085,
+      "source_sha256": "889290040ff2398b4984462a0c283b819ed8862a30e9bdf623be3d047b4ee693",
+      "worktree_sha256": "889290040ff2398b4984462a0c283b819ed8862a30e9bdf623be3d047b4ee693",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "scripts/seafile_operator_capacity_attestation_v2.py",
+      "review_sha256": "fe0d4f3731038f2c7b7f2c09b3487a6e7999c89f33defc5770db194a7d4037cd",
+      "review_size_bytes": 25493,
+      "source_sha256": "fe0d4f3731038f2c7b7f2c09b3487a6e7999c89f33defc5770db194a7d4037cd",
+      "worktree_sha256": "fe0d4f3731038f2c7b7f2c09b3487a6e7999c89f33defc5770db194a7d4037cd",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "tests/cpp/checkpoint_analytics_execution_client_test.cpp",
+      "review_sha256": "5e10c2cdfe76a48114c81e088a59eddab42980588aee578f55d68db90ecc4813",
+      "review_size_bytes": 12524,
+      "source_sha256": "5e10c2cdfe76a48114c81e088a59eddab42980588aee578f55d68db90ecc4813",
+      "worktree_sha256": "96bae158b9d5750092a09f91890578075379efec7601f43926104e20ff4653ce",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "review_sha256": "b7e07221469833ae416489a73e2fc1f6ca6d91d628dc66dafa24f824671dff34",
+      "review_size_bytes": 111619,
+      "source_sha256": "b7e07221469833ae416489a73e2fc1f6ca6d91d628dc66dafa24f824671dff34",
+      "worktree_sha256": "4db81af66aeb6098a44346777753b9cce108c443ee0e1f802459e535cb167aec",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "tests/test_analytics_execution_protocol.py",
+      "review_sha256": "6d7b479521c9548f7ead99879d91713f18d99430f7919359a57517b3d812bbf8",
+      "review_size_bytes": 5110,
+      "source_sha256": "6d7b479521c9548f7ead99879d91713f18d99430f7919359a57517b3d812bbf8",
+      "worktree_sha256": "6d7b479521c9548f7ead99879d91713f18d99430f7919359a57517b3d812bbf8",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "tests/test_full_publication_supervisor.py",
+      "review_sha256": "e54b90b62e052de53509135d3539dd3333a5e5e616dc8a58263570e20a83b5d1",
+      "review_size_bytes": 12163,
+      "source_sha256": "e54b90b62e052de53509135d3539dd3333a5e5e616dc8a58263570e20a83b5d1",
+      "worktree_sha256": "6f71bed2c315551119f1c5496e47f14eda37260074dd149dab8fe505530dfc0f",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "tests/test_full_publication_wsl_user_service_v1.py",
+      "review_sha256": "ac7e614b36a2369959d1e3ff3dcc27a46c614abab1fc68776c387178afcca3ed",
+      "review_size_bytes": 35928,
+      "source_sha256": "ac7e614b36a2369959d1e3ff3dcc27a46c614abab1fc68776c387178afcca3ed",
+      "worktree_sha256": "5b025c7fbdaccecf3fc04252e8e94707f35f75cd14d9f796aef6e541c2c5752d",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "tests/test_backend_q4_two_phase_executor_v1.py",
+      "review_sha256": "8a78670653a8f71e57803a72e7ceb495ec239571bf425de48a34b7c0d32ab8b1",
+      "review_size_bytes": 115894,
+      "source_sha256": "8a78670653a8f71e57803a72e7ceb495ec239571bf425de48a34b7c0d32ab8b1",
+      "worktree_sha256": "8a78670653a8f71e57803a72e7ceb495ec239571bf425de48a34b7c0d32ab8b1",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "tests/test_full_publication_runner.py",
+      "review_sha256": "ce52c794a71d86f789603338ad66ec150b23fd8209558f462ba2e81015f66732",
+      "review_size_bytes": 45697,
+      "source_sha256": "ce52c794a71d86f789603338ad66ec150b23fd8209558f462ba2e81015f66732",
+      "worktree_sha256": "ce52c794a71d86f789603338ad66ec150b23fd8209558f462ba2e81015f66732",
+      "source_matches_review": true,
+      "worktree_matches_review": true
+    },
+    {
+      "path": "artifacts/publication_qualification_runtime_v1_20260921_attempt269/failed-state-check-20260921/failure-analysis.json",
+      "review_sha256": "fa4de598c8a03b50677d3cd59da40d6d8bd1a15beb47268620887bebebd90dc9",
+      "review_size_bytes": 8797,
+      "source_sha256": "fa4de598c8a03b50677d3cd59da40d6d8bd1a15beb47268620887bebebd90dc9",
+      "worktree_sha256": null,
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "artifacts/plan_execution_20260906/full-matrix-plan-after-a253-v1/independent-check.json",
+      "review_sha256": "65ffd5888abd60eb90adeb277090c5d26a5371a2239414e30b2bf48f19867fe0",
+      "review_size_bytes": 920,
+      "source_sha256": "65ffd5888abd60eb90adeb277090c5d26a5371a2239414e30b2bf48f19867fe0",
+      "worktree_sha256": null,
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "artifacts/plan_execution_20260906/a268-suite-check.json",
+      "review_sha256": "4ee916f6cdb2e5d2b6379c1cfd6685d5ddebfec5a960dc6b51e91a5230e7dc0f",
+      "review_size_bytes": 746,
+      "source_sha256": "4ee916f6cdb2e5d2b6379c1cfd6685d5ddebfec5a960dc6b51e91a5230e7dc0f",
+      "worktree_sha256": null,
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "artifacts/plan_execution_20260906/q4-continuation-entrypoints.md",
+      "review_sha256": "a6cbaea2a45b7773cc6205e2108bdb88f60cce6d3bd63440b8e0301f8f7c18b9",
+      "review_size_bytes": 3940,
+      "source_sha256": "a6cbaea2a45b7773cc6205e2108bdb88f60cce6d3bd63440b8e0301f8f7c18b9",
+      "worktree_sha256": null,
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_bridge.py",
+      "review_sha256": "26e37bedc15cec271256e030f24b8d63716dc71e60ac7c727da1ff315df4d91c",
+      "review_size_bytes": 35413,
+      "source_sha256": "26e37bedc15cec271256e030f24b8d63716dc71e60ac7c727da1ff315df4d91c",
+      "worktree_sha256": "79eb8a28739897592954af7afc279357c5158995c5007a4ff42ed5a951c81ecc",
+      "source_matches_review": true,
+      "worktree_matches_review": false
+    }
+  ],
+  "baseline_file_count": 544,
+  "copied_file_count": 494,
+  "not_copied": [
+    "deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cu",
+    "deploy/custom_cpp_cuda_qt/policy_trace_format.hpp",
+    "deploy/custom_cpp_cuda_qt/weighted_proxy_policy.hpp",
+    "deploy/deepstream/checkpoint/wheels/PyYAML-6.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "deploy/deepstream/checkpoint/wheels/numpy-1.26.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "deploy/deepstream/checkpoint/wheels/pandas-2.2.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "deploy/deepstream/checkpoint/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+    "deploy/deepstream/checkpoint/wheels/pytz-2026.3.post1-py2.py3-none-any.whl",
+    "deploy/deepstream/checkpoint/wheels/six-1.17.0-py2.py3-none-any.whl",
+    "deploy/deepstream/checkpoint/wheels/tzdata-2026.3-py2.py3-none-any.whl",
+    "deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c",
+    "deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp",
+    "deploy/gstreamer_custom/publication/wheels/numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+    "deploy/gstreamer_custom/publication/wheels/pandas-3.0.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl",
+    "deploy/gstreamer_custom/publication/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+    "deploy/gstreamer_custom/publication/wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+    "deploy/gstreamer_custom/publication/wheels/six-1.17.0-py2.py3-none-any.whl",
+    "deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp",
+    "deploy/openvino/checkpoint/contract.json",
+    "deploy/openvino/checkpoint/probe_openvino_devices.py",
+    "deploy/savant/canonical_distributed_module.yml",
+    "deploy/savant/canonical_heterogeneous_module.yml",
+    "deploy/savant/module.yml",
+    "requirements.txt",
+    "scripts/analyze_results.py",
+    "scripts/check_dataset.py",
+    "scripts/check_system.py",
+    "scripts/checkpoint_admission.py",
+    "scripts/custom_app_emitter.py",
+    "scripts/distributed_executor.py",
+    "scripts/emit_runtime_frames_csv.py",
+    "scripts/formal_aw_heft_reference.py",
+    "scripts/install_openvino_dlstreamer.sh",
+    "scripts/mount_publication_evidence_wsl.sh",
+    "scripts/mount_publication_runtime_wsl.sh",
+    "scripts/mount_publication_sockets_wsl.sh",
+    "scripts/prepare_assets.sh",
+    "scripts/rtp_trace.py",
+    "scripts/run_deepstream_kpp_sdk_pilot_v3.sh",
+    "scripts/run_system_template.sh",
+    "scripts/setup_target.py",
+    "scripts/setup_target_windows.ps1",
+    "scripts/train_ql_heft.py",
+    "scripts/vast_gui.py",
+    "tests/cpp/checkpoint_analytics_terminal_transport_test.cpp",
+    "tests/fixtures/checkpoint_admission_source.py",
+    "tests/test_checkpoint_admission.py",
+    "tests/test_custom_cpp_policy_trace.py",
+    "tests/test_formal_aw_heft_reference.py",
+    "tests/test_vast_gui.py"
+  ],
+  "copied_missing_from_commit_tree": [
+    "PLAN.md",
+    "scripts/diagnose_deepstream_publication_bundle_v3.py",
+    "scripts/refreeze_publication_qualification_images_v1.sh",
+    "tests/run_publication_durable_process_split_gate_v1.py",
+    "tests/test_analytics_peer_identity.py",
+    "tests/test_checkpoint_deepstream_service_clock.py",
+    "tests/test_checkpoint_model_parity_socket_namespace.py",
+    "tests/test_checkpoint_publication_system_backends.py",
+    "tests/test_checkpoint_savant_native_identity_integration_v3.py",
+    "tests/test_checkpoint_savant_stop_race.py",
+    "tests/test_full_publication_identity_parity_v4_dispatch.py",
+    "tests/test_model_parity_grant_v4.py",
+    "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+    "tests/test_publication_runtime_refreeze_handoff_v1.py",
+    "tests/test_publication_runtime_source_closure_guardian_v1.py",
+    "tests/test_savant_native_stdio_contract_v3.py",
+    "tests/test_savant_stage_geometry_contract_v3.py",
+    "tests/test_savant_worker_stdout_atomicity.py"
+  ],
+  "copied_blob_mismatches": [
+    {
+      "path": "CMakeLists.txt",
+      "baseline_sha256": "26a63a9a8115c8da1e48fbe36002d2e9aee1fc8a85122b480a55e8052ebe1758",
+      "commit_sha256": "b47da30810da9eb46ce008f6eb41596975d0787ee482d57c721d1ffb7337110f",
+      "baseline_size_bytes": 16661,
+      "commit_size_bytes": 16517
+    },
+    {
+      "path": "README.md",
+      "baseline_sha256": "21bf7cee7575199e65f3c8e32c55d56dc91611cb7d55b185f0cc7373ca04fc8e",
+      "commit_sha256": "5ec2d0f14ebc0811fba908d4a716eddde63a12dec2e6f8429e2a413ad24528e1",
+      "baseline_size_bytes": 71369,
+      "commit_size_bytes": 57909
+    },
+    {
+      "path": "configs/experiments.yaml",
+      "baseline_sha256": "e3922a46986db473d6d67cffd67132d403395b116d09970520b480d60e699b7d",
+      "commit_sha256": "6acf69410702b3baee841bb192ebfd89a32b39dba4312f38bd373bda5e7f6c5f",
+      "baseline_size_bytes": 23617,
+      "commit_size_bytes": 23078
+    },
+    {
+      "path": "deploy/gstreamer_analytics_terminal/checkpoint_analytics_model_provenance.hpp",
+      "baseline_sha256": "7a4b2800774c25d59808637f10fbfad778394debf16d80618157df84a5e614ab",
+      "commit_sha256": "1bceaa9be4d4cea9bb2ae8bdc5fd2a575319d8af79a6b02f22fbf915cc324949",
+      "baseline_size_bytes": 6901,
+      "commit_size_bytes": 6743
+    },
+    {
+      "path": "deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp",
+      "baseline_sha256": "f21bbdd2494edc08fa626e5c102bfc1d995e81946ddc7f3ae101505bc45b0ae1",
+      "commit_sha256": "6e6f9d4c94331b277aea38ae9731be870a74b9f9ee2737dfef4fdf87e6584cbd",
+      "baseline_size_bytes": 18781,
+      "commit_size_bytes": 18261
+    },
+    {
+      "path": "deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp",
+      "baseline_sha256": "b9548761c572aaa4e3878deecba24f312ed35536e95cf220e36425cab67f75e7",
+      "commit_sha256": "9e074ed73fa1abcd2d75d9e58370ed2186cc3be0b87b288c7da5d683de187fc8",
+      "baseline_size_bytes": 14600,
+      "commit_size_bytes": 14245
+    },
+    {
+      "path": "deploy/native_gst_probe/checkpoint_admission_transport.hpp",
+      "baseline_sha256": "54e9aa0a05b50aacd9372fa6a2a660fb7f31f37d68b76d349362dad34e87e48d",
+      "commit_sha256": "3f36664e672677a7dfcded1d26c426e2de4041ed4dd67fb465a39cea180a0ca1",
+      "baseline_size_bytes": 9551,
+      "commit_size_bytes": 9337
+    },
+    {
+      "path": "deploy/native_gst_probe/checkpoint_runtime_emitter.hpp",
+      "baseline_sha256": "2fd34309bfcbdce6b96f4023c198453dbcbbbef59351a4e5e06f0f2be9d8bc9b",
+      "commit_sha256": "415f660674451605f1fe77ffacf9d078dcfd1798efbc88f71c4a85203b2714c0",
+      "baseline_size_bytes": 11207,
+      "commit_size_bytes": 10898
+    },
+    {
+      "path": "deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
+      "baseline_sha256": "03f69a8e1be20c03a9044d0a478e52b8721bed18b3f61170e35f899ff9708fc4",
+      "commit_sha256": "9960ac533e24e681dd3fc85e3d67295dd2241807802badeb426b1a83ddb42b2b",
+      "baseline_size_bytes": 27391,
+      "commit_size_bytes": 26692
+    },
+    {
+      "path": "deploy/savant/native_probe.py",
+      "baseline_sha256": "5397f10fd40715bd08fb26e21dfbeeac1884d5c93103f0d73e8620787c36829d",
+      "commit_sha256": "fb47ab715c919671bf59c535e9bc94b4e869a6a84f81cb8338ab15f6f70ff657",
+      "baseline_size_bytes": 22158,
+      "commit_size_bytes": 21530
+    },
+    {
+      "path": "deploy/savant/publication/savant_publication_runtime_v3.py",
+      "baseline_sha256": "7e0e6d1b33a5b2dece3b0ea641cf09d9d5602d865aa40047f38125cc25866230",
+      "commit_sha256": "26cd00dd8b3f06f1805eb6b936f49bae72718fd61eb2c1c6cda233a45a94ff99",
+      "baseline_size_bytes": 44984,
+      "commit_size_bytes": 44967
+    },
+    {
+      "path": "progress.md",
+      "baseline_sha256": "b7aa9278d83557a45f871f0088ef4bfd2a8319b8ed90f364b3cf6507ed03888b",
+      "commit_sha256": "35a77799cb22fe06d0860550239cb77319dbc3a38e70b0096d111375eae0cf08",
+      "baseline_size_bytes": 13298,
+      "commit_size_bytes": 1206382
+    },
+    {
+      "path": "scripts/analytics_model_contract.py",
+      "baseline_sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62",
+      "commit_sha256": "a814852c9aafc308c003928266be690f6f10eea6dfd61bca36321707d9890542",
+      "baseline_size_bytes": 15765,
+      "commit_size_bytes": 15441
+    },
+    {
+      "path": "scripts/backend_runtime_replay_handle_abi_authority_v1.py",
+      "baseline_sha256": "8bed92778257388e059bb588adc3cf7fcc874cccdac2d8cb75a870397585aa8e",
+      "commit_sha256": "4f77ee6a195567e9cdf5c1ee10cf116ad981c639f22baac4f39bfb95f34cd552",
+      "baseline_size_bytes": 42355,
+      "commit_size_bytes": 41780
+    },
+    {
+      "path": "scripts/backend_runtime_replay_runner_authority_v3.py",
+      "baseline_sha256": "b0ad61d2b4bec93fe4d35251a4d9320b79472d9ebe80ce1bbd262d5a5a9f9fd6",
+      "commit_sha256": "f31a94dde955e8a8be1a11d1d45c05921ece7bd0faa102af86147c87b57afd74",
+      "baseline_size_bytes": 47720,
+      "commit_size_bytes": 47145
+    },
+    {
+      "path": "scripts/benchmark_adapters.py",
+      "baseline_sha256": "537ba72f547e376a79fbae33ff39c48c3d5cf460f0f6090731ab30a709427c50",
+      "commit_sha256": "6a965b159b36a08a80f69908c0572365283fcc65b2c482279c6a3f8c42b1dfe3",
+      "baseline_size_bytes": 15713,
+      "commit_size_bytes": 15525
+    },
+    {
+      "path": "scripts/benchmark_contract.py",
+      "baseline_sha256": "7ccfe54967be22ea3c9dbec0f955c91d12e8bf744c6a7f0b2aa968e5b8756f88",
+      "commit_sha256": "ba7ee6faa566781508b6560ca96df082252af717e7840d14835116eaffc5f9ab",
+      "baseline_size_bytes": 334453,
+      "commit_size_bytes": 328002
+    },
+    {
+      "path": "scripts/build_native_probe_images.sh",
+      "baseline_sha256": "6564c3bf092c3fe9d01c40cf988457ba58da79a5707d8eb42e937c7edfede9fc",
+      "commit_sha256": "e02243c11fb485ca04f8d40b05b47fbf42048c57dffda4d8c23edfe16da97239",
+      "baseline_size_bytes": 169,
+      "commit_size_bytes": 3542
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+      "baseline_sha256": "be8387b34cc36ba7c23dde41b0deb5bbb9258cc150d25978a2d0c65b49c0a402",
+      "commit_sha256": "5b0c34390dc7ca90da6ec01e0e9a9009b0c01288fa09f46a3f7d1f2167456149",
+      "baseline_size_bytes": 39201,
+      "commit_size_bytes": 38884
+    },
+    {
+      "path": "scripts/checkpoint_model_parity.py",
+      "baseline_sha256": "ecb4d10ee878fe77fef30ca7df9990e5e2cc8a959c6aa6e285736a489b71d17c",
+      "commit_sha256": "de7a2bd3724e7a0236df390a8c62e460d17ba7e227c9104fd962034672960bb7",
+      "baseline_size_bytes": 97548,
+      "commit_size_bytes": 97318
+    },
+    {
+      "path": "scripts/checkpoint_openvino_execution_bridge.py",
+      "baseline_sha256": "f39aafb554d1942a85a4ff6b5efde0b36d02846720befdc8c132c86b0d0e9ded",
+      "commit_sha256": "228689026a89dde4a5e3bfdfbde7a40913cad56d5b9001eeaee6ed7f247ff0a8",
+      "baseline_size_bytes": 29873,
+      "commit_size_bytes": 29789
+    },
+    {
+      "path": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "baseline_sha256": "3d9b2fb88f9146dd4dae0d696c5edcf22670c1bffe6cae69ebe28fce2824bfbc",
+      "commit_sha256": "631914b01532e70a12b1de63bf82248e519cdeb6944ced6e865f8c59ab989549",
+      "baseline_size_bytes": 24165,
+      "commit_size_bytes": 23891
+    },
+    {
+      "path": "scripts/checkpoint_openvino_runtime.py",
+      "baseline_sha256": "53e6f5e8c28cd3a27f74e5be037202953e29a5a252f30e9a5a30c89a5b6488b0",
+      "commit_sha256": "e59b495bd8683082b78fd4492d5287234a478748261b44d83ffd08508db5dc9b",
+      "baseline_size_bytes": 27205,
+      "commit_size_bytes": 26539
+    },
+    {
+      "path": "scripts/checkpoint_publication_runtime.py",
+      "baseline_sha256": "45263806079f8d5cecdcd26738362adcdd17b11fb93c52b183aed5e2cb65fd11",
+      "commit_sha256": "57a1c82cb2807fc9a34f36a0ae44c5aa1bf9a6157f0fcd78d090e8228c5ba395",
+      "baseline_size_bytes": 46579,
+      "commit_size_bytes": 46083
+    },
+    {
+      "path": "scripts/checkpoint_runtime.py",
+      "baseline_sha256": "3aa0d6c74337961c6b8be54f31abde05f15cc82335673f5e1a61a12d48d95330",
+      "commit_sha256": "e9a6776c84939a463943c72685e3a455459f1ff48a2fa5916a7cf07f1783027a",
+      "baseline_size_bytes": 94245,
+      "commit_size_bytes": 92662
+    },
+    {
+      "path": "scripts/checkpoint_runtime_plan.py",
+      "baseline_sha256": "1de5f88c0939f3d9c38744e8248e5c0268159909393a4712af0e25e6d8462890",
+      "commit_sha256": "5e82756f86acbf006352107d586b73dd41df1324ead9b8eb7377ed74324f727b",
+      "baseline_size_bytes": 30727,
+      "commit_size_bytes": 30083
+    },
+    {
+      "path": "scripts/checkpoint_savant_native_module.py",
+      "baseline_sha256": "66acc570993ec071db8323fc2763744fb8ae5359b673aff2ba213ea9814ab68b",
+      "commit_sha256": "c8d0931dd3ddc8c46dc67ce3b7c08aefb2a3bce36bb34a42563f8ac5ad240fc2",
+      "baseline_size_bytes": 47245,
+      "commit_size_bytes": 47242
+    },
+    {
+      "path": "scripts/checkpoint_savant_qualification_fragment_v3.py",
+      "baseline_sha256": "79bf05a46af44b80c14e10b4964cfaf05344794cc4917068ce7a5b592f65eb02",
+      "commit_sha256": "dbd49a97c22b580abfb5d1e9d535e0107603267375fbae8411c29d7e9c4d59f1",
+      "baseline_size_bytes": 31911,
+      "commit_size_bytes": 31917
+    },
+    {
+      "path": "scripts/collect_metrics.py",
+      "baseline_sha256": "f2db6624aa56970dd09cd8cf3dcb97c5c55ab47f3c20c54cf5c26cc2263d70dc",
+      "commit_sha256": "d9d7aaaf6a9f33864e8a40728ebb5aebd363b3e1ff668979e671f11c4be3405b",
+      "baseline_size_bytes": 13324,
+      "commit_size_bytes": 13032
+    },
+    {
+      "path": "scripts/full_publication_runner.py",
+      "baseline_sha256": "f8cde9e4e285b9a554d07f56e8f4dc140ec5113e9795eee41d1971b4ff026c3c",
+      "commit_sha256": "c94cd21aa12a23d48bf03b887a287e31fa02f796202fcac8f25a165d04d4a05e",
+      "baseline_size_bytes": 69380,
+      "commit_size_bytes": 68738
+    },
+    {
+      "path": "scripts/full_resource_contract.py",
+      "baseline_sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+      "commit_sha256": "3c615621423d760e2704ee40a892668e03b2b04ffb367d5b3ca4aac6ec993d7d",
+      "baseline_size_bytes": 21340,
+      "commit_size_bytes": 20908
+    },
+    {
+      "path": "scripts/generate_vast_report_artifacts.py",
+      "baseline_sha256": "b21b47ac1434124c966180a6c60fd4c3861ada30c67d740ca347d54c9e2a35ac",
+      "commit_sha256": "776775732ed01fc414313e94533be8579d1cf69fba310c0e2ef38493df2d4a56",
+      "baseline_size_bytes": 158120,
+      "commit_size_bytes": 154553
+    },
+    {
+      "path": "scripts/kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+      "baseline_sha256": "b84b6b1505e1b15e897ff9ea2368564ff7bc34cc21b977fce6fe8d646d5d7b39",
+      "commit_sha256": "cd98fef7d1f6cacfd886743f95f7124b93706b5377be9443461f5152f6f9e894",
+      "baseline_size_bytes": 573548,
+      "commit_size_bytes": 569470
+    },
+    {
+      "path": "scripts/prepare_benchmark_dataset.py",
+      "baseline_sha256": "ae05830ea83ed5e17c073b1e76d0a4df473f5f9da44c2897902cdab06c4b9024",
+      "commit_sha256": "8875a51d949d623ee5af6f8b1581c77f41174e2048ec2f843b24d4f1a6a0caa3",
+      "baseline_size_bytes": 43148,
+      "commit_size_bytes": 42834
+    },
+    {
+      "path": "scripts/publication_archive.py",
+      "baseline_sha256": "8e3103f4148e92673394722b66b769378445ec0b3fd5c4b564b4c8262dec7918",
+      "commit_sha256": "1f666e45f866ede2b95c72a49115388ba31936158dfde817799fc185c67e1ee3",
+      "baseline_size_bytes": 14903,
+      "commit_size_bytes": 14785
+    },
+    {
+      "path": "scripts/publication_cloud_transaction.py",
+      "baseline_sha256": "9fdeae5019ac66f32b6cd3dac49bb0f1b224aadeeaf78c8fc61afba730ddedff",
+      "commit_sha256": "14babe0d147e636a1db9b54e034186a0d9d969de9a315c4878c4200ebc12fd5a",
+      "baseline_size_bytes": 125767,
+      "commit_size_bytes": 124569
+    },
+    {
+      "path": "scripts/publication_matrix.py",
+      "baseline_sha256": "704ca2153ffeefbe6a0edd68c68a7b83162e3d0439ed9fc1fd5595b4878db25e",
+      "commit_sha256": "a27b792da2c4cf11c843b7d015019d83fa87f4d2c60c02d3f0d77bd918cbee21",
+      "baseline_size_bytes": 17407,
+      "commit_size_bytes": 17241
+    },
+    {
+      "path": "scripts/publication_policy_contract.py",
+      "baseline_sha256": "3bfb5b16e3caf754156082732bf53df716a3dc273fcef405e6953d66ce013286",
+      "commit_sha256": "b2c1368199dff621b30e2f2f9acac429faf6d830a9f9b9d873e9e23a5d518cc0",
+      "baseline_size_bytes": 49564,
+      "commit_size_bytes": 48501
+    },
+    {
+      "path": "scripts/run_experiments.py",
+      "baseline_sha256": "7bd5cd0a3fd06aaa53ac545dcd17fd0b92b2a29b23f3718b6e2a93a9d00c3ee7",
+      "commit_sha256": "e8ecbed748d7e8ad791d1353ee278754181ef67f0984777e9afc02eb6d35e9be",
+      "baseline_size_bytes": 132826,
+      "commit_size_bytes": 130516
+    },
+    {
+      "path": "scripts/run_openvino_container_chunks.py",
+      "baseline_sha256": "94aef72b93ff9c6c681b18d9b8c329852c29c2463318eee88f4d895f1314765d",
+      "commit_sha256": "3f7dff8f4d7998e4c785126f8b32e099dd5e86dd6edcf200cdc8c8134761dd9b",
+      "baseline_size_bytes": 17990,
+      "commit_size_bytes": 17725
+    },
+    {
+      "path": "scripts/seafile_artifact_store.py",
+      "baseline_sha256": "889290040ff2398b4984462a0c283b819ed8862a30e9bdf623be3d047b4ee693",
+      "commit_sha256": "00076c9b485bd3ca60c6ae95728acc043bde5f037308aecab61c2d7f71571a0c",
+      "baseline_size_bytes": 68085,
+      "commit_size_bytes": 67884
+    },
+    {
+      "path": "scripts/setup_target.sh",
+      "baseline_sha256": "e77bd6a51401e23fb0ac6c0b18b829e54ff8cd041cac58e0255dfaeff26a0a89",
+      "commit_sha256": "3e2c23b07cfb85b533de0dc8b2189747225ae42a0a19db92587afdff42ace042",
+      "baseline_size_bytes": 13437,
+      "commit_size_bytes": 13428
+    },
+    {
+      "path": "scripts/topology_contract.py",
+      "baseline_sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+      "commit_sha256": "252f08a3a0a2d8ad0bae929a58d9ad56d69839473e32aa330a1cd42cfa407695",
+      "baseline_size_bytes": 18707,
+      "commit_size_bytes": 18381
+    },
+    {
+      "path": "scripts/validate_strict_telemetry_fix.py",
+      "baseline_sha256": "ee4a4f5ffbf3fa4c0188332e759e26e76261e5bc4d4f972e6b980cc8809f1c2c",
+      "commit_sha256": "008948d56e80d8f34915e788094e3065611e9a1a74f8b4e9595e9b543ea9816c",
+      "baseline_size_bytes": 17713,
+      "commit_size_bytes": 17316
+    },
+    {
+      "path": "tests/cpp/checkpoint_admission_transport_test.cpp",
+      "baseline_sha256": "61b3f12eb088c2e489f34c1cd567e43ab5ed65a5a88614ed35c08eebce0995f6",
+      "commit_sha256": "94dffbda4a66df3cf0340b73176b7b115d77931e66047bc3e1d23eada483ed59",
+      "baseline_size_bytes": 3078,
+      "commit_size_bytes": 2989
+    },
+    {
+      "path": "tests/cpp/checkpoint_resource_interval_emitter_test.cpp",
+      "baseline_sha256": "8f9e5321f78d12699384b6d9d1bc7b351eec0e7af111ebfbcced2db177afa5d5",
+      "commit_sha256": "9f0af2d3768ea9291103e2073e067e5e8908ec5d8757c5310b1e03d87c5a668a",
+      "baseline_size_bytes": 2299,
+      "commit_size_bytes": 2242
+    },
+    {
+      "path": "tests/cpp/checkpoint_runtime_emitter_test.cpp",
+      "baseline_sha256": "5959ce972b50a16cf4ae906232bb46121dafac38f535a68287652f3cdd8c42e3",
+      "commit_sha256": "08bf78be8dd2a9197fd03800d35dc9e9f85fd830e170260458b89eb16577a155",
+      "baseline_size_bytes": 2111,
+      "commit_size_bytes": 2048
+    },
+    {
+      "path": "tests/cpp/gst_vast_analytics_queue_test.cpp",
+      "baseline_sha256": "55c4da6f5558f90ea0aea6a94fb0bc2dbb4142722e26b2c89848be0c94617dcc",
+      "commit_sha256": "a601660ac238795c5498ca9f23fc85a0186b1f9949e8af7af4fa47b2da02e53a",
+      "baseline_size_bytes": 10351,
+      "commit_size_bytes": 10090
+    },
+    {
+      "path": "tests/cpp/gst_vast_analytics_terminal_test.cpp",
+      "baseline_sha256": "c7df3bd9a8b798ab1a6c82a399cfcf7adf38c73d2b925cf46ee93ef9e7b7e508",
+      "commit_sha256": "e46a34c8b126852a905df88d2d6c63c811a0f654bb802d3125163b25f06213e7",
+      "baseline_size_bytes": 10515,
+      "commit_size_bytes": 10253
+    },
+    {
+      "path": "tests/fixtures/checkpoint_event_worker.py",
+      "baseline_sha256": "15015ebf2f61d4329cfc4072e99a6a23143227c1f29303d57380e0fdf9af08fe",
+      "commit_sha256": "836ae3f4af8d04f1e67f7e4792150f853f936550ff62d9a6eebf3e59f52b235a",
+      "baseline_size_bytes": 7934,
+      "commit_size_bytes": 7793
+    },
+    {
+      "path": "tests/test_analytics_model_contract.py",
+      "baseline_sha256": "50b0187638fbb9d8563e5b31cb8503071e1d234cca962bf1e912526062574b27",
+      "commit_sha256": "40eaeec0e15d484ace73a47b8f5e58b6553addf775511ca2a9aec165a9e2f505",
+      "baseline_size_bytes": 9427,
+      "commit_size_bytes": 9249
+    },
+    {
+      "path": "tests/test_backend_runtime_qualification.py",
+      "baseline_sha256": "10b1e4659e40fb5bbdd916d68bce1bb5727f92b3ba381831ef3e4910724d30bd",
+      "commit_sha256": "9b9881edf7b3eec3a21058081e0a346c17acf3755a8e0735255f2c473d117e86",
+      "baseline_size_bytes": 33504,
+      "commit_size_bytes": 33269
+    },
+    {
+      "path": "tests/test_backend_runtime_replay_handle_abi_authority_v1.py",
+      "baseline_sha256": "01e88374b025f5acfdb894988f5084d1cf7852e347978b14b051aa6c7dce9167",
+      "commit_sha256": "1cdd6e874880da8ebacbe252b968248dbce5b2cf5ffa91d07f285eda8d23f1b6",
+      "baseline_size_bytes": 23903,
+      "commit_size_bytes": 23509
+    },
+    {
+      "path": "tests/test_backend_runtime_replay_runner_authority_v3.py",
+      "baseline_sha256": "e84d5e17b3f72af336dc079d462e262df30cbca1c9d18f5152a01bcb57a4cfa8",
+      "commit_sha256": "21264e6bd7c549d5dc9951e702cce16ec153f01cfaefa113e3a2d187ce278ca5",
+      "baseline_size_bytes": 23916,
+      "commit_size_bytes": 23207
+    },
+    {
+      "path": "tests/test_benchmark_contract.py",
+      "baseline_sha256": "6f4e539917d6c536d3e5cb87f85d7b93cd061c5443b055c112cf34cdd5f628a5",
+      "commit_sha256": "c75fcd776c5c0720d4d363e10ba770d271ebfe599236f55c627c0b3d04fc5b95",
+      "baseline_size_bytes": 244425,
+      "commit_size_bytes": 239239
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_container_runtime_v3.py",
+      "baseline_sha256": "e758ac8f4094d0bec2498b0f01f7f3752fefcd0ad9af293a4f1e2aca8e927cc0",
+      "commit_sha256": "56ce56713920f187c90ca127d1419f56ac4dcdc65d524c550d789d332fd943c3",
+      "baseline_size_bytes": 13662,
+      "commit_size_bytes": 11355
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_protocol_adapter.py",
+      "baseline_sha256": "0a49bfb696ec4bc1326a7b3d0f61ac1f1c5e41f530627e1d53d638a0f15b815b",
+      "commit_sha256": "b8884788c10dfc3f6a0e30e03add7cd7cc920c3abf01120b788ebbce376b6ff7",
+      "baseline_size_bytes": 6109,
+      "commit_size_bytes": 5585
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_resource_runtime_v3.py",
+      "baseline_sha256": "0f9796ab128363619948d6e654092f937bd8a9e8a8e09c6e4070d29f0c5def9b",
+      "commit_sha256": "4b8035cb6572ef3e72afdf439a65c8c3617af52e65dcf187d42d9a5692b2a0eb",
+      "baseline_size_bytes": 25414,
+      "commit_size_bytes": 15001
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_sdk_runtime.py",
+      "baseline_sha256": "71baedb60827ceb0890c995f1fd6b711cc87a9ab5ebdd9e7b770d1aa54058c09",
+      "commit_sha256": "2985b279e8b7c872bec29f6edb035d00c86d60b6af4a3d8e9fb703d64fd7d9bf",
+      "baseline_size_bytes": 37312,
+      "commit_size_bytes": 24793
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+      "baseline_sha256": "c1faa4998c32555d94806e607b5f15a417458602bbeb3a783e8777e30c20e1e8",
+      "commit_sha256": "e086331c61afa492f81e48656e9a27a28f97a089c93565e911097b1a7f5038b9",
+      "baseline_size_bytes": 12178,
+      "commit_size_bytes": 11360
+    },
+    {
+      "path": "tests/test_checkpoint_openvino_execution_bridge.py",
+      "baseline_sha256": "b027d89e0a4a3d043318084f61ccff3d90a4e6ccf58fad8b69d87efb9b54b2e1",
+      "commit_sha256": "c701583c476f7d6fcba13f92192da8cb5c943f6d6cb731864709b5ab530688bd",
+      "baseline_size_bytes": 36753,
+      "commit_size_bytes": 36630
+    },
+    {
+      "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "baseline_sha256": "dee0a7e1418dba5ec4206b4f8f65646f13e9348fd4230beac8e3cde78d37013e",
+      "commit_sha256": "f1304f908c9fb1f1b7450e71de514132c275d3d8086c61205e1c7e22105a694a",
+      "baseline_size_bytes": 10431,
+      "commit_size_bytes": 6929
+    },
+    {
+      "path": "tests/test_checkpoint_publication_runtime.py",
+      "baseline_sha256": "5d8aceb5286a69fe387d69650ec865b9ecdb849126cf5ac024352144aa243afc",
+      "commit_sha256": "581cee5f352b8c75ed2c881503e4a5caf5303819dbc24842c29d5ef334ce3fe5",
+      "baseline_size_bytes": 10703,
+      "commit_size_bytes": 10565
+    },
+    {
+      "path": "tests/test_checkpoint_runtime.py",
+      "baseline_sha256": "1e92dc5378b8c322a261bcb2d8f32b635d095695ceca1dc7e4202c8125128db4",
+      "commit_sha256": "ad479a5d0b4920c7214cb004ec254adf6bfb57a44fce0d9877eb3f3baa2c5e13",
+      "baseline_size_bytes": 119932,
+      "commit_size_bytes": 117802
+    },
+    {
+      "path": "tests/test_checkpoint_runtime_plan.py",
+      "baseline_sha256": "443ce1e625b156ef2143d653582f625bc329c97c0d8681cad93de6559072fc8f",
+      "commit_sha256": "fb8d5e1ba4bcade6ff1525811fdc7c49158c49c1c88e47c0b13cf247e82d5191",
+      "baseline_size_bytes": 13255,
+      "commit_size_bytes": 13019
+    },
+    {
+      "path": "tests/test_checkpoint_savant_container_runtime_v3.py",
+      "baseline_sha256": "a60955e103502559370b62dde348d4a266901c736d1a99eb0ce8f09a3b6bcd31",
+      "commit_sha256": "b5de9b46a7e025876af0fd10455a1e98c04354799c5cfd130594c5a248ef8b1d",
+      "baseline_size_bytes": 10719,
+      "commit_size_bytes": 8516
+    },
+    {
+      "path": "tests/test_checkpoint_savant_ingress.py",
+      "baseline_sha256": "562467ee9cd4f9cd3973166ed31c9a3c128409eddf9f46297b6acf46d9db64ff",
+      "commit_sha256": "33839893c6670f4b4ff93b13c5f6d8f7a46151646213602c496948f3683f6d24",
+      "baseline_size_bytes": 12210,
+      "commit_size_bytes": 6430
+    },
+    {
+      "path": "tests/test_checkpoint_savant_native_module.py",
+      "baseline_sha256": "b3441610665543bf36c9951128d53859ef170886fcd3e2c444f384b03848d059",
+      "commit_sha256": "a916eb3865e4b8d9cf61230b76772ad323c61482ada13e688352fc5127375ca4",
+      "baseline_size_bytes": 29590,
+      "commit_size_bytes": 12789
+    },
+    {
+      "path": "tests/test_checkpoint_savant_protocol_bridge.py",
+      "baseline_sha256": "ad7e1a0869d17bf8f80bebe553aa6c5936b21d9f4413f9aa7eb198569a2d3189",
+      "commit_sha256": "bcb8a4bb4a37df3a9b9a6033ee14a5b263ecb61def8fbfe92d68908de4296a06",
+      "baseline_size_bytes": 8653,
+      "commit_size_bytes": 8566
+    },
+    {
+      "path": "tests/test_checkpoint_savant_sdk_runtime_v3.py",
+      "baseline_sha256": "819521181fa4d638ee28a9cf445c4359428cbea0d51e789321b9b236fd4bcc41",
+      "commit_sha256": "05c65447c466e5c79d0ced7d1371ede6223c005517223f0ba8d03cd1e304e591",
+      "baseline_size_bytes": 30365,
+      "commit_size_bytes": 16944
+    },
+    {
+      "path": "tests/test_collect_metrics.py",
+      "baseline_sha256": "f2fbbf11ad765f199fa3e93e87b75adc5f5d557176764529c6f5ee5218bc2292",
+      "commit_sha256": "db865aa25b8f7bf5f4332d4d52a38532831c47bc63e2caf48d87daba78d834ee",
+      "baseline_size_bytes": 5378,
+      "commit_size_bytes": 5305
+    },
+    {
+      "path": "tests/test_full_publication_identity_runtime_authority_v3.py",
+      "baseline_sha256": "e20048ca2918a90b610a5ebf7d79a53077a5161b43af8db65ceb54dcb17fe441",
+      "commit_sha256": "ed6c2de874186194867ab67c307daf04f2ff49c9d0de0f2e4962cbc16f6182c6",
+      "baseline_size_bytes": 15092,
+      "commit_size_bytes": 14770
+    },
+    {
+      "path": "tests/test_full_publication_seafile_capacity_binding.py",
+      "baseline_sha256": "88a4560bc533beb4d250975f411cb64e7f965ca895b9d90b346acc88c512cb0d",
+      "commit_sha256": "98a3d6ff95e54d0fcfd36df26f273cff1eb708c8da0b0d752110f9a17fc786b5",
+      "baseline_size_bytes": 8377,
+      "commit_size_bytes": 4340
+    },
+    {
+      "path": "tests/test_full_resource_contract.py",
+      "baseline_sha256": "551925bbdaa181630f5f46e209c5b2fd49ab134b74f4d430462d30c1b61ead89",
+      "commit_sha256": "474d69d29b47068e599c6f86ced1e625d8234515ac9b207c3d82eb9e336e01b7",
+      "baseline_size_bytes": 8904,
+      "commit_size_bytes": 8712
+    },
+    {
+      "path": "tests/test_full_resource_publication.py",
+      "baseline_sha256": "667409c19feef4d11f0cb5cca653bc642219ae812c9dbb41a8ec6d0eabbdb045",
+      "commit_sha256": "aa210f8d1c7da6749a898e6c7e6810c138e7282b42c2a6e028708abba0cd707d",
+      "baseline_size_bytes": 14828,
+      "commit_size_bytes": 14783
+    },
+    {
+      "path": "tests/test_full_resource_runtime_v2.py",
+      "baseline_sha256": "7e9e20f183c8a4ce74bfc40b404393990aaf7492f47213afd5b218a5cc04b6bb",
+      "commit_sha256": "e4f3d617d1c1ed14eaa023f77beb3d1a1b6467c087c63cc6b2a61bd9f0f8beea",
+      "baseline_size_bytes": 36274,
+      "commit_size_bytes": 28303
+    },
+    {
+      "path": "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+      "baseline_sha256": "c0bcbe3e5ca973878fe6b8c43ea8e9d847bc3fbc4845a670936749f465ba0bee",
+      "commit_sha256": "86bb1b79ec580ea2503143e1b6f98a0df77fbdcf897f06b039a90f093fb81f3e",
+      "baseline_size_bytes": 457130,
+      "commit_size_bytes": 453473
+    },
+    {
+      "path": "tests/test_prepare_benchmark_dataset.py",
+      "baseline_sha256": "01f1aceae8cdb8291399c011027e71d0d4974f53ed50831299b3ce747d9457dd",
+      "commit_sha256": "e8337a392631ba476b4dd65805e1eb56f2108b06f00ccd8d2ec925faaa4de2ad",
+      "baseline_size_bytes": 26013,
+      "commit_size_bytes": 25635
+    },
+    {
+      "path": "tests/test_publication_archive.py",
+      "baseline_sha256": "6ee181b900a9062f261344f3fd9dffe71797eb5eaa6e891f63158df7700187f6",
+      "commit_sha256": "1f69a075e57e0b734ef1f217c0020aa649d43458cf3f870e8ceef55ec03bb387",
+      "baseline_size_bytes": 13419,
+      "commit_size_bytes": 13338
+    },
+    {
+      "path": "tests/test_publication_cloud_transaction.py",
+      "baseline_sha256": "82c6764caadae7c1ff992c52e5432ce69be107676ecd8fe4635dc7cc723956b8",
+      "commit_sha256": "b204513cf2ea15b671b9641984d0fd1cfb318634cfc5efbbe6523439549fece9",
+      "baseline_size_bytes": 66183,
+      "commit_size_bytes": 65264
+    },
+    {
+      "path": "tests/test_publication_matrix.py",
+      "baseline_sha256": "70b4e499c9ba41adb9778e38ff5215e19a372c8dda1d69ad52c162d1cb9acab6",
+      "commit_sha256": "0c7a0911cdb5c1d6e639997bccad0b8f2afbfdff6c028cc43ef826863832e50e",
+      "baseline_size_bytes": 15304,
+      "commit_size_bytes": 15238
+    },
+    {
+      "path": "tests/test_repository_integrity.py",
+      "baseline_sha256": "7e924c81735faad065f724b8f2b363f1fff3ac79ba728994f6d36104bcd14cdf",
+      "commit_sha256": "ec9232715e5d3f49c883ab7ca9f45a628109db190d1338690331eb79fa63a655",
+      "baseline_size_bytes": 2478,
+      "commit_size_bytes": 2453
+    },
+    {
+      "path": "tests/test_run_experiments_full_resource.py",
+      "baseline_sha256": "5cbd4b1445f113985a7bd8361fd150f258b19408d9715d8053d15cd8fba0fbbb",
+      "commit_sha256": "75b980f507081b1ac3eff9f766d3c0bbc7bac38faaf06ef6f593682d40555d10",
+      "baseline_size_bytes": 17831,
+      "commit_size_bytes": 17773
+    },
+    {
+      "path": "tests/test_run_experiments_resume.py",
+      "baseline_sha256": "d5166b37468dcf2b9c926d978b86588f7944e04922aca6fcc56cd7dd58540e7b",
+      "commit_sha256": "d87ddc3ffa51086167e319a85d213932a164393b7d5a40ddc67b08290e339940",
+      "baseline_size_bytes": 25001,
+      "commit_size_bytes": 24439
+    },
+    {
+      "path": "tests/test_scenario_planning.py",
+      "baseline_sha256": "455bd9d4241d163bc65ffb8dc3e207a2a9918d4aaed969bbe4baa4d40142f744",
+      "commit_sha256": "158584a1899b0567df303ebeaef05ad19cc8cc67c9a1ceae75cf9271f03313be",
+      "baseline_size_bytes": 95672,
+      "commit_size_bytes": 93744
+    },
+    {
+      "path": "tests/test_seafile_artifact_store.py",
+      "baseline_sha256": "93169ab881536d9506f2de5f8585eaed49402a14232705be72f3478f49829dba",
+      "commit_sha256": "c55eaa01fd83b473aff372ac06137401b8e75b96f87902d7875c7bcb4bd93d6a",
+      "baseline_size_bytes": 5837,
+      "commit_size_bytes": 5695
+    },
+    {
+      "path": "tests/test_strict_validation.py",
+      "baseline_sha256": "b575dac346bedf335d3c7b20e7ba9a922644759fddd4b46dc84c479123ec72b2",
+      "commit_sha256": "9cb7b23f9c5a765581369e759b764a1c4b4e5f0413465d18762d29f9c1f1623e",
+      "baseline_size_bytes": 20247,
+      "commit_size_bytes": 19873
+    },
+    {
+      "path": "tests/test_topology_contract.py",
+      "baseline_sha256": "067b26135d0ff534924b9c9b5e4ae9ec9558e18790e1385b0ded4a4cf666f8a0",
+      "commit_sha256": "09d0989e00dd031ed6fd40b259b9ec2d72a8efc8569c99dfdf352e7ee55b1154",
+      "baseline_size_bytes": 30927,
+      "commit_size_bytes": 30263
+    }
+  ],
+  "working_tree_modified_count": 125,
+  "working_tree_untracked_count": 381,
+  "related_untracked_openspec": [
+    "openspec/changes/fix-benchmark-preparations-spec/conformance-progress.md",
+    "openspec/changes/fix-benchmark-preparations-spec/implementation-baseline.json",
+    "openspec/changes/fix-benchmark-preparations-spec/implementation-evidence.md"
+  ],
+  "blanket_staging_used": false,
+  "unrelated_dirty_tree_excluded": true,
+  "publication_ready": false
+}

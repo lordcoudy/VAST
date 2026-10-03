@@ -36,6 +36,7 @@ from analytics_execution_protocol import (
 )
 from analytics_execution_worker import (
     BackendInference,
+    MAX_WORKER_REQUESTS,
     WORKER_CAPABILITY_KIND,
     WORKER_RUNTIME_PROBE_KIND,
     WorkerHarness,
@@ -354,7 +355,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(json.dumps(result, sort_keys=True, separators=(",", ":")))
             return 0
         _require(args.binding is not None and args.socket is not None and args.max_requests is not None, "binding, socket, and max-requests are required")
-        _require(0 <= args.max_requests <= 1_000_000, "max-requests is invalid")
+        _require(
+            0 <= args.max_requests <= MAX_WORKER_REQUESTS,
+            "max-requests is invalid",
+        )
         binding = load_binding(args.binding)
         backend = OpenVINOBackend(binding)
         connection = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)

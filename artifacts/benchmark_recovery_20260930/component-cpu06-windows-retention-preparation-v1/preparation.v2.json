@@ -1,0 +1,145 @@
+{
+  "archive_strategy": "One streaming ZIP_DEFLATED level1 archive of128 exact original output/controller files, plus one URI/fullSHA/CRC/epoch7 manifest. All source and target namespace/schema/CRC/decompressedSHA checked; physical ZIP packageSHA receipt last; no authority rebinding. Originals remain ext4.",
+  "artifact_kind": "vast_cpu06_finite_retention_preparation_v1",
+  "bounds": "future original120+10;1MiB chunks, each source<=64MiB, archive<=256MiB, metadata<=1MiB; final120 gate after finalreceipt/FDclose with exclusive sticky late-failure companion/nonzero exit",
+  "excluded_engine_duplicate_bytes": 45570705,
+  "extension_counts": {
+    ".cid": 2,
+    ".csv": 27,
+    ".json": 65,
+    ".jsonl": 13,
+    ".log": 2,
+    ".raw": 2,
+    ".stderr": 8,
+    ".stdout": 8,
+    ".svg": 1
+  },
+  "future_gpu_retention": {
+    "actual_bytes": null,
+    "actual_inventory": null,
+    "namespaces": [
+      "gpu-pair-01",
+      "gpu-pair-01-original-controller"
+    ],
+    "scope": "Only inventory after authentic GPU closure; no active output reads or guessed records."
+  },
+  "future_original_gpu_terminal_sha256": null,
+  "future_original_gpu_terminal_size": null,
+  "genuine_unexecuted_source_review_fix": "write() previously called clock-guarded descriptor() after publication; at120 seconds that prevented the promised sticky late-failure companion. New write uses its actual exclusively-written bytes/fstat/path tuple, fsync/close, and no deadline guard for bounded failure persistence; original final120 gate and130 containment still reject late success. Only write function AST differs. No producer bytes or source87 changed.",
+  "hardware_or_benchmark_grant": false,
+  "largest20_retained_files": [
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence.operational/native_operational_requests.v1.jsonl",
+      "size_bytes": 32365325
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence.operational/native_operational_requests.v1.jsonl",
+      "size_bytes": 30042428
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+      "size_bytes": 17530523
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl",
+      "size_bytes": 16231632
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/topology_events.csv",
+      "size_bytes": 8370100
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/topology_events.csv",
+      "size_bytes": 7807985
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/policy_decisions.csv",
+      "size_bytes": 6625710
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/policy_decisions.csv",
+      "size_bytes": 6102528
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frame_events.csv",
+      "size_bytes": 5874450
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_events.csv",
+      "size_bytes": 5699139
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frame_events.csv",
+      "size_bytes": 3520098
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_events.csv",
+      "size_bytes": 3319546
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/branch_terminals.csv",
+      "size_bytes": 2849152
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/branch_terminals.csv",
+      "size_bytes": 2762897
+    },
+    {
+      "relative_path": "cpu-pair-06/guardian-operational/plate_number-cpu.jsonl",
+      "size_bytes": 2120257
+    },
+    {
+      "relative_path": "cpu-pair-06/guardian-operational/vehicle_type-cpu.jsonl",
+      "size_bytes": 2022265
+    },
+    {
+      "relative_path": "cpu-pair-06/guardian-operational/damage-cpu.jsonl",
+      "size_bytes": 1991960
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_intervals.csv",
+      "size_bytes": 1899015
+    },
+    {
+      "relative_path": "cpu-pair-06/guardian-operational/foreign_object-cpu.jsonl",
+      "size_bytes": 1520161
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_intervals.csv",
+      "size_bytes": 1335711
+    }
+  ],
+  "no_cpu_raw_hash_or_copy_during_active_gpu": true,
+  "no_model_producer_input_data_copy": true,
+  "packer": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/pack_original_outputs_v2.py",
+    "sha256": "43088e67d8f470033be6f4fa07ed109c718e047c4e61615b3d979ee1e784d929",
+    "size_bytes": 10516
+  },
+  "preserved_original_preparation": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/preparation.v1.json",
+    "sha256": "b7c59eea5f18a2d9dbd984ab2eeee8702d9d8cb70777c7e0c20269ac4f1d448e",
+    "size_bytes": 6159
+  },
+  "preserved_original_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/pack_original_outputs_v1.py",
+    "sha256": "8c04f47d1e49d175112cf49e9e11752373a38b691ba5d10bcc4f12d094e65248",
+    "size_bytes": 10261
+  },
+  "remaining_gate": "Independent source review; actual closed GPU terminal/FD release; root explicit dispatch of this one packer. No copy or original raw-data reads have occurred.",
+  "retained_bytes": 165944632,
+  "retained_file_count": 128,
+  "retention_executed": false,
+  "schema_version": 1,
+  "source_custody": "Exact initial129-file/29-directory namespace, held ancestor dirfds, leaf epoch7 before/after transfer, final source namespace/epochs and metadata FD rechecks. Source inventory SHA fixed in code, GPU actual terminal externally supplied/hash-held before copy.",
+  "source_groups": [
+    "cpu-pair-06",
+    "cpu-pair-06-original-controller"
+  ],
+  "stat_only_inventory": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu06-windows-retention-preparation-v1/inventory.v1.json",
+    "sha256": "f18913e434ceddd0f65dae6ad0b7b0c642d54b6d1ff9751e2c9bb28378ba2ce0",
+    "size_bytes": 97442
+  },
+  "status": "source_prepared_not_executed"
+}

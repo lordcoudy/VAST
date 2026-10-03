@@ -1,0 +1,324 @@
+{
+  "actual_detached_HEAD_raw": "3c025b29b3c1d5275c2ec693410e4b83700583de\n",
+  "conclusion": "No component/unknown-kind bypass was identified in the inspected named full-entrypoint families. Rejection precedes publication/acceptance effects; physical path/index reads may precede JSON kind validation. Exact source predicates and complete historical table/false-flag logic are source evidence, not executed universal coverage.",
+  "internal_helper_limit": "_binding_document_schema accepts legacy schema1 without its own kind test; enclosing exact full index/fragment/coordinate guards are necessary. Do not describe this helper alone as proving unknown-kind rejection.",
+  "kind": "decision29_full_consumer_guard_order_source_review_v1",
+  "metadata_custody_limit": "Author source inspection read raw D metadata sequentially without long-lived holds; runtime generator independently holds and rechecks all selected source/notes/evidence FDs/epochs.",
+  "named_entrypoint_guard_reviews": [
+    {
+      "boundary": "assess_capability_manifest",
+      "boundary_line": 320,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 424,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "\n    if manifest.get(\"schema_version\") != CAPABILITY_MANIFEST_SCHEMA_VERSION:\n        blockers.append(\"capability_manifest_schema_version_mismatch\")\n    if manifest.get(\"artifact_kind\") != \"vast_publication_policy_capability_manifest\":\n        blockers.append(\"capability_manifest_artifact_kind_mismatch\")\n    if manifest.get(\"policy_scope\") != POLICY_SCOPE:\n        blockers.append(\"capability_manifest_policy_scope_mismatch\")",
+      "guard_line": 338,
+      "reviewed_order": "Kind mismatch remains a blocker while all four systems/branches/resources are assessed; callers require passed=True. A complete historical table cannot remove this blocker.",
+      "source": {
+        "path": "scripts/publication_policy_contract.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+        "size_bytes": 40143
+      }
+    },
+    {
+      "boundary": "assess_policy_qualification",
+      "boundary_line": 921,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 1085,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "            set(index) == expected_fields\n            and index.get(\"schema_version\")\n            in SUPPORTED_QUALIFICATION_INDEX_SCHEMA_VERSIONS\n            and index.get(\"artifact_kind\") == \"vast_publication_policy_qualification_index\"\n        )\n        if not schema_ok:\n            raise QualificationError(\"qualification index schema/fields drifted\")",
+      "guard_line": 961,
+      "reviewed_order": "Exact top-level index fields/version/kind after physical index read, before dataset/fragments/pilots and accepted assessment.",
+      "source": {
+        "path": "scripts/publication_policy_qualification.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "529a5ed62e57dba014dd781fa8e2a6b1a24b63812cd5a53aefb8ae279d9948e3",
+        "size_bytes": 63279
+      }
+    },
+    {
+      "boundary": "promote_policy_qualification",
+      "boundary_line": 1294,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 1381,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "        pilot_validator=pilot_validator,\n        fragment_validator=fragment_validator,\n    )\n    if not assessment[\"passed\"]:\n        raise QualificationError(\"policy qualification is blocked: \" + \", \".join(assessment[\"blockers\"][:8]))\n    root = Path(project_root).resolve(strict=True)\n    supplied_destination = Path(output_dir)",
+      "guard_line": 1310,
+      "reviewed_order": "Calls the preceding full assessor and rejects before output destination creation or immutable writes.",
+      "source": {
+        "path": "scripts/publication_policy_qualification.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "529a5ed62e57dba014dd781fa8e2a6b1a24b63812cd5a53aefb8ae279d9948e3",
+        "size_bytes": 63279
+      }
+    },
+    {
+      "boundary": "assess_full_resource_qualification",
+      "boundary_line": 882,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 1056,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "            or index.get(\"schema_version\")\n            not in SUPPORTED_QUALIFICATION_INDEX_SCHEMA_VERSIONS\n            or index.get(\"artifact_kind\")\n            != \"vast_pre_run_full_resource_qualification_index\"\n        ):\n            raise FullResourceQualificationError(\n                \"qualification index schema/fields drifted\"",
+      "guard_line": 919,
+      "reviewed_order": "Exact top-level fields/version/kind after physical index read, before full resource/dataset/closure acceptance.",
+      "source": {
+        "path": "scripts/full_resource_qualification.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "6e2c4362c3946c256748c7051ef52fe22c00ec2100ca3213781518acbf58d2d5",
+        "size_bytes": 57030
+      }
+    },
+    {
+      "boundary": "promote_full_resource_qualification",
+      "boundary_line": 1262,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 1354,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "    assessment = assess_full_resource_qualification(\n        project_root=project_root, index_path=index_path,\n    )\n    if not assessment[\"passed\"]:\n        raise FullResourceQualificationError(\n            \"full-resource qualification is blocked: \"\n            + \", \".join(assessment[\"blockers\"][:8])",
+      "guard_line": 1273,
+      "reviewed_order": "Full assessor rejection precedes output custody/directory/publication.",
+      "source": {
+        "path": "scripts/full_resource_qualification.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "6e2c4362c3946c256748c7051ef52fe22c00ec2100ca3213781518acbf58d2d5",
+        "size_bytes": 57030
+      }
+    },
+    {
+      "boundary": "assess_backend_runtime_qualification",
+      "boundary_line": 693,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 872,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "        }\n        if (\n            set(index) != fields or index.get(\"schema_version\") != 1\n            or index.get(\"artifact_kind\") != \"vast_backend_runtime_qualification_index\"\n        ):\n            raise BackendRuntimeQualificationError(\"qualification index schema/fields drifted\")\n        policies, policy_contract_sha = _policies_and_contract_sha()",
+      "guard_line": 728,
+      "reviewed_order": "Exact top-level fields/version/kind precede full upstream policy/resource/system runtime validation.",
+      "source": {
+        "path": "scripts/backend_runtime_qualification.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "b7f06881ed3c4dfb81ea0468df828dcedd82bb8d92b35778f6872e2021e300f5",
+        "size_bytes": 49852
+      }
+    },
+    {
+      "boundary": "promote_backend_runtime_qualification",
+      "boundary_line": 963,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 1049,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "        pilot_validator=pilot_validator, dataset_loader=dataset_loader,\n        execution_identity_loader=execution_identity_loader,\n    )\n    if not assessment[\"passed\"]:\n        raise BackendRuntimeQualificationError(\n            \"backend runtime qualification is blocked: \"\n            + \", \".join(assessment[\"blockers\"][:8])",
+      "guard_line": 975,
+      "reviewed_order": "Full assessor rejection precedes _safe_output_directory and receipt writes.",
+      "source": {
+        "path": "scripts/backend_runtime_qualification.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "b7f06881ed3c4dfb81ea0468df828dcedd82bb8d92b35778f6872e2021e300f5",
+        "size_bytes": 49852
+      }
+    },
+    {
+      "boundary": "_candidate_material",
+      "boundary_line": 278,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 391,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "        in receipt[\"blockers\"],\n        \"candidate receipt lost its nonauthority blocker\",\n    )\n    assessment = policy.assess_capability_manifest(manifest)\n    _require(\n        assessment.get(\"passed\") is True\n        and assessment.get(\"status\") == \"ready\"",
+      "guard_line": 371,
+      "reviewed_order": "Candidate receipt strict fields/kind/non-authority blocker and full capability assessment precede derived bootstrap acceptance.",
+      "source": {
+        "path": "scripts/publication_policy_qualification_bootstrap_v2.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6",
+        "size_bytes": 82531
+      }
+    },
+    {
+      "boundary": "_resource_binding_inventory",
+      "boundary_line": 531,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 705,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "            }\n            and value.get(\"schema_version\") == 1\n            and value.get(\"artifact_kind\")\n            == \"vast_publication_qualification_system_fragment_v1\"\n            and value.get(\"system\") == system\n            and value.get(\"pilots\") == [],\n            f\"{system} qualification fragment identity drifted\",",
+      "guard_line": 571,
+      "reviewed_order": "Outer exact full fragment fields/kind and 32 binding/4 system coverage checks precede all resource/policy projections. Legacy internal schema1 helper alone is not a top-level full-kind gate.",
+      "source": {
+        "path": "scripts/publication_policy_qualification_runtime_inputs_v2.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "a4358e759a24cbf49652cecbbb7a30199476d0c3539be5e1c9dd87b972aeb2f8",
+        "size_bytes": 136988
+      }
+    },
+    {
+      "boundary": "validate_guardian_preprocessing_authority_v1",
+      "boundary_line": 1462,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 1479,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "    authority = dict(value)\n    _require(\n        authority.get(\"schema_version\") == 1\n        and authority.get(\"artifact_kind\") == AUTHORITY_KIND\n        and all(\n            _valid_sha(authority.get(field))\n            for field in _AUTHORITY_FIELDS - {\"schema_version\", \"artifact_kind\"}",
+      "guard_line": 1472,
+      "reviewed_order": "Exact authority fields then original full authority kind before return. accepted=false cannot override kind.",
+      "source": {
+        "path": "scripts/publication_guardian_preprocessing_contract_v1.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+        "size_bytes": 68402
+      }
+    },
+    {
+      "boundary": "validate_accepted_policy_guardian_preprocessing_authority_v1",
+      "boundary_line": 856,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 880,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "    authority = dict(value)\n    _require(\n        authority.get(\"schema_version\") == SCHEMA_VERSION\n        and authority.get(\"artifact_kind\") == AUTHORITY_KIND\n        and all(\n            _valid_sha(authority.get(field))\n            for field in _AUTHORITY_FIELDS",
+      "guard_line": 866,
+      "reviewed_order": "Exact second full authority fields/kind and complete resource images before return.",
+      "source": {
+        "path": "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+        "size_bytes": 48963
+      }
+    },
+    {
+      "boundary": "_source_material",
+      "boundary_line": 343,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 789,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "        and accepted_receipt.get(\"status\")\n        == \"accepted_evidence_driven_policy_qualification\"\n        and accepted_receipt.get(\"coverage\") == _COVERAGE,\n        \"accepted policy qualification receipt schema/status/coverage drifted\",\n    )\n    accepted_receipt_identity = _self_hash(\n        accepted_receipt,",
+      "guard_line": 557,
+      "reviewed_order": "Accepted qualification receipt exact fields/kind/status/full coverage before self-hash/index promotion and preprocessing derivation.",
+      "source": {
+        "path": "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+        "size_bytes": 48963
+      }
+    },
+    {
+      "boundary": "__init__",
+      "boundary_line": 546,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 652,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "        if tuple(branches) != tuple(ANALYTICS_BRANCHES):\n            raise NativePolicyRuntimeError(\"checkpoint analytics branch set or order has drifted\")\n\n        assessment = assess_capability_manifest(capability_manifest)\n        if not assessment[\"passed\"]:\n            raise NativePolicyRuntimeError(\n                \"publication policy capability manifest is blocked: \"",
+      "guard_line": 581,
+      "reviewed_order": "Native coordinator constructor requires full capability passed before assigning runtime state. Only the matching class constructor is cited.",
+      "source": {
+        "path": "scripts/checkpoint_native_policy_runtime.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+        "size_bytes": 73421
+      }
+    },
+    {
+      "boundary": "promote",
+      "boundary_line": 1179,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 1446,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "        with self._lock:\n            if self._operational_error is not None:\n                raise NativePolicyRuntimeError(self._operational_error)\n            if not self._states:\n                raise NativePolicyRuntimeError(\"native policy runtime emitted no decisions\")\n            pending = [\n                decision_id",
+      "guard_line": 1191,
+      "reviewed_order": "Stateful promotion rejects operational failure, empty or unterminated decisions before projection/publishing; component receipt cannot instantiate accepted state in lieu of strict constructor.",
+      "source": {
+        "path": "scripts/checkpoint_native_policy_runtime.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+        "size_bytes": 73421
+      }
+    },
+    {
+      "boundary": "validate_publication_q4_raw_evidence_manifest_v4",
+      "boundary_line": 890,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 922,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "    \"\"\"Purely validate the exact raw-manifest ABI and external identities.\"\"\"\n    _require(type(value) is dict and set(value) == _MANIFEST_FIELDS, \"Q4 raw evidence manifest fields drifted\")\n    coordinate = _coordinate(copy.deepcopy(dict(expected_coordinate)))\n    _require(value.get(\"schema_version\") == SCHEMA_VERSION and value.get(\"artifact_kind\") == RAW_EVIDENCE_MANIFEST_KIND and value.get(\"status\") == \"captured_native_runtime_evidence\" and value.get(\"authorization_eligible\") is False and value.get(\"execution_authorized\") is False, \"Q4 raw evidence manifest header/claims drifted\")\n    _require(value.get(\"coordinate\") == coordinate and value.get(\"run_id\") == expected_run_id and value.get(\"duration_s\") == DURATION_S, \"Q4 raw evidence manifest run/coordinate drifted\")\n    _require(type(expected_run_id) is str and _RUN_ID_RE.fullmatch(expected_run_id) is not None, \"expected Q4 run_id is invalid\")\n    contract = _descriptor(value.get(\"runtime_contract\"), \"runtime contract\")",
+      "guard_line": 898,
+      "reviewed_order": "Exact top-level fields then raw manifest kind/status/non-authorizing flags before descriptor/coordinate/file validation.",
+      "source": {
+        "path": "scripts/publication_q4_evidence_validator_v4.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "d45abf6c9d894cf5c85a4ec7f3d8ae37640b550a7d2ee19c9f1d7155fbc85dfd",
+        "size_bytes": 118920
+      }
+    },
+    {
+      "boundary": "_validate_request",
+      "boundary_line": 1918,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 1988,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "        and value.get(\"schema_version\") == 2\n        and type(value.get(\"artifact_kind\")) is str\n        and value.get(\"artifact_kind\") == VALIDATION_REQUEST_KIND,\n        \"formal validation request header drifted\",\n    )\n    coordinate = _request_coordinate(value)\n    identity = _sha(value.get(\"request_sha256\"), \"formal validation request\")",
+      "guard_line": 1932,
+      "reviewed_order": "Exact request fields/version/kind before reference/authority parsing. Typed full runtime/runner/validator authority references follow.",
+      "source": {
+        "path": "scripts/publication_q4_evidence_validator_v4.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "d45abf6c9d894cf5c85a4ec7f3d8ae37640b550a7d2ee19c9f1d7155fbc85dfd",
+        "size_bytes": 118920
+      }
+    },
+    {
+      "boundary": "validate_publication_q4_evidence_v4",
+      "boundary_line": 1991,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 2065,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": ") -> dict[str, Any]:\n    \"\"\"Validate a formal request and return only the qualified replay ABI.\"\"\"\n    descriptor = _descriptor(raw_evidence_manifest_descriptor, \"raw evidence manifest\")\n    manifest = validate_publication_q4_raw_evidence_manifest_v4(\n        raw_evidence_manifest,\n        expected_coordinate=_request_coordinate(validation_request),\n        expected_run_id=str(raw_evidence_manifest.get(\"run_id\", \"\")),",
+      "guard_line": 2000,
+      "reviewed_order": "Raw-kind validation and exact formal request validation precede evidence files and runtime contract loading.",
+      "source": {
+        "path": "scripts/publication_q4_evidence_validator_v4.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "d45abf6c9d894cf5c85a4ec7f3d8ae37640b550a7d2ee19c9f1d7155fbc85dfd",
+        "size_bytes": 118920
+      }
+    },
+    {
+      "boundary": "_validate_manifest",
+      "boundary_line": 1120,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 1143,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "        if manifest.get(\"schema_version\") != RUN_MANIFEST_SCHEMA_VERSION:\n            raise ContractError(\"full publication run manifest schema drift\")\n        if manifest.get(\"artifact_kind\") != \"vast_full_publication_run_manifest\":\n            raise ContractError(\"invalid full publication run manifest artifact kind\")\n        matrix = manifest.get(\"matrix\")\n        self._validate_matrix(matrix)\n        actual_matrix_identity = publication_matrix_identity(matrix)",
+      "guard_line": 1129,
+      "reviewed_order": "Exact full run kind before full matrix/run identity checks.",
+      "source": {
+        "path": "scripts/full_publication_runner.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "c94cd21aa12a23d48bf03b887a287e31fa02f796202fcac8f25a165d04d4a05e",
+        "size_bytes": 68738
+      }
+    },
+    {
+      "boundary": "_validate_checkpoint",
+      "boundary_line": 1160,
+      "direct_exhaustive_component_negative_test": "not_identified",
+      "end_line": 1333,
+      "execution": "not_invoked_source_only",
+      "guard_excerpt": "        if checkpoint.get(\"schema_version\") != CHECKPOINT_SCHEMA_VERSION:\n            raise ContractError(\"full publication checkpoint schema drift\")\n        if checkpoint.get(\"artifact_kind\") != \"vast_full_publication_checkpoint\":\n            raise ContractError(\"invalid full publication checkpoint artifact kind\")\n        if checkpoint.get(\"matrix_identity_sha256\") != manifest[\"matrix_identity\"][\n            \"sha256\"\n        ]:",
+      "guard_line": 1166,
+      "reviewed_order": "Exact full checkpoint kind before state/verified-pair/cloud/acceptance validation.",
+      "source": {
+        "path": "scripts/full_publication_runner.py",
+        "physical_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+        "sha256": "c94cd21aa12a23d48bf03b887a287e31fa02f796202fcac8f25a165d04d4a05e",
+        "size_bytes": 68738
+      }
+    }
+  ],
+  "operations": {
+    "Git_commands": 0,
+    "consumer_calls": 0,
+    "model_engine_native_calls": 0,
+    "target_imports": 0,
+    "tests": 0
+  },
+  "regression_gap": "The existing two component negative tests do not directly invoke every named full consumer. Direct exhaustive component-kind behavioral coverage remains unverified, and R13/S6 requires final explicit manual/source disposition rather than a blanket green label.",
+  "schema_version": 1,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "two_original_full_kinds": "Original qualification and accepted-policy guardian authority validators each retain their own exact fields/kind gate. New component admission is separate and is not a full promotion/publication authority."
+}

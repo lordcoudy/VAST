@@ -1,0 +1,47 @@
+{
+  "actual_source_commit": "53a0dcf61b5b5764880878cbe0138c9d965dfb85",
+  "artifact_kind": "vast_original_cpu_ci_read_only_outcome_join_v1",
+  "cancellation_cause": "unknown from retained job log; no explicit timeout reason present",
+  "complete_full_ci_success": false,
+  "full_report_present": false,
+  "hardware_acceptance": false,
+  "job_id": 109759965078,
+  "last_start": {
+    "event": "test_started",
+    "monotonic_ns": 5065550818423,
+    "test_id": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_rejected_semantic_evidence_never_creates_publishable_result_or_receipt"
+  },
+  "last_terminal": {
+    "elapsed_s": 615.1906369070002,
+    "event": "test_terminal",
+    "monotonic_ns": 5065550764211,
+    "outcome": "error",
+    "test_id": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_receipt_is_last_and_tamper_fails_read_only_validation"
+  },
+  "observed_conclusion": "cancelled",
+  "observed_status": "completed",
+  "original_065_crash_cause_proven": false,
+  "original_decoded_job": {
+    "sha256": "f100486587e2b4233925c0d42d31aa1c72d7f69cb46a7d91ecc15c8dba678573",
+    "size_bytes": 80009,
+    "tool_decoded_utf8_carrier": true
+  },
+  "original_zip": {
+    "all_members_crc_valid": true,
+    "members": 152,
+    "sha256": "9bf2259f9eca622624c0a62a70bb2fbd457cb31012a7200d4019bff62a789d64",
+    "size_bytes": 940648
+  },
+  "run_id": 36675667933,
+  "scope": "Read-only join of original completed53 job and original ZIP. No test, model acquisition, source/namespace change or worker launch. Immediate615-second durable-journal waits are original errors; underlying early setup exception is unavailable.",
+  "setup_errno_proven": false,
+  "source_after_present": false,
+  "terminal_outcomes": {
+    "error": 8,
+    "failure": 2,
+    "skip": 2,
+    "success": 121
+  },
+  "test_started_count": 134,
+  "test_terminal_count": 133
+}

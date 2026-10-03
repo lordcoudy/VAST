@@ -1,0 +1,34 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_qualification_image_refreeze_v1.py",
+    "capture",
+    "--project-root",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "--registry",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/configs/publication_qualification_image_refreeze_v1.json",
+    "--system",
+    "gstreamer_custom",
+    "--native-receipt",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/fix_benchmark_preparations_20260928g/native-a/native_probe.freeze.json",
+    "--candidate-final-reference",
+    "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9",
+    "--receipt-output",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/gstreamer_custom.runtime.freeze.json",
+    "--docker",
+    "/usr/bin/docker"
+  ],
+  "commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable_realpath": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "gid": 1000,
+    "pgid": 72983,
+    "pid": 72983,
+    "ppid": 72344,
+    "startticks": 49386740,
+    "uid": 1000
+  },
+  "started_at_ns": 1791011538022081891
+}

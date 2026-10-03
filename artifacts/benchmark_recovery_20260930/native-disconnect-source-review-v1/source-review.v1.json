@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "kind": "independent_bounded_cpu07_native_front_source_review",
+  "accepted": false,
+  "cause_proven": false,
+  "source_runtime_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+  "planning_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "source_vs_runtime_diff": "Empty for every listed source pin at the time of review.",
+  "source_pins": [
+    {
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "size_bytes": 167521,
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f"
+    },
+    {
+      "path": "deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+      "size_bytes": 41004,
+      "sha256": "d531893e2586bb02432d69edfae7bb2ec08a04711c2c8e22353efda678ae461a"
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_runtime.py",
+      "size_bytes": 156160,
+      "sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97"
+    },
+    {
+      "path": "scripts/checkpoint_runtime.py",
+      "size_bytes": 94557,
+      "sha256": "fb91d24e69385d37fc59b68c116829163cc3e29ed6b1403276b0b0676af90135"
+    },
+    {
+      "path": "scripts/checkpoint_native_policy_runtime.py",
+      "size_bytes": 73421,
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95"
+    },
+    {
+      "path": "deploy/native_gst_probe/checkpoint_native_policy_client.hpp",
+      "size_bytes": 22257,
+      "sha256": "85d2b64ccc977a76b6a9c250fd77ea8f02029382cc6121c52ff7ec3bc57acc0c"
+    }
+  ],
+  "evidence": {
+    "failed_front_review": {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/failed-front-record-review.v1.json",
+      "size_bytes": 4381,
+      "sha256": "00802c6e9ecb8fa046d2977fec1841e02d44537e5a7df5b5c7193ef8816602c6"
+    },
+    "request_id": "edf739962630fd9cc16e41d5291746d57060c2af31bb5d4f90de4ec8db97328f",
+    "connection_id": 7,
+    "stream_id": 1,
+    "frame_id": 205,
+    "transport_pts_ns": 210000000000,
+    "response_sha256": "4c4103dca211a7d3fd1393cd849c872243b2638ce91ec2d1831deeba0964353c",
+    "failed_send_at_ns": 1790823582124428000,
+    "engine_registration_to_native_terminal_ns": 215583684325,
+    "engine_registration_is_ready": false,
+    "native_stderr_raw_retained": false
+  },
+  "findings": [
+    {
+      "classification": "source_fact",
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "anchors": [
+        1174,
+        1180,
+        1189,
+        2761,
+        2772,
+        2850,
+        2864,
+        2881,
+        2887
+      ],
+      "statement": "An external policy execution remains registered across analytics execute and policy terminal acknowledgment. checkpoint_state_drained requires every branch execution map to be empty. Ordinary DRAINED cannot be chosen while this registered request is pending."
+    },
+    {
+      "classification": "source_fact",
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "anchors": [
+        1226,
+        1233,
+        1240,
+        1271,
+        1275,
+        385,
+        389,
+        2388,
+        2391
+      ],
+      "statement": "CENSORED is emitted after the drain boundary without settling execution maps; it quits the main loop, which aborts ingress and requests GST_STATE_NULL on the pipelines."
+    },
+    {
+      "classification": "source_fact",
+      "path": "deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+      "anchors": [
+        209,
+        225,
+        251,
+        276,
+        278,
+        405,
+        408,
+        425,
+        433,
+        438
+      ],
+      "statement": "The analytics execution request serializes a deadline, but native exchange has a blocking recv and no CENSORED, drain, or socket receive timer. The client fd closes through its destructor or move assignment, not directly through pipeline state changes."
+    },
+    {
+      "classification": "bounded_inference",
+      "statement": "CENSORED-to-loop-quit-to-NULL is a possible lifecycle route. The inspected source does not prove this route closed the exact CPU07 front while that request was pending, and GST_STATE_NULL must not be reported as a direct client-fd close."
+    },
+    {
+      "classification": "source_fact",
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "anchors": [
+        1099,
+        1114,
+        1118,
+        1122
+      ],
+      "statement": "The native STOP reader consumes a POLLIN line before rejecting HUP. The coordinator STOP then control-pipe close is explicitly supported."
+    },
+    {
+      "classification": "source_fact",
+      "path": "scripts/checkpoint_runtime.py",
+      "anchors": [
+        1704,
+        1708,
+        1797,
+        1802,
+        1816,
+        1843,
+        1847,
+        1892,
+        1898
+      ],
+      "statement": "Execution timeout resets after all READY statuses. Nonzero child exit, coordinator-reader errors, and execution timeout enter shared fail-closed cleanup that terminates remaining native processes."
+    },
+    {
+      "classification": "retained_fact",
+      "statement": "The exact retained journal has a nonnull response digest and send=failed for the failed request. The response was constructed successfully before FRONT delivery failed. The original conflated inference stage does not establish inference failure."
+    }
+  ],
+  "limits": [
+    "Original native READY, ADMISSION_STOPPED, DRAINED or CENSORED ordering and the original first native/coordinator stderr cause are unavailable to this review.",
+    "Registration duration and PTS cannot identify the selected shutdown path.",
+    "No production source, tests, CI, engine, worker, model, hardware, or Git state was changed.",
+    "No runtime reproduction or test was written or run; the failed original remains failed.",
+    "All reads selected finite named files; no held descriptors or background processes remain from this review."
+  ],
+  "next_required_observation": [
+    "On the next already-authorized full pair attempt, retain the first originating native or coordinator error before fail-closed peer containment, per-child return codes and bounded raw stderr.",
+    "Retain emitted native lifecycle status and observation order for the exact process owning the corresponding failed FRONT connection, including READY, STARTED, ADMISSION_STOPPED, and any DRAINED or CENSORED terminal. Original CPU07 used connection 7; a new attempt must use its own observed connection identity.",
+    "Join that process and first error to the failed request and constructed-response/send-failure record. A new attempt diagnoses itself and does not retroactively prove the original CPU07 cause."
+  ],
+  "simplest_reviewed_next_fix": "Keep Decision28 as a minimal diagnostic retention and stage-label repair. No timeout increase, cancellation relaxation, schema/counter change, or success waiver follows from this source review.",
+  "unexecuted_test_design": [
+    "Using the existing VAST_NATIVE_PROBE_TESTING access seam and an AF_UNIX SOCK_SEQPACKET mock analytics peer, hold the response to a valid registered execution until the test controls a barrier; assert checkpoint_state_drained remains false while the entry is registered.",
+    "Exercise STOP before the drain boundary with that barrier held; inspect lifecycle state and frontend descriptor ownership separately. Release a valid response and terminal acknowledgment, then assert the execution entry is erased and DRAINED becomes eligible.",
+    "Exercise the unchanged CENSORED boundary in a subprocess with the response barrier held; record lifecycle and actual peer-close or process-exit order. This discriminates a potential lifecycle mechanism without representing the censored result as benchmark success.",
+    "Exercise a distinct native/coordinator failure while the barrier is held; assert its first diagnostic is retained before resulting peer termination and FRONT send failure."
+  ]
+}

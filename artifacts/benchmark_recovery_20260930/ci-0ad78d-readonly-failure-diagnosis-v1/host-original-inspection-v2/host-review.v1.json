@@ -1,0 +1,280 @@
+{
+  "actual_tracked_source_count": 3663,
+  "all_member_crc_verified": true,
+  "archive": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-original-host-retention-v1/36773798497-host/original-artifact.zip",
+    "sha256": "2fdca7dac0c37065e9e8edc1cf8019015d05ca84930ee192203b3f310e99eaab",
+    "size_bytes": 336328
+  },
+  "artifact_kind": "vast_0ad78d_original_host_prerequisites_readonly_review_v1",
+  "asset_total_bytes": 15514597,
+  "decoded_bytes": 1649598,
+  "eight_original_asset_facts": [
+    {
+      "acquisition_elapsed_s": 0.913631395000003,
+      "actual_child_pid": 2535,
+      "index": 0,
+      "original_exit_code": 0,
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+      "sha256": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed",
+      "sha384": "f9f35961bc5cffbb0d663bfc1e8b02efab0fbc4c9270578dad2bedac2634bd33428acde64f2e080347c2417948a690ee",
+      "size_bytes": 254351,
+      "status": "downloaded"
+    },
+    {
+      "acquisition_elapsed_s": 0.8447294879999987,
+      "actual_child_pid": 2536,
+      "index": 1,
+      "original_exit_code": 0,
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin",
+      "sha256": "7f9344e41167d14179a0da136f87f2570a30ac5399e0363fd6787a9ae18d0fa0",
+      "sha384": "5f76bab11f3fd97d4313fa6e9d9f1fce0fc669aacfba9e688161c90c89baeb5f9a89a9f68e4ace49c180af35133fbda3",
+      "size_bytes": 3691778,
+      "status": "downloaded"
+    },
+    {
+      "acquisition_elapsed_s": 0.555503035000001,
+      "actual_child_pid": 2537,
+      "index": 2,
+      "original_exit_code": 0,
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml",
+      "sha256": "baed27b9dde81b75590a382d2aa458d63391cdb146e7ef20c12577c4cb0617d8",
+      "sha384": "812a89ced16938bb32c6648f5278cb4a34940912199de4c9644bbb0e63d5b0728f7f0e0e0f1c0bae6eab36c28b724c3b",
+      "size_bytes": 292640,
+      "status": "downloaded"
+    },
+    {
+      "acquisition_elapsed_s": 0.9350543429999973,
+      "actual_child_pid": 2538,
+      "index": 3,
+      "original_exit_code": 0,
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin",
+      "sha256": "a7f04e3243aae3099a00c5276074bdbe57bc8bf91986093dfeafb3b065843f45",
+      "sha384": "fc945d7885733f86cef916b91e2791761abaa56bc005f6426ec48e7aa573e1529f479f723713944d4a81773a9140df9f",
+      "size_bytes": 5774062,
+      "status": "downloaded"
+    },
+    {
+      "acquisition_elapsed_s": 0.542575290000002,
+      "actual_child_pid": 2539,
+      "index": 4,
+      "original_exit_code": 0,
+      "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml",
+      "sha256": "69ed174cee70e19b098215f53d1fe6f27edc5b417790bbc44cde7f37cc082fae",
+      "sha384": "b0a70cfc4ccbe85dd5ba5549c2d142d7f922a0a1116657cdcc9f48cb6afc7cc40a596a655b9e6566396c48b72232ff65",
+      "size_bytes": 325452,
+      "status": "downloaded"
+    },
+    {
+      "acquisition_elapsed_s": 0.7016223530000048,
+      "actual_child_pid": 2540,
+      "index": 5,
+      "original_exit_code": 0,
+      "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin",
+      "sha256": "7f96bfaa0ac3af65d136f6a185d1d78d68d03bab2e1f2faafe1d27ccd94b0dc1",
+      "sha384": "0406e296c9822f4a5e8ee300ad40e5c0a0eeeaf9206f829556cb836cb8f10a4f8a4dd94d1bb16a60562bf1568fd12618",
+      "size_bytes": 1286772,
+      "status": "downloaded"
+    },
+    {
+      "acquisition_elapsed_s": 0.5575831259999973,
+      "actual_child_pid": 2541,
+      "index": 6,
+      "original_exit_code": 0,
+      "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml",
+      "sha256": "08b844a402a615605a626261fd9e27161a044845426ece5aa0872203c50bb5a2",
+      "sha384": "397543ce3a53c629df7794fc13b919092a9e788003fb6bdf8ef1dafa77392b72732fe408c9d0d13e05ce4af4a7833b74",
+      "size_bytes": 254888,
+      "status": "downloaded"
+    },
+    {
+      "acquisition_elapsed_s": 0.8323457630000064,
+      "actual_child_pid": 2542,
+      "index": 7,
+      "original_exit_code": 0,
+      "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin",
+      "sha256": "c0a602428cfd71ac63a533c23b7cdb8c83e144f118a81001420246701daf0c78",
+      "sha384": "467802734ab235cf653d13707501fa3c44fb025a7ad02921ea958b3032865fce43bbafe4dfabbb2acfb18b0bcd6c0180",
+      "size_bytes": 3634654,
+      "status": "downloaded"
+    }
+  ],
+  "full_ci_successful": false,
+  "hardware_acceptance": false,
+  "job_id": 110086521396,
+  "original_asset_acquisition_command": {
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+      "-I",
+      "-B",
+      "/home/runner/work/VAST/VAST/scripts/prepare_ci_model_assets.py",
+      "--output-dir",
+      "/home/runner/work/_temp/vast-host-diagnostics/model-acquisition"
+    ],
+    "cleanup_error": null,
+    "elapsed_s": 9.487858086000003,
+    "returncode": 0,
+    "timed_out": false
+  },
+  "original_asset_acquisition_elapsed_s": 9.121037671999993,
+  "original_decoded_job_log": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-original-host-retention-v1/host-job-110086521396.decoded.exact.original.log",
+    "sha256": "eae8c7499063aed3ad548f62bdfad601ee719f82c3b3bcfde3aa635ca058068f",
+    "size_bytes": 33963
+  },
+  "original_host_facts": {
+    "api_available": {
+      "CLONE_NEWNS": true,
+      "CLONE_NEWPID": true,
+      "CLONE_NEWUSER": true,
+      "fork": true,
+      "pidfd_open": true,
+      "unshare": true
+    },
+    "executable": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+    "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+    "executable_stat": {
+      "st_dev": 2049,
+      "st_gid": 1001,
+      "st_ino": 2436902,
+      "st_mode": 33261,
+      "st_nlink": 1,
+      "st_size": 17744,
+      "st_uid": 1001
+    },
+    "gid": 1001,
+    "kernel_release": "6.17.0-1022-azure",
+    "namespace_sysctls": {
+      "apparmor_restrict_unprivileged_userns": {
+        "path": "/proc/sys/kernel/apparmor_restrict_unprivileged_userns",
+        "value": "1"
+      },
+      "max_user_namespaces": {
+        "path": "/proc/sys/user/max_user_namespaces",
+        "value": "63838"
+      },
+      "unprivileged_userns_clone": {
+        "path": "/proc/sys/kernel/unprivileged_userns_clone",
+        "value": "1"
+      }
+    },
+    "process_status": {
+      "CapAmb": "0000000000000000",
+      "CapBnd": "000001ffffffffff",
+      "CapEff": "0000000000000000",
+      "CapInh": "0000000000000000",
+      "CapPrm": "0000000000000000",
+      "NoNewPrivs": "0",
+      "Seccomp": "0"
+    },
+    "python": "3.12.3 (main, Sep 26 2024, 18:18:55) [GCC 13.2.0]",
+    "uid": 1001
+  },
+  "original_host_prerequisites_command": {
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "import sys,unittest; sys.path[:0]=sys.argv[1:3]; import run_ci_checks as checks; suite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[3:]); result=unittest.TextTestRunner(verbosity=2,resultclass=checks.RecordedResult).run(suite); sys.exit(0 if result.wasSuccessful() and result.testsRun==2 and set(sys.argv[3:])<=set(result.successes) else 1)",
+      "/home/runner/work/VAST/VAST/tests",
+      "/home/runner/work/VAST/VAST/scripts",
+      "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+      "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+    ],
+    "cleanup_error": null,
+    "elapsed_s": 1.3673714469999965,
+    "returncode": 0,
+    "timed_out": false
+  },
+  "original_source_before_after_equal": true,
+  "provider_conclusion": "success",
+  "raw_original_test_log": {
+    "byte_equality_verified": true,
+    "copy": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/host-original-inspection-v2/host-prerequisites.stderr.original.raw",
+      "sha256": "2fd2086737e96c0b3232458e22e6d0f487dd98aa7d7ac173fa19ee60fcc4941c",
+      "size_bytes": 1345
+    },
+    "member_crc32": 1359583014,
+    "zip_member": "host-prerequisites.stderr"
+  },
+  "reviewer_tests_engine_models_namespace_or_source_changes": false,
+  "run_id": 36773798497,
+  "schema_version": 1,
+  "scope": "Two genuine original host prerequisites passed after eight exact canonical asset acquisitions. This does not grant full CI, CUDA/model numerical acceptance, namespace permission or benchmark acceptance.",
+  "seven_exact_source_blob_joins": [
+    {
+      "git_blob": "d09ab243e20429e5fd57018320cefb8312d0f2e3",
+      "path": "scripts/run_ci_host_diagnostics.py",
+      "sha256": "d71dc7dbed53be1a10db8a27af5cce43158c2114f95670fe1d0b4c6a3aa99875",
+      "size_bytes": 3588
+    },
+    {
+      "git_blob": "da1815c1fbe1be86239e0c2a90acf09b47f0e2a2",
+      "path": "scripts/prepare_ci_model_assets.py",
+      "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+      "size_bytes": 30314
+    },
+    {
+      "git_blob": "fa6d3c9e35eea4fd36c6b822fb999ad0f85b3319",
+      "path": ".ci/model-assets.v1.json",
+      "sha256": "225db21da5943a34d35c41e61c4fcda9623dd4e5eb973d7975d450ff421edab7",
+      "size_bytes": 5124
+    },
+    {
+      "git_blob": "2795642765f0f1ef958358df1f1c36ac96b61096",
+      "path": "configs/checkpoint_analytics_models_openvino.yaml",
+      "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+      "size_bytes": 7885
+    },
+    {
+      "git_blob": "3761fb1b4d762146714d9c90fcdb971c1f760398",
+      "path": "tests/test_analytics_peer_identity.py",
+      "sha256": "3f9876f3b494c8d3579f8017893c9db349ce361b6c76cfe2e3858978b94280a8",
+      "size_bytes": 21089
+    },
+    {
+      "git_blob": "4b35e53678c4fdfd2dc1177be0172472e3e544bf",
+      "path": "tests/test_analytics_model_contract.py",
+      "sha256": "40eaeec0e15d484ace73a47b8f5e58b6553addf775511ca2a9aec165a9e2f505",
+      "size_bytes": 9249
+    },
+    {
+      "git_blob": "2ea2534bb3337509b01dad002ef53324ff79e72b",
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237
+    }
+  ],
+  "source_blob_read_argv": [
+    "/usr/bin/git",
+    "-c",
+    "core.longpaths=true",
+    "--git-dir=/mnt/e/STUDY/VAST/.git/worktrees/fix-benchmark-preparations-spec",
+    "cat-file",
+    "--batch"
+  ],
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "two_actual_success_terminals": [
+    {
+      "elapsed_s": 0.02772039399999926,
+      "event": "test_terminal",
+      "monotonic_ns": 69712147984,
+      "outcome": "success",
+      "test_id": "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound"
+    },
+    {
+      "elapsed_s": 0.0011801299999945059,
+      "event": "test_terminal",
+      "monotonic_ns": 69713413214,
+      "outcome": "success",
+      "test_id": "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+    }
+  ],
+  "two_original_test_ids": [
+    "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+    "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+  ],
+  "zip_member_count": 51
+}

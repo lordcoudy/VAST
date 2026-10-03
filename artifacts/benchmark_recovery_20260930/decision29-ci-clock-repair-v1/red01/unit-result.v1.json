@@ -1,0 +1,85 @@
+{
+  "classification": "explicit synthetic original-denial clocks and ordinary original-wrapper/file/pipe/process fixtures; no live namespace/profile/journal",
+  "errors": [
+    {
+      "id": "test_ci_userns_profile_v1.AuditClockTests.test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins",
+      "traceback": "Traceback (most recent call last):\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py\", line 494, in test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins\n    proof=module.join_original_userns_denial_v1(*args)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_userns_profile_v1.py\", line 167, in join_original_userns_denial_v1\n    _require(capture['started_wall_time_ns']<=wall_ns<=capture['terminal_wall_time_ns'] and\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/ci_userns_profile_v1.py\", line 32, in _require\n    raise RuntimeError(message)\nRuntimeError: original kernel denial outside exact syscall/clock interval\n"
+    }
+  ],
+  "failures": [],
+  "fd_timing_facts": [
+    {
+      "fd_after": 4,
+      "fd_before": 4,
+      "id": "test_ci_userns_profile_v1.AuditClockTests.test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins",
+      "start_monotonic_ns": 500799827584725,
+      "terminal_monotonic_ns": 500799849612425
+    }
+  ],
+  "ids": [
+    "test_ci_userns_profile_v1.AuditClockTests.test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins"
+  ],
+  "skips": [],
+  "source_after": [
+    {
+      "epoch": [
+        69,
+        1407374885979672,
+        33279,
+        1,
+        6901,
+        1791018459109371300,
+        1791018459109371300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/run_focused_v1.py",
+      "sha256": "03d722b05e54eaaf2149a29043b36aed3b86e7e3ccd3a4055da9f62ec2cf41a5",
+      "size_bytes": 6901
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977064,
+        33279,
+        1,
+        38932,
+        1791018335338110300,
+        1791018335338110300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py",
+      "sha256": "48c7145a31691297672b224a41d84ff97ec9736a2ebe942a22b4395ca23ac802",
+      "size_bytes": 38932
+    }
+  ],
+  "source_before": [
+    {
+      "epoch": [
+        69,
+        1407374885979672,
+        33279,
+        1,
+        6901,
+        1791018459109371300,
+        1791018459109371300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/run_focused_v1.py",
+      "sha256": "03d722b05e54eaaf2149a29043b36aed3b86e7e3ccd3a4055da9f62ec2cf41a5",
+      "size_bytes": 6901
+    },
+    {
+      "epoch": [
+        69,
+        1407374885977064,
+        33279,
+        1,
+        38932,
+        1791018335338110300,
+        1791018335338110300
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_userns_profile_v1.py",
+      "sha256": "48c7145a31691297672b224a41d84ff97ec9736a2ebe942a22b4395ca23ac802",
+      "size_bytes": 38932
+    }
+  ],
+  "source_stable": true,
+  "tests_run": 1
+}

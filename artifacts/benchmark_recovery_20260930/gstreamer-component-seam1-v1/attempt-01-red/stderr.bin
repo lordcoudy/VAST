@@ -1,0 +1,23 @@
+test_native_factory_uses_explicit_current_material_without_qualification_inputs (test_publication_gstreamer_component_inputs_v1.ComponentPureFactoryTests.test_native_factory_uses_explicit_current_material_without_qualification_inputs) ... FAIL
+test_selected_pin_factory_does_not_read_other_system_calibrations (test_publication_gstreamer_component_inputs_v1.ComponentPureFactoryTests.test_selected_pin_factory_does_not_read_other_system_calibrations) ... FAIL
+
+======================================================================
+FAIL: test_native_factory_uses_explicit_current_material_without_qualification_inputs (test_publication_gstreamer_component_inputs_v1.ComponentPureFactoryTests.test_native_factory_uses_explicit_current_material_without_qualification_inputs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_inputs_v1.py", line 19, in test_native_factory_uses_explicit_current_material_without_qualification_inputs
+    self.assertTrue(hasattr(stock, "_runtime_contract_from_material_v1"),
+AssertionError: False is not true : selected native execution must not manufacture QualificationInputs
+
+======================================================================
+FAIL: test_selected_pin_factory_does_not_read_other_system_calibrations (test_publication_gstreamer_component_inputs_v1.ComponentPureFactoryTests.test_selected_pin_factory_does_not_read_other_system_calibrations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_inputs_v1.py", line 45, in test_selected_pin_factory_does_not_read_other_system_calibrations
+    self.assertTrue(hasattr(stock, "_system_file_descriptors_from_pins_v1"),
+AssertionError: False is not true : selected file construction must consume only explicit physical pins
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.002s
+
+FAILED (failures=2)

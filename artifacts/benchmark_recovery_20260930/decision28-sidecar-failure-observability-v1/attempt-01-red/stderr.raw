@@ -1,0 +1,125 @@
+test_response_send_epipe_captures_live_validated_worker_before_teardown (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_response_send_epipe_captures_live_validated_worker_before_teardown) ... FAIL
+test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails) ... FAIL
+test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure) ... ERROR
+test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed) ... FAIL
+test_unattributed_first_failure_does_not_borrow_later_validated_route (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_unattributed_first_failure_does_not_borrow_later_validated_route) ... ERROR
+test_real_shared_capture_offset_is_preserved_for_the_original_writer (test_publication_worker_termination_facts_v1.TerminationTests.test_real_shared_capture_offset_is_preserved_for_the_original_writer) ... FAIL
+test_bytesio_capture_does_not_change_fixture_cursor_and_pipe_is_unavailable (test_publication_worker_termination_facts_v1.TerminationTests.test_bytesio_capture_does_not_change_fixture_cursor_and_pipe_is_unavailable) ... FAIL
+test_terminal_event_argv_is_original_cid_only_and_unchanged_bounded (test_publication_worker_termination_facts_v1.TerminationTests.test_terminal_event_argv_is_original_cid_only_and_unchanged_bounded) ... FAIL
+test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal (test_publication_worker_termination_facts_v1.TerminationTests.test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal) ... FAIL
+
+======================================================================
+ERROR: test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py", line 1718, in test_inference_stage_and_observer_refusal_do_not_replace_or_repeat_primary_failure
+    self.assertIsNone(service._capture_worker_termination(route, factory.handles[route], phase="later_failure"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 4654, in _capture_worker_termination
+    value = dict(observer())
+                 ^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+OSError: fixture observer failure
+
+======================================================================
+ERROR: test_unattributed_first_failure_does_not_borrow_later_validated_route (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_unattributed_first_failure_does_not_borrow_later_validated_route)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py", line 1793, in test_unattributed_first_failure_does_not_borrow_later_validated_route
+    service._record_production_failure(RuntimeError("later validated fixture failure"), validated_route=route)
+TypeError: GStreamerAnalyticsSidecar._record_production_failure() got an unexpected keyword argument 'validated_route'
+
+======================================================================
+FAIL: test_response_send_epipe_captures_live_validated_worker_before_teardown (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_response_send_epipe_captures_live_validated_worker_before_teardown)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py", line 1647, in test_response_send_epipe_captures_live_validated_worker_before_teardown
+    observe_call.assert_called_once()
+  File "/usr/lib/python3.12/unittest/mock.py", line 923, in assert_called_once
+    raise AssertionError(msg)
+AssertionError: Expected 'termination_facts' to have been called once. Called 0 times.
+
+======================================================================
+FAIL: test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py", line 1690, in test_inference_failure_snapshot_retains_first_route_when_diagnostic_write_fails
+    observer.assert_called_once()
+  File "/usr/lib/python3.12/unittest/mock.py", line 923, in assert_called_once
+    raise AssertionError(msg)
+AssertionError: Expected 'termination_facts' to have been called once. Called 0 times.
+
+======================================================================
+FAIL: test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed (test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_gstreamer_analytics_sidecar.py", line 1761, in test_first_failure_route_is_selected_under_persistence_lock_and_later_route_is_not_observed
+    self.assertTrue(entered.wait(5))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_real_shared_capture_offset_is_preserved_for_the_original_writer (test_publication_worker_termination_facts_v1.TerminationTests.test_real_shared_capture_offset_is_preserved_for_the_original_writer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_worker_termination_facts_v1.py", line 69, in test_real_shared_capture_offset_is_preserved_for_the_original_writer
+    self.assertEqual(os.lseek(writer, 0, os.SEEK_CUR), 3)
+AssertionError: 2060 != 3
+
+======================================================================
+FAIL: test_bytesio_capture_does_not_change_fixture_cursor_and_pipe_is_unavailable (test_publication_worker_termination_facts_v1.TerminationTests.test_bytesio_capture_does_not_change_fixture_cursor_and_pipe_is_unavailable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_worker_termination_facts_v1.py", line 80, in test_bytesio_capture_does_not_change_fixture_cursor_and_pipe_is_unavailable
+    self.assertEqual(capture.tell(), 2)
+AssertionError: 12 != 2
+
+======================================================================
+FAIL: test_terminal_event_argv_is_original_cid_only_and_unchanged_bounded (test_publication_worker_termination_facts_v1.TerminationTests.test_terminal_event_argv_is_original_cid_only_and_unchanged_bounded)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_worker_termination_facts_v1.py", line 97, in test_terminal_event_argv_is_original_cid_only_and_unchanged_bounded
+    self.assertEqual(filters, ["type=container", "container=" + "a" * 64,
+AssertionError: Lists differ: ['container=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[30 chars]aaa'] != ['type=container', 'container=aaaaaaaaaaaaa[105 chars]roy']
+
+First differing element 0:
+'container=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+'type=container'
+
+Second list contains 5 additional elements.
+First extra element 1:
+'container=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+
++ ['type=container',
+- ['container=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
+? ^                                                                            ^
+
++  'container=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+? ^                                                                            ^
+
++  'event=die',
++  'event=oom',
++  'event=kill',
++  'event=destroy']
+
+======================================================================
+FAIL: test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal (test_publication_worker_termination_facts_v1.TerminationTests.test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_worker_termination_facts_v1.py", line 117, in test_live_frontend_is_snapshot_and_healthcheck_event_is_not_terminal
+    self.assertEqual(facts["engine_events"]["status"], "unavailable")
+AssertionError: 'observed' != 'unavailable'
+- observed
++ unavailable
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 5.483s
+
+FAILED (failures=7, errors=2)

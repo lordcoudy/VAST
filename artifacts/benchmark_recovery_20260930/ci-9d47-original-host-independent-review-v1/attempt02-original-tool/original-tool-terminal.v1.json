@@ -1,0 +1,116 @@
+{
+  "CPU07_success": false,
+  "all_reader_input_FDs_released": true,
+  "artifacts": [
+    {
+      "path": "root-grant.v2.json",
+      "sha256": "cd952faa4a9086ef0d82a03f176a5e1faae86582a44f1db2a931e9152dc7f5b8",
+      "size_bytes": 2357
+    },
+    {
+      "path": "inspect_hosted34_v4.py",
+      "sha256": "809941650bda699e28a3e39e50af59b4102a2533bca47d534721c3ae9342ea47",
+      "size_bytes": 24668
+    },
+    {
+      "path": "preparation.v5.json",
+      "sha256": "1aaaf0997d3deeb5e75775551887b8cad215e5cc3ca3dd2f055ac61e8afbb825",
+      "size_bytes": 4235
+    },
+    {
+      "path": "attempt02/launch.v1.json",
+      "sha256": "71c3dade619cec4d96af31debb3be4da2daf11346ba9483d76b85aca5bbfab15",
+      "size_bytes": 727
+    },
+    {
+      "path": "attempt02/review.v1.json",
+      "sha256": "77ad41f11e56688ecb28e7f46083cd9620d1e2d07bad4f192c23aabd8f7844cb",
+      "size_bytes": 111727
+    },
+    {
+      "path": "attempt02-original-tool/stdout.raw",
+      "sha256": "ca4342db80175d710f112fe56ce18c37793b76ddf0d561b4d52997411134c2d3",
+      "size_bytes": 404
+    },
+    {
+      "path": "attempt02-original-tool/stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "attempt02-original-tool/postterminal-process-closure.v1.json",
+      "sha256": "ca5ee6b7c39afc2efdc652e09028ca9c618ff4e757b162532d6f6daa17ae6f70",
+      "size_bytes": 5770
+    }
+  ],
+  "capture_argv": [
+    "/usr/bin/setsid",
+    "--wait",
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v4.py"
+  ],
+  "fd_count_before_after": [
+    6,
+    6
+  ],
+  "genuine_original_reader_exit_via_sets_id_wait_timeout": 0,
+  "hardware_acceptance": false,
+  "late_companion_absent": true,
+  "no_original_attempt01_or_producer_bytes_overwritten": true,
+  "observed_tool_exit_code": 0,
+  "original_reader": {
+    "argv": [
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v4.py"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "mode": "closed retained original metadata only",
+    "pgid": 65564,
+    "pid": 65565,
+    "ppid": 65564,
+    "source": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v4.py",
+      "sha256": "809941650bda699e28a3e39e50af59b4102a2533bca47d534721c3ae9342ea47",
+      "size_bytes": 24668
+    },
+    "startticks": 30818677,
+    "uid": 1000
+  },
+  "original_reader_elapsed_s": 1.244262880005408,
+  "postterminal_two_scans_original_reader_timeout_PID_PGID_absent": true,
+  "raw_channels_EOF_after_wait": true,
+  "raw_channels_separate": true,
+  "raw_stderr_size": 0,
+  "raw_stdout_size": 404,
+  "report": {
+    "path": "attempt02/review.v1.json",
+    "sha256": "77ad41f11e56688ecb28e7f46083cd9620d1e2d07bad4f192c23aabd8f7844cb",
+    "size_bytes": 111727
+  },
+  "schema_version": 1,
+  "source_before_after_equals_peer": true,
+  "status": "closed_successful_original_hosted34_finite_evidence_reader",
+  "tool_chunk_id": "3bf112",
+  "tool_elapsed_s": 2.3794076,
+  "whole_run34_CI_evidence_scope": {
+    "5039_original_full_SHA_size_rawGit_source_joins": true,
+    "actual_successes": 2875,
+    "all6_native_builds_and3_required_native_regressions": true,
+    "deferred_nonexecution": 9,
+    "discovered_ids": 2972,
+    "fresh_conditional_profile_scoped_chain_and_unload_observed": true,
+    "generic_unknown_flags_retained": true,
+    "original_observer_dump_requests_starts_completes": 23,
+    "original_source_payload_234MB_not_replayed": true,
+    "portable_executed": 2963,
+    "run_id": 36802923013,
+    "skips_nonexecution": 88,
+    "source_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723"
+  }
+}

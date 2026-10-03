@@ -1,0 +1,129 @@
+{
+  "actual_first_failure_cause": null,
+  "actual_original_provider_bytes_retained": false,
+  "all_function_and_class_ASTs_unchanged": true,
+  "author": "/root/decision28_source_peer",
+  "author_handles_released": true,
+  "exact_raw_forward_and_inverse": true,
+  "expected_commit": "56dd56bcc80519b99357546a49dbd65377e0db22",
+  "expected_failed_CPU_step_from_parent_metadata": 12,
+  "expected_job_conclusions": {
+    "111170763520": "success",
+    "111170763707": "failure"
+  },
+  "expected_provider_conclusion": "failure",
+  "future_dispatch_only": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "180s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ci-P-original-retention-v1/retain_originals_v1.py"
+  ],
+  "future_original_owner": null,
+  "future_original_retention_result": null,
+  "future_original_tool_terminal": null,
+  "independent_author_approval_claimed": false,
+  "independent_root_source_review_required_before_execution": true,
+  "literal_occurrences_in_order": [
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "literal_pairs_in_order": [
+    [
+      "decision28-ci-B-original-retention-v1",
+      "decision29-ci-P-original-retention-v1"
+    ],
+    [
+      "RUN=37107524802",
+      "RUN=37111719589"
+    ],
+    [
+      "CPU=111158873062",
+      "CPU=111170763707"
+    ],
+    [
+      "HOST=111158872804",
+      "HOST=111170763520"
+    ],
+    [
+      "EXPECTED='a00aa57f7d9534f8e7920f14f70d6a75a23570ed'",
+      "EXPECTED='56dd56bcc80519b99357546a49dbd65377e0db22'"
+    ]
+  ],
+  "new_functions_or_classes": [],
+  "original_failed_B_retainer": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-ci-B-original-retention-v1/retain_originals_v1.py",
+    "sha256": "3895c7e42bdfd10780da256e960559659389e475d4e7a8484b5813e9945733c5",
+    "size_bytes": 6058
+  },
+  "owned_source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-P-original-retention-v1/retain_originals_v1.py",
+      "sha256": "94201084415e76c286aad629e47127ae4e721081cbf9b1857bbc075af2077e60",
+      "size_bytes": 6058
+    }
+  ],
+  "preserved_definitions": [
+    {
+      "kind": "ClassDef",
+      "name": "Redirect"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "clock"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "save"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "redirect_request"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "request"
+    },
+    {
+      "kind": "FunctionDef",
+      "name": "data"
+    }
+  ],
+  "preserved_original_raw": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-ci-P-original-retention-v1/original-source.raw",
+    "sha256": "3895c7e42bdfd10780da256e960559659389e475d4e7a8484b5813e9945733c5",
+    "size_bytes": 6058
+  },
+  "reviewable_for_independent_source_review": true,
+  "run_id": 37111719589,
+  "schema_version": 1,
+  "scope_limit": "A literal source preparation and author audit only. Hosted cause and unexecuted checks remain unknown until actual retained provider originals are inspected. Existing failed-B request, auth, security, ZIP/log and error behavior is byte-preserved outside five binding literals.",
+  "source_only_unexecuted": true,
+  "target_imported_compiled_or_executed": false,
+  "unchanged_bounds": {
+    "HTTP_timeout_s_max": 45,
+    "ZIP_bytes": 8388608,
+    "ZIP_member_count": 4096,
+    "artifact_count": 8,
+    "artifact_metadata_bytes": 1048576,
+    "credential_s": 20,
+    "decoded_ZIP_bytes": 67108864,
+    "each_job_log_bytes": 33554432,
+    "jobs_metadata_bytes": 4194304,
+    "run_metadata_bytes": 1048576,
+    "saved_JSON_bytes": 8388608,
+    "work_s": 180
+  },
+  "unchanged_guards": [
+    "GCM credentials and signed redirect URLs stay in memory; Authorization removed on redirects outside api.github.com.",
+    "Readonly original run/jobs/artifact/job-log GET requests; exact run, commit and CPU-failure/host-success guards retained.",
+    "Exclusive raw log/ZIP/metadata/terminal leaves; provider ZIP size/full-SHA digest, CRC, decoded bounds and safe member paths/modes retained.",
+    "No extraction, rerun, cancellation, workflow write, production/test/CI/source modification or engine/model activity."
+  ]
+}

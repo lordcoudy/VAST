@@ -1,0 +1,871 @@
+{
+  "actual_C_source_paths": [
+    {
+      "path": ".ci/fixtures/origin-manifest.v1.json",
+      "sha256": "6e14bd04cc172000858ec9dce213520cd01f62575ece7f7e3340d83d3077a28c",
+      "size_bytes": 10581
+    },
+    {
+      "path": ".ci/integration-test-selection.v1.json",
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "109eef60f5ed87e35b18a663c0e112cfc4040fe898dc09d38923d16de803c392",
+      "size_bytes": 17102
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "0ec268a98e6f61e1db860c1455d1970f714d1abe7d0dd8da483ca13fbcb8d95a",
+      "size_bytes": 4251
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260929/original-g-service_lifecycle.v1.json",
+      "sha256": "3add3b849e0b5a3e491a1bf51d583202f88862f4c3f0f8db32151c85ce2f56ae",
+      "size_bytes": 9441
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/setup_finite_ext4_root_v1.py",
+      "sha256": "c7306eefd8dce58fefd81e7fabb8a46a85c3910eb45993e897f7b7f5df48b979",
+      "size_bytes": 26675
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/controller.py",
+      "sha256": "aeb2b5d8a87b98855c1e7170eb12c0622f080592fad6d4292507f830e76ec852",
+      "size_bytes": 36891
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/guest_consumer.py",
+      "sha256": "0c2457e022fac923a04b970bb838a2bbac921d39a608c0171a5869606ce163fa",
+      "size_bytes": 53980
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/research_protocol.py",
+      "sha256": "cbf5820bfc0cccc129ff02f6c14c1e724983843a4576e506f25075b70624a8fe",
+      "size_bytes": 26513
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_mapped_inputs_v4.py",
+      "sha256": "831cbd07388af9994d2684ab2248e299c95b29ee4ad799f26375d603b2f2f986",
+      "size_bytes": 11433
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_pin_diagnostics_v3.py",
+      "sha256": "87a79b11e9b6861bb24aed5b05597e72d267b94931cfddfc474e5c4957983935",
+      "size_bytes": 11350
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_preflight_diagnostics_v5.py",
+      "sha256": "a6fb3f264fbc41be2f92ac1a9991a98f7b0779039a66ed77d310c49a124cae23",
+      "size_bytes": 11787
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_research_protocol.py",
+      "sha256": "2dbcec646c9d641f93ccbac4b633ad3513f5e2eb37161f6f9abdb39717255a45",
+      "size_bytes": 17449
+    },
+    {
+      "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "sha256": "43b41dee019fc730704d3c176a753d0e26c8f871da59714ce97e70e9209396cc",
+      "size_bytes": 3780
+    },
+    {
+      "path": "deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+      "sha256": "d531893e2586bb02432d69edfae7bb2ec08a04711c2c8e22353efda678ae461a",
+      "size_bytes": 41004
+    },
+    {
+      "path": "deploy/native_gst_probe/checkpoint_native_policy_client.hpp",
+      "sha256": "85d2b64ccc977a76b6a9c250fd77ea8f02029382cc6121c52ff7ec3bc57acc0c",
+      "size_bytes": 22257
+    },
+    {
+      "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+      "sha256": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+      "size_bytes": 167521
+    },
+    {
+      "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "sha256": "f91760d199bf72651be9ea71bcec2effa43d0afdd7a7f89202f1885308fd6624",
+      "size_bytes": 3457
+    },
+    {
+      "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+      "sha256": "691feca866c3bfdd09fced300659f1f7888c2bdb298c427fa4f4204ce9eba9b4",
+      "size_bytes": 3841
+    },
+    {
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "sha256": "be0f47eb43a8746f1753ba175f96cabc15e3992ac39c95d7505c0f0804287a8b",
+      "size_bytes": 11712
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "112ec56dca4445e3e753899ff116203604094b37ffafcac4f7e8d28ea350afce",
+      "size_bytes": 44659
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "ee2518562588198019189d8bbe6471e9bc93a0858c09dc8ecd8dd736dd09e0ab",
+      "size_bytes": 36740
+    },
+    {
+      "path": "scripts/backend_publication_process_supervisor_v3.py",
+      "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+      "size_bytes": 124707
+    },
+    {
+      "path": "scripts/benchmark_contract.py",
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+      "size_bytes": 344569
+    },
+    {
+      "path": "scripts/benchmark_preparation_evidence_v1.py",
+      "sha256": "ffd982925a97875e8edc0698ce1689d5a6668c29c795d9619b88d07be1b92a57",
+      "size_bytes": 15705
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "4a853d79fe4296882d1f3e28774ccabb458e030c55d474b1bf34918b897f7fd6",
+      "size_bytes": 299261
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "0fee418bfa0c7e0e89f9c74210f107fa950d14cf65844d82b1a91330a398aa1c",
+      "size_bytes": 59624
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_runtime.py",
+      "sha256": "36cbd08613a4420f8b1aa516f297f0019d05ce7df58b17e4ca8e5f2bac498f97",
+      "size_bytes": 156160
+    },
+    {
+      "path": "scripts/checkpoint_native_policy_runtime.py",
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "size_bytes": 73421
+    },
+    {
+      "path": "scripts/checkpoint_publication_runtime.py",
+      "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+      "size_bytes": 55785
+    },
+    {
+      "path": "scripts/ci_external_test_observer_v1.py",
+      "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+      "size_bytes": 20916
+    },
+    {
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292",
+      "size_bytes": 25359
+    },
+    {
+      "path": "scripts/ci_test_selection_v1.py",
+      "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d",
+      "size_bytes": 9978
+    },
+    {
+      "path": "scripts/ci_userns_profile_v1.py",
+      "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+      "size_bytes": 28890
+    },
+    {
+      "path": "scripts/full_publication_results.py",
+      "sha256": "dde01c5bb9e88e036e0dc9de11f233efd6504b46c99dae4df53a3fa9ef98c8ca",
+      "size_bytes": 23051
+    },
+    {
+      "path": "scripts/full_publication_runner.py",
+      "sha256": "c94cd21aa12a23d48bf03b887a287e31fa02f796202fcac8f25a165d04d4a05e",
+      "size_bytes": 68738
+    },
+    {
+      "path": "scripts/full_publication_runtime.py",
+      "sha256": "e9027470592b94b3a4435cf7ac035c2f46a22b24929e99b0209ac06ddf553285",
+      "size_bytes": 46139
+    },
+    {
+      "path": "scripts/full_publication_supervisor.py",
+      "sha256": "797ab416b69a8a3afc2d77ecb70aa19f2e99154faf12ccc4dc695354d15d7922",
+      "size_bytes": 26190
+    },
+    {
+      "path": "scripts/full_publication_wsl_user_service_v1.py",
+      "sha256": "c48200741e2b3fc0d03efbcc4fe3316493ad15748b9953f8ab968aa073973bcc",
+      "size_bytes": 92640
+    },
+    {
+      "path": "scripts/prepare_ci_model_assets.py",
+      "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+      "size_bytes": 30314
+    },
+    {
+      "path": "scripts/publication_cloud_transaction.py",
+      "sha256": "14babe0d147e636a1db9b54e034186a0d9d969de9a315c4878c4200ebc12fd5a",
+      "size_bytes": 124569
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_authority_v1.py",
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+      "size_bytes": 27355
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_cli_v1.py",
+      "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b",
+      "size_bytes": 40969
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_inputs_v1.py",
+      "sha256": "1390b429025478799a03065ebe031cb07dac2669f716f05f97f074735e5e75d1",
+      "size_bytes": 34510
+    },
+    {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014",
+      "size_bytes": 69372
+    },
+    {
+      "path": "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+      "size_bytes": 48963
+    },
+    {
+      "path": "scripts/publication_guardian_component_preprocessing_contract_v1.py",
+      "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+      "size_bytes": 19178
+    },
+    {
+      "path": "scripts/publication_guardian_operational_recorder_v1.py",
+      "sha256": "130130ba64079f6a80ef4762a45c9969f4b3a425432a70d082ecc5a59004169d",
+      "size_bytes": 24563
+    },
+    {
+      "path": "scripts/publication_guardian_preprocessing_contract_v1.py",
+      "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+      "size_bytes": 68402
+    },
+    {
+      "path": "scripts/publication_operational_container_custody_v1.py",
+      "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+      "size_bytes": 38235
+    },
+    {
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+      "size_bytes": 51141
+    },
+    {
+      "path": "scripts/publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    },
+    {
+      "path": "scripts/publication_operational_request_reconciliation_v1.py",
+      "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+      "size_bytes": 28069
+    },
+    {
+      "path": "scripts/publication_policy_contract.py",
+      "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+      "size_bytes": 40143
+    },
+    {
+      "path": "scripts/publication_policy_projection_v1.py",
+      "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+      "size_bytes": 29622
+    },
+    {
+      "path": "scripts/publication_policy_qualification_bootstrap_v2.py",
+      "sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6",
+      "size_bytes": 82531
+    },
+    {
+      "path": "scripts/publication_policy_qualification_execution_closure_v1.py",
+      "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "size_bytes": 147846
+    },
+    {
+      "path": "scripts/publication_policy_qualification_execution_code_closure_v1.py",
+      "sha256": "984dd840a768b08462db82ea96cb7cdce4b9f6e3e1ca20605b258771f665a30c",
+      "size_bytes": 19176
+    },
+    {
+      "path": "scripts/publication_policy_qualification_runtime_inputs_v2.py",
+      "sha256": "a4358e759a24cbf49652cecbbb7a30199476d0c3539be5e1c9dd87b972aeb2f8",
+      "size_bytes": 136988
+    },
+    {
+      "path": "scripts/publication_q4_evidence_validator_v4.py",
+      "sha256": "d45abf6c9d894cf5c85a4ec7f3d8ae37640b550a7d2ee19c9f1d7155fbc85dfd",
+      "size_bytes": 118920
+    },
+    {
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+      "size_bytes": 29477
+    },
+    {
+      "path": "scripts/seafile_artifact_store.py",
+      "sha256": "00076c9b485bd3ca60c6ae95728acc043bde5f037308aecab61c2d7f71571a0c",
+      "size_bytes": 67884
+    },
+    {
+      "path": "scripts/seafile_capacity_attestation_v1.py",
+      "sha256": "084bc9bce9caea87866cb72dacfa6d6530ea69e97955a20fb0771b7f0bb9bf51",
+      "size_bytes": 23342
+    },
+    {
+      "path": "scripts/seafile_operator_capacity_attestation_v2.py",
+      "sha256": "fe0d4f3731038f2c7b7f2c09b3487a6e7999c89f33defc5770db194a7d4037cd",
+      "size_bytes": 25493
+    },
+    {
+      "path": "tests/cpp/checkpoint_analytics_execution_client_test.cpp",
+      "sha256": "f949f2373978ea01fdd1c6169935ea0f786c064f7ec5bd07915e5f8d0ead8e40",
+      "size_bytes": 20456
+    },
+    {
+      "path": "tests/cpp/checkpoint_native_policy_identity_test.cpp",
+      "sha256": "e04606dc424faca0f4867117b1a9fa6ad0cb121e8c6cecdea7e2eb06de371096",
+      "size_bytes": 3835
+    },
+    {
+      "path": "tests/cpp/checkpoint_native_reset_queue_level_test.cpp",
+      "sha256": "ee64191ed62cb497f078f0adfb5e6886d887bfc885557867b835a0b66e4e1f1d",
+      "size_bytes": 7413
+    },
+    {
+      "path": "tests/test_analytics_peer_identity.py",
+      "sha256": "3f9876f3b494c8d3579f8017893c9db349ce361b6c76cfe2e3858978b94280a8",
+      "size_bytes": 21089
+    },
+    {
+      "path": "tests/test_backend_publication_broker_terminal_v3.py",
+      "sha256": "1e632d43c6a8361b7483ef9d160832e5993760f48103a8a22527c3bac1cbe1fa",
+      "size_bytes": 22598
+    },
+    {
+      "path": "tests/test_benchmark_contract.py",
+      "sha256": "cd79cd27ba7265783fcacbab7879a01f8fb61aed8441ed64b4bcc135874014e7",
+      "size_bytes": 248960
+    },
+    {
+      "path": "tests/test_benchmark_preparation_evidence_v1.py",
+      "sha256": "2864638a607121af6547406caf1d479bceacd93130e38e9f784f85a5ad3a4632",
+      "size_bytes": 16150
+    },
+    {
+      "path": "tests/test_checkpoint_analytics_execution_client_cpp.py",
+      "sha256": "2bd19ff7d010fd400cf15a4074a2a5a44fec5b4e52b6640dff8961cf3afbbf26",
+      "size_bytes": 6311
+    },
+    {
+      "path": "tests/test_checkpoint_deepstream_runtime_source_closure_v3.py",
+      "sha256": "2b74544af58b0876554e3573b3e80069e30f2974923a6d36aabd3a590162174f",
+      "size_bytes": 8575
+    },
+    {
+      "path": "tests/test_checkpoint_external_execution_manifest.py",
+      "sha256": "90a48b1343fd6f5b1dbeca2aa424458ebe9cffb64055da0e581736c3add6a628",
+      "size_bytes": 10149
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "47f74ffd43d81dff567b7f04576446fab9f246fb3937d6c97a92b73bff90a78d",
+      "size_bytes": 138071
+    },
+    {
+      "path": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+      "sha256": "b6bc88d91a11eda378cb079ade41e473164db39f2dcb224e29f607dc106fd02c",
+      "size_bytes": 25066
+    },
+    {
+      "path": "tests/test_checkpoint_native_policy_publication_projection_v1.py",
+      "sha256": "ae6fc39ddfc3c13068e88f90aa76662c64a0a8927c6cbe0561b940c37ef0bf5c",
+      "size_bytes": 27442
+    },
+    {
+      "path": "tests/test_checkpoint_native_policy_runtime.py",
+      "sha256": "5dd6730460e04f34a2b394409e4a38c21d8cf178ba57149fa168a810dee0ff77",
+      "size_bytes": 35893
+    },
+    {
+      "path": "tests/test_checkpoint_openvino_gva_runtime_source_closure_v3.py",
+      "sha256": "bdaa1b1b834da822ecff99190081f8e2f4d49012517f7aa7c2f4d5f04533d26c",
+      "size_bytes": 2853
+    },
+    {
+      "path": "tests/test_checkpoint_publication_runtime.py",
+      "sha256": "afb7a89ba8f77f94da4a419ec83caf67f0190f87a8036072310da75ce88f8e42",
+      "size_bytes": 38896
+    },
+    {
+      "path": "tests/test_checkpoint_runtime.py",
+      "sha256": "3df16f8e926c3e89cba6e0f8c1c8eaad9293e18ab10d446a9d63279c8c673408",
+      "size_bytes": 126014
+    },
+    {
+      "path": "tests/test_checkpoint_savant_runtime_source_closure_v3.py",
+      "sha256": "9e53f57c6f83839be66363813e2de6f1a8b7ed74530832a77f4ef9d2f70afd4c",
+      "size_bytes": 10062
+    },
+    {
+      "path": "tests/test_ci_external_test_observer_v1.py",
+      "sha256": "cbd9be309e2092d66e68403432a7162ca00d77ca1408d6c7b600fa77458be9c4",
+      "size_bytes": 12475
+    },
+    {
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64",
+      "size_bytes": 33264
+    },
+    {
+      "path": "tests/test_ci_test_selection_v1.py",
+      "sha256": "eda164526e44f8084ed28ecceb6d99e0d7887c22750007aa1a04d8181f520b7a",
+      "size_bytes": 12157
+    },
+    {
+      "path": "tests/test_ci_userns_profile_v1.py",
+      "sha256": "dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695",
+      "size_bytes": 41955
+    },
+    {
+      "path": "tests/test_full_publication_results.py",
+      "sha256": "680235b031de3e2e0b4116111863ec1e9a0ed9440dfb74d6734ebfaac76f2ab7",
+      "size_bytes": 14223
+    },
+    {
+      "path": "tests/test_full_publication_runner.py",
+      "sha256": "ce52c794a71d86f789603338ad66ec150b23fd8209558f462ba2e81015f66732",
+      "size_bytes": 45697
+    },
+    {
+      "path": "tests/test_full_publication_runtime.py",
+      "sha256": "dab1eea8a9b0d433b7c4a47a9017c769f0c853345d3c0327c8e7dd7cfb2c17e7",
+      "size_bytes": 34218
+    },
+    {
+      "path": "tests/test_full_publication_seafile_capacity_binding.py",
+      "sha256": "88a4560bc533beb4d250975f411cb64e7f965ca895b9d90b346acc88c512cb0d",
+      "size_bytes": 8377
+    },
+    {
+      "path": "tests/test_full_publication_supervisor.py",
+      "sha256": "354cf9eb1a2cec293bbf76976f17e33d5ad41a380c14b9e20ae9f3fa56269139",
+      "size_bytes": 14336
+    },
+    {
+      "path": "tests/test_full_publication_wsl_user_service_v1.py",
+      "sha256": "ca023670faa22e701ccc05619379023b979d17f7ead364535984ad6a9193a6f5",
+      "size_bytes": 37359
+    },
+    {
+      "path": "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+      "sha256": "965195e425d13d6c2047127d807db1f3c973624ad1d063bb78f8f169ba150ba8",
+      "size_bytes": 456217
+    },
+    {
+      "path": "tests/test_prepare_ci_model_assets.py",
+      "sha256": "cbbbb4fe9ba0f5890966023ed28a8663f9b4f7f8c660d8fe8ad885b4e7718e3c",
+      "size_bytes": 23773
+    },
+    {
+      "path": "tests/test_publication_cloud_transaction.py",
+      "sha256": "b204513cf2ea15b671b9641984d0fd1cfb318634cfc5efbbe6523439549fece9",
+      "size_bytes": 65264
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_cli_v1.py",
+      "sha256": "f8204fe8b4c45ef4a0dce6cafc3bed8242dc33e67468e6e35767fd42e752e125",
+      "size_bytes": 27148
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+      "sha256": "678aee8e50b780950c86c13b8e76871d4e4b5496fadff5e2cc883af841b54368",
+      "size_bytes": 54712
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "18d72265cbed3d4d88f013f83922f458053329a22b1a10c04b1aa5938c34ef50",
+      "size_bytes": 25105
+    },
+    {
+      "path": "tests/test_publication_guardian_component_preprocessing_contract_v1.py",
+      "sha256": "0593be7a09359ba0b0cc99db8dd3836167d3bf64fc33341f3243ca954a9e0ebe",
+      "size_bytes": 23592
+    },
+    {
+      "path": "tests/test_publication_guardian_operational_recorder_v1.py",
+      "sha256": "b6fa92900384dd6a761959fdbb3ff0b697e1b36b1b4aa352fae59b2443a1b8d6",
+      "size_bytes": 10737
+    },
+    {
+      "path": "tests/test_publication_operational_boundary_v1.py",
+      "sha256": "e27cd10161224dbd6faf4a23f696f46922c782e71b762b894e0b61ce2e38eff6",
+      "size_bytes": 37440
+    },
+    {
+      "path": "tests/test_publication_operational_container_custody_v1.py",
+      "sha256": "6fd45b43fe0a5acc0cc59951d9c4bafa0496780110f89b59950c3bbd420d9cee",
+      "size_bytes": 21792
+    },
+    {
+      "path": "tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "690212c96e47cb2a037e5b26ed24de9637e349515df3fb99b3ddc7d49c7b04c8",
+      "size_bytes": 40344
+    },
+    {
+      "path": "tests/test_publication_operational_request_domain_v1.py",
+      "sha256": "d61e2e106bd9ee06cb618add74fb8b70d621408b5596dd961969bad0e0252ed5",
+      "size_bytes": 26735
+    },
+    {
+      "path": "tests/test_publication_policy_contract.py",
+      "sha256": "bdf6fecb70524ae919d15541bd689baa9c03c1f4f11677f79eb68e5eb56a0105",
+      "size_bytes": 17621
+    },
+    {
+      "path": "tests/test_publication_policy_history_acceptance_v1.py",
+      "sha256": "3c7417b653f293977a7255513b5dc17acef9be94b491ead21b8166fc5e5e79c5",
+      "size_bytes": 16523
+    },
+    {
+      "path": "tests/test_publication_policy_history_namespace_v1.py",
+      "sha256": "565a7d269e254d90da1c2aefa7c6a1b8ded6012dc37bde5b66de615a63b2c7a6",
+      "size_bytes": 5325
+    },
+    {
+      "path": "tests/test_publication_policy_qualification_execution_code_closure_v1.py",
+      "sha256": "c4156e8e358a069d353888170a72631bcd6addaf9f2a15dbc725ea9f5698d0a8",
+      "size_bytes": 6123
+    },
+    {
+      "path": "tests/test_publication_q4_evidence_validator_v4.py",
+      "sha256": "bc0146af52f8f055a8a06922681753329259638d971917c90e28f1b01141ebfc",
+      "size_bytes": 37543
+    },
+    {
+      "path": "tests/test_publication_q4_policy_projection_v1.py",
+      "sha256": "a7893ed4a2dab1b934e503baf1882921ccbbe42bf13ec083ddb0dc002da409f7",
+      "size_bytes": 37912
+    },
+    {
+      "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+      "sha256": "ba158ae63c8e8c3fea9ff65c36d11d2dbe0d82046eef2e9407a4364e4bc5db8a",
+      "size_bytes": 23561
+    },
+    {
+      "path": "tests/test_publication_storage_recovery.py",
+      "sha256": "206a8606353e81a23f5c40eb2945ffcbce760cdccfb29d910a4ff5901f627761",
+      "size_bytes": 14936
+    },
+    {
+      "path": "tests/test_publication_worker_termination_facts_v1.py",
+      "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3",
+      "size_bytes": 6599
+    },
+    {
+      "path": "tests/test_qualification_complete_operational_promotion_gate_v1.py",
+      "sha256": "bf382dd9729e7418173d3bb34cf11577d94c2f4ad2d8fe34c644700cdb5fd90b",
+      "size_bytes": 4960
+    },
+    {
+      "path": "tests/test_qualification_operational_closure_cold_gate_v1.py",
+      "sha256": "f853db53e3bc23bf1c4366d0d1cd366746f8b97542eafd25adf6b5a1ad39b8c2",
+      "size_bytes": 5818
+    },
+    {
+      "path": "tests/test_run_ci_checks.py",
+      "sha256": "c622b17d500d6f13094b304d2da3ae4284592502fdd49cfe3d3b1d4da034b201",
+      "size_bytes": 15813
+    },
+    {
+      "path": "tests/test_seafile_capacity_attestation_v1.py",
+      "sha256": "b64738d345ae0a044dcaebf00bd25af2a439bd3adc3d0bd58fb56b83cdb4bdb0",
+      "size_bytes": 9054
+    },
+    {
+      "path": "tests/test_seafile_operator_capacity_attestation_v2.py",
+      "sha256": "d89c39584b1584a1603ff3a263b8c08cd9fcfa92bcb3e0122fccc01120a365b1",
+      "size_bytes": 15314
+    }
+  ],
+  "actual_HEAD_leaf": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3\n",
+  "changed_method_AST_since_prior_mapping": [
+    "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection",
+    "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_platform_parser_rejects_non_wsl_kernel_bytes",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_conflicting_response_preserves_actual_terminal_prefix_and_returns74",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_hash_invalid_request_cannot_create_durable_authority",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_held_early_setup_failure_commits_original_failed_terminal",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_held_losing_owner_commit_cannot_write_elected_owner_terminal",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_normal_early_setup_failure_commits_original_failed_terminal",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_normal_losing_owner_commit_cannot_write_elected_owner_terminal",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_quiescent_failed_stdout_is_not_durable_authority_and_fails_promptly",
+    "test_benchmark_contract.BenchmarkContractTests.test_throughput_uses_completed_frames_per_window",
+    "test_benchmark_preparation_evidence_v1.BenchmarkPreparationEvidenceV1Tests.test_historical_failed_lifecycle_without_diagnostic_is_explicitly_missing",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_identity_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression",
+    "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure",
+    "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_external_manifest_rejects_real_identity_and_coverage_drift",
+    "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_worker_fixture_needs_no_ignored_runtime_artifacts",
+    "test_checkpoint_external_execution_manifest.ExternalExecutionManifestTests.test_worker_fixture_rejects_missing_and_foreign_metadata",
+    "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_concurrent_terminal_failures_commit_only_first_diagnostic",
+    "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_diagnostic_does_not_read_oversized_or_unsafe_descriptors",
+    "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_diagnostic_persistence_failure_preserves_original_integrity_error",
+    "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_guardian_status_fails_closed_after_any_worker_dies",
+    "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_pre_authority_failure_cannot_commit_an_orphan_diagnostic",
+    "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_integrity_failure_keeps_request_diagnostic",
+    "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_production_rejection_diagnostics_keep_untrusted_fields_unattributed",
+    "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_runtime_worker_crash_interrupts_front_service",
+    "test_checkpoint_gstreamer_analytics_sidecar.GStreamerAnalyticsSidecarTests.test_worker_protocol_integrity_failure_is_attributed",
+    "test_checkpoint_gstreamer_custom_publication_runtime_v3.GstreamerPublicationRuntimeV3Tests.test_container_engine_accepts_the_bundle_copied_client",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionColdReplayTests.test_dense_outer_and_request_ordinals_still_require_exact_csv_linkage",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionColdReplayTests.test_interleaved_feedback_reorder_and_wrong_admission_hash_fail",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionColdReplayTests.test_measurement_omission_cannot_be_hidden_as_an_excluded_decision",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionColdReplayTests.test_missing_history_and_removed_excluded_predecessor_fail_closed",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionColdReplayTests.test_original_accepted_hash_and_issued_hash_cannot_be_relabelled",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionColdReplayTests.test_original_feedback_payload_state_and_native_terminal_must_match",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionColdReplayTests.test_physical_mapping_and_original_worker_provenance_are_authoritative",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionColdReplayTests.test_projection_version_fields_and_mixed_arms_are_strict",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionColdReplayTests.test_streaming_reader_and_writer_enforce_byte_event_and_line_bounds",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionColdReplayTests.test_strict_reader_rejects_duplicate_keys_nonfinite_and_truncation",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionCoordinatorTests.test_actual_interleaving_preserves_excluded_feedback_and_measurement_state",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionCoordinatorTests.test_incomplete_excluded_decision_blocks_publication",
+    "test_checkpoint_native_policy_publication_projection_v1.PublicationProjectionCoordinatorTests.test_warmup_gap_projects_both_coordinates_without_changing_live_hashes",
+    "test_checkpoint_native_policy_runtime.NativePolicyRuntimeCoordinatorTests.test_all_seven_policies_require_native_path_and_terminal_before_promotion",
+    "test_checkpoint_native_policy_runtime.NativePolicyRuntimeCoordinatorTests.test_cpu_capability_must_match_loaded_binary_and_model_identity",
+    "test_checkpoint_native_policy_runtime.NativePolicyRuntimeCoordinatorTests.test_gvadetect_device_gpu_cannot_be_relabelled_as_nvidia_cuda",
+    "test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure",
+    "test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests.test_acceptance_summary_serializes_unavailable_metrics_as_json_null",
+    "test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests.test_independent_mixed_and_all_prefix_reduce_only_completed_stages",
+    "test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests.test_native_resource_producer_matches_physical_intervals_and_excludes_warmup_drain",
+    "test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests.test_native_resource_producer_refuses_existing_target_and_precedes_publication",
+    "test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests.test_native_resource_producer_rejects_missing_duplicate_invalid_and_extra_intervals",
+    "test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests.test_prefix_reduction_rejects_fabricated_or_missing_stages_and_forged_lineage",
+    "test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests.test_publication_requires_preexisting_native_policy_and_resource_sidecars",
+    "test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests.test_shared_all_prefix_has_decode_only_and_partial_prefix_fails",
+    "test_checkpoint_runtime.CheckpointRuntimeTests.test_cpp_analytics_terminal_transport_rejects_identity_and_ambiguous_drop",
+    "test_checkpoint_runtime.CheckpointRuntimeTests.test_decoder_placement_status_is_required_before_measurement",
+    "test_checkpoint_runtime.CheckpointRuntimeTests.test_explicit_native_branch_drop_resolves_frame_without_creating_join",
+    "test_checkpoint_runtime.CheckpointRuntimeTests.test_native_policy_worker_specs_inject_frozen_manifest_identities",
+    "test_checkpoint_runtime.CheckpointRuntimeTests.test_native_postdecode_prefix_drop_closes_baseline_after_decode",
+    "test_checkpoint_runtime.CheckpointRuntimeTests.test_worker_cannot_claim_join_or_skip_sequence",
+    "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure",
+    "test_ci_external_test_observer_v1.ExternalObserverTests.test_capture_failure_and_cancellation_reap_original_and_retire_fds",
+    "test_ci_external_test_observer_v1.ExternalObserverTests.test_long_native_call_records_delay_and_possible_coalescing",
+    "test_ci_external_test_observer_v1.ExternalObserverTests.test_new_namespace_overflow_is_sticky_and_retires_original_fds",
+    "test_ci_external_test_observer_v1.ExternalObserverTests.test_nonblocking_child_control_failure_does_not_raise_into_test",
+    "test_ci_external_test_observer_v1.ExternalObserverTests.test_original_nonzero_and_signal_are_not_success",
+    "test_ci_external_test_observer_v1.ExternalObserverTests.test_real_signal_dump_has_one_native_task_and_actual_response",
+    "test_ci_external_test_observer_v1.ExternalObserverTests.test_receipt_close_crossing_original_cleanup_deadline_is_failed",
+    "test_ci_external_test_observer_v1.ExternalObserverTests.test_trace_overflow_retains_exact_prefix_and_sticky_failure",
+    "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_exact_first_unshare_failure_delegates_once_and_retains_original_errno",
+    "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_mapping_open_failure_identifies_actual_path_and_flags",
+    "test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_prepared_namespace_and_kernel_capture_share_the_reviewed_64kib_domain",
+    "test_ci_test_selection_v1.SelectionContracts.test_absent_declared_method_is_rejected",
+    "test_ci_test_selection_v1.SelectionContracts.test_all_original_platform_and_retired_skip_ids_remain_nonexecution",
+    "test_ci_test_selection_v1.SelectionContracts.test_current_broker_and_operational_custody_cannot_be_deferred",
+    "test_ci_test_selection_v1.SelectionContracts.test_exact_skip_identity_and_reason_are_audited_without_success_claim",
+    "test_ci_test_selection_v1.SelectionContracts.test_missing_reason_or_real_capability_is_rejected",
+    "test_ci_test_selection_v1.SelectionContracts.test_native_namespace_interpreter_broker_source_safety_deferral_is_rejected",
+    "test_ci_test_selection_v1.SelectionContracts.test_new_skip_or_changed_reason_is_rejected",
+    "test_ci_test_selection_v1.SelectionContracts.test_new_tests_remain_mandatory_and_original_cases_order_are_preserved",
+    "test_ci_test_selection_v1.SelectionContracts.test_patterns_and_module_exceptions_are_rejected",
+    "test_ci_userns_profile_v1.UsernsProfileTests.test_absent_foreign_ambiguous_or_generic_denial_is_not_a_profile_grant",
+    "test_ci_userns_profile_v1.UsernsProfileTests.test_held_lifecycle_uses_original_fixed_add_and_owned_remove_with_actual_file_bytes",
+    "test_ci_userns_profile_v1.UsernsProfileTests.test_original_shape_joins_only_exact_interpreter_pid_boot_operation_and_time",
+    "test_ci_userns_profile_v1.UsernsProfileTests.test_profile_has_only_exact_attachment_and_userns_permission",
+    "test_ci_userns_profile_v1.UsernsProfileTests.test_real_fresh_child_rejects_wrong_profile_before_discovery",
+    "test_full_publication_results.FullPublicationResultsTests.test_exports_deterministic_compact_article_inputs",
+    "test_full_publication_runner.FullPublicationRunnerTests.test_cloud_failure_resumes_from_durable_acceptance_without_rerunning_arms",
+    "test_full_publication_runner.FullPublicationRunnerTests.test_complete_run_executes_each_pair_in_sequence_and_finalizes",
+    "test_full_publication_runner.FullPublicationRunnerTests.test_finalize_refuses_incomplete_run_and_run_requires_callbacks",
+    "test_full_publication_runner.FullPublicationRunnerTests.test_finalize_requires_remote_verification_of_every_receipt",
+    "test_full_publication_runner.FullPublicationRunnerTests.test_identity_drift_aborts_before_any_callback",
+    "test_full_publication_runner.FullPublicationRunnerTests.test_plan_uses_the_frozen_2800_pair_publication_matrix",
+    "test_full_publication_runtime.FullPublicationRuntimeTests.test_preflight_fails_closed_on_readiness_capacity_or_owned_namespace_corruption",
+    "test_full_publication_seafile_capacity_binding.FullPublicationSeafileCapacityBindingTests.test_legacy_capacity_number_is_not_a_production_authority",
+    "test_full_publication_seafile_capacity_binding.FullPublicationSeafileCapacityBindingTests.test_operator_lower_bound_attestation_is_accepted_without_layout_claim",
+    "test_full_publication_seafile_capacity_binding.FullPublicationSeafileCapacityBindingTests.test_tamper_destination_and_rotated_capability_fail_closed",
+    "test_full_publication_supervisor.FullPublicationSupervisorTests.test_cli_default_budget_stops_unknown_exit_after_one_launch",
+    "test_full_publication_supervisor.FullPublicationSupervisorTests.test_default_budget_stops_exceptions_and_unknown_exits_without_sleep",
+    "test_full_publication_supervisor.FullPublicationSupervisorTests.test_subprocess_invoker_requires_exact_frozen_contract_arguments",
+    "test_full_publication_wsl_user_service_v1.FullPublicationWslUserServiceTests.test_manifest_binds_same_exact_run_root_state_and_command_sources",
+    "test_full_publication_wsl_user_service_v1.FullPublicationWslUserServiceTests.test_materialization_is_canonical_self_hashed_and_does_not_start",
+    "test_full_publication_wsl_user_service_v1.FullPublicationWslUserServiceTests.test_materialization_rejects_alternate_frozen_contract_pins",
+    "test_full_publication_wsl_user_service_v1.FullPublicationWslUserServiceTests.test_materialization_rejects_run_root_outside_exact_namespace",
+    "test_full_publication_wsl_user_service_v1.FullPublicationWslUserServiceTests.test_materialize_api_default_disables_unexpected_retries",
+    "test_full_publication_wsl_user_service_v1.FullPublicationWslUserServiceTests.test_materialize_cli_default_disables_unexpected_retries",
+    "test_full_publication_wsl_user_service_v1.FullPublicationWslUserServiceTests.test_start_never_enables_when_preflight_is_not_exact_ready",
+    "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_real_docker29_zero_mount_probe_passes_stale_reaper",
+    "test_mapped_inputs_v4.MappedInputTests.test_actual_guest_maps_snapshot_joins_cached_pin_and_backing_identity",
+    "test_mapped_inputs_v4.MappedInputTests.test_actual_mapped_hardlink_accepts_join_but_default_still_rejects",
+    "test_mapped_inputs_v4.MappedInputTests.test_correct_identity_does_not_bypass_type_size_or_expected_hash",
+    "test_mapped_inputs_v4.MappedInputTests.test_mapped_link_count_mutation_remains_full_epoch_failure",
+    "test_mapped_inputs_v4.MappedInputTests.test_tiny_original_child_uses_same_actual_source_pid_maps_parser",
+    "test_pin_diagnostics_v3.InnerFailureTests.test_exclusive_diagnostic_collision_keeps_original_cause_and_prior_bytes",
+    "test_pin_diagnostics_v3.PinDiagnosticsTests.test_actual_oversize_retains_original_size_and_limit_before_hash",
+    "test_pin_diagnostics_v3.PinDiagnosticsTests.test_hardlink_preserves_original_rejection_and_actual_predicate_facts",
+    "test_pin_diagnostics_v3.PinDiagnosticsTests.test_substituted_inode_retains_held_and_named_failure_epochs",
+    "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_actual_readonly_primary_write_keeps_original_cause_and_retires_fds",
+    "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_original_mapped_rejection_persists_before_remaining_pin_retirement",
+    "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_outer_record_cap_failure_preserves_original_cause_without_truncation",
+    "test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_clean_empty_checkout_acquires_exact_eight_without_input_changes",
+    "test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_corrupt_cache_is_not_overwritten_and_prevents_dispatch",
+    "test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_deadline_is_rechecked_after_final_report_fsync",
+    "test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_same_bytes_partial_replacement_is_not_published_as_original",
+    "test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_short_and_oversize_bodies_never_publish",
+    "test_publication_cloud_transaction.PublicationCloudTransactionTests.test_pair_is_not_deleted_before_receipt_and_durable_ledger",
+    "test_publication_cloud_transaction.PublicationCloudTransactionTests.test_unverified_status_never_authorizes_prune",
+    "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_default_cli_owns_one_private_context_through_original_cold_and_stop",
+    "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_exact_two_original_operations_one_guardian_stop_before_cold",
+    "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_failed_original_arm_timeline_does_not_invent_later_phases",
+    "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_failure_no_second_operation_and_authenticated_stop",
+    "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_pair_retains_bounded_phase_starts_and_real_terminals",
+    "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_source_drift_during_original_terminal_commit_creates_failed_companion",
+    "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_stop_failure_preserves_original_body_cause_and_is_not_clean",
+    "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_timeline_has_exact_fixed_names_and_rejects_oversize_before_write",
+    "test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_timing_terminal_write_failure_keeps_start_and_performs_owned_cleanup",
+    "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_engine_bytes_or_socket_identity_drift_rejects",
+    "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_exception_closes_actual_input_fds_and_keeps_original_failure",
+    "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_five_boundaries_share_one_full_assessment_but_observe_twenty_images",
+    "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_original_socket_replacement_and_ancestor_alias_reject_before_inspect",
+    "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_private_projection_collector_publishes_only_after_complete_assessment",
+    "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_public_held_inputs_retains_independent_complete_validation",
+    "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_raw_dict_foreign_pid_root_authority_and_closed_session_fail",
+    "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_same_bytes_replacement_is_rejected_before_live_image_observation",
+    "test_publication_gstreamer_component_inputs_v1.ComponentHeldSessionTests.test_same_image_id_does_not_hide_projection_drift",
+    "test_publication_gstreamer_component_inputs_v1.ComponentHostPredicatesTests.test_actual_materializer_commits_last_and_raw_refusal_leaves_only_owned_prefix",
+    "test_publication_gstreamer_component_inputs_v1.ComponentHostPredicatesTests.test_selected_costs_retain_actual_original_sample_ids_and_medians",
+    "test_publication_gstreamer_component_inputs_v1.ComponentPhysicalAuthorityTests.test_expected_descriptor_semantic_seal_and_symlink_are_not_alias_authority",
+    "test_publication_gstreamer_component_inputs_v1.ComponentPhysicalAuthorityTests.test_original_seven_roles_and_front_workers_are_independently_bound",
+    "test_publication_gstreamer_component_inputs_v1.ComponentPhysicalAuthorityTests.test_real_physical_selected_eight_keep_complete_declaration_verbatim",
+    "test_publication_gstreamer_component_inputs_v1.ComponentPhysicalAuthorityTests.test_resealed_sibling_policy_count_and_model_binding_fail",
+    "test_publication_gstreamer_component_inputs_v1.ComponentPhysicalAuthorityTests.test_stale_current_source_rejects_even_same_length",
+    "test_publication_gstreamer_component_inputs_v1.ComponentPureFactoryTests.test_native_factory_uses_explicit_current_material_without_qualification_inputs",
+    "test_publication_gstreamer_component_runtime_v1.ComponentCustodyTests.test_all_acceptance_leaves_remain_held_after_validator_returns",
+    "test_publication_gstreamer_component_runtime_v1.ComponentCustodyTests.test_guardian_journals_stay_held_after_the_surrounding_join_returns",
+    "test_publication_gstreamer_component_runtime_v1.ComponentCustodyTests.test_original_arm_local_cohort_ids_do_not_break_stock_schedule_pair_gate",
+    "test_publication_gstreamer_component_runtime_v1.ComponentRuntimeFixtureTests.test_execution_cannot_opt_out_of_live_guardian",
+    "test_publication_gstreamer_component_runtime_v1.ComponentRuntimeFixtureTests.test_original_pair_is_physically_planned_and_factory_reconstructed",
+    "test_publication_gstreamer_component_runtime_v1.ComponentRuntimeFixtureTests.test_private_session_keeps_real_factory_and_custody_at_all_five_boundaries",
+    "test_publication_gstreamer_component_runtime_v1.ComponentRuntimeFixtureTests.test_resealed_foreign_factory_fields_fail_before_native_execution",
+    "test_publication_guardian_component_preprocessing_contract_v1.ComponentFrontTests.test_active_context_binding_rejects_absent_or_changed_context",
+    "test_publication_guardian_component_preprocessing_contract_v1.ComponentFrontTests.test_real_memfd_front_foreign_run_or_gva_implementation_or_resource_never_executes",
+    "test_publication_guardian_component_preprocessing_contract_v1.ComponentPreprocessingTests.test_legacy_kind_still_requires_original_image_patch_and_component_exact_four_projection",
+    "test_publication_guardian_operational_recorder_v1.RecorderTests.test_event_terminal_reservation_rejects_before_begin",
+    "test_publication_guardian_operational_recorder_v1.RecorderTests.test_journal_substitution_fails_custody_without_appending",
+    "test_publication_guardian_operational_recorder_v1.RecorderTests.test_terminal_duplicate_and_unfinished_rejected",
+    "test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_complete_cold_workload_includes_warmup_measurement_and_drain",
+    "test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_default_scratch_file_exhaustion_is_bounded_and_cleans_only_private_files",
+    "test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_duplicate_actual_terminal_is_rejected_without_an_extra_front_call",
+    "test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_lazy_canonical_ingress_provider_cannot_substitute_same_count_stream_mapping",
+    "test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_legitimate_repeated_wire_identity_keeps_both_original_operations",
+    "test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_observed_stream_substitution_is_rejected_before_inference",
+    "test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_resealed_guardian_identity_and_terminal_mutations_fail_cold_validation",
+    "test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_same_count_foreign_front_frame_cannot_pass_complete_cold_join",
+    "test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_stock_canonical_frame_mapping_can_differ_from_original_worker_frame",
+    "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_actual_retained_terminal_and_resealed_invalid_times_are_checked",
+    "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_malformed_original_cid_remains_failure_and_cleans_only_validated_owned_name",
+    "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_resealed_foreign_absence_cannot_grant_quiescence",
+    "test_publication_operational_container_custody_v1.OriginalContainerCompositionTests.test_start_persistence_failure_recovers_owned_name_and_cleans_original_cid",
+    "test_publication_operational_request_domain_v1.OperationalRequestDomainTests.test_complete_native_occurrences_preserve_all_three_phases_and_original_hashes",
+    "test_publication_operational_request_domain_v1.OperationalRequestDomainTests.test_failed_operational_publication_preserves_original_file_and_first_reason",
+    "test_publication_operational_request_domain_v1.OperationalRequestDomainTests.test_native_record_byte_cap_is_checked_before_authority_callback",
+    "test_publication_operational_request_domain_v1.OperationalRequestDomainTests.test_stream_reader_rejects_truncation_descriptor_drift_and_wrong_complete_counts",
+    "test_publication_operational_request_domain_v1.OperationalRequestDomainTests.test_strict_json_rejects_ambiguous_numbers_duplicate_keys_and_oversized_lines",
+    "test_publication_operational_request_domain_v1.OperationalRequestDomainTests.test_supported_source_bounds_and_6744_cap_block_before_engine_allocation",
+    "test_publication_policy_contract.PublicationPolicyContractTests.test_all_seven_policies_emit_replayable_but_unaccepted_records",
+    "test_publication_policy_contract.PublicationPolicyContractTests.test_ready_task_selection_and_resource_ties_are_stable",
+    "test_publication_policy_contract.PublicationPolicyContractTests.test_static_hybrid_calibration_is_exhaustive_mixed_and_deterministic",
+    "test_publication_policy_history_acceptance_v1.PublicationPolicyHistoryAcceptanceTests.test_legacy_cpu_and_adaptive_acceptance_keep_the_original_exact_names",
+    "test_publication_policy_history_namespace_v1.PublicationPolicyHistoryNamespaceTests.test_legacy_projection_stays_exact_and_nonadaptive_history_is_rejected",
+    "test_publication_policy_qualification_execution_code_closure_v1.QualificationExecutionCodeClosureV1Tests.test_builder_recursively_freezes_exact_project_sources_and_interpreter",
+    "test_publication_policy_qualification_execution_code_closure_v1.QualificationExecutionCodeClosureV1Tests.test_loader_rejects_mutate_restore_snapshot_drift",
+    "test_publication_q4_evidence_validator_v4.PublicationQ4EvidenceValidatorV4Tests.test_build_and_validate_exact_native_evidence",
+    "test_publication_q4_evidence_validator_v4.PublicationQ4EvidenceValidatorV4Tests.test_candidate_gates_and_native_topology_provenance_fail_closed",
+    "test_publication_q4_policy_projection_v1.PublicationQ4PolicyProjectionV1Tests.test_actual_isolated_formal_runner_accepts_projected_cpu_and_rejects_drift",
+    "test_publication_q4_policy_projection_v1.PublicationQ4PolicyProjectionV1Tests.test_actual_isolated_verified_byte_loader_replays_adaptive_history",
+    "test_publication_q4_policy_projection_v1.PublicationQ4PolicyProjectionV1Tests.test_all_nonadaptive_projected_frozen_policy_paths_replay",
+    "test_publication_q4_policy_projection_v1.PublicationQ4PolicyProjectionV1Tests.test_history_bounded_and_duplicate_nonfinite_records_rejected",
+    "test_publication_q4_policy_projection_v1.PublicationQ4PolicyProjectionV1Tests.test_projected_adaptive_actual_predecessor_and_interleaved_feedback",
+    "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_gstreamer_current_runtime_is_exactly_refrozen",
+    "test_publication_storage_recovery.PublicationStorageRecoveryTests.test_accepted_pair_recovers_offload_before_disk_gate_without_reexecution",
+    "test_publication_storage_recovery.PublicationStorageRecoveryTests.test_space_exhaustion_between_pairs_never_starts_next_pair",
+    "test_publication_storage_recovery.SeafileReadbackTransportTests.test_completed_wrong_size_or_sha_remains_permanent",
+    "test_publication_worker_termination_facts_v1.TerminationTests.test_engine_reported_oom_false_does_not_infer_actor",
+    "test_publication_worker_termination_facts_v1.TerminationTests.test_engine_reported_oom_true_retained_as_fact",
+    "test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_completed_policy_index_requires_strict_cold_accounting",
+    "test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_current_accepted_policy_guardian_requires_strict_cold_accounting",
+    "test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_full_resource_assessment_requires_strict_cold_accounting",
+    "test_qualification_complete_operational_promotion_gate_v1.CompleteOperationalPromotionGateV1Tests.test_policy_assessment_requires_strict_cold_accounting",
+    "test_qualification_operational_closure_cold_gate_v1.OperationalClosureColdGateTests.test_legacy_exact_32_closure_remains_readable_but_cannot_promote",
+    "test_qualification_operational_closure_cold_gate_v1.OperationalClosureColdGateTests.test_present_report_is_recomputed_from_physical_binding_before_comparison",
+    "test_research_protocol.ProtocolTests.test_actual_sink_eos_keeps_fixed_central_cohort_and_marks_flush_insufficient",
+    "test_research_protocol.ProtocolTests.test_exact32_no_extra_duplicate_foreign_or_late_admission",
+    "test_research_protocol.ProtocolTests.test_external_previous_run_needs_sealed_terminal_before_next_start",
+    "test_research_protocol.ProtocolTests.test_pair_complete_multiset_pixels_caps_order_and_tail_are_required",
+    "test_run_ci_checks.RunCiChecksTests.test_changed_added_and_removed_sources_are_reported",
+    "test_run_ci_checks.RunCiChecksTests.test_empty_discovery_fails",
+    "test_run_ci_checks.RunCiChecksTests.test_failure_traceback_is_flushed_before_the_suite_returns",
+    "test_run_ci_checks.RunCiChecksTests.test_foreign_namespace_origin_is_rejected_before_discovery",
+    "test_run_ci_checks.RunCiChecksTests.test_host_facts_are_bounded_and_exclude_environment_secrets",
+    "test_run_ci_checks.RunCiChecksTests.test_interrupted_test_start_does_not_invent_a_terminal",
+    "test_run_ci_checks.RunCiChecksTests.test_isolated_default_discovery_imports_contained_namespaces_and_preserves_ids",
+    "test_run_ci_checks.RunCiChecksTests.test_loaded_factory_facts_bind_original_metadata_and_plugin_bytes",
+    "test_run_ci_checks.RunCiChecksTests.test_manifest_detects_equal_size_source_replacement",
+    "test_run_ci_checks.RunCiChecksTests.test_missing_runtime_factory_remains_a_failed_prerequisite",
+    "test_run_ci_checks.RunCiChecksTests.test_real_alias_launcher_uses_canonical_interpreter_for_suite_and_assets",
+    "test_run_ci_checks.RunCiChecksTests.test_real_periodic_stack_capture_keeps_the_active_test_and_result",
+    "test_run_ci_checks.RunCiChecksTests.test_required_native_skip_does_not_become_a_pass",
+    "test_run_ci_checks.RunCiChecksTests.test_required_native_successes_allow_other_explicit_skips",
+    "test_run_ci_checks.RunCiChecksTests.test_subtest_error_traceback_is_flushed_and_parent_terminal_is_error",
+    "test_seafile_capacity_attestation_v1.SeafileCapacityAttestationV1Tests.test_missing_or_duplicate_sizing_cell_quota_shortfall_and_foreign_file_fail_closed",
+    "test_seafile_operator_capacity_attestation_v2.SeafileOperatorCapacityAttestationV2Tests.test_builds_secret_free_nonempty_destination_attestation",
+    "test_seafile_operator_capacity_attestation_v2.SeafileOperatorCapacityAttestationV2Tests.test_sizing_above_operator_lower_bound_fails_closed"
+  ],
+  "full_consumer_gap": "Exact field/kind/full-matrix guards reject raw component authority at the inspected named boundaries. Existing preprocessing dispatch and component-host tests are narrower than direct negative tests of every qualification, accepted-policy, promotion, Q4 and full-publication consumer. There is no identified bypass in the inspected source, but exhaustive named-consumer behavior remains unverified; manual/source review is not an executed test.",
+  "generator": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/generate_current_mapping_v1.py",
+    "sha256": "2443403f68f2182aa4e641e4775ae5165e815146147fa1b72bae73d386b77d68",
+    "size_bytes": 30466
+  },
+  "generator_imports": [
+    "import ast",
+    "import collections",
+    "import hashlib",
+    "import json",
+    "import os",
+    "from pathlib import Path",
+    "import re",
+    "import stat",
+    "import sys",
+    "import time",
+    "import traceback"
+  ],
+  "manual_only_scenarios": [
+    "R5/S5",
+    "R12/S1",
+    "R14/S2",
+    "R20/S1"
+  ],
+  "methods_without_literal_assert_call": [
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_held_losing_owner_commit_cannot_write_elected_owner_terminal",
+    "test_backend_publication_broker_terminal_v3.BackendPublicationBrokerTerminalV3Tests.test_normal_losing_owner_commit_cannot_write_elected_owner_terminal",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_identity_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+  ],
+  "missing_anchors": [],
+  "missing_methods": [],
+  "no_target_import_or_execution": true,
+  "qualified_tests": 290,
+  "schema_version": 1,
+  "source_anchors": 187,
+  "source_commit": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+  "source_only_raw_pins_not_test_execution": true,
+  "source_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+  "status": "prepared_source_link_inspection_only_not_generator_execution"
+}

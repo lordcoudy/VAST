@@ -1,0 +1,14 @@
+{
+  "actual_test_effect": null,
+  "cause": "Substring .test_ counted the nested fault fixture function as a test method; actual unittest27 and source byte equality remain unchanged. Correct method count uses final qualified name component.",
+  "error": "AssertionError at author metadata script line31",
+  "exit_code": 1,
+  "partial_outputs_preserved": [
+    "final-source/scripts/publication_operational_process_custody_v1.py",
+    "final-source/tests/test_publication_operational_process_custody_v1.py",
+    "publication_operational_process_custody_v1.final.diff",
+    "test_publication_operational_process_custody_v1.final.diff"
+  ],
+  "source_or_test_edit": false,
+  "tool_chunk": "7c5b4c"
+}

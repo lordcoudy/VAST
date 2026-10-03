@@ -1,0 +1,648 @@
+{
+  "all_reader_handles_released": true,
+  "close_errors": [],
+  "elapsed_s": 0.099353316007182,
+  "error": null,
+  "facts": {
+    "actual_copy_terminal": {
+      "epoch": [
+        2096,
+        591648,
+        33024,
+        1,
+        13866,
+        1791024541258224078,
+        1791024541258224078
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-model-cache-copy-output/execution.v1.json",
+      "sha256": "edd18fe1ea79b25355c17d21e18dbe910035f00f400df03fdb591d3eb969780e",
+      "size_bytes": 13866
+    },
+    "all_small_metadata_rechecked_while_held": true,
+    "closed_stock_command": {
+      "argv": [
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/prepare_ci_model_assets.py",
+        "--output-dir",
+        "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition"
+      ],
+      "cleanup_error": null,
+      "elapsed_s": 0.16399364703102037,
+      "returncode": 0,
+      "timed_out": false
+    },
+    "closed_stock_report": {
+      "assets": [
+        {
+          "index": 0,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+          "sha256": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed",
+          "sha384": "f9f35961bc5cffbb0d663bfc1e8b02efab0fbc4c9270578dad2bedac2634bd33428acde64f2e080347c2417948a690ee",
+          "size_bytes": 254351,
+          "status": "reused"
+        },
+        {
+          "index": 1,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin",
+          "sha256": "7f9344e41167d14179a0da136f87f2570a30ac5399e0363fd6787a9ae18d0fa0",
+          "sha384": "5f76bab11f3fd97d4313fa6e9d9f1fce0fc669aacfba9e688161c90c89baeb5f9a89a9f68e4ace49c180af35133fbda3",
+          "size_bytes": 3691778,
+          "status": "reused"
+        },
+        {
+          "index": 2,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml",
+          "sha256": "baed27b9dde81b75590a382d2aa458d63391cdb146e7ef20c12577c4cb0617d8",
+          "sha384": "812a89ced16938bb32c6648f5278cb4a34940912199de4c9644bbb0e63d5b0728f7f0e0e0f1c0bae6eab36c28b724c3b",
+          "size_bytes": 292640,
+          "status": "reused"
+        },
+        {
+          "index": 3,
+          "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin",
+          "sha256": "a7f04e3243aae3099a00c5276074bdbe57bc8bf91986093dfeafb3b065843f45",
+          "sha384": "fc945d7885733f86cef916b91e2791761abaa56bc005f6426ec48e7aa573e1529f479f723713944d4a81773a9140df9f",
+          "size_bytes": 5774062,
+          "status": "reused"
+        },
+        {
+          "index": 4,
+          "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml",
+          "sha256": "69ed174cee70e19b098215f53d1fe6f27edc5b417790bbc44cde7f37cc082fae",
+          "sha384": "b0a70cfc4ccbe85dd5ba5549c2d142d7f922a0a1116657cdcc9f48cb6afc7cc40a596a655b9e6566396c48b72232ff65",
+          "size_bytes": 325452,
+          "status": "reused"
+        },
+        {
+          "index": 5,
+          "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin",
+          "sha256": "7f96bfaa0ac3af65d136f6a185d1d78d68d03bab2e1f2faafe1d27ccd94b0dc1",
+          "sha384": "0406e296c9822f4a5e8ee300ad40e5c0a0eeeaf9206f829556cb836cb8f10a4f8a4dd94d1bb16a60562bf1568fd12618",
+          "size_bytes": 1286772,
+          "status": "reused"
+        },
+        {
+          "index": 6,
+          "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml",
+          "sha256": "08b844a402a615605a626261fd9e27161a044845426ece5aa0872203c50bb5a2",
+          "sha384": "397543ce3a53c629df7794fc13b919092a9e788003fb6bdf8ef1dafa77392b72732fe408c9d0d13e05ce4af4a7833b74",
+          "size_bytes": 254888,
+          "status": "reused"
+        },
+        {
+          "index": 7,
+          "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin",
+          "sha256": "c0a602428cfd71ac63a533c23b7cdb8c83e144f118a81001420246701daf0c78",
+          "sha384": "467802734ab235cf653d13707501fa3c44fb025a7ad02921ea958b3032865fce43bbafe4dfabbb2acfb18b0bcd6c0180",
+          "size_bytes": 3634654,
+          "status": "reused"
+        }
+      ],
+      "elapsed_s": 0.07897603802848607,
+      "hardware_acceptance": false,
+      "inputs": [
+        {
+          "epoch": [
+            2096,
+            585014,
+            33188,
+            1,
+            5124,
+            1791024489318184365,
+            1791024489318184365
+          ],
+          "path": ".ci/model-assets.v1.json",
+          "sha256": "225db21da5943a34d35c41e61c4fcda9623dd4e5eb973d7975d450ff421edab7",
+          "size_bytes": 5124
+        },
+        {
+          "epoch": [
+            2096,
+            590937,
+            33188,
+            1,
+            7885,
+            1791024491334348119,
+            1791024491334348119
+          ],
+          "path": "configs/checkpoint_analytics_models_openvino.yaml",
+          "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+          "size_bytes": 7885
+        }
+      ],
+      "requires_original_exit_zero": true,
+      "schema_version": 1,
+      "status": "complete"
+    },
+    "exact_eight_reuse_joins": [
+      {
+        "destination_current_stat_epoch_equals_copy": [
+          2096,
+          591634,
+          33060,
+          1,
+          254351,
+          1791024541142214607,
+          1791024541142214607
+        ],
+        "donor_copy_original_epoch": [
+          2096,
+          552828,
+          33188,
+          1,
+          254351,
+          1790800737204191547,
+          1790800737204191547
+        ],
+        "index": 0,
+        "model_bytes_reread_by_reviewer_now": false,
+        "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+        "sha256": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed",
+        "sha384": "f9f35961bc5cffbb0d663bfc1e8b02efab0fbc4c9270578dad2bedac2634bd33428acde64f2e080347c2417948a690ee",
+        "size_bytes": 254351,
+        "stock_status": "reused"
+      },
+      {
+        "destination_current_stat_epoch_equals_copy": [
+          2096,
+          591635,
+          33060,
+          1,
+          3691778,
+          1791024541150215260,
+          1791024541154215587
+        ],
+        "donor_copy_original_epoch": [
+          2096,
+          552827,
+          33188,
+          1,
+          3691778,
+          1790800737172189667,
+          1790800737172189667
+        ],
+        "index": 1,
+        "model_bytes_reread_by_reviewer_now": false,
+        "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin",
+        "sha256": "7f9344e41167d14179a0da136f87f2570a30ac5399e0363fd6787a9ae18d0fa0",
+        "sha384": "5f76bab11f3fd97d4313fa6e9d9f1fce0fc669aacfba9e688161c90c89baeb5f9a89a9f68e4ace49c180af35133fbda3",
+        "size_bytes": 3691778,
+        "stock_status": "reused"
+      },
+      {
+        "destination_current_stat_epoch_equals_copy": [
+          2096,
+          591638,
+          33060,
+          1,
+          292640,
+          1791024541170216893,
+          1791024541174217219
+        ],
+        "donor_copy_original_epoch": [
+          2096,
+          552832,
+          33188,
+          1,
+          292640,
+          1790800737264195076,
+          1790800737264195076
+        ],
+        "index": 2,
+        "model_bytes_reread_by_reviewer_now": false,
+        "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml",
+        "sha256": "baed27b9dde81b75590a382d2aa458d63391cdb146e7ef20c12577c4cb0617d8",
+        "sha384": "812a89ced16938bb32c6648f5278cb4a34940912199de4c9644bbb0e63d5b0728f7f0e0e0f1c0bae6eab36c28b724c3b",
+        "size_bytes": 292640,
+        "stock_status": "reused"
+      },
+      {
+        "destination_current_stat_epoch_equals_copy": [
+          2096,
+          591639,
+          33060,
+          1,
+          5774062,
+          1791024541178217547,
+          1791024541186218199
+        ],
+        "donor_copy_original_epoch": [
+          2096,
+          552831,
+          33188,
+          1,
+          5774062,
+          1790800737240193666,
+          1790800737240193666
+        ],
+        "index": 3,
+        "model_bytes_reread_by_reviewer_now": false,
+        "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin",
+        "sha256": "a7f04e3243aae3099a00c5276074bdbe57bc8bf91986093dfeafb3b065843f45",
+        "sha384": "fc945d7885733f86cef916b91e2791761abaa56bc005f6426ec48e7aa573e1529f479f723713944d4a81773a9140df9f",
+        "size_bytes": 5774062,
+        "stock_status": "reused"
+      },
+      {
+        "destination_current_stat_epoch_equals_copy": [
+          2096,
+          591642,
+          33060,
+          1,
+          325452,
+          1791024541206219832,
+          1791024541210220158
+        ],
+        "donor_copy_original_epoch": [
+          2096,
+          552840,
+          33188,
+          1,
+          325452,
+          1790800737356200487,
+          1790800737356200487
+        ],
+        "index": 4,
+        "model_bytes_reread_by_reviewer_now": false,
+        "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml",
+        "sha256": "69ed174cee70e19b098215f53d1fe6f27edc5b417790bbc44cde7f37cc082fae",
+        "sha384": "b0a70cfc4ccbe85dd5ba5549c2d142d7f922a0a1116657cdcc9f48cb6afc7cc40a596a655b9e6566396c48b72232ff65",
+        "size_bytes": 325452,
+        "stock_status": "reused"
+      },
+      {
+        "destination_current_stat_epoch_equals_copy": [
+          2096,
+          591643,
+          33060,
+          1,
+          1286772,
+          1791024541214220486,
+          1791024541218220811
+        ],
+        "donor_copy_original_epoch": [
+          2096,
+          552839,
+          33188,
+          1,
+          1286772,
+          1790800737336199311,
+          1790800737336199311
+        ],
+        "index": 5,
+        "model_bytes_reread_by_reviewer_now": false,
+        "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin",
+        "sha256": "7f96bfaa0ac3af65d136f6a185d1d78d68d03bab2e1f2faafe1d27ccd94b0dc1",
+        "sha384": "0406e296c9822f4a5e8ee300ad40e5c0a0eeeaf9206f829556cb836cb8f10a4f8a4dd94d1bb16a60562bf1568fd12618",
+        "size_bytes": 1286772,
+        "stock_status": "reused"
+      },
+      {
+        "destination_current_stat_epoch_equals_copy": [
+          2096,
+          591646,
+          33060,
+          1,
+          254888,
+          1791024541226221464,
+          1791024541230221791
+        ],
+        "donor_copy_original_epoch": [
+          2096,
+          552836,
+          33188,
+          1,
+          254888,
+          1790800737316198135,
+          1790800737316198135
+        ],
+        "index": 6,
+        "model_bytes_reread_by_reviewer_now": false,
+        "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml",
+        "sha256": "08b844a402a615605a626261fd9e27161a044845426ece5aa0872203c50bb5a2",
+        "sha384": "397543ce3a53c629df7794fc13b919092a9e788003fb6bdf8ef1dafa77392b72732fe408c9d0d13e05ce4af4a7833b74",
+        "size_bytes": 254888,
+        "stock_status": "reused"
+      },
+      {
+        "destination_current_stat_epoch_equals_copy": [
+          2096,
+          591647,
+          33060,
+          1,
+          3634654,
+          1791024541234222119,
+          1791024541242222771
+        ],
+        "donor_copy_original_epoch": [
+          2096,
+          552835,
+          33188,
+          1,
+          3634654,
+          1790800737292196722,
+          1790800737292196722
+        ],
+        "index": 7,
+        "model_bytes_reread_by_reviewer_now": false,
+        "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin",
+        "sha256": "c0a602428cfd71ac63a533c23b7cdb8c83e144f118a81001420246701daf0c78",
+        "sha384": "467802734ab235cf653d13707501fa3c44fb025a7ad02921ea958b3032865fce43bbafe4dfabbb2acfb18b0bcd6c0180",
+        "size_bytes": 3634654,
+        "stock_status": "reused"
+      }
+    ],
+    "prior_independent_copy_review": {
+      "epoch": [
+        69,
+        1407374885980237,
+        33279,
+        1,
+        21260,
+        1791024781885103500,
+        1791024781885103500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-copy-actual-review-v1/review.v1.json",
+      "sha256": "1c95e34e98acfd6f90194f17b0433dc3feb57fe5fae1525e98f233b550b5d76a",
+      "size_bytes": 21260
+    },
+    "retained_raw_original_metadata": [
+      {
+        "original": {
+          "epoch": [
+            2096,
+            591668,
+            33024,
+            1,
+            3437,
+            1791024855366750036,
+            1791024855366750036
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition/report.json",
+          "sha256": "cb5c0fa2eeb1ddcf1083f27b1e5b6879f146cebf65bb4f65fa7fbb168db66f58",
+          "size_bytes": 3437
+        },
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/stock-report.original.json",
+        "raw_bytes_unchanged": true,
+        "sha256": "cb5c0fa2eeb1ddcf1083f27b1e5b6879f146cebf65bb4f65fa7fbb168db66f58",
+        "size_bytes": 3437
+      },
+      {
+        "original": {
+          "epoch": [
+            2096,
+            591669,
+            33188,
+            1,
+            483,
+            1791024855402753142,
+            1791024855402753142
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-assets.json",
+          "sha256": "4e829bb934424d8bf455b569edb7bf98ea74a90b1be5baa67480d56832ba1de4",
+          "size_bytes": 483
+        },
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/stock-model-assets-command.original.json",
+        "raw_bytes_unchanged": true,
+        "sha256": "4e829bb934424d8bf455b569edb7bf98ea74a90b1be5baa67480d56832ba1de4",
+        "size_bytes": 483
+      },
+      {
+        "original": {
+          "epoch": [
+            2096,
+            591660,
+            33024,
+            1,
+            563,
+            1791024855326746586,
+            1791024855326746586
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition/asset-00.json",
+          "sha256": "d5773cd76642ff8d7d543a1eb6e9e69dfab244de6d10ae4ba08a662193276bd2",
+          "size_bytes": 563
+        },
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/stock-asset-00.original.json",
+        "raw_bytes_unchanged": true,
+        "sha256": "d5773cd76642ff8d7d543a1eb6e9e69dfab244de6d10ae4ba08a662193276bd2",
+        "size_bytes": 563
+      },
+      {
+        "original": {
+          "epoch": [
+            2096,
+            591661,
+            33024,
+            1,
+            564,
+            1791024855334747277,
+            1791024855334747277
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition/asset-01.json",
+          "sha256": "04f62e8b7d5a59c623fc0a847772962853376635c3f36d78786e232efa81eca1",
+          "size_bytes": 564
+        },
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/stock-asset-01.original.json",
+        "raw_bytes_unchanged": true,
+        "sha256": "04f62e8b7d5a59c623fc0a847772962853376635c3f36d78786e232efa81eca1",
+        "size_bytes": 564
+      },
+      {
+        "original": {
+          "epoch": [
+            2096,
+            591662,
+            33024,
+            1,
+            611,
+            1791024855338747621,
+            1791024855338747621
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition/asset-02.json",
+          "sha256": "e31fc86ab7fc132928a5f9f1c4e0d4d6ed59900ee1e33f24abdbd067b70fde1d",
+          "size_bytes": 611
+        },
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/stock-asset-02.original.json",
+        "raw_bytes_unchanged": true,
+        "sha256": "e31fc86ab7fc132928a5f9f1c4e0d4d6ed59900ee1e33f24abdbd067b70fde1d",
+        "size_bytes": 611
+      },
+      {
+        "original": {
+          "epoch": [
+            2096,
+            591663,
+            33024,
+            1,
+            612,
+            1791024855346748312,
+            1791024855346748312
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition/asset-03.json",
+          "sha256": "cbb1750685fe4ca240fd59415db975996e80f9138f2fd2ccf998ee8698c99485",
+          "size_bytes": 612
+        },
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/stock-asset-03.original.json",
+        "raw_bytes_unchanged": true,
+        "sha256": "cbb1750685fe4ca240fd59415db975996e80f9138f2fd2ccf998ee8698c99485",
+        "size_bytes": 612
+      },
+      {
+        "original": {
+          "epoch": [
+            2096,
+            591664,
+            33024,
+            1,
+            609,
+            1791024855350748656,
+            1791024855350748656
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition/asset-04.json",
+          "sha256": "47097412dbeea22bbe646ac80277f62c87f204f1d2b6067fe2122e83c417b8f7",
+          "size_bytes": 609
+        },
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/stock-asset-04.original.json",
+        "raw_bytes_unchanged": true,
+        "sha256": "47097412dbeea22bbe646ac80277f62c87f204f1d2b6067fe2122e83c417b8f7",
+        "size_bytes": 609
+      },
+      {
+        "original": {
+          "epoch": [
+            2096,
+            591665,
+            33024,
+            1,
+            610,
+            1791024855354749003,
+            1791024855354749003
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition/asset-05.json",
+          "sha256": "89b7359dedf3b61f29d515f81ecca6493f0cdbc663a4539a8ca8dbfe527dd57b",
+          "size_bytes": 610
+        },
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/stock-asset-05.original.json",
+        "raw_bytes_unchanged": true,
+        "sha256": "89b7359dedf3b61f29d515f81ecca6493f0cdbc663a4539a8ca8dbfe527dd57b",
+        "size_bytes": 610
+      },
+      {
+        "original": {
+          "epoch": [
+            2096,
+            591666,
+            33024,
+            1,
+            521,
+            1791024855358749347,
+            1791024855358749347
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition/asset-06.json",
+          "sha256": "202ed75b19b3f2cce54df50dd8fbefcbeec99075cb45028146291b811b0c4842",
+          "size_bytes": 521
+        },
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/stock-asset-06.original.json",
+        "raw_bytes_unchanged": true,
+        "sha256": "202ed75b19b3f2cce54df50dd8fbefcbeec99075cb45028146291b811b0c4842",
+        "size_bytes": 521
+      },
+      {
+        "original": {
+          "epoch": [
+            2096,
+            591667,
+            33024,
+            1,
+            522,
+            1791024855366750036,
+            1791024855366750036
+          ],
+          "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output/model-acquisition/asset-07.json",
+          "sha256": "a9f2744883514b895a7bd0e328e93a4f4558a4d104f5aeb4a6e1f9bec0236c91",
+          "size_bytes": 522
+        },
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/stock-asset-07.original.json",
+        "raw_bytes_unchanged": true,
+        "sha256": "a9f2744883514b895a7bd0e328e93a4f4558a4d104f5aeb4a6e1f9bec0236c91",
+        "size_bytes": 522
+      }
+    ],
+    "stock_verifier_sources": [
+      {
+        "epoch": [
+          2096,
+          591269,
+          33188,
+          1,
+          30314,
+          1791024491690377036,
+          1791024491690377036
+        ],
+        "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/prepare_ci_model_assets.py",
+        "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+        "size_bytes": 30314
+      },
+      {
+        "epoch": [
+          2096,
+          591322,
+          33188,
+          1,
+          29477,
+          1791024491698377685,
+          1791024491698377685
+        ],
+        "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/run_ci_checks.py",
+        "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+        "size_bytes": 29477
+      },
+      {
+        "epoch": [
+          2096,
+          585014,
+          33188,
+          1,
+          5124,
+          1791024489318184365,
+          1791024489318184365
+        ],
+        "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.ci/model-assets.v1.json",
+        "sha256": "225db21da5943a34d35c41e61c4fcda9623dd4e5eb973d7975d450ff421edab7",
+        "size_bytes": 5124
+      },
+      {
+        "epoch": [
+          2096,
+          590937,
+          33188,
+          1,
+          7885,
+          1791024491334348119,
+          1791024491334348119
+        ],
+        "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/configs/checkpoint_analytics_models_openvino.yaml",
+        "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+        "size_bytes": 7885
+      }
+    ]
+  },
+  "fd_after": 6,
+  "fd_before": 6,
+  "full_local_CI_acceptance": null,
+  "hardware_acceptance": false,
+  "kind": "closed_stock_asset_reuse_review_v1",
+  "limits": [
+    "Completed acquisition metadata and its actual command are independent of the still-running full local suite.",
+    "Fresh full donor/destination hashes were checked in the prior closed copy review. This review uses the genuine unchanged stock verifier hashes and current seven-epoch stats, without rereading weights.",
+    "No active unittest/native/overall report is inspected; no full CI acceptance or final release claim."
+  ],
+  "no_model_body_reads_or_network_or_CI_execution": true,
+  "reviewer": "/root/architecture_review",
+  "schema_version": 1,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "status": "verified",
+  "stock_all_eight_existing_verifier_passed": true
+}

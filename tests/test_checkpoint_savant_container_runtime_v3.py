@@ -14,12 +14,15 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from checkpoint_savant_container_runtime_v3 import (  # noqa: E402
     SavantContainerRuntimeV3Error,
+    _verify_binding_artifacts,
     parse_sha_path_bindings,
     seed_savant_gstreamer_registries,
     terminal_status,
     validate_savant_native_stdio,
 )
 from checkpoint_savant_runtime_image_materialization_v3 import (  # noqa: E402
+    NATIVE_BUILDER_IMAGE_ID,
+    NATIVE_BUILDER_SOURCE_SHA256,
     build_runtime_image_materialization,
 )
 
@@ -76,14 +79,62 @@ class SavantContainerRuntimeV3Tests(unittest.TestCase):
             stdout = root / "stdout.log"
             stderr = root / "stderr.log"
             stdout.write_text(
-                "nvstreammux: Successfully handled EOS for source_id=0\n",
+                "max_fps_dur 8.33333e+06 min_fps_dur 2e+08\n"
+                "max_fps_dur 1.66667e+06 min_fps_dur 1.66667e+06\n",
                 encoding="utf-8",
             )
             stderr.write_bytes(b"")
             audit = validate_savant_native_stdio(
                 stdout, stderr, expected_worker_count=1,
             )
-            self.assertEqual(audit["nvstreammux_eos_line_count"], 1)
+            self.assertEqual(audit["nvstreammux_default_timing_line_count"], 1)
+            self.assertEqual(audit["nvstreammux_configured_timing_line_count"], 1)
+
+    def test_frozen_gpu_model_paths_are_sha_bound_after_namespace_translation(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            input_root = root / "input"
+            frozen_root = root / "workspace"
+            binding = {}
+            model_bindings = {}
+            expected_paths = set()
+            for field, digest_field, relative, payload in (
+                ("source_path", "source_model_sha256", Path("models/parity/source.onnx"), b"source"),
+                ("engine_path", "model_artifact_sha256", Path("models/parity/runtime.engine"), b"engine"),
+            ):
+                materialized = input_root / "models" / relative
+                materialized.parent.mkdir(parents=True, exist_ok=True)
+                materialized.write_bytes(payload)
+                digest = hashlib.sha256(payload).hexdigest()
+                binding[field] = str(frozen_root / relative)
+                binding[digest_field] = digest
+                model_bindings[digest] = materialized
+                expected_paths.add(materialized)
+
+            self.assertEqual(
+                _verify_binding_artifacts(
+                    binding,
+                    resource="gpu",
+                    model_bindings=model_bindings,
+                    input_root=input_root,
+                    frozen_project_root=frozen_root,
+                ),
+                expected_paths,
+            )
+            model_bindings[binding["model_artifact_sha256"]] = next(
+                path for path in expected_paths if path.name == "source.onnx"
+            )
+            with self.assertRaisesRegex(
+                SavantContainerRuntimeV3Error,
+                "undeclared model artifact",
+            ):
+                _verify_binding_artifacts(
+                    binding,
+                    resource="gpu",
+                    model_bindings=model_bindings,
+                    input_root=input_root,
+                    frozen_project_root=frozen_root,
+                )
 
     def test_terminal_status_is_exact_savant_abi_v3(self) -> None:
         args = argparse.Namespace(
@@ -154,7 +205,7 @@ class SavantContainerRuntimeV3Tests(unittest.TestCase):
         )
         self.assertIn(
             "vast/savant-native-probe@sha256:"
-            "ef70f6fae0558d1d90ae32fc931256bc71169749c15ae00b70a8ca00c0b70513",
+            "314d4a4d71130e9b86caacb802e92fe97a89ee92b0240f9947dccebca3adc3dc",
             build,
         )
         self.assertIn("compute_runtime_source_sha256", build)
@@ -175,9 +226,9 @@ class SavantContainerRuntimeV3Tests(unittest.TestCase):
             "org.vast.base-image-id":
                 "sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6",
             "org.vast.native-builder-image-id":
-                "sha256:ef70f6fae0558d1d90ae32fc931256bc71169749c15ae00b70a8ca00c0b70513",
+                NATIVE_BUILDER_IMAGE_ID,
             "org.vast.native-builder-source-sha256":
-                "e38aa56050381aef7ce9ff6fb934ae3da0d44175f10fb67f4cecea34433ded01",
+                NATIVE_BUILDER_SOURCE_SHA256,
             "org.vast.savant.runtime-source-sha256": source_sha,
             "org.vast.savant.runtime-bundle-sha256": bundle_sha,
             "org.vast.publication-ready": "false",

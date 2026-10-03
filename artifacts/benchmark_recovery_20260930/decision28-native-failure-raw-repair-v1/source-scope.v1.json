@@ -1,0 +1,192 @@
+{
+  "actual_copy_matches": [
+    {
+      "matches": [
+        {
+          "line": 94,
+          "text": "scripts/publication_operational_process_custody_v1.py \\"
+        }
+      ],
+      "path": "deploy/deepstream/checkpoint/Dockerfile.runtime",
+      "sha256": "2235b11c12e4bd84656a986c0064200fabc964b16a42a83ea6090e70e9e3fd30",
+      "size_bytes": 7720
+    },
+    {
+      "matches": [
+        {
+          "line": 78,
+          "text": "scripts/publication_operational_process_custody_v1.py \\"
+        }
+      ],
+      "path": "deploy/gstreamer_custom/publication/Dockerfile",
+      "sha256": "5d10aec4076e67218905b2c71ae32553e6843810d6d176b8e31c0c3be9dffe78",
+      "size_bytes": 8169
+    },
+    {
+      "matches": [
+        {
+          "line": 78,
+          "text": "scripts/publication_operational_process_custody_v1.py \\"
+        }
+      ],
+      "path": "deploy/openvino_gva/publication/Dockerfile",
+      "sha256": "594dc1f55c8249b1767324d110f84af605b4237b9589d0baa980df617919101f",
+      "size_bytes": 8291
+    },
+    {
+      "matches": [
+        {
+          "line": 114,
+          "text": "scripts/publication_operational_process_custody_v1.py \\"
+        }
+      ],
+      "path": "deploy/savant/publication/Dockerfile",
+      "sha256": "8ec0991d4af832aff22fc0699b80b8cc68725d892b99cc7376f923ffac218672",
+      "size_bytes": 7955
+    }
+  ],
+  "allowlists": [
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt",
+      "sha256": "c6de183e6bbb3d3cea16cfeea98d22d64d1e034ae87a568111284f474c002d1a",
+      "size_bytes": 47,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/analytics_execution/publication/openvino-source-allowlist.txt",
+      "sha256": "b1a42fda639e43e61d1d3ab20161f9a294754d9157b0b54be23de02a5e62e3e4",
+      "size_bytes": 124,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt",
+      "sha256": "c05e67bd428175b99aa15e9325d1e7f6f6e5258e1857c0da15509ddda76383f6",
+      "size_bytes": 47,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt",
+      "sha256": "6fefe6f415200d4a10025e3efb9e28fc22737dee84ca7cb5e40be660b8667722",
+      "size_bytes": 172,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt",
+      "sha256": "c63c495e89b109abca372f1b43047ed989f0e5a95779b9004e47ce657635f3c2",
+      "size_bytes": 670,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": true,
+      "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "sha256": "43b41dee019fc730704d3c176a753d0e26c8f871da59714ce97e70e9209396cc",
+      "size_bytes": 3780,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt",
+      "sha256": "c90fd7e4b347fdf086924d1bf419d0e03c3335a1e901bcd402b628a5379872bc",
+      "size_bytes": 320,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt",
+      "sha256": "f4655c4dbd7eee1da21267a9e3f08cbddc4a18d8e69fda2a8a0fcc4898119072",
+      "size_bytes": 589,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": true,
+      "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+      "sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+      "size_bytes": 3538,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt",
+      "sha256": "ea34504be944777a79047b36626552642921aa10ad0c8c2c6707fa50fda3f887",
+      "size_bytes": 46,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt",
+      "sha256": "9a25d25c340f7c0a5e920c8700bb75fbfbf891a6d7fecc3e68363e34ea9dca28",
+      "size_bytes": 562,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt",
+      "sha256": "56987dcbda19e589653eb5cceac8e482f0896b5cd89bd4bb92e6ba8d1aeffcff",
+      "size_bytes": 44,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/native_gst_probe/publication/openvino-source-allowlist.txt",
+      "sha256": "4fbb83d112fff52b8a8a85e3cd48decb4498705328c74b289eee834119b50f05",
+      "size_bytes": 894,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt",
+      "sha256": "24de33ad711ca197a08e9f6d527e36d406f18318dc2cd53d5420c3855691a86c",
+      "size_bytes": 89,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/native_gst_probe/publication/savant-source-allowlist.txt",
+      "sha256": "78416b85bc9434312548da1d5dd14b008406813ea13b8a33b212d432d5bce5c0",
+      "size_bytes": 621,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": false,
+      "path": "deploy/openvino_gva/publication/runtime-build-context-allowlist.txt",
+      "sha256": "d169204f89573eede568ec1c401e3ae3157a3774be39ac0815b6463e4f329d82",
+      "size_bytes": 369,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": true,
+      "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "sha256": "f91760d199bf72651be9ea71bcec2effa43d0afdd7a7f89202f1885308fd6624",
+      "size_bytes": 3457,
+      "test_member": false
+    },
+    {
+      "owned_process_source_member": true,
+      "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+      "sha256": "691feca866c3bfdd09fced300659f1f7888c2bdb298c427fa4f4204ce9eba9b4",
+      "size_bytes": 3841,
+      "test_member": false
+    }
+  ],
+  "hardware_acceptance": false,
+  "native_three_worker_two_owned_source_membership": false,
+  "owned_existing_paths": [
+    {
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+      "size_bytes": 51141
+    },
+    {
+      "path": "tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "690212c96e47cb2a037e5b26ed24de9637e349515df3fb99b3ddc7d49c7b04c8",
+      "size_bytes": 40344
+    }
+  ],
+  "scope_limit": "Membership audit of this owned source delta only; parent performs combined source/embedded/image/native/worker closure renewal. Historical receipts are not current.",
+  "selected_GStreamer_and_three_sibling_runtime_source_renewal_required": true
+}

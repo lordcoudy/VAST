@@ -1,0 +1,79 @@
+{
+  "artifact_kind": "vast_ext4_bind_probe_author_static_review_v1",
+  "diff": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/review-repairs.v1.diff",
+    "sha256": "8c342b27f8285b81bfa7ddab2ebf46e65f4e2991c66816af484143628a16916f",
+    "size_bytes": 16070
+  },
+  "limits": [
+    "Static AST/source review only; no probe import/execution, Docker/namespace/native/model/GPU operation, test, build, Git mutation or target setup.",
+    "Actual ext4/root/daemon/image/user/bind reachability and original process/container cleanup are unexecuted and cannot be claimed by this review.",
+    "No production source or benchmark acceptance predicate changed; existing30s+10s/64KiB-channel/1MiB-metadata bounds remain."
+  ],
+  "model_native_gpu_acceptance": false,
+  "original_source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/probe_original_ext4_bind_v1.v1-original.py",
+    "sha256": "be828c5a3e5616ee24a3f98fefe5e293ebb3d23de55c93adb7fb08be15ed0f31",
+    "size_bytes": 12486
+  },
+  "planning_commit": "5bc416a2beab98b6cc60229dac56332b48cc6ca2",
+  "planning_pr_comment": "5918066559",
+  "pre_edit": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/pre-edit.v1.json",
+    "sha256": "58211077ce5c778e2fdebc69ba17a7203561a3a0fc8e5c9a2b42677c9639df91",
+    "size_bytes": 868
+  },
+  "publication_ready": false,
+  "schema_version": 1,
+  "source": {
+    "path": "artifacts/benchmark_recovery_20260930/component-ext4-bind-preparation-v1/probe_original_ext4_bind_v1.py",
+    "sha256": "6d95e49d8f39cc4f0b6a877549780f91537c84d036efa60de95de0dbfe3bae1d",
+    "size_bytes": 16724
+  },
+  "source_only_findings": [
+    "Second stream-open, wait, selector, pipe and per-stream flush/fsync/close failures now retire each accessible resource independently; first original exception remains raised and separately retained cleanup errors are sticky.",
+    "Captured raw channels remain64KiB beforewrite; short writes/missing EOF/source-read failures cannot produce a passed result. Physical raw file byte counts and hashes are retained after closure.",
+    "Single-link regular/canonical path and full7-epoch checks are retained. SHA/size are streamed with<=64MiB and actual30s deadline checks; rejected source-FD close failure sets the actual release flag false.",
+    "Original Popen PID is stored immediately. Actual /proc/status UID/GID and original stat startticks/PPID/PGID are retained; executable-unavailable zombie observations are explicit. Named socket type/dev/inode/mode/nlink and UID/GID are checked before/after from actual stat snapshots.",
+    "Exact returncode1, stdoutempty-or-one-newline and three source-derived identifier-bound stderr forms authorize NotFound. Both exactCID and reservedNAME absence are required after nonforced exactCID removal.",
+    "Root prior failure-only reservedNAME\u2192label/image/name64hexCID cleanup is preserved; no name-only mutation. Root prior actual FD release flag and absolute40s postreceipt failure companion are preserved, and exit0 also requires actual finalclock<40s.",
+    "Positive exact image/label/name/read-onlyroot/user1000/mount/RWfalse/Runningfalse/Pid0/ExitCode0/OOMfalse and actual retained receipt hashpayload are still required. Probe remains onlybind reachability."
+  ],
+  "static_checks": {
+    "actual_create_start_rm_stop_call_AST_unchanged": true,
+    "both_sources_ast_parse": true,
+    "changed_original_functions": [
+      "owner",
+      "pin",
+      "observe",
+      "command"
+    ],
+    "constant_AST_exact": [
+      "ROOT",
+      "OUTPUT",
+      "IMAGE",
+      "RELATIVE",
+      "EXPECTED",
+      "COMMIT",
+      "BEGAN",
+      "NORMAL",
+      "END",
+      "NAME",
+      "LABEL",
+      "TOKEN"
+    ],
+    "exact_not_found_prefixes_match_existing_stock_source": true,
+    "new_functions": [
+      "not_found"
+    ],
+    "no_rm_or_force_flag": true,
+    "one_original_Popen_AST_unchanged": true,
+    "unchanged_functions": [
+      "epoch",
+      "write",
+      "docker",
+      "owned_inspect"
+    ]
+  },
+  "status": "frozen_artifact_source_ready_for_independent_review_not_executed"
+}

@@ -1,0 +1,11 @@
+{
+  "tool_chunk": "0c03f1",
+  "schema_version": 1,
+  "exit_code": 1,
+  "scope": "Source/ZIP inputs only read; exclusive final report was not created",
+  "original_script": "inspect_original_v1.py",
+  "classification": "artifact-only inspector failure, no workload",
+  "error": "LookupError: unknown encoding: utf8-sig",
+  "repair": "New immutable inspect_original_v2.py changes only encoding spelling to utf-8-sig",
+  "original_script_sha256": "129571dec04f259f8e9c0145bf97304a2b59f0f7af08ebad1c665b8d37a78ecc"
+}

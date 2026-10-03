@@ -194,7 +194,9 @@ def _execution(value: Any) -> dict[str, Any]:
     return copy.deepcopy(value)
 
 
-def launcher_output_protocol(policy: Any) -> dict[str, Any]:
+def launcher_output_protocol(
+    policy: Any, *, runtime_history: bool = False,
+) -> dict[str, Any]:
     """Return the exact launcher-owned output set for one frozen policy."""
     normalized = str(policy).strip().lower()
     if not normalized:
@@ -208,7 +210,7 @@ def launcher_output_protocol(policy: Any) -> dict[str, Any]:
         "output_protocol_identity_sha256": OUTPUT_PROTOCOL_IDENTITY_SHA256,
         "policy": normalized,
         "launcher_evidence_files": list(
-            pre_finalization_acceptance_evidence_files(normalized)
+            pre_finalization_acceptance_evidence_files(normalized, runtime_history=runtime_history)
         ),
         "launcher_result_file": LAUNCHER_RESULT_FILENAME,
         "output_receipt_file": OUTPUT_RECEIPT_FILENAME,
@@ -297,7 +299,13 @@ def validate_backend_publication_arm_contract(value: Any) -> dict[str, Any]:
         raise BackendPublicationOutputReceiptError(
             "backend publication runtime input fields drifted"
         )
-    protocol = launcher_output_protocol(runtime.get("policy"))
+    declared_protocol = value.get("launcher_output_protocol")
+    runtime_history = (
+        type(declared_protocol) is dict
+        and type(declared_protocol.get("launcher_evidence_files")) is list
+        and "publication_policy_runtime_history.jsonl" in declared_protocol["launcher_evidence_files"]
+    )
+    protocol = launcher_output_protocol(runtime.get("policy"), runtime_history=runtime_history)
     if value.get("launcher_output_protocol") != protocol:
         raise BackendPublicationOutputReceiptError(
             "backend launcher output protocol drifted"

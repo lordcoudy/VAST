@@ -1,0 +1,135 @@
+{
+  "actual_fd_count_before_after": 6,
+  "actual_launch": {
+    "epoch": [
+      69,
+      1407374885977346,
+      33279,
+      1,
+      542,
+      1790805188362758400,
+      1790805188362758400
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-readiness-v1/audit.launch.v1.json",
+    "sha256": "2cfcc0f9b4d1f4e7d3f8b2d63161de6724ae8764281a9c938cc8ab2afd61f000",
+    "size_bytes": 542
+  },
+  "actual_reader_and_timeout_owner": {
+    "argv": [
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-readiness-v1/audit_v1.py"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "parent_executable": "/usr/bin/timeout",
+    "parent_startticks": 28750272,
+    "pgid": 47716,
+    "pid": 47717,
+    "ppid": 47716,
+    "reader_sha256": "df393f25ac43245279147fd18cca71bbbe97ea45b1a4db6b83e93bd6236f20be",
+    "source_only_not_gpu_dispatch": true,
+    "startticks": 28750275,
+    "uid": 1000
+  },
+  "all95_and_stock_root_custody_fds_released": true,
+  "artifact_kind": "vast_gpu01_ext4_pure_readiness_original_terminal_v1",
+  "current_stock_closure_full_physical_body_and_loaded_module_coverage": true,
+  "gpu_accepted": false,
+  "gpu_namespaces_absent_as_original_ready_gate": true,
+  "late_companion_absent": true,
+  "original120_plus10_timeout_argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-readiness-v1/audit_v1.py"
+  ],
+  "original_gpu_terminal": null,
+  "original_returncode": 0,
+  "original_stderr": {
+    "epoch": [
+      69,
+      1407374885977345,
+      33279,
+      1,
+      0,
+      1790805188325266100,
+      1790805188325266100
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-readiness-v1/original.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "original_stdout": {
+    "epoch": [
+      69,
+      1407374885977344,
+      33279,
+      1,
+      268,
+      1790805190176597400,
+      1790805190176597400
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-readiness-v1/original.stdout.raw",
+    "sha256": "d1781cfd66f1b58f9b7d7d004ed868eef107a1c72cea445579b2fb7fdc4af3e0",
+    "size_bytes": 268
+  },
+  "original_tool_chunk": "fcb567",
+  "original_tool_elapsed_s": 2.7368251,
+  "reader": {
+    "epoch": [
+      69,
+      1407374885977342,
+      33279,
+      1,
+      12986,
+      1790805156619975200,
+      1790805156619975200
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-readiness-v1/audit_v1.py",
+    "sha256": "df393f25ac43245279147fd18cca71bbbe97ea45b1a4db6b83e93bd6236f20be",
+    "size_bytes": 12986
+  },
+  "readiness_report": {
+    "epoch": [
+      69,
+      1407374885977347,
+      33279,
+      1,
+      88493,
+      1790805190174286300,
+      1790805190174286300
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-gpu01-ext4-readiness-v1/review.v1.json",
+    "sha256": "034555e31e7cf458a11464fa1561a8cdd26a016e4b29e6c4158fb904782e4d7b",
+    "size_bytes": 88493
+  },
+  "schema_version": 1,
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "stock95_before_after_fullbytes_7epochs_equal": true,
+  "two_actual_postterminal_process_scans": [
+    {
+      "actual_pid_absence": {
+        "47716": true,
+        "47717": true
+      },
+      "at_ns": 1790805246428598288,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "errors": [],
+      "members": []
+    },
+    {
+      "actual_pid_absence": {
+        "47716": true,
+        "47717": true
+      },
+      "at_ns": 1790805246429800723,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "errors": [],
+      "members": []
+    }
+  ],
+  "weights_models_engine_native_namespace_tests_or_gpu_dispatch": false
+}

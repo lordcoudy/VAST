@@ -72,7 +72,7 @@ int main() {
             "\"message_type\":\"path_ack\",\"schema_version\":1}");
         const std::string terminal = receive_packet(descriptors[1]);
         if (!contains(terminal, "\"message_type\":\"terminal\"") ||
-            !contains(terminal, "\"backend\":\"openvino-dlstreamer:gvadetect;device=CPU\"") ||
+            !contains(terminal, "\"backend\":\"analytics-execution:openvino_cpu;runtime=OpenVINO;native_api=openvino.CompiledModel.__call__;device=CPU:Intel(R) Core(TM) i7-14700K\"") ||
             !contains(terminal, "\"actual_service_ms\":2.5")) {
           throw std::runtime_error("terminal evidence is incomplete");
         }
@@ -117,10 +117,23 @@ int main() {
         1004.5,
         2.5,
         "plate-number-detector-v1",
-        "openvino-dlstreamer:gvadetect;device=CPU");
+        "analytics-execution:openvino_cpu;runtime=OpenVINO;native_api=openvino.CompiledModel.__call__;device=CPU:Intel(R) Core(TM) i7-14700K");
     server.join();
     if (server_error) {
       std::rethrow_exception(server_error);
+    }
+    for (const std::string& invalid_backend : {
+             " leading-backend", "trailing-backend ", "backend\tcontrol"}) {
+      bool rejected = false;
+      try {
+        client.terminal(request, decision, binding, "completed", 1004.5,
+                        2.5, "plate-number-detector-v1", invalid_backend);
+      } catch (const std::exception& error) {
+        rejected = contains(error.what(), "backend contains controls");
+      }
+      if (!rejected) {
+        throw std::runtime_error("unsafe native policy backend was accepted");
+      }
     }
 
     int mismatch_fds[2] = {-1, -1};
@@ -162,6 +175,78 @@ int main() {
     mismatch_server.join();
     if (!rejected || unexpected_unselected_path.load()) {
       throw std::runtime_error("unselected local path was accepted");
+    }
+
+    // The frozen six-byte "damage" branch is valid; unknown names are rejected
+    // locally before any request is sent.
+    int branch_fds[2] = {-1, -1};
+    if (::socketpair(AF_UNIX, SOCK_SEQPACKET, 0, branch_fds) != 0) {
+      throw std::runtime_error("branch socketpair failed");
+    }
+    std::exception_ptr branch_error;
+    std::atomic<int> branch_requests{0};
+    std::thread branch_server([&]() {
+      try {
+        const std::string packet = receive_packet(branch_fds[1]);
+        branch_requests.fetch_add(1);
+        if (!contains(packet, "\"branch\":\"damage\"")) {
+          throw std::runtime_error("damage decision request lost its branch");
+        }
+        send_packet(
+            branch_fds[1],
+            "{\"decision_id\":\"run-policy:decision:0003\",\"decision_seq\":3,"
+            "\"emitter_id\":\"vast-gst-policy:damage:cpu:v1\","
+            "\"emitter_sha256\":\"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\","
+            "\"message_type\":\"decision_response\",\"schema_version\":1,"
+            "\"selected_implementation_id\":\"gst-openvino:damage:cpu:v1\","
+            "\"selected_resource\":\"cpu\"}");
+        pollfd extra{};
+        extra.fd = branch_fds[1];
+        extra.events = POLLIN;
+        if (::poll(&extra, 1, 100) > 0 && (extra.revents & POLLIN) != 0) {
+          char probe = 0;
+          // A closed peer also reports POLLIN; count only a real packet.
+          if (::recv(branch_fds[1], &probe, sizeof(probe), MSG_DONTWAIT | MSG_TRUNC) > 0) {
+            branch_requests.fetch_add(1);
+          }
+        }
+      } catch (...) {
+        branch_error = std::current_exception();
+      }
+      ::close(branch_fds[1]);
+    });
+    std::exception_ptr client_error;
+    try {
+      vast::CheckpointNativePolicyClient branch_client(branch_fds[0]);
+      vast::CheckpointNativePolicyRequest damage = request;
+      damage.branch = "damage";
+      (void)branch_client.decide(damage);
+      for (const char* invalid : {"", "dmg", "damage2", "Damage", "unknown_branch"}) {
+        vast::CheckpointNativePolicyRequest bad = request;
+        bad.branch = invalid;
+        bool branch_rejected = false;
+        try {
+          (void)branch_client.decide(bad);
+        } catch (const std::exception& error) {
+          branch_rejected = contains(error.what(), "frozen branch set");
+        }
+        if (!branch_rejected) {
+          throw std::runtime_error(std::string("invalid policy branch was accepted: ") + invalid);
+        }
+      }
+    } catch (...) {
+      client_error = std::current_exception();
+      ::shutdown(branch_fds[0], SHUT_RDWR);
+    }
+    branch_server.join();
+    if (client_error) {
+      std::rethrow_exception(client_error);
+    }
+    if (branch_error) {
+      std::rethrow_exception(branch_error);
+    }
+    if (branch_requests.load() != 1) {
+      throw std::runtime_error("invalid policy branch reached the policy transport");
     }
   } catch (const std::exception& exc) {
     std::cerr << exc.what() << '\n';

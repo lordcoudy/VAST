@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_independent_setup_lf_planning_review_v1",
+  "created_at_utc": "2026-09-30T02:44:20.518689+00:00",
+  "change": "fix-benchmark-preparations-spec",
+  "reviewer": "/root/adversarial_review",
+  "reviewed_base_commit": "a045b8874ad15b2fa05f1a5d7fc9f331e8b04a47",
+  "review_scope": "Planning-only amendment to the same ten documents; no production/artifact-v2 code, attributes, tests, probes, checkout or decoder execution.",
+  "disposition": "approved_for_exact_commit_planning_record_before_dependent_implementation",
+  "github_approval_claimed": false,
+  "files": [
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "size_bytes": 33385,
+      "sha256": "3f0a65e643cab2e76f69255448bff88dcdf56bc8d57f5de58942382194bda607"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "size_bytes": 10704,
+      "sha256": "ee2f54dabb74a5cf3e17b875dc82c4c2c6084b5fed9f18922079bc861846456a"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "size_bytes": 80168,
+      "sha256": "28363b051ca6eb8b546dd6eb89863c29510943a4e618e0f2aa2916ee6988b5fe"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "size_bytes": 38191,
+      "sha256": "ec15339065fb81cd2b45e9dfcabdea4cad6edfcf89161622b72d8dfeb8478d28"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "size_bytes": 44044,
+      "sha256": "f05a8b6c799098b0c9331fa068668c7cc735c286fdbb9ed619974aaf4d5eec38"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+      "size_bytes": 33067,
+      "sha256": "35602d17e111b673cd5619848c72785b6fb9e4986b9893c3f6ecaeaba5bbea01"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/preparation-plan.md",
+      "size_bytes": 24489,
+      "sha256": "2c727b503c08a5618c2f632cef79e2197df55ebcf37c5695e80d091eea9e034a"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/implementation-validation.md",
+      "size_bytes": 158335,
+      "sha256": "bf1ca88901d3279094bcb175c4ecbb5a644448acdccc6a3eeae4141ad398d6e1"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/conformance-progress.md",
+      "size_bytes": 73870,
+      "sha256": "38cfe8638aa199588d90bbfba4c2f3ff58d2a32bec28d80b738c9ff1e57edbe1"
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/image-invalidation.md",
+      "size_bytes": 63225,
+      "sha256": "a5b483ff7a7e87bea32510168cf70fe1ac3b931df1b6012079ffdafa78835748"
+    }
+  ],
+  "owned_diff": {
+    "command": "git diff --no-ext-diff --binary HEAD -- <exact ten paths>",
+    "size_bytes": 66396,
+    "sha256": "e30965570ae57176eed26c14a4baf11cdb9d1aa53f810e69f8eb7c82ed9b772f"
+  },
+  "counts": {
+    "checked_tasks": 28,
+    "total_tasks": 72,
+    "requirements": 16,
+    "scenarios": 72,
+    "newly_checked_tasks": 0,
+    "new_scenarios": 3
+  },
+  "findings": [
+    {
+      "topic": "Failed setup and factual unknowns",
+      "assessment": "Attempt01 remains consumed and failed with zero source/decoder runs. Failure-time CID stat and actual GI failing call stay unknown; the cleanup-time NotFound between daemon Created and Started is explicitly distinguished from expected prelaunch absence. Original killed launcher/OOM-unknown facts are not replaced by later exact-owned Exit1/OOMfalse facts."
+    },
+    {
+      "topic": "Cleanup budget and ownership",
+      "assessment": "Decision18 establishes one absolute monotonic15-second deadline before launcher reap, including all waits/RPC/polls/pipe EOF joins/helper teardown/close and final-facts reserve. Reap precedes publication settling. Only positive exact owner/state, actual nonforce owned removal and subsequent CID/name absence permit disposal claims. Forced launcher stop remains failed even if later container exits0."
+    },
+    {
+      "topic": "CID and GI correction scope",
+      "assessment": "Missing/valid partial CID is pending under existing prelaunch bounds; complete stable original CID is rechecked after fast CLI exit. Malformed/type/link/inode/identity cases reject. One explicit Gst.init([]), actual callable/module/available override and typelib metadata, stage and bounded original traceback are required without fallback. Upstream None-to-list behavior supports the explicit list but does not prove the original failing call."
+    },
+    {
+      "topic": "Checkout correction",
+      "assessment": "Exactly ten registry controller LF contracts are separate from165 frozen source inputs and preserve original bytes with attributes-only staging. Two fresh initial autocrlf checkouts must prove175 declared inputs, clean paths/effective attrs and all native3/worker2/runtime4/host78 stock contexts. Historical failed checkout and distinct physical custody remain immutable; no broad formatting or duplicate review-context schema."
+    },
+    {
+      "topic": "Experiment and acceptance",
+      "assessment": "The fixed four original32-AU runs, central9-24, original clocks/source/media/PTS/DTS/duration/cadence, actual decoder-sink EOS classification and finite caps are preserved. Complete raw independent research validation still follows provisional terminals. No cohort search, fallback, automatic retry, scientific regime, model/parity/pair/qualification/full acceptance or image invalidation is fabricated."
+    },
+    {
+      "topic": "Workflow and status",
+      "assessment": "All three added scenarios are mapped once in spec and verification; task checkmarks unchanged28/72. Current prefaces supersede dated history. Exact amended planning commit and PR review record precede v2/attributes; focused actual-file/process tests and independent exact-code review/PR precede only one fresh attempt02. Hosted CI observations remain dated and incomplete."
+    }
+  ],
+  "blocking_findings": [],
+  "remaining_gates": [
+    "Exact commit blob hashes and actual PR review record must match this review.",
+    "Artifact-v2 source, focused tests and all time/byte guards require separate final-code review; planning does not prove execution feasibility or corrected physical setup success.",
+    "Both new stock fresh checkout proofs and independently cold-validated original decoder outputs remain pending."
+  ],
+  "evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-independent-failed-setup-review.v1.json",
+      "size_bytes": 55442,
+      "sha256": "a33f1ae341521e15042a3f3471201522c813a0c1a6e493a5b67ca842c73a491e"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-independent-cold-v1/cold_reader.py",
+      "size_bytes": 31604,
+      "sha256": "242842aea976b50a3c27f9b54c574564c4e6f15dc3ee99412474fd42070465a1"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-01-original-controller/terminal.v1.json",
+      "size_bytes": 1455,
+      "sha256": "3e49f768a1c4c3718c66cfaa3e747166aedf0224eaeadb31f2364d4942868317"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-01-post-terminal-observation/terminal.v1.json",
+      "size_bytes": 6147,
+      "sha256": "10a2ee8c76c856db3c9fe775145114aab549e16968b4ec2e0930bc4311332629"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-01-owned-cleanup/terminal.v1.json",
+      "size_bytes": 10024,
+      "sha256": "9af05fba0e32cdad28580f28c5bbbb02135b9b73a4666099c15062e429f4b9bf"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-setup-repair-source-review/terminal.v1.json",
+      "size_bytes": 2148,
+      "sha256": "ffb0d587b306cdacef969b4490bdc770c20a5f74e97caf35d95c521b297c7a34"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/controller-lf-scope-gap.v1.json",
+      "size_bytes": 48770,
+      "sha256": "c25cf4a781a5780e9cbb52bf5d6d8b0cdd4bc41736d1a319074506c89194d311"
+    }
+  ],
+  "prior_cold_audit_save_scope": {
+    "saved_source": "artifacts/benchmark_recovery_20260930/decoder-independent-cold-v1/cold_reader.py",
+    "saved_report": "artifacts/benchmark_recovery_20260930/decoder-independent-failed-setup-review.v1.json",
+    "invocation_kind": "inline tool-dispatched pinned WSL CPython -I -B executing the saved reader",
+    "observed_exit_code": 1,
+    "observed_elapsed_s": 10.155928,
+    "held_rechecked_files": 76,
+    "separate_saved_execution_receipt": null,
+    "separate_saved_stdout_file": null,
+    "separate_saved_stderr_file": null,
+    "physical_dispatch_wrapper_source": null,
+    "limitation": "The original invocation/terminal output was captured in tool results; no separate physical logs or prelaunch wrapper descriptor were saved, and none is manufactured retrospectively. Report exit1 deliberately rejects research completion; b1 document custody was released only after final held recheck."
+  },
+  "self_review": "The actual setup boundary was not established by earlier metadata/synthetic checks. This amendment narrows the repair to demonstrated ownership/diagnostic defects, preserves unproven GI/CID causes, and keeps operational success separate from decoder causality and scientific acceptance.",
+  "sha256": "48e6412f08805dc068dd9e10d097d1b88814144f9a76808bb54a16c1a7822530"
+}

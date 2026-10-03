@@ -1,0 +1,86 @@
+{
+  "accepted": false,
+  "additional_errors": [],
+  "channels": {
+    "stderr": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-terminal-events-observation-attempt01/stdout.raw",
+      "sha256": "7e99e4a394ca5268001dceee6e055e40d6d67bb362e6644bf3cb3f415afc1057",
+      "size_bytes": 623
+    }
+  },
+  "elapsed_s": 0.10053777100984007,
+  "eof": {
+    "stderr": true,
+    "stdout": true
+  },
+  "events": [
+    {
+      "action": "die",
+      "exit_code": "0",
+      "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+      "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+      "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+      "signal": "",
+      "time_ns": 1790823583350994229,
+      "type": "container"
+    },
+    {
+      "action": "destroy",
+      "exit_code": "",
+      "id": "893b2b02a18906c5d7f840e2515e8f2fb8253c396cf4c2a3756efd1513f166aa",
+      "image": "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9",
+      "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+      "signal": "",
+      "time_ns": 1790823583609320428,
+      "type": "container"
+    }
+  ],
+  "failure": null,
+  "fd_after": 4,
+  "fd_before": 4,
+  "limitations": [
+    "only last256 daemon events available; empty is not proof of no death/OOM",
+    "query is later historical daemon observation, not original contemporaneous worker terminal",
+    "original daemon-ID aa8f3d33-e1dc-4ed2-ad06-488b46b332d0 retained; current ID not requeried; pinned CLI and same original socket observed",
+    "die137 alone cannot prove OOM; causal ordering requires exact name/image/CID/time and oom event"
+  ],
+  "original_pid": 65612,
+  "overflow": false,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65612,
+    "pid": 65612,
+    "ppid": 65611,
+    "startticks": 30857669,
+    "state": "R",
+    "uid": 1000
+  },
+  "process_scans": [
+    {
+      "at_ns": 1790826261255754721,
+      "group_members": [],
+      "original_pid": 65612,
+      "original_pid_absent": true,
+      "scan_errors": []
+    },
+    {
+      "at_ns": 1790826261257165488,
+      "group_members": [],
+      "original_pid": 65612,
+      "original_pid_absent": true,
+      "scan_errors": []
+    }
+  ],
+  "publication_ready": false,
+  "returncode": 0,
+  "signals": [],
+  "status": "observed",
+  "timed_out": false,
+  "validation_errors": []
+}

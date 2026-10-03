@@ -1,0 +1,487 @@
+{
+  "API_audit": {
+    "correct_existing_provider": "scripts/publication_operational_request_reconciliation_v1.py266-276",
+    "current_guardian_native_calls": [
+      704,
+      789
+    ],
+    "descriptor_contract": [
+      "path",
+      "size_bytes",
+      "sha256"
+    ],
+    "entry_contract": [
+      "path",
+      "descriptor"
+    ],
+    "existing_stock_consumer": "scripts/publication_policy_qualification_execution_closure_v1.py31-33/2170-2175",
+    "reader_semantics": "physically pins whole original file size/SHA/epoch/ancestors; reads one bounded canonical first line; closes generator andFD in finally. Semantic header equality/seal/domain validation remain existing downstream gates.",
+    "remaining_signature_inventory": [
+      {
+        "line": 3092,
+        "name": "assert_publication_sidecar_service_authority_identity_v1",
+        "signature": "value: Mapping[str, Any], *, expected_front_socket: Path | str, expected_execution_config_identity_sha256: str, expected_binding_set_identity_sha256: str, expected_worker_image_ids: Mapping[str, str], expected_preprocessing_contract_authority: Mapping[str, Any], expected_service_identity_sha256: str, expected_policy_contract_sha256: str",
+        "source": {
+          "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+          "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+          "size_bytes": 296398
+        }
+      },
+      {
+        "line": 3325,
+        "name": "validate_publication_sidecar_service_lifecycle_v1",
+        "signature": "value: Mapping[str, Any], *, expected_authority: Mapping[str, Any]",
+        "source": {
+          "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+          "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+          "size_bytes": 296398
+        }
+      },
+      {
+        "line": 220,
+        "name": "load_component_guardian_preprocessing_contract_v1",
+        "signature": "*, project_root, preprocessing_contract_path, materialization_receipt_path, capability_manifest_path, component_authority_path=None, operational_context_path=None",
+        "source": {
+          "path": "scripts/publication_guardian_component_preprocessing_contract_v1.py",
+          "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+          "size_bytes": 19178
+        }
+      },
+      {
+        "line": 62,
+        "name": "runtime_expectations_from_preprocessing_receipt_v1",
+        "signature": "receipt: Mapping[str, Any]",
+        "source": {
+          "path": "scripts/publication_guardian_runtime_expectations_v1.py",
+          "sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+          "size_bytes": 7872
+        }
+      },
+      {
+        "line": 331,
+        "name": "held_operational_capture_plan_v1",
+        "signature": "*, project_root, index_path, expected_descriptor=None",
+        "source": {
+          "path": "scripts/publication_operational_capture_plan_v1.py",
+          "sha256": "1019d8ca5aae7ec23315e08bafef0c4842350e55fedfb209453785b793c4ac95",
+          "size_bytes": 25882
+        }
+      },
+      {
+        "line": 620,
+        "name": "original_process_validator_v1",
+        "signature": "*, project_root, receipt_path, expected_descriptor=None, operation_id, original_operation_descriptor, native_context_descriptor, expected_container_image",
+        "source": {
+          "path": "scripts/publication_operational_process_custody_v1.py",
+          "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+          "size_bytes": 47271
+        }
+      },
+      {
+        "line": 458,
+        "name": "original_container_validator_v1",
+        "signature": "*, project_root, receipt_path, expected_descriptor=None, process_receipt_path, expected_process_descriptor=None, operation_id, original_operation_descriptor, native_context_descriptor, expected_container_image",
+        "source": {
+          "path": "scripts/publication_operational_container_custody_v1.py",
+          "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+          "size_bytes": 38235
+        }
+      },
+      {
+        "line": 1885,
+        "name": "reconcile_guardian_operational_workload_v1",
+        "signature": "*, producer_domains, guardian_companion, measurement_descriptors, expected_context, capability_manifest, lifecycle_counters, scratch_root",
+        "source": {
+          "path": "scripts/publication_policy_qualification_execution_closure_v1.py",
+          "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+          "size_bytes": 147846
+        }
+      },
+      {
+        "line": 1922,
+        "name": "_operational_absolute_descriptor",
+        "signature": "root, descriptor",
+        "source": {
+          "path": "scripts/publication_policy_qualification_execution_closure_v1.py",
+          "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+          "size_bytes": 147846
+        }
+      },
+      {
+        "line": 1929,
+        "name": "_held_operational_cold_custody_v1",
+        "signature": "root",
+        "source": {
+          "path": "scripts/publication_policy_qualification_execution_closure_v1.py",
+          "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+          "size_bytes": 147846
+        }
+      },
+      {
+        "line": 1994,
+        "name": "_operational_measured_ingress_v1",
+        "signature": "*, root, operation, directory, ingress_descriptor",
+        "source": {
+          "path": "scripts/publication_policy_qualification_execution_closure_v1.py",
+          "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+          "size_bytes": 147846
+        }
+      },
+      {
+        "line": 185,
+        "name": "prepare_checkpoint_publication_acceptance",
+        "signature": "*, output_dir: Path, expected_run_id: str, expected_system: str, expected_scenario: str, expected_codec: str, expected_policy: str, expected_deadline_ms: float, topology_kind: str, hardware_collector_stopped: bool",
+        "source": {
+          "path": "scripts/checkpoint_publication_runtime.py",
+          "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+          "size_bytes": 55785
+        }
+      },
+      {
+        "line": 266,
+        "name": "load_operational_jsonl_header_v1",
+        "signature": "entry",
+        "source": {
+          "path": "scripts/publication_operational_request_reconciliation_v1.py",
+          "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+          "size_bytes": 28069
+        }
+      },
+      {
+        "line": 279,
+        "name": "reconcile_operational_request_domain_v1",
+        "signature": "*, producer_domains, guardian_companion, measurement_descriptors, expected_context, authority_validator, scratch_root",
+        "source": {
+          "path": "scripts/publication_operational_request_reconciliation_v1.py",
+          "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+          "size_bytes": 28069
+        }
+      }
+    ],
+    "remaining_signature_result": "Actual cold keywords match all enumerated providers. canonical_frames partial has no remaining required arguments and is called at reconciliation325-328. Process/container custody, ingress and physical acceptance signatures are identical to calls already reached in original arm executor. expected_context exact3 keys; native and guardian entry shapes fit original provider."
+  },
+  "artifact_kind": "vast_component_cold_helper_api_independent_review_v1",
+  "before_descriptors": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/before/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "a77d70f6b35718c596cdf8d0a79a2275296c20562e10688047a16e70bde6a597",
+      "size_bytes": 65283
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/before/test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "86f334eb962620f106d20163af1696dd16a48a50ce982a5f9e6d401023fbb6e6",
+      "size_bytes": 19234
+    }
+  ],
+  "closed_CPU04_shape_observation": {
+    "companion_descriptor": {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/guardian-operational/operational_group.v1.json",
+      "sha256": "d05437bd47b303ef5d724709977b48e18e2a2ade9e8d922ffe08dd10225bb339",
+      "size_bytes": 4759
+    },
+    "guardian_counts": {
+      "connections_accepted": 31,
+      "event_count": 16796,
+      "requests_completed": 8398,
+      "requests_failed": 0,
+      "requests_started": 8398,
+      "unfinished_requests": 0
+    },
+    "guardian_route_count": 8,
+    "limitations": "Bounded original metadata/header shape readback only, not full identity/multiplicity recomputation or acceptance.",
+    "measurement_ingress_per_arm": 1080,
+    "mode": "bounded_native_diagnostic_operational_v1",
+    "native_complete_decision_counts": [
+      4319,
+      4079
+    ],
+    "native_domain_size_bytes": [
+      32472511,
+      30227790
+    ],
+    "native_header_source_context_differences": [],
+    "native_measurement_decision_counts": [
+      3673,
+      3473
+    ],
+    "original_arm_output_roles": [
+      "native_domain",
+      "process_receipt",
+      "container_receipt",
+      "accepted_ingress",
+      "measurement_decisions",
+      "hardware"
+    ]
+  },
+  "limitations": [
+    "No reviewer test execution, no new live engine/socket/image or process query.",
+    "Original test process absence is joined to closed original terminal records, not independently re-probed by this review.",
+    "Physical test header is an explicitly labeled small fixture, not a valid native/guardian header and not evidence of complete real cohort reconciliation.",
+    "Source-only signature and shape review does not make CPU04 failedCLI success or complete task18.8."
+  ],
+  "observed_at_ns": 1790783916304751300,
+  "original_test_records": [
+    {
+      "child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 34108,
+        "pid": 34108,
+        "ppid": 34107,
+        "startticks": 26410110,
+        "uid": 1000
+      },
+      "elapsed_s": 0.880271990026813,
+      "original_child_current": null,
+      "original_group_members": [],
+      "original_returncode": 1,
+      "raw_outputs": {
+        "stderr": {
+          "path": "artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/red-01/stderr.raw",
+          "sha256": "ca13f22dfb31d5b1e3a98d059ec2fec10a279aa1d8e440dfead1e66b3757a35d",
+          "size_bytes": 1731
+        },
+        "stdout": {
+          "path": "artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/red-01/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        }
+      },
+      "source_after": {
+        "scripts/publication_gstreamer_component_runtime_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_runtime_v1.py",
+          "sha256": "a77d70f6b35718c596cdf8d0a79a2275296c20562e10688047a16e70bde6a597",
+          "size_bytes": 65283
+        },
+        "scripts/publication_operational_request_domain_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_domain_v1.py",
+          "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+          "size_bytes": 25997
+        },
+        "scripts/publication_operational_request_reconciliation_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_reconciliation_v1.py",
+          "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+          "size_bytes": 28069
+        },
+        "tests/test_publication_gstreamer_component_runtime_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_runtime_v1.py",
+          "sha256": "b71447895a9b4e9f50d3893242c3be4e1d5bbea9516813df0dd54d66bbeb96b3",
+          "size_bytes": 21225
+        }
+      },
+      "source_before": {
+        "scripts/publication_gstreamer_component_runtime_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_runtime_v1.py",
+          "sha256": "a77d70f6b35718c596cdf8d0a79a2275296c20562e10688047a16e70bde6a597",
+          "size_bytes": 65283
+        },
+        "scripts/publication_operational_request_domain_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_domain_v1.py",
+          "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+          "size_bytes": 25997
+        },
+        "scripts/publication_operational_request_reconciliation_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_reconciliation_v1.py",
+          "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+          "size_bytes": 28069
+        },
+        "tests/test_publication_gstreamer_component_runtime_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_runtime_v1.py",
+          "sha256": "b71447895a9b4e9f50d3893242c3be4e1d5bbea9516813df0dd54d66bbeb96b3",
+          "size_bytes": 21225
+        }
+      },
+      "terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/red-01/terminal.v1.json",
+        "sha256": "4c0c7103afd6dd803d4743cfeeffa704b5d8655ef183b38bda5a3cb9571b0094",
+        "size_bytes": 4068
+      }
+    },
+    {
+      "child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 34144,
+        "pid": 34144,
+        "ppid": 34143,
+        "startticks": 26412996,
+        "uid": 1000
+      },
+      "elapsed_s": 3.9694675210048445,
+      "original_child_current": null,
+      "original_group_members": [],
+      "original_returncode": 0,
+      "raw_outputs": {
+        "stderr": {
+          "path": "artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/green-01/stderr.raw",
+          "sha256": "36f17eaf58a8af6bc96dd507247df9ff2f7867394cb571cec5a79f5c603cd999",
+          "size_bytes": 3085
+        },
+        "stdout": {
+          "path": "artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/green-01/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        }
+      },
+      "source_after": {
+        "scripts/publication_gstreamer_component_runtime_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_runtime_v1.py",
+          "sha256": "23202bc466cd53f60cc0b78eb7902b5cdb1be4c6242c04e5ed81d13609a0d49e",
+          "size_bytes": 65291
+        },
+        "scripts/publication_operational_request_domain_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_domain_v1.py",
+          "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+          "size_bytes": 25997
+        },
+        "scripts/publication_operational_request_reconciliation_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_reconciliation_v1.py",
+          "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+          "size_bytes": 28069
+        },
+        "tests/test_publication_gstreamer_component_runtime_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_runtime_v1.py",
+          "sha256": "b71447895a9b4e9f50d3893242c3be4e1d5bbea9516813df0dd54d66bbeb96b3",
+          "size_bytes": 21225
+        }
+      },
+      "source_before": {
+        "scripts/publication_gstreamer_component_runtime_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_runtime_v1.py",
+          "sha256": "23202bc466cd53f60cc0b78eb7902b5cdb1be4c6242c04e5ed81d13609a0d49e",
+          "size_bytes": 65291
+        },
+        "scripts/publication_operational_request_domain_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_domain_v1.py",
+          "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+          "size_bytes": 25997
+        },
+        "scripts/publication_operational_request_reconciliation_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_request_reconciliation_v1.py",
+          "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+          "size_bytes": 28069
+        },
+        "tests/test_publication_gstreamer_component_runtime_v1.py": {
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_runtime_v1.py",
+          "sha256": "b71447895a9b4e9f50d3893242c3be4e1d5bbea9516813df0dd54d66bbeb96b3",
+          "size_bytes": 21225
+        }
+      },
+      "terminal": {
+        "path": "artifacts/benchmark_recovery_20260930/component-cold-provider-seam-repair-v1/green-01/terminal.v1.json",
+        "sha256": "073a8187022343baf7f7381d3adfe45f026291fdeb9881b99ef7ecc8cc4de891",
+        "size_bytes": 4047
+      }
+    }
+  ],
+  "production_delta": "one import provider only, domain_v1 -> reconciliation_v1 at component runtime650",
+  "production_inverse_exact": true,
+  "schema_version": 1,
+  "scope": "source/API inspection plus readback of original focused records; no test/cold/engine/model/native operation by reviewer",
+  "source_descriptors": [
+    {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "23202bc466cd53f60cc0b78eb7902b5cdb1be4c6242c04e5ed81d13609a0d49e",
+      "size_bytes": 65291
+    },
+    {
+      "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+      "sha256": "b71447895a9b4e9f50d3893242c3be4e1d5bbea9516813df0dd54d66bbeb96b3",
+      "size_bytes": 21225
+    },
+    {
+      "path": "scripts/publication_operational_request_reconciliation_v1.py",
+      "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+      "size_bytes": 28069
+    },
+    {
+      "path": "scripts/publication_operational_request_domain_v1.py",
+      "sha256": "5df1071402080957c312acddb85e0285c589c4a7d1948d51e9bf5e274727f0b9",
+      "size_bytes": 25997
+    }
+  ],
+  "source_impact": {
+    "four_runtime_manifests": [
+      {
+        "entry_count": 73,
+        "manifest": {
+          "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+          "sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+          "size_bytes": 3538
+        },
+        "python_count": 62,
+        "runtime_member": false
+      },
+      {
+        "entry_count": 72,
+        "manifest": {
+          "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+          "sha256": "f91760d199bf72651be9ea71bcec2effa43d0afdd7a7f89202f1885308fd6624",
+          "size_bytes": 3457
+        },
+        "python_count": 62,
+        "runtime_member": false
+      },
+      {
+        "entry_count": 79,
+        "manifest": {
+          "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+          "sha256": "43b41dee019fc730704d3c176a753d0e26c8f871da59714ce97e70e9209396cc",
+          "size_bytes": 3780
+        },
+        "python_count": 69,
+        "runtime_member": false
+      },
+      {
+        "entry_count": 83,
+        "manifest": {
+          "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+          "sha256": "691feca866c3bfdd09fced300659f1f7888c2bdb298c427fa4f4204ce9eba9b4",
+          "size_bytes": 3841
+        },
+        "python_count": 77,
+        "runtime_member": false
+      }
+    ],
+    "historical_constraint": "Normal held_component_runtime -> held_selected_component_inputs -> _verify_host_material339 loads original selected authority host closure against current full snapshot. Changed runtimebytes/epochs make CPU04 v5 unsuitable for fresh current-source normal cold call. Preserve original failedCLI, originals and source provenance; any corrected historical cold diagnostic remains separately reviewed/nonpromotion.",
+    "host_source_count": 87,
+    "host_v5_descriptor": {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.v5.json",
+      "sha256": "3b9cc84e185fc3cc51f9feafb5d4dabbf578d985633a9c4eeb95a400b28f714d",
+      "size_bytes": 30986
+    },
+    "native3_worker2": "Runtimefile absent all deploy COPY and source allowlists; one host-only module import cannot change their existing physical source context.",
+    "new_host_closure_required": true,
+    "old_runtime_entry": {
+      "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "a77d70f6b35718c596cdf8d0a79a2275296c20562e10688047a16e70bde6a597",
+      "size_bytes": 65283,
+      "snapshot": {
+        "st_ctime_ns": 1790764892003799100,
+        "st_dev": 69,
+        "st_file_attributes": 0,
+        "st_ino": 2533274792817426,
+        "st_mode": 33279,
+        "st_mtime_ns": 1790764892003799100,
+        "st_nlink": 1,
+        "st_size": 65283
+      }
+    },
+    "runtime_COPY_mentions": [],
+    "selected_e474_rebuild_required_for_only_this_import": false
+  },
+  "test_scope": {
+    "actual_GREEN": "Ran14 tests in3.215s/OK, original capture3.969s; no full physical cold pair or model execution",
+    "actual_RED": "Ran2 tests/errors1: production cold entry ImportError before original two-arm cardinality guard; real physical header test passed",
+    "new_methods": [
+      "ColdProviderBoundaryTests.test_actual_operational_header_reader_binds_physical_bytes",
+      "ColdProviderBoundaryTests.test_real_cold_provider_resolves_before_two_arm_cardinality_guard"
+    ],
+    "new_physical_header_negative": "same-sized modified bytes refused by original physical SHA guard",
+    "no_mocked_provider_or_cold_callback_in_new_regressions": true,
+    "old_method_AST_preserved": true,
+    "old_methods": 12,
+    "previous_gap": "CLI fixture replaces deps.cold at tests/test_publication_gstreamer_component_cli_v1.py127-140; old runtime12 do not invoke actual cold body"
+  },
+  "verdict": "No source review blocker for exact one-line correction; actual RED/GREEN and unchanged12 methods verified. Future true full cold rejection remains possible and must be retained."
+}

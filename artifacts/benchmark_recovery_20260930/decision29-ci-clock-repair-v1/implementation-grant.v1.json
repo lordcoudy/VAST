@@ -1,0 +1,35 @@
+{
+  "PR_record": 5967478840,
+  "exact_delegated_review_sha256": "ebd0e5164f8d2e650ecd5ebeb4520c825e87e11541941bb4083824f4194c15aa",
+  "future_test_result": null,
+  "no_runtime95_or_image_change": true,
+  "original_sources": [
+    {
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "4f7e10d2decd1411f4c31281ceda4374d4d8cf1971fcb36497d11cfca10d8cc0",
+      "size_bytes": 23980,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/before/scripts__ci_namespace_diagnostic_v1.py.raw"
+    },
+    {
+      "path": "scripts/ci_userns_profile_v1.py",
+      "sha256": "2b268daa1f6b1c7095e2ad35aa333cfc88998dfc7f024e39cee04d178334a578",
+      "size_bytes": 25945,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/before/scripts__ci_userns_profile_v1.py.raw"
+    },
+    {
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "37d771d553a76cbbaf6d878ab10cc2a7f409bb054c41ada8f36daba16da91223",
+      "size_bytes": 20805,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/before/tests__test_ci_namespace_diagnostic_v1.py.raw"
+    },
+    {
+      "path": "tests/test_ci_userns_profile_v1.py",
+      "sha256": "74ea52a30432ce759b88cb7ec0bcdf94b7bb0f8904f8188df1e55a7fcf3a2804",
+      "size_bytes": 31429,
+      "snapshot": "artifacts/benchmark_recovery_20260930/decision29-ci-clock-repair-v1/before/tests__test_ci_userns_profile_v1.py.raw"
+    }
+  ],
+  "reviewed_planning_commit": "56dd56bcc80519b99357546a49dbd65377e0db22",
+  "schema_version": 1,
+  "standing_implementation_authorization": true
+}

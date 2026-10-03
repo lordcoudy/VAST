@@ -1,0 +1,65 @@
+--- decoder-research-attempt03-original-dispatch.py
++++ decoder-research-attempt04-original-dispatch.py
+@@ -1,4 +1,4 @@
+-"""One saved external capture for the reviewed artifact-v3 attempt03; no automatic retry.
++"""One saved external capture for the reviewed artifact-v4 attempt04; no automatic retry.
+ 
+ The single 600s deadline starts before preflight and never restarts at Popen.
+ Any later containment is failed teardown, not additional research time/acceptance.
+@@ -19,23 +19,24 @@
+ import time
+ 
+ PYTHON='/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python'
+-PLANNING='a84e0e734678aa9ecc9e0a4f16dcc3036c5c8f02'
++PLANNING='8a0bdb4b4ed1a09593ab054537766c0970d722df'
+ RECOVERY='artifacts/benchmark_recovery_20260930'
+ CHANNEL=1024*1024
+ CODE={
+- 'README.md':(12345,'f78efe8f031aa614d90c05f2158bb7810ca9de778cced002076fb9f7f6d55261'),
+- 'controller.py':(36891,'f886bc344e526db320dedeb7c999561811f06840b0ebab9495628deaa02951c8'),
+- 'guest_consumer.py':(49239,'1ed940a62b30c2527c5c9f76242e8d00d1461c792b6972e7fb573b7c9d31dc84'),
+- 'research_protocol.py':(23656,'206972dc7742f75ca354a27b20b312e6531952cc3cf94a2b8941c02eb9553124'),
+- 'test_pin_diagnostics_v3.py':(10773,'c7e917daa2e09f24625e7011924895b84ecd4baaa59439fab16bc396648d0c8d'),
++ 'README.md':(13459,'0a7c297c7c21198f7ba8e2567359e561e84408278b675c0f36b87587982ff667'),
++ 'controller.py':(36891,'9e4dc93f88fab0879377e129f32e2a8b3292d342c17572f044fe6eb5e86b174c'),
++ 'guest_consumer.py':(50914,'4cb32329cd6758b295cbef35456727a40b497d65b900597d5408954f322aea05'),
++ 'research_protocol.py':(26513,'cbf5820bfc0cccc129ff02f6c14c1e724983843a4576e506f25075b70624a8fe'),
++ 'test_mapped_inputs_v4.py':(11433,'831cbd07388af9994d2684ab2248e299c95b29ee4ad799f26375d603b2f2f986'),
++ 'test_pin_diagnostics_v3.py':(11350,'87a79b11e9b6861bb24aed5b05597e72d267b94931cfddfc474e5c4957983935'),
+  'test_research_protocol.py':(17449,'2dbcec646c9d641f93ccbac4b633ad3513f5e2eb37161f6f9abdb39717255a45'),
+  'test_setup_v2.py':(17070,'f2b44bb02e30abfa502d61dcd754900149a009d62b51f7558839c9a760a79f23'),
+ }
+ CORE={
+- 'proposal.md':(12199,'a36ee79884363abaef0e356056db122a77392729637faeabcafdddba4a733ccd'),
+- 'design.md':(85520,'ec3a8db57a9cdb05717fe7791b1c5fff4ed6ab886f9d338a1763f0f089fa5d22'),
+- 'tasks.md':(44420,'efb80391a17644a668ca01382c7eb27380c58a4765d4522931da6b9aa4f327d4'),
+- 'specs/benchmark-launch-preparation/spec.md':(46296,'8250736c3b65e73ec5e2a4e63b19966146300f48ca73a0d107265a20a9276c63'),
++ 'proposal.md':(14105,'64195309fe125980ce93946fa4f3a81dc0baa83c3357b6cf64414bde1124fbde'),
++ 'design.md':(92551,'25fb99b3b92bc7ebfbcf3d5d0708a339a05cf64800b501d70292e0d9893a2662'),
++ 'tasks.md':(46379,'36932aa1ad63ec93af8dfc87f24fc355449ba503d477e58cd91945def74da023'),
++ 'specs/benchmark-launch-preparation/spec.md':(48427,'c128324d5647a42c6893d5962b5cbc1a320e5a5add5e34eb15dc4f2da295f262'),
+ }
+ 
+ 
+@@ -89,9 +90,9 @@
+  require(sys.version_info[:3]==(3,12,3) and sys.executable==PYTHON and sys.flags.isolated==1 and sys.dont_write_bytecode,
+   'invoke only pinned CPython3.12.3 -I -B')
+  recovery=root/RECOVERY;require(recovery.is_dir() and not recovery.is_symlink(),'original recovery parent unavailable')
+- research=recovery/'decoder-research-attempt-03'
+- destination=recovery/'decoder-research-attempt03-original-controller'
+- require(not research.exists() and not destination.exists(),'attempt03 namespace already consumed; no resume/retry')
++ research=recovery/'decoder-research-attempt-04'
++ destination=recovery/'decoder-research-attempt04-original-controller'
++ require(not research.exists() and not destination.exists(),'attempt04 namespace already consumed; no resume/retry')
+  began=time.monotonic();deadline=began+600;started_at=time.time_ns()
+  destination.mkdir(mode=0o700)  # This consumes this external attempt only when dispatched.
+  failures=[];canceled=threading.Event();capture_exceeded=[];held=[];directories={}
+@@ -170,7 +171,7 @@
+    outputs[name]=os.open(destination/name,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+   interpreter=hold(Path(PYTHON).resolve(strict=True));python_fd=held[-1][1]
+   hold(Path('/usr/bin/git').resolve(strict=True));git_fd=held[-1][1]
+-  code=root/RECOVERY/'decoder-research-implementation-v3'
++  code=root/RECOVERY/'decoder-research-implementation-v4'
+   for name,expected in CODE.items():
+    path=code/name;row=hold(path,expected);git_blob(path.relative_to(root).as_posix(),args.source_commit,expected);sources.append(row)
+   for name,expected in CORE.items():

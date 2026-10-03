@@ -1,0 +1,42 @@
+{
+  "accepted_cpu_and_gpu_source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "closed_tasks": [
+    "18.9",
+    "21.4",
+    "22.2"
+  ],
+  "completed": 54,
+  "current_selected73_native3_worker2_scope_equal": true,
+  "four_arm_scientific_reduction_complete": false,
+  "full_ci_successful": false,
+  "host3_current_pins_equal": true,
+  "reviewed_gates": {
+    "component-cpu06-ext4-actual-audit-closure-v1/review.v1.json": {
+      "sha256": "20c896c126454b17f747d2b119b6a60444f7d8bc338184782eb68ec8ab37218a",
+      "size_bytes": 13097
+    },
+    "component-ext4-bind-actual-independent-review-v1/review.v1.json": {
+      "sha256": "130790415f7287678ce5ffb4f50d6378f50d2371c18159b29bef1b862f914934",
+      "size_bytes": 24840
+    },
+    "component-ext4-host-closure-physical-review-v1/review.v1.json": {
+      "sha256": "7b619330e210eacd70fb19c6c5eef5c2b2e6c564599dc36d1638f02fab83bb22",
+      "size_bytes": 98976
+    },
+    "component-ext4-setup-physical-review-v2/review.v1.json": {
+      "sha256": "dac36320f7c3ac15de2dd76f2a3dcefd53300117e1e548d5ea41d0632d75b024",
+      "size_bytes": 56063
+    },
+    "component-gpu01-ext4-actual-audit-closure-v1/review.v1.json": {
+      "sha256": "6c25127270763cf47a03291be9b2115671ea7d6df3d4d8c19fb7f59932b79768",
+      "size_bytes": 16564
+    },
+    "component-held-session-host-image-scope-v1/review.v1.json": {
+      "sha256": "3d401843d9e788ff76f0b2140fef8878d0f694529cc0406e076369cab91ae8e9",
+      "size_bytes": 4206
+    }
+  },
+  "tasks_after_sha256": "4f90ee5ec939ec313db36291d02d0fd96cf0d67a0af305149657c460ea64b41c",
+  "tasks_before_sha256": "704b5443e5bf77198d5c6437cbfdddbd50ea1102f6460c428e31df3b5526f1f7",
+  "total": 65
+}

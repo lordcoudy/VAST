@@ -1,0 +1,227 @@
+{
+  "actual_focus": {
+    "all_per_test_fd_counts_equal": true,
+    "all_source_before_after_bytes_epochs_equal": true,
+    "both_eof": true,
+    "elapsed_s": 10.015863490989432,
+    "final_successes": 27,
+    "loaded_repo_sources": 52,
+    "new_methods": 6,
+    "old_methods": 21,
+    "owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 66129,
+      "pid": 66129,
+      "ppid": 66128,
+      "startticks": 31027125,
+      "uid": 1000
+    },
+    "red_error_count": 5,
+    "red_failure_count": 1,
+    "red_new_methods": 6,
+    "skips": 0,
+    "two_owned_group_absence_scans": true
+  },
+  "approval_url": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5924440005",
+  "artifact_kind": "decision28_native_failure_raw_author_review_v1",
+  "ast_analysis": [
+    {
+      "all_original_test_methods_unchanged": true,
+      "changed_original_functions": [
+        "_Capture.__init__",
+        "_Capture.verify",
+        "_Capture.close",
+        "engine_process_terminal_v1"
+      ],
+      "final_test_count": 0,
+      "new_functions": [
+        "_write_failure_channel"
+      ],
+      "original_test_count": 0,
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "removed_original_functions": []
+    },
+    {
+      "all_original_test_methods_unchanged": true,
+      "changed_original_functions": [],
+      "final_test_count": 27,
+      "new_functions": [
+        "ProcessCustodyTests._assert_failed_measurement_raw",
+        "ProcessCustodyTests.test_failed_measurement_retains_actual_binary_channels_and_unchanged_terminal",
+        "ProcessCustodyTests.test_success_and_nonmeasurement_failure_write_no_measurement_adjunct",
+        "ProcessCustodyTests.test_failed_measurement_empty_channels_and_actual_timeout_are_retained",
+        "ProcessCustodyTests.test_failed_measurement_capture_flags_keep_original_prefix_and_bounds",
+        "ProcessCustodyTests.test_failed_measurement_exclusive_collision_preserves_primary_and_written_channel",
+        "ProcessCustodyTests.test_failed_measurement_adjunct_persistence_error_keeps_original_wrapper_error",
+        "ProcessCustodyTests.test_failed_measurement_adjunct_persistence_error_keeps_original_wrapper_error.fault"
+      ],
+      "original_test_count": 21,
+      "path": "tests/test_publication_operational_process_custody_v1.py",
+      "removed_original_functions": []
+    }
+  ],
+  "behavior": {
+    "accepted": false,
+    "adjunct_bound_bytes": 4096,
+    "failed_measurement_only": true,
+    "original_body_error_precedence": true,
+    "persistence_failure": "original_engine_terminal_failed remains first; already committed raw channel and unchanged terminal survive; no successful receipt",
+    "publication_ready": false,
+    "raw_channel_bound_bytes": 8388608,
+    "receipt_last_adjunct": true,
+    "terminal_written_and_failure_latched_before_raw": true,
+    "unchanged_public_cold_validator_and_write_helper": true,
+    "unchanged_terminal_row_receipt_and_module_constants": true,
+    "zero_channel": {
+      "durability_api": "adopt_exact_durable_identity(allow_empty=True, expected_identity=actual_created)",
+      "exclusive_primitive": "PhysicalRootCustodyV1._write_exclusive_posix",
+      "held_fd_and_named_full_epoch_until_capture_close": true,
+      "nonblocking_nofollow_open": true,
+      "payload_bytes": 0,
+      "public_descriptor_validator_relaxed": false,
+      "regular_single_link_mode_uid_gid_actual_created_inode_checks": true,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "shared_api_nonempty_only": true
+    }
+  },
+  "evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/preedit-inventory.v1.json",
+      "sha256": "39f0ca38dfc8d588c69b18c9fb00b4471276c2aa18edab4c6c5ff074b577aef4",
+      "size_bytes": 10091
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/source-scope.v1.json",
+      "sha256": "f892f74c7b1ee92d93c29d30e088e6792c1b34713221343a942ec75c72ebe5bd",
+      "size_bytes": 7133
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/run_focused_v1.py",
+      "sha256": "1bf7566f9d1f0f9a72221452c674f48ed283ead73bc5f2bb35e1e82fa554dd58",
+      "size_bytes": 6271
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/author-preparation-failure.v1.json",
+      "sha256": "56df33ecc1f928ec7ef652f887f92380269c99c56248e5f1c3026987bae5d522",
+      "size_bytes": 696
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/red-01/launch.v1.json",
+      "sha256": "911ad08ee2e844bedd105cb17c4f4eefc2c462f2948a1645c67bd358db3410d2",
+      "size_bytes": 2076
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/red-01/unit-result.v1.json",
+      "sha256": "15fc68723fc0efb7137fb7917287bcd05c58b96cdcdbe1f630cc320d0a6aaf59",
+      "size_bytes": 53294
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/red-01/execution.v1.json",
+      "sha256": "ee23937f0475f4cf6357ecdb42b153906b8b87837e8f2b98505d16e6e6709198",
+      "size_bytes": 4225
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/red-01/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/red-01/stderr.raw",
+      "sha256": "36a0efac2fb4591d609ecf9d9e9a3ef3fbcf5714d4a4ce6083f411d59ea2f9a1",
+      "size_bytes": 10215
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-01/launch.v1.json",
+      "sha256": "83c39b78da86467ce866078a15cf9b8d388209dfbc1012caca226b0b5297df61",
+      "size_bytes": 2080
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-01/unit-result.v1.json",
+      "sha256": "5483d13d9aceaadfacab186f219bdb4259e3af7f91b8a92d264ecddb2403bd8a",
+      "size_bytes": 53235
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-01/execution.v1.json",
+      "sha256": "0c23744bff492fd35013011e9a117183f4d7db9a7d7369a019ec8807a2bcfc97",
+      "size_bytes": 4226
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-01/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-01/stderr.raw",
+      "sha256": "12c514931d1077dbc633a746083b93af8011467c2da8d70aee5efdf74f2b41e1",
+      "size_bytes": 5934
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-02/launch.v1.json",
+      "sha256": "60bbbefcc16ac8061011f8abc7d33ec3591f814d99531973db22684cd3ac8d9b",
+      "size_bytes": 2080
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-02/unit-result.v1.json",
+      "sha256": "0acd9f3c1fb488f17ba359d8eb3f53ce3c96bddbbe2fa160dfe7a0bf1d9e92ee",
+      "size_bytes": 53235
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-02/execution.v1.json",
+      "sha256": "9dae8853d9f64a5b354f616135eb7ca97497fb59b396ce941f9903dbd1097a9c",
+      "size_bytes": 4227
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-02/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-native-failure-raw-repair-v1/green-02/stderr.raw",
+      "sha256": "e6fdd5042e66116886e3032e9c851436200e0a04876b91c4d7811a855e9ea380",
+      "size_bytes": 5934
+    }
+  ],
+  "limits": [
+    "Genuine small CPython ELF child and temporary physical custody only; no Docker/model/inference/native namespace/hardware.",
+    "Overflow/drain flags and injected write errors are explicitly labeled wrapper/persistence fixtures; actual timeout/nonzero children are real.",
+    "Original GREEN01 is preserved and binds its earlier source/test bytes; final GREEN02 binds final two-file bytes and concurrently stable repaired sidecar import.",
+    "No stage/commit/task checkbox/source image renewal or hardware retry by this author. Independent source review pending."
+  ],
+  "owned_source": [
+    {
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "sha256": "dc92e20512cc2e3e7265e75bfd3c01de0146f29cfd4720e1a6f1b199ceb52d97",
+      "size_bytes": 51141
+    },
+    {
+      "path": "tests/test_publication_operational_process_custody_v1.py",
+      "sha256": "690212c96e47cb2a037e5b26ed24de9637e349515df3fb99b3ddc7d49c7b04c8",
+      "size_bytes": 40344
+    }
+  ],
+  "planning_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "planning_context": [
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sha256": "5971d2a50337373c70f2414946976aabe51cb54223ca7c1f0acd29e099494c5e",
+      "size_bytes": 16049
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sha256": "83d73b96d9f2b6dac10043633b7108afe2549d6304fa798f62fedd7095d57ebb",
+      "size_bytes": 40041
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sha256": "3eb2dc17f30b24fa0be14ef77fdf8ca46d00c75d19a9160754f98b58e7211a26",
+      "size_bytes": 32821
+    },
+    {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "e42fa4a5c5931aaf82c0e2fac408c5a3930d80a4a110c6c4fcc1a889d455ec90",
+      "size_bytes": 72946
+    }
+  ],
+  "schema_version": 1
+}

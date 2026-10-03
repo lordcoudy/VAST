@@ -1,0 +1,12 @@
+--- before/scripts/publication_gstreamer_component_cli_v1.py
++++ after/scripts/publication_gstreamer_component_cli_v1.py
+@@ -438,7 +438,8 @@
+         try:
+             with deps.reserve(project_root=root, scratch_namespace=scratch_namespace, output_dir=output) as reserve:
+                 source = deps.source(project_root=root, resource=resource, output_dir=output / "source",
+-                    container_engine=container_engine, container_engine_socket=container_engine_socket, **input_paths)
++                    container_engine=container_engine, container_engine_socket=container_engine_socket,
++                    **{name: path.relative_to(root).as_posix() for name, path in input_paths.items()})
+                 authority_path = Path(source["authority_path"])
+                 capture = deps.capture(project_root=root, component_authority_path=authority_path,
+                     execution_code_closure_path=input_paths["execution_code_closure_path"],

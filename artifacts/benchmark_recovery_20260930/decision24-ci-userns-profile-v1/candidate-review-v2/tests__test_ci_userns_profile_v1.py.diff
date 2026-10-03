@@ -1,0 +1,89 @@
+--- artifacts/benchmark_recovery_20260930/decision24-ci-userns-profile-v1/guard-repair-v1/before/tests/test_ci_userns_profile_v1.py
++++ tests/test_ci_userns_profile_v1.py
+@@ -237,6 +237,86 @@
+             self.assertTrue(report['held_fds_released']);self.assertFalse(state['present'])
+             self.assertTrue((kwargs['output_dir']/'late-profile.failure').is_file())
+ 
++    def test_post_verify_budget_guard_never_dispatches_a_root_command_past_original_deadline(self):
++        import subprocess
++        import types
++        for phase in ('slow_verify_inventory','preceding_inventory_parser','post_suite_verify'):
++            with self.subTest(phase=phase),tempfile.TemporaryDirectory() as directory:
++                module=helper();state,capture=self.policy_command_fixture(module)
++                kwargs=self.physical_metadata_fixture(module,directory)
++                clock={'late':None,'advanced':False};real_time=module.time
++                module.time=types.SimpleNamespace(monotonic_ns=lambda:
++                    clock['late'] if clock['late'] is not None else real_time.monotonic_ns(),
++                    time_ns=real_time.time_ns)
++                def consume_original_budget(deadline,remaining):
++                    original=subprocess.run([sys.executable,'-I','-B','-c',
++                        'import time;time.sleep(.005)'],capture_output=True,timeout=1)
++                    self.assertEqual(original.returncode,0)
++                    self.assertEqual((original.stdout,original.stderr),(b'',b''))
++                    clock['late']=deadline-remaining+1;clock['advanced']=True
++                verify=module.verify_held_v1
++                def slow_verify(path,fd,identity,deadline_ns=None):
++                    verify(path,fd,identity,deadline_ns)
++                    if phase=='slow_verify_inventory' and Path(path).name=='owned.profile' and                        deadline_ns<kwargs['absolute_deadline_ns'] and not clock['advanced']:
++                        consume_original_budget(deadline_ns,3_000_000_000)
++                def preceding_inventory(argv,path,deadline,**options):
++                    value=capture(argv,path,deadline,**options)
++                    if phase=='preceding_inventory_parser' and len(state['commands'])==1:
++                        # The first inventory uses the20s work deadline; the parser
++                        # uses the original30s work+cleanup deadline.
++                        consume_original_budget(deadline+10_000_000_000,21_000_000_000)
++                    return value
++                before=set(Path('/proc/self/fd').iterdir())
++                with mock.patch.object(module.uuid,'uuid4',return_value=type('Uuid',(),{'hex':'a'*32})()),                     mock.patch.object(module._diagnostic,'capture_original_child',preceding_inventory),                     mock.patch.object(module,'verify_held_v1',slow_verify):
++                    with self.assertRaisesRegex(RuntimeError,'self-timeout.*closing reserve'):
++                        with module.held_ci_userns_profile_v1(**kwargs) as active:
++                            self.assertEqual(phase,'post_suite_verify','insufficient load budget yielded suite')
++                            consume_original_budget(kwargs['absolute_deadline_ns'],21_000_000_000)
++                self.assertTrue(clock['advanced']);self.assertEqual(before,set(Path('/proc/self/fd').iterdir()))
++                if phase=='slow_verify_inventory':self.assertEqual(state['commands'],[])
++                elif phase=='preceding_inventory_parser':self.assertFalse(any('--add' in c for c in state['commands']))
++                else:
++                    self.assertEqual(sum('--add' in c for c in state['commands']),1)
++                    self.assertFalse(any('--remove' in c for c in state['commands']))
++                    self.assertTrue(state['present'],'unproved removal cannot be reported absent')
++                report=json.loads((kwargs['output_dir']/'profile-lifecycle.json').read_bytes())
++                self.assertEqual(report['status'],'failed');self.assertTrue(report['held_fds_released'])
++
++    def test_privileged_minimum_budget_accepts_only_two_original_fixed_command_shapes(self):
++        module=helper();fdpath=f'/proc/{os.getpid()}/fd/7'
++        for action in ('--add','--remove'):
++            self.assertEqual(module.fixed_root_timeout_budget_v1(module.parser_command_v1(action,fdpath)),21_000_000_000)
++        inventory=['/usr/bin/sudo','-n','--','/usr/bin/timeout','--signal=TERM','--kill-after=1s','1s',
++                   '/usr/bin/cat',module.KERNEL_PROFILES]
++        self.assertEqual(module.fixed_root_timeout_budget_v1(inventory),3_000_000_000)
++        for command in [inventory[:-1]+['/etc/shadow'],['/usr/bin/sudo','-n','--','arbitrary'],
++                        module.parser_command_v1('--add',fdpath)[:-1]+['/tmp/profile']]:
++            with self.assertRaisesRegex(RuntimeError,'unknown privileged command|parser source is not this original controller held FD'):
++                module.fixed_root_timeout_budget_v1(command)
++
++    def test_actual_gate_handoff_withholds_original_child_if_owner_acquisition_consumes_budget(self):
++        import types
++        module=helper();diagnostic=module._diagnostic;real_time=diagnostic.time
++        start=real_time.monotonic_ns();deadline=start+30_000_000_000
++        clock={'calls':0}
++        def now():
++            clock['calls']+=1
++            return start if clock['calls']==1 else deadline-21_000_000_000+1
++        diagnostic.time=types.SimpleNamespace(monotonic_ns=now,time_ns=real_time.time_ns,sleep=real_time.sleep)
++        with tempfile.TemporaryDirectory() as directory:
++            marker=Path(directory)/'payload-started'
++            command=[sys.executable,'-I','-B','-c',
++                'from pathlib import Path;Path('+repr(str(marker))+').write_text("started")']
++            before=set(Path('/proc/self/fd').iterdir())
++            result=diagnostic.capture_original_child(diagnostic._gated_execv_argv(sys.executable,command),
++                Path(directory)/'capture',deadline,execution_s=20,cleanup_s=10,start_gate=True,
++                raw_limit=8192,report_limit=8192,minimum_start_budget_ns=21_000_000_000)
++            self.assertFalse(result['original_start_gate_released']);self.assertFalse(marker.exists())
++            self.assertFalse(result['capture_completed']);self.assertIn('gate release',result['failure'])
++            self.assertIsNotNone(result['owner']);self.assertTrue(result['original_group_absent'])
++            self.assertEqual(result['eof'],{'stdout':True,'stderr':True})
++            self.assertIsNotNone(result['returncode']);self.assertEqual(before,set(Path('/proc/self/fd').iterdir()))
++
+     def test_original_shape_joins_only_exact_interpreter_pid_boot_operation_and_time(self):
+         module = helper()
+         args = denial_fixture()

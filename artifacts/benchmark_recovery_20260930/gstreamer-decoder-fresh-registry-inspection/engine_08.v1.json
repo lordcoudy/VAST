@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/usr/bin/docker",
+    "info",
+    "--format",
+    "{{json .ID}}"
+  ],
+  "returncode": 0,
+  "started_at_ns": 1790727016052441056,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/engine_08.stderr",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/engine_08.stdout",
+    "sha256": "406a38b0d978a01b1e5fbb7b6d4f5194161c01404c8226898e29bfdad449f523",
+    "size_bytes": 39
+  },
+  "terminal_at_ns": 1790727016165662130
+}

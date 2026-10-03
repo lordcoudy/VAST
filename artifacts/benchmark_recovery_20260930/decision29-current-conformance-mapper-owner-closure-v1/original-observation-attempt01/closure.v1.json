@@ -1,0 +1,150 @@
+{
+  "all_observer_handles_released": true,
+  "archive_complete": false,
+  "close_errors": [],
+  "conformance_acceptance": false,
+  "elapsed_s": 0.01683163200505078,
+  "facts": {
+    "input_custody": {
+      "epoch7": [
+        69,
+        1407374885980547,
+        33279,
+        1,
+        145106,
+        1791034118731480600,
+        1791034118731480600
+      ],
+      "gid": 1000,
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/attempt01/input-custody.v1.json",
+      "sha256": "ae767c3fcfa51a31efecae0b3b8c56008362344832ea21d29c0258cac9111028",
+      "size_bytes": 145106,
+      "uid": 1000
+    },
+    "late_companion_absent": true,
+    "late_companion_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/attempt01/persistence-or-late-failure.v1.json",
+    "mapper_PID_actual": 11034,
+    "mapper_PPID_PGID_actual": 11033,
+    "mapper_birth_session_UID_GID_boot_not_recorded": true,
+    "original_ancestor_count": 125,
+    "original_input_aggregate_bytes": 28350121,
+    "original_input_leaf_count": 246,
+    "original_mapper_FD_before_after": [
+      6,
+      6
+    ],
+    "original_terminal_outputs_not_reduced_or_replayed": {
+      "inventory": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/attempt01/input-custody.v1.json",
+        "sha256": "ae767c3fcfa51a31efecae0b3b8c56008362344832ea21d29c0258cac9111028",
+        "size_bytes": 145106
+      },
+      "mapping": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/attempt01/mapping.v1.json",
+        "sha256": "8d8b80bbc7a50c87e519f40f37a4bd2e3c965d3c8dca02af72fd04699770e583",
+        "size_bytes": 4907163
+      }
+    },
+    "terminal": {
+      "epoch7": [
+        69,
+        1407374885980548,
+        33279,
+        1,
+        1419,
+        1791034118733998700,
+        1791034118733998700
+      ],
+      "gid": 1000,
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/attempt01/terminal.v1.json",
+      "sha256": "ffa350ef8061a69a12bd019a5a5c5e41b15b74ba8a4f8000bc5d665da1ec3d52",
+      "size_bytes": 1419,
+      "uid": 1000
+    },
+    "two_fresh_actual_process_scans": [
+      {
+        "at_monotonic_ns": 516883678302429,
+        "current_boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "errors": [],
+        "known_original_PGID": 11033,
+        "matched_original_PID_or_known_PGID_members": [],
+        "original_PID_paths_absent": {
+          "11033": true,
+          "11034": true
+        },
+        "original_birth": null,
+        "original_session": null
+      },
+      {
+        "at_monotonic_ns": 516883679907988,
+        "current_boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "errors": [],
+        "known_original_PGID": 11033,
+        "matched_original_PID_or_known_PGID_members": [],
+        "original_PID_paths_absent": {
+          "11033": true,
+          "11034": true
+        },
+        "original_birth": null,
+        "original_session": null
+      }
+    ],
+    "umount_executable_actual_full_SHA_and_seven_epochs": {
+      "epoch7": [
+        2096,
+        46737,
+        35309,
+        1,
+        39296,
+        1787158071000000000,
+        1788318592831788374
+      ],
+      "gid": 0,
+      "path": "/usr/bin/umount",
+      "sha256": "186774a008ad69cf60bce6af35a850608d1c6ba410d3eca4113ea55b3a8b54d6",
+      "size_bytes": 39296,
+      "uid": 0
+    }
+  },
+  "fd_after": 6,
+  "fd_before": 6,
+  "first_error": null,
+  "hardware_acceptance": false,
+  "kind": "actual_current_conformance_mapper_owner_late_closure_v1",
+  "limits": [
+    "Mapper11034/parent11033 original birth/session/UID/GID/boot were not recorded; no fields retroactively inferred.",
+    "Fresh absence covers mapper/parent PID paths and observed PGID11033 only; no original-session or global descendant claim.",
+    "Only terminal and input-custody metadata bodies are read; original mapping/body/test evidence is not rerun or semantically accepted.",
+    "Live observer retains its own actual owner/parent for later parent closure."
+  ],
+  "no_mapper_CI_contract_test_engine_model_replay": true,
+  "observer": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "observed_parent": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 11079,
+      "pid": 11079,
+      "ppid": 11078,
+      "session": 11079,
+      "startticks": 51688361,
+      "uid": 1000
+    },
+    "pgid": 11079,
+    "pid": 11080,
+    "ppid": 11079,
+    "session": 11079,
+    "startticks": 51688361,
+    "uid": 1000
+  },
+  "original_mapper_tool_completion": {
+    "basis": "Parent genuine original completion notification",
+    "returncode": 0,
+    "terminal_cell": "a0fdba",
+    "tool_elapsed_s": 2.404
+  },
+  "schema_version": 1,
+  "source_commit_D": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "status": "verified"
+}

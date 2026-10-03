@@ -1,0 +1,40 @@
+{
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "core.longpaths=true",
+    "-C",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "ls-tree",
+    "-r",
+    "-z",
+    "0ad78d6abdb3c526544a17185af7fe8094716735"
+  ],
+  "capture_exceeded": false,
+  "channels": {
+    "stderr": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-setup-original-v1/command05.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-setup-original-v1/command05.stdout.raw",
+      "sha256": "9c27887ce22c9bccb952bf61066257d3d835ab8bd7d1c108b8b2ca4a38e1dd9a",
+      "size_bytes": 573601
+    }
+  },
+  "errors": [],
+  "original_group_absent": true,
+  "original_pid_absent": true,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 41506,
+    "pid": 41506,
+    "ppid": 41498,
+    "startticks": 28299328,
+    "uid": 1000
+  },
+  "returncode": 0,
+  "timed_out": false
+}

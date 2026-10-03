@@ -32,11 +32,15 @@ from benchmark_contract import (
     PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT,
     PRIMARY_ANALYTICS_QUEUE_CONTRACT,
     RESET_EVIDENCE_COLUMNS,
+    RESOURCE_EVENT_COLUMNS,
     STAGE_CONTRACT_COLUMNS,
+    stage_base_name,
+    validate_resource_events,
     validate_stage_contracts,
 )
 from checkpoint_admission import schedule_fingerprint_for_records
 from checkpoint_runtime import (
+    RuntimeRunResult,
     SourceLaunchSpec,
     WorkerLaunchSpec,
     build_runtime_reset_evidence,
@@ -58,13 +62,22 @@ from checkpoint_runtime_plan import (
 )
 from checkpoint_native_policy_runtime import (
     NativePolicyRuntimeCoordinator,
+    EXTERNAL_EXECUTION_MANIFEST_KIND,
     assess_gstreamer_native_policy_execution_manifest,
     canonical_frames_from_events,
+    native_policy_identity_environment,
     require_exact_native_cpu_capability_bindings,
 )
+from checkpoint_publication_runtime import (
+    _accepted_branch_rows,
+    _accepted_frame_event_rows,
+    _accepted_ingress_rows,
+)
 from checkpoint_publication_runtime import publish_checkpoint_runtime
-from publication_policy_contract import POLICIES
+from publication_owned_staging_cleanup_v1 import retire_owned_runtime_output_v1
+from publication_policy_contract import ANALYTICS_BRANCHES, POLICIES
 from resource_interval_contract import (
+    PLATFORM_BACKWARD_CLOCK_STEP_NS,
     RESOURCE_INTERVAL_COLUMNS,
     RESOURCE_INTERVAL_CONTRACT_VERSION,
     ResourceIntervalContractError,
@@ -441,6 +454,233 @@ def build_runtime_cohort_audit(
 def _require(condition: bool, message: str) -> None:
     if not condition:
         raise ContractError(message)
+
+
+def _promote_native_policy_measurement(
+    policy_runtime: NativePolicyRuntimeCoordinator,
+    output_dir: Path,
+    *,
+    result: RuntimeRunResult,
+    run_id: str,
+) -> dict[str, Any]:
+    """Promote only decisions linked to the accepted measurement ingress."""
+    ingress_rows, _cohort_id = _accepted_ingress_rows(result, run_id=run_id)
+    runtime_frames = canonical_frames_from_events(result.events)
+    accepted_frames: dict[str, dict[str, Any]] = {}
+    accepted_identities: set[tuple[str, int, int]] = set()
+    for row in ingress_rows:
+        input_key = row["input_frame_key"]
+        _require(
+            type(input_key) is str and bool(input_key) and input_key not in accepted_frames,
+            "accepted measurement ingress has a duplicate or invalid input frame key",
+        )
+        identity = (str(row["trace_id"]), int(row["stream_id"]), int(row["frame_id"]))
+        _require(
+            identity not in accepted_identities,
+            "accepted measurement ingress has a duplicate frame identity",
+        )
+        canonical = runtime_frames.get(input_key)
+        _require(canonical is not None, "accepted measurement ingress is missing canonical runtime frame")
+        _require(
+            canonical == {
+                "trace_id": identity[0],
+                "stream_id": identity[1],
+                "frame_id": identity[2],
+            },
+            "accepted measurement ingress canonical frame identity drifted",
+        )
+        accepted_frames[input_key] = canonical
+        accepted_identities.add(identity)
+    return policy_runtime.promote(output_dir, canonical_frames=accepted_frames)
+
+
+def write_native_stage_resource_events(
+    output_dir: Path,
+    *,
+    result: RuntimeRunResult,
+    plan: dict[str, Any],
+    scenario: dict[str, Any],
+    dataset: dict[str, Any],
+    run_id: str,
+    policy: str,
+    deadline_ms: float,
+) -> Path:
+    """Write one resource row per accepted native frame-stage interval."""
+    required_branches = [str(branch) for branch in plan["required_branches"]]
+    topology_kind = str(plan["topology_kind"])
+    _require(
+        bool(required_branches) and len(set(required_branches)) == len(required_branches)
+        and topology_kind in {"independent_processes", "shared_video_dag"},
+        "native resource evidence has invalid branch topology",
+    )
+    ledger_rows, cohort_id = _accepted_ingress_rows(result, run_id=run_id)
+    branch_rows = _accepted_branch_rows(
+        result,
+        ledger_rows=ledger_rows,
+        cohort_id=cohort_id,
+        required_branches=required_branches,
+    )
+    stage_rows = _accepted_frame_event_rows(
+        result,
+        ledger_rows=ledger_rows,
+        policy=policy,
+        system=str(plan["system"]),
+        scenario=str(scenario["name"]),
+        codec=str(dataset["codec_variant"]),
+        deadline_ms=deadline_ms,
+        branch_rows=branch_rows,
+        topology_kind=topology_kind,
+        required_branches=required_branches,
+    )
+    _require(bool(stage_rows), "native resource evidence has no accepted stage intervals")
+
+    streams = dataset.get("streams")
+    _require(isinstance(streams, list), "native resource dataset streams are missing")
+    bytes_by_stream: dict[int, int] = {}
+    for stream in streams:
+        _require(isinstance(stream, dict), "native resource dataset stream is invalid")
+        stream_id = stream.get("stream_id")
+        width = stream.get("width")
+        height = stream.get("height")
+        _require(
+            type(stream_id) is int and type(width) is int and type(height) is int
+            and width > 0 and height > 0 and stream_id not in bytes_by_stream,
+            "native resource dataset stream dimensions or identity are invalid",
+        )
+        bytes_by_stream[stream_id] = width * height * 3
+
+    allowed_stages = {"aggregate", "record"}
+    if topology_kind == "shared_video_dag":
+        allowed_stages.update({"decode", "preprocess"})
+    else:
+        allowed_stages.update(f"decode_{branch}" for branch in required_branches)
+        allowed_stages.update(f"preprocess_{branch}" for branch in required_branches)
+    allowed_stages.update(required_branches)
+    allowed_stages.update(f"postprocess_{branch}" for branch in required_branches)
+
+    ledger_bounds: dict[tuple[str, str, int, int], tuple[float, float]] = {}
+    ingress_keys: dict[tuple[str, str, int, int], str] = {}
+    for ingress in ledger_rows:
+        key = (
+            str(ingress["run_id"]), str(ingress["trace_id"]),
+            int(ingress["stream_id"]), int(ingress["frame_id"]),
+        )
+        try:
+            start = float(ingress["ingress_timestamp_ms"])
+            end = float(ingress["terminal_timestamp_ms"])
+        except (KeyError, TypeError, ValueError, OverflowError) as error:
+            raise ContractError("accepted native ingress has invalid time bounds") from error
+        _require(
+            math.isfinite(start) and math.isfinite(end) and 0 <= start <= end,
+            "accepted native ingress has invalid time bounds",
+        )
+        ledger_bounds[key] = (start, end)
+        ingress_keys[key] = str(ingress["input_frame_key"])
+    _require(len(ledger_bounds) == len(ledger_rows), "accepted native ingress keys are duplicated")
+
+    for native_event in result.events:
+        frame_key = (
+            str(native_event["run_id"]), str(native_event["trace_id"]),
+            int(native_event["stream_id"]), int(native_event["frame_id"]),
+        )
+        if frame_key not in ledger_bounds:
+            continue
+        _require(
+            str(native_event["input_frame_key"]) == ingress_keys[frame_key]
+            and str(native_event["event_provenance"]) == "native_runtime_event"
+            and str(native_event["telemetry_source"]) == "native",
+            "native resource event has unmatched accepted ingress or non-native provenance",
+        )
+
+    rows: list[dict[str, Any]] = []
+    stage_keys: set[tuple[str, str, int, int, str]] = set()
+    for stage in stage_rows:
+        frame_key = (
+            str(stage["run_id"]), str(stage["trace_id"]),
+            int(stage["stream_id"]), int(stage["frame_id"]),
+        )
+        stage_name = str(stage["stage"])
+        stage_key = (*frame_key, stage_name)
+        _require(
+            frame_key in ledger_bounds and stage_name in allowed_stages
+            and stage_key not in stage_keys,
+            "native resource stage is duplicate, unmatched or outside accepted ingress",
+        )
+        stage_keys.add(stage_key)
+        _require(
+            frame_key[2] in bytes_by_stream,
+            "native resource stage has no dataset stream dimensions",
+        )
+        resource = str(stage["resource"]).strip().lower()
+        _require(resource in {"cpu", "gpu", "nvdec"}, "native resource stage label is invalid")
+        try:
+            queue_enter = float(stage["queue_enter_timestamp_ms"])
+            start = float(stage["stage_start_timestamp_ms"])
+            end = float(stage["stage_end_timestamp_ms"])
+        except (KeyError, TypeError, ValueError, OverflowError) as error:
+            raise ContractError("native resource stage interval is invalid") from error
+        ingress_start, terminal_end = ledger_bounds[frame_key]
+        _require(
+            all(math.isfinite(value) for value in (queue_enter, start, end))
+            and ingress_start <= queue_enter <= start <= end <= terminal_end,
+            "native resource stage interval is invalid or outside accepted ingress",
+        )
+        duration = end - start
+        transfer_bytes = bytes_by_stream[frame_key[2]]
+        is_gpu = resource == "gpu"
+        rows.append({
+            "schema_version": TELEMETRY_SCHEMA_VERSION,
+            "run_id": frame_key[0],
+            "trace_id": frame_key[1],
+            "stream_id": frame_key[2],
+            "frame_id": frame_key[3],
+            "stage": stage_name,
+            "resource": resource,
+            "timestamp_ms": round(end, 6),
+            "cpu_time_ms": round(0.0 if is_gpu else duration, 6),
+            "gpu_time_ms": round(duration if is_gpu else 0.0, 6),
+            "h2d_bytes": transfer_bytes if is_gpu else 0,
+            "d2h_bytes": max(0, transfer_bytes // 12) if is_gpu else 0,
+            "nvdec_util_percent": 1.0 if stage_base_name(stage_name) == "decode" else 0.0,
+            "vram_mb": round(transfer_bytes / (1024 * 1024), 6) if is_gpu else 0.0,
+            "time_provenance": "derived_from_native_stage_timestamps",
+            "transfer_provenance": "estimated_from_frame_dimensions",
+            "nvdec_provenance": "stage_presence_proxy",
+            "vram_provenance": "estimated_from_frame_dimensions",
+            "telemetry_source": "native",
+        })
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    path = output_dir / "resource_events.csv"
+    try:
+        with path.open("x", newline="", encoding="utf-8") as output:
+            writer = csv.DictWriter(output, fieldnames=RESOURCE_EVENT_COLUMNS)
+            writer.writeheader()
+            writer.writerows(rows)
+            output.flush()
+            os.fsync(output.fileno())
+    except FileExistsError as error:
+        raise ContractError("native resource_events.csv already exists") from error
+    observed = validate_resource_events(path, require_labeled_provenance=True)
+    _require(
+        observed.to_dict(orient="records") == rows,
+        "native resource_events.csv differs from accepted stage intervals",
+    )
+    return path
+
+
+def _publish_with_native_resource_events(**publication_args: Any) -> dict[str, Any]:
+    write_native_stage_resource_events(
+        Path(publication_args["output_dir"]),
+        result=publication_args["result"],
+        plan=publication_args["plan"],
+        scenario=publication_args["scenario"],
+        dataset=publication_args["dataset"],
+        run_id=publication_args["run_id"],
+        policy=publication_args["policy"],
+        deadline_ms=publication_args["deadline_ms"],
+    )
+    return publish_checkpoint_runtime(**publication_args)
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
@@ -825,6 +1065,7 @@ def build_gstreamer_worker_specs(
     native_policy_deadline_ms: float | None = None,
     analytics_execution_socket: Path | str | None = None,
     analytics_preprocessing_contract_sha256: str | None = None,
+    native_policy_identities: dict[str, str] | None = None,
     inherited_native_fds: tuple[int, ...] = (),
     gst_plugin_path: str | None = None,
 ) -> list[WorkerLaunchSpec]:
@@ -862,6 +1103,24 @@ def build_gstreamer_worker_specs(
         ),
         "gstreamer_custom native policy runtime requires one frozen policy, a positive deadline, an analytics execution socket, and a preprocessing contract SHA-256",
     )
+    if native_policy_identities is not None:
+        expected_identity_names = {
+            _binding_environment_name(f"{resource.upper()}_{field}", branch)
+            for branch in ANALYTICS_BRANCHES
+            for resource in ("cpu", "gpu")
+            for field in ("IMPLEMENTATION_ID", "EMITTER_ID", "EMITTER_SHA256")
+        }
+        expected_identity_names.update(
+            _binding_environment_name("DROP_DETECTOR", branch)
+            for branch in ANALYTICS_BRANCHES
+        )
+        expected_identity_names.add("VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE")
+        _require(
+            policy_runtime_enabled
+            and set(native_policy_identities) == expected_identity_names
+            and native_policy_identities["VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE"] == "1",
+            "native policy identities require the policy runtime and every branch/resource identity and drop detector",
+        )
     resolved_execution_socket = (
         _analytics_execution_socket_path(analytics_execution_socket)
         if policy_runtime_enabled
@@ -1012,6 +1271,7 @@ def build_gstreamer_worker_specs(
                                         ): str(resolved_preprocessing_sha256)
                                         for required_branch in branches
                                     },
+                                    **(native_policy_identities or {}),
                                 }
                                 if policy_runtime_enabled
                                 else {}
@@ -1107,6 +1367,7 @@ def build_gstreamer_worker_specs(
                                     ): str(resolved_preprocessing_sha256)
                                     for required_branch in branches
                                 },
+                                **(native_policy_identities or {}),
                             }
                             if policy_runtime_enabled
                             else {}
@@ -1321,7 +1582,7 @@ def merge_runtime_resource_intervals(
     run_id: str,
     topology_events: list[dict[str, Any]] | tuple[dict[str, Any], ...],
 ) -> Path:
-    """Merge exact native NVDEC/fanout fragments without accepting them for publication."""
+    """Merge exact native NVDEC/fanout/CUDA fragments without accepting them."""
 
     _require(bool(specs), "resource interval merge requires checkpoint workers")
     shared = all(spec.branch_id is None for spec in specs)
@@ -1331,6 +1592,7 @@ def merge_runtime_resource_intervals(
     topology_by_execution: dict[tuple[str, str, int, int, str], dict[str, Any]] = {}
     expected_nvdec: set[tuple[str, str, int, int, str]] = set()
     expected_fanout: set[tuple[str, str, int, int, str]] = set()
+    eligible_transfers: set[tuple[tuple[str, str, int, int, str], str]] = set()
     for raw in topology_events:
         key = (
             str(raw["run_id"]),
@@ -1347,15 +1609,48 @@ def merge_runtime_resource_intervals(
             expected_nvdec.add(key)
         if event_kind == "fanout":
             expected_fanout.add(key)
+        if event_kind == "stage_complete":
+            trace_id = str(raw["trace_id"])
+            branch_id = str(raw["branch_id"])
+            execution_id = str(raw["execution_id"])
+            if stage == branch_id and execution_id == f"{trace_id}:{branch_id}:analytics":
+                eligible_transfers.add((key, "h2d"))
+            if (
+                stage == f"postprocess_{branch_id}"
+                and execution_id == f"{trace_id}:{branch_id}:postprocess"
+            ):
+                eligible_transfers.add((key, "d2h"))
     _require(bool(expected_nvdec), "runtime topology produced no decode executions for NVDEC coverage")
     _require(
         bool(expected_fanout) == shared,
         "runtime fanout topology does not match the worker topology kind",
     )
 
+    declared_policies = {
+        str(getattr(spec, "environment", {}).get("SCHEDULER_POLICY", "")).strip()
+        for spec in specs
+        if str(getattr(spec, "environment", {}).get("SCHEDULER_POLICY", "")).strip()
+    }
+    _require(
+        len(declared_policies) <= 1,
+        "resource interval workers declare inconsistent scheduler policies",
+    )
+    declared_policy = next(iter(declared_policies), None)
+    expected_transfers = eligible_transfers if declared_policy == "gpu_only" else set()
+    if declared_policy == "gpu_only":
+        _require(
+            bool(expected_transfers),
+            "gpu_only runtime topology produced no eligible CUDA transfer executions",
+        )
+
     rows: list[dict[str, str]] = []
     observed_nvdec: set[tuple[str, str, int, int, str]] = set()
     observed_fanout: set[tuple[str, str, int, int, str]] = set()
+    observed_transfers: set[tuple[tuple[str, str, int, int, str], str]] = set()
+    observed_transfer_directions: dict[tuple[str, str, int, int, str], set[str]] = {}
+    observed_transfer_intervals: dict[
+        tuple[str, str, int, int, str], dict[str, tuple[int, int, str]]
+    ] = {}
     native_event_ids: set[str] = set()
     for spec in specs:
         worker_output = Path(spec.command[spec.command.index("--output-dir") + 1])
@@ -1405,10 +1700,19 @@ def merge_runtime_resource_intervals(
             )
             _require(str(row["run_id"]) == run_id, f"{spec.worker_id}: resource interval run_id mismatch")
             _require(stream_id == int(spec.stream_id), f"{spec.worker_id}: resource interval stream mismatch")
+            component = str(row["component"])
+            host_width_ns = end_ns - start_ns
             _require(
-                start_ns < end_ns and duration_ns == end_ns - start_ns and payload_bytes > 0,
-                f"{spec.worker_id}: native diagnostic interval is invalid",
+                start_ns < end_ns
+                and 0 < duration_ns <= host_width_ns
+                and payload_bytes > 0,
+                f"{spec.worker_id}: native interval or host envelope is invalid",
             )
+            if component != "transfer":
+                _require(
+                    duration_ns == host_width_ns,
+                    f"{spec.worker_id}: native diagnostic interval is invalid",
+                )
             native_event_id = str(row["native_event_id"])
             _require(
                 re.fullmatch(r"[0-9a-f]{64}", native_event_id) is not None
@@ -1428,11 +1732,6 @@ def merge_runtime_resource_intervals(
                 and str(topology["branch_id"]) == branch_id,
                 f"{spec.worker_id}: resource interval topology linkage drifted",
             )
-            topology_ns = int(topology["timestamp_ms"]) * 1_000_000
-            _require(
-                end_ns <= topology_ns + 1_000_000,
-                f"{spec.worker_id}: resource interval ends after its topology event",
-            )
             try:
                 parents = json.loads(str(topology["parent_execution_ids_json"]))
             except json.JSONDecodeError as exc:
@@ -1443,12 +1742,23 @@ def merge_runtime_resource_intervals(
                 parent = topology_by_execution.get((run_id, trace_id, stream_id, frame_id, str(parent_id)))
                 _require(parent is not None, f"{spec.worker_id}: resource interval parent is missing")
                 parent_times.append(int(parent["timestamp_ms"]) * 1_000_000)
-            _require(
-                start_ns >= max(parent_times),
-                f"{spec.worker_id}: resource interval starts before its topology parent",
-            )
+            if component != "transfer":
+                topology_ns = int(topology["timestamp_ms"]) * 1_000_000
+                _require(
+                    end_ns
+                    <= topology_ns + 1_000_000 + PLATFORM_BACKWARD_CLOCK_STEP_NS,
+                    f"{spec.worker_id}: resource interval ends after its topology event",
+                )
+                _require(
+                    # Topology timestamps are upward-rounded milliseconds; the
+                    # precise native edge may therefore be <1 ms earlier.  The
+                    # platform allowance covers a backward host clock step
+                    # landing between the two captures.
+                    start_ns + 1_000_000 + PLATFORM_BACKWARD_CLOCK_STEP_NS
+                    >= max(parent_times),
+                    f"{spec.worker_id}: resource interval starts before its topology parent",
+                )
 
-            component = str(row["component"])
             if component == "nvdec_submit_complete":
                 _require(
                     (
@@ -1503,6 +1813,58 @@ def merge_runtime_resource_intervals(
                 )
                 _require(key not in observed_fanout, "fanout execution has more than one interval")
                 observed_fanout.add(key)
+            elif component == "transfer":
+                direction = str(row["direction"])
+                transfer_key = (key, direction)
+                _require(
+                    transfer_key in eligible_transfers,
+                    f"{spec.worker_id}: CUDA transfer has no eligible topology edge",
+                )
+                _require(
+                    (
+                        str(row["counter_scope"]),
+                        str(row["duration_provenance"]),
+                        str(row["telemetry_source"]),
+                    )
+                    == (
+                        "per_trace_interval",
+                        "native_cuda_event_interval_v1",
+                        "native",
+                    ),
+                    f"{spec.worker_id}: CUDA transfer interval provenance drifted",
+                )
+                _require(
+                    str(row["device_id"]).startswith("gpu:")
+                    and re.fullmatch(r"[a-z][a-z0-9_.:-]*", str(row["device_id"])) is not None,
+                    f"{spec.worker_id}: CUDA transfer device identity drifted",
+                )
+                _require(
+                    spec.branch_id is None or branch_id == str(spec.branch_id),
+                    f"{spec.worker_id}: CUDA transfer branch escaped its worker",
+                )
+                expected_parent = (
+                    f"{trace_id}:{branch_id}:analytics"
+                    if direction == "d2h"
+                    else (
+                        f"{trace_id}:{branch_id}:fanout"
+                        if shared
+                        else f"{trace_id}:{branch_id}:preprocess"
+                    )
+                )
+                _require(
+                    parents == [expected_parent],
+                    f"{spec.worker_id}: CUDA transfer topology parent drifted",
+                )
+                _require(
+                    transfer_key not in observed_transfers,
+                    f"{spec.worker_id}: CUDA transfer execution/direction is duplicated",
+                )
+                observed_transfers.add(transfer_key)
+                frame_branch_key = (run_id, trace_id, stream_id, frame_id, branch_id)
+                observed_transfer_directions.setdefault(frame_branch_key, set()).add(direction)
+                observed_transfer_intervals.setdefault(frame_branch_key, {})[
+                    direction
+                ] = (start_ns, end_ns, str(row["device_id"]))
             else:
                 raise ContractError(
                     f"{spec.worker_id}: runtime resource fragment contains unsupported component {component}"
@@ -1511,6 +1873,23 @@ def merge_runtime_resource_intervals(
 
     _require(observed_nvdec == expected_nvdec, "runtime NVDEC interval coverage is not exact")
     _require(observed_fanout == expected_fanout, "runtime fanout interval coverage is not exact")
+    _require(
+        all(directions == {"h2d", "d2h"} for directions in observed_transfer_directions.values()),
+        "runtime CUDA transfer coverage is not paired by frame and branch",
+    )
+    _require(
+        all(
+            intervals["h2d"][1] <= intervals["d2h"][0]
+            and intervals["h2d"][2] == intervals["d2h"][2]
+            for intervals in observed_transfer_intervals.values()
+        ),
+        "runtime CUDA transfer pair order or device binding drifted",
+    )
+    if declared_policy in {"cpu_only", "gpu_only"}:
+        _require(
+            observed_transfers == expected_transfers,
+            f"runtime {declared_policy} CUDA transfer coverage is not exact",
+        )
     output_root.mkdir(parents=True, exist_ok=True)
     merged = output_root / "resource_intervals.runtime.csv"
     with merged.open("w", newline="", encoding="utf-8") as output:
@@ -1667,7 +2046,7 @@ def merge_runtime_fanout_intervals(
             )
             topology_ns = int(topology["timestamp_ms"]) * 1_000_000
             _require(
-                abs(end_ns - topology_ns) <= 1_000_000,
+                abs(end_ns - topology_ns) <= 1_000_000 + PLATFORM_BACKWARD_CLOCK_STEP_NS,
                 f"{spec.worker_id}: fanout interval end differs from topology event",
             )
             parents = json.loads(str(topology["parent_execution_ids_json"]))
@@ -1684,7 +2063,11 @@ def merge_runtime_fanout_intervals(
                 f"{spec.worker_id}: fanout interval parent is not shared preprocess",
             )
             _require(
-                start_ns >= int(parent["timestamp_ms"]) * 1_000_000,
+                # Preserve the precise host interval while allowing the
+                # parent's upward millisecond quantization bucket and a
+                # backward host clock step between the two captures.
+                start_ns + 1_000_000 + PLATFORM_BACKWARD_CLOCK_STEP_NS
+                >= int(parent["timestamp_ms"]) * 1_000_000,
                 f"{spec.worker_id}: fanout interval starts before preprocess completes",
             )
             _require(key not in observed_fanout, "fanout execution has more than one interval")
@@ -1849,6 +2232,34 @@ def merge_runtime_fanout_work_counters(
     return merged
 
 
+def _accepted_topology_execution_keys(
+    *,
+    topology_events: pd.DataFrame,
+    accepted_frame_keys: set[tuple[str, str, int, int]],
+    label: str,
+) -> set[tuple[str, str, int, int, str]]:
+    required = {"run_id", "trace_id", "stream_id", "frame_id", "execution_id"}
+    if topology_events.empty or not required.issubset(topology_events.columns):
+        raise FullResourceContractError(
+            f"{label} requires accepted topology execution identities"
+        )
+    result: set[tuple[str, str, int, int, str]] = set()
+    for row in topology_events.to_dict(orient="records"):
+        frame_key = (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        if frame_key in accepted_frame_keys:
+            result.add((*frame_key, str(row["execution_id"])))
+    if not result:
+        raise FullResourceContractError(
+            f"{label} has no accepted topology execution identities"
+        )
+    return result
+
+
 def promote_runtime_interval_and_fanout_evidence(
     *,
     runtime_resource_intervals: Path,
@@ -1884,6 +2295,11 @@ def promote_runtime_interval_and_fanout_evidence(
     }
     if {key[0] for key in accepted_keys} != {expected_run_id}:
         raise FullResourceContractError("runtime resource promotion run identity drifted")
+    accepted_topology_execution_keys = _accepted_topology_execution_keys(
+        topology_events=topology_events,
+        accepted_frame_keys=accepted_keys,
+        label="runtime resource promotion",
+    )
 
     def read_exact(path: Path, columns: list[str], label: str) -> list[dict[str, str]]:
         if path.is_symlink() or not path.is_file():
@@ -1910,8 +2326,9 @@ def promote_runtime_interval_and_fanout_evidence(
             str(row["trace_id"]),
             int(row["stream_id"]),
             int(row["frame_id"]),
+            str(row["execution_id"]),
         )
-        in accepted_keys
+        in accepted_topology_execution_keys
     ]
     if not accepted_interval_rows:
         raise FullResourceContractError("accepted cohort has no runtime resource intervals")
@@ -1924,7 +2341,7 @@ def promote_runtime_interval_and_fanout_evidence(
         if runtime_fanout_work_counters is not None
         else []
     )
-    accepted_counter_rows = [
+    accepted_frame_counter_rows = [
         row
         for row in counter_rows
         if (
@@ -1945,12 +2362,35 @@ def promote_runtime_interval_and_fanout_evidence(
         )
         for row in topology_events.to_dict(orient="records")
         if str(row["event_kind"]) == "fanout"
+        and (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        in accepted_keys
     }
     require_fanout = topology_kind == "shared_video_dag"
     if require_fanout and runtime_fanout_work_counters is None:
         raise FullResourceContractError("shared runtime lacks fanout work evidence")
     if require_fanout != bool(expected_fanout_keys):
         raise FullResourceContractError("accepted fanout topology coverage is inconsistent")
+    accepted_counter_rows = (
+        [
+            row
+            for row in accepted_frame_counter_rows
+            if (
+                str(row["trace_id"]),
+                int(row["stream_id"]),
+                int(row["frame_id"]),
+                str(row["branch_id"]),
+                str(row["execution_id"]),
+            )
+            in expected_fanout_keys
+        ]
+        if require_fanout
+        else accepted_frame_counter_rows
+    )
 
     try:
         with tempfile.TemporaryDirectory(prefix=".resource-frame-staging-", dir=output_root) as tmp:
@@ -2036,6 +2476,11 @@ def promote_runtime_full_resource_evidence(
     }
     if not accepted_keys or {key[0] for key in accepted_keys} != {expected_run_id}:
         raise FullResourceContractError("accepted ingress cohort run identity drifted")
+    accepted_topology_execution_keys = _accepted_topology_execution_keys(
+        topology_events=topology_events,
+        accepted_frame_keys=accepted_keys,
+        label="full-resource promotion",
+    )
 
     def read_exact(path: Path, columns: list[str], label: str) -> list[dict[str, str]]:
         if path.is_symlink() or not path.is_file():
@@ -2062,8 +2507,9 @@ def promote_runtime_full_resource_evidence(
             str(row["trace_id"]),
             int(row["stream_id"]),
             int(row["frame_id"]),
+            str(row["execution_id"]),
         )
-        in accepted_keys
+        in accepted_topology_execution_keys
     ]
     if not accepted_interval_rows:
         raise FullResourceContractError("accepted cohort has no native resource intervals")
@@ -2081,7 +2527,7 @@ def promote_runtime_full_resource_evidence(
         if runtime_fanout_work_counters is not None
         else []
     )
-    accepted_counter_rows = [
+    accepted_frame_counter_rows = [
         row
         for row in counter_rows
         if (
@@ -2092,10 +2538,43 @@ def promote_runtime_full_resource_evidence(
         )
         in accepted_keys
     ]
-    if topology_kind == "shared_video_dag" and runtime_fanout_work_counters is None:
+    expected_fanout_keys = {
+        (
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+            str(row["branch_id"]),
+            str(row["execution_id"]),
+        )
+        for row in topology_events.to_dict(orient="records")
+        if str(row["event_kind"]) == "fanout"
+        and (
+            str(row["run_id"]),
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+        )
+        in accepted_keys
+    }
+    require_fanout = topology_kind == "shared_video_dag"
+    if require_fanout and runtime_fanout_work_counters is None:
         raise FullResourceContractError("shared topology lacks native fanout work counters")
-    if topology_kind == "independent_processes" and accepted_counter_rows:
+    if require_fanout != bool(expected_fanout_keys):
+        raise FullResourceContractError("accepted fanout topology coverage is inconsistent")
+    if not require_fanout and accepted_frame_counter_rows:
         raise FullResourceContractError("independent topology reported fanout work counters")
+    accepted_counter_rows = [
+        row
+        for row in accepted_frame_counter_rows
+        if (
+            str(row["trace_id"]),
+            int(row["stream_id"]),
+            int(row["frame_id"]),
+            str(row["branch_id"]),
+            str(row["execution_id"]),
+        )
+        in expected_fanout_keys
+    ]
 
     try:
         with tempfile.TemporaryDirectory(prefix=".resource-v2-staging-", dir=output_root) as tmp:
@@ -2400,6 +2879,8 @@ def main(
     parser.add_argument("--policy-capability-manifest", type=Path)
     parser.add_argument("--policy-calibration", type=Path)
     parser.add_argument("--static-hybrid-map", type=Path)
+    parser.add_argument("--operational-request-context", type=Path)
+    parser.add_argument("--operational-output-dir", type=Path)
     parser.add_argument("--gst-registry-template", type=Path)
     parser.add_argument("--gst-plugin-path", type=Path)
     parser.add_argument(
@@ -2546,7 +3027,23 @@ def main(
             pinned_file_paths_by_sha256,
         )
     native_policy_runtime: NativePolicyRuntimeCoordinator | None = None
+    from publication_operational_runtime_context_v1 import (
+        load_native_operational_context_v1, require_operational_execution_window_v1,
+    )
+    operational_context, operational_limits = load_native_operational_context_v1(
+        args.operational_request_context, args.operational_output_dir,
+        run_id=args.run_id, system=args.system, scenario=args.scenario,
+        codec=str(args.codec), policy=str(args.policy), deadline_ms=float(args.deadline_ms),
+    )
+    _require(operational_context is None or publication_mode,
+             "operational capture requires the actual publication runtime")
+    require_operational_execution_window_v1(
+        operational_context, warmup_s=runtime_warmup_s, measurement_s=runtime_measurement_s,
+        drain_timeout_s=float(args.drain_timeout), streams=len(plan["streams"]),
+        branches=len(plan["required_branches"]),
+    )
     native_policy_capability_assessment: dict[str, Any] | None = None
+    native_policy_identities: dict[str, str] | None = None
     if publication_mode:
         _require(
             args.analytics_model_manifest is not None
@@ -2554,8 +3051,18 @@ def main(
             and analytics_model_bindings is not None,
             "publication policy runtime requires exact model and execution manifests",
         )
+        _require(
+            args.policy_capability_manifest is not None,
+            "publication policy capability manifest is required",
+        )
+        _require(args.policy_calibration is not None, "publication policy calibration is required")
+        capability_manifest = _load_yaml(args.policy_capability_manifest)
+        execution_manifest = _load_yaml(args.analytics_execution_manifest)
         native_policy_capability_assessment = assess_gstreamer_native_policy_execution_manifest(
-            _load_yaml(args.analytics_execution_manifest)
+            execution_manifest,
+            system=args.system,
+            capability_manifest=capability_manifest,
+            preprocessing_contract_sha256=args.analytics_preprocessing_contract_sha256,
         )
         _require(
             native_policy_capability_assessment["passed"] is True
@@ -2563,23 +3070,23 @@ def main(
             "native gstreamer policy is blocked by execution capabilities: "
             + ",".join(native_policy_capability_assessment["blockers"][:8]),
         )
-        _require(
-            args.policy_capability_manifest is not None,
-            "publication policy capability manifest is required",
-        )
-        _require(args.policy_calibration is not None, "publication policy calibration is required")
-        capability_manifest = _load_yaml(args.policy_capability_manifest)
         calibration = _load_yaml(args.policy_calibration)
         static_hybrid_map = (
             _load_yaml(args.static_hybrid_map)
             if args.static_hybrid_map is not None
             else None
         )
-        require_exact_native_cpu_capability_bindings(
-            binary=args.binary,
-            analytics_bindings=analytics_model_bindings,
-            capability_manifest=capability_manifest,
-        )
+        if execution_manifest.get("artifact_kind") != EXTERNAL_EXECUTION_MANIFEST_KIND:
+            require_exact_native_cpu_capability_bindings(
+                binary=args.binary,
+                analytics_bindings=analytics_model_bindings,
+                capability_manifest=capability_manifest,
+            )
+        else:
+            native_policy_identities = native_policy_identity_environment(
+                system=args.system,
+                capability_manifest=capability_manifest,
+            )
         native_policy_runtime = NativePolicyRuntimeCoordinator(
             run_id=args.run_id,
             arm_id=(
@@ -2595,6 +3102,7 @@ def main(
             capability_manifest=capability_manifest,
             calibration=calibration,
             static_hybrid_map=static_hybrid_map,
+            operational_context=operational_context,
         )
     resolved_queue_max_buffers = _resolve_analytics_queue_max_buffers(
         plan=plan,
@@ -2626,6 +3134,7 @@ def main(
             if native_policy_runtime is not None
             else None
         ),
+        native_policy_identities=native_policy_identities,
         inherited_native_fds=inherited_native_fds,
         gst_plugin_path=(
             str(args.gst_plugin_path)
@@ -2729,7 +3238,7 @@ def main(
         specs,
         source_specs,
         template_path=args.gst_registry_template,
-        refresh_hardware_plugins=not publication_mode,
+        refresh_hardware_plugins=True,
     )
     telemetry_sink_preexisting_entry_count = (
         sum(1 for _ in runtime_output_dir.iterdir()) if runtime_output_dir.exists() else 0
@@ -2756,6 +3265,7 @@ def main(
         result = run_worker_processes(
             run_id=args.run_id,
             topology_kind=plan["topology_kind"],
+            topology_contract_version=2,
             branches=plan["required_branches"],
             specs=specs,
             source_specs=source_specs,
@@ -2779,12 +3289,15 @@ def main(
                 if native_policy_runtime is not None
                 else None
             ),
+            operational_admission_limits=operational_limits,
         )
     native_policy_promotion: dict[str, Any] | None = None
     if native_policy_runtime is not None:
-        native_policy_promotion = native_policy_runtime.promote(
+        native_policy_promotion = _promote_native_policy_measurement(
+            native_policy_runtime,
             args.output_dir,
-            canonical_frames=canonical_frames_from_events(result.events),
+            result=result,
+            run_id=args.run_id,
         )
         result = dataclasses.replace(
             result,
@@ -2912,7 +3425,7 @@ def main(
         scenario = dict((config.get("scenarios") or {}).get(args.scenario) or {})
         scenario["name"] = args.scenario
         dataset = dict(datasets[str(plan["dataset"])])
-        publication_acceptance = publish_checkpoint_runtime(
+        publication_acceptance = _publish_with_native_resource_events(
             output_dir=args.output_dir,
             plan=plan,
             scenario=scenario,
@@ -3020,6 +3533,16 @@ def main(
             "target-hardware execution has not been accepted",
         ] if publication_acceptance is None else [],
     }
+    if publication_mode:
+        _require(
+            runtime_output_dir is not None,
+            "publication native runtime output directory is absent at terminal handoff",
+        )
+        retire_owned_runtime_output_v1(
+            runtime_output_dir,
+            output_root=args.output_dir,
+            label=f"{args.system} publication native runtime output",
+        )
     print(json.dumps(status, indent=2, sort_keys=True))
     return 0 if not result.unresolved_frames else 2
 

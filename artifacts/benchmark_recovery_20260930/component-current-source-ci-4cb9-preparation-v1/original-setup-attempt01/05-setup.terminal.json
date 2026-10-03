@@ -1,0 +1,55 @@
+{
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "core.longpaths=true",
+    "-C",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261001-4cb9d831",
+    "checkout",
+    "--detach",
+    "4cb9d8313cca71256179bc3b59cc6f9137e7b8ba"
+  ],
+  "child_reaped": true,
+  "cwd": null,
+  "elapsed_s": 1.0730931789730676,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 52992,
+    "pid": 53001,
+    "ppid": 52993,
+    "startticks": 29011880,
+    "state": "R",
+    "uid": 1000
+  },
+  "returncode": 0,
+  "started_at_ns": 1790807804242044077,
+  "stderr": {
+    "epoch7": [
+      69,
+      2533274792816155,
+      33279,
+      1,
+      75,
+      1790807805259163700,
+      1790807805259163700
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-4cb9-preparation-v1/original-setup-attempt01/05-setup.stderr.raw",
+    "sha256": "805740853532189dc1137190e3d5c62c159e6117955dbdd3f344c0cc6a56c8a8",
+    "size_bytes": 75
+  },
+  "stdout": {
+    "epoch7": [
+      69,
+      2533274792816154,
+      33279,
+      1,
+      0,
+      1790807804240326900,
+      1790807804240326900
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-4cb9-preparation-v1/original-setup-attempt01/05-setup.stdout.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  }
+}

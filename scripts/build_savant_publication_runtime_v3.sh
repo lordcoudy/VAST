@@ -3,11 +3,10 @@ set -euo pipefail
 
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 base_image="ghcr.io/insight-platform/savant-deepstream@sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6"
-expected_base_id="sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6"
-base_build_ref="ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0"
-native_builder="vast/savant-native-probe@sha256:ef70f6fae0558d1d90ae32fc931256bc71169749c15ae00b70a8ca00c0b70513"
-expected_native_builder_id="sha256:ef70f6fae0558d1d90ae32fc931256bc71169749c15ae00b70a8ca00c0b70513"
-native_builder_build_ref="vast/savant-native-probe:0.5.17-7.0"
+expected_base_id="${VAST_SAVANT_BASE_IMAGE_ID:-sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6}"
+native_builder="${VAST_SAVANT_NATIVE_PROBE_IMAGE:-vast/savant-native-probe@sha256:314d4a4d71130e9b86caacb802e92fe97a89ee92b0240f9947dccebca3adc3dc}"
+expected_native_builder_id="${VAST_SAVANT_NATIVE_PROBE_IMAGE_ID:-sha256:314d4a4d71130e9b86caacb802e92fe97a89ee92b0240f9947dccebca3adc3dc}"
+expected_native_builder_source_sha256="${VAST_SAVANT_NATIVE_PROBE_SOURCE_SHA256:-b6772ea56a31886b2599ed602e325d39b876d33d740bd3b983f1b96dbcf82c0f}"
 image_ref="${VAST_SAVANT_RUNTIME_IMAGE:-vast/savant-publication-runtime-v3:materialized}"
 image_manifest="${VAST_SAVANT_RUNTIME_IMAGE_MANIFEST:-$project_root/artifacts/savant_publication_v3/qualification/runtime_image.materialized.json}"
 first_ref="${image_ref}-determinism-a"
@@ -24,24 +23,15 @@ mapfile -t runtime_sources < "$source_allowlist"
 mapfile -t runtime_dependencies < "$dependency_allowlist"
 
 assert_exact_input_images() {
-  local observed_base_digest_id observed_base_tag_id
-  local observed_builder_digest_id observed_builder_tag_id
-  observed_base_digest_id="$(docker image inspect "$base_image" --format '{{.Id}}')"
-  observed_base_tag_id="$(docker image inspect "$base_build_ref" --format '{{.Id}}')"
-  observed_builder_digest_id="$(
-    docker image inspect "$native_builder" --format '{{.Id}}'
-  )"
-  observed_builder_tag_id="$(
-    docker image inspect "$native_builder_build_ref" --format '{{.Id}}'
-  )"
-  if [[ "$observed_base_digest_id" != "$expected_base_id" \
-     || "$observed_base_tag_id" != "$expected_base_id" ]]; then
-    echo "pinned Savant base image/tag ID drifted" >&2
+  local observed_base_id observed_builder_id
+  observed_base_id="$(docker image inspect "$base_image" --format '{{.Id}}')"
+  observed_builder_id="$(docker image inspect "$native_builder" --format '{{.Id}}')"
+  if [[ "$observed_base_id" != "$expected_base_id" ]]; then
+    echo "pinned Savant base image ID drifted" >&2
     exit 2
   fi
-  if [[ "$observed_builder_digest_id" != "$expected_native_builder_id" \
-     || "$observed_builder_tag_id" != "$expected_native_builder_id" ]]; then
-    echo "pinned Savant native-builder image/tag ID drifted" >&2
+  if [[ "$observed_builder_id" != "$expected_native_builder_id" ]]; then
+    echo "pinned Savant native-builder image ID drifted" >&2
     exit 2
   fi
 }
@@ -101,8 +91,11 @@ build_one() {
       --provenance=false \
       --output "type=docker,rewrite-timestamp=true,unpack=false" \
       --build-arg "SOURCE_DATE_EPOCH=$source_date_epoch" \
-      --build-arg "SAVANT_BASE_IMAGE=$base_build_ref" \
-      --build-arg "NATIVE_BUILDER_IMAGE=$native_builder_build_ref" \
+      --build-arg "SAVANT_BASE_IMAGE=$base_image" \
+      --build-arg "NATIVE_BUILDER_IMAGE=$native_builder" \
+      --build-arg "VAST_BASE_IMAGE_ID=$expected_base_id" \
+      --build-arg "VAST_NATIVE_BUILDER_IMAGE_ID=$expected_native_builder_id" \
+      --build-arg "VAST_NATIVE_BUILDER_SOURCE_SHA256=$expected_native_builder_source_sha256" \
       --build-arg "VAST_SAVANT_RUNTIME_SOURCE_SHA256=$runtime_source_sha256" \
       --build-arg "VAST_SAVANT_RUNTIME_BUNDLE_SHA256=$runtime_bundle_sha256" \
       --tag "$target" \
@@ -170,6 +163,9 @@ python3 -B scripts/checkpoint_savant_runtime_image_materialization_v3.py \
   --image-id "$image_id" \
   --runtime-source-sha256 "$runtime_source_sha256" \
   --runtime-bundle-sha256 "$runtime_bundle_sha256" \
+  --base-image-id "$expected_base_id" \
+  --native-builder-image-id "$expected_native_builder_id" \
+  --native-builder-source-sha256 "$expected_native_builder_source_sha256" \
   --output "$image_manifest" >/dev/null
 repo_digests="$(
   docker image inspect "$image_id" --format '{{json .RepoDigests}}'

@@ -20,10 +20,10 @@ BASE_IMAGE_ID = (
     "sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6"
 )
 NATIVE_BUILDER_IMAGE_ID = (
-    "sha256:ef70f6fae0558d1d90ae32fc931256bc71169749c15ae00b70a8ca00c0b70513"
+    "sha256:314d4a4d71130e9b86caacb802e92fe97a89ee92b0240f9947dccebca3adc3dc"
 )
 NATIVE_BUILDER_SOURCE_SHA256 = (
-    "e38aa56050381aef7ce9ff6fb934ae3da0d44175f10fb67f4cecea34433ded01"
+    "b6772ea56a31886b2599ed602e325d39b876d33d740bd3b983f1b96dbcf82c0f"
 )
 ENTRYPOINT = ["/usr/local/bin/vast_savant_checkpoint_runtime"]
 LABELS = {
@@ -66,6 +66,9 @@ def build_runtime_image_materialization(
     inspect: Mapping[str, Any],
     runtime_source_sha256: str,
     runtime_bundle_sha256: str,
+    base_image_id: str = BASE_IMAGE_ID,
+    native_builder_image_id: str = NATIVE_BUILDER_IMAGE_ID,
+    native_builder_source_sha256: str = NATIVE_BUILDER_SOURCE_SHA256,
 ) -> dict[str, Any]:
     """Validate exact labels and return the fragment-consumable projection."""
     _require(isinstance(inspect, Mapping), "Docker inspect must be an object")
@@ -75,6 +78,12 @@ def build_runtime_image_materialization(
         _SHA_RE.fullmatch(source_sha) is not None
         and _SHA_RE.fullmatch(bundle_sha) is not None,
         "runtime source/bundle SHA-256 is invalid",
+    )
+    _require(
+        _IMAGE_RE.fullmatch(str(base_image_id)) is not None
+        and _IMAGE_RE.fullmatch(str(native_builder_image_id)) is not None
+        and _SHA_RE.fullmatch(str(native_builder_source_sha256)) is not None,
+        "Savant base/native-builder identity is invalid",
     )
     image_id = str(inspect.get("Id", ""))
     config = inspect.get("Config")
@@ -90,6 +99,9 @@ def build_runtime_image_materialization(
     _require(isinstance(labels, Mapping), "Savant image labels are missing")
     expected = {
         **LABELS,
+        "org.vast.base-image-id": str(base_image_id),
+        "org.vast.native-builder-image-id": str(native_builder_image_id),
+        "org.vast.native-builder-source-sha256": str(native_builder_source_sha256),
         "org.vast.savant.runtime-source-sha256": source_sha,
         "org.vast.savant.runtime-bundle-sha256": bundle_sha,
     }
@@ -123,9 +135,9 @@ def build_runtime_image_materialization(
         "os": "linux",
         "savant_version": "0.5.17",
         "deepstream_version": "7.0",
-        "base_image_id": BASE_IMAGE_ID,
-        "native_builder_image_id": NATIVE_BUILDER_IMAGE_ID,
-        "native_builder_source_sha256": NATIVE_BUILDER_SOURCE_SHA256,
+        "base_image_id": str(base_image_id),
+        "native_builder_image_id": str(native_builder_image_id),
+        "native_builder_source_sha256": str(native_builder_source_sha256),
         "runtime_source_sha256": source_sha,
         "runtime_bundle_sha256": bundle_sha,
         "publication_ready_label": "false",
@@ -164,6 +176,9 @@ def _write_immutable(path: Path, payload: bytes) -> None:
 def materialize_from_docker(
     *, image_id: str, runtime_source_sha256: str,
     runtime_bundle_sha256: str, output: Path,
+    base_image_id: str = BASE_IMAGE_ID,
+    native_builder_image_id: str = NATIVE_BUILDER_IMAGE_ID,
+    native_builder_source_sha256: str = NATIVE_BUILDER_SOURCE_SHA256,
 ) -> dict[str, Any]:
     _require(_IMAGE_RE.fullmatch(image_id) is not None, "image ID is invalid")
     try:
@@ -189,6 +204,9 @@ def materialize_from_docker(
         inspect=values[0],
         runtime_source_sha256=runtime_source_sha256,
         runtime_bundle_sha256=runtime_bundle_sha256,
+        base_image_id=base_image_id,
+        native_builder_image_id=native_builder_image_id,
+        native_builder_source_sha256=native_builder_source_sha256,
     )
     payload = _canonical(result) + b"\n"
     _write_immutable(output, payload)
@@ -200,6 +218,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--image-id", required=True)
     parser.add_argument("--runtime-source-sha256", required=True)
     parser.add_argument("--runtime-bundle-sha256", required=True)
+    parser.add_argument("--base-image-id", default=BASE_IMAGE_ID)
+    parser.add_argument("--native-builder-image-id", default=NATIVE_BUILDER_IMAGE_ID)
+    parser.add_argument(
+        "--native-builder-source-sha256",
+        default=NATIVE_BUILDER_SOURCE_SHA256,
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     try:
@@ -208,6 +232,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             runtime_source_sha256=args.runtime_source_sha256,
             runtime_bundle_sha256=args.runtime_bundle_sha256,
             output=args.output,
+            base_image_id=args.base_image_id,
+            native_builder_image_id=args.native_builder_image_id,
+            native_builder_source_sha256=args.native_builder_source_sha256,
         )
     except RuntimeImageMaterializationError as error:
         print(str(error), file=os.sys.stderr)

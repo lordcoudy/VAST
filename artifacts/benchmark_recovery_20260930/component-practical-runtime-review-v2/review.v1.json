@@ -1,0 +1,226 @@
+{
+  "actual_cpu04": {
+    "after_shared_s": 50.538853053,
+    "arms": [
+      {
+        "engine_measurement_callback_elapsed_s": 256.937903582,
+        "envelope_elapsed_s": 390.589373837,
+        "finished_at_ns": 1790779870134662740,
+        "scenario": "independent-processes",
+        "start_offset_s": 950.841784628,
+        "started_at_ns": 1790779479545288903
+      },
+      {
+        "engine_measurement_callback_elapsed_s": 251.000023294,
+        "envelope_elapsed_s": 381.633611789,
+        "finished_at_ns": 1790780479760434170,
+        "scenario": "shared-video-dag",
+        "start_offset_s": 1569.423318106,
+        "started_at_ns": 1790780098126822381
+      }
+    ],
+    "between_envelopes_s": 227.992159641,
+    "cli_elapsed_s": 2001.595782948,
+    "limit": "Actual envelopes and callback spans include preparation/cleanup; no isolated hash/numeric timing attribution.",
+    "status": "FAILED before cold scan ImportError; both arms returned0; no pair acceptance, no GPU execution"
+  },
+  "artifact_kind": "vast_component_practical_runtime_readonly_review_v2",
+  "current_runtime_delta": "Exactly header-loader provider import changed; original CPU04 used original78 bytes. Nine other reviewed source pins match original hostv5.",
+  "evidence": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.v5.json",
+      "sha256": "3b9cc84e185fc3cc51f9feafb5d4dabbf578d985633a9c4eeb95a400b28f714d",
+      "size_bytes": 30986
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/component_cli_terminal.v1.json",
+      "sha256": "f214c7c513881660b16fc84316c2c8425f0545bfb43af4270b0c6219f8ad14b6",
+      "size_bytes": 9103
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/source/gstreamer-component-authority.v1.json",
+      "sha256": "729a9bc6f54eb87005d20ac09d9a49366383acbca9ca801d2eb7766a5a47a800",
+      "size_bytes": 128324
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu04-postterminal-independent-review-v1/review.v1.json",
+      "sha256": "595e40bf132d8041995a13baa6f42435e0889be13a4fd53d003f8ac90d306709",
+      "size_bytes": 7087
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/component_arm_result.v1.json",
+      "sha256": "62e598b0d220bf350fe0c620c0d1f035f8f138ed928033605f746ce7a1e0cf0f",
+      "size_bytes": 15470
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/original_engine_process_capture.v1.json",
+      "sha256": "2ff0ac034e961d0ea552a9b5a00bfd9eef858584867de8ed9adc2032ec33593f",
+      "size_bytes": 6661
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.launch.v1.json",
+      "sha256": "e12cdaf5ff6d5f1de937f2680c3c517124f9bbf32dd223a4ad6c70111c9115ac",
+      "size_bytes": 8070
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.terminal.v1.json",
+      "sha256": "09685361990ee2f63007446af202b390c37e0f5cad717c865b7979dadbd7e666",
+      "size_bytes": 950
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/component_arm_result.v1.json",
+      "sha256": "7f211044688ca4b4c686b205b463172f60b7fb14371a9ff233c99d6efcd2257d",
+      "size_bytes": 14188
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/original_engine_process_capture.v1.json",
+      "sha256": "968a07f19216e45cb5cd40edb98cff5ba24069d581b15d644cff59867faa2229",
+      "size_bytes": 6591
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_05.launch.v1.json",
+      "sha256": "839d973add40f6368d03897b9ee871b3dc1742a120f3c8b9d2c07c825cb2c9a2",
+      "size_bytes": 7996
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-04/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_05.terminal.v1.json",
+      "sha256": "4ded100360a4614e9d53077f42dd3fdb85e4446f2734f8bb9d5f8b8bdf241ec3",
+      "size_bytes": 940
+    }
+  ],
+  "historical_consumer": "Versioned producer-versus-reader production design deferred. A separately frozen corrected-reader experiment over preserved original physicalv5 inputs cannot change original failed CLI disposition/rebind its closure/grant, and does not satisfy fresh original CPU/GPU release acceptance.",
+  "original_runtime_source": {
+    "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+    "sha256": "a77d70f6b35718c596cdf8d0a79a2275296c20562e10688047a16e70bde6a597",
+    "size_bytes": 65283
+  },
+  "original_source_commit": "78f50184362c1bd77f9dc5eadd8cd69d6ab3c5ac",
+  "prior_writer_failure": "v1 receipt assertion stopped on current import-only delta; empty v1 namespace and failed original tool output retained; no v1 receipt was written.",
+  "recommendation": {
+    "model_calls_after_first_version": 3,
+    "owned_candidate_paths": [
+      "scripts/publication_gstreamer_component_cli_v1.py",
+      "scripts/publication_gstreamer_component_inputs_v1.py",
+      "scripts/publication_gstreamer_component_runtime_v1.py"
+    ],
+    "private_factoring": [
+      "After source authority commit, original CLI enters one genuine held_selected_component_inputs_v1 through capture/preprocessing/runtime/two arms/cold receipt. Initial source materializer retains both original model assessments.",
+      "Factor materialize body, held-runtime body and execute body into private from-held methods; cold original loops use same session. Public signatures/default behavior open their own real context then delegate.",
+      "Use private active session object bound to ownerPID/root/authority and original callback; reject raw dict, foreign context and post-close reuse. No public skip-validation argument/global cache.",
+      "Keep all ComponentPinsV1.verify full hash calls, actual seven epochs and held FD/name/ancestor barriers, original engine/socket checks, native seven roles and exact entire factory reconstruction. No epoch-only optimization now.",
+      "Retain fresh original four-image observation checks at former full-model boundaries using existing held engine/socket and strict original projection/IDs; do not treat old image observations as current. Keep native wrapper image/device probes and guardian health checks.",
+      "Produced arm evidence still passes original physical cold output validator, process/container custody, full resources, ingress schedule and complete operational-versus-measurement reconciliation."
+    ],
+    "required_fate_tests": [
+      "Private session constructor/owner/root/authority/closed state and raw-dict rejection.",
+      "Counter: one host semantic acceptance for materialize/two arms/cold; public standalone calls fresh; source preflight retains two.",
+      "Real source bytes/inode/ancestor alias and engine/socket replacement fail at original barriers before next launch/receipt.",
+      "Fresh original image mismatch fails despite stable model bytes; wrapper probes remain mandatory.",
+      "Arm/cold exception closes FDs, retains original failure and guardian/reservation cleanup, no retry or receipt.",
+      "Actual header provider import and stock cold evidence/reconciliation exercised without fake validation."
+    ],
+    "saved_complete_pair_calls": 4,
+    "scope": "One private CLI held-selected session; preserve every current full byte barrier and original native wrapper. Public standalone entrypoints retain fresh independent validation.",
+    "timing_next": "Bounded source-assessment/load/barrier/materialization/wrapper/cold start+terminal, call counts and declared bytes. No speedup claim until actual capture; original schemas and byte/time budgets unchanged.",
+    "unchanged_deadlines_s": {
+      "original_cli": 2100,
+      "outer": 2250
+    }
+  },
+  "schema_version": 1,
+  "self_review": "The mistake is nesting independent top-level acceptance sessions inside one owned execution. A genuinely held context removes repeated semantic work with smaller risk than a rewrite. Numeric duplication and logical-byte duplication are grounded; individual wall-time costs remain unknown.",
+  "sha256": "948e4891cc846bbb202eeb8ccb384375630ce61a5d40b5f1a3ec242f64be0604",
+  "source_findings": {
+    "bytes_per_full_sweep": 2561093319,
+    "call_anchors": [
+      "inputs:251",
+      "inputs:315->333",
+      "runtime:365->inputs:363->333",
+      "runtime:452->333 twice",
+      "future cold runtime:733->333 twice"
+    ],
+    "declared_deduplicated_large_paths": 408,
+    "dependency_scope": "runtime/inputs host-only, absent selected73. Import-only correction requires new host closure, no image rebuild if selected73 unchanged.",
+    "group_bytes": {
+      "proof382": 39663743,
+      "proxy_models8": 15514597,
+      "source2": 1142577576,
+      "terminal_models16": 1363337403
+    },
+    "io_limit": "Static successful original call-path lower bound, excludes extra model/inventory hashes, sidecar child and original wrapper reads; logical hash-reader bytes are not measured storage-device I/O.",
+    "main_process_static_full_sweep_lower_counts": {
+      "capture_source_loader": 3,
+      "failed_cold_outer": 2,
+      "guardian_constructor": 3,
+      "preprocessing_materialization": 5,
+      "runtime_materialization_including_preprocessing": 10,
+      "source_proposed_document": 3,
+      "two_executions_including_preprocessing": 26
+    },
+    "main_process_static_logical_read_lower_bytes": 133176852588,
+    "model_material_calls_actual_cpu04": 5,
+    "model_material_calls_complete_current_pair": 7,
+    "per_arm_original_wrapper": {
+      "anchors": "runtime_v3:703-749,762-776,990-1043,1103-1127,1388-1450",
+      "copy_source_read": 1,
+      "copy_target_hash": 1,
+      "initial_original_hash": 1,
+      "materialized_pin_rechecks": 5,
+      "original_pin_rechecks": 8
+    },
+    "reduction_chain": "bootstrap_v2:584->accepted_v4:589->parity_v4:771->parity:1709-1759; each invokes four branch raw numeric reductions and four original image inspections."
+  },
+  "source_pins": {
+    "scripts/checkpoint_gstreamer_publication_runtime_v3.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "ee0476b574e012b213bdc603a7a930234c0bb27d929859ef03acfdb99eb7a241",
+      "size_bytes": 59640
+    },
+    "scripts/checkpoint_model_parity.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_model_parity.py",
+      "sha256": "ecb4d10ee878fe77fef30ca7df9990e5e2cc8a959c6aa6e285736a489b71d17c",
+      "size_bytes": 97548
+    },
+    "scripts/checkpoint_model_parity_acceptance_v4.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_model_parity_acceptance_v4.py",
+      "sha256": "cda34465993fccd9acff9833b4db52292e7e58fce5286eda44ceb62dcab71cda",
+      "size_bytes": 31392
+    },
+    "scripts/checkpoint_model_parity_v4.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_model_parity_v4.py",
+      "sha256": "34474de61e19a8f3b1167ff8b52f11f33514e1d9483220abf693456ec840cf9c",
+      "size_bytes": 35800
+    },
+    "scripts/publication_gstreamer_component_authority_v1.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_authority_v1.py",
+      "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+      "size_bytes": 27355
+    },
+    "scripts/publication_gstreamer_component_cli_v1.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_cli_v1.py",
+      "sha256": "7fdd977cab1f290998627a83ad425b762c188f3d9956cf752167ac284ccbbb40",
+      "size_bytes": 33247
+    },
+    "scripts/publication_gstreamer_component_inputs_v1.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_inputs_v1.py",
+      "sha256": "1fd0076ae65d363b2c247789927b17250c529d5069500655a3148db59d64d706",
+      "size_bytes": 28197
+    },
+    "scripts/publication_gstreamer_component_runtime_v1.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_gstreamer_component_runtime_v1.py",
+      "sha256": "23202bc466cd53f60cc0b78eb7902b5cdb1be4c6242c04e5ed81d13609a0d49e",
+      "size_bytes": 65291
+    },
+    "scripts/publication_guardian_component_preprocessing_contract_v1.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_guardian_component_preprocessing_contract_v1.py",
+      "sha256": "7aa52f62ddd5651559737f31dc75dadbefedd1759c8d528b185666262775c990",
+      "size_bytes": 19178
+    },
+    "scripts/publication_policy_qualification_bootstrap_v2.py": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_bootstrap_v2.py",
+      "sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6",
+      "size_bytes": 82531
+    }
+  },
+  "work_scope": "Read-only source/closed bounded metadata plus this artifact. No source/core/Git edits, tests, model bytes, engine query or profiling."
+}

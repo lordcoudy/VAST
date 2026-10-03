@@ -21,6 +21,8 @@ from benchmark_contract import (
     FRAME_COLUMNS,
     FRAME_EVENT_COLUMNS,
     INGRESS_LEDGER_COLUMNS,
+    POSTDECODE_PREFIX_DROP_REASON,
+    PRE_DETECTOR_DROP_REASON,
     RESET_EVIDENCE_COLUMNS,
     STAGE_CONTRACT_COLUMNS,
     TELEMETRY_SCHEMA_VERSION,
@@ -55,6 +57,7 @@ from publication_acceptance_evidence import (
     BASE_ACCEPTANCE_EVIDENCE_FILES,
     FROZEN_POLICY_DECISIONS_JSONL,
     FROZEN_POLICY_FEEDBACK_JSONL,
+    FROZEN_POLICY_RUNTIME_HISTORY_JSONL,
     FULL_RESOURCE_EVIDENCE_FILES,
     frozen_policy_requires_feedback,
     pre_finalization_acceptance_evidence_files,
@@ -82,14 +85,20 @@ _CANDIDATE_FIELDS = {
 _CHECKPOINT_AGGREGATE_BACKENDS = {
     "gstreamer_custom": "openvino_dlstreamer_branch_aggregate_v1",
     "deepstream": "deepstream_native_branch_aggregate_v1",
+    "savant": "savant_native_branch_aggregate_v1",
+    "openvino_gva": "openvino_gva_native_branch_aggregate_v1",
 }
 
 
-def _acceptance_evidence_files(policy: str) -> tuple[str, ...]:
+def _acceptance_evidence_files(
+    policy: str, *, runtime_history: bool = False,
+) -> tuple[str, ...]:
     # The native coordinator emits a canonical replay record for every frozen
     # policy.  The CSV projection alone is insufficient to bind the accepted
     # native request/evaluation/terminal evidence used by qualification.
-    return pre_finalization_acceptance_evidence_files(policy)
+    return pre_finalization_acceptance_evidence_files(
+        policy, runtime_history=runtime_history,
+    )
 
 
 def _require(condition: bool, message: str) -> None:
@@ -159,6 +168,18 @@ def _write_immutable_json(path: Path, value: dict[str, Any]) -> None:
                     os.close(directory_descriptor)
     finally:
         temporary.unlink(missing_ok=True)
+
+
+def _json_finite_or_null(value: Any) -> Any:
+    """Preserve summary structure while encoding unavailable floats as JSON null."""
+
+    if type(value) is float:
+        return value if math.isfinite(value) else None
+    if type(value) is dict:
+        return {key: _json_finite_or_null(item) for key, item in value.items()}
+    if type(value) in {list, tuple}:
+        return [_json_finite_or_null(item) for item in value]
+    return value
 
 
 def prepare_checkpoint_publication_acceptance(
@@ -257,7 +278,13 @@ def prepare_checkpoint_publication_acceptance(
     evidence = candidate.get("evidence_sha256")
     _require(
         type(evidence) is dict
-        and set(evidence) == set(_acceptance_evidence_files(expected_policy)),
+        and (
+            (FROZEN_POLICY_RUNTIME_HISTORY_JSONL in evidence)
+            == (output_dir / FROZEN_POLICY_RUNTIME_HISTORY_JSONL).is_file()
+        )
+        and set(evidence) == set(_acceptance_evidence_files(
+            expected_policy, runtime_history=FROZEN_POLICY_RUNTIME_HISTORY_JSONL in evidence,
+        )),
         "candidate evidence hash set drifted",
     )
     for name, expected_sha in evidence.items():
@@ -514,6 +541,10 @@ def _accepted_branch_rows(
         _require(int(row["runtime_protocol_version"]) == 3, "accepted branch outcome is not protocol-v3")
         _require(str(row["telemetry_source"]) == "native", "accepted branch outcome is not native")
         _require(str(row["event_provenance"]) == "native_runtime_event", "branch event provenance is not native")
+        _require(
+            isinstance(row.get("terminal_reason"), str) and bool(row["terminal_reason"].strip()),
+            "accepted branch outcome lacks a native terminal reason",
+        )
         grouped.setdefault(key, []).append(row)
 
     accepted: list[dict[str, Any]] = []
@@ -633,6 +664,9 @@ def _accepted_frame_event_rows(
     scenario: str,
     codec: str,
     deadline_ms: float,
+    branch_rows: list[dict[str, Any]] | None = None,
+    topology_kind: str | None = None,
+    required_branches: list[str] | None = None,
 ) -> list[dict[str, Any]]:
     expected_codec = str(codec).strip().lower().replace("hevc", "h265")
     _require(bool(system), "checkpoint publication system is not explicit")
@@ -648,7 +682,7 @@ def _accepted_frame_event_rows(
         row: dict[str, Any],
         *,
         key: tuple[str, str, int, int],
-    ) -> tuple[str, str]:
+    ) -> tuple[str, str, int | None, float | None]:
         required = {
             "execution_resource",
             "scheduler_policy",
@@ -682,9 +716,57 @@ def _accepted_frame_event_rows(
         _require(resource in CHECKPOINT_EXECUTION_RESOURCES, f"stage execution resource is invalid: {key}")
         action = str(row["policy_action"]).strip()
         _require(action.startswith(f"{policy}:"), f"stage policy action is not bound to requested policy: {key}")
-        return resource, action
+        fixed_action = f"{policy}:fixed_outside_analytics_scope:"
+        if action.startswith(fixed_action):
+            return resource, action, None, None
+        policy_fields = {
+            "scheduler_queue_depth",
+            "scheduler_estimated_cost_ms",
+        }
+        missing_policy_fields = sorted(
+            field for field in policy_fields if row.get(field) in {None, ""}
+        )
+        _require(
+            not missing_policy_fields,
+            (
+                "native policy execution binding is missing fields "
+                f"{','.join(missing_policy_fields)}: {key}"
+            ),
+        )
+        queue_depth = int(row["scheduler_queue_depth"])
+        estimated_cost_ms = float(row["scheduler_estimated_cost_ms"])
+        _require(queue_depth >= 0, f"native policy queue depth is invalid: {key}")
+        _require(
+            math.isfinite(estimated_cost_ms) and estimated_cost_ms >= 0,
+            f"native policy estimated cost is invalid: {key}",
+        )
+        return resource, action, queue_depth, estimated_cost_ms
 
     ledger_by_key = {_linkage_key(row): row for row in ledger_rows}
+    verify_branch_coverage = any(
+        value is not None for value in (branch_rows, topology_kind, required_branches)
+    )
+    if verify_branch_coverage:
+        _require(
+            branch_rows is not None and topology_kind in {"independent_processes", "shared_video_dag"}
+            and required_branches is not None and bool(required_branches)
+            and len(set(required_branches)) == len(required_branches),
+            "branch stage coverage lacks exact topology and native branch outcomes",
+        )
+        _require(
+            topology_kind != "shared_video_dag" or len(required_branches) == 4,
+            "shared prefix coverage requires four branches",
+        )
+    branch_by_key: dict[tuple[str, str, int, int], dict[str, dict[str, Any]]] = {}
+    for row in branch_rows or []:
+        key = _linkage_key(row)
+        branch = str(row["branch_id"])
+        _require(key in ledger_by_key, f"branch outcome has no measurement ingress: {key}")
+        _require(
+            branch not in branch_by_key.get(key, {}),
+            f"duplicate branch outcome for {branch}: {key}",
+        )
+        branch_by_key.setdefault(key, {})[branch] = row
     runtime_by_key: dict[tuple[str, str, int, int], list[dict[str, Any]]] = {}
     for source in result.events:
         key = _linkage_key(source)
@@ -695,8 +777,129 @@ def _accepted_frame_event_rows(
     for key, ledger in ledger_by_key.items():
         runtime_rows = runtime_by_key.get(key, [])
         by_execution = {str(row["execution_id"]): row for row in runtime_rows}
+        _require(len(by_execution) == len(runtime_rows), f"runtime execution IDs are duplicated: {key}")
         stage_rows = [row for row in runtime_rows if str(row["event_kind"]) == "stage_complete"]
         _require(bool(stage_rows), f"measurement ingress has no native stage events: {key}")
+        if verify_branch_coverage:
+            assert required_branches is not None and topology_kind is not None
+            outcomes = branch_by_key.get(key, {})
+            _require(
+                set(outcomes) == set(required_branches),
+                f"measurement ingress lacks exact branch terminal provenance: {key}",
+            )
+            statuses = {str(row["terminal_status"]) for row in outcomes.values()}
+            _require(
+                (str(ledger["terminal_status"]) == "completed" and statuses == {"completed"})
+                or (str(ledger["terminal_status"]) == "drop" and "drop" in statuses),
+                f"measurement ingress and branch terminal statuses differ: {key}",
+            )
+            terminals = [
+                row for row in runtime_rows
+                if str(row["event_kind"]) in {"branch_complete", "branch_drop"}
+            ]
+            _require(
+                len(terminals) == len(required_branches)
+                and {str(row["branch_id"]) for row in terminals} == set(required_branches),
+                f"runtime branch terminal count or identity mismatch: {key}",
+            )
+            terminals_by_branch = {str(row["branch_id"]): row for row in terminals}
+            stage_names = {str(row["stage"]) for row in stage_rows}
+            prefix_branches: set[str] = set()
+            for branch, outcome in outcomes.items():
+                status = str(outcome["terminal_status"])
+                reason = str(outcome["terminal_reason"])
+                terminal = terminals_by_branch[branch]
+                expected_kind = "branch_drop" if status == "drop" else "branch_complete"
+                _require(
+                    status in {"drop", "completed"}
+                    and str(outcome["terminal_provenance"]) == (
+                        "native_drop_event" if status == "drop" else "native_completion_event"
+                    )
+                    and str(outcome["telemetry_source"]) == "native"
+                    and str(outcome["input_frame_key"]) == str(ledger["input_frame_key"])
+                    and str(terminal["event_kind"]) == expected_kind
+                    and str(terminal["stage"]) == branch
+                    # The topology event projection omits terminal_reason; the
+                    # direct native branch outcome above is its source of truth.
+                    and (
+                        "terminal_reason" not in terminal
+                        or str(terminal["terminal_reason"]) == reason
+                    )
+                    and int(terminal["timestamp_ms"]) == int(outcome["terminal_timestamp_ms"])
+                    and str(terminal["input_frame_key"]) == str(outcome["input_frame_key"])
+                    and str(terminal["event_provenance"]) == "native_runtime_event"
+                    and str(terminal["telemetry_source"]) == "native",
+                    f"native branch terminal reason or identity mismatch: {key}:{branch}",
+                )
+                parents = json.loads(str(terminal["parent_execution_ids_json"]))
+                _require(
+                    isinstance(parents, list) and len(parents) == 1
+                    and str(parents[0]) in by_execution,
+                    f"native branch terminal parent is missing: {key}:{branch}",
+                )
+                parent = by_execution[str(parents[0])]
+                parent_stage = str(parent["stage"])
+                parent_branch = str(parent["branch_id"])
+                _require(str(parent["event_kind"]) in {"stage_complete", "fanout"},
+                         f"native branch terminal parent kind is invalid: {key}:{branch}")
+                if status == "drop":
+                    _require(
+                        reason in {POSTDECODE_PREFIX_DROP_REASON, PRE_DETECTOR_DROP_REASON}
+                        and branch not in stage_names
+                        and f"postprocess_{branch}" not in stage_names,
+                        f"native branch drop has invalid reason or completed analytics stage: {key}:{branch}",
+                    )
+                    if reason == POSTDECODE_PREFIX_DROP_REASON:
+                        prefix_branches.add(branch)
+                        expected_parent = (
+                            ("decode", "shared", "stage_complete")
+                            if topology_kind == "shared_video_dag"
+                            else (f"decode_{branch}", branch, "stage_complete")
+                        )
+                    else:
+                        expected_parent = (
+                            ("fanout", branch, "fanout")
+                            if topology_kind == "shared_video_dag"
+                            else (f"preprocess_{branch}", branch, "stage_complete")
+                        )
+                else:
+                    _require(
+                        reason not in {POSTDECODE_PREFIX_DROP_REASON, PRE_DETECTOR_DROP_REASON},
+                        f"completed branch carries a drop reason: {key}:{branch}",
+                    )
+                    _require(
+                        (parent_stage, parent_branch, str(parent["event_kind"])) in {
+                            (branch, branch, "stage_complete"),
+                            (f"postprocess_{branch}", branch, "stage_complete"),
+                        },
+                        f"completed branch parent lineage mismatch: {key}:{branch}",
+                    )
+                    continue
+                _require(
+                    (parent_stage, parent_branch, str(parent["event_kind"])) == expected_parent,
+                    f"native branch drop parent lineage mismatch: {key}:{branch}",
+                )
+            if topology_kind == "independent_processes":
+                for branch in required_branches:
+                    _require(
+                        f"decode_{branch}" in stage_names,
+                        f"independent branch lacks native decode: {key}:{branch}",
+                    )
+                    _require(
+                        (f"preprocess_{branch}" in stage_names) == (branch not in prefix_branches),
+                        f"independent branch preprocessing contradicts terminal: {key}:{branch}",
+                    )
+            else:
+                _require("decode" in stage_names, f"shared frame lacks native decode: {key}")
+                _require(
+                    not prefix_branches or prefix_branches == set(required_branches),
+                    f"partial shared prefix drop is invalid: {key}",
+                )
+                _require(
+                    ("preprocess" in stage_names) == (not prefix_branches)
+                    and (not prefix_branches or not any(str(row["event_kind"]) == "fanout" for row in runtime_rows)),
+                    f"shared preprocessing or fanout contradicts prefix terminal: {key}",
+                )
         for row in stage_rows:
             parents = json.loads(str(row["parent_execution_ids_json"]))
             _require(isinstance(parents, list) and bool(parents), f"stage event has no direct parent: {key}")
@@ -706,7 +909,12 @@ def _accepted_frame_event_rows(
             end = int(row["timestamp_ms"])
             _require(start <= end, f"native stage interval is negative: {key}")
             stage = str(row["stage"])
-            resource, policy_action = native_execution_binding(row, key=key)
+            (
+                resource,
+                policy_action,
+                scheduler_queue_depth,
+                scheduler_estimated_cost_ms,
+            ) = native_execution_binding(row, key=key)
             if stage.split("_", 1)[0] == "decode":
                 _require(resource == "nvdec", f"decode stage lacks native NVDEC execution binding: {key}")
             accepted.append(
@@ -723,17 +931,26 @@ def _accepted_frame_event_rows(
                     "queue_enter_timestamp_ms": start,
                     "stage_start_timestamp_ms": start,
                     "stage_end_timestamp_ms": end,
-                    "queue_depth": 0,
-                    "estimated_cost_ms": end - start,
+                    "queue_depth": (
+                        scheduler_queue_depth
+                        if scheduler_queue_depth is not None
+                        else 0
+                    ),
+                    "estimated_cost_ms": (
+                        scheduler_estimated_cost_ms
+                        if scheduler_estimated_cost_ms is not None
+                        else end - start
+                    ),
                     "policy_action": policy_action,
                 }
             )
 
-        observed_bases = {str(row["stage"]).split("_", 1)[0] for row in stage_rows}
-        _require(
-            {"decode", "preprocess"}.issubset(observed_bases),
-            f"measurement ingress lacks a native decode/preprocess prefix: {key}",
-        )
+        if not verify_branch_coverage:
+            observed_bases = {str(row["stage"]).split("_", 1)[0] for row in stage_rows}
+            _require(
+                {"decode", "preprocess"}.issubset(observed_bases),
+                f"measurement ingress lacks a native decode/preprocess prefix: {key}",
+            )
         if str(ledger["terminal_status"]) == "completed":
             branch_terminal_rows = [
                 row for row in runtime_rows if str(row["event_kind"]) == "branch_complete"
@@ -744,7 +961,12 @@ def _accepted_frame_event_rows(
             aggregate_end = int(joins[0]["timestamp_ms"])
             _require(aggregate_start <= aggregate_end, f"aggregate interval is negative: {key}")
             host = str(joins[0]["execution_domain"])
-            join_resource, join_policy_action = native_execution_binding(joins[0], key=key)
+            (
+                join_resource,
+                join_policy_action,
+                join_queue_depth,
+                join_estimated_cost_ms,
+            ) = native_execution_binding(joins[0], key=key)
             for stage, start, end in (
                 ("aggregate", aggregate_start, aggregate_end),
                 ("record", aggregate_end, aggregate_end),
@@ -763,8 +985,14 @@ def _accepted_frame_event_rows(
                         "queue_enter_timestamp_ms": start,
                         "stage_start_timestamp_ms": start,
                         "stage_end_timestamp_ms": end,
-                        "queue_depth": 0,
-                        "estimated_cost_ms": end - start,
+                        "queue_depth": (
+                            join_queue_depth if join_queue_depth is not None else 0
+                        ),
+                        "estimated_cost_ms": (
+                            join_estimated_cost_ms
+                            if join_estimated_cost_ms is not None
+                            else end - start
+                        ),
                         "policy_action": join_policy_action,
                     }
                 )
@@ -932,6 +1160,9 @@ def publish_checkpoint_runtime(
         scenario=scenario_name,
         codec=codec,
         deadline_ms=deadline_ms,
+        branch_rows=branch_rows,
+        topology_kind=str(plan["topology_kind"]),
+        required_branches=required_branches,
     )
     accepted_reset_rows = _accepted_reset_rows(reset_rows, cohort_id=cohort_id)
 
@@ -1040,6 +1271,8 @@ def publish_checkpoint_runtime(
         and all(value > 0 for value in completed_by_stream.values()),
         "publication arm lacks a positive completed cohort on every logical stream",
     )
+    summary = _json_finite_or_null(summary)
+    _require(type(summary) is dict, "accepted checkpoint summary is invalid")
 
     acceptance = {
         "schema_version": PUBLICATION_ACCEPTANCE_SCHEMA_VERSION,
@@ -1061,7 +1294,9 @@ def publish_checkpoint_runtime(
         "summary": summary,
         "evidence_sha256": {
             name: _sha256_file(output_dir / name)
-            for name in _acceptance_evidence_files(policy)
+            for name in _acceptance_evidence_files(
+                policy, runtime_history=(output_dir / FROZEN_POLICY_RUNTIME_HISTORY_JSONL).is_file(),
+            )
         },
     }
     if defer_full_resource_acceptance:

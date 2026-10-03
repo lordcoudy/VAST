@@ -1,0 +1,145 @@
+{
+  "accepted": false,
+  "argv": [
+    "/usr/bin/docker",
+    "ps",
+    "--all",
+    "--no-trunc",
+    "--format",
+    "{{json .}}"
+  ],
+  "artifact_kind": "vast_readonly_post_packaged_original_quiescence_observation_v1",
+  "engine_sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+  "no_containers_listed": true,
+  "original_children": [
+    {
+      "current_starttime_ticks": null,
+      "original_child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 8059,
+        "ppid": 8057,
+        "proc_stat_starttime_ticks": 20912209,
+        "uid": 1000
+      },
+      "original_child_still_present": false,
+      "proc_path_exists": false,
+      "terminal_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-refrozen-build/original-terminal.v1.json"
+    },
+    {
+      "current_starttime_ticks": null,
+      "original_child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 8670,
+        "ppid": 8467,
+        "proc_stat_starttime_ticks": 20918774,
+        "uid": 1000
+      },
+      "original_child_still_present": false,
+      "proc_path_exists": false,
+      "terminal_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-packaged-regression-02/original-terminal.v1.json"
+    },
+    {
+      "current_starttime_ticks": null,
+      "original_child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 9087,
+        "ppid": 8887,
+        "proc_stat_starttime_ticks": 20923588,
+        "uid": 1000
+      },
+      "original_child_still_present": false,
+      "proc_path_exists": false,
+      "terminal_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-inspection/version.terminal.v1.json"
+    },
+    {
+      "current_starttime_ticks": null,
+      "original_child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 9129,
+        "ppid": 8887,
+        "proc_stat_starttime_ticks": 20923666,
+        "uid": 1000
+      },
+      "original_child_still_present": false,
+      "proc_path_exists": false,
+      "terminal_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-inspection/nvh264dec.terminal.v1.json"
+    },
+    {
+      "current_starttime_ticks": null,
+      "original_child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 9173,
+        "ppid": 8887,
+        "proc_stat_starttime_ticks": 20923716,
+        "uid": 1000
+      },
+      "original_child_still_present": false,
+      "proc_path_exists": false,
+      "terminal_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-inspection/nvh265dec.terminal.v1.json"
+    },
+    {
+      "current_starttime_ticks": null,
+      "original_child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 9620,
+        "ppid": 9414,
+        "proc_stat_starttime_ticks": 20932263,
+        "uid": 1000
+      },
+      "original_child_still_present": false,
+      "proc_path_exists": false,
+      "terminal_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/version.terminal.v1.json"
+    },
+    {
+      "current_starttime_ticks": null,
+      "original_child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 9663,
+        "ppid": 9414,
+        "proc_stat_starttime_ticks": 20932407,
+        "uid": 1000
+      },
+      "original_child_still_present": false,
+      "proc_path_exists": false,
+      "terminal_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/nvh264dec.terminal.v1.json"
+    },
+    {
+      "current_starttime_ticks": null,
+      "original_child": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 9703,
+        "ppid": 9414,
+        "proc_stat_starttime_ticks": 20932501,
+        "uid": 1000
+      },
+      "original_child_still_present": false,
+      "proc_path_exists": false,
+      "terminal_path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/gstreamer-decoder-fresh-registry-inspection/nvh265dec.terminal.v1.json"
+    }
+  ],
+  "publication_ready": false,
+  "returncode": 0,
+  "schema_version": 1,
+  "socket_device": 61,
+  "socket_inode": 1944,
+  "started_at_ns": 1790727317385255214,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/post-packaged-inspection-quiescence.stderr",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/post-packaged-inspection-quiescence.stdout",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "terminal_at_ns": 1790727317416595468
+}

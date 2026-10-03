@@ -1,0 +1,22 @@
+test_native_factory_uses_explicit_current_material_without_qualification_inputs (test_publication_gstreamer_component_inputs_v1.ComponentPureFactoryTests.test_native_factory_uses_explicit_current_material_without_qualification_inputs) ... ok
+test_selected_pin_factory_does_not_read_other_system_calibrations (test_publication_gstreamer_component_inputs_v1.ComponentPureFactoryTests.test_selected_pin_factory_does_not_read_other_system_calibrations) ... ERROR
+
+======================================================================
+ERROR: test_selected_pin_factory_does_not_read_other_system_calibrations (test_publication_gstreamer_component_inputs_v1.ComponentPureFactoryTests.test_selected_pin_factory_does_not_read_other_system_calibrations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_inputs_v1.py", line 62, in test_selected_pin_factory_does_not_read_other_system_calibrations
+    result = stock._system_file_descriptors_from_pins_v1(root=root, dataset_pin=dataset,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 2210, in _system_file_descriptors_from_pins_v1
+    candidate = _json_descriptor(
+                ^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 1748, in _json_descriptor
+    "size_bytes": int(pin.snapshot[4]),
+                      ^^^^^^^^^^^^
+AttributeError: 'JsonPin' object has no attribute 'snapshot'
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.010s
+
+FAILED (errors=1)

@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "/proc/self/fd/89",
+    "container",
+    "inspect",
+    "--format",
+    "{\"Id\":{{json .Id}},\"Name\":{{json .Name}},\"Image\":{{json .Image}},\"Created\":{{json .Created}},\"Running\":{{json .State.Running}},\"OOMKilled\":{{json .State.OOMKilled}},\"ExitCode\":{{json .State.ExitCode}},\"Pid\":{{json .State.Pid}},\"StartedAt\":{{json .State.StartedAt}},\"FinishedAt\":{{json .State.FinishedAt}},\"Operation\":{{json (index .Config.Labels \"vast.operational-custody\")}}}",
+    "8783399b17e872c49208d3f6aee4ab8f488a40618e0d78cb0c034a7cd1fb9e97"
+  ],
+  "commit": "a3e976d02e19e714232bc78a4da3e72c99bb8cde",
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable_realpath": "/usr/bin/docker",
+    "gid": 1000,
+    "pgid": 25157,
+    "pid": 25157,
+    "ppid": 24902,
+    "startticks": 25040172,
+    "uid": 1000
+  },
+  "started_at_ns": 1790768089338678350
+}

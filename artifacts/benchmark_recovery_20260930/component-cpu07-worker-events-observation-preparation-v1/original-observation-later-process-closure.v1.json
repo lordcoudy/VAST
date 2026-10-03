@@ -1,0 +1,209 @@
+{
+  "all_read_handles_released": true,
+  "elapsed_s": 0.057210900995414704,
+  "engine_queries": 0,
+  "fd_after": 6,
+  "fd_before": 6,
+  "original_closure": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/original-observation-closure-review.v1.json",
+    "sha256": "a944ac4dc1be3307f2912fc1b3501eb29cdba11f2f388f2be8c67e16a86f596b",
+    "size_bytes": 23272
+  },
+  "process_scans": [
+    {
+      "at_ns": 1790825901790019262,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "group_members": [],
+      "owners": [
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65511,
+            "pid": 65511,
+            "ppid": 65507,
+            "startticks": 30767868,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65512,
+            "pid": 65512,
+            "ppid": 65511,
+            "startticks": 30767872,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65512,
+            "pid": 65513,
+            "ppid": 65512,
+            "startticks": 30767873,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65514,
+            "pid": 65514,
+            "ppid": 65513,
+            "startticks": 30767879,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65550,
+            "pid": 65551,
+            "ppid": 65550,
+            "startticks": 30814010,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "limitation": "Metadata timeout startticks were not captured before dispatch; PID/path/group absence is separately observed.",
+            "pgid": 65550,
+            "pid": 65550,
+            "startticks": null,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        }
+      ],
+      "scan_errors": []
+    },
+    {
+      "at_ns": 1790825901841781800,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "group_members": [],
+      "owners": [
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65511,
+            "pid": 65511,
+            "ppid": 65507,
+            "startticks": 30767868,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65512,
+            "pid": 65512,
+            "ppid": 65511,
+            "startticks": 30767872,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65512,
+            "pid": 65513,
+            "ppid": 65512,
+            "startticks": 30767873,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65514,
+            "pid": 65514,
+            "ppid": 65513,
+            "startticks": 30767879,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "pgid": 65550,
+            "pid": 65551,
+            "ppid": 65550,
+            "startticks": 30814010,
+            "state": "R",
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        },
+        {
+          "observed_at_numeric_pid": null,
+          "original": {
+            "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+            "gid": 1000,
+            "limitation": "Metadata timeout startticks were not captured before dispatch; PID/path/group absence is separately observed.",
+            "pgid": 65550,
+            "pid": 65550,
+            "startticks": null,
+            "uid": 1000
+          },
+          "original_pid_path_absent": true
+        }
+      ],
+      "scan_errors": []
+    }
+  ],
+  "scanner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65574,
+    "pid": 65575,
+    "ppid": 65574,
+    "startticks": 30821723,
+    "state": "R",
+    "uid": 1000
+  },
+  "schema_version": 1,
+  "scope": "later metadata-only closure of original query and first finite closure scanner",
+  "source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-cpu07-worker-events-observation-preparation-v1/close_original_observation_v1.py",
+    "sha256": "1140c43f0e4df36270a6e6483276340b1fa621e24bd0c76eaf0ad6bc4bce81b6",
+    "size_bytes": 8410
+  }
+}

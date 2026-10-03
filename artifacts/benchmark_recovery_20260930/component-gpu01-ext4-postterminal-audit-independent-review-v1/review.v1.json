@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_gpu01_ext4_postterminal_audit_prepared_source_independent_review_v1",
+  "disposition": "approved_prepared_source_only",
+  "blocking_findings": [],
+  "reviewed_sources": [
+    {"path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/audit_v1.py", "size_bytes": 17876, "sha256": "033a597766a461c8f1b1e2be43bb775ec27e3085202bb384e4ba2c15261d43f8"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/dispatch_v1.py", "size_bytes": 1998, "sha256": "7eb5ad62673ca3cfd947fe0d28b1273f2153a1c41b1e4a482f1e011216cb4bc6"},
+    {"path": "artifacts/benchmark_recovery_20260930/component-gpu01-ext4-postterminal-audit-preparation-v1/preparation.v1.json", "size_bytes": 3814, "sha256": "2df01c674185b265c85a43bef2154ef4e53406722f1a72d92b582ab30709e269"}
+  ],
+  "original_raw_sources": [
+    {"file": "cpu06-audit_v2.original.raw", "size_bytes": 17876, "sha256": "e8e7e72280d2971d677763f512b0bede8710550c7a9518b6f19e779ad12e1d98"},
+    {"file": "cpu06-dispatch_v2.original.raw", "size_bytes": 1998, "sha256": "2264e57b2b012b6a4ed6b5b7bf8935939b1ba2a9086e1fe175b77b02ee67f33a"}
+  ],
+  "independent_source_checks": {
+    "raw_byte_inverse_audit_exact_after_only_declared_GPU_replacements": true,
+    "raw_byte_inverse_dispatch_exact_after_only_GPU_label_and_reader_filename": true,
+    "all_ten_original_audit_function_ASTs_identical": true,
+    "both_original_dispatch_function_ASTs_identical": true,
+    "future_owner_terminal_hash_size_and_PID_null_until_observed": true,
+    "no_stale_actual_CPU_PID_constants": true,
+    "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+    "fresh_stock_host_closure_sha256": "adbcb638a5f104e43c95b84e4d16388a8111d39321afb3e8e7a26f2ef537b498",
+    "original_GPU_controller_sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2"
+  },
+  "preserved_predicates": [
+    "Actual terminal/hash/size/CLI PID must join original launch, prelaunch, parent, boot, UID/GID, PGID and authenticated guardian-stop facts.",
+    "All95 original rows require full bytes, canonical names and seven-field epochs before/after/current, final held-FD rehash and truthful FD retirement; two original PID/group/session scans must be absent without unexplained read errors.",
+    "Actual20GiB reserve retirement, original native process/container and guardian lifecycle receipts, two1080-ingress GPU arm descriptors and equal measurement schedule must join. CID NotFound is not invented daemon ExitCode/Pid/OOM evidence.",
+    "Original CLI success is mandatory. A retained cold result cannot promote a failed original or complete18.9. Full qualification/Q4/publication/full-run grants remain false.",
+    "The final120-second gate includes report persistence, held-FD retirement and stdout flush. Late companion plus nonzero is sticky;135-second dispatcher containment never admits late success."
+  ],
+  "review_method": "Source reads and pinned CPython3.12.3 -I -B pure raw-byte/hash/AST inspection only. Inspection output is retained in the tool result; no physical dispatch wrapper was fabricated.",
+  "auditor_dispatcher_tests_engine_model_native_namespace_or_cold_executed": false,
+  "active_benchmark_output_read": false,
+  "source_or_original_evidence_modified": false,
+  "reviewer_holds_remaining": false,
+  "benchmark_accepted": false,
+  "task_18_9_complete": false,
+  "remaining_gate": "Use only the genuine future original GPU terminal's exact physical SHA/size/CLI PID after its writers close. Require actual audit dispatch rc0, no late-failure companion and authentic cleanup/current95 custody before adopting the report. This review is no GPU result or launch authority."
+}

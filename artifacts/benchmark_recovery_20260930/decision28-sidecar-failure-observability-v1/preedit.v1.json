@@ -1,0 +1,45 @@
+{
+  "acceptance": false,
+  "authorization": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5924440005",
+  "kind": "decision28_sidecar_author_preedit",
+  "pins": {
+    "openspec\\changes\\fix-benchmark-preparations-spec\\design.md": {
+      "sha256": "83d73b96d9f2b6dac10043633b7108afe2549d6304fa798f62fedd7095d57ebb",
+      "size_bytes": 40041
+    },
+    "openspec\\changes\\fix-benchmark-preparations-spec\\proposal.md": {
+      "sha256": "5971d2a50337373c70f2414946976aabe51cb54223ca7c1f0acd29e099494c5e",
+      "size_bytes": 16049
+    },
+    "openspec\\changes\\fix-benchmark-preparations-spec\\specs\\benchmark-launch-preparation\\spec.md": {
+      "sha256": "e42fa4a5c5931aaf82c0e2fac408c5a3930d80a4a110c6c4fcc1a889d455ec90",
+      "size_bytes": 72946
+    },
+    "openspec\\changes\\fix-benchmark-preparations-spec\\tasks.md": {
+      "sha256": "3eb2dc17f30b24fa0be14ef77fdf8ca46d00c75d19a9160754f98b58e7211a26",
+      "size_bytes": 32821
+    },
+    "scripts/checkpoint_gstreamer_analytics_sidecar.py": {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "0a0ff1d67e536d42258d8d53f8ed511283db478aba30442411b607bb849970ef",
+      "size_bytes": 296398
+    },
+    "tests/test_checkpoint_gstreamer_analytics_sidecar.py": {
+      "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "08aecf8478eb3148ab5e4a051eb4ae81529f79a778e11c30383832a94e64e1b6",
+      "size_bytes": 126015
+    },
+    "tests/test_publication_worker_termination_facts_v1.py": {
+      "path": "tests/test_publication_worker_termination_facts_v1.py",
+      "sha256": "698c118aa705f66b3f58e97e29392ab4be7d371c15a489068991b5567242b55e",
+      "size_bytes": 3296
+    }
+  },
+  "scope": [
+    "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+    "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+    "tests/test_publication_worker_termination_facts_v1.py"
+  ],
+  "source_commit": "958a036bc5a55821c712204577fdf4c51c2181c7",
+  "workload_started": false
+}

@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "/usr/bin/docker",
+    "--host",
+    "unix:///run/docker.sock",
+    "container",
+    "inspect",
+    "4e14a7d73811531299937ee4a1929968b4a445dc5b774b0b5bdf13fc724762f1"
+  ],
+  "eof": {
+    "stderr": false,
+    "stdout": false
+  },
+  "original_pid": 41581,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable": "/usr/bin/docker",
+    "executable_unavailable": null,
+    "gid": 1000,
+    "pgid": 41581,
+    "pid": 41581,
+    "ppid": 41539,
+    "startticks": 28329041,
+    "uid": 1000
+  },
+  "signals": []
+}

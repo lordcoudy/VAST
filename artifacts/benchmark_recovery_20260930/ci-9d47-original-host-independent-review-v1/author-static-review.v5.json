@@ -1,0 +1,22 @@
+{
+  "execution_performed": false,
+  "final_preparation": {
+    "path": "preparation.v5.json",
+    "sha256": "1aaaf0997d3deeb5e75775551887b8cad215e5cc3ca3dd2f055ac61e8afbb825",
+    "size_bytes": 4235
+  },
+  "hardware_acceptance": false,
+  "only_change": "Replace inherited no_selected_ROOT_or_CPU07_outputs=true with exact two selected-root control leaves/no CPU07 producer/model/host87 access; no source/argv/budget/namespace change.",
+  "schema_version": 1,
+  "source_unchanged": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v4.py",
+    "sha256": "809941650bda699e28a3e39e50af59b4102a2533bca47d534721c3ae9342ea47",
+    "size_bytes": 24668
+  },
+  "status": "prepared_factual_scope_correction_only",
+  "superseded_preparation": {
+    "path": "preparation.v4.json",
+    "sha256": "56bd93e825f2eb443d1e52b3c922591655b93d4d0f0a783d6c5284d2a9ac611b",
+    "size_bytes": 3820
+  }
+}

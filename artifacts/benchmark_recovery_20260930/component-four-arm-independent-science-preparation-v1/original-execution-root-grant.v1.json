@@ -1,0 +1,57 @@
+{
+  "authority": "Root NEW_TASK explicit grant after exact peer review; all3 source hashes/preparation/peer match",
+  "no_automatic_retry": true,
+  "peer": {
+    "path": "artifacts\\benchmark_recovery_20260930\\component-four-arm-independent-science-source-review-v1\\review.v1.json",
+    "sha256": "bbfa27710f021cfb2177ad3336ce9fcb849d3aebdb5ba34c16c55cc5d326a27f",
+    "size_bytes": 7226
+  },
+  "preparation": {
+    "path": "artifacts\\benchmark_recovery_20260930\\component-four-arm-independent-science-preparation-v1\\preparation.v2.json",
+    "sha256": "b262a0eca1a82710d20bb5713fbe4b56fb67626aae725e6c53049a0896c1cfcc",
+    "size_bytes": 8492
+  },
+  "prepared_command": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/run.py",
+    "--project-root",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "--font-cache",
+    "/home/s-a-balashov/.cache/matplotlib/fontlist-v3.11.0.json",
+    "--cpu-original-terminal",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/original.terminal.v1.json",
+    "--cpu-original-terminal-sha256",
+    "e87c878c725f309cf344f27926cb6e12647e839a8f5745084b69619c090d3db9",
+    "--cpu-original-terminal-size",
+    "88066",
+    "--gpu-original-terminal",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-01-original-controller/original.terminal.v1.json",
+    "--gpu-original-terminal-sha256",
+    "4c0e3fd34fb8ac8255bffab52fec7a310601eb4d29211a40f6948e882cbf3fc9",
+    "--gpu-original-terminal-size",
+    "88102"
+  ],
+  "recorded_at_ns": 1790808452891920500,
+  "root_grant_text": "Root reviewed exact preparation.v2.json8492B b262a0eca1a82710d20bb5713fbe4b56fb67626aae725e6c53049a0896c1cfcc +independent source review7226B bbfa27710f021cfb2177ad3336ce9fcb849d3aebdb5ba34c16c55cc5d326a27f, approvedprepared. ROOT GRANT ONE original pure four-arm science execution: exactly prepared_command20args with sources reduce24264B f4332d703d94dd54e7b856f12d04300bc95d99ec1eb456f87d24b8f98813ccff/run7853B b88c9e78b0ba8f075ab8934810f67de903af49dd3ef87181f896d59b2b5cf91e/render9184B fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1. Original110+10/whole120 bounds remain; one freshexclusive attempt01, no import-fallback/hardware/models/source modifications. Persist rootgrant referencing this exactmessage+peerfile and actualtoolterminal, run once, close FD/process/EOF/latecompanion/numeric equality/renderpins/timing. Then request independent CLOSED actual result peer from adversarial_review after your capture terminal. This grant is result-unproven; failed original must remain failed no automatic retry. Return compact actual metrics CPU/GPU baseline/shared deadlinecoverage/admitted/drop/latencies/partial C_obs once numericrecomputeclosed. Preserve source0ad benchmark root and current CI checkout4cb; diagnosisagent works separatepath.",
+  "schema_version": 1,
+  "scope": "ONE original pure-science reduction/render, no new hardware or cold authority",
+  "source_files": {
+    "reduce.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/reduce.py",
+      "sha256": "f4332d703d94dd54e7b856f12d04300bc95d99ec1eb456f87d24b8f98813ccff",
+      "size_bytes": 24264
+    },
+    "render.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/render.py",
+      "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+      "size_bytes": 9184
+    },
+    "run.py": {
+      "path": "artifacts/benchmark_recovery_20260930/component-four-arm-independent-science-preparation-v1/run.py",
+      "sha256": "b88c9e78b0ba8f075ab8934810f67de903af49dd3ef87181f896d59b2b5cf91e",
+      "size_bytes": 7853
+    }
+  }
+}

@@ -594,6 +594,22 @@ def _read_windows(
             ) from close_error
 
 
+def _posix_file_fingerprint(info: os.stat_result) -> tuple[int, ...]:
+    """Track security/content identity while deliberately excluding atime."""
+
+    return (
+        int(info.st_dev),
+        int(info.st_ino),
+        int(info.st_mode),
+        int(info.st_nlink),
+        int(info.st_uid),
+        int(info.st_gid),
+        int(info.st_size),
+        int(info.st_mtime_ns),
+        int(info.st_ctime_ns),
+    )
+
+
 def _read_posix(
     root: Path, relative: PurePosixPath, root_identity: tuple[int, int],
 ) -> tuple[dict[str, Any], tuple[int, int], bytes]:
@@ -648,8 +664,10 @@ def _read_posix(
                      "launcher runtime artifact exceeds size limit")
             chunks.append(chunk)
         after = os.fstat(descriptor_fd)
-        _require(opened == after,
-                 "launcher runtime artifact changed while reading")
+        _require(
+            _posix_file_fingerprint(opened) == _posix_file_fingerprint(after),
+            "launcher runtime artifact changed while reading",
+        )
         verify_parent = os.open(root, directory_flags)
         verification.append(verify_parent)
         verify_root = os.fstat(verify_parent)
@@ -665,10 +683,13 @@ def _read_posix(
         verify_fd = os.open(relative.parts[-1], flags, dir_fd=verify_parent)
         verification.append(verify_fd)
         verify_info = os.fstat(verify_fd)
-        _require(stat.S_ISREG(verify_info.st_mode)
-                 and int(verify_info.st_nlink) == 1
-                 and verify_info == after,
-                 "launcher runtime artifact path changed while reading")
+        _require(
+            stat.S_ISREG(verify_info.st_mode)
+            and int(verify_info.st_nlink) == 1
+            and _posix_file_fingerprint(verify_info)
+            == _posix_file_fingerprint(after),
+            "launcher runtime artifact path changed while reading",
+        )
         payload = b"".join(chunks)
         return ({
             "path": relative.as_posix(), "size_bytes": len(payload),

@@ -1,0 +1,402 @@
+--- immutable-v4/README.md
++++ artifact-v5/README.md
+@@ -1,9 +1,31 @@
+-Artifact-v4 applies reviewed decision20 at planning8a0bdb4b4ed1a09593ab054537766c0970d722df,
+-PR comment5905513846. Decision21 is a CI-only planning amendment; the mapped-input
+-behavior remains reviewed decision20. The47-test behavioral receipt records the
+-prebinding065 snapshot, with no functional rerun required for these literals. Immutable v1-v3 and failed original attempts01-03 stay unchanged.
+-No launch authorization is implied by these files. Future attempt04 requires exact final
+-source/dispatcher review, commit/PR record and explicit once-only root dispatch.
++Artifact-v5 applies reviewed decision22 at planning9c514a60d644c8c3ecd637eb83185a59aa2a5e01,
++PR comment5906191857, after independent planning review9b566203. Immutable v1-v4
++and failed original attempts01-04 stay unchanged. No launch authorization is implied
++by these files. Future attempt05 requires exact final source/dispatcher review,
++commit/PR record and explicit once-only root dispatch.
++
++Attempt04 failed during preflight with an original mapped identity rejection. Its
++outer handler retained a stack but omitted attached Pin facts, so the failed path and
++held/named identity remain unknown. V5 reuses the existing bounded first-error writer
++in Guest.execute before remaining held Pins retire. Its record has null run/clip/setting
++for preflight, the actual stage, original exception and stack, and the attached snapshot
++captured inside Pin before the rejected FD closed. Existing per-run records remain
++separate and immutable. The guest terminal references the outer primary descriptor and
++separate capture failure; overflow/collision/write failure never permits continuation.
++
++Nested teardown retires remaining held Pins even if metadata closing fails. An original
++terminal persistence failure re-raises the original primary cause with a separate note.
++A close failure after terminal sealing retains that terminal and an exclusive bounded
++close-failure companion, reports capture failure separately and returns nonzero. The
++original primary record and cause are not replaced by teardown errors. All records use
++existing 16KiB/namespace reservations and the existing whole deadline.
++
++Focused preflight fixtures use an actual hardlinked mmap, actual /proc/self/maps rows,
++and a deliberate inode-plus-one fault at the real Pin boundary. Cap, exclusive collision,
++actual readonly-FD write, terminal persistence and metadata-close failures verify original
++facts, primary precedence and FD retirement. No GI/Docker/source/decoder/model is run.
++All Pin/maps/default/cache/pipeline/media/order/cohort/ACK/numeric guards remain unchanged.
++The following mapped-input and original protocol description is inherited from v4.
+ 
+ Original attempt03 identified a regular187984B libcuda.so.1 with4hardlinks. V4 changes
+ only mapped-library input identity: keyword-only mapped_identity=None keeps the strict
+@@ -53,14 +75,14 @@
+ two real15s outer-boundary tests are not repeated merely for this diagnostic change.
+ 
+ Artifact-only decoder mechanism experiment for reviewed planning commit
+-`8a0bdb4b4ed1a09593ab054537766c0970d722df` (PR comment5905513846).
++`9c514a60d644c8c3ecd637eb83185a59aa2a5e01` (PR comment5906191857).
+ No production runtime source, image, model, guardian or benchmark authority is changed.
+-Original attempts01-03 failed during setup and retained no source/decoder cohort. V4
+-attempt04 has not been started. Root and independent controller review, then a separate
++Original attempts01-04 failed during setup and retained no source/decoder cohort. V5
++attempt05 has not been started. Root and independent controller review, then a separate
+ exact dispatch authorization, must finish before executing this command once:
+ 
+ ```
+-/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v4/controller.py --project-root /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec --output-dir /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-attempt-04
++/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/controller.py --project-root /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec --output-dir /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-attempt-05
+ ```
+ 
+ The exclusively created output directory consumes that attempt. An existing directory
+@@ -76,7 +98,7 @@
+ The original output layout is fixed:
+ 
+ ```
+-decoder-research-attempt-04/
++decoder-research-attempt-05/
+   controller/
+     execution-plan.v1.json
+     reservation.v1.json
+--- immutable-v4/controller.py
++++ artifact-v5/controller.py
+@@ -20,7 +20,7 @@
+ from research_protocol import (CHANNEL_MAX, Evidence, METADATA_MAX, Pin, ResearchError,
+     canonical, epoch, owner, physical_descriptor, post_receipt_deadline, require, strict_object, verify_seal)
+ 
+-PLANNING_COMMIT = '8a0bdb4b4ed1a09593ab054537766c0970d722df'
++PLANNING_COMMIT = '9c514a60d644c8c3ecd637eb83185a59aa2a5e01'
+ IMAGE_ID = 'sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a'
+ DAEMON_ID = 'aa8f3d33-e1dc-4ed2-ad06-488b46b332d0'
+ ENGINE_SHA = 'a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d'
+--- immutable-v4/guest_consumer.py
++++ artifact-v5/guest_consumer.py
+@@ -58,7 +58,7 @@
+         self.plan_pin = Pin(plan_path, maximum=METADATA_MAX, deadline=self.phase_deadline)
+         self.plan = verify_seal(strict_object(os.pread(self.plan_pin.fd, METADATA_MAX, 0), METADATA_MAX))
+         require(self.plan['artifact_kind'] == 'vast_decoder_research_plan_v1' and
+-            self.plan['planning_commit'] == '8a0bdb4b4ed1a09593ab054537766c0970d722df', 'unreviewed research plan')
++            self.plan['planning_commit'] == '9c514a60d644c8c3ecd637eb83185a59aa2a5e01', 'unreviewed research plan')
+         require(self.plan['fixed_order'] == [list(x) for x in FIXED_ORDER], 'fixed four-run order differs')
+         require(type(self.plan['guest_prelaunch_budget_s']) in (float,int) and
+             0 < self.plan['guest_prelaunch_budget_s'] <= 120, 'guest shared-prelaunch budget invalid')
+@@ -733,6 +733,8 @@
+         result = None
+         failure = None
+         failure_type = failure_trace = failure_trace_error = None
++        primary_exc = original_primary_failure = primary_failure_capture_error = None
++        metadata_close_error = pin_close_error = close_failure = close_failure_capture_error = None
+         try:
+             self.preflight()
+             completed = []
+@@ -772,8 +774,15 @@
+                     'source realtime ms and planned offsets are not subtracted from decoder monotonic ns',
+                     'four fixed prefixes do not establish six-stream100ms feasibility or model throughput']}
+         except BaseException as exc:
++            primary_exc = exc
++            result = None
+             failure = str(exc)
+             failure_type = type(exc).__module__+'.'+type(exc).__qualname__
++            try:
++                original_primary_failure = self.record_inner_failure(
++                    self.metadata, exc, self.failure_stage, None, None, None)
++            except BaseException as capture_error:
++                primary_failure_capture_error = str(capture_error)
+             try:
+                 raw=''.join(traceback.format_exception(exc)).encode('utf8')
+                 require(len(raw)<=EVENT_MAX,'original failure traceback16KiB cap exceeded')
+@@ -793,18 +802,56 @@
+                     'failure_stage':None if failure is None else self.failure_stage,
+                     'failure_type':failure_type,'failure_traceback':failure_trace,
+                     'failure_traceback_error':failure_trace_error,
++                    'original_primary_failure':original_primary_failure,
++                    'primary_failure_capture_error':primary_failure_capture_error,
+                     'elapsed_s': time.monotonic()-self.begun, 'accepted': False, 'publication_ready': False,
+                     'benchmark_arm_count': 0, 'native_pair_count': 0, 'qualification_count': 0,
+                     'model_or_parity_evidence': False}, final=True)
++            except BaseException as final_error:
++                if primary_exc is not None:
++                    primary_exc.add_note('guest terminal persistence failed: '+str(final_error))
++                    raise primary_exc from final_error
++                raise
+             finally:
+-                self.metadata.close()
+-                for pin in reversed(self.pins):
+-                    pin.close()
++                try:
++                    self.metadata.close()
++                except BaseException as close_error:
++                    metadata_close_error = str(close_error)
++                    result = None
++                    if primary_exc is not None:
++                        primary_exc.add_note('guest metadata close failed: '+metadata_close_error)
++                finally:
++                    for pin in reversed(self.pins):
++                        try:
++                            pin.close()
++                        except BaseException as close_error:
++                            if pin_close_error is None:pin_close_error = str(close_error)
++                            result = None
++                            if primary_exc is not None:
++                                primary_exc.add_note('guest pin close failed: '+str(close_error))
++            if metadata_close_error is not None or pin_close_error is not None:
++                try:
++                    record = {'artifact_kind':'vast_decoder_research_guest_close_failure_v1',
++                        'provisional_terminal':receipt, 'original_failure':failure,
++                        'original_failure_type':failure_type, 'original_primary_failure':original_primary_failure,
++                        'metadata_close_error':metadata_close_error, 'pin_close_error':pin_close_error,
++                        'accepted':False, 'publication_ready':False}
++                    require(len(canonical(seal(record)))+1<=EVENT_MAX,'guest close failure record16KiB cap exceeded')
++                    close_failure = self.metadata.document('guest-close-failure.v1.json',record,final=True)
++                except BaseException as capture_error:
++                    close_failure_capture_error = str(capture_error)
++                finally:
++                    try:
++                        self.metadata.close()
++                    except BaseException as capture_error:
++                        if close_failure_capture_error is None:close_failure_capture_error = str(capture_error)
+             within_deadline,late_receipt=post_receipt_deadline(
+                 self.metadata,receipt,self.begun,self.overall_deadline,'guest')
+             if not within_deadline:result=None
+             print(canonical({'receipt': receipt, 'successful': result is not None,
+-                'receipt_time_limit_failure':late_receipt}).decode(), flush=True)
++                'receipt_time_limit_failure':late_receipt, 'close_failure':close_failure,
++                'metadata_close_error':metadata_close_error, 'pin_close_error':pin_close_error,
++                'close_failure_capture_error':close_failure_capture_error}).decode(), flush=True)
+         return 0 if result is not None else 1
+ 
+ 
+--- immutable-v4/test_preflight_diagnostics_v5.py
++++ artifact-v5/test_preflight_diagnostics_v5.py
+@@ -0,0 +1,223 @@
++"""Real mmap/files/FDs exercising outer execute; deliberate wrong inode, no GI/source/decoder."""
++import contextlib
++import hashlib
++import io
++import json
++import mmap
++import os
++from pathlib import Path
++import sys
++import tempfile
++import time
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++import research_protocol as p
++import guest_consumer
++
++
++def decoded(path):
++    return p.verify_seal(json.loads(path.read_bytes()))
++
++
++class PreflightDiagnosticsTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.base = Path(self.temp.name)
++        self.library = self.base / 'libgst_original_preflight_fixture.so'
++        self.library.write_bytes(b'actual original mapped fixture' * 128)
++        os.link(self.library, self.base / 'second-library-link')
++        self.file = self.library.open('rb')
++        self.mapping = mmap.mmap(self.file.fileno(), 0, access=mmap.ACCESS_READ)
++        self.g = guest_consumer.Guest.__new__(guest_consumer.Guest)
++        guest = self.g
++        guest.begun = time.monotonic()
++        guest.overall_deadline = guest.begun + 30
++        guest.phase_deadline = guest.begun + 20
++        guest.output = self.base / 'guest'
++        guest.output.mkdir()
++        guest.metadata = p.Evidence(guest.output / 'metadata', p.METADATA_MAX // 2)
++        plan = self.base / 'plan.json'
++        plan.write_bytes(b'explicit file fixture, no production plan or hardware')
++        other = self.base / 'other.bin'
++        other.write_bytes(b'actual held pin during failed preflight')
++        guest.plan_pin = p.Pin(plan)
++        guest.pins = [guest.plan_pin, p.Pin(other)]
++        self.held_fds = [pin.fd for pin in guest.pins]
++        self.held_fd_count = sum(1+len(pin.directories) for pin in guest.pins)
++        guest.packages = {}
++        guest.runs = []
++        guest.failure_stage = 'fixture_preflight.actual_mapped_identity'
++        self.primary = None
++
++        def preflight():
++            raw = p.read_process_maps(os.getpid())
++            identities, rows = p.mapped_library_rows(raw, ('libgst_original_preflight_fixture',))
++            actual = identities[str(self.library)]
++            snapshot = guest.metadata.document('mapped-inputs-01.v1.json', {
++                'artifact_kind':'vast_decoder_research_original_mapped_inputs_v1',
++                'process':p.owner(os.getpid()), 'proc_path':f'/proc/{os.getpid()}/maps',
++                'snapshot_size_bytes':len(raw), 'snapshot_sha256':hashlib.sha256(raw).hexdigest(),
++                'selected_original_rows':rows, 'fixture_fault':'actual mapped inode plus one',
++                'accepted':False,'publication_ready':False})
++            try:
++                guest.pin(self.library, mapped_identity=(actual[0], actual[1]+1))
++            except BaseException as exc:
++                self.primary = exc
++                exc.pin_rejection['mapping_snapshot'] = snapshot
++                exc.pin_rejection['original_mapping_row'] = rows[0]
++                raise
++        guest.preflight = preflight
++
++    def tearDown(self):
++        self.g.metadata.close()
++        for pin in self.g.pins:
++            pin.close()
++        self.mapping.close()
++        self.file.close()
++        self.temp.cleanup()
++
++    def execute_failed(self):
++        before = len(list(Path('/proc/self/fd').iterdir()))
++        out = io.StringIO()
++        with contextlib.redirect_stdout(out):
++            rc = self.g.execute()
++        self.assertEqual(rc, 1)
++        for fd in self.held_fds:
++            with self.assertRaises(OSError):os.fstat(fd)
++        self.assertEqual(len(list(Path('/proc/self/fd').iterdir())), before-self.held_fd_count-1)
++        terminal = decoded(self.g.metadata.directory / 'research-terminal.v1.json')
++        self.assertEqual(terminal['failure'], 'mapped input identity differs')
++        self.assertEqual(terminal['failure_type'], 'research_protocol.ResearchError')
++        self.assertEqual(terminal['failure_stage'], 'fixture_preflight.actual_mapped_identity')
++        self.assertEqual(terminal['runs_completed'], 0)
++        self.assertIsNone(terminal['result'])
++        self.assertFalse(json.loads(out.getvalue())['successful'])
++        self.assertFalse(any(path.name.startswith('run-') for path in self.g.output.iterdir()))
++        return terminal, json.loads(out.getvalue())
++
++    def test_original_mapped_rejection_persists_before_remaining_pin_retirement(self):
++        original = self.g.record_inner_failure
++        def observe(evidence, exc, *args):
++            for fd in self.held_fds:os.fstat(fd)
++            self.assertIs(exc, self.primary)
++            return original(evidence, exc, *args)
++        self.g.record_inner_failure = observe
++        terminal, _ = self.execute_failed()
++        path = self.g.metadata.directory / 'original-inner-failure.v1.json'
++        self.assertLessEqual(path.stat().st_size, p.EVENT_MAX)
++        record = decoded(path)
++        self.assertEqual(terminal['original_primary_failure']['sha256'], hashlib.sha256(path.read_bytes()).hexdigest())
++        self.assertIsNone(terminal['primary_failure_capture_error'])
++        self.assertEqual((record['run'],record['clip'],record['setting']), (None,None,None))
++        self.assertEqual(record['stage'], terminal['failure_stage'])
++        self.assertIn('preflight', record['traceback'])
++        self.assertIn('Pin', record['traceback'])
++        facts = record['pin_rejection']
++        self.assertEqual(facts['requested_path'], str(self.library))
++        self.assertEqual(facts['fstat']['nlink'], 2)
++        self.assertEqual(facts['fstat'], facts['failure_fstat'])
++        self.assertEqual(facts['pin_stage'],'mapped_identity_join')
++        self.assertEqual(facts['predicate_results'],
++            {'regular_file':True,'single_link':False,'within_size_cap':True})
++        self.assertEqual(facts['mapped_named_lstat']['epoch'][1], facts['fstat']['epoch'][1])
++        self.assertEqual(facts['mapped_identity'][1], facts['fstat']['epoch'][1]+1)
++        self.assertEqual(facts['original_mapping_row']['mapped_identity'][1], facts['fstat']['epoch'][1])
++        self.assertTrue((self.g.metadata.directory / 'mapped-inputs-01.v1.json').is_file())
++        self.assertFalse(record['accepted'])
++
++    def test_outer_record_cap_failure_preserves_original_cause_without_truncation(self):
++        original = self.g.record_inner_failure
++        self.g.record_inner_failure = lambda ev,exc,stage,*args:original(ev,exc,'X'*p.EVENT_MAX,*args)
++        terminal, _ = self.execute_failed()
++        self.assertIsNone(terminal['original_primary_failure'])
++        self.assertEqual(terminal['primary_failure_capture_error'], 'original inner failure record16KiB cap exceeded')
++        self.assertFalse((self.g.metadata.directory/'original-inner-failure.v1.json').exists())
++        self.assertIn('mapped input identity differs', (self.g.metadata.directory/'original-failure-traceback.txt').read_text())
++
++    def test_exclusive_collision_keeps_prior_bytes_and_original_primary(self):
++        prior = b'explicit immutable fixture collision'
++        (self.g.metadata.directory/'original-inner-failure.v1.json').write_bytes(prior)
++        terminal, _ = self.execute_failed()
++        self.assertIsNone(terminal['original_primary_failure'])
++        self.assertIn('File exists', terminal['primary_failure_capture_error'])
++        self.assertEqual((self.g.metadata.directory/'original-inner-failure.v1.json').read_bytes(), prior)
++
++    def actual_readonly_write(self, target):
++        original = p.Evidence.append
++        def append(evidence,name,raw,**kwargs):
++            if name != target:return original(evidence,name,raw,**kwargs)
++            writer = evidence.streams[name]
++            readonly = os.open(evidence.directory/name, os.O_RDONLY)
++            evidence.streams[name] = readonly
++            try:return original(evidence,name,raw,**kwargs)
++            finally:
++                evidence.streams[name] = writer
++                os.close(readonly)
++        return patch.object(p.Evidence,'append',append)
++
++    def test_actual_readonly_primary_write_keeps_original_cause_and_retires_fds(self):
++        with self.actual_readonly_write('original-inner-failure.v1.json'):
++            terminal, _ = self.execute_failed()
++        self.assertIsNone(terminal['original_primary_failure'])
++        self.assertIn('Bad file descriptor',terminal['primary_failure_capture_error'])
++        self.assertEqual((self.g.metadata.directory/'original-inner-failure.v1.json').read_bytes(),b'')
++
++    def test_actual_trace_write_failure_does_not_replace_structured_primary(self):
++        with self.actual_readonly_write('original-failure-traceback.txt'):
++            terminal, _ = self.execute_failed()
++        self.assertIsNotNone(terminal['original_primary_failure'])
++        self.assertIn('Bad file descriptor',terminal['failure_traceback_error'])
++
++    def test_metadata_close_failure_keeps_primary_and_retires_all_remaining_fds(self):
++        original = p.Evidence.close
++        failed = False
++        def close(evidence):
++            nonlocal failed
++            original(evidence)
++            if evidence is self.g.metadata and not failed:
++                failed = True
++                raise OSError('explicit close failure after actual FD retirement')
++        with patch.object(p.Evidence,'close',close):
++            terminal, out = self.execute_failed()
++        self.assertIsNotNone(terminal['original_primary_failure'])
++        close_record = decoded(self.g.metadata.directory/'guest-close-failure.v1.json')
++        self.assertEqual(close_record['original_failure'],terminal['failure'])
++        self.assertEqual(close_record['metadata_close_error'],'explicit close failure after actual FD retirement')
++        self.assertEqual(out['close_failure']['sha256'],hashlib.sha256((self.g.metadata.directory/'guest-close-failure.v1.json').read_bytes()).hexdigest())
++
++    def test_terminal_persistence_failure_raises_original_primary_and_retires_fds(self):
++        original = self.g.metadata.document
++        def document(name,*args,**kwargs):
++            if name == 'research-terminal.v1.json':raise OSError('explicit final terminal persistence failure')
++            return original(name,*args,**kwargs)
++        self.g.metadata.document = document
++        with self.assertRaisesRegex(p.ResearchError,'mapped input identity differs') as caught:
++            self.g.execute()
++        self.assertIs(caught.exception,self.primary)
++        self.assertIn('guest terminal persistence failed: explicit final terminal persistence failure',caught.exception.__notes__)
++        for fd in self.held_fds:
++            with self.assertRaises(OSError):os.fstat(fd)
++        self.assertEqual(decoded(self.g.metadata.directory/'original-inner-failure.v1.json')['message'],'mapped input identity differs')
++
++    def test_close_companion_write_failure_stays_nonzero_and_reports_capture_error(self):
++        original = p.Evidence.close
++        failed = False
++        def close(evidence):
++            nonlocal failed
++            original(evidence)
++            if evidence is self.g.metadata and not failed:
++                failed = True
++                raise OSError('explicit original close failure')
++        with patch.object(p.Evidence,'close',close), self.actual_readonly_write('guest-close-failure.v1.json'):
++            terminal, out = self.execute_failed()
++        self.assertEqual(out['metadata_close_error'],'explicit original close failure')
++        self.assertIn('Bad file descriptor',out['close_failure_capture_error'])
++        self.assertIsNone(out['close_failure'])
++        self.assertEqual((self.g.metadata.directory/'guest-close-failure.v1.json').read_bytes(),b'')
++        self.assertEqual(terminal['failure'],'mapped input identity differs')
++
++
++if __name__ == '__main__':
++    unittest.main(verbosity=2)

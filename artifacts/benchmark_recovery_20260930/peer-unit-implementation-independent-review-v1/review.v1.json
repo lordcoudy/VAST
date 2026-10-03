@@ -1,0 +1,73 @@
+{
+  "artifact_kind": "vast_independent_peer_unit_implementation_review_v1",
+  "disposition": "approved within exact Decision21 test-only scope",
+  "findings": [],
+  "inputs": [
+    {
+      "path": "tests/test_analytics_peer_identity.py",
+      "sha256": "3f9876f3b494c8d3579f8017893c9db349ce361b6c76cfe2e3858978b94280a8",
+      "size_bytes": 21089
+    },
+    {
+      "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+      "sha256": "05c958f75564577465f5031dcb52010be990516c01f9e7b0504926abe9ccf55a",
+      "size_bytes": 293953
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/peer-unit-portable-tests-v1/attempt-01-focused/execution.json",
+      "sha256": "9eb021adcfe5909a7e8c417d47eb0518d6370fb95456a34adbac723d75d10aa5",
+      "size_bytes": 2831
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/peer-unit-portable-tests-v1/attempt-01-focused/stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/peer-unit-portable-tests-v1/attempt-01-focused/stderr",
+      "sha256": "ddf27d4e1590236340dd5b7b8e8dc509fda86edce2d54584478dbf1827b514ab",
+      "size_bytes": 474
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/peer-unit-portable-tests-v1/attempt-01-focused/source-before.json",
+      "sha256": "db46c747196ac45cb08e25d8f415172088a6ab68e9e8e10c9a188a6b99db07f0",
+      "size_bytes": 44860
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/peer-unit-portable-tests-v1/attempt-01-focused/source-after.json",
+      "sha256": "da8ef743e72fd880c7e9fcc89e31084c3a3adfa82f64676028180dc07dc42530",
+      "size_bytes": 40561
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/peer-unit-portable-tests-v1/attempt-01-focused/dispatch.json",
+      "sha256": "0d32014114be92dadcfd584acee4efcfaa15b3b24db0627b4e05b17ad1a8fbb6",
+      "size_bytes": 1487
+    }
+  ],
+  "limits": [
+    "No test, network, Docker, source, model or decoder workload was run by this reviewer.",
+    "The two original local successes establish the reviewed fixture behavior; hosted Ubuntu success and full CI remain pending.",
+    "This review grants no actual WSL host attestation, benchmark result, source/model parity or publication acceptance."
+  ],
+  "original_validation": {
+    "elapsed_s": 0.5787782419938594,
+    "process_absent": true,
+    "returncode": 0,
+    "scope": "original pinned WSL CPython local unit fixture only; real Docker commands were mocked",
+    "tests_passed": 2,
+    "timed_out": false
+  },
+  "planning_commit": "8a0bdb4b4ed1a09593ab054537766c0970d722df",
+  "planning_review_comment": 5905513846,
+  "reasoning": [
+    "The only code change is the approved unit fixture and explicit parser negative. The observer still performs its real proc open, fstat, path/owner/mode checks, bounded original reads and close; saved real os functions avoid mock recursion. Explicit 33-byte frozen WSL fixture plus EOF supplies the unit parser input rather than claiming an observation of the current host.",
+    "The test requires exact no-follow/close-on-exec open flags, actual same integer descriptor, original requested read sizes 256 and 223, one close, and EBADF afterward. It leaves Docker projection fixture and existing output equality unchanged.",
+    "The added direct non-WSL marker negative exercises the unchanged production parser. No production predicate, platform check, fstat, path, source, socket or Docker implementation is relaxed or skipped.",
+    "Original before/after current physical source witness arrays are exactly equal, with 165-source and 78-host membership preserved and this test excluded from both. Current production observer bytes independently match the original frozen digest."
+  ],
+  "review_save_scope": "One earlier reviewer receipt command had a parse-time SyntaxError before any filesystem effects; this corrected read-only command performed the recorded checks and saved only this review. Original test evidence was not rerun or changed.",
+  "reviewed_at_utc": "2026-09-30T06:54:30.889603+00:00",
+  "reviewer": "adversarial_review",
+  "schema_version": 1,
+  "sha256": "f58078691f4933a105aed44f1a12f26b2082357d19ce49e37c3f0bb9d51a2ca9"
+}

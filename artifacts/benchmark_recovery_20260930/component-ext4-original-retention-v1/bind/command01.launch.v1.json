@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "/usr/bin/docker",
+    "--host",
+    "unix:///run/docker.sock",
+    "container",
+    "inspect",
+    "vast-d27-bind-41539"
+  ],
+  "eof": {
+    "stderr": false,
+    "stdout": false
+  },
+  "original_pid": 41541,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable": "/usr/bin/docker",
+    "executable_unavailable": null,
+    "gid": 1000,
+    "pgid": 41541,
+    "pid": 41541,
+    "ppid": 41539,
+    "startticks": 28329028,
+    "uid": 1000
+  },
+  "signals": []
+}

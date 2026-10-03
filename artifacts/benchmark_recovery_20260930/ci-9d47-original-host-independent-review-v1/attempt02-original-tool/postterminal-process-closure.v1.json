@@ -1,0 +1,171 @@
+{
+  "CPU07_success": false,
+  "all_original_reader_timeout_pids_and_groups_absent": true,
+  "fd_count_after": 6,
+  "fd_count_before": 6,
+  "genuine_tool_exit_code": 0,
+  "hardware_acceptance": false,
+  "late_companion_absent": true,
+  "original_all_FDs_released": true,
+  "original_artifact_rows": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v4.py",
+        "sha256": "809941650bda699e28a3e39e50af59b4102a2533bca47d534721c3ae9342ea47",
+        "size_bytes": 24668
+      },
+      "epoch": [
+        69,
+        1407374885978550,
+        33279,
+        1,
+        24668,
+        1790825116132281800,
+        1790825116132281800
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/root-grant.v2.json",
+        "sha256": "cd952faa4a9086ef0d82a03f176a5e1faae86582a44f1db2a931e9152dc7f5b8",
+        "size_bytes": 2357
+      },
+      "epoch": [
+        69,
+        1688849862689232,
+        33279,
+        1,
+        2357,
+        1790825853715706400,
+        1790825853715706400
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/preparation.v5.json",
+        "sha256": "1aaaf0997d3deeb5e75775551887b8cad215e5cc3ca3dd2f055ac61e8afbb825",
+        "size_bytes": 4235
+      },
+      "epoch": [
+        69,
+        1407374885978560,
+        33279,
+        1,
+        4235,
+        1790825281006264500,
+        1790825281006264500
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/attempt02/launch.v1.json",
+        "sha256": "71c3dade619cec4d96af31debb3be4da2daf11346ba9483d76b85aca5bbfab15",
+        "size_bytes": 727
+      },
+      "epoch": [
+        69,
+        1407374885978581,
+        33279,
+        1,
+        727,
+        1790825871349575800,
+        1790825871349575800
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/attempt02/review.v1.json",
+        "sha256": "77ad41f11e56688ecb28e7f46083cd9620d1e2d07bad4f192c23aabd8f7844cb",
+        "size_bytes": 111727
+      },
+      "epoch": [
+        69,
+        1688849862689238,
+        33279,
+        1,
+        111727,
+        1790825872595429000,
+        1790825872595429000
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/attempt02-original-tool/stdout.raw",
+        "sha256": "ca4342db80175d710f112fe56ce18c37793b76ddf0d561b4d52997411134c2d3",
+        "size_bytes": 404
+      },
+      "epoch": [
+        69,
+        2251799816110546,
+        33279,
+        1,
+        404,
+        1790825872597428800,
+        1790825872597428800
+      ]
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/attempt02-original-tool/stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "epoch": [
+        69,
+        1407374885978579,
+        33279,
+        1,
+        0,
+        1790825871306107800,
+        1790825871306107800
+      ]
+    }
+  ],
+  "original_capture_command": "setsid --wait timeout --signal=TERM --kill-after=10s 120s pinnedCP312 -I -B exactv4",
+  "original_reader": {
+    "argv": [
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v4.py"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "mode": "closed retained original metadata only",
+    "pgid": 65564,
+    "pid": 65565,
+    "ppid": 65564,
+    "source": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v4.py",
+      "sha256": "809941650bda699e28a3e39e50af59b4102a2533bca47d534721c3ae9342ea47",
+      "size_bytes": 24668
+    },
+    "startticks": 30818677,
+    "uid": 1000
+  },
+  "original_reader_status": "closed_original_hosted_full_portable_CI_evidence_success",
+  "postterminal_scans": [
+    {
+      "matching_original_pids_or_pgid": [],
+      "monotonic_ns": 308259007439032,
+      "proc_rows_observed": 106,
+      "read_errors": [],
+      "wall_time_ns": 1790825943531590881
+    },
+    {
+      "matching_original_pids_or_pgid": [],
+      "monotonic_ns": 308259509788736,
+      "proc_rows_observed": 106,
+      "read_errors": [],
+      "wall_time_ns": 1790825944033255019
+    }
+  ],
+  "raw_stdout_stderr_EOF_after_waiting_original_tool": true,
+  "scanner_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 65588,
+    "pid": 65588,
+    "uid": 1000
+  },
+  "schema_version": 1,
+  "scope": "Exact original reader/timeout PID+PGID scans and reader-held FDs, not global hosted CI process re-observation or hardware acceptance.",
+  "status": "closed_original_hosted34_metadata_reader_success_process_proof"
+}

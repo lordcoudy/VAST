@@ -13,10 +13,12 @@
 
 #include <algorithm>
 #include <array>
+#include <cctype>
 #include <atomic>
 #include <chrono>
 #include <cmath>
 #include <condition_variable>
+#include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <deque>
@@ -129,6 +131,142 @@ struct StreamState {
       checkpoint_policy_executions_by_branch;
   std::uint64_t checkpoint_source_cycle = 0;
 };
+
+// Elements disagree on the width of current-level-buffers: GstAppSrc exposes
+// guint64 while queue elements expose guint. Read through a GValue of the
+// declared type so a wider property can never overwrite adjacent storage.
+bool read_current_level_buffers(GstElement* element, std::uint64_t& level) {
+  GParamSpec* property =
+      g_object_class_find_property(G_OBJECT_GET_CLASS(element), "current-level-buffers");
+  if (property == nullptr) {
+    return false;
+  }
+  if ((property->flags & G_PARAM_READABLE) == 0) {
+    throw std::runtime_error("checkpoint queue level property is not readable");
+  }
+  const GType type = G_PARAM_SPEC_VALUE_TYPE(property);
+  if (type != G_TYPE_UINT && type != G_TYPE_UINT64) {
+    throw std::runtime_error("checkpoint queue level property has an unsupported type");
+  }
+  GValue level_value = G_VALUE_INIT;
+  g_value_init(&level_value, type);
+  g_object_get_property(G_OBJECT(element), "current-level-buffers", &level_value);
+  level = type == G_TYPE_UINT64 ? g_value_get_uint64(&level_value)
+                                : g_value_get_uint(&level_value);
+  g_value_unset(&level_value);
+  return true;
+}
+
+// Transport bound for one analytics execution request; must equal the
+// DeepStream adapter's ANALYTICS_EXECUTION_TRANSPORT_TIMEOUT_NS.
+constexpr std::uint64_t kCheckpointAnalyticsExecutionTransportTimeoutNs = 300'000'000'000ULL;
+
+// Loaded plugin factories that identify the checkpoint decode stage. Its
+// "explicit_hardware_decoder" autoplugger is a configuration label recorded in
+// the stage config, not a GStreamer factory, so it is never resolved here.
+std::vector<std::pair<std::string, std::string>> checkpoint_decode_artifact_factories(
+    const std::string& decoder_factory) {
+  return {
+      {"decoder", decoder_factory},
+      {"format_converter", "videoconvert"},
+  };
+}
+
+// Frozen qualification-v2 policy identity injected by the runtime for one
+// branch/resource. Returns false when no identity was injected at all; a
+// partial or malformed identity is an error.
+bool checkpoint_injected_policy_identity(
+    const std::string& branch,
+    const std::string& resource,
+    vast::CheckpointNativeExecutionBinding& binding) {
+  std::string prefix;
+  for (const char character : resource) {
+    prefix.push_back(static_cast<char>(std::toupper(static_cast<unsigned char>(character))));
+  }
+  const auto read = [&](const char* field) -> const char* {
+    const std::string name =
+        "VAST_CHECKPOINT_ANALYTICS_" + prefix + "_" + field + "_" + branch;
+    return std::getenv(name.c_str());
+  };
+  const char* implementation = read("IMPLEMENTATION_ID");
+  const char* emitter = read("EMITTER_ID");
+  const char* emitter_sha = read("EMITTER_SHA256");
+  if (implementation == nullptr && emitter == nullptr && emitter_sha == nullptr) {
+    return false;
+  }
+  const auto stable_identity = [](const char* value) {
+    if (value == nullptr) {
+      return false;
+    }
+    const std::string text(value);
+    return !text.empty() && text.size() <= 4096 &&
+           std::all_of(text.begin(), text.end(), [](unsigned char character) {
+             return character >= 0x21 && character != 0x7f;
+           });
+  };
+  const auto sha256_text = [](const char* value) {
+    if (value == nullptr) {
+      return false;
+    }
+    const std::string text(value);
+    return text.size() == 64 &&
+           std::all_of(text.begin(), text.end(), [](char character) {
+             return (character >= '0' && character <= '9') ||
+                    (character >= 'a' && character <= 'f');
+           });
+  };
+  if (!stable_identity(implementation) || !stable_identity(emitter) ||
+      !sha256_text(emitter_sha)) {
+    throw std::runtime_error(
+        "injected " + resource + " analytics path has no exact native policy identity");
+  }
+  binding = vast::CheckpointNativeExecutionBinding{resource, implementation, emitter, emitter_sha};
+  return true;
+}
+
+// Returns the number of observable queues after proving every one is empty.
+std::size_t verify_pipeline_queues_empty(GstElement* pipeline) {
+  GstIterator* iterator = gst_bin_iterate_recurse(GST_BIN(pipeline));
+  if (iterator == nullptr) {
+    throw std::runtime_error("checkpoint reset verification cannot inspect pipeline elements");
+  }
+  GValue value = G_VALUE_INIT;
+  bool done = false;
+  std::size_t bounded_queue_count = 0;
+  try {
+    while (!done) {
+      switch (gst_iterator_next(iterator, &value)) {
+        case GST_ITERATOR_OK: {
+          GstElement* element = GST_ELEMENT(g_value_get_object(&value));
+          std::uint64_t level = 0;
+          if (read_current_level_buffers(element, level)) {
+            if (level != 0) {
+              throw std::runtime_error("checkpoint queue is not empty before READY");
+            }
+            ++bounded_queue_count;
+          }
+          g_value_reset(&value);
+          break;
+        }
+        case GST_ITERATOR_RESYNC:
+          gst_iterator_resync(iterator);
+          break;
+        case GST_ITERATOR_DONE:
+          done = true;
+          break;
+        case GST_ITERATOR_ERROR:
+          throw std::runtime_error("checkpoint reset verification failed while inspecting queues");
+      }
+    }
+  } catch (...) {
+    g_value_unset(&value);
+    gst_iterator_free(iterator);
+    throw;
+  }
+  g_value_unset(&value);
+  gst_iterator_free(iterator);
+  return bounded_queue_count;
+}
 
 class NativeProbeRuntime {
  public:
@@ -270,6 +408,9 @@ class NativeProbeRuntime {
   }
 
  private:
+#ifdef VAST_NATIVE_PROBE_TESTING
+  friend struct NativeProbeRuntimeTestAccess;
+#endif
   Args args_;
   int streams_ = 1;
   std::vector<StreamState> states_;
@@ -283,6 +424,7 @@ class NativeProbeRuntime {
   std::unique_ptr<vast::CheckpointFanoutWorkCounterEmitter> checkpoint_fanout_work_emitter_;
   std::unique_ptr<vast::CheckpointNativePolicyClient> checkpoint_policy_client_;
   std::unique_ptr<vast::CheckpointAnalyticsExecutionClient> checkpoint_analytics_execution_client_;
+  bool checkpoint_external_execution_mode_ = false;
   std::string checkpoint_worker_id_;
   std::string checkpoint_policy_emitter_sha256_;
   GMainLoop* loop_ = nullptr;
@@ -735,12 +877,7 @@ class NativeProbeRuntime {
         stage,
         "decode",
         decode_config,
-        checkpoint_artifact_manifest(
-            {
-                {"autoplugger", "explicit_hardware_decoder"},
-                {"decoder", decoder_factory},
-                {"format_converter", "videoconvert"},
-            }),
+        checkpoint_artifact_manifest(checkpoint_decode_artifact_factories(decoder_factory)),
         identity_transform,
         "[\"source_height\",\"source_width\",3]");
     if (!checkpoint_allowed_decoder_factories_.empty() &&
@@ -864,7 +1001,8 @@ class NativeProbeRuntime {
   static bool valid_checkpoint_name(const std::string& value) {
     return !value.empty() && std::all_of(value.begin(), value.end(), [](unsigned char character) {
       return (character >= 'a' && character <= 'z') ||
-             (character >= '0' && character <= '9') || character == '_';
+             (character >= '0' && character <= '9') || character == '_' ||
+             character == '-';
     });
   }
 
@@ -872,6 +1010,43 @@ class NativeProbeRuntime {
     return value.size() == 64 && std::all_of(value.begin(), value.end(), [](unsigned char character) {
       return (character >= '0' && character <= '9') || (character >= 'a' && character <= 'f');
     });
+  }
+
+  static bool valid_drop_detector_identity(const std::string& value) {
+    const std::string marker = ";model_sha256=";
+    const std::size_t split = value.find(marker);
+    if (split == std::string::npos || split == 0 || split > 80 ||
+        value.find(';') != split) {
+      return false;
+    }
+    if (value.compare(0, split, "identity") == 0 ||
+        value.compare(0, split, "topology_only") == 0) {
+      return false;
+    }
+    const bool valid_model_id = std::all_of(
+        value.begin(), value.begin() + static_cast<std::ptrdiff_t>(split),
+        [](unsigned char character) {
+          return (character >= 'a' && character <= 'z') ||
+                 (character >= 'A' && character <= 'Z') ||
+                 (character >= '0' && character <= '9') ||
+                 character == '.' || character == '_' || character == '-';
+        });
+    return valid_model_id && valid_sha256(value.substr(split + marker.size()));
+  }
+
+  static bool has_external_drop_detector_binding(const std::string& branch) {
+    vast::CheckpointNativeExecutionBinding cpu_binding;
+    vast::CheckpointNativeExecutionBinding gpu_binding;
+    const bool has_cpu = checkpoint_injected_policy_identity(branch, "cpu", cpu_binding);
+    const bool has_gpu = checkpoint_injected_policy_identity(branch, "gpu", gpu_binding);
+    const std::string pin_name =
+        "VAST_CHECKPOINT_ANALYTICS_DROP_DETECTOR_" + branch;
+    const bool has_pin = std::getenv(pin_name.c_str()) != nullptr;
+    if (has_cpu != has_gpu || (has_pin && !has_cpu)) {
+      throw std::runtime_error(
+          "native analytics drop has incomplete external execution bindings");
+    }
+    return has_cpu;
   }
 
   static std::uint64_t parse_uint64(const std::string& raw, const char* name) {
@@ -1043,47 +1218,7 @@ class NativeProbeRuntime {
       throw std::runtime_error("checkpoint process state is not empty before READY");
     }
 
-    GstIterator* iterator = gst_bin_iterate_recurse(GST_BIN(pipelines_.front()));
-    if (iterator == nullptr) {
-      throw std::runtime_error("checkpoint reset verification cannot inspect pipeline elements");
-    }
-    GValue value = G_VALUE_INIT;
-    bool done = false;
-    std::size_t bounded_queue_count = 0;
-    while (!done) {
-      switch (gst_iterator_next(iterator, &value)) {
-        case GST_ITERATOR_OK: {
-          GstElement* element = GST_ELEMENT(g_value_get_object(&value));
-          const GParamSpec* level_property = g_object_class_find_property(
-              G_OBJECT_GET_CLASS(element), "current-level-buffers");
-          if (level_property != nullptr) {
-            guint level = 0;
-            g_object_get(G_OBJECT(element), "current-level-buffers", &level, nullptr);
-            if (level != 0) {
-              g_value_unset(&value);
-              gst_iterator_free(iterator);
-              throw std::runtime_error("checkpoint queue is not empty before READY");
-            }
-            ++bounded_queue_count;
-          }
-          g_value_reset(&value);
-          break;
-        }
-        case GST_ITERATOR_RESYNC:
-          gst_iterator_resync(iterator);
-          break;
-        case GST_ITERATOR_DONE:
-          done = true;
-          break;
-        case GST_ITERATOR_ERROR:
-          g_value_unset(&value);
-          gst_iterator_free(iterator);
-          throw std::runtime_error("checkpoint reset verification failed while inspecting queues");
-      }
-    }
-    g_value_unset(&value);
-    gst_iterator_free(iterator);
-    if (bounded_queue_count == 0) {
+    if (verify_pipeline_queues_empty(pipelines_.front()) == 0) {
       throw std::runtime_error("checkpoint reset verification found no observable queues");
     }
   }
@@ -1192,6 +1327,7 @@ class NativeProbeRuntime {
     }
     initialize_checkpoint_analytics_bridge();
     initialize_checkpoint_policy_runtime();
+    initialize_checkpoint_external_execution_mode();
   }
 
   bool native_checkpoint_analytics_enabled() const {
@@ -1218,8 +1354,9 @@ class NativeProbeRuntime {
     if (!native_checkpoint_analytics_enabled()) {
       throw std::runtime_error("native policy runtime requires native analytics terminal mode");
     }
-    if (args_.system != "gstreamer_custom") {
-      throw std::runtime_error("checkpoint native policy client is topology-specific to gstreamer_custom");
+    if (args_.system != "gstreamer_custom" && args_.system != "openvino_gva") {
+      throw std::runtime_error(
+          "checkpoint native policy client is topology-specific to gstreamer_custom and openvino_gva");
     }
     if (!std::isfinite(args_.deadline_ms) || args_.deadline_ms <= 0.0) {
       throw std::runtime_error("checkpoint native policy runtime requires a positive deadline");
@@ -1235,6 +1372,34 @@ class NativeProbeRuntime {
     checkpoint_analytics_execution_client_ =
         std::make_unique<vast::CheckpointAnalyticsExecutionClient>(
             vast::CheckpointAnalyticsExecutionClient::from_environment());
+  }
+
+  void initialize_checkpoint_external_execution_mode() {
+    const char* raw_mode =
+        std::getenv("VAST_CHECKPOINT_ANALYTICS_EXTERNAL_EXECUTION_MODE");
+    if (raw_mode != nullptr && std::string(raw_mode) != "1") {
+      throw std::runtime_error("checkpoint external execution mode marker is invalid");
+    }
+    checkpoint_external_execution_mode_ = raw_mode != nullptr;
+    if (checkpoint_external_execution_mode_ &&
+        (checkpoint_policy_client_ == nullptr ||
+         checkpoint_analytics_execution_client_ == nullptr)) {
+      throw std::runtime_error("checkpoint external execution mode lacks policy/execution bridge");
+    }
+    for (const std::string& branch : checkpoint_branches_) {
+      const bool has_external_bindings = has_external_drop_detector_binding(branch);
+      if (has_external_bindings != checkpoint_external_execution_mode_) {
+        throw std::runtime_error(
+            "checkpoint external execution mode and branch bindings disagree");
+      }
+      if (checkpoint_external_execution_mode_) {
+        const std::string drop_detector =
+            checkpoint_analytics_binding(branch, "DROP_DETECTOR");
+        if (!valid_drop_detector_identity(drop_detector)) {
+          throw std::runtime_error("native analytics drop semantic detector pin is invalid");
+        }
+      }
+    }
   }
 
   void initialize_checkpoint_analytics_bridge() {
@@ -1389,7 +1554,7 @@ class NativeProbeRuntime {
     return trace_id(trace) + ":" + branch + ":" + suffix;
   }
 
-  void emit_checkpoint_event(
+  std::uint64_t emit_checkpoint_event(
       const Trace& trace,
       std::uint64_t pts,
       const std::string& event_kind,
@@ -1405,7 +1570,7 @@ class NativeProbeRuntime {
     if (trace.admission_id.empty() || !valid_sha256(trace.payload_sha256)) {
       throw std::runtime_error("checkpoint trace lacks verified direct-admission linkage");
     }
-    checkpoint_emitter_->emit_with_admission(
+    return checkpoint_emitter_->emit_with_admission(
         trace_id(trace),
         trace.frame_id,
         checkpoint_input_frame_key(trace),
@@ -1683,45 +1848,102 @@ class NativeProbeRuntime {
     if (trace_it == state.local_traces_by_pts.end()) {
       throw std::runtime_error("checkpoint analytics terminal has no admitted transport PTS");
     }
+    const auto completed_it = state.checkpoint_completed_branches_by_pts.find(
+        resolved_terminal.transport_pts_ns);
+    if (completed_it != state.checkpoint_completed_branches_by_pts.end() &&
+        completed_it->second.count(resolved_terminal.branch_id) != 0) {
+      throw std::runtime_error("duplicate checkpoint analytics terminal for one branch and frame");
+    }
     const Trace trace = trace_it->second;
-    if (checkpoint_policy_client_ != nullptr) {
-      if (postdecode_prefix_drop ||
-          resolved_terminal.status != vast::CheckpointAnalyticsTerminalStatus::kCompleted) {
-        throw std::runtime_error(
-            "native policy publication cannot bind a pre-detector/drop terminal as execution");
+    if (resolved_terminal.status != vast::CheckpointAnalyticsTerminalStatus::kDrop &&
+        resolved_terminal.status != vast::CheckpointAnalyticsTerminalStatus::kCompleted) {
+      throw std::runtime_error("native analytics terminal status is invalid");
+    }
+    if (resolved_terminal.status == vast::CheckpointAnalyticsTerminalStatus::kDrop) {
+      if (resolved_terminal.objects != 0) {
+        throw std::runtime_error("native analytics drop reported accepted objects");
       }
-      auto branch_executions_it =
-          state.checkpoint_policy_executions_by_branch.find(resolved_terminal.branch_id);
-      if (branch_executions_it == state.checkpoint_policy_executions_by_branch.end()) {
-        throw std::runtime_error("native detector terminal has no selected policy path entry");
+      if (!postdecode_prefix_drop &&
+          resolved_terminal.terminal_reason != "native_pre_detector_queue_full_drop_newest") {
+        throw std::runtime_error("native analytics drop has no verified queue origin");
       }
-      auto execution_it =
-          branch_executions_it->second.find(resolved_terminal.transport_pts_ns);
-      if (execution_it == branch_executions_it->second.end()) {
-        throw std::runtime_error("native detector terminal has no matching policy PTS entry");
-      }
-      const NativePolicyExecution execution = execution_it->second;
-      if (terminal_timestamp_ns <= execution.path_entry_timestamp_ns) {
-        throw std::runtime_error("native detector terminal does not follow its selected path entry");
+      std::string expected_detector =
+          checkpoint_analytics_binding(resolved_terminal.branch_id, "DETECTOR_ID") +
+          ";model_sha256=" +
+          checkpoint_analytics_binding(resolved_terminal.branch_id, "MODEL_SHA256");
+      const std::string weights_sha256 =
+          checkpoint_analytics_binding(resolved_terminal.branch_id, "WEIGHTS_SHA256", true);
+      if (!weights_sha256.empty()) {
+        expected_detector += ";weights_sha256=" + weights_sha256;
       }
       const std::string expected_backend =
           "openvino-dlstreamer:" +
-          checkpoint_analytics_binding(resolved_terminal.branch_id, "FACTORY") +
-          ";device=CPU";
-      if (resolved_terminal.backend != expected_backend) {
-        throw std::runtime_error("native detector terminal backend/device identity drifted");
+          checkpoint_analytics_binding(resolved_terminal.branch_id, "FACTORY");
+      if (resolved_terminal.detector != expected_detector ||
+          resolved_terminal.backend != expected_backend) {
+        throw std::runtime_error("native analytics drop detector/backend binding drifted");
       }
-      checkpoint_policy_client_->terminal(
-          execution.request,
-          execution.decision,
-          execution.binding,
-          "completed",
-          static_cast<double>(terminal_timestamp_ns) / 1'000'000.0,
-          static_cast<double>(terminal_timestamp_ns - execution.path_entry_timestamp_ns) /
-              1'000'000.0,
-          resolved_terminal.detector,
-          resolved_terminal.backend);
-      branch_executions_it->second.erase(execution_it);
+      const auto branch_executions_it =
+          state.checkpoint_policy_executions_by_branch.find(resolved_terminal.branch_id);
+      if (branch_executions_it != state.checkpoint_policy_executions_by_branch.end() &&
+          branch_executions_it->second.count(resolved_terminal.transport_pts_ns) != 0) {
+        throw std::runtime_error("native analytics drop followed policy path entry");
+      }
+      const bool has_external_bindings =
+          has_external_drop_detector_binding(resolved_terminal.branch_id);
+      if (has_external_bindings != checkpoint_external_execution_mode_) {
+        throw std::runtime_error(
+            "checkpoint external execution mode and branch bindings disagree");
+      }
+      if (checkpoint_external_execution_mode_) {
+        // The queue attests the physical OMZ proxy above.  A dropped frame
+        // never enters the external worker, but its branch terminal must use
+        // the same frozen semantic model identity as completed worker frames.
+        const std::string drop_detector =
+            checkpoint_analytics_binding(resolved_terminal.branch_id, "DROP_DETECTOR");
+        if (!valid_drop_detector_identity(drop_detector)) {
+          throw std::runtime_error("native analytics drop semantic detector pin is invalid");
+        }
+        resolved_terminal.detector = drop_detector;
+      }
+    } else if (resolved_terminal.terminal_reason != "native_roi_metadata_committed") {
+      throw std::runtime_error("native detector completion reason drifted");
+    }
+    if (checkpoint_policy_client_ != nullptr) {
+      if (resolved_terminal.status == vast::CheckpointAnalyticsTerminalStatus::kCompleted) {
+        auto branch_executions_it =
+            state.checkpoint_policy_executions_by_branch.find(resolved_terminal.branch_id);
+        if (branch_executions_it == state.checkpoint_policy_executions_by_branch.end()) {
+          throw std::runtime_error("native detector terminal has no selected policy path entry");
+        }
+        auto execution_it =
+            branch_executions_it->second.find(resolved_terminal.transport_pts_ns);
+        if (execution_it == branch_executions_it->second.end()) {
+          throw std::runtime_error("native detector terminal has no matching policy PTS entry");
+        }
+        const NativePolicyExecution execution = execution_it->second;
+        if (terminal_timestamp_ns <= execution.path_entry_timestamp_ns) {
+          throw std::runtime_error("native detector terminal does not follow its selected path entry");
+        }
+        const std::string expected_backend =
+            "openvino-dlstreamer:" +
+            checkpoint_analytics_binding(resolved_terminal.branch_id, "FACTORY") +
+            ";device=CPU";
+        if (resolved_terminal.backend != expected_backend) {
+          throw std::runtime_error("native detector terminal backend/device identity drifted");
+        }
+        checkpoint_policy_client_->terminal(
+            execution.request,
+            execution.decision,
+            execution.binding,
+            "completed",
+            static_cast<double>(terminal_timestamp_ns) / 1'000'000.0,
+            static_cast<double>(terminal_timestamp_ns - execution.path_entry_timestamp_ns) /
+                1'000'000.0,
+            resolved_terminal.detector,
+            resolved_terminal.backend);
+        branch_executions_it->second.erase(execution_it);
+      }
     }
     const std::string prefix_parent =
         postdecode_prefix_drop
@@ -2556,21 +2778,25 @@ class NativeProbeRuntime {
             });
         const vast::CheckpointNativeExecutionBinding binding =
             self->checkpoint_policy_binding(ctx->branch, decision.selected_resource);
+        // The coordinator may serialize a concurrent decision after this
+        // worker captured request.decision_time_ms.  Bind path entry to a
+        // fresh post-response realtime timestamp so it cannot precede the
+        // authoritative serialized decision.
+        const std::uint64_t path_entry_timestamp_ns = now_ns();
         const std::string event_id = sha256_text(
             "native_policy_path_entry_v1\n" + self->args_.run_id + "\n" +
             self->trace_id(trace) + "\n" + self->checkpoint_input_frame_key(trace) +
             "\n" + ctx->branch + "\n" + std::to_string(pts) + "\n" +
             binding.implementation_id + "\n" +
-            std::to_string(event_timestamp_ns));
+            std::to_string(path_entry_timestamp_ns));
         vast::checkpoint_external_call(lock, [&]() {
           self->checkpoint_policy_client_->enter_path(
               request,
               decision,
               binding,
               event_id,
-              request.decision_time_ms);
+              static_cast<double>(path_entry_timestamp_ns) / 1'000'000.0);
         });
-        const std::uint64_t path_entry_timestamp_ns = now_ns();
 
         lock.lock();
         auto branch_executions_it =
@@ -2605,8 +2831,9 @@ class NativeProbeRuntime {
         execution_request.transport_pts_ns = pts;
         execution_request.branch = ctx->branch;
         execution_request.decision = decision;
-        const std::uint64_t deadline_ns = static_cast<std::uint64_t>(
-            self->args_.deadline_ms * 1'000'000.0);
+        // The worker deadline is a transport bound, as in the DeepStream
+        // adapter; the policy deadline stays a measured outcome.
+        const std::uint64_t deadline_ns = kCheckpointAnalyticsExecutionTransportTimeoutNs;
         const std::uint64_t execution_started_monotonic_ns = steady_now_ns();
         if (deadline_ns == 0 || execution_started_monotonic_ns > UINT64_MAX - deadline_ns) {
           throw std::runtime_error("analytics execution deadline overflows uint64");
@@ -2880,7 +3107,7 @@ class NativeProbeRuntime {
       }
       const std::string preprocess_id = self->checkpoint_execution_id(trace, "shared", "preprocess");
       const std::string execution_id = self->checkpoint_execution_id(trace, ctx->branch, "fanout");
-      self->emit_checkpoint_event(
+      const std::uint64_t serialized_fanout_timestamp_ms = self->emit_checkpoint_event(
           trace,
           pts,
           "fanout",
@@ -2890,6 +3117,12 @@ class NativeProbeRuntime {
           {preprocess_id},
           end);
       try {
+        const std::uint64_t fanout_interval_end_timestamp_ns =
+            vast::CheckpointResourceIntervalEmitter::canonical_interval_end_ns(
+                interval_start.host_start_timestamp_ns,
+                event_timestamp_ns,
+                end,
+                serialized_fanout_timestamp_ms);
         std::uint64_t fanout_thread_cpu_end_ns = 0;
         if (!thread_cpu_now_ns(&fanout_thread_cpu_end_ns) ||
             fanout_thread_cpu_end_ns <= fanout_thread_cpu_start_ns) {
@@ -2902,7 +3135,7 @@ class NativeProbeRuntime {
             "\n" + std::to_string(trace.stream_id) + "\n" +
             std::to_string(trace.frame_id) + "\n" + ctx->branch + "\n" + execution_id +
             "\n" + std::to_string(interval_start.host_start_timestamp_ns) + "\n" +
-            std::to_string(event_timestamp_ns) + "\n" +
+            std::to_string(fanout_interval_end_timestamp_ns) + "\n" +
             std::to_string(interval_start.bytes));
         self->checkpoint_resource_interval_emitter_->emit_fanout(
             self->args_.run_id,
@@ -2913,7 +3146,7 @@ class NativeProbeRuntime {
             ctx->branch,
             execution_id,
             interval_start.host_start_timestamp_ns,
-            event_timestamp_ns,
+            fanout_interval_end_timestamp_ns,
             interval_start.bytes,
             native_event_id);
         self->checkpoint_fanout_work_emitter_->emit(
@@ -3139,24 +3372,17 @@ class NativeProbeRuntime {
     if (resource != "cpu" && resource != "gpu") {
       throw std::runtime_error("checkpoint policy selected an invalid execution resource");
     }
+    vast::CheckpointNativeExecutionBinding injected;
     if (resource == "gpu") {
-      const std::string implementation =
-          checkpoint_analytics_binding(branch, "GPU_IMPLEMENTATION_ID");
-      const std::string emitter = checkpoint_analytics_binding(branch, "GPU_EMITTER_ID");
-      const std::string emitter_sha =
-          checkpoint_analytics_binding(branch, "GPU_EMITTER_SHA256");
-      const auto stable_identity = [](const std::string& value) {
-        return !value.empty() && value.size() <= 4096 &&
-               std::all_of(value.begin(), value.end(), [](unsigned char character) {
-                 return character >= 0x21 && character != 0x7f;
-               });
-      };
-      if (!stable_identity(implementation) || !stable_identity(emitter) ||
-          !valid_sha256(emitter_sha)) {
+      if (!checkpoint_injected_policy_identity(branch, "gpu", injected)) {
         throw std::runtime_error("loaded GPU analytics path has no exact native policy identity");
       }
-      return vast::CheckpointNativeExecutionBinding{
-          "gpu", implementation, emitter, emitter_sha};
+      return injected;
+    }
+    // Qualification-v2 runtimes inject the frozen manifest identity for CPU as
+    // well; only the legacy in-process path derives the v1 identity below.
+    if (checkpoint_injected_policy_identity(branch, "cpu", injected)) {
+      return injected;
     }
     const std::string factory = checkpoint_analytics_binding(branch, "FACTORY");
     const std::string device = checkpoint_analytics_binding(branch, "DEVICE");
@@ -3757,6 +3983,12 @@ static Args parse_args(int argc, char** argv) {
 
 int main(int argc, char** argv) {
   try {
+    if (argc == 2 && std::string(argv[1]) == "--help") {
+      std::cout
+          << "Usage: vast_native_gst_probe [--system NAME] [--role NAME] "
+             "[--stages CSV] [--run-id ID] [runtime options]\n";
+      return 0;
+    }
     const std::string executable_path = resolve_executable_path(argv[0]);
     gst_init(&argc, &argv);
     Args args = parse_args(argc, argv);

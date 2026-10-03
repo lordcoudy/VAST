@@ -1,0 +1,14 @@
+test_kernel_query_explicitly_captures_capability_denials_without_claiming_cause (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_kernel_query_explicitly_captures_capability_denials_without_claiming_cause) ... FAIL
+
+======================================================================
+FAIL: test_kernel_query_explicitly_captures_capability_denials_without_claiming_cause (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_kernel_query_explicitly_captures_capability_denials_without_claiming_cause)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 66, in test_kernel_query_explicitly_captures_capability_denials_without_claiming_cause
+    self.assertIn('--case-sensitive=no', calls[1][0])
+AssertionError: '--case-sensitive=no' not found in ['/usr/bin/sudo', '-n', '--', '/usr/bin/journalctl', '--kernel', '--since', '@1790786343', '--until', '@1790786345', '--no-pager', '--output=json', '--lines=32', '--grep=apparmor=.*DENIED.*(userns|unshare)']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.016s
+
+FAILED (failures=1)

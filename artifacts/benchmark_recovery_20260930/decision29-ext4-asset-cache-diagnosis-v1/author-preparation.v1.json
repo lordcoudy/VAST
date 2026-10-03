@@ -1,0 +1,167 @@
+{
+  "actual_copy_acceptance": null,
+  "actual_copy_terminal": null,
+  "actual_full_ci_success": null,
+  "actual_full_ci_terminal": null,
+  "actual_readonly_inspection": {
+    "all_handles_released": true,
+    "elapsed_s": 0.028780248016119003,
+    "fd_after": 6,
+    "fd_before": 6,
+    "limitation": "The source and physically written table are retained; tool text is an observation, not a separately captured original raw stdout file.",
+    "raw_external_stdout_saved": false,
+    "reader_pid": 94984,
+    "source_named_fd_seven_epochs_checked_through_close": true,
+    "tool_chunk_id": "581334",
+    "tool_exit_code": 0
+  },
+  "changes": {
+    "ci_paths": [],
+    "git_mutations": [],
+    "owned_artifact_namespace": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-diagnosis-v1",
+    "production_paths": [],
+    "runtime_source87_changed": false,
+    "selected_image73_changed": false,
+    "test_paths": []
+  },
+  "donor_root": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "failure_contract": [
+    "Occupied output or any target leaf is refused, including same-byte collision.",
+    "Source/destination ancestor alias, link, wrong principal, source seven-epoch drift, wrong size or either hash aborts.",
+    "Every FD is registered immediately after open; all closes are attempted independently; first cause remains primary.",
+    "Success requires source+destination hash/name/epoch checks, all FD release, exclusive LF/fsynced receipt and final actual120s check; late-failure companion makes exit nonzero.",
+    "No helper retry/cleanup/corrupt-cache normalization; original partials/output retained. Outer ROOT capture remains responsible for actual PID/startticks/group/EOF/quiescence."
+  ],
+  "hardware_acceptance": false,
+  "helper": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-diagnosis-v1/copy_existing_ci_model_assets_v1.py",
+    "sha256": "fd8ce70c6e84bc29481c75aaa1071f0b3b89cd0084ab1e7830a621a8b6f384ae",
+    "size_bytes": 16532
+  },
+  "inventory": {
+    "file_names": "Eight canonical models/openvino/public/intel/<model>/FP16/<model>.xml|bin paths from unchanged .ci/model-assets.v1.json.",
+    "objects": 8,
+    "raw_bytes": 15514597,
+    "sha256_and_sha384_all_equal_fixed_metadata": true
+  },
+  "kind": "decision29_ci_offline_asset_setup_author_preparation_v1",
+  "limitations": [
+    "Source-only helper has been AST-parsed but not executed or locally regression-tested; source peer and original ROOT execution remain required.",
+    "Old CI roots were checked for presence only; only the bounded8 donor files were hashed. Their present mode0644 does not imply a kernel immutable flag; actual fd/name/7epoch and raw hashes are the custody facts.",
+    "Offline operation follows the unchanged all-eight-reused branch, not a new offline flag. If a verified reused leaf disappears on its per-row recheck, the unchanged helper fails rather than silently downloading that row.",
+    "No test, network, model inference, engine, namespace policy, Git mutation, asset copy or CI execution occurred in this preparation."
+  ],
+  "limits": {
+    "block_bytes": 65536,
+    "copied_raw_bytes": 15514597,
+    "copy_metadata_bytes_per_record": 65536,
+    "external_teardown_seconds": 10,
+    "maximum_file_bytes": 5774062,
+    "namespace_bytes": 25165824,
+    "original_ci_asset_object_seconds": 120,
+    "original_ci_asset_total_seconds": 600,
+    "original_ci_job_seconds": 5400,
+    "original_ci_outer_teardown_seconds": 10,
+    "original_ci_parent_asset_seconds": 590,
+    "work_seconds": 120
+  },
+  "original_failed_checkout_untouched": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29",
+  "original_failed_ci": {
+    "asset00_elapsed_s": 15.756069600000046,
+    "asset00_error": "The read operation timed out",
+    "asset00_error_type": "TimeoutError",
+    "asset00_http_status": 200,
+    "child_returncode": 1,
+    "child_timed_out": false,
+    "completed_write_bytes": 0,
+    "interpretation": "A body socket read failed after HTTP200; the child110/parent590/full90m budgets were not exhausted. Native build/test stages had not run.",
+    "received_bytes": 0,
+    "source_commit": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+    "successful": false
+  },
+  "prepared_copy_argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-diagnosis-v1/copy_existing_ci_model_assets_v1.py",
+    "--target-root",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+    "--expected-commit",
+    "3c025b29b3c1d5275c2ec693410e4b83700583de",
+    "--output-dir",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-model-cache-copy-output"
+  ],
+  "prepared_unchanged_full_ci_argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/run_ci_checks.py",
+    "--expected-commit",
+    "3c025b29b3c1d5275c2ec693410e4b83700583de",
+    "--job-started-monotonic-ns",
+    "<actual-original-dispatch-monotonic-ns>",
+    "--output-dir",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output"
+  ],
+  "prior_setup_reference": {
+    "contract": "Original setup handles Git/prerequisites and benchmark95; later run_ci_checks owns asset preparation. Do not change old setup or original failed C.",
+    "path": "artifacts/benchmark_recovery_20260930/component-current-source-ci-4cb9-preparation-v1/setup_original_current_ci_v1.py"
+  },
+  "readonly_inspector": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-diagnosis-v1/inspect_exact_eight_v1.py",
+    "sha256": "ec1bb1d02f90d25c110107fa83fda9b8f0199972145c695a482879aa49497f98",
+    "size_bytes": 7218
+  },
+  "schema_version": 1,
+  "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "status": "prepared_only_not_executed",
+  "stock_source_anchors": [
+    {
+      "contract": "_existing fixed canonical path: O_NOFOLLOW, regular nlink1, exact size, SHA256+SHA384, full FD/name epoch before-after and physical directory checks; corrupt files fail, no repair.",
+      "line": 262,
+      "path": "scripts/prepare_ci_model_assets.py"
+    },
+    {
+      "contract": "All eight initial reused checks run before acquisition; each true row is verified again at557 and recorded reused; downloads occur only in the else branch568.",
+      "line": 546,
+      "path": "scripts/prepare_ci_model_assets.py"
+    },
+    {
+      "contract": "Only public --output-dir; fixed ROOT/manifest/metadata. No supported cache-dir or offline override.",
+      "line": 594,
+      "path": "scripts/prepare_ci_model_assets.py"
+    },
+    {
+      "contract": "Unconditional original acquisition CLI under590s/absolute90m job deadline, then six native targets and full portable suite; keep unchanged.",
+      "line": 509,
+      "path": "scripts/run_ci_checks.py"
+    },
+    {
+      "contract": "Existing unit explicitly checks eight valid objects reused without network; source-only reference here, no unit executed.",
+      "line": 91,
+      "path": "tests/test_prepare_ci_model_assets.py"
+    },
+    {
+      "contract": "Existing corrupt-cache negative refuses overwrite/dispatch; source-only reference here, no unit executed.",
+      "line": 100,
+      "path": "tests/test_prepare_ci_model_assets.py"
+    }
+  ],
+  "successor_sequence": [
+    "ROOT first creates and independently checks fresh D at exact3c025b, with authentic existing setup source/raw Git/prerequisite/current95 gates; no reuse of C outputs.",
+    "After helper source peer and separate original ROOT grant, run exclusive setup copy once under120+10 with arguments below. All donor8 FDs/7epochs/hash pairs and D source metadata/HEAD are validated before destination creation.",
+    "New destination leaves use O_EXCL/O_NOFOLLOW, single-link new inodes, bounded raw writes, fsync, mode0444 and full digest rechecks. Retain failures/partials; no overwrite/repair/symlink/hardlink. Donor remains unchanged.",
+    "ROOT checks real original copy exit0, no late companion, all8 exact fresh destination witnesses/source epochs and released handles. This grants only setup, never CI success/model/image acceptance.",
+    "Run unchanged genuine full D CI once in its new external output with expected3c025b and actual monotonic job start under original5400+10. Mandatory model-acquisition must show complete8/8 status reused, exact metadata hash pairs, original exit0; all native/suite/profile/source gates still apply."
+  ],
+  "table": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-diagnosis-v1/inventory.v1.json",
+    "sha256": "c99b1402c4c909cb0a47421b0a0d2f872cc932e26ee99de76c9539f192684f3b",
+    "size_bytes": 33294
+  },
+  "target_root": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D"
+}

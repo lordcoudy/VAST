@@ -1,0 +1,27 @@
+test_exact_first_unshare_failure_delegates_once_and_retains_original_errno (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_exact_first_unshare_failure_delegates_once_and_retains_original_errno) ... ok
+test_kernel_query_explicitly_captures_capability_denials_without_claiming_cause (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_kernel_query_explicitly_captures_capability_denials_without_claiming_cause) ... ok
+test_kernel_query_is_read_only_once_and_rejects_foreign_pid_prefix (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_kernel_query_is_read_only_once_and_rejects_foreign_pid_prefix) ... ok
+test_mapping_open_failure_identifies_actual_path_and_flags (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_mapping_open_failure_identifies_actual_path_and_flags) ... ok
+test_namespace_denial_candidate_retains_original_pid_capability_and_case (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_namespace_denial_candidate_retains_original_pid_capability_and_case) ... ok
+test_original_capture_flush_failure_closes_fd_and_preserves_failed_status (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_capture_flush_failure_closes_fd_and_preserves_failed_status) ... FAIL
+test_original_child_exit_does_not_extend_descendant_pipe_cleanup_to_execution_budget (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_child_exit_does_not_extend_descendant_pipe_cleanup_to_execution_budget) ... ok
+test_original_cleanup_deadline_includes_capture_close (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_cleanup_deadline_includes_capture_close) ... ok
+test_original_mount_cause_and_flags_are_retained_without_policy_inference (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_mount_cause_and_flags_are_retained_without_policy_inference) ... ok
+test_original_pidfd_failure_contains_exact_child_and_leaves_no_parent_fds (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_pidfd_failure_contains_exact_child_and_leaves_no_parent_fds) ... ok
+test_prepared_namespace_and_kernel_capture_share_the_reviewed_64kib_domain (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_prepared_namespace_and_kernel_capture_share_the_reviewed_64kib_domain) ... ok
+test_real_ordinary_child_nonzero_and_raw_eof_are_preserved (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_real_ordinary_child_nonzero_and_raw_eof_are_preserved) ... ok
+test_real_ordinary_child_overflow_retains_bounded_prefix_and_fails (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_real_ordinary_child_overflow_retains_bounded_prefix_and_fails) ... ok
+test_real_ordinary_child_timeout_reaps_original_and_never_reports_success (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_real_ordinary_child_timeout_reaps_original_and_never_reports_success) ... ok
+
+======================================================================
+FAIL: test_original_capture_flush_failure_closes_fd_and_preserves_failed_status (test_ci_namespace_diagnostic_v1.NamespaceDiagnosticTests.test_original_capture_flush_failure_closes_fd_and_preserves_failed_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_namespace_diagnostic_v1.py", line 200, in test_original_capture_flush_failure_closes_fd_and_preserves_failed_status
+    self.assertIn('explicit original flush fault', result['failure'])
+AssertionError: 'explicit original flush fault' not found in "original owner/pidfd unavailable: FileNotFoundError: [Errno 2] No such file or directory: '/proc/34568/exe'"
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.480s
+
+FAILED (failures=1)

@@ -48,6 +48,7 @@ _IDENTITY_FIELDS = {
     "nvds_source_id",
     "nvds_frame_num",
     "nvds_buf_pts_ns",
+    "mux_gst_buffer_pts_ns",
     "decoder_factory",
     "decoder_gpu_id",
 }
@@ -61,6 +62,7 @@ _NVDS_FIELDS = {
     "nvds_source_id",
     "nvds_frame_num",
     "nvds_buf_pts_ns",
+    "mux_gst_buffer_pts_ns",
     "decoder_factory",
     "decoder_gpu_id",
 }
@@ -128,6 +130,10 @@ class SavantProtocolBridge:
             "Savant/delegate stream binding drifted",
         )
         _require(
+            delegate.nvds_source_id == checked_stream,
+            "Savant/delegate native source binding drifted",
+        )
+        _require(
             delegate.worker_id == module_id,
             "Savant/delegate module identity drifted",
         )
@@ -182,6 +188,11 @@ class SavantProtocolBridge:
             "Savant frame stream drifted",
         )
         _require(
+            _exact_integer(identity["nvds_source_id"], "Savant native source_id")
+            == self.stream_id,
+            "Savant native source identity drifted",
+        )
+        _require(
             identity["decoder_factory"] == "nvv4l2decoder",
             "Savant frame is not native nvv4l2decoder output",
         )
@@ -219,8 +230,8 @@ class SavantProtocolBridge:
         self,
         identity: Mapping[str, Any],
         **kwargs: Any,
-    ) -> None:
-        self.delegate.observe_fanout(self._nvds_identity(identity), **kwargs)
+    ) -> int:
+        return self.delegate.observe_fanout(self._nvds_identity(identity), **kwargs)
 
     def bind_branch_tensor(
         self,

@@ -1,0 +1,118 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_independent_custody_budget_rollforward_review_v1",
+  "benchmark_or_model_execution": false,
+  "changed_sources": [
+    "scripts/publication_operational_process_custody_v1.py",
+    "scripts/publication_operational_container_custody_v1.py"
+  ],
+  "findings": [
+    "All seven current physical source pins match v3; only the two independently reviewed narrow repair sources differ from v2.",
+    "Exact GVA three-field preservation adds no larger contract than existing native/SDK caps.",
+    "Exact Docker absence single-LF output is inside unchanged output bounds; no whitespace normalization or added persisted leaf.",
+    "All numeric bounds are unchanged: 187926885 supplemental custody bytes and 5427 conservative held FDs, below the actual soft10240 limit.",
+    "Successful container cold namespace enforces four observations and exact fixed leaves; failed cleanup eight-command worst case remains included in the storage allowance.",
+    "This receipt does not rely on packaging-v3 Git classification. Guardian/native journals, primary outputs, hardware samples, aggregate storage and total RSS remain separate."
+  ],
+  "prior_reviewed_budget": {
+    "path": "artifacts/benchmark_recovery_20260929/custody-budget-supplement.v2.json",
+    "sha256": "8f98b438a289ff42c51fce62beba5b11bea8514e369ad224b18ebb5be9ba9a2f",
+    "size_bytes": 3251
+  },
+  "publication_ready": false,
+  "recomputed_bounds": {
+    "all_37_custody_namespaces_bytes": 187926885,
+    "cold_37_leaf_fds_plus_1024_controller_allowance": 5427,
+    "container_namespace_bytes_per_operation": 2752577,
+    "custody_namespaces_bytes_per_operation": 5079105,
+    "process_namespace_bytes_per_operation": 2293760,
+    "successful_cold_operation_leaf_upper_bound": 119,
+    "transfer_metadata_bytes_per_operation": 32768
+  },
+  "repair_evidence": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/gva-image-schema-repair/focused.execution.v1.json",
+      "sha256": "663237eb40e2bda9f8607d9836ea7ac251be39a0f65b497993aeeeb4ae882a74",
+      "size_bytes": 4473
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/runtime-custody-live-repair/focused-process-container.execution.v1.json",
+      "sha256": "892026dde8d96527aeaa973d0dde784c09893a0edb583df886969d1ba7f15424",
+      "size_bytes": 3586
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/runtime-custody-live-repair/independent-review.v1.json",
+      "sha256": "57235bb17a6383205404fc2c3aa378d69bb4cb776b4f11b80b00745efe8851bc",
+      "size_bytes": 3411
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/runtime-custody-live-repair/original-inspect.execution.v1.json",
+      "sha256": "3ad2ddce81b3c7cd6a77da3db86fb4ece6ebd6bd7518d9a4ab809756d3ac1b77",
+      "size_bytes": 2404
+    }
+  ],
+  "reviewed_artifact": {
+    "path": "artifacts/benchmark_recovery_20260930/custody-budget-supplement.v3.json",
+    "sha256": "d78e387d1154d9e8a88cc2c71246e17b8c7ff3fbc85674a35c1be9af8618f773",
+    "size_bytes": 4560
+  },
+  "reviewed_at_utc": "2026-09-30T00:01:55.717835+00:00",
+  "reviewer": "/root/adversarial_review",
+  "schema_version": 1,
+  "scope": "Read-only source pins, exact constants, namespace arithmetic and prior v2 comparison; no tests, container launch, measured RSS or full-run disk acceptance.",
+  "sha256": "684e77081173219b08f0301c2d5cb1fd0ceab79a429324b67c5993c466b90c57",
+  "source_constants": {
+    "container": {
+      "MAX_COMMANDS": 8,
+      "MAX_FACT_BYTES": 65536,
+      "MAX_OUTPUT_BYTES": 16384,
+      "MAX_OUTPUT_FACT_BYTES": 131072
+    },
+    "process": {
+      "MAX_CALLS": 32,
+      "MAX_CAPTURE_BYTES": 8388608,
+      "MAX_LAUNCH_BYTES": 65536,
+      "MAX_RECEIPT_BYTES": 65536,
+      "MAX_TERMINAL_BYTES": 4096,
+      "MAX_TRANSFER_METADATA_BYTES": 8192
+    }
+  },
+  "source_files": [
+    {
+      "path": "scripts/publication_operational_process_custody_v1.py",
+      "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+      "size_bytes": 47271
+    },
+    {
+      "path": "scripts/publication_operational_container_custody_v1.py",
+      "sha256": "036805ad328ddc6c63377c942f86bf3e26a0bf6de2a83847c4bc9801d5d8d334",
+      "size_bytes": 38235
+    },
+    {
+      "path": "scripts/publication_policy_qualification_execution_closure_v1.py",
+      "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "size_bytes": 147846
+    },
+    {
+      "path": "scripts/publication_operational_request_reconciliation_v1.py",
+      "sha256": "7036af860c587e3b93f6835ac3c0992643daa754693867c342a97a63aac9a51d",
+      "size_bytes": 28069
+    },
+    {
+      "path": "scripts/publication_operational_stock_operations_v1.py",
+      "sha256": "1edcd2813f3bedbac4416d7e7d69b9e959ecc044aee710f248721b06e81f0689",
+      "size_bytes": 24380
+    },
+    {
+      "path": "scripts/publication_benchmark_native_diagnostic_v1.py",
+      "sha256": "4b308d6727168b211b4eca7917e18c7516247e77d41329856566e343b9bd9c53",
+      "size_bytes": 13329
+    },
+    {
+      "path": "scripts/publication_policy_qualification_execution_code_closure_v1.py",
+      "sha256": "5487bbb6203c17d5adcf1697148685590c11017228942d225cbb32a945f730a7",
+      "size_bytes": 18967
+    }
+  ],
+  "verdict": "Source-only v3 rollforward is consistent with the reviewed v2 quantitative supplement and exact narrow repairs."
+}

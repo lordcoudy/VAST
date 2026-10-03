@@ -1,0 +1,62 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_component_ext4_unexecuted_preparation_v1",
+  "bind_root_smoke": "separate bounded reviewed exact-image read-only smoke required before measurement; not supplied or executed by these helpers",
+  "hardware_work_started": false,
+  "historical_original_helpers": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-cpu05-controller-preparation-v1/run_original_cpu_component_pair_v1.py",
+      "sha256": "a6245ffaef0f197fa561dacdd173aa45a1a35b84e4beda1fbe063ddcb1d19c13",
+      "size_bytes": 15136
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-gpu01-controller-preparation-v2/run_original_gpu_component_pair_v1.py",
+      "sha256": "095de25ad80f0d2e38da3cbb2cbd5df0e84e51df4f55d0dccb07781b71e6a707",
+      "size_bytes": 15136
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/capture_selected_host_closure_v6.py",
+      "sha256": "a05b1c72e6188dac057ea7104e2ffe2cc83cf8f596ab1b1675b10f70a09314db",
+      "size_bytes": 3049
+    }
+  ],
+  "input_classification_sha256": "ed2858413c0dca784f05bff2ca4551b0d6f7879baf6624d07a54c1227a320e3c",
+  "input_inventory_sha256": "8a03751c4f3e18a2590d04874496559cc77dab7ffebc8184269c0b9bb81dc364",
+  "new_artifact_helpers": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_cpu_component_pair_ext4_v1.py",
+      "sha256": "49b6659ce3b6c595be21bf5ffefa721738a23094cc1a66642a9f5bab8666f559",
+      "size_bytes": 15089
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/run_original_gpu_component_pair_ext4_v3.py",
+      "sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2",
+      "size_bytes": 15089
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/capture_selected_host_closure_ext4_v1.py",
+      "sha256": "425834a1b3016cc5a50843017de32a58b58449de571eda17ff4d5e3d6632ac6b",
+      "size_bytes": 3878
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/setup_finite_ext4_root_v1.py",
+      "sha256": "88852d59baef1501918abd5764d5181126f5e2bdefe7137e43862e13cd04b62f",
+      "size_bytes": 16881
+    }
+  ],
+  "original_pair_cleanup_s": 15,
+  "pair_outer_timeout_s": 2250,
+  "production_source_mutations": [],
+  "publication_ready": false,
+  "required_before_dispatch": "independent artifact review, exact reviewed planning/source commit and recorded PR authorization",
+  "schema_version": 1,
+  "setup_cleanup_s": 10,
+  "setup_creates_shared_clone_object_dependency_not_full_history_copy": true,
+  "setup_does_not_invoke_engine_or_models": true,
+  "setup_timeout_s": 600,
+  "status": "authored_and_ast_parsed_not_executed",
+  "stock_host_closure_cleanup_s": 10,
+  "stock_host_closure_timeout_s": 120,
+  "stock_pair_timeout_s": 2100,
+  "target": "/home/s-a-balashov/work/vast-component-release-20260930-d27"
+}

@@ -1,0 +1,193 @@
+test_clean_empty_checkout_acquires_exact_eight_without_input_changes (owned_asset_tests.PrepareCiModelAssetsTests.test_clean_empty_checkout_acquires_exact_eight_without_input_changes) ... ERROR
+test_correct_existing_objects_are_verified_without_network (owned_asset_tests.PrepareCiModelAssetsTests.test_correct_existing_objects_are_verified_without_network) ... ERROR
+test_corrupt_cache_is_not_overwritten_and_prevents_dispatch (owned_asset_tests.PrepareCiModelAssetsTests.test_corrupt_cache_is_not_overwritten_and_prevents_dispatch) ... FAIL
+test_existing_hardlink_is_rejected (owned_asset_tests.PrepareCiModelAssetsTests.test_existing_hardlink_is_rejected) ... FAIL
+test_http_error_redirect_and_timeout_are_original_failures (owned_asset_tests.PrepareCiModelAssetsTests.test_http_error_redirect_and_timeout_are_original_failures) ... 
+  test_http_error_redirect_and_timeout_are_original_failures (owned_asset_tests.PrepareCiModelAssetsTests.test_http_error_redirect_and_timeout_are_original_failures) (label='status') ... FAIL
+  test_http_error_redirect_and_timeout_are_original_failures (owned_asset_tests.PrepareCiModelAssetsTests.test_http_error_redirect_and_timeout_are_original_failures) (label='redirect') ... FAIL
+  test_http_error_redirect_and_timeout_are_original_failures (owned_asset_tests.PrepareCiModelAssetsTests.test_http_error_redirect_and_timeout_are_original_failures) (label='timeout') ... FAIL
+test_manifest_drift_during_transfer_blocks_publication (owned_asset_tests.PrepareCiModelAssetsTests.test_manifest_drift_during_transfer_blocks_publication) ... FAIL
+test_metadata_path_escape_is_rejected_before_dispatch (owned_asset_tests.PrepareCiModelAssetsTests.test_metadata_path_escape_is_rejected_before_dispatch) ... FAIL
+test_publication_race_never_replaces_foreign_target (owned_asset_tests.PrepareCiModelAssetsTests.test_publication_race_never_replaces_foreign_target) ... FAIL
+test_short_and_oversize_bodies_never_publish (owned_asset_tests.PrepareCiModelAssetsTests.test_short_and_oversize_bodies_never_publish) ... 
+  test_short_and_oversize_bodies_never_publish (owned_asset_tests.PrepareCiModelAssetsTests.test_short_and_oversize_bodies_never_publish) (suffix='short') ... FAIL
+  test_short_and_oversize_bodies_never_publish (owned_asset_tests.PrepareCiModelAssetsTests.test_short_and_oversize_bodies_never_publish) (suffix='large') ... FAIL
+test_symlink_model_parent_is_rejected_without_outside_write (owned_asset_tests.PrepareCiModelAssetsTests.test_symlink_model_parent_is_rejected_without_outside_write) ... FAIL
+test_wrong_digest_preserves_original_failed_partial (owned_asset_tests.PrepareCiModelAssetsTests.test_wrong_digest_preserves_original_failed_partial) ... FAIL
+
+======================================================================
+ERROR: test_clean_empty_checkout_acquires_exact_eight_without_input_changes (owned_asset_tests.PrepareCiModelAssetsTests.test_clean_empty_checkout_acquires_exact_eight_without_input_changes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 77, in test_clean_empty_checkout_acquires_exact_eight_without_input_changes
+    result = self.run_preparation()
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 71, in run_preparation
+    return assets.prepare_ci_model_assets(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/prepare_ci_model_assets.py", line 9, in prepare_ci_model_assets
+    raise AssetPreparationError("eight-asset preparation has not been implemented")
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+======================================================================
+ERROR: test_correct_existing_objects_are_verified_without_network (owned_asset_tests.PrepareCiModelAssetsTests.test_correct_existing_objects_are_verified_without_network)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 93, in test_correct_existing_objects_are_verified_without_network
+    result = self.run_preparation()
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 71, in run_preparation
+    return assets.prepare_ci_model_assets(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/prepare_ci_model_assets.py", line 9, in prepare_ci_model_assets
+    raise AssetPreparationError("eight-asset preparation has not been implemented")
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+======================================================================
+FAIL: test_corrupt_cache_is_not_overwritten_and_prevents_dispatch (owned_asset_tests.PrepareCiModelAssetsTests.test_corrupt_cache_is_not_overwritten_and_prevents_dispatch)
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 101, in test_corrupt_cache_is_not_overwritten_and_prevents_dispatch
+    with self.assertRaisesRegex(assets.AssetPreparationError, "existing.*size|existing.*digest"):
+AssertionError: "existing.*size|existing.*digest" does not match "eight-asset preparation has not been implemented"
+
+======================================================================
+FAIL: test_existing_hardlink_is_rejected (owned_asset_tests.PrepareCiModelAssetsTests.test_existing_hardlink_is_rejected)
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 120, in test_existing_hardlink_is_rejected
+    with self.assertRaisesRegex(assets.AssetPreparationError, "single|alias|link"):
+AssertionError: "single|alias|link" does not match "eight-asset preparation has not been implemented"
+
+======================================================================
+FAIL: test_http_error_redirect_and_timeout_are_original_failures (owned_asset_tests.PrepareCiModelAssetsTests.test_http_error_redirect_and_timeout_are_original_failures) (label='status')
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 164, in test_http_error_redirect_and_timeout_are_original_failures
+    with self.assertRaisesRegex(assets.AssetPreparationError, "status|redirect|timeout"):
+AssertionError: "status|redirect|timeout" does not match "eight-asset preparation has not been implemented"
+
+======================================================================
+FAIL: test_http_error_redirect_and_timeout_are_original_failures (owned_asset_tests.PrepareCiModelAssetsTests.test_http_error_redirect_and_timeout_are_original_failures) (label='redirect')
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 164, in test_http_error_redirect_and_timeout_are_original_failures
+    with self.assertRaisesRegex(assets.AssetPreparationError, "status|redirect|timeout"):
+AssertionError: "status|redirect|timeout" does not match "eight-asset preparation has not been implemented"
+
+======================================================================
+FAIL: test_http_error_redirect_and_timeout_are_original_failures (owned_asset_tests.PrepareCiModelAssetsTests.test_http_error_redirect_and_timeout_are_original_failures) (label='timeout')
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 164, in test_http_error_redirect_and_timeout_are_original_failures
+    with self.assertRaisesRegex(assets.AssetPreparationError, "status|redirect|timeout"):
+AssertionError: "status|redirect|timeout" does not match "eight-asset preparation has not been implemented"
+
+======================================================================
+FAIL: test_manifest_drift_during_transfer_blocks_publication (owned_asset_tests.PrepareCiModelAssetsTests.test_manifest_drift_during_transfer_blocks_publication)
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 185, in test_manifest_drift_during_transfer_blocks_publication
+    with self.assertRaisesRegex(assets.AssetPreparationError, "input|manifest|changed|drift"):
+AssertionError: "input|manifest|changed|drift" does not match "eight-asset preparation has not been implemented"
+
+======================================================================
+FAIL: test_metadata_path_escape_is_rejected_before_dispatch (owned_asset_tests.PrepareCiModelAssetsTests.test_metadata_path_escape_is_rejected_before_dispatch)
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 126, in test_metadata_path_escape_is_rejected_before_dispatch
+    with self.assertRaisesRegex(assets.AssetPreparationError, "destination|path|canonical"):
+AssertionError: "destination|path|canonical" does not match "eight-asset preparation has not been implemented"
+
+======================================================================
+FAIL: test_publication_race_never_replaces_foreign_target (owned_asset_tests.PrepareCiModelAssetsTests.test_publication_race_never_replaces_foreign_target)
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 175, in test_publication_race_never_replaces_foreign_target
+    with self.assertRaisesRegex(assets.AssetPreparationError, "exist|replace|occupied"):
+AssertionError: "exist|replace|occupied" does not match "eight-asset preparation has not been implemented"
+
+======================================================================
+FAIL: test_short_and_oversize_bodies_never_publish (owned_asset_tests.PrepareCiModelAssetsTests.test_short_and_oversize_bodies_never_publish) (suffix='short')
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 150, in test_short_and_oversize_bodies_never_publish
+    with self.assertRaisesRegex(assets.AssetPreparationError, "size|short|oversize"):
+AssertionError: "size|short|oversize" does not match "eight-asset preparation has not been implemented"
+
+======================================================================
+FAIL: test_short_and_oversize_bodies_never_publish (owned_asset_tests.PrepareCiModelAssetsTests.test_short_and_oversize_bodies_never_publish) (suffix='large')
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 150, in test_short_and_oversize_bodies_never_publish
+    with self.assertRaisesRegex(assets.AssetPreparationError, "size|short|oversize"):
+AssertionError: "size|short|oversize" does not match "eight-asset preparation has not been implemented"
+
+======================================================================
+FAIL: test_symlink_model_parent_is_rejected_without_outside_write (owned_asset_tests.PrepareCiModelAssetsTests.test_symlink_model_parent_is_rejected_without_outside_write)
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 110, in test_symlink_model_parent_is_rejected_without_outside_write
+    with self.assertRaisesRegex(assets.AssetPreparationError, "symlink|physical|alias"):
+AssertionError: "symlink|physical|alias" does not match "eight-asset preparation has not been implemented"
+
+======================================================================
+FAIL: test_wrong_digest_preserves_original_failed_partial (owned_asset_tests.PrepareCiModelAssetsTests.test_wrong_digest_preserves_original_failed_partial)
+----------------------------------------------------------------------
+prepare_ci_model_assets.AssetPreparationError: eight-asset preparation has not been implemented
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 135, in test_wrong_digest_preserves_original_failed_partial
+    with self.assertRaisesRegex(assets.AssetPreparationError, "digest"):
+AssertionError: "digest" does not match "eight-asset preparation has not been implemented"
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.123s
+
+FAILED (failures=12, errors=2)

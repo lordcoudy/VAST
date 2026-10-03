@@ -1,0 +1,133 @@
+test_exact_two_original_operations_one_guardian_stop_before_cold (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_exact_two_original_operations_one_guardian_stop_before_cold) ... ERROR
+test_occupied_output_rejects_before_reserve_or_source (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_occupied_output_rejects_before_reserve_or_source) ... ERROR
+test_original_failure_no_second_operation_and_authenticated_stop (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_failure_no_second_operation_and_authenticated_stop) ... ERROR
+test_real_bounded_reserve_release_checks_original_inode (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_real_bounded_reserve_release_checks_original_inode) ... ERROR
+test_reserve_replacement_is_preserved_and_fails (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_reserve_replacement_is_preserved_and_fails) ... ERROR
+test_source_mutation_before_receipt_last_is_failure (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_source_mutation_before_receipt_last_is_failure) ... ERROR
+test_stop_failure_preserves_original_body_cause_and_is_not_clean (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_stop_failure_preserves_original_body_cause_and_is_not_clean) ... ERROR
+test_symlink_input_rejects_before_source (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_symlink_input_rejects_before_source) ... ERROR
+
+======================================================================
+ERROR: test_exact_two_original_operations_one_guardian_stop_before_cold (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_exact_two_original_operations_one_guardian_stop_before_cold)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 20, in setUp
+    self.cli = importlib.import_module("publication_gstreamer_component_cli_v1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'publication_gstreamer_component_cli_v1'
+
+======================================================================
+ERROR: test_occupied_output_rejects_before_reserve_or_source (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_occupied_output_rejects_before_reserve_or_source)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 20, in setUp
+    self.cli = importlib.import_module("publication_gstreamer_component_cli_v1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'publication_gstreamer_component_cli_v1'
+
+======================================================================
+ERROR: test_original_failure_no_second_operation_and_authenticated_stop (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_failure_no_second_operation_and_authenticated_stop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 20, in setUp
+    self.cli = importlib.import_module("publication_gstreamer_component_cli_v1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'publication_gstreamer_component_cli_v1'
+
+======================================================================
+ERROR: test_real_bounded_reserve_release_checks_original_inode (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_real_bounded_reserve_release_checks_original_inode)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 20, in setUp
+    self.cli = importlib.import_module("publication_gstreamer_component_cli_v1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'publication_gstreamer_component_cli_v1'
+
+======================================================================
+ERROR: test_reserve_replacement_is_preserved_and_fails (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_reserve_replacement_is_preserved_and_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 20, in setUp
+    self.cli = importlib.import_module("publication_gstreamer_component_cli_v1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'publication_gstreamer_component_cli_v1'
+
+======================================================================
+ERROR: test_source_mutation_before_receipt_last_is_failure (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_source_mutation_before_receipt_last_is_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 20, in setUp
+    self.cli = importlib.import_module("publication_gstreamer_component_cli_v1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'publication_gstreamer_component_cli_v1'
+
+======================================================================
+ERROR: test_stop_failure_preserves_original_body_cause_and_is_not_clean (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_stop_failure_preserves_original_body_cause_and_is_not_clean)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 20, in setUp
+    self.cli = importlib.import_module("publication_gstreamer_component_cli_v1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'publication_gstreamer_component_cli_v1'
+
+======================================================================
+ERROR: test_symlink_input_rejects_before_source (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_symlink_input_rejects_before_source)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 20, in setUp
+    self.cli = importlib.import_module("publication_gstreamer_component_cli_v1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'publication_gstreamer_component_cli_v1'
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.012s
+
+FAILED (errors=8)

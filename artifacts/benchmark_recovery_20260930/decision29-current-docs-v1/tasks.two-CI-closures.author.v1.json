@@ -1,0 +1,61 @@
+{
+  "CI_tests_engine_model_Git_execution": false,
+  "actual_checkboxes": {
+    "checked": 65,
+    "pending": 9,
+    "total": 74
+  },
+  "after": {
+    "path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+    "sha256": "674cbdae53333415d7d41cf7474ed73d18062c6e39ae86caf5e63ad30ee3f338",
+    "size_bytes": 36740
+  },
+  "all_other_task_text_states_and_bytes_identical": true,
+  "before": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/tasks.before-two-CI-closures.v1.raw",
+    "sha256": "ee2518562588198019189d8bbe6471e9bc93a0858c09dc8ecd8dd736dd09e0ab",
+    "size_bytes": 36740
+  },
+  "completion_basis": "Actual independently accepted original hostedD and prerequisite-corrected ext4D full portable/native/selection/source/skip lanes, plus already accepted separate physical CPU08/GPU02 and raw science. 18.13 separately requires future archived-commit CI.",
+  "exact_closure_refs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-D-original-independent-review-v1/review.v1.json",
+      "sha256": "05019c9b277292ae29c4b60dee2839c9ae4c8d61456254da2796f89ca4cf4f98",
+      "size_bytes": 115481
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/original-prerequisite-review-attempt01/review.v1.json",
+      "sha256": "5a58508acf35f71d3c2934a022de1bff2e60eb44a39b6f85bd48cc3715ab7c60",
+      "size_bytes": 119285
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-independent-review-v1/root-local-CI-acceptance.v1.json",
+      "sha256": "76fb5d70e68df9e4dabac3ec87a6ac4cb36896308aa544ca58cc617185b186f1",
+      "size_bytes": 3172
+    }
+  ],
+  "exact_completed_tasks": [
+    "18.11",
+    "20.6"
+  ],
+  "explicit_not_completed": [
+    "18.12",
+    "18.13",
+    "19.5",
+    "conformance",
+    "archive",
+    "latest_final_review",
+    "merge"
+  ],
+  "finite_diff": {
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-docs-v1/tasks.two-CI-closures.v1.diff",
+    "sha256": "addee8a75f9cfe860e2a0a47ed6ce5e5c2212c7de1a5e05c8f5943e5bf6be3fb",
+    "size_bytes": 6276
+  },
+  "kind": "two_actual_CI_task_closures_author_v1",
+  "only_two_single_ASCII_checkbox_bytes_changed": true,
+  "raw_inverse_identical": true,
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "source_commit_D": "3c025b29b3c1d5275c2ec693410e4b83700583de"
+}

@@ -1,0 +1,927 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_original_ci_two_failure_inspection_v1",
+  "limitations": [
+    "The original capacity traceback does not expose the ValueError swallowed by assertRaises.",
+    "A source-demonstrated owner-commit failure response hazard is not a timing reconstruction of the original run.",
+    "No test, namespace, policy, model or engine workload was run by this inspector."
+  ],
+  "matching_observer_events": [],
+  "original_copies": [
+    {
+      "copy": {
+        "epoch": [
+          69,
+          4785074606502359,
+          33279,
+          1,
+          24050,
+          1790809370544124200,
+          1790809370544124200
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/observer-original-member-copies-v1/events.original.jsonl",
+        "sha256": "7f56c32126d6a47449a24a0fe7fe723eb9aa8c6a1dee14147ae734c9edea90fc",
+        "size_bytes": 24050
+      },
+      "crc32": 3390567652,
+      "original_member": "external-test-observer/events.original.jsonl"
+    },
+    {
+      "copy": {
+        "epoch": [
+          69,
+          4785074606502360,
+          33279,
+          1,
+          788,
+          1790809370559018600,
+          1790809370559018600
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/observer-original-member-copies-v1/launch.v1.json",
+        "sha256": "4af3da7fdb83ab4484fe26f95a03133cdbc73c76074d6ad97ef7e59ed0187735",
+        "size_bytes": 788
+      },
+      "crc32": 2941361227,
+      "original_member": "external-test-observer/launch.v1.json"
+    },
+    {
+      "copy": {
+        "epoch": [
+          69,
+          4785074606502361,
+          33279,
+          1,
+          4904,
+          1790809370564065700,
+          1790809370564065700
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/observer-original-member-copies-v1/responses.original.jsonl",
+        "sha256": "21305cc969385905632b1e20d28b19cdbe23a3fa1c39e12beec024d3e6a6ae3f",
+        "size_bytes": 4904
+      },
+      "crc32": 2775383304,
+      "original_member": "external-test-observer/responses.original.jsonl"
+    },
+    {
+      "copy": {
+        "epoch": [
+          69,
+          4785074606502362,
+          33279,
+          1,
+          1520,
+          1790809370569132100,
+          1790809370569132100
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/observer-original-member-copies-v1/terminal.v1.json",
+        "sha256": "66e78f80ebdb233daa337a8b3e4dcf876cc88ecb6b693408f10e35b3376d3dd2",
+        "size_bytes": 1520
+      },
+      "crc32": 175445056,
+      "original_member": "external-test-observer/terminal.v1.json"
+    },
+    {
+      "copy": {
+        "epoch": [
+          69,
+          4785074606502363,
+          33279,
+          1,
+          60043,
+          1790809370573098300,
+          1790809370573098300
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/observer-original-member-copies-v1/trace.original.log",
+        "sha256": "0084a5c5f4425e87ebb1e9fb43f6265599a3fd9559246f5dd348533f6e609faf",
+        "size_bytes": 60043
+      },
+      "crc32": 1590522474,
+      "original_member": "external-test-observer/trace.original.log"
+    }
+  ],
+  "original_error_count": 0,
+  "original_failures": [
+    {
+      "test_id": "test_backend_publication_output_transaction_v3.BackendPublicationOutputTransactionV3Tests.test_two_coordinators_spawn_at_most_once",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_backend_publication_output_transaction_v3.py\", line 790, in test_two_coordinators_spawn_at_most_once\n    self.assertEqual(\nAssertionError: 0 != 1 : [BackendPublicationOutputTransactionV3Error('backend publication synthetic v3 process failed: durable broker owner does not bind the spawned broker'), BackendPublicationOutputTransactionV3Error('backend publication synthetic v3 process failed: backend publication POSIX broker process failed')]\n"
+    },
+    {
+      "test_id": "test_publication_operational_process_custody_v1.ProcessCustodyTests.test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_publication_operational_process_custody_v1.py\", line 286, in test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded\n    self.assertEqual(receipt[\"call_count\"], 32)\nAssertionError: 11 != 32\n"
+    }
+  ],
+  "original_full_elapsed_s": 1475.3290163,
+  "original_member_count": 197,
+  "original_native_build": {
+    "argv": [
+      "cmake",
+      "--build",
+      "/home/runner/work/_temp/vast-cpu-checks/build",
+      "--parallel",
+      "2",
+      "--target",
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ],
+    "cleanup_error": null,
+    "elapsed_s": 15.752515020999994,
+    "returncode": 0,
+    "timed_out": false
+  },
+  "original_observer_terminal": {
+    "absolute_deadline_ns": 5401912980472,
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "-I",
+      "-B",
+      "/home/runner/work/VAST/VAST/scripts/run_ci_checks.py",
+      "--suite-child",
+      "--output-dir",
+      "/home/runner/work/_temp/vast-cpu-checks",
+      "--trace-fd",
+      "12",
+      "--event-fd",
+      "14",
+      "--stop-fd",
+      "15",
+      "--expected-profile",
+      "vast-ci-userns-bb698292a08a4cc197faae0cfd7f5d90 (unconfined)"
+    ],
+    "cleanup_deadline_ns": 1590930182190,
+    "clock": "same_kernel_monotonic_ns",
+    "descendant_quiescence": "not established by original-child status",
+    "failure": "original suite child did not exit zero",
+    "finished_monotonic_ns": 1575930491107,
+    "forced_sigkill": false,
+    "forced_sigterm": false,
+    "kind": "vast_external_ci_test_observer_v1",
+    "owner": {
+      "boot_id": "fbd162ee-8261-43fc-a05a-2d380da796a3",
+      "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "executable_stat": {
+        "st_dev": 2049,
+        "st_gid": 1001,
+        "st_ino": 9190207,
+        "st_mode": 33261,
+        "st_nlink": 1,
+        "st_size": 17744,
+        "st_uid": 1001
+      },
+      "gid": 1001,
+      "pgid": 4050,
+      "pid": 4050,
+      "ppid": 3732,
+      "startticks": 13171,
+      "uid": 1001
+    },
+    "pidfd_acquisition_failed": false,
+    "pidfd_failure": null,
+    "pipe_eof": {
+      "control": true,
+      "trace": true
+    },
+    "ready": true,
+    "requests_sent": 24,
+    "requests_stopped_before_disposition_restore": true,
+    "response_channel_bytes": 4904,
+    "response_matching": "ordinary signals may coalesce; no one-to-one or timely claim",
+    "responses_completed": 24,
+    "responses_started": 24,
+    "returncode": 1,
+    "signal": null,
+    "started_monotonic_ns": 131712319626,
+    "successful": false,
+    "trace_bytes": 60043,
+    "unmatched_or_coalesced_requests_possible": 0
+  },
+  "original_portable_skip_audit": [
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "DrvFS hard-link recovery requires WSL workspace",
+      "test_id": "test_backend_pair_archive_sizing_receipts_v1.BackendPairArchiveSizingReceiptsV1ContractTests.test_pair_archive_fd_anchored_hardlink_recovers_on_drvfs"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "canonical WSL publication venv is not installed",
+      "test_id": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows directory custody attack",
+      "test_id": "test_backend_publication_output_transaction_v3.BackendPublicationOutputTransactionV3Tests.test_windows_directory_swap_before_native_custody_is_rejected"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_native_query_failure_is_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_parent_handles_deny_directory_replacement"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_reparse_volume_and_duplicate_ids_are_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_rewalk_file_id_mismatch_is_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_fresh_final_reopen_rejects_hardlink_drift"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_native_query_failure_is_fail_closed_and_cleans_handle"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_outer_root_identity_mismatch_is_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_parent_handle_denies_directory_replacement"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_reparse_volume_and_duplicate_ids_are_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_rewalk_file_id_mismatch_is_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_root_handle_denies_directory_replacement"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "real KPP AVI files are not present",
+      "test_id": "test_benchmark_contract.BenchmarkContractTests.test_kpp_real_avi_manifest_validates_real_files_and_fps_policy"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_calibration_and_evaluation_sample_ids_must_be_disjoint"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_calibration_minimum_and_numeric_tolerances_are_enforced"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_complete_common_source_contract_passes"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_image_command_cannot_pull_or_run"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_lineage_preprocessing_and_toolchain_drift_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_non_finite_tolerance_is_rejected"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_openvino_gpu_execution_evidence_is_not_cuda"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_repository_state_is_honestly_blocked"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_symlinked_model_artifact_is_not_accepted"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "existing_retired_schema_migration",
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_verified_equivalent_derivations_can_replace_a_local_source"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows share-mode custody only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_ancestor_custody_blocks_parent_rename_aba"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows share-mode custody only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_custody_blocks_same_size_in_place_rewrite_with_restored_mtime"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows pre-custody drift only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_rejects_same_size_rewrite_before_native_custody"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows ctime views only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_windows_cross_view_ignores_only_ctime_and_each_view_binds_it"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows path-view ctime only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_windows_same_view_callsites_reject_ctime_only_drift"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "local physical attempt2 evidence is unavailable",
+      "test_id": "test_checkpoint_model_parity_v4.ModelParityV4Test.test_actual_attempt2_patch_allows_exact_refrozen_base_producers"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_oversized_component_is_rejected_before_ntcreatefile"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_root_parent_final_reparse_and_rewalk_drift_are_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_verification_handle_cleanup_failure_is_fail_closed"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows retained failure candidate only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_authoritative_failure_retains_custodied_private_candidate"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows reparse-point rejection only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_custody_rejects_directory_link_swap_candidate"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows directory-handle custody only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_directory_handles_hold_custody_and_publish_no_replace"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows rollback fail-safe only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_retains_explicitly_when_disposition_fails"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows atomic private create only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_returns_custody_without_create_open_gap"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows exact-handle rollback only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_rolls_back_every_post_create_validation_failure"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows retained failure candidate only",
+      "test_id": "test_freeze_kpp_legacy_iss_v2_transcodes.FreezeKppLegacyIssV2TranscodesTests.test_authoritative_freeze_failure_retains_private_candidate"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody negatives only",
+      "test_id": "test_freeze_kpp_legacy_iss_v2_transcodes.FreezeKppLegacyIssV2TranscodesTests.test_windows_freeze_custody_blocks_rename_and_preserves_collision"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "bounded cleanup retry targets WinError 145",
+      "test_id": "test_kpp_legacy_iss_v2_offline_image_intake.OfflineImageIntakeTests.test_windows_temporary_directory_cleanup_retries_only_directory_not_empty"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "workspace filesystem is already native Linux ext",
+      "test_id": "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_default_watchdog_provisioner_rejects_non_native_workspace_filesystem"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows rename custody attack",
+      "test_id": "test_kpp_legacy_iss_v2_secondary_sensitivity_pilot.KppLegacyIssV2SecondarySensitivityPilotTests.test_windows_candidate_rename_out_back_metadata_restore_is_denied"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_each_unpublished_bootstrap_failure_leaves_no_random_orphan"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_failure_closes_every_locally_acquired_handle"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows NtCreateFile route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_never_path_creates_a_destination_component"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_exact_rerun_holds_target_custody_without_creating"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows ACL route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rechecks_target_acl_after_long_verification"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows ACL route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rejects_permissive_target_acl_untouched"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_route_bootstraps_and_holds_full_destination_custody"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative marker only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_failure_marker_is_absent_or_exact_on_stage_faults"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_prepublish_failure_is_quarantined_with_marker"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_quarantine_collision_never_overwrites"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative sentinel only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_commit_pending_removal_is_last_exact_handle_success_operation"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_committed_candidate_validator_rejects_record_drift_and_extra_leaf"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_committed_resume_holds_every_validated_leaf_through_terminal_scan"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative guards only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_duplicate_guards_quarantine_same_file_id_after_originals_close"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_existing_candidate_size_caps_reject_before_oversized_leaf_read"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_existing_output_drift_or_collision_fails_untouched"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative sentinel only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_failed_quarantine_leaves_canonical_namespace_commit_pending"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_failure_immediately_after_canonical_rename_moves_exact_file_id_to_quarantine"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_fault_immediately_after_native_true_is_postcommit_success"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_identical_public_call_resumes_existing_committed_candidate_read_only"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_native_commit_false_keeps_canonical_child_guard"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_native_true_then_python_gap_is_resolved_by_permanent_record"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows native capture reopen only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_parent_drained_capture_blocks_native_same_token_reopen_and_growth"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_persistent_postcommit_close_failure_releases_canonical_namespace"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_postcommit_close_and_observer_faults_cannot_become_failed_publication"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_postpublish_verification_failure_releases_leaf_then_quarantines"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_pre_native_commit_failure_keeps_canonical_child_guard"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_resealed_materializer_and_preprocessor_role_drift_is_rejected"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_resealed_receipt_core_or_schema_drift_is_rejected"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows authoritative guards only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_second_guard_duplicate_failure_leaves_original_custody_usable"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows directory custody only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_windows_directory_identity_custody_requires_old_write_handle_close"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "canonical publication evidence mount is not materialized",
+      "test_id": "test_mount_publication_evidence_wsl.MountPublicationEvidenceWslTests.test_check_only_accepts_the_canonical_writable_mount"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "canonical publication runtime mounts are not materialized",
+      "test_id": "test_mount_publication_runtime_wsl.MountPublicationRuntimeWslTests.test_check_only_accepts_the_canonical_read_only_mounts"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "canonical publication socket mount is not materialized",
+      "test_id": "test_mount_publication_sockets_wsl.MountPublicationSocketsWslTests.test_check_only_accepts_the_canonical_writable_mount"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_authoritative_failure_retains_custodied_private_candidate"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_authoritative_route_holds_root_staging_and_working_custody"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "Windows custody route only",
+      "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_post_publication_tamper_fails_without_deleting_output"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "live post-rename descriptor loss requires the WSL DrvFS workspace",
+      "test_id": "test_publication_owned_staging_cleanup_v1.OwnedStagingCleanupV1Tests.test_drvfs_post_rename_fd_loss_uses_final_inode_and_tree_anchors"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "DrvFS replacement visibility is WSL workspace-specific",
+      "test_id": "test_publication_physical_io_v1.PublicationPhysicalIoV1Tests.test_drvfs_atomic_replace_closes_staging_fd_before_verification"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "DrvFS hard-link fallback is WSL workspace-specific",
+      "test_id": "test_publication_physical_io_v1.PublicationPhysicalIoV1Tests.test_drvfs_unsupported_rename_recovers_two_link_publish"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "live no-replace fallback requires the WSL DrvFS workspace",
+      "test_id": "test_publication_policy_qualification_pilot_executor_v2.QualificationPilotExecutorV2ContractTests.test_drvfs_directory_commit_does_not_depend_on_ambient_cwd"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "live no-replace fallback requires the WSL DrvFS workspace",
+      "test_id": "test_publication_policy_qualification_pilot_executor_v2.QualificationPilotExecutorV2ContractTests.test_drvfs_directory_commit_succeeds_and_never_overwrites_collision"
+    },
+    {
+      "acceptance_claim": false,
+      "classification": "platform_or_explicit_physical_prerequisite",
+      "reason": "live no-replace race requires the WSL DrvFS workspace",
+      "test_id": "test_publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputsV2Tests.test_drvfs_runtime_directory_commit_race_has_exactly_one_winner"
+    }
+  ],
+  "original_profile": {
+    "attempted": true,
+    "held_fds_released": true,
+    "load_phase": {
+      "cleanup_deadline_ns": 161594106252,
+      "execution_deadline_ns": 151594106252,
+      "started_monotonic_ns": 131594106252
+    },
+    "load_terminal": {
+      "capture_completed": true,
+      "failure": null,
+      "returncode": 0,
+      "timed_out": false
+    },
+    "load_verified": true,
+    "name": "vast-ci-userns-bb698292a08a4cc197faae0cfd7f5d90",
+    "profile": {
+      "epoch": [
+        2049,
+        9453092,
+        33152,
+        1,
+        158,
+        1790805745924229773,
+        1790805745924229773
+      ],
+      "path": "/home/runner/work/_temp/vast-cpu-checks/namespace-profile/owned.profile",
+      "sha256": "4b275ffea5a5d6029a57f049539c4e57fc8acd0d37734474889c54062b19ff62",
+      "size_bytes": 158,
+      "stat": {
+        "st_dev": 2049,
+        "st_gid": 1001,
+        "st_ino": 9453092,
+        "st_mode": 33152,
+        "st_nlink": 1,
+        "st_size": 158,
+        "st_uid": 1001
+      }
+    },
+    "status": "completed",
+    "unload_phase": {
+      "cleanup_deadline_ns": 1605931558692,
+      "execution_deadline_ns": 1595931558692,
+      "started_monotonic_ns": 1575931558692
+    },
+    "unload_terminal": {
+      "capture_completed": true,
+      "failure": null,
+      "returncode": 0,
+      "timed_out": false
+    },
+    "unload_verified": true
+  },
+  "original_report_commit": "4cb9d8313cca71256179bc3b59cc6f9137e7b8ba",
+  "original_skip_count": 88,
+  "original_source_changed_count": [],
+  "original_success_count": 2870,
+  "original_tests_run": 2960,
+  "original_unittest_keys": [
+    "discovered_ids",
+    "errors",
+    "expected_failures",
+    "failures",
+    "missing_required_successes",
+    "portable_skip_audit",
+    "profile_observation",
+    "selection",
+    "skips",
+    "successful",
+    "successful_test_ids",
+    "tests_run",
+    "unexpected_successes"
+  ],
+  "original_zip": {
+    "epoch": [
+      69,
+      2814749769526779,
+      33279,
+      1,
+      1973434,
+      1790807574770443000,
+      1790807574770443000
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/36783010512-cpu/original-artifact.zip",
+    "sha256": "ad640c85c3641140fb26ce5f473bc37ff4424c731f0cebf6bb36068643f55bfb",
+    "size_bytes": 1973434
+  },
+  "required_native_missing": [],
+  "schema_version": 1,
+  "source_memberships": [
+    {
+      "allowlists": [],
+      "current": {
+        "epoch": [
+          69,
+          3096224745679184,
+          33279,
+          1,
+          124499,
+          1790754661743690100,
+          1790754661743690100
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_process_supervisor_v3.py",
+        "sha256": "acc40456cf93db8deb270f54d14b8f17555a268969e5bad0695372ddba12132d",
+        "size_bytes": 124499
+      },
+      "finite2693": true,
+      "host87": true,
+      "relative_path": "scripts/backend_publication_process_supervisor_v3.py"
+    },
+    {
+      "allowlists": [],
+      "current": {
+        "epoch": [
+          69,
+          3096224745679183,
+          33279,
+          1,
+          108483,
+          1789990791980198000,
+          1789990791980198000
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_output_transaction_v3.py",
+        "sha256": "5df9d564a4c175c1c07d4a311453a83e21b01815928622d535e31f5615cdab43",
+        "size_bytes": 108483
+      },
+      "finite2693": false,
+      "host87": false,
+      "relative_path": "scripts/backend_publication_output_transaction_v3.py"
+    },
+    {
+      "allowlists": [
+        "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+        "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+        "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+        "deploy/savant/publication/runtime-source-allowlist.txt"
+      ],
+      "current": {
+        "epoch": [
+          69,
+          1407374885973190,
+          33279,
+          1,
+          47271,
+          1790724976212369600,
+          1790724976212369600
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py",
+        "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+        "size_bytes": 47271
+      },
+      "finite2693": true,
+      "host87": true,
+      "relative_path": "scripts/publication_operational_process_custody_v1.py"
+    },
+    {
+      "allowlists": [],
+      "current": {
+        "epoch": [
+          69,
+          200973133373270713,
+          33279,
+          1,
+          40771,
+          1790546926181910800,
+          1790546926181910800
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_backend_publication_output_transaction_v3.py",
+        "sha256": "600cd481bd72b22d72b1b01be95d1d5af4718971ff559a80279cce7504ceba00",
+        "size_bytes": 40771
+      },
+      "finite2693": false,
+      "host87": false,
+      "relative_path": "tests/test_backend_publication_output_transaction_v3.py"
+    },
+    {
+      "allowlists": [],
+      "current": {
+        "epoch": [
+          69,
+          1407374885973191,
+          33279,
+          1,
+          27795,
+          1790724950775203700,
+          1790724950775203700
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py",
+        "sha256": "161938214d28727a633838108b95777e363bf4c516bd4c49a37baf897d3fe95d",
+        "size_bytes": 27795
+      },
+      "finite2693": false,
+      "host87": false,
+      "relative_path": "tests/test_publication_operational_process_custody_v1.py"
+    }
+  ]
+}

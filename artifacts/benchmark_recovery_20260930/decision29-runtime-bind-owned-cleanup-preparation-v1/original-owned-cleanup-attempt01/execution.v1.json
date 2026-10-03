@@ -1,0 +1,1151 @@
+{
+  "acceptance_claim": false,
+  "all_held_FDs_closed": true,
+  "benchmark_acceptance": false,
+  "close_errors": [],
+  "command": {
+    "EOF": {
+      "stderr": true,
+      "stdout": true
+    },
+    "argv": [
+      "/usr/bin/umount",
+      "--",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"
+    ],
+    "failure": null,
+    "finished_at_ns": 1791036320263434814,
+    "observed_descendants": [],
+    "owner": {
+      "argv": [
+        "/usr/bin/umount",
+        "--",
+        "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "cmdline_empty_observed": false,
+      "gid": 0,
+      "pgid": 11314,
+      "pid": 11314,
+      "ppid": 11313,
+      "session": 11314,
+      "startticks": 51865117,
+      "state": "R",
+      "uid": 0
+    },
+    "raw_channels": {
+      "stderr": {
+        "EOF_observed": true,
+        "acknowledged_bytes": 0,
+        "acknowledged_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stored_descriptor_verified": true,
+        "stored_original_descriptor": {
+          "epoch7": [
+            69,
+            1407374885980595,
+            33279,
+            1,
+            0,
+            1791036320257830900,
+            1791036320257830900
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/original-owned-cleanup-attempt01/umount.stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        }
+      },
+      "stdout": {
+        "EOF_observed": true,
+        "acknowledged_bytes": 0,
+        "acknowledged_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stored_descriptor_verified": true,
+        "stored_original_descriptor": {
+          "epoch7": [
+            69,
+            1407374885980594,
+            33279,
+            1,
+            0,
+            1791036320257830900,
+            1791036320257830900
+          ],
+          "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/original-owned-cleanup-attempt01/umount.stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        }
+      }
+    },
+    "reaped": true,
+    "returncode": 0,
+    "signals": [],
+    "started_at_ns": 1791036320257095717,
+    "two_owned_process_scans": [
+      {
+        "at_ns": 1791036320265102734,
+        "errors": [],
+        "members": [],
+        "original_pid_absent": {
+          "11314": true
+        }
+      },
+      {
+        "at_ns": 1791036320266545521,
+        "errors": [],
+        "members": [],
+        "original_pid_absent": {
+          "11314": true
+        }
+      }
+    ]
+  },
+  "conformance_acceptance": false,
+  "controller": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/capture_owned_runtime_bind_cleanup_v2.py",
+      "9530",
+      "059f4057bf7d6f550d59064c06e4e785b687ec1998e9625dfb2c6a3c2b148cee",
+      "e4321413fb7a9613a362bd544347de8d552c1ebd50615beb78d3b82dbce98921"
+    ],
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "cmdline_empty_observed": false,
+    "gid": 0,
+    "observed_parent": {
+      "argv": [
+        "/usr/bin/timeout",
+        "--verbose",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "30s",
+        "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "-I",
+        "-B",
+        "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/capture_owned_runtime_bind_cleanup_v2.py",
+        "9530",
+        "059f4057bf7d6f550d59064c06e4e785b687ec1998e9625dfb2c6a3c2b148cee",
+        "e4321413fb7a9613a362bd544347de8d552c1ebd50615beb78d3b82dbce98921"
+      ],
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "cmdline_empty_observed": false,
+      "gid": 0,
+      "pgid": 11312,
+      "pid": 11312,
+      "ppid": 11308,
+      "session": 11312,
+      "startticks": 51865093,
+      "state": "S",
+      "uid": 0
+    },
+    "pgid": 11312,
+    "pid": 11313,
+    "ppid": 11312,
+    "session": 11312,
+    "startticks": 51865096,
+    "state": "R",
+    "uid": 0
+  },
+  "directory_deletion_performed": false,
+  "elapsed_s": 0.22905553097371012,
+  "errors": [],
+  "facts": {
+    "binding": {
+      "epoch7": [
+        69,
+        1407374885980589,
+        33279,
+        1,
+        9530,
+        1791036304361550900,
+        1791036304361550900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/consumer-closure.bound.v1.json",
+      "sha256": "059f4057bf7d6f550d59064c06e4e785b687ec1998e9625dfb2c6a3c2b148cee",
+      "size_bytes": 9530
+    },
+    "canonical_python": {
+      "epoch7": [
+        2096,
+        87545,
+        33261,
+        1,
+        8020928,
+        1787574148546271435,
+        1787574148546271435
+      ],
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+      "size_bytes": 8020928
+    },
+    "consumer_owner_scans": [
+      {
+        "at_ns": 1791036320191403050,
+        "errors": [],
+        "members": [],
+        "original_pid_absent": {
+          "10965": true,
+          "10982": true,
+          "10983": true,
+          "11034": true,
+          "11079": true,
+          "11080": true,
+          "11249": true,
+          "11250": true,
+          "6530": true,
+          "6531": true,
+          "6532": true,
+          "6533": true,
+          "6563": true,
+          "6564": true,
+          "6619": true,
+          "6620": true,
+          "6631": true,
+          "6632": true,
+          "6673": true,
+          "6687": true,
+          "6996": true,
+          "6999": true,
+          "7596": true
+        }
+      },
+      {
+        "at_ns": 1791036320193011770,
+        "errors": [],
+        "members": [],
+        "original_pid_absent": {
+          "10965": true,
+          "10982": true,
+          "10983": true,
+          "11034": true,
+          "11079": true,
+          "11080": true,
+          "11249": true,
+          "11250": true,
+          "6530": true,
+          "6531": true,
+          "6532": true,
+          "6533": true,
+          "6563": true,
+          "6564": true,
+          "6619": true,
+          "6620": true,
+          "6631": true,
+          "6632": true,
+          "6673": true,
+          "6687": true,
+          "6996": true,
+          "6999": true,
+          "7596": true
+        }
+      }
+    ],
+    "consumer_proof_pins": [
+      {
+        "epoch7": [
+          69,
+          1407374885980416,
+          33279,
+          1,
+          5426,
+          1791030051846443600,
+          1791030051846443600
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-prerequisite-capture-preparation-v1/original-full-ci-prerequisite-attempt01/dispatch.v1.json",
+        "sha256": "68f7184244fd4343317a75e0390ee5851110033628acf77022cdf0c819fc2bdc",
+        "size_bytes": 5426
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980458,
+          33279,
+          1,
+          964,
+          1791032167044463500,
+          1791032167044463500
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-prerequisite-capture-preparation-v1/original-full-ci-prerequisite-attempt01/terminal.v1.json",
+        "sha256": "3edd982ef6967a065fc52f1bf266fc0614fe4e69b64b6d875ccfc47ec98d658b",
+        "size_bytes": 964
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980509,
+          33279,
+          1,
+          119285,
+          1791032750233587000,
+          1791032750233587000
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/original-prerequisite-review-attempt01/review.v1.json",
+        "sha256": "5a58508acf35f71d3c2934a022de1bff2e60eb44a39b6f85bd48cc3715ab7c60",
+        "size_bytes": 119285
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980526,
+          33279,
+          1,
+          5410,
+          1791033464821739600,
+          1791033464821739600
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/independent-owner-late-closure-v1/actual-tool-and-owner-closure-supplement.v1.json",
+        "sha256": "45957c4900ec9edd6d0712bfbb8cf94c07401a01457bea09106938e95f1ccd45",
+        "size_bytes": 5410
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980548,
+          33279,
+          1,
+          1419,
+          1791034118733998700,
+          1791034118733998700
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/attempt01/terminal.v1.json",
+        "sha256": "ffa350ef8061a69a12bd019a5a5c5e41b15b74ba8a4f8000bc5d665da1ec3d52",
+        "size_bytes": 1419
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980567,
+          33279,
+          1,
+          434057,
+          1791035318516433800,
+          1791035318516433800
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/review.v1.json",
+        "sha256": "af861006d56d00e466648cf2479f1536925f7b33f5a246916e924c067abec202",
+        "size_bytes": 434057
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980568,
+          33279,
+          1,
+          4648,
+          1791035507817511400,
+          1791035507817511400
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/reviewer-owner-late-closure.v1.json",
+        "sha256": "e3fea3ab9dcb4e2e633b9744eb4bb4aff692d4a049c40d4b8aef219bee6a162e",
+        "size_bytes": 4648
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980572,
+          33279,
+          1,
+          677,
+          1791035550130877800,
+          1791035550130877800
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/final-tool-closure.v1.json",
+        "sha256": "11514e3417af92c6a3ea75752c33b22f3bbcf2558ebf0e77bd01519c11b1db97",
+        "size_bytes": 677
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980560,
+          33279,
+          1,
+          4763,
+          1791034760893577400,
+          1791034760893577400
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-mapper-owner-closure-v1/actual-tool-and-owner-closure-supplement.v1.json",
+        "sha256": "c708bff2864de2b1ead9ff2f06d894d311f7174ef998034bac3e61d042e86e4e",
+        "size_bytes": 4763
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980552,
+          33279,
+          1,
+          5327,
+          1791034552892450700,
+          1791034552892450700
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-mapper-owner-closure-v1/original-observation-attempt01/closure.v1.json",
+        "sha256": "2756f040256f1c42cbb699b28c323e98cd6705131c706ab61a41572029fb8f07",
+        "size_bytes": 5327
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980423,
+          33279,
+          1,
+          26021,
+          1791030273594449800,
+          1791030273594449800
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/review.v3.json",
+        "sha256": "524f12a1b3aabbabc39b580e8ed4b7ee3e56dd82bf9f3f8381dc8a9fc147203d",
+        "size_bytes": 26021
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980425,
+          33279,
+          1,
+          3843,
+          1791030361783474200,
+          1791030361783474200
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/closed-reviewer-supplement.v1.json",
+        "sha256": "b07d7fc88c4362389bc2aa492f8bfd5c1b0f961a44f7ff855d0ddf0f5881e2d7",
+        "size_bytes": 3843
+      }
+    ],
+    "creator": {
+      "epoch7": [
+        69,
+        1407374885980399,
+        33279,
+        1,
+        19078,
+        1791029221042541100,
+        1791029221042541100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/original-bind-attempt01/execution.v1.json",
+      "sha256": "829110b9b75faf53fcce812d188fe318540422c1c7d12acd2019257b6aaa9dea",
+      "size_bytes": 19078
+    },
+    "creator_closure": {
+      "epoch7": [
+        69,
+        1407374885980400,
+        33279,
+        1,
+        5037,
+        1791029287775413400,
+        1791029287775413400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/original-bind-attempt01/root-original-closure.v1.json",
+      "sha256": "3cf93ba8891604fdaddb2689ed3400ab5ce4ae50a8c6eac723466bff6815275b",
+      "size_bytes": 5037
+    },
+    "global_source_mount331_unchanged": true,
+    "held_ancestor_identities_after_rechecked": true,
+    "held_original_leaves_after_full_SHA_and_epoch_recheck": [
+      {
+        "epoch7": [
+          69,
+          1407374885980536,
+          33279,
+          1,
+          31423,
+          1791033790643004000,
+          1791033790643004000
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/capture_owned_runtime_bind_cleanup_v2.py",
+        "sha256": "e4321413fb7a9613a362bd544347de8d552c1ebd50615beb78d3b82dbce98921",
+        "size_bytes": 31423
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980589,
+          33279,
+          1,
+          9530,
+          1791036304361550900,
+          1791036304361550900
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/consumer-closure.bound.v1.json",
+        "sha256": "059f4057bf7d6f550d59064c06e4e785b687ec1998e9625dfb2c6a3c2b148cee",
+        "size_bytes": 9530
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980399,
+          33279,
+          1,
+          19078,
+          1791029221042541100,
+          1791029221042541100
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/original-bind-attempt01/execution.v1.json",
+        "sha256": "829110b9b75faf53fcce812d188fe318540422c1c7d12acd2019257b6aaa9dea",
+        "size_bytes": 19078
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980400,
+          33279,
+          1,
+          5037,
+          1791029287775413400,
+          1791029287775413400
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/original-bind-attempt01/root-original-closure.v1.json",
+        "sha256": "3cf93ba8891604fdaddb2689ed3400ab5ce4ae50a8c6eac723466bff6815275b",
+        "size_bytes": 5037
+      },
+      {
+        "epoch7": [
+          2096,
+          87545,
+          33261,
+          1,
+          8020928,
+          1787574148546271435,
+          1787574148546271435
+        ],
+        "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+        "size_bytes": 8020928
+      },
+      {
+        "epoch7": [
+          2096,
+          46737,
+          35309,
+          1,
+          39296,
+          1787158071000000000,
+          1788318592831788374
+        ],
+        "path": "/usr/bin/umount",
+        "sha256": "186774a008ad69cf60bce6af35a850608d1c6ba410d3eca4113ea55b3a8b54d6",
+        "size_bytes": 39296
+      },
+      {
+        "epoch7": [
+          2096,
+          591626,
+          33188,
+          1,
+          41,
+          1791024492306427071,
+          1791024492306427071
+        ],
+        "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.git/HEAD",
+        "sha256": "33b3c32b7cd1f722f6eeaf2bff0e7ee83a9e2f01bcaa902a4d72f96558b507af",
+        "size_bytes": 41
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980416,
+          33279,
+          1,
+          5426,
+          1791030051846443600,
+          1791030051846443600
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-prerequisite-capture-preparation-v1/original-full-ci-prerequisite-attempt01/dispatch.v1.json",
+        "sha256": "68f7184244fd4343317a75e0390ee5851110033628acf77022cdf0c819fc2bdc",
+        "size_bytes": 5426
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980458,
+          33279,
+          1,
+          964,
+          1791032167044463500,
+          1791032167044463500
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-prerequisite-capture-preparation-v1/original-full-ci-prerequisite-attempt01/terminal.v1.json",
+        "sha256": "3edd982ef6967a065fc52f1bf266fc0614fe4e69b64b6d875ccfc47ec98d658b",
+        "size_bytes": 964
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980509,
+          33279,
+          1,
+          119285,
+          1791032750233587000,
+          1791032750233587000
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/original-prerequisite-review-attempt01/review.v1.json",
+        "sha256": "5a58508acf35f71d3c2934a022de1bff2e60eb44a39b6f85bd48cc3715ab7c60",
+        "size_bytes": 119285
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980526,
+          33279,
+          1,
+          5410,
+          1791033464821739600,
+          1791033464821739600
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-D-prerequisite-result-review-preparation-v1/independent-owner-late-closure-v1/actual-tool-and-owner-closure-supplement.v1.json",
+        "sha256": "45957c4900ec9edd6d0712bfbb8cf94c07401a01457bea09106938e95f1ccd45",
+        "size_bytes": 5410
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980548,
+          33279,
+          1,
+          1419,
+          1791034118733998700,
+          1791034118733998700
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/attempt01/terminal.v1.json",
+        "sha256": "ffa350ef8061a69a12bd019a5a5c5e41b15b74ba8a4f8000bc5d665da1ec3d52",
+        "size_bytes": 1419
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980567,
+          33279,
+          1,
+          434057,
+          1791035318516433800,
+          1791035318516433800
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/review.v1.json",
+        "sha256": "af861006d56d00e466648cf2479f1536925f7b33f5a246916e924c067abec202",
+        "size_bytes": 434057
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980568,
+          33279,
+          1,
+          4648,
+          1791035507817511400,
+          1791035507817511400
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/reviewer-owner-late-closure.v1.json",
+        "sha256": "e3fea3ab9dcb4e2e633b9744eb4bb4aff692d4a049c40d4b8aef219bee6a162e",
+        "size_bytes": 4648
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980572,
+          33279,
+          1,
+          677,
+          1791035550130877800,
+          1791035550130877800
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/final-tool-closure.v1.json",
+        "sha256": "11514e3417af92c6a3ea75752c33b22f3bbcf2558ebf0e77bd01519c11b1db97",
+        "size_bytes": 677
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980560,
+          33279,
+          1,
+          4763,
+          1791034760893577400,
+          1791034760893577400
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-mapper-owner-closure-v1/actual-tool-and-owner-closure-supplement.v1.json",
+        "sha256": "c708bff2864de2b1ead9ff2f06d894d311f7174ef998034bac3e61d042e86e4e",
+        "size_bytes": 4763
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980552,
+          33279,
+          1,
+          5327,
+          1791034552892450700,
+          1791034552892450700
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-mapper-owner-closure-v1/original-observation-attempt01/closure.v1.json",
+        "sha256": "2756f040256f1c42cbb699b28c323e98cd6705131c706ab61a41572029fb8f07",
+        "size_bytes": 5327
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980423,
+          33279,
+          1,
+          26021,
+          1791030273594449800,
+          1791030273594449800
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/review.v3.json",
+        "sha256": "524f12a1b3aabbabc39b580e8ed4b7ee3e56dd82bf9f3f8381dc8a9fc147203d",
+        "size_bytes": 26021
+      },
+      {
+        "epoch7": [
+          69,
+          1407374885980425,
+          33279,
+          1,
+          3843,
+          1791030361783474200,
+          1791030361783474200
+        ],
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-gates-independent-review-v1/closed-reviewer-supplement.v1.json",
+        "sha256": "b07d7fc88c4362389bc2aa492f8bfd5c1b0f961a44f7ff855d0ddf0f5881e2d7",
+        "size_bytes": 3843
+      }
+    ],
+    "mount_after": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "mountinfo_sha256": "183a650671892866df981c34d6bee93c1ae6518a57af41b19d0221dd9dbbe17a",
+      "mountinfo_size_bytes": 70364,
+      "namespace": "mnt:[4026532217]",
+      "namespace_stat": [
+        4,
+        4026532217,
+        33060,
+        1,
+        0,
+        1790517703668223409,
+        1790517703668223409
+      ],
+      "rows": [
+        {
+          "device": "8:48",
+          "filesystem": "ext4",
+          "mount_id": 331,
+          "optional": [],
+          "options": [
+            "ro",
+            "relatime"
+          ],
+          "original_line": "331 80 8:48 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 ro,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+          "parent_mount_id": 80,
+          "root": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+          "source": "/dev/sdd",
+          "superblock_options": [
+            "rw",
+            "discard",
+            "errors=remount-ro",
+            "data=ordered"
+          ],
+          "target": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1"
+        }
+      ]
+    },
+    "mount_before": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "mountinfo_sha256": "07f2e45cb0c2e8010dcff571c59cb9463120a962e077e704dba74f794e99fcdb",
+      "mountinfo_size_bytes": 70646,
+      "namespace": "mnt:[4026532217]",
+      "namespace_stat": [
+        4,
+        4026532217,
+        33060,
+        1,
+        0,
+        1790517703668223409,
+        1790517703668223409
+      ],
+      "rows": [
+        {
+          "device": "8:48",
+          "filesystem": "ext4",
+          "mount_id": 331,
+          "optional": [],
+          "options": [
+            "ro",
+            "relatime"
+          ],
+          "original_line": "331 80 8:48 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 ro,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+          "parent_mount_id": 80,
+          "root": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+          "source": "/dev/sdd",
+          "superblock_options": [
+            "rw",
+            "discard",
+            "errors=remount-ro",
+            "data=ordered"
+          ],
+          "target": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1"
+        },
+        {
+          "device": "8:48",
+          "filesystem": "ext4",
+          "mount_id": 2708,
+          "optional": [],
+          "options": [
+            "ro",
+            "relatime"
+          ],
+          "original_line": "2708 80 8:48 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 /home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1 ro,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+          "parent_mount_id": 80,
+          "root": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+          "source": "/dev/sdd",
+          "superblock_options": [
+            "rw",
+            "discard",
+            "errors=remount-ro",
+            "data=ordered"
+          ],
+          "target": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"
+        }
+      ]
+    },
+    "mount_immediate_pre_command": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "mountinfo_sha256": "07f2e45cb0c2e8010dcff571c59cb9463120a962e077e704dba74f794e99fcdb",
+      "mountinfo_size_bytes": 70646,
+      "namespace": "mnt:[4026532217]",
+      "namespace_stat": [
+        4,
+        4026532217,
+        33060,
+        1,
+        0,
+        1790517703668223409,
+        1790517703668223409
+      ],
+      "rows": [
+        {
+          "device": "8:48",
+          "filesystem": "ext4",
+          "mount_id": 331,
+          "optional": [],
+          "options": [
+            "ro",
+            "relatime"
+          ],
+          "original_line": "331 80 8:48 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 ro,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+          "parent_mount_id": 80,
+          "root": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+          "source": "/dev/sdd",
+          "superblock_options": [
+            "rw",
+            "discard",
+            "errors=remount-ro",
+            "data=ordered"
+          ],
+          "target": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1"
+        },
+        {
+          "device": "8:48",
+          "filesystem": "ext4",
+          "mount_id": 2708,
+          "optional": [],
+          "options": [
+            "ro",
+            "relatime"
+          ],
+          "original_line": "2708 80 8:48 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1 /home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1 ro,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+          "parent_mount_id": 80,
+          "root": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+          "source": "/dev/sdd",
+          "superblock_options": [
+            "rw",
+            "discard",
+            "errors=remount-ro",
+            "data=ordered"
+          ],
+          "target": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1"
+        }
+      ]
+    },
+    "normalized_actual_consumer_owners_unknown_fields_null": [
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 0,
+        "pgid": 6530,
+        "pid": 6530,
+        "session": 6530,
+        "startticks": 51155127,
+        "uid": 0
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 0,
+        "pgid": 6530,
+        "pid": 6531,
+        "session": 6530,
+        "startticks": 51155127,
+        "uid": 0
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 0,
+        "pgid": 6532,
+        "pid": 6532,
+        "session": 6532,
+        "startticks": 51155133,
+        "uid": 0
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 0,
+        "pgid": 6532,
+        "pid": 6533,
+        "session": 6532,
+        "startticks": 51155133,
+        "uid": 0
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 0,
+        "pgid": 6563,
+        "pid": 6563,
+        "session": 6563,
+        "startticks": 51155140,
+        "uid": 0
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 0,
+        "pgid": 6563,
+        "pid": 6564,
+        "session": 6563,
+        "startticks": 51155140,
+        "uid": 0
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 6619,
+        "pid": 6619,
+        "session": null,
+        "startticks": 51215597,
+        "uid": 1000
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 6620,
+        "pid": 6620,
+        "session": null,
+        "startticks": 51215606,
+        "uid": 1000
+      },
+      {
+        "boot_id": null,
+        "gid": null,
+        "pgid": 6631,
+        "pid": 6631,
+        "session": null,
+        "startticks": null,
+        "uid": null
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 6631,
+        "pid": 6632,
+        "session": 6631,
+        "startticks": 51217869,
+        "uid": 1000
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 6673,
+        "pid": 6673,
+        "session": 6673,
+        "startticks": 51238226,
+        "uid": 1000
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 6687,
+        "pid": 6687,
+        "session": 6687,
+        "startticks": 51238236,
+        "uid": 1000
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 6996,
+        "pid": 6996,
+        "session": null,
+        "startticks": 51239750,
+        "uid": 1000
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 6999,
+        "pid": 6999,
+        "session": null,
+        "startticks": 51239773,
+        "uid": 1000
+      },
+      {
+        "boot_id": null,
+        "gid": null,
+        "pgid": null,
+        "pid": 7596,
+        "session": null,
+        "startticks": null,
+        "uid": null
+      },
+      {
+        "boot_id": null,
+        "gid": null,
+        "pgid": null,
+        "pid": 10965,
+        "session": null,
+        "startticks": null,
+        "uid": null
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 10982,
+        "pid": 10982,
+        "session": 10982,
+        "startticks": 51563532,
+        "uid": 1000
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 10982,
+        "pid": 10983,
+        "session": 10982,
+        "startticks": 51563532,
+        "uid": 1000
+      },
+      {
+        "boot_id": null,
+        "gid": null,
+        "pgid": 11033,
+        "pid": 11034,
+        "session": null,
+        "startticks": null,
+        "uid": null
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 11079,
+        "pid": 11079,
+        "session": 11079,
+        "startticks": 51688361,
+        "uid": 1000
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 11079,
+        "pid": 11080,
+        "session": 11079,
+        "startticks": 51688361,
+        "uid": 1000
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 11249,
+        "pid": 11249,
+        "session": 11249,
+        "startticks": 51764641,
+        "uid": 1000
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 11249,
+        "pid": 11250,
+        "session": 11249,
+        "startticks": 51764644,
+        "uid": 1000
+      }
+    ],
+    "original_underlying_target_directory_identity": null,
+    "owned_target_mount2708_absent": true,
+    "retained_target_directory_post_unmount_observation_only": {
+      "deleted": false,
+      "empty_observed": true,
+      "epoch7": [
+        2096,
+        591859,
+        16877,
+        2,
+        4096,
+        1791029220905523078,
+        1791029220905523078
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1",
+      "pre_mount_identity_unknown": true
+    },
+    "source_HEAD": {
+      "epoch7": [
+        2096,
+        591626,
+        33188,
+        1,
+        41,
+        1791024492306427071,
+        1791024492306427071
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.git/HEAD",
+      "sha256": "33b3c32b7cd1f722f6eeaf2bff0e7ee83a9e2f01bcaa902a4d72f96558b507af",
+      "size_bytes": 41
+    },
+    "target_python_before_only_all_FDs_closed": {
+      "epoch7": [
+        2096,
+        87545,
+        33261,
+        1,
+        8020928,
+        1787574148546271435,
+        1787574148546271435
+      ],
+      "path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/.publication-runtime/full-publication-cp312-v1/bin/python",
+      "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+      "size_bytes": 8020928
+    },
+    "umount_executable": {
+      "epoch7": [
+        2096,
+        46737,
+        35309,
+        1,
+        39296,
+        1787158071000000000,
+        1788318592831788374
+      ],
+      "path": "/usr/bin/umount",
+      "sha256": "186774a008ad69cf60bce6af35a850608d1c6ba410d3eca4113ea55b3a8b54d6",
+      "size_bytes": 39296
+    }
+  },
+  "fd_after": 6,
+  "fd_before": 6,
+  "first_error": null,
+  "full_CI_acceptance": false,
+  "kind": "original_owned_runtime_bind_cleanup_capture_v1",
+  "limits": [
+    "Only recorded positive consumer and command PIDs/groups/sessions are scanned. Unknown original birth/session/group fields stay null, not inferred; no global descendant absence claim.",
+    "Original underlying target-directory inode was never recorded. Its post-unmount observation cannot prove pre-mount identity; empty directories remain.",
+    "No mount-source331 mutation, force/lazy/recursive umount, source/model/engine operation, test/CI replay or authority rebinding.",
+    "Capture controller/outer timeout absence requires an independent parent postterminal closure before cleanup is considered fully closed."
+  ],
+  "schema_version": 1,
+  "source_commit_D": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "status": "verified_owned_unmount_not_acceptance",
+  "underlying_target_directory_pre_mount_identity": null
+}

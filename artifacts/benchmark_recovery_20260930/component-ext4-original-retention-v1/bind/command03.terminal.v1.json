@@ -1,0 +1,70 @@
+{
+  "argv": [
+    "/usr/bin/docker",
+    "--host",
+    "unix:///run/docker.sock",
+    "container",
+    "create",
+    "--name",
+    "vast-d27-bind-41539",
+    "--label",
+    "vast.component.ext4-bind-owner=dde50e69-39bf-45bd-bdb7-bc33c9adcb0b:41539",
+    "--read-only",
+    "--network",
+    "none",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--user",
+    "1000:1000",
+    "--mount",
+    "type=bind,source=/home/s-a-balashov/work/vast-component-release-20260930-d27,target=/vast-root,readonly",
+    "--entrypoint",
+    "/usr/bin/python3",
+    "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6",
+    "-I",
+    "-B",
+    "-c",
+    "import hashlib,json;from pathlib import Path;p=Path('/vast-root/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a4e145b7-v1/gstreamer_custom.runtime.freeze.json');raw=p.read_bytes();print(json.dumps({'sha256':hashlib.sha256(raw).hexdigest(),'size_bytes':len(raw)},sort_keys=True));assert hashlib.sha256(raw).hexdigest()=='61874c718d6140d0d5cf745988bc301b916077af8f80e96742184f80a0805db7'"
+  ],
+  "both_eof": true,
+  "captured_bytes_counter": {
+    "stderr": 0,
+    "stdout": 65
+  },
+  "channels": {
+    "stderr": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command03.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "stdout": {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/component-ext4-bind-original-v1/command03.stdout.raw",
+      "sha256": "1723601ae816e28b0b6ec54a12649c55fd21436eba026d703c656e7f527a0e5d",
+      "size_bytes": 65
+    }
+  },
+  "cleanup_errors": [],
+  "eof": {
+    "stderr": true,
+    "stdout": true
+  },
+  "failure": null,
+  "original_group_absent": true,
+  "original_pid": 41568,
+  "original_pid_absent": true,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable": "/usr/bin/docker",
+    "executable_unavailable": null,
+    "gid": 1000,
+    "pgid": 41568,
+    "pid": 41568,
+    "ppid": 41539,
+    "startticks": 28329034,
+    "uid": 1000
+  },
+  "returncode": 0,
+  "signals": []
+}

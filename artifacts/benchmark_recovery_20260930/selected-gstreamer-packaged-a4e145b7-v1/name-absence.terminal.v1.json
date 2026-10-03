@@ -1,0 +1,40 @@
+{
+  "argv": [
+    "/proc/self/fd/89",
+    "container",
+    "inspect",
+    "--format",
+    "{\"Id\":{{json .Id}},\"Name\":{{json .Name}},\"Image\":{{json .Image}},\"Created\":{{json .Created}},\"Running\":{{json .State.Running}},\"OOMKilled\":{{json .State.OOMKilled}},\"ExitCode\":{{json .State.ExitCode}},\"Pid\":{{json .State.Pid}},\"StartedAt\":{{json .State.StartedAt}},\"FinishedAt\":{{json .State.FinishedAt}},\"Operation\":{{json (index .Config.Labels \"vast.operational-custody\")}}}",
+    "vast-component-fixtures-e626df5b51044b7d9fbc4f76db6d5f5e"
+  ],
+  "capture_exceeded": false,
+  "cleanup_error": null,
+  "elapsed_s": 0.027796882000984624,
+  "engine_backend_quiescence": "not inferred from original CLI status",
+  "failure": null,
+  "finished_at_ns": 1790777235823695135,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable_realpath": "/usr/bin/docker",
+    "gid": 1000,
+    "pgid": 28818,
+    "pid": 28818,
+    "ppid": 28543,
+    "startticks": 25954868,
+    "uid": 1000
+  },
+  "process_group_members_at_terminal": [],
+  "returncode": 1,
+  "started_at_ns": 1790777235795898926,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/name-absence.stderr.raw",
+    "sha256": "55278e0594068a98c167695c0bcf06d18b6b33b43b6df374b9a1fcfc49950814",
+    "size_bytes": 104
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/name-absence.stdout.raw",
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "size_bytes": 1
+  },
+  "timed_out": false
+}

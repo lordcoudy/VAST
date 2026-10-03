@@ -70,6 +70,10 @@ ANALYTICS_BRANCHES = (
 INDEPENDENT_PROCESSES = "independent_processes"
 SHARED_VIDEO_DAG = "shared_video_dag"
 _ID_RE = re.compile(r"^[^\x00-\x20\x7f]+$")
+_GPU_UUID_RE = re.compile(
+    r"^GPU-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
+    r"[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+)
 
 
 def _text(value: Any, label: str) -> str:
@@ -102,6 +106,7 @@ class DeepStreamNativeResourceRecorderV3:
         stream_id: int,
         topology_kind: str,
         branches: Sequence[str],
+        decoder_gpu_index: int,
     ) -> None:
         directory = Path(output_dir)
         if not directory.is_dir() or directory.is_symlink():
@@ -109,6 +114,9 @@ class DeepStreamNativeResourceRecorderV3:
         self.run_id = _text(run_id, "run_id")
         self.worker_id = _text(worker_id, "worker_id")
         self.stream_id = _integer(stream_id, "stream_id")
+        self.decoder_gpu_index = _integer(
+            decoder_gpu_index, "decoder_gpu_index"
+        )
         self.topology_kind = str(topology_kind)
         self.branches = tuple(str(branch) for branch in branches)
         if self.topology_kind == INDEPENDENT_PROCESSES:
@@ -160,6 +168,36 @@ class DeepStreamNativeResourceRecorderV3:
         # frame, while preserving the worker-local execution IDs emitted by
         # DeepStreamProtocolBridge.  Resource rows must bind both identities.
         return f"{self.run_id}:{self.stream_id}:{frame_id}"
+
+    @staticmethod
+    def canonical_fanout_interval_end_ns(
+        *,
+        host_start_timestamp_ns: int,
+        physical_end_timestamp_ns: int,
+        serialized_topology_timestamp_ms: int,
+    ) -> int:
+        start = _integer(
+            host_start_timestamp_ns, "fanout host start timestamp", minimum=1
+        )
+        physical_end = _integer(
+            physical_end_timestamp_ns, "fanout physical end timestamp", minimum=1
+        )
+        if physical_end <= start:
+            raise ValueError("DeepStream physical fanout interval must have positive width")
+        serialized_ms = _integer(
+            serialized_topology_timestamp_ms,
+            "serialized fanout topology timestamp",
+            minimum=1,
+        )
+        requested_ms = (physical_end + 999_999) // 1_000_000
+        if serialized_ms < requested_ms:
+            raise ValueError("DeepStream serialized fanout topology timestamp moved backwards")
+        if serialized_ms == requested_ms:
+            return physical_end
+        canonical_end = serialized_ms * 1_000_000
+        if canonical_end <= start:
+            raise ValueError("DeepStream canonical fanout interval must have positive width")
+        return canonical_end
 
     def _interval(
         self,
@@ -265,7 +303,7 @@ class DeepStreamNativeResourceRecorderV3:
                 payload_bytes=payload_bytes,
                 start_timestamp_ns=start_timestamp_ns,
                 end_timestamp_ns=end_timestamp_ns,
-                device_id="nvdec:gpu-0",
+                device_id=f"nvdec:{self.decoder_gpu_index}",
                 provenance="native_decoder_submit_complete_interval_v1",
             )
             self._interval_writer.writerow(row)
@@ -341,6 +379,7 @@ class DeepStreamNativeResourceRecorderV3:
 
         offset = path_enter - worker_received
         expected_directions = ("h2d", "d2h")
+        previous_host_end: int | None = None
         with self._lock:
             if self._closed:
                 raise ValueError("DeepStream resource recorder is closed")
@@ -373,6 +412,9 @@ class DeepStreamNativeResourceRecorderV3:
                 )
                 if start_monotonic < worker_received or end_monotonic <= start_monotonic:
                     raise ValueError("DeepStream CUDA transfer host envelope is invalid")
+                if previous_host_end is not None and start_monotonic < previous_host_end:
+                    raise ValueError("DeepStream CUDA transfer pair is out of order")
+                previous_host_end = end_monotonic
                 elapsed = _integer(
                     raw["device_elapsed_ns"],
                     f"CUDA {direction} device elapsed",
@@ -393,6 +435,9 @@ class DeepStreamNativeResourceRecorderV3:
                 if raw["timing_source"] != "cudaEventElapsedTime":
                     raise ValueError("DeepStream CUDA transfer timing is not cudaEventElapsedTime")
                 gpu_uuid = _text(raw["device_id"], f"CUDA {direction} device_id")
+                if _GPU_UUID_RE.fullmatch(gpu_uuid) is None:
+                    raise ValueError(f"CUDA {direction} device_id is not an NVIDIA GPU UUID")
+                canonical_gpu_uuid = gpu_uuid.lower()
                 stage = branch_id if direction == "h2d" else f"postprocess_{branch_id}"
                 suffix = "analytics" if direction == "h2d" else "postprocess"
                 row = self._interval(
@@ -406,7 +451,7 @@ class DeepStreamNativeResourceRecorderV3:
                     payload_bytes=payload_bytes,
                     start_timestamp_ns=start_monotonic + offset,
                     end_timestamp_ns=end_monotonic + offset,
-                    device_id=f"gpu:{gpu_uuid}",
+                    device_id=f"gpu:{canonical_gpu_uuid}",
                     provenance="native_cuda_event_interval_v1",
                     duration_ns=elapsed,
                 )
@@ -421,11 +466,17 @@ class DeepStreamNativeResourceRecorderV3:
         payload_bytes: int,
         start_timestamp_ns: int,
         end_timestamp_ns: int,
+        serialized_topology_timestamp_ms: int,
         thread_cpu_time_ns: int,
     ) -> None:
         if self.topology_kind != SHARED_VIDEO_DAG:
             raise ValueError("DeepStream fanout evidence requires shared topology")
         cpu_time = _integer(thread_cpu_time_ns, "thread CPU time", minimum=1)
+        canonical_end_timestamp_ns = self.canonical_fanout_interval_end_ns(
+            host_start_timestamp_ns=start_timestamp_ns,
+            physical_end_timestamp_ns=end_timestamp_ns,
+            serialized_topology_timestamp_ms=serialized_topology_timestamp_ms,
+        )
         with self._lock:
             if self._closed:
                 raise ValueError("DeepStream resource recorder is closed")
@@ -438,7 +489,7 @@ class DeepStreamNativeResourceRecorderV3:
                 execution_suffix="fanout",
                 payload_bytes=payload_bytes,
                 start_timestamp_ns=start_timestamp_ns,
-                end_timestamp_ns=end_timestamp_ns,
+                end_timestamp_ns=canonical_end_timestamp_ns,
                 # DeepStream SDK routes are physical GStreamer tee/queue elements.
                 device_id="gstreamer:tee-queue",
                 provenance="native_gstreamer_pad_probe_interval_v1",

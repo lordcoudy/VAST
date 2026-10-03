@@ -1,0 +1,81 @@
+--- scripts/publication_guardian_runtime_expectations_v1.py.before
++++ scripts/publication_guardian_runtime_expectations_v1.py.after
+@@ -65,6 +65,16 @@
+     """Return only pins whose authority predates the production service."""
+ 
+     _require(type(receipt) is dict, "preprocessing receipt must be one plain object")
++    if receipt.get("artifact_kind") == "vast_guardian_component_preprocessing_contract_materialization_v1":
++        projection = receipt.get("worker_projection")
++        _require(type(projection) is dict and set(projection) == {
++            "execution_config", "binding_set", "workers", "runtime_probes"},
++            "component preprocessing worker projection fields drifted")
++        return runtime_expectations_from_worker_projection_v1(
++            execution_config_authority=projection["execution_config"],
++            binding_set_authority=projection["binding_set"], worker_authority=projection["workers"],
++            policy_contract_sha256=receipt.get("policy_contract_sha256"),
++            preprocessing_contract_content_sha256=receipt.get("preprocessing_contract_content_sha256"))
+     _require(
+         receipt.get("artifact_kind")
+         in {QUALIFICATION_RECEIPT_KIND, ACCEPTED_POLICY_RECEIPT_KIND},
+@@ -84,7 +94,22 @@
+         "preprocessing receipt model-parity refresh authority fields drifted",
+     )
+ 
+-    execution = refresh.get("execution_config")
++    return runtime_expectations_from_worker_projection_v1(
++        execution_config_authority=refresh.get("execution_config"),
++        binding_set_authority=refresh.get("binding_set"),
++        worker_authority=refresh.get("workers"),
++        policy_contract_sha256=receipt.get("policy_contract_sha256"),
++        preprocessing_contract_content_sha256=receipt.get("preprocessing_contract_content_sha256"),
++    )
++
++
++def runtime_expectations_from_worker_projection_v1(
++    *, execution_config_authority: object, binding_set_authority: object,
++    worker_authority: object, policy_contract_sha256: object,
++    preprocessing_contract_content_sha256: object,
++) -> dict[str, Any]:
++    """Validate actual selected worker pins; caller separately verifies their provenance."""
++    execution = execution_config_authority
+     _require(
+         type(execution) is dict
+         and set(execution)
+@@ -105,7 +130,7 @@
+         "preprocessing execution worker projection",
+     )
+ 
+-    binding_set = refresh.get("binding_set")
++    binding_set = binding_set_authority
+     _require(
+         type(binding_set) is dict
+         and set(binding_set)
+@@ -124,7 +149,7 @@
+     for coordinate in sorted(expected_coordinates):
+         _descriptor(bindings[coordinate], f"preprocessing binding {coordinate}")
+ 
+-    workers = refresh.get("workers")
++    workers = worker_authority
+     _require(
+         type(workers) is dict and set(workers) == set(RESOURCES),
+         "preprocessing worker authority coverage is not exact CPU/GPU",
+@@ -169,11 +194,11 @@
+             ),
+             "worker_image_ids": worker_images,
+             "policy_contract_sha256": _sha(
+-                receipt.get("policy_contract_sha256"),
++                policy_contract_sha256,
+                 "preprocessing policy contract",
+             ),
+             "preprocessing_contract_content_sha256": _sha(
+-                receipt.get("preprocessing_contract_content_sha256"),
++                preprocessing_contract_content_sha256,
+                 "preprocessing contract content",
+             ),
+         }
+@@ -185,4 +210,5 @@
+     "GuardianRuntimeExpectationsV1Error",
+     "QUALIFICATION_RECEIPT_KIND",
+     "runtime_expectations_from_preprocessing_receipt_v1",
++    "runtime_expectations_from_worker_projection_v1",
+ ]

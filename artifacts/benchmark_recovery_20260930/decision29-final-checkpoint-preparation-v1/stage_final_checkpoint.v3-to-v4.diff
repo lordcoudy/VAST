@@ -1,0 +1,11 @@
+--- artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v3.py
++++ artifacts/benchmark_recovery_20260930/decision29-final-checkpoint-preparation-v1/stage_final_checkpoint_v4.py
+@@ -25,7 +25,7 @@
+ END = START + 300
+ MAX_FILE = 8 * 1048576
+ MAX_TOTAL = 64 * 1048576
+-MAX_PATHS = 512
++MAX_PATHS = 640
+ MAX_DOC = 1048576
+ DOCS = {'README.md', 'docs/gstreamer-component-benchmark-runbook.md', 'progress.md', 'BENCHMARK_RECOVERY_PLAN.md', '.gitattributes', MAIN}
+ CHANGE_FILES = (

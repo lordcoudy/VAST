@@ -1,0 +1,19 @@
+{
+  "action": "one_original_gpu01_at_reviewed_ext4_root",
+  "accepted_pair_before_execution": false,
+  "automatic_retry": false,
+  "change": "fix-benchmark-preparations-spec",
+  "controller": {"sha256": "6200b55afd15ca2b9964a52de3fc0ae1fd4f6e72b131b50afa74fac01fad24b2", "size_bytes": 15089},
+  "exact_source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "fresh_host_closure": {"sha256": "adbcb638a5f104e43c95b84e4d16388a8111d39321afb3e8e7a26f2ef537b498", "size_bytes": 30266},
+  "independent_cpu06_accepted_and_released_review": "20c896c126454b17f747d2b119b6a60444f7d8bc338184782eb68ec8ab37218a",
+  "independent_current_original_stock95_readiness": {"sha256": "034555e31e7cf458a11464fa1561a8cdd26a016e4b29e6c4158fb904782e4d7b", "size_bytes": 88493},
+  "independent_postterminal_auditor_preparation_review": "1f71fa5b9e868b2b62372ba6a7632c2a789864e6f86ba897761d84bf750c066d",
+  "local_tests_before_measurement": "Original GREEN06 closed:74 successes,0 skips/errors/failures; child47609 and group absent, all original pipes/FDs closed; source9 before=after",
+  "original_limits_seconds": {"cli": 2100, "outer_capture": 2250, "teardown": 15},
+  "pair_namespace": "gpu-pair-01",
+  "controller_namespace": "gpu-pair-01-original-controller",
+  "root": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "standing_exact_commit_authorization": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5919298416",
+  "standing_user_authorization": "Do everything needed. You have card-blanche. I approve every change. You may proceed autonomously until the benchmark is fully operable and makes sense."
+}

@@ -1,0 +1,511 @@
+{
+  "blocking_findings": [],
+  "causal_chain": [
+    "Original TLS response read TimeoutError",
+    "AssetPreparationError retained in original acquisition failed.json and model-assets.stderr",
+    "Stock full CI RuntimeError: model-assets failed",
+    "Capture AssertionError retaining original failed stock report"
+  ],
+  "current_partial_file_presence_or_epoch_not_observed": true,
+  "elapsed_s": 0.14779979991726577,
+  "exact_original_metadata_and_raw_copies": [
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/model-assets.json",
+        "sha256": "a2ad42143d5e0834e9cde39332d64298f8aa7892876124066d85328ff3f22379",
+        "size_bytes": 478
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/model-assets.json",
+        "sha256": "a2ad42143d5e0834e9cde39332d64298f8aa7892876124066d85328ff3f22379",
+        "size_bytes": 478
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/model-assets.stderr",
+        "sha256": "2e148450759404885b3cec9e887334359422a7a35f8c2f86a6200f04dc01b66e",
+        "size_bytes": 127
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/model-assets.stderr",
+        "sha256": "2e148450759404885b3cec9e887334359422a7a35f8c2f86a6200f04dc01b66e",
+        "size_bytes": 127
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/model-assets.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/model-assets.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/report.json",
+        "sha256": "43defd1fdd53d3722a5cd9de46df29602930a13f34a99b9f279f1950307822a3",
+        "size_bytes": 30050
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/report.json",
+        "sha256": "43defd1fdd53d3722a5cd9de46df29602930a13f34a99b9f279f1950307822a3",
+        "size_bytes": 30050
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/specification-inventory.json",
+        "sha256": "eb3d307e9cb97ca8d3c873e4724a314d0e28cd622f21f2dfa698b3f81dd4e5e7",
+        "size_bytes": 10511
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/specification-inventory.json",
+        "sha256": "eb3d307e9cb97ca8d3c873e4724a314d0e28cd622f21f2dfa698b3f81dd4e5e7",
+        "size_bytes": 10511
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/tracked-source.before.json",
+        "sha256": "18065d804a7f0f200b5174699dbe23cf5e44728a29ba2913302949a379ee079e",
+        "size_bytes": 1267405
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/tracked-source.before.json",
+        "sha256": "18065d804a7f0f200b5174699dbe23cf5e44728a29ba2913302949a379ee079e",
+        "size_bytes": 1267405
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/tracked-source.after.json",
+        "sha256": "18065d804a7f0f200b5174699dbe23cf5e44728a29ba2913302949a379ee079e",
+        "size_bytes": 1267405
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/tracked-source.after.json",
+        "sha256": "18065d804a7f0f200b5174699dbe23cf5e44728a29ba2913302949a379ee079e",
+        "size_bytes": 1267405
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/model-acquisition/asset-00.dispatch.json",
+        "sha256": "baf6e872b1de6ef43a5042b82598edb31cccac02c04c6aaa37597a588bea5245",
+        "size_bytes": 963
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/model-acquisition/asset-00.dispatch.json",
+        "sha256": "baf6e872b1de6ef43a5042b82598edb31cccac02c04c6aaa37597a588bea5245",
+        "size_bytes": 963
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/model-acquisition/asset-00.json",
+        "sha256": "567d630df4cbb2b065e742c8e041c6daf7d239128d0aeecc10be4047e3e6f21e",
+        "size_bytes": 2827
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/model-acquisition/asset-00.json",
+        "sha256": "567d630df4cbb2b065e742c8e041c6daf7d239128d0aeecc10be4047e3e6f21e",
+        "size_bytes": 2827
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/model-acquisition/asset-00.stderr",
+        "sha256": "805f15ef0e92955be3ce6c46ffdd8245f2a171130e0fc8fe2c14f1b9619e3b2e",
+        "size_bytes": 162
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/model-acquisition/asset-00.stderr",
+        "sha256": "805f15ef0e92955be3ce6c46ffdd8245f2a171130e0fc8fe2c14f1b9619e3b2e",
+        "size_bytes": 162
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/model-acquisition/asset-00.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/model-acquisition/asset-00.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/model-acquisition/asset-00.terminal.json",
+        "sha256": "b54264f54311fa91320f54848dce35901c069ba7768e60ee7d7da557201e72f2",
+        "size_bytes": 579
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/model-acquisition/asset-00.terminal.json",
+        "sha256": "b54264f54311fa91320f54848dce35901c069ba7768e60ee7d7da557201e72f2",
+        "size_bytes": 579
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/stock-output/model-acquisition/failed.json",
+        "sha256": "ab2740ae452991690c30136a03719d562964dc1deb1eba064acc69d1125ebffd",
+        "size_bytes": 201
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/model-acquisition/failed.json",
+        "sha256": "ab2740ae452991690c30136a03719d562964dc1deb1eba064acc69d1125ebffd",
+        "size_bytes": 201
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/original-wrapper/terminal.v1.json",
+        "sha256": "75960bd6c927aa119bb1fe28a397ef680cba7f4042026d3dc1ee3b67ab2d69e8",
+        "size_bytes": 1048
+      },
+      "original": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-full-ci-attempt01/terminal.v1.json",
+        "sha256": "75960bd6c927aa119bb1fe28a397ef680cba7f4042026d3dc1ee3b67ab2d69e8",
+        "size_bytes": 1048
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/original-wrapper/dispatch.v1.json",
+        "sha256": "00b893e685899f3e78731fbbd9a5e334c6fd42794b385228f4105981dbd37ccd",
+        "size_bytes": 5351
+      },
+      "original": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-full-ci-attempt01/dispatch.v1.json",
+        "sha256": "00b893e685899f3e78731fbbd9a5e334c6fd42794b385228f4105981dbd37ccd",
+        "size_bytes": 5351
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/original-wrapper/stdout.raw",
+        "sha256": "3ec4b7463709ef63cb733f7f7e3b3efa25926122d55cf4b878a0564c5ff08c73",
+        "size_bytes": 130
+      },
+      "original": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-full-ci-attempt01/stdout.raw",
+        "sha256": "3ec4b7463709ef63cb733f7f7e3b3efa25926122d55cf4b878a0564c5ff08c73",
+        "size_bytes": 130
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/original-wrapper/stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "original": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/original-full-ci-attempt01/stderr.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/source/capture_original_full_ci_v1.py.raw",
+        "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+        "size_bytes": 12429
+      },
+      "original": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_full_ci_v1.py",
+        "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+        "size_bytes": 12429
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/source/prepare_ci_model_assets.py.raw",
+        "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+        "size_bytes": 30314
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/prepare_ci_model_assets.py",
+        "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+        "size_bytes": 30314
+      }
+    },
+    {
+      "immutable_review_copy": {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/original-copies/source/run_ci_checks.py.raw",
+        "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+        "size_bytes": 29477
+      },
+      "original": {
+        "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/run_ci_checks.py",
+        "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+        "size_bytes": 29477
+      }
+    }
+  ],
+  "first_original_cause": {
+    "declared_Content_Length": 254351,
+    "message": "The read operation timed out",
+    "operation": "first HTTPResponse.read(limit) at prepare_ci_model_assets.py:380",
+    "original_CHUNK_BYTES": 65536,
+    "original_socket_timeout_s": 15.0,
+    "outer_timeout_fired": false,
+    "received_HTTP_status": 200,
+    "recorded_elapsed_s": 15.756069600000046,
+    "type": "TimeoutError"
+  },
+  "limits": [
+    "Only the exact original C attempt metadata/raw channels and two source files were read and copied. No network, retry, setup, CI, Git, engine, model read/measurement or cleanup occurred.",
+    "The original network reason beyond the recorded TLS/socket read timeout is unknown; this record does not establish server outage or a source defect.",
+    "Prospective syntax/test-file lists in the report are not unittest-discovered IDs or successful test outcomes.",
+    "Original wrapper provides two error-free owned PID/group/session scans and released held descriptors, but it records no numeric FD count; none is invented.",
+    "Asset child94035/group94034 return1/reap metadata is preserved. No fresh absence scan for that separate group or new Linux seven-epoch custody is claimed by this Windows/UNC review.",
+    "Copies preserve raw originals and their exact full hashes. The failed original remains failed, with zero completed assets; no scientific/hardware/full-CI acceptance follows."
+  ],
+  "not_reached_in_this_original_attempt": [
+    "native configure/build",
+    "loaded GStreamer factory facts",
+    "namespace diagnostic/profile admission",
+    "full unittest discovery/selection/execution and external observer"
+  ],
+  "original_acquisition_dispatch": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/prepare_ci_model_assets.py",
+      "--output-dir",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/model-acquisition",
+      "--_asset",
+      "0",
+      "--_staging",
+      "models/.ci-acquisition-b07e1d8d71454f61",
+      "--_deadline",
+      "505034.627136189"
+    ],
+    "deadline_monotonic": 505034.627136189,
+    "inputs": [
+      {
+        "epoch": [
+          2096,
+          578340,
+          33188,
+          1,
+          5124,
+          1791020972274885361,
+          1791020972274885361
+        ],
+        "path": ".ci/model-assets.v1.json",
+        "sha256": "225db21da5943a34d35c41e61c4fcda9623dd4e5eb973d7975d450ff421edab7",
+        "size_bytes": 5124
+      },
+      {
+        "epoch": [
+          2096,
+          584184,
+          33188,
+          1,
+          7885,
+          1791020976316772386,
+          1791020976316772386
+        ],
+        "path": "configs/checkpoint_analytics_models_openvino.yaml",
+        "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+        "size_bytes": 7885
+      }
+    ],
+    "started_monotonic": 504924.627164878
+  },
+  "original_acquisition_terminal": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "child_inherits_original_group": true,
+    "child_pgid": 94034,
+    "child_proc_stat": "94035 (python) R 94034 94034 94034 0 -1 4194304 19 0 0 0 0 0 0 0 20 0 1 0 50492463 8450048 56 18446744073709551615 4325376 7352317 140731306447344 0 0 0 0 0 0 0 0 0 17 12 0 0 0 0 0 10653128 12216448 355078144 140731306453809 140731306454216 140731306454216 140731306459034 0\n",
+    "controller_gid": 1000,
+    "controller_uid": 1000,
+    "elapsed_s": 15.861807956011035,
+    "outer_pgid": 94034,
+    "pid": 94035,
+    "returncode": 1,
+    "stderr_bytes": 162,
+    "stdout_bytes": 0,
+    "timed_out": false
+  },
+  "original_asset_descriptor": {
+    "branch": "damage",
+    "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+    "role": "xml",
+    "sha256": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed",
+    "sha384": "f9f35961bc5cffbb0d663bfc1e8b02efab0fbc4c9270578dad2bedac2634bd33428acde64f2e080347c2417948a690ee",
+    "size_bytes": 254351,
+    "url": "https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml"
+  },
+  "original_asset_failure_record": {
+    "asset": {
+      "branch": "damage",
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+      "role": "xml",
+      "sha256": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed",
+      "sha384": "f9f35961bc5cffbb0d663bfc1e8b02efab0fbc4c9270578dad2bedac2634bd33428acde64f2e080347c2417948a690ee",
+      "size_bytes": 254351,
+      "url": "https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml"
+    },
+    "completed_write_bytes": 0,
+    "elapsed_s": 15.756069600000046,
+    "error": {
+      "message": "The read operation timed out",
+      "message_truncated": false,
+      "traceback": "Traceback (most recent call last):\n  File \"/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/prepare_ci_model_assets.py\", line 380, in _download\n    block = response.read(limit)\n            ^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/http/client.py\", line 484, in read\n    s = self.fp.read(amt)\n        ^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/socket.py\", line 707, in readinto\n    return self._sock.recv_into(b)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/ssl.py\", line 1252, in recv_into\n    return self.read(nbytes, buffer)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/ssl.py\", line 1104, in read\n    return self._sslobj.read(len, buffer)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTimeoutError: The read operation timed out\n",
+      "traceback_truncated": false,
+      "type": "TimeoutError"
+    },
+    "hashed_prefix_bytes": 0,
+    "http_status": 200,
+    "index": 0,
+    "observed_url": "https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+    "observed_url_redacted": false,
+    "observed_url_truncated": false,
+    "original_file_epoch": [
+      2096,
+      584895,
+      33152,
+      1,
+      0,
+      1791022594686758860,
+      1791022594686758860
+    ],
+    "original_file_observed_bytes": 0,
+    "partial_path": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/models/.ci-acquisition-b07e1d8d71454f61/asset-00.part",
+    "partial_path_matches_original_fd": true,
+    "received_bytes": 0,
+    "received_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "received_prefix_sha384": "38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b",
+    "request_url": "https://storage.openvinotoolkit.org/repositories/open_model_zoo/2023.0/models_bin/1/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+    "response_headers": {
+      "Content-Length": "254351",
+      "Content-Type": "application/xml",
+      "ETag": "\"bd0ad86c40f80c1da0727c312e2089d8\"",
+      "Last-Modified": "Tue, 17 Oct 2023 15:54:19 GMT"
+    },
+    "response_headers_truncated": [],
+    "started_monotonic": 504924.679432679,
+    "status": "failed"
+  },
+  "original_attempt_status": "failed",
+  "original_completed_assets": [],
+  "original_failed_partial_file_epoch": [
+    2096,
+    584895,
+    33152,
+    1,
+    0,
+    1791022594686758860,
+    1791022594686758860
+  ],
+  "original_model_command": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/prepare_ci_model_assets.py",
+      "--output-dir",
+      "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/model-acquisition"
+    ],
+    "cleanup_error": null,
+    "elapsed_s": 15.963952291989699,
+    "returncode": 1,
+    "timed_out": false
+  },
+  "original_raw_source_before_after_identical": true,
+  "original_report_static_syntax_file_counts": {
+    "bash_syntax": 16,
+    "python_syntax": 479
+  },
+  "original_tool_returncode": 1,
+  "original_wrapper_terminal": {
+    "channel_bytes": {
+      "stderr": 0,
+      "stdout": 130
+    },
+    "close_errors": [],
+    "elapsed_s": 18.994382151,
+    "eof": [
+      "stderr",
+      "stdout"
+    ],
+    "first_error": {
+      "message": "original full CI exit is failed; retain stock report",
+      "type": "AssertionError"
+    },
+    "full_stock_report": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-original-output/report.json",
+    "hardware_acceptance": false,
+    "held_descriptors_released": true,
+    "original": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 94012,
+      "pid": 94012,
+      "ppid": 93998,
+      "session": 94012,
+      "startticks": 50492196,
+      "uid": 1000
+    },
+    "process_scans": [
+      {
+        "at_ns": 1791022610911670743,
+        "errors": [],
+        "members": []
+      },
+      {
+        "at_ns": 1791022610913585307,
+        "errors": [],
+        "members": []
+      }
+    ],
+    "returncode": 1,
+    "signals": [],
+    "source_before_after_equal": true,
+    "source_commit": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+    "status": "failed"
+  },
+  "owned_source_pins": [
+    {
+      "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-ci-preparation-v1/capture_original_full_ci_v1.py",
+      "sha256": "a37fecbaa6fb4a560bb7c44897a39a9f3c0e294d5fb4b75c0cb2412ec465c9ac",
+      "size_bytes": 12429
+    },
+    {
+      "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/prepare_ci_model_assets.py",
+      "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c",
+      "size_bytes": 30314
+    },
+    {
+      "path": "//wsl.localhost/Ubuntu/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29/scripts/run_ci_checks.py",
+      "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+      "size_bytes": 29477
+    }
+  ],
+  "raw_checkout_bytes_match_commit_reported": true,
+  "received_or_written_prefix_bytes": 0,
+  "reviewable": true,
+  "reviewed_commit": "04a5d1c7b90274af71f4ff2456ec3013107c2bb3",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewer_handles_released": true,
+  "root_reported_original_tool_closure": {
+    "completion_tool": "159b17",
+    "initial_tool": "cd2125",
+    "returncode": 1,
+    "session_id": 23990,
+    "source": "Parent original closure, joined here to original terminal/stock report bytes."
+  },
+  "schema_version": 1,
+  "stock_source_failure": "RuntimeError: model-assets failed: see its original stdout/stderr",
+  "tracked_source_count": 5561
+}

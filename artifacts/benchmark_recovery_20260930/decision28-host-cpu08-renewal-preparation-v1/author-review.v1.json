@@ -1,0 +1,94 @@
+{
+  "README": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/README.pending.md",
+    "sha256": "4c00b6c67c637a0633c8608679044f7922c9d524549c8fef739517c2027772d3",
+    "size_bytes": 1917
+  },
+  "actual_new_runtime_image_receipt_and_checkpointB_and_stock_closure_null": true,
+  "all_function_ASTs_exact": {
+    "cpu_controller_all_including_raw_desc": 10,
+    "stock_host_all": 8
+  },
+  "all_old_function_schemas_and_capture_limits_unchanged": true,
+  "artifact_JSON_literal_LF": true,
+  "diffs": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/stock-host.v2-to-decision28-v3.diff",
+      "sha256": "305c901af5b72d31fc3f9fdb783d27929c837b1b078e7cde0b76b6744a4e1b37",
+      "size_bytes": 831
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/cpu07.v2-to-cpu08.pending-v3.diff",
+      "sha256": "b1456986a629d3015a3f9b8487e271706d6625693d646f27eca5b8a24fc1d47b",
+      "size_bytes": 2870
+    }
+  ],
+  "exact_inverse_to_original_source": true,
+  "fresh_actual_95_and_current_device_model_worker_checks_still_required": true,
+  "local_tests_or_privileged_or_models_or_engine_or_Git_or_helper_execution": false,
+  "metadata_handles_closed": true,
+  "old_host7dd_is_not_new_CPU08_binding": true,
+  "old_runtime_image_61874_and_old_image_e474_are_not_CPU08_binding": true,
+  "only_extra_statement_is_early_missing_actual_runtime_binding_guard": true,
+  "original_CPU07_failed_preserved": true,
+  "original_receipt_last_and_first_cause_and_FD_scans_preserved": true,
+  "origins_before_after_equal": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/capture_selected_host_closure_ext4_supervisor_v2.py",
+      "sha256": "658af2e3c400c232e107af8c3cc5469a372dcf446dff3ac454a34bec9189c187",
+      "size_bytes": 10668
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/run_original_cpu_component_pair_ext4_supervisor_v2.py",
+      "sha256": "b4488d87a4c0feb500d7fdbca77af76e4745efeafb4927003ea1e932227ec8fd",
+      "size_bytes": 15100
+    },
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "sha256": "db6e2ac4535d5fc572ee02b2dd9761de6fa01ba26e56c8147789fcf110323305",
+      "size_bytes": 113257
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-preparation-v1/controller-preparation.v1.json",
+      "sha256": "33d3f96be4cc377b08b42757b60593c1b49dcec3a0bc992f908762a5f5591a8a",
+      "size_bytes": 2413
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-supervisor-renewal-source-independent-review-v1/review.v1.json",
+      "sha256": "ce23c737db6974ec2be06068caf3b509beb8046d2209bd54f36ddc17567d1107",
+      "size_bytes": 11106
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/component-cpu07-failed-boundary-independent-review-v1/review.v1.json",
+      "sha256": "85b668c7510641ab3d7fd2455b1f7cd0f9e7b83ae9ef37531a6949ed46403d3d",
+      "size_bytes": 16997
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-selected-renewal-preparation-v2/preparation.v2.json",
+      "sha256": "2d27d19d8c7c0fd0a8961e02e6576a4487cd6ab74227511a79a5b1a7d66dc114",
+      "size_bytes": 5756
+    }
+  ],
+  "peer_status": "pending independent exact-source review; no dispatch approval",
+  "preparation": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/preparation.v1.json",
+    "sha256": "5878cde5d5c4b5f9830e52393b9e80645a429ae330e00396c2ac433076f62646",
+    "size_bytes": 10792
+  },
+  "schema_version": 1,
+  "scope": "finite source-only author review; target helpers not imported/executed",
+  "six_roles_strict": true,
+  "source_descriptors": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/capture_selected_host_closure_ext4_decision28_v3.py",
+      "sha256": "721441bff4f99454bfffab54c1fae258d3b704aada02ff6ec7631773c32ce430",
+      "size_bytes": 10658
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-host-cpu08-renewal-preparation-v1/run_original_cpu_component_pair_ext4_decision28_v3.pending.py",
+      "sha256": "617a2ca5c4344d077db35c2d950a899b25b667b4b73a8b0f9ce293ab927d576b",
+      "size_bytes": 15095
+    }
+  ],
+  "source_inputs_not_changed": true
+}

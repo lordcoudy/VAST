@@ -1,0 +1,67 @@
+{
+  "argv": [
+    "/proc/self/fd/94",
+    "image",
+    "ls",
+    "--filter",
+    "reference=vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9-determinism-a",
+    "--format",
+    "{{json .}}"
+  ],
+  "capture_exceeded": false,
+  "cleanup_errors": [],
+  "elapsed_s": 0.02388893999159336,
+  "engine_backend_quiescence": "not inferred from original CLI status",
+  "failure": null,
+  "finished_at_ns": 1791011491105017929,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable_realpath": "/usr/bin/docker",
+    "gid": 1000,
+    "pgid": 72547,
+    "pid": 72547,
+    "ppid": 72344,
+    "startticks": 49382046,
+    "uid": 1000
+  },
+  "process_group_members_at_terminal": [],
+  "process_group_scans": [
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "finished_at_ns": 1791011491103689207,
+      "members": [],
+      "original_pgid": 72547,
+      "original_pid": 72547,
+      "original_pid_identity": "absent",
+      "original_startticks": 49382046,
+      "started_at_ns": 1791011491102173694,
+      "vanished_during_scan": 0
+    },
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "finished_at_ns": 1791011491104944645,
+      "members": [],
+      "original_pgid": 72547,
+      "original_pid": 72547,
+      "original_pid_identity": "absent",
+      "original_startticks": 49382046,
+      "started_at_ns": 1791011491103692961,
+      "vanished_during_scan": 0
+    }
+  ],
+  "returncode": 0,
+  "started_at_ns": 1791011491081129402,
+  "stderr": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/tag-reservation-1.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/benchmark_recovery_20260930/decision28-gstreamer-build-2a6a42c9-v1/tag-reservation-1.stdout.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "timed_out": false
+}

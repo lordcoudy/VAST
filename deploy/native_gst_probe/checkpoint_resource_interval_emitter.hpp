@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <fstream>
+#include <limits>
 #include <mutex>
 #include <stdexcept>
 #include <string>
@@ -34,6 +35,35 @@ class CheckpointResourceIntervalEmitter {
            "host_start_timestamp_ns,host_end_timestamp_ns,duration_ns,bytes,device_id,"
            "counter_scope,native_event_id,duration_provenance,telemetry_source\n";
     output_.flush();
+  }
+
+  static std::uint64_t canonical_interval_end_ns(
+      std::uint64_t host_start_timestamp_ns,
+      std::uint64_t physical_end_timestamp_ns,
+      std::uint64_t requested_topology_timestamp_ms,
+      std::uint64_t serialized_topology_timestamp_ms) {
+    if (host_start_timestamp_ns >= physical_end_timestamp_ns) {
+      throw std::runtime_error("physical resource interval must have positive width");
+    }
+    if (requested_topology_timestamp_ms != physical_end_timestamp_ns / 1'000'000) {
+      throw std::runtime_error("physical interval end does not match requested topology time");
+    }
+    if (serialized_topology_timestamp_ms < requested_topology_timestamp_ms) {
+      throw std::runtime_error("serialized topology time moved backwards");
+    }
+    if (serialized_topology_timestamp_ms == requested_topology_timestamp_ms) {
+      return physical_end_timestamp_ns;
+    }
+    if (serialized_topology_timestamp_ms >
+        std::numeric_limits<std::uint64_t>::max() / 1'000'000) {
+      throw std::runtime_error("serialized topology time overflows nanoseconds");
+    }
+    const std::uint64_t canonical_end_timestamp_ns =
+        serialized_topology_timestamp_ms * 1'000'000;
+    if (canonical_end_timestamp_ns <= host_start_timestamp_ns) {
+      throw std::runtime_error("canonical resource interval must have positive width");
+    }
+    return canonical_end_timestamp_ns;
   }
 
   void emit_nvdec_submit_complete(

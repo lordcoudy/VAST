@@ -1,0 +1,40 @@
+{
+  "CPU07_success": false,
+  "argv": [
+    "/usr/bin/setsid",
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v3.py"
+  ],
+  "authorizing_sender": "/root",
+  "capture_dir": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/attempt01-original-tool",
+  "hardware_acceptance": false,
+  "internal_receipt_last_s": 120,
+  "only_execution_count": 1,
+  "original_root_grant_payload": "ROOT grantsONEpureoriginalhost34 v3metadata-reader execution now, exact23380B629ad711d0b1fe4de83eb5626d54cbdeddb5fe1e2d4a5725b183ca1889e5c61a/sourcepeer3775B67e16a44d3e2136ce911701e6826f27bde29f6d3f03c95197573447299556c36/prep3892c548. CP312-I-Bunchanged120+10; outputexclusive/genuine toolstdio+rawFD/process/latefinalreceipt preserved. No GCM/network/actions/Gitmutation/234MBreplay/model/engine/test, originalCPU07success remainsfalse. Saveexactgrantprovenancebeforedispatch andretainactualsuccessorfirstfailure; closeownreader/timeoutIDs2scansafterFDrelease. Thenforwardfrozenactualtoadversary.",
+  "outer_kill_after_s": 10,
+  "outer_timeout_s": 120,
+  "raw_channels": [
+    "stdout.raw",
+    "stderr.raw"
+  ],
+  "received_at_utc": "2026-10-01T03:17:52.440392+00:00",
+  "schema_version": 1,
+  "source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-review-v1/inspect_hosted34_v3.py",
+    "sha256": "629ad711d0b1fe4de83eb5626d54cbdeddb5fe1e2d4a5725b183ca1889e5c61a",
+    "size_bytes": 23380
+  },
+  "source_commit": "9d47e99b623df44816f7b0a0b73b249a940f7723",
+  "source_peer": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-9d47-original-host-independent-source-review-v1/review.v1.json",
+    "sha256": "67e16a44d3e2136ce911701e6826f27bde29f6d3f03c95197573447299556c36",
+    "size_bytes": 3775
+  },
+  "status": "root_authorized_once_before_original_dispatch"
+}

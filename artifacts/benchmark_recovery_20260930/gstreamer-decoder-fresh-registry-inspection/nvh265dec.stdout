@@ -1,0 +1,118 @@
+Factory Details:
+  Rank                     primary + 1 (257)
+  Long-name                NVDEC H.265 Decoder
+  Klass                    Codec/Decoder/Video/Hardware
+  Description              NVIDIA H.265 video decoder
+  Author                   Seungha Yang <seungha@centricular.com>
+  Documentation            https://gstreamer.freedesktop.org/documentation/nvcodec/nvh265dec.html
+
+Plugin Details:
+  Name                     nvcodec
+  Description              GStreamer NVCODEC plugin
+  Filename                 /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstnvcodec.so
+  Version                  1.28.2
+  License                  LGPL
+  Source module            gst-plugins-bad
+  Documentation            https://gstreamer.freedesktop.org/documentation/nvcodec/
+  Source release date      2026-04-07
+  Binary package           GStreamer Bad Plug-ins source release
+  Origin URL               Unknown package origin
+
+GObject
+ +----GInitiallyUnowned
+       +----GstObject
+             +----GstElement
+                   +----GstVideoDecoder
+                         +----GstH265Decoder
+                               +----GstNvH265Dec
+
+Element Flags:
+
+Pad Templates:
+  SINK template: 'sink'
+    Availability: Always
+    Capabilities:
+      video/x-h265
+          stream-format: { (string)hev1, (string)hvc1, (string)byte-stream } (GstValueList)
+              alignment: au (gchararray)
+                profile: { (string)main, (string)main-10, (string)main-12, (string)main-444, (string)main-444-10, (string)main-444-12 } (GstValueList)
+                  width: [ 144, 8192 ] (GstIntRange)
+                 height: [ 144, 8192 ] (GstIntRange)
+  
+  SRC template: 'src'
+    Availability: Always
+    Capabilities:
+      video/x-raw(memory:CUDAMemory)
+                 format: { (string)NV12, (string)P010_10LE, (string)P012_LE, (string)Y444, (string)Y444_16LE, (string)GBR, (string)GBR_16LE } (GstValueList)
+                  width: [ 144, 8192 ] (GstIntRange)
+                 height: [ 144, 8192 ] (GstIntRange)
+      video/x-raw
+                 format: { (string)NV12, (string)P010_10LE, (string)P012_LE, (string)Y444, (string)Y444_16LE, (string)GBR, (string)GBR_16LE } (GstValueList)
+                  width: [ 144, 8192 ] (GstIntRange)
+                 height: [ 144, 8192 ] (GstIntRange)
+
+Element has no clocking capabilities.
+Element has no URI handling capabilities.
+
+Pads:
+  SINK: 'sink'
+    Pad Template: 'sink'
+  SRC: 'src'
+    Pad Template: 'src'
+
+Element Properties:
+
+  automatic-request-sync-point-flags: Flags to use when automatically requesting sync points
+                        flags: readable, writable
+                        Flags "GstVideoDecoderRequestSyncPointFlags" Default: 0x00000003, "corrupt-output+discard-input"
+                           (0x00000001): discard-input    - GST_VIDEO_DECODER_REQUEST_SYNC_POINT_DISCARD_INPUT
+                           (0x00000002): corrupt-output   - GST_VIDEO_DECODER_REQUEST_SYNC_POINT_CORRUPT_OUTPUT
+  
+  automatic-request-sync-points: Automatically request sync points when it would be useful
+                        flags: readable, writable
+                        Boolean. Default: false
+  
+  cuda-device-id      : Assigned CUDA device id
+                        flags: readable
+                        Unsigned Integer. Range: 0 - 2147483647 Default: 0 
+  
+  discard-corrupted-frames: Discard frames marked as corrupted instead of outputting them
+                        flags: readable, writable
+                        Boolean. Default: false
+  
+  init-max-height     : Expected maximum coded height of stream. This value is used to pre-allocate higher dimension of output surfaces than that of input stream, in order to help decoder reconfiguration
+                        flags: readable, writable, changeable only in NULL or READY state
+                        Unsigned Integer. Range: 0 - 8192 Default: 0 
+  
+  init-max-width      : Expected maximum coded width of stream. This value is used to pre-allocate higher dimension of output surfaces than that of input stream, in order to help decoder reconfiguration
+                        flags: readable, writable, changeable only in NULL or READY state
+                        Unsigned Integer. Range: 0 - 8192 Default: 0 
+  
+  max-display-delay   : Improves pipelining of decode with display, 0 means no delay (auto = -1)
+                        flags: readable, writable
+                        Integer. Range: -1 - 16 Default: -1 
+  
+  max-errors          : Max consecutive decoder errors before returning flow error
+                        flags: readable, writable
+                        Integer. Range: -1 - 2147483647 Default: -1 
+  
+  min-force-key-unit-interval: Minimum interval between force-keyunit requests in nanoseconds
+                        flags: readable, writable
+                        Unsigned Integer64. Range: 0 - 18446744073709551615 Default: 0 
+  
+  name                : The name of the object
+                        flags: readable, writable
+                        String. Default: "nvh265dec0"
+  
+  num-output-surfaces : Maximum number of output surfaces simultaneously mapped in CUDA output mode (0 = auto, 1 = always copy)
+                        flags: readable, writable, changeable only in NULL or READY state
+                        Unsigned Integer. Range: 0 - 64 Default: 1 
+  
+  parent              : The parent of the object
+                        flags: readable, writable
+                        Object of type "GstObject"
+  
+  qos                 : Handle Quality-of-Service events from downstream
+                        flags: readable, writable
+                        Boolean. Default: true
+  

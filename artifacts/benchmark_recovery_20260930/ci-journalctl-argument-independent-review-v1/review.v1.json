@@ -1,0 +1,96 @@
+{
+  "artifact_kind": "vast_ci_journalctl_argument_independent_review_v1",
+  "author_review": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/author-review.v1.json",
+    "sha256": "c6ec12d9947bd377a9972f6bc9b3cd6e57f74d085f1f3f6027c2383938f1a26d",
+    "size_bytes": 21353
+  },
+  "blockers": [],
+  "disposition": "approved_source_and_closed_parser_fixture_scope",
+  "limits": [
+    "Actual --help proves supported spelling with the generated production arguments; it does not prove hosted journal permission, availability or an AppArmor root cause.",
+    "Original same-PID launch records prove the initial Python owner. The post-exec journal executable is explicitly unobserved.",
+    "The original hosted unsupported-option failure remains failed. Full CI, benchmark acceptance and namespace or policy causality remain unclaimed."
+  ],
+  "original_green": {
+    "both_channels_EOF_and_original_child_groups_absent": true,
+    "capture": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/green-01/execution.json",
+      "sha256": "4cb9bf54167c28e5a9d1a2984db7bfb87baf2d2c8e4e844b39066e7bacfb494e",
+      "size_bytes": 658
+    },
+    "capture_elapsed_s": 0.6376387400086969,
+    "errors": 0,
+    "failures": 0,
+    "parser_returncode": 0,
+    "skips": 0,
+    "source_before_after_equal": true,
+    "successes": 16,
+    "tests_run": 16,
+    "unittest_elapsed_s": 0.546
+  },
+  "original_red": {
+    "capture": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/red-01/execution.json",
+      "sha256": "c5884dd7e6ac435f9af9e6b91de9f6a453bf3f70ba48b8ce1148bec1bceeafb1",
+      "size_bytes": 660
+    },
+    "failure_count": 1,
+    "parser_returncode": 1,
+    "retained_original_unsupported_option": true,
+    "tests_run": 1
+  },
+  "original_sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/ci_namespace_diagnostic_v1.py",
+      "sha256": "c27e5fde456c0448cee9e7ea20a5861e66e5f0636c56fe207995993549dbcff8",
+      "size_bytes": 22271
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/before/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "fe07668ac4b3c2f1f7c1af8c668b0d86e1b74d3f0d1cfc085074050ab6010832",
+      "size_bytes": 17886
+    }
+  ],
+  "owned_diff": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-journalctl-argument-seam-repair-v1/owned-source.diff",
+    "sha256": "0db2a33816639b5fdc44a93456fa9256ceed9a95358725364810b78f7d609d56",
+    "size_bytes": 4658
+  },
+  "owned_sources": [
+    {
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "7bb96d3dba712f8c47c2afc2984628ccee7cca03e827895e95f1461c3479bbe5",
+      "size_bytes": 22270
+    },
+    {
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "37d771d553a76cbbaf6d878ab10cc2a7f409bb054c41ada8f36daba16da91223",
+      "size_bytes": 20805
+    }
+  ],
+  "reviewable": true,
+  "reviewer_operations": "Read source/diff, parse AST, rehash closed original records; no producer import, test rerun, actual namespace, journal read, engine, model, profile or remote call.",
+  "schema_version": 1,
+  "scope_checks": {
+    "all_original_15_test_methods_and_assertions_unchanged_after_option_literal_normalization": true,
+    "complete_production_inverse_byte_equality_except_single_option": true,
+    "no_sudo_policy_or_namespace_predicate_change": true,
+    "one_added_production_argument_parser_regression": true,
+    "project_source_87_intersection": [],
+    "unchanged_20_plus_10_deadlines_64KiB_domain_2_plus_1_query_capture_and_original_owner_checks": true
+  },
+  "source_recheck": [
+    {
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "7bb96d3dba712f8c47c2afc2984628ccee7cca03e827895e95f1461c3479bbe5",
+      "size_bytes": 22270
+    },
+    {
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "37d771d553a76cbbaf6d878ab10cc2a7f409bb054c41ada8f36daba16da91223",
+      "size_bytes": 20805
+    }
+  ],
+  "verified_closed_leaf_count": 30
+}

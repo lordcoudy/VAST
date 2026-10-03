@@ -1,0 +1,23 @@
+test_original_pair_retains_bounded_phase_starts_and_real_terminals (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_pair_retains_bounded_phase_starts_and_real_terminals) ... FAIL
+test_failed_original_arm_timeline_does_not_invent_later_phases (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_failed_original_arm_timeline_does_not_invent_later_phases) ... FAIL
+
+======================================================================
+FAIL: test_original_pair_retains_bounded_phase_starts_and_real_terminals (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_original_pair_retains_bounded_phase_starts_and_real_terminals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 24, in test_original_pair_retains_bounded_phase_starts_and_real_terminals
+    self.assertTrue(path.is_file(), "original pair must persist its bounded phase timeline")
+AssertionError: False is not true : original pair must persist its bounded phase timeline
+
+======================================================================
+FAIL: test_failed_original_arm_timeline_does_not_invent_later_phases (test_publication_gstreamer_component_cli_v1.ComponentCliTests.test_failed_original_arm_timeline_does_not_invent_later_phases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_gstreamer_component_cli_v1.py", line 41, in test_failed_original_arm_timeline_does_not_invent_later_phases
+    self.assertTrue(path.is_file(), "failed original must retain real phase facts")
+AssertionError: False is not true : failed original must retain real phase facts
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.103s
+
+FAILED (failures=2)

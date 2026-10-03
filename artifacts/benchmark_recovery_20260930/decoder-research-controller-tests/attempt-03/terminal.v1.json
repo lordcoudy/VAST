@@ -1,0 +1,80 @@
+{
+  "accepted": false,
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py"
+  ],
+  "artifact_kind": "vast_decoder_research_synthetic_test_execution_v1",
+  "benchmark_arm_count": 0,
+  "child": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "pid": 10787,
+    "ppid": 10786,
+    "starttime_ticks": 21360635
+  },
+  "classification": "Synthetic parser/pipe/bounds/pixel-layout and actual-sink-EOS cohort logic only; no GI import, original source, Docker or decoder execution",
+  "model_or_parity_evidence": false,
+  "native_pair_count": 0,
+  "publication_ready": false,
+  "returncode": 0,
+  "schema_version": 1,
+  "source_after": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/controller.py",
+      "sha256": "e7caa4d3cfb69630cd90f5bfede43d8695807d698c255423038895c7500c7bb8",
+      "size_bytes": 22948
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/guest_consumer.py",
+      "sha256": "63811bd3e56308fa5ec5cbc886dd307c5e4f19da0c0de4f1f2a5718324509690",
+      "size_bytes": 39394
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/research_protocol.py",
+      "sha256": "b943b5754f0a293b0f6c49b67085edc2a2f670ec4ed525a223090fe075ae82fd",
+      "size_bytes": 18195
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py",
+      "sha256": "29c4c54486c0fa497b94f66ae22bed875e24c05446130fc88ba05e9b03b7908e",
+      "size_bytes": 11630
+    }
+  ],
+  "source_before": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/controller.py",
+      "sha256": "e7caa4d3cfb69630cd90f5bfede43d8695807d698c255423038895c7500c7bb8",
+      "size_bytes": 22948
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/guest_consumer.py",
+      "sha256": "63811bd3e56308fa5ec5cbc886dd307c5e4f19da0c0de4f1f2a5718324509690",
+      "size_bytes": 39394
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/research_protocol.py",
+      "sha256": "b943b5754f0a293b0f6c49b67085edc2a2f670ec4ed525a223090fe075ae82fd",
+      "size_bytes": 18195
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v1/test_research_protocol.py",
+      "sha256": "29c4c54486c0fa497b94f66ae22bed875e24c05446130fc88ba05e9b03b7908e",
+      "size_bytes": 11630
+    }
+  ],
+  "source_stable": true,
+  "started_at_ns": 1790731296161527787,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-controller-tests/attempt-03/original.stderr",
+    "sha256": "2c8e4ebcd02a3c0854be4a90e3afab67268db6e86837fefe2643e9bc93c6899c",
+    "size_bytes": 2271
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-controller-tests/attempt-03/original.stdout",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "terminal_at_ns": 1790731296386079705
+}

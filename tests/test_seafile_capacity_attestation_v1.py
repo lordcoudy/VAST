@@ -17,6 +17,10 @@ import seafile_capacity_attestation_v1 as target  # noqa: E402
 GIB = 1024**3
 
 
+class SimulatedPhysicalCrash(BaseException):
+    pass
+
+
 def rows(size_bytes: int = 1024**2) -> list[dict[str, object]]:
     return [
         {
@@ -139,11 +143,75 @@ class SeafileCapacityAttestationV1Tests(unittest.TestCase):
             self.assertEqual(descriptor["path"], str(output))
             self.assertEqual(descriptor["sha256"], hashlib.sha256(output.read_bytes()).hexdigest())
             target.write_immutable_attestation(output, build())
+            output.chmod(0o600)
             output.write_text("tampered\n", encoding="utf-8")
             with self.assertRaisesRegex(
                 target.SeafileCapacityAttestationV1Error, "collision"
             ):
                 target.write_immutable_attestation(output, build())
+
+    def test_immutable_output_recovers_each_physical_crash_window(self) -> None:
+        for crash_step in (
+            "mid_write",
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(crash_step=crash_step), tempfile.TemporaryDirectory() as tmp:
+                output = Path(tmp) / "capacity.json"
+                faulted = False
+
+                def fault(step: str, path: Path) -> None:
+                    nonlocal faulted
+                    self.assertEqual(path, output)
+                    if step == crash_step and not faulted:
+                        faulted = True
+                        raise SimulatedPhysicalCrash(step)
+
+                with self.assertRaises(SimulatedPhysicalCrash):
+                    target.write_immutable_attestation(
+                        output,
+                        build(),
+                        after_physical_commit_step=fault,
+                    )
+                published_inode = output.stat().st_ino if output.exists() else None
+                descriptor = target.write_immutable_attestation(output, build())
+                self.assertTrue(faulted)
+                self.assertEqual(
+                    descriptor["sha256"], hashlib.sha256(output.read_bytes()).hexdigest()
+                )
+                if published_inode is not None:
+                    self.assertEqual(output.stat().st_ino, published_inode)
+
+    def test_immutable_output_rejects_racing_foreign_and_rebound_final(self) -> None:
+        for attack_step in (
+            "post_fsync_pre_publish",
+            "post_publish_pre_parent_fsync",
+        ):
+            with self.subTest(attack_step=attack_step), tempfile.TemporaryDirectory() as tmp:
+                output = Path(tmp) / "capacity.json"
+
+                def attack(step: str, path: Path) -> None:
+                    if step != attack_step:
+                        return
+                    if path.exists():
+                        path.unlink()
+                    path.write_bytes(b"foreign-capacity-attestation\n")
+                    path.chmod(0o444)
+
+                with self.assertRaises(target.SeafileCapacityAttestationV1Error):
+                    target.write_immutable_attestation(
+                        output,
+                        build(),
+                        after_physical_commit_step=attack,
+                    )
+                foreign_inode = output.stat().st_ino
+                foreign_payload = output.read_bytes()
+                with self.assertRaisesRegex(
+                    target.SeafileCapacityAttestationV1Error, "collision"
+                ):
+                    target.write_immutable_attestation(output, build())
+                self.assertEqual(output.stat().st_ino, foreign_inode)
+                self.assertEqual(output.read_bytes(), foreign_payload)
 
 
 if __name__ == "__main__":

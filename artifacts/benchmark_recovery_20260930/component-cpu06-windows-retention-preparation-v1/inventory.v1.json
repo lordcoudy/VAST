@@ -1,0 +1,2418 @@
+{
+  "all_bytes": 211515337,
+  "all_file_count": 129,
+  "artifact_kind": "vast_cpu06_closed_original_retention_inventory_v1",
+  "copy_executed": false,
+  "cpu_acceptance_proof_sha256": "20c896c126454b17f747d2b119b6a60444f7d8bc338184782eb68ec8ab37218a",
+  "directories": [
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552909,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 478062,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06-original-controller",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552963,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/cold-pair",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552962,
+      "mode": 16877,
+      "relative_path": "cpu-pair-06/cold-pair.reconciliation-scratch",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552960,
+      "mode": 16877,
+      "relative_path": "cpu-pair-06/guardian",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552988,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/guardian-operational",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552940,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553006,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/arms",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553007,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553009,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/.hardware-host",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553008,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553132,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence.operational",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553018,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553021,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/.hardware-host",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553019,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553191,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence.operational",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552946,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/capture-plan",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552941,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/original-operations",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553010,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/process-captures",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553011,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553110,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553022,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553171,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552953,
+      "mode": 16749,
+      "relative_path": "cpu-pair-06/preprocessing",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552997,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/runtime",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553000,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/runtime/_assets",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 553001,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/runtime/_assets/gstreamer_custom",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552998,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/runtime/container-engine",
+      "uid": 1000
+    },
+    {
+      "dev": 2096,
+      "gid": 1000,
+      "ino": 552936,
+      "mode": 16832,
+      "relative_path": "cpu-pair-06/source",
+      "uid": 1000
+    }
+  ],
+  "excluded_input_duplicates": [
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552999,
+        33133,
+        1,
+        45570705,
+        1790802754777662289,
+        1790802754805664147
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/runtime/container-engine/docker",
+      "relative_path": "cpu-pair-06/runtime/container-engine/docker",
+      "sha256": null,
+      "size_bytes": 45570705
+    }
+  ],
+  "extension_counts": {
+    ".cid": 2,
+    ".csv": 27,
+    ".json": 65,
+    ".jsonl": 13,
+    ".log": 2,
+    ".raw": 2,
+    ".stderr": 8,
+    ".stdout": 8,
+    ".svg": 1
+  },
+  "full_hashes_are_deliberately_future_not_invented": true,
+  "inventory_started_at_ns": 1790805581217828830,
+  "inventory_terminal_at_ns": 1790805581226802628,
+  "largest20_retained_files": [
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence.operational/native_operational_requests.v1.jsonl",
+      "size_bytes": 32365325
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence.operational/native_operational_requests.v1.jsonl",
+      "size_bytes": 30042428
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+      "size_bytes": 17530523
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl",
+      "size_bytes": 16231632
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/topology_events.csv",
+      "size_bytes": 8370100
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/topology_events.csv",
+      "size_bytes": 7807985
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/policy_decisions.csv",
+      "size_bytes": 6625710
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/policy_decisions.csv",
+      "size_bytes": 6102528
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frame_events.csv",
+      "size_bytes": 5874450
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_events.csv",
+      "size_bytes": 5699139
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frame_events.csv",
+      "size_bytes": 3520098
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_events.csv",
+      "size_bytes": 3319546
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/branch_terminals.csv",
+      "size_bytes": 2849152
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/branch_terminals.csv",
+      "size_bytes": 2762897
+    },
+    {
+      "relative_path": "cpu-pair-06/guardian-operational/plate_number-cpu.jsonl",
+      "size_bytes": 2120257
+    },
+    {
+      "relative_path": "cpu-pair-06/guardian-operational/vehicle_type-cpu.jsonl",
+      "size_bytes": 2022265
+    },
+    {
+      "relative_path": "cpu-pair-06/guardian-operational/damage-cpu.jsonl",
+      "size_bytes": 1991960
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_intervals.csv",
+      "size_bytes": 1899015
+    },
+    {
+      "relative_path": "cpu-pair-06/guardian-operational/foreign_object-cpu.jsonl",
+      "size_bytes": 1520161
+    },
+    {
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_intervals.csv",
+      "size_bytes": 1335711
+    }
+  ],
+  "namespaces": [
+    "cpu-pair-06",
+    "cpu-pair-06-original-controller"
+  ],
+  "project_root": "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+  "retained_bytes": 165944632,
+  "retained_file_count": 128,
+  "retained_files": [
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552908,
+        33188,
+        1,
+        2698,
+        1790802641904720980,
+        1790802641904720980
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/original.launch.v1.json",
+      "relative_path": "cpu-pair-06-original-controller/original.launch.v1.json",
+      "sha256": null,
+      "size_bytes": 2698
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552906,
+        33188,
+        1,
+        0,
+        1790802641864716764,
+        1790802641864716764
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/original.stderr.raw",
+      "relative_path": "cpu-pair-06-original-controller/original.stderr.raw",
+      "sha256": null,
+      "size_bytes": 0
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        545257,
+        33188,
+        1,
+        460,
+        1790803446165260959,
+        1790803446165260959
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/original.stdout.raw",
+      "relative_path": "cpu-pair-06-original-controller/original.stdout.raw",
+      "sha256": null,
+      "size_bytes": 460
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552972,
+        33188,
+        1,
+        88066,
+        1790803446181261888,
+        1790803446181261888
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/original.terminal.v1.json",
+      "relative_path": "cpu-pair-06-original-controller/original.terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 88066
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552907,
+        33188,
+        1,
+        45690,
+        1790802641900720559,
+        1790802641900720559
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06-original-controller/prelaunch.v1.json",
+      "relative_path": "cpu-pair-06-original-controller/prelaunch.v1.json",
+      "sha256": null,
+      "size_bytes": 45690
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552966,
+        33060,
+        1,
+        89272,
+        1790803439680888801,
+        1790803439680888801
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/cold-pair/component_pair_latency_ecdf.svg",
+      "relative_path": "cpu-pair-06/cold-pair/component_pair_latency_ecdf.svg",
+      "sha256": null,
+      "size_bytes": 89272
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552965,
+        33060,
+        1,
+        617,
+        1790803439600884288,
+        1790803439600884288
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/cold-pair/component_pair_metrics.csv",
+      "relative_path": "cpu-pair-06/cold-pair/component_pair_metrics.csv",
+      "sha256": null,
+      "size_bytes": 617
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552968,
+        33060,
+        1,
+        18461,
+        1790803440944960098,
+        1790803440944960098
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/cold-pair/component_pair_result.v1.json",
+      "relative_path": "cpu-pair-06/cold-pair/component_pair_result.v1.json",
+      "sha256": null,
+      "size_bytes": 18461
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552971,
+        33060,
+        1,
+        8836,
+        1790803445977250060,
+        1790803445977250060
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/component_cli_terminal.v1.json",
+      "relative_path": "cpu-pair-06/component_cli_terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 8836
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552933,
+        33024,
+        1,
+        5525,
+        1790803445965249364,
+        1790803445965249364
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/component_pair_timing.v1.jsonl",
+      "relative_path": "cpu-pair-06/component_pair_timing.v1.jsonl",
+      "sha256": null,
+      "size_bytes": 5525
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552989,
+        33152,
+        1,
+        1991960,
+        1790803311039059039,
+        1790803311039059039
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian-operational/damage-cpu.jsonl",
+      "relative_path": "cpu-pair-06/guardian-operational/damage-cpu.jsonl",
+      "sha256": null,
+      "size_bytes": 1991960
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552990,
+        33152,
+        1,
+        6448,
+        1790802746181125372,
+        1790802746181125372
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian-operational/damage-gpu.jsonl",
+      "relative_path": "cpu-pair-06/guardian-operational/damage-gpu.jsonl",
+      "sha256": null,
+      "size_bytes": 6448
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552991,
+        33152,
+        1,
+        1520161,
+        1790803311043059272,
+        1790803311043059272
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian-operational/foreign_object-cpu.jsonl",
+      "relative_path": "cpu-pair-06/guardian-operational/foreign_object-cpu.jsonl",
+      "sha256": null,
+      "size_bytes": 1520161
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552992,
+        33152,
+        1,
+        6521,
+        1790802746181125372,
+        1790802746181125372
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian-operational/foreign_object-gpu.jsonl",
+      "relative_path": "cpu-pair-06/guardian-operational/foreign_object-gpu.jsonl",
+      "sha256": null,
+      "size_bytes": 6521
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553029,
+        33152,
+        1,
+        4669,
+        1790803363184052984,
+        1790803363184052984
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian-operational/operational_group.v1.json",
+      "relative_path": "cpu-pair-06/guardian-operational/operational_group.v1.json",
+      "sha256": null,
+      "size_bytes": 4669
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552993,
+        33152,
+        1,
+        2120257,
+        1790803311079061371,
+        1790803311079061371
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian-operational/plate_number-cpu.jsonl",
+      "relative_path": "cpu-pair-06/guardian-operational/plate_number-cpu.jsonl",
+      "sha256": null,
+      "size_bytes": 2120257
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552994,
+        33152,
+        1,
+        6502,
+        1790802746181125372,
+        1790802746181125372
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian-operational/plate_number-gpu.jsonl",
+      "relative_path": "cpu-pair-06/guardian-operational/plate_number-gpu.jsonl",
+      "sha256": null,
+      "size_bytes": 6502
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552995,
+        33152,
+        1,
+        2022265,
+        1790803310655036641,
+        1790803310655036641
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian-operational/vehicle_type-cpu.jsonl",
+      "relative_path": "cpu-pair-06/guardian-operational/vehicle_type-cpu.jsonl",
+      "sha256": null,
+      "size_bytes": 2022265
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552996,
+        33152,
+        1,
+        6502,
+        1790802746181125372,
+        1790802746181125372
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian-operational/vehicle_type-gpu.jsonl",
+      "relative_path": "cpu-pair-06/guardian-operational/vehicle_type-gpu.jsonl",
+      "sha256": null,
+      "size_bytes": 6502
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552969,
+        33024,
+        1,
+        0,
+        1790803445977250060,
+        1790803445977250060
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian.stderr.log",
+      "relative_path": "cpu-pair-06/guardian.stderr.log",
+      "sha256": null,
+      "size_bytes": 0
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552935,
+        33024,
+        1,
+        26350,
+        1790803445973249829,
+        1790803445973249829
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian.stdout.log",
+      "relative_path": "cpu-pair-06/guardian.stdout.log",
+      "sha256": null,
+      "size_bytes": 26350
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552987,
+        33024,
+        1,
+        16312,
+        1790802746173124879,
+        1790802746173124879
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian/service_authority.v1.json",
+      "relative_path": "cpu-pair-06/guardian/service_authority.v1.json",
+      "sha256": null,
+      "size_bytes": 16312
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553030,
+        33024,
+        1,
+        10038,
+        1790803363188053227,
+        1790803363188053227
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/guardian/service_lifecycle.v1.json",
+      "relative_path": "cpu-pair-06/guardian/service_lifecycle.v1.json",
+      "sha256": null,
+      "size_bytes": 10038
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553017,
+        33060,
+        1,
+        15380,
+        1790803061500596619,
+        1790803061500596619
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/component_arm_result.v1.json",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/component_arm_result.v1.json",
+      "sha256": null,
+      "size_bytes": 15380
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553152,
+        33060,
+        1,
+        32365325,
+        1790803050627966514,
+        1790803050683969747
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence.operational/native_operational_requests.v1.jsonl",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence.operational/native_operational_requests.v1.jsonl",
+      "sha256": null,
+      "size_bytes": 32365325
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553142,
+        33060,
+        1,
+        2849152,
+        1790803050159939502,
+        1790803050167939964
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/branch_terminals.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/branch_terminals.csv",
+      "sha256": null,
+      "size_bytes": 2849152
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553148,
+        33060,
+        1,
+        8163,
+        1790803050447956125,
+        1790803050451956355
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/checkpoint_publication_candidate.json",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/checkpoint_publication_candidate.json",
+      "sha256": null,
+      "size_bytes": 8163
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553139,
+        33060,
+        1,
+        1356,
+        1790803050019931422,
+        1790803050023931652
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/drop_counters.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/drop_counters.csv",
+      "sha256": null,
+      "size_bytes": 1356
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553147,
+        33060,
+        1,
+        206,
+        1790803050415954278,
+        1790803050419954508
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/fanout_work_counters.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/fanout_work_counters.csv",
+      "sha256": null,
+      "size_bytes": 206
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553136,
+        33060,
+        1,
+        5874450,
+        1790803049859922187,
+        1790803049875923110
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frame_events.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frame_events.csv",
+      "sha256": null,
+      "size_bytes": 5874450
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553135,
+        33060,
+        1,
+        147846,
+        1790803049819919878,
+        1790803049823920108
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frames.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frames.csv",
+      "sha256": null,
+      "size_bytes": 147846
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553020,
+        33060,
+        1,
+        1030096,
+        1790803052376067407,
+        1790803052380067638
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/hardware_resource_samples.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/hardware_resource_samples.csv",
+      "sha256": null,
+      "size_bytes": 1030096
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553141,
+        33060,
+        1,
+        751207,
+        1790803050123937424,
+        1790803050131937885
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/ingress_ledger.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/ingress_ledger.csv",
+      "sha256": null,
+      "size_bytes": 751207
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553138,
+        33060,
+        1,
+        6625710,
+        1790803049967928419,
+        1790803049991929805
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/policy_decisions.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/policy_decisions.csv",
+      "sha256": null,
+      "size_bytes": 6625710
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553145,
+        33060,
+        1,
+        17530523,
+        1790803050291947120,
+        1790803050331949430
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+      "sha256": null,
+      "size_bytes": 17530523
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553144,
+        33060,
+        1,
+        15250,
+        1790803050219942965,
+        1790803050223943196
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/reset_evidence.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/reset_evidence.csv",
+      "sha256": null,
+      "size_bytes": 15250
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553137,
+        33060,
+        1,
+        5699139,
+        1790803049911925188,
+        1790803049923925881
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_events.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_events.csv",
+      "sha256": null,
+      "size_bytes": 5699139
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553146,
+        33060,
+        1,
+        1335711,
+        1790803050387952661,
+        1790803050395953124
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_intervals.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_intervals.csv",
+      "sha256": null,
+      "size_bytes": 1335711
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553143,
+        33060,
+        1,
+        79680,
+        1790803050195941579,
+        1790803050199941811
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/stage_contracts.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/stage_contracts.csv",
+      "sha256": null,
+      "size_bytes": 79680
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553140,
+        33060,
+        1,
+        8370100,
+        1790803050063933960,
+        1790803050087935347
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/topology_events.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/topology_events.csv",
+      "sha256": null,
+      "size_bytes": 8370100
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553028,
+        33060,
+        1,
+        14097,
+        1790803360071867731,
+        1790803360071867731
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/component_arm_result.v1.json",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/component_arm_result.v1.json",
+      "sha256": null,
+      "size_bytes": 14097
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553211,
+        33060,
+        1,
+        30042428,
+        1790803350659338132,
+        1790803350695339985
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence.operational/native_operational_requests.v1.jsonl",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence.operational/native_operational_requests.v1.jsonl",
+      "sha256": null,
+      "size_bytes": 30042428
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553201,
+        33060,
+        1,
+        2762897,
+        1790803350255317326,
+        1790803350267317944
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/branch_terminals.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/branch_terminals.csv",
+      "sha256": null,
+      "size_bytes": 2762897
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553207,
+        33060,
+        1,
+        6888,
+        1790803350503330098,
+        1790803350507330304
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/checkpoint_publication_candidate.json",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/checkpoint_publication_candidate.json",
+      "sha256": null,
+      "size_bytes": 6888
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553198,
+        33060,
+        1,
+        1337,
+        1790803350135311147,
+        1790803350139311353
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/drop_counters.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/drop_counters.csv",
+      "sha256": null,
+      "size_bytes": 1337
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553206,
+        33060,
+        1,
+        1126830,
+        1790803350475328656,
+        1790803350479328862
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/fanout_work_counters.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/fanout_work_counters.csv",
+      "sha256": null,
+      "size_bytes": 1126830
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553195,
+        33060,
+        1,
+        3520098,
+        1790803350003304350,
+        1790803350015304968
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frame_events.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frame_events.csv",
+      "sha256": null,
+      "size_bytes": 3520098
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553194,
+        33060,
+        1,
+        172003,
+        1790803349967302495,
+        1790803349975302908
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frames.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frames.csv",
+      "sha256": null,
+      "size_bytes": 172003
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553031,
+        33060,
+        1,
+        979729,
+        1790803352379426708,
+        1790803352387427120
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/hardware_resource_samples.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/hardware_resource_samples.csv",
+      "sha256": null,
+      "size_bytes": 979729
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553200,
+        33060,
+        1,
+        734595,
+        1790803350223315679,
+        1790803350231316091
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/ingress_ledger.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/ingress_ledger.csv",
+      "sha256": null,
+      "size_bytes": 734595
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553197,
+        33060,
+        1,
+        6102528,
+        1790803350095309087,
+        1790803350111309912
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/policy_decisions.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/policy_decisions.csv",
+      "sha256": null,
+      "size_bytes": 6102528
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553204,
+        33060,
+        1,
+        16231632,
+        1790803350379323712,
+        1790803350403324949
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl",
+      "sha256": null,
+      "size_bytes": 16231632
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553203,
+        33060,
+        1,
+        6420,
+        1790803350315320417,
+        1790803350319320623
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/reset_evidence.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/reset_evidence.csv",
+      "sha256": null,
+      "size_bytes": 6420
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553196,
+        33060,
+        1,
+        3319546,
+        1790803350043306410,
+        1790803350055307027
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_events.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_events.csv",
+      "sha256": null,
+      "size_bytes": 3319546
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553205,
+        33060,
+        1,
+        1899015,
+        1790803350443327009,
+        1790803350451327420
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_intervals.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/resource_intervals.csv",
+      "sha256": null,
+      "size_bytes": 1899015
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553202,
+        33060,
+        1,
+        19770,
+        1790803350287318975,
+        1790803350291319181
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/stage_contracts.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/stage_contracts.csv",
+      "sha256": null,
+      "size_bytes": 19770
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553199,
+        33060,
+        1,
+        7807985,
+        1790803350175313207,
+        1790803350195314237
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/topology_events.csv",
+      "relative_path": "cpu-pair-06/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/topology_events.csv",
+      "sha256": null,
+      "size_bytes": 7807985
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552952,
+        33060,
+        1,
+        2133,
+        1790802721101210480,
+        1790802721101210480
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/capture-plan/capture_plan_index.v1.json",
+      "relative_path": "cpu-pair-06/operations/capture-plan/capture_plan_index.v1.json",
+      "sha256": null,
+      "size_bytes": 2133
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552951,
+        33060,
+        1,
+        39811,
+        1790802721101210480,
+        1790802721101210480
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/capture-plan/guardian_capture_context.v1.json",
+      "relative_path": "cpu-pair-06/operations/capture-plan/guardian_capture_context.v1.json",
+      "sha256": null,
+      "size_bytes": 39811
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552949,
+        33060,
+        1,
+        3845,
+        1790802721089209783,
+        1790802721089209783
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/capture-plan/native_context_00.v1.json",
+      "relative_path": "cpu-pair-06/operations/capture-plan/native_context_00.v1.json",
+      "sha256": null,
+      "size_bytes": 3845
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552950,
+        33060,
+        1,
+        3792,
+        1790802721093210016,
+        1790802721093210016
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/capture-plan/native_context_01.v1.json",
+      "relative_path": "cpu-pair-06/operations/capture-plan/native_context_01.v1.json",
+      "sha256": null,
+      "size_bytes": 3792
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552947,
+        33060,
+        1,
+        11930,
+        1790802721085209551,
+        1790802721085209551
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/capture-plan/original_operations.v1.json",
+      "relative_path": "cpu-pair-06/operations/capture-plan/original_operations.v1.json",
+      "sha256": null,
+      "size_bytes": 11930
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552948,
+        33060,
+        1,
+        1117,
+        1790802721089209783,
+        1790802721089209783
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/capture-plan/source_plan_inventory.v1.json",
+      "relative_path": "cpu-pair-06/operations/capture-plan/source_plan_inventory.v1.json",
+      "sha256": null,
+      "size_bytes": 1117
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552943,
+        33060,
+        1,
+        7221,
+        1790802710134336702,
+        1790802710134336702
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/original-operations/component-gstreamer_custom-cpu-h264-independent-processes.original.json",
+      "relative_path": "cpu-pair-06/operations/original-operations/component-gstreamer_custom-cpu-h264-independent-processes.original.json",
+      "sha256": null,
+      "size_bytes": 7221
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552942,
+        33060,
+        1,
+        39843,
+        1790802710134336702,
+        1790802710134336702
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/original-operations/component-gstreamer_custom-cpu-h264-independent-processes.source-plan.json",
+      "relative_path": "cpu-pair-06/operations/original-operations/component-gstreamer_custom-cpu-h264-independent-processes.source-plan.json",
+      "sha256": null,
+      "size_bytes": 39843
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552945,
+        33060,
+        1,
+        7071,
+        1790802710142337184,
+        1790802710142337184
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/original-operations/component-gstreamer_custom-cpu-h264-shared-video-dag.original.json",
+      "relative_path": "cpu-pair-06/operations/original-operations/component-gstreamer_custom-cpu-h264-shared-video-dag.original.json",
+      "sha256": null,
+      "size_bytes": 7071
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552944,
+        33060,
+        1,
+        28097,
+        1790802710138336944,
+        1790802710138336944
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/original-operations/component-gstreamer_custom-cpu-h264-shared-video-dag.source-plan.json",
+      "relative_path": "cpu-pair-06/operations/original-operations/component-gstreamer_custom-cpu-h264-shared-video-dag.source-plan.json",
+      "sha256": null,
+      "size_bytes": 28097
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553113,
+        33060,
+        1,
+        269,
+        1790802787817550997,
+        1790802787817550997
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.stderr",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.stderr",
+      "sha256": null,
+      "size_bytes": 269
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553112,
+        33060,
+        1,
+        312,
+        1790802787705544185,
+        1790802787705544185
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.stdout",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.stdout",
+      "sha256": null,
+      "size_bytes": 312
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553114,
+        33060,
+        1,
+        1905,
+        1790802787925557565,
+        1790802787925557565
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.v1.json",
+      "sha256": null,
+      "size_bytes": 1905
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553116,
+        33060,
+        1,
+        359,
+        1790802788281579217,
+        1790802788281579217
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.stderr",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.stderr",
+      "sha256": null,
+      "size_bytes": 359
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553115,
+        33060,
+        1,
+        271,
+        1790802788165572160,
+        1790802788165572160
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.stdout",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.stdout",
+      "sha256": null,
+      "size_bytes": 271
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553117,
+        33060,
+        1,
+        2357,
+        1790802788393586027,
+        1790802788393586027
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.v1.json",
+      "sha256": null,
+      "size_bytes": 2357
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553123,
+        33060,
+        1,
+        384,
+        1790803045711707428,
+        1790803045711707428
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.stderr",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.stderr",
+      "sha256": null,
+      "size_bytes": 384
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553122,
+        33060,
+        1,
+        271,
+        1790803045575700436,
+        1790803045575700436
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.stdout",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.stdout",
+      "sha256": null,
+      "size_bytes": 271
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553124,
+        33060,
+        1,
+        2379,
+        1790803045847714419,
+        1790803045847714419
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.v1.json",
+      "sha256": null,
+      "size_bytes": 2379
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553127,
+        33060,
+        1,
+        269,
+        1790803046331739300,
+        1790803046331739300
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.stderr",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.stderr",
+      "sha256": null,
+      "size_bytes": 269
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553126,
+        33060,
+        1,
+        312,
+        1790803046195732309,
+        1790803046195732309
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.stdout",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.stdout",
+      "sha256": null,
+      "size_bytes": 312
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553128,
+        33060,
+        1,
+        1904,
+        1790803046471746498,
+        1790803046471746498
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.v1.json",
+      "sha256": null,
+      "size_bytes": 1904
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553119,
+        33188,
+        1,
+        64,
+        1790802788597598433,
+        1790802788597598433
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/measurement.cid",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/measurement.cid",
+      "sha256": null,
+      "size_bytes": 64
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553129,
+        33060,
+        1,
+        3824,
+        1790803046607753489,
+        1790803046607753489
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+      "sha256": null,
+      "size_bytes": 3824
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553118,
+        33060,
+        1,
+        2431,
+        1790802788509593081,
+        1790802788509593081
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/reservation.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/container-custody/reservation.v1.json",
+      "sha256": null,
+      "size_bytes": 2431
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553012,
+        33060,
+        1,
+        1806,
+        1790802770418638272,
+        1790802770418638272
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_01.launch.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_01.launch.v1.json",
+      "sha256": null,
+      "size_bytes": 1806
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553013,
+        33060,
+        1,
+        939,
+        1790802770454639845,
+        1790802770454639845
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_01.terminal.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_01.terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 939
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553102,
+        33060,
+        1,
+        2736,
+        1790802778528988158,
+        1790802778528988158
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_02.launch.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_02.launch.v1.json",
+      "sha256": null,
+      "size_bytes": 2736
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553103,
+        33060,
+        1,
+        939,
+        1790802778941013091,
+        1790802778941013091
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_02.terminal.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_02.terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 939
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553104,
+        33060,
+        1,
+        2588,
+        1790802781353159060,
+        1790802781353159060
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_03.launch.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_03.launch.v1.json",
+      "sha256": null,
+      "size_bytes": 2588
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553105,
+        33060,
+        1,
+        938,
+        1790802782209210864,
+        1790802782209210864
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_03.terminal.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_03.terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 938
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553106,
+        33060,
+        1,
+        2206,
+        1790802784609356108,
+        1790802784609356108
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_04.launch.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_04.launch.v1.json",
+      "sha256": null,
+      "size_bytes": 2206
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553107,
+        33060,
+        1,
+        937,
+        1790802785037382009,
+        1790802785037382009
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_04.terminal.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_04.terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 937
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553120,
+        33060,
+        1,
+        8022,
+        1790802788625600137,
+        1790802788625600137
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.launch.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.launch.v1.json",
+      "sha256": null,
+      "size_bytes": 8022
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553121,
+        33060,
+        1,
+        940,
+        1790803045291685836,
+        1790803045291685836
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.terminal.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/engine_05.terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 940
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553016,
+        33060,
+        1,
+        6511,
+        1790803052232059096,
+        1790803052232059096
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/original_engine_process_capture.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-independent-processes/original_engine_process_capture.v1.json",
+      "sha256": null,
+      "size_bytes": 6511
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553174,
+        33060,
+        1,
+        269,
+        1790803094228621079,
+        1790803094228621079
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_01.stderr",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_01.stderr",
+      "sha256": null,
+      "size_bytes": 269
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553173,
+        33060,
+        1,
+        312,
+        1790803094120614836,
+        1790803094120614836
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_01.stdout",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_01.stdout",
+      "sha256": null,
+      "size_bytes": 312
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553175,
+        33060,
+        1,
+        1890,
+        1790803094344627786,
+        1790803094344627786
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_01.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_01.v1.json",
+      "sha256": null,
+      "size_bytes": 1890
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553177,
+        33060,
+        1,
+        359,
+        1790803094720649522,
+        1790803094720649522
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_02.stderr",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_02.stderr",
+      "sha256": null,
+      "size_bytes": 359
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553176,
+        33060,
+        1,
+        271,
+        1790803094596642354,
+        1790803094596642354
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_02.stdout",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_02.stdout",
+      "sha256": null,
+      "size_bytes": 271
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553178,
+        33060,
+        1,
+        2342,
+        1790803094832655997,
+        1790803094832655997
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_02.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_02.v1.json",
+      "sha256": null,
+      "size_bytes": 2342
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553184,
+        33060,
+        1,
+        384,
+        1790803346439120811,
+        1790803346439120811
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_03.stderr",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_03.stderr",
+      "sha256": null,
+      "size_bytes": 384
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553183,
+        33060,
+        1,
+        271,
+        1790803346303113807,
+        1790803346303113807
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_03.stdout",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_03.stdout",
+      "sha256": null,
+      "size_bytes": 271
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553185,
+        33060,
+        1,
+        2364,
+        1790803346575127815,
+        1790803346575127815
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_03.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_03.v1.json",
+      "sha256": null,
+      "size_bytes": 2364
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553188,
+        33060,
+        1,
+        269,
+        1790803347071153358,
+        1790803347071153358
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_04.stderr",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_04.stderr",
+      "sha256": null,
+      "size_bytes": 269
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553187,
+        33060,
+        1,
+        312,
+        1790803346935146354,
+        1790803346935146354
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_04.stdout",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_04.stdout",
+      "sha256": null,
+      "size_bytes": 312
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553189,
+        33060,
+        1,
+        1889,
+        1790803347207160361,
+        1790803347207160361
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_04.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/command_04.v1.json",
+      "sha256": null,
+      "size_bytes": 1889
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553180,
+        33188,
+        1,
+        64,
+        1790803095020666866,
+        1790803095020666866
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/measurement.cid",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/measurement.cid",
+      "sha256": null,
+      "size_bytes": 64
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553190,
+        33060,
+        1,
+        3784,
+        1790803347347167571,
+        1790803347347167571
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/original_container_custody.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/original_container_custody.v1.json",
+      "sha256": null,
+      "size_bytes": 3784
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553179,
+        33060,
+        1,
+        2416,
+        1790803094948662705,
+        1790803094948662705
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/reservation.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/container-custody/reservation.v1.json",
+      "sha256": null,
+      "size_bytes": 2416
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553023,
+        33060,
+        1,
+        1801,
+        1790803076879623075,
+        1790803076879623075
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_01.launch.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_01.launch.v1.json",
+      "sha256": null,
+      "size_bytes": 1801
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553024,
+        33060,
+        1,
+        929,
+        1790803076919625331,
+        1790803076919625331
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_01.terminal.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_01.terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 929
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553163,
+        33060,
+        1,
+        2731,
+        1790803085024087917,
+        1790803085024087917
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_02.launch.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_02.launch.v1.json",
+      "sha256": null,
+      "size_bytes": 2731
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553164,
+        33060,
+        1,
+        929,
+        1790803085428111365,
+        1790803085428111365
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_02.terminal.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_02.terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 929
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553165,
+        33060,
+        1,
+        2578,
+        1790803087812249729,
+        1790803087812249729
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_03.launch.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_03.launch.v1.json",
+      "sha256": null,
+      "size_bytes": 2578
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553166,
+        33060,
+        1,
+        928,
+        1790803088660298945,
+        1790803088660298945
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_03.terminal.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_03.terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 928
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553167,
+        33060,
+        1,
+        2201,
+        1790803091060437925,
+        1790803091060437925
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_04.launch.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_04.launch.v1.json",
+      "sha256": null,
+      "size_bytes": 2201
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553168,
+        33060,
+        1,
+        927,
+        1790803091456460820,
+        1790803091456460820
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_04.terminal.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_04.terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 927
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553181,
+        33060,
+        1,
+        7948,
+        1790803095068669640,
+        1790803095068669640
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_05.launch.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_05.launch.v1.json",
+      "sha256": null,
+      "size_bytes": 7948
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553182,
+        33060,
+        1,
+        930,
+        1790803346011098770,
+        1790803346011098770
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_05.terminal.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/engine_05.terminal.v1.json",
+      "sha256": null,
+      "size_bytes": 930
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553027,
+        33060,
+        1,
+        6441,
+        1790803352239419498,
+        1790803352239419498
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/original_engine_process_capture.v1.json",
+      "relative_path": "cpu-pair-06/operations/process-captures/component-gstreamer_custom-cpu-h264-shared-video-dag/original_engine_process_capture.v1.json",
+      "sha256": null,
+      "size_bytes": 6441
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552959,
+        33060,
+        1,
+        6525,
+        1790802725109464532,
+        1790802725129465804
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/preprocessing/guardian-component-preprocessing-receipt.v1.json",
+      "relative_path": "cpu-pair-06/preprocessing/guardian-component-preprocessing-receipt.v1.json",
+      "sha256": null,
+      "size_bytes": 6525
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552958,
+        33060,
+        1,
+        1078,
+        1790802725037459955,
+        1790802725057461226
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/preprocessing/guardian-preprocessing-contract.v1.json",
+      "relative_path": "cpu-pair-06/preprocessing/guardian-preprocessing-contract.v1.json",
+      "sha256": null,
+      "size_bytes": 1078
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553002,
+        33060,
+        1,
+        10638,
+        1790802754833666005,
+        1790802754833666005
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/runtime/_assets/gstreamer_custom/analytics-execution-manifest.json",
+      "relative_path": "cpu-pair-06/runtime/_assets/gstreamer_custom/analytics-execution-manifest.json",
+      "sha256": null,
+      "size_bytes": 10638
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553005,
+        33060,
+        1,
+        2052,
+        1790802756185755687,
+        1790802756185755687
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/runtime/component_runtime_index.v1.json",
+      "relative_path": "cpu-pair-06/runtime/component_runtime_index.v1.json",
+      "sha256": null,
+      "size_bytes": 2052
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553003,
+        33060,
+        1,
+        23565,
+        1790802754837666270,
+        1790802754837666270
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/runtime/qualification-arm-v2-gstreamer_custom-cpu-h264-independent-processes.component.json",
+      "relative_path": "cpu-pair-06/runtime/qualification-arm-v2-gstreamer_custom-cpu-h264-independent-processes.component.json",
+      "sha256": null,
+      "size_bytes": 23565
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        553004,
+        33060,
+        1,
+        23531,
+        1790802754841666535,
+        1790802754841666535
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/runtime/qualification-arm-v2-gstreamer_custom-cpu-h264-shared-video-dag.component.json",
+      "relative_path": "cpu-pair-06/runtime/qualification-arm-v2-gstreamer_custom-cpu-h264-shared-video-dag.component.json",
+      "sha256": null,
+      "size_bytes": 23531
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552937,
+        33060,
+        1,
+        39843,
+        1790802661804882068,
+        1790802661804882068
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/source/baseline.source-plan.json",
+      "relative_path": "cpu-pair-06/source/baseline.source-plan.json",
+      "sha256": null,
+      "size_bytes": 39843
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552939,
+        33060,
+        1,
+        128329,
+        1790802681398065509,
+        1790802681398065509
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/source/gstreamer-component-authority.v1.json",
+      "relative_path": "cpu-pair-06/source/gstreamer-component-authority.v1.json",
+      "sha256": null,
+      "size_bytes": 128329
+    },
+    {
+      "hash_status": "future_retention_stream_not_read_by_stat_inventory",
+      "original_epoch7": [
+        2096,
+        552938,
+        33060,
+        1,
+        28097,
+        1790802661808882305,
+        1790802661808882305
+      ],
+      "original_uri": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-06/source/shared.source-plan.json",
+      "relative_path": "cpu-pair-06/source/shared.source-plan.json",
+      "sha256": null,
+      "size_bytes": 28097
+    }
+  ],
+  "retention_is_not_benchmark_or_source_authority": true,
+  "schema_version": 1,
+  "scope": "One later streaming ZIP of128 exact closed CPU producer/controller output files; exclude only the45,570,705B copied Docker engine input duplicate. Original URI/epoch7/fullSHA will be measured by the later bounded source FD transfer. No canonicalmodel/media/corpus copies, no output read or hash now.",
+  "source_base": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7",
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "status": "stat_only_prepared_unexecuted"
+}

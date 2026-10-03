@@ -1,0 +1,21 @@
+{
+  "after": {
+    "sha256": "504ceb16d7ab7cff66925251859ccb453bfb3b0190b12f6ad0eba64ed79a9acd",
+    "size_bytes": 16430
+  },
+  "before": {
+    "sha256": "27b8b1feaaaa51f2b01de423cfa4824d4f351613650f5b2fe137295610237c3f",
+    "size_bytes": 16082
+  },
+  "entire_original_prefix_first15_and_LF_contracts_unchanged": true,
+  "full_ci_or_benchmark_acceptance": false,
+  "only_production_path": ".gitattributes",
+  "original_failed_renewal_root_untouched": true,
+  "raw_payloads_unchanged": true,
+  "rules": [
+    "/artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/host-download-source-review.v1.json -text !eol",
+    "/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-preparation-v1/capture-literal-preparation.v1.json -text !eol"
+  ],
+  "schema_version": 1,
+  "status": "applied_exact_two_pending_controlled_transition_proof_and_peer"
+}

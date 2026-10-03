@@ -1,0 +1,56 @@
+{
+  "after": {
+    "epoch7": [
+      69,
+      55450570413844846,
+      33279,
+      1,
+      16575,
+      1790818743022602400,
+      1790818743022602400
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/.gitattributes",
+    "sha256": "f2a113e232566f8110dc5c282bbec1adf10499c2dc61d499e2bbf9a7fdb4b01e",
+    "size_bytes": 16575
+  },
+  "all_fds_released": true,
+  "before": {
+    "epoch7": [
+      69,
+      55450570413844846,
+      33279,
+      1,
+      16430,
+      1790816839767483200,
+      1790816839767483200
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/.gitattributes",
+    "sha256": "504ceb16d7ab7cff66925251859ccb453bfb3b0190b12f6ad0eba64ed79a9acd",
+    "size_bytes": 16430
+  },
+  "elapsed_s": 1.0521766659803689,
+  "git_mutation": false,
+  "no2693_attribute_membership": true,
+  "only_production_path": ".gitattributes",
+  "payloads_unchanged": true,
+  "proposal": {
+    "epoch7": [
+      69,
+      1407374885977928,
+      33279,
+      1,
+      107431,
+      1790818743007530400,
+      1790818743007530400
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/forensic-raw-stream-attributes-repair-v1/preedit-proposal-and-authorization.v1.json",
+    "sha256": "bf95bde7d42a69edda166d14a5a2554e23917d6c93e93d47ed8ae2346d77bfb1",
+    "size_bytes": 107431
+  },
+  "rule": "/artifacts/benchmark_recovery_20260930/**/*.raw -text !eol",
+  "schema_version": 1,
+  "source_146_fullbytes_epochs_unchanged": true,
+  "source_controller_180_metadata_unchanged": true,
+  "status": "applied_one_raw_family_pending_green_and_peer",
+  "whole16430_prefix_17_json_45_lf_preserved": true
+}

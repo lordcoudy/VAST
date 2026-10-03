@@ -21,7 +21,7 @@ int main() {
 
   auto emitter = vast::CheckpointRuntimeEmitter::from_environment();
   emitter.emit("run-1:3:0", 0, "dataset:3:sha:pts0", "source_read", "source", "shared", "source", {}, 1000);
-  emitter.emit_with_admission(
+  const std::uint64_t serialized_decode_timestamp_ms = emitter.emit_with_admission(
       "run-1:3:0",
       0,
       "dataset:3:sha:pts0",
@@ -33,6 +33,10 @@ int main() {
       999,
       "run-1:3:admission:1",
       "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef");
+  if (serialized_decode_timestamp_ms != 1000) {
+    std::cerr << "emitter did not return the causally serialized timestamp\n";
+    return 4;
+  }
   emitter.emit_branch_terminal_with_admission(
       "run-1:3:0",
       0,

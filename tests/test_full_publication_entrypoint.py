@@ -17,10 +17,15 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import full_publication_entrypoint as entrypoint_module  # noqa: E402
-from benchmark_contract import ContractError  # noqa: E402
-from benchmark_contract import FULL_RESOURCE_PUBLICATION_SCOPE  # noqa: E402
+from benchmark_contract import (  # noqa: E402
+    ContractError,
+    FULL_RESOURCE_PUBLICATION_SCOPE,
+    primary_architecture_pair_metadata,
+)
 from full_publication_entrypoint import (  # noqa: E402
-    _consume_cloud_links_from_environment,
+    FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION,
+    FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+    FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256,
     _default_command_runner,
     _validated_run_root,
     build_offline_publication_plan,
@@ -43,9 +48,12 @@ from full_publication_runner import (  # noqa: E402
 )
 from model_parity_grant import model_parity_grant_from_identity_artifacts  # noqa: E402
 from seafile_artifact_store import SeafileShareLinks  # noqa: E402
+from tests.test_publication_policy_contract import (  # noqa: E402
+    valid_capability_manifest,
+)
 
 
-MATRIX_SHA = "a" * 64
+MATRIX_SHA = FROZEN_FULL_PUBLICATION_MATRIX_SHA256
 RUN_SHA = "b" * 64
 
 
@@ -198,48 +206,38 @@ def arm_context(arm: dict[str, object] | None = None) -> ArmContext:
 
 
 def minimal_config(project_root: Path) -> dict[str, object]:
-    systems = {
-        name: {"container_image": f"example/{name}:frozen", "command": "unused"}
-        for name in ("deepstream", "savant", "openvino_gva", "gstreamer_custom")
-    }
-    scenario = {
-        "benchmark_status": "supported",
-        "workload": {
-            "streams": 6,
-            "object_density": {"min": 1, "max": 12},
-        },
-        "pipeline": ["decode", "record"],
-        "placement": {"stages": {"decode": "local", "record": "local"}},
-        "network": {},
-        "distributed": {"enabled": False},
-    }
-    return {
-        "benchmark": {
-            "dataset_manifest": "configs/datasets.yaml",
-            "scheduler_policies": [
-                "cpu_only",
-                "gpu_only",
-                "static_hybrid",
-                "heft",
-                "deadline_aware_heft",
-                "queue_aware_edf",
-                "adaptive_weights",
-            ],
-            "deadline_ms": [16.7, 33.3, 50, 100, 500],
-            "default_seed": 20260323,
-        },
-        "protocol": {"warmup_s": 30, "measurement_s": 180, "repeats": 10},
-        "hardware_target": {
-            "gpu_model": "NVIDIA GeForce RTX 3060",
-            "cpu_model": "Intel Core i7-14700K",
-            "ram_gb": 22,
-        },
-        "scenarios": {
-            "checkpoint_independent_processes_baseline": copy.deepcopy(scenario),
-            "checkpoint_video_dag_shared": copy.deepcopy(scenario),
-        },
-        "systems": systems,
-    }
+    del project_root
+    config = yaml.safe_load(
+        (ROOT / "configs" / "experiments.yaml").read_text(encoding="utf-8")
+    )
+    for name in ("deepstream", "savant", "openvino_gva", "gstreamer_custom"):
+        config["systems"][name]["container_image"] = f"example/{name}:frozen"
+        config["systems"][name]["command"] = "unused"
+    return config
+
+
+def primary_frozen_arm(
+    config: dict[str, object],
+    *,
+    repeat: int = 1,
+    scenario: str = "checkpoint_independent_processes_baseline",
+) -> dict[str, object]:
+    metadata = primary_architecture_pair_metadata(
+        config,
+        repeat=repeat,
+        scenario=scenario,
+    )
+    return frozen_arm(
+        arm_id=(
+            f"gstreamer_custom--h264--static_hybrid--d100--r{repeat:02d}"
+            f"--a{metadata['arm_position']}"
+        ),
+        arm_position=metadata["arm_position"],
+        scenario=scenario,
+        policy="static_hybrid",
+        repeat=repeat,
+        primary_architecture_pair=metadata,
+    )
 
 
 def resolved_dataset(project_root: Path, name: str, codec: str) -> dict[str, object]:
@@ -292,9 +290,9 @@ class RealArmRunnerTests(unittest.TestCase):
             calls.append(kwargs)
             execution = kwargs["execution_binding"]
             return {
-                "schema_version": 3,
+                "schema_version": 4,
                 "artifact_kind": (
-                    "vast_backend_publication_production_output_receipt_authority_v3"
+                    "vast_backend_publication_production_output_receipt_authority_v4"
                 ),
                 "status": "accepted_publishable_backend_output",
                 "execution_scope": "full_publication_measurement_v3",
@@ -358,9 +356,9 @@ class RealArmRunnerTests(unittest.TestCase):
     def test_production_v3_rejects_unaccepted_semantic_authority(self) -> None:
         def rejected_executor(**kwargs: object) -> dict[str, object]:
             return {
-                "schema_version": 3,
+                "schema_version": 4,
                 "artifact_kind": (
-                    "vast_backend_publication_production_output_receipt_authority_v3"
+                    "vast_backend_publication_production_output_receipt_authority_v4"
                 ),
                 "status": "accepted_publishable_backend_output",
                 "execution_scope": "full_publication_measurement_v3",
@@ -650,6 +648,12 @@ class RealArmRunnerTests(unittest.TestCase):
                     kwargs["arm_contract"]
                 )
             )
+            prepared_output = Path(kwargs["output_dir"])
+            prepared_output.mkdir(parents=True)
+            (
+                prepared_output
+                / entrypoint_module.backend_dispatch_v3.ARM_CONTRACT_FILENAME
+            ).write_bytes(payload)
             return {
                 "status": "prepared_production_arm_not_executed",
                 "sha256": hashlib.sha256(payload).hexdigest(),
@@ -720,6 +724,135 @@ class RealArmRunnerTests(unittest.TestCase):
             transaction["semantic_evidence_validator"],
             entrypoint_module.publication_arm_semantic_evidence_validator_v3,
         )
+        self.assertIsNone(transaction["expected_durable_parent_artifact_pin"])
+        parent_pin_store = transaction["durable_parent_artifact_pin_sink"]
+        self.assertIsInstance(
+            parent_pin_store,
+            entrypoint_module.ProductionParentArtifactPinStoreV1,
+        )
+        self.assertFalse(parent_pin_store.pin_root.is_relative_to(arm_root))
+
+    def test_production_v3_existing_plain_arm_resumes_without_prepare(self) -> None:
+        arm = frozen_arm()
+        context = arm_context(arm)
+        invocation = entrypoint_module.publication_launcher_invocation_v3_contract()
+        selected = {
+            "launcher": {
+                "path": "scripts/checkpoint_gstreamer_custom_publication_launcher_v3.py",
+                "size_bytes": 321,
+                "sha256": "6" * 64,
+            },
+            "launcher_invocation": invocation,
+            "cell_identity_sha256": "7" * 64,
+            "validation_record_sha256": "8" * 64,
+            "runtime_authority_sha256": "9" * 64,
+            "model_parity_acceptance_binding_sha256": "4" * 64,
+            "dataset_runtime_input_key": "gstreamer_custom_publication_runtime_v3",
+            "dataset_runtime_input": {
+                "evidence_mapping": {
+                    "checkpoint_publication_acceptance.json": (
+                        "checkpoint_publication_acceptance.json"
+                    ),
+                    "run_metadata.json": "run_metadata.json",
+                }
+            },
+            "launcher_evidence_files": [
+                "checkpoint_publication_acceptance.json",
+                "run_metadata.json",
+            ],
+        }
+        identity_sha = "a" * 64
+        execution_binding = {
+            "schema_version": 1,
+            "artifact_kind": "vast_full_publication_arm_execution_binding",
+            "run_identity_sha256": "9" * 64,
+            "sequence": 0,
+            "pair_id": context.pair_context.pair["pair_id"],
+            "attempt": 1,
+            "arm_id": arm["arm_id"],
+        }
+        runtime_binding = {
+            "schema_version": 3,
+            "artifact_kind": (
+                "vast_backend_publication_production_runtime_bind_mount_v3"
+            ),
+            "source_runtime_root": "/runtime",
+            "source_python_relative_path": "bin/python",
+            "source_python_size_bytes": 123,
+            "source_python_sha256": "a" * 64,
+            "project_runtime_mount": (
+                ".publication-runtime/full-publication-cp312-v1"
+            ),
+            "project_python_path": (
+                ".publication-runtime/full-publication-cp312-v1/bin/python"
+            ),
+            "source_runtime_mount_read_only": True,
+            "runtime_mount_read_only": True,
+            "binding_sha256": "b" * 64,
+        }
+        grants = {
+            "resource": {
+                "identity_artifact_binding_sha256": identity_sha,
+                "grant_sha256": "1" * 64,
+            },
+            "backend": {
+                "identity_artifact_binding_sha256": identity_sha,
+                "grant_sha256": "2" * 64,
+            },
+            "model": {
+                "identity_artifact_binding_sha256": identity_sha,
+                "grant_sha256": "3" * 64,
+                "parity_acceptance_binding_sha256": "4" * 64,
+            },
+        }
+        arm_root = self.root / "run" / "existing-production-arm"
+        arm_root.mkdir(parents=True)
+        run_calls: list[dict[str, object]] = []
+
+        with (
+            patch(
+                "full_publication_entrypoint._select_production_v3_authority",
+                return_value=selected,
+            ),
+            patch.object(
+                entrypoint_module.production_transaction_v3,
+                "prepare_backend_publication_production_transaction_v3",
+            ) as prepare,
+            patch.object(
+                entrypoint_module.production_transaction_v3,
+                "run_or_resume_backend_publication_production_transaction_v3",
+                side_effect=lambda **kwargs: (
+                    run_calls.append(kwargs) or {"sentinel": "resumed"}
+                ),
+            ),
+        ):
+            result = entrypoint_module._execute_production_v3_arm(
+                config=self.config,
+                project_root=self.root.resolve(),
+                arm_root=arm_root,
+                arm=arm,
+                scenario=self.config["scenarios"][arm["scenario"]],
+                dataset=self.datasets[arm["dataset"]],
+                execution_binding=execution_binding,
+                resource_capability_grant=grants["resource"],
+                backend_runtime_grant=grants["backend"],
+                model_parity_grant=grants["model"],
+                identity_artifacts={"binding_sha256": identity_sha},
+                production_runtime_bind_mount=runtime_binding,
+                semantic_evidence_validator=(
+                    entrypoint_module.publication_arm_semantic_evidence_validator_v3
+                ),
+                semantic_validator_identity_sha256="c" * 64,
+            )
+
+        self.assertEqual(result, {"sentinel": "resumed"})
+        prepare.assert_not_called()
+        self.assertEqual(len(run_calls), 1)
+        self.assertIsNone(run_calls[0]["expected_durable_parent_artifact_pin"])
+        self.assertIsInstance(
+            run_calls[0]["durable_parent_artifact_pin_sink"],
+            entrypoint_module.ProductionParentArtifactPinStoreV1,
+        )
 
     def test_exactly_maps_frozen_arm_to_run_one_in_local_heterogeneous_mode(self) -> None:
         calls: list[dict[str, object]] = []
@@ -787,6 +920,91 @@ class RealArmRunnerTests(unittest.TestCase):
         self.assertEqual(context.run_kind, "heterogeneous")
         self.assertEqual(context.deployment_mode, "heterogeneous")
         self.assertFalse(context.distributed_enabled)
+
+    def test_exact_primary_architecture_pair_metadata_is_validated_and_forwarded(
+        self,
+    ) -> None:
+        calls: list[dict[str, object]] = []
+
+        def fake_run_one(**kwargs: object) -> dict[str, object]:
+            calls.append(kwargs)
+            return {
+                "status": "completed",
+                "system": kwargs["system_key"],
+                "scenario": kwargs["scenario"]["name"],
+                "repeat": kwargs["repeat_index"],
+                "streams": kwargs["streams"],
+                "duration_s": kwargs["duration_s"],
+                "policy": kwargs["policy"],
+                "dataset": kwargs["directory_dataset_name"],
+                "seed": kwargs["base_seed"],
+                "deadline_ms": kwargs["deadline_ms"],
+                "distributed": False,
+                "deployment_mode": "heterogeneous",
+            }
+
+        runner = RealArmRunner(
+            config=self.config,
+            project_root=self.root,
+            dataset_manifest_path=self.root / "configs" / "datasets.yaml",
+            verified_datasets=self.datasets,
+            run_one_fn=fake_run_one,
+        )
+        arm = primary_frozen_arm(self.config, repeat=2, scenario="checkpoint_video_dag_shared")
+        result = runner(arm_context(arm), self.root / "run" / "primary-arm")
+
+        self.assertEqual(result, {"status": "completed", "arm_id": arm["arm_id"]})
+        self.assertEqual(
+            calls[0]["primary_architecture_pair"],
+            arm["primary_architecture_pair"],
+        )
+
+    def test_primary_architecture_pair_metadata_is_required_only_for_exact_cell(
+        self,
+    ) -> None:
+        runner = RealArmRunner(
+            config=self.config,
+            project_root=self.root,
+            dataset_manifest_path=self.root / "configs" / "datasets.yaml",
+            verified_datasets=self.datasets,
+            run_one_fn=lambda **_: {},
+        )
+        missing = primary_frozen_arm(self.config)
+        missing.pop("primary_architecture_pair")
+        with self.assertRaisesRegex(
+            ContractError,
+            "exact primary architecture arm requires pair metadata",
+        ):
+            runner(arm_context(missing), self.root / "run" / "missing-primary")
+
+        outside = frozen_arm(
+            primary_architecture_pair=primary_architecture_pair_metadata(
+                self.config,
+                repeat=1,
+                scenario="checkpoint_video_dag_shared",
+            )
+        )
+        with self.assertRaisesRegex(
+            ContractError,
+            "primary architecture pair metadata is forbidden outside",
+        ):
+            runner(arm_context(outside), self.root / "run" / "outside-primary")
+
+    def test_primary_architecture_pair_arm_position_is_crossbound(self) -> None:
+        runner = RealArmRunner(
+            config=self.config,
+            project_root=self.root,
+            dataset_manifest_path=self.root / "configs" / "datasets.yaml",
+            verified_datasets=self.datasets,
+            run_one_fn=lambda **_: {},
+        )
+        drifted = primary_frozen_arm(self.config)
+        drifted["arm_position"] = 2
+        with self.assertRaisesRegex(
+            ContractError,
+            "primary architecture arm_position drift",
+        ):
+            runner(arm_context(drifted), self.root / "run" / "position-drift")
 
     def test_rejects_parity_grant_that_does_not_match_immutable_identity(self) -> None:
         identity = model_parity_identity()
@@ -1253,13 +1471,42 @@ class IdentityMaterialTests(unittest.TestCase):
         self.assertEqual(before, after)
         self.assertNotEqual(after["destination_sha256"], other["destination_sha256"])
 
-    def test_cloud_capability_environment_is_consumed_before_local_probes(self) -> None:
+    def test_cloud_capability_environment_cannot_replace_canonical_link_file(self) -> None:
         values = {
             "VAST_SEAFILE_UPLOAD_LINK": "https://seafile.example/u/d/UploadSecretToken",
             "VAST_SEAFILE_READ_LINK": "https://seafile.example/d/ReadSecretToken",
         }
         with patch.dict("full_publication_entrypoint.os.environ", values, clear=False):
-            links = _consume_cloud_links_from_environment()
+            with self.assertRaisesRegex(ContractError, "seafile.txt"):
+                entrypoint_module._consume_cloud_links(
+                    project_root=self.root,
+                    links_file=None,
+                )
+            self.assertNotIn(
+                "VAST_SEAFILE_UPLOAD_LINK",
+                sys.modules["full_publication_entrypoint"].os.environ,
+            )
+            self.assertNotIn(
+                "VAST_SEAFILE_READ_LINK",
+                sys.modules["full_publication_entrypoint"].os.environ,
+            )
+    def test_cloud_capability_file_is_consumed_without_layout_assumptions(self) -> None:
+        path = self.root / "seafile.txt"
+        path.write_text(
+            "download link - https://seafile.example/d/ReadSecretToken\n"
+            "upload link - https://seafile.example/u/d/UploadSecretToken\n"
+            "capacity - 1000 GB\n",
+            encoding="utf-8",
+        )
+        values = {
+            "VAST_SEAFILE_UPLOAD_LINK": "poison",
+            "VAST_SEAFILE_READ_LINK": "poison",
+        }
+        with patch.dict("full_publication_entrypoint.os.environ", values, clear=False):
+            links = entrypoint_module._consume_cloud_links(
+                project_root=self.root,
+                links_file=Path("seafile.txt"),
+            )
             self.assertEqual(links.base_url, "https://seafile.example")
             self.assertNotIn(
                 "VAST_SEAFILE_UPLOAD_LINK",
@@ -1268,6 +1515,13 @@ class IdentityMaterialTests(unittest.TestCase):
             self.assertNotIn(
                 "VAST_SEAFILE_READ_LINK",
                 sys.modules["full_publication_entrypoint"].os.environ,
+            )
+        alternate = self.root / "links.txt"
+        alternate.write_bytes(path.read_bytes())
+        with self.assertRaisesRegex(ContractError, "project_root/seafile.txt"):
+            entrypoint_module._consume_cloud_links(
+                project_root=self.root,
+                links_file=alternate,
             )
 
     def test_model_hash_mismatch_is_permanent_contract_error(self) -> None:
@@ -1447,7 +1701,7 @@ class OfflinePublicationPlanTests(unittest.TestCase):
 
             with (
                 patch(
-                    "full_publication_entrypoint._consume_cloud_links_from_environment",
+                    "full_publication_entrypoint._consume_cloud_links",
                     side_effect=AssertionError("plan touched Seafile capabilities"),
                 ),
                 patch(
@@ -1475,8 +1729,30 @@ class OfflinePublicationPlanTests(unittest.TestCase):
             self.assertEqual(plan["expected_arms"], 5600)
             self.assertEqual(len(plan["pairs"]), 2800)
             self.assertEqual(
+                plan["frozen_publication_contract"],
+                {
+                    "matrix_schema_version": (
+                        FROZEN_FULL_PUBLICATION_MATRIX_SCHEMA_VERSION
+                    ),
+                    "matrix_sha256": FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+                    "policy_contract_sha256": (
+                        FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256
+                    ),
+                },
+            )
+            self.assertEqual(
+                plan["matrix_identity"]["sha256"],
+                FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+            )
+            self.assertEqual(
                 plan["policy_contract_identity"],
                 plan["matrix_contract"]["policy_contract_identity"],
+            )
+            self.assertEqual(
+                plan["matrix_contract"]["primary_architecture_pair_contract"][
+                    "pair_count"
+                ],
+                10,
             )
             self.assertEqual(len(plan["policies"]), 7)
             self.assertFalse((project_root / "runs").exists())
@@ -1490,6 +1766,79 @@ class OfflinePublicationPlanTests(unittest.TestCase):
             )
             with self.assertRaisesRegex(ContractError, "frozen policy contract"):
                 build_offline_publication_plan(config)
+
+    def test_valid_alternate_2800_pair_matrix_is_permanent_78(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            project_root = Path(tmp) / "repo"
+            config_path = project_root / "configs" / "experiments.yaml"
+            config_path.parent.mkdir(parents=True)
+            config = minimal_config(project_root)
+            config["benchmark"]["default_seed"] += 1
+            config["benchmark"]["primary_architecture_contrast"]["seed"] += 1
+            alternate = entrypoint_module.build_full_publication_matrix(config)
+            self.assertEqual(
+                (alternate["expected_pairs"], alternate["expected_arms"]),
+                (2800, 5600),
+            )
+            self.assertNotEqual(
+                entrypoint_module.publication_matrix_identity(alternate)["sha256"],
+                FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+            )
+            config_path.write_text(
+                yaml.safe_dump(config, sort_keys=False), encoding="utf-8"
+            )
+            output: list[str] = []
+            exit_code = main(
+                [
+                    "--project-root",
+                    str(project_root),
+                    "--config",
+                    str(config_path),
+                    "plan",
+                ],
+                output_fn=output.append,
+            )
+            self.assertEqual(exit_code, int(ExitCode.PERMANENT))
+            payload = json.loads(output[0])
+            self.assertEqual(payload["status"], "permanent_error")
+            self.assertIn("matrix SHA-256 mismatch", payload["message"])
+            self.assertFalse((project_root / "runs").exists())
+
+    def test_policy_contract_literal_pin_rejects_coordinated_dynamic_drift(self) -> None:
+        config = minimal_config(ROOT)
+        with patch(
+            "publication_matrix.policy_contract_identity",
+            return_value={"schema_version": 1, "sha256": "0" * 64},
+        ):
+            with self.assertRaisesRegex(
+                ContractError, "frozen publication policy contract SHA-256"
+            ):
+                build_offline_publication_plan(config)
+
+    def test_cli_expected_pin_cannot_authorize_an_alternate_matrix(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            project_root = Path(tmp) / "repo"
+            config_path = project_root / "configs" / "experiments.yaml"
+            config_path.parent.mkdir(parents=True)
+            config_path.write_text(
+                yaml.safe_dump(minimal_config(project_root), sort_keys=False),
+                encoding="utf-8",
+            )
+            output: list[str] = []
+            exit_code = main(
+                [
+                    "--project-root",
+                    str(project_root),
+                    "--config",
+                    str(config_path),
+                    "--expected-matrix-sha256",
+                    "0" * 64,
+                    "plan",
+                ],
+                output_fn=output.append,
+            )
+            self.assertEqual(exit_code, int(ExitCode.PERMANENT))
+            self.assertIn("must equal the frozen v4 pin", output[0])
 
     def test_nonplan_factory_still_requires_a_run_root(self) -> None:
         args = build_parser().parse_args(["preflight"])
@@ -1524,7 +1873,7 @@ class OfflinePublicationPlanTests(unittest.TestCase):
                     return_value=run_root,
                 ),
                 patch(
-                    "full_publication_entrypoint._consume_cloud_links_from_environment",
+                    "full_publication_entrypoint._consume_cloud_links",
                     side_effect=AssertionError(
                         "blocked identity consumed cloud capabilities"
                     ),
@@ -1557,6 +1906,23 @@ class OfflinePublicationPlanTests(unittest.TestCase):
 
 
 class ProductionEntrypointTests(unittest.TestCase):
+    def test_plan_preflight_and_run_reject_matrix_identity_drift_before_execution(
+        self,
+    ) -> None:
+        for command in ("plan", "preflight", "run"):
+            with self.subTest(command=command), tempfile.TemporaryDirectory() as tmp:
+                runner = FakeRunner(Path(tmp) / "run")
+                runner.plan_value["matrix_identity"]["sha256"] = "0" * 64
+                runtime = FakeRuntime(CallbackDecision.passed({"ready": True}))
+                app = ProductionEntrypoint(runner=runner, runtime=runtime)
+                with self.assertRaisesRegex(
+                    ContractError, "frozen full publication matrix SHA-256 mismatch"
+                ):
+                    app.dispatch(command)
+                self.assertEqual(runner.run_calls, 0)
+                self.assertEqual(runtime.contexts, [])
+                self.assertFalse(runner.run_root.exists())
+
     def test_blocked_run_does_not_initialize_run_root(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             run_root = Path(tmp) / "must-not-exist"
@@ -1708,11 +2074,92 @@ class ProductionEntrypointTests(unittest.TestCase):
         self.assertNotIn("read-link", help_text)
         args = parser.parse_args(["--run-root", "run", "plan"])
         self.assertEqual(args.command, "plan")
+        self.assertEqual(
+            args.expected_matrix_sha256,
+            FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+        )
+        self.assertEqual(
+            args.expected_policy_contract_sha256,
+            FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256,
+        )
         export_args = parser.parse_args(["--run-root", "run", "export"])
         self.assertEqual(export_args.command, "export")
 
 
 class ProductionReadinessTests(unittest.TestCase):
+    def test_accepted_policy_manifest_is_injected_only_into_readiness_copy(self) -> None:
+        manifest = valid_capability_manifest()
+        config: dict[str, object] = {
+            "benchmark": {},
+            "hardware_target": {
+                "gpu_model": "NVIDIA GeForce RTX 3060",
+                "cpu_model": "Intel Core i7-14700K",
+                "ram_gb": 22,
+            },
+        }
+        received: list[dict[str, object]] = []
+
+        def scientific(
+            candidate: dict[str, object], **_grants: object
+        ) -> dict[str, object]:
+            received.append(candidate)
+            candidate["benchmark"]["publication_policy_capability_manifest"][
+                "policy_scope"
+            ] = "mutated-by-validator"
+            return {"passed": True, "blockers": []}
+
+        result = production_readiness_validator(
+            config,
+            detected_hardware={
+                "gpu_model": "NVIDIA GeForce RTX 3060",
+                "cpu_model": "Intel Core i7-14700K",
+                "ram_gb": 22.0,
+            },
+            accepted_policy_capability_manifest=manifest,
+            scientific_validator=scientific,
+        )
+
+        self.assertTrue(result["passed"])
+        self.assertNotIn(
+            "publication_policy_capability_manifest", config["benchmark"]
+        )
+        self.assertEqual(manifest, valid_capability_manifest())
+        self.assertEqual(
+            received[0]["benchmark"]["publication_policy_capability_manifest"][
+                "policy_scope"
+            ],
+            "mutated-by-validator",
+        )
+
+    def test_conflicting_config_policy_manifest_is_rejected(self) -> None:
+        manifest = valid_capability_manifest()
+        conflicting = copy.deepcopy(manifest)
+        conflicting["policy_scope"] = "conflicting"
+        called = False
+
+        def scientific(
+            _config: dict[str, object], **_grants: object
+        ) -> dict[str, object]:
+            nonlocal called
+            called = True
+            return {"passed": True, "blockers": []}
+
+        with self.assertRaisesRegex(
+            ContractError, "conflicting policy capability manifest"
+        ):
+            production_readiness_validator(
+                {
+                    "benchmark": {
+                        "publication_policy_capability_manifest": conflicting
+                    },
+                    "hardware_target": {},
+                },
+                detected_hardware={},
+                accepted_policy_capability_manifest=manifest,
+                scientific_validator=scientific,
+            )
+        self.assertFalse(called)
+
     def test_hardware_mismatch_blocks_otherwise_ready_assessment(self) -> None:
         config = {
             "hardware_target": {
@@ -1842,6 +2289,150 @@ class ProductionReadinessTests(unittest.TestCase):
                     "blockers": [],
                 },
             )
+
+
+class AcceptedPolicyCapabilityManifestTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name) / "repo"
+        self.root.mkdir()
+        self.path = self.root / "accepted" / "checkpoint_policy_capability_manifest.json"
+        self.path.parent.mkdir()
+        self.manifest = valid_capability_manifest()
+        self.identity = self._write_manifest(self.manifest)
+
+    def tearDown(self) -> None:
+        self.temp.cleanup()
+
+    def _write_manifest(self, manifest: dict[str, object]) -> dict[str, object]:
+        payload = entrypoint_module._canonical_json(manifest) + b"\n"
+        self.path.write_bytes(payload)
+        descriptor: dict[str, object] = {
+            "path": self.path.relative_to(self.root).as_posix(),
+            "size_bytes": len(payload),
+            "sha256": hashlib.sha256(payload).hexdigest(),
+        }
+        return {
+            "bindings": {
+                "policy_qualification": {
+                    "outputs": {
+                        "capability_manifest": copy.deepcopy(descriptor),
+                    }
+                }
+            },
+            "files": [copy.deepcopy(descriptor)],
+        }
+
+    def _load(self, identity: dict[str, object] | None = None) -> dict[str, object]:
+        return entrypoint_module._load_accepted_policy_capability_manifest(
+            project_root=self.root,
+            identity_artifacts=self.identity if identity is None else identity,
+        )
+
+    def test_happy_path_returns_detached_accepted_manifest(self) -> None:
+        loaded = self._load()
+        self.assertEqual(loaded, self.manifest)
+        self.assertIsNot(loaded, self.manifest)
+
+    def test_missing_descriptor_is_rejected(self) -> None:
+        identity = copy.deepcopy(self.identity)
+        identity["bindings"]["policy_qualification"]["outputs"].pop(
+            "capability_manifest"
+        )
+        with self.assertRaisesRegex(ContractError, "descriptor"):
+            self._load(identity)
+
+    def test_descriptor_must_exactly_match_identity_file_set(self) -> None:
+        identity = copy.deepcopy(self.identity)
+        identity["files"][0]["sha256"] = "0" * 64
+        with self.assertRaisesRegex(ContractError, "identity_artifacts.files"):
+            self._load(identity)
+
+    def test_missing_physical_file_is_rejected(self) -> None:
+        self.path.unlink()
+        with self.assertRaisesRegex(ContractError, "missing"):
+            self._load()
+
+    def test_size_mismatch_is_rejected(self) -> None:
+        identity = copy.deepcopy(self.identity)
+        descriptor = identity["bindings"]["policy_qualification"]["outputs"][
+            "capability_manifest"
+        ]
+        descriptor["size_bytes"] += 1
+        identity["files"][0] = copy.deepcopy(descriptor)
+        with self.assertRaisesRegex(ContractError, "size"):
+            self._load(identity)
+
+    def test_hash_mismatch_is_rejected(self) -> None:
+        identity = copy.deepcopy(self.identity)
+        descriptor = identity["bindings"]["policy_qualification"]["outputs"][
+            "capability_manifest"
+        ]
+        descriptor["sha256"] = "0" * 64
+        identity["files"][0] = copy.deepcopy(descriptor)
+        with self.assertRaisesRegex(ContractError, "SHA-256"):
+            self._load(identity)
+
+    def test_symbolic_link_is_rejected(self) -> None:
+        source = self.root / "accepted" / "physical.json"
+        source.write_bytes(self.path.read_bytes())
+        self.path.unlink()
+        try:
+            self.path.symlink_to(source)
+        except OSError as error:
+            self.skipTest(f"symbolic links unavailable: {error}")
+        with self.assertRaisesRegex(ContractError, "non-link"):
+            self._load()
+
+    def test_noncanonical_json_is_rejected(self) -> None:
+        payload = json.dumps(self.manifest, indent=2, sort_keys=True).encode("utf-8")
+        self.path.write_bytes(payload)
+        descriptor = {
+            "path": self.path.relative_to(self.root).as_posix(),
+            "size_bytes": len(payload),
+            "sha256": hashlib.sha256(payload).hexdigest(),
+        }
+        identity = copy.deepcopy(self.identity)
+        identity["bindings"]["policy_qualification"]["outputs"][
+            "capability_manifest"
+        ] = copy.deepcopy(descriptor)
+        identity["files"] = [copy.deepcopy(descriptor)]
+        with self.assertRaisesRegex(ContractError, "canonical JSON"):
+            self._load(identity)
+
+    def test_path_escape_is_rejected(self) -> None:
+        outside = self.root.parent / "outside.json"
+        outside.write_bytes(self.path.read_bytes())
+        descriptor = {
+            "path": "../outside.json",
+            "size_bytes": outside.stat().st_size,
+            "sha256": hashlib.sha256(outside.read_bytes()).hexdigest(),
+        }
+        identity = copy.deepcopy(self.identity)
+        identity["bindings"]["policy_qualification"]["outputs"][
+            "capability_manifest"
+        ] = copy.deepcopy(descriptor)
+        identity["files"] = [copy.deepcopy(descriptor)]
+        with self.assertRaisesRegex(ContractError, "inside project_root"):
+            self._load(identity)
+
+    def test_failed_capability_assessment_is_rejected(self) -> None:
+        rejected = copy.deepcopy(self.manifest)
+        rejected["artifact_kind"] = "not-accepted"
+        identity = self._write_manifest(rejected)
+        with self.assertRaisesRegex(ContractError, "not accepted"):
+            self._load(identity)
+
+    def test_coordinated_policy_manifest_sha_drift_is_rejected_by_literal_pin(
+        self,
+    ) -> None:
+        drifted = copy.deepcopy(self.manifest)
+        drifted["policy_contract_sha256"] = "0" * 64
+        identity = self._write_manifest(drifted)
+        with self.assertRaisesRegex(
+            ContractError, "frozen publication policy contract SHA-256"
+        ):
+            self._load(identity)
 
 
 if __name__ == "__main__":

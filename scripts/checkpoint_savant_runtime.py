@@ -59,7 +59,7 @@ DATASET_BY_CODEC = {
 PARSER_BY_CODEC = {"h264": "h264parse", "h265": "h265parse"}
 FROZEN_DEADLINES_MS = (16.7, 33.3, 50.0, 100.0, 500.0)
 FROZEN_CPU_MANIFEST_SHA256 = (
-    "db011831a08136683985ef529b28c11e2e4aa91b73a036945ffc31e768d2eb8b"
+    "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca"
 )
 REQUIRED_ELEMENTS = (
     "appsrc", "h264parse", "h265parse", "nvv4l2decoder", "nvstreammux",

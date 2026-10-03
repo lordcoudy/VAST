@@ -2,6 +2,9 @@
 
 #include "checkpoint_native_policy_client.hpp"
 
+#include <glib.h>
+
+#include <algorithm>
 #include <array>
 #include <cerrno>
 #include <cstdint>
@@ -23,6 +26,21 @@
 #include <unistd.h>
 
 namespace vast {
+
+// The response backend embeds the worker device ID. CPU processor models may
+// contain spaces, while control characters and edge whitespace remain invalid.
+inline bool checkpoint_analytics_printable_response_text(
+    const std::string& value, std::size_t maximum) {
+  return !value.empty() && value.size() <= maximum &&
+         value.front() != ' ' && value.back() != ' ' &&
+         std::all_of(value.begin(), value.end(), [](unsigned char character) {
+           return character >= 0x20 && character < 0x7f;
+         });
+}
+
+inline bool checkpoint_analytics_stable_device_id(const std::string& value) {
+  return checkpoint_analytics_printable_response_text(value, 256);
+}
 
 struct CheckpointAnalyticsExecutionRequest {
   std::string request_id;
@@ -104,6 +122,7 @@ class CheckpointAnalyticsExecutionClient {
   static constexpr const char* kSocketEnvironment = "VAST_CHECKPOINT_ANALYTICS_EXECUTION_SOCKET";
   static constexpr std::uint64_t kSchemaVersion = 1;
   static constexpr std::size_t kMaximumMessageBytes = 64U * 1024U;
+  static constexpr std::size_t kMaximumPayloadBytes = 67'108'864U;
   static constexpr const char* kProtocolIdentitySha256 =
       "3bed4ad0e5cd46b01649b054fa520c0f728a1ceeb14502fb9fe1f0f8f5941eff";
 
@@ -194,32 +213,39 @@ class CheckpointAnalyticsExecutionClient {
       const std::uint8_t* payload,
       std::size_t payload_size) {
     validate_request(request, payload, payload_size);
+    const std::vector<std::uint8_t> snapshot(payload, payload + payload_size);
+    const std::string snapshot_sha256 = sha256(snapshot);
+    require(
+        snapshot_sha256 == request.raw_input_sha256,
+        "analytics execution payload SHA-256 differs from raw_input_sha256");
     std::ostringstream json;
+    // Keys must stay in canonical (sorted) order: the guardian re-serializes
+    // with sort_keys and rejects any other byte sequence.
     json << "{\"arm_id\":\"" << escape(request.arm_id)
-         << "\",\"decision\":{\"decision_id\":\"" << escape(request.decision.decision_id)
+         << "\",\"deadline_monotonic_ns\":" << request.deadline_monotonic_ns
+         << ",\"decision\":{\"decision_id\":\"" << escape(request.decision.decision_id)
          << "\",\"decision_seq\":" << request.decision.decision_seq
          << ",\"emitter_id\":\"" << escape(request.decision.emitter_id)
          << "\",\"emitter_sha256\":\"" << request.decision.emitter_sha256
          << "\",\"selected_implementation_id\":\""
          << escape(request.decision.selected_implementation_id)
          << "\",\"selected_resource\":\"" << request.decision.selected_resource
-         << "\"},\"deadline_monotonic_ns\":" << request.deadline_monotonic_ns
-         << ",\"frame\":{\"branch\":\"" << escape(request.branch)
+         << "\"},\"frame\":{\"branch\":\"" << escape(request.branch)
          << "\",\"frame_id\":" << request.frame_id
          << ",\"input_frame_key\":\"" << escape(request.input_frame_key)
          << "\",\"stream_id\":" << request.stream_id
          << ",\"transport_pts_ns\":" << request.transport_pts_ns
          << "},\"gstreamer_worker_id\":\"" << escape(request.worker_id)
          << "\",\"message_type\":\"analytics_execute\",\"payload\":{\"byte_length\":"
-         << payload_size << ",\"format\":\"" << request.format
+         << snapshot.size() << ",\"format\":\"" << request.format
          << "\",\"height\":" << request.height
          << ",\"kind\":\"raw_gstreamer_frame\",\"preprocessing_contract_sha256\":\""
          << request.preprocessing_contract_sha256 << "\",\"sha256\":\""
-         << request.raw_input_sha256 << "\",\"stride\":" << request.stride
+         << snapshot_sha256 << "\",\"stride\":" << request.stride
          << ",\"width\":" << request.width << "},\"request_id\":\""
          << escape(request.request_id) << "\",\"run_id\":\"" << escape(request.run_id)
          << "\",\"schema_version\":1}";
-    const int payload_fd = create_sealed_memfd(payload, payload_size);
+    const int payload_fd = create_sealed_memfd(snapshot.data(), snapshot.size());
     FlatObject response;
     try {
       response = exchange(json.str(), payload_fd);
@@ -278,11 +304,27 @@ class CheckpointAnalyticsExecutionClient {
     }
   }
 
+  static std::string sha256(const std::vector<std::uint8_t>& value) {
+    gchar* digest = g_compute_checksum_for_data(
+        G_CHECKSUM_SHA256,
+        reinterpret_cast<const guchar*>(value.data()),
+        static_cast<gsize>(value.size()));
+    if (digest == nullptr) {
+      throw std::runtime_error("failed to compute analytics execution payload SHA-256");
+    }
+    std::string result(digest);
+    g_free(digest);
+    return result;
+  }
+
   static void validate_request(
       const CheckpointAnalyticsExecutionRequest& request,
       const std::uint8_t* payload,
       std::size_t payload_size) {
     require(payload != nullptr && payload_size > 0, "analytics execution payload is empty");
+    require(
+        payload_size <= kMaximumPayloadBytes,
+        "analytics execution payload exceeds bounded maximum");
     for (const auto& field : {
              std::make_pair(&request.request_id, "request_id"),
              std::make_pair(&request.run_id, "run_id"),
@@ -631,7 +673,9 @@ class CheckpointAnalyticsExecutionClient {
          result.engine == "openvino_cpu" &&
          result.runtime_name == "OpenVINO" &&
          result.device_api == "CPU" &&
-         result.device_id == "CPU" &&
+         // The worker reports the processor model; the exact device is bound
+         // through the terminal backend the policy coordinator verifies.
+         checkpoint_analytics_stable_device_id(result.device_id) &&
          result.native_inference_api == "openvino.CompiledModel.__call__" &&
          result.execution_path == "openvino_cpu_native") ||
             (!cpu &&
@@ -725,7 +769,16 @@ class CheckpointAnalyticsExecutionClient {
              std::make_pair(&result.execution_path, "execution_path"),
              std::make_pair(&result.model_id, "model_id"),
          }) {
-      require_text(*field.first, field.second);
+      if (std::strcmp(field.second, "backend") == 0 ||
+          std::strcmp(field.second, "device_id") == 0) {
+        require(checkpoint_analytics_printable_response_text(
+                    *field.first, std::strcmp(field.second, "device_id") == 0
+                                      ? 256 : 4096),
+                std::string("analytics execution ") + field.second +
+                    " contains controls or has invalid length");
+      } else {
+        require_text(*field.first, field.second);
+      }
     }
     require(result.detector != "identity" && result.backend != "identity",
             "analytics execution terminal cannot be identity-only");

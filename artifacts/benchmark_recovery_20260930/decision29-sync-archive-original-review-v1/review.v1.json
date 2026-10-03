@@ -1,0 +1,270 @@
+{
+  "Purpose_Scope_and_all20_complete_requirement_bodies118_scenarios_exact": true,
+  "accepted_112_prior_clauses_and_72_82_register_preserved_by_same_normative_and_conformance_refs": true,
+  "accepted_conformance_ref": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current-conformance-independent-review-v1/review.v1.json",
+    "sha256": "af861006d56d00e466648cf2479f1536925f7b33f5a246916e924c067abec202",
+    "size_bytes": 434057
+  },
+  "actual_inline_sync_ref": {
+    "Purpose_and_Scope_verbatim": true,
+    "all20_requirements118_scenarios_exact": true,
+    "archive_performed": false,
+    "capability": "benchmark-launch-preparation",
+    "delta": {
+      "path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "383e90694a5f4a2ed81ff8d53fc7ee4a35dc67767f17b35fd8e5bffde4751ed9",
+      "size_bytes": 75100
+    },
+    "kind": "actual_inline_main_spec_sync_v1",
+    "main": {
+      "path": "openspec/specs/benchmark-launch-preparation/spec.md",
+      "sha256": "d777fca9299def232e13c75e484c0863a639d4acdfdf5445e38e8a925873d36b",
+      "size_bytes": 75126
+    },
+    "no_additive_rules_returned": true,
+    "only_title_and_delta_section_header_changed": true,
+    "reviewable": false,
+    "schema_version": 1,
+    "source_specs_instruction_original_tool": "2075d6"
+  },
+  "actual_move_count": 18,
+  "actual_supported_archive": {
+    "chunk_id": "feeec7",
+    "exit_code": 0,
+    "original_token_count": 112,
+    "output": "{\n  \"archive\": {\n    \"change\": \"fix-benchmark-preparations-spec\",\n    \"archivedAs\": \"2026-10-03-fix-benchmark-preparations-spec\",\n    \"path\": \"E:\\\\STUDY\\\\VAST\\\\tmp\\\\openspec-review\\\\fix-benchmark-preparations-spec\\\\openspec\\\\changes\\\\archive\\\\2026-10-03-fix-benchmark-preparations-spec\",\n    \"specsUpdated\": false\n  },\n  \"root\": {\n    \"path\": \"E:\\\\STUDY\\\\VAST\\\\tmp\\\\openspec-review\\\\fix-benchmark-preparations-spec\",\n    \"source\": \"nearest\"\n  }\n}\n",
+    "wall_time_seconds": 1.7137699
+  },
+  "actual_task_snapshot": {
+    "checked": 69,
+    "four_new_checked": [
+      "18.12",
+      "19.5",
+      "20.7",
+      "21.5"
+    ],
+    "pending_process_ids": [
+      "18.13",
+      "18.14",
+      "22.3",
+      "23.5",
+      "24.4"
+    ],
+    "total": 74
+  },
+  "all_consumer_direct_negative_gap_preserved": "R13/S6",
+  "all_old_leaves_and_active_root_absent": true,
+  "archive_location": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec",
+  "blocking_findings": [],
+  "both_accepted_CI_controls_unchanged": true,
+  "change_name": "fix-benchmark-preparations-spec",
+  "close_errors": [],
+  "dated_implementation_closure_preserved": true,
+  "elapsed_s": 0.257164407,
+  "exact_archive_namespace": true,
+  "fd_after": 6,
+  "fd_before": 6,
+  "finite_input_count": 157,
+  "finite_input_witness_aggregate_sha256": "4ba109f322fac068fc621168085b732e4da8e40ef54edb41916f96877d451c37",
+  "first_failure": null,
+  "full_before_after_SHA_name_seven_epochs_verified": true,
+  "latest_archived_commit_CI_accepted": false,
+  "limits": [
+    "Only the actual local inline sync/archive stage is approved; commit/push, latest archived-commit CI, exact final review and merge remain future gates.",
+    "Sealed manifest records Git100644 class, not original per-file Linux physical mode/epoch; current regular leaf modes are observed separately. Staged/committed raw modes are a later root gate.",
+    "18 archive leaves include17 originally tracked leaves and a new dated closure snapshot; no missing original is synthesized.",
+    "All legacy campaign/integration/research obligations and scientific negative/manual limits remain; no full eligibility or execution grant.",
+    "No OpenSpec/Git/source/test/CI/engine/model operation is executed by this reviewer."
+  ],
+  "manual_limits_preserved": [
+    "R5/S5",
+    "R12/S1",
+    "R14/S2",
+    "R20/S1"
+  ],
+  "merge_performed": false,
+  "only_main_title_and_delta_header_changed": true,
+  "preserved_moves": [
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/.openspec.yaml",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/.openspec.yaml",
+      "sealed_git_mode": "100644",
+      "sha256": "af129b9ee15d74d62153581b8fddf3076a708f08915261aabfb9e78ea334de0f",
+      "size_bytes": 40
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/conformance-progress.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/conformance-progress.md",
+      "sealed_git_mode": "100644",
+      "sha256": "449563678e1c6392e1955246ff67fc8003a34bcead58c9bd47d45d61cd9aaf2f",
+      "size_bytes": 77152
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/design.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/design.md",
+      "sealed_git_mode": "100644",
+      "sha256": "112ec56dca4445e3e753899ff116203604094b37ffafcac4f7e8d28ea350afce",
+      "size_bytes": 44659
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/image-invalidation.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/image-invalidation.md",
+      "sealed_git_mode": "100644",
+      "sha256": "b75d31a3c24ed0d2b50f2272ea26d62c466bb65df700446832648248e074888d",
+      "size_bytes": 66507
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-approval.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/implementation-approval.md",
+      "sealed_git_mode": "100644",
+      "sha256": "9d4db75c7dbe4b2b9d37a61223c4a108117040b4757c128c45680c69c7ad1d32",
+      "size_bytes": 2887
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-baseline.json",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/implementation-baseline.json",
+      "sealed_git_mode": "100644",
+      "sha256": "845b6722746da92d83d16bf2b11c926250f6bad3d1fe01994e64f849bc6a6ace",
+      "size_bytes": 119189
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-closure.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/implementation-closure.md",
+      "sealed_git_mode": "100644",
+      "sha256": "c4d5f2f5b50707ba0062e43440bfb4e894df2962c030036e4eb81b6f609c2735",
+      "size_bytes": 9219
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-evidence.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/implementation-evidence.md",
+      "sealed_git_mode": "100644",
+      "sha256": "8d01a13734499e51e2e35cb5cff8f8a90798e5550bc1f1c7f680629e6f4dd970",
+      "size_bytes": 17896
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-validation.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/implementation-validation.md",
+      "sealed_git_mode": "100644",
+      "sha256": "77cd4b0e8f2e6d23c08818a3cd46941e294da4a261bf1280b66ae55c815a8935",
+      "size_bytes": 161617
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/preparation-plan.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/preparation-plan.md",
+      "sealed_git_mode": "100644",
+      "sha256": "9d14c3524cccbd6fed0f08146d4874209ba6fdf97c464c1ac62422316ffa8f8c",
+      "size_bytes": 25014
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/proposal-validation.json",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/proposal-validation.json",
+      "sealed_git_mode": "100644",
+      "sha256": "0bdf3ec4cf8724731aceef4d3b3babd604864aa3b85c232071f8b5dd6b3582c3",
+      "size_bytes": 1382
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/proposal.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md",
+      "sealed_git_mode": "100644",
+      "sha256": "969aa4ac3bae9b742b268333070b1266c22abc5c7bce9b204a63b6f750c0f6d6",
+      "size_bytes": 17599
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/review-context.json",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/review-context.json",
+      "sealed_git_mode": "100644",
+      "sha256": "bb4a5818a15ee1f32b29087f4b52fe5a1f4207c117b73a094250d7bd7f57a3f0",
+      "size_bytes": 10129
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.json",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.json",
+      "sealed_git_mode": "100644",
+      "sha256": "4602f4cf68024b16a54455a36111252498369ca65c8310fe6ee1ea133f5953e4",
+      "size_bytes": 54707
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.lf-check.json",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.lf-check.json",
+      "sealed_git_mode": "100644",
+      "sha256": "c3be1addf1ca2845d8de683943edd411f9a324438c2092355675825da5cc9a5a",
+      "size_bytes": 14971
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+      "sealed_git_mode": "100644",
+      "sha256": "383e90694a5f4a2ed81ff8d53fc7ee4a35dc67767f17b35fd8e5bffde4751ed9",
+      "size_bytes": 75100
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/tasks.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md",
+      "sealed_git_mode": "100644",
+      "sha256": "4dadfcb3e06881211cc188f2f017cf1bb490421c1dd81107cc7fbe41432d4bf8",
+      "size_bytes": 36740
+    },
+    {
+      "actual_regular_file_mode": 33279,
+      "new_path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/verification-plan.md",
+      "old_path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md",
+      "sealed_git_mode": "100644",
+      "sha256": "b3db56c13e3a5c7157820f4e60f459455c5a83706b207c308f7af09716c8f73d",
+      "size_bytes": 48891
+    }
+  ],
+  "reader_original": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "observed_parent": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 11346,
+      "pid": 11346,
+      "ppid": 11343,
+      "session": 11346,
+      "startticks": 51917338,
+      "uid": 1000
+    },
+    "pgid": 11346,
+    "pid": 11347,
+    "ppid": 11346,
+    "session": 11346,
+    "startticks": 51917341,
+    "uid": 1000
+  },
+  "reviewable": true,
+  "reviewer_handles_released": true,
+  "schema_sidecar_preserved": true,
+  "schema_version": 1,
+  "source_D_raw_SHA_seven_epochs_unchanged": true,
+  "source_D_witnesses_rechecked": 122,
+  "validation": {
+    "limit": "Original validation raw bytes were not retained; this is explicitly root-observed, not an invented physical descriptor. Latest archived-commit CI must validate again.",
+    "root_observed_originals": [
+      "93e855",
+      "22e9ca0"
+    ],
+    "root_reported_INFO_long_requirement_messages": 18,
+    "root_reported_errors": 0,
+    "root_reported_valid_items": 2
+  }
+}

@@ -1,0 +1,34 @@
+--- accepted-D/capture_original_full_ci_v1.py
++++ prerequisite-prepared/capture_original_full_ci_v1.py
+@@ -11,9 +11,9 @@
+ import time
+ 
+ HERE = Path(__file__).parent
+-OUT = HERE / 'original-full-ci-attempt01'
++OUT = HERE / 'original-full-ci-prerequisite-attempt01'
+ ROOT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D')
+-RESULT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output')
++RESULT = Path('/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-prerequisite-original-output')
+ assert len(sys.argv) == 4, 'usage: capture ACTUAL_COMMIT ACTUAL_RECIPE_SIZE ACTUAL_RECIPE_SHA256'
+ COMMIT = sys.argv[1]
+ assert len(COMMIT) == 40 and all(c in '0123456789abcdef' for c in COMMIT)
+--- accepted-D/recipe.bound.v1.json
++++ prerequisite-prepared/recipe.bound.v1.json
+@@ -34,7 +34,7 @@
+   "limitations": "Source-only actual-D bound preparation. Benchmark B and genuine closed B95/host/source-impact descriptors remain actual retained inputs. D3c025b29 is the actual committed/pushed successor supplied by ROOT; new clone/setup/full-CI owners, clocks and outcomes remain null. Preserve every historical checkout/output; no force/reset/clean/prune/resume/retry. ROOT must independently review these sources and the exact bound recipe before one new setup and one stock full-CI grant. A separately reviewed offline exact8 donor-copy setup action is outside these helpers; the unchanged stock strict_existing verifier remains mandatory.",
+   "outer_cleanup_s": 10,
+   "outer_containment": "/usr/bin/timeout --signal=TERM --kill-after=10s 5400s ORIGINAL_STOCK_CLI_ARGV; actual job clock supplied once at original dispatch. Do not reset the clock or increase original90-minute acceptance. Capture original stdout/stderr with exclusive noclobber names and actual PID/startticks/UID/GID/process group; on failure retain source/outcome/terminal and quiescence, no rerun.",
+-  "output": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output",
++  "output": "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-prerequisite-original-output",
+   "preconditions": [
+     "Actual CPU08/GPU02 at benchmark B are closed and independently audited. Genuine Decision28 B95 manifest/stock87 closure remain physically unchanged; the exact closed CI source-impact review joins95/73/native3/worker2 preservation and excludes the four reviewed CI paths. Distinct actual CI checkpoint D is committed/pushed and must be exactly bound before dispatch. The narrowly corrected existing selected-image static test is independently reviewed with all95/73 unchanged; it grants no runtime/image/native/worker/source95 renewal.",
+     "Exclusive absent checkout/output/capture namespaces; canonical real parent directories, UID/GID1000, ext4 and available space at least20GiB before clone. Refuse aliases/symlinks or occupied destinations; no cleanup/resume/automatic retry.",
+@@ -180,7 +180,7 @@
+     "--expected-commit",
+     "3c025b29b3c1d5275c2ec693410e4b83700583de",
+     "--output-dir",
+-    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-original-output",
++    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D-prerequisite-original-output",
+     "--job-started-monotonic-ns",
+     "ACTUAL_ORIGINAL_DISPATCH_MONOTONIC_NS"
+   ],

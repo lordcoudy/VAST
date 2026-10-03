@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-c",
+    "import runpy,sys;sys.path.insert(0,'/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts');runpy.run_path('/home/s-a-balashov/work/vast-component-release-20260930-d27/scripts/publication_policy_qualification_execution_code_closure_v1.py',run_name=\"__main__\")",
+    "--project-root",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "--receipt",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4.v1.json"
+  ],
+  "capture_exceeded": false,
+  "errors": [],
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 41795,
+    "pid": 41795,
+    "ppid": 41793,
+    "startticks": 28387585,
+    "uid": 1000
+  },
+  "timed_out": false
+}

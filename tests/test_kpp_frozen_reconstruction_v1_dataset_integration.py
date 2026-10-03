@@ -10,6 +10,8 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
+# Declared metadata only; the full-corpus method still reads actual ROOT.
+CORPUS_METADATA_FIXTURES = ROOT / ".ci/fixtures/corpus_metadata_v1"
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import kpp_frozen_reconstruction_v1_dataset as gate  # noqa: E402
@@ -22,7 +24,7 @@ class KppFrozenReconstructionV1DatasetIntegrationTests(unittest.TestCase):
         cls.catalog = yaml.safe_load(
             (ROOT / "configs" / "datasets.yaml").read_text(encoding="utf-8")
         )["datasets"]
-        corpus = ROOT / gate.TARGET_ROOT
+        corpus = CORPUS_METADATA_FIXTURES / gate.TARGET_ROOT
         cls.manifest = json.loads(
             (corpus / gate.MANIFEST_NAME).read_text(encoding="ascii")
         )

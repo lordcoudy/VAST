@@ -1,0 +1,146 @@
+{
+  "closed_refs": {
+    "D_cache_copy_original_peer": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-copy-actual-review-v1/review.v1.json",
+      "sha256": "1c95e34e98acfd6f90194f17b0433dc3feb57fe5fae1525e98f233b550b5d76a",
+      "size_bytes": 21260
+    },
+    "D_cache_stock_reuse_original_peer": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ext4-asset-cache-stock-reuse-review-v1/review.v1.json",
+      "sha256": "890f5a0e0df96d846ba6a39f699c339c7dbce49e9662c37bb4c681a5c7327b78",
+      "size_bytes": 24571
+    },
+    "D_fresh95_original_audit": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current95-post-D-setup-audit-preparation-v1/original-audit-attempt01/review.v1.json",
+      "sha256": "a4945b6dbe8ac466b3fbb4573f17bcb2408912803053772446fa500982c1a8f2",
+      "size_bytes": 127757
+    },
+    "D_setup_original": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-setup-attempt01/execution.v1.json",
+      "sha256": "96ed65f0d6e59acf5ee75400b43d11b5312741e446883fcdb64cf93d041043e4",
+      "size_bytes": 29015
+    },
+    "D_setup_tracked_raw_manifest": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/original-setup-attempt01/tracked-raw-source.v1.json",
+      "sha256": "2aa2d4a507a0e0676b0afaadbc2b6b269c038431dc9ea79228fdc8a9f6b7451d",
+      "size_bytes": 2423045
+    },
+    "R13_S6_manual_independent_peer": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-r13-s6-manual-source-review-v1/review.v1.json",
+      "sha256": "92bfaa80b37bf8c64f607be154828ddc04d05ce8328d86ca97c56ac016ce4039",
+      "size_bytes": 243450
+    },
+    "historical_P_C_CI_peer": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-ci-P-C-original-independent-review-v1/review.v1.json",
+      "sha256": "49938f7a6ca0f24bee7171c399577587c3d1a2cc3e7d3ded46738b8ea4a3c0b6",
+      "size_bytes": 237683
+    },
+    "historical_ext4_C_failure_peer": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/review.v1.json",
+      "sha256": "62e1e864bc4aaaa05b4f55595c9ee817f888a6e00cc0da9e6e3f4be54a0a4f2d",
+      "size_bytes": 25609
+    }
+  },
+  "current_binding": {
+    "domain": "control",
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/binding.components.D.v4.json",
+    "sha256": "f1f2ee65d263c081407a93441b48ef2a5563789f923cbdf8728a8d87f7a0cbe5",
+    "size_bytes": 18805
+  },
+  "finalization": {
+    "archive": "pending",
+    "conformance_review": "pending",
+    "latest_final_review": "pending",
+    "merge": "user_authorized_pending_required_checks_and_exact_final_review"
+  },
+  "frozen_generator": {
+    "domain": "control",
+    "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/generate_current_mapping_D_v3.py",
+    "sha256": "ce5aef28f825f716e1a9869c377e26023d9cb177234315d32a4ef8c167979e86",
+    "size_bytes": 37807
+  },
+  "historical_failure_disposition": {
+    "ext4_C": {
+      "disposition": "Original stock model-assets acquisition failure before build/test is preserved; actual D exclusive cache copy and stock verification do not rewrite that attempt.",
+      "independent_original_review": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-local-ci-C-original-failure-review-v1/review.v1.json",
+        "sha256": "62e1e864bc4aaaa05b4f55595c9ee817f888a6e00cc0da9e6e3f4be54a0a4f2d",
+        "size_bytes": 25609
+      },
+      "status": "failed_original"
+    },
+    "hosted_P_and_C": {
+      "disposition": "The original stale selected-image fixture failure is preserved; D three-literal correction and its actual hosted original are separate facts.",
+      "independent_original_review": {
+        "domain": "control",
+        "path": "artifacts/benchmark_recovery_20260930/decision29-ci-P-C-original-independent-review-v1/review.v1.json",
+        "sha256": "49938f7a6ca0f24bee7171c399577587c3d1a2cc3e7d3ded46738b8ea4a3c0b6",
+        "size_bytes": 237683
+      },
+      "status": "failed_originals"
+    },
+    "successor_D_local": {
+      "actual_original_wrapper_returncode": 1,
+      "independent_original_refs": null,
+      "no_rerun_or_acceptance_inferred": true,
+      "root_reported_elapsed_s": 2141.443891322,
+      "root_reported_first_error": "AssertionError: original full CI exit failed",
+      "status": "closed_failed_original_root_reported_independent_review_pending"
+    }
+  },
+  "kind": "decision29_closed_evidence_binding_supplement_v1",
+  "limits": [
+    "No closed-failure report is reclassified as success; hosted D and accepted B science remain separate.",
+    "Frozen generator is not executed or edited. No test, model, engine, native, Git or producer mutation.",
+    "Per parent instruction, all20 requirement bodies need independent human/peer review; generator clause preservation alone is not that review.",
+    "Generator publish dual write+close exception corner remains documented. Any future original must retain actual raw failure/close/FD facts; clean once-only writes and closure are mandatory."
+  ],
+  "manual_R13_S6": {
+    "disposition": "Actual clean-D manual source proof supplements the source mapping. Direct every-named-full-consumer regression gap remains explicit; no target consumer or test invocation by this review.",
+    "independent_ref": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-r13-s6-manual-source-review-v1/review.v1.json",
+      "sha256": "92bfaa80b37bf8c64f607be154828ddc04d05ce8328d86ca97c56ac016ce4039",
+      "size_bytes": 243450
+    },
+    "source_order_ref": {
+      "domain": "control",
+      "path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/full-consumer-guard-order-review.v1.json",
+      "sha256": "254c5d6dd3cb59d6a9d1e606bfb1a40d3d846f6748033e3e2714b6b9117397e6",
+      "size_bytes": 23224
+    }
+  },
+  "operations": {
+    "engine_model_native_Git": 0,
+    "generator": 0,
+    "original_payload_rewrite": 0,
+    "tests_or_target_imports": 0
+  },
+  "pending": [
+    "Independent actual local D failure review and any separately reviewed remedy.",
+    "Root final current-document/task/own reassessment freeze and actual final binding.",
+    "Required CI/conformance/archive/latest checks/final review before merge."
+  ],
+  "schema_version": 1,
+  "source_setup_facts": {
+    "all121_mapped_source_SHA_size_equal_original_tracked_manifest": true,
+    "benchmark95_unchanged": true,
+    "cache_copy_accepts_CI": false,
+    "held95_fds_released": true,
+    "original_setup_raw_committed_bytes_equal": true,
+    "source_commit": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+    "stock_all8_existing_verifier_passed": true,
+    "tracked_bytes": 280799517,
+    "tracked_count": 5577
+  },
+  "status": "source_only_binding_preparation_no_generator_or_final_acceptance"
+}

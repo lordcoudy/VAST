@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "core.longpaths=true",
+    "--git-dir=/mnt/e/STUDY/VAST/.git",
+    "cat-file",
+    "-e",
+    "3c025b29b3c1d5275c2ec693410e4b83700583de^{commit}"
+  ],
+  "cwd": null,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 95665,
+    "pid": 95668,
+    "ppid": 95666,
+    "startticks": 50681913,
+    "state": "R",
+    "uid": 1000
+  },
+  "started_at_ns": 1791024489008506288
+}

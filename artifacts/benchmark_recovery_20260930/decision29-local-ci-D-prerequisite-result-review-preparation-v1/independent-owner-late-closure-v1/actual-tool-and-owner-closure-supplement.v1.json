@@ -1,0 +1,150 @@
+{
+  "all_numeric_observed_FD_balances_equal": true,
+  "all_original_closed_process_rows_and_limits": [
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 6673,
+      "pid": 6673,
+      "session": 6673,
+      "startticks": 51238226,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 6687,
+      "pid": 6687,
+      "session": 6687,
+      "startticks": 51238236,
+      "uid": 1000
+    },
+    {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 6999,
+      "pid": 6999,
+      "session": null,
+      "startticks": 51239773,
+      "uid": 1000
+    },
+    {
+      "boot_id": null,
+      "gid": null,
+      "pgid": null,
+      "pid": 10965,
+      "session": null,
+      "startticks": null,
+      "uid": null
+    }
+  ],
+  "closed_original_CI": {
+    "basis": "Parent genuine terminal notification",
+    "returncode": 0,
+    "tool_terminal_cell": "3db5dc"
+  },
+  "closed_original_independent_reader": {
+    "PID": 10965,
+    "basis": "Parent genuine terminal notification and pinned original reader report",
+    "birth_group_session_unknown": true,
+    "returncode": 0,
+    "tool_terminal_cell": "35ac22"
+  },
+  "conformance_archive_merge_acceptance": false,
+  "kind": "actual_original_tool_and_owner_closure_supplement",
+  "later_actual_observer_process_closure": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-prerequisite-result-review-preparation-v1\\independent-owner-late-closure-v1\\original-observation-attempt01\\later-observer-process-closure.v1.json",
+    "sha256": "243877ffa848c4d113b76daf2899c533a8abff53d8e39cc7aea94b22aa17a3a6",
+    "size_bytes": 909
+  },
+  "later_original_scanner": {
+    "FD_before_after": [
+      6,
+      6
+    ],
+    "exit_code": 0,
+    "helper_PID": 10998,
+    "observed_elapsed_s": 0.004562008020002395,
+    "separate_stdio_capture": "not available; unified exec tool returned normal JSON plus WSL startup proxy warning",
+    "tool_chunk": "317fdd",
+    "tool_wall_time_s": 0.9866592
+  },
+  "limits": [
+    "Neither original independent reader10965 birth nor PGID/session was observed; its two current PID-path absence checks are not a missing group proof.",
+    "Observer6999 original session is unknown. Actual known PID/PGID are scanned, no session inferred.",
+    "Last tiny metadata scanner10998 completed normal tool exit0; its own later process/group scan was not performed.",
+    "Only recorded original actors/groups are checked. No global descendant quiescence, invented signal events or separated raw-stdio claim."
+  ],
+  "metadata_observer_original": {
+    "FD_before_after": [
+      6,
+      6
+    ],
+    "exit_code": 0,
+    "observed_helper_elapsed_s": 0.023936625046189874,
+    "observed_owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "observed_parent": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 10982,
+        "pid": 10982,
+        "ppid": 10981,
+        "session": 10982,
+        "startticks": 51563532,
+        "uid": 1000
+      },
+      "pgid": 10982,
+      "pid": 10983,
+      "ppid": 10982,
+      "session": 10982,
+      "startticks": 51563532,
+      "uid": 1000
+    },
+    "separate_stdio_capture": "not available; unified exec tool returned normal JSON plus WSL startup proxy warning",
+    "tool_chunk": "f41c81",
+    "tool_wall_time_s": 0.9426799
+  },
+  "no_target_CI_test_reader_engine_model_replay": true,
+  "observer_10983_timeout_10982_late_absence_two_scans": [
+    {
+      "at_monotonic_ns": 515731179060722,
+      "errors": [],
+      "original_PID_paths_absent": {
+        "10982": true,
+        "10983": true
+      },
+      "owned_group_session_members": []
+    },
+    {
+      "at_monotonic_ns": 515731180717333,
+      "errors": [],
+      "original_PID_paths_absent": {
+        "10982": true,
+        "10983": true
+      },
+      "owned_group_session_members": []
+    }
+  ],
+  "original_metadata_closure": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-prerequisite-result-review-preparation-v1\\independent-owner-late-closure-v1\\original-observation-attempt01\\closure.v1.json",
+    "sha256": "ca21c181c230f17d6a8201187f8e6eb41f6173bb97ce555393ed868f3ffaf530",
+    "size_bytes": 6809
+  },
+  "original_reader_and_wrapper_late_companions_absent": true,
+  "schema_version": 1,
+  "sources": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-prerequisite-result-review-preparation-v1\\independent-owner-late-closure-v1\\observe_closed_originals_v1.py",
+      "sha256": "07734d59c5df7b5007683e6f6ffd132d2ab3d29347137c5f3003f172169793b3",
+      "size_bytes": 11867
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-local-ci-D-prerequisite-result-review-preparation-v1\\independent-owner-late-closure-v1\\observe_later_process_paths_v1.py",
+      "sha256": "8c237c2297cdc9170be30a2df518b045fff347a92f760cb2208338979f994a2c",
+      "size_bytes": 2635
+    }
+  ],
+  "status": "verified"
+}

@@ -1,0 +1,117 @@
+{
+  "after": [
+    {
+      "epoch": [
+        69,
+        3940649676372240,
+        33279,
+        1,
+        18489,
+        1790796800969826900,
+        1790796800969826900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/setup_finite_ext4_root_v1.py",
+      "sha256": "cbc00d0ad965a89808ac07f5870db16fe85688fad648787266c1d46ac0d1b617",
+      "size_bytes": 18489
+    },
+    {
+      "epoch": [
+        69,
+        3377699722948708,
+        33279,
+        1,
+        6740,
+        1790796930155278500,
+        1790796930155278500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/test_setup_finite_transfer_v1.py",
+      "sha256": "8f7e2bd5d012c5b7aa9785c2d2a85fe5dd2ad8107a6d29b95175c4a9ae3aa8c2",
+      "size_bytes": 6740
+    }
+  ],
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/test_setup_finite_transfer_v1.py",
+    "-v"
+  ],
+  "before": [
+    {
+      "epoch": [
+        69,
+        3940649676372240,
+        33279,
+        1,
+        18489,
+        1790796800969826900,
+        1790796800969826900
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/setup_finite_ext4_root_v1.py",
+      "sha256": "cbc00d0ad965a89808ac07f5870db16fe85688fad648787266c1d46ac0d1b617",
+      "size_bytes": 18489
+    },
+    {
+      "epoch": [
+        69,
+        3377699722948708,
+        33279,
+        1,
+        6740,
+        1790796930155278500,
+        1790796930155278500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/test_setup_finite_transfer_v1.py",
+      "sha256": "8f7e2bd5d012c5b7aa9785c2d2a85fe5dd2ad8107a6d29b95175c4a9ae3aa8c2",
+      "size_bytes": 6740
+    }
+  ],
+  "channels": {
+    "stderr": {
+      "epoch": [
+        69,
+        1407374885976785,
+        33279,
+        1,
+        1989,
+        1790797075447946600,
+        1790797075447946600
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/focused-attempt-01/stderr.raw",
+      "sha256": "8aa4ead3bec596b3731febc4dd8b870e50ae1adeb280ee112d592ab1a9c0ba79",
+      "size_bytes": 1989
+    },
+    "stdout": {
+      "epoch": [
+        69,
+        1407374885976784,
+        33279,
+        1,
+        0,
+        1790797075330426500,
+        1790797075330426500
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-ext4-relocation-preparation-v1/focused-attempt-01/stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  },
+  "elapsed_s": 0.1320973639958538,
+  "error": null,
+  "model_native_gpu_acceptance": false,
+  "original_group_absent": true,
+  "original_pid_absent": true,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 41162,
+    "pid": 41162,
+    "ppid": 41161,
+    "startticks": 27938925,
+    "uid": 1000
+  },
+  "returncode": 0,
+  "setup_executed": false,
+  "source_before_after_equal": true,
+  "timed_out": false
+}

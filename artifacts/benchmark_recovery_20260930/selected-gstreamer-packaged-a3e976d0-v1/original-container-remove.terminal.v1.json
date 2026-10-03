@@ -1,0 +1,38 @@
+{
+  "argv": [
+    "/proc/self/fd/89",
+    "container",
+    "rm",
+    "8783399b17e872c49208d3f6aee4ab8f488a40618e0d78cb0c034a7cd1fb9e97"
+  ],
+  "capture_exceeded": false,
+  "cleanup_error": null,
+  "elapsed_s": 0.11423437600024045,
+  "engine_backend_quiescence": "not inferred from original CLI status",
+  "failure": null,
+  "finished_at_ns": 1790768089093508418,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable_realpath": "/usr/bin/docker",
+    "gid": 1000,
+    "pgid": 25143,
+    "pid": 25143,
+    "ppid": 24902,
+    "startticks": 25040136,
+    "uid": 1000
+  },
+  "process_group_members_at_terminal": [],
+  "returncode": 0,
+  "started_at_ns": 1790768088979274779,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a3e976d0-v1/original-container-remove.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a3e976d0-v1/original-container-remove.stdout.raw",
+    "sha256": "ce7cccda563dde7ed9de0c8649661c058e52c3b264ad03152732cb74320b6013",
+    "size_bytes": 65
+  },
+  "timed_out": false
+}

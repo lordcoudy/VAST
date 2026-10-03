@@ -10,7 +10,12 @@ import os
 import re
 import stat
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
+
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
 
 
 SCHEMA_VERSION = 2
@@ -618,23 +623,42 @@ def _read_json_object(path: Path, label: str) -> dict[str, Any]:
     return value
 
 
-def _write_new_json(path: Path, value: Mapping[str, Any], label: str) -> dict[str, Any]:
-    _require(not path.exists() and not os.path.lexists(path), f"{label} immutable collision")
+def _write_new_json(
+    path: Path,
+    value: Mapping[str, Any],
+    label: str,
+    *,
+    _fault_hook: Callable[[str], None] | None = None,
+) -> dict[str, Any]:
     _require(path.parent.is_dir(), f"{label} parent is missing")
     _require(not _is_reparse_or_link(path.parent), f"{label} parent is unsafe")
     payload = _canonical_bytes(value) + b"\n"
-    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | int(getattr(os, "O_CLOEXEC", 0))
-    descriptor = os.open(path, flags, 0o444)
+    custody: PhysicalRootCustodyV1 | None = None
     try:
-        offset = 0
-        while offset < len(payload):
-            offset += os.write(descriptor, payload[offset:])
-        os.fsync(descriptor)
+        custody = PhysicalRootCustodyV1.open(
+            path.parent, label=f"{label} output parent"
+        )
+        record, _identity, _disposition = custody.commit_or_adopt_exact_identity(
+            path.name,
+            payload,
+            label=label,
+            mode=0o444,
+            create_parents=False,
+            after_publish_step=_fault_hook,
+        )
+        custody.verify()
+    except PublicationPhysicalIoV1Error as error:
+        raise ModelParityAcceptanceError(
+            f"{label} atomic commit/adoption failed"
+        ) from error
     finally:
-        os.close(descriptor)
-    path.chmod(0o444)
-    record, _ = _stable_descriptor(path.parent, path.name, label)
-    return {"path": path.name, "size_bytes": record["size_bytes"], "sha256": record["sha256"]}
+        if custody is not None:
+            custody.close()
+    return {
+        "path": path.name,
+        "size_bytes": record["size_bytes"],
+        "sha256": record["sha256"],
+    }
 
 
 def _output_path(root: Path, value: Path | str, label: str) -> Path:
@@ -669,13 +693,6 @@ def promote_model_parity_acceptance(
     assessment_path = _output_path(root, accepted_assessment_path, "accepted assessment")
     receipt_path = _output_path(root, acceptance_receipt_path, "acceptance receipt")
     _require(assessment_path != receipt_path, "assessment and receipt paths must be distinct")
-    _require(
-        not assessment_path.exists()
-        and not os.path.lexists(assessment_path)
-        and not receipt_path.exists()
-        and not os.path.lexists(receipt_path),
-        "model-parity acceptance output immutable collision",
-    )
     registry = _FileRegistry(root)
     manifest_record = registry.add_path(manifest_relative, "accepted model-parity manifest")
     manifest_path = root / manifest_relative
@@ -776,15 +793,7 @@ def promote_model_parity_acceptance(
         "runtime_images_sha256": assessment_binding["runtime_images_sha256"],
     }
     receipt["receipt_sha256"] = _canonical_sha(receipt)
-    try:
-        _write_new_json(receipt_path, receipt, "model-parity acceptance receipt")
-    except Exception:
-        # The assessment is not authorization. Remove only our exact just-created file.
-        current, _ = _stable_descriptor(root, assessment_relative, "orphan assessment")
-        _require(current == assessment_record, "assessment changed before rollback")
-        assessment_path.chmod(0o600)
-        assessment_path.unlink()
-        raise
+    _write_new_json(receipt_path, receipt, "model-parity acceptance receipt")
     return load_verified_model_parity_acceptance(
         project_root=root,
         receipt_path=receipt_path,

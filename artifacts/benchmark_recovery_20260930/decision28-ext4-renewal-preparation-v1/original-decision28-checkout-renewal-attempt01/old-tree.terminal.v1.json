@@ -1,0 +1,99 @@
+{
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "gc.auto=0",
+    "-c",
+    "maintenance.auto=false",
+    "-c",
+    "core.longpaths=true",
+    "-c",
+    "core.hooksPath=/dev/null",
+    "-C",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27",
+    "ls-tree",
+    "-r",
+    "-z",
+    "9d47e99b623df44816f7b0a0b73b249a940f7723"
+  ],
+  "counts": {
+    "stderr": 0,
+    "stdout": 824157
+  },
+  "eof": [
+    "stderr",
+    "stdout"
+  ],
+  "fault": null,
+  "original_child_reaped": true,
+  "original_group_absent": true,
+  "original_pid_absent": true,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 72294,
+    "pid": 72294,
+    "ppid": 72279,
+    "session": 72294,
+    "startticks": 49370860,
+    "uid": 1000
+  },
+  "returncode": 0,
+  "signals": [],
+  "stderr": {
+    "epoch7": [
+      69,
+      1407374885979234,
+      33279,
+      1,
+      0,
+      1791011379225393100,
+      1791011379225393100
+    ],
+    "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-tree.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "epoch7": [
+      69,
+      1407374885979233,
+      33279,
+      1,
+      824157,
+      1791011379429157300,
+      1791011379429157300
+    ],
+    "git_blob_sha1": "e7ababfccd8969eabba6f48e9f1c0496d3717f47",
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision28-ext4-renewal-preparation-v1/original-decision28-checkout-renewal-attempt01/old-tree.stdout.raw",
+    "sha256": "bb86498454f01959bb873ac260c5310f08cc3caa2b27f1623f76c174ad54777e",
+    "size_bytes": 824157
+  },
+  "two_original_process_scans": [
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "finished_at_ns": 1791011379437398669,
+      "members": [],
+      "original_pgid": 72294,
+      "original_pid": 72294,
+      "original_pid_identity": "absent",
+      "original_startticks": 49370860,
+      "started_at_ns": 1791011379435850720,
+      "vanished_during_scan": 0
+    },
+    {
+      "error_overflow": 0,
+      "errors": [],
+      "finished_at_ns": 1791011379438698184,
+      "members": [],
+      "original_pgid": 72294,
+      "original_pid": 72294,
+      "original_pid_identity": "absent",
+      "original_startticks": 49370860,
+      "started_at_ns": 1791011379437402285,
+      "vanished_during_scan": 0
+    }
+  ]
+}

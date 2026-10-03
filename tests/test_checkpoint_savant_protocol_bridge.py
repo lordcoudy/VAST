@@ -22,6 +22,7 @@ from test_checkpoint_deepstream_protocol_bridge import (  # noqa: E402
     ANALYTICS_BRANCHES,
     FakePolicyExchange,
     StepClock,
+    mock_service_clock,
     admission,
     endpoints,
     nvds_identity,
@@ -52,6 +53,9 @@ def savant_identity(
 
 
 class SavantProtocolBridgeTests(unittest.TestCase):
+    def setUp(self) -> None:
+        mock_service_clock(self)
+
     def test_shared_module_closes_one_live_protocol_v3_join(self) -> None:
         run_id, module_id = "run-savant-shared", "savant-stream-0-shared-video-dag"
         admitted = admission(run_id)

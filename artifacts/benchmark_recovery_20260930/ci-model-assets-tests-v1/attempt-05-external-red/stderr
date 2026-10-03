@@ -1,0 +1,97 @@
+test_clean_empty_checkout_acquires_exact_eight_without_input_changes (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_clean_empty_checkout_acquires_exact_eight_without_input_changes) ... ok
+test_correct_existing_objects_are_verified_without_network (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_correct_existing_objects_are_verified_without_network) ... ok
+test_corrupt_cache_is_not_overwritten_and_prevents_dispatch (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_corrupt_cache_is_not_overwritten_and_prevents_dispatch) ... ok
+test_deadline_is_rechecked_after_final_report_fsync (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_deadline_is_rechecked_after_final_report_fsync) ... FAIL
+test_existing_file_growth_is_stopped_at_exact_size_cap (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_existing_file_growth_is_stopped_at_exact_size_cap) ... ok
+test_existing_hardlink_is_rejected (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_existing_hardlink_is_rejected) ... ok
+test_external_fresh_observations_keep_repository_destinations_fixed (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_external_fresh_observations_keep_repository_destinations_fixed) ... ERROR
+test_external_output_absolute_path_is_passed_to_original_child (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_external_output_absolute_path_is_passed_to_original_child) ... FAIL
+test_failed_write_labels_received_hash_separately_from_observed_file_size (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_failed_write_labels_received_hash_separately_from_observed_file_size) ... ERROR
+test_http_error_redirect_and_timeout_are_original_failures (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_http_error_redirect_and_timeout_are_original_failures) ... ok
+test_large_body_uses_only_bounded_reads (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_large_body_uses_only_bounded_reads) ... ok
+test_manifest_drift_during_transfer_blocks_publication (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_manifest_drift_during_transfer_blocks_publication) ... ok
+test_metadata_path_escape_is_rejected_before_dispatch (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_metadata_path_escape_is_rejected_before_dispatch) ... ok
+test_namespace_budget_and_occupied_observations_fail_before_dispatch (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_namespace_budget_and_occupied_observations_fail_before_dispatch) ... ok
+test_publication_race_never_replaces_foreign_target (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_publication_race_never_replaces_foreign_target) ... ok
+test_real_http_error_keeps_status_and_redirect_without_retry (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_real_http_error_keeps_status_and_redirect_without_retry) ... ok
+test_real_original_child_timeout_is_reaped_in_outer_group (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_real_original_child_timeout_is_reaped_in_outer_group) ... ok
+test_real_reader_socket_wait_is_reduced_to_remaining_deadline (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_real_reader_socket_wait_is_reduced_to_remaining_deadline) ... ok
+test_record_text_is_bounded_even_for_large_unicode_error (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_record_text_is_bounded_even_for_large_unicode_error) ... ok
+test_redirect_handler_never_creates_a_followup_request (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_redirect_handler_never_creates_a_followup_request) ... ok
+test_same_bytes_partial_replacement_is_not_published_as_original (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_same_bytes_partial_replacement_is_not_published_as_original) ... FAIL
+test_short_and_oversize_bodies_never_publish (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_short_and_oversize_bodies_never_publish) ... ok
+test_symlink_model_parent_is_rejected_without_outside_write (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_symlink_model_parent_is_rejected_without_outside_write) ... ok
+test_wrong_digest_preserves_original_failed_partial (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_wrong_digest_preserves_original_failed_partial) ... ok
+
+======================================================================
+ERROR: test_external_fresh_observations_keep_repository_destinations_fixed (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_external_fresh_observations_keep_repository_destinations_fixed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/prepare_ci_model_assets.py", line 509, in prepare_ci_model_assets
+    relative = destination.relative_to(root.path).as_posix()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/tmp/vast-ci-assets-observations-auwzkpxn/nested/observations' is not in the subpath of '/tmp/vast-ci-assets-test-ycloz58m'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 321, in test_external_fresh_observations_keep_repository_destinations_fixed
+    result = assets.prepare_ci_model_assets(project_root=self.root,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/prepare_ci_model_assets.py", line 511, in prepare_ci_model_assets
+    raise AssetPreparationError("observation output escapes the project root") from error
+prepare_ci_model_assets.AssetPreparationError: observation output escapes the project root
+
+======================================================================
+ERROR: test_failed_write_labels_received_hash_separately_from_observed_file_size (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_failed_write_labels_received_hash_separately_from_observed_file_size)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 394, in test_failed_write_labels_received_hash_separately_from_observed_file_size
+    self.assertEqual(record["hashed_prefix_bytes"], row["size_bytes"])
+                     ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'hashed_prefix_bytes'
+
+======================================================================
+FAIL: test_deadline_is_rechecked_after_final_report_fsync (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_deadline_is_rechecked_after_final_report_fsync)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 408, in test_deadline_is_rechecked_after_final_report_fsync
+    with self.assertRaisesRegex(assets.AssetPreparationError, "deadline"):
+AssertionError: AssetPreparationError not raised
+
+======================================================================
+FAIL: test_external_output_absolute_path_is_passed_to_original_child (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_external_output_absolute_path_is_passed_to_original_child)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/prepare_ci_model_assets.py", line 509, in prepare_ci_model_assets
+    relative = destination.relative_to(root.path).as_posix()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/tmp/vast-ci-assets-child-output-9jfsslme/observations' is not in the subpath of '/tmp/vast-ci-assets-test-sbbcmmxv'
+
+The above exception was the direct cause of the following exception:
+
+prepare_ci_model_assets.AssetPreparationError: observation output escapes the project root
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 343, in test_external_output_absolute_path_is_passed_to_original_child
+    with self.assertRaisesRegex(assets.AssetPreparationError, "timeout"):
+AssertionError: "timeout" does not match "observation output escapes the project root"
+
+======================================================================
+FAIL: test_same_bytes_partial_replacement_is_not_published_as_original (test_prepare_ci_model_assets.PrepareCiModelAssetsTests.test_same_bytes_partial_replacement_is_not_published_as_original)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_prepare_ci_model_assets.py", line 363, in test_same_bytes_partial_replacement_is_not_published_as_original
+    with self.assertRaisesRegex(assets.AssetPreparationError, "original|inode|replaced"):
+AssertionError: AssetPreparationError not raised
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.940s
+
+FAILED (failures=3, errors=2)

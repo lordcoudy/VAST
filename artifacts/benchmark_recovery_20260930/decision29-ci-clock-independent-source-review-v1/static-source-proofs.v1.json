@@ -1,0 +1,136 @@
+[
+  {
+    "Popen_call_ASTs_unchanged": true,
+    "before": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-ci-clock-repair-v1\\before\\scripts__ci_namespace_diagnostic_v1.py.raw",
+      "sha256": "4f7e10d2decd1411f4c31281ceda4374d4d8cf1971fcb36497d11cfca10d8cc0",
+      "size_bytes": 23980
+    },
+    "changed_original_module_functions": [
+      "instrument_namespace_calls",
+      "capture_original_child",
+      "namespace_worker"
+    ],
+    "module_constant_ASTs_unchanged": true,
+    "new_module_functions": [
+      "_audit_coarse_sample"
+    ],
+    "source": {
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292",
+      "size_bytes": 25359
+    },
+    "unchanged_original_module_functions": [
+      "_json",
+      "_label",
+      "_errno",
+      "_group_members",
+      "_relevant_original_denial",
+      "_gated_execv_argv",
+      "observe_namespace_setup_v1"
+    ]
+  },
+  {
+    "Popen_call_ASTs_unchanged": true,
+    "before": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-ci-clock-repair-v1\\before\\scripts__ci_userns_profile_v1.py.raw",
+      "sha256": "2b268daa1f6b1c7095e2ad35aa333cfc88998dfc7f024e39cee04d178334a578",
+      "size_bytes": 25945
+    },
+    "changed_original_module_functions": [
+      "join_original_userns_denial_v1",
+      "held_ci_userns_profile_v1"
+    ],
+    "live_held_function_inverse_only_explicit_expected_version2": true,
+    "module_constant_ASTs_unchanged": true,
+    "new_module_functions": [
+      "_coarse_audit_bracket_v2"
+    ],
+    "source": {
+      "path": "scripts/ci_userns_profile_v1.py",
+      "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+      "size_bytes": 28890
+    },
+    "unchanged_original_module_functions": [
+      "_require",
+      "_epoch",
+      "hold_regular_v1",
+      "verify_held_v1",
+      "_safe_python",
+      "profile_bytes_v1",
+      "parser_command_v1",
+      "fixed_root_timeout_budget_v1",
+      "kernel_profile_present_v1",
+      "_decode",
+      "_save",
+      "_descriptor",
+      "observe_suite_profile_v1"
+    ]
+  },
+  {
+    "Popen_call_ASTs_unchanged": true,
+    "before": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-ci-clock-repair-v1\\before\\tests__test_ci_userns_profile_v1.py.raw",
+      "sha256": "74ea52a30432ce759b88cb7ec0bcdf94b7bb0f8904f8188df1e55a7fcf3a2804",
+      "size_bytes": 31429
+    },
+    "changed_original_module_functions": [],
+    "explicit_legacy_only_changed_test_methods": [
+      "test_original_shape_joins_only_exact_interpreter_pid_boot_operation_and_time",
+      "test_absent_foreign_ambiguous_or_generic_denial_is_not_a_profile_grant"
+    ],
+    "module_constant_ASTs_unchanged": true,
+    "new_clock_test_methods": [
+      "test_coarse_lag_beyond_original_fine_tolerance_joins_actual_clock_bins",
+      "test_equal_and_inclusive_boundary_bins_accept_but_adjacent_bins_fail",
+      "test_missing_and_malformed_new_clock_evidence_cannot_downgrade",
+      "test_explicit_legacy_retains_original_strict_rejection_and_cannot_take_v2",
+      "test_original_B_clock_operands_stay_rejected_in_explicit_legacy_context",
+      "test_unknown_expected_clock_contract_is_never_inferred_from_record",
+      "test_original_journal_and_owner_predicates_still_reject_v2",
+      "test_live_missing_contract_fails_before_any_profile_command"
+    ],
+    "new_module_functions": [
+      "coarse_denial_fixture"
+    ],
+    "original_test_assertion_call_ASTs_unchanged": true,
+    "original_test_method_count": 21,
+    "original_tests_unchanged_or_only_explicit_legacy_keyword": true,
+    "source": {
+      "path": "tests/test_ci_userns_profile_v1.py",
+      "sha256": "dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695",
+      "size_bytes": 41955
+    },
+    "unchanged_original_module_functions": [
+      "helper",
+      "denial_fixture"
+    ]
+  },
+  {
+    "Popen_call_ASTs_unchanged": true,
+    "all_original_function_and_method_ASTs_unchanged": true,
+    "before": {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision29-ci-clock-repair-v1\\original-focused-controller.raw",
+      "sha256": "313641c51248d2733af9cdc9373903fc9c6daab75fed7d056acecd18d7098c2a",
+      "size_bytes": 7749
+    },
+    "original_execution_cleanup_channel_budgets_unchanged": {
+      "cleanup_s": 10,
+      "each_channel_bytes": 1048576,
+      "work_s": 120
+    },
+    "original_function_names": [
+      "pin",
+      "save",
+      "owner",
+      "drain",
+      "startTest",
+      "stopTest"
+    ],
+    "source": {
+      "path": "artifacts\\benchmark_recovery_20260930\\decision29-ci-clock-repair-v1\\run_focused_v1.py",
+      "sha256": "03d722b05e54eaaf2149a29043b36aed3b86e7e3ccd3a4055da9f62ec2cf41a5",
+      "size_bytes": 6901
+    }
+  }
+]

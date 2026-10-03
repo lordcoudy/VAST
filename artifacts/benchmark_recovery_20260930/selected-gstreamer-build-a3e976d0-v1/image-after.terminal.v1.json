@@ -1,0 +1,40 @@
+{
+  "argv": [
+    "/proc/self/fd/94",
+    "image",
+    "inspect",
+    "vast/gstreamer-custom-publication-runtime-v3:component-release-20260930-a3e976d0",
+    "vast/gstreamer-custom-publication-runtime-v3:component-release-20260930-a3e976d0-determinism-a",
+    "vast/gstreamer-custom-publication-runtime-v3:component-release-20260930-a3e976d0-determinism-b"
+  ],
+  "capture_exceeded": false,
+  "cleanup_error": null,
+  "elapsed_s": 0.09002627900918014,
+  "engine_backend_quiescence": "not inferred from original CLI status",
+  "failure": null,
+  "finished_at_ns": 1790767009695686396,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "executable_realpath": "/usr/bin/docker",
+    "gid": 1000,
+    "pgid": 24418,
+    "pid": 24418,
+    "ppid": 23785,
+    "startticks": 24932193,
+    "uid": 1000
+  },
+  "process_group_members_at_terminal": [],
+  "returncode": 0,
+  "started_at_ns": 1790767009605661480,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/image-after.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-build-a3e976d0-v1/image-after.stdout.raw",
+    "sha256": "31beea9f738ec7b7a848e524bb87e4e9c07d1f98debb9b78fa66a8ec2f0f00f8",
+    "size_bytes": 21003
+  },
+  "timed_out": false
+}

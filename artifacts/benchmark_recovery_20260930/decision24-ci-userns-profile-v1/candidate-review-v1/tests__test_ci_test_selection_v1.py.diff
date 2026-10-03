@@ -1,0 +1,19 @@
+--- original/tests/test_ci_test_selection_v1.py
++++ candidate/tests/test_ci_test_selection_v1.py
+@@ -113,6 +113,16 @@
+         with self.assertRaisesRegex(ValueError, 'existing source migration tombstone'):
+             self.api.select_portable_suite_v1(unittest.TestSuite([case]),project_root=self.root)
+ 
++    def test_new_ci_userns_policy_contract_cannot_be_deferred_or_skipped(self):
++        name='test_ci_userns_profile_v1.UsernsProfileTests.test_original_shape_joins_only_exact_interpreter_pid_boot_operation_and_time'
++        self.manifest([self.row(name)])
++        with self.assertRaisesRegex(ValueError,'mandatory contract'):
++            self.select([name])
++        self.manifest(skips=[{'test_id':name,'reason':'invented missing policy prerequisite',
++            'classification':'platform_or_explicit_physical_prerequisite','acceptance_claim':False}])
++        with self.assertRaisesRegex(ValueError,'mandatory contract'):
++            self.select([name])
++
+     def test_all_original_platform_and_retired_skip_ids_remain_nonexecution(self):
+         rows=json.loads((ROOT/self.api.MANIFEST).read_bytes())['allowed_portable_skips']
+         self.assertEqual(len(rows),88)

@@ -1,0 +1,670 @@
+{
+  "artifact_kind": "portable_fixture_repair_author_review_v1",
+  "before_after": [
+    {
+      "after": {
+        "path": "tests/test_backend_runtime_replay_runner_authority_v2.py",
+        "sha256": "20a903cb40910b6f4c2981798e1456f6932b80ce0e916c2576cd1afc6f7cc6dc",
+        "size_bytes": 30675
+      },
+      "all_original_assertion_counts_retained": true,
+      "all_original_test_ids_retained": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_backend_runtime_replay_runner_authority_v2.py",
+        "sha256": "34c3ccb8db7c0f942cb800883115074e66c267ed344923d7793ba353ce956506",
+        "size_bytes": 30043
+      },
+      "changed_original_assertions": [
+        {
+          "changed_assertion_ast": [
+            [
+              "Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[Call(func=Name(id='any', ctx=Load()), args=[GeneratorExp(elt=Compare(left=Constant(value='replay_runner_authority_v2'), ops=[In()], comparators=[Call(func=Attribute(value=Name(id='path', ctx=Load()), attr='read_text', ctx=Load()), keywords=[keyword(arg='encoding', value=Constant(value='utf-8')), keyword(arg='errors', value=Constant(value='ignore'))])]), generators=[comprehension(target=Name(id='path', ctx=Store()), iter=Call(func=Attribute(value=BinOp(left=Name(id='ROOT', ctx=Load()), op=Div(), right=Constant(value='scripts')), attr='glob', ctx=Load()), args=[Constant(value='*.py')]), ifs=[BoolOp(op=And(), values=[Compare(left=Attribute(value=Name(id='path', ctx=Load()), attr='name', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='backend_runtime_replay_runner_authority_v2.py')]), Compare(left=Attribute(value=Name(id='path', ctx=Load()), attr='name', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='backend_runtime_replay_runner_invocation_protocol_v3.py')]), Compare(left=Attribute(value=Name(id='path', ctx=Load()), attr='name', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='backend_runtime_replay_runner_invocation_protocol_v4.py')])])], is_async=0)])])])",
+              "Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertFalse', ctx=Load()), args=[Call(func=Name(id='any', ctx=Load()), args=[GeneratorExp(elt=Compare(left=Constant(value='replay_runner_authority_v2'), ops=[In()], comparators=[Call(func=Attribute(value=Call(func=Attribute(value=Name(id='path', ctx=Load()), attr='read_text', ctx=Load()), keywords=[keyword(arg='encoding', value=Constant(value='utf-8')), keyword(arg='errors', value=Constant(value='ignore'))]), attr='replace', ctx=Load()), args=[Constant(value='test_backend_runtime_replay_runner_authority_v2'), Constant(value='')])]), generators=[comprehension(target=Name(id='path', ctx=Store()), iter=Call(func=Attribute(value=BinOp(left=Name(id='ROOT', ctx=Load()), op=Div(), right=Constant(value='scripts')), attr='glob', ctx=Load()), args=[Constant(value='*.py')]), ifs=[BoolOp(op=And(), values=[Compare(left=Attribute(value=Name(id='path', ctx=Load()), attr='name', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='backend_runtime_replay_runner_authority_v2.py')]), Compare(left=Attribute(value=Name(id='path', ctx=Load()), attr='name', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='backend_runtime_replay_runner_invocation_protocol_v3.py')]), Compare(left=Attribute(value=Name(id='path', ctx=Load()), attr='name', ctx=Load()), ops=[NotEq()], comparators=[Constant(value='backend_runtime_replay_runner_invocation_protocol_v4.py')])])], is_async=0)])])])"
+            ]
+          ],
+          "method": "ReplayRunnerAuthorityV2Tests.test_source_has_no_process_network_write_or_downstream_consumers",
+          "new_assertion_count": 4,
+          "old_assertion_count": 4
+        }
+      ],
+      "current_method_count": 13,
+      "new_negative_methods": [
+        "ReplayRunnerAuthorityV2Tests.test_selection_identity_does_not_hide_a_production_import"
+      ],
+      "old_method_count": 12,
+      "skip_decorators_unchanged": true
+    },
+    {
+      "after": {
+        "path": "tests/test_checkpoint_deepstream_qualification_fragment_v1.py",
+        "sha256": "0f82dcfa8525ae459d482ae672fd4fd779a1dfeec22d160aded9d3d0cee86f73",
+        "size_bytes": 17673
+      },
+      "all_original_assertion_counts_retained": true,
+      "all_original_test_ids_retained": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_deepstream_qualification_fragment_v1.py",
+        "sha256": "753e59985503431a2e6822b4e5a56547faf27b1e26c79ac5d30c0c92f8b688ad",
+        "size_bytes": 16696
+      },
+      "changed_original_assertions": [],
+      "current_method_count": 4,
+      "new_negative_methods": [],
+      "old_method_count": 4,
+      "skip_decorators_unchanged": true
+    },
+    {
+      "after": {
+        "path": "tests/test_checkpoint_model_parity_materializer_v4.py",
+        "sha256": "2aa4d4e8aedde6ca30ad178e7ff7d2fec13ed1d840f122e851075afa77000ac4",
+        "size_bytes": 15690
+      },
+      "all_original_assertion_counts_retained": true,
+      "all_original_test_ids_retained": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_model_parity_materializer_v4.py",
+        "sha256": "032c8ea8a5a25e79208cd6acec826789dbaeffa5333660fb5f2a36cdbea2b5a1",
+        "size_bytes": 15682
+      },
+      "changed_original_assertions": [],
+      "current_method_count": 6,
+      "new_negative_methods": [],
+      "old_method_count": 6,
+      "skip_decorators_unchanged": true
+    },
+    {
+      "after": {
+        "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+        "sha256": "62f91b0a8480e11ae018bb31c53cbc167dca78fbe8fe7de23f6a6133723cb87f",
+        "size_bytes": 11502
+      },
+      "all_original_assertion_counts_retained": true,
+      "all_original_test_ids_retained": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+        "sha256": "dee0a7e1418dba5ec4206b4f8f65646f13e9348fd4230beac8e3cde78d37013e",
+        "size_bytes": 10431
+      },
+      "changed_original_assertions": [],
+      "current_method_count": 4,
+      "new_negative_methods": [],
+      "old_method_count": 4,
+      "skip_decorators_unchanged": true
+    },
+    {
+      "after": {
+        "path": "tests/test_checkpoint_savant_qualification_fragment_v3.py",
+        "sha256": "75feb1788871e4f70f25b08d23020bf6fab9be250ce4b87034d262d42e9ce7fe",
+        "size_bytes": 10069
+      },
+      "all_original_assertion_counts_retained": true,
+      "all_original_test_ids_retained": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_savant_qualification_fragment_v3.py",
+        "sha256": "03a9af86b0e03a3e8debf94a9a80c5d5febe649775f6f86c3fed92d82c59469d",
+        "size_bytes": 8929
+      },
+      "changed_original_assertions": [],
+      "current_method_count": 3,
+      "new_negative_methods": [],
+      "old_method_count": 3,
+      "skip_decorators_unchanged": true
+    },
+    {
+      "after": {
+        "path": "tests/test_checkpoint_source_runtime_closure_authority_v1.py",
+        "sha256": "7a3e36a1cb642a5e914b9483261cc95ad3861d7752b0d47019d338bbbb6cfd95",
+        "size_bytes": 88905
+      },
+      "all_original_assertion_counts_retained": true,
+      "all_original_test_ids_retained": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_checkpoint_source_runtime_closure_authority_v1.py",
+        "sha256": "e4c341a6523b30c941d8e9898d00c9382b6dc42b1bb259b62cb418285a8531ac",
+        "size_bytes": 88416
+      },
+      "changed_original_assertions": [],
+      "current_method_count": 25,
+      "new_negative_methods": [
+        "CheckpointSourceRuntimeClosureAuthorityV1Tests.test_selection_identity_does_not_hide_a_production_import"
+      ],
+      "old_method_count": 24,
+      "skip_decorators_unchanged": true
+    },
+    {
+      "after": {
+        "path": "tests/test_ci_test_selection_v1.py",
+        "sha256": "3d35114149e44d50f6d762fd6c05d4a903bbd9f1b5afc01c0bae4278b1933024",
+        "size_bytes": 11499
+      },
+      "all_original_assertion_counts_retained": true,
+      "all_original_test_ids_retained": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_ci_test_selection_v1.py",
+        "sha256": "70ed46fc26c61f19dc584aba5aa9565c80838862e1332ba4ca927862da65c4ee",
+        "size_bytes": 11499
+      },
+      "changed_original_assertions": [
+        {
+          "changed_assertion_ast": [
+            [
+              "Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[Call(func=Name(id='len', ctx=Load()), args=[Name(id='rows', ctx=Load())]), Constant(value=80)])",
+              "Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[Call(func=Name(id='len', ctx=Load()), args=[Name(id='rows', ctx=Load())]), Constant(value=88)])"
+            ],
+            [
+              "Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[Call(func=Attribute(value=Name(id='suite', ctx=Load()), attr='countTestCases', ctx=Load())), Constant(value=80)])",
+              "Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='assertEqual', ctx=Load()), args=[Call(func=Attribute(value=Name(id='suite', ctx=Load()), attr='countTestCases', ctx=Load())), Constant(value=88)])"
+            ]
+          ],
+          "method": "SelectionContracts.test_all_original_platform_and_retired_skip_ids_remain_nonexecution",
+          "new_assertion_count": 5,
+          "old_assertion_count": 5
+        }
+      ],
+      "current_method_count": 20,
+      "new_negative_methods": [],
+      "old_method_count": 20,
+      "skip_decorators_unchanged": true
+    },
+    {
+      "after": {
+        "path": "tests/test_publication_operational_container_custody_v1.py",
+        "sha256": "6fd45b43fe0a5acc0cc59951d9c4bafa0496780110f89b59950c3bbd420d9cee",
+        "size_bytes": 21792
+      },
+      "all_original_assertion_counts_retained": true,
+      "all_original_test_ids_retained": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_publication_operational_container_custody_v1.py",
+        "sha256": "9cb286476e38d7045c4d5e4537ebaa4efef2d508703c7f165e0350639794e4c0",
+        "size_bytes": 21620
+      },
+      "changed_original_assertions": [],
+      "current_method_count": 13,
+      "new_negative_methods": [],
+      "old_method_count": 13,
+      "skip_decorators_unchanged": true
+    },
+    {
+      "after": {
+        "path": "tests/test_publication_policy_qualification_fragments_from_authority_v2.py",
+        "sha256": "cf7574d817dd416d0886a25b9f559975f39aa58c2fa32cfe9f6729f0ea48a72d",
+        "size_bytes": 19287
+      },
+      "all_original_assertion_counts_retained": true,
+      "all_original_test_ids_retained": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_publication_policy_qualification_fragments_from_authority_v2.py",
+        "sha256": "c28586d197fef2b64650b4a3b0e5d7efb5f701d33056d267ba1c5950114eb4cd",
+        "size_bytes": 18121
+      },
+      "changed_original_assertions": [],
+      "current_method_count": 6,
+      "new_negative_methods": [],
+      "old_method_count": 6,
+      "skip_decorators_unchanged": true
+    },
+    {
+      "after": {
+        "path": "tests/test_replay_broker_artifact_bytes_observation_v4.py",
+        "sha256": "2b484a675fb4808ccb8ab6340a7e53bad17a1d04c60cf2e35552036b2298314c",
+        "size_bytes": 6787
+      },
+      "all_original_assertion_counts_retained": true,
+      "all_original_test_ids_retained": true,
+      "before": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/test_replay_broker_artifact_bytes_observation_v4.py",
+        "sha256": "9b6e7f0405680f82846c8ac122733a463d578ecd6e13a11013b64cd3228a23f9",
+        "size_bytes": 5916
+      },
+      "changed_original_assertions": [],
+      "current_method_count": 5,
+      "new_negative_methods": [
+        "ReplayBrokerArtifactBytesObservationV4Tests.test_selection_identity_does_not_hide_a_production_import"
+      ],
+      "old_method_count": 4,
+      "skip_decorators_unchanged": true
+    }
+  ],
+  "claims": [
+    {
+      "repair": "Project-local temporary directory uses existing artifacts rather than absent staging; original acceptance/publication refusal assertions retained.",
+      "source": "test_checkpoint_model_parity_materializer_v4.py"
+    },
+    {
+      "repair": "Historical8-worker schema3 binding/probe metadata copied from existing .ci fixtures into fresh custody project; original receipt hashes/assertions retained.",
+      "source": "test_checkpoint_deepstream_qualification_fragment_v1.py"
+    },
+    {
+      "repair": "Fresh metadata/model/source fixture copies actual image allowlist and host runtime descriptor paths; test-local allowlist SHA matches actual current file, alongside existing source SHA patch; production pins unchanged.",
+      "source": "test_checkpoint_openvino_gva_qualification_fragment_v3.py"
+    },
+    {
+      "repair": "Fresh historical metadata/source fixture copies exact original dependency-allowlist wheel/lock bytes; original no-pilot/materialization/identity assertions retained; no wheel install.",
+      "source": "test_checkpoint_savant_qualification_fragment_v3.py"
+    },
+    {
+      "repair": "Existing accepted metadata/model descriptors live in temporary project; dangling collision created inside that same project so genuine existing-child rejection executes.",
+      "source": "test_publication_policy_qualification_fragments_from_authority_v2.py"
+    },
+    {
+      "repair": "Mutable fake-daemon state uses preowned daemon-state directory, separate from held input parent and exact one-file operational namespace. Original fake C ENGINE_SOURCE bytes unchanged; genuine local ELF fixture, not Docker proof.",
+      "source": "test_publication_operational_container_custody_v1.py"
+    },
+    {
+      "repair": "Exact test identity declaration token excluded; existing production module import/readiness consumer checks retained plus real import/from-string negatives.",
+      "source": "test_backend_runtime_replay_runner_authority_v2.py"
+    },
+    {
+      "repair": "Immutable artifact/spec/CI metadata roots excluded before traversal; exact test identity token excluded; original process/network/write/readiness AST restrictions retained plus import/from negatives.",
+      "source": "test_checkpoint_source_runtime_closure_authority_v1.py"
+    },
+    {
+      "repair": "Immutable artifact/spec/CI metadata roots pruned before traversal; executable/source checks retained, exact test declaration token excluded; original source/include/function allowlist intact, import/function negatives added.",
+      "source": "test_replay_broker_artifact_bytes_observation_v4.py"
+    },
+    {
+      "repair": "Exactly2 actual derived count assertions80 to88, all row generation/portable audit/same-zero-integration/nonacceptance assertions retained.",
+      "source": "test_ci_test_selection_v1.py"
+    },
+    {
+      "repair": "Exactly8 existing decorated platform skips added with source provenance; all original80 records unchanged, original9 integration declarations and every other manifest field unchanged; no new skip decorators.",
+      "source": ".ci/integration-test-selection.v1.json"
+    }
+  ],
+  "final_test_counts": {
+    "actual_total": 99,
+    "errors": 0,
+    "existing_windows_skips": [
+      {
+        "reason": "Windows handle semantics only",
+        "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_oversized_component_is_rejected_before_ntcreatefile"
+      },
+      {
+        "reason": "Windows handle semantics only",
+        "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_root_parent_final_reparse_and_rewalk_drift_are_fail_closed"
+      },
+      {
+        "reason": "Windows handle semantics only",
+        "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_verification_handle_cleanup_failure_is_fail_closed"
+      }
+    ],
+    "failures": 0,
+    "new3_consumer_import_negatives": true,
+    "original96_test_ids_retained": true,
+    "successes": 96
+  },
+  "fixture_wheel_provenance": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/wheel-fixture-provenance.v1.json",
+    "sha256": "c1b3cca23a699aa15c89fbc0b51b0211ddf9f61356c885ba1b3f20ea83b0fc35",
+    "size_bytes": 2914
+  },
+  "image_source_scope": {
+    "all9_allowlists": [
+      {
+        "declared_count": 3,
+        "manifest": {
+          "path": "deploy/analytics_execution/publication/openvino-source-allowlist.txt",
+          "sha256": "b1a42fda639e43e61d1d3ab20161f9a294754d9157b0b54be23de02a5e62e3e4",
+          "size_bytes": 124
+        },
+        "owned_edit_intersection": []
+      },
+      {
+        "declared_count": 4,
+        "manifest": {
+          "path": "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt",
+          "sha256": "6fefe6f415200d4a10025e3efb9e28fc22737dee84ca7cb5e40be660b8667722",
+          "size_bytes": 172
+        },
+        "owned_edit_intersection": []
+      },
+      {
+        "declared_count": 79,
+        "manifest": {
+          "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+          "sha256": "43b41dee019fc730704d3c176a753d0e26c8f871da59714ce97e70e9209396cc",
+          "size_bytes": 3780
+        },
+        "owned_edit_intersection": []
+      },
+      {
+        "declared_count": 73,
+        "manifest": {
+          "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+          "sha256": "111c8d3a517a4ab350fbb2753a3c01965e6645eeaad72c24f1b9f1266659e600",
+          "size_bytes": 3538
+        },
+        "owned_edit_intersection": []
+      },
+      {
+        "declared_count": 10,
+        "manifest": {
+          "path": "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt",
+          "sha256": "9a25d25c340f7c0a5e920c8700bb75fbfbf891a6d7fecc3e68363e34ea9dca28",
+          "size_bytes": 562
+        },
+        "owned_edit_intersection": []
+      },
+      {
+        "declared_count": 15,
+        "manifest": {
+          "path": "deploy/native_gst_probe/publication/openvino-source-allowlist.txt",
+          "sha256": "4fbb83d112fff52b8a8a85e3cd48decb4498705328c74b289eee834119b50f05",
+          "size_bytes": 894
+        },
+        "owned_edit_intersection": []
+      },
+      {
+        "declared_count": 11,
+        "manifest": {
+          "path": "deploy/native_gst_probe/publication/savant-source-allowlist.txt",
+          "sha256": "78416b85bc9434312548da1d5dd14b008406813ea13b8a33b212d432d5bce5c0",
+          "size_bytes": 621
+        },
+        "owned_edit_intersection": []
+      },
+      {
+        "declared_count": 72,
+        "manifest": {
+          "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+          "sha256": "f91760d199bf72651be9ea71bcec2effa43d0afdd7a7f89202f1885308fd6624",
+          "size_bytes": 3457
+        },
+        "owned_edit_intersection": []
+      },
+      {
+        "declared_count": 83,
+        "manifest": {
+          "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+          "sha256": "691feca866c3bfdd09fced300659f1f7888c2bdb298c427fa4f4204ce9eba9b4",
+          "size_bytes": 3841
+        },
+        "owned_edit_intersection": []
+      }
+    ],
+    "host_closure_v6": {
+      "path": "artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.v6.json",
+      "sha256": "fedf5d8c85c5e435d4bfab21b4c8851db1e07fd9a982f428f91621314b3a8805",
+      "size_bytes": 30986
+    },
+    "host_declared_count": 87,
+    "no_image_or_host_runtime_source_edit": true,
+    "owned_edit_intersection": [],
+    "selected_gst_declared_count": 73
+  },
+  "limitations": [
+    "Focused fixture semantics only; no hosted full-suite acceptance.",
+    "Local small C ELF and ordinary child fixtures compiled/executed; no real Docker daemon/image, model inference, native benchmark, namespace syscall or hardware workloads.",
+    "Three original Windows-only tests remain skipped/nonexecution; no new skip decorator.",
+    "Native139 cause and original namespace policy denial remain unproved and unchanged.",
+    "Historical schemas/receipts and temporary fixture image IDs are not current runtime/full qualification authority.",
+    "Before/after hash inventory is not full FD-held7-epoch cold benchmark acceptance; no such claim.",
+    "Original failed99 and targeted8 captures retained without retrying hardware or overwriting attempts.",
+    "All10 original test modules retain96 source test IDs/assertion counts; only approved fixture paths/input spellings, scans and exact count literals changed."
+  ],
+  "limits": {
+    "final_before_after_hashes_equal": true,
+    "final_both_eof": true,
+    "final_input_source_pins": 531,
+    "final_original_pid_group_absent": true,
+    "original_cap_seconds": 600,
+    "original_channel_cap_each_bytes": 1048576,
+    "python": "3.12.3"
+  },
+  "manifest": {
+    "after": {
+      "path": ".ci/integration-test-selection.v1.json",
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    },
+    "before": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/before/integration-test-selection.v1.json",
+      "sha256": "a27ff9488d658637e16e81d0a6b6614ce9ac43716b7dd5b152060a2cb093c987",
+      "size_bytes": 31541
+    },
+    "current_allowed_count": 88,
+    "old80_exact_subset": true,
+    "old_allowed_count": 80,
+    "original_nine_integrations_and_other_fields_unchanged": true,
+    "provenance": {
+      "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/skip-provenance.v1.json",
+      "sha256": "8ae7b1f595f317881cf73947b6547c2c6b4eabc946769be0b89de4731ad4e7bf",
+      "size_bytes": 4627
+    }
+  },
+  "original_focused_attempts": [
+    {
+      "execution": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/execution.json",
+        "sha256": "4dc7d66f66a7c1ae3078fdeff97472ac22c04004f33ca07c0ff1be81d44ae471",
+        "size_bytes": 588
+      },
+      "facts": {
+        "channel_bytes": {
+          "stderr": 108575,
+          "stdout": 0
+        },
+        "elapsed_s": 553.5412391789723,
+        "failure": null,
+        "fixture_only_no_real_engine_or_model_execution": true,
+        "original_group_members": [],
+        "original_pid_absent": true,
+        "owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "gid": 1000,
+          "pgid": 34819,
+          "pid": 34819,
+          "startticks": 27012279,
+          "uid": 1000
+        },
+        "pipe_eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "returncode": 1,
+        "source_path_count": 42,
+        "source_stable": true,
+        "successful": false,
+        "timed_out": false
+      },
+      "launch": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/launch.json",
+        "sha256": "d8aa37ff710387f0c0017c6078633c84ea4de951e72968fb6b404a70460ade3f",
+        "size_bytes": 2523
+      },
+      "name": "attempt01",
+      "results": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/test-results.json",
+        "sha256": "1984a5a03d2d88d4adcb1e17b89da88754308a508b28276dc3d752b84d601a12",
+        "size_bytes": 33106
+      },
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/stderr.raw",
+        "sha256": "68e79cd307f86762386b2fbe250c51c4c76ec8d8081f403040d2af7859faba81",
+        "size_bytes": 108575
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt01/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "execution": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/execution.json",
+        "sha256": "e6c44039fd4b51f1e7362fa14ad8d6f94efca24167346a135239114801869b45",
+        "size_bytes": 587
+      },
+      "facts": {
+        "channel_bytes": {
+          "stderr": 7076,
+          "stdout": 0
+        },
+        "elapsed_s": 32.009834547003265,
+        "failure": null,
+        "fixture_only_no_real_engine_or_model_execution": true,
+        "original_group_members": [],
+        "original_pid_absent": true,
+        "owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "gid": 1000,
+          "pgid": 35156,
+          "pid": 35156,
+          "startticks": 27145110,
+          "uid": 1000
+        },
+        "pipe_eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "returncode": 1,
+        "source_path_count": 51,
+        "source_stable": true,
+        "successful": false,
+        "timed_out": false
+      },
+      "launch": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/launch.json",
+        "sha256": "7160d2226e2fc45e3ffe7b022d4f67adcd33ef3a4da17a1c1a8a4d7940afbb1c",
+        "size_bytes": 3231
+      },
+      "name": "attempt02-targeted",
+      "results": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/test-results.json",
+        "sha256": "c9541e707712bddc83387598dcde392f379e212e13e8a64262913ec8f7fcf772",
+        "size_bytes": 1820
+      },
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/stderr.raw",
+        "sha256": "019c9f1d49e05ff5a645615aef80083782cfeb6edccbf19a633c10769a47f0c3",
+        "size_bytes": 7076
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt02-targeted/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "execution": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/execution.json",
+        "sha256": "a9dd96c51701e8f4be05a8e82e4527a546a85c231b496e677230845062cbbaa4",
+        "size_bytes": 586
+      },
+      "facts": {
+        "channel_bytes": {
+          "stderr": 719,
+          "stdout": 0
+        },
+        "elapsed_s": 0.33190187701256946,
+        "failure": null,
+        "fixture_only_no_real_engine_or_model_execution": true,
+        "original_group_members": [],
+        "original_pid_absent": true,
+        "owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "gid": 1000,
+          "pgid": 35220,
+          "pid": 35220,
+          "startticks": 27157096,
+          "uid": 1000
+        },
+        "pipe_eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "returncode": 0,
+        "source_path_count": 51,
+        "source_stable": true,
+        "successful": true,
+        "timed_out": false
+      },
+      "launch": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/launch.json",
+        "sha256": "aa1cf3325d5cf748bfd76b51717323efb6b5b82ed9d25c22c4a1ab33d9f55f4d",
+        "size_bytes": 2100
+      },
+      "name": "attempt03-selection-targeted",
+      "results": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/test-results.json",
+        "sha256": "e3f9059725b0054a95b456f2c2a4d913370851e7a251f1286afb600fdc4a0ccf",
+        "size_bytes": 318
+      },
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/stderr.raw",
+        "sha256": "1ff4f513c0f90be5e207dd9b65d306acadd525893ef2903f68c93b7fb78f7e8e",
+        "size_bytes": 719
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt03-selection-targeted/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    },
+    {
+      "execution": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/execution.json",
+        "sha256": "db8167780b4e44c58d0dfae2e69060c7ae7eec4d60a9f783873ce0742e2f64d3",
+        "size_bytes": 587
+      },
+      "facts": {
+        "channel_bytes": {
+          "stderr": 69112,
+          "stdout": 0
+        },
+        "elapsed_s": 138.3685269250418,
+        "failure": null,
+        "fixture_only_no_real_engine_or_model_execution": true,
+        "original_group_members": [],
+        "original_pid_absent": true,
+        "owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "gid": 1000,
+          "pgid": 35344,
+          "pid": 35344,
+          "startticks": 27164660,
+          "uid": 1000
+        },
+        "pipe_eof": {
+          "stderr": true,
+          "stdout": true
+        },
+        "returncode": 0,
+        "source_path_count": 531,
+        "source_stable": true,
+        "successful": true,
+        "timed_out": false
+      },
+      "launch": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/launch.json",
+        "sha256": "47277e76490887de707850252a2fc97aea7e7fcc1f7ba57cc7b02be2b51f2119",
+        "size_bytes": 2530
+      },
+      "name": "attempt04-final",
+      "results": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/test-results.json",
+        "sha256": "1d73e6f990c8263b9cff876aaeaa77a2f2ed476317e39c8ea11258a2b113d592",
+        "size_bytes": 15036
+      },
+      "stderr": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/stderr.raw",
+        "sha256": "b812928316dd956db77e6cd1319d61095a2d47a8af2d2dabf802146a7ce27748",
+        "size_bytes": 69112
+      },
+      "stdout": {
+        "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/attempt04-final/stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      }
+    }
+  ],
+  "patch": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-2f409-portable-fixture-repairs-v1/owned-source.diff",
+    "sha256": "28e51e885d73294692ea3d467c421c45933ceef149d4b1563502c282ddcd86ec",
+    "size_bytes": 33932
+  },
+  "schema_version": 1,
+  "scope": "10_existing_test_modules_plus_exact_skip_manifest_only",
+  "standing_approval": "Parent Decision25 finite portable fixture repair grant and explicit same-test derived80-to88 count grant; no production repair"
+}

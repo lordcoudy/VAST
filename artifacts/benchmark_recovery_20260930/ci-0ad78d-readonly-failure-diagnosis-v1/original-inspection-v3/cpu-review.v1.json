@@ -1,0 +1,329 @@
+{
+  "all88_original_skip_ids_unchanged_from5bc": true,
+  "all_members_crc_verified": true,
+  "all_required_native_successes_present": true,
+  "archive": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-original-host-retention-v1/36773798497-cpu/original-artifact.zip",
+    "sha256": "ab520c48107272ad2b03615c3c1e0a755537cb9faf5ddbdedc0cc606b307e31b",
+    "size_bytes": 1946953
+  },
+  "artifact_kind": "vast_0ad78d_original_cpu_ci_closed_readonly_review_v1",
+  "built_targets": [
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "decoded_original_joblog": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-original-host-retention-v1/cpu-job-110086521669.decoded.exact.original.log",
+    "sha256": "d06d16cbf00dc111fc8d2214ebd0bf8053efc115e8a732d9dbd8c6c56f2769a7",
+    "size_bytes": 91680
+  },
+  "decoded_zip_bytes": 10338880,
+  "differences_from5bc": [
+    "One prior pure GVA error is now a genuine original success, with the method unchanged in mandatory portable selection.",
+    "Errors reduce25->24 and successes2804->2805; failures21/skips88/selected2938/discovered2947/integration9 and native3 successes stay unchanged.",
+    "Namespace denial is a new actual original PID3946/boot41beccfd\u2026 record; no old PID3991/journal record is substituted."
+  ],
+  "eight_exact_committed_source_blob_joins": [
+    {
+      "original_git_blob": "2ea2534bb3337509b01dad002ef53324ff79e72b",
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "6841581ae05ae7ea862752fb23f0999e48283d6dcad27c4634c94e626960eabc",
+      "size_bytes": 28237
+    },
+    {
+      "original_git_blob": "e52195a17b95e854a334f2793ec01c9a6ac87df0",
+      "path": "scripts/ci_namespace_diagnostic_v1.py",
+      "sha256": "7bb96d3dba712f8c47c2afc2984628ccee7cca03e827895e95f1461c3479bbe5",
+      "size_bytes": 22270
+    },
+    {
+      "original_git_blob": "c79daa8e445e287923a67240fdea78f378bfe23a",
+      "path": "scripts/ci_test_selection_v1.py",
+      "sha256": "c911e1a566682094c4c9fc86177af84b696b9be35e7511039d944e8d75c65a9f",
+      "size_bytes": 9945
+    },
+    {
+      "original_git_blob": "69f60f1c660bda1842c298d68526caf6542beef9",
+      "path": ".ci/integration-test-selection.v1.json",
+      "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+      "size_bytes": 34014
+    },
+    {
+      "original_git_blob": "4c4c4092144dbb6dd41abe0c1fa26b3baec8d2e6",
+      "path": ".github/workflows/ci.yml",
+      "sha256": "0ec268a98e6f61e1db860c1455d1970f714d1abe7d0dd8da483ca13fbcb8d95a",
+      "size_bytes": 4251
+    },
+    {
+      "original_git_blob": "7585361e5d7ecd55eca5b172823800c842db515d",
+      "path": "tests/test_run_ci_checks.py",
+      "sha256": "fdfff7c66e0d50e51b4cc616a5f660dc19eafdeabf0cfe0f88583689e91b3925",
+      "size_bytes": 15786
+    },
+    {
+      "original_git_blob": "84133380f1c5404c56be07c367de320f2f500df0",
+      "path": "tests/test_ci_namespace_diagnostic_v1.py",
+      "sha256": "37d771d553a76cbbaf6d878ab10cc2a7f409bb054c41ada8f36daba16da91223",
+      "size_bytes": 20805
+    },
+    {
+      "original_git_blob": "eb9672f299a59387d68afba0df6c8b55cbecbd0d",
+      "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "sha256": "7ffdbe0d1aed76bbb1da0251cbae86bf968396b998f3899f5c29ace7e9d3793b",
+      "size_bytes": 11557
+    }
+  ],
+  "failure_index": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/original-inspection-v3/cpu-failure-index.v1.json",
+    "sha256": "7f45728caf0a185e200a1bf5e76a02ed0b2f27a90f4798a3882e31e45bd18b2d",
+    "size_bytes": 75893
+  },
+  "failure_module_counts": {
+    "test_backend_publication_broker_terminal_v3": 1,
+    "test_backend_publication_output_transaction_production_v3": 13,
+    "test_backend_publication_output_transaction_v3": 17,
+    "test_backend_publication_process_supervisor_v3": 14
+  },
+  "full_ci_successful": false,
+  "full_discovery_selection_ids_unchanged_from_original5bc": true,
+  "hardware_acceptance": false,
+  "interpretation": "This original run repeats same-PID/boot/wall AppArmor capable/sys_admin denial after successful CLONE_NEWUSER and setgroups-open EACCES13. It supports the separately reviewed exact-executable ephemeral CI policy investigation; collectorFalse remains unchanged. The45 individual test tracebacks are retained, and membership is not proof of each failure syscall cause.",
+  "job_id": 110086521669,
+  "limitations": [
+    "Original fullCI exit1, never successful. No attribution of historical139 or blanket per-test namespace-cause assertion.",
+    "Source before/after is the original full3663-path report; own exact Git comparisons are explicitly scoped to eight relevant committed blobs, not rehashing all tracked source files.",
+    "No workflow/test/policy/source edits, CI retry/cancel, local test/model/native/engine/namespace operation or credential/signedURL disclosure."
+  ],
+  "loaded_gstreamer_factories": {
+    "appsrc": {
+      "plugin": {
+        "device": 2049,
+        "inode": 94993,
+        "path": "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstapp.so",
+        "sha256": "4ff1814cf43e4d7df591da20458f912cedb6ffd8459ab02e3afd5347dfeaad59",
+        "size_bytes": 14424
+      },
+      "returncode": 0
+    },
+    "queue": {
+      "plugin": {
+        "device": 2049,
+        "inode": 7587,
+        "path": "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstcoreelements.so",
+        "sha256": "bf7fa7eab22d238f1bc5e2e76a978f24694460657efba0827961eb154482f436",
+        "size_bytes": 451152
+      },
+      "returncode": 0
+    },
+    "videoconvert": {
+      "plugin": {
+        "device": 2049,
+        "inode": 95016,
+        "path": "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstvideoconvertscale.so",
+        "sha256": "b0597f4da660da026c3cd8de9621471c74c8aec67562698adc944473fbc8c2ff",
+        "size_bytes": 59712
+      },
+      "returncode": 0
+    }
+  },
+  "original_conclusion": "failure",
+  "original_full_elapsed_s": 1498.0688802690001,
+  "original_namespace": {
+    "collector_policy_denial_proven": false,
+    "first_failed_syscall": {
+      "errno": 13,
+      "error": "[Errno 13] Permission denied: '/proc/self/setgroups'",
+      "error_type": "PermissionError",
+      "event": "syscall_failed",
+      "flags": 655361,
+      "monotonic_ns": 187455545806,
+      "original_pid": 3946,
+      "path": "/proc/self/setgroups",
+      "pid": 3946,
+      "stock_tolerated_missing_setgroups": false,
+      "syscall": "open",
+      "terminal_monotonic_ns": 187455598666,
+      "terminal_wall_time_ns": 1790800675531296558,
+      "wall_time_ns": 1790800675531243779
+    },
+    "five_raw_original_copy_provenance": [
+      {
+        "bytes_equal_original_zip_member": true,
+        "copy": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/original-inspection-v3/original-namespace-diagnostic--stdout.raw",
+          "sha256": "8e960ee28cbfa9279ff98b6af8915b8d429d52f843078701e8fe59fd887d3aed",
+          "size_bytes": 1410
+        },
+        "member_crc32": 1906675503,
+        "zip_member": "namespace-diagnostic/stdout.raw"
+      },
+      {
+        "bytes_equal_original_zip_member": true,
+        "copy": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/original-inspection-v3/original-namespace-diagnostic--kernel-query--stdout.raw",
+          "sha256": "b52fbbd160a49069ea58c535e433ddc8a511dfcb2dff8b407ce69119ca709437",
+          "size_bytes": 772
+        },
+        "member_crc32": 3178280351,
+        "zip_member": "namespace-diagnostic/kernel-query/stdout.raw"
+      },
+      {
+        "bytes_equal_original_zip_member": true,
+        "copy": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/original-inspection-v3/original-namespace-diagnostic--kernel-denial.json",
+          "sha256": "27af2c6f906a4ee5fbeba95fc31a3b1cb6b8dc19e13bd454c2ab1947476aaa0f",
+          "size_bytes": 1553
+        },
+        "member_crc32": 1366486963,
+        "zip_member": "namespace-diagnostic/kernel-denial.json"
+      },
+      {
+        "bytes_equal_original_zip_member": true,
+        "copy": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/original-inspection-v3/original-namespace-diagnostic--capture.json",
+          "sha256": "0397ea082b777082da2939ee739c965e8c23d2eec6fc36bca3f162c16c899199",
+          "size_bytes": 925
+        },
+        "member_crc32": 3812633706,
+        "zip_member": "namespace-diagnostic/capture.json"
+      },
+      {
+        "bytes_equal_original_zip_member": true,
+        "copy": {
+          "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-readonly-failure-diagnosis-v1/original-inspection-v3/original-namespace-diagnostic--kernel-query--capture.json",
+          "sha256": "d680924f6efd2c7871c39755515c9b5ee90f24e485e10a3ddfabf4d825227ec8",
+          "size_bytes": 1238
+        },
+        "member_crc32": 3846458836,
+        "zip_member": "namespace-diagnostic/kernel-query/capture.json"
+      }
+    ],
+    "journal_wall_minus_failed_syscall_terminal_ns": 629442,
+    "kernel_record": {
+      "MESSAGE": "audit: type=1400 audit(1790800675.529:128): apparmor=\"DENIED\" operation=\"capable\" class=\"cap\" profile=\"unprivileged_userns\" pid=3946 comm=\"python3.12\" capability=21  capname=\"sys_admin\"",
+      "PRIORITY": "5",
+      "SYSLOG_FACILITY": "0",
+      "SYSLOG_IDENTIFIER": "kernel",
+      "_BOOT_ID": "41beccfde8da48c6a85b6f87faa95db7",
+      "_HOSTNAME": "runnervm8df0l",
+      "_MACHINE_ID": "bb9ebc7b4ed8498385fd3b7f0a389054",
+      "_RUNTIME_SCOPE": "system",
+      "_SOURCE_MONOTONIC_TIMESTAMP": "187523617",
+      "_TRANSPORT": "kernel",
+      "__CURSOR": "s=ae0fe61fe7fd4854ada7a6aa4ab37ea4;i=4805;b=41beccfde8da48c6a85b6f87faa95db7;m=b2c5ae4;t=65cb94620ec96;x=e28b938a9a970578",
+      "__MONOTONIC_TIMESTAMP": "187456228",
+      "__REALTIME_TIMESTAMP": "1790800675531926",
+      "__SEQNUM": "18437",
+      "__SEQNUM_ID": "ae0fe61fe7fd4854ada7a6aa4ab37ea4"
+    },
+    "matching_original_pid_boot_wall_interval": true,
+    "original_group_absent": true,
+    "original_label_before_unshare": {
+      "path": "/proc/self/attr/current",
+      "value": "unconfined"
+    },
+    "owner": {
+      "boot_id": "41beccfd-e8da-48c6-a85b-6f87faa95db7",
+      "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "executable_stat": {
+        "st_dev": 2049,
+        "st_gid": 1001,
+        "st_ino": 2437097,
+        "st_mode": 33261,
+        "st_nlink": 1,
+        "st_size": 17744,
+        "st_uid": 1001
+      },
+      "gid": 1001,
+      "pgid": 3946,
+      "pid": 3946,
+      "ppid": 3640,
+      "startticks": 18712,
+      "uid": 1001
+    },
+    "post_exec_executable_observed": false,
+    "query_credential_transition": false,
+    "query_initial_owner_python_only": true,
+    "query_returncode": 0,
+    "query_supplementary_groups": [
+      4,
+      100,
+      118,
+      999,
+      1001
+    ],
+    "query_uid": 1001,
+    "successful_CLONE_NEWUSER": {
+      "event": "syscall_completed",
+      "flags": 268435456,
+      "monotonic_ns": 187455420632,
+      "original_pid": 3946,
+      "pid": 3946,
+      "syscall": "unshare",
+      "terminal_monotonic_ns": 187455509589,
+      "wall_time_ns": 1790800675531118654
+    }
+  },
+  "original_report_raw_checkout_matches_commit": true,
+  "original_suite_observer": {
+    "descendant_quiescence": "not established by original-child status",
+    "forced_sigkill": false,
+    "forced_sigterm": false,
+    "pipe_eof": {
+      "control": true,
+      "trace": true
+    },
+    "returncode": 1,
+    "signal": null
+  },
+  "outcomes": {
+    "errors": 24,
+    "executed": 2938,
+    "existing_audited_skips": 88,
+    "failures": 21,
+    "missing_required_successes": 0,
+    "success": 2805
+  },
+  "prior_pure_GVA_failure_now_original_success_ids": [
+    "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant"
+  ],
+  "provider_artifacts": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-original-host-retention-v1/provider-artifacts.final.original.json",
+    "sha256": "a5dae17e0d5c8592d6a508f08d0cd64dee4ec9d6035843d5431d247ecbc617d0",
+    "size_bytes": 1518
+  },
+  "provider_jobs": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-0ad78d-original-host-retention-v1/provider-jobs.final.original.json",
+    "sha256": "593e53da0e3b957372e357f6b2ee538d57b1f596f591454b594f24e16261df33",
+    "size_bytes": 3585
+  },
+  "required_three_native_success_ids": [
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+    "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+  ],
+  "run_id": 36773798497,
+  "schema_version": 1,
+  "selection_counts": {
+    "discovered": 2947,
+    "integration": 9,
+    "portable": 2938
+  },
+  "source_blob_bytes_read": 147287,
+  "source_blob_read_argv": [
+    "/usr/bin/git",
+    "-c",
+    "core.longpaths=true",
+    "--git-dir=/mnt/e/STUDY/VAST/.git/worktrees/fix-benchmark-preparations-spec",
+    "cat-file",
+    "--batch"
+  ],
+  "source_commit": "0ad78d6abdb3c526544a17185af7fe8094716735",
+  "tracked_source_before_after_equal": true,
+  "tracked_source_path_count": 3663,
+  "zip_member_count": 178
+}

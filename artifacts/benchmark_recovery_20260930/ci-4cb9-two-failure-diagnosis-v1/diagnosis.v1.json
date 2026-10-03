@@ -1,0 +1,256 @@
+{
+  "accepted": false,
+  "artifact_kind": "vast_original_4cb_two_failure_diagnosis_v1",
+  "author_observation_failures": [
+    {
+      "scope": "Read-only metadata command printed an unintentionally nested report then failed a missing top-level key; no source/output authority change.",
+      "tool_chunk": "c99458"
+    },
+    {
+      "scope": "Read-only compact field inspection assumed list was dict; source/receipt unchanged.",
+      "tool_chunk": "932ac4"
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-focused-attempt01/prelaunch-failure.v1.json",
+      "scope": "Collector Git metadata prelaunch failure before any unit child. Corrected collector and new namespace are separate."
+    }
+  ],
+  "diagnosis": [
+    {
+      "all9_allowlist_membership": [],
+      "deterministic_proof": "Both genuine pipe-gated normal/held owner-collision tests failed before source fix because the losing candidate created terminal intent. After private owner-only journal promotion, the same tests pass and the winner alone emits response.",
+      "finite2693": true,
+      "host87": true,
+      "id": "test_backend_publication_output_transaction_v3.BackendPublicationOutputTransactionV3Tests.test_two_coordinators_spawn_at_most_once",
+      "latest_test_supplement": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/author-review.v2.supplement.json",
+        "sha256": "2015d19722c8d500dc7efd3c9825daa126f8591443f4f285fad6d61cf145110f",
+        "size_bytes": 3017
+      },
+      "proven_original": "Both outcomes were errors: foreign immutable broker owner mismatch and POSIX broker process failed; exactly-one-result assertion failed.",
+      "proven_source_defect": "A validated request journal was passed to early terminal emission even when this candidate failed immutable owner commit. A losing candidate could write into the elected owner journal.",
+      "repair": "Only after successful immutable owner commit promote local terminal_journal; early failure writes durable terminal only through that private promoted reference. No startup lock/schema/timeout/namespace/parent cleanup changes.",
+      "review": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/broker-terminal-owner-repair-v1/author-review.v1.json",
+        "sha256": "6d597bca035d385e0f03cad2a4a0481360db37701ae8337668bdc7f43562118c",
+        "size_bytes": 12165
+      },
+      "selected73": false,
+      "source": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/backend_publication_process_supervisor_v3.py",
+        "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e",
+        "size_bytes": 124707
+      },
+      "unknown": "The archived failure does not retain the exact racing child journal messages or prove the precise hosted timing. Fixture five-second release timing is not itself a demonstrated cause."
+    },
+    {
+      "controlled_facts": "A deliberately reaped genuine child is refused with FileNotFoundError. A genuine child held at READY registers before release and passes actual cold process validation. A child failing before READY cannot register. Unreaped zombie semantics remain supported.",
+      "finite2693": false,
+      "host87": false,
+      "id": "test_publication_operational_process_custody_v1.ProcessCustodyTests.test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded",
+      "local_original_reproduction": "The unchanged original ID passed once locally with32 calls and intended33rd capacity refusal; observation wrappers always forwarded real validators.",
+      "proven_original": "Receipt call_count was11 rather than32; generic expected ValueError scope hid the first error.",
+      "repair": "A capacity-only real pipe/stdin gate keeps that fixture child alive until actual registration, then releases it. Exact33rd capacity error is asserted. Original process()/run_child() and all other original methods are AST-identical.",
+      "review": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/capacity-fixture-repair-v1/author-review.v1.json",
+        "sha256": "fea8e3f0e16e6a8c8cac229b1ed39b8babab9c993f7e1ec1aed47ba9c9d30193",
+        "size_bytes": 6086
+      },
+      "selected73": false,
+      "source": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_operational_process_custody_v1.py",
+        "sha256": "8ba4f9b93e00b368712cc3f84855b648ff98d54ff887de25f99d4208e11a97d1",
+        "size_bytes": 30982
+      },
+      "unchanged_production": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py",
+        "sha256": "5ea8477e527bf57438ce81cea9b8b19fb628c555cb808711438e2036bcaee923",
+        "size_bytes": 47271
+      },
+      "unknown": "Original hosted first swallowed ValueError remains unavailable; controlled reaped error is not that error and does not establish original hosted causality."
+    }
+  ],
+  "future_requirements": [
+    "Independent final source review and root exact source commit before new current CI.",
+    "Supervisor is in host87: renew genuine current host closure and current CPU/GPU acceptance after root source checkpoint; preserve original0ad accepted pairs, no authority rebind.",
+    "No image rebuild follows solely from this supervisor/test-only change; actual selected73/native3/worker2 scope proof must remain current.",
+    "Current independent CI checkout is prepared only; stock CI invocation count remains0 and the original hosted failure remains failed."
+  ],
+  "limits": [
+    "No production process-helper or transaction edit, profile/policy operation, model/engine/native workload, full CI launch, benchmark dispatch or Git mutation by this diagnosis.",
+    "Focused broker12 plus corrected-helper2 and capacity6 are scoped units, not green full CI or hardware acceptance."
+  ],
+  "original": {
+    "commit": "4cb9d8313cca71256179bc3b59cc6f9137e7b8ba",
+    "declared_integrations_unexecuted": 9,
+    "discovered": 2969,
+    "errors": 0,
+    "exact_failure_events": [
+      {
+        "event": "test_started",
+        "monotonic_ns": 178522404212,
+        "test_id": "test_backend_publication_output_transaction_v3.BackendPublicationOutputTransactionV3Tests.test_two_coordinators_spawn_at_most_once"
+      },
+      {
+        "event": "test_failure",
+        "monotonic_ns": 183779606912,
+        "test_id": "test_backend_publication_output_transaction_v3.BackendPublicationOutputTransactionV3Tests.test_two_coordinators_spawn_at_most_once"
+      },
+      {
+        "elapsed_s": 5.258851668999995,
+        "event": "test_terminal",
+        "monotonic_ns": 183781256652,
+        "outcome": "failure",
+        "test_id": "test_backend_publication_output_transaction_v3.BackendPublicationOutputTransactionV3Tests.test_two_coordinators_spawn_at_most_once"
+      },
+      {
+        "event": "test_started",
+        "monotonic_ns": 907135977702,
+        "test_id": "test_publication_operational_process_custody_v1.ProcessCustodyTests.test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded"
+      },
+      {
+        "event": "test_failure",
+        "monotonic_ns": 907390588287,
+        "test_id": "test_publication_operational_process_custody_v1.ProcessCustodyTests.test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded"
+      },
+      {
+        "elapsed_s": 0.25745256499999414,
+        "event": "test_terminal",
+        "monotonic_ns": 907393431108,
+        "outcome": "failure",
+        "test_id": "test_publication_operational_process_custody_v1.ProcessCustodyTests.test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded"
+      }
+    ],
+    "failures": [
+      {
+        "test_id": "test_backend_publication_output_transaction_v3.BackendPublicationOutputTransactionV3Tests.test_two_coordinators_spawn_at_most_once",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_backend_publication_output_transaction_v3.py\", line 790, in test_two_coordinators_spawn_at_most_once\n    self.assertEqual(\nAssertionError: 0 != 1 : [BackendPublicationOutputTransactionV3Error('backend publication synthetic v3 process failed: durable broker owner does not bind the spawned broker'), BackendPublicationOutputTransactionV3Error('backend publication synthetic v3 process failed: backend publication POSIX broker process failed')]\n"
+      },
+      {
+        "test_id": "test_publication_operational_process_custody_v1.ProcessCustodyTests.test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_publication_operational_process_custody_v1.py\", line 286, in test_caught_invalid_phase_remains_sticky_and_call_capacity_is_bounded\n    self.assertEqual(receipt[\"call_count\"], 32)\nAssertionError: 11 != 32\n"
+      }
+    ],
+    "full_job_elapsed_s": 1475.3290163,
+    "job_id": 110117643414,
+    "original_profile_observation": {
+      "actual_label": {
+        "path": "/proc/self/attr/current",
+        "value": "vast-ci-userns-bb698292a08a4cc197faae0cfd7f5d90 (unconfined)"
+      },
+      "boot_id": "fbd162ee-8261-43fc-a05a-2d380da796a3",
+      "executable": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+      "expected_profile": "vast-ci-userns-bb698292a08a4cc197faae0cfd7f5d90 (unconfined)",
+      "pid": 4050
+    },
+    "portable_selected": 2960,
+    "profile_load_unload": {
+      "attempted": true,
+      "held_fds_released": true,
+      "load_phase": {
+        "cleanup_deadline_ns": 161594106252,
+        "execution_deadline_ns": 151594106252,
+        "started_monotonic_ns": 131594106252
+      },
+      "load_terminal": {
+        "capture_completed": true,
+        "failure": null,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "load_verified": true,
+      "name": "vast-ci-userns-bb698292a08a4cc197faae0cfd7f5d90",
+      "profile": {
+        "epoch": [
+          2049,
+          9453092,
+          33152,
+          1,
+          158,
+          1790805745924229773,
+          1790805745924229773
+        ],
+        "path": "/home/runner/work/_temp/vast-cpu-checks/namespace-profile/owned.profile",
+        "sha256": "4b275ffea5a5d6029a57f049539c4e57fc8acd0d37734474889c54062b19ff62",
+        "size_bytes": 158,
+        "stat": {
+          "st_dev": 2049,
+          "st_gid": 1001,
+          "st_ino": 9453092,
+          "st_mode": 33152,
+          "st_nlink": 1,
+          "st_size": 158,
+          "st_uid": 1001
+        }
+      },
+      "status": "completed",
+      "unload_phase": {
+        "cleanup_deadline_ns": 1605931558692,
+        "execution_deadline_ns": 1595931558692,
+        "started_monotonic_ns": 1575931558692
+      },
+      "unload_terminal": {
+        "capture_completed": true,
+        "failure": null,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "unload_verified": true
+    },
+    "required_native_ids_successful": [
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+    ],
+    "run_id": 36783010512,
+    "six_native_builds": {
+      "argv": [
+        "cmake",
+        "--build",
+        "/home/runner/work/_temp/vast-cpu-checks/build",
+        "--parallel",
+        "2",
+        "--target",
+        "vast_native_gst_probe",
+        "vast_checkpoint_source",
+        "gstadaptivescheduler",
+        "gstvastanalyticsterminal",
+        "gstvastanalyticsqueue",
+        "gstvastcheckpointprefixqueue"
+      ],
+      "cleanup_error": null,
+      "elapsed_s": 15.752515020999994,
+      "returncode": 0,
+      "timed_out": false
+    },
+    "skips": 88,
+    "source_after": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/original-member-copies-v1/tracked-source.after.json.original.raw",
+      "sha256": "2bfeedc946da7429e417365224538bb48575df54878fffefd33b3f8f34293e1d",
+      "size_bytes": 867128
+    },
+    "source_before": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-two-failure-diagnosis-v1/original-member-copies-v1/tracked-source.before.json.original.raw",
+      "sha256": "2bfeedc946da7429e417365224538bb48575df54878fffefd33b3f8f34293e1d",
+      "size_bytes": 867128
+    },
+    "successful": false,
+    "successful_tests": 2870,
+    "zip": {
+      "epoch": [
+        69,
+        2814749769526779,
+        33279,
+        1,
+        1973434,
+        1790807574770443000,
+        1790807574770443000
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/ci-4cb9-original-host-retention-v1/36783010512-cpu/original-artifact.zip",
+      "sha256": "ad640c85c3641140fb26ce5f473bc37ff4424c731f0cebf6bb36068643f55bfb",
+      "size_bytes": 1973434
+    }
+  },
+  "schema_version": 1,
+  "status": "original_failure_retained_scoped_repairs_pending_independent_review_and_current_checks"
+}

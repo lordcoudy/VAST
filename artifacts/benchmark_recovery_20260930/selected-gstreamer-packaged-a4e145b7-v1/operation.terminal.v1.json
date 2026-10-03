@@ -1,0 +1,72 @@
+{
+  "accepted": false,
+  "classification": "packaged fixture gate only; no model or benchmark acceptance",
+  "commands": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/daemon-before.terminal.v1.json",
+      "sha256": "57a1b1e75a2a35959a915adc6938461967d960ca4c7ea24893c89fbcef521a49",
+      "size_bytes": 1292
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/image-before.terminal.v1.json",
+      "sha256": "efd853898ce1be3aafffb00637942b49225e7ebe83a944a8d630268b5f47965f",
+      "size_bytes": 1351
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/name-reservation.terminal.v1.json",
+      "sha256": "ba61cd94029d9e18196b992c1c960502cb52441bf72648b8b86e51ef4041eb22",
+      "size_bytes": 1771
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/packaged-component-front.terminal.v1.json",
+      "sha256": "90e9ed3c0db983d9fe0b8916221bfecb379252b65e9b3cad55bfad5708387658",
+      "size_bytes": 3149
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/original-container-terminal.terminal.v1.json",
+      "sha256": "b73ca5f13b3b7d07f5848260a1cbf8f7c179866d6b3fa7941f70f7571a6af2e1",
+      "size_bytes": 1802
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/original-container-remove.terminal.v1.json",
+      "sha256": "7565b26c5a817775e313e95ca753210fb884ec730169d9285e1d70fffe598511",
+      "size_bytes": 1367
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/cid-absence.terminal.v1.json",
+      "sha256": "05cc2404a311ff6f00e336c7e35410187652e7b734fc988bdde49d36f0810a13",
+      "size_bytes": 1770
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/name-absence.terminal.v1.json",
+      "sha256": "2eba8275a91ad5eca255cd07e0959a9dca54937673c2a286e1bb132beb192c2c",
+      "size_bytes": 1764
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/selected-gstreamer-packaged-a4e145b7-v1/daemon-after.terminal.v1.json",
+      "sha256": "6ddc9b6dc4002babb8f38fca1be49380afab0c2a425f6384d1bbfef08015601c",
+      "size_bytes": 1290
+    }
+  ],
+  "commit": "a4e145b7bf32e0c870b114e303e9adb6a559d0ef",
+  "container_id": "a270a897ddcd533e9927a5493b8a85f8e92c94c63d1c1513fd8462fdf30d8709",
+  "elapsed_s": 7.8220737730152905,
+  "exact_cid_and_name_absence_after_remove": true,
+  "exact_owned_remove_completed": true,
+  "failure": null,
+  "image_id": "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6",
+  "original_observed_state": {
+    "Created": "2026-09-30T14:07:09.966109526Z",
+    "ExitCode": 0,
+    "FinishedAt": "2026-09-30T14:07:14.567475721Z",
+    "Id": "a270a897ddcd533e9927a5493b8a85f8e92c94c63d1c1513fd8462fdf30d8709",
+    "Image": "sha256:e474867043f1a74387573140cb2bfd69825df2672edad0acda0d28954af84cb6",
+    "Name": "/vast-component-fixtures-e626df5b51044b7d9fbc4f76db6d5f5e",
+    "OOMKilled": false,
+    "Operation": "887bfed8e5b872096274d48bc74dc529becfc611bab57baa0f020fa402438027",
+    "Pid": 0,
+    "Running": false,
+    "StartedAt": "2026-09-30T14:07:10.03044317Z"
+  },
+  "publication_ready": false
+}

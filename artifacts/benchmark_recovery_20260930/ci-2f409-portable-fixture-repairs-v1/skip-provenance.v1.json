@@ -1,0 +1,123 @@
+{
+  "integration_declarations_unchanged": true,
+  "new_exact_allowed_count": 88,
+  "no_new_skip_decorators": true,
+  "original_allowed_80_subset_unchanged": true,
+  "original_integration_nine_canonical_sha256": "b2cef04f9a53c6ff5f9c2dcd33c7fce87196fcd6638bcbab1cc9748e48708c18",
+  "original_unapproved_eight": [
+    {
+      "decorator_lines": [
+        5312,
+        5313
+      ],
+      "method_line": 5314,
+      "original_decorated_method_unchanged": true,
+      "reason": "real KPP AVI files are not present",
+      "source": {
+        "path": "tests/test_benchmark_contract.py",
+        "sha256": "9918a25c4eb94f6b60323360bbbfed1a579b542b306e4f46024b17f74e991abc",
+        "size_bytes": 254120
+      },
+      "test_id": "test_benchmark_contract.BenchmarkContractTests.test_kpp_real_avi_manifest_validates_real_files_and_fps_policy"
+    },
+    {
+      "decorator_lines": [
+        921
+      ],
+      "method_line": 922,
+      "original_decorated_method_unchanged": true,
+      "reason": "Windows custody route only",
+      "source": {
+        "path": "tests/test_materialize_kpp_legacy_iss_v2.py",
+        "sha256": "7690d9670a3319afcb7af83c3b140c7ac6dd3368df3463e01631bb06c8d6d6f6",
+        "size_bytes": 39346
+      },
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_each_unpublished_bootstrap_failure_leaves_no_random_orphan"
+    },
+    {
+      "decorator_lines": [
+        859
+      ],
+      "method_line": 860,
+      "original_decorated_method_unchanged": true,
+      "reason": "Windows custody route only",
+      "source": {
+        "path": "tests/test_materialize_kpp_legacy_iss_v2.py",
+        "sha256": "7690d9670a3319afcb7af83c3b140c7ac6dd3368df3463e01631bb06c8d6d6f6",
+        "size_bytes": 39346
+      },
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_failure_closes_every_locally_acquired_handle"
+    },
+    {
+      "decorator_lines": [
+        851
+      ],
+      "method_line": 852,
+      "original_decorated_method_unchanged": true,
+      "reason": "Windows NtCreateFile route only",
+      "source": {
+        "path": "tests/test_materialize_kpp_legacy_iss_v2.py",
+        "sha256": "7690d9670a3319afcb7af83c3b140c7ac6dd3368df3463e01631bb06c8d6d6f6",
+        "size_bytes": 39346
+      },
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_never_path_creates_a_destination_component"
+    },
+    {
+      "decorator_lines": [
+        666
+      ],
+      "method_line": 667,
+      "original_decorated_method_unchanged": true,
+      "reason": "Windows custody route only",
+      "source": {
+        "path": "tests/test_materialize_kpp_legacy_iss_v2.py",
+        "sha256": "7690d9670a3319afcb7af83c3b140c7ac6dd3368df3463e01631bb06c8d6d6f6",
+        "size_bytes": 39346
+      },
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_exact_rerun_holds_target_custody_without_creating"
+    },
+    {
+      "decorator_lines": [
+        809
+      ],
+      "method_line": 810,
+      "original_decorated_method_unchanged": true,
+      "reason": "Windows ACL route only",
+      "source": {
+        "path": "tests/test_materialize_kpp_legacy_iss_v2.py",
+        "sha256": "7690d9670a3319afcb7af83c3b140c7ac6dd3368df3463e01631bb06c8d6d6f6",
+        "size_bytes": 39346
+      },
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rechecks_target_acl_after_long_verification"
+    },
+    {
+      "decorator_lines": [
+        732
+      ],
+      "method_line": 733,
+      "original_decorated_method_unchanged": true,
+      "reason": "Windows ACL route only",
+      "source": {
+        "path": "tests/test_materialize_kpp_legacy_iss_v2.py",
+        "sha256": "7690d9670a3319afcb7af83c3b140c7ac6dd3368df3463e01631bb06c8d6d6f6",
+        "size_bytes": 39346
+      },
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rejects_permissive_target_acl_untouched"
+    },
+    {
+      "decorator_lines": [
+        579
+      ],
+      "method_line": 580,
+      "original_decorated_method_unchanged": true,
+      "reason": "Windows custody route only",
+      "source": {
+        "path": "tests/test_materialize_kpp_legacy_iss_v2.py",
+        "sha256": "7690d9670a3319afcb7af83c3b140c7ac6dd3368df3463e01631bb06c8d6d6f6",
+        "size_bytes": 39346
+      },
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_route_bootstraps_and_holds_full_destination_custody"
+    }
+  ],
+  "schema_version": 1
+}

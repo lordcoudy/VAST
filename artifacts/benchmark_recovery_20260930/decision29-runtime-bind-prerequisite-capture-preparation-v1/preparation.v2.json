@@ -1,0 +1,173 @@
+{
+  "acceptance": false,
+  "accepted_small_capture_reference": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-successor-ci-D-preparation-v1/capture_original_setup_v2.py",
+    "sha256": "930a40eb19dc00d289cbd1e38207933f459dd7a7bcf4d889cd086fb74b3b6cfe",
+    "size_bytes": 4935
+  },
+  "actual_canonical_test": null,
+  "actual_check": null,
+  "actual_fresh95": null,
+  "actual_mount": null,
+  "actual_outer_terminal": null,
+  "actual_reader_process_closure": null,
+  "artifact_kind": "stock_runtime_bind_prerequisite_capture_preparation_v1",
+  "explicit_limits": [
+    "No original mount/check/CI/test/query has executed; actual outcomes/mountID/owners remain null",
+    "No target imports, model inference or image/device/benchmark operation; canonical executable is only read during eventual capture",
+    "Suppressed stock failure cleanup does not prove rollback; exact after mount state retained and unresolved cleanup fails",
+    "Underlying covered target directory inode unavailable after stock mount; no unmount/removal is implemented",
+    "Fresh original95 and unchanged canonical test are separate future gates; this source does not grant whole CI"
+  ],
+  "external_terminal_gate": [
+    "Root retain original exec cell true EOF/returncode and original outer timeout/helper PID/startticks/UID/GID/PGID",
+    "After original tool terminal, independently scan helper/controller and outer owner PID/groups twice; helper cannot assert its own future absence"
+  ],
+  "inner_argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "30s",
+    "/usr/bin/bash",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/mount_publication_runtime_wsl.sh",
+    "--source-runtime",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+    "--project-root",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+    "--project-runtime-mount",
+    ".publication-runtime/full-publication-cp312-v1"
+  ],
+  "inner_check_argv": [
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "30s",
+    "/usr/bin/bash",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D/scripts/mount_publication_runtime_wsl.sh",
+    "--check-only",
+    "--source-runtime",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1",
+    "--project-root",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261003-decision29-D",
+    "--project-runtime-mount",
+    ".publication-runtime/full-publication-cp312-v1"
+  ],
+  "limits": {
+    "channel_bytes_each": 1048576,
+    "error_rows": 32,
+    "mountinfo_bytes": 4194304,
+    "outer_cleanup_s": 10,
+    "outer_work_s": 120,
+    "per_command_cleanup_s": 10,
+    "per_command_work_s": 30
+  },
+  "lineage": "Owner/proc scan/exclusive raw capture pattern adapted from accepted small setup capture. This is a new finite wrapper with explicit held files/mount observations; function AST identity to old capture is not claimed.",
+  "one_line_delta": {
+    "all_function_ASTs_unchanged": true,
+    "diff": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/v2-one-line.diff",
+      "sha256": "58b35ceaf2030d5e3e4e753988be2c3524a78d5ee3c90fd9bd91301e1f23bf9f",
+      "size_bytes": 475
+    },
+    "exact_raw_inverse": true,
+    "inserted_line": "controller['observed_parent'] = owner(controller['ppid'])",
+    "output_namespace_unchanged": true
+  },
+  "original_B95_interpreter_witness": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-current95-post-D-setup-audit-preparation-v1/original-audit-attempt01/review.v1.json",
+    "sha256": "a4945b6dbe8ac466b3fbb4573f17bcb2408912803053772446fa500982c1a8f2",
+    "size_bytes": 127757
+  },
+  "original_failed_D_disposition": "failed unchanged; no relabeling",
+  "outer_argv": [
+    "wsl",
+    "-d",
+    "Ubuntu",
+    "-u",
+    "root",
+    "--",
+    "/usr/bin/setsid",
+    "--wait",
+    "/usr/bin/timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "120s",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/capture_stock_runtime_bind_v2.py"
+  ],
+  "outputs": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/original-bind-attempt01",
+  "pins": {
+    "HEAD": {
+      "raw": "3c025b29b3c1d5275c2ec693410e4b83700583de\n",
+      "size_bytes": 41
+    },
+    "canonical_python": {
+      "epoch7": [
+        2096,
+        87545,
+        33261,
+        1,
+        8020928,
+        1787574148546271435,
+        1787574148546271435
+      ],
+      "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+      "size_bytes": 8020928
+    },
+    "script": {
+      "sha256": "5f68ab843ba5022b78242ce50de708f9b387bc817ee3a81cc2cc6f37096a0e6c",
+      "size_bytes": 6112
+    }
+  },
+  "preserved_v1": {
+    "preparation": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/preparation.v1.json",
+      "sha256": "499ca74e6e395e677ad289c57bac84a5c5b86639d9f2bb35e82ae5876767bdf8",
+      "size_bytes": 6642
+    },
+    "source": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/capture_stock_runtime_bind_v1.py",
+      "sha256": "942f7620e7550ad099d3ba52b0c129a5715dbfa59c49481251c28fb78f737a40",
+      "size_bytes": 20833
+    }
+  },
+  "reviewed_plan": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-plan-v1/plan.v1.json",
+    "sha256": "1179e334083458dc750bea7a0d9c49e0f3131cb70158b52857bd92d6cf2ae0ea",
+    "size_bytes": 11340
+  },
+  "schema_version": 1,
+  "source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decision29-runtime-bind-prerequisite-capture-preparation-v1/capture_stock_runtime_bind_v2.py",
+    "sha256": "aa0beeff2f3d6057cd2e5f99bebd311845db0a162757bf5590b39ba6b5d79dff",
+    "size_bytes": 20895
+  },
+  "source_AST_parsed": true,
+  "source_commit_D": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "source_function_names": [
+    "interrupted",
+    "fault",
+    "gate_time",
+    "epoch",
+    "raw",
+    "save",
+    "digest_fd",
+    "hold",
+    "owner",
+    "scan",
+    "mount_observation",
+    "source_row",
+    "command"
+  ],
+  "status": "prepared_unexecuted",
+  "success_predicates": [
+    "Root actual CP312 owner; stock script/head/CP held raw SHA and named/fd seven epochs unchanged; immediate registered nofollow ancestor/leaf holds",
+    "Unique source mount331/read-only/ext4 remains exact same row and mount namespace/boot/directory; D root inode/mode/uid/gid same",
+    "Materialize and check-only original0, exact stock JSON, raw EOF, own original child reaped and two error-free PID/group/session scans",
+    "New exact target unique RO/ext4 mount with same source root/device; source-target directory and Python identities/full SHA/seven epochs equal",
+    "Every held handle independently closed; FD baseline same; final receipt/close clock under120; no late companion"
+  ],
+  "target_code_imported": false
+}

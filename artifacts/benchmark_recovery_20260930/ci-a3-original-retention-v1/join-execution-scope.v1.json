@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_ci_a3_readonly_join_execution_scope_v1",
+  "source_pins": [
+    {
+      "path": "join_originals.py",
+      "size_bytes": 9749,
+      "sha256": "9b54ad55e3a14e197b14ceeac61808e53eb32b632a543ed3cefc1616788b950d"
+    },
+    {
+      "path": "join_originals_v2.py",
+      "size_bytes": 9740,
+      "sha256": "df49c381a6b6e741261146f44010fe86c5e383f2f418ed69762ba1d84a2bb6c3"
+    },
+    {
+      "path": "download_originals.py",
+      "size_bytes": 5121,
+      "sha256": "d44b90de7b5aac77cffb09e24df50bad8a8f442bdc7681776b2d78c270b18f25"
+    }
+  ],
+  "original_failed_join": {
+    "tool_chunk": "576118",
+    "exit_code": 1,
+    "wall_time_seconds": 1.0082723,
+    "failure": "Local reader asserted response/control EOF key; original metadata actually uses control.",
+    "original_reader_preserved": true,
+    "result_files_published": false
+  },
+  "corrected_join": {
+    "tool_chunk": "97a770",
+    "exit_code": 0,
+    "wall_time_seconds": 1.4807678,
+    "change": "Only expected original EOF dictionary key corrected; no original evidence changed."
+  },
+  "execution_capture_scope": "Actual tool output retains combined WSL warning/process output. Separate original stdout/stderr files or saved external dispatch source were not captured; none are fabricated.",
+  "temporary_urls_saved": false,
+  "workflow_action": null,
+  "hardware_workload": false
+}

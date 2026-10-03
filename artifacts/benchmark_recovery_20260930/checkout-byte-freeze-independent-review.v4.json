@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_independent_closed_checkout_review_v1",
+  "created_at_utc": "2026-09-30T03:12:50.123680+00:00",
+  "reviewer": "/root/adversarial_review",
+  "source_commit": "caea5419c0302fc60183544de86f4e879346b7d0",
+  "planning_commit": "47e432f2b5c09f750a55f7eb0164d84cc4d7e658",
+  "review_reference": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5903081964",
+  "disposition": "pass_checkout_reproducibility_scope",
+  "accepted": false,
+  "publication_ready": false,
+  "model_or_image_workload_run": false,
+  "proof_physical_sha256": {
+    "byte-freeze-fresh-checkouts.v7.json": "3c27a97f3132e84707f9849e4bf6939fd8a6de64173f2f5549251299bbdc7bf3",
+    "byte-freeze-fresh-checkouts.v7.source.json": "7def15c706a49ed03ff6b87d4900873c129eb4d9ba4b29b9ce5aa409d1f76104",
+    "byte-freeze-fresh-checkouts.v7.autocrlf-false.json": "0ce5450ecfd0829b548ca765b337164ce3268d87317dcd5b618025a33388f432",
+    "byte-freeze-fresh-checkouts.v7.autocrlf-true.json": "35750b37b1a14f9abc10ea445b576ce4583d46c4dcde2c114a7751a8cd9ad2e9",
+    "packaging-source-rollforward.v4.json": "6199d98a4496a7c54d5a45ff80687786f5bf7ad43c90f0d2a1129cf2ba007c31",
+    "byte-freeze-corrected-closed-execution.v1.json": "6970b664dcb979217edc5a1cf74b3bf2f6719e8f3c38dfb25f5dd6e22fc4bdac"
+  },
+  "facts": [
+    {
+      "project_root": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+      "mode": "original_source",
+      "physical_source_count": 165,
+      "controller_lf_count": 10,
+      "independent_index_commit_blobs": 350,
+      "declared_status_hex": "204d20636f6e666967732f636865636b706f696e745f616e616c79746963735f6d6f64656c735f6f70656e76696e6f2e79616d6c00204d206465706c6f792f6465657073747265616d2f636865636b706f696e742f726571756972656d656e74732e6c6f636b00204d206465706c6f792f6773747265616d65725f637573746f6d2f7075626c69636174696f6e2f726571756972656d656e74732e6c6f636b00",
+      "all_effective_attributes_match": true,
+      "original_file_epochs_match": true,
+      "recorded_stock9_host78_closures_match_frozen_audit": true
+    },
+    {
+      "project_root": "/var/tmp/vast-byte-freeze-caea5419c030-false-64a1af1d712b",
+      "mode": "false",
+      "physical_source_count": 165,
+      "controller_lf_count": 10,
+      "independent_index_commit_blobs": 350,
+      "declared_status_hex": "",
+      "all_effective_attributes_match": true,
+      "original_file_epochs_match": true,
+      "recorded_stock9_host78_closures_match_frozen_audit": true
+    },
+    {
+      "project_root": "/var/tmp/vast-byte-freeze-caea5419c030-true-137e78bac514",
+      "mode": "true",
+      "physical_source_count": 165,
+      "controller_lf_count": 10,
+      "independent_index_commit_blobs": 350,
+      "declared_status_hex": "",
+      "all_effective_attributes_match": true,
+      "original_file_epochs_match": true,
+      "recorded_stock9_host78_closures_match_frozen_audit": true
+    }
+  ],
+  "source_aggregate_sha256": "f7e2b75bf6eaf847b810fedc417782af3bb1238f4b23ab030463219690667ecc",
+  "controller_lf_aggregate_sha256": "7deb3d2ebda59065c162633afff3fe014d1e7142cab76e57c8e5e2d9551b0b91",
+  "held_rehashed_leaf_count": 534,
+  "held_directory_count": 69,
+  "elapsed_s": 4.010296983993612,
+  "recorded_command_outcomes": {
+    "original_master_commands": 13,
+    "all_returncode0": true,
+    "config_precedes_initial_checkout": true
+  },
+  "source_review": "v9 calls unchanged stock image planners/runtime closure/source identities and host discovery, compares actual exact members/hashes to immutable v4; distinct165 executable plus10 controller metadata, not175 packaged sources. Outside165 universal-newline parser CR-at-EOL and attributes relation are explicit. Actual source commit changes only attributes. No source mutation/reclone/retest occurred in this review.",
+  "limitations": [
+    "Original source worktree status retains its existing stat-cache dirt despite independently equal physical/index/commit bytes; both actual fresh clones remain clean for175 inputs and attributes.",
+    "Recorded stock calls/terminal process observations are verified as closed original evidence; this reader does not repeat stock imports, image inspection, CI, model/parity or benchmark workloads.",
+    "Read-only reviewer first query used LF with git check-attr -z instead of NUL and failed before completion. Corrected query uses NUL; original producer proof unchanged. The first reviewer invocation exists as tool output, without separately saved raw logs or fabricated receipt.",
+    "Native3/worker2 live image metadata scope is a separate pending review; reproducible bytes alone do not grant current image acceptance."
+  ],
+  "blocking_findings": [],
+  "sha256": "f6b23b385074ca0a23ded3cdbbbde4f89dbfbe4aa8f3df739f4dfdd1973c6a13"
+}

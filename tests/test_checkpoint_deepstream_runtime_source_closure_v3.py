@@ -55,6 +55,7 @@ class DeepStreamRuntimeSourceClosureV3Tests(unittest.TestCase):
             "scripts/benchmark_contract.py",
             "scripts/checkpoint_deepstream_launcher.py",
             "scripts/checkpoint_deepstream_sdk_runtime.py",
+            "scripts/publication_policy_qualification.py",
             "deploy/native_gst_probe/checkpoint_admission_transport.hpp",
             "deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
             "deploy/deepstream/checkpoint/vast_deepstream_meta_bridge.cpp",
@@ -65,7 +66,6 @@ class DeepStreamRuntimeSourceClosureV3Tests(unittest.TestCase):
             "CMakeLists.txt",
             "scripts/checkpoint_openvino_execution_bridge.py",
             "scripts/checkpoint_savant_container_runtime_v3.py",
-            "scripts/publication_policy_qualification.py",
             "scripts/run_experiments.py",
         ):
             self.assertNotIn(unrelated, result["all_sources"])

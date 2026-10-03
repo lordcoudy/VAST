@@ -1,0 +1,139 @@
+{
+  "after": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_benchmark_native_diagnostic_v1.py",
+      "sha256": "4b308d6727168b211b4eca7917e18c7516247e77d41329856566e343b9bd9c53",
+      "size_bytes": 13329
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_stock_operations_v1.py",
+      "sha256": "ce3a6cdf6b23804dfdd1dea4b50e163dc0bf1b1ec3012b383bedb98fdccbacae",
+      "size_bytes": 24024
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py",
+      "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "size_bytes": 147846
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_pilot_executor_v2.py",
+      "sha256": "419074d4cb65c6170f3cb33922d769b3c781cb1f24609e762c955dca72d0a09a",
+      "size_bytes": 179864
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_container_custody_v1.py",
+      "sha256": "fcc6058a09e4f600f0d2c5af712754faba88c2a91c70f4641bbea155f5c5f200",
+      "size_bytes": 38040
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "40fabd0c797d914b82a0852df9d86f6fad08c2af13fef5280f1adc4a8b069ba5",
+      "size_bytes": 47167
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "7fcbb1767cecdd9b9555df29d511c2b95a0c36a021f8fe574b383472d6a6df83",
+      "size_bytes": 59617
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+      "sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+      "size_bytes": 65596
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/collect_metrics.py",
+      "sha256": "f2db6624aa56970dd09cd8cf3dcb97c5c55ab47f3c20c54cf5c26cc2263d70dc",
+      "size_bytes": 13324
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_benchmark_native_diagnostic_v1.py",
+      "sha256": "34bc67d00750b6c227667aa89a5657fe93e157a4ddfe7477fc8d864cdb2017fa",
+      "size_bytes": 12466
+    }
+  ],
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-c",
+    "import sys,unittest;sys.path[:0]=['/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests', '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts'];unittest.main(module=None,argv=['unittest', '-v', 'test_publication_benchmark_native_diagnostic_v1'])"
+  ],
+  "before": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_benchmark_native_diagnostic_v1.py",
+      "sha256": "4b308d6727168b211b4eca7917e18c7516247e77d41329856566e343b9bd9c53",
+      "size_bytes": 13329
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_stock_operations_v1.py",
+      "sha256": "ce3a6cdf6b23804dfdd1dea4b50e163dc0bf1b1ec3012b383bedb98fdccbacae",
+      "size_bytes": 24024
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_execution_closure_v1.py",
+      "sha256": "5a9039a86e1abb2ce84f189217cd77e0885f86cba71cc1d6aca09b89df638304",
+      "size_bytes": 147846
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_policy_qualification_pilot_executor_v2.py",
+      "sha256": "419074d4cb65c6170f3cb33922d769b3c781cb1f24609e762c955dca72d0a09a",
+      "size_bytes": 179864
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_container_custody_v1.py",
+      "sha256": "fcc6058a09e4f600f0d2c5af712754faba88c2a91c70f4641bbea155f5c5f200",
+      "size_bytes": 38040
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_operational_process_custody_v1.py",
+      "sha256": "40fabd0c797d914b82a0852df9d86f6fad08c2af13fef5280f1adc4a8b069ba5",
+      "size_bytes": 47167
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+      "sha256": "7fcbb1767cecdd9b9555df29d511c2b95a0c36a021f8fe574b383472d6a6df83",
+      "size_bytes": 59617
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+      "sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+      "size_bytes": 65596
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size_bytes": 132238
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts/collect_metrics.py",
+      "sha256": "f2db6624aa56970dd09cd8cf3dcb97c5c55ab47f3c20c54cf5c26cc2263d70dc",
+      "size_bytes": 13324
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_benchmark_native_diagnostic_v1.py",
+      "sha256": "34bc67d00750b6c227667aa89a5657fe93e157a4ddfe7477fc8d864cdb2017fa",
+      "size_bytes": 12466
+    }
+  ],
+  "classification": "adapter delegation with mocked stock inputs/runtime/collector/finalizers/cold ownership; real physical custody used for file/ancestor/external engine/empty leaf checks; no Docker/model/hardware/measurement acceptance",
+  "elapsed_s": 0.849215344991535,
+  "exit_code": 0,
+  "outputs": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260929/native-diagnostic-adapter/attempt-02.focused.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260929/native-diagnostic-adapter/attempt-02.focused.stderr",
+      "sha256": "4c48f4a3f8e92770b91b9e0fc4547fa32ec1b26ec9acdf274f182d9b04378f69",
+      "size_bytes": 1860
+    }
+  ],
+  "sources_stable": true
+}

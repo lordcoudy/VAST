@@ -1,0 +1,140 @@
+test_dependency_closure_rejects_extraneous_symlinked_wheel (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_dependency_closure_rejects_extraneous_symlinked_wheel) ... ok
+test_docker_copy_and_isolated_build_context_match_validated_sets (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets) ... ERROR
+test_missing_extraneous_and_unrelated_module_drift_fail_as_expected (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_missing_extraneous_and_unrelated_module_drift_fail_as_expected) ... ok
+test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure) ... ERROR
+test_constant_dynamic_local_import_is_in_the_reachable_set (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_constant_dynamic_local_import_is_in_the_reachable_set) ... ok
+test_docker_copy_and_ab_build_use_only_validated_allowlist (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist) ... ERROR
+test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image) ... ERROR
+test_missing_and_extraneous_transitive_imports_fail_closed (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_missing_and_extraneous_transitive_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure) ... ERROR
+test_runtime_consumes_the_native_foundation_drop_queue (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue) ... ERROR
+test_missing_and_extraneous_imports_fail_closed (test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_missing_and_extraneous_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_transitive_closure (test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure) ... ERROR
+test_docker_copy_and_build_hash_use_only_the_validated_allowlist (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_docker_copy_and_build_hash_use_only_the_validated_allowlist) ... ok
+test_missing_and_extraneous_python_imports_fail_closed (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_missing_and_extraneous_python_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_reachable_runtime_closure (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure) ... ok
+test_materializes_only_manifest_union_with_frozen_metadata (test_runtime_build_context_v3.RuntimeBuildContextV3Tests.test_materializes_only_manifest_union_with_frozen_metadata) ... ok
+test_rejects_concurrently_injected_empty_directory (test_runtime_build_context_v3.RuntimeBuildContextV3Tests.test_rejects_concurrently_injected_empty_directory) ... ok
+test_rejects_hardlinked_source_without_partial_copy (test_runtime_build_context_v3.RuntimeBuildContextV3Tests.test_rejects_hardlinked_source_without_partial_copy) ... ok
+test_rejects_manifest_path_escape_and_member_escape (test_runtime_build_context_v3.RuntimeBuildContextV3Tests.test_rejects_manifest_path_escape_and_member_escape) ... ok
+test_rejects_nonempty_or_project_internal_output (test_runtime_build_context_v3.RuntimeBuildContextV3Tests.test_rejects_nonempty_or_project_internal_output) ... ok
+test_rejects_source_replacement_before_held_copy (test_runtime_build_context_v3.RuntimeBuildContextV3Tests.test_rejects_source_replacement_before_held_copy) ... ok
+test_rejects_symlinked_manifest_itself (test_runtime_build_context_v3.RuntimeBuildContextV3Tests.test_rejects_symlinked_manifest_itself) ... ok
+test_rejects_symlinked_manifest_member_without_partial_copy (test_runtime_build_context_v3.RuntimeBuildContextV3Tests.test_rejects_symlinked_manifest_member_without_partial_copy) ... ok
+
+======================================================================
+ERROR: test_docker_copy_and_isolated_build_context_match_validated_sets (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_deepstream_runtime_source_closure_v3.py", line 120, in test_docker_copy_and_isolated_build_context_match_validated_sets
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 397, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 200, in validate_python_source_closure
+    _require(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/publication_gstreamer_component_authority_v1.py, scripts/publication_guardian_component_preprocessing_contract_v1.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_deepstream_runtime_source_closure_v3.py", line 33, in test_production_allowlist_is_exact_multi_entry_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 397, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 200, in validate_python_source_closure
+    _require(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/publication_gstreamer_component_authority_v1.py, scripts/publication_guardian_component_preprocessing_contract_v1.py
+
+======================================================================
+ERROR: test_docker_copy_and_ab_build_use_only_validated_allowlist (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 167, in test_docker_copy_and_ab_build_use_only_validated_allowlist
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/publication_gstreamer_component_authority_v1.py, scripts/publication_guardian_component_preprocessing_contract_v1.py
+
+======================================================================
+ERROR: test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 47, in test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/publication_gstreamer_component_authority_v1.py, scripts/publication_guardian_component_preprocessing_contract_v1.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 66, in test_production_allowlist_is_exact_multi_entry_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/publication_gstreamer_component_authority_v1.py, scripts/publication_guardian_component_preprocessing_contract_v1.py
+
+======================================================================
+ERROR: test_runtime_consumes_the_native_foundation_drop_queue (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 42, in test_runtime_consumes_the_native_foundation_drop_queue
+    self.assertEqual(_validator_module().validate_runtime_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/publication_gstreamer_component_authority_v1.py, scripts/publication_guardian_component_preprocessing_contract_v1.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_transitive_closure (test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_checkpoint_openvino_gva_runtime_source_closure_v3.py", line 28, in test_production_allowlist_is_exact_transitive_closure
+    result = _module().validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 181, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 104, in validate_python_source_closure
+    _require(not missing, "missing reachable Python source: " + ", ".join(missing))
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/publication_gstreamer_component_authority_v1.py, scripts/publication_guardian_component_preprocessing_contract_v1.py
+
+----------------------------------------------------------------------
+Ran 23 tests in 10.097s
+
+FAILED (errors=7)

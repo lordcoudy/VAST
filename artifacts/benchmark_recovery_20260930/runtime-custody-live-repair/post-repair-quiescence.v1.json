@@ -1,0 +1,51 @@
+{
+  "accepted": false,
+  "argv": [
+    "/usr/bin/docker",
+    "--host",
+    "unix:///run/docker.sock",
+    "ps",
+    "--all",
+    "--no-trunc",
+    "--format",
+    "{{json .}}"
+  ],
+  "artifact_kind": "vast_readonly_original_process_container_quiescence_observation_v1",
+  "child_pid": 7841,
+  "engine": {
+    "device": 2096,
+    "inode": 11482,
+    "path": "/usr/bin/docker",
+    "sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+    "size_bytes": 45570705
+  },
+  "engine_socket": {
+    "device": 61,
+    "inode": 1944,
+    "path": "/run/docker.sock"
+  },
+  "no_containers_listed": true,
+  "original_pids": {
+    "6513": {
+      "proc_path_exists": false
+    },
+    "6515": {
+      "proc_path_exists": false
+    }
+  },
+  "publication_ready": false,
+  "returncode": 0,
+  "schema_version": 1,
+  "started_at_ns": 1790725696685151219,
+  "stderr": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/runtime-custody-live-repair/post-repair-quiescence.stderr",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/runtime-custody-live-repair/post-repair-quiescence.stdout",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "terminal_at_ns": 1790725696764826208
+}

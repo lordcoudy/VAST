@@ -1,0 +1,41 @@
+{
+  "argv": [
+    "/usr/bin/git",
+    "-c",
+    "core.longpaths=true",
+    "-C",
+    "/home/s-a-balashov/work/vast-current-source-ci-20261001-supervisor-attributes",
+    "cat-file",
+    "--batch"
+  ],
+  "child_reaped": true,
+  "elapsed_s": 1.5584847159916535,
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 57412,
+    "pid": 57435,
+    "ppid": 57413,
+    "startticks": 29816831,
+    "state": "R",
+    "uid": 1000
+  },
+  "returncode": 0,
+  "stderr": {
+    "epoch7": [
+      69,
+      1688849862688337,
+      33279,
+      1,
+      0,
+      1790815853339445000,
+      1790815853339445000
+    ],
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/component-current-source-ci-supervisor-attributes-preparation-v1/original-setup-attempt01/10-cat-file.stderr.raw",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout_retention": "Parsed streamed Git blobs compared byte-for-byte to held new-checkout leaves; per-leaf SHA retained, not duplicate raw payloads.",
+  "streamed_raw_blob_bytes": 213031024,
+  "streamed_raw_blob_count": 4721
+}

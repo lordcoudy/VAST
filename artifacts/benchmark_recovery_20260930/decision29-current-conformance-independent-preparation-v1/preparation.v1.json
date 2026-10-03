@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "decision29_current_conformance_independent_reader_preparation_v1",
+  "status": "finite_source_review_and_reader_approach_closed_actual_mapping_review_pending",
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewer_handles_released": true,
+  "source_checkpoint_D": "3c025b29b3c1d5275c2ec693410e4b83700583de",
+  "measurement_checkpoint_B": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "approved_Decision29_planning_commit": "56dd56bcc80519b99357546a49dbd65377e0db22",
+  "standing_approval_reference": "https://github.com/lordcoudy/VAST/pull/2#issuecomment-5967478840",
+  "actual_mapping_result": null,
+  "actual_mapper_terminal": null,
+  "actual_latest_local_CI_success": null,
+  "conformance_accepted": false,
+  "component_release_complete": false,
+  "archive_complete": false,
+  "merge_authority_granted_by_this_receipt": false,
+  "owned_source_pins": [
+    {"path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/generate_current_mapping_D_v3.py", "size_bytes": 37807, "sha256": "ce5aef28f825f716e1a9869c377e26023d9cb177234315d32a4ef8c167979e86"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/scenario-notes.v5.json", "size_bytes": 22113, "sha256": "efc447f446120757e62d60b38659d938c3b104fc7e4a43537d7f9c418ff57715"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/preparation.v1.json", "size_bytes": 6564, "sha256": "1bc05194736efe02790812fa9eb84a6865530d764391ace23c62c5e3723fddef"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/static-source-link-inspection.D.v3.json", "size_bytes": 201689, "sha256": "2062118baf3a433b6da26d6325b96613d44805b6034015ba75cad2d21c1d73dd"},
+    {"path": "artifacts/benchmark_recovery_20260930/decision29-current-conformance-preparation-v1/full-consumer-guard-order-review.v1.json", "size_bytes": 23224, "sha256": "254c5d6dd3cb59d6a9d1e606bfb1a40d3d846f6748033e3e2714b6b9117397e6"},
+    {"path": "openspec/changes/fix-benchmark-preparations-spec/proposal.md", "size_bytes": 17599, "sha256": "969aa4ac3bae9b742b268333070b1266c22abc5c7bce9b204a63b6f750c0f6d6"},
+    {"path": "openspec/changes/fix-benchmark-preparations-spec/design.md", "size_bytes": 44659, "sha256": "112ec56dca4445e3e753899ff116203604094b37ffafcac4f7e8d28ea350afce"},
+    {"path": "openspec/changes/fix-benchmark-preparations-spec/tasks.md", "size_bytes": 36740, "sha256": "ee2518562588198019189d8bbe6471e9bc93a0858c09dc8ecd8dd736dd09e0ab"},
+    {"path": "openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md", "size_bytes": 75100, "sha256": "383e90694a5f4a2ed81ff8d53fc7ee4a35dc67767f17b35fd8e5bffde4751ed9"},
+    {"path": "openspec/changes/fix-benchmark-preparations-spec/verification-plan.md", "size_bytes": 48891, "sha256": "b3db56c13e3a5c7157820f4e60f459455c5a83706b207c308f7af09716c8f73d"}
+  ],
+  "review_completed": {
+    "full_generator_and_notes_and_preparation_read": true,
+    "proposal_design_tasks_spec_verification_read": true,
+    "entire_19_guard_author_source_review_read": true,
+    "source_only_metadata_tool_closure": ["a03ce0 CLOSED0 pins/count shape", "ccf201 CLOSED0 independent normative text parsing", "a7ad2d CLOSED0 all121 source,290 method and195 anchor joins"],
+    "source_joins": "All121 static source descriptors independently full-hashed from clean D over UNC and joined to the original D5577 raw-source manifest. All290 qualified methods resolve uniquely at exact AST start/end locations; all195 anchor records point to lines containing the exact anchor literal.",
+    "assertion_count_limit": "The author's direct_assertion_calls is a lexical count of attribute calls beginning assert. It includes unittest assertions, Mock assertions and a production service.assert_live call. All290 counts match that definition; counts alone never prove behavioral coverage or execution.",
+    "parser_limit": "Independent AST boundary/count reads use CPython3.14 metadata only. Stored CPython3.12 AST serialization hashes were not compared to3.14 hashes. Author pinned3.12 original229-identical/3-reviewed-inverse proof remains a separately reviewed evidence join, to be rechecked from exact sources when adjudicating final mapping.",
+    "metadata_inspection_correction": "An initial regex used a DOTALL greedy requirement-name capture and returned one requirement; corrected to a non-newline name capture before any normative result was recorded. An initial self.assert-only counter differed from the author's broader lexical counter; the precise lexical definition was independently verified. Neither inspection failure executed target code or changed source/evidence."
+  },
+  "normative_reader_checks": {
+    "expected_requirements": 20,
+    "expected_scenarios": 118,
+    "original_scenario_clauses": 112,
+    "new_scenario_ids": ["R14/S6", "R14/S7", "R14/S8", "R17/S8", "R17/S9", "R17/S10"],
+    "historical_register": {"scenarios": 82, "tasks": 72, "original_checked": 31, "original_unchecked": 41},
+    "requirement_body_check": "Independently compare all20 exact requirement names and bodies, separately from every scenario name/clause. v3 parse_spec retains bodies, but build only directly compares original scenario names/clauses. The old112 mapping does not contain requirement body text, so that mapping alone cannot prove body preservation.",
+    "already_observed_body_chain": "Current20 bodies exactly equal the retained pre-Decision29 115-scenario spec: decision28-native-failure-raw-repair-v1/before/openspec/changes/fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md,72946B/e42fa4a5c5931aaf82c0e2fac408c5a3930d80a4a110c6c4fcc1a889d455ec90. Original19 bodies and109 clauses also exactly equal Decision27-originals68409B/45bcdca6d5dcc41b9f3a9768e13f5f474fa3287d0cf30502b253bae5264068c2. Literal original112-spec20-body baseline join remains pending its exact retained raw source.",
+    "preservation_method": "Parse static raw Markdown without imports, retain LF-normalized logical clauses separately from raw size/full-SHA pins, verify ordered requirement/scenario memberships and all original task texts/states. Append-only six scenarios do not complete historical tasks or campaign clauses."
+  },
+  "per_scenario_evidence_reader_checks": [
+    "Join each118 row to its exact current clause and implementation predicate; review the actual test assertion and relevant fixtures/helpers, not merely a method name or topic anchor.",
+    "Keep direct current portable assertions, manual source review, conditional strict-interface checks and real scoped component integration evidence distinct. A current CPU/GPU/science link does not automatically prove that row's behavior.",
+    "Join exact qualified test IDs to actual original current report outcomes and source-before/after descriptors; successful tests, audited skips, deferred integration and failures remain separate classifications. Verify six stock builds and three required native successes from their own original records.",
+    "For fixture fault injection, identify the actual delegated boundary, original error identity, first failure, side-effect ordering and caps. Mock Docker/event replies or synthetic overflow flags do not become physical external-event or engine evidence.",
+    "Keep R5/S5,R12/S1,R14/S2,R20/S1 explicit manual dispositions; require evidence and limits per row rather than blanket passing labels.",
+    "Keep R13/S6 direct every-full-consumer component-negative coverage explicitly incomplete. Join independent92bfaa80 manual-source review and root19-guard review; preserve enclosing full-index/fragment/coordinate requirements for legacy _binding_document_schema, and preserve directory creation before later JSON kind rejection where source does so.",
+    "Source guards can show rejection before publication/acceptance or native execution at specific boundaries. They do not establish zero filesystem effects, exhaustive unknown-kind negative tests, full physical qualification, or all consumers' runtime execution."
+  ],
+  "original_mapper_closure_reader_checks": [
+    "Require a genuine single invocation bound to the exact reviewed source and actual immutable current-CI refs; independently hash mapping, source-read inventory, terminal and original console/capture.",
+    "Verify original120s metadata bound,16MiB individual/96MiB aggregate custody caps, held regular single-link nofollow leaves and held ancestors, fresh before/after full hashes plus Linux seven epochs, EOF observations, independent FD closes, restored FD baseline, exclusive terminal-last publication and absence of late/failure companions.",
+    "Source v3 preserves sticky build/read errors and attempts all independent closes. publish() uses a finally close which can mask a simultaneous write/fsync error if close also raises. This is a bounded nonauthorizing metadata-helper limitation: it still fails, cannot grant acceptance, and no dual-failure behavior is claimed tested. Only actual clean write/close/FD observations may close the original mapper.",
+    "A successful generator indexes evidence and does not authorize conformance, release, archive or merge. Independently adjudicate every row and actual required CI gates afterward."
+  ],
+  "current_CI_disposition": {
+    "hosted_D": "ROOT reports original provider success independently accepted by architecture peer05019c9b:2904 success,88 audited skips,six builds,three required native,source5577. This preparation has no bound final hosted metadata descriptors yet.",
+    "local_D_attempt01": "ROOT9d7cd5 original CLOSED1 after2141.443891322s.2992 tests/2904 successes/88 skips/zero test failures/errors nevertheless fail the final exact skip audit for missing canonical installed-runtime bind. This result remains failed and blocks whole local-CI completion.",
+    "prerequisite_remedy": "Separate decision29-runtime-bind-prerequisite-plan-v1/plan.v1.json is source-reviewed and unexecuted by this reviewer. Any later genuine prerequisite/targeted/full-CI result needs separate original owner, output and closure; it cannot relabel the failed attempt.",
+    "prior_failures": "Original B/P/C hosted failures and original local C model-assets timeout remain retained at their original commits and scopes; no retrospective acceptance."
+  },
+  "science_scope": {
+    "measurement_source": "B,CPU08/GPU02 separately original0/cold accepted; current four-arm original reduction separately closed and independently reviewed93acbd3a.",
+    "counts": "CPU completions516/664,drops564/416,100ms-ontime0/0;GPU completions1070/1075,drops10/5,ontime3/1. Offered/admitted1080 per arm. Partial C_obs, opaque ResNet proxy, two recordings replicated to six streams, baseline-first one pair per resource.",
+    "prohibited_inference": "No100ms SLO achievement, causal speedup, algorithmic model-work/energy/GPU-busy estimate, quality/noninferiority or population confidence. Science wrapper observed one process/group scan and no numeric FD count; never manufacture two scans or a numeric FD balance.",
+    "campaigns": "Full32 qualification,1120 pilots,5600 full runs,Q4,cloud/service execution and other historical physical campaign obligations remain unexecuted. Current strict interfaces remain active."
+  },
+  "final_review_pending": ["Exact original112-scenario spec requirement-body baseline", "Actual original mapping/terminal/inventory/capture refs after reviewed one-shot generation", "Genuine latest local complete portable/native/source/skip success after prerequisite repair, without replacing prior failure", "Independent per118-row behavior/evidence/manual/conditional/integration disposition", "Final own/fresh review, supported same-PR sync/archive and latest archived-commit checks/final approval"],
+  "operations_by_reviewer": {"prepared_generator_execution": 0, "target_imports": 0, "tests": 0, "workload_or_model_engine_device": 0, "Git_commands_or_mutations": 0, "production_test_CI_doc_mutations": 0, "existing_evidence_mutations": 0, "exclusive_own_metadata_preparation": true},
+  "limits": ["This finite source-review preparation does not accept actual conformance or grant an execution.", "UNC reads prove exact raw source descriptors and static AST locations; no actual Linux epoch or mount/process custody is claimed from Windows metadata.", "Source assertions and linked retained results must be assessed at their specific scope; structural document validity and counts cannot substitute for behavior or required final checks."]
+}

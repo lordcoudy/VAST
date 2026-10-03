@@ -1,0 +1,13 @@
+{
+  "errors": [],
+  "failures": [
+    {
+      "test_id": "test_ci_test_selection_v1.SelectionContracts.test_new_ci_userns_policy_contract_cannot_be_deferred_or_skipped",
+      "traceback": "Traceback (most recent call last):\n  File \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_ci_test_selection_v1.py\", line 119, in test_new_ci_userns_policy_contract_cannot_be_deferred_or_skipped\n    with self.assertRaisesRegex(ValueError,'mandatory contract'):\nAssertionError: ValueError not raised\n"
+    }
+  ],
+  "no_profile_namespace_or_journal_operation": true,
+  "skips": [],
+  "successful": false,
+  "tests_run": 1
+}

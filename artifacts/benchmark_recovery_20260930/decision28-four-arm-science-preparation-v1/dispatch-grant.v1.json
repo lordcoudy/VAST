@@ -1,0 +1,60 @@
+{
+  "author": "/root",
+  "bounds": {
+    "channel_bytes": 1048576,
+    "cleanup_s": 10,
+    "document_bytes": 1048576,
+    "execution_s": 110,
+    "held_files": 512,
+    "leaf_bytes": 67108864
+  },
+  "future_original_owner_and_outcome": null,
+  "hardware_or_full_campaign_acceptance": false,
+  "independent_source_review": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-independent-source-review-v1\\review.v1.json",
+    "sha256": "0742fc2c3d88f2f658d9ba2d062213ac82cd442f6d641b3198878a2742d50a53",
+    "size_bytes": 6710
+  },
+  "original_receipts": {
+    "cpu": {
+      "independent_audit_sha256": "1f5abb9e8b2c5c2fdd9898bd121ab365a9719513b361486833612e4fca151330",
+      "original_terminal_path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08-original-controller/original.terminal.v1.json",
+      "sha256": "32a034c535e98adf13fdbcb3005414c24d3ab3c03da885ec24da464a0e74b185",
+      "size_bytes": 94894
+    },
+    "gpu": {
+      "independent_audit_sha256": "a125010eae25262ead16a37ae4b47f6e21e637cc15da89399242f824e5b21283",
+      "original_terminal_path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/original.terminal.v1.json",
+      "sha256": "7272120d78ae1d851a46cee48cf1f51267da504b4550a7a434d86c2db8cda062",
+      "size_bytes": 94879
+    }
+  },
+  "preparation": {
+    "path": "artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\preparation.v1.json",
+    "sha256": "9f7a5868bd16540370b3aa8cdbd14611dea069c2867b00e7a90e28defd06bcd0",
+    "size_bytes": 4727
+  },
+  "schema_version": 1,
+  "scope": "One unchanged stock raw-sidecar four-arm reduction/render, actual closed CPU08/GPU02 at B; no model/engine/measurement/cold replay or scientific setting change",
+  "source_pins": [
+    {
+      "all_function_ASTs_equal": true,
+      "name": "run.py",
+      "sha256": "2fade68fb199777f71e4e210e101a0a394725bd2570976f4ad33665d321d65fe",
+      "size_bytes": 7853
+    },
+    {
+      "all_function_ASTs_equal": true,
+      "name": "reduce.py",
+      "sha256": "6fe50289ce88225a39fdc7721b23449a01b6dd54e966375571b8982d69e75610",
+      "size_bytes": 24239
+    },
+    {
+      "all_function_ASTs_equal": true,
+      "name": "render.py",
+      "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+      "size_bytes": 9184
+    }
+  ],
+  "standing_user_authorization": "Do everything needed; carte-blanche; approve every change; proceed autonomously until benchmark operable and makes sense"
+}

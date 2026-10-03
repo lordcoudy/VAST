@@ -1,0 +1,56 @@
+{
+  "blocking_findings": [],
+  "execution": "Neither observer nor Docker query/test/workload executed by reviewer. Actual dispatch requires root grant and actual result/EOF/process/FD/late-failure review.",
+  "limits": [
+    "Original daemon ID aa8f3d33-e1dc-4ed2-ad06-488b46b332d0 is retained through pinned original command output; current daemon ID remains unqueried.",
+    "Historical empty events cannot prove no death/OOM; die137 alone cannot prove OOM.",
+    "No change to failed CPU07 disposition or benchmark/publication acceptance."
+  ],
+  "prior_review": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-independent-source-review-v1\\review.v1.json",
+    "sha256": "c5bec4c8cc9edabeb1c7a704d65140bd1c6c4c55ce98a0d8316fab039dce1f8d",
+    "size_bytes": 2583
+  },
+  "reviewed_delta": {
+    "all_top_level_assignment_ASTs_equal": true,
+    "changed_functions": [
+      "hold",
+      "scan"
+    ],
+    "fixes": [
+      "New ancestor handles are registered before assertion, so final independent retirement covers failed custody checks.",
+      "Selector, pipe, raw stream and held leaf/ancestor closes independently latch errors and retain first cause.",
+      "Two scans explicitly observe original PID absence, retain non-vanishing process errors, and reject present or uncertain PID/group closure.",
+      "Original socket UID/GID binding is tightened to 0/1001 in addition to original dev61/inode1944."
+    ],
+    "other_function_ASTs_equal": true
+  },
+  "reviewer_handles_released": true,
+  "scope": {
+    "cleanup_seconds": 10,
+    "command_seconds": 2,
+    "envelope_ns": [
+      1790823221323071118,
+      1790823586186876374
+    ],
+    "max_records": 32,
+    "name": "vast-gst-analytics-f5a8e4aa391f4df1-vehicle-type-cpu",
+    "queries": 1,
+    "stderr_bytes": 1024,
+    "stdout_bytes": 8192,
+    "work_seconds": 30
+  },
+  "sources": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\observe_original_primary_worker_events_v4.py",
+      "sha256": "dfe892ea547de7fa8c4a1f24b2da0d9299ab2cad6deb8ef7212c6b7117583d5a",
+      "size_bytes": 14053
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-cpu07-worker-events-observation-preparation-v1\\preparation.v3.json",
+      "sha256": "11d39a83a9873b290af9aec79139783b3809c7d6475f14f66fba0b1ce2b74801",
+      "size_bytes": 7609
+    }
+  ],
+  "status": "approved_prepared_source_only"
+}

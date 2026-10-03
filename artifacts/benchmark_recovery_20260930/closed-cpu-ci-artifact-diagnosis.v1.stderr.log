@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/diagnose_closed_cpu_ci_artifact_v1.py", line 74, in <module>
+    require({key: actual[key] for key in ("size_bytes", "sha256")} == before[name],
+  File "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/verify_checkout_byte_freeze_v9.py", line 47, in require
+    raise ValueError(message)
+ValueError: diagnostic source differs from original hosted source manifest: .gitignore

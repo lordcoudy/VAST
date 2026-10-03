@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_component_held_session_preparation_independent_review_v1",
+  "reviewed_at_utc": "2026-09-30T17:16:16.8798660Z",
+  "disposition": "approved_prepared_source_only",
+  "planning_commit": "6358c42cf1b969fb7ac2aa7be51929c3da46b9af",
+  "source_review": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-independent-review-v1/review.v1.json",
+    "size_bytes": 8562,
+    "sha256": "b8623147480662bd30fd6b721692d95a78c7930e8c6a6a88d7cd47dfd98089e8"
+  },
+  "author_audit": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-implementation-v1/author-review.v1.json",
+    "size_bytes": 15548,
+    "sha256": "fdde3a22d521366d8cc2ab4eb067b63bcf54bf9a8b511de2c8f5effd46aee7f0"
+  },
+  "pure_original_stock_image_scope": {
+    "path": "artifacts/benchmark_recovery_20260930/component-held-session-host-image-scope-v1/review.v1.json",
+    "size_bytes": 4206,
+    "sha256": "3d401843d9e788ff76f0b2140fef8878d0f694529cc0406e076369cab91ae8e9"
+  },
+  "prepared_sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/verify_component_host_only_image_scope_v1.py",
+      "size_bytes": 3952,
+      "sha256": "d8ce5c1694fa1f9522b1e853490598b8c042021c5c07ab6682094ee8274ba26c"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/capture_selected_host_closure_v6.py",
+      "size_bytes": 3049,
+      "sha256": "a05b1c72e6188dac057ea7104e2ffe2cc83cf8f596ab1b1675b10f70a09314db"
+    }
+  ],
+  "controller_renewals": [
+    {
+      "original": {
+        "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-cpu04-controller-preparation-v1/run_original_cpu_component_pair_v1.py",
+        "size_bytes": 15136,
+        "sha256": "f5c60a937c87353621d614060f1471646a4349969a87af4c157d32a0fde080ea"
+      },
+      "prepared": {
+        "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-cpu05-controller-preparation-v1/run_original_cpu_component_pair_v1.py",
+        "size_bytes": 15136,
+        "sha256": "a6245ffaef0f197fa561dacdd173aa45a1a35b84e4beda1fbe063ddcb1d19c13"
+      },
+      "exact_raw_literal_inverse": true,
+      "changes": [
+        "V5 -> V6",
+        "v5 -> v6",
+        "cpu-pair-04 -> cpu-pair-05"
+      ]
+    },
+    {
+      "original": {
+        "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-gpu01-controller-preparation-v1/run_original_gpu_component_pair_v1.py",
+        "size_bytes": 15136,
+        "sha256": "807f28e2cb6acb5584d318a0064a9eaa11095a3982a5327e50bf7293fbff3027"
+      },
+      "prepared": {
+        "path": "artifacts/benchmark_recovery_20260930/selected-gstreamer-gpu01-controller-preparation-v2/run_original_gpu_component_pair_v1.py",
+        "size_bytes": 15136,
+        "sha256": "095de25ad80f0d2e38da3cbb2cbd5df0e84e51df4f55d0dccb07781b71e6a707"
+      },
+      "exact_raw_literal_inverse": true,
+      "changes": [
+        "V5 -> V6",
+        "v5 -> v6"
+      ]
+    }
+  ],
+  "findings": [
+    "The closed pure stock metadata calculation binds the three reviewed host source hashes, selected runtime73/native8/dependency6 equality, and all five original native/worker image source/dependency/build-context identities. The three host modules are absent from those image source closures; this host-only diff does not require an image rebuild.",
+    "The author AST audit joins the already independently reviewed six physical files and original58-test receipt. Its twenty source checks pass; reviewer verified the original five native/worker identity rows directly against their retained freeze receipts.",
+    "Both prepared resource controllers are exact raw-text literal renewals. The same actual e474 image, 61874 runtime receipt, six original input roles,2250/2100/15 second limits,1MiB channels and original stock CLI ownership remain. GPU keeps a fresh gpu-pair-01; no old GPU attempt is relabeled.",
+    "The v6 capture uses v5 only as an87-path inventory and invokes the existing stock host closure CLI for a new exclusive receipt with before/after bytes and original child/group status. It cannot reuse v5 authority or source epochs."
+  ],
+  "blockers": [],
+  "prelaunch_conditions": [
+    "A committed reviewed source checkpoint and actual fresh stock execution-code-closure.v6.json with87 current source rows, genuine original source epochs and successful closed capture must be joined before dispatch.",
+    "The prepared resource controller must receive that exact current commit and physical v6 receipt hash. Parent authorization controls each original dispatch."
+  ],
+  "limits": [
+    "No reviewer tests, model assessments, Docker queries, builds, worker/native/guardian or paired workload were executed.",
+    "The pure scope report is source metadata evidence and explicitly contains current_live_image_observation=false; it is not a new live image observation or benchmark acceptance.",
+    "No CPU04 acceptance, measured speedup, fresh CPU/GPU result, full CI, task completion or archive is claimed."
+  ],
+  "benchmark_accepted": false
+}`n

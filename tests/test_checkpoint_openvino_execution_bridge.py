@@ -575,7 +575,10 @@ class OpenVINOGVAExecutionBridgeTests(unittest.TestCase):
         )
         self.assertEqual(
             gpu_result["runtime_identity"]["terminal_detector"],
-            capability("damage", "gpu")["model_id"],
+            (
+                f"{capability('damage', 'gpu')['model_id']};"
+                f"model_sha256={capability('damage', 'gpu')['source_model_sha256']}"
+            ),
         )
 
     @unittest.skipUnless(

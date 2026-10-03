@@ -1,0 +1,156 @@
+{
+  "actual_host_v4_closure": {
+    "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/host/execution-code-closure.ext4-decision28.v4.json",
+    "sha256": "3c91339d43f6154dd76afe8a89c02d82f60a4b1e5da16623039f691fdc6701f2",
+    "size_bytes": 30266
+  },
+  "actual_original_receipt_joins": {
+    "cpu": {
+      "authentic_source_owner_and_descriptor_join": true,
+      "no_scientific_values_recomputed_in_source_review": true,
+      "original_cli": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/component_cli_terminal.v1.json",
+        "sha256": "3f2db482347c210f58cdcad95bcedd79d9b2c8063dc4439d61e0736c4688c600",
+        "size_bytes": 8849
+      },
+      "original_cold": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/cold-pair/component_pair_result.v1.json",
+        "sha256": "63a0826fb419d3023f56c81bed8dc1b7afbef167c42f7091fe0563ba5c987213",
+        "size_bytes": 18461
+      },
+      "original_terminal": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08-original-controller/original.terminal.v1.json",
+        "sha256": "32a034c535e98adf13fdbcb3005414c24d3ab3c03da885ec24da464a0e74b185",
+        "size_bytes": 94894
+      },
+      "retained_independent_audit": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-cpu08-independent-audit-v1\\review.v1.json",
+        "sha256": "1f5abb9e8b2c5c2fdd9898bd121ab365a9719513b361486833612e4fca151330",
+        "size_bytes": 51656
+      }
+    },
+    "gpu": {
+      "authentic_source_owner_and_descriptor_join": true,
+      "no_scientific_values_recomputed_in_source_review": true,
+      "original_cli": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/component_cli_terminal.v1.json",
+        "sha256": "34d2b825a86ccba5974a6a1db4d6bff3a4c6f2c08eadfed504ab17b9bf4ea323",
+        "size_bytes": 8849
+      },
+      "original_cold": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/cold-pair/component_pair_result.v1.json",
+        "sha256": "80b8d063ebfbc146eec837e4733398d7d7d28373dbbad0f0952f5a5b9c6b7130",
+        "size_bytes": 18451
+      },
+      "original_terminal": {
+        "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02-original-controller/original.terminal.v1.json",
+        "sha256": "7272120d78ae1d851a46cee48cf1f51267da504b4550a7a434d86c2db8cda062",
+        "size_bytes": 94879
+      },
+      "retained_independent_audit": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-gpu02-independent-audit-v1\\review.v1.json",
+        "sha256": "a125010eae25262ead16a37ae4b47f6e21e637cc15da89399242f824e5b21283",
+        "size_bytes": 51657
+      }
+    }
+  },
+  "all_read_handles_released": true,
+  "preparation": {
+    "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\preparation.v1.json",
+    "sha256": "9f7a5868bd16540370b3aa8cdbd14611dea069c2867b00e7a90e28defd06bcd0",
+    "size_bytes": 4727
+  },
+  "schema_version": 1,
+  "source_proofs": [
+    {
+      "all_original_function_ASTs_equal": true,
+      "exact_ordered_forward_and_inverse_equal": true,
+      "original_closed_source": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-four-arm-independent-science-preparation-v1\\run.py",
+        "sha256": "b88c9e78b0ba8f075ab8934810f67de903af49dd3ef87181f896d59b2b5cf91e",
+        "size_bytes": 7853
+      },
+      "original_function_names": [
+        "descriptor",
+        "owner",
+        "save",
+        "latch",
+        "contain"
+      ],
+      "renderer_raw_bytes_identical": null,
+      "replacement_occurrences": 2,
+      "snapshot": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\run.py.original.raw",
+        "sha256": "b88c9e78b0ba8f075ab8934810f67de903af49dd3ef87181f896d59b2b5cf91e",
+        "size_bytes": 7853
+      },
+      "source": {
+        "path": "artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\run.py",
+        "sha256": "2fade68fb199777f71e4e210e101a0a394725bd2570976f4ad33665d321d65fe",
+        "size_bytes": 7853
+      }
+    },
+    {
+      "all_original_function_ASTs_equal": true,
+      "exact_ordered_forward_and_inverse_equal": true,
+      "original_closed_source": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-four-arm-independent-science-preparation-v1\\reduce.py",
+        "sha256": "f4332d703d94dd54e7b856f12d04300bc95d99ec1eb456f87d24b8f98813ccff",
+        "size_bytes": 24264
+      },
+      "original_function_names": [
+        "epoch",
+        "ancestor",
+        "clock",
+        "check",
+        "hash_fd",
+        "hold",
+        "doc",
+        "ref",
+        "save",
+        "forbidden",
+        "hold_project_imports",
+        "argument",
+        "comparison",
+        "exact"
+      ],
+      "renderer_raw_bytes_identical": null,
+      "replacement_occurrences": 9,
+      "snapshot": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\reduce.py.original.raw",
+        "sha256": "f4332d703d94dd54e7b856f12d04300bc95d99ec1eb456f87d24b8f98813ccff",
+        "size_bytes": 24264
+      },
+      "source": {
+        "path": "artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\reduce.py",
+        "sha256": "6fe50289ce88225a39fdc7721b23449a01b6dd54e966375571b8982d69e75610",
+        "size_bytes": 24239
+      }
+    },
+    {
+      "all_original_function_ASTs_equal": true,
+      "exact_ordered_forward_and_inverse_equal": true,
+      "original_closed_source": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\component-four-arm-independent-science-preparation-v1\\render.py",
+        "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+        "size_bytes": 9184
+      },
+      "original_function_names": [
+        "render_four_arm_exports_v1"
+      ],
+      "renderer_raw_bytes_identical": true,
+      "replacement_occurrences": 0,
+      "snapshot": {
+        "path": "E:\\STUDY\\VAST\\tmp\\openspec-review\\fix-benchmark-preparations-spec\\artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\render.py.original.raw",
+        "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+        "size_bytes": 9184
+      },
+      "source": {
+        "path": "artifacts\\benchmark_recovery_20260930\\decision28-four-arm-science-preparation-v1\\render.py",
+        "sha256": "fbf411a550617f24634de711f1bcd93a5c4889d50fc1f5c4ac78291b248301f1",
+        "size_bytes": 9184
+      }
+    }
+  ],
+  "targets_imported_compiled_or_executed": false
+}

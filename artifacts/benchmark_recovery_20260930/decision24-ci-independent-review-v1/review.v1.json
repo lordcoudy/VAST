@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_decision24_ci_independent_source_review_v1",
+  "planning_commit": "ded811a8043575e7a93cf0bbc28696ac53667d3c",
+  "planning_review_comment": 5908873975,
+  "reviewable": true,
+  "blockers": [],
+  "source_files": [
+    {"path": "scripts/run_ci_checks.py", "size_bytes": 22068, "sha256": "a501d9a8a07979e6657fcb129fe12b54e43d91693dbde0ab24a5b40c1cdbdb96"},
+    {"path": "scripts/ci_external_test_observer_v1.py", "size_bytes": 20916, "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59"},
+    {"path": ".github/workflows/ci.yml", "size_bytes": 4206, "sha256": "974160678fc6c68a1fc12e2ac277850466c9e507a850d8a1401ac93ac0e7e959"},
+    {"path": "tests/test_run_ci_checks.py", "size_bytes": 8261, "sha256": "41a088e2be50d5707bdbe82291b1902c3b0e5d0b28aa07f6558c0829d6b02626"},
+    {"path": "tests/test_ci_external_test_observer_v1.py", "size_bytes": 12475, "sha256": "cbd9be309e2092d66e68403432a7162ca00d77ca1408d6c7b600fa77458be9c4"}
+  ],
+  "author_review": {"path": "artifacts/benchmark_recovery_20260930/decision24-ci-author-review-v1/review.v2.json", "size_bytes": 5681, "sha256": "7297712c3225a127651b03a4509a4f5078bc1b421ee8fa7f7385ecdb2a9ff27d"},
+  "repaired_review_finding": "Popen could succeed while pidfd acquisition failed, leaving all cleanup signals as no-ops. The final helper retains the first failure and signals only its still-unreaped original Popen child when that acquisition failed. A genuine small-child negative now checks original PID absence, negative return status, parent FD restoration and honest unobserved EOF.",
+  "findings": [
+    "The unchanged complete unittest discovery runs in one fresh child under pinned CPython3.12.3. The parent retains the six CPU targets, mandatory three native-success criteria and source-before/after checks; no per-test isolation or selection weakening is introduced.",
+    "SIGUSR1 handling is synchronous Python main-thread dispatch with the GIL. No native periodic timer, helper thread or faulthandler.register is installed in the subject. The original sigaction is restored after parent stop-ACK and pending-signal drain.",
+    "The parent records scheduled/send/handler/arrival clocks and response completion, including coalescing, ambiguous matching and delayed native-call dispatch. It claims no guaranteed timely 60-second dump.",
+    "Workflow records the original job clock before setup. The same absolute 90-minute deadline covers runner phases; original child cleanup/drain/receipt uses at most15s or the remaining original budget. After-close lateness remains failed with an immutable companion.",
+    "Before-write trace/control1MiB and fresh8MiB namespace limits are sticky. Failure and cancellation retire original pipe FDs and keep actual child status; descendant quiescence is explicitly not inferred from that status."
+  ],
+  "original_evidence_checked": {
+    "physical_references_verified": 12,
+    "tests": 26,
+    "breakdown": {"observer": 15, "runner": 11},
+    "original_terminal_sha256": ["b351fd496bdb63d78ccccd7a9544dcd01140ac112c2a9c2f2c4cc6c5e7faa924", "e69018e0bd1e9755a07a04d496052999ec2319b261e95b28a1f4cc28b90ca6a3"],
+    "returncodes": [0, 0],
+    "raw_channels_count_and_OK_verified": true,
+    "source_before_after_stable": true
+  },
+  "limits": [
+    "Source/original focused-evidence review only; no reviewer test, full suite, native build, hosted workflow, namespace probe, profile change or hardware workload ran.",
+    "Original hosted139 cause remains unproven. This observer replacement is not proof of its cause or proof that the hosted full suite passes.",
+    "Safe Python signal dispatch can be delayed by native code; parent metadata distinguishes requests from actual responses. No global userns policy change, skip, timeout relaxation or Python upgrade is adopted."
+  ],
+  "full_ci_successful": false,
+  "hardware_acceptance": false
+}

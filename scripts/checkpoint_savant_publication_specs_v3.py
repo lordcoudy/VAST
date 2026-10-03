@@ -93,11 +93,18 @@ def _sources_by_stream(plan: Mapping[str, Any]) -> dict[int, dict[str, Any]]:
             if stream_id == 5
             else f"kpp_plate_avi-stream-{stream_id}"
         )
+        frame_count = int(source.get("frame_count", 0))
+        duration_numerator = frame_count * 1_000_000_000
+        _require(
+            frame_count > 0 and duration_numerator % 600 == 0,
+            "Savant source duration is not exact at 600 fps",
+        )
         result[stream_id] = {
             "stream_id": stream_id,
             "source_id": source_id,
             "source_sha256": str(source["source_sha256"]),
             "source_codec": str(source["source_codec"]),
+            "source_duration_ns": duration_numerator // 600,
             "width": int(source["width"]),
             "height": int(source["height"]),
         }

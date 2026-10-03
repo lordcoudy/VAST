@@ -7,11 +7,13 @@ import hashlib
 import json
 import os
 import re
-import stat
-import tempfile
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
+from publication_physical_io_v1 import (
+    PhysicalRootCustodyV1,
+    PublicationPhysicalIoV1Error,
+)
 from seafile_artifact_store import ArtifactStoreError, SeafileShareLinks
 
 
@@ -512,47 +514,76 @@ def validate_seafile_capacity_attestation_v1(
     return json.loads(_canonical_bytes(value).decode("utf-8"))
 
 
-def write_immutable_attestation(path: Path, value: Mapping[str, Any]) -> dict[str, Any]:
-    """Atomically write once; identical replay is allowed, drift is rejected."""
-    destination = Path(path).resolve(strict=False)
+def write_immutable_attestation(
+    path: Path,
+    value: Mapping[str, Any],
+    *,
+    after_physical_commit_step: Callable[[str, Path], None] | None = None,
+) -> dict[str, Any]:
+    """Durably publish once or adopt only one exact physical attestation."""
+
+    destination = Path(os.path.abspath(os.fspath(path)))
     parent = destination.parent.resolve(strict=True)
     if not parent.is_dir() or destination.parent != parent:
         raise SeafileCapacityAttestationV1Error(
             "attestation output parent must be a physical directory"
         )
     payload = _canonical_bytes(dict(value)) + b"\n"
-    if destination.exists():
-        try:
-            info = destination.lstat()
-            existing = destination.read_bytes()
-        except OSError as exc:
-            raise SeafileCapacityAttestationV1Error(
-                f"immutable attestation collision: {exc}"
-            ) from exc
-        if not stat.S_ISREG(info.st_mode) or int(info.st_nlink) != 1 or existing != payload:
-            raise SeafileCapacityAttestationV1Error("immutable attestation collision")
-    else:
-        descriptor, temporary_name = tempfile.mkstemp(
-            prefix=f".{destination.name}.", suffix=".tmp", dir=parent
-        )
-        temporary = Path(temporary_name)
-        try:
-            with os.fdopen(descriptor, "wb") as output:
-                output.write(payload)
-                output.flush()
-                os.fsync(output.fileno())
-            os.replace(temporary, destination)
-        except Exception as exc:
-            raise SeafileCapacityAttestationV1Error(
-                f"immutable attestation commit failed: {exc}"
-            ) from exc
-        finally:
-            temporary.unlink(missing_ok=True)
-    return {
-        "path": str(destination),
+    expected = {
+        "path": destination.name,
         "size_bytes": len(payload),
         "sha256": hashlib.sha256(payload).hexdigest(),
     }
+
+    def physical_step(step: str) -> None:
+        if after_physical_commit_step is not None:
+            after_physical_commit_step(step, destination)
+
+    try:
+        with PhysicalRootCustodyV1.open(
+            parent, label="Seafile capacity attestation parent"
+        ) as custody:
+            descriptor, identity, _disposition = (
+                custody.commit_or_adopt_exact_identity(
+                    destination.name,
+                    payload,
+                    label="Seafile capacity attestation",
+                    mode=0o444,
+                    create_parents=False,
+                    after_publish_step=physical_step,
+                )
+            )
+            cold_descriptor, cold_payload, cold_identity = (
+                custody.read_descriptor_identity(
+                    destination.name,
+                    label="cold Seafile capacity attestation",
+                    maximum=len(payload),
+                    capture=True,
+                )
+            )
+            cold_mode, cold_stat_identity = custody.stat_regular_identity(
+                destination.name,
+                label="cold Seafile capacity attestation",
+            )
+            if (
+                descriptor != expected
+                or cold_descriptor != expected
+                or cold_payload != payload
+                or cold_identity != identity
+                or cold_stat_identity != identity
+                or (
+                    custody.permission_modes_enforced
+                    and cold_mode != 0o444
+                )
+            ):
+                raise SeafileCapacityAttestationV1Error(
+                    "immutable attestation changed across cold reload"
+                )
+    except PublicationPhysicalIoV1Error as error:
+        raise SeafileCapacityAttestationV1Error(
+            "immutable attestation collision"
+        ) from error
+    return {**expected, "path": str(destination)}
 
 
 def _parse_args() -> argparse.Namespace:

@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "-c",
+    "import sys,unittest;sys.path[:0]=['/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests', '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/scripts'];unittest.main(module=None,argv=['unittest','-v','test_publication_benchmark_native_diagnostic_v1'])"
+  ],
+  "classification": "expected missing diagnostic adapter; mock delegation fixture has no publication authority",
+  "elapsed_s": 0.0928405940067023,
+  "exit_code": 1,
+  "outputs": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260929/native-diagnostic-adapter/attempt-01.red.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260929/native-diagnostic-adapter/attempt-01.red.stderr",
+      "sha256": "5db38606d2eb2793a054ed9cf67ddab502f527fe8fbdea5184646b95fdf3a1d2",
+      "size_bytes": 1113
+    }
+  ],
+  "test": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/tests/test_publication_benchmark_native_diagnostic_v1.py",
+    "sha256": "7c66d648c6834ddae534fc0d1505e35ab85139966f202be595ebe1d6113a95c2",
+    "size_bytes": 9431
+  }
+}

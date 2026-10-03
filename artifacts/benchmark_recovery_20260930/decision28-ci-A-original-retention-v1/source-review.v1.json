@@ -1,0 +1,70 @@
+{
+  "actual_CI_or_benchmark_acceptance": false,
+  "actual_retention_owner_or_terminal": null,
+  "all_function_and_class_ASTs_equal": true,
+  "blocking_findings": [],
+  "bounds_unchanged": {
+    "HTTP_timeout_s_max": 45,
+    "ZIP_bytes": 8388608,
+    "ZIP_members": 4096,
+    "credential_timeout_s": 20,
+    "decoded_ZIP_bytes": 67108864,
+    "job_log_bytes": 33554432,
+    "work_s": 180
+  },
+  "credentials_and_signed_redirects_memory_only": true,
+  "expected_job_conclusions": {
+    "111152507333": "success",
+    "111152507519": "success"
+  },
+  "expected_provider_conclusion": "success",
+  "immutable_original_source_copy": {
+    "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/original-source.raw",
+    "sha256": "51e9206f45236b1ca18b9c344f472c597376a4d974d93a39cbca2aecdb13d01d",
+    "size_bytes": 5912
+  },
+  "literal_pairs": [
+    [
+      "ci-9d47-original-host-retention-v1",
+      "decision28-ci-A-original-retention-v1"
+    ],
+    [
+      "RUN=36802923013",
+      "RUN=37105302376"
+    ],
+    [
+      "CPU=110181019042",
+      "CPU=111152507333"
+    ],
+    [
+      "HOST=110181019292",
+      "HOST=111152507519"
+    ],
+    [
+      "EXPECTED='9d47e99b623df44816f7b0a0b73b249a940f7723'",
+      "EXPECTED='2a6a42c924ae3447ceda4bd9d1b6db33765c6466'"
+    ]
+  ],
+  "original_CRC_SHA_provider_digest_and_path_guards_unchanged": true,
+  "original_source": {
+    "path": "artifacts/benchmark_recovery_20260930/ci-9d47-original-host-retention-v1/retain_originals_v1.py",
+    "sha256": "51e9206f45236b1ca18b9c344f472c597376a4d974d93a39cbca2aecdb13d01d",
+    "size_bytes": 5912
+  },
+  "owned_source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decision28-ci-A-original-retention-v1/retain_originals_v1.py",
+      "sha256": "dca000311559b03ac7411353d5abfbaf5aa828eb3e28c7f3b3daf993d8952dd3",
+      "size_bytes": 5915
+    }
+  ],
+  "raw_inverse_equal": true,
+  "review_scope": "Static literal comparison against original retained-source helper; new literals authored and audited by the same reviewer, not an independent review of an own algorithm change.",
+  "reviewable": true,
+  "reviewer": "/root/decision28_source_peer",
+  "reviewer_handles_released": true,
+  "run_id": 37105302376,
+  "schema_version": 1,
+  "source_commit": "2a6a42c924ae3447ceda4bd9d1b6db33765c6466",
+  "workflow_rerun_cancel_or_write": null
+}

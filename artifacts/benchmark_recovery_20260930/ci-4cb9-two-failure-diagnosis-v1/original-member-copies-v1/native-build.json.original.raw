@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "cmake",
+    "--build",
+    "/home/runner/work/_temp/vast-cpu-checks/build",
+    "--parallel",
+    "2",
+    "--target",
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "cleanup_error": null,
+  "elapsed_s": 15.752515020999994,
+  "returncode": 0,
+  "timed_out": false
+}
