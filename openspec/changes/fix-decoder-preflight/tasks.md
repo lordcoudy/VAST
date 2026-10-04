@@ -1,0 +1,56 @@
+## 1. Exact planning gate and immutable baseline
+
+- [ ] 1.1 Complete independent Draft PR review of these four planning artifacts and record the exact approved P before source/test/CI edits; verify the review comment identifies P and this change, with the full original R15 block preserved and only twelve successor scenarios added.
+- [ ] 1.2 Snapshot all nine physical V5 leaves, the two original cold-reader sources and original failed-attempt descriptors in external evidence; verify sizes/SHA and record original attempts01–05 runs_completed0/result null without treating the prepared success reader as executed.
+- [ ] 1.3 Fix the separate physical input/review repository roles and reviewed command/namespace contract in the implementation record; verify frozen ledger/media/source/helper/image descriptors are available at their original paths and no original/global source/runtime/image state is changed.
+
+## 2. Inherited copies and meaningful RED
+
+- [ ] 2.1 Create the V6 sibling from the three unchanged V5 runtime sources and all five companion modules, plus README; verify copied initial bytes and all66 inherited method IDs, and confirm no runtime import crosses into V5.
+- [ ] 2.2 Add focused new bridge/owner/cache/link/descriptor/bounds/retirement tests before their production correction; retain actual RED original stdout/return/per-case outcomes demonstrating the distinct-view failure and unchanged strict negatives with real files/mmap/FDs and explicitly identified synthetic view differences.
+- [ ] 2.3 Add mode/planning/source/archive/final-close tests before their correction; retain actual RED proving metadata would enter a run or lack the required sealed/bounded behavior, and verify disposable Git/worktree fixtures never use the historical repository or launch GI/Docker/source/model.
+
+## 3. Minimal V6 runtime correction
+
+- [ ] 3.1 Implement one shared direct-view-or-held-FD readonly backing verifier for fresh and cached mapped routes; verify readonly buffer/address/range/perms/effective-offset and complete device/inode joins pass while wrong/ambiguous/unavailable joins reject and original direct-view hardlink acceptance remains valid.
+- [ ] 3.2 Preserve ordinary single-link, held/name/ancestor/seven-epoch/full-SHA guards and enforce expected size+SHA on cached requests; verify default-after-mapped, named replacement, bytes/links/type/size/descriptor mutations fail in the focused cases.
+- [ ] 3.3 Add bounded alive-owner and whole-selected-VMA brackets for guest self and recorded source child at READY-before-START; verify real tiny-child collection, owner/range changes, maps/owner caps and source exit behavior, retaining selected rows/full-view observed size+SHA with explicit unselected-raw and memory-integrity limits.
+- [ ] 3.4 Implement nested export/mmap/base-FD retirement with primary-cause precedence and bounded failure facts; verify acquisition/parse/join/hash/persist/release/close faults attempt remaining retirement, report unavailable closes truthfully and start no later setting.
+- [ ] 3.5 Bind exact P/S, supported repository/worktree and separate immutable physical root, retaining four bounded raw P blobs/copies in closed metadata; verify disposable Git task progress/archive succeeds, modified runtime/helper or foreign/unavailable/oversize blobs fail before launch, and guest mounted-code hashes match sealed descriptors.
+- [ ] 3.6 Implement required sealed metadata-only/research modes and truthful mode-specific completion/terminal predicates; verify no source/run/pipeline/property intervention in metadata mode, unchanged full-four order/failure stop, remaining shared120s through guest final close and original15/600s controller finalization with late/close failure rejection.
+
+## 4. Independent closed-evidence observer
+
+- [ ] 4.1 Add one Git-tracked self-contained `artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py` with explicit mode/P/S/roots/closed attempt/external terminal/exclusive report inputs; verify it imports no producer/old reader/GI and launches no source/container/model, and include its actual source bytes in reviewed S.
+- [ ] 4.2 Test metadata cold success and rejection of foreign/changed/partial/active/mode-mismatched/late/close-failed namespaces, descriptors and owner/source/planning joins; verify actual retained selected-row/physical-metadata replay, distinct inner/outer cleanup authority,120s/FD/file/report bounds and explicit unavailable unselected maps/image-path facts.
+- [ ] 4.3 Test complete synthetic four-by-32-AU cold reconstruction and corrupted/missing/duplicate/trailing header/payload/admission/ACK/control/PTS/caps/digest/EOS/order/cohort cases; verify the independent reader recomputes raw hashes and64 paired rows, preserves allowed causal observer interleaving and rejects producer-only summaries.
+- [ ] 4.4 Test failed/partial research retained-prefix reports and central flush-only timing insufficiency; verify no successful-cohort/steady-state/adoption or benchmark/native/qualification/model/publication authority is granted and original reader sources remain unchanged.
+
+## 5. Full GREEN and actual hosted discovery
+
+- [ ] 5.1 Add the small discoverable `tests/test_decoder_research_v6.py` adapter and isolated bounded full-suite child; verify actual import origins, all66 inherited plus approved new IDs, per-case started/terminal/outcomes and original stdout/stderr/source/owner/return/timeout/retirement records, including the two real15s finalization cases.
+- [ ] 5.2 Retain full canonical CPython3.12.3 -I -B GREEN outside original namespaces; verify exact discovered/success membership and zero failures/errors/skips/expected-failures/unexpected-successes, child return0, no timeout/teardown failure and unchanged nine V5 leaves.
+- [ ] 5.3 Verify clean-checkout tracked source availability and CI evidence persistence under the existing uploaded CPU-check tree; require actual hosted cpu-checks on exact S to run the root adapter and retain individual66+new results, without relabelling baseline3036 or historical55 as V6 verification.
+- [ ] 5.4 Independently review and freeze exact V6 runtime, tests/adapter, cold observer and separate original-dispatch/capture bytes/argv on S under P before any deployment; verify approval precedes invocation and records the once-only namespaces, scopes, grants and original clocks.
+
+## 6. One metadata-only deployment and cold gate
+
+- [ ] 6.1 After S approval, prepare a fresh standard ext4 Git checkout from committed primary objects through supported native clone, without resetting/changing the dirty primary or existing worktrees; verify exact S/P ancestry and all tracked physical source bytes under native Git, retain its preparation record, and use it as deployment review-repository-root without claiming runtime acceptance.
+- [ ] 6.2 Check actual original input/source epochs, quiet pinned daemon/image/socket and absent fresh metadata attempt/external/cold namespaces; verify the approved exact argv includes both roots, exact S and required metadata-only mode under canonical host CPython3.12.3 -I -B.
+- [ ] 6.3 Execute that original metadata-only invocation exactly once and retain original capture plus controller/guest closed leaves; verify actual zero source/AU/run count, observed guest ABI/backing joins or original failure prefix, mode-specific receipt/close clocks and exact-positive owned container terminal/removal/CID+name absence facts without retry or original rewrites.
+- [ ] 6.4 Independently cold-read its closed physical evidence with the frozen observer and write an exclusive fresh report; verify actual source/P/S/mode/planning-copy/owner/namespace/log/terminal/cleanup joins, bounds and failure companions, and record research eligibility only if this original preflight passes the independent review.
+
+## 7. Conditional separately dispatched unchanged research
+
+- [ ] 7.1 Record a separate independent exact-S research-dispatch review only after accepted original metadata cold evidence; verify same P/frozen source, explicit research mode, unchanged original four32-AU experiment/caps and absent separate research/external/cold namespaces, or retain this gate explicitly unsatisfied if preflight failed.
+- [ ] 7.2 If and only if7.1 is satisfied, dispatch one original research invocation and retain its actual raw/terminals/cleanup once; verify front_gate/default -> front_gate/zero -> underbody/zero -> underbody/default, exact32 AUs per completed run, original cadence/cohorts and first-failure stop with no retry/resume. Otherwise retain the scientific execution as unexecuted; a conditional gate does not prove a cohort ran.
+- [ ] 7.3 Independently cold-reconstruct the actual closed research evidence or retained failed prefix and issue a fresh source-pinned report; verify all raw transport/admission/ACK/control/PTS/RGB/caps/order/EOS/cohort/paired rows before any supported conclusion, with incomplete/flush-only/unknown observations preserved and no adopted-regime authority.
+- [ ] 7.4 Publish a bounded research diagnosis from actual originals and cold findings; verify it distinguishes executed/complete/partial/unexecuted states, source-child deployment coverage, central timing sufficiency, observed pixel-hash limits and wall residence from utilization, and keeps full32/Q4/5600 campaign and qualification/publication counts unchanged.
+
+## 8. Conformance and same-PR release evidence
+
+- [ ] 8.1 Update current PLAN/progress/recovery/runbook and README using actual outcomes and exact command/evidence paths; verify legacy full-scope unchecked tasks remain unexecuted and old false/null failure/cleanup fields are not retrospectively promoted.
+- [ ] 8.2 Produce requirement/scenario conformance for the preserved R15 and twelve successor scenarios with actual source/test/CI/once-execution/cold evidence or explicit conditional/unverified status; verify all other nineteen requirements and diagnostics capability are unchanged and critical discrepancies remain merge-blocking.
+- [ ] 8.3 Resolve observed warnings/failures without weakening the reviewed contract; verify any material design/scope change receives exact-commit planning review before dependent code or further execution, and no failed once-only attempt is silently retried.
+- [ ] 8.4 After actual required work and conformance gates are satisfied, compare delta/main, supported sync/archive in this same branch/PR and verify all ten original plus twelve new R15 scenarios survive with the other capabilities untouched; retain a truthful disposition for conditional unexecuted work rather than marking a scientific run completed.
+- [ ] 8.5 Commit/push the supported archive and main-spec result in the same PR only under root's authorization; verify latest-commit required CI includes the actual V6 adapter/observer tests and obtain exact final review before merge. No local archive or earlier green check substitutes for these release gates.
