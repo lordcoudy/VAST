@@ -1,3 +1,13 @@
+# Подтверждённый прогресс — 4 октября 2026
+
+Восстановление выбранного GStreamer component benchmark завершено в [PR2](https://github.com/lordcoudy/VAST/pull/2), merge `c07de9c78e3beaaf276ee54b5f414a3a4b5d035c` от 3 октября, 19:18:11 МСК. CPU08/GPU02 дали четыре настоящих принятых arms на источнике B `a00aa57f`; результат почти полностью нарушает 100 мс. Нового причинного speedup вывода нет.
+
+Финальный CI на E2 `1f44b9f9` прошёл: 3 001 discovered, 2 992 selected, 2 904 successes, 88 approved skips, failures/errors 0; шесть native builds и три обязательных native regressions. Отдельный ext4 D `3c025b29` прошёл 2 906/86. Conformance 20/118, sync/archive, final review, Draft removal, merge и owned D bind cleanup завершены. Архивные пять unchecked process lines — сохранённый pre-transition snapshot, а не активные незакрытые задачи.
+
+Новая активная работа: `explain-benchmark-latency` — актуализация документов и offline разбор genuine raw задержек/потерь без engine/model rerun. [Текущий план](PLAN.md) и [задачи](openspec/changes/explain-benchmark-latency/tasks.md) задают acceptance. Полные 32/Q4/1 120/5 600 campaigns, девять integrations и указанные ручные/direct-test gaps остаются невыполненными. Их статус не заменяется компонентными/portable результатами.
+
+Данные ниже — неизменённая датированная история; утверждения running/pending/paused относятся к моменту записи и не задают текущее состояние.
+
 # Current CI checkpoint - 3 October2026,13:13 UTC
 
 Hosted D run37116707816 passed with3001 discovered tests,2992 selected,2904 successes and88 approved skips. The prerequisite-corrected original local D full CI also passed:3001 discovered,2992 selected,2906 successes,86 approved skips and9 deferred integrations, with zero failures/errors, all six native builds and the three required native regressions. Its original capture closed with exit0 after2115.37338894s; independent review5a58508a verified the original report, unchanged5577-source tables, observer/wrapper closure and reader FD6 to6. The local namespace diagnostic succeeded, so no temporary profile was required. These are distinct original lane outcomes; the two formerly skipped local checks ran successfully.

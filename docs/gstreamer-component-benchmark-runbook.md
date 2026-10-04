@@ -1,5 +1,13 @@
 # GStreamer component benchmark
 
+## Актуальный статус — 4 октября 2026
+
+Восстановление выбранного component benchmark завершено в [PR2](https://github.com/lordcoudy/VAST/pull/2): merge `c07de9c78e3beaaf276ee54b5f414a3a4b5d035c`, финальный CI/review — E2 `1f44b9f9`; измерения CPU08/GPU02 остаются на B `a00aa57f`. Conformance 20/118, archive, все пять repository process gates и временный owned D-bind cleanup завершены. D — источник отдельного implementation CI, а не текущая вершина репозитория. Датированные pending/running строки ниже сохранены как история.
+
+Текущая задача `explain-benchmark-latency` и её критерии приведены в [PLAN.md](../PLAN.md); public offline diagnostics добавляются в этом этапе. Promoted queue-enter=start означает записанный нулевой span, но не измеренное отсутствие очереди. Stage и native policy path intervals включают наблюдаемые envelopes; pure inference, actual queue wait и NVDEC busy time остаются неизвестны. Исходные workload, результаты, deadlines и full-campaign obligations сохраняются.
+
+## Исторический снимок и действующая процедура
+
 This entry point runs a real baseline/shared GStreamer pair for one analytics resource, then stops the guardian and cold-validates both arms. Run CPU and GPU separately. A completed pair produces descriptive data; it does not complete the historical multi-backend qualification campaign.
 
 ## Current validation status

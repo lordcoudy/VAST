@@ -1,5 +1,9 @@
 # Runbook подготовки полного benchmark VAST
 
+## Текущий указатель — 4 октября 2026
+
+PR2 завершён и merged; исходный component benchmark работает. Актуальные статусы, оставшиеся задачи и порядок задаёт [PLAN.md](../PLAN.md), воспроизводимый component entry point — [component runbook](gstreamer-component-benchmark-runbook.md). Полный launch по-прежнему требует fresh all-backend source/image closures,32 qualification cells/promotion,Q4 и storage gates; этот исторический preparation snapshot не даёт допуска. Ниже сохранены исходные даты/счётчики; текущий configured CI существует в .github/workflows/ci.yml.
+
 Этот документ описывает только подготовку: canonical `plan`, текущий `preflight`, materialize неустановленного WSL user-service и его неустановленную validation. Он не разрешает запуск матрицы. До его применения должны быть приняты все repair/qualification/Q4/capacity gates из OpenSpec change `fix-benchmark-preparations-spec`; текущий статус и исторические отказы остаются в [progress.md](../progress.md), а исходные numbered obligations — в [PLAN.md](../PLAN.md).
 
 ## Текущее наблюдение g — 28 сентября 2026, 08:29 UTC

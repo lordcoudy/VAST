@@ -1,3 +1,13 @@
+# Текущий этап восстановления — 4 октября 2026
+
+Старый change `fix-benchmark-preparations-spec` завершён, архивирован и слит в PR2: `c07de9c78e3beaaf276ee54b5f414a3a4b5d035c`. Все старые component release gates, final CI/review/merge и временный owned-bind cleanup фактически выполнены. Повторять их по прежним pending/running строкам ниже нельзя.
+
+Актуальный общий [план](PLAN.md), подтверждённый [прогресс](progress.md), активный change `explain-benchmark-latency` и его [задачи](openspec/changes/explain-benchmark-latency/tasks.md) заменяют очередность устаревших снимков. Следующий этап — объяснить latency envelopes/coverage/drops по сохранённым четырём arms, честно обозначить неизмеренные queue/service компоненты и проверить небольшой offline инструмент. Runtime/model/workload/исходные результаты неизменны.
+
+Полные campaign obligations остаются отдельным незавершённым объёмом. Historical A269, decoder research failures, CPU07 и CI/staging failures сохраняют свои первоначальные результаты.
+
+## Датированная история восстановления
+
 Current execution plan - 2026-10-03 13:13 UTC
 
 Hosted D run37116707816 passed with3001 discovered tests,2992 selected,2904 successes and88 approved skips. The prerequisite-corrected original local D full CI also passed:3001 discovered,2992 selected,2906 successes,86 approved skips and9 deferred integrations, with zero failures/errors, all six native builds and the three required native regressions. Its original capture closed with exit0 after2115.37338894s; independent review5a58508a verified the original report, unchanged5577-source tables, observer/wrapper closure and reader FD6 to6. The local namespace diagnostic succeeded, so no temporary profile was required. These are distinct original lane outcomes; the two formerly skipped local checks ran successfully.
