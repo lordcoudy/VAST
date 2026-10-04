@@ -1,0 +1,187 @@
+{
+  "artifact_kind": "independent_exact_s4_original_hosted_ci_failure_review_v1",
+  "verdict": "FAILED_CI_GATE_ORIGINALS_VALIDATED",
+  "source_commit": "11471c5e13787dd7eac710738cd67472dc60b591",
+  "run_id": 37229785524,
+  "run_attempt": 1,
+  "provider_url": "https://github.com/lordcoudy/VAST/actions/runs/37229785524",
+  "actual_provider": {
+    "status": "completed",
+    "conclusion": "failure",
+    "updated_at": "2026-10-04T20:16:31Z",
+    "cpu_job": 111516849439,
+    "cpu_conclusion": "failure",
+    "host_job": 111516849664,
+    "host_conclusion": "success",
+    "cpu_failed_step": 12,
+    "host_diagnostic_only": true
+  },
+  "blocker": {
+    "test_id": "test_full_publication_results.FullPublicationResultsTests.test_concurrent_exact_exporters_serialize_and_adopt_one_bundle",
+    "exception": "benchmark_contract.ContractError",
+    "cause": "PublicationPhysicalIoV1Error: compact result intent root parent directory mutated during custody",
+    "traceback_loci": [
+      "tests/test_full_publication_results.py:210",
+      "scripts/full_publication_results.py:476",
+      "scripts/publication_physical_io_v1.py:2920",
+      "scripts/publication_physical_io_v1.py:403",
+      "scripts/full_publication_results.py:596"
+    ],
+    "source_limit": "These files are unchanged from accepted S3. This review confirms the observed failure, not its race cause or attribution to P4."
+  },
+  "original_retention": {
+    "root": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S411471c5e-v1/original-retention-v1",
+    "provider_metadata": {
+      "size_bytes": 26992,
+      "sha256": "5a37de28ac216431181607b24a2c6a449ca719490ccac9e449cc72c132f2e3d0"
+    },
+    "terminal": {
+      "size_bytes": 60979,
+      "sha256": "1d69fa4019d9e21429223969c9bd5bc20d5732924c5ec75aafe35f47292b0c44",
+      "status": "originals_retained",
+      "provider_run_success": false,
+      "elapsed_s": 9.29727895394899
+    },
+    "tool_record": {
+      "path": "../retention-original-tools.v1.json",
+      "size_bytes": 1645,
+      "sha256": "79254287cd3067c6de96252a0305e8cf00c8efee68ce0b2e4d51acfc3247b4b3",
+      "initiating_reference": "2b5864/session35874",
+      "final_poll": "e29d98/exit0",
+      "limitation": "Full initiating output unavailable in this file; actual initiating reference retained honestly. Complete original final poll joins terminal status/count/elapsed."
+    },
+    "retainer": {
+      "prepared_bytes": 5860,
+      "prepared_sha256": "ada5d8b0bfebefea827ee6dc18cb7ffcced2cc3f7e8ce4a5b05c17102fdce5c8",
+      "prepared_executed": false,
+      "executed_bytes": 5923,
+      "executed_sha256": "12830e55951b8d0a63d16f501a76a4263c141e099ddc624a3853131ea6ec3609",
+      "diff": "Exactly three failed-disposition lines; network/CRC/hash/cap/clock behavior unchanged. Review executed no retainer or provider action."
+    },
+    "archives": [
+      {
+        "kind": "cpu",
+        "id": 11314041069,
+        "size_bytes": 2224182,
+        "sha256": "f325b3e1784375176fb496ea38ea5a1e970567cc227f66ba214c79d33a16e13f",
+        "members": 202,
+        "decoded_bytes": 11794743
+      },
+      {
+        "kind": "host",
+        "id": 11313595383,
+        "size_bytes": 559471,
+        "sha256": "9a7e4fe32d5d8a2a2eafcb5e32cf28bea75fc4904bef2ceb6c95b02cebb0a84b",
+        "members": 51,
+        "decoded_bytes": 2956281
+      }
+    ],
+    "independently_verified": "Both full ZIPs match provider size/digest and retention pins; all253 actual members independently read, CRC/size/SHA equal retained descriptors, safe unique names and finite aggregate bytes. Both complete job log hashes match retained originals."
+  },
+  "source_binding": {
+    "baseline": "Accepted S3 cpu.source-before.original.json,1456519B/SHA83e8a54eda1949e6365d6a6565c19c0881a6af6a29d3a8f21818d64cc53858b7",
+    "native_raw_delta": "Complete native raw S3→S4 diff in memory:29 paths,9 modified/20 added, no deletion or mode change; old raw blob bytes match baseline rows and new raw blobs applied.",
+    "actual_tables": "All6399 CPU and host source rows equal baseline plus exact delta; before/after raw JSON bytes identical in both jobs, SHA256d12bd2c8f272269f79a846d003338770c7161a42ba17f199f42d13544f463b2b.",
+    "changed_source_paths": [
+      "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "tests/test_decoder_research_v6.py"
+    ],
+    "cpu_changed_tracked_paths": [],
+    "host_changed_tracked_paths": [],
+    "new_full_manifest_created": false
+  },
+  "actual_checks": {
+    "root": {
+      "discovered": 3048,
+      "selected": 3039,
+      "success": 2950,
+      "skipped": 88,
+      "errors": 1,
+      "failures": 0,
+      "deferred": 9,
+      "elapsed_s": 1510.167842709,
+      "successful": false
+    },
+    "inventory_join": "Complete selection manifest, all88 skip IDs/reasons/audit fields and all9 deferred IDs/reasons/source/capability fields exactly equal accepted S3. Sole prior-success loss equals the recorded error ID; no added success or missing required native success.",
+    "native_built_targets": [
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ],
+    "required_native_regressions_successful": [
+      "test_native_client_regression",
+      "test_native_policy_topology_regression",
+      "test_native_reset_queue_level_regression"
+    ],
+    "decoder": {
+      "root_module_successes": 12,
+      "nested_tests": 167,
+      "nested_elapsed_s": 54.492308972000046,
+      "nested_failures": 0,
+      "nested_errors": 0,
+      "nested_skips": 0,
+      "isolated": true,
+      "dont_write_bytecode": true,
+      "python": "3.12.3",
+      "source15_before_after_epochs_equal": true,
+      "source15_rows_equal_exact_S4_snapshot": true,
+      "raw167_unique_ID_start_terminal_outcome_join": true,
+      "capture_returncode": 0,
+      "pid": 5792,
+      "ppid": 3964,
+      "pgid": 5792,
+      "sid": 5792,
+      "capture_elapsed_s": 55.04621370799998,
+      "cleanup_elapsed_s": 0.01671464300000025,
+      "final_close_cleanup_elapsed_s": 0.017360587999974086,
+      "child_reaped": true,
+      "logs_closed": true,
+      "close_errors": [],
+      "candidate_success": true,
+      "original_successful": false,
+      "original_provisional": true,
+      "two_real15s_cases_s": [
+        15.04098096100006,
+        15.041414032000034
+      ]
+    },
+    "original_failed_suite": {
+      "returncode": 1,
+      "forced_sigterm": false,
+      "forced_sigkill": false,
+      "control_EOF": true,
+      "trace_EOF": true,
+      "descendant_quiescence": "not established by original-child status",
+      "profile_load_unload_verified": true,
+      "profile_held_fds_released": true
+    },
+    "failure_raw_log": {
+      "size_bytes": 2043537,
+      "sha256": "72746330a5c87b59d2b183ea31fe456375570e971d4f1b61e948dcb307e87cdb",
+      "actual_custody_error_present": true
+    },
+    "host": {
+      "diagnostic_tests": 2,
+      "returncode": 0,
+      "diagnostic_passed": true,
+      "full_ci_successful": false
+    }
+  },
+  "gate_disposition": {
+    "mandatory_exact_S4_hosted_CI_pass": false,
+    "P4_corrected_cold_granted": false,
+    "hardware_acceptance": false,
+    "scientific_acceptance": false,
+    "no_retry_or_target_execution": true,
+    "source_review_PASS_not_revoked_by_relabelling_failure": true
+  },
+  "limits": [
+    "Decoder/native positives do not replace failed full CI.",
+    "Source/fixture/CI evidence does not accept any scientific cold reconstruction or historic unexecuted campaign.",
+    "Some initial shape/locator output was truncated; final acceptance uses untruncated complete in-memory delta/CRC/source/outcome joins. No reconstructed initiating retention output or new member-verifier hierarchy."
+  ]
+}

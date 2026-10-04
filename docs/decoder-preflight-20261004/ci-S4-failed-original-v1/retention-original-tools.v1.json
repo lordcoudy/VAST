@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "original_failed_hosted_retention_tool_record",
+  "run_id": 37229785524,
+  "source_commit": "11471c5e13787dd7eac710738cd67472dc60b591",
+  "initiating_tool_reference": {
+    "tool": "exec_command",
+    "chunk_id": "2b5864",
+    "session_id": 35874,
+    "wall_time_seconds": 10.0041907,
+    "exit_code": null,
+    "full_output_retained_in_this_file": false,
+    "original_full_output_location": "current task tool result 2b5864",
+    "note": "The actual exec_command result was emitted; subsequent JS store(undefined) failed. The launched retention continued and was polled to real completion."
+  },
+  "original_final_poll": {
+    "tool": "write_stdin",
+    "arguments": {
+      "session_id": 35874,
+      "chars": "",
+      "yield_time_ms": 1000,
+      "max_output_tokens": 1500
+    },
+    "result": {
+      "chunk_id": "e29d98",
+      "wall_time_seconds": 0.0000065,
+      "exit_code": 0,
+      "original_token_count": 28,
+      "output": "{\"run_id\": 37229785524, \"status\": \"originals_retained\", \"retained_count\": 4, \"elapsed_s\": 9.29727895394899}\n\r\n"
+    }
+  },
+  "prepared_success_only_script": {
+    "size_bytes": 5860,
+    "sha256": "ada5d8b0bfebefea827ee6dc18cb7ffcced2cc3f7e8ce4a5b05c17102fdce5c8",
+    "executed": false
+  },
+  "executed_failed_run_retainer": {
+    "sha256": "12830e55951b8d0a63d16f501a76a4263c141e099ddc624a3853131ea6ec3609",
+    "change": "Exactly three literals: run conclusion failure, CPU failure/HOST success completed exact jobs, provider_run_success false. All GET/credential/redirect/hash/CRC/cap/clock behavior unchanged."
+  },
+  "workflow_retry_or_action": null
+}
