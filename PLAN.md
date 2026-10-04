@@ -1,7 +1,7 @@
 <!-- CURRENT BENCHMARK RECOVERY 2026-10-04: fix-decoder-preflight -->
 Текущая цель: полностью работающий VAST benchmark с фактическим сравнением 24 arms / 12 pairs. Работа продолжается до исполнения всей матрицы и проверки результатов.
 
-Активное изменение: fix-decoder-preflight, ветка codex/fix-decoder-preflight, Draft PR4 https://github.com/lordcoudy/VAST/pull/4. Выполнено44/53 задач; три новые P6 задачи пока не выполнены. Последний source S5 cfa959d2aacbc84a589671dbdf13ae36ae76a2a6 отправлен; planning P5 2ad1d8b55b5cdf33e0c435e20510ee6b403830f4 рассмотрен до кода (COMMENT5408186908), source review COMMENT5408246333. P6 planning artifacts обновлены; exact planning review/comment ещё требуется до реализации.
+Активное изменение: fix-decoder-preflight, ветка codex/fix-decoder-preflight, Draft PR4 https://github.com/lordcoudy/VAST/pull/4. Выполнено45/53 задач;13.1 закрыта точным P6 planning review. Последний source S5 cfa959d2aacbc84a589671dbdf13ae36ae76a2a6 отправлен; planning P5 2ad1d8b55b5cdf33e0c435e20510ee6b403830f4 рассмотрен до кода (COMMENT5408186908), source review COMMENT5408246333. P6 39797d30644a5b889802acbdd67420838cc66821 рассмотрен до кода; independent PASS9621/63bb4645 и COMMENT5408522443. Задача13.2 выполняется; S6/canonical/CI и новый cold-read ещё не выполнены.
 
 Подтверждено:
 - S5 CI37235417252/attempt1: CPU-checks и host diagnostics SUCCESS. 3040 selected /2952 success /88 прежних разрешённых skips /0 failures/errors; decoder root12/nested167 и native6+3 прошли. Исходники до/после совпали. S4 FAILED CI37229785524 остаётся отдельным историческим отказом.
@@ -10,7 +10,7 @@
 - Узкий source разбор: packets() ошибочно требует len(pread)==requested за один syscall. Новые чтения четырёх сохранённых transport сейчас полны, их SHA/epochs неизменны; это не воспроизведение прежнего shortread. Исходный FAIL не сохранил offset/requested/returned. Положительное частичное чтение разрешено контрактом pread; нужны bounded progress-loop, отказ на EOF/timeout и прежние integrity predicates.
 
 Оставшиеся задачи:
-1. Согласованно уточнить четыре planning artifacts P6 и провести exact-commit техническое ревью в том же PR до кода. Реализовать минимальное точное чтение, meaningful real-file partial-read RED/GREEN и строгие EOF/deadline проверки. Не расширять120s/byte/FD/epoch/hash/cadence/cohort limits.
+1. Planning P6 согласован и exact-commit техническое ревью зафиксировано до кода. Выполнить13.2: минимальное точное чтение, meaningful real-file partial-read RED/GREEN и строгие EOF/deadline проверки. Не расширять120s/byte/FD/epoch/hash/cadence/cohort limits.
 2. Один новый canonical после изменения reader, независимое source review и latest hosted CI на S6. Подготовить обычный S6 observer; только после отдельного exact grant — одна проверка прежних S3 originals в новый исключительный report namespace. Producer не повторять. Сохранить все предыдущие отказы.
 3. По фактическому результату завершить diagnosis/runbooks/README/conformance28 R15 scenarios плюс19 untouched requirements и diagnostics. Sync/archive в том же PR, последний CI, финальное ревью и merge.
 4. Официально оформить отдельное конечное сравнительное исследование по готовым внешним planning drafts. Подготовить первые442 исходных AVI display frames в≤448 AU, детерминированное422→420, YUV/RGB parity, необходимые native/GStreamer builds и обе конфигурации analytics client до pilot. Проверить bounded blocked-recv/STOP и сохранение failed prefix.

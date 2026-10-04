@@ -1241,4 +1241,95 @@ class IndependentColdTests(unittest.TestCase):
                 fresh.h.close();(metadata/name).unlink()
 
 
+    def test_P6_transport_partial_positive_reads_complete_header_text_and_payload(self):
+        import json
+        replay=self.fixture('research');directory=self.attempt/'guest/run-01-front_gate-default'
+        path=directory/'source-transport.raw';original=path.read_bytes()
+        admissions=[json.loads(line) for line in (directory/'source-admission.raw').read_bytes().splitlines()]
+        source=self.plan['sources'][0];run=admissions[0]['run_id']
+        replay.h.pin(path,maximum=self.cold.RAW_MAX)
+        fd,held_epoch,descriptor=replay.h.files[str(path)];real_pread=os.pread
+        header=self.cold.HEADER.unpack(original[:80]);payload=80+sum(header[9:12])
+        regions=(('header',0,80),('text',80,payload),('payload',payload,payload+header[12]))
+        try:
+            expected=replay.packets(directory,admissions,source,run)
+            self.assertEqual(expected[1],len(original))
+            for name,begin,end in regions:
+                with self.subTest(region=name):
+                    calls=[]
+                    def fragmented(actual_fd,size,offset):
+                        if actual_fd!=fd or not begin<=offset<end:
+                            return real_pread(actual_fd,size,offset)
+                        block=real_pread(actual_fd,min(size,3),offset)
+                        calls.append((offset,size,len(block)));return block
+                    with patch.object(self.cold.os,'pread',fragmented):
+                        actual=replay.packets(directory,admissions,source,run)
+                    self.assertEqual(actual,expected)
+                    self.assertTrue(any(0<returned<requested for _,requested,returned in calls))
+                    self.assertEqual(replay.h.files[str(path)][0],fd)
+                    self.assertEqual(self.cold.epoch(os.fstat(fd)),held_epoch)
+                    self.assertEqual(self.cold.epoch(path.stat()),held_epoch)
+                    self.assertEqual(path.read_bytes(),original)
+                    self.assertEqual(hashlib.sha256(original).hexdigest(),descriptor['sha256'])
+                    replay.h.check(True)
+        finally:replay.h.close()
+        self.assertEqual(replay.h.close_errors,[])
+        self.assertEqual(len(list(Path('/proc/self/fd').iterdir())),self.fd_before)
+
+    def test_P6_transport_zero_progress_refuses_without_spinning(self):
+        import json
+        replay=self.fixture('research');directory=self.attempt/'guest/run-01-front_gate-default'
+        path=directory/'source-transport.raw';original=path.read_bytes()
+        admissions=[json.loads(line) for line in (directory/'source-admission.raw').read_bytes().splitlines()]
+        replay.h.pin(path,maximum=self.cold.RAW_MAX)
+        fd,held_epoch,_=replay.h.files[str(path)];real_pread=os.pread;calls=[]
+        def interrupted(actual_fd,size,offset):
+            if actual_fd!=fd:return real_pread(actual_fd,size,offset)
+            self.assertLess(len(calls),2,'reader continued after injected empty progress')
+            block=real_pread(actual_fd,min(size,3),offset) if not calls else b''
+            calls.append((offset,size,len(block)));return block
+        try:
+            with patch.object(self.cold.os,'pread',interrupted):
+                with self.assertRaisesRegex(self.cold.Refusal,'short original transport'):
+                    replay.packets(directory,admissions,self.plan['sources'][0],admissions[0]['run_id'])
+            self.assertEqual(len(calls),2)
+            self.assertGreater(calls[0][2],0);self.assertLess(calls[0][2],calls[0][1])
+            self.assertEqual(calls[1][0],calls[0][0]+calls[0][2]);self.assertEqual(calls[1][2],0)
+            self.assertEqual(self.cold.epoch(os.fstat(fd)),held_epoch)
+            self.assertEqual(self.cold.epoch(path.stat()),held_epoch)
+            self.assertEqual(path.read_bytes(),original);replay.h.check(True)
+        finally:replay.h.close()
+        self.assertEqual(replay.h.close_errors,[])
+        self.assertEqual(len(list(Path('/proc/self/fd').iterdir())),self.fd_before)
+
+    def test_P6_transport_partial_progress_keeps_original_absolute_deadline(self):
+        import json
+        replay=self.fixture('research');directory=self.attempt/'guest/run-01-front_gate-default'
+        path=directory/'source-transport.raw';original=path.read_bytes()
+        admissions=[json.loads(line) for line in (directory/'source-admission.raw').read_bytes().splitlines()]
+        replay.h.pin(path,maximum=self.cold.RAW_MAX)
+        fd,held_epoch,_=replay.h.files[str(path)];real_pread=os.pread
+        deadline=replay.h.deadline;clock=[deadline-1];calls=[]
+        def elapsed_after_fragment(actual_fd,size,offset):
+            if actual_fd!=fd:return real_pread(actual_fd,size,offset)
+            self.assertEqual(calls,[],'reader issued a syscall after the original deadline')
+            block=real_pread(actual_fd,min(size,3),offset)
+            calls.append((offset,size,len(block)));clock[0]=deadline+1;return block
+        try:
+            with patch.object(self.cold.time,'monotonic',lambda:clock[0]), \
+                 patch.object(self.cold.os,'pread',elapsed_after_fragment):
+                with self.assertRaisesRegex(self.cold.Refusal,'cold120s limit'):
+                    replay.packets(directory,admissions,self.plan['sources'][0],admissions[0]['run_id'])
+            self.assertEqual(len(calls),1)
+            self.assertGreater(calls[0][2],0);self.assertLess(calls[0][2],calls[0][1])
+            self.assertEqual(replay.h.deadline,deadline)
+            self.assertEqual(replay.h.files[str(path)][0],fd)
+            self.assertEqual(self.cold.epoch(os.fstat(fd)),held_epoch)
+            self.assertEqual(self.cold.epoch(path.stat()),held_epoch)
+            self.assertEqual(path.read_bytes(),original);replay.h.check(True)
+        finally:replay.h.close()
+        self.assertEqual(replay.h.close_errors,[])
+        self.assertEqual(len(list(Path('/proc/self/fd').iterdir())),self.fd_before)
+
+
 if __name__=='__main__':unittest.main(verbosity=2)

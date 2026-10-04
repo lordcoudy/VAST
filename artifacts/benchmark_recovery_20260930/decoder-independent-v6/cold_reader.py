@@ -339,10 +339,14 @@ class Replay:
         def read(size):
             nonlocal offset
             self.require(offset + size <= epoch[4], "truncated original transport")
-            raw = os.pread(fd, size, offset)
-            self.require(len(raw) == size, "short original transport")
+            chunks, received = [], 0
+            while received < size:
+                self.h.clock()
+                raw = os.pread(fd, size - received, offset + received)
+                self.require(bool(raw), "short original transport")
+                chunks.append(raw); received += len(raw)
             offset += size
-            return raw
+            return b"".join(chunks)
         for sequence, declaration in enumerate(admissions, 1):
             self.require(type(declaration) is dict and set(declaration) == EVENT_FIELDS
                 and type(declaration['protocol_version']) is int
