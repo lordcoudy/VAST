@@ -363,6 +363,8 @@ class IndependentColdTests(unittest.TestCase):
 
     def fixture(self,mode='metadata-only',flush=False):
         c=self.cold;self.project=self.base/'physical';self.repository=self.base/'review';self.repository.mkdir()
+        # Synthetic host binding only; the real interpreter still undergoes file/FD custody.
+        self.patch_anchor('HOST_INTERPRETER',str(Path(sys.executable).resolve(strict=True)))
         self.attempt=self.base/'attempt';(self.attempt/'controller').mkdir(parents=True);(self.attempt/'guest/metadata').mkdir(parents=True)
         self.external=self.base/'external';self.external.mkdir();self.helper=self.base/'capture.py';helper=self.raw(self.helper,b'# synthetic reviewed helper\n')
         self.git(self.repository,'init','-q')
@@ -495,12 +497,12 @@ class IndependentColdTests(unittest.TestCase):
             research_conclusion_authorized=False,research_complete=mode=='research',metadata_preflight_completed=mode=='metadata-only',runs_completed=0 if mode=='metadata-only' else 4,
             result=None if mode=='metadata-only' else 'original research body',controller=controller_owner,child=docker_owner,name=name,label=label,container_id=cid,
             final_observed_state=state,closed_controller_leaves=manifest,guest_terminal=guest_descriptor)
-        host_argv=['/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python','-I','-B',str(self.repository/c.RUNTIME/'controller.py'),
+        host_argv=[c.HOST_INTERPRETER,'-I','-B',str(self.repository/c.RUNTIME/'controller.py'),
             '--project-root',str(self.project),'--review-repository-root',str(self.repository),'--source-commit',self.S,'--mode',mode,'--output-dir',str(self.attempt)]
         sources_before=[]
         for row in [*self.code,dict(path=str(self.repository/c.OBSERVER),size_bytes=Path(c.__file__).stat().st_size,sha256=hashlib.sha256(Path(c.__file__).read_bytes()).hexdigest())]:
             sources_before.append(dict(descriptor=row,epoch=c.epoch(Path(row['path']).stat())))
-        interpreter=Path('/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python')
+        interpreter=Path(c.HOST_INTERPRETER)
         interpreter_descriptor=dict(path=str(interpreter),size_bytes=interpreter.stat().st_size,sha256=hashlib.sha256(interpreter.read_bytes()).hexdigest())
         launch=self.document(self.external/'launch.v1.json','vast_decoder_research_external_original_controller_launch_v1',argv=host_argv,controller=outer,sources=sources_before,
             dispatch_source=dict(descriptor=helper,epoch=c.epoch(self.helper.stat())),interpreter=dict(descriptor=interpreter_descriptor,epoch=c.epoch(interpreter.stat())))

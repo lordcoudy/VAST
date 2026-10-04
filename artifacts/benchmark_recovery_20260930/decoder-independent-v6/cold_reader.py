@@ -22,6 +22,7 @@ import subprocess
 import time
 
 PLANNING = '3aa35c3b2eedc05d22cf16ba37d470143d080f6b'
+HOST_INTERPRETER = '/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python'
 IMAGE = 'sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a'
 DAEMON = 'aa8f3d33-e1dc-4ed2-ad06-488b46b332d0'
 ENGINE_SHA = 'a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d'
@@ -708,7 +709,7 @@ class Replay:
         for value in (terminal['controller'], terminal['original_child']): validate_owner(value)
         require(terminal['original_child']['ppid'] == terminal['controller']['pid'], 'external child parent')
         code = self.repository/RUNTIME/'controller.py'
-        require(launch['argv'] == ['/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python',
+        require(launch['argv'] == [HOST_INTERPRETER,
             '-I', '-B', str(code), '--project-root', str(self.project), '--review-repository-root', str(self.repository),
             '--source-commit', self.source_commit, '--mode', self.mode, '--output-dir', str(self.attempt)], 'external exact mode/roots argv')
         require(launch['sources'] == terminal['sources_before'] == terminal['sources_after'], 'external source epochs')

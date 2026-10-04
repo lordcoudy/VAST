@@ -21,7 +21,7 @@
 
 ## 4. Independent closed-evidence observer
 
-- [ ] 4.1 Add one Git-tracked self-contained `artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py` with explicit mode/P/S/roots/closed attempt/external terminal/exclusive report inputs; verify it imports no producer/old reader/GI and launches no source/container/model, and include its actual source bytes in reviewed S.
+- [x] 4.1 Add one Git-tracked self-contained `artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py` with explicit mode/P/S/roots/closed attempt/external terminal/exclusive report inputs; verify it imports no producer/old reader/GI and launches no source/container/model, and include its actual source bytes in reviewed S.
 - [x] 4.2 Test metadata cold success and rejection of foreign/changed/partial/active/mode-mismatched/late/close-failed namespaces, descriptors and owner/source/planning joins; verify actual retained selected-row/physical-metadata replay, distinct inner/outer cleanup authority,120s/FD/file/report bounds and explicit unavailable unselected maps/image-path facts.
 - [x] 4.3 Test complete synthetic four-by-32-AU cold reconstruction and corrupted/missing/duplicate/trailing header/payload/admission/ACK/control/PTS/caps/digest/EOS/order/cohort cases; verify the independent reader recomputes raw hashes and64 paired rows, preserves allowed causal observer interleaving and rejects producer-only summaries.
 - [x] 4.4 Test failed/partial research retained-prefix reports and central flush-only timing insufficiency; verify no successful-cohort/steady-state/adoption or benchmark/native/qualification/model/publication authority is granted and original reader sources remain unchanged.
