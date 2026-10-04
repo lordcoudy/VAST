@@ -1,0 +1,155 @@
+{
+  "all_own_retention_fds_closed": true,
+  "capture_elapsed_s": 58.68057141802274,
+  "cleanup_elapsed_s": 1.6636080500902608,
+  "elapsed_s": 0.02665328001603484,
+  "fd_after": 6,
+  "fd_before": 6,
+  "hardware_acceptance": false,
+  "kind": "decoder_P2_closed_full_fixture_metadata_retention_v1",
+  "limitations": [
+    "Root original birth/session/FD count was not captured by the direct launcher; parent PID is the original nested child PPID only.",
+    "Own later process absence is checked separately after this reader returns.",
+    "No deployment or scientific acceptance."
+  ],
+  "nested_child_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 36902,
+    "pid": 36902,
+    "ppid": 36883,
+    "sid": 36902,
+    "starttime_ticks": 60930293,
+    "uid": 1000
+  },
+  "nested_elapsed_s": 52.55514786904678,
+  "nested_tests": 159,
+  "original_provisional_flags_preserved": true,
+  "outcomes": {
+    "success": 159
+  },
+  "process_scans": [
+    {
+      "errors": [],
+      "monotonic_ns": 609590136177168,
+      "original_group": 36902,
+      "remaining": [],
+      "target_pid_paths": [
+        36883,
+        36902
+      ]
+    },
+    {
+      "errors": [],
+      "monotonic_ns": 609590137620522,
+      "original_group": 36902,
+      "remaining": [],
+      "target_pid_paths": [
+        36883,
+        36902
+      ]
+    }
+  ],
+  "reader": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "observed_parent": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "pgid": 38891,
+      "pid": 38891,
+      "ppid": 38890,
+      "sid": 38891,
+      "starttime_ticks": 60959006,
+      "uid": 1000
+    },
+    "pgid": 38891,
+    "pid": 38892,
+    "ppid": 38891,
+    "sid": 38891,
+    "starttime_ticks": 60959006,
+    "uid": 1000
+  },
+  "root_source": "faithful full-adapter-original-tool.v1.json: actual root12 OK and exit0",
+  "root_tests": 12,
+  "rows": [
+    {
+      "original_epoch": [
+        2096,
+        607112,
+        33188,
+        1,
+        97513,
+        1791127020552471266,
+        1791127020552471266
+      ],
+      "original_path": "/tmp/vast-decoder-p2-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-b3646b53d774469d9d9054b7494d5339/nested-suite.v1.json",
+      "retained_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-P2-implementation-v1/full-adapter-01/nested-suite.v1.json",
+      "sha256": "e347e161b746cbc48afcb353fa2336f06f7e2e140bfe5034181f9fcc6be5f849",
+      "size_bytes": 97513
+    },
+    {
+      "original_epoch": [
+        2096,
+        607108,
+        33188,
+        1,
+        8168,
+        1791127022212620999,
+        1791127022212620999
+      ],
+      "original_path": "/tmp/vast-decoder-p2-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-b3646b53d774469d9d9054b7494d5339/original.stdout",
+      "retained_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-P2-implementation-v1/full-adapter-01/original.stdout",
+      "sha256": "5ed512abb33c0012b599ed72045322ed44d7cb2fdd98e9debfd97bc846530511",
+      "size_bytes": 8168
+    },
+    {
+      "original_epoch": [
+        2096,
+        607109,
+        33188,
+        1,
+        94718,
+        1791127022216621360,
+        1791127022216621360
+      ],
+      "original_path": "/tmp/vast-decoder-p2-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-b3646b53d774469d9d9054b7494d5339/original.stderr",
+      "retained_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-P2-implementation-v1/full-adapter-01/original.stderr",
+      "sha256": "b3e369bc7d94196a623daf718f94dbbc5b1a9278310c40ac99c1638dcb520ce4",
+      "size_bytes": 94718
+    },
+    {
+      "original_epoch": [
+        2096,
+        607111,
+        33188,
+        1,
+        1909,
+        1791127023872770731,
+        1791127023872770731
+      ],
+      "original_path": "/tmp/vast-decoder-p2-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-b3646b53d774469d9d9054b7494d5339/adapter-terminal.v1.json",
+      "retained_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-P2-implementation-v1/full-adapter-01/adapter-terminal.v1.json",
+      "sha256": "ad9202f0a594a4ed51f737fd174c39e6af192c7142032ec641740d1b4c221dd7",
+      "size_bytes": 1909
+    },
+    {
+      "original_epoch": [
+        2096,
+        607113,
+        33188,
+        1,
+        758,
+        1791127023876771092,
+        1791127023876771092
+      ],
+      "original_path": "/tmp/vast-decoder-p2-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-b3646b53d774469d9d9054b7494d5339/adapter-final-close.v1.json",
+      "retained_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-P2-implementation-v1/full-adapter-01/adapter-final-close.v1.json",
+      "sha256": "a514db24af01c854fa238ef7f1263a70b8a678a1d7b8527d2a512c59aec664ea",
+      "size_bytes": 758
+    }
+  ],
+  "source_or_research_executed": false,
+  "source_rows": 15,
+  "source_stable": true,
+  "starts": 159,
+  "terminals": 159
+}

@@ -342,7 +342,11 @@ class IndependentColdTests(unittest.TestCase):
     @staticmethod
     def owner(pid,ppid=90):
         return {'pid':pid,'ppid':ppid,'starttime_ticks':100+pid,'uid':1000,'gid':1000,
-            'boot_id':'11111111-2222-3333-4444-555555555555','process_group_id':pid}
+            'boot_id':'11111111-2222-3333-4444-555555555555'}
+
+    def external_owner(self,pid,ppid,group=None,session=None):
+        return dict(self.owner(pid,ppid),process_group_id=pid if group is None else group,
+            session_id=pid if session is None else session)
 
     def journal(self,path,rows):
         return self.raw(path,b''.join(self.cold.canonical(dict(event_seq=i,observed_monotonic_ns=100000+i,**row))+b'\n'
@@ -361,18 +365,21 @@ class IndependentColdTests(unittest.TestCase):
                 GIT_COMMITTER_NAME='Synthetic',GIT_COMMITTER_EMAIL='fixture@example.invalid'))
         self.assertEqual(result.returncode,0,result.stderr.decode());return result.stdout.strip().decode()
 
-    def fixture(self,mode='metadata-only',flush=False):
-        c=self.cold;self.project=self.base/'physical';self.repository=self.base/'review';self.repository.mkdir()
+    def fixture(self,mode='metadata-only',flush=False,original_observer=None,fixture_root=None):
+        base=self.base if fixture_root is None else Path(fixture_root)
+        c=self.cold;self.project=base/'physical';self.repository=base/'review';self.repository.mkdir()
         # Synthetic host binding only; the real interpreter still undergoes file/FD custody.
         self.patch_anchor('HOST_INTERPRETER',str(Path(sys.executable).resolve(strict=True)))
-        self.attempt=self.base/'attempt';(self.attempt/'controller').mkdir(parents=True);(self.attempt/'guest/metadata').mkdir(parents=True)
-        self.external=self.base/'external';self.external.mkdir();self.helper=self.base/'capture.py';helper=self.raw(self.helper,b'# synthetic reviewed helper\n')
+        self.attempt=base/'attempt';(self.attempt/'controller').mkdir(parents=True);(self.attempt/'guest/metadata').mkdir(parents=True)
+        self.external=base/'external';self.external.mkdir();self.helper=base/'capture.py';helper=self.raw(self.helper,b'# synthetic reviewed helper\n')
         self.git(self.repository,'init','-q')
         for name,rel in c.PLANNING_PATHS.items():self.raw(self.repository/'openspec/changes/fix-decoder-preflight'/rel,('P '+name+'\n').encode())
         self.git(self.repository,'add','openspec');self.git(self.repository,'commit','-qm','synthetic planning')
         self.P=self.git(self.repository,'rev-parse','HEAD')
+        # Only the declared disposable fixture substitutes the reviewed amendment authority.
+        if hasattr(c,'OBSERVER_PLANNING'):self.patch_anchor('OBSERVER_PLANNING',self.P)
         for name in ('controller.py','guest_consumer.py','research_protocol.py'):self.raw(self.repository/c.RUNTIME/name,('# synthetic source '+name+'\n').encode())
-        self.raw(self.repository/c.OBSERVER,Path(c.__file__).read_bytes())
+        self.raw(self.repository/c.OBSERVER,Path(c.__file__).read_bytes() if original_observer is None else original_observer)
         self.git(self.repository,'add','artifacts');self.git(self.repository,'commit','-qm','synthetic reviewed source')
         self.S=self.git(self.repository,'rev-parse','HEAD')
         self.binding=dict(mode=mode,planning_commit=self.P,source_commit=self.S,current_checkout_commit=self.S,
@@ -458,7 +465,8 @@ class IndependentColdTests(unittest.TestCase):
             result=result,failure=None,failure_stage=None,failure_type=None,failure_traceback=None,failure_traceback_error=None,original_primary_failure=None,
             primary_failure_capture_error=None,elapsed_s=10)
         guest_descriptor=dict(guest_terminal,path='/opt/vast/output/metadata/'+guest_leaf)
-        controller_owner=self.owner(100,90);docker_owner=self.owner(101,100);outer=self.owner(90,89)
+        controller_owner=self.owner(100,90);docker_owner=self.owner(101,100)
+        external_child=self.external_owner(100,90);outer=self.external_owner(90,89,80,80)
         name='vast-decoder-research-'+('0'*32);cid='b'*64;label=hashlib.sha256((self.P+self.S+mode+c.IMAGE+name).encode()).hexdigest()
         engine=dict(path='/usr/bin/docker',size_bytes=Path('/usr/bin/docker').stat().st_size,sha256=hashlib.sha256(Path('/usr/bin/docker').read_bytes()).hexdigest());self.patch_anchor('ENGINE_SHA',engine['sha256'])
         self.document(self.attempt/'controller/reservation.v1.json','vast_decoder_research_reservation_v1',**self.binding,
@@ -496,32 +504,190 @@ class IndependentColdTests(unittest.TestCase):
             oom_killed=False,container_not_found_after_owned_remove=True,elapsed_s=30,cleanup_elapsed_after_close_s=1,independent_cold_recomputed=False,
             research_conclusion_authorized=False,research_complete=mode=='research',metadata_preflight_completed=mode=='metadata-only',runs_completed=0 if mode=='metadata-only' else 4,
             result=None if mode=='metadata-only' else 'original research body',controller=controller_owner,child=docker_owner,name=name,label=label,container_id=cid,
-            final_observed_state=state,closed_controller_leaves=manifest,guest_terminal=guest_descriptor)
+            final_observed_state=state,closed_controller_leaves=manifest,guest_terminal=guest_terminal)
         host_argv=[c.HOST_INTERPRETER,'-I','-B',str(self.repository/c.RUNTIME/'controller.py'),
             '--project-root',str(self.project),'--review-repository-root',str(self.repository),'--source-commit',self.S,'--mode',mode,'--output-dir',str(self.attempt)]
         sources_before=[]
-        for row in [*self.code,dict(path=str(self.repository/c.OBSERVER),size_bytes=Path(c.__file__).stat().st_size,sha256=hashlib.sha256(Path(c.__file__).read_bytes()).hexdigest())]:
+        observer_path=self.repository/c.OBSERVER
+        for row in [*self.code,dict(path=str(observer_path),size_bytes=observer_path.stat().st_size,sha256=hashlib.sha256(observer_path.read_bytes()).hexdigest())]:
             sources_before.append(dict(descriptor=row,epoch=c.epoch(Path(row['path']).stat())))
         interpreter=Path(c.HOST_INTERPRETER)
         interpreter_descriptor=dict(path=str(interpreter),size_bytes=interpreter.stat().st_size,sha256=hashlib.sha256(interpreter.read_bytes()).hexdigest())
         launch=self.document(self.external/'launch.v1.json','vast_decoder_research_external_original_controller_launch_v1',argv=host_argv,controller=outer,sources=sources_before,
             dispatch_source=dict(descriptor=helper,epoch=c.epoch(self.helper.stat())),interpreter=dict(descriptor=interpreter_descriptor,epoch=c.epoch(interpreter.stat())))
-        self.document(self.external/'process-start.v1.json','vast_decoder_research_external_original_controller_started_v1',argv=host_argv,controller=outer,child=controller_owner)
+        self.document(self.external/'process-start.v1.json','vast_decoder_research_external_original_controller_started_v1',argv=host_argv,controller=outer,child=external_child)
         stdout=self.raw(self.external/'original.stdout',c.canonical(dict(successful=True,receipt=terminal,original_execution_completed=True,
             streams_closed=True,pins_closed=True,socket_closed=True,controller_close_errors=[],failure=None,close_failure=None,
             close_failure_capture_error=None,receipt_time_limit_failure=None,mode=mode,planning_commit=self.P,source_commit=self.S))+b'\n');stderr=self.raw(self.external/'original.stderr',b'')
         external_terminal=self.document(self.external/'terminal.v1.json','vast_decoder_research_external_original_controller_terminal_v1',**self.binding,
             external_capture_completed=True,original_controller_returncode=0,timed_out=False,capture_exceeded=[],failures=[],containment=None,
             all_source_epochs_rechecked=True,elapsed_s=40,started_at_ns=1,finished_at_ns=2,log_eof=dict(stdout=True,stderr=True),close_errors=[],all_streams_closed=True,
-            provisional_until_owner_final_close=True,launch=launch,argv=host_argv,controller=outer,original_child=controller_owner,sources_before=sources_before,sources_after=sources_before,
+            provisional_until_owner_final_close=True,launch=launch,argv=host_argv,controller=outer,original_child=external_child,sources_before=sources_before,sources_after=sources_before,
             dispatch_source=dict(descriptor=helper,epoch=c.epoch(self.helper.stat())),dispatch_source_after=dict(descriptor=helper,epoch=c.epoch(self.helper.stat())),
             interpreter_after=dict(descriptor=interpreter_descriptor,epoch=c.epoch(interpreter.stat())),signals=[],container_cleanup_verified=None,container_oom_observed=None,
             stdout=stdout,stderr=stderr)
-        self.tool=self.base/'original-tool.json'
+        self.tool=base/'original-tool.json'
         self.raw(self.tool,c.canonical(dict(tool_calls=[dict(tool_name='exec_command',arguments={'cmd':'synthetic capture'},result=dict(exit_code=0,
             original_token_count=300,output='w\0s\0l\0: synthetic warning\r\0\n\0'+c.canonical(dict(receipt=external_terminal,external_capture_completed=True,late_terminal=None,close_errors=[])).decode()+'\n'))])))
         replay=c.Replay(self.project,self.repository,self.attempt,mode,self.S,planning_commit=self.P);self.replays.append(replay)
         self.replay=replay;self.capture_sha=helper['sha256'];return replay
+
+    def test_P2_real_six_core_and_eight_external_owner_records_join(self):
+        replay=self.fixture();replay.plan=self.plan;replay.binding=replay.source_bindings(self.plan)
+        external=replay.external(self.external/'terminal.v1.json',self.capture_sha,self.tool)
+        controller=replay.controller(external)
+        self.assertEqual(set(controller['controller']),{'pid','ppid','starttime_ticks','uid','gid','boot_id'})
+        self.assertEqual(set(external['original_child']),set(controller['controller'])|{'process_group_id','session_id'})
+        self.assertEqual(external['controller']['process_group_id'],80)
+        self.assertNotEqual(external['controller']['process_group_id'],external['controller']['pid'])
+
+    def test_P2_real_guest_alias_and_physical_terminal_descriptor_join(self):
+        replay=self.fixture();replay.plan=replay.doc(self.attempt/'controller/execution-plan.v1.json','vast_decoder_research_plan_v1')
+        replay.binding=self.binding;controller=self.decoded(self.attempt/'controller/terminal.v1.json')
+        completed,pairs=replay.guest(controller)
+        self.assertEqual((completed,pairs),([],[]))
+        alias=self.decoded(self.attempt/'controller/original.stdout')['receipt']
+        self.assertEqual(replay.output(alias),Path(controller['guest_terminal']['path']))
+        self.assertNotEqual(alias['path'],controller['guest_terminal']['path'])
+        self.assertEqual({k:alias[k] for k in ('size_bytes','sha256')},
+            {k:controller['guest_terminal'][k] for k in ('size_bytes','sha256')})
+        self.assertEqual(replay.guest_terminal_join,dict(controller_physical=controller['guest_terminal'],
+            guest_stdout_alias=alias,held_physical=controller['guest_terminal']))
+
+    def reseal_external_owners(self,parent,child):
+        launch=self.replace_document(self.external/'launch.v1.json',controller=parent)
+        self.replace_document(self.external/'process-start.v1.json',controller=parent,child=child)
+        terminal=self.replace_document(self.external/'terminal.v1.json',launch=launch,controller=parent,original_child=child)
+        value=self.decoded(self.tool)
+        value['tool_calls'][0]['result']['output']=self.cold.canonical(dict(receipt=terminal,
+            external_capture_completed=True,late_terminal=None,close_errors=[])).decode()+'\n'
+        self.raw(self.tool,self.cold.canonical(value))
+
+    def cross_version_fixture(self,fixture_root=None,large_planning=False):
+        replay=self.fixture(original_observer=b'# immutable distinct original S observer\n',fixture_root=fixture_root)
+        replay.h.close();c=self.cold
+        self.observer_repository=self.repository.parent/'observer'
+        self.git(self.repository.parent,'clone','-q','--no-hardlinks',str(self.repository),str(self.observer_repository))
+        for name,relative in c.PLANNING_PATHS.items():
+            raw=('P2 '+name+'\n').encode()
+            if large_planning and name=='reviewed-design.md':raw=b'x'*(c.DOC_MAX+1)
+            self.raw(self.observer_repository/'openspec/changes/fix-decoder-preflight'/relative,raw)
+        self.git(self.observer_repository,'add','openspec');self.git(self.observer_repository,'commit','-qm','synthetic approved P2')
+        self.P2=self.git(self.observer_repository,'rev-parse','HEAD');self.patch_anchor('OBSERVER_PLANNING',self.P2)
+        self.raw(self.observer_repository/c.OBSERVER,Path(c.__file__).read_bytes())
+        self.git(self.observer_repository,'add','artifacts');self.git(self.observer_repository,'commit','-qm','synthetic corrected C')
+        self.C=self.git(self.observer_repository,'rev-parse','HEAD')
+        corrected=c.Replay(self.project,self.repository,self.attempt,'metadata-only',self.S,self.P,
+            observer_repository=self.observer_repository,observer_commit=self.C)
+        self.replays.append(corrected);return corrected
+
+    def test_P2_each_core_identity_and_exact_controller_schema_is_required(self):
+        changes=[('pid',101),('ppid',91),('starttime_ticks',201),('uid',1001),('gid',1001),
+            ('boot_id','22222222-2222-3333-4444-555555555555'),('uid',1000.0),('extra',1),('missing',None)]
+        for key,new in changes:
+            with self.subTest(field=key),tempfile.TemporaryDirectory(dir=self.base) as temp:
+                replay=self.fixture(fixture_root=temp);replay.plan=self.plan;replay.binding=self.binding
+                owner=self.owner(100,90)
+                if key=='missing':owner.pop('boot_id')
+                else:owner[key]=new
+                self.replace_document(self.attempt/'controller/terminal.v1.json',controller=owner)
+                with self.assertRaises(self.cold.Refusal):replay.controller(self.decoded(self.external/'terminal.v1.json'))
+                replay.h.close()
+
+    def test_P2_external_parent_child_shape_and_containment_are_required(self):
+        changes=[('parent','process_group_id',0),('parent','session_id',True),('parent','extra',1),
+            ('parent','missing',None),('child','process_group_id',99),('child','session_id',99),
+            ('child','process_group_id',True),('child','session_id',0),('child','missing',None)]
+        for role,key,new in changes:
+            with self.subTest(role=role,field=key),tempfile.TemporaryDirectory(dir=self.base) as temp:
+                replay=self.fixture(fixture_root=temp);replay.plan=self.plan;replay.binding=replay.source_bindings(self.plan)
+                parent=self.external_owner(90,89,80,80);child=self.external_owner(100,90)
+                owner=parent if role=='parent' else child
+                if key=='missing':owner.pop('session_id')
+                else:owner[key]=new
+                self.reseal_external_owners(parent,child)
+                with self.assertRaisesRegex(self.cold.Refusal,'external .*owner|session containment'):
+                    replay.external(self.external/'terminal.v1.json',self.capture_sha,self.tool)
+                replay.h.close()
+
+    def test_P2_terminal_paths_size_hash_and_mode_are_not_interchangeable(self):
+        cases=[('physical','path','/opt/vast/output/metadata/metadata-preflight-terminal.v1.json'),
+            ('physical','path','foreign'),('physical','size_bytes',1),('physical','sha256','0'*64),
+            ('guest','path','physical'),('guest','path','/opt/vast/output/metadata/research-terminal.v1.json'),
+            ('guest','path','/opt/vast/output/metadata/../metadata/metadata-preflight-terminal.v1.json'),
+            ('guest','path','/foreign/metadata/metadata-preflight-terminal.v1.json'),
+            ('guest','size_bytes',1),('guest','sha256','0'*64)]
+        for role,key,new in cases:
+            with self.subTest(role=role,field=key,value=new),tempfile.TemporaryDirectory(dir=self.base) as temp:
+                replay=self.fixture(fixture_root=temp)
+                replay.plan=replay.doc(self.attempt/'controller/execution-plan.v1.json','vast_decoder_research_plan_v1');replay.binding=self.binding
+                controller=self.decoded(self.attempt/'controller/terminal.v1.json')
+                stdout=self.decoded(self.attempt/'controller/original.stdout')
+                descriptor=controller['guest_terminal'] if role=='physical' else stdout['receipt']
+                descriptor[key]=str(self.base/'foreign-terminal.json') if new=='foreign' else controller['guest_terminal']['path'] if new=='physical' else new
+                if role=='guest':self.raw(self.attempt/'controller/original.stdout',self.cold.canonical(stdout)+b'\n')
+                with self.assertRaises(self.cold.Refusal):replay.guest(controller)
+                replay.h.close()
+
+    def test_P2_distinct_git_C_executes_against_frozen_S_and_raw_P2_after_archive(self):
+        replay=self.cross_version_fixture();old_plan=(self.attempt/'controller/execution-plan.v1.json').read_bytes()
+        current=self.observer_repository/'openspec/changes/fix-decoder-preflight'
+        self.raw(current/'tasks.md',b'legitimate task progress after P2\n')
+        archive=self.observer_repository/'openspec/changes/archive/2026-10-04-fix-decoder-preflight';archive.parent.mkdir()
+        self.git(self.observer_repository,'mv',str(current),str(archive));self.git(self.observer_repository,'add','openspec')
+        self.git(self.observer_repository,'commit','-qm','synthetic task progress and archive')
+        result=replay.execute(self.external/'terminal.v1.json',self.capture_sha,self.tool)
+        binding=result['observer_binding']
+        self.assertTrue(result['operation_completed']);self.assertEqual(result['source_commit'],self.S)
+        self.assertEqual(replay.binding,self.binding);self.assertEqual(binding['source_commit'],self.C)
+        self.assertEqual(binding['planning_commit'],self.P2);self.assertNotEqual(binding['current_checkout_commit'],self.C)
+        self.assertEqual(len(binding['planning_files']),4);self.assertEqual(len([r for r in replay.git_commands
+            if 'cat-file' in r['argv'] and any(a.startswith(self.P2+':') for a in r['argv'])]),4)
+        self.assertNotEqual(binding['original_observer']['sha256'],binding['executed_observer']['sha256'])
+        self.assertEqual(binding['executed_observer']['sha256'],hashlib.sha256(Path(self.cold.__file__).read_bytes()).hexdigest())
+        self.assertEqual((self.attempt/'controller/execution-plan.v1.json').read_bytes(),old_plan)
+        self.assertTrue(all(r['planning_commit']==self.P for r in self.plan['planning_files']))
+        self.assertEqual((result['actual_original_au_count'],result['paired_timing_count']),(0,0))
+        self.assertEqual(result['guest_terminal_join']['controller_physical'],
+            self.decoded(self.attempt/'controller/terminal.v1.json')['guest_terminal'])
+        self.assertEqual(result['guest_terminal_join']['guest_stdout_alias'],
+            self.decoded(self.attempt/'controller/original.stdout')['receipt'])
+
+    def test_P2_paired_observer_arguments_and_exact_C_ancestry_are_required(self):
+        replay=self.cross_version_fixture();replay.h.close();c=self.cold
+        for supplied in ({'observer_repository':self.observer_repository},{'observer_commit':self.C}):
+            with self.subTest(supplied=supplied),self.assertRaisesRegex(c.Refusal,'paired observer'):
+                c.Replay(self.project,self.repository,self.attempt,'metadata-only',self.S,self.P,**supplied)
+        for root,commit in [(self.observer_repository,self.P),(self.repository,self.C),
+                (self.observer_repository/'..',self.C),(self.observer_repository,'not-a-commit')]:
+            with self.subTest(root=root,commit=commit):
+                changed=c.Replay(self.project,self.repository,self.attempt,'metadata-only',self.S,self.P,
+                    observer_repository=root,observer_commit=commit);self.replays.append(changed)
+                with self.assertRaises(c.Refusal):changed.source_bindings(self.plan)
+                changed.h.close()
+        default=c.Replay(self.project,self.repository,self.attempt,'metadata-only',self.S,self.P);self.replays.append(default)
+        with self.assertRaises(c.Refusal):default.source_bindings(self.plan)
+
+    def test_P2_current_C_and_original_S_files_keep_separate_physical_guards(self):
+        for role in ('observer-C','original-S','C-epoch'):
+            with self.subTest(role=role),tempfile.TemporaryDirectory(dir=self.base) as temp:
+                replay=self.cross_version_fixture(fixture_root=temp)
+                path=(self.repository if role=='original-S' else self.observer_repository)/self.cold.OBSERVER
+                if role=='C-epoch':
+                    replay.source_bindings(self.plan);path.write_bytes(path.read_bytes())
+                    with self.assertRaisesRegex(self.cold.Refusal,'epoch|name'):replay.h.check(True)
+                else:
+                    path.write_bytes(path.read_bytes()+b'# unreviewed drift\n')
+                    with self.assertRaisesRegex(self.cold.Refusal,'descriptor'):replay.source_bindings(self.plan)
+                replay.h.close()
+
+    def test_P2_raw_amendment_blob_bound_is_enforced(self):
+        replay=self.cross_version_fixture(large_planning=True)
+        with self.assertRaisesRegex(self.cold.Refusal,'Git stream cap'):replay.source_bindings(self.plan)
+        failed=replay.git_commands[-1]
+        self.assertIn(self.P2+':openspec/changes/fix-decoder-preflight/design.md',failed['argv'])
+        self.assertLessEqual(failed['stdout_size'],self.cold.DOC_MAX)
+        self.assertIsNotNone(failed['returncode']);self.assertEqual(failed['close_errors'],[])
 
     def run_fixture(self,index,role,setting,flush):
         c=self.cold;source=next(row for row in self.plan['sources'] if row['role']==role);guest=self.guest_owner

@@ -1,0 +1,73 @@
+{
+  "all_prior_retention_handles_released": true,
+  "current_reader_pid": 38941,
+  "kind": "decoder_P2_later_fixture_owner_closure_v1",
+  "limitation": "Full root/timeout birth/session was not captured; root PID is known from original nested PPID. No global process/quiescence claim.",
+  "original_nested_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 36902,
+    "pid": 36902,
+    "ppid": 36883,
+    "sid": 36902,
+    "starttime_ticks": 60930293,
+    "uid": 1000
+  },
+  "original_retention_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "observed_parent": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "pgid": 38891,
+      "pid": 38891,
+      "ppid": 38890,
+      "sid": 38891,
+      "starttime_ticks": 60959006,
+      "uid": 1000
+    },
+    "pgid": 38891,
+    "pid": 38892,
+    "ppid": 38891,
+    "sid": 38891,
+    "starttime_ticks": 60959006,
+    "uid": 1000
+  },
+  "research_executed": false,
+  "scans": [
+    {
+      "errors": [],
+      "monotonic_ns": 609700759786795,
+      "remaining": [],
+      "target_groups": [
+        35437,
+        36902,
+        38891
+      ],
+      "target_pid_paths": [
+        35436,
+        35437,
+        36883,
+        36902,
+        38891,
+        38892
+      ]
+    },
+    {
+      "errors": [],
+      "monotonic_ns": 609700761206926,
+      "remaining": [],
+      "target_groups": [
+        35437,
+        36902,
+        38891
+      ],
+      "target_pid_paths": [
+        35436,
+        35437,
+        36883,
+        36902,
+        38891,
+        38892
+      ]
+    }
+  ]
+}

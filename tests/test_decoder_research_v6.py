@@ -175,6 +175,15 @@ APPROVED_NEW_IDS=frozenset((
     'test_successor_v6.GuestRunRetirementTests.test_run_drain_handoff_and_retirement_keep_real_fd_and_first_cause',
     'test_successor_v6.GuestRunRetirementTests.test_run_partial_pipe_acquisition_retires_real_first_pair',
     'test_successor_v6.GuestRunRetirementTests.test_run_retirement_errors_preserve_primary_and_attempt_remaining',
+    'test_research_protocol.IndependentColdTests.test_P2_real_six_core_and_eight_external_owner_records_join',
+    'test_research_protocol.IndependentColdTests.test_P2_real_guest_alias_and_physical_terminal_descriptor_join',
+    'test_research_protocol.IndependentColdTests.test_P2_each_core_identity_and_exact_controller_schema_is_required',
+    'test_research_protocol.IndependentColdTests.test_P2_external_parent_child_shape_and_containment_are_required',
+    'test_research_protocol.IndependentColdTests.test_P2_terminal_paths_size_hash_and_mode_are_not_interchangeable',
+    'test_research_protocol.IndependentColdTests.test_P2_distinct_git_C_executes_against_frozen_S_and_raw_P2_after_archive',
+    'test_research_protocol.IndependentColdTests.test_P2_paired_observer_arguments_and_exact_C_ancestry_are_required',
+    'test_research_protocol.IndependentColdTests.test_P2_current_C_and_original_S_files_keep_separate_physical_guards',
+    'test_research_protocol.IndependentColdTests.test_P2_raw_amendment_blob_bound_is_enforced',
 ))
 
 
@@ -231,7 +240,7 @@ def validate_nested(report):
     ids=report['selected_test_ids'];outcomes=report['outcomes']
     if report.get('isolated') is not True or report.get('dont_write_bytecode') is not True:
         raise AssertionError('nested fixture process was not isolated -I -B')
-    if len(INHERITED_IDS)!=66 or len(APPROVED_NEW_IDS)!=84 or INHERITED_IDS & APPROVED_NEW_IDS or \
+    if len(INHERITED_IDS)!=66 or len(APPROVED_NEW_IDS)!=93 or INHERITED_IDS & APPROVED_NEW_IDS or \
             len(ids)!=len(set(ids)) or set(ids)!=INHERITED_IDS | APPROVED_NEW_IDS:
         raise AssertionError('full frozen inherited66 inventory missing or duplicated')
     if not any(name.startswith('test_successor_v6.') for name in ids):

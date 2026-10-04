@@ -22,6 +22,8 @@ import subprocess
 import time
 
 PLANNING = '3aa35c3b2eedc05d22cf16ba37d470143d080f6b'
+OBSERVER_PLANNING = '684ea836a27fa002bc231117fbe445d0ec5579ab'
+OWNER_CORE = frozenset(('pid','ppid','starttime_ticks','uid','gid','boot_id'))
 HOST_INTERPRETER = '/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python'
 IMAGE = 'sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a'
 DAEMON = 'aa8f3d33-e1dc-4ed2-ad06-488b46b332d0'
@@ -121,6 +123,15 @@ def validate_owner(value):
         and type(value.get('starttime_ticks')) is int and value['starttime_ticks'] > 0
         and value.get('uid') == value.get('gid') == 1000
         and re.fullmatch(r'[0-9a-f-]{36}', value.get('boot_id', '')), 'original owner facts')
+
+
+def validate_external_owner(value, child=False):
+    validate_owner(value)
+    require(set(value) == OWNER_CORE | {'process_group_id','session_id'}
+        and all(type(value[key]) is int and value[key] > 0 for key in ('process_group_id','session_id'))
+        and type(value['uid']) is type(value['gid']) is int, 'external eight-field owner facts')
+    require(not child or value['pid'] == value['process_group_id'] == value['session_id'],
+        'external original child session containment')
 
 
 def timestamp_ns(value):
@@ -264,11 +275,18 @@ def bounded_lines(held, path, maximum_bytes=CHANNEL_MAX, maximum_lines=512):
 
 
 class Replay:
-    def __init__(self, project, repository, attempt, mode, source_commit, planning_commit=PLANNING):
+    def __init__(self, project, repository, attempt, mode, source_commit, planning_commit=PLANNING,
+                 *, observer_repository=None, observer_commit=None):
         require(mode in ('metadata-only', 'research'), 'explicit mode')
         require(re.fullmatch(r'[0-9a-f]{40}', source_commit) is not None, 'source commit')
+        require((observer_repository is None) == (observer_commit is None), 'paired observer repository/commit')
         self.project, self.repository, self.attempt = map(Path, (project, repository, attempt))
         self.mode, self.source_commit, self.planning_commit = mode, source_commit, planning_commit
+        self.observer_repository = self.repository if observer_repository is None else Path(observer_repository)
+        self.observer_commit = source_commit if observer_commit is None else observer_commit
+        self.observer_binding = {'planning_commit':OBSERVER_PLANNING,'source_commit':self.observer_commit,
+            'review_repository_root':str(self.observer_repository)}
+        self.guest_terminal_join = None
         self.require = require
         self.h = Held(self.attempt, time.monotonic()+120)
         self.git_commands = []
@@ -538,14 +556,14 @@ class Replay:
         require(sum(row['size_bytes'] for row in inventory) <= TOTAL_MAX, 'total namespace cap')
         return inventory
 
-    def git(self, *arguments, cap=DOC_MAX, allow_one=False):
+    def git(self, *arguments, cap=DOC_MAX, allow_one=False, repository=None):
         """Bound one read-only original Git child, including both pipe EOFs."""
         self.h.clock()
         executable = Path('/usr/bin/git')
         self.h.pin(executable, maximum=64*1048576, under_root=False)
         fd = self.h.files[str(executable)][0]
         argv = [str(executable), '--no-replace-objects', '-c', 'core.longpaths=true',
-                '-C', str(self.repository), *arguments]
+                '-C', str(self.repository if repository is None else repository), *arguments]
         deadline = min(self.h.deadline, time.monotonic()+5)
         process = selector = None
         chunks = [bytearray(), bytearray()]
@@ -638,8 +656,6 @@ class Replay:
         observer_raw = self.git('cat-file', 'blob', self.source_commit+':'+OBSERVER)
         self.h.pin(self.repository/OBSERVER,{'path':str(self.repository/OBSERVER),'size_bytes':len(observer_raw),
             'sha256':hashlib.sha256(observer_raw).hexdigest()},under_root=False)
-        actual_observer = self.h.read(Path(__file__).resolve(), DOC_MAX, under_root=False)
-        require(observer_raw == actual_observer, 'executed observer bytes do not equal S')
         require(len(plan['planning_files']) == 4, 'four P copies')
         names = set()
         for row in plan['planning_files']:
@@ -653,8 +669,48 @@ class Replay:
             descriptor = {k:row[k] for k in ('path', 'size_bytes', 'sha256')}
             self.match_descriptor(descriptor)
             require(self.h.read(Path(row['path'])) == raw, 'P raw copy mismatch')
+        self.observer_source_bindings(self.h.files[str(self.repository/OBSERVER)][2])
         require(self.git('rev-parse', 'HEAD').decode().strip() == head, 'repository changed during cold Git reads')
         return expected
+
+    def observer_source_bindings(self, original_observer):
+        """C/P2 authority is independent of the original producer binding."""
+        root = self.observer_repository
+        require(root.is_absolute() and root.resolve(strict=True) == root, 'observer repository alias')
+        require(self.git('rev-parse','--show-toplevel',repository=root).decode().strip() == str(root),
+            'observer Git repository root')
+        for commit in (OBSERVER_PLANNING,self.observer_commit):
+            require(type(commit) is str and re.fullmatch('[0-9a-f]{40}',commit), 'observer exact commit shape')
+            require(self.git('rev-parse','--verify',commit+'^{commit}',repository=root).decode().strip() == commit,
+                'observer Git commit identity')
+        head = self.git('rev-parse','HEAD',repository=root).decode().strip()
+        head_path = Path(self.git('rev-parse','--git-path','HEAD',repository=root).decode().strip())
+        if not head_path.is_absolute():head_path=root/head_path
+        self.h.pin(head_path,maximum=4096,under_root=False)
+        for before,after in ((self.planning_commit,OBSERVER_PLANNING),
+                (OBSERVER_PLANNING,self.observer_commit),(self.source_commit,self.observer_commit),
+                (self.observer_commit,head)):
+            self.git('merge-base','--is-ancestor',before,after,repository=root)
+        self.observer_binding.update(current_checkout_commit=head,original_observer=dict(original_observer))
+        raw = self.git('cat-file','blob',self.observer_commit+':'+OBSERVER,repository=root)
+        source = {'path':str(root/OBSERVER),'size_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+        self.match_descriptor(source,maximum=DOC_MAX)
+        executed = Path(__file__).absolute()
+        require(executed.resolve(strict=True) == executed, 'executed observer alias')
+        actual = self.h.read(executed,DOC_MAX,under_root=False)
+        require(raw == actual, 'executed observer bytes do not equal C')
+        self.observer_binding.update(reviewed_observer=source,executed_observer=dict(self.h.files[str(executed)][2]))
+        planning = []
+        for relative in PLANNING_PATHS.values():
+            path = 'openspec/changes/fix-decoder-preflight/'+relative
+            data = self.git('cat-file','blob',OBSERVER_PLANNING+':'+path,repository=root)
+            planning.append({'planning_commit':OBSERVER_PLANNING,'git_path':path,'size_bytes':len(data),
+                'sha256':hashlib.sha256(data).hexdigest(),
+                'git_blob_sha1':hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()})
+        require(sum(row['size_bytes'] for row in planning) <= 4*DOC_MAX, 'four P2 raw blob cap')
+        self.observer_binding['planning_files'] = planning
+        require(self.git('rev-parse','HEAD',repository=root).decode().strip() == head,
+            'observer repository changed during cold Git reads')
 
     def external(self, terminal_path, capture_sha, tool_record):
         directory = terminal_path.parent
@@ -706,7 +762,8 @@ class Replay:
         require(launch['argv'] == started['argv'] == terminal['argv']
             and launch['controller'] == started['controller'] == terminal['controller']
             and started['child'] == terminal['original_child'], 'external launch/owner join')
-        for value in (terminal['controller'], terminal['original_child']): validate_owner(value)
+        validate_external_owner(terminal['controller'])
+        validate_external_owner(terminal['original_child'],child=True)
         require(terminal['original_child']['ppid'] == terminal['controller']['pid'], 'external child parent')
         code = self.repository/RUNTIME/'controller.py'
         require(launch['argv'] == [HOST_INTERPRETER,
@@ -754,7 +811,11 @@ class Replay:
             value['runs_completed'] == (0 if self.mode == 'metadata-only' else 4)
             and (self.mode != 'metadata-only' or value['result'] is None), 'mode-specific controller result/count')
         validate_owner(value['controller'])
-        require(value['controller'] == external['original_child'], 'external/controller original identity')
+        require(set(value['controller']) == OWNER_CORE
+            and type(value['controller']['uid']) is type(value['controller']['gid']) is int,
+            'controller six-field owner facts')
+        require(value['controller'] == {key:external['original_child'][key] for key in OWNER_CORE},
+            'external/controller original identity')
         manifest_path = Path(value['closed_controller_leaves']['path'])
         self.h.pin(manifest_path, value['closed_controller_leaves'])
         manifest = self.doc(manifest_path, 'vast_decoder_research_closed_controller_leaves_v1')
@@ -986,7 +1047,8 @@ class Replay:
         actual_names = self.h.members(directory)
         require(names <= actual_names and all(name in names or re.fullmatch(r'mapped-inputs-[0-9]{2}(-closed)?\.v1\.json',name)
             for name in actual_names), 'closed guest metadata/no failure companions')
-        require(self.output(controller['guest_terminal']) == directory/leaf, 'mode terminal path')
+        require(controller['guest_terminal']['path'] == str(directory/leaf), 'physical mode terminal path')
+        self.match_descriptor(controller['guest_terminal'])
         terminal = self.doc(directory/leaf,'vast_decoder_research_metadata_preflight_terminal_v1' if self.mode == 'metadata-only' else 'vast_decoder_research_guest_terminal_v1')
         require(all(terminal.get(k) == v for k,v in self.binding.items()) and terminal['provisional_until_owner_final_close'] is True
             and terminal['operation_completed'] is True and terminal['metadata_preflight_completed'] is (self.mode == 'metadata-only')
@@ -996,7 +1058,14 @@ class Replay:
         require(terminal['plan'] == dict(self.h.files[str(self.attempt/'controller/execution-plan.v1.json')][2],path='/opt/vast/input/plan.json'), 'guest original plan')
         stdout = strict_json(self.h.read(self.attempt/'controller/original.stdout',CHANNEL_MAX).strip(),LINE_MAX)
         require(stdout['successful'] is True and all(stdout[k] is None for k in ('receipt_time_limit_failure','close_failure',
-            'metadata_close_error','pin_close_error','close_failure_capture_error')) and stdout['receipt'] == controller['guest_terminal'], 'actual post-close guest stdout')
+            'metadata_close_error','pin_close_error','close_failure_capture_error')), 'actual post-close guest stdout')
+        require(stdout['receipt']['path'] == '/opt/vast/output/metadata/'+leaf, 'mode guest terminal alias')
+        require(self.output(stdout['receipt']) == directory/leaf
+            and all(stdout['receipt'][key] == controller['guest_terminal'][key] for key in ('size_bytes','sha256')),
+            'guest/controller physical terminal join')
+        self.guest_terminal_join = {'controller_physical':dict(controller['guest_terminal']),
+            'guest_stdout_alias':dict(stdout['receipt']),
+            'held_physical':dict(self.h.files[str(directory/leaf)][2])}
         prelaunch = self.doc(directory/'prelaunch.v1.json','vast_decoder_research_guest_prelaunch_v1')
         require(prelaunch['plan'] == terminal['plan'] and prelaunch['gi_version'] == '3.50.0'
             and prelaunch['gst_version'] == [1,28,2,0] and prelaunch['plugin_path'] == self.plan['nvcodec_plugin']['path']
@@ -1080,7 +1149,9 @@ class Replay:
             'operation_completed':True,'metadata_preflight_completed':self.mode == 'metadata-only','research_complete':self.mode == 'research',
             'raw_join_complete':True,'actual_original_au_count':sum(r['actual_packets'] for r in completed),
             'paired_timing_count':len(pairs),'central_steady_state_sufficient_by_run':[r['central_steady_state_sufficient'] for r in completed],
-            'paired_timings':pairs,'git_observations':self.git_commands,'held_inputs':self.h.observations(),
+            'paired_timings':pairs,'observer_binding':self.observer_binding,
+            'guest_terminal_join':self.guest_terminal_join,
+            'git_observations':self.git_commands,'held_inputs':self.h.observations(),
             'limitations':['Selected original VMA rows and backing probes are replayed; full unselected maps and mapped memory bytes are unavailable.',
                 'Disposed image package/library descriptors are original observations, not current host rehashes.',
                 'Pixel hashes are original observed RGB active-row hashes, compared but not independently decoded.',
@@ -1150,7 +1221,11 @@ def main():
     for name in ('project-root','review-repository-root','planning-commit','source-commit','mode','attempt',
                  'external-terminal','capture-source-sha256','capture-tool-record','report'):
         parser.add_argument('--'+name,required=True,choices=('metadata-only','research') if name=='mode' else None)
+    parser.add_argument('--observer-repository-root')
+    parser.add_argument('--observer-commit')
     args=parser.parse_args()
+    require((args.observer_repository_root is None) == (args.observer_commit is None),
+        'paired observer repository/commit')
     require(args.planning_commit==PLANNING,'exact reviewed planning P required')
     require(re.fullmatch('[0-9a-f]{64}',args.capture_source_sha256),'reviewed capture SHA256 required')
     paths=[Path(getattr(args,name.replace('-','_'))) for name in ('project-root','review-repository-root','attempt','external-terminal','capture-tool-record','report')]
@@ -1161,7 +1236,8 @@ def main():
     begun=time.monotonic(); original_reader=reader_owner();fd_before=len(list(Path('/proc/self/fd').iterdir()))
     replay=None;result=None;code=1;first=None;prefix=[];held=[];close=[]
     try:
-        replay=Replay(project,repository,attempt,args.mode,args.source_commit,planning_commit=args.planning_commit)
+        replay=Replay(project,repository,attempt,args.mode,args.source_commit,planning_commit=args.planning_commit,
+            observer_repository=args.observer_repository_root,observer_commit=args.observer_commit)
         replay.h.deadline=begun+120
         result=replay.execute(external,args.capture_source_sha256,tool)
         code=0
@@ -1188,7 +1264,9 @@ def main():
             'planning_commit':PLANNING,'source_commit':args.source_commit,'mode':args.mode,'first_failure':first,
             'operation_completed':False,'metadata_preflight_completed':False,'research_complete':False,'raw_join_complete':False,
             'valid_prefix_findings':prefix,'held_inputs':held,'accepted':False,'publication_ready':False,
-            'native_pair_count':0,'benchmark_arm_count':0,'qualification_count':0,'model_or_parity_evidence':False}
+            'native_pair_count':0,'benchmark_arm_count':0,'qualification_count':0,'model_or_parity_evidence':False,
+            'observer_binding':None if replay is None else replay.observer_binding,
+            'guest_terminal_join':None if replay is None else replay.guest_terminal_join}
     fd_after=len(list(Path('/proc/self/fd').iterdir()))
     if fd_after!=fd_before:
         code=1
