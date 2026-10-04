@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "kind": "one_bounded_read_only_original_transport_scalar_scan",
+  "original_cold_replayed": false,
+  "source_functions_imported_or_called": false,
+  "test_or_producer_or_engine_invoked": false,
+  "transport_rows": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-01-front_gate-default/source-transport.raw",
+        "sha256": "fbffcfe0cf4af38f79380a2a8038ea2aa184ca3b2b895b44a6c393e2a7cdf110",
+        "size_bytes": 153277
+      },
+      "epoch_before": [
+        69,
+        1407374885983867,
+        33279,
+        1,
+        153277,
+        1791139498244041700,
+        1791139498244041700
+      ],
+      "epoch_final": [
+        69,
+        1407374885983867,
+        33279,
+        1,
+        153277,
+        1791139498244041700,
+        1791139498244041700
+      ],
+      "named_epoch_final": [
+        69,
+        1407374885983867,
+        33279,
+        1,
+        153277,
+        1791139498244041700,
+        1791139498244041700
+      ],
+      "regular_single_link": true,
+      "transport_layout_packet_count": 32,
+      "scalar_pread_call_count": 162,
+      "positive_short_call_count": 0,
+      "positive_short_call_examples": [],
+      "maximum_payload_bytes": 131563,
+      "full_raw_sha256_equal_original": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-02-front_gate-zero/source-transport.raw",
+        "sha256": "f3a987ada66269e8ef515f0264a895dcdd71cf69c72db4a575ea903e939b3519",
+        "size_bytes": 153277
+      },
+      "epoch_before": [
+        69,
+        1688849862694544,
+        33279,
+        1,
+        153277,
+        1791139533581927000,
+        1791139533581927000
+      ],
+      "epoch_final": [
+        69,
+        1688849862694544,
+        33279,
+        1,
+        153277,
+        1791139533581927000,
+        1791139533581927000
+      ],
+      "named_epoch_final": [
+        69,
+        1688849862694544,
+        33279,
+        1,
+        153277,
+        1791139533581927000,
+        1791139533581927000
+      ],
+      "regular_single_link": true,
+      "transport_layout_packet_count": 32,
+      "scalar_pread_call_count": 162,
+      "positive_short_call_count": 0,
+      "positive_short_call_examples": [],
+      "maximum_payload_bytes": 131563,
+      "full_raw_sha256_equal_original": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-03-underbody-zero/source-transport.raw",
+        "sha256": "4a5af3ea46814c52edcd80ef59bb200aa25b00141b9659912f460da1afd5d9f2",
+        "size_bytes": 1514651
+      },
+      "epoch_before": [
+        69,
+        1407374885983911,
+        33279,
+        1,
+        1514651,
+        1791139568924624700,
+        1791139568924624700
+      ],
+      "epoch_final": [
+        69,
+        1407374885983911,
+        33279,
+        1,
+        1514651,
+        1791139568924624700,
+        1791139568924624700
+      ],
+      "named_epoch_final": [
+        69,
+        1407374885983911,
+        33279,
+        1,
+        1514651,
+        1791139568924624700,
+        1791139568924624700
+      ],
+      "regular_single_link": true,
+      "transport_layout_packet_count": 32,
+      "scalar_pread_call_count": 181,
+      "positive_short_call_count": 0,
+      "positive_short_call_examples": [],
+      "maximum_payload_bytes": 147874,
+      "full_raw_sha256_equal_original": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-04-underbody-default/source-transport.raw",
+        "sha256": "b36251fb53c8a9905e8b9872f22dbfdc4be23e833d35408b9e4008766cbaf8f0",
+        "size_bytes": 1514651
+      },
+      "epoch_before": [
+        69,
+        1407374885983937,
+        33279,
+        1,
+        1514651,
+        1791139606810193400,
+        1791139606810193400
+      ],
+      "epoch_final": [
+        69,
+        1407374885983937,
+        33279,
+        1,
+        1514651,
+        1791139606810193400,
+        1791139606810193400
+      ],
+      "named_epoch_final": [
+        69,
+        1407374885983937,
+        33279,
+        1,
+        1514651,
+        1791139606810193400,
+        1791139606810193400
+      ],
+      "regular_single_link": true,
+      "transport_layout_packet_count": 32,
+      "scalar_pread_call_count": 181,
+      "positive_short_call_count": 0,
+      "positive_short_call_examples": [],
+      "maximum_payload_bytes": 147874,
+      "full_raw_sha256_equal_original": true
+    }
+  ],
+  "no_causal_numeric_or_scientific_promotion": true,
+  "original_failure_offset_not_reconstructed": true,
+  "held_7epochs_and_named_epochs_equal_original_before_after": true,
+  "parent_identity_before_after_equal": true,
+  "fd_before": 6,
+  "fd_after": 6,
+  "close_errors": [],
+  "elapsed_s": 0.0618128270143643
+}

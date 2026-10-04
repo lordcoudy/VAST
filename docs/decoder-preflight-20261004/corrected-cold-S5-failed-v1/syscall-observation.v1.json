@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "kind": "read_only_original_transport_syscall_observation",
+  "target_imports_or_cold_or_producer_or_engine_calls": 0,
+  "original_failed_report": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-metadata-namespace-verification.v1.json",
+    "size_bytes": 93113,
+    "sha256": "d847af344229c40f6c4a16ccfe901ab6394b19dedaf2a1f395361faca2eac004",
+    "first_failure": {
+      "message": "short original transport",
+      "type": "Refusal"
+    }
+  },
+  "actual_header_scan_scope": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-01-front_gate-default/source-transport.raw",
+      "header_entries_inspected": 1,
+      "first_large_payload": {
+        "sequence": 1,
+        "header_offset": 0,
+        "payload_offset": 281,
+        "payload_bytes": 131563
+      },
+      "epoch_before": [
+        69,
+        1407374885983867,
+        33279,
+        1,
+        153277,
+        1791139498244041700,
+        1791139498244041700
+      ],
+      "epoch_final": [
+        69,
+        1407374885983867,
+        33279,
+        1,
+        153277,
+        1791139498244041700,
+        1791139498244041700
+      ],
+      "named_epoch_final": [
+        69,
+        1407374885983867,
+        33279,
+        1,
+        153277,
+        1791139498244041700,
+        1791139498244041700
+      ]
+    }
+  ],
+  "candidate": {
+    "descriptor": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-01-front_gate-default/source-transport.raw",
+      "sha256": "fbffcfe0cf4af38f79380a2a8038ea2aa184ca3b2b895b44a6c393e2a7cdf110",
+      "size_bytes": 153277
+    },
+    "epoch_before": [
+      69,
+      1407374885983867,
+      33279,
+      1,
+      153277,
+      1791139498244041700,
+      1791139498244041700
+    ],
+    "sequence": 1,
+    "header_offset": 0,
+    "header_hex": "56415354415530310001000100000000000000010000000000000000000000000032dcd500000000773593380000000000000000000000003b9ac87000000021000000680000004000000000000201eb",
+    "header_fields": {
+      "magic": "VASTAU01",
+      "version": 1,
+      "flags": 1,
+      "sequence": 1,
+      "cycle": 0,
+      "access_unit_pts_ns": 3333333,
+      "pts_ns": 1999999800,
+      "dts_ns": 0,
+      "duration_ns": 999999600,
+      "admission_text_bytes": 33,
+      "input_key_text_bytes": 104,
+      "digest_text_bytes": 64,
+      "payload_bytes": 131563
+    },
+    "payload_offset": 281,
+    "single_actual_pread": {
+      "offset": 281,
+      "requested_bytes": 65536,
+      "returned_bytes": 65536,
+      "returned_sha256": "07956983700a8e6b837b20c7eecf8458846b9997addb1d000b64b7b48d48f85d",
+      "request_end_within_held_file": true
+    },
+    "bounded_progress_loop_payload": {
+      "calls": [
+        {
+          "offset": 281,
+          "requested": 65536,
+          "returned": 65536
+        },
+        {
+          "offset": 65817,
+          "requested": 65536,
+          "returned": 65536
+        },
+        {
+          "offset": 131353,
+          "requested": 491,
+          "returned": 491
+        }
+      ],
+      "bytes": 131563,
+      "sha256": "595cc55d8b3b169c1094451565e8bac9c46148869e1a6da34409b22faf9ea215",
+      "matches_original_header_digest": true
+    },
+    "bounded_progress_loop_complete_file": {
+      "call_count": 3,
+      "short_call_count": 0,
+      "bytes": 153277,
+      "sha256": "fbffcfe0cf4af38f79380a2a8038ea2aa184ca3b2b895b44a6c393e2a7cdf110",
+      "matches_original_cold_descriptor": true
+    },
+    "epoch_final": [
+      69,
+      1407374885983867,
+      33279,
+      1,
+      153277,
+      1791139498244041700,
+      1791139498244041700
+    ],
+    "named_epoch_final": [
+      69,
+      1407374885983867,
+      33279,
+      1,
+      153277,
+      1791139498244041700,
+      1791139498244041700
+    ]
+  },
+  "not_retroactive_original_failure_offset": true,
+  "no_numeric_or_causal_cohort_acceptance": true,
+  "original_prefix_counts": [
+    32,
+    32,
+    32,
+    32
+  ],
+  "all_held_before_after_7epochs_equal": true,
+  "parent_identities_before_after_equal": true,
+  "fd_before": 6,
+  "fd_after": 6,
+  "close_errors": [],
+  "elapsed_s": 0.006385079002939165
+}

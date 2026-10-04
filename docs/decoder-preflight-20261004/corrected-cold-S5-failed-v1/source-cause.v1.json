@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "kind": "independent_failed_corrected_cold_transport_diagnosis",
+  "disposition": "READ_ONLY_DIAGNOSIS_CLOSED_ORIGINAL_COLD_REMAINS_FAILED",
+  "reviewed_observer_commit": "cfa959d2aacbc84a589671dbdf13ae36ae76a2a6",
+  "original_producer_commit": "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+  "source": {
+    "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s5cfa959d2/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+    "size_bytes": 93578,
+    "sha256": "ecd99e9c4f17448ca85d16fdd810cc361a5160f3d2403d88426fe4f001628bf7"
+  },
+  "original_failure": {
+    "physical_report": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-metadata-namespace-verification.v1.json",
+      "size_bytes": 93113,
+      "sha256": "d847af344229c40f6c4a16ccfe901ab6394b19dedaf2a1f395361faca2eac004"
+    },
+    "faithful_actual_tool_record": {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-corrected-cold-original-tool-record.S5cfa959d2.v1.json",
+      "size_bytes": 3999,
+      "sha256": "9fb209637d004d1b408f334d5824be972458c32974c85f7d7a5ab4f2fe4a3a5b"
+    },
+    "prelaunch_comment": 5408368341,
+    "exec_chunk": "f5bab9",
+    "session_id": 6576,
+    "terminal_chunk": "2d6b08",
+    "actual_exit_code": 1,
+    "first_failure": {
+      "type": "Refusal",
+      "message": "short original transport"
+    },
+    "elapsed_s": 31.6318226,
+    "fd_before": 6,
+    "fd_after": 6,
+    "all_held_fds_released": true,
+    "close_errors": [],
+    "late_failure": null,
+    "exact_argv_authority": "The faithful actual tool record contains the original 28-argument canonical Python/observer invocation. Producer remains S3, observer S5, mode research is read-only cold over immutable original outputs."
+  },
+  "demonstrated_finding": {
+    "location": "cold_reader.py:339-345; payload caller:373-379",
+    "predicate": "After offset+requested <= held original size, one os.pread(fd, requested, offset) is immediately required to return exactly requested bytes.",
+    "original_syscall_fact": "The authentic failure message has one raise site in the reviewed standalone source. At that original invocation the returned length was less than requested. The original report did not retain the failing offset, requested size, returned size, sequence, or whether the short return was positive or zero.",
+    "stable_file_evidence": "Original failure cleanup retained four hash-valid 32-packet prefixes and completed full held hash/epoch check. The fresh bounded scalar scan independently matched all four complete transport SHA256/size/seven epochs and named identities. Persistent truncation or retained-byte drift is not demonstrated.",
+    "fresh_reproduction": false,
+    "current_observation": "A fresh single run03 packet1 pread at offset281 requested65536 and returned65536. One subsequent bounded ordered scalar scan made686 actual calls, all full length. This does not reproduce the original short syscall and is not relabelled as a reproduction.",
+    "cause_boundary": "The exact-read implementation assumes one syscall completes the request. That is the demonstrated fragile seam. The underlying transient syscall mechanism and exact original failing location are not known."
+  },
+  "actual_raw_observations": [
+    {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/S5-short-original-transport.syscall-observation.v1.json",
+      "size_bytes": 4460,
+      "sha256": "4f5632b8340a1daa9aea939d702814810c17326f1761ca9ad7e75c89f8f6acfa",
+      "tool_chunk": "a39d5b",
+      "exit_code": 0,
+      "fd_before": 6,
+      "fd_after": 6,
+      "close_errors": []
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/S5-short-original-transport.scalar-scan.v1.json",
+      "size_bytes": 5265,
+      "sha256": "a58fa63280c3ac3e91893575f179d4358ded1e056530257a86a4f0f7f27caefd",
+      "tool_chunk": "06cb1f",
+      "exit_code": 0,
+      "call_counts": [
+        162,
+        162,
+        181,
+        181
+      ],
+      "positive_short_call_count": 0,
+      "all_four_original_raw_hashes_and_seven_epochs_exact": true,
+      "fd_before": 6,
+      "fd_after": 6,
+      "close_errors": []
+    }
+  ],
+  "selected_actual_packet": {
+    "path": "guest/run-03-underbody-zero/source-transport.raw",
+    "file_size_bytes": 1514651,
+    "file_sha256": "4a5af3ea46814c52edcd80ef59bb200aa25b00141b9659912f460da1afd5d9f2",
+    "header_offset": 0,
+    "header_bytes": 80,
+    "sequence": 1,
+    "admission_text_bytes": 33,
+    "input_key_text_bytes": 104,
+    "digest_text_bytes": 64,
+    "payload_offset": 281,
+    "payload_size_bytes": 131563,
+    "payload_sha256": "595cc55d8b3b169c1094451565e8bac9c46148869e1a6da34409b22faf9ea215",
+    "bounded_actual_payload_returns": [
+      65536,
+      65536,
+      491
+    ],
+    "not_retroactive_original_failing_offset": true
+  },
+  "interoperability": {
+    "producer_protocol": {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s3bdb6cd81/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+      "size_bytes": 36624,
+      "sha256": "f0685e19a3072736f8262aad32d868a2021650381e8beaef989d4f5339358d63",
+      "header": "Struct('>8sHHQQQQQQIIIQ')",
+      "read_exact_lines": "537-553",
+      "behavior": "Bounded deadline/abort loop advances by actual positive os.read length; empty reads fail."
+    },
+    "existing_cold_failed_prefix_lines": "1177-1192",
+    "existing_prefix_behavior": "Payload hashing advances by actual positive pread length under clock checks; the header/text prefix checks remain single-call and are outside this proposed minimal correction."
+  },
+  "smallest_planning_proposal": {
+    "production_scope": "Only the existing local packets.read(size) seam.",
+    "behavior": "Fill the already bounded requested byte count using a finite progress loop over actual positive returned lengths. Check the original absolute cold deadline each iteration; empty read before completion refuses. Advance the caller offset only after exact completion.",
+    "preserved": "Same fd and original held size/epochs; same80-byte header/text/payload limits, SHA joins, exact32/trailing-byte checks, first failure, failed-prefix nonpromotion and final hold verification. No retry of the observer or producer; no parser/schema/capacity relaxation.",
+    "meaningful_regression": "One real regular transport fixture whose targeted pread wrapper delegates genuine smaller positive reads, covering header/text/payload; original single-call source must fail and the corrected local loop must complete identical bytes. Preserve or add targeted empty-read/truncation/clock refusal checks without global filesystem mocks.",
+    "code_or_test_authorization_from_this_review": false
+  },
+  "scope_limits": {
+    "observer_replay": 0,
+    "producer_or_engine_calls": 0,
+    "target_imports": 0,
+    "tests": 0,
+    "source_or_git_edits": 0,
+    "media_hashes": 0,
+    "causal_or_numeric_cohort_acceptance": false,
+    "scientific_completion": false,
+    "research_retry_granted": false
+  },
+  "custody": {
+    "all_observation_holds_released": true,
+    "original_inputs_unchanged": true,
+    "readonly_original_tools": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/S5-short-original-transport.original-readonly-tools.v1.json",
+    "notes": "Each finite diagnostic command completed rc0. Actual FD6->6 and independent closes recorded for both raw observations. No new process/global quiescence claim."
+  }
+}

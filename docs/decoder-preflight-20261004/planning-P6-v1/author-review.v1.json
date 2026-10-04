@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "kind": "P6_external_planning_author_revision",
+  "change": "fix-decoder-preflight",
+  "scope": "EXTERNAL_PLANNING_DRAFT_ONLY_NOT_OFFICIAL_APPROVAL_OR_IMPLEMENTATION",
+  "official_root": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+  "existing_four_artifacts": [
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/proposal.md",
+      "size_bytes": 11871,
+      "sha256": "cdeefaf752a32381269919cf57d85a45b49f39709d5612450fe38e78b82286b5"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/design.md",
+      "size_bytes": 67278,
+      "sha256": "6c036e5d99ebdb4afdc67039547c650cf7320338f6918343d1051bdc18c92dda"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/tasks.md",
+      "size_bytes": 24460,
+      "sha256": "645e7853bbd93a02ac1b4baf0fe7f77eb86f01a45187dc74d6c91f78c6f8ae15"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "size_bytes": 23273,
+      "sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d"
+    }
+  ],
+  "drafts": [
+    {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-planning-author-v1/draft/proposal.md",
+      "size_bytes": 14447,
+      "sha256": "8da4687b6ba5b9554938da50431f1697a1e6457d2ee6e8f0f20d55e09a350672"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-planning-author-v1/draft/design.md",
+      "size_bytes": 75703,
+      "sha256": "c49c13ed95cffc708e1e01e152d3a10b7ce3fb297e8e7220f33b0fc62ee8dde4"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-planning-author-v1/draft/tasks.md",
+      "size_bytes": 27630,
+      "sha256": "111bb28ac0c21f9be277d54a6c0621d023b813108220917a552087977255f55a"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-planning-author-v1/draft/delta-spec.md",
+      "size_bytes": 23273,
+      "sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d"
+    }
+  ],
+  "diff": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-planning-author-v1/planning.v1.diff",
+    "size_bytes": 20524,
+    "sha256": "6782ce312b8aab1432d4e47623943d6761789d9be8554027a400c5f39c310ff6"
+  },
+  "approved_prior_authorities": {
+    "producer_S3": "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+    "observer_S5": "cfa959d2aacbc84a589671dbdf13ae36ae76a2a6",
+    "P6_commit": null,
+    "S6_commit": null
+  },
+  "original_closed_evidence_fully_read": [
+    {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-corrected-cold-independent-v1/review.v1.json",
+      "size_bytes": 9087,
+      "sha256": "eb31ec775e12ebc374ae84347e67e887cc6a66ccf9eebf627d2c1173c6454b52"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/S5-short-original-transport.finding.v1.json",
+      "size_bytes": 7770,
+      "sha256": "96108646e9c66b62ef1ac114915d4ee9b821f508b7e4635e9337da4e597fee8f"
+    }
+  ],
+  "original_short_return_positive_vs_zero": "unknown; original offset/request/returned length absent",
+  "immutable_failed_reports": [
+    "verification.v1.json",
+    "corrected-metadata-namespace-verification.v1.json"
+  ],
+  "new_exclusive_report": "decoder-research-v6-clock-fixed-cold/attempt-01/corrected-transport-read-verification.v1.json",
+  "proposal_design_tasks_changes": "append-only later operative P6; earlier pending-at-revision prose explicitly historical/superseded",
+  "normative": {
+    "delta_sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d",
+    "all_28_scenarios_raw_identical": true,
+    "other_19_main_requirements_and_diagnostics_unchanged": true,
+    "new_requirements": 0,
+    "new_scenarios": 0,
+    "main_spec_descriptors": [
+      {
+        "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/specs/benchmark-launch-preparation/spec.md",
+        "size_bytes": 75126,
+        "sha256": "d777fca9299def232e13c75e484c0863a639d4acdfdf5445e38e8a925873d36b"
+      },
+      {
+        "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/specs/component-latency-diagnostics/spec.md",
+        "size_bytes": 6554,
+        "sha256": "4ad6263d274252d8e1f9178210b32463de00526542b12edbdcfc94bf83e152ca"
+      }
+    ]
+  },
+  "tasks": {
+    "current_checked_retained": 44,
+    "current_total": 50,
+    "draft_checked": 44,
+    "draft_total": 53,
+    "new_unchecked": [
+      "13.1",
+      "13.2",
+      "13.3"
+    ],
+    "failed_dispositions_already_closed_by_root": [
+      "10.5",
+      "11.4",
+      "12.3"
+    ],
+    "still_pending": [
+      "7.4",
+      "8.1",
+      "8.2",
+      "8.3",
+      "8.4",
+      "8.5"
+    ]
+  },
+  "future_exact_new_test_ids": [
+    "test_research_protocol.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload",
+    "test_research_protocol.IndependentColdTests.test_P6_transport_zero_progress_refuses_without_spinning",
+    "test_research_protocol.IndependentColdTests.test_P6_transport_partial_progress_keeps_original_absolute_deadline"
+  ],
+  "test_count_prediction_only": {
+    "existing_inherited": 66,
+    "existing_approved_new": 101,
+    "future_approved_new": 104,
+    "future_nested": 170,
+    "actual_P6_tests_executed": 0
+  },
+  "source_read_before_after": [
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 93578,
+      "sha256": "ecd99e9c4f17448ca85d16fdd810cc361a5160f3d2403d88426fe4f001628bf7"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 100392,
+      "sha256": "69aa29d807661118b30a5eefc82967443aab56003b4b6666d764826db6d1ecdb"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+      "size_bytes": 49838,
+      "sha256": "6aeba18d3b313aacd74e046dd413cda8084c8fbdae8da2ae03db5ee45f5d15cb"
+    }
+  ],
+  "preserved_current_bounds": [
+    "continuous cold120s",
+    "fixture120s/body15sretirement",
+    "metadata40/run32/controller128",
+    "general1MiB/typedmapping2MiB/metadata16MiB",
+    "256fileFD/128dirFD/fullhash/sevenepochs"
+  ],
+  "no_changes": {
+    "official_planning": true,
+    "production": true,
+    "tests_adapter_CI": true,
+    "main_specs": true,
+    "original_raw_receipts": true,
+    "Git_index_commits": true
+  },
+  "operations": {
+    "target_imports": 0,
+    "test_runs": 0,
+    "cold_reads": 0,
+    "producer_scientific_calls": 0,
+    "engine_model_media_calls": 0,
+    "new_scripts_helpers_verifiers_or_whole_manifests": 0
+  },
+  "limits": [
+    "author planning revision, not independent approval",
+    "Referenced failed report/tool facts come from fully read existing cause/custody receipts; no fresh raw scientific reconstruction",
+    "No numeric FD or global process-quiescence claim for this Windows metadata writer",
+    "Required exact P6 review/comment precedes all dependent code",
+    "All S6/CI/ordinary-source/once-read/final-release outcomes remain pending"
+  ],
+  "own_read_handles_released": true
+}
