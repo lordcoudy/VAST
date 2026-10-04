@@ -1,0 +1,366 @@
+{
+  "kind": "current_document_update_after_actual_A_CI_conformance_and_supported_archive",
+  "documents": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/PLAN.md",
+      "size_bytes": 20281,
+      "sha256": "a39919c7901b6ed7f8fc6fec00b3343216d0a837c77f08389907f95fb0375880",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 12345,
+      "prior_content_sha256": "5b50e3f739874eeec6c11a5ae0533a8921020aa7d3600046dfeab9f4447edba0",
+      "original_bytes_preserved": true,
+      "all_new_pointer_links_exist": true,
+      "checked_links": [
+        "docs/latency-diagnostics-20261004/four-arm-report.md",
+        "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md",
+        "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md",
+        "docs/gstreamer-component-benchmark-runbook.md"
+      ],
+      "previous_current_sha256": "992e11ae2b7823aa43b43e6b3b24d8dff581196e0c32669e1c91f736958c0970",
+      "status_replacement": {
+        "old": "Независимая научная сверка закрыта без блокеров; conformance и обязательный CI текущего кода выполняются; затем same-PR archive/latest-head checks/final review/merge.",
+        "new": "Научная сверка и conformance 4/12 завершены без блокеров. CI реализации A 2a75b470 прошёл: 2 939 successes, 88 точных разрешённых skips, ноль failures/errors; hardware acceptance false. Все девять задач выполнены; спецификация синхронизирована и change архивирован 4 октября. Финальные CI/review/merge архивного коммита фиксируются в [PR3](https://github.com/lordcoudy/VAST/pull/3) после фактического выполнения."
+      },
+      "task_link_replacement": {
+        "old": "openspec/changes/explain-benchmark-latency/tasks.md",
+        "new": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      }
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/progress.md",
+      "size_bytes": 1244391,
+      "sha256": "53f8e2174e2de29d5232203c61ed74ec010d57814dad7411acee59c47887feb0",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 1239979,
+      "prior_content_sha256": "e93049786410beff6d512b9ebac515c74368a5f8b25e37097abd3424a4826f2e",
+      "original_bytes_preserved": true,
+      "all_new_pointer_links_exist": true,
+      "checked_links": [
+        "docs/latency-diagnostics-20261004/four-arm-report.md",
+        "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md",
+        "PLAN.md",
+        "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      ],
+      "previous_current_sha256": "915d74dff764456bce362b97c6ca2de4b6c2eb2a42d3515db8ff8d15093fc15c",
+      "status_replacement": {
+        "old": "Независимая научная сверка закрыта без блокеров; conformance и обязательный CI текущего кода выполняются; затем same-PR archive/latest-head checks/final review/merge.",
+        "new": "Научная сверка и conformance 4/12 завершены без блокеров. CI реализации A 2a75b470 прошёл: 2 939 successes, 88 точных разрешённых skips, ноль failures/errors; hardware acceptance false. Все девять задач выполнены; спецификация синхронизирована и change архивирован 4 октября. Финальные CI/review/merge архивного коммита фиксируются в [PR3](https://github.com/lordcoudy/VAST/pull/3) после фактического выполнения."
+      },
+      "task_link_replacement": {
+        "old": "openspec/changes/explain-benchmark-latency/tasks.md",
+        "new": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      }
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/BENCHMARK_RECOVERY_PLAN.md",
+      "size_bytes": 142640,
+      "sha256": "7c1c5ef301c4c05638168d4d8562aa4008931ad779e19ef8d745511685d0afe9",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 138689,
+      "prior_content_sha256": "3cd9e8de01e2b12dca969fd97307d1caff519bda4ae53ff40cc7bd0975ee320e",
+      "original_bytes_preserved": true,
+      "all_new_pointer_links_exist": true,
+      "checked_links": [
+        "docs/latency-diagnostics-20261004/four-arm-report.md",
+        "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md",
+        "PLAN.md",
+        "progress.md",
+        "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      ],
+      "previous_current_sha256": "1770ebdfc1b65b40b94a68eeb71f48a7c9cb1ab13ff57ec48c8c7fbe33c28e16",
+      "status_replacement": {
+        "old": "Независимая научная сверка закрыта без блокеров; conformance и обязательный CI текущего кода выполняются; затем same-PR archive/latest-head checks/final review/merge.",
+        "new": "Научная сверка и conformance 4/12 завершены без блокеров. CI реализации A 2a75b470 прошёл: 2 939 successes, 88 точных разрешённых skips, ноль failures/errors; hardware acceptance false. Все девять задач выполнены; спецификация синхронизирована и change архивирован 4 октября. Финальные CI/review/merge архивного коммита фиксируются в [PR3](https://github.com/lordcoudy/VAST/pull/3) после фактического выполнения."
+      },
+      "task_link_replacement": {
+        "old": "openspec/changes/explain-benchmark-latency/tasks.md",
+        "new": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      }
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/README.md",
+      "size_bytes": 62419,
+      "sha256": "da8669dce46cad55c3b4c95d169ebe71f0c24dbe70bf0e0475a05be40d4a2470",
+      "title_bytes": 33,
+      "prior_suffix_bytes": 59346,
+      "prior_content_sha256": "0c6d45685e7fe0fc025c902be3cdaedcbceb61b4f1d6b181b66e0e7cd167b875",
+      "original_bytes_preserved": true,
+      "all_new_pointer_links_exist": true,
+      "checked_links": [
+        "docs/latency-diagnostics-20261004/four-arm-report.md",
+        "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md",
+        "PLAN.md",
+        "progress.md",
+        "docs/gstreamer-component-benchmark-runbook.md"
+      ],
+      "previous_current_sha256": "ee6fd025849207f847d1753afe5d7ed0efe4f6e18e478c29709177e15dd9e788",
+      "status_replacement": {
+        "old": "Независимая научная сверка закрыта без блокеров; conformance и обязательный CI текущего кода выполняются; затем same-PR archive/latest-head checks/final review/merge.",
+        "new": "Научная сверка и conformance 4/12 завершены без блокеров. CI реализации A 2a75b470 прошёл: 2 939 successes, 88 точных разрешённых skips, ноль failures/errors; hardware acceptance false. Все девять задач выполнены; спецификация синхронизирована и change архивирован 4 октября. Финальные CI/review/merge архивного коммита фиксируются в [PR3](https://github.com/lordcoudy/VAST/pull/3) после фактического выполнения."
+      },
+      "task_link_replacement": {
+        "old": "openspec/changes/explain-benchmark-latency/tasks.md",
+        "new": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      }
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/gstreamer-component-benchmark-runbook.md",
+      "size_bytes": 20640,
+      "sha256": "8a6c73709dc3739e18c90292b57e72a5c6432595ba968ae6cf06880f0a8f2204",
+      "title_bytes": 32,
+      "prior_suffix_bytes": 14658,
+      "prior_content_sha256": "96665a3730508d2f708e3634bf944d357859da93571e3d1b9ff9404aa6bcdf4e",
+      "original_bytes_preserved": true,
+      "all_new_pointer_links_exist": true,
+      "checked_links": [
+        "latency-diagnostics-20261004/four-arm-report.md",
+        "../openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md",
+        "latency-diagnostics-20261004/original-cli-execution-v1",
+        "../PLAN.md"
+      ],
+      "previous_current_sha256": "39d15c8c587b06499a94d29723e02c2d2f07873af9c60474eba72dddaf130c14",
+      "status_replacement": {
+        "old": "Независимая научная сверка закрыта без блокеров; conformance и обязательный CI текущего кода выполняются; затем same-PR archive/latest-head checks/final review/merge.",
+        "new": "Научная сверка и conformance 4/12 завершены без блокеров. CI реализации A 2a75b470 прошёл: 2 939 successes, 88 точных разрешённых skips, ноль failures/errors; hardware acceptance false. Все девять задач выполнены; спецификация синхронизирована и change архивирован 4 октября. Финальные CI/review/merge архивного коммита фиксируются в [PR3](https://github.com/lordcoudy/VAST/pull/3) после фактического выполнения."
+      },
+      "task_link_replacement": {
+        "old": "openspec/changes/explain-benchmark-latency/tasks.md",
+        "new": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      }
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/benchmark-preparation-runbook.md",
+      "size_bytes": 17062,
+      "sha256": "8508a133cd56fedb95c2b0798bb34159042c8cdc67289f0df8d0a43dcfcd885f",
+      "title_bytes": 61,
+      "prior_suffix_bytes": 13827,
+      "prior_content_sha256": "8f88fcd81de73a39b7a1756c5c5881e6c15eefb4f143d66ab3af081bd40d2903",
+      "original_bytes_preserved": true,
+      "all_new_pointer_links_exist": true,
+      "checked_links": [
+        "latency-diagnostics-20261004/four-arm-report.md",
+        "../openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md",
+        "../PLAN.md",
+        "gstreamer-component-benchmark-runbook.md"
+      ],
+      "previous_current_sha256": "acddb9deb50f85a13f2ccf36122949cda7663119d207bc1c99a160ab6164c0dd",
+      "status_replacement": {
+        "old": "Независимая научная сверка закрыта без блокеров; conformance и обязательный CI текущего кода выполняются; затем same-PR archive/latest-head checks/final review/merge.",
+        "new": "Научная сверка и conformance 4/12 завершены без блокеров. CI реализации A 2a75b470 прошёл: 2 939 successes, 88 точных разрешённых skips, ноль failures/errors; hardware acceptance false. Все девять задач выполнены; спецификация синхронизирована и change архивирован 4 октября. Финальные CI/review/merge архивного коммита фиксируются в [PR3](https://github.com/lordcoudy/VAST/pull/3) после фактического выполнения."
+      },
+      "task_link_replacement": {
+        "old": "openspec/changes/explain-benchmark-latency/tasks.md",
+        "new": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      }
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/PLAN.md",
+      "size_bytes": 14880,
+      "sha256": "6df9c151780b475bb9c68687fd3dfa2e6185f4c7720c8bfa36834ffba0004c8a",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 12027,
+      "prior_content_sha256": "3e5449bfd43b9455a38cceaa4c7f2f639bd1e2c472bde5c5bf722311f394e5bf",
+      "original_bytes_preserved": true,
+      "all_new_pointer_links_exist": true,
+      "checked_links": [
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/PLAN.md",
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md",
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/four-arm-report.md",
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/PLAN.md",
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/progress.md",
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      ],
+      "previous_current_sha256": "92f3aafcdfdaef55dddf3e03a794987ca0bddc6af591180d4953cc0f181ce5c8",
+      "status_replacement": {
+        "old": "Независимая научная сверка закрыта без блокеров; current CI/conformance и same-PR release выполняются; full campaigns остаются unexecuted.",
+        "new": "Научная сверка и conformance 4/12 завершены; CI реализации A прошёл: 2 939 successes/88 точных разрешённых skips, ноль failures/errors, hardware acceptance false. Все девять задач выполнены, spec sync/archive завершены 4 октября; финальные CI/review/merge архивного коммита фиксируются в PR3 по факту. Full campaigns остаются unexecuted."
+      },
+      "task_link_replacement": {
+        "old": "openspec/changes/explain-benchmark-latency/tasks.md",
+        "new": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      }
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/progress.md",
+      "size_bytes": 16151,
+      "sha256": "f3225e0b5077f06673a36d97e2992ada69fcef2a7ca4c681be93d7357fc04f67",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 13298,
+      "prior_content_sha256": "b7aa9278d83557a45f871f0088ef4bfd2a8319b8ed90f364b3cf6507ed03888b",
+      "original_bytes_preserved": true,
+      "all_new_pointer_links_exist": true,
+      "checked_links": [
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/PLAN.md",
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md",
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/four-arm-report.md",
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/PLAN.md",
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/progress.md",
+        "C:/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      ],
+      "previous_current_sha256": "3d01d2479dd10807a2715bdbd08f4c700e446d1028f4cc25e9deaa94558d77df",
+      "status_replacement": {
+        "old": "Независимая научная сверка закрыта без блокеров; current CI/conformance и same-PR release выполняются; full campaigns остаются unexecuted.",
+        "new": "Научная сверка и conformance 4/12 завершены; CI реализации A прошёл: 2 939 successes/88 точных разрешённых skips, ноль failures/errors, hardware acceptance false. Все девять задач выполнены, spec sync/archive завершены 4 октября; финальные CI/review/merge архивного коммита фиксируются в PR3 по факту. Full campaigns остаются unexecuted."
+      },
+      "task_link_replacement": {
+        "old": "openspec/changes/explain-benchmark-latency/tasks.md",
+        "new": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md"
+      }
+    }
+  ],
+  "all_original_title_and_suffix_bytes_preserved": true,
+  "full_eligibility": false,
+  "all9_implementation_tasks_complete": true,
+  "A_CI_review_sha256": "461c5aa1fcb38ffd163f9978af9cb62aaf38d98268ff8dfdf89ac1c8770d2e89",
+  "archive_path": "openspec/changes/archive/2026-10-04-explain-benchmark-latency",
+  "archive_inputs_sha256": "1cbc225307e2ec0ae00814e1e1dfcb106465d3b1dfbb4e31b5819f17ff5db13c",
+  "archive_inputs": {
+    "old_main_sha256": "d777fca9299def232e13c75e484c0863a639d4acdfdf5445e38e8a925873d36b",
+    "old_archive": [
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/.openspec.yaml",
+        "size_bytes": 40,
+        "sha256": "af129b9ee15d74d62153581b8fddf3076a708f08915261aabfb9e78ea334de0f"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/conformance-progress.md",
+        "size_bytes": 77152,
+        "sha256": "449563678e1c6392e1955246ff67fc8003a34bcead58c9bd47d45d61cd9aaf2f"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/design.md",
+        "size_bytes": 45628,
+        "sha256": "c05f313262fc7a876ca16b58b496e9ea2d609285696626a4fd9a5ca4ba42c123"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/image-invalidation.md",
+        "size_bytes": 66507,
+        "sha256": "b75d31a3c24ed0d2b50f2272ea26d62c466bb65df700446832648248e074888d"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-approval.md",
+        "size_bytes": 2887,
+        "sha256": "9d4db75c7dbe4b2b9d37a61223c4a108117040b4757c128c45680c69c7ad1d32"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-baseline.json",
+        "size_bytes": 119189,
+        "sha256": "845b6722746da92d83d16bf2b11c926250f6bad3d1fe01994e64f849bc6a6ace"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-closure.md",
+        "size_bytes": 10188,
+        "sha256": "5a485cd613f7b1cb05192bdafedc9285dd30cfe897ec5d912a87451124f4093f"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-evidence.md",
+        "size_bytes": 17896,
+        "sha256": "8d01a13734499e51e2e35cb5cff8f8a90798e5550bc1f1c7f680629e6f4dd970"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/implementation-validation.md",
+        "size_bytes": 161617,
+        "sha256": "77cd4b0e8f2e6d23c08818a3cd46941e294da4a261bf1280b66ae55c815a8935"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/preparation-plan.md",
+        "size_bytes": 25014,
+        "sha256": "9d14c3524cccbd6fed0f08146d4874209ba6fdf97c464c1ac62422316ffa8f8c"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/proposal-validation.json",
+        "size_bytes": 1382,
+        "sha256": "0bdf3ec4cf8724731aceef4d3b3babd604864aa3b85c232071f8b5dd6b3582c3"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/proposal.md",
+        "size_bytes": 17599,
+        "sha256": "969aa4ac3bae9b742b268333070b1266c22abc5c7bce9b204a63b6f750c0f6d6"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/release-gates.md",
+        "size_bytes": 3229,
+        "sha256": "cd7cfd3ef3652a214ecd8f83e0a87b22bdf8e6038587bd48ab7b3567163ab21a"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/review-context.json",
+        "size_bytes": 10129,
+        "sha256": "bb4a5818a15ee1f32b29087f4b52fe5a1f4207c117b73a094250d7bd7f57a3f0"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.json",
+        "size_bytes": 54707,
+        "sha256": "4602f4cf68024b16a54455a36111252498369ca65c8310fe6ee1ea133f5953e4"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/reviewed-runtime-reconciliation.lf-check.json",
+        "size_bytes": 14971,
+        "sha256": "c3be1addf1ca2845d8de683943edd411f9a324438c2092355675825da5cc9a5a"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/specs/benchmark-launch-preparation/spec.md",
+        "size_bytes": 75100,
+        "sha256": "383e90694a5f4a2ed81ff8d53fc7ee4a35dc67767f17b35fd8e5bffde4751ed9"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/tasks.md",
+        "size_bytes": 36279,
+        "sha256": "832e445ba8e466fd1991ef30051410afb525bdc811cf92e3deb17f405dcf7da3"
+      },
+      {
+        "path": "openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/verification-plan.md",
+        "size_bytes": 48891,
+        "sha256": "b3db56c13e3a5c7157820f4e60f459455c5a83706b207c308f7af09716c8f73d"
+      }
+    ],
+    "new_archive_leaves": [
+      {
+        "path": ".openspec.yaml",
+        "size_bytes": 40,
+        "sha256": "ad734da2ba5f4c5a6979a8bbb6bad4db20fb21ec275ceca5f24842fbdfaf5bef"
+      },
+      {
+        "path": "design.md",
+        "size_bytes": 5513,
+        "sha256": "cc8cd72fdf6f11309be29343a6e194acc72405f5bdced956ea98800a1fb20146"
+      },
+      {
+        "path": "proposal.md",
+        "size_bytes": 2205,
+        "sha256": "cfde6d7b937a2eb02495b5a30dd497f29581f2bfcce2a920a4ac6eddbe3615b8"
+      },
+      {
+        "path": "specs/component-latency-diagnostics/spec.md",
+        "size_bytes": 6560,
+        "sha256": "5d1f9a2771db70d0d6e22905a81c13b19ecee71180a3037be7d78c806327b36e"
+      },
+      {
+        "path": "tasks.md",
+        "size_bytes": 6111,
+        "sha256": "447af7e038a8bf0d3c9f869d785f780ac1fbcfe05091ee14aff5d9503517e39a"
+      }
+    ],
+    "new_main_sha256": "4ad6263d274252d8e1f9178210b32463de00526542b12edbdcfc94bf83e152ca",
+    "inline_sync": "exact new-capability purpose and4 requirements/12 scenarios; ADDED header changed only",
+    "all9_implementation_tasks_complete": true
+  },
+  "report": {
+    "path": "docs/latency-diagnostics-20261004/four-arm-report.md",
+    "before_sha256": "3892650a749aad98a861dd697e889a90c90c91bbc6a6e48efd82fbf678b4baae",
+    "after_sha256": "e3b3d7656b5fa630c462cfd2c6bf17f005a5d882bfe1ecb18bbbc2e3485c8a6e",
+    "size_bytes": 12708,
+    "only_two_status_sentences_changed": true,
+    "inverse_equal_original_bytes": true,
+    "replacements": [
+      {
+        "old": "CI, conformance и repository release этого изменения ещё не завершены.",
+        "new": "Conformance 4/12 и обязательный CI реализации A 2a75b470 завершены: 2 939 successes/88 точных разрешённых skips, ноль failures/errors; hardware acceptance false. Все девять задач выполнены, spec sync/archive завершены 4 октября; последующие финальные checks/review/merge архивного коммита записываются в [PR3](https://github.com/lordcoudy/VAST/pull/3) по факту."
+      },
+      {
+        "old": "Сначала закрыть текущие conformance и обязательный CI; независимая численная сверка уже завершена.",
+        "new": "Текущие conformance, CI реализации и независимая численная сверка завершены; spec sync/archive выполнены. Финальные repository transitions остаются зафиксированными отдельно в PR3."
+      }
+    ]
+  },
+  "final_archived_head_CI_review_merge": "pending; actual PR3 ledger is source for later transitions"
+}

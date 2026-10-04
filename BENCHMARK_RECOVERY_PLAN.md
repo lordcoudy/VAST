@@ -5,7 +5,7 @@ Offline CLI реализован: 35 tests passed, 0 skips; два замеча�
 
 [Четырёх-arm отчёт](docs/latency-diagnostics-20261004/four-arm-report.md) показывает исходные counts/drops/100ms misses и критический путь всех 3 325 completed frames. GPU per-frame decoder share p50 — 93,23% / 91,94%; это residence envelope. True queue wait, pure inference и NVDEC busy остаются unknown.
 
-Независимая научная сверка закрыта без блокеров; conformance и обязательный CI текущего кода выполняются; затем same-PR archive/latest-head checks/final review/merge. [Задачи текущего изменения](openspec/changes/explain-benchmark-latency/tasks.md) задают фактический статус. Все PR2 gates уже закрыты.
+Научная сверка и conformance 4/12 завершены без блокеров. CI реализации A 2a75b470 прошёл: 2 939 successes, 88 точных разрешённых skips, ноль failures/errors; hardware acceptance false. Все девять задач выполнены; спецификация синхронизирована и change архивирован 4 октября. Финальные CI/review/merge архивного коммита фиксируются в [PR3](https://github.com/lordcoudy/VAST/pull/3) после фактического выполнения. [Задачи текущего изменения](openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md) задают фактический статус. Все PR2 gates уже закрыты.
 
 Следующий научный шаг — отдельно рассмотренный decoder/intake preflight по реальной setup ошибке attempt05; identity correction ещё не реализована. Полный путь остаётся неизменным: три stale sibling runtime renewals (native3/worker2 source совпали), patch-bound parity, original owner/binding для 37 producing operations, 32 qualification cells, Q4 560+560 / 280 sizing, capacity, 5 600 accepted arms / 2 800 durable pairs. Они не исполнены; full eligibility false.
 
@@ -15,7 +15,7 @@ Offline CLI реализован: 35 tests passed, 0 skips; два замеча�
 
 Старый change `fix-benchmark-preparations-spec` завершён, архивирован и слит в PR2: `c07de9c78e3beaaf276ee54b5f414a3a4b5d035c`. Все старые component release gates, final CI/review/merge и временный owned-bind cleanup фактически выполнены. Повторять их по прежним pending/running строкам ниже нельзя.
 
-Актуальный общий [план](PLAN.md), подтверждённый [прогресс](progress.md), активный change `explain-benchmark-latency` и его [задачи](openspec/changes/explain-benchmark-latency/tasks.md) заменяют очередность устаревших снимков. Следующий этап — объяснить latency envelopes/coverage/drops по сохранённым четырём arms, честно обозначить неизмеренные queue/service компоненты и проверить небольшой offline инструмент. Runtime/model/workload/исходные результаты неизменны.
+Актуальный общий [план](PLAN.md), подтверждённый [прогресс](progress.md), активный change `explain-benchmark-latency` и его [задачи](openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md) заменяют очередность устаревших снимков. Следующий этап — объяснить latency envelopes/coverage/drops по сохранённым четырём arms, честно обозначить неизмеренные queue/service компоненты и проверить небольшой offline инструмент. Runtime/model/workload/исходные результаты неизменны.
 
 Полные campaign obligations остаются отдельным незавершённым объёмом. Historical A269, decoder research failures, CPU07 и CI/staging failures сохраняют свои первоначальные результаты.
 

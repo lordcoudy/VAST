@@ -1,0 +1,610 @@
+{
+  "schema_version": 1,
+  "kind": "explain_benchmark_latency_implementation_conformance",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewed_at_UTC": "2026-10-04T08:10:21.486772+00:00",
+  "planning_commit": "08137b8f5a614f1fe27140aedb3d51d1125a7c47",
+  "implementation_commit": "2a75b47077e1f3c503b1f61cb2f0da3649b9dbe1",
+  "measured_commit": "a00aa57f7d9534f8e7920f14f70d6a75a23570ed",
+  "merged_PR2_commit": "c07de9c78e3beaaf276ee54b5f414a3a4b5d035c",
+  "status": "implementation_conformant_current_CI_and_release_pending",
+  "reviewable": true,
+  "blocking_findings": [],
+  "implementation_conformance_pass": true,
+  "merge_ready": false,
+  "requirement_count": 4,
+  "scenario_count": 12,
+  "requirements": [
+    {
+      "id": "R1",
+      "name": "Current status distinguishes completed release and incomplete campaigns",
+      "result": "conformant",
+      "scenarios": [
+        "R1/S1",
+        "R1/S2"
+      ],
+      "body_coverage": "Actual completed release/source distinctions,immutable earlier docs/archive and fullfalse obligations."
+    },
+    {
+      "id": "R2",
+      "name": "Offline diagnostics retain original populations and identities",
+      "result": "conformant",
+      "scenarios": [
+        "R2/S1",
+        "R2/S2",
+        "R2/S3",
+        "R2/S4",
+        "R2/S5"
+      ],
+      "body_coverage": "Selected bounded inputs,strict identities/cohort/denominators/deadline,JSON/CSV/Markdown provenance,exclusive outputs,no engine/raw mutation/authority."
+    },
+    {
+      "id": "R3",
+      "name": "Latency diagnostics report observed envelopes and unknown service components",
+      "result": "conformant",
+      "scenarios": [
+        "R3/S1",
+        "R3/S2",
+        "R3/S3"
+      ],
+      "body_coverage": "Completed-frame critical decoder prefix+residual,linear/null quantiles,parent and native envelopes,optional population,unknown queue/service/NVDEC."
+    },
+    {
+      "id": "R4",
+      "name": "Actual four-arm review preserves scientific limits",
+      "result": "conformant",
+      "scenarios": [
+        "R4/S1",
+        "R4/S2"
+      ],
+      "body_coverage": "Four actual original counts/quantiles/raw joins,independent critical/native comparison,allconfounders and separately reviewed follow-up/full obligations."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "R1/S1",
+      "name": "Previous release actions are already complete",
+      "result": "conformant",
+      "implementation_anchors": [
+        "PLAN.md:14",
+        "progress.md:14",
+        "BENCHMARK_RECOVERY_PLAN.md:14",
+        "README.md:16",
+        "docs/gstreamer-component-benchmark-runbook.md:38"
+      ],
+      "named_tests": [],
+      "actual_evidence_keys": [
+        "planning_review",
+        "current_documents"
+      ],
+      "verification": "Manual reconciliation of real PR2 c07 merge, distinct measuredB/CI-D/final-E2 and closed process ledger; independent byte/hash reconstruction of allsix documents and two primary pointers.",
+      "limits": "No new unit test proves GitHub merge or historical measurements. Earlier dated status text remains immutable history; no measurement replay."
+    },
+    {
+      "id": "R1/S2",
+      "name": "Full input closures are stale",
+      "result": "conformant",
+      "implementation_anchors": [
+        "PLAN.md:35",
+        "docs/latency-diagnostics-20261004/four-arm-report.md:38",
+        "docs/gstreamer-component-benchmark-runbook.md:11",
+        "docs/benchmark-preparation-runbook.md:18"
+      ],
+      "named_tests": [],
+      "actual_evidence_keys": [
+        "full_route_source_map",
+        "current_documents"
+      ],
+      "verification": "Manual source-only roadmap review: DS/GVA/Savant affected source closures require genuine renewal; selectedGst/native3/worker2 source reuse is distinguished from actual image presence; parity/original37/32/Q4/capacity/5600 remain gates.",
+      "limits": "No image query/build/parity/qualification/full campaign was performed or accepted by this review."
+    },
+    {
+      "id": "R2/S1",
+      "name": "Complete original evidence is analyzed",
+      "result": "conformant",
+      "implementation_anchors": [
+        "scripts/analyze_component_latency_v1.py:112",
+        "scripts/analyze_component_latency_v1.py:162",
+        "scripts/analyze_component_latency_v1.py:175",
+        "scripts/analyze_component_latency_v1.py:369",
+        "scripts/analyze_component_latency_v1.py:469",
+        "docs/gstreamer-component-benchmark-runbook.md:14"
+      ],
+      "named_tests": [
+        "test_cli_real_entrypoint_uses_only_selected_fixture_directory",
+        "test_input_hashes_identify_exact_bytes_and_inputs_remain_unchanged",
+        "test_drops_censoring_and_branch_populations_remain_separate"
+      ],
+      "actual_evidence_keys": [
+        "GREEN",
+        "original_invocation",
+        "independent_output_review",
+        "independent_output_comparison"
+      ],
+      "verification": "Direct unit assertions and four retained real isolated CLI executions; independent numeric comparison and current physical output pins join all20 inputs,3325 frames,59291 stages,15522 native branch paths.",
+      "limits": "Recorded zero returncodes and leaf closure are observed. No invented numeric FD balance,process-birth/global-absence,ancestor custody or cold reattestation."
+    },
+    {
+      "id": "R2/S2",
+      "name": "Diagnostic deadline is explicitly supplied",
+      "result": "conformant",
+      "implementation_anchors": [
+        "scripts/analyze_component_latency_v1.py:332",
+        "scripts/analyze_component_latency_v1.py:402",
+        "scripts/analyze_component_latency_v1.py:473",
+        "scripts/analyze_component_latency_v1.py:506",
+        "docs/gstreamer-component-benchmark-runbook.md:16"
+      ],
+      "named_tests": [
+        "test_required_deadline_is_finite_and_positive",
+        "test_unrepresentable_deadline_fails",
+        "test_policy_wrong_associations_deadline_and_missing_path_fail",
+        "test_empty_supplied_policy_does_not_claim_deadline_corroboration",
+        "test_cli_real_entrypoint_uses_only_selected_fixture_directory"
+      ],
+      "actual_evidence_keys": [
+        "GREEN",
+        "original_invocation",
+        "independent_output_review"
+      ],
+      "verification": "Direct malformed/missing/nonpositive/nonfinite/contradictory deadline tests; allfour actual argv use100,caller_parameter and valid optional corroboration. CSV headers carry no inferred default deadline.",
+      "limits": "The caller parameter is diagnostic provenance,not a new experimental deadline;0.001ms only validates retained serialization."
+    },
+    {
+      "id": "R2/S3",
+      "name": "Cohort boundary wall clocks differ",
+      "result": "conformant",
+      "implementation_anchors": [
+        "scripts/analyze_component_latency_v1.py:175",
+        "scripts/analyze_component_latency_v1.py:396"
+      ],
+      "named_tests": [
+        "test_recorded_cohort_early_ingress_and_shuffled_rows_are_preserved"
+      ],
+      "actual_evidence_keys": [
+        "GREEN",
+        "original_calculation",
+        "independent_output_comparison"
+      ],
+      "verification": "Direct shuffled-row/early-window fixture and real cohort comparison preserve allrecorded ledger rows by fullidentity rather than wall-clock reselection.",
+      "limits": "Observed branch set is inferred; this does not certify a declared DAG or original admission authority."
+    },
+    {
+      "id": "R2/S4",
+      "name": "Malformed or inconsistent evidence is supplied",
+      "result": "conformant",
+      "implementation_anchors": [
+        "scripts/analyze_component_latency_v1.py:48",
+        "scripts/analyze_component_latency_v1.py:100",
+        "scripts/analyze_component_latency_v1.py:138",
+        "scripts/analyze_component_latency_v1.py:166",
+        "scripts/analyze_component_latency_v1.py:175",
+        "scripts/analyze_component_latency_v1.py:270",
+        "scripts/analyze_component_latency_v1.py:286",
+        "scripts/analyze_component_latency_v1.py:294",
+        "scripts/analyze_component_latency_v1.py:343",
+        "scripts/analyze_component_latency_v1.py:475"
+      ],
+      "named_tests": [
+        "test_missing_input_invalid_utf8_and_duplicate_headers_fail",
+        "test_individual_and_total_input_limits_fail_before_output",
+        "test_nonregular_and_symlink_inputs_fail",
+        "test_nonfinite_reversed_and_invalid_numbers_fail",
+        "test_duplicate_frame_stage_branch_or_ledger_fail",
+        "test_conflicting_frame_ledger_terminal_and_branch_status_fail",
+        "test_conflicting_input_key_and_stream_admission_sequence_fail",
+        "test_incomplete_completed_path_and_mixed_decoder_layout_fail",
+        "test_completed_frame_requires_aggregate_and_record_events",
+        "test_aggregate_record_times_must_agree_with_postprocess_and_frame_join",
+        "test_carried_native_path_span_gross_or_outside_precision_mismatch_fails",
+        "test_policy_wrong_associations_deadline_and_missing_path_fail",
+        "test_duplicate_policy_json_keys_and_identity_fail"
+      ],
+      "actual_evidence_keys": [
+        "RED",
+        "GREEN",
+        "source_review"
+      ],
+      "verification": "Direct independent negative fixtures,including original nine F1/F2 subtest failures before repair; finalGREEN rejects malformed evidence before successful output. Real3325 aggregate/record joins and15522 bounded carried rows independently agree.",
+      "limits": "Not exhaustive adversarial fuzzing or injected dual I/O failures.64MiB leaf/256MiB total bounds unchanged; source-only review is not an input acceptance receipt."
+    },
+    {
+      "id": "R2/S5",
+      "name": "Output is occupied",
+      "result": "conformant",
+      "implementation_anchors": [
+        "scripts/analyze_component_latency_v1.py:472",
+        "scripts/analyze_component_latency_v1.py:492"
+      ],
+      "named_tests": [
+        "test_occupied_output_preserves_existing_files_and_source"
+      ],
+      "actual_evidence_keys": [
+        "GREEN",
+        "source_review"
+      ],
+      "verification": "Direct occupied directory/marker preservation assertion; source uses lexists and exclusive mkdir/file opens.",
+      "limits": "No exhaustive concurrent filesystem race/fault coverage claimed; outputs are diagnostic only."
+    },
+    {
+      "id": "R3/S1",
+      "name": "Critical-path branch varies",
+      "result": "conformant",
+      "implementation_anchors": [
+        "scripts/analyze_component_latency_v1.py:87",
+        "scripts/analyze_component_latency_v1.py:369",
+        "scripts/analyze_component_latency_v1.py:372",
+        "scripts/analyze_component_latency_v1.py:377",
+        "scripts/analyze_component_latency_v1.py:409"
+      ],
+      "named_tests": [
+        "test_shared_critical_branches_and_nonadditive_medians",
+        "test_baseline_uses_decoder_of_actual_critical_branch",
+        "test_ties_are_deterministic_and_zero_latency_share_is_unknown",
+        "test_linear_quantiles_not_nearest_rank",
+        "test_empty_completed_population_has_null_quantiles_with_reason",
+        "test_valid_aggregate_join_can_complete_well_after_latest_postprocess"
+      ],
+      "actual_evidence_keys": [
+        "GREEN",
+        "source_review",
+        "independent_output_comparison",
+        "independent_output_review"
+      ],
+      "verification": "Direct critical-branch/baseline/shared/tie/linear-quantile/nonadditivity/null fixtures; all3325 actual identity/decomposition rows compared exactly to independent raw math; valid31ms aggregate tail preserved.",
+      "limits": "Marginal quantiles are not additive; completed subsets differ. No causal shared-decoder speedup or dropped-frame latency is inferred."
+    },
+    {
+      "id": "R3/S2",
+      "name": "Queue timestamps are equal by construction",
+      "result": "conformant",
+      "implementation_anchors": [
+        "scripts/analyze_component_latency_v1.py:385",
+        "scripts/analyze_component_latency_v1.py:415",
+        "scripts/analyze_component_latency_v1.py:419",
+        "scripts/analyze_component_latency_v1.py:456",
+        "docs/latency-diagnostics-20261004/four-arm-report.md:24",
+        "scripts/checkpoint_publication_runtime.py:908",
+        "scripts/checkpoint_publication_runtime.py:931"
+      ],
+      "named_tests": [
+        "test_promoted_zero_queue_span_does_not_claim_zero_true_wait",
+        "test_policy_population_includes_successful_branches_of_dropped_frames",
+        "test_native_terminal_may_precede_postprocess_and_frame_join",
+        "test_carried_native_path_span_gross_or_outside_precision_mismatch_fails"
+      ],
+      "actual_evidence_keys": [
+        "GREEN",
+        "source_review",
+        "independent_output_comparison",
+        "independent_output_review"
+      ],
+      "verification": "Direct unknown/envelope assertions and source-grounded manual semantics; all59291 real stage rows and15522 native path distributions independently compared; allfour current JSON unknowns are null.",
+      "limits": "True queue wait,pure inference and NVDEC busy are unobserved. Native and carried intervals remain separate envelopes,with their own branch population."
+    },
+    {
+      "id": "R3/S3",
+      "name": "Optional policy evidence is unavailable",
+      "result": "conformant",
+      "implementation_anchors": [
+        "scripts/analyze_component_latency_v1.py:294",
+        "scripts/analyze_component_latency_v1.py:478",
+        "scripts/analyze_component_latency_v1.py:452"
+      ],
+      "named_tests": [
+        "test_missing_optional_policy_reports_unavailable_not_zero",
+        "test_empty_supplied_policy_does_not_claim_deadline_corroboration"
+      ],
+      "actual_evidence_keys": [
+        "GREEN",
+        "source_review"
+      ],
+      "verification": "Direct absence/empty-population fixtures prove explicit unavailable/null and no fabricated zero/corroboration. Source keeps required CSV diagnostics usable without optionalJSONL.",
+      "limits": "Allfour realarms supplied optionalJSONL; absent-policy behavior is verified on fixtures,not a fifth original invocation."
+    },
+    {
+      "id": "R4/S1",
+      "name": "Decoder envelope dominates GPU latency",
+      "result": "conformant",
+      "implementation_anchors": [
+        "docs/latency-diagnostics-20261004/four-arm-report.md:13",
+        "docs/latency-diagnostics-20261004/four-arm-report.md:18",
+        "docs/latency-diagnostics-20261004/four-arm-report.md:20",
+        "docs/latency-diagnostics-20261004/four-arm-report.md:24",
+        "docs/latency-diagnostics-20261004/four-arm-report.md:26",
+        "docs/latency-diagnostics-20261004/four-arm-report.md:28",
+        "docs/latency-diagnostics-20261004/four-arm-report.md:30",
+        "scripts/analyze_component_latency_v1.py:423"
+      ],
+      "named_tests": [
+        "test_promoted_zero_queue_span_does_not_claim_zero_true_wait",
+        "test_shared_critical_branches_and_nonadditive_medians"
+      ],
+      "actual_evidence_keys": [
+        "original_invocation",
+        "original_calculation",
+        "independent_output_comparison",
+        "independent_output_review"
+      ],
+      "verification": "Independent actual raw/output comparison verifies fourcounts and completedquantiles; current report manually read in full. GPU per-frame decoder-sharep50=93.23%/91.94% is an observed residence envelope. Drops,negative100ms,one baseline-first pair,two recordings,commonNVDEC,partialoverlappingC_obs and different completedsets remain explicit.",
+      "limits": "No direct unit test validates causal interpretation of actual hardware. Decoder/display/input mechanisms remain hypotheses; no energy/work/population confidence or causal speedup claim."
+    },
+    {
+      "id": "R4/S2",
+      "name": "Next performance experiment is proposed",
+      "result": "conformant",
+      "implementation_anchors": [
+        "docs/latency-diagnostics-20261004/four-arm-report.md:32",
+        "docs/latency-diagnostics-20261004/four-arm-report.md:34",
+        "docs/latency-diagnostics-20261004/four-arm-report.md:36",
+        "docs/latency-diagnostics-20261004/four-arm-report.md:38",
+        "PLAN.md:10",
+        "PLAN.md:40"
+      ],
+      "named_tests": [],
+      "actual_evidence_keys": [
+        "decoder_setup_review",
+        "full_route_source_map",
+        "current_documents",
+        "independent_output_review"
+      ],
+      "verification": "Manual bounded follow-up review preserves actual attempt05 setup failure before firstAU,requires separately reviewed identity fix/regressions/metadata preflight and unchanged32AUx4research contract; roadmap retains exactfull gates.",
+      "limits": "Future decoder/intake intervention and full campaigns are unimplemented/unexecuted and require their reviewed scope; source map/research diagnosis grants no dispatch or scientific adoption."
+    }
+  ],
+  "source_test_wrapper_pins": [
+    {
+      "path": "scripts/analyze_component_latency_v1.py",
+      "size_bytes": 35396,
+      "sha256": "4023c5846098a2055961fed2899038eeb2317854a6bd89ba4142c682ffd260b4"
+    },
+    {
+      "path": "tests/test_component_latency_diagnostics.py",
+      "size_bytes": 31856,
+      "sha256": "f84a7594521e8bd364179f40359aa3c2d9c90b1913e40c52cb78a2c148df9543"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/execute_originals_once_v1.py",
+      "size_bytes": 6637,
+      "sha256": "4bf6acd63819ffcb3013bd1c08112d4fbd9111145964c085a332459491ac7d16"
+    }
+  ],
+  "current_report_pin": {
+    "path": "docs/latency-diagnostics-20261004/four-arm-report.md",
+    "size_bytes": 12184,
+    "sha256": "3892650a749aad98a861dd697e889a90c90c91bbc6a6e48efd82fbf678b4baae"
+  },
+  "planning_artifact_pins": [
+    {
+      "path": "openspec/changes/explain-benchmark-latency/proposal.md",
+      "size_bytes": 2205,
+      "sha256": "cfde6d7b937a2eb02495b5a30dd497f29581f2bfcce2a920a4ac6eddbe3615b8"
+    },
+    {
+      "path": "openspec/changes/explain-benchmark-latency/design.md",
+      "size_bytes": 5513,
+      "sha256": "cc8cd72fdf6f11309be29343a6e194acc72405f5bdced956ea98800a1fb20146"
+    },
+    {
+      "path": "openspec/changes/explain-benchmark-latency/specs/component-latency-diagnostics/spec.md",
+      "size_bytes": 6560,
+      "sha256": "5d1f9a2771db70d0d6e22905a81c13b19ecee71180a3037be7d78c806327b36e"
+    },
+    {
+      "path": "openspec/changes/explain-benchmark-latency/tasks.md",
+      "size_bytes": 5344,
+      "sha256": "9c73b9d2090f247d5e3876d4c4164237290571eabf6e986c99fdff5df9097464"
+    }
+  ],
+  "evidence_refs": {
+    "source_review": {
+      "path": "docs/latency-diagnostics-20261004/source-independent-review.v2.json",
+      "size_bytes": 10103,
+      "sha256": "30debcdc489595c29a014e6a256d263776086bfb908c9231eb2a8e2f57c96b43"
+    },
+    "GREEN": {
+      "path": "docs/latency-diagnostics-20261004/tests/green-peer-consistency.terminal.json",
+      "size_bytes": 849,
+      "sha256": "ab8fa08a4674c8f5c0feaf97487a8c364f7cb2feb04737d5da07d514b77938fa"
+    },
+    "RED": {
+      "path": "docs/latency-diagnostics-20261004/tests/red-peer-consistency.terminal.json",
+      "size_bytes": 848,
+      "sha256": "d2effc4031cfdaf29befe40416a2c4044c86899037f34b358c747f7a8b88d5d1"
+    },
+    "original_invocation": {
+      "path": "docs/latency-diagnostics-20261004/original-cli-execution-v1/invocation-terminal.v1.json",
+      "size_bytes": 25322,
+      "sha256": "9e0bfcdc7cf9a81f444f70d031f7968d608d6fea39bb0f0bc0856c51eef90299"
+    },
+    "independent_output_review": {
+      "path": "docs/latency-diagnostics-20261004/raw-independent-review/cli-output-independent-review.v1.json",
+      "size_bytes": 6940,
+      "sha256": "ce2a0adaf8bb82d90f06f2338443124a69e19358f5214965cae076ff9d858de7"
+    },
+    "independent_output_comparison": {
+      "path": "docs/latency-diagnostics-20261004/raw-independent-review/cli-comparison.v1.json",
+      "size_bytes": 11519,
+      "sha256": "d86ce901f0edf640e1f3e233278e80e5e826f2cea7cf79fb141a6b8f1ffc95a7"
+    },
+    "original_calculation": {
+      "path": "docs/latency-diagnostics-20261004/raw-independent-review/calculation.v2.json",
+      "size_bytes": 39658,
+      "sha256": "e9b370012bcdc18204e1c868aaf921dd8f10e3da4d7b35cade0b5c96777b3f2b"
+    },
+    "current_documents": {
+      "path": "docs/latency-diagnostics-20261004/current-document-update.v2.json",
+      "size_bytes": 6753,
+      "sha256": "787accbabc17c60c9627555c4f2be899e31aaa8525f508ce0592bcd845446035"
+    },
+    "full_route_source_map": {
+      "path": "docs/latency-diagnostics-20261004/raw-independent-review/full-route.source-facts.v2.json",
+      "size_bytes": 16734,
+      "sha256": "94a7f813c68863ff262b59442ec9e5e87a46d9a92f1ecf37b20720f96efce812"
+    },
+    "decoder_setup_review": {
+      "path": "docs/latency-diagnostics-20261004/decoder-attempt05-setup-review.v1.json",
+      "size_bytes": 8813,
+      "sha256": "20ec05aa47ee294786f5fc866ccc2b65c6a78115e70e9a9964266684eff04dae"
+    },
+    "planning_review": {
+      "path": "docs/latency-diagnostics-20261004/planning-independent-review.v1.json",
+      "size_bytes": 9235,
+      "sha256": "9f88ae3e8a4f3241b13cba3ab58164643f64f91cf770636378d18fd46057d4cc"
+    }
+  },
+  "actual_evidence_summary": {
+    "focused_GREEN": {
+      "tests": 35,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "recorded_original_CLI_returncodes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "original_inputs": 20,
+    "original_input_bytes": 109802522,
+    "completed_frames": 3325,
+    "stage_rows": 59291,
+    "native_completed_branch_paths": 15522,
+    "physical_comparison_output_leaves_joined": 16,
+    "document_title_suffix_reconstructions": 8,
+    "new_document_links_physically_exist": 38
+  },
+  "current_document_pins": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/PLAN.md",
+      "size_bytes": 19875,
+      "sha256": "992e11ae2b7823aa43b43e6b3b24d8dff581196e0c32669e1c91f736958c0970",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 12345,
+      "prior_content_sha256": "5b50e3f739874eeec6c11a5ae0533a8921020aa7d3600046dfeab9f4447edba0"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/progress.md",
+      "size_bytes": 1243985,
+      "sha256": "915d74dff764456bce362b97c6ca2de4b6c2eb2a42d3515db8ff8d15093fc15c",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 1239979,
+      "prior_content_sha256": "e93049786410beff6d512b9ebac515c74368a5f8b25e37097abd3424a4826f2e"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/BENCHMARK_RECOVERY_PLAN.md",
+      "size_bytes": 142234,
+      "sha256": "1770ebdfc1b65b40b94a68eeb71f48a7c9cb1ab13ff57ec48c8c7fbe33c28e16",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 138689,
+      "prior_content_sha256": "3cd9e8de01e2b12dca969fd97307d1caff519bda4ae53ff40cc7bd0975ee320e"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/README.md",
+      "size_bytes": 62032,
+      "sha256": "ee6fd025849207f847d1753afe5d7ed0efe4f6e18e478c29709177e15dd9e788",
+      "title_bytes": 33,
+      "prior_suffix_bytes": 59346,
+      "prior_content_sha256": "0c6d45685e7fe0fc025c902be3cdaedcbceb61b4f1d6b181b66e0e7cd167b875"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/gstreamer-component-benchmark-runbook.md",
+      "size_bytes": 20253,
+      "sha256": "39d15c8c587b06499a94d29723e02c2d2f07873af9c60474eba72dddaf130c14",
+      "title_bytes": 32,
+      "prior_suffix_bytes": 14658,
+      "prior_content_sha256": "96665a3730508d2f708e3634bf944d357859da93571e3d1b9ff9404aa6bcdf4e"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/benchmark-preparation-runbook.md",
+      "size_bytes": 16675,
+      "sha256": "acddb9deb50f85a13f2ccf36122949cda7663119d207bc1c99a160ab6164c0dd",
+      "title_bytes": 61,
+      "prior_suffix_bytes": 13827,
+      "prior_content_sha256": "8f88fcd81de73a39b7a1756c5c5881e6c15eefb4f143d66ab3af081bd40d2903"
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/PLAN.md",
+      "size_bytes": 14554,
+      "sha256": "92f3aafcdfdaef55dddf3e03a794987ca0bddc6af591180d4953cc0f181ce5c8",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 12027,
+      "prior_content_sha256": "3e5449bfd43b9455a38cceaa4c7f2f639bd1e2c472bde5c5bf722311f394e5bf"
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/progress.md",
+      "size_bytes": 15825,
+      "sha256": "3d01d2479dd10807a2715bdbd08f4c700e446d1028f4cc25e9deaa94558d77df",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 13298,
+      "prior_content_sha256": "b7aa9278d83557a45f871f0088ef4bfd2a8319b8ed90f364b3cf6507ed03888b"
+    }
+  ],
+  "preservation_and_scope": {
+    "old_main_spec": {
+      "path": "openspec/specs/benchmark-launch-preparation/spec.md",
+      "size_bytes": 75126,
+      "sha256": "d777fca9299def232e13c75e484c0863a639d4acdfdf5445e38e8a925873d36b"
+    },
+    "old_main_requirements": 20,
+    "old_main_scenarios": 118,
+    "merged_archive_plus_old_main_raw_physical_Git_blob_joins": 20,
+    "merged_archive_leaves": 19,
+    "merged_archive_plus_old_main_bytes": 863531,
+    "raw_Git_comparison_commit": "c07de9c78e3beaaf276ee54b5f414a3a4b5d035c",
+    "old_deploy_CI_existing_scripts_tests_main_archive_tracked_diff": [],
+    "new_CLI_test_paths_outside_engine_runtime_native_worker_implementation": true,
+    "scientific_skip_workload_acceptance_changes": false,
+    "full32_Q4_1120_5600_still_unexecuted": true,
+    "eligibility_granted": false
+  },
+  "manual_and_unverified_limits": [
+    "R1 document/release/roadmap semantics and R4 scientific interpretation/future proposals are manual/source reviews; namedfixture tests do not replace those checks.",
+    "Real-original numeric comparison is distinct from per-scenario unit assertions. No project tests,CLI,benchmark,model,native build,hardware query or raw calculation was replayed by this conformance reviewer.",
+    "NewCI commit and provider job outcomes are unknown; current implementation checks and allrelease transitions remain pending. Historical PR2 CI success is not PR3 CI.",
+    "Original offline wrapper/independent readers report leaf closure but do not establish numericFD balance,globalabsence/EOF/reap/ancestral custody where unrecorded. Dual I/O/close failures are not claimed exhaustively tested.",
+    "No fullDAG/cold acceptance,hardware attestation,causal speedup,pure inference,true zeroqueue,NVDECbusy,Q4 or fullcampaign readiness is granted."
+  ],
+  "pending_gates": [
+    "4.1 mandatory current implementation CI and exact committed-source/evidence join",
+    "supported same-change sync/archive,main+YAML preservation,commit/push",
+    "latest archived-head CI",
+    "exact final independent review,Draft removal and authorized expected-SHA merge"
+  ],
+  "conformance_authorship": "The implementation-independent reviewer authored this mapping and its consistency receipt. Parent must read it; no second independent review of this reviewer's own report is invented.",
+  "reviewer_handles_released": true,
+  "exact_implementation_commit_join": {
+    "commit": "2a75b47077e1f3c503b1f61cb2f0da3649b9dbe1",
+    "physical_raw_Git_joined_paths": [
+      "BENCHMARK_RECOVERY_PLAN.md",
+      "PLAN.md",
+      "README.md",
+      "docs/benchmark-preparation-runbook.md",
+      "docs/gstreamer-component-benchmark-runbook.md",
+      "docs/latency-diagnostics-20261004/current-document-update.v2.json",
+      "docs/latency-diagnostics-20261004/execute_originals_once_v1.py",
+      "docs/latency-diagnostics-20261004/four-arm-report.md",
+      "docs/latency-diagnostics-20261004/original-cli-execution-v1/invocation-terminal.v1.json",
+      "docs/latency-diagnostics-20261004/raw-independent-review/cli-comparison.v1.json",
+      "docs/latency-diagnostics-20261004/raw-independent-review/cli-output-independent-review.v1.json",
+      "docs/latency-diagnostics-20261004/source-independent-review.v2.json",
+      "docs/latency-diagnostics-20261004/tests/green-peer-consistency.terminal.json",
+      "openspec/changes/explain-benchmark-latency/design.md",
+      "openspec/changes/explain-benchmark-latency/proposal.md",
+      "openspec/changes/explain-benchmark-latency/specs/component-latency-diagnostics/spec.md",
+      "openspec/changes/explain-benchmark-latency/tasks.md",
+      "progress.md",
+      "scripts/analyze_component_latency_v1.py",
+      "tests/test_component_latency_diagnostics.py"
+    ],
+    "count": 20,
+    "all_equal": true,
+    "read_only": true,
+    "existing_source_scope_delta": [
+      "add scripts/analyze_component_latency_v1.py",
+      "add tests/test_component_latency_diagnostics.py"
+    ],
+    "old_native_runtime_worker_CI_selection_main_archive_unchanged": true
+  }
+}

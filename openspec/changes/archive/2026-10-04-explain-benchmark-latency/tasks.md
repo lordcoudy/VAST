@@ -17,7 +17,7 @@
 
 ## 4. Implementation acceptance
 
-- [ ] 4.1 Complete requirement/scenario conformance, independent source/test/report review and mandatory current CI checks; verify no native/runtime/worker/source identity or scientific experiment/skip changes.
+- [x] 4.1 Complete requirement/scenario conformance, independent source/test/report review and mandatory current CI checks; verify no native/runtime/worker/source identity or scientific experiment/skip changes. Exact A 2a75b47077e1f3c503b1f61cb2f0da3649b9dbe1 conformance covers all4 requirements/12 scenarios with no blockers; independent review d60329f5 and root full reads completed. Actual hosted run37188046188 and both jobs passed:3036 discovered/3027 selected/2939 successes/88 exact existing allowed skips/9 deferred integrations, zero failures/errors/missing successes; all35 new IDs, six native builds and three required native regressions passed. Independent CI review461c5aa1 verified original ZIP/log/control/source bytes, all6240 Git source rows/346255512 bytes, profile lifecycle and observer EOF. Root read the complete review; no source/skip/science changes or target rerun. Hardware acceptance remains false; final archived-head CI is a later repository gate.
 
 ## Repository release transitions
 
