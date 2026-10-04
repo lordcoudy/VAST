@@ -1,0 +1,20 @@
+{
+  "phase": "RED_HARDENING",
+  "executable": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+  "version": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "argv": [
+    "-"
+  ],
+  "discovery": "unittest discover tests/test_component_latency_diagnostics.py",
+  "pid": 17506,
+  "tests": 28,
+  "failures": 3,
+  "errors": 0,
+  "skips": 0,
+  "success": false,
+  "exit_code": 1,
+  "elapsed_seconds": 0.40923129103612155,
+  "test_source_sha256": "be454ce7e5af8d2360e772414136b2b998d044baf7d03b3c22374b3974ac5426",
+  "production_source_sha256": "cf9cfad51b5a8a4eea4ad2f3eff058eb3db42ae4f1502c8e11daab4aa02eddcf",
+  "stdout_sha256": "e7af613793cb04900045deb147009225fb7fe3b65af582f0d1608dd768b26d48"
+}

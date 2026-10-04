@@ -1,0 +1,13 @@
+{
+  "disposition": "independent_calculation_failure_not_original_benchmark_failure",
+  "original_tool_chunk": "d86df6",
+  "exit_code": 1,
+  "source": {
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/raw-independent-review/recompute_originals.py",
+    "size_bytes": 9967,
+    "sha256": "ea33ee4c0d57720568470e43f79b9e2ca835a74e147f1f39b849816c89266576"
+  },
+  "failed_assertion": "assert start <= decode_end <= end and end == max(ends.values())",
+  "diagnosis": "The independently added equality was too strict: frame0:33 has last postprocess1791015843004, aggregate completion/egress1791015843006. Spec decomposition uses actual frame egress; the 2ms aggregate envelope belongs in residual. Original inputs unchanged; v2 removes only this unsupported equality.",
+  "output_not_created": true
+}

@@ -1,5 +1,46 @@
 # GStreamer component benchmark
 
+## Фактический этап — 4 октября 2026
+
+Offline CLI реализован: 35 tests passed, 0 skips; два замечания reviewer воспроизведены RED и исправлены. Все четыре original CPU08/GPU02 directories обработаны однократно, каждый CLI exit0. Все 20 исходных файлов (109 802 522 bytes) сохранили SHA256 и семь полей named/held identity. Benchmark/engine/model не повторялись.
+
+[Четырёх-arm отчёт](latency-diagnostics-20261004/four-arm-report.md) показывает исходные counts/drops/100ms misses и критический путь всех 3 325 completed frames. GPU per-frame decoder share p50 — 93,23% / 91,94%; это residence envelope. True queue wait, pure inference и NVDEC busy остаются unknown.
+
+Научная сверка и conformance 4/12 завершены без блокеров. CI реализации A 2a75b470 прошёл: 2 939 successes, 88 точных разрешённых skips, ноль failures/errors; hardware acceptance false. Все девять задач выполнены; спецификация синхронизирована и change архивирован 4 октября. Финальные CI/review/merge архивного коммита фиксируются в [PR3](https://github.com/lordcoudy/VAST/pull/3) после фактического выполнения. [Задачи текущего изменения](../openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md) задают фактический статус. Все PR2 gates уже закрыты.
+
+Следующий научный шаг — отдельно рассмотренный decoder/intake preflight по реальной setup ошибке attempt05; identity correction ещё не реализована. Полный путь остаётся неизменным: три stale sibling runtime renewals (native3/worker2 source совпали), patch-bound parity, original owner/binding для 37 producing operations, 32 qualification cells, Q4 560+560 / 280 sizing, capacity, 5 600 accepted arms / 2 800 durable pairs. Они не исполнены; full eligibility false.
+
+
+## Offline команда по сохранённому arm
+
+Задайте реальную evidence directory и новый, ещё не существующий output. Required CSV не содержит deadline; explicit 100 ms здесь соответствует исходным четырём arms. Optional native policy JSONL также указывается явно.
+
+```bash
+PY=/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python
+CODE=/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST
+EVIDENCE=/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence
+OUTPUT=/absolute/new/offline-diagnostic-directory
+"$PY" -I -B "$CODE/scripts/analyze_component_latency_v1.py" \
+  --evidence-dir "$EVIDENCE" --deadline-ms 100 \
+  --native-policy-evidence "$EVIDENCE/publication_policy_decisions.jsonl" \
+  --output-dir "$OUTPUT"
+```
+
+Читаются frames.csv, ingress_ledger.csv, branch_terminals.csv, frame_events.csv и выбранный optional JSONL; лимиты 64 MiB на leaf / 256 MiB всего. Malformed/nonfinite/reversed/duplicate/inconsistent input, symlink/nonregular file и occupied output отклоняются. Выходы: diagnostic.json, per_completed_frame.csv, report.md. Отсутствующий optional input означает unavailable, не ноль. Observed branch set не является доказательством full DAG/cold acceptance; модели и runtime не запускаются.
+
+[Root one-shot originals](latency-diagnostics-20261004/original-cli-execution-v1) сохраняют четыре реальные argv/stdout/stderr/terminals. Этот namespace уже существует и wrapper не повторяет его. Для собственного повторного offline анализа задавайте fresh output; принятые benchmark measurements не повторяются.
+
+## Предыдущая постановка текущего этапа
+
+
+## Актуальный статус — 4 октября 2026
+
+Восстановление выбранного component benchmark завершено в [PR2](https://github.com/lordcoudy/VAST/pull/2): merge `c07de9c78e3beaaf276ee54b5f414a3a4b5d035c`, финальный CI/review — E2 `1f44b9f9`; измерения CPU08/GPU02 остаются на B `a00aa57f`. Conformance 20/118, archive, все пять repository process gates и временный owned D-bind cleanup завершены. D — источник отдельного implementation CI, а не текущая вершина репозитория. Датированные pending/running строки ниже сохранены как история.
+
+Текущая задача `explain-benchmark-latency` и её критерии приведены в [PLAN.md](../PLAN.md); public offline diagnostics добавляются в этом этапе. Promoted queue-enter=start означает записанный нулевой span, но не измеренное отсутствие очереди. Stage и native policy path intervals включают наблюдаемые envelopes; pure inference, actual queue wait и NVDEC busy time остаются неизвестны. Исходные workload, результаты, deadlines и full-campaign obligations сохраняются.
+
+## Исторический снимок и действующая процедура
+
 This entry point runs a real baseline/shared GStreamer pair for one analytics resource, then stops the guardian and cold-validates both arms. Run CPU and GPU separately. A completed pair produces descriptive data; it does not complete the historical multi-backend qualification campaign.
 
 ## Current validation status

@@ -1,0 +1,132 @@
+{
+  "blocking_findings": [],
+  "calculation": {
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/raw-independent-review/calculation.v2.json",
+    "sha256": "e9b370012bcdc18204e1c868aaf921dd8f10e3da4d7b35cade0b5c96777b3f2b",
+    "size_bytes": 39658
+  },
+  "calculation_source": {
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/raw-independent-review/recompute_originals_v2.py",
+    "sha256": "590bf6b61c4fca1e76fe4e5e4c5fb71354b5e478c8bbceb104028688230eb30b",
+    "size_bytes": 9967
+  },
+  "diagnostic_math_completed": true,
+  "first_calculation_error": {
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/raw-independent-review/first-calculation-failure.v1.json",
+    "sha256": "87543fffc8c6d1b09a247961e238067b760915c164a5061c8fc1cd210b644389",
+    "size_bytes": 863
+  },
+  "formulas": {
+    "critical_branch": "max required postprocess completion; ascending branch-name tie break",
+    "decoder": "decode_<critical branch> baseline; decode shared",
+    "frame_key": [
+      "run_id",
+      "trace_id",
+      "stream_id",
+      "frame_id"
+    ],
+    "policy_envelope": "native terminal_timestamp_ms - path_entry_timestamp_ms, completed-branch population",
+    "policy_key": "request trace parses run/stream/frame; branch, decision and input_frame_key join ledger/terminals",
+    "prefix_ms": "decode_end - ingress",
+    "quantiles": "linear q*(n-1), not sum of marginal quantiles",
+    "residual_ms": "frame_egress - decode_end",
+    "sum": "prefix+residual == retained e2e exactly on3325 completed frames"
+  },
+  "inputs": {
+    "actual_calculation_fd_count_or_birth_record_instrumented": false,
+    "files": 20,
+    "leaf_handles_closed_in_finally": true,
+    "original_leaf_before_after_and_named_epoch_equal": true,
+    "per_file_full_sha256_and_seven_epochs_in_calculation": true,
+    "total_bytes": 109802522
+  },
+  "kind": "independent_raw_latency_diagnostic_review",
+  "limits": [
+    "completed frame envelopes, not hardware busy or pure inference service",
+    "policy-path population is all completed measurement branches",
+    "one baseline-first pair per resource; two recordings; no causal or population inference",
+    "recorded measurement cohort retained regardless of rounded wall boundary",
+    "No ancestor-custody/full cold validator or hardware facts were reattested by this diagnostic.",
+    "The first added egress==last-postprocess assertion was unsupported; actual frame ingress0:33 aggregate adds2ms. Its original error/source remain retained.",
+    "Fresh CLI outputs are still pending independent comparison; this report validates original math only."
+  ],
+  "new_production_cli_executed": false,
+  "original_acceptance_reissued": false,
+  "original_tool": {
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/raw-independent-review/original-v2-tool-result.json",
+    "sha256": "807cde9f3879b10398bf4d09f0d9da6b65f53d347fb1dcca31b21e60e013c9ca",
+    "size_bytes": 1335
+  },
+  "paired_populations": {
+    "cpu": {
+      "baseline_only_completed_input_count": 52,
+      "causal_speedup_inferred": false,
+      "common_completed_input_count": 464,
+      "identical_admissions_by_stream_frame_input": 1080,
+      "shared_only_completed_input_count": 200
+    },
+    "gpu": {
+      "baseline_only_completed_input_count": 0,
+      "causal_speedup_inferred": false,
+      "common_completed_input_count": 1070,
+      "identical_admissions_by_stream_frame_input": 1080,
+      "shared_only_completed_input_count": 5
+    }
+  },
+  "planning_commit": "08137b8f5a614f1fe27140aedb3d51d1125a7c47",
+  "source_interpretation": {
+    "native_path_rounding_absolute_error_ms_max": "0.000569",
+    "nvdec_busy": null,
+    "pure_inference_service": null,
+    "stock_parent_start_anchor": "checkpoint_publication_runtime.py:908;start=max direct-parent timestamp",
+    "stock_queue_start_anchor": "checkpoint_publication_runtime.py:931-932;queue_enter=start=derived parent completion",
+    "true_queue_wait": null
+  },
+  "source_pins": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/openspec/changes/explain-benchmark-latency/specs/component-latency-diagnostics/spec.md",
+      "sha256": "5d1f9a2771db70d0d6e22905a81c13b19ecee71180a3037be7d78c806327b36e",
+      "size_bytes": 6560
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/openspec/changes/explain-benchmark-latency/design.md",
+      "sha256": "cc8cd72fdf6f11309be29343a6e194acc72405f5bdced956ea98800a1fb20146",
+      "size_bytes": 5513
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/scripts/checkpoint_publication_runtime.py",
+      "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+      "size_bytes": 55785
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/scripts/checkpoint_native_policy_runtime.py",
+      "sha256": "76de5fa2bc52eb1a11b34abbfb93dd144d0769b802351dec992c92e0d1610c95",
+      "size_bytes": 73421
+    }
+  ],
+  "verified_totals": {
+    "admissions_per_arm": 1080,
+    "censored_total": 0,
+    "completed_by_arm": [
+      516,
+      664,
+      1070,
+      1075
+    ],
+    "dropped_by_arm": [
+      564,
+      416,
+      10,
+      5
+    ],
+    "on_time_at_100ms": [
+      0,
+      0,
+      3,
+      1
+    ],
+    "policy_completed_branch_joins": 15522,
+    "promoted_stage_rows": 59291,
+    "queue_enter_equals_start_rows": 59291
+  }
+}

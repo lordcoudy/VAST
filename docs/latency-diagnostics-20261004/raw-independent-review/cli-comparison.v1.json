@@ -1,0 +1,319 @@
+{
+  "acceptance_authority": false,
+  "completed_frames_verified": 3325,
+  "findings": [],
+  "invocation_terminal": {
+    "epoch": [
+      68,
+      32369622322189704,
+      33279,
+      1,
+      25322,
+      1791100027020471000,
+      1791100027020471000
+    ],
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/invocation-terminal.v1.json",
+    "sha256": "9e0bfcdc7cf9a81f444f70d031f7968d608d6fea39bb0f0bc0856c51eef90299",
+    "size_bytes": 25322
+  },
+  "kind": "independent_closed_offline_cli_comparison",
+  "leaf_handles_closed": true,
+  "limits": [
+    "Comparison verifies closed offline outputs and preserved input leaf facts, not original acceptance or ancestor custody.",
+    "Additional per-branch policy metrics and drop-reason counts were independently parsed from originals; no inference/campaign/engine was run.",
+    "CLI numeric summaries are compared within 1e-14 relative / 1e-12 absolute float representation tolerance; per-frame Decimal decomposition and identity hashes are exact.",
+    "No PID birth, EOF/reap, global process absence or numeric FD-count fact is invented; four recorded returncodes and empty stderr are joined."
+  ],
+  "native_completed_branch_paths_verified": 15522,
+  "original_calculation": {
+    "epoch": [
+      68,
+      5348024559170931,
+      33279,
+      1,
+      39658,
+      1791097848655614900,
+      1791097848655614900
+    ],
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/raw-independent-review/calculation.v2.json",
+    "sha256": "e9b370012bcdc18204e1c868aaf921dd8f10e3da4d7b35cade0b5c96777b3f2b",
+    "size_bytes": 39658
+  },
+  "original_math_rerun": false,
+  "results": [
+    {
+      "all_compared_fields_equal": true,
+      "arm": "cpu-baseline",
+      "completed_frame_count": 516,
+      "critical_rows_sha256": "5122ddd86adf627c7c96ee5f75031c81dabfe299f4140cff57b2c998ecf738df",
+      "diagnostic": {
+        "epoch": [
+          68,
+          305681824707937632,
+          33279,
+          1,
+          17035,
+          1791100025359886300,
+          1791100025359886300
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/cpu-baseline/diagnostic.json",
+        "sha256": "e1b58a9785363ae9efc4311a43e9ad0a7da22e86d5b7cd5bdac7171567978f48",
+        "size_bytes": 17035
+      },
+      "native_completed_branch_paths": 3556,
+      "per_frame_csv": {
+        "epoch": [
+          68,
+          185210534675740357,
+          33279,
+          1,
+          105496,
+          1791100025357655900,
+          1791100025357655900
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/cpu-baseline/per_completed_frame.csv",
+        "sha256": "b64a163c628b13482f44a2e4f54a27552b8060d61aeb3c880cd09080238e6259",
+        "size_bytes": 105496
+      },
+      "recorded_stage_rows": 16782,
+      "report": {
+        "epoch": [
+          68,
+          289919226012117500,
+          33279,
+          1,
+          9262,
+          1791100025358880600,
+          1791100025358880600
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/cpu-baseline/report.md",
+        "sha256": "d2975dd226499d1a3c85247544ab48e18b572166a81e0330360afd2e5d3cdc81",
+        "size_bytes": 9262
+      },
+      "terminal": {
+        "epoch": [
+          68,
+          178455135234736926,
+          33279,
+          1,
+          1608,
+          1791100025372861200,
+          1791100025372861200
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/cpu-baseline.terminal.v1.json",
+        "sha256": "c42b42a580cf972abaa2d56ce2c6691547bb9790f7a11152d7e2a5c542cc7b99",
+        "size_bytes": 1608
+      }
+    },
+    {
+      "all_compared_fields_equal": true,
+      "arm": "cpu-shared",
+      "completed_frame_count": 664,
+      "critical_rows_sha256": "0f792bb7de2a4eed60843501753af1d01efbdc9f9fd0472cf8c83ef0059fc49d",
+      "diagnostic": {
+        "epoch": [
+          68,
+          45880421204140141,
+          33279,
+          1,
+          14353,
+          1791100025807420300,
+          1791100025807420300
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/cpu-shared/diagnostic.json",
+        "sha256": "99444b91719491d858a8094e04ecc06585504b28fa7bc5ac9d199ba92b6fd10a",
+        "size_bytes": 14353
+      },
+      "native_completed_branch_paths": 3371,
+      "per_frame_csv": {
+        "epoch": [
+          68,
+          403635116603319387,
+          33279,
+          1,
+          126532,
+          1791100025804043200,
+          1791100025804043200
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/cpu-shared/per_completed_frame.csv",
+        "sha256": "8ab356a9d30f0678e18633db02b6f5efd77ea94e86ac92364bc2a52d5e332af4",
+        "size_bytes": 126532
+      },
+      "recorded_stage_rows": 10230,
+      "report": {
+        "epoch": [
+          68,
+          135670938774832545,
+          33279,
+          1,
+          8388,
+          1791100025805416100,
+          1791100025805416100
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/cpu-shared/report.md",
+        "sha256": "4a18f781907b8cef68774f3bceacfb222c652c5b6e3d942b02e092cdd777089d",
+        "size_bytes": 8388
+      },
+      "terminal": {
+        "epoch": [
+          68,
+          498210708778191904,
+          33279,
+          1,
+          1592,
+          1791100025820108600,
+          1791100025820108600
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/cpu-shared.terminal.v1.json",
+        "sha256": "8635268ff6d6f8c970e07e12db6235ea0ffe0fd33bc4542cdc896a81ca526822",
+        "size_bytes": 1592
+      }
+    },
+    {
+      "all_compared_fields_equal": true,
+      "arm": "gpu-baseline",
+      "completed_frame_count": 1070,
+      "critical_rows_sha256": "80291ba47b3e2c4a822cd22c6bccff70dc70e37ce867e95fdba78efd1d4494db",
+      "diagnostic": {
+        "epoch": [
+          68,
+          16325548649639273,
+          33279,
+          1,
+          17108,
+          1791100026427242300,
+          1791100026427242300
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/gpu-baseline/diagnostic.json",
+        "sha256": "0bd2173c8c2dee9aa3e34b3cfeb84b7cc8c8720630fa1623a7889a00d7432a4b",
+        "size_bytes": 17108
+      },
+      "native_completed_branch_paths": 4295,
+      "per_frame_csv": {
+        "epoch": [
+          68,
+          200410183418398843,
+          33279,
+          1,
+          214691,
+          1791100026422834200,
+          1791100026422834200
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/gpu-baseline/per_completed_frame.csv",
+        "sha256": "44e2c27e8bb7dad650259d4a3b29d267d9e459ad14dab571995fcb2aaed907c0",
+        "size_bytes": 214691
+      },
+      "recorded_stage_rows": 19369,
+      "report": {
+        "epoch": [
+          68,
+          19421773393456487,
+          33279,
+          1,
+          9241,
+          1791100026425240500,
+          1791100026425240500
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/gpu-baseline/report.md",
+        "sha256": "f8dd8fa3da3ab249dbedc8d2e108e3d545ae687cec2f0e7014330e3df57b0820",
+        "size_bytes": 9241
+      },
+      "terminal": {
+        "epoch": [
+          68,
+          153403862307756502,
+          33279,
+          1,
+          1608,
+          1791100026440801400,
+          1791100026440801400
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/gpu-baseline.terminal.v1.json",
+        "sha256": "ddffec42a4e534de04b93e093855e8e1c565f81635d6a3bcdcf69f173d87fe08",
+        "size_bytes": 1608
+      }
+    },
+    {
+      "all_compared_fields_equal": true,
+      "arm": "gpu-shared",
+      "completed_frame_count": 1075,
+      "critical_rows_sha256": "6c5b713a0d20863739929274a9932bc520c0e96d507d9557005172e80f319b54",
+      "diagnostic": {
+        "epoch": [
+          68,
+          88664617664320291,
+          33279,
+          1,
+          14342,
+          1791100026946326200,
+          1791100026946326200
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/gpu-shared/diagnostic.json",
+        "sha256": "4cd7345cf1105d2ec55a640bf4a18f0fec9aafa074ab7ecec23ce2ea42a9a8df",
+        "size_bytes": 14342
+      },
+      "native_completed_branch_paths": 4300,
+      "per_frame_csv": {
+        "epoch": [
+          68,
+          88383142687602986,
+          33279,
+          1,
+          204294,
+          1791100026941197900,
+          1791100026941197900
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/gpu-shared/per_completed_frame.csv",
+        "sha256": "3c356ee685ce590701377756b995cc97576efd67d6311f574ab12b8148b19579",
+        "size_bytes": 204294
+      },
+      "recorded_stage_rows": 12910,
+      "report": {
+        "epoch": [
+          68,
+          167477611143298378,
+          33279,
+          1,
+          8347,
+          1791100026942613900,
+          1791100026942613900
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/gpu-shared/report.md",
+        "sha256": "898cf4f4327051faa25bbbe6ffd7db7e1ba426a904e2bc7cd6a1439eadf7b73c",
+        "size_bytes": 8347
+      },
+      "terminal": {
+        "epoch": [
+          68,
+          73746443898655736,
+          33279,
+          1,
+          1592,
+          1791100026964163400,
+          1791100026964163400
+        ],
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/gpu-shared.terminal.v1.json",
+        "sha256": "daeb0ef0c7b69968130361b34bbb739aebee081f8fb8f4c36dc230f79d484928",
+        "size_bytes": 1592
+      }
+    }
+  ],
+  "reviewed_leaf_count": 39,
+  "schema_version": 1,
+  "source": {
+    "epoch": [
+      68,
+      4785074605749654,
+      33279,
+      1,
+      35396,
+      1791099452960346600,
+      1791099452960346600
+    ],
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/scripts/analyze_component_latency_v1.py",
+    "sha256": "4023c5846098a2055961fed2899038eeb2317854a6bd89ba4142c682ffd260b4",
+    "size_bytes": 35396
+  },
+  "stage_rows_verified": 59291,
+  "target_cli_rerun": false
+}

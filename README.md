@@ -1,5 +1,22 @@
 # VAST Video Analytics Benchmark
 
+## Фактический этап — 4 октября 2026
+
+Offline CLI реализован: 35 tests passed, 0 skips; два замечания reviewer воспроизведены RED и исправлены. Все четыре original CPU08/GPU02 directories обработаны однократно, каждый CLI exit0. Все 20 исходных файлов (109 802 522 bytes) сохранили SHA256 и семь полей named/held identity. Benchmark/engine/model не повторялись.
+
+[Четырёх-arm отчёт](docs/latency-diagnostics-20261004/four-arm-report.md) показывает исходные counts/drops/100ms misses и критический путь всех 3 325 completed frames. GPU per-frame decoder share p50 — 93,23% / 91,94%; это residence envelope. True queue wait, pure inference и NVDEC busy остаются unknown.
+
+Научная сверка и conformance 4/12 завершены без блокеров. CI реализации A 2a75b470 прошёл: 2 939 successes, 88 точных разрешённых skips, ноль failures/errors; hardware acceptance false. Все девять задач выполнены; спецификация синхронизирована и change архивирован 4 октября. Финальные CI/review/merge архивного коммита фиксируются в [PR3](https://github.com/lordcoudy/VAST/pull/3) после фактического выполнения. [Задачи текущего изменения](openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md) задают фактический статус. Все PR2 gates уже закрыты.
+
+Следующий научный шаг — отдельно рассмотренный decoder/intake preflight по реальной setup ошибке attempt05; identity correction ещё не реализована. Полный путь остаётся неизменным: три stale sibling runtime renewals (native3/worker2 source совпали), patch-bound parity, original owner/binding для 37 producing operations, 32 qualification cells, Q4 560+560 / 280 sizing, capacity, 5 600 accepted arms / 2 800 durable pairs. Они не исполнены; full eligibility false.
+
+## Предыдущая постановка текущего этапа
+
+
+## Текущий benchmark — 4 октября 2026
+
+PR2 merged: `c07de9c7`; четыре CPU/GPU GStreamer arms приняты, финальный E2 CI и archive/review завершены. Результат отрицательный по100мс и остаётся описательным. Актуальный [план](PLAN.md), [прогресс](progress.md) и [component runbook](docs/gstreamer-component-benchmark-runbook.md) различают этот завершённый этап и незапущенные full32/Q4/5600 campaigns. Датированные статусы ниже сохранены как история.
+
 Use the [GStreamer component benchmark runbook](docs/gstreamer-component-benchmark-runbook.md) to run the real six-stream baseline/shared pair on CPU or GPU analytics, validate the original run and interpret its raw results. Current CPU08/GPU02 pairs completed successfully at source `a00aa57f`; the [four-arm CSV](artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_metrics.csv) and [figure](artifacts/benchmark_recovery_20260930/decision28-four-arm-science-preparation-v1/attempt01/four_arm_latency_coverage_cobs.svg) show completion, drops, completed-frame latency and partial attributed stage time. The100ms deadline is largely missed; successful execution does not mean the deadline is met. Implementation checkpoint,3 October2026,repository source D `3c025b29`: hosted and prerequisite-corrected local CI passed; current conformance, same-change archive, checks on the eventual archived commit and final review were pending at this snapshot. The [PR2 final process ledger](https://github.com/lordcoudy/VAST/pull/2) records subsequent repository closure.
 
 The broader qualification/Q4/full campaign retains its [preparation runbook](docs/benchmark-preparation-runbook.md) and original unexecuted obligations. See [progress.md](progress.md) and [the durable recovery plan](BENCHMARK_RECOVERY_PLAN.md) for their scope and current evidence.

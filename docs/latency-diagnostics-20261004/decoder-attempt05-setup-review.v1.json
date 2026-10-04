@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "read_only_original_decoder_attempt05_setup_diagnosis_v1",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewed_at_UTC": "2026-10-04T07:29:05.112542+00:00",
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewer_handles_released": true,
+  "new_implementation_approval": false,
+  "hardware_or_research_executed": false,
+  "original_files_modified": false,
+  "original_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt05-original-dispatch.py",
+      "size_bytes": 16647,
+      "sha256": "c8ebc4eea0e1877bfff81fdc65f0b24ef3071b8e985eaab99a4d605e07c1cc78"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt05-original-controller/terminal.v1.json",
+      "size_bytes": 12098,
+      "sha256": "773acd40d21748af7a84c61a6c2e66b943ee722cbec48ed4adc412bcc6f9fd79"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt05-original-controller/original.stdout",
+      "size_bytes": 388,
+      "sha256": "8d56d4840d31b8ecab2d00a19f134a3707f4fa7bf090d1b34282031508e1df60"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-05/controller/terminal.v1.json",
+      "size_bytes": 7874,
+      "sha256": "8f81e0adef00f81ce19e6e2513c59614a1a2eccb6c5b5f3aed3ae3a243c83631"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-05/controller/launch-intent.v1.json",
+      "size_bytes": 2279,
+      "sha256": "c9a24e033b409174aa41f71713c47894386c2e02dec612b37ab770338a769a37"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-05/controller/execution-plan.v1.json",
+      "size_bytes": 6778,
+      "sha256": "f1793104e9598f10a4a7816702746b3f8d678dce1bf7896e0a4d43ca15a82ddc"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-05/guest/metadata/original-inner-failure.v1.json",
+      "size_bytes": 3389,
+      "sha256": "3a4a55ae30dc8113b8cf8e4460fff0f7b530c87130614520811ac087e9909b3f"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-05/guest/metadata/research-terminal.v1.json",
+      "size_bytes": 1056,
+      "sha256": "f6e379c645f9fcc994d1560c6460b12daae00ec0202430d4db01fe9a7640bba0"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-attempt-05/guest/metadata/mapped-inputs-01.v1.json",
+      "size_bytes": 9000,
+      "sha256": "ecf80f4c2ab22235775ceed4f93ca60845a73f0b8de1f0e7cf4294e876a25e0b"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/research_protocol.py",
+      "size_bytes": 26513,
+      "sha256": "cbf5820bfc0cccc129ff02f6c14c1e724983843a4576e506f25075b70624a8fe"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/guest_consumer.py",
+      "size_bytes": 53980,
+      "sha256": "0c2457e022fac923a04b970bb838a2bbac921d39a608c0171a5869606ce163fa"
+    }
+  ],
+  "actual_first_failure": {
+    "stage": "decoder_plugin_metadata",
+    "exception_type": "research_protocol.ResearchError",
+    "message": "mapped input identity differs",
+    "requested_path": "/opt/intel/dlstreamer/gstreamer/lib/libgstreamer-1.0.so.0.2802.0",
+    "pin_stage": "mapped_identity_join",
+    "proc_maps_device_inode": [
+      2112,
+      130187
+    ],
+    "held_and_named_device_inode": [
+      77,
+      130187
+    ],
+    "original_device_field": "08:40",
+    "regular_single_link_size_predicates": {
+      "regular_file": true,
+      "single_link": true,
+      "within_size_cap": true
+    },
+    "source_guard": "research_protocol.py:126-127; cached guest_consumer.py:103-104 has the same cross-view equality; mapped_library_rows:214-215 correctly decodes hexadecimal device values."
+  },
+  "original_outcome": {
+    "guest_elapsed_s": 3.9090673409809824,
+    "runs_completed": 0,
+    "research_result": null,
+    "outer_controller_returncode": 1,
+    "outer_elapsed_s": 11.566058391006663,
+    "outer_capture_timed_out": false,
+    "inner_Docker_exit": 1,
+    "inner_Docker_oom": false,
+    "inner_container_not_found_after_owned_remove": true,
+    "outer_container_cleanup_verified": false,
+    "accepted": false,
+    "research_conclusion_authorized": false,
+    "historical_failure_not_relabelled": true
+  },
+  "interpretation": "The definite failure is equality across the proc/VMA backing identity and named/FD stat identity. It is compatible with overlay/stacked-filesystem identity semantics, not evidence of different library bytes. Original first-failure records contain no storage-driver/mount table or kernel-version proof, so the exact filesystem mechanism is an inference. No decoder-latency conclusion follows; preflight precedes all four run() calls at guest_consumer.py:739-744.",
+  "minimal_candidate_remedy": [
+    "In a separately reviewed successor, keep the existing strict named held-FD/name/ancestor/fullSHA/epoch checks and default caller link policy. For selected mapped libraries, compare backing-to-backing identities instead of equating backing to visible stat.",
+    "A capability-neutral candidate is one short private read-only mmap from that exact held FD. Resolve its actual address/range/offset in the same bounded /proc/self/maps view and require its backing device/inode to equal the original selected loaded VMA. Re-read original selected mappings before/after; reject missing, conflicting, replaced, deleted or ambiguous mappings. A matching inode alone is insufficient.",
+    "Record both identity views; retire probe mmap and any temporary buffers/FDs on every path. An unavailable observation remains failure. This is a design candidate, not implemented or validated and not authorization to weaken the existing predicate.",
+    "Do not use map_files access or new CAP_SYS_ADMIN/CAP_CHECKPOINT_RESTORE privileges as an implicit workaround; no existing grants/capabilities are expanded."
+  ],
+  "verification_before_any_scientific_run": [
+    "Pure FD+mmap/map-parser regressions for ordinary filesystem equality and distinct visible/backing identity fixtures; explicit wrong device/inode, named replacement, altered bytes/epochs/links, ambiguous/deleted mappings, caps and failure cleanup must still reject. Existing tests already exercise real hardlinked mmap and wrong identity but do not establish overlay cross-view handling.",
+    "Independently source-review the exact successor and retain RED/GREEN originals. Only a separately authorized bounded metadata-only preflight should establish actual deployment mapping joins under unchanged image/runtime grants before considering a new research attempt; no decoder/source/model run is required to test the identity bridge."
+  ],
+  "preserved_scientific_contract": {
+    "AU_count_per_run": 32,
+    "four_runs": [
+      [
+        "front_gate",
+        "default"
+      ],
+      [
+        "front_gate",
+        "zero"
+      ],
+      [
+        "underbody",
+        "zero"
+      ],
+      [
+        "underbody",
+        "default"
+      ]
+    ],
+    "historical_image_id": "sha256:70696f057232acd382f60beaaf12cd9279b317b0ba9a7ade29f0b955ce90481a",
+    "whole_s": 600,
+    "prelaunch_and_run_s": 120,
+    "startup_s": 45,
+    "EOS_s": 10,
+    "cleanup_s": 15,
+    "payload_bytes": 67108864,
+    "raw_bytes": 134217728,
+    "run_bytes": 268435456,
+    "metadata_bytes": 33554432,
+    "channel_bytes": 1048576,
+    "event_bytes": 16384,
+    "event_count": 512,
+    "cohort_and_ACK_cadence_and_pipeline_caps": "unchanged; this review edits none of them",
+    "qualification_and_publication_authority": false
+  },
+  "primary_sources": [
+    {
+      "url": "https://docs.kernel.org/filesystems/overlayfs.html",
+      "supports": "Visible stat device/inode can follow overlay identity rules distinct from underlying objects."
+    },
+    {
+      "url": "https://github.com/torvalds/linux/blob/v6.17/fs/overlayfs/file.c#L450-L459",
+      "supports": "ovl_mmap delegates to real backing file; used for mechanism research, not claimed to be the original WSL kernel version."
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man5/proc_pid_map_files.5.html",
+      "supports": "map_files link access has capability restrictions; it is not an automatic capability-neutral remedy."
+    }
+  ],
+  "limits": [
+    "Read-only original metadata/source review; no original helper import, tests, decoder, engine, device observation or cleanup.",
+    "No current process/global FD/container absence is asserted. Inner container cleanup and the outer false cleanup field retain their distinct recorded facts.",
+    "No proposed remedy is tested or approved for implementation; any changed research identity contract requires its own exact reviewed scope."
+  ]
+}

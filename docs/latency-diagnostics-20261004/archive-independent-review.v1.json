@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "kind": "independent_PR3_archive_and_current_document_review",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewed_at_UTC": "2026-10-04T08:50:53.885071+00:00",
+  "planning_commit": "08137b8f5a614f1fe27140aedb3d51d1125a7c47",
+  "implementation_commit": "2a75b47077e1f3c503b1f61cb2f0da3649b9dbe1",
+  "candidate_archive_commit": null,
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewer_handles_released": true,
+  "archive_document_candidate_pass": true,
+  "future_archived_head_CI_or_merge_accepted": false,
+  "owned_source_pins": [
+    {
+      "path": "scripts/analyze_component_latency_v1.py",
+      "size_bytes": 35396,
+      "sha256": "4023c5846098a2055961fed2899038eeb2317854a6bd89ba4142c682ffd260b4"
+    },
+    {
+      "path": "tests/test_component_latency_diagnostics.py",
+      "size_bytes": 31856,
+      "sha256": "f84a7594521e8bd364179f40359aa3c2d9c90b1913e40c52cb78a2c148df9543"
+    },
+    {
+      "path": "openspec/specs/component-latency-diagnostics/spec.md",
+      "size_bytes": 6554,
+      "sha256": "4ad6263d274252d8e1f9178210b32463de00526542b12edbdcfc94bf83e152ca"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/four-arm-report.md",
+      "size_bytes": 12708,
+      "sha256": "e3b3d7656b5fa630c462cfd2c6bf17f005a5d882bfe1ecb18bbbc2e3485c8a6e"
+    },
+    {
+      "path": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/.openspec.yaml",
+      "size_bytes": 40,
+      "sha256": "ad734da2ba5f4c5a6979a8bbb6bad4db20fb21ec275ceca5f24842fbdfaf5bef"
+    },
+    {
+      "path": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/design.md",
+      "size_bytes": 5513,
+      "sha256": "cc8cd72fdf6f11309be29343a6e194acc72405f5bdced956ea98800a1fb20146"
+    },
+    {
+      "path": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/proposal.md",
+      "size_bytes": 2205,
+      "sha256": "cfde6d7b937a2eb02495b5a30dd497f29581f2bfcce2a920a4ac6eddbe3615b8"
+    },
+    {
+      "path": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/specs/component-latency-diagnostics/spec.md",
+      "size_bytes": 6560,
+      "sha256": "5d1f9a2771db70d0d6e22905a81c13b19ecee71180a3037be7d78c806327b36e"
+    },
+    {
+      "path": "openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md",
+      "size_bytes": 6111,
+      "sha256": "447af7e038a8bf0d3c9f869d785f780ac1fbcfe05091ee14aff5d9503517e39a"
+    }
+  ],
+  "evidence_refs": [
+    {
+      "path": "docs/latency-diagnostics-20261004/current-document-update.v2.json",
+      "size_bytes": 6753,
+      "sha256": "787accbabc17c60c9627555c4f2be899e31aaa8525f508ce0592bcd845446035"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/current-document-update.v3.json",
+      "size_bytes": 24416,
+      "sha256": "4274a69ca2ef84cca97388cc8e08d52da10fe8bafec6643d3ba9892a3ac16b90"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/archive-original-tool.v1.json",
+      "size_bytes": 613,
+      "sha256": "4283025e532b72838525fee8e24b2f7f157ab80ee4441d498bbfe1f5986f2a32"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/ci-A/independent-CI-review.v1.json",
+      "size_bytes": 13858,
+      "sha256": "461c5aa1fcb38ffd163f9978af9cb62aaf38d98268ff8dfdf89ac1c8770d2e89"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/independent-conformance-review.v1.json",
+      "size_bytes": 5282,
+      "sha256": "d60329f5a72463c2ce9906c41f7b9347336935634d6317eb88cf5a2b3eff917a"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/raw-independent-review/cli-output-independent-review.v1.json",
+      "size_bytes": 6940,
+      "sha256": "ce2a0adaf8bb82d90f06f2338443124a69e19358f5214965cae076ff9d858de7"
+    }
+  ],
+  "findings": [
+    "New main is the full exact archived delta with only ADDED Requirements changed to Requirements: same purpose,allfour requirement names/bodies and all12 scenario clauses. No semantic omission or scope amendment.",
+    "Archive exact leaf set is .openspec.yaml,proposal.md,design.md,tasks.md,specs/component-latency-diagnostics/spec.md. YAML/schema/created date,proposal/design/spec are byte-identical to exact A originals. Only task4.1 state and concrete actual CI proof differ; inverse replacement restores A tasks5344B/SHA9c73b9d2 exactly. Allnine task IDs are checked; no future release transition is falsely checked.",
+    "Old19 archive leaves plus old main physically match all20 raw Git blobs at merged c07. Old main remains20 requirements/118 scenarios; allold leaf size/fullSHA joins also match v3 snapshots.",
+    "Allsix managed documents and twoprimary pointers match v3 physical pins. Title plus complete historical suffix reconstructs v2 original hash in every case. Inverting only current-prefix status and task-link replacements reproduces allprevious v2 current-document hashes. All38 declared new local links exist and point to current archive where applicable.",
+    "Report has exactly two bounded status replacements; reversing them reproduces exact A report12184B/SHA3892650a. Scientific body,populations,negative100ms results,critical envelopes,unknown service/queue/NVDEC and controlled future/full32/Q4/5600 limits are byte-identical.",
+    "CLI4023c584 and testsf84a7594 physically equal exact A raw source; existing deploy/CI/scripts/tests diff against A is empty. No source,skip,workload,scientific tolerance or authority contract changed.",
+    "Retained supported archive tool bd5ec8 exited0 and returned actual2026-10-04 archive path. Its specsUpdated=false is faithful: root had already performed independently verified exact inline sync. This review does not claim that archive command itself executed sync."
+  ],
+  "actual_implementation_CI_join": {
+    "review_sha256": "461c5aa1fcb38ffd163f9978af9cb62aaf38d98268ff8dfdf89ac1c8770d2e89",
+    "run_id": 37188046188,
+    "both_provider_jobs_success": true,
+    "discovered": 3036,
+    "selected": 3027,
+    "success": 2939,
+    "approved_unchanged_skips": 88,
+    "deferred_integrations": 9,
+    "failure": 0,
+    "error": 0,
+    "new35_test_IDs_successful": true,
+    "native_builds": 6,
+    "required_native_successes": 3,
+    "hardware_acceptance": false,
+    "scope": "Closed independent exact-A CI receipt read and hash-joined; this review did not replay CI/tests or reclassify skips."
+  },
+  "current_document_pins": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/PLAN.md",
+      "size_bytes": 20281,
+      "sha256": "a39919c7901b6ed7f8fc6fec00b3343216d0a837c77f08389907f95fb0375880",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 12345,
+      "prior_content_sha256": "5b50e3f739874eeec6c11a5ae0533a8921020aa7d3600046dfeab9f4447edba0"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/progress.md",
+      "size_bytes": 1244391,
+      "sha256": "53f8e2174e2de29d5232203c61ed74ec010d57814dad7411acee59c47887feb0",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 1239979,
+      "prior_content_sha256": "e93049786410beff6d512b9ebac515c74368a5f8b25e37097abd3424a4826f2e"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/BENCHMARK_RECOVERY_PLAN.md",
+      "size_bytes": 142640,
+      "sha256": "7c1c5ef301c4c05638168d4d8562aa4008931ad779e19ef8d745511685d0afe9",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 138689,
+      "prior_content_sha256": "3cd9e8de01e2b12dca969fd97307d1caff519bda4ae53ff40cc7bd0975ee320e"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/README.md",
+      "size_bytes": 62419,
+      "sha256": "da8669dce46cad55c3b4c95d169ebe71f0c24dbe70bf0e0475a05be40d4a2470",
+      "title_bytes": 33,
+      "prior_suffix_bytes": 59346,
+      "prior_content_sha256": "0c6d45685e7fe0fc025c902be3cdaedcbceb61b4f1d6b181b66e0e7cd167b875"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/gstreamer-component-benchmark-runbook.md",
+      "size_bytes": 20640,
+      "sha256": "8a6c73709dc3739e18c90292b57e72a5c6432595ba968ae6cf06880f0a8f2204",
+      "title_bytes": 32,
+      "prior_suffix_bytes": 14658,
+      "prior_content_sha256": "96665a3730508d2f708e3634bf944d357859da93571e3d1b9ff9404aa6bcdf4e"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/benchmark-preparation-runbook.md",
+      "size_bytes": 17062,
+      "sha256": "8508a133cd56fedb95c2b0798bb34159042c8cdc67289f0df8d0a43dcfcd885f",
+      "title_bytes": 61,
+      "prior_suffix_bytes": 13827,
+      "prior_content_sha256": "8f88fcd81de73a39b7a1756c5c5881e6c15eefb4f143d66ab3af081bd40d2903"
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/PLAN.md",
+      "size_bytes": 14880,
+      "sha256": "6df9c151780b475bb9c68687fd3dfa2e6185f4c7720c8bfa36834ffba0004c8a",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 12027,
+      "prior_content_sha256": "3e5449bfd43b9455a38cceaa4c7f2f639bd1e2c472bde5c5bf722311f394e5bf"
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/progress.md",
+      "size_bytes": 16151,
+      "sha256": "f3225e0b5077f06673a36d97e2992ada69fcef2a7ca4c681be93d7357fc04f67",
+      "title_bytes": 0,
+      "prior_suffix_bytes": 13298,
+      "prior_content_sha256": "b7aa9278d83557a45f871f0088ef4bfd2a8319b8ed90f364b3cf6507ed03888b"
+    }
+  ],
+  "pending_process_authority": "Archive candidate is uncommitted here. Parent must read this receipt before stage/commit. Exact archived-head CI,final review,Draft transition and authorized expected-SHA merge remain future gates recorded in PR3.",
+  "limits": [
+    "This is independent archive/document/source-diff verification,not a second original benchmark acceptance or fresh hardware/current image attestation.",
+    "Existing conformance manual/document/scientific checks and nine deferred real integrations remain explicit; full32/Q4/1120/5600 remain unexecuted/false.",
+    "Historical dated pending sentences and old links are deliberately preserved inside original suffixes; only current new links are asserted live.",
+    "Only ordinary metadata parsing/hash/raw-Git reads were performed; no project import,test,CI,CLI analysis,benchmark,engine/model/native or hardware action.",
+    "No numeric reviewer FD count,unrecorded process identity/EOF/reap/global absence or comprehensive injected dual-I/O-failure test is invented."
+  ],
+  "no_Git_or_source_or_document_mutations": true,
+  "written_only_requested_exclusive_review": true
+}

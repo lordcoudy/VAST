@@ -1,0 +1,14 @@
+test_native_arrival_before_canonical_ingress_fails (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_native_arrival_before_canonical_ingress_fails) ... FAIL
+
+======================================================================
+FAIL: test_native_arrival_before_canonical_ingress_fails (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_native_arrival_before_canonical_ingress_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/tests/test_component_latency_diagnostics.py", line 272, in test_native_arrival_before_canonical_ingress_fails
+    with self.assertRaises(self.diag.DiagnosticError):
+AssertionError: DiagnosticError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.016s
+
+FAILED (failures=1)

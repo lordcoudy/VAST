@@ -1,3 +1,53 @@
+
+## Фактический этап — 4 октября 2026
+
+Offline CLI реализован: 35 tests passed, 0 skips; два замечания reviewer воспроизведены RED и исправлены. Все четыре original CPU08/GPU02 directories обработаны однократно, каждый CLI exit0. Все 20 исходных файлов (109 802 522 bytes) сохранили SHA256 и семь полей named/held identity. Benchmark/engine/model не повторялись.
+
+[Четырёх-arm отчёт](docs/latency-diagnostics-20261004/four-arm-report.md) показывает исходные counts/drops/100ms misses и критический путь всех 3 325 completed frames. GPU per-frame decoder share p50 — 93,23% / 91,94%; это residence envelope. True queue wait, pure inference и NVDEC busy остаются unknown.
+
+Научная сверка и conformance 4/12 завершены без блокеров. CI реализации A 2a75b470 прошёл: 2 939 successes, 88 точных разрешённых skips, ноль failures/errors; hardware acceptance false. Все девять задач выполнены; спецификация синхронизирована и change архивирован 4 октября. Финальные CI/review/merge архивного коммита фиксируются в [PR3](https://github.com/lordcoudy/VAST/pull/3) после фактического выполнения. [Задачи текущего изменения](openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md) задают фактический статус. Все PR2 gates уже закрыты.
+
+Следующий научный шаг — отдельно рассмотренный decoder/intake preflight по реальной setup ошибке attempt05; identity correction ещё не реализована. Полный путь остаётся неизменным: три stale sibling runtime renewals (native3/worker2 source совпали), patch-bound parity, original owner/binding для 37 producing operations, 32 qualification cells, Q4 560+560 / 280 sizing, capacity, 5 600 accepted arms / 2 800 durable pairs. Они не исполнены; full eligibility false.
+
+## Предыдущая постановка текущего этапа
+
+# Актуальный план VAST — 4 октября 2026
+
+PR [#2](https://github.com/lordcoudy/VAST/pull/2) завершён и слит: merge `c07de9c78e3beaaf276ee54b5f414a3a4b5d035c`, 3 октября, 19:18:11 МСК. Измеренный источник — B `a00aa57f`; исправления CI — D `3c025b29`; финальный проверенный архивный commit — E2 `1f44b9f9`. Это разные источники, их результаты не перепривязаны.
+
+## Выполнено и проверено
+
+- [x] Настоящие CPU08 и GPU02: четыре GStreamer baseline/shared arms, cold validation, штатная остановка guardian и освобождение резервов.
+- [x] Независимая обработка всех четырёх arms; 1 080 admissions на arm, без censoring. CPU завершил 516/664 frames, GPU — 1 070/1 075. Дедлайн 100 мс выполнен 0/0 и 3/1 раз соответственно.
+- [x] Hosted E2 CI: 2 904 successes, 88 разрешённых skips, ноль failures/errors, шесть native builds и три обязательных native regressions. Независимый ext4 D: 2 906/86, ноль failures/errors.
+- [x] Conformance 20 requirements/118 scenarios, sync/archive, окончательное ревью, снятие Draft и merge. Все пять process gates 18.13/18.14/22.3/23.5/24.4 закрыты в фактическом ledger PR2. В архиве оставлен исходный снимок до этих действий.
+- [x] Временный owned runtime bind D снят после закрытия consumers; глобальный runtime и измеренный ext4 checkout сохранены.
+
+## Ближайшие задачи: explain-benchmark-latency
+
+Пользователь поручил проверить и выполнить следующий необходимый этап автономно. [Задачи текущего изменения](openspec/changes/archive/2026-10-04-explain-benchmark-latency/tasks.md) — источник статуса реализации; после archive ссылка переносится в архив.
+
+1. Проверить текущие статусы и сохранить исторические исходники документов.
+2. Реализовать небольшой offline CLI для критического пути по сохранённым frame events и доступным native policy timings. Отдельно показывать decoder envelope, остаток пути, frame/branch drops и observation gaps.
+3. Проверить parser и расчёты на положительных/отрицательных случаях; выполнить анализ всех четырёх реальных arms и независимое научное ревью. Нулевые queue spans в promoted CSV не означают отсутствие ожидания: истинные queue wait/worker service из этих данных отдельно не измерены.
+4. Обновить воспроизводимый runbook, проверить соответствие спеки, обязательный CI, archive и окончательное ревью в одном новом PR.
+
+## Оставшийся полный объём
+
+Он не завершён компонентными результатами и не удалён из плана:
+
+- Технический долг: прямые отрицательные проверки всех full consumers (R13/S6), четыре ручных conformance checks, девять физических интеграций; причина исходного CPU07 EPIPE остаётся неизвестной.
+- Научный этап: изучить фактические decoder/pacing/queue envelopes; causal correction, изменение intake/corpus/deadline или сравнительные performance claims требуют отдельного контролируемого эксперимента и ревью.
+- Full qualification: свежие допустимые all-backend inputs/images/parity/operational identities, четыре native pre-checks, все 32 cells, остановка guardian и stock promotion. Старые A269 partial cells и component authority не дают такого допуска.
+- Q4: 560 операций A, граница identities/grants, 560 B, 280 sizing pairs и фактическая датированная storage-capacity attestation.
+- Full run: ровно 5 600 accepted arms/2 800 verified durable pairs, прежние workload/order/seed, zero unexpected retries и stock verify → finalize → export.
+
+Полные qualification/Q4/publication/full eligibility остаются false. Новые запуски возможны только после их реальных prerequisites; уже принятые arms не повторяются ради обновления документов. Практический действующий entry point: [component runbook](docs/gstreamer-component-benchmark-runbook.md).
+
+## Исторический план
+
+Ниже сохранён весь прежний документ. Его датированные статусы описывают прошлые попытки; текущий статус и очередность заданы выше.
+
 # Подготовка и запуск полной матрицы VAST
 
 > Статус сверён 21 сентября 2026 в 10:21 UTC. A269 failed после 8/32 cells: guardian exit78 (analytics execution memfd SHA-256 differs from the contract), затем pilot exit1 (savant_endpoint_socket_identity_changed); verifier/promotion также exit1. Все original identities сохранены, MainPID=0, Restart=no. 8 historical DeepStream proofs проверены по 176 descriptors / 141 физическому файлу; qualification не принята. Причина memfd mismatch ещё не установлена. Перезапуск и promotion не выполнялись; Q4/full matrix не запущены. A268 suite/A261 images/A262 parity и предыдущие prerequisites сохранены. Полный объём: все32qualificationcells; Q4 560A+identity/grantboundary+560B+280sizingpairs; 5600acceptedarms/2800verifiedSeafilepairs; verify -> finalize -> export. Seafile capacity question без ответа; publication_ready=false. [Failure evidence](artifacts/publication_qualification_runtime_v1_20260921_attempt269/failed-state-check-20260921/failure-analysis.json). Исходные требования ниже сохранены.

@@ -1,0 +1,28 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/scripts/analyze_component_latency_v1.py",
+    "--evidence-dir",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence",
+    "--deadline-ms",
+    "100",
+    "--native-policy-evidence",
+    "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl",
+    "--output-dir",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/gpu-shared"
+  ],
+  "elapsed_s": 0.514665365,
+  "exit_code": 0,
+  "stderr": {
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/gpu-shared.stderr.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size_bytes": 0
+  },
+  "stdout": {
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/original-cli-execution-v1/gpu-shared.stdout.txt",
+    "sha256": "6d4dc6b87526d4ea89247e2a9baf29215a99ed393cc6916fe4a116162d2d2235",
+    "size_bytes": 156
+  }
+}

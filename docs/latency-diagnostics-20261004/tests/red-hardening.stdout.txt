@@ -1,0 +1,59 @@
+test_baseline_uses_decoder_of_actual_critical_branch (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_baseline_uses_decoder_of_actual_critical_branch) ... ok
+test_cli_real_entrypoint_uses_only_selected_fixture_directory (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_cli_real_entrypoint_uses_only_selected_fixture_directory) ... ok
+test_conflicting_frame_ledger_terminal_and_branch_status_fail (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_conflicting_frame_ledger_terminal_and_branch_status_fail) ... ok
+test_csv_extra_or_missing_fields_fail (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_csv_extra_or_missing_fields_fail) ... ok
+test_drops_censoring_and_branch_populations_remain_separate (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_drops_censoring_and_branch_populations_remain_separate) ... ok
+test_duplicate_frame_stage_branch_or_ledger_fail (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_duplicate_frame_stage_branch_or_ledger_fail) ... ok
+test_duplicate_policy_json_keys_and_identity_fail (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_duplicate_policy_json_keys_and_identity_fail) ... ok
+test_empty_completed_population_has_null_quantiles_with_reason (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_empty_completed_population_has_null_quantiles_with_reason) ... ok
+test_empty_supplied_policy_does_not_claim_deadline_corroboration (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_empty_supplied_policy_does_not_claim_deadline_corroboration) ... FAIL
+test_foreign_postprocess_branch_fails (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_foreign_postprocess_branch_fails) ... FAIL
+test_incomplete_completed_path_and_mixed_decoder_layout_fail (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_incomplete_completed_path_and_mixed_decoder_layout_fail) ... ok
+test_individual_and_total_input_limits_fail_before_output (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_individual_and_total_input_limits_fail_before_output) ... ok
+test_input_hashes_identify_exact_bytes_and_inputs_remain_unchanged (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_input_hashes_identify_exact_bytes_and_inputs_remain_unchanged) ... ok
+test_linear_quantiles_not_nearest_rank (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_linear_quantiles_not_nearest_rank) ... ok
+test_missing_input_invalid_utf8_and_duplicate_headers_fail (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_missing_input_invalid_utf8_and_duplicate_headers_fail) ... ok
+test_missing_optional_policy_reports_unavailable_not_zero (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_missing_optional_policy_reports_unavailable_not_zero) ... ok
+test_native_terminal_may_precede_postprocess_and_frame_join (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_native_terminal_may_precede_postprocess_and_frame_join) ... ok
+test_nonfinite_reversed_and_invalid_numbers_fail (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_nonfinite_reversed_and_invalid_numbers_fail) ... ok
+test_nonregular_and_symlink_inputs_fail (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_nonregular_and_symlink_inputs_fail) ... ok
+test_occupied_output_preserves_existing_files_and_source (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_occupied_output_preserves_existing_files_and_source) ... ok
+test_policy_population_includes_successful_branches_of_dropped_frames (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_policy_population_includes_successful_branches_of_dropped_frames) ... ok
+test_policy_wrong_associations_deadline_and_missing_path_fail (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_policy_wrong_associations_deadline_and_missing_path_fail) ... ok
+test_promoted_zero_queue_span_does_not_claim_zero_true_wait (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_promoted_zero_queue_span_does_not_claim_zero_true_wait) ... ok
+test_recorded_cohort_early_ingress_and_shuffled_rows_are_preserved (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_recorded_cohort_early_ingress_and_shuffled_rows_are_preserved) ... ok
+test_required_deadline_is_finite_and_positive (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_required_deadline_is_finite_and_positive) ... ok
+test_shared_critical_branches_and_nonadditive_medians (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_shared_critical_branches_and_nonadditive_medians) ... ok
+test_ties_are_deterministic_and_zero_latency_share_is_unknown (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_ties_are_deterministic_and_zero_latency_share_is_unknown) ... ok
+test_unrepresentable_deadline_fails (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_unrepresentable_deadline_fails) ... FAIL
+
+======================================================================
+FAIL: test_empty_supplied_policy_does_not_claim_deadline_corroboration (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_empty_supplied_policy_does_not_claim_deadline_corroboration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/tests/test_component_latency_diagnostics.py", line 325, in test_empty_supplied_policy_does_not_claim_deadline_corroboration
+    self.assertEqual(report["policy_path"]["reason"], "empty_population")
+AssertionError: None != 'empty_population'
+
+======================================================================
+FAIL: test_foreign_postprocess_branch_fails (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_foreign_postprocess_branch_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/tests/test_component_latency_diagnostics.py", line 315, in test_foreign_postprocess_branch_fails
+    self.rejected()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/tests/test_component_latency_diagnostics.py", line 131, in rejected
+    with self.assertRaisesRegex(self.diag.DiagnosticError, match):
+AssertionError: DiagnosticError not raised
+
+======================================================================
+FAIL: test_unrepresentable_deadline_fails (test_component_latency_diagnostics.ComponentLatencyDiagnosticsTests.test_unrepresentable_deadline_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/tests/test_component_latency_diagnostics.py", line 306, in test_unrepresentable_deadline_fails
+    with self.assertRaises(self.diag.DiagnosticError):
+AssertionError: DiagnosticError not raised
+
+----------------------------------------------------------------------
+Ran 28 tests in 0.227s
+
+FAILED (failures=3)

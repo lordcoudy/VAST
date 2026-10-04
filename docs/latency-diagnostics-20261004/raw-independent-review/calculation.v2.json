@@ -1,0 +1,1254 @@
+{
+  "acceptance_authority": false,
+  "arms": [
+    {
+      "admissions_before_wall_window_start_kept": 5,
+      "branch_terminal_counts": {
+        "damage": {
+          "completed": 961,
+          "drop": 119
+        },
+        "foreign_object": {
+          "completed": 553,
+          "drop": 527
+        },
+        "plate_number": {
+          "completed": 1074,
+          "drop": 6
+        },
+        "vehicle_type": {
+          "completed": 968,
+          "drop": 112
+        }
+      },
+      "completed_frames": 516,
+      "completed_latency_ms": {
+        "max": "10171",
+        "mean": "6478.420542635658914728682171",
+        "min": "3148",
+        "n": 516,
+        "p50": "5727.5",
+        "p95": "9713.25",
+        "p99": "9976.20"
+      },
+      "critical_branch_counts": {
+        "foreign_object": 516
+      },
+      "critical_decoder_prefix_ms": {
+        "max": "6402",
+        "mean": "3413.170542635658914728682171",
+        "min": "44",
+        "n": 516,
+        "p50": "2071.5",
+        "p95": "6361.25",
+        "p99": "6390.00"
+      },
+      "critical_decoder_residual_ms": {
+        "max": "4323",
+        "mean": "3065.25",
+        "min": "1230",
+        "n": 516,
+        "p50": "3113.0",
+        "p95": "3965.25",
+        "p99": "4145.85"
+      },
+      "critical_decomposition_exact": true,
+      "critical_rows_sha256": "5122ddd86adf627c7c96ee5f75031c81dabfe299f4140cff57b2c998ecf738df",
+      "evidence_directory": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence",
+      "frame_terminal_counts": {
+        "completed": 516,
+        "drop": 564
+      },
+      "inputs": {
+        "branch_terminals.csv": {
+          "epoch": [
+            2096,
+            578057,
+            33060,
+            1,
+            2839161,
+            1791016058945876058,
+            1791016058969877085
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/branch_terminals.csv",
+          "sha256": "425558c03c0abeefd823e741e3bebeffbb2a3016fe28a984312f4584dff0243a",
+          "size_bytes": 2839161
+        },
+        "frame_events.csv": {
+          "epoch": [
+            2096,
+            578051,
+            33060,
+            1,
+            5771832,
+            1791016058361851082,
+            1791016058385852108
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frame_events.csv",
+          "sha256": "08636bd285d170fbc4b7fc6d48bd0f3fca8bbc802b8082334085c812335967b3",
+          "size_bytes": 5771832
+        },
+        "frames.csv": {
+          "epoch": [
+            2096,
+            578050,
+            33060,
+            1,
+            136512,
+            1791016058269847147,
+            1791016058281847661
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/frames.csv",
+          "sha256": "9bfcb7ed4e67b0f29a37bdb19156b817112b62e927a13491f3052ba245121145",
+          "size_bytes": 136512
+        },
+        "ingress_ledger.csv": {
+          "epoch": [
+            2096,
+            578056,
+            33060,
+            1,
+            751336,
+            1791016058857872295,
+            1791016058877873150
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/ingress_ledger.csv",
+          "sha256": "68cb1ec93a68034fc98edb67b4b7f5d28dfb6bd4584061fddd54ce10536e09b8",
+          "size_bytes": 751336
+        },
+        "publication_policy_decisions.jsonl": {
+          "epoch": [
+            2096,
+            578060,
+            33060,
+            1,
+            17037969,
+            1791016059221887862,
+            1791016059269889915
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+          "sha256": "1e36877ae2831d705b7301000107636219f9d8727232f5e300bc6d542528afad",
+          "size_bytes": 17037969
+        }
+      },
+      "maximum_path_span_vs_named_actual_service_ms_absolute_difference": "0.000569",
+      "measurement_admissions": 1080,
+      "native_policy_path_envelope_ms": {
+        "max": "2397.4823",
+        "mean": "868.5196734814398200224971879",
+        "min": "72.6048",
+        "n": 3556,
+        "p50": "802.78995",
+        "p95": "2060.315350",
+        "p99": "2236.578825"
+      },
+      "observed_stage_parent_to_completion_envelopes_ms": {
+        "aggregate": {
+          "max": "35",
+          "mean": "2.618217054263565891472868217",
+          "min": "1",
+          "n": 516,
+          "p50": "2.0",
+          "p95": "4.00",
+          "p99": "11.85"
+        },
+        "damage": {
+          "max": "2375",
+          "mean": "1146.118626430801248699271592",
+          "min": "161",
+          "n": 961,
+          "p50": "1105.0",
+          "p95": "2020.00",
+          "p99": "2205.00"
+        },
+        "decode_damage": {
+          "max": "6398",
+          "mean": "2545.491666666666666666666667",
+          "min": "9",
+          "n": 1080,
+          "p50": "2017.0",
+          "p95": "6036.00",
+          "p99": "6383.21"
+        },
+        "decode_foreign_object": {
+          "max": "6401",
+          "mean": "2547.136111111111111111111111",
+          "min": "36",
+          "n": 1080,
+          "p50": "2017.5",
+          "p95": "6037.00",
+          "p99": "6383.84"
+        },
+        "decode_plate_number": {
+          "max": "6397",
+          "mean": "2533.811111111111111111111111",
+          "min": "9",
+          "n": 1080,
+          "p50": "2015.5",
+          "p95": "6035.00",
+          "p99": "6381.21"
+        },
+        "decode_vehicle_type": {
+          "max": "6402",
+          "mean": "2544.050925925925925925925926",
+          "min": "13",
+          "n": 1080,
+          "p50": "2015.0",
+          "p95": "6036.00",
+          "p99": "6379.42"
+        },
+        "foreign_object": {
+          "max": "4332",
+          "mean": "3083.585895117540687160940325",
+          "min": "1222",
+          "n": 553,
+          "p50": "3155.0",
+          "p95": "4004.60",
+          "p99": "4177.48"
+        },
+        "plate_number": {
+          "max": "1406",
+          "mean": "483.3621973929236499068901304",
+          "min": "74",
+          "n": 1074,
+          "p50": "428.0",
+          "p95": "1007.00",
+          "p99": "1199.54"
+        },
+        "postprocess_damage": {
+          "max": "11",
+          "mean": "0.9812695109261186264308012487",
+          "min": "0",
+          "n": 961,
+          "p50": "1.0",
+          "p95": "1.00",
+          "p99": "2.00"
+        },
+        "postprocess_foreign_object": {
+          "max": "5",
+          "mean": "0.9168173598553345388788426763",
+          "min": "0",
+          "n": 553,
+          "p50": "1.0",
+          "p95": "2.00",
+          "p99": "2.00"
+        },
+        "postprocess_plate_number": {
+          "max": "6",
+          "mean": "0.9199255121042830540037243948",
+          "min": "0",
+          "n": 1074,
+          "p50": "1.0",
+          "p95": "2.00",
+          "p99": "2.00"
+        },
+        "postprocess_vehicle_type": {
+          "max": "4",
+          "mean": "0.8543388429752066115702479339",
+          "min": "0",
+          "n": 968,
+          "p50": "1.0",
+          "p95": "1.00",
+          "p99": "2.00"
+        },
+        "preprocess_damage": {
+          "max": "21",
+          "mean": "4.506481481481481481481481481",
+          "min": "0",
+          "n": 1080,
+          "p50": "4.0",
+          "p95": "11.00",
+          "p99": "16.00"
+        },
+        "preprocess_foreign_object": {
+          "max": "30",
+          "mean": "4.611677479147358665430954588",
+          "min": "0",
+          "n": 1079,
+          "p50": "4.0",
+          "p95": "11.00",
+          "p99": "18.00"
+        },
+        "preprocess_plate_number": {
+          "max": "22",
+          "mean": "4.406481481481481481481481481",
+          "min": "0",
+          "n": 1080,
+          "p50": "4.0",
+          "p95": "10.00",
+          "p99": "15.00"
+        },
+        "preprocess_vehicle_type": {
+          "max": "24",
+          "mean": "4.403151065801668211306765524",
+          "min": "0",
+          "n": 1079,
+          "p50": "4.0",
+          "p95": "10.00",
+          "p99": "16.00"
+        },
+        "record": {
+          "max": "0",
+          "mean": "0",
+          "min": "0",
+          "n": 516,
+          "p50": "0.0",
+          "p95": "0.00",
+          "p99": "0.00"
+        },
+        "vehicle_type": {
+          "max": "2306",
+          "mean": "1131.861570247933884297520661",
+          "min": "197",
+          "n": 968,
+          "p50": "1104.0",
+          "p95": "1988.65",
+          "p99": "2202.97"
+        }
+      },
+      "on_time_completed_at_100ms": 0,
+      "per_frame_decoder_prefix_share": {
+        "max": "0.8306718061674008810572687225",
+        "mean": "0.4650678893835882636937867291",
+        "min": "0.01397712833545108005082592122",
+        "n": 516,
+        "p50": "0.3827705887570729855786388100",
+        "p95": "0.7573587077742202395942008130",
+        "p99": "0.8054319179892734455811132045"
+      },
+      "policy_complete_branch_identity_joins": 3556,
+      "pure_inference_service_ms": null,
+      "recorded_queue_enter_to_start_ms": {
+        "max": "0",
+        "mean": "0",
+        "min": "0",
+        "n": 16782,
+        "p50": "0.0",
+        "p95": "0.00",
+        "p99": "0.00"
+      },
+      "resource": "cpu",
+      "sum_decoder_prefix_over_sum_latency": "0.5268522659455287605093235892",
+      "topology": "independent-processes",
+      "true_queue_wait_ms": null
+    },
+    {
+      "admissions_before_wall_window_start_kept": 6,
+      "branch_terminal_counts": {
+        "damage": {
+          "completed": 856,
+          "drop": 224
+        },
+        "foreign_object": {
+          "completed": 794,
+          "drop": 286
+        },
+        "plate_number": {
+          "completed": 866,
+          "drop": 214
+        },
+        "vehicle_type": {
+          "completed": 855,
+          "drop": 225
+        }
+      },
+      "completed_frames": 664,
+      "completed_latency_ms": {
+        "max": "8483",
+        "mean": "4902.484939759036144578313253",
+        "min": "2194",
+        "n": 664,
+        "p50": "3621.0",
+        "p95": "8026.85",
+        "p99": "8160.37"
+      },
+      "critical_branch_counts": {
+        "damage": 225,
+        "foreign_object": 89,
+        "plate_number": 170,
+        "vehicle_type": 180
+      },
+      "critical_decoder_prefix_ms": {
+        "max": "6253",
+        "mean": "2992.947289156626506024096386",
+        "min": "11",
+        "n": 664,
+        "p50": "1237.5",
+        "p95": "6216.00",
+        "p99": "6238.59"
+      },
+      "critical_decoder_residual_ms": {
+        "max": "3103",
+        "mean": "1909.537650602409638554216867",
+        "min": "919",
+        "n": 664,
+        "p50": "1926.0",
+        "p95": "2617.10",
+        "p99": "2851.85"
+      },
+      "critical_decomposition_exact": true,
+      "critical_rows_sha256": "0f792bb7de2a4eed60843501753af1d01efbdc9f9fd0472cf8c83ef0059fc49d",
+      "evidence_directory": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence",
+      "frame_terminal_counts": {
+        "completed": 664,
+        "drop": 416
+      },
+      "inputs": {
+        "branch_terminals.csv": {
+          "epoch": [
+            2096,
+            578114,
+            33060,
+            1,
+            2756398,
+            1791016362294397793,
+            1791016362306398302
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/branch_terminals.csv",
+          "sha256": "8a141bab3d67cb94c1139ccbdc49ec37b790b10c2a2b80e5635946ac0a5bf152",
+          "size_bytes": 2756398
+        },
+        "frame_events.csv": {
+          "epoch": [
+            2096,
+            578108,
+            33060,
+            1,
+            3464477,
+            1791016362018386094,
+            1791016362030386602
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frame_events.csv",
+          "sha256": "ed9c746d2caa0f5978ef678c74353a2ffc9d33951f504fa1b9efe351f0ba0143",
+          "size_bytes": 3464477
+        },
+        "frames.csv": {
+          "epoch": [
+            2096,
+            578107,
+            33060,
+            1,
+            168947,
+            1791016361982384568,
+            1791016361990384907
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/frames.csv",
+          "sha256": "ad873819e62f5abd176ea88da9a18fb94b41e15a59f0c794c292a46e4672ba23",
+          "size_bytes": 168947
+        },
+        "ingress_ledger.csv": {
+          "epoch": [
+            2096,
+            578113,
+            33060,
+            1,
+            734631,
+            1791016362258396267,
+            1791016362266396606
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/ingress_ledger.csv",
+          "sha256": "fb4f2c9680a4d99672f7f8b7356d625b44016c70e5266713f731b145c451b80a",
+          "size_bytes": 734631
+        },
+        "publication_policy_decisions.jsonl": {
+          "epoch": [
+            2096,
+            578117,
+            33060,
+            1,
+            15914290,
+            1791016362414402880,
+            1791016362446404237
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/cpu-pair-08/operations/arms/component-gstreamer_custom-cpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl",
+          "sha256": "e07f2088f24b158852f862ce5011c9f30bb6f55bf468ea9a0eaded52f8b0b329",
+          "size_bytes": 15914290
+        }
+      },
+      "maximum_path_span_vs_named_actual_service_ms_absolute_difference": "0.000511",
+      "measurement_admissions": 1080,
+      "native_policy_path_envelope_ms": {
+        "max": "1739.9738",
+        "mean": "1171.366043577573420350044497",
+        "min": "78.3909",
+        "n": 3371,
+        "p50": "1284.7150",
+        "p95": "1453.853850",
+        "p99": "1566.424010"
+      },
+      "observed_stage_parent_to_completion_envelopes_ms": {
+        "aggregate": {
+          "max": "6",
+          "mean": "2.170180722891566265060240964",
+          "min": "1",
+          "n": 664,
+          "p50": "2.0",
+          "p95": "3.00",
+          "p99": "4.00"
+        },
+        "damage": {
+          "max": "2912",
+          "mean": "1619.615654205607476635514019",
+          "min": "132",
+          "n": 856,
+          "p50": "1703.5",
+          "p95": "2564.00",
+          "p99": "2746.80"
+        },
+        "decode": {
+          "max": "6252",
+          "mean": "2479.854629629629629629629630",
+          "min": "9",
+          "n": 1080,
+          "p50": "2006.0",
+          "p95": "6030.05",
+          "p99": "6235.00"
+        },
+        "foreign_object": {
+          "max": "2915",
+          "mean": "1773.492443324937027707808564",
+          "min": "564",
+          "n": 794,
+          "p50": "1777.5",
+          "p95": "2570.75",
+          "p99": "2732.19"
+        },
+        "plate_number": {
+          "max": "3001",
+          "mean": "1580.572748267898383371824480",
+          "min": "78",
+          "n": 866,
+          "p50": "1691.0",
+          "p95": "2523.50",
+          "p99": "2762.05"
+        },
+        "postprocess_damage": {
+          "max": "2",
+          "mean": "0.7488317757009345794392523364",
+          "min": "0",
+          "n": 856,
+          "p50": "1.0",
+          "p95": "1.00",
+          "p99": "1.00"
+        },
+        "postprocess_foreign_object": {
+          "max": "2",
+          "mean": "0.8198992443324937027707808564",
+          "min": "0",
+          "n": 794,
+          "p50": "1.0",
+          "p95": "1.00",
+          "p99": "2.00"
+        },
+        "postprocess_plate_number": {
+          "max": "2",
+          "mean": "0.8221709006928406466512702079",
+          "min": "0",
+          "n": 866,
+          "p50": "1.0",
+          "p95": "1.00",
+          "p99": "1.00"
+        },
+        "postprocess_vehicle_type": {
+          "max": "2",
+          "mean": "0.7836257309941520467836257310",
+          "min": "0",
+          "n": 855,
+          "p50": "1.0",
+          "p95": "1.00",
+          "p99": "1.46"
+        },
+        "preprocess": {
+          "max": "5",
+          "mean": "2.476851851851851851851851852",
+          "min": "0",
+          "n": 1080,
+          "p50": "3.0",
+          "p95": "4.00",
+          "p99": "4.00"
+        },
+        "record": {
+          "max": "0",
+          "mean": "0",
+          "min": "0",
+          "n": 664,
+          "p50": "0.0",
+          "p95": "0.00",
+          "p99": "0.00"
+        },
+        "vehicle_type": {
+          "max": "3099",
+          "mean": "1606.780116959064327485380117",
+          "min": "107",
+          "n": 855,
+          "p50": "1692.0",
+          "p95": "2526.30",
+          "p99": "2733.90"
+        }
+      },
+      "on_time_completed_at_100ms": 0,
+      "per_frame_decoder_prefix_share": {
+        "max": "0.8714505525248286473632675899",
+        "mean": "0.5243474725090781644667736657",
+        "min": "0.004359889021006738010305192231",
+        "n": 664,
+        "p50": "0.4154725527639420243814207656",
+        "p95": "0.8292605768498485438333618860",
+        "p99": "0.8531182397879454680681640089"
+      },
+      "policy_complete_branch_identity_joins": 3371,
+      "pure_inference_service_ms": null,
+      "recorded_queue_enter_to_start_ms": {
+        "max": "0",
+        "mean": "0",
+        "min": "0",
+        "n": 10230,
+        "p50": "0.0",
+        "p95": "0.00",
+        "p99": "0.00"
+      },
+      "resource": "cpu",
+      "sum_decoder_prefix_over_sum_latency": "0.6104959680516089394055756086",
+      "topology": "shared-video-dag",
+      "true_queue_wait_ms": null
+    },
+    {
+      "admissions_before_wall_window_start_kept": 6,
+      "branch_terminal_counts": {
+        "damage": {
+          "completed": 1073,
+          "drop": 7
+        },
+        "foreign_object": {
+          "completed": 1074,
+          "drop": 6
+        },
+        "plate_number": {
+          "completed": 1075,
+          "drop": 5
+        },
+        "vehicle_type": {
+          "completed": 1073,
+          "drop": 7
+        }
+      },
+      "completed_frames": 1070,
+      "completed_latency_ms": {
+        "max": "6330",
+        "mean": "2602.182242990654205607476636",
+        "min": "60",
+        "n": 1070,
+        "p50": "2127.0",
+        "p95": "6301.00",
+        "p99": "6320.00"
+      },
+      "critical_branch_counts": {
+        "damage": 223,
+        "foreign_object": 582,
+        "plate_number": 92,
+        "vehicle_type": 173
+      },
+      "critical_decoder_prefix_ms": {
+        "max": "6050",
+        "mean": "2465.717757009345794392523364",
+        "min": "11",
+        "n": 1070,
+        "p50": "2010.0",
+        "p95": "6035.00",
+        "p99": "6040.00"
+      },
+      "critical_decoder_residual_ms": {
+        "max": "324",
+        "mean": "136.4644859813084112149532710",
+        "min": "26",
+        "n": 1070,
+        "p50": "120.0",
+        "p95": "272.00",
+        "p99": "297.00"
+      },
+      "critical_decomposition_exact": true,
+      "critical_rows_sha256": "80291ba47b3e2c4a822cd22c6bccff70dc70e37ce867e95fdba78efd1d4494db",
+      "evidence_directory": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence",
+      "frame_terminal_counts": {
+        "completed": 1070,
+        "drop": 10
+      },
+      "inputs": {
+        "branch_terminals.csv": {
+          "epoch": [
+            2096,
+            578252,
+            33060,
+            1,
+            3035390,
+            1791018080183369545,
+            1791018080195370128
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/branch_terminals.csv",
+          "sha256": "8a6364e28e9087c83ad6c902b08cd588767a2a0662e6fb197c3efddd96891ab7",
+          "size_bytes": 3035390
+        },
+        "frame_events.csv": {
+          "epoch": [
+            2096,
+            578246,
+            33060,
+            1,
+            6663972,
+            1791018079839352823,
+            1791018079855353601
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/frame_events.csv",
+          "sha256": "729a46e61d0b694250ed273ea3b708868e0ce978a3515e8b8a0ef8b7bb78d458",
+          "size_bytes": 6663972
+        },
+        "frames.csv": {
+          "epoch": [
+            2096,
+            578245,
+            33060,
+            1,
+            282852,
+            1791018079795350684,
+            1791018079799350878
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/frames.csv",
+          "sha256": "dafab9add58d980a88ac35e09c44219b95968b09cb32550caa94734a728a848e",
+          "size_bytes": 282852
+        },
+        "ingress_ledger.csv": {
+          "epoch": [
+            2096,
+            578251,
+            33060,
+            1,
+            749622,
+            1791018080151367990,
+            1791018080155368184
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/ingress_ledger.csv",
+          "sha256": "218203ecaff1fea88e9865237428ebcdfe94f08640cb0b5d2f4a1513184e73f5",
+          "size_bytes": 749622
+        },
+        "publication_policy_decisions.jsonl": {
+          "epoch": [
+            2096,
+            578255,
+            33060,
+            1,
+            20723574,
+            1791018080315375962,
+            1791018080347377517
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+          "sha256": "f0f4160be6f1f9fddbdd62d3f77d6c19e264ff59baaffee65ae3df0441dbfec8",
+          "size_bytes": 20723574
+        }
+      },
+      "maximum_path_span_vs_named_actual_service_ms_absolute_difference": "0.000494",
+      "measurement_admissions": 1080,
+      "native_policy_path_envelope_ms": {
+        "max": "290.829",
+        "mean": "87.73504556461001164144353900",
+        "min": "16.1365",
+        "n": 4295,
+        "p50": "62.61720",
+        "p95": "242.664780",
+        "p99": "265.777240"
+      },
+      "observed_stage_parent_to_completion_envelopes_ms": {
+        "aggregate": {
+          "max": "32",
+          "mean": "4.495327102803738317757009346",
+          "min": "1",
+          "n": 1070,
+          "p50": "4.0",
+          "p95": "10.00",
+          "p99": "21.31"
+        },
+        "damage": {
+          "max": "310",
+          "mean": "96.30848089468779123951537745",
+          "min": "15",
+          "n": 1073,
+          "p50": "76.0",
+          "p95": "245.40",
+          "p99": "270.56"
+        },
+        "decode_damage": {
+          "max": "6049",
+          "mean": "2459.425",
+          "min": "7",
+          "n": 1080,
+          "p50": "2010.0",
+          "p95": "6031.00",
+          "p99": "6037.00"
+        },
+        "decode_foreign_object": {
+          "max": "6042",
+          "mean": "2459.409259259259259259259259",
+          "min": "10",
+          "n": 1080,
+          "p50": "2009.0",
+          "p95": "6032.05",
+          "p99": "6038.21"
+        },
+        "decode_plate_number": {
+          "max": "6043",
+          "mean": "2459.555555555555555555555556",
+          "min": "8",
+          "n": 1080,
+          "p50": "2009.0",
+          "p95": "6033.05",
+          "p99": "6038.21"
+        },
+        "decode_vehicle_type": {
+          "max": "6040",
+          "mean": "2459.380555555555555555555556",
+          "min": "10",
+          "n": 1080,
+          "p50": "2010.0",
+          "p95": "6032.00",
+          "p99": "6037.21"
+        },
+        "foreign_object": {
+          "max": "317",
+          "mean": "103.3109869646182495344506518",
+          "min": "16",
+          "n": 1074,
+          "p50": "84.0",
+          "p95": "253.00",
+          "p99": "284.00"
+        },
+        "plate_number": {
+          "max": "286",
+          "mean": "87.66604651162790697674418605",
+          "min": "15",
+          "n": 1075,
+          "p50": "69.0",
+          "p95": "233.00",
+          "p99": "256.00"
+        },
+        "postprocess_damage": {
+          "max": "222",
+          "mean": "13.68406337371854613233923579",
+          "min": "1",
+          "n": 1073,
+          "p50": "7.0",
+          "p95": "32.40",
+          "p99": "196.28"
+        },
+        "postprocess_foreign_object": {
+          "max": "223",
+          "mean": "15.52048417132216014897579143",
+          "min": "2",
+          "n": 1074,
+          "p50": "9.0",
+          "p95": "54.00",
+          "p99": "192.27"
+        },
+        "postprocess_plate_number": {
+          "max": "216",
+          "mean": "10.62697674418604651162790698",
+          "min": "1",
+          "n": 1075,
+          "p50": "5.0",
+          "p95": "17.00",
+          "p99": "191.04"
+        },
+        "postprocess_vehicle_type": {
+          "max": "224",
+          "mean": "12.98695246971109040074557316",
+          "min": "2",
+          "n": 1073,
+          "p50": "7.0",
+          "p95": "29.00",
+          "p99": "192.24"
+        },
+        "preprocess_damage": {
+          "max": "24",
+          "mean": "4.558850787766450417052826691",
+          "min": "0",
+          "n": 1079,
+          "p50": "4.0",
+          "p95": "10.00",
+          "p99": "16.22"
+        },
+        "preprocess_foreign_object": {
+          "max": "25",
+          "mean": "4.431481481481481481481481481",
+          "min": "0",
+          "n": 1080,
+          "p50": "4.0",
+          "p95": "10.00",
+          "p99": "15.00"
+        },
+        "preprocess_plate_number": {
+          "max": "25",
+          "mean": "4.586111111111111111111111111",
+          "min": "0",
+          "n": 1080,
+          "p50": "4.0",
+          "p95": "10.05",
+          "p99": "18.00"
+        },
+        "preprocess_vehicle_type": {
+          "max": "21",
+          "mean": "4.462037037037037037037037037",
+          "min": "0",
+          "n": 1080,
+          "p50": "4.0",
+          "p95": "10.00",
+          "p99": "16.00"
+        },
+        "record": {
+          "max": "0",
+          "mean": "0",
+          "min": "0",
+          "n": 1070,
+          "p50": "0.0",
+          "p95": "0.00",
+          "p99": "0.00"
+        },
+        "vehicle_type": {
+          "max": "299",
+          "mean": "93.46877912395153774464119292",
+          "min": "15",
+          "n": 1073,
+          "p50": "74.0",
+          "p95": "240.40",
+          "p99": "266.56"
+        }
+      },
+      "on_time_completed_at_100ms": 3,
+      "per_frame_decoder_prefix_share": {
+        "max": "0.9933019101959811461175886877",
+        "mean": "0.9305500863909602677561324298",
+        "min": "0.04467353951890034364261168385",
+        "n": 1070,
+        "p50": "0.9322881128412704968815827516",
+        "p95": "0.9738003917395685214656333280",
+        "p99": "0.9896201723178260969935438528"
+      },
+      "policy_complete_branch_identity_joins": 4295,
+      "pure_inference_service_ms": null,
+      "recorded_queue_enter_to_start_ms": {
+        "max": "0",
+        "mean": "0",
+        "min": "0",
+        "n": 19369,
+        "p50": "0.0",
+        "p95": "0.00",
+        "p99": "0.00"
+      },
+      "resource": "gpu",
+      "sum_decoder_prefix_over_sum_latency": "0.9475576753515650954357144525",
+      "topology": "independent-processes",
+      "true_queue_wait_ms": null
+    },
+    {
+      "admissions_before_wall_window_start_kept": 6,
+      "branch_terminal_counts": {
+        "damage": {
+          "completed": 1075,
+          "drop": 5
+        },
+        "foreign_object": {
+          "completed": 1075,
+          "drop": 5
+        },
+        "plate_number": {
+          "completed": 1075,
+          "drop": 5
+        },
+        "vehicle_type": {
+          "completed": 1075,
+          "drop": 5
+        }
+      },
+      "completed_frames": 1075,
+      "completed_latency_ms": {
+        "max": "6406",
+        "mean": "2629.304186046511627906976744",
+        "min": "69",
+        "n": 1075,
+        "p50": "2168.0",
+        "p95": "6364.00",
+        "p99": "6391.26"
+      },
+      "critical_branch_counts": {
+        "damage": 291,
+        "foreign_object": 372,
+        "plate_number": 185,
+        "vehicle_type": 227
+      },
+      "critical_decoder_prefix_ms": {
+        "max": "6021",
+        "mean": "2448.251162790697674418604651",
+        "min": "5",
+        "n": 1075,
+        "p50": "2006.0",
+        "p95": "6016.00",
+        "p99": "6018.00"
+      },
+      "critical_decoder_residual_ms": {
+        "max": "469",
+        "mean": "181.0530232558139534883720930",
+        "min": "61",
+        "n": 1075,
+        "p50": "152.0",
+        "p95": "381.00",
+        "p99": "445.00"
+      },
+      "critical_decomposition_exact": true,
+      "critical_rows_sha256": "6c5b713a0d20863739929274a9932bc520c0e96d507d9557005172e80f319b54",
+      "evidence_directory": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence",
+      "frame_terminal_counts": {
+        "completed": 1075,
+        "drop": 5
+      },
+      "inputs": {
+        "branch_terminals.csv": {
+          "epoch": [
+            2096,
+            578308,
+            33060,
+            1,
+            2971211,
+            1791018392754588862,
+            1791018392762589073
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/branch_terminals.csv",
+          "sha256": "3c60c993a60b090909880090d30ee1923db10695720d476f5ee9a2b970eb82f0",
+          "size_bytes": 2971211
+        },
+        "frame_events.csv": {
+          "epoch": [
+            2096,
+            578302,
+            33060,
+            1,
+            4372641,
+            1791018392462581153,
+            1791018392474581469
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/frame_events.csv",
+          "sha256": "20b43079100ec18a4dcf3ac9bd0c16c148f293e8440cb02b0a166cf2a71eb02e",
+          "size_bytes": 4372641
+        },
+        "frames.csv": {
+          "epoch": [
+            2096,
+            578301,
+            33060,
+            1,
+            273427,
+            1791018392426580202,
+            1791018392430580308
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/frames.csv",
+          "sha256": "5174a4da28bf3f38e203ef4d77b28ee6ef2c4635798fb274a1ab670a1ee16733",
+          "size_bytes": 273427
+        },
+        "ingress_ledger.csv": {
+          "epoch": [
+            2096,
+            578307,
+            33060,
+            1,
+            733398,
+            1791018392722588017,
+            1791018392726588122
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/ingress_ledger.csv",
+          "sha256": "c9ddf3e1e1f7a071797ceb4ab40ea0413fd2935e96f7f3e6ddbc7a14f6e32331",
+          "size_bytes": 733398
+        },
+        "publication_policy_decisions.jsonl": {
+          "epoch": [
+            2096,
+            578311,
+            33060,
+            1,
+            20420882,
+            1791018392906592874,
+            1791018392930593508
+          ],
+          "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl",
+          "sha256": "16cc7d0674365e19f01fd96c204e1fa8a266b708103c14c3b7fd228cc2a12569",
+          "size_bytes": 20420882
+        }
+      },
+      "maximum_path_span_vs_named_actual_service_ms_absolute_difference": "0.000557",
+      "measurement_admissions": 1080,
+      "native_policy_path_envelope_ms": {
+        "max": "382.3594",
+        "mean": "107.5204155348837209302325581",
+        "min": "16.2056",
+        "n": 4300,
+        "p50": "75.09535",
+        "p95": "331.911110",
+        "p99": "361.920603"
+      },
+      "observed_stage_parent_to_completion_envelopes_ms": {
+        "aggregate": {
+          "max": "8",
+          "mean": "2.8",
+          "min": "1",
+          "n": 1075,
+          "p50": "2.0",
+          "p95": "5.00",
+          "p99": "6.00"
+        },
+        "damage": {
+          "max": "458",
+          "mean": "124.8744186046511627906976744",
+          "min": "15",
+          "n": 1075,
+          "p50": "87.0",
+          "p95": "356.00",
+          "p99": "406.04"
+        },
+        "decode": {
+          "max": "6021",
+          "mean": "2445.961111111111111111111111",
+          "min": "5",
+          "n": 1080,
+          "p50": "2005.0",
+          "p95": "6015.00",
+          "p99": "6018.00"
+        },
+        "foreign_object": {
+          "max": "459",
+          "mean": "134",
+          "min": "15",
+          "n": 1075,
+          "p50": "97.0",
+          "p95": "361.30",
+          "p99": "418.26"
+        },
+        "plate_number": {
+          "max": "434",
+          "mean": "107.6995348837209302325581395",
+          "min": "14",
+          "n": 1075,
+          "p50": "74.0",
+          "p95": "348.00",
+          "p99": "409.26"
+        },
+        "postprocess_damage": {
+          "max": "291",
+          "mean": "13.00093023255813953488372093",
+          "min": "2",
+          "n": 1075,
+          "p50": "5.0",
+          "p95": "31.00",
+          "p99": "253.04"
+        },
+        "postprocess_foreign_object": {
+          "max": "294",
+          "mean": "15.65395348837209302325581395",
+          "min": "1",
+          "n": 1075,
+          "p50": "7.0",
+          "p95": "45.30",
+          "p99": "246.78"
+        },
+        "postprocess_plate_number": {
+          "max": "289",
+          "mean": "9.824186046511627906976744186",
+          "min": "1",
+          "n": 1075,
+          "p50": "3.0",
+          "p95": "17.30",
+          "p99": "248.78"
+        },
+        "postprocess_vehicle_type": {
+          "max": "289",
+          "mean": "12.01674418604651162790697674",
+          "min": "2",
+          "n": 1075,
+          "p50": "5.0",
+          "p95": "27.30",
+          "p99": "237.78"
+        },
+        "preprocess": {
+          "max": "5",
+          "mean": "2.630555555555555555555555556",
+          "min": "0",
+          "n": 1080,
+          "p50": "3.0",
+          "p95": "4.00",
+          "p99": "5.00"
+        },
+        "record": {
+          "max": "0",
+          "mean": "0",
+          "min": "0",
+          "n": 1075,
+          "p50": "0.0",
+          "p95": "0.00",
+          "p99": "0.00"
+        },
+        "vehicle_type": {
+          "max": "444",
+          "mean": "118.1944186046511627906976744",
+          "min": "14",
+          "n": 1075,
+          "p50": "82.0",
+          "p95": "357.30",
+          "p99": "419.26"
+        }
+      },
+      "on_time_completed_at_100ms": 1,
+      "per_frame_decoder_prefix_share": {
+        "max": "0.9847440944881889763779527559",
+        "mean": "0.9097877335187043372950382417",
+        "min": "0.04237288135593220338983050847",
+        "n": 1075,
+        "p50": "0.9193840579710144927536231884",
+        "p95": "0.9707781724249273490474652890",
+        "p99": "0.9788643145723100970302035927"
+      },
+      "policy_complete_branch_identity_joins": 4300,
+      "pure_inference_service_ms": null,
+      "recorded_queue_enter_to_start_ms": {
+        "max": "0",
+        "mean": "0",
+        "min": "0",
+        "n": 12910,
+        "p50": "0.0",
+        "p95": "0.00",
+        "p99": "0.00"
+      },
+      "resource": "gpu",
+      "sum_decoder_prefix_over_sum_latency": "0.9311403282219506655222603770",
+      "topology": "shared-video-dag",
+      "true_queue_wait_ms": null
+    }
+  ],
+  "kind": "independent_original_four_arm_calculation",
+  "limits": [
+    "completed frame envelopes, not hardware busy or pure inference service",
+    "policy-path population is all completed measurement branches",
+    "one baseline-first pair per resource; two recordings; no causal or population inference",
+    "recorded measurement cohort retained regardless of rounded wall boundary"
+  ],
+  "paired_populations": {
+    "cpu": {
+      "baseline_only_completed_input_count": 52,
+      "causal_speedup_inferred": false,
+      "common_completed_input_count": 464,
+      "identical_admissions_by_stream_frame_input": 1080,
+      "shared_only_completed_input_count": 200
+    },
+    "gpu": {
+      "baseline_only_completed_input_count": 0,
+      "causal_speedup_inferred": false,
+      "common_completed_input_count": 1070,
+      "identical_admissions_by_stream_frame_input": 1080,
+      "shared_only_completed_input_count": 5
+    }
+  },
+  "quantile_formula": "linear interpolation at q*(n-1)"
+}
