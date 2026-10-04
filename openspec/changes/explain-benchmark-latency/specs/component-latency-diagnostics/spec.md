@@ -22,6 +22,10 @@ A public command SHALL read a caller-selected evidence directory containing reta
 - **WHEN** all required input rows and identifiers consistently describe the selected measurement cohort
 - **THEN** the command SHALL report its original denominators and completed-frame results with input identities, without rerunning any arm.
 
+#### Scenario: Diagnostic deadline is explicitly supplied
+- **WHEN** the caller supplies a finite positive diagnostic deadline
+- **THEN** the report SHALL identify that parameter's provenance as caller_parameter, corroborate it against supplied optional native-policy deadline/arrival evidence and SHALL NOT invent an original deadline from CSVs which do not record it; a missing/nonpositive/nonfinite or contradictory supplied deadline SHALL fail.
+
 #### Scenario: Cohort boundary wall clocks differ
 - **WHEN** a recorded measurement admission lies slightly before the wall-clock measurement start but belongs to the recorded scheduled cohort
 - **THEN** the command SHALL preserve the stock recorded cohort rather than selecting a new one by wall time.
