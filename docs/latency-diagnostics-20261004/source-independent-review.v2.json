@@ -1,0 +1,194 @@
+{
+  "kind": "component_latency_source_test_wrapper_review_v2",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewed_at_UTC": "2026-10-04T07:46:07.298435+00:00",
+  "approved_planning_commit": "08137b8f5a614f1fe27140aedb3d51d1125a7c47",
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewer_handles_released": true,
+  "offline_once_invocation_approved": true,
+  "new_research_or_hardware_approval": false,
+  "owned_source_pins": [
+    {
+      "path": "scripts/analyze_component_latency_v1.py",
+      "size_bytes": 35396,
+      "sha256": "4023c5846098a2055961fed2899038eeb2317854a6bd89ba4142c682ffd260b4"
+    },
+    {
+      "path": "tests/test_component_latency_diagnostics.py",
+      "size_bytes": 31856,
+      "sha256": "f84a7594521e8bd364179f40359aa3c2d9c90b1913e40c52cb78a2c148df9543"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/execute_originals_once_v1.py",
+      "size_bytes": 6637,
+      "sha256": "4bf6acd63819ffcb3013bd1c08112d4fbd9111145964c085a332459491ac7d16"
+    }
+  ],
+  "planning_artifact_pins": [
+    {
+      "path": "openspec/changes/explain-benchmark-latency/proposal.md",
+      "size_bytes": 2205,
+      "sha256": "cfde6d7b937a2eb02495b5a30dd497f29581f2bfcce2a920a4ac6eddbe3615b8"
+    },
+    {
+      "path": "openspec/changes/explain-benchmark-latency/design.md",
+      "size_bytes": 5513,
+      "sha256": "cc8cd72fdf6f11309be29343a6e194acc72405f5bdced956ea98800a1fb20146"
+    },
+    {
+      "path": "openspec/changes/explain-benchmark-latency/specs/component-latency-diagnostics/spec.md",
+      "size_bytes": 6560,
+      "sha256": "5d1f9a2771db70d0d6e22905a81c13b19ecee71180a3037be7d78c806327b36e"
+    },
+    {
+      "path": "openspec/changes/explain-benchmark-latency/tasks.md",
+      "size_bytes": 3976,
+      "sha256": "859fdf516beba5ad01bec560189523d34d871bdcca11b20fba285dce1f2a9745"
+    }
+  ],
+  "retained_evidence_refs": [
+    {
+      "path": "docs/latency-diagnostics-20261004/planning-independent-review.v1.json",
+      "size_bytes": 9235,
+      "sha256": "9f88ae3e8a4f3241b13cba3ab58164643f64f91cf770636378d18fd46057d4cc"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/source-independent-review.v1.json",
+      "size_bytes": 5986,
+      "sha256": "69b91caa2522ab6f15526cf52065fd6a3371a858f17150abd5aa3d3624c1f802"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/raw-independent-review/calculation.v2.json",
+      "size_bytes": 39658,
+      "sha256": "e9b370012bcdc18204e1c868aaf921dd8f10e3da4d7b35cade0b5c96777b3f2b"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/tests/red-peer-consistency.terminal.json",
+      "size_bytes": 848,
+      "sha256": "d2effc4031cfdaf29befe40416a2c4044c86899037f34b358c747f7a8b88d5d1"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/tests/red-peer-consistency.stdout.txt",
+      "size_bytes": 15905,
+      "sha256": "4fea0f0a10a1fc244de2f12701583f0c5de4106aafde8adcd262880d274e8de0"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/tests/green-peer-consistency.terminal.json",
+      "size_bytes": 849,
+      "sha256": "ab8fa08a4674c8f5c0feaf97487a8c364f7cb2feb04737d5da07d514b77938fa"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/tests/green-peer-consistency.stdout.txt",
+      "size_bytes": 6774,
+      "sha256": "cac00ea4bece7f5fea13a3c04b63f988e0286273806d456b6ff0f448f28dd841"
+    }
+  ],
+  "scope": "Independent read-only review of all four requirements/twelve scenarios and design, full corrected 518-line CLI,537-line tests and138-line final isolated wrapper; original20 leaves were independently rehashed and their aggregate/record/native-carried relationships were read as metadata. No project source import, CLI, fixture/test execution or diagnostic recomputation was performed by reviewer.",
+  "supersession": "This exact corrected-source disposition closes F1/F2 only for the owned source pins above. The first blocked review and its superseded source/test pins remain immutable; this is not a retroactive approval of95905e22/67fe0b7a.",
+  "resolved_findings": [
+    {
+      "id": "F1",
+      "implementation": "CLI343-344 rejects abs(carried-(terminal-path))>Decimal(0.001); derived/carried fields and their envelope semantics remain distinct. Native source deploy/native_gst_probe/vast_native_gst_probe.cpp2870-2872 constructs carried duration from that same interval.",
+      "regression": "test_carried_native_path_span_gross_or_outside_precision_mismatch_fails rejects1000000 and0.00101ms contradictions; existing successful-path test retains a+0.0006ms serialization discrepancy."
+    },
+    {
+      "id": "F2",
+      "implementation": "CLI270-282 requires aggregate and record for each completed frame; aggregate queue/start match latest required postprocess, aggregate end matches frame egress, record queue/start/end match egress. Earlier generic stage chronology preserves start<=end. This agrees with checkpoint_publication_runtime.py954-987.",
+      "regression": "Missing aggregate/record and five independently in-range contradictory endpoints fail before output. A positive31ms aggregate join remains valid; aggregate end is not equated to latest postprocess."
+    }
+  ],
+  "actual_original_join_checks": {
+    "input_leaves": 20,
+    "full_size_SHA256_join_to_calculation_v2": true,
+    "completed_frame_joins": 3325,
+    "aggregate_record_rows_joined": 6650,
+    "aggregate_record_mismatches": 0,
+    "native_carried_rows": 15522,
+    "arms": [
+      {
+        "resource": "cpu",
+        "topology": "independent-processes",
+        "completed_frames": 516,
+        "positive_join_tails": 516,
+        "native_carried_rows": 3556,
+        "maximum_carried_difference_ms": "0.000569"
+      },
+      {
+        "resource": "cpu",
+        "topology": "shared-video-dag",
+        "completed_frames": 664,
+        "positive_join_tails": 664,
+        "native_carried_rows": 3371,
+        "maximum_carried_difference_ms": "0.000511"
+      },
+      {
+        "resource": "gpu",
+        "topology": "independent-processes",
+        "completed_frames": 1070,
+        "positive_join_tails": 1070,
+        "native_carried_rows": 4295,
+        "maximum_carried_difference_ms": "0.000494"
+      },
+      {
+        "resource": "gpu",
+        "topology": "shared-video-dag",
+        "completed_frames": 1075,
+        "positive_join_tails": 1075,
+        "native_carried_rows": 4300,
+        "maximum_carried_difference_ms": "0.000557"
+      }
+    ],
+    "limit": "Read-only Windows UNC size/full-hash and row relationships; no new Linux epoch custody or original experiment acceptance is asserted."
+  },
+  "test_preservation": "Removing only four new test methods reconstructs exact prior28196B/SHA67fe0b7ad4f9ad543098726612f9276714e9ea1ac121b93638473c5b6d39ccaf. AST comparison preserves all31 prior test methods, four other test-class methods and allfive fixture methods.",
+  "actual_test_evidence": {
+    "RED": {
+      "tests": 35,
+      "failures": 9,
+      "errors": 0,
+      "skips": 0,
+      "exit_code": 1,
+      "production_sha256": "95905e22b831236fda58e6763f5d647dbe34ed8e53fa3411536d28ff451ea482"
+    },
+    "GREEN": {
+      "tests": 35,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "exit_code": 0,
+      "production_sha256": "4023c5846098a2055961fed2899038eeb2317854a6bd89ba4142c682ffd260b4",
+      "test_sha256": "f84a7594521e8bd364179f40359aa3c2d9c90b1913e40c52cb78a2c148df9543"
+    },
+    "terminal_stdout_hashes_joined": true,
+    "recorded_sources_unchanged": true,
+    "recorded_python": "canonical CPython3.12.3,isolated,bytecode-disabled",
+    "reviewer_reran_tests": false
+  },
+  "accepted_behavior": [
+    "Explicit finite positive caller deadline and optional native request corroboration; allfour original invocations use frozen100ms.",
+    "Full run/trace/stream/frame joins and recorded cohort preservation; admissions/completed/drop/censor and branch populations have distinct denominators.",
+    "Critical branch and its baseline decoder/shared decoder select per-frame prefix+residual; linearq*(n-1),empty/null reasons and deterministic ties remain correct.",
+    "Finite64MiB leaf/256MiB total regular-input guards,duplicate/conflicting identity rejection,UTF8/CSV/JSON validation,input hashes and fresh exclusive outputs remain present.",
+    "Stage/recorded queue/native path envelopes remain distinct; true queue,pure inference and NVDEC busy are unknown. No causal decoder/service/zero-queue or full32/Q4/5600 authority is introduced."
+  ],
+  "wrapper_assessment": {
+    "approved_exact_sha256": "4bf6acd63819ffcb3013bd1c08112d4fbd9111145964c085a332459491ac7d16",
+    "fixed_names": [
+      "cpu-baseline",
+      "cpu-shared",
+      "gpu-baseline",
+      "gpu-shared"
+    ],
+    "behavior": "Exclusive invocation namespace consumes once; canonical CPython3.12.3; each child argv-I-B with required100ms deadline and exact original directories/policy; synchronous original returncodes/stdout/stderr retained. Twenty leaves are held and fully hashed with seven-field before/after descriptor/name checks; source full hash before/after; success requires four zeros,no primary failure,no stability error.",
+    "limits": [
+      "No retry,benchmark/engine/model/native action or acceptance grant.",
+      "No numeric FD balance,descendant absence,ancestor custody or execution-time bound is claimed by this simple offline wrapper.",
+      "As retained in v1,the simple close loop has no tested comprehensive first-cause/remaining-handle guarantee under simultaneous read and close failures. Such failure cannot satisfy four-original-success; actual successful tool/leaf closure remains a separate post-execution review."
+    ]
+  },
+  "approval_boundary": "Only reviewed offline CLI/tests and once-only four original diagnostic invocations after parent reads this receipt. Future decoder research/remedy,new measurements,qualification/full campaign,CI,archive,merge and original experiment acceptance are outside this disposition.",
+  "future_original_execution_result": null,
+  "no_Git_or_production_or_test_edits": true,
+  "no_target_code_or_tests_executed": true
+}

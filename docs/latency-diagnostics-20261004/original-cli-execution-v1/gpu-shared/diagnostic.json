@@ -1,0 +1,489 @@
+{
+  "artifact_kind": "component_latency_diagnostic",
+  "branch_drop_reasons": {
+    "native_pre_detector_queue_full_drop_newest": 20
+  },
+  "branch_set_provenance": "inferred_observed_terminals_not_declared_DAG_completeness",
+  "cohort": {
+    "cohort_id": "qualification-v2-gstreamer_custom-gpu-h264-shared-video-dag:measurement:1791018162560:1791018342560",
+    "run_id": "qualification-v2-gstreamer_custom-gpu-h264-shared-video-dag",
+    "selection": "all_recorded_ledger_rows_no_wall_clock_reselection"
+  },
+  "completion_coverage": 0.9953703703703703,
+  "counts": {
+    "admitted": 1080,
+    "branch_completed": 4300,
+    "branch_dropped": 20,
+    "censored": 0,
+    "completed": 1075,
+    "dropped": 5
+  },
+  "critical_branch_counts": {
+    "damage": 291,
+    "foreign_object": 372,
+    "plate_number": 185,
+    "vehicle_type": 227
+  },
+  "critical_path": {
+    "decoder_prefix_ms": {
+      "count": 1075,
+      "p50": 2006,
+      "p95": 6016,
+      "p99": 6018,
+      "reason": null
+    },
+    "decoder_share": {
+      "count": 1075,
+      "p50": 0.9193840579710145,
+      "p95": 0.9707781724249274,
+      "p99": 0.97886431457231,
+      "reason": null
+    },
+    "per_frame_sum_verified": true,
+    "population": "completed_frames",
+    "postdecode_residual_ms": {
+      "count": 1075,
+      "p50": 152,
+      "p95": 381,
+      "p99": 445,
+      "reason": null
+    },
+    "tie_break": "lexicographically_largest_branch_name"
+  },
+  "deadline": {
+    "completed_misses": 1074,
+    "completed_on_time": 1,
+    "deadline_ms": 100,
+    "policy_corroborated": true,
+    "policy_serialization_tolerance_ms": 0.001,
+    "population": "completed_frames",
+    "provenance": "caller_parameter",
+    "timely_completion_coverage": 0.000925925925925926
+  },
+  "diagnostic_only": true,
+  "full_campaign_ready": false,
+  "inputs": [
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/frames.csv",
+      "sha256": "5174a4da28bf3f38e203ef4d77b28ee6ef2c4635798fb274a1ab670a1ee16733",
+      "size_bytes": 273427
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/ingress_ledger.csv",
+      "sha256": "c9ddf3e1e1f7a071797ceb4ab40ea0413fd2935e96f7f3e6ddbc7a14f6e32331",
+      "size_bytes": 733398
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/branch_terminals.csv",
+      "sha256": "3c60c993a60b090909880090d30ee1923db10695720d476f5ee9a2b970eb82f0",
+      "size_bytes": 2971211
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/frame_events.csv",
+      "sha256": "20b43079100ec18a4dcf3ac9bd0c16c148f293e8440cb02b0a166cf2a71eb02e",
+      "size_bytes": 4372641
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-component-release-20260930-d27/artifacts/gstreamer_component_release_20260930_a4e145b7/gpu-pair-02/operations/arms/component-gstreamer_custom-gpu-h264-shared-video-dag/evidence/publication_policy_decisions.jsonl",
+      "sha256": "16cc7d0674365e19f01fd96c204e1fa8a266b708103c14c3b7fd228cc2a12569",
+      "size_bytes": 20420882
+    }
+  ],
+  "latency_ms": {
+    "count": 1075,
+    "p50": 2168,
+    "p95": 6364,
+    "p99": 6391.26,
+    "reason": null
+  },
+  "observed_branch_set": [
+    "damage",
+    "foreign_object",
+    "plate_number",
+    "vehicle_type"
+  ],
+  "policy_path": {
+    "by_branch": {
+      "damage": {
+        "carried_actual_service_ms": {
+          "count": 1075,
+          "p50": 75.846692,
+          "p95": 327.5658411,
+          "p99": 362.68677662,
+          "reason": null
+        },
+        "native_terminal_to_postprocess_ms": {
+          "count": 1075,
+          "p50": -0.4866,
+          "p95": -0.05093,
+          "p99": -0.01174,
+          "reason": null
+        },
+        "parent_to_path_ms": {
+          "count": 1075,
+          "p50": 5.1714,
+          "p95": 98.88403,
+          "p99": 345.27317,
+          "reason": null
+        },
+        "path_to_terminal_ms": {
+          "count": 1075,
+          "p50": 75.8468,
+          "p95": 327.56568,
+          "p99": 362.68687,
+          "reason": null
+        }
+      },
+      "foreign_object": {
+        "carried_actual_service_ms": {
+          "count": 1075,
+          "p50": 78.484091,
+          "p95": 336.3138157,
+          "p99": 366.57313172,
+          "reason": null
+        },
+        "native_terminal_to_postprocess_ms": {
+          "count": 1075,
+          "p50": -0.5137,
+          "p95": -0.0476,
+          "p99": -0.0095,
+          "reason": null
+        },
+        "parent_to_path_ms": {
+          "count": 1075,
+          "p50": 5.8872,
+          "p95": 102.19535,
+          "p99": 350.454958,
+          "reason": null
+        },
+        "path_to_terminal_ms": {
+          "count": 1075,
+          "p50": 78.4842,
+          "p95": 336.31401,
+          "p99": 366.573246,
+          "reason": null
+        }
+      },
+      "plate_number": {
+        "carried_actual_service_ms": {
+          "count": 1075,
+          "p50": 70.091807,
+          "p95": 326.8424231,
+          "p99": 351.09552994,
+          "reason": null
+        },
+        "native_terminal_to_postprocess_ms": {
+          "count": 1075,
+          "p50": -0.4966,
+          "p95": -0.05974,
+          "p99": -0.011292,
+          "reason": null
+        },
+        "parent_to_path_ms": {
+          "count": 1075,
+          "p50": 2.8826,
+          "p95": 86.09234,
+          "p99": 334.633034,
+          "reason": null
+        },
+        "path_to_terminal_ms": {
+          "count": 1075,
+          "p50": 70.0918,
+          "p95": 326.84254,
+          "p99": 351.095636,
+          "reason": null
+        }
+      },
+      "vehicle_type": {
+        "carried_actual_service_ms": {
+          "count": 1075,
+          "p50": 74.303801,
+          "p95": 332.5976225,
+          "p99": 360.19224432,
+          "reason": null
+        },
+        "native_terminal_to_postprocess_ms": {
+          "count": 1075,
+          "p50": -0.4802,
+          "p95": -0.05171,
+          "p99": -0.005,
+          "reason": null
+        },
+        "parent_to_path_ms": {
+          "count": 1075,
+          "p50": 4.6614,
+          "p95": 92.60042,
+          "p99": 348.610912,
+          "reason": null
+        },
+        "path_to_terminal_ms": {
+          "count": 1075,
+          "p50": 74.3037,
+          "p95": 332.59766,
+          "p99": 360.192304,
+          "reason": null
+        }
+      }
+    },
+    "carried_actual_service_semantics": "original_field_carried_separately_not_pure_inference_service",
+    "carried_path_serialization_tolerance_ms": 0.001,
+    "count": 4300,
+    "csv_timestamp_resolution_ms": 1,
+    "includes_completed_paths_of_censored_frames": true,
+    "population": "measured_completed_branch_paths_including_dropped_frames",
+    "reason": null,
+    "semantics": "native_path_envelope_including_transport_preparation_waits_and_execution"
+  },
+  "publication_ready": false,
+  "q4_ready": false,
+  "qualification_eligible": false,
+  "quantiles": {
+    "marginal_quantiles_are_additive": false,
+    "method": "linear_interpolation",
+    "position": "q*(n-1)"
+  },
+  "schema_version": 1,
+  "scientific_limits": [
+    "Recorded branch set does not certify the declared DAG or experiment acceptance.",
+    "Completed-frame latency excludes dropped/censored frames; branch outcomes have separate denominators.",
+    "Prefix plus residual equals latency per frame; marginal quantiles must not be added.",
+    "Promoted stages are parent-to-completion envelopes; recorded zero queue spans do not prove zero queue wait.",
+    "Native paths include preparation, transport, mapping/hash, waits and execution; carried actual_service_ms is not pure inference service.",
+    "Decoder residence is not NVDEC busy time or proof of reorder/display/hardware causation.",
+    "Overlapping partial C_obs is not work, energy or causal speedup; different completed subsets and baseline-first ordering remain confounders.",
+    "Original deadlines, drops, workloads and source evidence are unchanged; no cold/full/Q4/publication authority is granted."
+  ],
+  "stages": {
+    "aggregate": {
+      "parent_to_completion_ms": {
+        "count": 1075,
+        "p50": 2,
+        "p95": 5,
+        "p99": 6,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1075,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    },
+    "damage": {
+      "parent_to_completion_ms": {
+        "count": 1075,
+        "p50": 87,
+        "p95": 356,
+        "p99": 406.04,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1075,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    },
+    "decode": {
+      "parent_to_completion_ms": {
+        "count": 1080,
+        "p50": 2005,
+        "p95": 6015,
+        "p99": 6018,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1080,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    },
+    "foreign_object": {
+      "parent_to_completion_ms": {
+        "count": 1075,
+        "p50": 97,
+        "p95": 361.3,
+        "p99": 418.26,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1075,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    },
+    "plate_number": {
+      "parent_to_completion_ms": {
+        "count": 1075,
+        "p50": 74,
+        "p95": 348,
+        "p99": 409.26,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1075,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    },
+    "postprocess_damage": {
+      "parent_to_completion_ms": {
+        "count": 1075,
+        "p50": 5,
+        "p95": 31,
+        "p99": 253.04,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1075,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    },
+    "postprocess_foreign_object": {
+      "parent_to_completion_ms": {
+        "count": 1075,
+        "p50": 7,
+        "p95": 45.3,
+        "p99": 246.78,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1075,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    },
+    "postprocess_plate_number": {
+      "parent_to_completion_ms": {
+        "count": 1075,
+        "p50": 3,
+        "p95": 17.3,
+        "p99": 248.78,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1075,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    },
+    "postprocess_vehicle_type": {
+      "parent_to_completion_ms": {
+        "count": 1075,
+        "p50": 5,
+        "p95": 27.3,
+        "p99": 237.78,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1075,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    },
+    "preprocess": {
+      "parent_to_completion_ms": {
+        "count": 1080,
+        "p50": 3,
+        "p95": 4,
+        "p99": 5,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1080,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    },
+    "record": {
+      "parent_to_completion_ms": {
+        "count": 1075,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1075,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    },
+    "vehicle_type": {
+      "parent_to_completion_ms": {
+        "count": 1075,
+        "p50": 82,
+        "p95": 357.3,
+        "p99": 419.26,
+        "reason": null
+      },
+      "population": "all_recorded_stage_rows_in_cohort",
+      "recorded_queue_span_ms": {
+        "count": 1075,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "reason": null
+      },
+      "semantics": "parent_to_completion_envelope"
+    }
+  },
+  "topology": "shared_video_dag",
+  "unknown_components": {
+    "nvdec_busy_ms": {
+      "reason": "ingress_to_decoder_completion_is_residence_envelope_not_hardware_busy_time",
+      "value": null
+    },
+    "pure_inference_service_ms": {
+      "reason": "stage_and_native_path_envelopes_include_preparation_transport_waits_and_execution",
+      "value": null
+    },
+    "true_queue_wait_ms": {
+      "reason": "promoted_queue_enter_and_start_do_not_observe_native_queue_boundaries",
+      "value": null
+    }
+  }
+}

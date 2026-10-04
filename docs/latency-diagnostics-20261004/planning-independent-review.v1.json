@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "independent_exact_planning_review_v1",
+  "change_name": "explain-benchmark-latency",
+  "pull_request": "https://github.com/lordcoudy/VAST/pull/3",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewed_commit": "08137b8f5a614f1fe27140aedb3d51d1125a7c47",
+  "baseline_commit": "c07de9c78e3beaaf276ee54b5f414a3a4b5d035c",
+  "reviewed_at_UTC": "2026-10-04T07:02:58.863088+00:00",
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewer_handles_released": true,
+  "planning_approved": true,
+  "approval_scope": "The exact committed planning artifacts and six current document additions for a bounded standard-library offline CLI, tests and four original raw analyses. Implementation may proceed only after recording this exact-commit independent approval and standing user authorization in PR3. This is delegated agent approval, not a human GitHub APPROVE.",
+  "superseded_planning_commit": "6856dc1f5e59be62aaf6ce5ba0fe820190791a24",
+  "superseded_deadline_gap": "Required CSVs contain no benchmark deadline. Approval was held until08137 introduced required finite-positive --deadline-ms, caller_parameter provenance, optional-policy corroboration and fixed100ms for the four original analyses.",
+  "owned_source_pins": [
+    {
+      "path": "openspec/changes/explain-benchmark-latency/.openspec.yaml",
+      "size_bytes": 40,
+      "sha256": "ad734da2ba5f4c5a6979a8bbb6bad4db20fb21ec275ceca5f24842fbdfaf5bef",
+      "physical_index_commit_equal": true
+    },
+    {
+      "path": "openspec/changes/explain-benchmark-latency/proposal.md",
+      "size_bytes": 2205,
+      "sha256": "cfde6d7b937a2eb02495b5a30dd497f29581f2bfcce2a920a4ac6eddbe3615b8",
+      "physical_index_commit_equal": true
+    },
+    {
+      "path": "openspec/changes/explain-benchmark-latency/design.md",
+      "size_bytes": 5513,
+      "sha256": "cc8cd72fdf6f11309be29343a6e194acc72405f5bdced956ea98800a1fb20146",
+      "physical_index_commit_equal": true
+    },
+    {
+      "path": "openspec/changes/explain-benchmark-latency/specs/component-latency-diagnostics/spec.md",
+      "size_bytes": 6560,
+      "sha256": "5d1f9a2771db70d0d6e22905a81c13b19ecee71180a3037be7d78c806327b36e",
+      "physical_index_commit_equal": true
+    },
+    {
+      "path": "openspec/changes/explain-benchmark-latency/tasks.md",
+      "size_bytes": 2706,
+      "sha256": "206b164c0f344113ba905d22e772028cf0ece6bb74b6ddba01349b64a2da63ff",
+      "physical_index_commit_equal": true
+    },
+    {
+      "path": "PLAN.md",
+      "size_bytes": 17870,
+      "sha256": "36754fd658f35c347f1ffad9a4155f5d75d34c41426532812217363f36a0a3fb",
+      "physical_index_commit_equal": true
+    },
+    {
+      "path": "progress.md",
+      "size_bytes": 1241980,
+      "sha256": "5fc36d1e4a8af096e4e811ddf09925d52da5f772dba653abc21654e1a779344e",
+      "physical_index_commit_equal": true
+    },
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "size_bytes": 140229,
+      "sha256": "536f152057a9e9473309ba4c86e68d748e16b99136b5c6d2250e32bb199ff0a9",
+      "physical_index_commit_equal": true
+    },
+    {
+      "path": "README.md",
+      "size_bytes": 60027,
+      "sha256": "b4dba49e65a401ee0d1792c72a730e3edc68b8ea0104d8f238cbda14e031bd6e",
+      "physical_index_commit_equal": true
+    },
+    {
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "size_bytes": 16159,
+      "sha256": "e81148a8313a7c2d16f693dd186854e989d0c880a16140d86d2e1ef3b2a3b955",
+      "physical_index_commit_equal": true
+    },
+    {
+      "path": "docs/benchmark-preparation-runbook.md",
+      "size_bytes": 14672,
+      "sha256": "f065b375a1be3e32eb4b42ecb368870b3469b3483f281c24aecf6b01e3406c7b",
+      "physical_index_commit_equal": true
+    }
+  ],
+  "document_preservation": [
+    {
+      "path": "PLAN.md",
+      "prior_size_bytes": 12345,
+      "prior_sha256": "5b50e3f739874eeec6c11a5ae0533a8921020aa7d3600046dfeab9f4447edba0",
+      "preservation": "complete prior raw suffix",
+      "current_suffix_offset_bytes": 5525,
+      "original_bytes_preserved": true
+    },
+    {
+      "path": "progress.md",
+      "prior_size_bytes": 1239979,
+      "prior_sha256": "e93049786410beff6d512b9ebac515c74368a5f8b25e37097abd3424a4826f2e",
+      "preservation": "complete prior raw suffix",
+      "current_suffix_offset_bytes": 2001,
+      "original_bytes_preserved": true
+    },
+    {
+      "path": "BENCHMARK_RECOVERY_PLAN.md",
+      "prior_size_bytes": 138689,
+      "prior_sha256": "3cd9e8de01e2b12dca969fd97307d1caff519bda4ae53ff40cc7bd0975ee320e",
+      "preservation": "complete prior raw suffix",
+      "current_suffix_offset_bytes": 1540,
+      "original_bytes_preserved": true
+    },
+    {
+      "path": "README.md",
+      "prior_size_bytes": 59379,
+      "prior_sha256": "0c6d45685e7fe0fc025c902be3cdaedcbceb61b4f1d6b181b66e0e7cd167b875",
+      "preservation": "unchanged original title and complete prior raw suffix after title",
+      "current_suffix_offset_bytes": 681,
+      "original_bytes_preserved": true
+    },
+    {
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "prior_size_bytes": 14690,
+      "prior_sha256": "96665a3730508d2f708e3634bf944d357859da93571e3d1b9ff9404aa6bcdf4e",
+      "preservation": "unchanged original title and complete prior raw suffix after title",
+      "current_suffix_offset_bytes": 1501,
+      "original_bytes_preserved": true
+    },
+    {
+      "path": "docs/benchmark-preparation-runbook.md",
+      "prior_size_bytes": 13888,
+      "prior_sha256": "8f88fcd81de73a39b7a1756c5c5881e6c15eefb4f143d66ab3af081bd40d2903",
+      "preservation": "unchanged original title and complete prior raw suffix after title",
+      "current_suffix_offset_bytes": 845,
+      "original_bytes_preserved": true
+    }
+  ],
+  "structure": {
+    "schema": "spec-driven",
+    "requirements": 4,
+    "scenarios": 12,
+    "tasks_completed": 1,
+    "tasks_total": 9,
+    "CLI_context_and_apply_paths_resolved": true,
+    "CLI_ready_is_not_implementation_completion": true,
+    "untracked_config_yaml": "Contains schema: spec-driven; outside exact committed approval scope."
+  },
+  "facts": [
+    "PR2 actual release receipt65bdccc24baeecf38c91e4038e835a60e1fa0eff062c90f9c5c8839e5bcb055c records mergedc07de9c7 at2026-10-03T16:18:11Z and all five process gates closed. Documentation keeps measuredB, implementationD and final-checkedE2 distinct.",
+    "Original owned D-bind execution57f8f2ea90b1cc3ef23a8409a3e7302141fb22730ee91bb605e946ec283fa15d and independent cleanup reviewf9a99ba7f2bcbf6a711c3767a1a27de1353ea5ba9e89bcd563c87b86bcdaf45d are verified, with no cleanup replay.",
+    "Six complete prior documents reconstruct byte-exactly; mixed CRLF/LF histories are preserved. Scoped Git whitespace check with cr-at-eol returned0. No normalization or attribute change.",
+    "Archive tree, existing main specs, production, tests, native deploy sources and CI have no commit delta from merged baseline.",
+    "All20 original required/optional evidence leaves across CPU08/GPU02 still equal retained stock custody size/fullSHA; CSV headers lack deadline. The first retained optional request on each arm has deadline-minus-arrival100ms. This planning review does not rerun or implement diagnostics.",
+    "Promotion source checkpoint_publication_runtime.py:903-933 assigns stage start=max direct-parent completions and queue_enter=start; :954-987 bounds aggregate at latest branch completion and native join. The planned zero-recorded-span/unknown true queue semantics match source.",
+    "Native vast_native_gst_probe.cpp:2785-2872 places path entry before map/hash/native execution and terminal after response. That interval cannot be described as pure inference service. Plan uses identity joins and keeps such observed envelopes separate.",
+    "Critical latest-postprocess branch, branch-specific baseline/shared decoder completion, per-frame prefix+residual=original latency, recorded cohort and linear quantiles are explicit; marginal quantiles are not made additive.",
+    "Full32/Q4/1120/5600 and9 physical integrations remain unexecuted; manual rows/R13S6 direct-test gap/CPU07 unknown cause remain disclosed. No runtime/native/model/dependency/workload change or new benchmark/acceptance grant is authorized."
+  ],
+  "raw_evidence_join_summary": {
+    "leaves_full_SHA_verified": 20,
+    "arms": 4,
+    "total_bytes": 109802522,
+    "max_leaf_bytes": 20723574,
+    "canonical_join_table_sha256": "8b11dee6a52b4aa7b5dfebda9022ca0486147dfcb8bbe803671bb00c132628d3",
+    "CSV_deadline_header_absent_all16": true,
+    "optional_first_request_deadline100_all4": true
+  },
+  "limits": [
+    "Planning/source/document review only; no tests, imports of project helpers, engine/model/native execution, CI or measurement replay.",
+    "No implementation correctness or future four-arm diagnostic result, archive, CI, final review or PR3 merge is asserted.",
+    "Retained raw files were freshly size/fullSHA-joined through UNC; no Linux epoch/process/FD/global-quiescence observation is invented.",
+    "Existing schema-only untracked configuration and future root dirty-checkout pointer are not committed planning evidence."
+  ],
+  "Git_mutations_performed": false,
+  "production_or_test_edits_performed": false
+}

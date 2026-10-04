@@ -1,5 +1,18 @@
 # Runbook подготовки полного benchmark VAST
 
+## Фактический этап — 4 октября 2026
+
+Offline CLI реализован: 35 tests passed, 0 skips; два замечания reviewer воспроизведены RED и исправлены. Все четыре original CPU08/GPU02 directories обработаны однократно, каждый CLI exit0. Все 20 исходных файлов (109 802 522 bytes) сохранили SHA256 и семь полей named/held identity. Benchmark/engine/model не повторялись.
+
+[Четырёх-arm отчёт](latency-diagnostics-20261004/four-arm-report.md) показывает исходные counts/drops/100ms misses и критический путь всех 3 325 completed frames. GPU per-frame decoder share p50 — 93,23% / 91,94%; это residence envelope. True queue wait, pure inference и NVDEC busy остаются unknown.
+
+Независимая научная сверка закрыта без блокеров; conformance и обязательный CI текущего кода выполняются; затем same-PR archive/latest-head checks/final review/merge. [Задачи текущего изменения](../openspec/changes/explain-benchmark-latency/tasks.md) задают фактический статус. Все PR2 gates уже закрыты.
+
+Следующий научный шаг — отдельно рассмотренный decoder/intake preflight по реальной setup ошибке attempt05; identity correction ещё не реализована. Полный путь остаётся неизменным: три stale sibling runtime renewals (native3/worker2 source совпали), patch-bound parity, original owner/binding для 37 producing operations, 32 qualification cells, Q4 560+560 / 280 sizing, capacity, 5 600 accepted arms / 2 800 durable pairs. Они не исполнены; full eligibility false.
+
+## Предыдущая постановка текущего этапа
+
+
 ## Текущий указатель — 4 октября 2026
 
 PR2 завершён и merged; исходный component benchmark работает. Актуальные статусы, оставшиеся задачи и порядок задаёт [PLAN.md](../PLAN.md), воспроизводимый component entry point — [component runbook](gstreamer-component-benchmark-runbook.md). Полный launch по-прежнему требует fresh all-backend source/image closures,32 qualification cells/promotion,Q4 и storage gates; этот исторический preparation snapshot не даёт допуска. Ниже сохранены исходные даты/счётчики; текущий configured CI существует в .github/workflows/ci.yml.

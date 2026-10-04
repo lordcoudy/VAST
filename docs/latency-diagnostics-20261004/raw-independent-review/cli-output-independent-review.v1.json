@@ -1,0 +1,209 @@
+{
+  "acceptance_authority": false,
+  "all_four_closed_outputs_equal_independent_math": true,
+  "analyzer_source": {
+    "epoch": [
+      68,
+      4785074605749654,
+      33279,
+      1,
+      35396,
+      1791099452960346600,
+      1791099452960346600
+    ],
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/scripts/analyze_component_latency_v1.py",
+    "sha256": "4023c5846098a2055961fed2899038eeb2317854a6bd89ba4142c682ffd260b4",
+    "size_bytes": 35396
+  },
+  "benchmark_rerun": false,
+  "blocking_findings": [],
+  "combined_report": {
+    "epoch": [
+      68,
+      320599998474053031,
+      33279,
+      1,
+      11683,
+      1791100187550851900,
+      1791100187550851900
+    ],
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/four-arm-report.md",
+    "sha256": "55d00b1444fcfdf6aaa74b7c50aa3f8050880f95d26440451b91504756e2f607",
+    "size_bytes": 11683
+  },
+  "combined_report_review": {
+    "all_populations_latency_quantiles_prefix_residual_and_gpu_share_numbers_match": true,
+    "decode_residence_not_nvdec_busy_or_causal_decoder_mechanism": true,
+    "full32_q4_5600_obligations_and_false_eligibility_preserved": true,
+    "metadata_note": "The report still says the independent comparison is in progress; this receipt supersedes only that status sentence. No scientific finding requires correction.",
+    "native_paths_are_envelopes_not_pure_inference_service": true,
+    "nonadditive_marginal_quantiles_stated": true,
+    "one_baseline_first_pair_and_different_completed_subsets_limit_speedup_claims": true,
+    "zero_promoted_queue_span_is_not_actual_queue_wait": true
+  },
+  "comparison": {
+    "epoch": [
+      68,
+      291326600895560004,
+      33279,
+      1,
+      11519,
+      1791100325558075100,
+      1791100325558075100
+    ],
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/raw-independent-review/cli-comparison.v1.json",
+    "sha256": "d86ce901f0edf640e1f3e233278e80e5e826f2cea7cf79fb141a6b8f1ffc95a7",
+    "size_bytes": 11519
+  },
+  "comparison_original_tool": {
+    "epoch": [
+      68,
+      61080069947224978,
+      33279,
+      1,
+      1637,
+      1791100565024249700,
+      1791100565024249700
+    ],
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/raw-independent-review/original-cli-comparison-tool-result.v1.json",
+    "sha256": "6a68311ddd095ed8031039761fbb53f1497b9e3bf4d4db107e03472fcb57e5aa",
+    "size_bytes": 1637
+  },
+  "comparison_source": {
+    "epoch": [
+      68,
+      112589990685195312,
+      33279,
+      1,
+      13377,
+      1791100295557768400,
+      1791100295557768400
+    ],
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/raw-independent-review/compare_cli_outputs_v1.py",
+    "sha256": "2d443fc539cb2af1724bd47d44838244d8dda1738d57c61cbe013ebd8424d4fa",
+    "size_bytes": 13377
+  },
+  "independent_calculation": {
+    "epoch": [
+      68,
+      5348024559170931,
+      33279,
+      1,
+      39658,
+      1791097848655614900,
+      1791097848655614900
+    ],
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/raw-independent-review/calculation.v2.json",
+    "sha256": "e9b370012bcdc18204e1c868aaf921dd8f10e3da4d7b35cade0b5c96777b3f2b",
+    "size_bytes": 39658
+  },
+  "kind": "independent_offline_outputs_and_four_arm_report_review",
+  "new_per_branch_metrics_independently_computed": true,
+  "numeric_comparison": {
+    "all_per_branch_native_four_envelope_quantiles_equal_independent_originals": true,
+    "all_stage_quantiles_and_recorded_queue_populations_equal": true,
+    "branch_drop_reason_counts_equal": true,
+    "critical_identity_and_decimal_decomposition_hashes_exact": true,
+    "float_summary_representation_tolerance": {
+      "absolute": 1e-12,
+      "relative": 1e-14
+    },
+    "linear_quantile_formula": "q*(n-1)",
+    "scientific_tolerance_changed": false
+  },
+  "original_cli_outcomes": {
+    "count": 4,
+    "empty_stderr_all_four": true,
+    "original_stdout_stderr_hashes_joined": true,
+    "recorded_returncodes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "retained_original20_input_sha256_and_seven_epochs_equal_prior_calculation": true,
+    "source_full_bytes_before_after_and_current_equal": true
+  },
+  "original_e2e_math_rerun": false,
+  "paired_populations": {
+    "cpu": {
+      "baseline_only_completed_input_count": 52,
+      "causal_speedup_inferred": false,
+      "common_completed_input_count": 464,
+      "identical_admissions_by_stream_frame_input": 1080,
+      "shared_only_completed_input_count": 200
+    },
+    "gpu": {
+      "baseline_only_completed_input_count": 0,
+      "causal_speedup_inferred": false,
+      "common_completed_input_count": 1070,
+      "identical_admissions_by_stream_frame_input": 1080,
+      "shared_only_completed_input_count": 5
+    }
+  },
+  "prior_math_review": {
+    "epoch": [
+      68,
+      3659174698907003,
+      33279,
+      1,
+      5906,
+      1791098012181182600,
+      1791098012181182600
+    ],
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/benchmark-next-stage/VAST/docs/latency-diagnostics-20261004/raw-independent-review/independent-review.v2.json",
+    "sha256": "2211a01ce9f673b0950bd4073b033939b32f07a183512fe160d4a4b187a9afc1",
+    "size_bytes": 5906
+  },
+  "reviewable": true,
+  "reviewer_handles_released": true,
+  "schema_version": 1,
+  "scope_limits": [
+    "This closes offline diagnostic comparison only; it does not reissue original cold acceptance, model/image/hardware authority, or full campaign eligibility.",
+    "Full20 original input equality joins the two preserved original readers; additional12 policy/frame-event/branch-terminal files were independently reread with full hashes and seven epochs for the new per-branch metrics.",
+    "Reviewer leaf FDs closed in finally; no numeric FD count, process-birth, EOF/reap or global quiescence is inferred where instrumentation is absent.",
+    "Combined report was manually reviewed in full; campaign/prerequisite source map remains source-only, not a dispatch grant."
+  ],
+  "target_cli_rerun": false,
+  "unknown_quantities": {
+    "nvdec_busy": null,
+    "pure_inference_service": null,
+    "true_queue_wait": null
+  },
+  "verified_populations": {
+    "admitted_each": 1080,
+    "censored": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "completed": [
+      516,
+      664,
+      1070,
+      1075
+    ],
+    "completed_frames": 3325,
+    "completed_native_branch_paths": [
+      3556,
+      3371,
+      4295,
+      4300
+    ],
+    "completed_native_branch_paths_total": 15522,
+    "dropped": [
+      564,
+      416,
+      10,
+      5
+    ],
+    "on_time_at100ms": [
+      0,
+      0,
+      3,
+      1
+    ],
+    "stage_rows": 59291
+  }
+}

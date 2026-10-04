@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "independent_offline_latency_source_test_wrapper_review_v1",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewed_at_UTC": "2026-10-04T07:38:02.349700+00:00",
+  "approved_planning_commit": "08137b8f5a614f1fe27140aedb3d51d1125a7c47",
+  "reviewable": false,
+  "blocking_findings": [
+    {
+      "id": "F1",
+      "path": "scripts/analyze_component_latency_v1.py",
+      "line": 322,
+      "finding": "actual_service_ms is only checked nonnegative and then published; an arbitrary positive contradiction with terminal_timestamp_ms-path_entry_timestamp_ms passes. Native source vast_native_gst_probe.cpp:2870-2872 defines the carried field from that interval.",
+      "required_fix": "Reject a discrepancy beyond retained serialization precision0.001ms, retain derived/carried metrics as distinct envelopes, and add a failing contradictory-carried-duration regression plus an allowed small-rounding positive case."
+    },
+    {
+      "id": "F2",
+      "path": "scripts/analyze_component_latency_v1.py",
+      "line": 240,
+      "finding": "Completed-frame aggregate/record stages are not required or joined to the frame endpoint/latest completed branch. Missing/in-range contradictory aggregate/record rows can still produce successful reports despite the declared inconsistent/incomplete-path rejection.",
+      "required_fix": "Require completed aggregate/record rows; join aggregate end and record endpoints to original frame egress, aggregate start to latest required postprocess completion and preserve aggregate start<=end. Do not equate aggregate end to latest postprocess. Add meaningful missing/contradictory join and valid-positive-tail regressions."
+    }
+  ],
+  "reviewer_handles_released": true,
+  "offline_once_invocation_approved": false,
+  "new_research_or_hardware_approval": false,
+  "owned_source_pins": [
+    {
+      "path": "scripts/analyze_component_latency_v1.py",
+      "size_bytes": 33762,
+      "sha256": "95905e22b831236fda58e6763f5d647dbe34ed8e53fa3411536d28ff451ea482"
+    },
+    {
+      "path": "tests/test_component_latency_diagnostics.py",
+      "size_bytes": 28196,
+      "sha256": "67fe0b7ad4f9ad543098726612f9276714e9ea1ac121b93638473c5b6d39ccaf"
+    },
+    {
+      "path": "docs/latency-diagnostics-20261004/execute_originals_once_v1.py",
+      "size_bytes": 6637,
+      "sha256": "4bf6acd63819ffcb3013bd1c08112d4fbd9111145964c085a332459491ac7d16"
+    }
+  ],
+  "reviewed_scope": "All four requirements/twelve scenarios and design; full499-line CLI,478-line tests and138-line final isolated wrapper; original retained CSV headers and first completed-frame/native-policy layouts in all four CPU08/GPU02 arms. This receipt binds the superseded frozen CLI/test bytes above, not a later author edit.",
+  "accepted_parts": [
+    "Recorded ledger cohort is preserved even across early wall-clock admissions; full(run,trace,stream,frame) identity and branch/input associations replace row-order joins.",
+    "Critical branch uses latest required postprocess with deterministic tie break; baseline selects that branch decoder and shared selects shared decode. Prefix+residual is verified per frame and linear q*(n-1) quantiles have explicit empty/null reasons.",
+    "Counts, drops/censoring, branch populations and absolute caller-provenance100ms deadline remain separate. Optional policy population includes successful branches of dropped/censored frames; missing policy is unavailable.",
+    "Required64MiB leaf/256MiB total bounds, regular-file/symlink checks, strict finite CSV numbers, duplicate/inconsistent identities and exclusive occupied-output rejection are present.",
+    "Derived native path and promoted stage/queue envelopes retain explicit unknown queue/pure inference/NVDEC busy semantics and false acceptance flags. No project runtime/helper imports or engine/model/native operations are present.",
+    "Final wrapper uses canonical CPython3.12.3 and -I -B child argv; one exclusive namespace, four fixed names/paths supplied by closed independent calculation, synchronous subprocess completion, retained stdout/stderr/exit and full original leaf hash/seven-field epoch before/after checks. No retry, model, engine, benchmark or acceptance command."
+  ],
+  "actual_original_layout_checks": [
+    "Four original CSV schemas match literal HEADERS; native evidence has branch/decision/input_frame_key/path-entry/terminal/carried duration fields.",
+    "Sample completed frames across all four arms have aggregate start equal latest postprocess but aggregate end2-3ms later at frame egress; record begins/ends at that egress. This confirms that positive join tail must remain valid.",
+    "Native path fields are high-resolution floating milliseconds; CSV wall clocks are integral millisecond promotion. A bounded serialization comparison is necessary; exact unrounded equality is inappropriate."
+  ],
+  "prior_GREEN": "Canonical recorded GREEN31 tests/0 failures/0 errors/0 skips/exit0,0.4261704169912264s, source95905e22/test67fe0b7a; that success is preserved but does not cover F1/F2. No tests were replayed by reviewer.",
+  "wrapper_limits": [
+    "Wrapper exposes no ancestor custody, formal cold grant or original acceptance reattestation. Current diagnosis/receipt does not invent numeric FD balance, descendant scans or execution time bounds.",
+    "The simple wrapper does not guarantee complete first-cause/remaining-handle cleanup under a simultaneous raw-read/handle-close exception; no such fault behavior is claimed tested, and no future successful receipt is accepted until actual closure is independently joined."
+  ],
+  "required_next_step": "Freeze minimal fixes and original RED/GREEN evidence; parent reads this blocked receipt and a separate exact corrected-source approval before the four once-only original CLI invocations.",
+  "no_target_code_tests_or_raw_analysis_execution": true,
+  "no_Git_or_production_or_test_edits": true,
+  "future_original_execution_result": null
+}
