@@ -186,6 +186,12 @@ APPROVED_NEW_IDS=frozenset((
     'test_research_protocol.IndependentColdTests.test_P2_raw_amendment_blob_bound_is_enforced',
     'test_research_protocol.ProtocolTests.test_P3_cached_pin_uses_live_current_phase_after_original_deadline_expires',
     'test_research_protocol.ProtocolTests.test_P3_cached_pin_rejects_expired_current_phase_despite_live_original_deadline',
+    'test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape',
+    'test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_40_and_rejects_41',
+    'test_research_protocol.IndependentColdTests.test_P4_run_33_and_controller_129_leaves_still_reject',
+    'test_research_protocol.IndependentColdTests.test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept',
+    'test_research_protocol.IndependentColdTests.test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow',
+    'test_research_protocol.IndependentColdTests.test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds',
 ))
 
 
@@ -242,7 +248,7 @@ def validate_nested(report):
     ids=report['selected_test_ids'];outcomes=report['outcomes']
     if report.get('isolated') is not True or report.get('dont_write_bytecode') is not True:
         raise AssertionError('nested fixture process was not isolated -I -B')
-    if len(INHERITED_IDS)!=66 or len(APPROVED_NEW_IDS)!=95 or INHERITED_IDS & APPROVED_NEW_IDS or \
+    if len(INHERITED_IDS)!=66 or len(APPROVED_NEW_IDS)!=101 or INHERITED_IDS & APPROVED_NEW_IDS or \
             len(ids)!=len(set(ids)) or set(ids)!=INHERITED_IDS | APPROVED_NEW_IDS:
         raise AssertionError('full frozen inherited66 inventory missing or duplicated')
     if not any(name.startswith('test_successor_v6.') for name in ids):

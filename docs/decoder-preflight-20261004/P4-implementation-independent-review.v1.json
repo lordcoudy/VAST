@@ -1,0 +1,84 @@
+{
+  "artifact_kind": "independent_p4_frozen_source_review_v1",
+  "verdict": "PASS_SOURCE_AND_FOCUSED_FIXTURES",
+  "blocker_findings": [],
+  "planning_commit": "ee15ffdefcbeae92716d1dc816254229d51bc752",
+  "technical_authorization_comment": 5407789217,
+  "baseline_source_commit": "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+  "observed_checkout_head": "ee15ffdefcbeae92716d1dc816254229d51bc752",
+  "reviewed_scope": "Exactly three frozen source/test files; complete owned diff and six new cases. Independent review only; no test/target/source/Git mutation.",
+  "source_root": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+  "frozen_sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 93578,
+      "sha256": "ecd99e9c4f17448ca85d16fdd810cc361a5160f3d2403d88426fe4f001628bf7",
+      "blob": "5e14fd540f6f25726fd561654be6b660ef55cbe2",
+      "old_size_bytes": 93103,
+      "old_sha256": "5501000b5cc057562460843701b654c95b5ea24565cab3773148e38bb501afcc",
+      "old_blob": "e5a76f92624da5582f434605e632f525a6d67b23",
+      "diff_lines_added": 11,
+      "diff_lines_removed": 8
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 100392,
+      "sha256": "69aa29d807661118b30a5eefc82967443aab56003b4b6666d764826db6d1ecdb",
+      "blob": "b26f3c32b9421e12d67949c76d937806d0b4d7de",
+      "old_size_bytes": 87992,
+      "old_sha256": "7961621bbbee98855cf401496252a603a9283a1dfba639e2dbd7b125eca370a9",
+      "old_blob": "2b546972d3c106f32acf8cf2aa650867e4b595de",
+      "diff_lines_added": 168,
+      "diff_lines_removed": 0
+    },
+    {
+      "path": "tests/test_decoder_research_v6.py",
+      "size_bytes": 49838,
+      "sha256": "6aeba18d3b313aacd74e046dd413cda8084c8fbdae8da2ae03db5ee45f5d15cb",
+      "blob": "c136cc361dd02d5edd7a9a3d90a733df63cd3c82",
+      "old_size_bytes": 49161,
+      "old_sha256": "a6982705711c6ad13867bd1e83d524a635bb1a1424de5950e135e42f0cf3dcea",
+      "old_blob": "36b6f56d9cde5a56c755b916da98b7a98da9ea2c",
+      "diff_lines_added": 7,
+      "diff_lines_removed": 1
+    }
+  ],
+  "verified_behavior": [
+    "cold_reader:46,229-231,295-296,992,1011,1120: only the three typed mapped-input routes use 2MiB; both physical read and strict sealed JSON enforce the same cap. General DOC_MAX/CHANNEL_MAX remain 1MiB.",
+    "cold_reader:545-558: metadata40 derives from eight research base leaves plus two per existing maximum sixteen collections. Run32/controller128, metadata16MiB, total byte/FD/epoch/hash/deadline guards are unchanged.",
+    "cold_reader:979-1013: ordered CLOSED descriptors, unique CLOSED set, sixteen-collection bound and all semantic/owner/backing/before-final joins survive. New exact BEFORE names require 01..N and refuse orphan/alternate leaves.",
+    "test_research_protocol:1076-1243: six exact approved cases, genuine files/seals/held reads; namespace fixtures and isolated large BEFORE/whitespace admissions explicitly do not claim full scientific receipts. Large canonical CLOSED views exercise mappings plus complete synthetic four-by32 guest/source-READY routes and64 pairs.",
+    "tests/test_decoder_research_v6:189-194,251: exactly six IDs appended, 95 becomes101; inherited66 and previous95 order remain unchanged. Full owned diff changes no capture logic, 120/15 clocks, old tests or producer code."
+  ],
+  "raw_baseline_join": "Native Git cat-file raw S3 blobs match all three retained P4-implementation-v1/before/*.raw size/SHA pairs. P4 planning tree points to the same old blobs.",
+  "focused_original_evidence": {
+    "root": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P4-implementation-v1",
+    "red": {
+      "tool": "red-original-tools.v1.json",
+      "size_bytes": 10767,
+      "sha256": "be6de968ec5c71d3294b34ab4390d100dcbc28697780d697818eb324193f4568",
+      "chunk": "34543e",
+      "returncode": 1,
+      "stderr_bytes": 10832,
+      "stderr_sha256": "f2cee8c626a835bae320b857dd1e2576dfa485b4b81a8935e428dd14a6049282",
+      "actual": "Six tests; four actual Refusals in original namespace32/physical1MiB and two missing BEFORE-predicate assertion failures. Existing run/controller rejection already passes. No constructor/API-error substitute."
+    },
+    "green": {
+      "tool": "green-original-tools.v1.json",
+      "size_bytes": 10762,
+      "sha256": "ecf93875e26684b0f10ac19e6b39d41458ed0df2f5d231c2a2adb6e398d01d82",
+      "chunk": "2d2c80",
+      "returncode": 0,
+      "stderr_bytes": 1156,
+      "stderr_sha256": "c2fff4899ee796902935bdf6037c71e46558b94eafe2caf3b0713804ee765340",
+      "actual": "Exactly same six IDs pass in0.529s; three frozen source pins match original capture."
+    },
+    "joined": "Complete execution JSON matches JSON in each original tool output; raw stdout/stderr hashes match both retained descriptors. All11 before/after source rows, including epochs, equal; FD6→6, streams closed, child reaped and two named process scans empty for each. These are original synthetic fixtures, not new reviewer executions."
+  },
+  "limits": [
+    "This source/fixture PASS neither completes canonical167 nor latest exact-S4 hosted CI; root owns those original checks and exact committed source closure remains pending.",
+    "No corrected cold invocation or accepted four-run scientific result is claimed. Producer/sourceS3 and all original FAILED cold reports remain immutable; future observerS4 must be bound separately.",
+    "2MiB is a finite typed observer ceiling, not a promise that every producer-permitted512-row mapping fits. Larger evidence must still refuse; historical benchmark campaigns and promotion gates remain unchanged.",
+    "One locator/output read was truncated and one command had a pre-read PowerShell parser failure, retained explicitly. Conclusions use subsequent complete owned diff, narrow source contexts and untruncated compact original joins."
+  ]
+}

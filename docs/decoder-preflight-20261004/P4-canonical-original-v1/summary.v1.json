@@ -1,0 +1,143 @@
+{
+  "P4_new": 6,
+  "actual_adapter": {
+    "acquired_logs": [
+      "stdout",
+      "stderr"
+    ],
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+      "--v6-child",
+      "/tmp/vast-decoder-p4-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-6eb16a5b37c8488fb5e5f8f7a6a59a46"
+    ],
+    "artifact_kind": "vast_decoder_v6_fixture_capture_v1",
+    "child_owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 45916,
+      "pid": 45916,
+      "ppid": 45905,
+      "sid": 45916,
+      "starttime_ticks": 62529404,
+      "uid": 1000
+    },
+    "child_reaped": true,
+    "cleanup_elapsed_s": 1.868854038999416,
+    "close_errors": [],
+    "elapsed_s": 59.65134807000868,
+    "failure": null,
+    "failure_type": null,
+    "logs_closed": true,
+    "pid": 45916,
+    "provisional_until_owner_final_close": true,
+    "research_executed": false,
+    "returncode": 0,
+    "signal_observation": null,
+    "stderr": {
+      "epoch": [
+        2096,
+        622245,
+        33188,
+        1,
+        99542,
+        1791143012927980803,
+        1791143012927980803
+      ],
+      "path": "/tmp/vast-decoder-p4-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-6eb16a5b37c8488fb5e5f8f7a6a59a46/original.stderr",
+      "sha256": "4cdae27a024858c154528848437852176f2abc50144f7c8908d310918563a1ed",
+      "size_bytes": 99542
+    },
+    "stdout": {
+      "epoch": [
+        2096,
+        622244,
+        33188,
+        1,
+        8168,
+        1791143012923980521,
+        1791143012923980521
+      ],
+      "path": "/tmp/vast-decoder-p4-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-6eb16a5b37c8488fb5e5f8f7a6a59a46/original.stdout",
+      "sha256": "598d9b90460305bcef25460a34f074d2a43e235746c6eb396cb89e1047a6faef",
+      "size_bytes": 8168
+    },
+    "successful": false
+  },
+  "actual_final_close": {
+    "artifact_kind": "vast_decoder_v6_fixture_final_close_v1",
+    "candidate_success": true,
+    "cleanup_elapsed_s": 1.8736249210778624,
+    "elapsed_s": 59.65611895208713,
+    "observed_after_terminal_persist_monotonic_s": 625353.701018027,
+    "provisional_until_capture_return": true,
+    "research_executed": false,
+    "successful": false,
+    "terminal": {
+      "epoch": [
+        2096,
+        622247,
+        33188,
+        1,
+        1908,
+        1791143014796112883,
+        1791143014796112883
+      ],
+      "path": "/tmp/vast-decoder-p4-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-6eb16a5b37c8488fb5e5f8f7a6a59a46/adapter-terminal.v1.json",
+      "sha256": "f96f350ba9c673751c7204f656a95f8cdc62881f46fbeb3270b73a13b0d35898",
+      "size_bytes": 1908
+    }
+  },
+  "inherited": 66,
+  "kind": "P4_actual_canonical_summary",
+  "nested_elapsed_s": 53.22252089891117,
+  "nested_tests": 167,
+  "originals": [
+    {
+      "name": "adapter-terminal.v1.json",
+      "sha256": "f96f350ba9c673751c7204f656a95f8cdc62881f46fbeb3270b73a13b0d35898",
+      "size_bytes": 1908
+    },
+    {
+      "name": "adapter-final-close.v1.json",
+      "sha256": "1b6e16207c3a17d4f9cafaf48f64407b4e882552f3aea8e0622b9fb2b4c88036",
+      "size_bytes": 758
+    },
+    {
+      "name": "nested-suite.v1.json",
+      "sha256": "810a58113dea7b2967c59e2f8c457d091c38f968dcafa3a91a4e882199fe1923",
+      "size_bytes": 101730
+    },
+    {
+      "name": "original.stdout",
+      "sha256": "598d9b90460305bcef25460a34f074d2a43e235746c6eb396cb89e1047a6faef",
+      "size_bytes": 8168
+    },
+    {
+      "name": "original.stderr",
+      "sha256": "4cdae27a024858c154528848437852176f2abc50144f7c8908d310918563a1ed",
+      "size_bytes": 99542
+    }
+  ],
+  "outer_root_FD_owner_not_captured": true,
+  "previous_new": 95,
+  "provisional_originals_unchanged": true,
+  "root_actual_tool_rc": 0,
+  "root_elapsed_s": 73.736,
+  "root_tests": 12,
+  "scientific_research_executed": false,
+  "source15_bytes_epochs_unchanged": true,
+  "two_original15s": [
+    {
+      "elapsed_s": 15.048279357026331,
+      "id": "test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed"
+    },
+    {
+      "elapsed_s": 15.040989448083565,
+      "id": "test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success"
+    }
+  ],
+  "unique_started_terminal_success": 167
+}

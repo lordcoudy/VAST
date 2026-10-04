@@ -1,0 +1,67 @@
+{
+  "reviewed_commit": "ee15ffdefcbeae92716d1dc816254229d51bc752",
+  "parent": "81aedc71af16240da96028fc42ce2c2dbfcf093a",
+  "producer_source": "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+  "verdict": "PASS_EXACT_P4_PLANNING",
+  "continuation_of": "P4-planning-independent-v1/review.v1.json,2830B,3cd387294784693ac86c6bd345c7ff114de0fe429aa4e70d3ff67eb70b7e8a07",
+  "review_method": "Same review: complete v1 four-document reading plus exhaustive native raw ee15ffde diff, full raw blob reads/physical equality and preserved S3 prefixes. No new broad audit/target/test/CI/source execution.",
+  "pins": [
+    {
+      "path": "proposal.md",
+      "size_bytes": 9450,
+      "sha256": "530e722d357c08d46a96e70b869fb17d91cc7f860f113106e8ae059e0a5cee51",
+      "blob": "31a9bf73be60925100cc792afdd1fec6c5b59455"
+    },
+    {
+      "path": "design.md",
+      "size_bytes": 58013,
+      "sha256": "892f09e77e808e78c5c088c80668742aa0a20b1b2d7a76b723d8d7d9e1f55789",
+      "blob": "457bcc7f8474d585f67831139b6b3e0a8cabac96"
+    },
+    {
+      "path": "tasks.md",
+      "size_bytes": 21121,
+      "sha256": "da6358e8092f44edcff6816aa0c228259989ac592a025fe1cb404bf90324d3fb",
+      "blob": "89667680de772bc039d8b3661993687ee75c7753"
+    },
+    {
+      "path": "specs/benchmark-launch-preparation/spec.md",
+      "size_bytes": 23273,
+      "sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d",
+      "blob": "c1bc6757983b41df87f031f36101157d8949722f"
+    }
+  ],
+  "resolved_blocker": {
+    "old": "Incorrect assertion that existing regex/CLOSED-only membership rejects orphan BEFORE files.",
+    "new": "Explicit ordered declared-collection equality for physical BEFORE names; original CLOSED-set, uniqueness/sequence/descriptors retained. Missing/orphan/alternate/surplus BEFORE refuses below count ceiling.",
+    "regression": "Same sixth approved case includes real orphan/alternate files with a small otherwise-valid declared collection below old32, so original RED exposes unused-BEFORE acceptance rather than unrelated namespace cap."
+  },
+  "checks": {
+    "exact_four_planning_only_100644_native_scope": true,
+    "all_physical_equal_full_raw_blobs": true,
+    "originalS3_proposal_design_delta_prefixes_exact": true,
+    "previous27_delta_scenarios_preserved_exact": true,
+    "new_total_r15_scenarios": 28,
+    "six_case_ids_preserved": true,
+    "tasks_done": 36,
+    "tasks_total": 47,
+    "p4_tasks_unchecked": 4,
+    "metadata40_old16_and_mapping_only2MiB_preserved": true,
+    "general1MiB_metadata16MiB_all_old_byte_fd_epoch_hash_120_15_guards_preserved": true,
+    "main_other19_requirements_and_diagnostics_unchanged": true,
+    "main_blob": "6b1049d72e2c0daf81c3ff7d503bf3a521243907",
+    "diagnostics_blob": "951e2a4fea9605edcf3964a1a799ca298b4533b9",
+    "observer_blob_unchanged": "e5a76f92624da5582f434605e632f525a6d67b23",
+    "guest_blob_unchanged": "a5a5182b2cdccef59033146f25c39c25b5fc7dc0",
+    "all_other_producer_and_source_blobs_unchanged_by_exhaustive_raw_scope": true,
+    "originalS3_futureS4_binding_separate": true,
+    "one_exclusive_corrected_cold_after_actual_S4_gates_only": true,
+    "original_failed_cold_preserved_and_no_producer_replay": true
+  },
+  "remaining_blockers": [],
+  "limits": "Planning technical PASS only. No implementation/GREEN/S4 hosted CI/once-read or128AU/64pairs acceptance asserted; root records technical COMMENT independently, not this reviewer. Old v1 CHANGES_REQUIRED retained without overwrite.",
+  "original_tool_chunks": [
+    "3613ee",
+    "f767d7"
+  ]
+}

@@ -43,6 +43,7 @@ HEADER = struct.Struct('>8sHHQQQQQQIIIQ')
 MISSING = (1 << 64) - 1
 RAW_MAX, PAYLOAD_MAX = 128 * 1048576, 64 * 1048576
 DOC_MAX, LINE_MAX, CHANNEL_MAX = 1048576, 16384, 1048576
+MAPPING_DOC_MAX = 2 * 1048576
 TOTAL_MAX, REPORT_MAX = 4 * 256 * 1048576 + 32 * 1048576, 2 * 1048576
 RUNTIME = 'artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6'
 OBSERVER = 'artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py'
@@ -225,8 +226,8 @@ class Held:
         self.check(False)
         return raw
 
-    def document(self, path, kind=None, under_root=True):
-        value = strict_json(self.read(path, under_root=under_root), sealed=True)
+    def document(self, path, kind=None, under_root=True, maximum=DOC_MAX):
+        value = strict_json(self.read(path, maximum=maximum, under_root=under_root), maximum=maximum, sealed=True)
         require(kind is None or value.get('artifact_kind') == kind, 'document kind')
         return value
 
@@ -291,8 +292,8 @@ class Replay:
         self.h = Held(self.attempt, time.monotonic()+120)
         self.git_commands = []
 
-    def doc(self, path, kind):
-        value = self.h.document(path, kind, under_root=Path(path).is_relative_to(self.attempt))
+    def doc(self, path, kind, maximum=DOC_MAX):
+        value = self.h.document(path, kind, under_root=Path(path).is_relative_to(self.attempt), maximum=maximum)
         nonpromoting(value)
         return value
 
@@ -549,7 +550,7 @@ class Replay:
         for directory in (self.attempt/'controller', *sorted((self.attempt/'guest').iterdir())):
             names = self.h.members(directory)
             cap = 16*1048576 if directory.name in ('controller', 'metadata') else 256*1048576
-            require(len(names) <= (128 if directory.name == 'controller' else 32), 'namespace count')
+            require(len(names) <= (128 if directory.name == 'controller' else 40 if directory.name == 'metadata' else 32), 'namespace count')
             rows = [self.h.pin(directory/name, maximum=RAW_MAX) for name in sorted(names)]
             require(sum(row['size_bytes'] for row in rows) <= cap, 'namespace byte cap')
             inventory.extend(rows)
@@ -982,11 +983,13 @@ class Replay:
             and collections[:len(prelaunch['mapped_library_collections'])] == prelaunch['mapped_library_collections'], 'original mapping collections')
         require({Path(r['path']).name for r in collections} == {p.name for p in directory.glob('mapped-inputs-*-closed.v1.json')}
             and len({r['path'] for r in collections}) == len(collections), 'all closed mapping collections')
+        require({p.name for p in directory.glob('mapped-inputs-*.v1.json') if not p.name.endswith('-closed.v1.json')}
+            == {f'mapped-inputs-{index:02d}.v1.json' for index in range(1,len(collections)+1)}, 'all before mapping collections')
         owners = [guest_owner,*source_owners]
         for index, descriptor in enumerate(collections,1):
             path = self.output(descriptor)
             require(path == directory/f'mapped-inputs-{index:02d}-closed.v1.json', 'mapping collection sequence')
-            value = self.doc(path,'vast_decoder_research_original_mapped_inputs_v1')
+            value = self.doc(path,'vast_decoder_research_original_mapped_inputs_v1',maximum=MAPPING_DOC_MAX)
             require(value['observation_complete'] is True and value['owner_before'] == value['owner_after'] == value['process']
                 and value['process'] in owners and value['proc_path'] == f"/proc/{value['process']['pid']}/maps", 'original mapping owner lifetime')
             validate_owner(value['process'])
@@ -1005,7 +1008,7 @@ class Replay:
                     and re.fullmatch('[0-9a-f]{64}',value[prefix+'_sha256']), 'original full map observation bounds')
             before_path = self.output(value['before_snapshot'])
             require(before_path == directory/f'mapped-inputs-{index:02d}.v1.json', 'mapping before leaf')
-            before = self.doc(before_path,'vast_decoder_research_original_mapped_inputs_v1')
+            before = self.doc(before_path,'vast_decoder_research_original_mapped_inputs_v1',maximum=MAPPING_DOC_MAX)
             require(before['observation_complete'] is False and all(before[k] == value[k] for k in
                 ('process','proc_path','selectors','snapshot_size_bytes','snapshot_sha256','selected_original_rows')), 'original mapping before/final join')
             identity_by_path = {}
@@ -1114,7 +1117,7 @@ class Replay:
                 journal=self.journal(run_dir/'events.jsonl');source_owner=self.one(journal,'source_process_started')['child'];owners.append(source_owner)
                 loaded=self.one(journal,'actual_source_loaded_libraries')
                 loaded_path=self.output(loaded['mapped_inputs'])
-                mapped=self.doc(loaded_path,'vast_decoder_research_original_mapped_inputs_v1')
+                mapped=self.doc(loaded_path,'vast_decoder_research_original_mapped_inputs_v1',maximum=MAPPING_DOC_MAX)
                 require(loaded['mapped_inputs'] in final['mapped_library_collections'] and mapped['process']==source_owner
                     and loaded['libraries']==[r['descriptor'] for r in mapped['pin_observations']], 'source READY original loaded-library join')
             require(all(starts[n]['guest_elapsed_at_start_s'] < starts[n+1]['guest_elapsed_at_start_s'] for n in range(3)), 'fixed serial order')

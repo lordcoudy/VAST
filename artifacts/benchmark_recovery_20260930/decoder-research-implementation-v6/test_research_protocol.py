@@ -1073,4 +1073,172 @@ class IndependentColdTests(unittest.TestCase):
             fresh.packets(directory,admissions,source,'research-decoder-01')
 
 
+    def P4_namespace_fixture(self, collections=14, extra=0, run_leaves=0, controller_leaves=0):
+        """Count-layer real files, not a complete scientific receipt."""
+        root=self.base/'count-attempt';(root/'controller').mkdir(parents=True)
+        metadata=root/'guest/metadata';metadata.mkdir(parents=True)
+        fixed=('events.jsonl','registry.stdout','registry.stderr','prelaunch.v1.json',
+            'initialization-metadata.v1.json','final-package-pins.v1.json',
+            'research-terminal.v1.json','paired-timing.v1.json')
+        for name in fixed:self.raw(metadata/name,b'count-layer fixture')
+        for index in range(1,collections+1):
+            for suffix in ('','-closed'):self.raw(metadata/f'mapped-inputs-{index:02d}{suffix}.v1.json')
+        for index in range(extra):self.raw(metadata/f'extra-{index:02d}')
+        for index in range(controller_leaves):self.raw(root/'controller'/f'leaf-{index:03d}')
+        if run_leaves:
+            run=root/'guest/run-01-front_gate-default';run.mkdir()
+            for index in range(run_leaves):self.raw(run/f'leaf-{index:03d}')
+        replay=self.cold.Replay(self.base,self.base,root,'research','1'*40)
+        self.replays.append(replay);return replay
+
+    def P4_fresh_replay(self, mode='metadata-only'):
+        for old in self.replays:old.h.close()
+        replay=self.cold.Replay(self.project,self.repository,self.attempt,mode,self.S,self.P)
+        replay.plan=self.plan;replay.binding=self.binding;self.replays.append(replay)
+        return replay
+
+    def P4_mapping_documents(self, index=1, large=False, closed_size=None, before_size=None):
+        """Synthetic producer field families, genuine sealed physical reads."""
+        c=self.cold;directory=self.attempt/'guest/metadata'
+        path=directory/f'mapped-inputs-{index:02d}-closed.v1.json'
+        value=self.decoded(path);value.pop('sha256')
+        if large:
+            old=value['selected_original_rows'][0]
+            library=dict(value['pin_observations'][0]['descriptor'],path='/synthetic/libgst_'+('a'*240)+'.so')
+            rows=[]
+            for ordinal in range(512):
+                start=4096*(ordinal+1);end=start+4096
+                rows.append(dict(old,address_start=start,address_end=end,path=library['path'],resolved_path=library['path'],
+                    original_row=f'{start:x}-{end:x} r--p 00000000 00:01 9 '+library['path']))
+            value.update(selected_original_rows=rows,selected_rows_before=rows,selected_rows_after=rows,
+                pin_observations=[dict(descriptor=library,mapping_observation=dict(view='direct',
+                    visible_identity=old['mapped_identity'],selected_identity=old['mapped_identity'],probe=None))])
+            if library not in self.packages:self.packages.append(library)
+        before_path=directory/f'mapped-inputs-{index:02d}.v1.json'
+        fields={key:value[key] for key in ('process','proc_path','selectors','snapshot_size_bytes','snapshot_sha256','selected_original_rows')}
+        before=self.document(before_path,'vast_decoder_research_original_mapped_inputs_v1',observation_complete=False,**fields)
+        if before_size is not None:
+            raw=before_path.read_bytes();self.assertLessEqual(len(raw),before_size)
+            before=self.raw(before_path,raw+b' '*(before_size-len(raw)))
+        value['before_snapshot']=dict(before,path='/opt/vast/output/metadata/'+before_path.name)
+        descriptor=self.raw(path,c.canonical(p.seal(value))+b'\n')
+        if closed_size is not None:
+            raw=path.read_bytes();self.assertLessEqual(len(raw),closed_size)
+            descriptor=self.raw(path,raw+b' '*(closed_size-len(raw)))
+        descriptor=dict(descriptor,path='/opt/vast/output/metadata/'+path.name)
+        self.collections[index-1]=descriptor
+        return descriptor,before
+
+    def test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape(self):
+        replay=self.P4_namespace_fixture()
+        inventory=replay.namespace()
+        self.assertEqual(len(inventory),36);self.assertEqual(len(replay.h.files),36)
+        replay.h.check(True)
+
+    def test_P4_metadata_namespace_accepts_40_and_rejects_41(self):
+        replay=self.P4_namespace_fixture(collections=16)
+        self.assertEqual(len(replay.namespace()),40);replay.h.check(True);replay.h.close()
+        self.raw(replay.attempt/'guest/metadata/extra-00')
+        fresh=self.cold.Replay(self.base,self.base,replay.attempt,'research','1'*40);self.replays.append(fresh)
+        with self.assertRaisesRegex(self.cold.Refusal,'namespace count'):fresh.namespace()
+
+    def test_P4_run_33_and_controller_129_leaves_still_reject(self):
+        replay=self.P4_namespace_fixture(collections=1,run_leaves=33)
+        with self.assertRaisesRegex(self.cold.Refusal,'namespace count'):replay.namespace()
+        replay.h.close()
+        for index in range(129):self.raw(replay.attempt/'controller'/f'leaf-{index:03d}')
+        fresh=self.cold.Replay(self.base,self.base,replay.attempt,'research','1'*40);self.replays.append(fresh)
+        with self.assertRaisesRegex(self.cold.Refusal,'namespace leaf count'):fresh.namespace()
+
+    def test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept(self):
+        import json
+        replay=self.fixture('research')
+        for index in (1,2):
+            descriptor,before=self.P4_mapping_documents(index,large=True)
+            self.assertGreater(descriptor['size_bytes'],1048576);self.assertLessEqual(descriptor['size_bytes'],2097152)
+            self.assertLessEqual(before['size_bytes'],1048576)
+        metadata=self.attempt/'guest/metadata'
+        self.replace_document(metadata/'prelaunch.v1.json',mapped_library_collections=self.collections[:1])
+        final=self.replace_document(metadata/'final-package-pins.v1.json',pins=self.packages,mapped_library_collections=self.collections)
+        run=self.attempt/'guest/run-01-front_gate-default'
+        rows=[json.loads(line) for line in (run/'events.jsonl').read_bytes().splitlines()]
+        loaded=next(row for row in rows if row['kind']=='actual_source_loaded_libraries')
+        mapped=self.decoded(metadata/'mapped-inputs-02-closed.v1.json')
+        loaded.update(mapped_inputs=self.collections[1],libraries=[row['descriptor'] for row in mapped['pin_observations']])
+        self.raw(run/'events.jsonl',b''.join(self.cold.canonical(row)+b'\n' for row in rows));self.reseal_run_leaves(run)
+        terminal=self.decoded(metadata/'research-terminal.v1.json');result=terminal['result']
+        result['final_package_pins']=dict(final,path='/opt/vast/output/metadata/final-package-pins.v1.json')
+        result['runs'][0]['terminal']=dict(path='/opt/vast/output/run-01-front_gate-default/terminal.v1.json',
+            size_bytes=(run/'terminal.v1.json').stat().st_size,sha256=hashlib.sha256((run/'terminal.v1.json').read_bytes()).hexdigest())
+        guest=self.replace_document(metadata/'research-terminal.v1.json',result=result)
+        stdout=self.decoded(self.attempt/'controller/original.stdout');stdout['receipt']=dict(guest,path='/opt/vast/output/metadata/research-terminal.v1.json')
+        self.raw(self.attempt/'controller/original.stdout',self.cold.canonical(stdout)+b'\n')
+        controller=self.decoded(self.attempt/'controller/terminal.v1.json');controller['guest_terminal']=guest
+        replay=self.P4_fresh_replay('research')
+        replay.plan=replay.doc(self.attempt/'controller/execution-plan.v1.json','vast_decoder_research_plan_v1')
+        # Existing mappings and guest source-READY routes: RED is a physical cap Refusal.
+        replay.mappings(dict(mapped_library_collections=self.collections),dict(mapped_library_collections=self.collections[:1]),
+            {row['path']:row for row in self.packages},self.guest_owner,[self.owner(201+i,120) for i in range(4)])
+        completed,pairs=replay.guest(controller)
+        self.assertEqual((len(completed),len(pairs)),(4,64))
+        replay.h.check(True)
+        replay.h.close()
+        # Isolated typed BEFORE admission only: these rows do not claim a
+        # complete pair whose three repeated CLOSED views would fit 2MiB.
+        before=self.decoded(metadata/'mapped-inputs-01.v1.json');before.pop('sha256')
+        rows=[]
+        for row in before['selected_original_rows']:
+            path='/synthetic/libgst_'+('b'*1000)+'.so'
+            rows.append(dict(row,path=path,resolved_path=path,
+                original_row=f'{row["address_start"]:x}-{row["address_end"]:x} r--p 00000000 00:01 9 '+path))
+        before['selected_original_rows']=rows
+        isolated=self.base/'isolated-before-admission';isolated.mkdir()
+        descriptor=self.raw(isolated/'mapped-inputs-01.v1.json',self.cold.canonical(p.seal(before))+b'\n')
+        self.assertGreater(descriptor['size_bytes'],1048576);self.assertLessEqual(descriptor['size_bytes'],2097152)
+        held=self.cold.Held(isolated,time.monotonic()+5)
+        try:
+            actual=held.document(Path(descriptor['path']),'vast_decoder_research_original_mapped_inputs_v1',maximum=2097152)
+            self.assertEqual(actual['selected_original_rows'],rows);held.check(True)
+        finally:held.close()
+
+    def test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow(self):
+        # Exact-size whitespace is an isolated admission boundary, not a
+        # deployed collection or an assertion about original maps cardinality.
+        replay=self.fixture();descriptor,_=self.P4_mapping_documents(closed_size=2097152,before_size=2097152)
+        replay=self.P4_fresh_replay()
+        args=(dict(mapped_library_collections=[descriptor]),dict(mapped_library_collections=[descriptor]),
+            {row['path']:row for row in self.packages},self.guest_owner,[])
+        replay.mappings(*args);replay.h.check(True);replay.h.close()
+        for role in ('closed','before'):
+            with self.subTest(role=role):
+                descriptor,_=self.P4_mapping_documents(closed_size=2097153 if role=='closed' else 2097152,
+                    before_size=2097153 if role=='before' else 2097152)
+                fresh=self.P4_fresh_replay()
+                with self.assertRaisesRegex(self.cold.Refusal,'file/cap|physical cap'):
+                    fresh.mappings(dict(mapped_library_collections=[descriptor]),dict(mapped_library_collections=[descriptor]),
+                        {row['path']:row for row in self.packages},self.guest_owner,[])
+
+    def test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds(self):
+        replay=self.fixture();metadata=self.attempt/'guest/metadata';packages={row['path']:row for row in self.packages}
+        general=self.document(metadata/'general.v1.json','synthetic_general',padding='x'*1048576)
+        with self.assertRaisesRegex(self.cold.Refusal,'file/cap'):replay.doc(Path(general['path']),'synthetic_general')
+        replay.h.close();Path(general['path']).unlink()
+        descriptor=self.collections[0];path=metadata/'mapped-inputs-01-closed.v1.json';original=path.read_bytes()
+        wrong=self.replace_document(path,artifact_kind='synthetic_foreign_kind');wrong=dict(wrong,path=descriptor['path'])
+        fresh=self.P4_fresh_replay()
+        with self.assertRaisesRegex(self.cold.Refusal,'document kind'):
+            fresh.mappings(dict(mapped_library_collections=[wrong]),dict(mapped_library_collections=[wrong]),packages,self.guest_owner,[])
+        fresh.h.close();self.raw(path,original)
+        for alternate in ('/foreign/metadata/'+path.name,'/opt/vast/output/metadata/alternate-closed.v1.json'):
+            changed=dict(descriptor,path=alternate);fresh=self.P4_fresh_replay()
+            with self.assertRaisesRegex(self.cold.Refusal,'closed mapping collections|foreign guest path'):
+                fresh.mappings(dict(mapped_library_collections=[changed]),dict(mapped_library_collections=[changed]),packages,self.guest_owner,[])
+        for name in ('mapped-inputs-15.v1.json','mapped-inputs-1.v1.json'):
+            with self.subTest(orphan_before=name):
+                fresh=self.P4_fresh_replay();self.raw(metadata/name,b'original orphan BEFORE bytes')
+                with self.assertRaisesRegex(self.cold.Refusal,'before mapping collections'):
+                    fresh.mappings(dict(mapped_library_collections=[descriptor]),dict(mapped_library_collections=[descriptor]),packages,self.guest_owner,[])
+                fresh.h.close();(metadata/name).unlink()
+
+
 if __name__=='__main__':unittest.main(verbosity=2)
