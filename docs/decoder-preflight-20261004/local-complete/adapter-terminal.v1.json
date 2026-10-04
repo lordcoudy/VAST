@@ -1,0 +1,66 @@
+{
+  "acquired_logs": [
+    "stdout",
+    "stderr"
+  ],
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+    "--v6-child",
+    "/home/s-a-balashov/work/vast-decoder-v6-fixtures-20261004-local02/vast-cpu-checks/decoder-v6-fixtures/attempt-94f95a53d6ea4c1bb2f890876e82f711"
+  ],
+  "artifact_kind": "vast_decoder_v6_fixture_capture_v1",
+  "child_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 28817,
+    "pid": 28817,
+    "ppid": 28806,
+    "sid": 28817,
+    "starttime_ticks": 59764221,
+    "uid": 1000
+  },
+  "child_reaped": true,
+  "cleanup_elapsed_s": 1.5941156420158222,
+  "close_errors": [],
+  "elapsed_s": 52.73531899799127,
+  "failure": null,
+  "failure_type": null,
+  "logs_closed": true,
+  "pid": 28817,
+  "provisional_until_owner_final_close": true,
+  "research_executed": false,
+  "returncode": 0,
+  "signal_observation": null,
+  "stderr": {
+    "epoch": [
+      2096,
+      86014,
+      33188,
+      1,
+      89304,
+      1791115356510964400,
+      1791115356510964400
+    ],
+    "path": "/home/s-a-balashov/work/vast-decoder-v6-fixtures-20261004-local02/vast-cpu-checks/decoder-v6-fixtures/attempt-94f95a53d6ea4c1bb2f890876e82f711/original.stderr",
+    "sha256": "32d28b4ba5ed8654b2d0a7c5fe7112b9ef9837a0c0ccbca977fce4c003864a9e",
+    "size_bytes": 89304
+  },
+  "stdout": {
+    "epoch": [
+      2096,
+      46248,
+      33188,
+      1,
+      8448,
+      1791115356506964130,
+      1791115356506964130
+    ],
+    "path": "/home/s-a-balashov/work/vast-decoder-v6-fixtures-20261004-local02/vast-cpu-checks/decoder-v6-fixtures/attempt-94f95a53d6ea4c1bb2f890876e82f711/original.stdout",
+    "sha256": "64accf6afeff3116e507aa1140a8e2509b1aa75bba33b952483cea3ea140ac1b",
+    "size_bytes": 8448
+  },
+  "successful": false
+}

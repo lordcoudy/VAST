@@ -1,3 +1,25 @@
+<!-- CURRENT BENCHMARK RECOVERY 2026-10-04: fix-decoder-preflight -->
+# Актуальный план и прогресс — 4 октября 2026
+
+PR3 фактически завершён: архив, conformance 4/12, CI точного E и независимое финальное ревью закрыты; merge 1ab80035c30f6a4f78d2b1aa7be4743288c3721d выполнен 2026-10-04T09:55:55Z и подтверждён remote master. [PR3](https://github.com/lordcoudy/VAST/pull/3) хранит реальные переходы, отрицательный результат 100 мс и ограничения. Это завершение диагностического этапа; общая задача сделать benchmark осмысленным продолжается.
+
+Активное изменение: **fix-decoder-preflight**, ветка codex/fix-decoder-preflight, [Draft PR4](https://github.com/lordcoudy/VAST/pull/4). Спека точного P 3aa35c3b2eedc05d22cf16ba37d470143d080f6b прошла независимое ревью без блокеров; review5405414454 записан до кода. [33 задачи](C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/tasks.md), [design](C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/design.md).
+
+Прогресс этого снимка: **17/33**. Исправлены mapped backing/owner/epoch guards, режимы и P/S binding, независимый cold observer и ресурсные/causal/schema ошибки из review. Полный исправленный adapter:12 root tests /150 nested cases (66 inherited+84 new), все success,0 skips/errors/failures; actual32e484/rc0. Исторические26 файлов сохранили полные SHA/epochs, child reaped, обе реальные15s проверки выполнены, source15 stable. Прежний143 GREEN и DrVFS failure сохранены с исходной областью доказательств. [Текущие evidence](C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/implementation-progress.v4.md). Source S, actual V6 hosted CI, exact-S dispatch review, metadata/cold acceptance и research ещё не выполнены; они остаются следующими воротами. Capture helper43864 независимо review PASS. Оригинальные попытки01–05 остаются runs0/result null и прежними false/null cleanup полями.
+
+Последовательность выполнения:
+
+1. Исправить общий held-FD readonly backing join для fresh/cache, строгие owner/VMA/epoch/cleanup checks и cached size+SHA; показать реальные RED и GREEN.
+2. Исправить P/S/H и отдельные physical/review roots; ввести обязательные sealed metadata-only/research modes с правдивыми provisional/post-close predicates.
+3. Запустить все66 inherited и новые regressions через isolated CI adapter; завершить source review и required CI на точном S.
+4. Подготовить отдельный ext4 checkout S, один metadata-only preflight без AU/source/pipeline/run и независимый cold read. Лишь после успешной проверки — отдельный review и одна неизменная four×32-AU research попытка с независимым raw replay.
+5. По фактическим данным завершить conformance, current docs, sync/archive и final latest-head review в том же PR4.
+
+Новый стратегический маршрут после V6: отдельная рассмотренная задача на сохранение existing worker clocks/process CPU и измерение client/route lock waits. Shared branches используют общий client с mutex через send→recv; это подтверждённый source mechanism, но его численный вклад ещё неизвестен. Затем нужен небольшой заранее заданный end-to-end capacity/arrival-rate study с counterbalanced repetitions и losses/latency/throughput до большой матрицы. Он не заменяет невыполненные старые обязательства и не обещает положительный100ms SLO.
+
+Full32 qualification/Q4/5600 arms, девять physical integrations и scientific/publication eligibility остаются unexecuted/false. Основной dirty checkout сохранён; рабочая реализация находится в отдельном managed worktree. Снимки ниже сохраняют прежний текст полностью и не задают актуальный статус.
+<!-- END CURRENT BENCHMARK RECOVERY 2026-10-04 -->
+
 
 ## Фактический этап — 4 октября 2026
 

@@ -1,0 +1,496 @@
+{
+  "Git_source_fixture_tasks_mutations_performed": false,
+  "accepted": false,
+  "approved_P_raw_blob_pins": [
+    {
+      "git_blob_sha1": "aec2f46ea26cd6558353496ab020f9193cea8a2c",
+      "git_path": "openspec/changes/fix-decoder-preflight/proposal.md",
+      "lines": 26,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-review-v3-planning/proposal.raw",
+      "planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+      "raw_supported_git_read": true,
+      "sha256": "e77529520f6467d9deca20fcfe1a891f13c6a882cbf74f36ec948c8a3edcd177",
+      "size_bytes": 2948
+    },
+    {
+      "git_blob_sha1": "9db11db33303e9c19d1484d7d665bfb32ea2bd86",
+      "git_path": "openspec/changes/fix-decoder-preflight/design.md",
+      "lines": 117,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-review-v3-planning/design.raw",
+      "planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+      "raw_supported_git_read": true,
+      "sha256": "814a9593f53854195f5eba408a7f737f7b51b9fd7665ef142ea8e9e559d786a6",
+      "size_bytes": 28405
+    },
+    {
+      "git_blob_sha1": "ae7218708255825034c3ef64fd80ac86a09fcf85",
+      "git_path": "openspec/changes/fix-decoder-preflight/tasks.md",
+      "lines": 56,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-review-v3-planning/tasks.raw",
+      "planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+      "raw_supported_git_read": true,
+      "sha256": "73f0c1ee5acd1e105a681a0dfbd80e76e50cd522e6a6894f4518799fc9daeb92",
+      "size_bytes": 10948
+    },
+    {
+      "git_blob_sha1": "7c7135af8a7dde5e8cb420eded53754a46b22a8c",
+      "git_path": "openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "lines": 92,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-review-v3-planning/spec.raw",
+      "planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+      "raw_supported_git_read": true,
+      "sha256": "7aac212b3904bc1b42eb8a93f72e03c28503a8bee8c5f2ef4989aadf8a7ec64e",
+      "size_bytes": 15625
+    }
+  ],
+  "approved_planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+  "benchmark_arm_count": 0,
+  "blocking_findings": [],
+  "change_name": "fix-decoder-preflight",
+  "checks": [
+    {
+      "contract": "P design4/9; exact planning/source and independent dispatch bytes",
+      "facts": "Required lowercase40hex S/64hex external helper SHA; canonical CPython3.12.3 -I -B; fixed historical physical root remains separate from actual supported review Git root. P/S exact commit objects, P ancestor S, S ancestor current H and four raw P blob constants are checked. All3 runtime and1 tracked observer blobs at S are bounded and physically size/SHA/epoch joined; no current tasks equality or historical Git-directory dependency. External helper hash is separately supplied, not an S self-reference.",
+      "helper_lines": [
+        236,
+        257,
+        344,
+        375
+      ],
+      "id": "CAP-V3-01",
+      "result": "PASS"
+    },
+    {
+      "contract": "P design4 bounded supported Git",
+      "facts": "Held /usr/bin/git uses supported -C, no-replace-objects, gc.auto0/maintenance.autofalse/core.longpaths true. Every command shares remaining whole deadline and5s bound; stdout actual stream<=caller cap<=1MiB, stderr<=65536. Raw size prechecks do not replace stream admission; rc, bothEOF, close errors and stderr are checked. Four raw P constants match independently read approved Git blobs. Controller, rather than external helper, owns the required physical P copies inside its closed evidence.",
+      "helper_lines": [
+        327,
+        336,
+        361
+      ],
+      "id": "CAP-V3-02",
+      "result": "PASS"
+    },
+    {
+      "contract": "P design9 exact owned external child and failure containment",
+      "facts": "Both pipe objects register before fallible owner observation/callback. Initial PPID/current parent plus PGID/SID equal new-session PID; current complete PID/PPID/startticks/UID/GID/boot/PGID/SID must equal the original still-unreaped direct child before each signal. Only this PID is signaled; owner unavailable/changed grants no signal. Normal completed/reaped child gets no signal. Containment remains failed, is bounded<=15s, and asserts no Docker/descendant/global quiescence.",
+      "helper_lines": [
+        140,
+        145,
+        191,
+        202,
+        213
+      ],
+      "id": "CAP-V3-03",
+      "result": "PASS"
+    },
+    {
+      "contract": "P original channel and clock caps",
+      "facts": "Concurrent nonblocking binary drain retains only allowed prefix, reads a one-byte surplus sentinel at the channel limit, records observed unretained byte/hash facts, and rejects overflow. Original stdout/stderr are written to owned files without duplicate full memory capture. Both EOF and original return are necessary. Deadline/cancellation/late final close remain failure; failure containment grants no successful extra time.",
+      "helper_lines": [
+        155,
+        160,
+        166,
+        177,
+        221
+      ],
+      "id": "CAP-V3-04",
+      "result": "PASS"
+    },
+    {
+      "contract": "P first-cause and retirement facts",
+      "facts": "Read/document/source primary exception survives subsequent real retirement fault via explicit cleanup attribute and note. Initial capture, failed containment, main and final-custody catches transfer that attribute. All successfully acquired source/ancestor/raw/pipe resources remain registered and all final retirement attempts continue; unavailable/failed retirement stays error and cannot make successful receipt. Exactly89-byte final change transfers missing containment cleanup attrs.",
+      "helper_lines": [
+        49,
+        62,
+        105,
+        187,
+        209,
+        278,
+        408,
+        410,
+        426
+      ],
+      "id": "CAP-V3-05",
+      "result": "PASS"
+    },
+    {
+      "contract": "P once-only modes, source freeze and whole600s",
+      "facts": "Required metadata-only/research mode selects separate fixed prescribed attempt/original namespaces; missing/consumed namespace refuses without retry/output override. Whole600s starts before held-source/Git preparation. Full streaming source rehash and seven-field FD/named epochs plus ancestors are checked before launch and during final custody; all_source_epochs_rechecked only becomes true on that actual success. Signals, source drift, EOF/close/cap/time failures prevent external_capture_completed/rc0.",
+      "helper_lines": [
+        257,
+        275,
+        310,
+        375,
+        437,
+        465,
+        475
+      ],
+      "id": "CAP-V3-06",
+      "result": "PASS"
+    },
+    {
+      "cold_reader_lines": [
+        643,
+        677,
+        713
+      ],
+      "contract": "P provisional terminal plus original post-close tool authority",
+      "facts": "Outer launch/start/terminal bind actual argv/P/S/H/roots/mode/owner/source/interpreter/helper and closed original log descriptors. Terminal explicitly provisional_until_owner_final_close; after physical terminal close, late companion blocks success. Actual flushed outer console plus final original tool rc0 is a separate required cold dependency. A terminal body never certifies its own last stdout close; null container_cleanup_verified/container_oom_observed are preserved.",
+      "helper_lines": [
+        383,
+        394,
+        441,
+        461,
+        465,
+        471
+      ],
+      "id": "CAP-V3-07",
+      "result": "PASS"
+    },
+    {
+      "cold_reader_lines": [
+        643,
+        651,
+        671,
+        697,
+        705,
+        713,
+        724
+      ],
+      "contract": "P design8/9 independent external/schema joins",
+      "facts": "Final bac458 cold reader checks exact external five-leaf closed namespace, P/S/H/roots/mode, original rc0, EOF/close/signals/cap/timeout/failure/containment predicates, original tool exec/write_stdin session/order/finalrc0/untruncated bounded console and receipt physical hash. It joins exact controller argv/owner, S runtime+observer source set, external independently supplied helper hash, interpreter/source final epochs, and actual controller post-close stdout. Controller-owned container cleanup is replayed separately; this review does not approve the entire cold implementation.",
+      "id": "CAP-V3-08",
+      "result": "PASS"
+    },
+    {
+      "contract": "Concrete fixture verification, not deployment",
+      "facts": "Actual17 started+terminal IDs, AST inventory, stdout per-case outcomes, report source before/after and original returned tool7e216d rc0 all join. Genuine tiny CPython children/native pipe/regular file/custody and disposable native Git fixtures cover concurrency/cap/deadline/cancel/receipt/source-drift/foreign digest/progress+archive/mode+once and first-cause/retirement faults. Distinct test authority is substituted only in disposable isolated fixture imports. New containment fixture leaves unverified-owner child unsignaled; fixture then separately re-observes and reaps its genuine original child.",
+      "fixture_lines": [
+        36,
+        122,
+        139,
+        152,
+        206,
+        269,
+        322,
+        347
+      ],
+      "id": "CAP-V3-09",
+      "result": "PASS"
+    }
+  ],
+  "closed_prior_findings": [
+    {
+      "evidence": "Real regular-file overflow/fsync/source mismatch primary errors plus separately retained cleanup; original RED3 failures2/errors1→GREEN16 preserved.",
+      "id": "CAPTURE-F1",
+      "status": "closed_in_exact43864"
+    },
+    {
+      "added_line": 209,
+      "evidence": "Genuine canceled owned child, second owner read overflow and real FD close plus injected EBADF-shaped failure; new RED1 failure1 before fix→GREEN17, no signal on unavailable owner and separate fixture reap.",
+      "id": "CAPTURE-F1-containment",
+      "patch_bytes": 89,
+      "status": "closed_in_exact43864"
+    }
+  ],
+  "cold_external_schema_reference": {
+    "lines": 1194,
+    "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+    "sha256": "bac45859fde1343c15d2383ec8cb232fb029030ec2644589cb5a72c1cb2652eb",
+    "size_bytes": 86164
+  },
+  "five_axis_summary": {
+    "architecture": "External exact pinned dispatch remains separate from S and Docker custody; no new framework/producer imports.",
+    "correctness": "All helper scope checks pass exact approved P and prior blockers closed.",
+    "performance": "Bounded streaming files/channels/Git commands/shared clocks; no source/model/research launched by review.",
+    "readability": "Small479-line standalone fixed-purpose capture helper; narrow89-byte follow-up has explicit first-cause semantics.",
+    "security": "Strict named/held executable/source identities, supported exact raw Git, explicit once namespaces and exact original-child signal predicates."
+  },
+  "fixture_original_facts": {
+    "decoder_or_metadata_original_operations": 0,
+    "executed_or_replayed_by_this_reviewer": false,
+    "original_containment_RED1": {
+      "chunk_id_parent_reported": "35bb9f",
+      "errors": 0,
+      "exit_code_parent_reported": 1,
+      "failures": 1,
+      "limitation": "Report/source pins physically read and parent transcript reference preserved; no unavailable original-tool object is manufactured or claimed independently read.",
+      "machine_original_tool_object_saved": false,
+      "report": {
+        "lines": 1,
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-fixtures-containment-red01.v1.json",
+        "sha256": "3b4fd0a6f36fdf004000ebe13847ceb2abc20b5180f3af73355b8e35e5a3ba80",
+        "size_bytes": 1010
+      },
+      "tests_run": 1
+    },
+    "original_retirement_RED3_GREEN16": {
+      "GREEN_chunk": "e2ce20",
+      "GREEN_exit_code": 0,
+      "GREEN_successes": 16,
+      "GREEN_tests": 16,
+      "RED_chunk": "1812cf",
+      "RED_errors": 1,
+      "RED_exit_code": 1,
+      "RED_failures": 2,
+      "RED_tests": 3,
+      "physical_tool_records": {
+        "lines": 86,
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/integration-and-retirement-original-tools.v1.json",
+        "sha256": "b1327a918f57bcae4450ced740b5f28560675819907d2805e606f474bea195a3",
+        "size_bytes": 31103
+      }
+    },
+    "original_whole17_GREEN": {
+      "IDs": [
+        "__main__.CaptureTests.test_bounded_read_rejects_overflow_and_document_is_exclusive",
+        "__main__.CaptureTests.test_concurrent_original_binary_channels_and_exact_owner",
+        "__main__.CaptureTests.test_deadline_is_failure_with_owned_reap_and_no_restart",
+        "__main__.CaptureTests.test_failed_containment_preserves_owner_read_retirement_companion",
+        "__main__.CaptureTests.test_fsync_primary_survives_real_close_then_error",
+        "__main__.CaptureTests.test_nonzero_keeps_raw_prefix_and_closed_eof_without_promotion",
+        "__main__.CaptureTests.test_raw_file_capture_does_not_duplicate_channels_in_memory",
+        "__main__.CaptureTests.test_read_overflow_primary_survives_real_close_then_error",
+        "__main__.CaptureTests.test_real_supported_git_capture_is_bounded_and_closed",
+        "__main__.CaptureTests.test_signal_cancellation_remains_failed_containment",
+        "__main__.CaptureTests.test_start_receipt_failure_still_retires_pipes_and_owned_child",
+        "__main__.CaptureTests.test_streaming_sentinel_never_retains_beyond_cap",
+        "__main__.MainFixtureTests.test_foreign_capture_hash_blocks_before_original_child",
+        "__main__.MainFixtureTests.test_planning_archive_progress_keeps_raw_P_authority_and_modes",
+        "__main__.MainFixtureTests.test_research_uses_separate_once_namespace_and_explicit_mode",
+        "__main__.MainFixtureTests.test_source_drift_blocks_launch_and_keeps_failed_terminal",
+        "__main__.MainFixtureTests.test_source_mismatch_primary_and_close_error_are_separate_facts"
+      ],
+      "actual_original_source_before_after_stable": true,
+      "chunk_id": "7e216d",
+      "elapsed_s_report": 0.6942143680062145,
+      "errors": 0,
+      "exit_code": 0,
+      "expected_failures": 0,
+      "failures": 0,
+      "report": {
+        "lines": 1,
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-fixtures-containment-green01.v1.json",
+        "sha256": "8ad4efdffa045447fcfdee19c7745f5b5b029953c01ec5145558ead78b6d5d6e",
+        "size_bytes": 4449
+      },
+      "skips": 0,
+      "successes": 17,
+      "tests_run": 17,
+      "tool": {
+        "lines": 14,
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-fixtures-containment-green01.original-tool.v1.json",
+        "sha256": "9e4f5405b06fb4c39c1daf3bd288e90f4520ffb79dcd612ea4d06d14b02b92a7",
+        "size_bytes": 4339
+      },
+      "tool_wall_time_seconds": 1.610436,
+      "unexpected_successes": 0,
+      "unique_started_terminal_IDs": 17
+    }
+  },
+  "full_byte_and_JSON_reads": [
+    {
+      "lines": 127,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-independent-review.v1.json",
+      "sha256": "2b53121ee61fc08314e50f423fdedb95bdcf7c69d930728776b98fc4bd87cd28",
+      "size_bytes": 8992
+    },
+    {
+      "lines": 131,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-independent-review.v2.json",
+      "sha256": "bec9fc531212760ed5139b2b7f9c464e8503ce001534c65e57d9f81bd55271d9",
+      "size_bytes": 8637
+    },
+    {
+      "lines": 452,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture_original_v6.f75.before-retirement.py",
+      "sha256": "f75eb576fc01e08d5bc8c201842a1101bf0cfb42327fa6ac20875750891466cd",
+      "size_bytes": 24662
+    },
+    {
+      "lines": 478,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture_original_v6.e0c9.before-containment.py",
+      "sha256": "e0c97d696f94600b85c11a1056d94ae0c9b8b69f920f77744fc539ec5a82b511",
+      "size_bytes": 25710
+    },
+    {
+      "lines": 1,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-fixtures-retirement-red01.v1.json",
+      "sha256": "86ca65f098df809fe5a8a4272f7ca81e7ad7b35ddfe6c3c56c57ff798748033e",
+      "size_bytes": 1422
+    },
+    {
+      "lines": 1,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-fixtures-retirement-green01.v1.json",
+      "sha256": "3f2feb84d107a7a758745f7d18c15e393e8ca75a77855d29044cb7114f2e5e5b",
+      "size_bytes": 4220
+    },
+    {
+      "lines": 1,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-fixtures-containment-red01.v1.json",
+      "sha256": "3b4fd0a6f36fdf004000ebe13847ceb2abc20b5180f3af73355b8e35e5a3ba80",
+      "size_bytes": 1010
+    },
+    {
+      "lines": 1,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-fixtures-containment-green01.v1.json",
+      "sha256": "8ad4efdffa045447fcfdee19c7745f5b5b029953c01ec5145558ead78b6d5d6e",
+      "size_bytes": 4449
+    },
+    {
+      "lines": 14,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-fixtures-containment-green01.original-tool.v1.json",
+      "sha256": "9e4f5405b06fb4c39c1daf3bd288e90f4520ffb79dcd612ea4d06d14b02b92a7",
+      "size_bytes": 4339
+    },
+    {
+      "lines": 86,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/integration-and-retirement-original-tools.v1.json",
+      "sha256": "b1327a918f57bcae4450ced740b5f28560675819907d2805e606f474bea195a3",
+      "size_bytes": 31103
+    }
+  ],
+  "full_text_reads": [
+    {
+      "lines": 479,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture_original_v6.py",
+      "sha256": "43864a7a27c2647d4d968ab0e2eee63ec7e2ccabdbb9e4474d53f1ebf240d063",
+      "size_bytes": 25799
+    },
+    {
+      "lines": 384,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/test_original_capture_v6.py",
+      "sha256": "2e77ed51ef3212219a09c590fc69035f39cf29d6f56d3a19bb7d27de57451afb",
+      "size_bytes": 21867
+    },
+    {
+      "lines": 1194,
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "sha256": "bac45859fde1343c15d2383ec8cb232fb029030ec2644589cb5a72c1cb2652eb",
+      "size_bytes": 86164
+    },
+    {
+      "git_blob_sha1": "aec2f46ea26cd6558353496ab020f9193cea8a2c",
+      "git_path": "openspec/changes/fix-decoder-preflight/proposal.md",
+      "lines": 26,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-review-v3-planning/proposal.raw",
+      "planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+      "raw_supported_git_read": true,
+      "sha256": "e77529520f6467d9deca20fcfe1a891f13c6a882cbf74f36ec948c8a3edcd177",
+      "size_bytes": 2948
+    },
+    {
+      "git_blob_sha1": "9db11db33303e9c19d1484d7d665bfb32ea2bd86",
+      "git_path": "openspec/changes/fix-decoder-preflight/design.md",
+      "lines": 117,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-review-v3-planning/design.raw",
+      "planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+      "raw_supported_git_read": true,
+      "sha256": "814a9593f53854195f5eba408a7f737f7b51b9fd7665ef142ea8e9e559d786a6",
+      "size_bytes": 28405
+    },
+    {
+      "git_blob_sha1": "ae7218708255825034c3ef64fd80ac86a09fcf85",
+      "git_path": "openspec/changes/fix-decoder-preflight/tasks.md",
+      "lines": 56,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-review-v3-planning/tasks.raw",
+      "planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+      "raw_supported_git_read": true,
+      "sha256": "73f0c1ee5acd1e105a681a0dfbd80e76e50cd522e6a6894f4518799fc9daeb92",
+      "size_bytes": 10948
+    },
+    {
+      "git_blob_sha1": "7c7135af8a7dde5e8cb420eded53754a46b22a8c",
+      "git_path": "openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "lines": 92,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-review-v3-planning/spec.raw",
+      "planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+      "raw_supported_git_read": true,
+      "sha256": "7aac212b3904bc1b42eb8a93f72e03c28503a8bee8c5f2ef4989aadf8a7ec64e",
+      "size_bytes": 15625
+    },
+    {
+      "lines": 127,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-independent-review.v1.json",
+      "sha256": "2b53121ee61fc08314e50f423fdedb95bdcf7c69d930728776b98fc4bd87cd28",
+      "size_bytes": 8992
+    },
+    {
+      "lines": 131,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture-independent-review.v2.json",
+      "sha256": "bec9fc531212760ed5139b2b7f9c464e8503ce001534c65e57d9f81bd55271d9",
+      "size_bytes": 8637
+    }
+  ],
+  "helper_author": "/root",
+  "human_approval": false,
+  "independent_of_helper_author": true,
+  "kind": "independent_external_original_capture_helper_exact_hash_review_v3",
+  "limitations": [
+    "Static exact-source review and existing actual fixture/tool record read only; no independent replay and no original metadata/research/hardware dispatch.",
+    "Only this external helper/fixture hash receives review PASS. Full V6 source S, conformance, full66+new adapter/hosted CI, final archive/merge and separate dispatch checkpoints remain outside this verdict.",
+    "No source-image equivalence, overlay backing deployment, distinct source-PID library observation, decoder timing, container/global absence or scientific acceptance is inferred.",
+    "Terminal success remains provisional until actual trusted original post-close tool/console and mode-specific closed cold evidence; unavailable own-final-close facts remain unavailable.",
+    "Original v1/v2 FAIL receipts, old source snapshots, RED failures and failed full-adapter facts are preserved and not relabelled.",
+    "The actual current native canonical Python path is regular and resolves to the expected literal; platform adaptation is not supplied."
+  ],
+  "model_or_parity_evidence": false,
+  "native_pair_count": 0,
+  "publication_ready": false,
+  "qualification_count": 0,
+  "read_only_verification_tools": {
+    "all_review_handles_released_before_receipt": true,
+    "candidate_source_read_chunk": "5c227b",
+    "exact_pin_recheck_chunk": "65fb5e",
+    "hash_AST_JSON_and_tool_report_join": "Readonly canonical CPython3.12.3 -I -B parser; candidate/fixture/producer/observer modules never imported or executed.",
+    "raw_P": "Supported native /usr/bin/git -c gc.auto=0 -c maintenance.auto=false -c core.longpaths=true --no-replace-objects -C /mnt/e/STUDY/VAST show exactP:path;5s/<=1MiB stdout/<=65536 stderr per command; exclusive raw copies only."
+  },
+  "review_scope": "External helper exact43864 and fixture exact2e77 only; source-grounded cold external-schema compatibility with exactbac458 under raw reviewed P. No full S/CI/deployment/scientific/merge approval.",
+  "reviewed_at_UTC": "2026-10-04T11:25:59.104868+00:00",
+  "reviewed_capture_source": {
+    "lines": 479,
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture_original_v6.py",
+    "sha256": "43864a7a27c2647d4d968ab0e2eee63ec7e2ccabdbb9e4474d53f1ebf240d063",
+    "size_bytes": 25799
+  },
+  "reviewed_fixture_source": {
+    "lines": 384,
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/test_original_capture_v6.py",
+    "sha256": "2e77ed51ef3212219a09c590fc69035f39cf29d6f56d3a19bb7d27de57451afb",
+    "size_bytes": 21867
+  },
+  "reviewer": "/root/latency_diagnosis",
+  "reviewer_prior_V6_controller_authorship_disclosed": true,
+  "schema_version": 1,
+  "source_CI_deployment_scientific_approval": false,
+  "source_review_pass": true,
+  "unpromoted_prior_integration_facts": {
+    "discovery": {
+      "all": 143,
+      "chunk_id": "4d82da",
+      "exit_code": 0,
+      "inherited": 66,
+      "new": 77,
+      "tests_executed": 0
+    },
+    "failed_full_adapter": {
+      "elapsed_s_stdout": 120.062,
+      "exit_code": 1,
+      "is_GREEN": false,
+      "is_full_suite_completion": false,
+      "root_failures": 1,
+      "root_tests_run": 1,
+      "session_id": 74595,
+      "terminal_chunk": "154dee"
+    },
+    "physical_record": {
+      "lines": 86,
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/integration-and-retirement-original-tools.v1.json",
+      "sha256": "b1327a918f57bcae4450ced740b5f28560675819907d2805e606f474bea195a3",
+      "size_bytes": 31103
+    }
+  },
+  "verdict": "PASS",
+  "written_only_exclusive_external_review_and_authorized_raw_P_copies": true
+}

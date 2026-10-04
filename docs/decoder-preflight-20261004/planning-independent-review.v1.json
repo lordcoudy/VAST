@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "independent_exact_commit_decoder_preflight_planning_review_v1",
+  "reviewer": "/root/decision28_source_peer",
+  "reviewed_at_utc": "2026-10-04T09:47:57.775836+00:00",
+  "change_name": "fix-decoder-preflight",
+  "reviewed_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+  "parent_commit": "b5105ed2e00622c328d159e7c80a0f59168ed646",
+  "review_repository_root": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+  "planning_disposition": "approve",
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewer_handles_released": true,
+  "owned_source_pins": [
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/proposal.md",
+      "size_bytes": 2948,
+      "sha256": "e77529520f6467d9deca20fcfe1a891f13c6a882cbf74f36ec948c8a3edcd177",
+      "repository_path": "openspec/changes/fix-decoder-preflight/proposal.md",
+      "raw_commit_blob_equal": true,
+      "git_blob_oid": "aec2f46ea26cd6558353496ab020f9193cea8a2c"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/design.md",
+      "size_bytes": 28405,
+      "sha256": "814a9593f53854195f5eba408a7f737f7b51b9fd7665ef142ea8e9e559d786a6",
+      "repository_path": "openspec/changes/fix-decoder-preflight/design.md",
+      "raw_commit_blob_equal": true,
+      "git_blob_oid": "9db11db33303e9c19d1484d7d665bfb32ea2bd86"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/tasks.md",
+      "size_bytes": 10948,
+      "sha256": "73f0c1ee5acd1e105a681a0dfbd80e76e50cd522e6a6894f4518799fc9daeb92",
+      "repository_path": "openspec/changes/fix-decoder-preflight/tasks.md",
+      "raw_commit_blob_equal": true,
+      "git_blob_oid": "ae7218708255825034c3ef64fd80ac86a09fcf85"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "size_bytes": 15625,
+      "sha256": "7aac212b3904bc1b42eb8a93f72e03c28503a8bee8c5f2ef4989aadf8a7ec64e",
+      "repository_path": "openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "raw_commit_blob_equal": true,
+      "git_blob_oid": "7c7135af8a7dde5e8cb420eded53754a46b22a8c"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/.openspec.yaml",
+      "size_bytes": 40,
+      "sha256": "ad734da2ba5f4c5a6979a8bbb6bad4db20fb21ec275ceca5f24842fbdfaf5bef",
+      "repository_path": "openspec/changes/fix-decoder-preflight/.openspec.yaml",
+      "raw_commit_blob_equal": true,
+      "git_blob_oid": "f98e139fb307ee57d69f587d7c892ef2ff4575e0"
+    }
+  ],
+  "review_scope": "Full proposal, design, delta spec and tasks; source-grounded setup and scientific-boundary correctness review plus separate ponytail-review complexity pass. No source/test/CI implementation review or deployment acceptance.",
+  "protection": {
+    "exact_commit_changes_only_five_added_planning_paths": true,
+    "planning_physical_raw_commit_equal": true,
+    "33_tasks_all_unchecked": true,
+    "original_R15_verbatim_bytes": 5908,
+    "original_R15_sha256": "872b076de7b01ae0b9d6d8fabc02f49e52efb2db983eb28c0dad2fc39883be52",
+    "original_scenarios": 10,
+    "new_scenarios": 12,
+    "delta_scenarios": 22,
+    "unchanged_main_requirements": 20,
+    "unchanged_main_scenarios": 118,
+    "unchanged_main_and_archive_physical_leaves": 26,
+    "protected_pin_inventory_sha256": "84c52b12f98294b71c76672c84ee3af6aaf1cacb1fe8f4e8fe6a7ecf3cf41c72",
+    "both_main_specs_and_all24_archived_leaves_equal_physical_P_and_parent": true,
+    "untracked_openspec_config_excluded_from_reviewed_commit": true
+  },
+  "considered_evidence": {
+    "planning_seams": {
+      "path": "E:/STUDY/VAST/tmp/latency-diagnostics-ci-20261004/decoder-successor-planning-seams.v1.md",
+      "size_bytes": 34647,
+      "sha256": "28a7e4cba09c5e1c9c201cd9c4ef6e7cbc40f5f84186ae2ac998f4c7506be3cd"
+    },
+    "prior_original_attempt05_diagnosis": {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/latency-diagnostics-20261004/decoder-attempt05-setup-review.v1.json",
+      "size_bytes": 8813,
+      "sha256": "20ec05aa47ee294786f5fc866ccc2b65c6a78115e70e9a9964266684eff04dae"
+    },
+    "all11_prior_diagnosis_leaf_pins_freshly_equal": true,
+    "V5_physical_source_test_pins": [
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/controller.py",
+        "size_bytes": 36891,
+        "sha256": "aeb2b5d8a87b98855c1e7170eb12c0622f080592fad6d4292507f830e76ec852"
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/guest_consumer.py",
+        "size_bytes": 53980,
+        "sha256": "0c2457e022fac923a04b970bb838a2bbac921d39a608c0171a5869606ce163fa"
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/research_protocol.py",
+        "size_bytes": 26513,
+        "sha256": "cbf5820bfc0cccc129ff02f6c14c1e724983843a4576e506f25075b70624a8fe"
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/README.md",
+        "size_bytes": 15010,
+        "sha256": "80a681b77aef141fb9fb8659579e5ec6b1437df53526b471f570d907fbae29b7"
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_research_protocol.py",
+        "size_bytes": 17449,
+        "sha256": "2dbcec646c9d641f93ccbac4b633ad3513f5e2eb37161f6f9abdb39717255a45"
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_setup_v2.py",
+        "size_bytes": 17070,
+        "sha256": "f2b44bb02e30abfa502d61dcd754900149a009d62b51f7558839c9a760a79f23"
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_pin_diagnostics_v3.py",
+        "size_bytes": 11350,
+        "sha256": "87a79b11e9b6861bb24aed5b05597e72d267b94931cfddfc474e5c4957983935"
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_mapped_inputs_v4.py",
+        "size_bytes": 11433,
+        "sha256": "831cbd07388af9994d2684ab2248e299c95b29ee4ad799f26375d603b2f2f986"
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v5/test_preflight_diagnostics_v5.py",
+        "size_bytes": 11787,
+        "sha256": "a6fb3f264fbc41be2f92ac1a9991a98f7b0779039a66ed77d310c49a124cae23"
+      }
+    ],
+    "inherited_test_method_counts": {
+      "test_research_protocol.py": 20,
+      "test_setup_v2.py": 15,
+      "test_pin_diagnostics_v3.py": 10,
+      "test_mapped_inputs_v4.py": 13,
+      "test_preflight_diagnostics_v5.py": 8
+    },
+    "inherited66_sorted_method_ids_sha256": "ba26abd220eabbbe48f67daf7bf7e56676ea75d5c38375ee44a04a1a23a0aae0",
+    "original_guest_terminals": [
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-attempt-01/guest/metadata/research-terminal.v1.json",
+        "size_bytes": 538,
+        "sha256": "9cfe4f7ddf6397cd1c37f506e1e8f785a284a8d3b8816db428e64a667cda3c52",
+        "attempt": 1,
+        "runs_completed": 0,
+        "result": null
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-attempt-02/guest/metadata/research-terminal.v1.json",
+        "size_bytes": 858,
+        "sha256": "6b0062fa54c4d85fcec74bcf971ae804cadf806af9da55281fd8131cbf67185c",
+        "attempt": 2,
+        "runs_completed": 0,
+        "result": null
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-attempt-03/guest/metadata/research-terminal.v1.json",
+        "size_bytes": 858,
+        "sha256": "30603796709f751839af956988ddc365614034aafc95dad7b0b3baf0a5db527f",
+        "attempt": 3,
+        "runs_completed": 0,
+        "result": null
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-attempt-04/guest/metadata/research-terminal.v1.json",
+        "size_bytes": 830,
+        "sha256": "cac7eff06d1f740e1510871ab08cf2441172dfe993d14e926b908850cf186259",
+        "attempt": 4,
+        "runs_completed": 0,
+        "result": null
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-attempt-05/guest/metadata/research-terminal.v1.json",
+        "size_bytes": 1056,
+        "sha256": "f6e379c645f9fcc994d1560c6460b12daae00ec0202430d4db01fe9a7640bba0",
+        "attempt": 5,
+        "runs_completed": 0,
+        "result": null
+      }
+    ],
+    "original_reader_sources": [
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-independent-cold-v1/cold_reader.py",
+        "size_bytes": 31604,
+        "sha256": "242842aea976b50a3c27f9b54c574564c4e6f15dc3ee99412474fd42070465a1"
+      },
+      {
+        "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-independent-success-v1/cold_reader.py",
+        "size_bytes": 45036,
+        "sha256": "b853fc4bd9e7f6b42f0cb82be01848b02138aa76da1d37c45048522da2f8fc1e"
+      }
+    ],
+    "current_ci_harness": {
+      "path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/run_ci_checks.py",
+      "size_bytes": 29477,
+      "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c"
+    }
+  },
+  "source_grounded_findings": [
+    {
+      "planning": "design.md:21-33; spec.md:46-52; tasks.md:3.1-3.4",
+      "baseline": "research_protocol.py:93-135,183-189; guest_consumer.py:80-131",
+      "finding": "Original attempt05 backing (2112,130187) versus visible (77,130187) is a cross-view equality failure before any run. The short held-FD private readonly mapping can observe backing-to-backing identity while retaining both visible epochs and full held-byte integrity checks. One shared fresh/cache verifier also corrects the existing cached expected-size omission. No inode waiver, reopen/copy fallback or new privilege is authorized."
+    },
+    {
+      "planning": "design.md:35-41; spec.md:54-60",
+      "baseline": "guest_consumer.py:109-136,446-455,580-582",
+      "finding": "Alive owner and full selected VMA multiset brackets close the lifetime gap without demanding allocator-sensitive whole maps equality. Temporary self VMA exclusion is narrowly identified; target-child and guest-probe owners remain distinct. READY-before-START is preserved. Later file verification cannot claim a departed child remains alive."
+    },
+    {
+      "planning": "design.md:45-59; spec.md:62-68",
+      "baseline": "controller.py:321-347,365-379",
+      "finding": "Explicit reviewed P, runtime S and observed H with four bounded raw P snapshots replace a stale hardcoded worktree/current-task equality. Separate physical input authority retains historical ledger/media/helper/image identity. A standard ext4 native clone avoids Windows gitdir rewriting; no existing checkout reset or packaged-image/current-source equivalence is claimed."
+    },
+    {
+      "planning": "design.md:61-67; spec.md:70-76",
+      "baseline": "guest_consumer.py:154-244,732-855; controller.py:507-530",
+      "finding": "Controller and guest both need mode-specific completion because the original guest always enters four run() calls and the controller requires non-null/four-run research. Explicit sealed metadata mode excludes source/AU/pipeline/property/run creation and retains result null, authority false/zero and shared remaining120/15/600 clocks, including final close/late failure."
+    },
+    {
+      "planning": "design.md:69-79; spec.md:78-80; tasks.md:5.1-5.3",
+      "baseline": "five companion modules (20+15+10+13+8=66 methods); test_setup_v2.py:190-230; scripts/run_ci_checks.py:216-282,349",
+      "finding": "A discoverable isolated adapter is necessary because the actual root CI discovers only root tests. Per-case IDs/origins/outcomes and two actual15s regressions prevent historical55 or aggregate baseline receipts from masquerading as complete V6 coverage. Reuse of RecordedResult is bounded; native-requiring suite_report is explicitly excluded."
+    },
+    {
+      "planning": "design.md:81-91; spec.md:82-92; tasks.md:4.1-4.4,6.4,7.1-7.4",
+      "baseline": "version-bound original cold readers and original guest terminals01-05",
+      "finding": "Neither old reader is accepted complete V6 evidence; the prepared positive reader is source-only, version-bound and imports an old reader. One tracked self-contained mode-specific successor, synthetic positive/negative replay, then original cold verification is necessary for the unchanged R15 raw-evidence obligation. Observer interleaving, flush-only insufficiency, unavailable unselected raw maps and observed pixel-hash limits remain explicit."
+    },
+    {
+      "planning": "design.md:93-115; spec.md:86-92; tasks.md:6-8",
+      "finding": "Metadata and research use separate fresh once-only namespaces and separate exact-source dispatch gates. Four settings,32 paced AUs/scale600/cohorts/cadence/ACK and120/45/10/15/600 scientific limits remain unchanged. First failure stops later settings, no automatic retry/adoption/full32/Q4/5600/publication grant. Conditional unexecuted status is explicit and cannot be relabelled as scientific completion."
+    }
+  ],
+  "complexity_review": {
+    "disposition": "No concrete delete/stdlib/native/yagni/shrink blocker in the reviewed planning. The shared verifier, two modes, one adapter and one reader directly address observed defects or existing raw-evidence gaps. The design forbids additional custody/interop hierarchies, extra dependency and privileged fallbacks.",
+    "estimated_required_deletion_lines": 0,
+    "estimate_limit": "Implementation does not exist at P; no invented code line saving or future passing behavior is claimed."
+  },
+  "nonblocking_implementation_interpretations": [
+    {
+      "location": "design.md:31",
+      "interpretation": "Positive inode is required for selected file-backed library/bridge identity. Valid unselected anonymous maps inode0 must remain parseable; ranges/perms/offset/device syntax still stay strict. Existing V5 selector-filtered logic and Linux proc documentation establish this interpretation; do not reject ordinary heap/BSS/stack rows merely for inode0."
+    }
+  ],
+  "primary_sources": [
+    {
+      "url": "https://docs.python.org/3.12/c-api/buffer.html",
+      "supports": "PyBUF_SIMPLE is a contiguous request; readonly export must be checked and each successful GetBuffer has exactly one Release obligation."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/python/cpython/v3.12.3/Include/pybuffer.h",
+      "supports": "Exact stable Py_buffer member order includes readonly/ndim before format; host result does not replace guest interpreter/pointer-width/layout admission."
+    },
+    {
+      "url": "https://docs.kernel.org/filesystems/proc.html",
+      "supports": "Maps exposes address/perms/offset/device/inode; inode0 is a valid anonymous mapping. Selected file backing comparison remains complete dev/inode."
+    },
+    {
+      "url": "https://docs.kernel.org/filesystems/overlayfs.html",
+      "supports": "Visible stat identity can vary by overlay configuration. Original exact filesystem mechanism remains an inference, not established attempt05 fact."
+    },
+    {
+      "url": "https://gstreamer.freedesktop.org/documentation/nvcodec/nvh264dec.html",
+      "supports": "max-display-delay default-1 and since1.24 support the retained comparison; actual packaged property/version still require deployment observation."
+    }
+  ],
+  "approval_boundary": {
+    "planning_exact_P_approved": true,
+    "exact_P_review_must_be_recorded_in_PR4_before_implementation": true,
+    "PR4_record_not_observed": true,
+    "human_GitHub_APPROVE_claimed": false,
+    "future_S_source_test_dispatch_or_cold_approval": false,
+    "future_CI_pass_or_guest_bridge_success": false,
+    "metadata_deployment_or_research_performed_in_review": false,
+    "current_global_process_container_absence_claimed": false,
+    "originals_production_tests_CI_or_Git_mutated": false
+  },
+  "limits": [
+    "Planning/source metadata review only; no V5/V6 import, test, original helper, GI, engine, source, decoder, model, device or cleanup execution.",
+    "All original01-05 guest failures remain runs0/result null; outer cleanup false/unknown is not promoted by inner owned removal.",
+    "Host mmap probe and historical image availability do not establish guest ABI/overlay/another-PID/failure-cleanup behavior. Required RED/GREEN, complete adapter CI, exact S source/observer/dispatch review and fresh once-only cold gates remain future.",
+    "Read-only Git calls verified planning/protected byte identity; no stage, object/index/ref mutation, commit, push, archive, deployment or measurements."
+  ]
+}

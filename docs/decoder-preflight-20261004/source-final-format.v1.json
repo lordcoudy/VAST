@@ -1,0 +1,26 @@
+{
+  "changes": [
+    {
+      "after_sha256": "dac3af43d124f6b76c18bd7e1409741c5f71b902e56c7d453ae29a590fab84bd",
+      "after_size": 87468,
+      "before_sha256": "6865217967d68b12ae4c57adfec1cb244b341f1da9860c14585a2b4b0cc2c29d",
+      "before_size": 87469,
+      "only_eof_newlines_trimmed": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py"
+    },
+    {
+      "after_sha256": "4607c67af75206a7c7cde6341660a662dea9f894db5eccbeca0e10aa85a04a5b",
+      "after_size": 7760,
+      "before_sha256": "7efa08ca755e44c31962e76408924f623d5c42b7c3565d2b6685427cf430b272",
+      "before_size": 7761,
+      "only_eof_newlines_trimmed": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/README.md"
+    }
+  ],
+  "evidence_git_attribute": "/docs/decoder-preflight-20261004/** -text !eol",
+  "exact_commit_hosted_CI_pending": true,
+  "kind": "vast_final_format_only_source_adjustment_v1",
+  "original_GREEN_not_rebound_to_formatted_source": true,
+  "original_full_GREEN_raw_sources_retained": true,
+  "python_ast_identical": true
+}

@@ -1,0 +1,33 @@
+{
+  "actual_discovery_sha256": "27e479bc919831d3f1d64143dea2c71059a8a6643de22025328acb41a16c4cbf",
+  "actual_tool_chunk": "246d3e",
+  "added_ids": [
+    "test_research_protocol.IndependentColdTests.test_failed_main_invalidates_prefix_after_real_held_epoch_mutation",
+    "test_research_protocol.IndependentColdTests.test_original_admission_types_u64_and_reserved_duration_are_rejected",
+    "test_research_protocol.IndependentColdTests.test_source_start_requires_ready_loaded_observation_and_enabling_intent",
+    "test_successor_v6.GuestRunRetirementTests.test_registry_reader_start_failure_preserves_primary_and_retires_auxiliary_fds",
+    "test_successor_v6.GuestRunRetirementTests.test_run_drain_handoff_and_retirement_keep_real_fd_and_first_cause",
+    "test_successor_v6.GuestRunRetirementTests.test_run_partial_pipe_acquisition_retires_real_first_pair",
+    "test_successor_v6.GuestRunRetirementTests.test_run_retirement_errors_preserve_primary_and_attempt_remaining"
+  ],
+  "counts": {
+    "all": 150,
+    "inherited": 66,
+    "new": 84
+  },
+  "final_adapter": {
+    "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+    "sha256": "ab6d118577b7bc384e1e3e97b412d8d106f50716c6351b066d407ab8b8f2ba6f",
+    "size_bytes": 47882
+  },
+  "kind": "vast_decoder_v6_final_actual_inventory_freeze_v2",
+  "only_inventory_comment_and_count_guard_changed": true,
+  "original_adapter": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-before-final-id-freeze59ce9.raw",
+    "sha256": "59ce9eba01706a22f7bac646ba9676ae465cbffba4917dc653ddba1a162386b5",
+    "size_bytes": 47061
+  },
+  "preserved_old77": true,
+  "scientific_operations": 0,
+  "tests_executed": 0
+}

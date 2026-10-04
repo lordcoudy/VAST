@@ -1,0 +1,510 @@
+{
+  "kind": "decoder_v6_root_adapter_lifecycle_author_review_v1",
+  "author": "fresh_architecture_critique",
+  "author_scope_only": true,
+  "independent_approval": false,
+  "ready_for_independent_source_review": true,
+  "planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+  "source_path": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+  "frozen_scoped_executed_source": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/green-02/adapter.executed.raw",
+    "size_bytes": 47061,
+    "sha256": "59ce9eba01706a22f7bac646ba9676ae465cbffba4917dc653ddba1a162386b5",
+    "read_full": true
+  },
+  "original_reconstruction": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/original-adapter.inverse-reconstructed.raw",
+    "size_bytes": 30479,
+    "sha256": "0412355fdf346867648e26dfb0b6e5eab850425c55fa78747c85c1a17f1eeba2",
+    "read_full": true
+  },
+  "original_reconstruction_provenance": "Inverse reconstructed from genuine RED03 adapter.executed.raw, removing only new lifecycle class and mock import.30479/SHA0412355fdf346867648e26dfb0b6e5eab850425c55fa78747c85c1a17f1eeba2 exactly; not a machine before-snapshot.",
+  "helper": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/run_root_capture.py",
+    "size_bytes": 4013,
+    "sha256": "e2ccbb64e0a1c2bd3f7dfcbdf67b52e2f781524313d2097349d4ca21d173c855",
+    "read_full": true
+  },
+  "source_refs": [
+    {
+      "line": 188,
+      "text": "def write_json(path,value):"
+    },
+    {
+      "line": 297,
+      "text": "def capture(output):"
+    },
+    {
+      "line": 305,
+      "text": "    def failed(exc,scope):"
+    },
+    {
+      "line": 310,
+      "text": "    def final_clock(stage):"
+    },
+    {
+      "line": 435,
+      "text": "class DecoderResearchV6CaptureLifecycleTests(unittest.TestCase):"
+    },
+    {
+      "line": 554,
+      "text": "        def failed(path,value):"
+    }
+  ],
+  "unchanged_functions": [
+    {
+      "function": "descriptor",
+      "old_and_executed_after_text_identical": true
+    },
+    {
+      "function": "child_owner",
+      "old_and_executed_after_text_identical": true
+    },
+    {
+      "function": "flatten",
+      "old_and_executed_after_text_identical": true
+    },
+    {
+      "function": "validate_nested",
+      "old_and_executed_after_text_identical": true
+    },
+    {
+      "function": "child",
+      "old_and_executed_after_text_identical": true
+    }
+  ],
+  "constants_and_both_frozen_inner_id_lists_byte_identical": true,
+  "production_scope": "Only adapter capture,exclusive JSON persistence retirement,and discoverable root lifecycle tests in tests/test_decoder_research_v6.py",
+  "actual_attempts": [
+    {
+      "name": "red-01",
+      "unit": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-01/unit.v1.json",
+        "size_bytes": 3660,
+        "sha256": "15117c0e9d3e4c09f6b9e354177837fef7078d54281468c162a5ed5d6ae059e4",
+        "read_full": true
+      },
+      "tool": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-01/original-tool.v1.json",
+        "size_bytes": 4619,
+        "sha256": "da7d7c7554388253fb24b5bf06e20424bd5ed6a1e88e443176da7784000951cd",
+        "read_full": true
+      },
+      "original_stdout": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-01/original.stdout",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "read_full": true
+      },
+      "original_stderr": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-01/original.stderr",
+        "size_bytes": 11447,
+        "sha256": "9ec07be653f45380d679912e20327c2d0aff9572ce37dffd1a18db49378a027a",
+        "read_full": true
+      },
+      "executed_source": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-01/adapter.executed.raw",
+        "size_bytes": 38075,
+        "sha256": "4ffcf9f0f9a000fe7429cc4476e341a5a0267990f5a35d1c39ef796aa94f0ef5",
+        "read_full": true
+      },
+      "returncode": 1,
+      "elapsed_s": 5.188033443992026,
+      "tests_run": 7,
+      "failures": 7,
+      "errors": 0,
+      "skips": 0,
+      "source_stable": true,
+      "fd_before": 6,
+      "fd_after": 6,
+      "selected_ids": [
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock"
+      ],
+      "outcomes": {
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock": "failure"
+      }
+    },
+    {
+      "name": "red-02",
+      "unit": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-02/unit.v1.json",
+        "size_bytes": 3660,
+        "sha256": "ecfc422386c220b8ee486857d2b339541320ba0338db09a95afca25ba5083df0",
+        "read_full": true
+      },
+      "tool": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-02/original-tool.v1.json",
+        "size_bytes": 4619,
+        "sha256": "539fe727ea88c14f70c9880a2242acef3381f41250f71ce0ca368f42509a1a0a",
+        "read_full": true
+      },
+      "original_stdout": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-02/original.stdout",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "read_full": true
+      },
+      "original_stderr": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-02/original.stderr",
+        "size_bytes": 10439,
+        "sha256": "667ff7a6ce66d0da7e11c2bf89ecafbb177496657e29951c9d715c0457874763",
+        "read_full": true
+      },
+      "executed_source": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-02/adapter.executed.raw",
+        "size_bytes": 38095,
+        "sha256": "160b78481f0b71e6e5d5ad214c59a493dfe8bd9a7eca0a3cd65a2cdcb9aadb89",
+        "read_full": true
+      },
+      "returncode": 1,
+      "elapsed_s": 5.349082104978152,
+      "tests_run": 7,
+      "failures": 7,
+      "errors": 0,
+      "skips": 0,
+      "source_stable": true,
+      "fd_before": 6,
+      "fd_after": 6,
+      "selected_ids": [
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock"
+      ],
+      "outcomes": {
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock": "failure"
+      }
+    },
+    {
+      "name": "red-03",
+      "unit": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-03/unit.v1.json",
+        "size_bytes": 4586,
+        "sha256": "a7b8c69b20f1c5c3c2277437202e4273dfa5a3ea7b722eddff485ed6dad11c17",
+        "read_full": true
+      },
+      "tool": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-03/original-tool.v1.json",
+        "size_bytes": 5540,
+        "sha256": "e656edc878a6d0c2c69633ecda8b5b1f791716467cf9de144107e259e3915443",
+        "read_full": true
+      },
+      "original_stdout": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-03/original.stdout",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "read_full": true
+      },
+      "original_stderr": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-03/original.stderr",
+        "size_bytes": 15292,
+        "sha256": "3cbb142bd6ee2783e65304f7ffabd2c0e7d6c84fbd93bc5a5c0b0698e96fdbc1",
+        "read_full": true
+      },
+      "executed_source": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-03/adapter.executed.raw",
+        "size_bytes": 41360,
+        "sha256": "d28f68ca89f4e7c548338b40d7938affd1a53bc6003c34c53ec61bdd9b118ea0",
+        "read_full": true
+      },
+      "returncode": 1,
+      "elapsed_s": 8.278494630940259,
+      "tests_run": 10,
+      "failures": 9,
+      "errors": 1,
+      "skips": 0,
+      "source_stable": true,
+      "fd_before": 6,
+      "fd_after": 6,
+      "selected_ids": [
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_final_receipt_persist_time_after_actual_close_still_blocks_success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock"
+      ],
+      "outcomes": {
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_final_receipt_persist_time_after_actual_close_still_blocks_success": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt": "error",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock": "failure"
+      }
+    },
+    {
+      "name": "green-01",
+      "unit": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/green-01/unit.v1.json",
+        "size_bytes": 4593,
+        "sha256": "bd89cd65c25cdb7c1e5c32e60b642e2e3846ca84bdc499d696e78ffe21c69774",
+        "read_full": true
+      },
+      "tool": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/green-01/original-tool.v1.json",
+        "size_bytes": 5546,
+        "sha256": "d1a18bdaf28fdc8e1b19eb2b91f0646a0c72898c66a82b2acdf617baf7ab81bb",
+        "read_full": true
+      },
+      "original_stdout": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/green-01/original.stdout",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "read_full": true
+      },
+      "original_stderr": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/green-01/original.stderr",
+        "size_bytes": 6863,
+        "sha256": "4bde02df470530604f4888e2461800d3022cc969908e603f932ecb4453764b53",
+        "read_full": true
+      },
+      "executed_source": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/green-01/adapter.executed.raw",
+        "size_bytes": 45135,
+        "sha256": "ab2806cfceba30c5889c029f9c869ab6dbb38a9436b5470db4114a43a8a62902",
+        "read_full": true
+      },
+      "returncode": 0,
+      "elapsed_s": 8.192283972981386,
+      "tests_run": 10,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "source_stable": true,
+      "fd_before": 6,
+      "fd_after": 6,
+      "selected_ids": [
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_final_receipt_persist_time_after_actual_close_still_blocks_success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock"
+      ],
+      "outcomes": {
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_final_receipt_persist_time_after_actual_close_still_blocks_success": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock": "success"
+      }
+    },
+    {
+      "name": "red-04",
+      "unit": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-04/unit.v1.json",
+        "size_bytes": 4888,
+        "sha256": "62b12be9cdc952fd9b3b5eb760aff9d9396059445a382f5230d32feccee18089",
+        "read_full": true
+      },
+      "tool": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-04/original-tool.v1.json",
+        "size_bytes": 6028,
+        "sha256": "a3730cb3937f47107c07521c3f499ea80669d7df53ed0428f568071660bcaace",
+        "read_full": true
+      },
+      "original_stdout": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-04/original.stdout",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "read_full": true
+      },
+      "original_stderr": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-04/original.stderr",
+        "size_bytes": 8345,
+        "sha256": "35e7a484c7a5bee23e8128d4f02f89cd8c5fe2f30994b87601c6aa4236fe6b72",
+        "read_full": true
+      },
+      "executed_source": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/red-04/adapter.executed.raw",
+        "size_bytes": 46585,
+        "sha256": "f29b4fa67bc06ff8bcee7b05fafc5b210cf9831ed3b2a961ece267251faf7359",
+        "read_full": true
+      },
+      "returncode": 1,
+      "elapsed_s": 9.984144403948449,
+      "tests_run": 11,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0,
+      "source_stable": true,
+      "fd_before": 6,
+      "fd_after": 6,
+      "selected_ids": [
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_final_receipt_persist_time_after_actual_close_still_blocks_success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_terminal_write_keeps_primary_and_actual_flush_close_failures",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock"
+      ],
+      "outcomes": {
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_final_receipt_persist_time_after_actual_close_still_blocks_success": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_terminal_write_keeps_primary_and_actual_flush_close_failures": "failure",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock": "success"
+      }
+    },
+    {
+      "name": "green-02",
+      "unit": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/green-02/unit.v1.json",
+        "size_bytes": 4894,
+        "sha256": "317509653ffa42b70c72b8efe2f2c471dec14c6bce91ffbd76a4c1b83eb5619c",
+        "read_full": true
+      },
+      "tool": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/green-02/original-tool.v1.json",
+        "size_bytes": 6034,
+        "sha256": "05b100e3cc1706b54570fcef4baaa8017ea493163f17eda16feb2032b2f264d5",
+        "read_full": true
+      },
+      "original_stdout": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/green-02/original.stdout",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "read_full": true
+      },
+      "original_stderr": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/green-02/original.stderr",
+        "size_bytes": 7560,
+        "sha256": "1a4b795c479629b89538ed08def4a141d535986c04f1edec345fbc9f96e6418a",
+        "read_full": true
+      },
+      "executed_source": {
+        "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/adapter-lifecycle-fix-v1/green-02/adapter.executed.raw",
+        "size_bytes": 47061,
+        "sha256": "59ce9eba01706a22f7bac646ba9676ae465cbffba4917dc653ddba1a162386b5",
+        "read_full": true
+      },
+      "returncode": 0,
+      "elapsed_s": 10.00163784797769,
+      "tests_run": 11,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "source_stable": true,
+      "fd_before": 6,
+      "fd_after": 6,
+      "selected_ids": [
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_final_receipt_persist_time_after_actual_close_still_blocks_success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_terminal_write_keeps_primary_and_actual_flush_close_failures",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock"
+      ],
+      "outcomes": {
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_final_receipt_persist_time_after_actual_close_still_blocks_success": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_partial_terminal_write_keeps_primary_and_actual_flush_close_failures": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock": "success",
+        "test_decoder_research_v6.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock": "success"
+      }
+    }
+  ],
+  "red_sequence": [
+    "RED01:7failures; tiny synthetic event packets mistakenly used stdout; corrected before capture change. Preserve this failed fixture version.",
+    "RED02:7failures with correct stderr packets; two retained real writer FD leaks and three accepted16s synthetic post-close/hash/validation crossings reproduced before capture change.",
+    "RED03:10cases/9failures/1error before capture change; actual cleanup-cause fault plus last-receipt and healthy-capture checks added. Healthy error is missing final-close receipt,not timeout.",
+    "GREEN01:10/10 for acquisition/cleanup/post-final-receipt guards; actual rc0 before further writer edge investigation.",
+    "RED04:11cases/1failure after capture correction but before JSON writer retirement correction; original partial write cause overwritten by actual close failure.",
+    "GREEN02:11/11 after preserving JSON first exception and retaining separate genuine flush/close faults."
+  ],
+  "final_scoped_result": {
+    "returncode": 0,
+    "tests_run": 11,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "elapsed_s": 10.00163784797769,
+    "fd_before": 6,
+    "fd_after": 6,
+    "source_stable": true
+  },
+  "closed_clock_contract": [
+    "Body retains120s; each actual log open registered before next open/Popen; acquisition errors enter owned cleanup.",
+    "Original owner signal remains exact-positive; reap,each pipe/log flush/close attempted independently.",
+    "Closed original hashing and nested/per-case validation now belong to15s finalization.",
+    "Terminal is exclusive/fsynced/provisional; actual after-terminal-close observation is persisted in separate final-close receipt.",
+    "Final-close receipt is itself explicitly provisional until capture return; candidate_success is not self-certified success. Actual after-final-receipt persist/close clock is checked before returning nested.",
+    "Any failure writes one exclusive nonpromoting close-failure companion; capture errors do not recursively retry or overwrite original partial files.",
+    "JSON write/flush/close failures preserve first exception and separate retirement notes."
+  ],
+  "remaining_work": [
+    "Root owns exact new inner148 discovery/ID freeze and full integration; our executed source kept original143 lists.",
+    "Independent source/adversarial review required; author cannot approve own adapter.",
+    "Hosted exact-S CI,physical metadata preflight,conditional research and scientific acceptance unexecuted by this peer."
+  ],
+  "limits": [
+    "Root-only scoped synthetic nested packets; actual owned tiny CPython/files/FD closes,not actual inner143 execution or scientific evidence.",
+    "Clock16s jumps intentionally synthetic and only applied after real closed hash/validation/persist; original120/15 limits unchanged.",
+    "FD6before/after captured in scoped process; no new global process/GPU/namespace audit.",
+    "No Git/tasks/other production/spec/CI mutations.",
+    "Source47061/SHA59ce9eba... is scoped executed freeze before root future inventory updates; any root follow-up changes need exact new-source review/tests.",
+    "Final persisted record cannot certify its own future close; explicit provisional flags plus actual capture-return guard are required. External original tool/unit records observe actual scoped return."
+  ],
+  "ownership_released_to_root": true
+}
