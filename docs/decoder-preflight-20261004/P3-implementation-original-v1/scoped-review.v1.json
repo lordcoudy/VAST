@@ -1,0 +1,77 @@
+{
+  "artifact_kind": "P3_scoped_original_fixture_and_source_review_v1",
+  "reviewed_planning_commit": "914f9c0852ebc77d56a148c1cddff8da9ef13f28",
+  "review_comment_id": 5407330527,
+  "tests_run": 161,
+  "unique_start_and_terminal_events": 161,
+  "outcomes": "all_success",
+  "source_before_equal_after": true,
+  "new_methods": [
+    "ProtocolTests.test_P3_cached_pin_rejects_expired_current_phase_despite_live_original_deadline",
+    "ProtocolTests.test_P3_cached_pin_uses_live_current_phase_after_original_deadline_expires"
+  ],
+  "old_methods_preserved": 70,
+  "source_pins": {
+    "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py": {
+      "size_bytes": 64637,
+      "sha256": "bc2a3a618fab6e53ed15835d327f611cc63f18543cc16648a5d6b7e084f073ec"
+    },
+    "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py": {
+      "size_bytes": 87992,
+      "sha256": "7961621bbbee98855cf401496252a603a9283a1dfba639e2dbd7b125eca370a9"
+    },
+    "tests/test_decoder_research_v6.py": {
+      "size_bytes": 49161,
+      "sha256": "a6982705711c6ad13867bd1e83d524a635bb1a1424de5950e135e42f0cf3dcea"
+    }
+  },
+  "helper": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/clock-fixed-original/capture_original_v6.py",
+    "size_bytes": 25823,
+    "sha256": "0f6e7a40f14f25690694542a193dc4ba0fea54ffd0345dbd835244e241582666",
+    "inverse_raw_equal": true
+  },
+  "retained_originals": [
+    {
+      "original_path": "/tmp/vast-decoder-p3-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-369cf2f339a64535994933567c28e1ca/adapter-terminal.v1.json",
+      "retained_path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/adapter-terminal.v1.json",
+      "size_bytes": 1909,
+      "sha256": "f22c0fead3ff1d517bd959456fa14bc45acb50bf57f351ce84c3310559307813"
+    },
+    {
+      "original_path": "/tmp/vast-decoder-p3-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-369cf2f339a64535994933567c28e1ca/adapter-final-close.v1.json",
+      "retained_path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/adapter-final-close.v1.json",
+      "size_bytes": 758,
+      "sha256": "05484feaccd3c850d5aee20e334a1793bfec748f9c690fa43fc15f46b46a78cf"
+    },
+    {
+      "original_path": "/tmp/vast-decoder-p3-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-369cf2f339a64535994933567c28e1ca/nested-suite.v1.json",
+      "retained_path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/nested-suite.v1.json",
+      "size_bytes": 98607,
+      "sha256": "1b158d2527fd1f84f36eb53c3c231c7bbb65c24d18c3b73d2c83d9727902a4ef"
+    },
+    {
+      "original_path": "/tmp/vast-decoder-p3-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-369cf2f339a64535994933567c28e1ca/original.stdout",
+      "retained_path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/original.stdout",
+      "size_bytes": 8168,
+      "sha256": "5596059f14d898249effa2e74eb4a0d3ada57a3b62d443b9e021a5d835dfe881"
+    },
+    {
+      "original_path": "/tmp/vast-decoder-p3-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-369cf2f339a64535994933567c28e1ca/original.stderr",
+      "retained_path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/original.stderr",
+      "size_bytes": 95992,
+      "sha256": "5b1ad3cb7b04041b4f4bba6bd2b9ad737c5ac2fdd74634dfeb583101336549be"
+    },
+    {
+      "original_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P3-implementation-original-tool-record.v1.json",
+      "retained_path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/P3-implementation-original-tool-record.v1.json",
+      "size_bytes": 11997,
+      "sha256": "ec20d3ad566b68babce917aa59b99a631c0fe396d75c2a51e1fbb78d5c7999e1"
+    }
+  ],
+  "limits": [
+    "Fixture results are not hardware or scientific acceptance.",
+    "Adapter terminal/final-close fields remain provisional as persisted; outer original tool exit code is separately retained.",
+    "Root launcher owner tuple was not captured and is not inferred."
+  ]
+}

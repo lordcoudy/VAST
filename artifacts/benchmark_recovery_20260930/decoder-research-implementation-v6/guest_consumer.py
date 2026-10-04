@@ -124,6 +124,7 @@ class Guest:
             self.packages[resolved] = pin
         else:
             pin = self.packages[resolved]
+            pin.deadline = self.phase_deadline
             pin.verify(rehash=True)
             info = os.fstat(pin.fd)
             if mapped_identity is None:

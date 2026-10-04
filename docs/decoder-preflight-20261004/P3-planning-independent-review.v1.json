@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "kind": "independent_exact_P3_planning_review",
+  "verdict": "PASS_PLANNING_ONLY",
+  "reviewed_commit": "914f9c0852ebc77d56a148c1cddff8da9ef13f28",
+  "exact_parent": "6cdb60023fd07878cb65bf9d61bfe97b252c8878",
+  "change": "fix-decoder-preflight",
+  "PR": "4",
+  "reviewer": "/root/adversarial_review; not an author of these P3 planning artifacts",
+  "scope": "Full substantive read of four current planning documents; bounded raw Git/physical/control checks. No implementation, tests, target imports, engine, metadata, research or Git mutation.",
+  "four_documents": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/proposal.md",
+      "size_bytes": 6693,
+      "sha256": "e348f27ee69f29052fb27e3f58677ee67c9576796828409f42142fdb07b92e5b",
+      "initial_final_named_7epoch": [
+        68,
+        2533274792077551,
+        33279,
+        1,
+        6693,
+        1791133514187063200,
+        1791133514187063200
+      ],
+      "regular_single_link": true,
+      "exact_P3_blob_equals_physical": true
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/design.md",
+      "size_bytes": 46250,
+      "sha256": "704d08004229b307136accc65abc86417ae256f7141026848e7139375a61673c",
+      "initial_final_named_7epoch": [
+        68,
+        122441614870155827,
+        33279,
+        1,
+        46250,
+        1791133570309122000,
+        1791133570309122000
+      ],
+      "regular_single_link": true,
+      "exact_P3_blob_equals_physical": true
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/tasks.md",
+      "size_bytes": 17441,
+      "sha256": "c5b9055c61d54b51fce1600302be36c53dbf7f6966dc3e26cb8fd48219c30f5e",
+      "initial_final_named_7epoch": [
+        68,
+        40532396647376409,
+        33279,
+        1,
+        17441,
+        1791133677677455900,
+        1791133677677455900
+      ],
+      "regular_single_link": true,
+      "exact_P3_blob_equals_physical": true
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "size_bytes": 21469,
+      "sha256": "6633fc9c8dbd57d1bd8df11f403013e9ab5f341c4d48bc473ab24ea8ba51fcfc",
+      "initial_final_named_7epoch": [
+        68,
+        4503599628879742,
+        33279,
+        1,
+        21469,
+        1791133514192957200,
+        1791133514192957200
+      ],
+      "regular_single_link": true,
+      "exact_P3_blob_equals_physical": true
+    }
+  ],
+  "author_receipt": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P3-planning-amendment-v1/author-revision.v1.json",
+    "size_bytes": 5914,
+    "sha256": "585ca17bb6c55d8fdaffaec81e069bf5bb5cce6f65f80472412a3591fe81f4d8",
+    "regular_single_link": true
+  },
+  "raw_Git_checks": {
+    "explicit_native_object_database": "/mnt/e/STUDY/VAST/.git",
+    "no_replace_objects": true,
+    "P3_parent_equals_C": true,
+    "changed_paths_count": 38,
+    "four_planning_paths": [
+      "openspec/changes/fix-decoder-preflight/proposal.md",
+      "openspec/changes/fix-decoder-preflight/design.md",
+      "openspec/changes/fix-decoder-preflight/tasks.md",
+      "openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md"
+    ],
+    "other_changes_only_PLAN_progress_and_preserved_docs_evidence": true,
+    "source_tests_CI_main_specs_attributes_schema_unchanged_C_to_P3": true,
+    "P1_22_scenario_prefix_and_P2_25_scenario_prefix_byte_exact": true,
+    "new_scenarios": 27,
+    "old_other_19_requirements_and_main_diagnostics_unchanged": true,
+    "guarded_17_current_leaves": [
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+        "size_bytes": 53060,
+        "sha256": "3db163f5d90043bddb07fbabd29ee4f500b5ccc070d844a8e6d67b2d595e1bce",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+        "size_bytes": 64590,
+        "sha256": "025d4a18e56fef4329ae5cfe757411ae476283ad1016d1f50a864184cf723708",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/README.md",
+        "size_bytes": 7760,
+        "sha256": "4607c67af75206a7c7cde6341660a662dea9f894db5eccbeca0e10aa85a04a5b",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+        "size_bytes": 36624,
+        "sha256": "f0685e19a3072736f8262aad32d868a2021650381e8beaef989d4f5339358d63",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_mapped_inputs_v4.py",
+        "size_bytes": 11433,
+        "sha256": "831cbd07388af9994d2684ab2248e299c95b29ee4ad799f26375d603b2f2f986",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_pin_diagnostics_v3.py",
+        "size_bytes": 11543,
+        "sha256": "a693f9fea9cc583d236447023745c612d3762da41d3103b474aa03dbddcfac14",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_preflight_diagnostics_v5.py",
+        "size_bytes": 11980,
+        "sha256": "ade99a45510b042fc55ce2c888f029301ae67defea2776524101aa8d158f3afe",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+        "size_bytes": 85216,
+        "sha256": "ba375930e337ad7bb65d07f1ccf54ccb735f4bc5343dd5e25ce798a4024cd708",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_setup_v2.py",
+        "size_bytes": 34262,
+        "sha256": "f0f5bdb2be0f834e9795aa35c665e1703a0b120df24a9a4b56afe425a90fe4cd",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_successor_v6.py",
+        "size_bytes": 54172,
+        "sha256": "2d1b3ac6ab031ac49449f28f453b165b19780fbc30e5fb9f451d15a5afd555f6",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+        "size_bytes": 93103,
+        "sha256": "5501000b5cc057562460843701b654c95b5ea24565cab3773148e38bb501afcc",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+        "size_bytes": 48918,
+        "sha256": "11a65d762530d34c6cfbd3a8a40dbd571ecf0e7bf09548bc95b94090b9949ba1",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/specs/benchmark-launch-preparation/spec.md",
+        "size_bytes": 75126,
+        "sha256": "d777fca9299def232e13c75e484c0863a639d4acdfdf5445e38e8a925873d36b",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/specs/component-latency-diagnostics/spec.md",
+        "size_bytes": 6554,
+        "sha256": "4ad6263d274252d8e1f9178210b32463de00526542b12edbdcfc94bf83e152ca",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/.openspec.yaml",
+        "size_bytes": 40,
+        "sha256": "ad734da2ba5f4c5a6979a8bbb6bad4db20fb21ec275ceca5f24842fbdfaf5bef",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/.gitattributes",
+        "size_bytes": 18475,
+        "sha256": "46d59007096826dc74dda6e94e6c71ef0796185fa34f0c7b0e5b91931f968a48",
+        "regular_single_link": true,
+        "C_and_P3_raw_blobs_equal": true
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture_original_v6.py",
+        "size_bytes": 25799,
+        "sha256": "43864a7a27c2647d4d968ab0e2eee63ec7e2ccabdbb9e4474d53f1ebf240d063",
+        "regular_single_link": true
+      }
+    ]
+  },
+  "task_states": {
+    "before_total": 38,
+    "after_total": 43,
+    "checked": 32,
+    "only_prior_checkbox_changes": {
+      "7.2": [
+        " ",
+        "x"
+      ],
+      "7.3": [
+        " ",
+        "x"
+      ]
+    },
+    "interpretation": "7.2 is the closed FAILED original invocation;7.3 is closed C refusal and independently retained prefixes. Neither earns scientific completion.10.1..10.5 remain unchecked in reviewed commit."
+  },
+  "substantive_checks": [
+    "Confirmed source defect: Guest.pin new acquisitions capture self.phase_deadline; cached branch rehashes with its old deadline. Pin.digest checks that stored absolute deadline per hash block. P3 targets that cached assignment only.",
+    "Proposed cached pin.deadline=self.phase_deadline precedes unchanged full verify(rehash=True), keeps the same FD, byte hash, named/ancestor/7epoch guards and original phase/final-close guards. No new Pin API or post-final-block completion guarantee is claimed.",
+    "Controlled-clock tests use actual1MiB+23-byte held files, unchanged real hash/verify and same FD/hash/epochs: expired-original/live-current must succeed; live-original/expired-current must refuse. Both directions have meaningful RED obligations.",
+    "All existing120/45/10/15/600-second budgets, caps, original failure/cleanup semantics and scientific pipeline/cohort/cadence/byte predicates remain mandatory; current phase means existing absolute deadline, not a relative reset.",
+    "P1 producer and P2 observer planning identities remain original; exact P3 is an additional reviewed amendment. S3/C3 future binding is separate, C3=S3 allowed, old C not valid for a future S3.",
+    "Future external helper is an independently reviewed full-hash copy changing exactly the two mode-prefix literals. Six new clock-fixed namespaces are distinct; no reset/overwrite/retry/resume or combination of S2 prefixes.",
+    "10.3 permits reviewed source and once-metadata preparation/grant only;10.4 must earn actual accepted new metadata cold result.10.5 requires a separate research review/grant afterward. No circular prerequisite.",
+    "Latest exact frozen S3 required CI, actual discovered/started/terminal IDs and independent source/dispatch checks are required. Adapter only receives those two literal case IDs/count maintenance; predicted host/nested counts are forbidden.",
+    "Four valid run terminals/full128 AUs/full64 comparisons plus accepted actual cold evidence are required for completion/numeric comparison. Any failed/partial/unexecuted result remains explicit and nonpromoting; existing64 prefix AUs are not accepted full cohorts."
+  ],
+  "original_closed_evidence": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/corrected-metadata-result-independent-v1/review.v1.json",
+      "size_bytes": 27072,
+      "sha256": "808d8469f177fdbd201ebee2864b88002ab85027eb80349aa13d6acf2dbc6d5b",
+      "regular_single_link": true
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-result-independent-v1/failed-original-review.v1.json",
+      "size_bytes": 46118,
+      "sha256": "13d71c9740a132899fb4fcd6cc86c999867143de0bc175314ebc9c3dc95b9a2a",
+      "regular_single_link": true
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-result-independent-v1/failed-cold-closure-review.v1.json",
+      "size_bytes": 10653,
+      "sha256": "86647f6a22f9bf308bce1fbd283e1dd446092d34c0b097b6c129406b1f3a46ff",
+      "regular_single_link": true
+    }
+  ],
+  "original_outcomes": [
+    {
+      "verdict": "PASS_METADATA_PREFLIGHT_RESULT_ONLY",
+      "own_fd_before": 6,
+      "own_fd_after": 6,
+      "own_close_errors": [],
+      "metadata_result_accepted": true,
+      "full_research_accepted": null,
+      "domain_counts": null,
+      "first_failure": null,
+      "publication_ready": false
+    },
+    {
+      "verdict": "CLOSED_FAILED_ORIGINAL_WITH_HASH_VALID_PREFIXES",
+      "own_fd_before": 6,
+      "own_fd_after": 6,
+      "own_close_errors": [],
+      "metadata_result_accepted": null,
+      "full_research_accepted": false,
+      "domain_counts": {
+        "controller_runs_completed": 0,
+        "guest_runs_completed": 1,
+        "retained_observational_runs": 2,
+        "hash_valid_raw_AUs": 64,
+        "expected_full_AUs": 128,
+        "full_pair_observations": 0,
+        "expected_full_pairs": 64
+      },
+      "first_failure": null,
+      "publication_ready": false
+    },
+    {
+      "verdict": "PASS_CLOSED_FAILURE_AND_PREFIX_RETENTION_ONLY",
+      "own_fd_before": 6,
+      "own_fd_after": 6,
+      "own_close_errors": [],
+      "metadata_result_accepted": null,
+      "full_research_accepted": false,
+      "domain_counts": null,
+      "first_failure": {
+        "message": "external original completion",
+        "type": "Refusal"
+      },
+      "publication_ready": false
+    }
+  ],
+  "blockers": [],
+  "required_doc_corrections": [],
+  "limitations": [
+    "This is exact planning review, not source S3 implementation/test acceptance, final deployment/metadata/research approval, release/archive/merge acceptance or human APPROVE.",
+    "The narrowly proposed correction is source-feasible; meaningful RED/GREEN, full canonical checks and latest exact-S3 hosted CI remain pending. No future outcome, count, commit, helper hash or acceptance is invented.",
+    "Original FAILED research cleanup prevents full retirement/package custody and adoption. Same-guest sink/src residence includes queueing/backpressure; no utilization, capacity, independent-repetition, six-stream SLO, legacy32/Q4/5600 or publication conclusion follows.",
+    "Guarded17-leaf checks and committed path diff are bounded scope proof, not a6300-leaf workspace manifest or global process/FD quiescence audit.",
+    "Own initial metadata query fb0525 failed because it incorrectly required the entire P3 commit diff to contain only four paths; P3 legitimately includes progress and preserved evidence. The subsequent explicit per-path check corrected that reviewer assumption without changing any inputs. The failed tool remains in chat; no producer/test replay occurred.",
+    "Standing user authorization is reported separately from this independent planning verdict. Root still records exact-P3 review COMMENT before dependent implementation."
+  ],
+  "reader_custody": {
+    "regular_single_link_full_bytes_read": true,
+    "bounded_pread_loop": true,
+    "each_named_and_held_7epoch_equal_before_after": true,
+    "each_input_FD_independently_closed": true,
+    "fd_before": 6,
+    "fd_after": 6,
+    "all_review_input_handles_released": true,
+    "elapsed_before_report_s": 1.1737127570668235,
+    "no_originals_modified": true
+  }
+}

@@ -184,6 +184,8 @@ APPROVED_NEW_IDS=frozenset((
     'test_research_protocol.IndependentColdTests.test_P2_paired_observer_arguments_and_exact_C_ancestry_are_required',
     'test_research_protocol.IndependentColdTests.test_P2_current_C_and_original_S_files_keep_separate_physical_guards',
     'test_research_protocol.IndependentColdTests.test_P2_raw_amendment_blob_bound_is_enforced',
+    'test_research_protocol.ProtocolTests.test_P3_cached_pin_uses_live_current_phase_after_original_deadline_expires',
+    'test_research_protocol.ProtocolTests.test_P3_cached_pin_rejects_expired_current_phase_despite_live_original_deadline',
 ))
 
 
@@ -240,7 +242,7 @@ def validate_nested(report):
     ids=report['selected_test_ids'];outcomes=report['outcomes']
     if report.get('isolated') is not True or report.get('dont_write_bytecode') is not True:
         raise AssertionError('nested fixture process was not isolated -I -B')
-    if len(INHERITED_IDS)!=66 or len(APPROVED_NEW_IDS)!=93 or INHERITED_IDS & APPROVED_NEW_IDS or \
+    if len(INHERITED_IDS)!=66 or len(APPROVED_NEW_IDS)!=95 or INHERITED_IDS & APPROVED_NEW_IDS or \
             len(ids)!=len(set(ids)) or set(ids)!=INHERITED_IDS | APPROVED_NEW_IDS:
         raise AssertionError('full frozen inherited66 inventory missing or duplicated')
     if not any(name.startswith('test_successor_v6.') for name in ids):

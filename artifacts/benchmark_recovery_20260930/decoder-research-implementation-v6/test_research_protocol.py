@@ -301,6 +301,57 @@ class ProtocolTests(unittest.TestCase):
         finally:c.engine.close()
 
 
+    def test_P3_cached_pin_uses_live_current_phase_after_original_deadline_expires(self):
+        import guest_consumer as guest
+        path=Path(self.temp.name)/'cached-package.bin'
+        payload=b'x'*(1024*1024)+b'y'*23
+        path.write_bytes(payload)
+        expected={'size_bytes':len(payload),'sha256':hashlib.sha256(payload).hexdigest()}
+        consumer=guest.Guest.__new__(guest.Guest)
+        consumer.packages={};consumer.pins=[];consumer.phase_deadline=110.0
+        try:
+            with patch.object(p.time,'monotonic',return_value=100.0):
+                pin=consumer.pin(path,expected)
+            original_fd=pin.fd;original_epoch=pin.initial_epoch;original_descriptor=dict(pin.descriptor)
+            consumer.phase_deadline=160.0
+            real_pread=os.pread;reads=[]
+            def observed_pread(fd,size,offset):
+                reads.append((fd,size,offset))
+                return real_pread(fd,size,offset)
+            with patch.object(p.time,'monotonic',return_value=150.0),patch.object(p.os,'pread',observed_pread):
+                self.assertIs(consumer.pin(path,expected),pin)
+            self.assertEqual(pin.fd,original_fd)
+            self.assertEqual(pin.initial_epoch,original_epoch)
+            self.assertEqual(pin.descriptor,original_descriptor)
+            self.assertEqual(reads,[(original_fd,1024*1024,0),
+                (original_fd,23,1024*1024),(original_fd,1,len(payload))])
+            self.assertEqual(os.fstat(original_fd).st_size,len(payload))
+        finally:
+            for held in reversed(consumer.pins):held.close()
+
+    def test_P3_cached_pin_rejects_expired_current_phase_despite_live_original_deadline(self):
+        import guest_consumer as guest
+        path=Path(self.temp.name)/'cached-package.bin'
+        payload=b'x'*(1024*1024)+b'y'*23
+        path.write_bytes(payload)
+        expected={'size_bytes':len(payload),'sha256':hashlib.sha256(payload).hexdigest()}
+        consumer=guest.Guest.__new__(guest.Guest)
+        consumer.packages={};consumer.pins=[];consumer.phase_deadline=200.0
+        try:
+            with patch.object(p.time,'monotonic',return_value=100.0):
+                pin=consumer.pin(path,expected)
+            original_fd=pin.fd;original_epoch=pin.initial_epoch
+            consumer.phase_deadline=140.0
+            with patch.object(p.time,'monotonic',return_value=150.0):
+                with self.assertRaisesRegex(p.ResearchError,'physical hash deadline exceeded'):
+                    consumer.pin(path,expected)
+            self.assertEqual(pin.fd,original_fd)
+            self.assertEqual(pin.initial_epoch,original_epoch)
+            self.assertEqual(os.fstat(original_fd).st_size,len(payload))
+        finally:
+            for held in reversed(consumer.pins):held.close()
+
+
 class IndependentColdTests(unittest.TestCase):
     """Synthetic closed observations; real tiny files/Git, never Docker or GI."""
     @classmethod
