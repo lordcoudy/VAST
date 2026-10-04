@@ -1,0 +1,792 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS_METADATA_PREFLIGHT_RESULT_ONLY",
+  "producer": {
+    "planning": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+    "source": "503b33b224b8f98b429d9a9cf80a0cf30402fcba"
+  },
+  "observer": {
+    "planning": "684ea836a27fa002bc231117fbe445d0ec5579ab",
+    "source": "6cdb60023fd07878cb65bf9d61bfe97b252c8878"
+  },
+  "corrected_report": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold/attempt-01/corrected-owner-join-verification.v1.json",
+    "size_bytes": 82939,
+    "sha256": "cd92545dd947741c8decb6f003a3a2325ffb33f60f0d65724648e7947d7e882e"
+  },
+  "FAILED_original": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold/attempt-01/verification.v1.json",
+    "size_bytes": 55542,
+    "sha256": "c03203b2e1b397c405ee690aacfa20c54801aba4e7f550b97ac11b7d92151164"
+  },
+  "checks": [
+    {
+      "predicate": "exact corrected raw file descriptor",
+      "passed": true
+    },
+    {
+      "predicate": "original FAILED bytes and refusal preserved",
+      "passed": true
+    },
+    {
+      "predicate": "one authorized actual corrected invocation and session closure",
+      "passed": true
+    },
+    {
+      "predicate": "actual final successful stdout after provisional report",
+      "passed": true
+    },
+    {
+      "predicate": "producer P1/S2 explicit mode unchanged",
+      "passed": true
+    },
+    {
+      "predicate": "observer P2/C exact raw source separate from S2",
+      "passed": true
+    },
+    {
+      "predicate": "four retained exact P2 planning blobs",
+      "passed": true
+    },
+    {
+      "predicate": "actual bound raw Git operations close without error",
+      "passed": true
+    },
+    {
+      "predicate": "strict original controller core6 external8 join and child containment",
+      "passed": true
+    },
+    {
+      "predicate": "original external launch/process/terminal/source joins",
+      "passed": true
+    },
+    {
+      "predicate": "guest physical container alias and held descriptor join",
+      "passed": true
+    },
+    {
+      "predicate": "original producer and external post-close facts retained",
+      "passed": true
+    },
+    {
+      "predicate": "metadata mode result and zero-source namespace",
+      "passed": true
+    },
+    {
+      "predicate": "complete unchanged cold predicates actually executed within bound",
+      "passed": true
+    },
+    {
+      "predicate": "no corrected late failure companion",
+      "passed": true
+    },
+    {
+      "predicate": "no research/model/benchmark promotion",
+      "passed": true
+    },
+    {
+      "predicate": "selected full-held current descriptor and epoch7 equality",
+      "passed": true
+    },
+    {
+      "predicate": "two later named original reader/producer/Git owner and group closures",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold/attempt-01/corrected-owner-join-verification.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold/attempt-01/verification.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/corrected-cold-original-tool-record.C6cdb6002.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/metadata-dispatch-S503b33b2-independent-review-v1/cold-result-independent-review.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P2-observer-independent-source-review-v1/exact-C-closure.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01/controller/terminal.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/terminal.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/launch.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/process-start.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01/guest/metadata/metadata-preflight-terminal.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01/controller/original.stdout",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/original.stdout",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P2-observer-independent-source-review-v1/P2-planning-0.stdout.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P2-observer-independent-source-review-v1/P2-planning-1.stdout.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P2-observer-independent-source-review-v1/P2-planning-2.stdout.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P2-observer-independent-source-review-v1/P2-planning-3.stdout.raw",
+      "passed": true
+    },
+    {
+      "predicate": "independent review handles actually closed",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "full_held_selected_inputs": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold/attempt-01/corrected-owner-join-verification.v1.json",
+        "size_bytes": 82939,
+        "sha256": "cd92545dd947741c8decb6f003a3a2325ffb33f60f0d65724648e7947d7e882e"
+      },
+      "epoch7": [
+        69,
+        2251799816115204,
+        33279,
+        1,
+        82939,
+        1791130529157175800,
+        1791130529157175800
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold/attempt-01/verification.v1.json",
+        "size_bytes": 55542,
+        "sha256": "c03203b2e1b397c405ee690aacfa20c54801aba4e7f550b97ac11b7d92151164"
+      },
+      "epoch7": [
+        69,
+        1407374885982943,
+        33279,
+        1,
+        55542,
+        1791122476767528000,
+        1791122476767528000
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/corrected-cold-original-tool-record.C6cdb6002.v1.json",
+        "size_bytes": 5844,
+        "sha256": "7242a6775ecad6fa32cfcfe860dff43fe88b871d06e3244cdc1044b369aace71"
+      },
+      "epoch7": [
+        69,
+        1407374885983237,
+        33279,
+        1,
+        5844,
+        1791130531436905800,
+        1791130531436905800
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/metadata-dispatch-S503b33b2-independent-review-v1/cold-result-independent-review.v1.json",
+        "size_bytes": 31201,
+        "sha256": "9753ab3cdf46a6c71ee98a3ea8e5c994b205ef3ae36e0f583977749ea1c3b7d5"
+      },
+      "epoch7": [
+        69,
+        1407374885982946,
+        33279,
+        1,
+        31201,
+        1791123026394615600,
+        1791123026394615600
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P2-observer-independent-source-review-v1/exact-C-closure.v1.json",
+        "size_bytes": 9114,
+        "sha256": "2201b86aaefa577161809451940dd4e7672f6ab5312cb6f397459e373169e761"
+      },
+      "epoch7": [
+        69,
+        1407374885983175,
+        33279,
+        1,
+        9114,
+        1791128075044602800,
+        1791128075044602800
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01/controller/terminal.v1.json",
+        "size_bytes": 9851,
+        "sha256": "138a20e7640596dc0790820ac2792ac90f55e8210c26f4d244fe4478f72d9ce1"
+      },
+      "epoch7": [
+        69,
+        1407374885982937,
+        33279,
+        1,
+        9851,
+        1791122277381826600,
+        1791122277381826600
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/terminal.v1.json",
+        "size_bytes": 7097,
+        "sha256": "a43b03fb4e6ff0181ce309bd3270968c6528237f58c0ad4c336d7765c204bd62"
+      },
+      "epoch7": [
+        69,
+        1407374885982938,
+        33279,
+        1,
+        7097,
+        1791122277421509100,
+        1791122277421509100
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/launch.v1.json",
+        "size_bytes": 24001,
+        "sha256": "fb360b56a6e55d118e07979c9a3924de164fc704d76fbd5d75f88a44b7b9a27e"
+      },
+      "epoch7": [
+        69,
+        1407374885982818,
+        33279,
+        1,
+        24001,
+        1791122260666608800,
+        1791122260666608800
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/process-start.v1.json",
+        "size_bytes": 1454,
+        "sha256": "24a7699d728e026b11ada3b44b5658a3dd835efc02b2c975674e9c8ebec6ccb6"
+      },
+      "epoch7": [
+        69,
+        1407374885982819,
+        33279,
+        1,
+        1454,
+        1791122260670020400,
+        1791122260670020400
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01/guest/metadata/metadata-preflight-terminal.v1.json",
+        "size_bytes": 1204,
+        "sha256": "1397cd637748b9e076a2d005c2eb03c48cba94ed8d3a3c366058574279dd302f"
+      },
+      "epoch7": [
+        69,
+        1407374885982920,
+        33279,
+        1,
+        1204,
+        1791122273379266800,
+        1791122273379266800
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01/controller/original.stdout",
+        "size_bytes": 338,
+        "sha256": "64972bcb20cb7eaf4a4afc6bce4242662b9544de69283a73a9efb9ed65658e8c"
+      },
+      "epoch7": [
+        69,
+        1407374885982902,
+        33279,
+        1,
+        338,
+        1791122273390010100,
+        1791122273390010100
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/original.stdout",
+        "size_bytes": 732,
+        "sha256": "e5480cfc9e4525518d33344514928f8e0d25f3c9ef6ca403d3f05af97af95ffd"
+      },
+      "epoch7": [
+        69,
+        1407374885982816,
+        33279,
+        1,
+        732,
+        1791122277402882100,
+        1791122277402882100
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+        "size_bytes": 93103,
+        "sha256": "5501000b5cc057562460843701b654c95b5ea24565cab3773148e38bb501afcc"
+      },
+      "epoch7": [
+        2096,
+        612047,
+        33188,
+        1,
+        93103,
+        1791128036110623026,
+        1791128036110623026
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+        "size_bytes": 87504,
+        "sha256": "30f996a4a35b6c4bfd3cfbcf6870e6c9a816dabb653358bd9dbb3d7b9bca979c"
+      },
+      "epoch7": [
+        2096,
+        604561,
+        33188,
+        1,
+        87504,
+        1791120090057638327,
+        1791120090057638327
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+        "size_bytes": 53060,
+        "sha256": "3db163f5d90043bddb07fbabd29ee4f500b5ccc070d844a8e6d67b2d595e1bce"
+      },
+      "epoch7": [
+        2096,
+        604924,
+        33188,
+        1,
+        53060,
+        1791120090069639159,
+        1791120090069639159
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+        "size_bytes": 64590,
+        "sha256": "025d4a18e56fef4329ae5cfe757411ae476283ad1016d1f50a864184cf723708"
+      },
+      "epoch7": [
+        2096,
+        604925,
+        33188,
+        1,
+        64590,
+        1791120090069639159,
+        1791120090069639159
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+        "size_bytes": 36624,
+        "sha256": "f0685e19a3072736f8262aad32d868a2021650381e8beaef989d4f5339358d63"
+      },
+      "epoch7": [
+        2096,
+        604926,
+        33188,
+        1,
+        36624,
+        1791120090069639159,
+        1791120090069639159
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P2-observer-independent-source-review-v1/P2-planning-0.stdout.raw",
+        "size_bytes": 4810,
+        "sha256": "5d0e58c715724a09d9dc30587865d891d2af936e7cc15b11d0060f0d4f21566b"
+      },
+      "epoch7": [
+        69,
+        1407374885983038,
+        33279,
+        1,
+        4810,
+        1791127209091781500,
+        1791127209091781500
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P2-observer-independent-source-review-v1/P2-planning-1.stdout.raw",
+        "size_bytes": 36677,
+        "sha256": "1d2bc29d95d851de8f0da9d1a89284b374502546d67c806f5e0ad27eda89af93"
+      },
+      "epoch7": [
+        69,
+        1407374885983040,
+        33279,
+        1,
+        36677,
+        1791127209132961600,
+        1791127209132961600
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P2-observer-independent-source-review-v1/P2-planning-2.stdout.raw",
+        "size_bytes": 19129,
+        "sha256": "f399b5cfc1777ec800fbbaefdf75ba879e4c43f9c7669772ff19f505c5df9a22"
+      },
+      "epoch7": [
+        69,
+        1407374885983042,
+        33279,
+        1,
+        19129,
+        1791127209174022900,
+        1791127209174022900
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P2-observer-independent-source-review-v1/P2-planning-3.stdout.raw",
+        "size_bytes": 13753,
+        "sha256": "8c2e53ee48365d25616bbde29adcd83ba472688f2e654b94d3cfcc0a457f4a42"
+      },
+      "epoch7": [
+        69,
+        1407374885983044,
+        33279,
+        1,
+        13753,
+        1791127209214979800,
+        1791127209214979800
+      ],
+      "full_read": true
+    }
+  ],
+  "current_epoch_matches": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01/controller/terminal.v1.json",
+      "exact": true
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/terminal.v1.json",
+      "exact": true
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/launch.v1.json",
+      "exact": true
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/process-start.v1.json",
+      "exact": true
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01/guest/metadata/metadata-preflight-terminal.v1.json",
+      "exact": true
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01/controller/original.stdout",
+      "exact": true
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/original.stdout",
+      "exact": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "exact": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "exact": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+      "exact": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+      "exact": true
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+      "exact": true
+    }
+  ],
+  "original_cold_held_input_count": 142,
+  "existing_source_proof": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P2-observer-independent-source-review-v1/exact-C-closure.v1.json",
+    "size_bytes": 9114,
+    "sha256": "2201b86aaefa577161809451940dd4e7672f6ab5312cb6f397459e373169e761"
+  },
+  "existing_producer_audit": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/metadata-dispatch-S503b33b2-independent-review-v1/cold-result-independent-review.v1.json",
+    "size_bytes": 31201,
+    "sha256": "9753ab3cdf46a6c71ee98a3ea8e5c994b205ef3ae36e0f583977749ea1c3b7d5"
+  },
+  "unchanged_predicates": "Approved exact-C source executes the same namespace/input backing/ABI/package/mode/cleanup/bounds predicates and reports raw_join_complete. This review joins the actual original tool and correction, reuses prior original producer audit, and does not reproduce the cold reader. Library/media bytes are original retained observations, not reopened here.",
+  "later_named_owner_scans": [
+    {
+      "monotonic_ns": 613551878206914,
+      "named_pids": {
+        "33003": null,
+        "33026": null,
+        "39386": null,
+        "39393": null,
+        "39394": null,
+        "39395": null,
+        "39396": null,
+        "39397": null,
+        "39398": null,
+        "39399": null,
+        "39400": null,
+        "39401": null,
+        "39402": null,
+        "39403": null,
+        "39404": null,
+        "39405": null,
+        "39406": null,
+        "39407": null,
+        "39408": null,
+        "39409": null,
+        "39410": null,
+        "39411": null,
+        "39412": null,
+        "39413": null,
+        "39414": null,
+        "39415": null,
+        "39416": null,
+        "39417": null,
+        "39418": null,
+        "39419": null,
+        "39420": null,
+        "39421": null,
+        "39422": null,
+        "39423": null,
+        "39424": null
+      },
+      "named_groups": [
+        33003,
+        33026,
+        39393,
+        39394,
+        39395,
+        39396,
+        39397,
+        39398,
+        39399,
+        39400,
+        39401,
+        39402,
+        39403,
+        39404,
+        39405,
+        39406,
+        39407,
+        39408,
+        39409,
+        39410,
+        39411,
+        39412,
+        39413,
+        39414,
+        39415,
+        39416,
+        39417,
+        39418,
+        39419,
+        39420,
+        39421,
+        39422,
+        39423,
+        39424
+      ],
+      "group_members": [],
+      "errors": []
+    },
+    {
+      "monotonic_ns": 613551879709212,
+      "named_pids": {
+        "33003": null,
+        "33026": null,
+        "39386": null,
+        "39393": null,
+        "39394": null,
+        "39395": null,
+        "39396": null,
+        "39397": null,
+        "39398": null,
+        "39399": null,
+        "39400": null,
+        "39401": null,
+        "39402": null,
+        "39403": null,
+        "39404": null,
+        "39405": null,
+        "39406": null,
+        "39407": null,
+        "39408": null,
+        "39409": null,
+        "39410": null,
+        "39411": null,
+        "39412": null,
+        "39413": null,
+        "39414": null,
+        "39415": null,
+        "39416": null,
+        "39417": null,
+        "39418": null,
+        "39419": null,
+        "39420": null,
+        "39421": null,
+        "39422": null,
+        "39423": null,
+        "39424": null
+      },
+      "named_groups": [
+        33003,
+        33026,
+        39393,
+        39394,
+        39395,
+        39396,
+        39397,
+        39398,
+        39399,
+        39400,
+        39401,
+        39402,
+        39403,
+        39404,
+        39405,
+        39406,
+        39407,
+        39408,
+        39409,
+        39410,
+        39411,
+        39412,
+        39413,
+        39414,
+        39415,
+        39416,
+        39417,
+        39418,
+        39419,
+        39420,
+        39421,
+        39422,
+        39423,
+        39424
+      ],
+      "group_members": [],
+      "errors": []
+    }
+  ],
+  "reader_original_sid": "unavailable in retained seven-field original owner; not inferred",
+  "own_owner": {
+    "pid": 39742,
+    "ppid": 39740,
+    "pgid": 39742,
+    "sid": 39742,
+    "starttime_ticks": 61355180
+  },
+  "own_fd_before": 6,
+  "own_fd_after": 6,
+  "own_close_errors": [],
+  "elapsed_before_receipt_s": 0.034409521031193435,
+  "limitations": [
+    "Selected original VMA rows and backing probes are replayed; full unselected maps and mapped memory bytes are unavailable.",
+    "Disposed image package/library descriptors are original observations, not current host rehashes.",
+    "Pixel hashes are original observed RGB active-row hashes, compared but not independently decoded.",
+    "Same-guest sink/src wall residence includes queueing/backpressure; it is not decoder utilization.",
+    "ACK_sent is observed after its write and can follow transport validation; enabling ACK intent must precede it.",
+    "Central outputs at/after actual sink EOS are flush-only and insufficient for central steady-state conclusions.",
+    "No global host/process quiescence, six-stream100ms, model, parity, qualification or benchmark acceptance is inferred."
+  ],
+  "metadata_result_accepted": true,
+  "research_dispatch_approved": false,
+  "research_executed": false,
+  "full32": 0,
+  "Q4": 0,
+  "publication5600": 0,
+  "publication_ready": false
+}

@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "kind": "decoder_P3_planning_author_revision",
+  "change": "fix-decoder-preflight",
+  "root": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+  "stage": "planning only; frozen for independent exact-commit review",
+  "authorization": "Root requested P3 planning amendment under standing user authorization; no dependent source/test/CI/runtime/Git edits authorized or performed",
+  "planning_commit": null,
+  "source_S3": null,
+  "paths": [
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\decoder-preflight-v6\\VAST\\openspec\\changes\\fix-decoder-preflight\\proposal.md",
+      "size_bytes": 6693,
+      "sha256": "e348f27ee69f29052fb27e3f58677ee67c9576796828409f42142fdb07b92e5b",
+      "relative_path": "openspec/changes/fix-decoder-preflight/proposal.md"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\decoder-preflight-v6\\VAST\\openspec\\changes\\fix-decoder-preflight\\design.md",
+      "size_bytes": 46250,
+      "sha256": "704d08004229b307136accc65abc86417ae256f7141026848e7139375a61673c",
+      "relative_path": "openspec/changes/fix-decoder-preflight/design.md"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\decoder-preflight-v6\\VAST\\openspec\\changes\\fix-decoder-preflight\\tasks.md",
+      "size_bytes": 17441,
+      "sha256": "c5b9055c61d54b51fce1600302be36c53dbf7f6966dc3e26cb8fd48219c30f5e",
+      "relative_path": "openspec/changes/fix-decoder-preflight/tasks.md"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\decoder-preflight-v6\\VAST\\openspec\\changes\\fix-decoder-preflight\\specs\\benchmark-launch-preparation\\spec.md",
+      "size_bytes": 21469,
+      "sha256": "6633fc9c8dbd57d1bd8df11f403013e9ab5f341c4d48bc473ab24ea8ba51fcfc",
+      "relative_path": "openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md"
+    }
+  ],
+  "before": {
+    "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P3-planning-amendment-v1\\before.v1.json",
+    "size_bytes": 7150,
+    "sha256": "489065ca7fbc989d77f42949875163257e5f42bb08b7687349d4fff1631000f9"
+  },
+  "original_four_snapshots_retained": true,
+  "prior25_delta_full_raw_prefix_preserved": true,
+  "requirements_modified": 1,
+  "scenarios_prior": 25,
+  "scenarios_after": 27,
+  "tasks_after": 43,
+  "tasks_checked": 32,
+  "closed_existing_tasks": [
+    "7.2 original once FAILED execution only",
+    "7.3 original C refusal / independent FAILED prefix disposition only"
+  ],
+  "new_unchecked_tasks": [
+    "10.1",
+    "10.2",
+    "10.3",
+    "10.4",
+    "10.5"
+  ],
+  "guarded_original_leaf_count": 17,
+  "guarded_source_test_adapter_main_specs_attributes_schema_helper_bytes_unchanged": true,
+  "CI_or_runtime_execution": false,
+  "code_or_test_edits": false,
+  "commit_push": false,
+  "main_specs_changed": false,
+  "proposed_production_change": "Only cached pin.deadline=self.phase_deadline before unchanged full verify(rehash=True); no Pin API/hash/epoch/clock changes",
+  "approved_test_case_names": [
+    "ProtocolTests.test_P3_cached_pin_uses_live_current_phase_after_original_deadline_expires",
+    "ProtocolTests.test_P3_cached_pin_rejects_expired_current_phase_despite_live_original_deadline"
+  ],
+  "future_counts_from_actual_discovery_only": true,
+  "helper_copy": "clock-fixed-original/capture_original_v6.py; future source-only two-prefix descendant of original43864a7a",
+  "original_failed_research_review": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-result-independent-v1/failed-original-review.v1.json",
+    "size_bytes": 46118,
+    "sha256": "13d71c9740a132899fb4fcd6cc86c999867143de0bc175314ebc9c3dc95b9a2a"
+  },
+  "original_failed_C_closure": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-result-independent-v1/failed-cold-closure-review.v1.json",
+    "size_bytes": 10653,
+    "sha256": "86647f6a22f9bf308bce1fbd283e1dd446092d34c0b097b6c129406b1f3a46ff"
+  },
+  "validation_original_tool": {
+    "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P3-planning-amendment-v1\\validation.original-tool.v1.json",
+    "size_bytes": 958,
+    "sha256": "4f426201cbebdcf4ccc4b6a356965a2efec8aceace4d0b4275b98a11c4cffeaf"
+  },
+  "strict_format_validation_exit": 0,
+  "strict_format_validation_is_not_behavior_or_planning_approval": true,
+  "diff": {
+    "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P3-planning-amendment-v1\\planning.diff",
+    "size_bytes": 37879,
+    "sha256": "6377d84a1469391aa4f13960e54b66d7e9d41fd940e5a9f8e3137fcd827da2ea"
+  },
+  "self_review": [
+    "Original25 clauses and other19/main diagnostics are unchanged.",
+    "Current phase means existing absolute phase deadline, no relative reset or omitted hash.",
+    "Original S2/C failures and front_gate32+32 observations remain nonpromoting; underbody/full128/64 absent.",
+    "New S3 uses P1 producer/P2 observer plus exact P3 review evidence; old C does not authorize future S3.",
+    "Task10.3 requires only source/metadata grant; research grant occurs after accepted10.4, avoiding circular prerequisite.",
+    "Both real-file controlled-clock regressions are explicitly scoped; only adapter literal IDs/count maintenance follows approval.",
+    "All five P3 tasks and new deployment/cold/research/release gates remain pending."
+  ],
+  "limitations": [
+    "Author planning review only; no independent P3 approval, S3 commit/CI/freeze or actual new invocation exists.",
+    "Guard checks are bounded full-file SHA/size comparisons of17 explicitly selected leaves, not a global workspace/FD/process audit.",
+    "Strict OpenSpec validation was captured before the final task10.3 wording-only no-cycle clarification; final semantic scope remains the same.",
+    "No scientific setting/intake/pipeline/metric/adoption/full-campaign authority is granted."
+  ],
+  "reviewer_handles_released": true
+}

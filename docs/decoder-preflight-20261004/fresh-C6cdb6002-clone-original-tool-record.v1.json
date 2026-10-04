@@ -1,0 +1,49 @@
+{
+  "tool_calls": [
+    {
+      "tool_name": "exec_command",
+      "arguments": {
+        "cmd": "@'\nfrom pathlib import Path\nimport subprocess\np=Path('/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002');assert not p.exists() and not p.is_symlink();assert p.parent.resolve(strict=True)==p.parent\ns=subprocess.run(['/usr/bin/git','-c','gc.auto=0','-c','maintenance.auto=false','clone','--no-local','--single-branch','--branch','codex/fix-decoder-preflight','file:///mnt/e/STUDY/VAST',str(p)],timeout=120,check=True)\nassert subprocess.check_output(['/usr/bin/git','-C',str(p),'rev-parse','HEAD']).decode().strip()=='6cdb60023fd07878cb65bf9d61bfe97b252c8878';assert (p/'.git').is_dir() and not (p/'.git/objects/info/alternates').exists();print('ordinary fresh C clone exact6cdb60023fd07878cb65bf9d61bfe97b252c8878; original S2 checkout untouched')\n'@ | wsl.exe -d Ubuntu --exec /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -",
+        "yield_time_ms": 10000,
+        "max_output_tokens": 2000
+      },
+      "result": {
+        "chunk_id": "ec46f2",
+        "wall_time_seconds": 10.0015822,
+        "session_id": 88929,
+        "original_token_count": 87,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000Cloning into '/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002'...\n"
+      }
+    },
+    {
+      "tool_name": "write_stdin",
+      "arguments": {
+        "session_id": 88929,
+        "chars": "",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 2000
+      },
+      "result": {
+        "chunk_id": "980d74",
+        "wall_time_seconds": 0.0000063,
+        "exit_code": 0,
+        "original_token_count": 26,
+        "output": "ordinary fresh C clone exact6cdb60023fd07878cb65bf9d61bfe97b252c8878; original S2 checkout untouched\n"
+      }
+    }
+  ],
+  "scoped_source_preparation": {
+    "arguments": {
+      "cmd": "wsl.exe -d Ubuntu --exec /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/prepare_observer_C_source_v1.py",
+      "yield_time_ms": 10000,
+      "max_output_tokens": 2200
+    },
+    "result": {
+      "chunk_id": "645a58",
+      "wall_time_seconds": 1.771471,
+      "exit_code": 0,
+      "original_token_count": 152,
+      "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000{\"result\": \"PASS\", \"C\": \"6cdb60023fd07878cb65bf9d61bfe97b252c8878\", \"held_rows\": 23, \"fd\": [6, 6], \"elapsed_s\": 0.8474601480411366, \"record\": \"/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/fresh-C6cdb6002-scoped-source-preparation.v1.json\", \"size_bytes\": 11706, \"sha256\": \"459513bf55f643c94178c74bba54172f6e3b56f91118cd7660eb0844f6523f1e\"}\n"
+    }
+  }
+}
