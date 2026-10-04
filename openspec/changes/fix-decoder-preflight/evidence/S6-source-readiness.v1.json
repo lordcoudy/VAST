@@ -1,0 +1,1295 @@
+{
+  "schema_version": 1,
+  "kind": "vast_decoder_research_S6_source_only_conditional_readiness_v1",
+  "verdict": "PASS_SOURCE_ONLY_WITH_FAILED_CI_BLOCKER",
+  "reviewable_source_only": true,
+  "producer_P1": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+  "producer_S3": "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+  "observer_P6": "39797d30644a5b889802acbdd67420838cc66821",
+  "observer_S6": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+  "observer_root": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+  "historical_S5_readiness": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/S5-corrected-cold-conditional-review.v1.json",
+    "size_bytes": 27527,
+    "sha256": "43bdc292f13b305f0b78d8b1c3fc81b97d884320c63f47e5e061fea3f2e1c9df",
+    "own_epoch7": [
+      69,
+      1688849862694899,
+      33279,
+      1,
+      27527,
+      1791149279322810700,
+      1791149279322810700
+    ]
+  },
+  "P6_planning_peer": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-planning-independent-v1/review.v1.json",
+    "size_bytes": 9621,
+    "sha256": "63bb4645baf5fede743d0b7c6daead220b24b36cf02cc6cf6baf333ed0d2c0d1",
+    "own_epoch7": [
+      69,
+      1970324839405616,
+      33279,
+      1,
+      9621,
+      1791152277332847000,
+      1791152277332847000
+    ]
+  },
+  "P6_source_and_canonical_peer": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-independent-v1/review.v1.json",
+    "size_bytes": 11407,
+    "sha256": "9396658256d1f9f5d25b834b6ae33cbd034261a3e1e108b976bb59b7542ca107",
+    "own_epoch7": [
+      69,
+      1970324839405665,
+      33279,
+      1,
+      11407,
+      1791153711166054300,
+      1791153711166054300
+    ]
+  },
+  "source_COMMENT": "5408607554",
+  "planning_COMMENT": "5408522443",
+  "CI": {
+    "run_id": 37240747391,
+    "status": "FAILED",
+    "basis": "root actual provider notification; originals under independent review",
+    "required_latest_CI_pass": false
+  },
+  "corrected_cold_dispatch_approved": false,
+  "research_complete": false,
+  "raw_join_complete": false,
+  "exact_future_corrected_cold_argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+    "--project-root",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "--review-repository-root",
+    "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s3bdb6cd81",
+    "--planning-commit",
+    "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+    "--source-commit",
+    "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+    "--mode",
+    "research",
+    "--attempt",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01",
+    "--external-terminal",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-original-controller/attempt-01/terminal.v1.json",
+    "--capture-source-sha256",
+    "0f6e7a40f14f25690694542a193dc4ba0fea54ffd0345dbd835244e241582666",
+    "--capture-tool-record",
+    "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-original-tool-record.S3bdb6cd81.v1.json",
+    "--observer-repository-root",
+    "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+    "--observer-commit",
+    "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+    "--report",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-transport-read-verification.v1.json"
+  ],
+  "changed_argv_indices": [
+    3,
+    23,
+    25,
+    27
+  ],
+  "other24_argv_fields_original_equal": true,
+  "new_report_and_late_companion_absent": true,
+  "ordinary_checkout": {
+    "root_identity": {
+      "dev": 2096,
+      "ino": 642242,
+      "mode": 16877,
+      "uid": 1000,
+      "gid": 1000
+    },
+    "own_dotgit": true,
+    "no_alternates": true,
+    "objects_directory_distinct_from_original_S5": true,
+    "HEAD": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+    "status_empty": true,
+    "ancestry": [
+      [
+        "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+        "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73"
+      ],
+      [
+        "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+        "cfa959d2aacbc84a589671dbdf13ae36ae76a2a6"
+      ],
+      [
+        "cfa959d2aacbc84a589671dbdf13ae36ae76a2a6",
+        "39797d30644a5b889802acbdd67420838cc66821"
+      ],
+      [
+        "39797d30644a5b889802acbdd67420838cc66821",
+        "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab"
+      ]
+    ],
+    "Git_control_leaves": [
+      {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/.git/HEAD",
+        "size_bytes": 41,
+        "sha256": "8f0dfa6e78eacb2434537efb95d64e27e8ccd1c28fcc905b69648fb134e68886",
+        "own_epoch7": [
+          2096,
+          652176,
+          33188,
+          1,
+          41,
+          1791153948629321075,
+          1791153948629321075
+        ]
+      },
+      {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/.git/config",
+        "size_bytes": 232,
+        "sha256": "da171c68a5c5da839816da8b231edc8f5b68384f05a0af8d0b09dc046f53bccf",
+        "own_epoch7": [
+          2096,
+          642271,
+          33188,
+          1,
+          232,
+          1791153906591931234,
+          1791153906591931234
+        ]
+      }
+    ]
+  },
+  "current_three_sources_full_SHA_raw_S6_and_epoch7": [
+    {
+      "relative_path": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 93774,
+      "sha256": "1cdfbbeffbbf859e83ba127a07b5ae214887b20bb4deab3615a1c1aa9bb124e8",
+      "own_epoch7": [
+        2096,
+        649462,
+        33188,
+        1,
+        93774,
+        1791153948193295817,
+        1791153948193295817
+      ]
+    },
+    {
+      "relative_path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 106331,
+      "sha256": "3d6eac7facb0e1fd87ad0acd3caf9c9ead396370a6d62e8caf626263a03463f1",
+      "own_epoch7": [
+        2096,
+        649831,
+        33188,
+        1,
+        106331,
+        1791153948205296512,
+        1791153948205296512
+      ]
+    },
+    {
+      "relative_path": "tests/test_decoder_research_v6.py",
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/tests/test_decoder_research_v6.py",
+      "size_bytes": 50190,
+      "sha256": "15ebb1f97da46e19358bc4d460c396abb607725a08dcc0018da8d92fc0ed0153",
+      "own_epoch7": [
+        2096,
+        652040,
+        33188,
+        1,
+        50190,
+        1791153948605319684,
+        1791153948605319684
+      ]
+    }
+  ],
+  "raw_four_P6_blobs_and_current_planning": [
+    {
+      "git_path": "openspec/changes/fix-decoder-preflight/proposal.md",
+      "P6": {
+        "size_bytes": 14447,
+        "sha256": "8da4687b6ba5b9554938da50431f1697a1e6457d2ee6e8f0f20d55e09a350672"
+      },
+      "current_S6": {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/openspec/changes/fix-decoder-preflight/proposal.md",
+        "size_bytes": 14447,
+        "sha256": "8da4687b6ba5b9554938da50431f1697a1e6457d2ee6e8f0f20d55e09a350672",
+        "own_epoch7": [
+          2096,
+          651628,
+          33188,
+          1,
+          14447,
+          1791153948533315513,
+          1791153948533315513
+        ],
+        "same_bytes_as_P6": true
+      }
+    },
+    {
+      "git_path": "openspec/changes/fix-decoder-preflight/design.md",
+      "P6": {
+        "size_bytes": 75703,
+        "sha256": "c49c13ed95cffc708e1e01e152d3a10b7ce3fb297e8e7220f33b0fc62ee8dde4"
+      },
+      "current_S6": {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/openspec/changes/fix-decoder-preflight/design.md",
+        "size_bytes": 75703,
+        "sha256": "c49c13ed95cffc708e1e01e152d3a10b7ce3fb297e8e7220f33b0fc62ee8dde4",
+        "own_epoch7": [
+          2096,
+          651627,
+          33188,
+          1,
+          75703,
+          1791153948533315513,
+          1791153948533315513
+        ],
+        "same_bytes_as_P6": true
+      }
+    },
+    {
+      "git_path": "openspec/changes/fix-decoder-preflight/tasks.md",
+      "P6": {
+        "size_bytes": 27630,
+        "sha256": "111bb28ac0c21f9be277d54a6c0621d023b813108220917a552087977255f55a"
+      },
+      "current_S6": {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/openspec/changes/fix-decoder-preflight/tasks.md",
+        "size_bytes": 27630,
+        "sha256": "b2124e29f2a545990127aa2cdaa7b86617f3e69fef51ec6757b954d2a8f48a1b",
+        "own_epoch7": [
+          2096,
+          651632,
+          33188,
+          1,
+          27630,
+          1791153948533315513,
+          1791153948533315513
+        ],
+        "same_bytes_as_P6": false
+      }
+    },
+    {
+      "git_path": "openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "P6": {
+        "size_bytes": 23273,
+        "sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d"
+      },
+      "current_S6": {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+        "size_bytes": 23273,
+        "sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d",
+        "own_epoch7": [
+          2096,
+          651631,
+          33188,
+          1,
+          23273,
+          1791153948533315513,
+          1791153948533315513
+        ],
+        "same_bytes_as_P6": true
+      }
+    }
+  ],
+  "helper_and_interpreter_full_hash_exact": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/clock-fixed-original/capture_original_v6.py",
+      "size_bytes": 25823,
+      "sha256": "0f6e7a40f14f25690694542a193dc4ba0fea54ffd0345dbd835244e241582666",
+      "own_epoch7": [
+        69,
+        1688849862694168,
+        33279,
+        1,
+        25823,
+        1791135630228921700,
+        1791135630228921700
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "size_bytes": 8020928,
+      "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+      "own_epoch7": [
+        2096,
+        87545,
+        33261,
+        1,
+        8020928,
+        1787574148546271435,
+        1787574148546271435
+      ]
+    }
+  ],
+  "read_only_Git_executable": {
+    "path": "/usr/bin/git",
+    "size_bytes": 4066232,
+    "sha256": "2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668",
+    "own_epoch7": [
+      2096,
+      1668,
+      33261,
+      1,
+      4066232,
+      1751487822000000000,
+      1757410189163646898
+    ]
+  },
+  "original223_named_epoch_refresh": {
+    "count": 223,
+    "before_projection_sha256": "a76707b00d8396edcbd7c4066347831937894479a6649f4982f88d6ea0c52d91",
+    "media_or_transport_rehashed": false,
+    "full_bytes_reused_from_original_failed_custody": true,
+    "after_projection_sha256": "a76707b00d8396edcbd7c4066347831937894479a6649f4982f88d6ea0c52d91"
+  },
+  "both_original_FAILED_cold_reports_preserved": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/verification.v1.json",
+      "size_bytes": 44168,
+      "sha256": "b1054cfe3fe53d7f30cd2853f9607d510722e9f9d9f387afce8b0484390f80c7",
+      "own_epoch7": [
+        69,
+        1407374885983973,
+        33279,
+        1,
+        44168,
+        1791139694938960400,
+        1791139694938960400
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-metadata-namespace-verification.v1.json",
+      "size_bytes": 93113,
+      "sha256": "d847af344229c40f6c4a16ccfe901ab6394b19dedaf2a1f395361faca2eac004",
+      "own_epoch7": [
+        69,
+        1407374885984255,
+        33279,
+        1,
+        93113,
+        1791150479447448700,
+        1791150479447448700
+      ]
+    }
+  ],
+  "small_original_controls_full_hash_exact": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-original-controller/attempt-01/terminal.v1.json",
+      "size_bytes": 7113,
+      "sha256": "f6bf60027fa73c079a12f78cc8a131a445b9448971b9b727322355f689982220",
+      "own_epoch7": [
+        69,
+        2533274792826593,
+        33279,
+        1,
+        7113,
+        1791139618706821900,
+        1791139618706821900
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-original-tool-record.S3bdb6cd81.v1.json",
+      "size_bytes": 3356,
+      "sha256": "bf4fdcb52cce239fba8ffc44c932fe5fdf51f0a16bce6cb0b86ea42f593e811f",
+      "own_epoch7": [
+        69,
+        1407374885983970,
+        33279,
+        1,
+        3356,
+        1791139671120608700,
+        1791139671120608700
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/verification.v1.json",
+      "size_bytes": 44168,
+      "sha256": "b1054cfe3fe53d7f30cd2853f9607d510722e9f9d9f387afce8b0484390f80c7",
+      "own_epoch7": [
+        69,
+        1407374885983973,
+        33279,
+        1,
+        44168,
+        1791139694938960400,
+        1791139694938960400
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/research-result-namespace-diagnosis.v2.json",
+      "size_bytes": 31808,
+      "sha256": "8acd86e45b7287d5a68ee95c992a441a3fd709d44f2ac98ed5dffde633648c82",
+      "own_epoch7": [
+        69,
+        1407374885983995,
+        33279,
+        1,
+        31808,
+        1791140534104762200,
+        1791140534104762200
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/research-result-namespace-diagnosis.later-owner-closure.v1.json",
+      "size_bytes": 1258,
+      "sha256": "8c0a0f270ee9a778a44faadbf5acf010f66f9795cbadbd8f8cff26c03776cfe3",
+      "own_epoch7": [
+        69,
+        1407374885983996,
+        33279,
+        1,
+        1258,
+        1791140589498574700,
+        1791140589498574700
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/controller/terminal.v1.json",
+      "size_bytes": 9741,
+      "sha256": "a1cbf41511315bc585172d7fdc8ec0e54d51267a93da14d8ca8cb85f8bfb7cf4",
+      "own_epoch7": [
+        69,
+        1407374885983968,
+        33279,
+        1,
+        9741,
+        1791139618665166900,
+        1791139618665166900
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/metadata/research-terminal.v1.json",
+      "size_bytes": 3377,
+      "sha256": "71b94e1a175e93cd31756c8df0793ff17190c0f647107f8013c3ace63f722fcd",
+      "own_epoch7": [
+        69,
+        1407374885983951,
+        33279,
+        1,
+        3377,
+        1791139614280088600,
+        1791139614280088600
+      ]
+    }
+  ],
+  "remaining": [
+    "latest mandatory S6 CI is FAILED; identify and resolve independently before any once grant",
+    "root exact once cold grant absent",
+    "new corrected transport report absent; scientific acceptance false"
+  ],
+  "limitations": [
+    "223 old input identities refreshed by named seven-epoch metadata only; no fresh media/raw-transport bytes read",
+    "source-only review does not execute/import observer, producer or tests and does not inspect Docker",
+    "original S3 producer and both failed cold dispositions remain immutable",
+    "no own later process absence or global quiescence inferred from this in-process receipt"
+  ],
+  "original_metadata_typo_failure": {
+    "tool_reference": "80d9d1",
+    "first_error": "expected original bytes",
+    "cause": "incorrect full expected SHA for the old S5 conditional receipt",
+    "new_root_not_audited": true,
+    "fd_before": 6,
+    "fd_after": 6,
+    "close_errors": []
+  },
+  "reader_original": {
+    "pid": 51575,
+    "ppid": 51572,
+    "process_group_id": 51575,
+    "session_id": 51575,
+    "starttime_ticks": 63748000,
+    "uid": 1000,
+    "gid": 1000,
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "rev-parse",
+        "--show-toplevel"
+      ],
+      "original_child": {
+        "pid": 51576,
+        "ppid": 51575,
+        "process_group_id": 51576,
+        "session_id": 51576,
+        "starttime_ticks": 63748025,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 78,
+      "stdout_sha256": "fa517b61b0cbd0fd9400834d3519e32a0d1273b036c043a12adc4e6a647875e1",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "rev-parse",
+        "HEAD"
+      ],
+      "original_child": {
+        "pid": 51577,
+        "ppid": 51575,
+        "process_group_id": 51577,
+        "session_id": 51577,
+        "starttime_ticks": 63748025,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 41,
+      "stdout_sha256": "8f0dfa6e78eacb2434537efb95d64e27e8ccd1c28fcc905b69648fb134e68886",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "rev-parse",
+        "--absolute-git-dir"
+      ],
+      "original_child": {
+        "pid": 51578,
+        "ppid": 51575,
+        "process_group_id": 51578,
+        "session_id": 51578,
+        "starttime_ticks": 63748025,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 83,
+      "stdout_sha256": "78b5475480af35daee06b9c98f7d35ce79e029f5efc7bb6efc67ccd62854c939",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "rev-parse",
+        "--path-format=absolute",
+        "--git-common-dir"
+      ],
+      "original_child": {
+        "pid": 51579,
+        "ppid": 51575,
+        "process_group_id": 51579,
+        "session_id": 51579,
+        "starttime_ticks": 63748025,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 83,
+      "stdout_sha256": "78b5475480af35daee06b9c98f7d35ce79e029f5efc7bb6efc67ccd62854c939",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "status",
+        "--porcelain=v1",
+        "-z"
+      ],
+      "original_child": {
+        "pid": 51580,
+        "ppid": 51575,
+        "process_group_id": 51580,
+        "session_id": 51580,
+        "starttime_ticks": 63748025,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "merge-base",
+        "--is-ancestor",
+        "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+        "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73"
+      ],
+      "original_child": {
+        "pid": 51593,
+        "ppid": 51575,
+        "process_group_id": 51593,
+        "session_id": 51593,
+        "starttime_ticks": 63748028,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "merge-base",
+        "--is-ancestor",
+        "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+        "cfa959d2aacbc84a589671dbdf13ae36ae76a2a6"
+      ],
+      "original_child": {
+        "pid": 51594,
+        "ppid": 51575,
+        "process_group_id": 51594,
+        "session_id": 51594,
+        "starttime_ticks": 63748028,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "merge-base",
+        "--is-ancestor",
+        "cfa959d2aacbc84a589671dbdf13ae36ae76a2a6",
+        "39797d30644a5b889802acbdd67420838cc66821"
+      ],
+      "original_child": {
+        "pid": 51595,
+        "ppid": 51575,
+        "process_group_id": 51595,
+        "session_id": 51595,
+        "starttime_ticks": 63748028,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "merge-base",
+        "--is-ancestor",
+        "39797d30644a5b889802acbdd67420838cc66821",
+        "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab"
+      ],
+      "original_child": {
+        "pid": 51596,
+        "ppid": 51575,
+        "process_group_id": 51596,
+        "session_id": 51596,
+        "starttime_ticks": 63748028,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "cat-file",
+        "blob",
+        "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab:artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py"
+      ],
+      "original_child": {
+        "pid": 51597,
+        "ppid": 51575,
+        "process_group_id": 51597,
+        "session_id": 51597,
+        "starttime_ticks": 63748028,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 93774,
+      "stdout_sha256": "1cdfbbeffbbf859e83ba127a07b5ae214887b20bb4deab3615a1c1aa9bb124e8",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "cat-file",
+        "blob",
+        "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab:artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py"
+      ],
+      "original_child": {
+        "pid": 51598,
+        "ppid": 51575,
+        "process_group_id": 51598,
+        "session_id": 51598,
+        "starttime_ticks": 63748029,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 106331,
+      "stdout_sha256": "3d6eac7facb0e1fd87ad0acd3caf9c9ead396370a6d62e8caf626263a03463f1",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "cat-file",
+        "blob",
+        "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab:tests/test_decoder_research_v6.py"
+      ],
+      "original_child": {
+        "pid": 51599,
+        "ppid": 51575,
+        "process_group_id": 51599,
+        "session_id": 51599,
+        "starttime_ticks": 63748029,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 50190,
+      "stdout_sha256": "15ebb1f97da46e19358bc4d460c396abb607725a08dcc0018da8d92fc0ed0153",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "cat-file",
+        "blob",
+        "39797d30644a5b889802acbdd67420838cc66821:openspec/changes/fix-decoder-preflight/proposal.md"
+      ],
+      "original_child": {
+        "pid": 51600,
+        "ppid": 51575,
+        "process_group_id": 51600,
+        "session_id": 51600,
+        "starttime_ticks": 63748029,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 14447,
+      "stdout_sha256": "8da4687b6ba5b9554938da50431f1697a1e6457d2ee6e8f0f20d55e09a350672",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "cat-file",
+        "blob",
+        "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab:openspec/changes/fix-decoder-preflight/proposal.md"
+      ],
+      "original_child": {
+        "pid": 51601,
+        "ppid": 51575,
+        "process_group_id": 51601,
+        "session_id": 51601,
+        "starttime_ticks": 63748029,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 14447,
+      "stdout_sha256": "8da4687b6ba5b9554938da50431f1697a1e6457d2ee6e8f0f20d55e09a350672",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "cat-file",
+        "blob",
+        "39797d30644a5b889802acbdd67420838cc66821:openspec/changes/fix-decoder-preflight/design.md"
+      ],
+      "original_child": {
+        "pid": 51602,
+        "ppid": 51575,
+        "process_group_id": 51602,
+        "session_id": 51602,
+        "starttime_ticks": 63748030,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 75703,
+      "stdout_sha256": "c49c13ed95cffc708e1e01e152d3a10b7ce3fb297e8e7220f33b0fc62ee8dde4",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "cat-file",
+        "blob",
+        "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab:openspec/changes/fix-decoder-preflight/design.md"
+      ],
+      "original_child": {
+        "pid": 51603,
+        "ppid": 51575,
+        "process_group_id": 51603,
+        "session_id": 51603,
+        "starttime_ticks": 63748030,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 75703,
+      "stdout_sha256": "c49c13ed95cffc708e1e01e152d3a10b7ce3fb297e8e7220f33b0fc62ee8dde4",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "cat-file",
+        "blob",
+        "39797d30644a5b889802acbdd67420838cc66821:openspec/changes/fix-decoder-preflight/tasks.md"
+      ],
+      "original_child": {
+        "pid": 51604,
+        "ppid": 51575,
+        "process_group_id": 51604,
+        "session_id": 51604,
+        "starttime_ticks": 63748030,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 27630,
+      "stdout_sha256": "111bb28ac0c21f9be277d54a6c0621d023b813108220917a552087977255f55a",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "cat-file",
+        "blob",
+        "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab:openspec/changes/fix-decoder-preflight/tasks.md"
+      ],
+      "original_child": {
+        "pid": 51605,
+        "ppid": 51575,
+        "process_group_id": 51605,
+        "session_id": 51605,
+        "starttime_ticks": 63748030,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 27630,
+      "stdout_sha256": "b2124e29f2a545990127aa2cdaa7b86617f3e69fef51ec6757b954d2a8f48a1b",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "cat-file",
+        "blob",
+        "39797d30644a5b889802acbdd67420838cc66821:openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md"
+      ],
+      "original_child": {
+        "pid": 51606,
+        "ppid": 51575,
+        "process_group_id": 51606,
+        "session_id": 51606,
+        "starttime_ticks": 63748030,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 23273,
+      "stdout_sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "cat-file",
+        "blob",
+        "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab:openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md"
+      ],
+      "original_child": {
+        "pid": 51607,
+        "ppid": 51575,
+        "process_group_id": 51607,
+        "session_id": 51607,
+        "starttime_ticks": 63748031,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 23273,
+      "stdout_sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "rev-parse",
+        "HEAD"
+      ],
+      "original_child": {
+        "pid": 51608,
+        "ppid": 51575,
+        "process_group_id": 51608,
+        "session_id": 51608,
+        "starttime_ticks": 63748043,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 41,
+      "stdout_sha256": "8f0dfa6e78eacb2434537efb95d64e27e8ccd1c28fcc905b69648fb134e68886",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "--no-replace-objects",
+        "--no-optional-locks",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+        "status",
+        "--porcelain=v1",
+        "-z"
+      ],
+      "original_child": {
+        "pid": 51609,
+        "ppid": 51575,
+        "process_group_id": 51609,
+        "session_id": 51609,
+        "starttime_ticks": 63748043,
+        "uid": 1000,
+        "gid": 1000,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "eof": [
+        true,
+        true
+      ],
+      "stdout_size": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_size": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "first_error": null
+    }
+  ],
+  "first_error": null,
+  "custody": {
+    "fd_before": 6,
+    "fd_after": 6,
+    "held_leaf_count": 23,
+    "held_ancestor_count": 48,
+    "all_owned_FDs_closed": true,
+    "close_errors": [],
+    "own_later_absence_not_claimed": true
+  },
+  "elapsed_s": 0.38913318898994476
+}

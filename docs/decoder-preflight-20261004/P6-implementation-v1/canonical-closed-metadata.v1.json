@@ -1,0 +1,417 @@
+{
+  "schema_version": 1,
+  "kind": "P6_closed_original_canonical_fixture_and_source_metadata",
+  "original_attempt": "/tmp/vast-decoder-p6-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-70c3bb1983b84da2bc6cb6ad5934a37e",
+  "originals": [
+    {
+      "path": "/tmp/vast-decoder-p6-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-70c3bb1983b84da2bc6cb6ad5934a37e/nested-suite.v1.json",
+      "size_bytes": 103333,
+      "sha256": "52b48c697f579a5cb2836ca51a519cfe5b6d6bf0b7d5ee600f35754885ea0d63",
+      "epoch7": [
+        2096,
+        639866,
+        33188,
+        1,
+        103333,
+        1791152792544641981,
+        1791152792544641981
+      ],
+      "external_copy": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.nested-suite.v1.json",
+        "size_bytes": 103333,
+        "sha256": "52b48c697f579a5cb2836ca51a519cfe5b6d6bf0b7d5ee600f35754885ea0d63"
+      }
+    },
+    {
+      "path": "/tmp/vast-decoder-p6-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-70c3bb1983b84da2bc6cb6ad5934a37e/adapter-terminal.v1.json",
+      "size_bytes": 1912,
+      "sha256": "a61c2b87feb47c20c61a0c1d01bceaf9c53861259eafe4a9a82d553b76106a11",
+      "epoch7": [
+        2096,
+        639865,
+        33188,
+        1,
+        1912,
+        1791152796052889549,
+        1791152796052889549
+      ],
+      "external_copy": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.adapter-terminal.v1.json",
+        "size_bytes": 1912,
+        "sha256": "a61c2b87feb47c20c61a0c1d01bceaf9c53861259eafe4a9a82d553b76106a11"
+      }
+    },
+    {
+      "path": "/tmp/vast-decoder-p6-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-70c3bb1983b84da2bc6cb6ad5934a37e/adapter-final-close.v1.json",
+      "size_bytes": 758,
+      "sha256": "f15b11c5eee46d9778f97447b11f98a7d0349174f4011239279e5e3edd97f95d",
+      "epoch7": [
+        2096,
+        639867,
+        33188,
+        1,
+        758,
+        1791152796056889832,
+        1791152796056889832
+      ],
+      "external_copy": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.adapter-final-close.v1.json",
+        "size_bytes": 758,
+        "sha256": "f15b11c5eee46d9778f97447b11f98a7d0349174f4011239279e5e3edd97f95d"
+      }
+    },
+    {
+      "path": "/tmp/vast-decoder-p6-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-70c3bb1983b84da2bc6cb6ad5934a37e/original.stdout",
+      "size_bytes": 8168,
+      "sha256": "b244063f5f1fd719f975f65271a73f877091c8636483da5eef621cdf0589fd89",
+      "epoch7": [
+        2096,
+        639862,
+        33188,
+        1,
+        8168,
+        1791152794284764776,
+        1791152794284764776
+      ],
+      "external_copy": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.original.stdout.raw",
+        "size_bytes": 8168,
+        "sha256": "b244063f5f1fd719f975f65271a73f877091c8636483da5eef621cdf0589fd89"
+      }
+    },
+    {
+      "path": "/tmp/vast-decoder-p6-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-70c3bb1983b84da2bc6cb6ad5934a37e/original.stderr",
+      "size_bytes": 101386,
+      "sha256": "cdd2d217ad7406313bbb7ce806df6b00cab7d3a59f7d771d935c67b982e276f0",
+      "epoch7": [
+        2096,
+        639863,
+        33188,
+        1,
+        101386,
+        1791152794288765060,
+        1791152794288765060
+      ],
+      "external_copy": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.original.stderr.raw",
+        "size_bytes": 101386,
+        "sha256": "cdd2d217ad7406313bbb7ce806df6b00cab7d3a59f7d771d935c67b982e276f0"
+      }
+    }
+  ],
+  "actual_nested_count": 170,
+  "actual_unique_started_count": 170,
+  "actual_unique_successful_terminal_count": 170,
+  "other_outcomes": 0,
+  "source15_before_after_fullSHA_and7epochs_equal": true,
+  "source15_current_fullSHA_and7epochs_equal_captured_before_after": true,
+  "current_source_rows": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_mapped_inputs_v4.py",
+      "size_bytes": 11433,
+      "sha256": "831cbd07388af9994d2684ab2248e299c95b29ee4ad799f26375d603b2f2f986",
+      "epoch7": [
+        68,
+        4785074605749788,
+        33279,
+        1,
+        11433,
+        1791107896746919500,
+        1791107896746919500
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_pin_diagnostics_v3.py",
+      "size_bytes": 11543,
+      "sha256": "a693f9fea9cc583d236447023745c612d3762da41d3103b474aa03dbddcfac14",
+      "epoch7": [
+        68,
+        3096224745485858,
+        33279,
+        1,
+        11543,
+        1791109088755188200,
+        1791109088755188200
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_preflight_diagnostics_v5.py",
+      "size_bytes": 11980,
+      "sha256": "ade99a45510b042fc55ce2c888f029301ae67defea2776524101aa8d158f3afe",
+      "epoch7": [
+        68,
+        23080948091955480,
+        33279,
+        1,
+        11980,
+        1791109088754187700,
+        1791109088754187700
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 106331,
+      "sha256": "3d6eac7facb0e1fd87ad0acd3caf9c9ead396370a6d62e8caf626263a03463f1",
+      "epoch7": [
+        68,
+        4785074605762841,
+        33279,
+        1,
+        106331,
+        1791152514994109700,
+        1791152514994109700
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_setup_v2.py",
+      "size_bytes": 34262,
+      "sha256": "f0f5bdb2be0f834e9795aa35c665e1703a0b120df24a9a4b56afe425a90fe4cd",
+      "epoch7": [
+        68,
+        8162774326290722,
+        33279,
+        1,
+        34262,
+        1791110052702391000,
+        1791110052702391000
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_successor_v6.py",
+      "size_bytes": 54172,
+      "sha256": "2d1b3ac6ab031ac49449f28f453b165b19780fbc30e5fb9f451d15a5afd555f6",
+      "epoch7": [
+        68,
+        39125021762869887,
+        33279,
+        1,
+        54172,
+        1791114693080789400,
+        1791114693080789400
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+      "size_bytes": 53060,
+      "sha256": "3db163f5d90043bddb07fbabd29ee4f500b5ccc070d844a8e6d67b2d595e1bce",
+      "epoch7": [
+        68,
+        4785074605590591,
+        33279,
+        1,
+        53060,
+        1791110107915893900,
+        1791110107915893900
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+      "size_bytes": 64637,
+      "sha256": "bc2a3a618fab6e53ed15835d327f611cc63f18543cc16648a5d6b7e084f073ec",
+      "epoch7": [
+        68,
+        8444249302829122,
+        33279,
+        1,
+        64637,
+        1791134947062299300,
+        1791134947062299300
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+      "size_bytes": 36624,
+      "sha256": "f0685e19a3072736f8262aad32d868a2021650381e8beaef989d4f5339358d63",
+      "epoch7": [
+        68,
+        6192449489143878,
+        33279,
+        1,
+        36624,
+        1791111029135697300,
+        1791111029135697300
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 93774,
+      "sha256": "1cdfbbeffbbf859e83ba127a07b5ae214887b20bb4deab3615a1c1aa9bb124e8",
+      "epoch7": [
+        68,
+        4785074605590882,
+        33279,
+        1,
+        93774,
+        1791152612452065500,
+        1791152612452065500
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+      "size_bytes": 50190,
+      "sha256": "15ebb1f97da46e19358bc4d460c396abb607725a08dcc0018da8d92fc0ed0153",
+      "epoch7": [
+        68,
+        147774362773175885,
+        33279,
+        1,
+        50190,
+        1791152612454500900,
+        1791152612454500900
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/run_ci_checks.py",
+      "size_bytes": 29477,
+      "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+      "epoch7": [
+        68,
+        1407374885234622,
+        33279,
+        1,
+        29477,
+        1791104455323487500,
+        1791104455323487500
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/ci_external_test_observer_v1.py",
+      "size_bytes": 20916,
+      "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+      "epoch7": [
+        68,
+        1407374885234523,
+        33279,
+        1,
+        20916,
+        1791104455283089200,
+        1791104455283089200
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/ci_test_selection_v1.py",
+      "size_bytes": 9978,
+      "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d",
+      "epoch7": [
+        68,
+        1407374885234525,
+        33279,
+        1,
+        9978,
+        1791104455284090800,
+        1791104455284090800
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/ci_userns_profile_v1.py",
+      "size_bytes": 28890,
+      "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+      "epoch7": [
+        68,
+        1407374885234526,
+        33279,
+        1,
+        28890,
+        1791104455284090800,
+        1791104455284090800
+      ]
+    }
+  ],
+  "all_old167_IDs_retained_by_unchanged_adapter_set_plus_exact_three": true,
+  "new_P6_actual_success_cases": [
+    {
+      "elapsed_s": 0.07822691008914262,
+      "event": "test_terminal",
+      "monotonic_ns": 635085036063233,
+      "outcome": "success",
+      "test_id": "test_research_protocol.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload"
+    },
+    {
+      "elapsed_s": 0.07458322797901928,
+      "event": "test_terminal",
+      "monotonic_ns": 635085110674876,
+      "outcome": "success",
+      "test_id": "test_research_protocol.IndependentColdTests.test_P6_transport_partial_progress_keeps_original_absolute_deadline"
+    },
+    {
+      "elapsed_s": 0.07553827005904168,
+      "event": "test_terminal",
+      "monotonic_ns": 635085186239024,
+      "outcome": "success",
+      "test_id": "test_research_protocol.IndependentColdTests.test_P6_transport_zero_progress_refuses_without_spinning"
+    }
+  ],
+  "original_two_real15s_cases": [
+    {
+      "elapsed_s": 15.04703714104835,
+      "event": "test_terminal",
+      "monotonic_ns": 635111588672638,
+      "outcome": "success",
+      "test_id": "test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed"
+    },
+    {
+      "elapsed_s": 15.044504021061584,
+      "event": "test_terminal",
+      "monotonic_ns": 635126633209485,
+      "outcome": "success",
+      "test_id": "test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success"
+    }
+  ],
+  "nested_elapsed_s": 53.202989136916585,
+  "original_child_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 49207,
+    "pid": 49207,
+    "ppid": 49196,
+    "sid": 49207,
+    "starttime_ticks": 63507608,
+    "uid": 1000
+  },
+  "known_parent_identity_limit": "PPID49196 observed through authentic child record; parent birth/session/UID were not independently captured. No invented full root-launcher identity.",
+  "original_provisional_successful_false_preserved": true,
+  "original_final_close_candidate_success_true": true,
+  "original_final_close_elapsed_s": 59.55450715101324,
+  "original_final_close_cleanup_elapsed_s": 1.7732332909945399,
+  "original_final_close_successful_false_preserved": true,
+  "original_reaped_EOF_logclose_signalno_failure_gates": true,
+  "later_two_actual_scans": [
+    {
+      "observed_monotonic_ns": 635446033597998,
+      "observed_boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "original_child_pid": 49207,
+      "known_parent_pid": 49196,
+      "original_pg_id": 49207,
+      "original_session_id": 49207,
+      "named_pid_presence": {
+        "49207": false,
+        "49196": false
+      },
+      "owned_group_members": [],
+      "owned_session_members": [],
+      "errors": []
+    },
+    {
+      "observed_monotonic_ns": 635446035472055,
+      "observed_boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "original_child_pid": 49207,
+      "known_parent_pid": 49196,
+      "original_pg_id": 49207,
+      "original_session_id": 49207,
+      "named_pid_presence": {
+        "49207": false,
+        "49196": false
+      },
+      "owned_group_members": [],
+      "owned_session_members": [],
+      "errors": []
+    }
+  ],
+  "scope_of_absence": "Only named original child/known parent and original child PGID/SID in visible current-UID proc. No global descendant claim.",
+  "late_or_close_failure_companion_absent": true,
+  "metadata_reader_fd_before": 6,
+  "metadata_reader_fd_after": 6,
+  "close_errors": [],
+  "elapsed_s": 0.06233673496171832,
+  "hardware_or_research_acceptance": false
+}

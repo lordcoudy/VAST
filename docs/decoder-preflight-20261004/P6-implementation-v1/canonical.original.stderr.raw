@@ -1,0 +1,855 @@
+
+{"event": "test_started", "monotonic_ns": 635078733857819, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_actual_guest_maps_snapshot_joins_cached_pin_and_backing_identity"}
+test_actual_guest_maps_snapshot_joins_cached_pin_and_backing_identity (test_mapped_inputs_v4.MappedInputTests.test_actual_guest_maps_snapshot_joins_cached_pin_and_backing_identity) ... ok
+
+{"elapsed_s": 0.01733341603539884, "event": "test_terminal", "monotonic_ns": 635078751190152, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_actual_guest_maps_snapshot_joins_cached_pin_and_backing_identity"}
+
+{"event": "test_started", "monotonic_ns": 635078751218345, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_actual_mapped_hardlink_accepts_join_but_default_still_rejects"}
+test_actual_mapped_hardlink_accepts_join_but_default_still_rejects (test_mapped_inputs_v4.MappedInputTests.test_actual_mapped_hardlink_accepts_join_but_default_still_rejects) ... ok
+
+{"elapsed_s": 0.003090899088419974, "event": "test_terminal", "monotonic_ns": 635078754309575, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_actual_mapped_hardlink_accepts_join_but_default_still_rejects"}
+
+{"event": "test_started", "monotonic_ns": 635078754330231, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_cached_default_cannot_inherit_mapping_policy_or_wrong_identity"}
+test_cached_default_cannot_inherit_mapping_policy_or_wrong_identity (test_mapped_inputs_v4.MappedInputTests.test_cached_default_cannot_inherit_mapping_policy_or_wrong_identity) ... ok
+
+{"elapsed_s": 0.003728069947101176, "event": "test_terminal", "monotonic_ns": 635078758058665, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_cached_default_cannot_inherit_mapping_policy_or_wrong_identity"}
+
+{"event": "test_started", "monotonic_ns": 635078758078415, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_correct_identity_does_not_bypass_type_size_or_expected_hash"}
+test_correct_identity_does_not_bypass_type_size_or_expected_hash (test_mapped_inputs_v4.MappedInputTests.test_correct_identity_does_not_bypass_type_size_or_expected_hash) ... ok
+
+{"elapsed_s": 0.002890593954361975, "event": "test_terminal", "monotonic_ns": 635078760969819, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_correct_identity_does_not_bypass_type_size_or_expected_hash"}
+
+{"event": "test_started", "monotonic_ns": 635078760991269, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_deleted_ambiguous_malformed_missing_inode_and_absent_name_fail"}
+test_deleted_ambiguous_malformed_missing_inode_and_absent_name_fail (test_mapped_inputs_v4.MappedInputTests.test_deleted_ambiguous_malformed_missing_inode_and_absent_name_fail) ... ok
+
+{"elapsed_s": 0.0028059020405635238, "event": "test_terminal", "monotonic_ns": 635078763797578, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_deleted_ambiguous_malformed_missing_inode_and_absent_name_fail"}
+
+{"event": "test_started", "monotonic_ns": 635078763817486, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_mapped_byte_mutation_remains_full_epoch_failure"}
+test_mapped_byte_mutation_remains_full_epoch_failure (test_mapped_inputs_v4.MappedInputTests.test_mapped_byte_mutation_remains_full_epoch_failure) ... ok
+
+{"elapsed_s": 0.0031871809624135494, "event": "test_terminal", "monotonic_ns": 635078767012138, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_mapped_byte_mutation_remains_full_epoch_failure"}
+
+{"event": "test_started", "monotonic_ns": 635078767033160, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_mapped_link_count_mutation_remains_full_epoch_failure"}
+test_mapped_link_count_mutation_remains_full_epoch_failure (test_mapped_inputs_v4.MappedInputTests.test_mapped_link_count_mutation_remains_full_epoch_failure) ... ok
+
+{"elapsed_s": 0.003198562073521316, "event": "test_terminal", "monotonic_ns": 635078770232314, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_mapped_link_count_mutation_remains_full_epoch_failure"}
+
+{"event": "test_started", "monotonic_ns": 635078770253520, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_maps_limit_reads_only_original_limit_plus_one_sentinel"}
+test_maps_limit_reads_only_original_limit_plus_one_sentinel (test_mapped_inputs_v4.MappedInputTests.test_maps_limit_reads_only_original_limit_plus_one_sentinel) ... ok
+
+{"elapsed_s": 0.0035109349992126226, "event": "test_terminal", "monotonic_ns": 635078773764939, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_maps_limit_reads_only_original_limit_plus_one_sentinel"}
+
+{"event": "test_started", "monotonic_ns": 635078773785370, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_named_substitution_cannot_match_original_mapping_identity"}
+test_named_substitution_cannot_match_original_mapping_identity (test_mapped_inputs_v4.MappedInputTests.test_named_substitution_cannot_match_original_mapping_identity) ... ok
+
+{"elapsed_s": 0.0034759020199999213, "event": "test_terminal", "monotonic_ns": 635078777261704, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_named_substitution_cannot_match_original_mapping_identity"}
+
+{"event": "test_started", "monotonic_ns": 635078777283259, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_repeated_rows_keep_original_rows_and_conflicts_or_aliases_fail"}
+test_repeated_rows_keep_original_rows_and_conflicts_or_aliases_fail (test_mapped_inputs_v4.MappedInputTests.test_repeated_rows_keep_original_rows_and_conflicts_or_aliases_fail) ... ok
+
+{"elapsed_s": 0.00289458897896111, "event": "test_terminal", "monotonic_ns": 635078780182369, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_repeated_rows_keep_original_rows_and_conflicts_or_aliases_fail"}
+
+{"event": "test_started", "monotonic_ns": 635078780203544, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_snapshot_cap_failure_cannot_authorize_mapped_pin"}
+test_snapshot_cap_failure_cannot_authorize_mapped_pin (test_mapped_inputs_v4.MappedInputTests.test_snapshot_cap_failure_cannot_authorize_mapped_pin) ... ok
+
+{"elapsed_s": 0.003378270077519119, "event": "test_terminal", "monotonic_ns": 635078783582228, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_snapshot_cap_failure_cannot_authorize_mapped_pin"}
+
+{"event": "test_started", "monotonic_ns": 635078783603135, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_tiny_original_child_uses_same_actual_source_pid_maps_parser"}
+test_tiny_original_child_uses_same_actual_source_pid_maps_parser (test_mapped_inputs_v4.MappedInputTests.test_tiny_original_child_uses_same_actual_source_pid_maps_parser) ... ok
+
+{"elapsed_s": 0.0143357909983024, "event": "test_terminal", "monotonic_ns": 635078797939722, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_tiny_original_child_uses_same_actual_source_pid_maps_parser"}
+
+{"event": "test_started", "monotonic_ns": 635078797964027, "test_id": "test_mapped_inputs_v4.MappedInputTests.test_wrong_device_inode_and_invalid_tuple_reject_before_hash_and_close"}
+test_wrong_device_inode_and_invalid_tuple_reject_before_hash_and_close (test_mapped_inputs_v4.MappedInputTests.test_wrong_device_inode_and_invalid_tuple_reject_before_hash_and_close) ... ok
+
+{"elapsed_s": 0.004950138041749597, "event": "test_terminal", "monotonic_ns": 635078802914664, "outcome": "success", "test_id": "test_mapped_inputs_v4.MappedInputTests.test_wrong_device_inode_and_invalid_tuple_reject_before_hash_and_close"}
+
+{"event": "test_started", "monotonic_ns": 635078802957063, "test_id": "test_pin_diagnostics_v3.InnerFailureTests.test_actual_maps_failure_retains_first_inner_stack_before_cleanup"}
+test_actual_maps_failure_retains_first_inner_stack_before_cleanup (test_pin_diagnostics_v3.InnerFailureTests.test_actual_maps_failure_retains_first_inner_stack_before_cleanup) ... ok
+
+{"elapsed_s": 0.03351670107804239, "event": "test_terminal", "monotonic_ns": 635078836473450, "outcome": "success", "test_id": "test_pin_diagnostics_v3.InnerFailureTests.test_actual_maps_failure_retains_first_inner_stack_before_cleanup"}
+
+{"event": "test_started", "monotonic_ns": 635078836495461, "test_id": "test_pin_diagnostics_v3.InnerFailureTests.test_actual_readonly_fd_write_failure_closes_and_keeps_original_cause"}
+test_actual_readonly_fd_write_failure_closes_and_keeps_original_cause (test_pin_diagnostics_v3.InnerFailureTests.test_actual_readonly_fd_write_failure_closes_and_keeps_original_cause) ... ok
+
+{"elapsed_s": 0.029231088003143668, "event": "test_terminal", "monotonic_ns": 635078865728402, "outcome": "success", "test_id": "test_pin_diagnostics_v3.InnerFailureTests.test_actual_readonly_fd_write_failure_closes_and_keeps_original_cause"}
+
+{"event": "test_started", "monotonic_ns": 635078865764686, "test_id": "test_pin_diagnostics_v3.InnerFailureTests.test_diagnostic_cap_failure_is_sticky_without_truncating_original_error"}
+test_diagnostic_cap_failure_is_sticky_without_truncating_original_error (test_pin_diagnostics_v3.InnerFailureTests.test_diagnostic_cap_failure_is_sticky_without_truncating_original_error) ... ok
+
+{"elapsed_s": 0.030552868964150548, "event": "test_terminal", "monotonic_ns": 635078896318118, "outcome": "success", "test_id": "test_pin_diagnostics_v3.InnerFailureTests.test_diagnostic_cap_failure_is_sticky_without_truncating_original_error"}
+
+{"event": "test_started", "monotonic_ns": 635078896343133, "test_id": "test_pin_diagnostics_v3.InnerFailureTests.test_exclusive_diagnostic_collision_keeps_original_cause_and_prior_bytes"}
+test_exclusive_diagnostic_collision_keeps_original_cause_and_prior_bytes (test_pin_diagnostics_v3.InnerFailureTests.test_exclusive_diagnostic_collision_keeps_original_cause_and_prior_bytes) ... ok
+
+{"elapsed_s": 0.02303332998417318, "event": "test_terminal", "monotonic_ns": 635078919377396, "outcome": "success", "test_id": "test_pin_diagnostics_v3.InnerFailureTests.test_exclusive_diagnostic_collision_keeps_original_cause_and_prior_bytes"}
+
+{"event": "test_started", "monotonic_ns": 635078919412086, "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_actual_directory_type_rejects_and_closes_fds"}
+test_actual_directory_type_rejects_and_closes_fds (test_pin_diagnostics_v3.PinDiagnosticsTests.test_actual_directory_type_rejects_and_closes_fds) ... ok
+
+{"elapsed_s": 0.00038939795922487974, "event": "test_terminal", "monotonic_ns": 635078919801699, "outcome": "success", "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_actual_directory_type_rejects_and_closes_fds"}
+
+{"event": "test_started", "monotonic_ns": 635078919822634, "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_actual_oversize_retains_original_size_and_limit_before_hash"}
+test_actual_oversize_retains_original_size_and_limit_before_hash (test_pin_diagnostics_v3.PinDiagnosticsTests.test_actual_oversize_retains_original_size_and_limit_before_hash) ... ok
+
+{"elapsed_s": 0.0004806519718840718, "event": "test_terminal", "monotonic_ns": 635078920303485, "outcome": "success", "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_actual_oversize_retains_original_size_and_limit_before_hash"}
+
+{"event": "test_started", "monotonic_ns": 635078920320631, "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_hardlink_preserves_original_rejection_and_actual_predicate_facts"}
+test_hardlink_preserves_original_rejection_and_actual_predicate_facts (test_pin_diagnostics_v3.PinDiagnosticsTests.test_hardlink_preserves_original_rejection_and_actual_predicate_facts) ... ok
+
+{"elapsed_s": 0.00034864700865000486, "event": "test_terminal", "monotonic_ns": 635078920669681, "outcome": "success", "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_hardlink_preserves_original_rejection_and_actual_predicate_facts"}
+
+{"event": "test_started", "monotonic_ns": 635078920712438, "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_missing_resolve_retains_original_exception_and_unavailable_stats"}
+test_missing_resolve_retains_original_exception_and_unavailable_stats (test_pin_diagnostics_v3.PinDiagnosticsTests.test_missing_resolve_retains_original_exception_and_unavailable_stats) ... ok
+
+{"elapsed_s": 0.00028539402410387993, "event": "test_terminal", "monotonic_ns": 635078920997294, "outcome": "success", "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_missing_resolve_retains_original_exception_and_unavailable_stats"}
+
+{"event": "test_started", "monotonic_ns": 635078921021999, "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_requested_symlink_and_resolved_target_are_distinct_original_facts"}
+test_requested_symlink_and_resolved_target_are_distinct_original_facts (test_pin_diagnostics_v3.PinDiagnosticsTests.test_requested_symlink_and_resolved_target_are_distinct_original_facts) ... ok
+
+{"elapsed_s": 0.00041948200669139624, "event": "test_terminal", "monotonic_ns": 635078921441290, "outcome": "success", "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_requested_symlink_and_resolved_target_are_distinct_original_facts"}
+
+{"event": "test_started", "monotonic_ns": 635078921457029, "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_substituted_inode_retains_held_and_named_failure_epochs"}
+test_substituted_inode_retains_held_and_named_failure_epochs (test_pin_diagnostics_v3.PinDiagnosticsTests.test_substituted_inode_retains_held_and_named_failure_epochs) ... ok
+
+{"elapsed_s": 0.0003610469866544008, "event": "test_terminal", "monotonic_ns": 635078921818550, "outcome": "success", "test_id": "test_pin_diagnostics_v3.PinDiagnosticsTests.test_substituted_inode_retains_held_and_named_failure_epochs"}
+
+{"event": "test_started", "monotonic_ns": 635078921851027, "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_actual_readonly_primary_write_keeps_original_cause_and_retires_fds"}
+test_actual_readonly_primary_write_keeps_original_cause_and_retires_fds (test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_actual_readonly_primary_write_keeps_original_cause_and_retires_fds) ... ok
+
+{"elapsed_s": 0.026168062002398074, "event": "test_terminal", "monotonic_ns": 635078948019293, "outcome": "success", "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_actual_readonly_primary_write_keeps_original_cause_and_retires_fds"}
+
+{"event": "test_started", "monotonic_ns": 635078948049751, "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_actual_trace_write_failure_does_not_replace_structured_primary"}
+test_actual_trace_write_failure_does_not_replace_structured_primary (test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_actual_trace_write_failure_does_not_replace_structured_primary) ... ok
+
+{"elapsed_s": 0.02485869196243584, "event": "test_terminal", "monotonic_ns": 635078972909184, "outcome": "success", "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_actual_trace_write_failure_does_not_replace_structured_primary"}
+
+{"event": "test_started", "monotonic_ns": 635078972932616, "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_close_companion_write_failure_stays_nonzero_and_reports_capture_error"}
+test_close_companion_write_failure_stays_nonzero_and_reports_capture_error (test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_close_companion_write_failure_stays_nonzero_and_reports_capture_error) ... ok
+
+{"elapsed_s": 0.030971396015956998, "event": "test_terminal", "monotonic_ns": 635079003925922, "outcome": "success", "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_close_companion_write_failure_stays_nonzero_and_reports_capture_error"}
+
+{"event": "test_started", "monotonic_ns": 635079003982196, "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_exclusive_collision_keeps_prior_bytes_and_original_primary"}
+test_exclusive_collision_keeps_prior_bytes_and_original_primary (test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_exclusive_collision_keeps_prior_bytes_and_original_primary) ... ok
+
+{"elapsed_s": 0.02603752794675529, "event": "test_terminal", "monotonic_ns": 635079030020238, "outcome": "success", "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_exclusive_collision_keeps_prior_bytes_and_original_primary"}
+
+{"event": "test_started", "monotonic_ns": 635079030043903, "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_metadata_close_failure_keeps_primary_and_retires_all_remaining_fds"}
+test_metadata_close_failure_keeps_primary_and_retires_all_remaining_fds (test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_metadata_close_failure_keeps_primary_and_retires_all_remaining_fds) ... ok
+
+{"elapsed_s": 0.03637276100926101, "event": "test_terminal", "monotonic_ns": 635079066418057, "outcome": "success", "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_metadata_close_failure_keeps_primary_and_retires_all_remaining_fds"}
+
+{"event": "test_started", "monotonic_ns": 635079066442620, "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_original_mapped_rejection_persists_before_remaining_pin_retirement"}
+test_original_mapped_rejection_persists_before_remaining_pin_retirement (test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_original_mapped_rejection_persists_before_remaining_pin_retirement) ... ok
+
+{"elapsed_s": 0.028781634056940675, "event": "test_terminal", "monotonic_ns": 635079095225319, "outcome": "success", "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_original_mapped_rejection_persists_before_remaining_pin_retirement"}
+
+{"event": "test_started", "monotonic_ns": 635079095249544, "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_outer_record_cap_failure_preserves_original_cause_without_truncation"}
+test_outer_record_cap_failure_preserves_original_cause_without_truncation (test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_outer_record_cap_failure_preserves_original_cause_without_truncation) ... ok
+
+{"elapsed_s": 0.023963841958902776, "event": "test_terminal", "monotonic_ns": 635079119214107, "outcome": "success", "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_outer_record_cap_failure_preserves_original_cause_without_truncation"}
+
+{"event": "test_started", "monotonic_ns": 635079119237724, "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_terminal_persistence_failure_raises_original_primary_and_retires_fds"}
+test_terminal_persistence_failure_raises_original_primary_and_retires_fds (test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_terminal_persistence_failure_raises_original_primary_and_retires_fds) ... ok
+
+{"elapsed_s": 0.026103973970748484, "event": "test_terminal", "monotonic_ns": 635079145342527, "outcome": "success", "test_id": "test_preflight_diagnostics_v5.PreflightDiagnosticsTests.test_terminal_persistence_failure_raises_original_primary_and_retires_fds"}
+
+{"event": "test_started", "monotonic_ns": 635079174923495, "test_id": "test_research_protocol.IndependentColdTests.test_P2_current_C_and_original_S_files_keep_separate_physical_guards"}
+test_P2_current_C_and_original_S_files_keep_separate_physical_guards (test_research_protocol.IndependentColdTests.test_P2_current_C_and_original_S_files_keep_separate_physical_guards) ... ok
+
+{"elapsed_s": 0.45767216000240296, "event": "test_terminal", "monotonic_ns": 635079632593761, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P2_current_C_and_original_S_files_keep_separate_physical_guards"}
+
+{"event": "test_started", "monotonic_ns": 635079632623388, "test_id": "test_research_protocol.IndependentColdTests.test_P2_distinct_git_C_executes_against_frozen_S_and_raw_P2_after_archive"}
+test_P2_distinct_git_C_executes_against_frozen_S_and_raw_P2_after_archive (test_research_protocol.IndependentColdTests.test_P2_distinct_git_C_executes_against_frozen_S_and_raw_P2_after_archive) ... ok
+
+{"elapsed_s": 0.8238048360217363, "event": "test_terminal", "monotonic_ns": 635080456429337, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P2_distinct_git_C_executes_against_frozen_S_and_raw_P2_after_archive"}
+
+{"event": "test_started", "monotonic_ns": 635080456460179, "test_id": "test_research_protocol.IndependentColdTests.test_P2_each_core_identity_and_exact_controller_schema_is_required"}
+test_P2_each_core_identity_and_exact_controller_schema_is_required (test_research_protocol.IndependentColdTests.test_P2_each_core_identity_and_exact_controller_schema_is_required) ... ok
+
+{"elapsed_s": 0.5828229800099507, "event": "test_terminal", "monotonic_ns": 635081039284062, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P2_each_core_identity_and_exact_controller_schema_is_required"}
+
+{"event": "test_started", "monotonic_ns": 635081039308282, "test_id": "test_research_protocol.IndependentColdTests.test_P2_external_parent_child_shape_and_containment_are_required"}
+test_P2_external_parent_child_shape_and_containment_are_required (test_research_protocol.IndependentColdTests.test_P2_external_parent_child_shape_and_containment_are_required) ... ok
+
+{"elapsed_s": 1.7394765639910474, "event": "test_terminal", "monotonic_ns": 635082778785834, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P2_external_parent_child_shape_and_containment_are_required"}
+
+{"event": "test_started", "monotonic_ns": 635082778817125, "test_id": "test_research_protocol.IndependentColdTests.test_P2_paired_observer_arguments_and_exact_C_ancestry_are_required"}
+test_P2_paired_observer_arguments_and_exact_C_ancestry_are_required (test_research_protocol.IndependentColdTests.test_P2_paired_observer_arguments_and_exact_C_ancestry_are_required) ... ok
+
+{"elapsed_s": 0.23074239899870008, "event": "test_terminal", "monotonic_ns": 635083009560750, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P2_paired_observer_arguments_and_exact_C_ancestry_are_required"}
+
+{"event": "test_started", "monotonic_ns": 635083009594923, "test_id": "test_research_protocol.IndependentColdTests.test_P2_raw_amendment_blob_bound_is_enforced"}
+test_P2_raw_amendment_blob_bound_is_enforced (test_research_protocol.IndependentColdTests.test_P2_raw_amendment_blob_bound_is_enforced) ... ok
+
+{"elapsed_s": 0.18753726698923856, "event": "test_terminal", "monotonic_ns": 635083197132980, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P2_raw_amendment_blob_bound_is_enforced"}
+
+{"event": "test_started", "monotonic_ns": 635083197161964, "test_id": "test_research_protocol.IndependentColdTests.test_P2_real_guest_alias_and_physical_terminal_descriptor_join"}
+test_P2_real_guest_alias_and_physical_terminal_descriptor_join (test_research_protocol.IndependentColdTests.test_P2_real_guest_alias_and_physical_terminal_descriptor_join) ... ok
+
+{"elapsed_s": 0.06683115405030549, "event": "test_terminal", "monotonic_ns": 635083263993851, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P2_real_guest_alias_and_physical_terminal_descriptor_join"}
+
+{"event": "test_started", "monotonic_ns": 635083264031507, "test_id": "test_research_protocol.IndependentColdTests.test_P2_real_six_core_and_eight_external_owner_records_join"}
+test_P2_real_six_core_and_eight_external_owner_records_join (test_research_protocol.IndependentColdTests.test_P2_real_six_core_and_eight_external_owner_records_join) ... ok
+
+{"elapsed_s": 0.5760505020152777, "event": "test_terminal", "monotonic_ns": 635083840082699, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P2_real_six_core_and_eight_external_owner_records_join"}
+
+{"event": "test_started", "monotonic_ns": 635083840107231, "test_id": "test_research_protocol.IndependentColdTests.test_P2_terminal_paths_size_hash_and_mode_are_not_interchangeable"}
+test_P2_terminal_paths_size_hash_and_mode_are_not_interchangeable (test_research_protocol.IndependentColdTests.test_P2_terminal_paths_size_hash_and_mode_are_not_interchangeable) ... ok
+
+{"elapsed_s": 0.6426536979852244, "event": "test_terminal", "monotonic_ns": 635084482761378, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P2_terminal_paths_size_hash_and_mode_are_not_interchangeable"}
+
+{"event": "test_started", "monotonic_ns": 635084482786364, "test_id": "test_research_protocol.IndependentColdTests.test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds"}
+test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds (test_research_protocol.IndependentColdTests.test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds) ... ok
+
+{"elapsed_s": 0.06821566203143448, "event": "test_terminal", "monotonic_ns": 635084551002877, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds"}
+
+{"event": "test_started", "monotonic_ns": 635084551027818, "test_id": "test_research_protocol.IndependentColdTests.test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow"}
+test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow (test_research_protocol.IndependentColdTests.test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow) ... ok
+
+{"elapsed_s": 0.09334081597626209, "event": "test_terminal", "monotonic_ns": 635084644369528, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow"}
+
+{"event": "test_started", "monotonic_ns": 635084644395661, "test_id": "test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_40_and_rejects_41"}
+test_P4_metadata_namespace_accepts_40_and_rejects_41 (test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_40_and_rejects_41) ... ok
+
+{"elapsed_s": 0.014615447027608752, "event": "test_terminal", "monotonic_ns": 635084659011450, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_40_and_rejects_41"}
+
+{"event": "test_started", "monotonic_ns": 635084659033879, "test_id": "test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape"}
+test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape (test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape) ... ok
+
+{"elapsed_s": 0.012219535070471466, "event": "test_terminal", "monotonic_ns": 635084671253596, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape"}
+
+{"event": "test_started", "monotonic_ns": 635084671274450, "test_id": "test_research_protocol.IndependentColdTests.test_P4_run_33_and_controller_129_leaves_still_reject"}
+test_P4_run_33_and_controller_129_leaves_still_reject (test_research_protocol.IndependentColdTests.test_P4_run_33_and_controller_129_leaves_still_reject) ... ok
+
+{"elapsed_s": 0.008250036044046283, "event": "test_terminal", "monotonic_ns": 635084679524780, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P4_run_33_and_controller_129_leaves_still_reject"}
+
+{"event": "test_started", "monotonic_ns": 635084679544843, "test_id": "test_research_protocol.IndependentColdTests.test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept"}
+test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept (test_research_protocol.IndependentColdTests.test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept) ... ok
+
+{"elapsed_s": 0.2782578179612756, "event": "test_terminal", "monotonic_ns": 635084957803766, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept"}
+
+{"event": "test_started", "monotonic_ns": 635084957835585, "test_id": "test_research_protocol.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload"}
+test_P6_transport_partial_positive_reads_complete_header_text_and_payload (test_research_protocol.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload) ... ok
+
+{"elapsed_s": 0.07822691008914262, "event": "test_terminal", "monotonic_ns": 635085036063233, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload"}
+
+{"event": "test_started", "monotonic_ns": 635085036090887, "test_id": "test_research_protocol.IndependentColdTests.test_P6_transport_partial_progress_keeps_original_absolute_deadline"}
+test_P6_transport_partial_progress_keeps_original_absolute_deadline (test_research_protocol.IndependentColdTests.test_P6_transport_partial_progress_keeps_original_absolute_deadline) ... ok
+
+{"elapsed_s": 0.07458322797901928, "event": "test_terminal", "monotonic_ns": 635085110674876, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P6_transport_partial_progress_keeps_original_absolute_deadline"}
+
+{"event": "test_started", "monotonic_ns": 635085110699867, "test_id": "test_research_protocol.IndependentColdTests.test_P6_transport_zero_progress_refuses_without_spinning"}
+test_P6_transport_zero_progress_refuses_without_spinning (test_research_protocol.IndependentColdTests.test_P6_transport_zero_progress_refuses_without_spinning) ... ok
+
+{"elapsed_s": 0.07553827005904168, "event": "test_terminal", "monotonic_ns": 635085186239024, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_P6_transport_zero_progress_refuses_without_spinning"}
+
+{"event": "test_started", "monotonic_ns": 635085186264935, "test_id": "test_research_protocol.IndependentColdTests.test_complete_metadata_positive_uses_real_git_and_holds_all_files"}
+test_complete_metadata_positive_uses_real_git_and_holds_all_files (test_research_protocol.IndependentColdTests.test_complete_metadata_positive_uses_real_git_and_holds_all_files) ... ok
+
+{"elapsed_s": 0.7289380839793012, "event": "test_terminal", "monotonic_ns": 635085915203929, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_complete_metadata_positive_uses_real_git_and_holds_all_files"}
+
+{"event": "test_started", "monotonic_ns": 635085915231653, "test_id": "test_research_protocol.IndependentColdTests.test_complete_research_positive_reconstructs128_au64_pairs_and_legal_ack_interleaving"}
+test_complete_research_positive_reconstructs128_au64_pairs_and_legal_ack_interleaving (test_research_protocol.IndependentColdTests.test_complete_research_positive_reconstructs128_au64_pairs_and_legal_ack_interleaving) ... ok
+
+{"elapsed_s": 1.5337121490156278, "event": "test_terminal", "monotonic_ns": 635087448944919, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_complete_research_positive_reconstructs128_au64_pairs_and_legal_ack_interleaving"}
+
+{"event": "test_started", "monotonic_ns": 635087448973544, "test_id": "test_research_protocol.IndependentColdTests.test_controller_positive_body_does_not_override_post_close_failure"}
+test_controller_positive_body_does_not_override_post_close_failure (test_research_protocol.IndependentColdTests.test_controller_positive_body_does_not_override_post_close_failure) ... ok
+
+{"elapsed_s": 0.22116641700267792, "event": "test_terminal", "monotonic_ns": 635087670140559, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_controller_positive_body_does_not_override_post_close_failure"}
+
+{"event": "test_started", "monotonic_ns": 635087670168510, "test_id": "test_research_protocol.IndependentColdTests.test_current_task_progress_does_not_replace_reviewed_p_blobs"}
+test_current_task_progress_does_not_replace_reviewed_p_blobs (test_research_protocol.IndependentColdTests.test_current_task_progress_does_not_replace_reviewed_p_blobs) ... ok
+
+{"elapsed_s": 0.178777054999955, "event": "test_terminal", "monotonic_ns": 635087848946765, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_current_task_progress_does_not_replace_reviewed_p_blobs"}
+
+{"event": "test_started", "monotonic_ns": 635087848976990, "test_id": "test_research_protocol.IndependentColdTests.test_external_provisional_success_needs_genuine_final_tool_rc"}
+test_external_provisional_success_needs_genuine_final_tool_rc (test_research_protocol.IndependentColdTests.test_external_provisional_success_needs_genuine_final_tool_rc) ... ok
+
+{"elapsed_s": 0.25157139694783837, "event": "test_terminal", "monotonic_ns": 635088100549432, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_external_provisional_success_needs_genuine_final_tool_rc"}
+
+{"event": "test_started", "monotonic_ns": 635088100576222, "test_id": "test_research_protocol.IndependentColdTests.test_failed_main_invalidates_prefix_after_real_held_epoch_mutation"}
+test_failed_main_invalidates_prefix_after_real_held_epoch_mutation (test_research_protocol.IndependentColdTests.test_failed_main_invalidates_prefix_after_real_held_epoch_mutation) ... ok
+
+{"elapsed_s": 0.9172025549924001, "event": "test_terminal", "monotonic_ns": 635089017779813, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_failed_main_invalidates_prefix_after_real_held_epoch_mutation"}
+
+{"event": "test_started", "monotonic_ns": 635089017806746, "test_id": "test_research_protocol.IndependentColdTests.test_failed_main_retains_prefix_and_independent_close_status_without_promotion"}
+test_failed_main_retains_prefix_and_independent_close_status_without_promotion (test_research_protocol.IndependentColdTests.test_failed_main_retains_prefix_and_independent_close_status_without_promotion) ... ok
+
+{"elapsed_s": 0.9478971199132502, "event": "test_terminal", "monotonic_ns": 635089965704579, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_failed_main_retains_prefix_and_independent_close_status_without_promotion"}
+
+{"event": "test_started", "monotonic_ns": 635089965731839, "test_id": "test_research_protocol.IndependentColdTests.test_fd_namespace_byte_and_json_limits_refuse_without_unbounded_acquisition"}
+test_fd_namespace_byte_and_json_limits_refuse_without_unbounded_acquisition (test_research_protocol.IndependentColdTests.test_fd_namespace_byte_and_json_limits_refuse_without_unbounded_acquisition) ... ok
+
+{"elapsed_s": 0.010390301002189517, "event": "test_terminal", "monotonic_ns": 635089976122744, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_fd_namespace_byte_and_json_limits_refuse_without_unbounded_acquisition"}
+
+{"event": "test_started", "monotonic_ns": 635089976145830, "test_id": "test_research_protocol.IndependentColdTests.test_flush_only_outputs_remain_insufficient_without_changing_cohorts"}
+test_flush_only_outputs_remain_insufficient_without_changing_cohorts (test_research_protocol.IndependentColdTests.test_flush_only_outputs_remain_insufficient_without_changing_cohorts) ... ok
+
+{"elapsed_s": 1.534064756007865, "event": "test_terminal", "monotonic_ns": 635091510211611, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_flush_only_outputs_remain_insufficient_without_changing_cohorts"}
+
+{"event": "test_started", "monotonic_ns": 635091510240398, "test_id": "test_research_protocol.IndependentColdTests.test_mapping_bridge_observer_owner_range_and_close_are_replayed"}
+test_mapping_bridge_observer_owner_range_and_close_are_replayed (test_research_protocol.IndependentColdTests.test_mapping_bridge_observer_owner_range_and_close_are_replayed) ... ok
+
+{"elapsed_s": 0.06625668902415782, "event": "test_terminal", "monotonic_ns": 635091576497812, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_mapping_bridge_observer_owner_range_and_close_are_replayed"}
+
+{"event": "test_started", "monotonic_ns": 635091576523473, "test_id": "test_research_protocol.IndependentColdTests.test_metadata_positive_cannot_authorize_foreign_owner_or_partial_maps"}
+test_metadata_positive_cannot_authorize_foreign_owner_or_partial_maps (test_research_protocol.IndependentColdTests.test_metadata_positive_cannot_authorize_foreign_owner_or_partial_maps) ... ok
+
+{"elapsed_s": 0.06634086498524994, "event": "test_terminal", "monotonic_ns": 635091642865282, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_metadata_positive_cannot_authorize_foreign_owner_or_partial_maps"}
+
+{"event": "test_started", "monotonic_ns": 635091642888779, "test_id": "test_research_protocol.IndependentColdTests.test_old_provisional_success_with_close_failure_companion_is_rejected"}
+test_old_provisional_success_with_close_failure_companion_is_rejected (test_research_protocol.IndependentColdTests.test_old_provisional_success_with_close_failure_companion_is_rejected) ... ok
+
+{"elapsed_s": 0.6744803499896079, "event": "test_terminal", "monotonic_ns": 635092317370278, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_old_provisional_success_with_close_failure_companion_is_rejected"}
+
+{"event": "test_started", "monotonic_ns": 635092317399533, "test_id": "test_research_protocol.IndependentColdTests.test_original_admission_types_u64_and_reserved_duration_are_rejected"}
+test_original_admission_types_u64_and_reserved_duration_are_rejected (test_research_protocol.IndependentColdTests.test_original_admission_types_u64_and_reserved_duration_are_rejected) ... ok
+
+{"elapsed_s": 0.0798732340335846, "event": "test_terminal", "monotonic_ns": 635092397273838, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_original_admission_types_u64_and_reserved_duration_are_rejected"}
+
+{"event": "test_started", "monotonic_ns": 635092397299896, "test_id": "test_research_protocol.IndependentColdTests.test_raw_payload_corruption_has_independent_valid_prefix_only"}
+test_raw_payload_corruption_has_independent_valid_prefix_only (test_research_protocol.IndependentColdTests.test_raw_payload_corruption_has_independent_valid_prefix_only) ... ok
+
+{"elapsed_s": 0.9370419990736991, "event": "test_terminal", "monotonic_ns": 635093334343149, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_raw_payload_corruption_has_independent_valid_prefix_only"}
+
+{"event": "test_started", "monotonic_ns": 635093334369864, "test_id": "test_research_protocol.IndependentColdTests.test_real_leaf_replacement_links_and_close_fault_release_other_handles"}
+test_real_leaf_replacement_links_and_close_fault_release_other_handles (test_research_protocol.IndependentColdTests.test_real_leaf_replacement_links_and_close_fault_release_other_handles) ... ok
+
+{"elapsed_s": 0.0017622410086914897, "event": "test_terminal", "monotonic_ns": 635093336132544, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_real_leaf_replacement_links_and_close_fault_release_other_handles"}
+
+{"event": "test_started", "monotonic_ns": 635093336153286, "test_id": "test_research_protocol.IndependentColdTests.test_resealed_journal_pts_caps_digest_eos_order_and_cohort_corruption_is_refused"}
+test_resealed_journal_pts_caps_digest_eos_order_and_cohort_corruption_is_refused (test_research_protocol.IndependentColdTests.test_resealed_journal_pts_caps_digest_eos_order_and_cohort_corruption_is_refused) ... ok
+
+{"elapsed_s": 0.1453440289478749, "event": "test_terminal", "monotonic_ns": 635093481497777, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_resealed_journal_pts_caps_digest_eos_order_and_cohort_corruption_is_refused"}
+
+{"event": "test_started", "monotonic_ns": 635093481522239, "test_id": "test_research_protocol.IndependentColdTests.test_resealed_raw_header_payload_ack_control_and_trailing_corruption_is_refused"}
+test_resealed_raw_header_payload_ack_control_and_trailing_corruption_is_refused (test_research_protocol.IndependentColdTests.test_resealed_raw_header_payload_ack_control_and_trailing_corruption_is_refused) ... ok
+
+{"elapsed_s": 0.12315867096185684, "event": "test_terminal", "monotonic_ns": 635093604681631, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_resealed_raw_header_payload_ack_control_and_trailing_corruption_is_refused"}
+
+{"event": "test_started", "monotonic_ns": 635093604709093, "test_id": "test_research_protocol.IndependentColdTests.test_source_and_reviewed_planning_raw_mutations_are_rejected_by_git"}
+test_source_and_reviewed_planning_raw_mutations_are_rejected_by_git (test_research_protocol.IndependentColdTests.test_source_and_reviewed_planning_raw_mutations_are_rejected_by_git) ... ok
+
+{"elapsed_s": 0.1228473229566589, "event": "test_terminal", "monotonic_ns": 635093727557343, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_source_and_reviewed_planning_raw_mutations_are_rejected_by_git"}
+
+{"event": "test_started", "monotonic_ns": 635093727585672, "test_id": "test_research_protocol.IndependentColdTests.test_source_start_requires_ready_loaded_observation_and_enabling_intent"}
+test_source_start_requires_ready_loaded_observation_and_enabling_intent (test_research_protocol.IndependentColdTests.test_source_start_requires_ready_loaded_observation_and_enabling_intent) ... ok
+
+{"elapsed_s": 0.11256375291850418, "event": "test_terminal", "monotonic_ns": 635093840150393, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_source_start_requires_ready_loaded_observation_and_enabling_intent"}
+
+{"event": "test_started", "monotonic_ns": 635093840176505, "test_id": "test_research_protocol.IndependentColdTests.test_unknown_extra_output_and_foreign_mode_cannot_borrow_positive_body"}
+test_unknown_extra_output_and_foreign_mode_cannot_borrow_positive_body (test_research_protocol.IndependentColdTests.test_unknown_extra_output_and_foreign_mode_cannot_borrow_positive_body) ... ok
+
+{"elapsed_s": 0.07821402396075428, "event": "test_terminal", "monotonic_ns": 635093918391972, "outcome": "success", "test_id": "test_research_protocol.IndependentColdTests.test_unknown_extra_output_and_foreign_mode_cannot_borrow_positive_body"}
+
+{"event": "test_started", "monotonic_ns": 635093918433049, "test_id": "test_research_protocol.ProtocolTests.test_P3_cached_pin_rejects_expired_current_phase_despite_live_original_deadline"}
+test_P3_cached_pin_rejects_expired_current_phase_despite_live_original_deadline (test_research_protocol.ProtocolTests.test_P3_cached_pin_rejects_expired_current_phase_despite_live_original_deadline) ... ok
+
+{"elapsed_s": 0.007901350036263466, "event": "test_terminal", "monotonic_ns": 635093926335154, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_P3_cached_pin_rejects_expired_current_phase_despite_live_original_deadline"}
+
+{"event": "test_started", "monotonic_ns": 635093926364228, "test_id": "test_research_protocol.ProtocolTests.test_P3_cached_pin_uses_live_current_phase_after_original_deadline_expires"}
+test_P3_cached_pin_uses_live_current_phase_after_original_deadline_expires (test_research_protocol.ProtocolTests.test_P3_cached_pin_uses_live_current_phase_after_original_deadline_expires) ... ok
+
+{"elapsed_s": 0.00628959690220654, "event": "test_terminal", "monotonic_ns": 635093932654885, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_P3_cached_pin_uses_live_current_phase_after_original_deadline_expires"}
+
+{"event": "test_started", "monotonic_ns": 635093932688169, "test_id": "test_research_protocol.ProtocolTests.test_active_rgb_excludes_padding_and_rejects_bad_layout_before_hash"}
+test_active_rgb_excludes_padding_and_rejects_bad_layout_before_hash (test_research_protocol.ProtocolTests.test_active_rgb_excludes_padding_and_rejects_bad_layout_before_hash) ... ok
+
+{"elapsed_s": 0.0036593939876183867, "event": "test_terminal", "monotonic_ns": 635093936348698, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_active_rgb_excludes_padding_and_rejects_bad_layout_before_hash"}
+
+{"event": "test_started", "monotonic_ns": 635093936378340, "test_id": "test_research_protocol.ProtocolTests.test_actual_sink_eos_keeps_fixed_central_cohort_and_marks_flush_insufficient"}
+test_actual_sink_eos_keeps_fixed_central_cohort_and_marks_flush_insufficient (test_research_protocol.ProtocolTests.test_actual_sink_eos_keeps_fixed_central_cohort_and_marks_flush_insufficient) ... ok
+
+{"elapsed_s": 0.0037152389995753765, "event": "test_terminal", "monotonic_ns": 635093940094130, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_actual_sink_eos_keeps_fixed_central_cohort_and_marks_flush_insufficient"}
+
+{"event": "test_started", "monotonic_ns": 635093940118554, "test_id": "test_research_protocol.ProtocolTests.test_bounded_auxiliary_real_python_child_drains_both_pipes_to_eof"}
+test_bounded_auxiliary_real_python_child_drains_both_pipes_to_eof (test_research_protocol.ProtocolTests.test_bounded_auxiliary_real_python_child_drains_both_pipes_to_eof) ... ok
+
+{"elapsed_s": 0.025652966927736998, "event": "test_terminal", "monotonic_ns": 635093965773208, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_bounded_auxiliary_real_python_child_drains_both_pipes_to_eof"}
+
+{"event": "test_started", "monotonic_ns": 635093965809685, "test_id": "test_research_protocol.ProtocolTests.test_bounded_auxiliary_timeout_retains_original_failed_child"}
+test_bounded_auxiliary_timeout_retains_original_failed_child (test_research_protocol.ProtocolTests.test_bounded_auxiliary_timeout_retains_original_failed_child) ... ok
+
+{"elapsed_s": 0.11276296200230718, "event": "test_terminal", "monotonic_ns": 635094078574052, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_bounded_auxiliary_timeout_retains_original_failed_child"}
+
+{"event": "test_started", "monotonic_ns": 635094078603639, "test_id": "test_research_protocol.ProtocolTests.test_clean_eof_truncation_and_invalid_json"}
+test_clean_eof_truncation_and_invalid_json (test_research_protocol.ProtocolTests.test_clean_eof_truncation_and_invalid_json) ... ok
+
+{"elapsed_s": 0.004981616977602243, "event": "test_terminal", "monotonic_ns": 635094083585187, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_clean_eof_truncation_and_invalid_json"}
+
+{"event": "test_started", "monotonic_ns": 635094083607272, "test_id": "test_research_protocol.ProtocolTests.test_current_binary_requires_its_enabling_ack_and_next_declaration_waits_previous"}
+test_current_binary_requires_its_enabling_ack_and_next_declaration_waits_previous (test_research_protocol.ProtocolTests.test_current_binary_requires_its_enabling_ack_and_next_declaration_waits_previous) ... ok
+
+{"elapsed_s": 0.03637116902973503, "event": "test_terminal", "monotonic_ns": 635094119979088, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_current_binary_requires_its_enabling_ack_and_next_declaration_waits_previous"}
+
+{"event": "test_started", "monotonic_ns": 635094120008019, "test_id": "test_research_protocol.ProtocolTests.test_decoder_clock_negative_and_missing_join_reject"}
+test_decoder_clock_negative_and_missing_join_reject (test_research_protocol.ProtocolTests.test_decoder_clock_negative_and_missing_join_reject) ... ok
+
+{"elapsed_s": 0.002891630050726235, "event": "test_terminal", "monotonic_ns": 635094122900258, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_decoder_clock_negative_and_missing_join_reject"}
+
+{"event": "test_started", "monotonic_ns": 635094122928379, "test_id": "test_research_protocol.ProtocolTests.test_digest_identity_flags_and_cadence_fail_closed"}
+test_digest_identity_flags_and_cadence_fail_closed (test_research_protocol.ProtocolTests.test_digest_identity_flags_and_cadence_fail_closed) ... ok
+
+{"elapsed_s": 0.005319656920619309, "event": "test_terminal", "monotonic_ns": 635094128248571, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_digest_identity_flags_and_cadence_fail_closed"}
+
+{"event": "test_started", "monotonic_ns": 635094128283513, "test_id": "test_research_protocol.ProtocolTests.test_evidence_caps_reserve_failure_receipt_and_preserve_failed_prefix"}
+test_evidence_caps_reserve_failure_receipt_and_preserve_failed_prefix (test_research_protocol.ProtocolTests.test_evidence_caps_reserve_failure_receipt_and_preserve_failed_prefix) ... ok
+
+{"elapsed_s": 0.01367223507259041, "event": "test_terminal", "monotonic_ns": 635094141955996, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_evidence_caps_reserve_failure_receipt_and_preserve_failed_prefix"}
+
+{"event": "test_started", "monotonic_ns": 635094141988061, "test_id": "test_research_protocol.ProtocolTests.test_exact32_no_extra_duplicate_foreign_or_late_admission"}
+test_exact32_no_extra_duplicate_foreign_or_late_admission (test_research_protocol.ProtocolTests.test_exact32_no_extra_duplicate_foreign_or_late_admission) ... ok
+
+{"elapsed_s": 0.003489652997814119, "event": "test_terminal", "monotonic_ns": 635094145477510, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_exact32_no_extra_duplicate_foreign_or_late_admission"}
+
+{"event": "test_started", "monotonic_ns": 635094145502861, "test_id": "test_research_protocol.ProtocolTests.test_external_previous_run_needs_sealed_terminal_before_next_start"}
+test_external_previous_run_needs_sealed_terminal_before_next_start (test_research_protocol.ProtocolTests.test_external_previous_run_needs_sealed_terminal_before_next_start) ... ok
+
+{"elapsed_s": 0.0038327479269355536, "event": "test_terminal", "monotonic_ns": 635094149335583, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_external_previous_run_needs_sealed_terminal_before_next_start"}
+
+{"event": "test_started", "monotonic_ns": 635094149357032, "test_id": "test_research_protocol.ProtocolTests.test_external_watchdog_does_not_complete_partial_or_unsealed_phase_file"}
+test_external_watchdog_does_not_complete_partial_or_unsealed_phase_file (test_research_protocol.ProtocolTests.test_external_watchdog_does_not_complete_partial_or_unsealed_phase_file) ... ok
+
+{"elapsed_s": 0.0030478559201583266, "event": "test_terminal", "monotonic_ns": 635094152405227, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_external_watchdog_does_not_complete_partial_or_unsealed_phase_file"}
+
+{"event": "test_started", "monotonic_ns": 635094152426736, "test_id": "test_research_protocol.ProtocolTests.test_header_oversize_and_declared_length_mismatch_before_payload_allocation"}
+test_header_oversize_and_declared_length_mismatch_before_payload_allocation (test_research_protocol.ProtocolTests.test_header_oversize_and_declared_length_mismatch_before_payload_allocation) ... ok
+
+{"elapsed_s": 0.005234982003457844, "event": "test_terminal", "monotonic_ns": 635094157662043, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_header_oversize_and_declared_length_mismatch_before_payload_allocation"}
+
+{"event": "test_started", "monotonic_ns": 635094157682535, "test_id": "test_research_protocol.ProtocolTests.test_held_file_and_ancestor_epochs_reject_mutation_and_rename"}
+test_held_file_and_ancestor_epochs_reject_mutation_and_rename (test_research_protocol.ProtocolTests.test_held_file_and_ancestor_epochs_reject_mutation_and_rename) ... ok
+
+{"elapsed_s": 0.0032936789793893695, "event": "test_terminal", "monotonic_ns": 635094160976591, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_held_file_and_ancestor_epochs_reject_mutation_and_rename"}
+
+{"event": "test_started", "monotonic_ns": 635094160997593, "test_id": "test_research_protocol.ProtocolTests.test_pair_complete_multiset_pixels_caps_order_and_tail_are_required"}
+test_pair_complete_multiset_pixels_caps_order_and_tail_are_required (test_research_protocol.ProtocolTests.test_pair_complete_multiset_pixels_caps_order_and_tail_are_required) ... ok
+
+{"elapsed_s": 0.002810887061059475, "event": "test_terminal", "monotonic_ns": 635094163809009, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_pair_complete_multiset_pixels_caps_order_and_tail_are_required"}
+
+{"event": "test_started", "monotonic_ns": 635094163830770, "test_id": "test_research_protocol.ProtocolTests.test_post_receipt_crossing_is_immutable_failed_and_cannot_enable_next_run"}
+test_post_receipt_crossing_is_immutable_failed_and_cannot_enable_next_run (test_research_protocol.ProtocolTests.test_post_receipt_crossing_is_immutable_failed_and_cannot_enable_next_run) ... ok
+
+{"elapsed_s": 0.008168805972672999, "event": "test_terminal", "monotonic_ns": 635094172000083, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_post_receipt_crossing_is_immutable_failed_and_cannot_enable_next_run"}
+
+{"event": "test_started", "monotonic_ns": 635094172045732, "test_id": "test_research_protocol.ProtocolTests.test_raw_aggregate_rejected_before_second_ack"}
+test_raw_aggregate_rejected_before_second_ack (test_research_protocol.ProtocolTests.test_raw_aggregate_rejected_before_second_ack) ... ok
+
+{"elapsed_s": 0.0026090500177815557, "event": "test_terminal", "monotonic_ns": 635094174654863, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_raw_aggregate_rejected_before_second_ack"}
+
+{"event": "test_started", "monotonic_ns": 635094174676661, "test_id": "test_research_protocol.ProtocolTests.test_true_unsigned_dts_and_duration_are_retained"}
+test_true_unsigned_dts_and_duration_are_retained (test_research_protocol.ProtocolTests.test_true_unsigned_dts_and_duration_are_retained) ... ok
+
+{"elapsed_s": 0.004536953987553716, "event": "test_terminal", "monotonic_ns": 635094179213913, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_true_unsigned_dts_and_duration_are_retained"}
+
+{"event": "test_started", "monotonic_ns": 635094179233726, "test_id": "test_research_protocol.ProtocolTests.test_truncated_text_payload_and_source_line_preserve_every_consumed_byte"}
+test_truncated_text_payload_and_source_line_preserve_every_consumed_byte (test_research_protocol.ProtocolTests.test_truncated_text_payload_and_source_line_preserve_every_consumed_byte) ... ok
+
+{"elapsed_s": 0.004660123959183693, "event": "test_terminal", "monotonic_ns": 635094183894122, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_truncated_text_payload_and_source_line_preserve_every_consumed_byte"}
+
+{"event": "test_started", "monotonic_ns": 635094183914257, "test_id": "test_research_protocol.ProtocolTests.test_wrong_second_schedule_rejected_using_received_duration"}
+test_wrong_second_schedule_rejected_using_received_duration (test_research_protocol.ProtocolTests.test_wrong_second_schedule_rejected_using_received_duration) ... ok
+
+{"elapsed_s": 0.0024089920334517956, "event": "test_terminal", "monotonic_ns": 635094186323512, "outcome": "success", "test_id": "test_research_protocol.ProtocolTests.test_wrong_second_schedule_rejected_using_received_duration"}
+
+{"event": "test_started", "monotonic_ns": 635094186356708, "test_id": "test_setup_v2.ControllerModeTests.test_controller_close_error_preserves_original_body_failure"}
+test_controller_close_error_preserves_original_body_failure (test_setup_v2.ControllerModeTests.test_controller_close_error_preserves_original_body_failure) ... ok
+
+{"elapsed_s": 0.018063530093058944, "event": "test_terminal", "monotonic_ns": 635094204420657, "outcome": "success", "test_id": "test_setup_v2.ControllerModeTests.test_controller_close_error_preserves_original_body_failure"}
+
+{"event": "test_started", "monotonic_ns": 635094204441421, "test_id": "test_setup_v2.ControllerModeTests.test_controller_close_error_retires_remaining_pins_and_blocks_provisional_success"}
+test_controller_close_error_retires_remaining_pins_and_blocks_provisional_success (test_setup_v2.ControllerModeTests.test_controller_close_error_retires_remaining_pins_and_blocks_provisional_success) ... ok
+
+{"elapsed_s": 0.042694882955402136, "event": "test_terminal", "monotonic_ns": 635094247137124, "outcome": "success", "test_id": "test_setup_v2.ControllerModeTests.test_controller_close_error_retires_remaining_pins_and_blocks_provisional_success"}
+
+{"event": "test_started", "monotonic_ns": 635094247167517, "test_id": "test_setup_v2.ControllerModeTests.test_metadata_fast_exit_still_checks_shared_body_deadline"}
+test_metadata_fast_exit_still_checks_shared_body_deadline (test_setup_v2.ControllerModeTests.test_metadata_fast_exit_still_checks_shared_body_deadline) ... ok
+
+{"elapsed_s": 0.033616945962421596, "event": "test_terminal", "monotonic_ns": 635094280785474, "outcome": "success", "test_id": "test_setup_v2.ControllerModeTests.test_metadata_fast_exit_still_checks_shared_body_deadline"}
+
+{"event": "test_started", "monotonic_ns": 635094280821645, "test_id": "test_setup_v2.ControllerModeTests.test_metadata_mode_rejects_any_original_run_directory"}
+test_metadata_mode_rejects_any_original_run_directory (test_setup_v2.ControllerModeTests.test_metadata_mode_rejects_any_original_run_directory) ... ok
+
+{"elapsed_s": 0.007408384000882506, "event": "test_terminal", "monotonic_ns": 635094288229524, "outcome": "success", "test_id": "test_setup_v2.ControllerModeTests.test_metadata_mode_rejects_any_original_run_directory"}
+
+{"event": "test_started", "monotonic_ns": 635094288252368, "test_id": "test_setup_v2.ControllerModeTests.test_metadata_null_result_zero_runs_is_valid_after_original_close"}
+test_metadata_null_result_zero_runs_is_valid_after_original_close (test_setup_v2.ControllerModeTests.test_metadata_null_result_zero_runs_is_valid_after_original_close) ... ok
+
+{"elapsed_s": 0.03466094611212611, "event": "test_terminal", "monotonic_ns": 635094322913596, "outcome": "success", "test_id": "test_setup_v2.ControllerModeTests.test_metadata_null_result_zero_runs_is_valid_after_original_close"}
+
+{"event": "test_started", "monotonic_ns": 635094322944413, "test_id": "test_setup_v2.ControllerModeTests.test_metadata_rejects_research_result_or_run_namespace"}
+test_metadata_rejects_research_result_or_run_namespace (test_setup_v2.ControllerModeTests.test_metadata_rejects_research_result_or_run_namespace) ... ok
+
+{"elapsed_s": 0.012530753971077502, "event": "test_terminal", "monotonic_ns": 635094335474825, "outcome": "success", "test_id": "test_setup_v2.ControllerModeTests.test_metadata_rejects_research_result_or_run_namespace"}
+
+{"event": "test_started", "monotonic_ns": 635094335504443, "test_id": "test_setup_v2.ControllerModeTests.test_missing_cli_mode_fails_before_engine_or_output_creation"}
+test_missing_cli_mode_fails_before_engine_or_output_creation (test_setup_v2.ControllerModeTests.test_missing_cli_mode_fails_before_engine_or_output_creation) ... ok
+
+{"elapsed_s": 0.09229197993408889, "event": "test_terminal", "monotonic_ns": 635094427797402, "outcome": "success", "test_id": "test_setup_v2.ControllerModeTests.test_missing_cli_mode_fails_before_engine_or_output_creation"}
+
+{"event": "test_started", "monotonic_ns": 635094427829629, "test_id": "test_setup_v2.ControllerModeTests.test_mode_mismatch_and_close_failure_never_promote"}
+test_mode_mismatch_and_close_failure_never_promote (test_setup_v2.ControllerModeTests.test_mode_mismatch_and_close_failure_never_promote) ... ok
+
+{"elapsed_s": 0.01564440003130585, "event": "test_terminal", "monotonic_ns": 635094443474548, "outcome": "success", "test_id": "test_setup_v2.ControllerModeTests.test_mode_mismatch_and_close_failure_never_promote"}
+
+{"event": "test_started", "monotonic_ns": 635094443522948, "test_id": "test_setup_v2.ReviewedInputTests.test_actual_git_stdout_stream_cap_rejects_and_reaps_owned_child"}
+test_actual_git_stdout_stream_cap_rejects_and_reaps_owned_child (test_setup_v2.ReviewedInputTests.test_actual_git_stdout_stream_cap_rejects_and_reaps_owned_child) ... ok
+
+{"elapsed_s": 0.028448063996620476, "event": "test_terminal", "monotonic_ns": 635094471971465, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_actual_git_stdout_stream_cap_rejects_and_reaps_owned_child"}
+
+{"event": "test_started", "monotonic_ns": 635094471999268, "test_id": "test_setup_v2.ReviewedInputTests.test_changed_auxiliary_owner_join_prevents_signal_and_preserves_cap_failure"}
+test_changed_auxiliary_owner_join_prevents_signal_and_preserves_cap_failure (test_setup_v2.ReviewedInputTests.test_changed_auxiliary_owner_join_prevents_signal_and_preserves_cap_failure) ... ok
+
+{"elapsed_s": 0.10094474698416889, "event": "test_terminal", "monotonic_ns": 635094572945407, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_changed_auxiliary_owner_join_prevents_signal_and_preserves_cap_failure"}
+
+{"event": "test_started", "monotonic_ns": 635094572975557, "test_id": "test_setup_v2.ReviewedInputTests.test_expired_shared_prelaunch_deadline_rejects_before_git_child"}
+test_expired_shared_prelaunch_deadline_rejects_before_git_child (test_setup_v2.ReviewedInputTests.test_expired_shared_prelaunch_deadline_rejects_before_git_child) ... ok
+
+{"elapsed_s": 0.027661880012601614, "event": "test_terminal", "monotonic_ns": 635094600639240, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_expired_shared_prelaunch_deadline_rejects_before_git_child"}
+
+{"event": "test_started", "monotonic_ns": 635094600676833, "test_id": "test_setup_v2.ReviewedInputTests.test_failed_initial_auxiliary_owner_observation_never_signals_unknown_group"}
+test_failed_initial_auxiliary_owner_observation_never_signals_unknown_group (test_setup_v2.ReviewedInputTests.test_failed_initial_auxiliary_owner_observation_never_signals_unknown_group) ... ok
+
+{"elapsed_s": 0.09875693405047059, "event": "test_terminal", "monotonic_ns": 635094699435736, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_failed_initial_auxiliary_owner_observation_never_signals_unknown_group"}
+
+{"event": "test_started", "monotonic_ns": 635094699471844, "test_id": "test_setup_v2.ReviewedInputTests.test_foreign_repository_and_unreviewed_source_drift_are_rejected"}
+test_foreign_repository_and_unreviewed_source_drift_are_rejected (test_setup_v2.ReviewedInputTests.test_foreign_repository_and_unreviewed_source_drift_are_rejected) ... ok
+
+{"elapsed_s": 0.11593016295228153, "event": "test_terminal", "monotonic_ns": 635094815403683, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_foreign_repository_and_unreviewed_source_drift_are_rejected"}
+
+{"event": "test_started", "monotonic_ns": 635094815441199, "test_id": "test_setup_v2.ReviewedInputTests.test_git_capture_close_failure_still_retires_other_original_stream"}
+test_git_capture_close_failure_still_retires_other_original_stream (test_setup_v2.ReviewedInputTests.test_git_capture_close_failure_still_retires_other_original_stream) ... ok
+
+{"elapsed_s": 0.03271584096364677, "event": "test_terminal", "monotonic_ns": 635094848158632, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_git_capture_close_failure_still_retires_other_original_stream"}
+
+{"event": "test_started", "monotonic_ns": 635094848192466, "test_id": "test_setup_v2.ReviewedInputTests.test_missing_runtime_source_and_nonexact_source_parameter_are_rejected"}
+test_missing_runtime_source_and_nonexact_source_parameter_are_rejected (test_setup_v2.ReviewedInputTests.test_missing_runtime_source_and_nonexact_source_parameter_are_rejected) ... ok
+
+{"elapsed_s": 0.08604649105109274, "event": "test_terminal", "monotonic_ns": 635094934240280, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_missing_runtime_source_and_nonexact_source_parameter_are_rejected"}
+
+{"event": "test_started", "monotonic_ns": 635094934274685, "test_id": "test_setup_v2.ReviewedInputTests.test_oversized_reviewed_blob_is_rejected_before_raw_copy"}
+test_oversized_reviewed_blob_is_rejected_before_raw_copy (test_setup_v2.ReviewedInputTests.test_oversized_reviewed_blob_is_rejected_before_raw_copy) ... ok
+
+{"elapsed_s": 0.11604012397583574, "event": "test_terminal", "monotonic_ns": 635095050316303, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_oversized_reviewed_blob_is_rejected_before_raw_copy"}
+
+{"event": "test_started", "monotonic_ns": 635095050351146, "test_id": "test_setup_v2.ReviewedInputTests.test_owned_auxiliary_is_killed_at_actual_remaining_shared_deadline"}
+test_owned_auxiliary_is_killed_at_actual_remaining_shared_deadline (test_setup_v2.ReviewedInputTests.test_owned_auxiliary_is_killed_at_actual_remaining_shared_deadline) ... ok
+
+{"elapsed_s": 0.18475538305938244, "event": "test_terminal", "monotonic_ns": 635095235108207, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_owned_auxiliary_is_killed_at_actual_remaining_shared_deadline"}
+
+{"event": "test_started", "monotonic_ns": 635095235146077, "test_id": "test_setup_v2.ReviewedInputTests.test_reviewed_planning_must_be_ancestor_of_exact_source"}
+test_reviewed_planning_must_be_ancestor_of_exact_source (test_setup_v2.ReviewedInputTests.test_reviewed_planning_must_be_ancestor_of_exact_source) ... ok
+
+{"elapsed_s": 0.061545938020572066, "event": "test_terminal", "monotonic_ns": 635095296693659, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_reviewed_planning_must_be_ancestor_of_exact_source"}
+
+{"event": "test_started", "monotonic_ns": 635095296731879, "test_id": "test_setup_v2.ReviewedInputTests.test_supported_native_git_worktree_is_accepted"}
+test_supported_native_git_worktree_is_accepted (test_setup_v2.ReviewedInputTests.test_supported_native_git_worktree_is_accepted) ... ok
+
+{"elapsed_s": 0.20168436993844807, "event": "test_terminal", "monotonic_ns": 635095498418385, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_supported_native_git_worktree_is_accepted"}
+
+{"event": "test_started", "monotonic_ns": 635095498456926, "test_id": "test_setup_v2.ReviewedInputTests.test_task_progress_and_archived_paths_use_exact_raw_reviewed_blobs"}
+test_task_progress_and_archived_paths_use_exact_raw_reviewed_blobs (test_setup_v2.ReviewedInputTests.test_task_progress_and_archived_paths_use_exact_raw_reviewed_blobs) ... ok
+
+{"elapsed_s": 0.19103404297493398, "event": "test_terminal", "monotonic_ns": 635095689491723, "outcome": "success", "test_id": "test_setup_v2.ReviewedInputTests.test_task_progress_and_archived_paths_use_exact_raw_reviewed_blobs"}
+
+{"event": "test_started", "monotonic_ns": 635095689534186, "test_id": "test_setup_v2.SetupTests.test_bad_cid_keeps_failure_but_cleans_positive_exact_name_owner"}
+test_bad_cid_keeps_failure_but_cleans_positive_exact_name_owner (test_setup_v2.SetupTests.test_bad_cid_keeps_failure_but_cleans_positive_exact_name_owner) ... ok
+
+{"elapsed_s": 0.11630147590767592, "event": "test_terminal", "monotonic_ns": 635095805836412, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_bad_cid_keeps_failure_but_cleans_positive_exact_name_owner"}
+
+{"event": "test_started", "monotonic_ns": 635095805867394, "test_id": "test_setup_v2.SetupTests.test_cleanup_command_cannot_consume_final_deadline_reserve"}
+test_cleanup_command_cannot_consume_final_deadline_reserve (test_setup_v2.SetupTests.test_cleanup_command_cannot_consume_final_deadline_reserve) ... ok
+
+{"elapsed_s": 0.006884595029987395, "event": "test_terminal", "monotonic_ns": 635095812753576, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_cleanup_command_cannot_consume_final_deadline_reserve"}
+
+{"event": "test_started", "monotonic_ns": 635095812782078, "test_id": "test_setup_v2.SetupTests.test_complete_cid_optional_newline_and_physical_hash"}
+test_complete_cid_optional_newline_and_physical_hash (test_setup_v2.SetupTests.test_complete_cid_optional_newline_and_physical_hash) ... ok
+
+{"elapsed_s": 0.007472307072021067, "event": "test_terminal", "monotonic_ns": 635095820255858, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_complete_cid_optional_newline_and_physical_hash"}
+
+{"event": "test_started", "monotonic_ns": 635095820284491, "test_id": "test_setup_v2.SetupTests.test_delayed_name_publication_is_not_earlier_removal_absence"}
+test_delayed_name_publication_is_not_earlier_removal_absence (test_setup_v2.SetupTests.test_delayed_name_publication_is_not_earlier_removal_absence) ... ok
+
+{"elapsed_s": 0.19410149194300175, "event": "test_terminal", "monotonic_ns": 635096014387533, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_delayed_name_publication_is_not_earlier_removal_absence"}
+
+{"event": "test_started", "monotonic_ns": 635096014423772, "test_id": "test_setup_v2.SetupTests.test_fast_natural_launcher_exit_binds_complete_cid_and_removes_before_both_absences"}
+test_fast_natural_launcher_exit_binds_complete_cid_and_removes_before_both_absences (test_setup_v2.SetupTests.test_fast_natural_launcher_exit_binds_complete_cid_and_removes_before_both_absences) ... ok
+
+{"elapsed_s": 0.11951237497851253, "event": "test_terminal", "monotonic_ns": 635096133937673, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_fast_natural_launcher_exit_binds_complete_cid_and_removes_before_both_absences"}
+
+{"event": "test_started", "monotonic_ns": 635096133970417, "test_id": "test_setup_v2.SetupTests.test_initialization_doc_cap_fails_before_single_intended_call"}
+test_initialization_doc_cap_fails_before_single_intended_call (test_setup_v2.SetupTests.test_initialization_doc_cap_fails_before_single_intended_call) ... ok
+
+{"elapsed_s": 0.026629952946677804, "event": "test_terminal", "monotonic_ns": 635096160601478, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_initialization_doc_cap_fails_before_single_intended_call"}
+
+{"event": "test_started", "monotonic_ns": 635096160628192, "test_id": "test_setup_v2.SetupTests.test_malformed_and_oversize_cid_retain_actual_failure_stat"}
+test_malformed_and_oversize_cid_retain_actual_failure_stat (test_setup_v2.SetupTests.test_malformed_and_oversize_cid_retain_actual_failure_stat) ... ok
+
+{"elapsed_s": 0.015107164974324405, "event": "test_terminal", "monotonic_ns": 635096175736535, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_malformed_and_oversize_cid_retain_actual_failure_stat"}
+
+{"event": "test_started", "monotonic_ns": 635096175765267, "test_id": "test_setup_v2.SetupTests.test_original_initializer_failure_keeps_stage_type_and_bounded_trace_without_fallback"}
+test_original_initializer_failure_keeps_stage_type_and_bounded_trace_without_fallback (test_setup_v2.SetupTests.test_original_initializer_failure_keeps_stage_type_and_bounded_trace_without_fallback) ... ok
+
+{"elapsed_s": 0.0517690209671855, "event": "test_terminal", "monotonic_ns": 635096227535468, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_original_initializer_failure_keeps_stage_type_and_bounded_trace_without_fallback"}
+
+{"event": "test_started", "monotonic_ns": 635096227563712, "test_id": "test_setup_v2.SetupTests.test_original_inode_substitution_symlink_and_multiple_links_reject"}
+test_original_inode_substitution_symlink_and_multiple_links_reject (test_setup_v2.SetupTests.test_original_inode_substitution_symlink_and_multiple_links_reject) ... ok
+
+{"elapsed_s": 0.01471474498976022, "event": "test_terminal", "monotonic_ns": 635096242279485, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_original_inode_substitution_symlink_and_multiple_links_reject"}
+
+{"event": "test_started", "monotonic_ns": 635096242308529, "test_id": "test_setup_v2.SetupTests.test_original_live_launcher_is_reaped_before_engine_fixture_observation"}
+test_original_live_launcher_is_reaped_before_engine_fixture_observation (test_setup_v2.SetupTests.test_original_live_launcher_is_reaped_before_engine_fixture_observation) ... ok
+
+{"elapsed_s": 0.17949059698730707, "event": "test_terminal", "monotonic_ns": 635096421801052, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_original_live_launcher_is_reaped_before_engine_fixture_observation"}
+
+{"event": "test_started", "monotonic_ns": 635096421836861, "test_id": "test_setup_v2.SetupTests.test_original_partial_file_publication_stays_pending_until_stable_complete"}
+test_original_partial_file_publication_stays_pending_until_stable_complete (test_setup_v2.SetupTests.test_original_partial_file_publication_stays_pending_until_stable_complete) ... ok
+
+{"elapsed_s": 0.11976281006354839, "event": "test_terminal", "monotonic_ns": 635096541600859, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_original_partial_file_publication_stays_pending_until_stable_complete"}
+
+{"event": "test_started", "monotonic_ns": 635096541633762, "test_id": "test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed"}
+test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed (test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed) ... ok
+
+{"elapsed_s": 15.04703714104835, "event": "test_terminal", "monotonic_ns": 635111588672638, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed"}
+
+{"event": "test_started", "monotonic_ns": 635111588703900, "test_id": "test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success"}
+test_outer_successful_body_crosses_original_cleanup15_and_rejects_success (test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success) ... ok
+
+{"elapsed_s": 15.044504021061584, "event": "test_terminal", "monotonic_ns": 635126633209485, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success"}
+
+{"event": "test_started", "monotonic_ns": 635126633243807, "test_id": "test_setup_v2.SetupTests.test_single_explicit_list_initializer_records_actual_fixture_callable_and_stages"}
+test_single_explicit_list_initializer_records_actual_fixture_callable_and_stages (test_setup_v2.SetupTests.test_single_explicit_list_initializer_records_actual_fixture_callable_and_stages) ... ok
+
+{"elapsed_s": 0.04857183701824397, "event": "test_terminal", "monotonic_ns": 635126681816290, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_single_explicit_list_initializer_records_actual_fixture_callable_and_stages"}
+
+{"event": "test_started", "monotonic_ns": 635126681840055, "test_id": "test_setup_v2.SetupTests.test_unresolved_publication_keeps_unknown_and_never_claims_removal_absence"}
+test_unresolved_publication_keeps_unknown_and_never_claims_removal_absence (test_setup_v2.SetupTests.test_unresolved_publication_keeps_unknown_and_never_claims_removal_absence) ... ok
+
+{"elapsed_s": 4.612180268974043, "event": "test_terminal", "monotonic_ns": 635131294021370, "outcome": "success", "test_id": "test_setup_v2.SetupTests.test_unresolved_publication_keeps_unknown_and_never_claims_removal_absence"}
+
+{"event": "test_started", "monotonic_ns": 635131294113143, "test_id": "test_successor_v6.BackingSuccessorTests.test_actual_full_maps_rejects_duplicate_but_classifier_retains_it"}
+test_actual_full_maps_rejects_duplicate_but_classifier_retains_it (test_successor_v6.BackingSuccessorTests.test_actual_full_maps_rejects_duplicate_but_classifier_retains_it) ... ok
+
+{"elapsed_s": 0.0036744530079886317, "event": "test_terminal", "monotonic_ns": 635131297787761, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_actual_full_maps_rejects_duplicate_but_classifier_retains_it"}
+
+{"event": "test_started", "monotonic_ns": 635131297812123, "test_id": "test_successor_v6.BackingSuccessorTests.test_anonymous_inode_zero_and_strict_ranges_permissions_offsets"}
+test_anonymous_inode_zero_and_strict_ranges_permissions_offsets (test_successor_v6.BackingSuccessorTests.test_anonymous_inode_zero_and_strict_ranges_permissions_offsets) ... ok
+
+{"elapsed_s": 0.002776000997982919, "event": "test_terminal", "monotonic_ns": 635131300588757, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_anonymous_inode_zero_and_strict_ranges_permissions_offsets"}
+
+{"event": "test_started", "monotonic_ns": 635131300609894, "test_id": "test_successor_v6.BackingSuccessorTests.test_bridge_wrong_permissions_offset_deleted_and_missing_range_reject"}
+test_bridge_wrong_permissions_offset_deleted_and_missing_range_reject (test_successor_v6.BackingSuccessorTests.test_bridge_wrong_permissions_offset_deleted_and_missing_range_reject) ... ok
+
+{"elapsed_s": 0.006875441991724074, "event": "test_terminal", "monotonic_ns": 635131307486069, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_bridge_wrong_permissions_offset_deleted_and_missing_range_reject"}
+
+{"event": "test_started", "monotonic_ns": 635131307507705, "test_id": "test_successor_v6.BackingSuccessorTests.test_buffer_acquisition_error_retires_mapping_without_release_obligation"}
+test_buffer_acquisition_error_retires_mapping_without_release_obligation (test_successor_v6.BackingSuccessorTests.test_buffer_acquisition_error_retires_mapping_without_release_obligation) ... ok
+
+{"elapsed_s": 0.0026333779096603394, "event": "test_terminal", "monotonic_ns": 635131310141343, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_buffer_acquisition_error_retires_mapping_without_release_obligation"}
+
+{"event": "test_started", "monotonic_ns": 635131310160935, "test_id": "test_successor_v6.BackingSuccessorTests.test_cached_bridge_rechecks_real_ancestor_mode_after_probe_retirement"}
+test_cached_bridge_rechecks_real_ancestor_mode_after_probe_retirement (test_successor_v6.BackingSuccessorTests.test_cached_bridge_rechecks_real_ancestor_mode_after_probe_retirement) ... ok
+
+{"elapsed_s": 0.00474264903459698, "event": "test_terminal", "monotonic_ns": 635131314903689, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_cached_bridge_rechecks_real_ancestor_mode_after_probe_retirement"}
+
+{"event": "test_started", "monotonic_ns": 635131314923750, "test_id": "test_successor_v6.BackingSuccessorTests.test_cached_bridge_uses_same_proof_and_expected_size_and_sha"}
+test_cached_bridge_uses_same_proof_and_expected_size_and_sha (test_successor_v6.BackingSuccessorTests.test_cached_bridge_uses_same_proof_and_expected_size_and_sha) ... ok
+
+{"elapsed_s": 0.005567724001593888, "event": "test_terminal", "monotonic_ns": 635131320491758, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_cached_bridge_uses_same_proof_and_expected_size_and_sha"}
+
+{"event": "test_started", "monotonic_ns": 635131320512304, "test_id": "test_successor_v6.BackingSuccessorTests.test_cached_expected_size_cannot_be_ignored"}
+test_cached_expected_size_cannot_be_ignored (test_successor_v6.BackingSuccessorTests.test_cached_expected_size_cannot_be_ignored) ... ok
+
+{"elapsed_s": 0.0026256260462105274, "event": "test_terminal", "monotonic_ns": 635131323138211, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_cached_expected_size_cannot_be_ignored"}
+
+{"event": "test_started", "monotonic_ns": 635131323158127, "test_id": "test_successor_v6.BackingSuccessorTests.test_cached_same_bytes_rewrite_during_rehash_keeps_full_epoch_guard"}
+test_cached_same_bytes_rewrite_during_rehash_keeps_full_epoch_guard (test_successor_v6.BackingSuccessorTests.test_cached_same_bytes_rewrite_during_rehash_keeps_full_epoch_guard) ... ok
+
+{"elapsed_s": 0.0027269170386716723, "event": "test_terminal", "monotonic_ns": 635131325885239, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_cached_same_bytes_rewrite_during_rehash_keeps_full_epoch_guard"}
+
+{"event": "test_started", "monotonic_ns": 635131325904059, "test_id": "test_successor_v6.BackingSuccessorTests.test_cancellation_primary_retires_probe_and_propagates_original_identity"}
+test_cancellation_primary_retires_probe_and_propagates_original_identity (test_successor_v6.BackingSuccessorTests.test_cancellation_primary_retires_probe_and_propagates_original_identity) ... ok
+
+{"elapsed_s": 0.002988352091051638, "event": "test_terminal", "monotonic_ns": 635131328893040, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_cancellation_primary_retires_probe_and_propagates_original_identity"}
+
+{"event": "test_started", "monotonic_ns": 635131328915561, "test_id": "test_successor_v6.BackingSuccessorTests.test_duplicate_full_bridge_snapshot_rejects_and_retires"}
+test_duplicate_full_bridge_snapshot_rejects_and_retires (test_successor_v6.BackingSuccessorTests.test_duplicate_full_bridge_snapshot_rejects_and_retires) ... ok
+
+{"elapsed_s": 0.0036816780921071768, "event": "test_terminal", "monotonic_ns": 635131332597422, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_duplicate_full_bridge_snapshot_rejects_and_retires"}
+
+{"event": "test_started", "monotonic_ns": 635131332618280, "test_id": "test_successor_v6.BackingSuccessorTests.test_expired_real_probe_rejects_before_success"}
+test_expired_real_probe_rejects_before_success (test_successor_v6.BackingSuccessorTests.test_expired_real_probe_rejects_before_success) ... ok
+
+{"elapsed_s": 0.003827744978480041, "event": "test_terminal", "monotonic_ns": 635131336446209, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_expired_real_probe_rejects_before_success"}
+
+{"event": "test_started", "monotonic_ns": 635131336465111, "test_id": "test_successor_v6.BackingSuccessorTests.test_failed_ancestor_fstat_retires_partially_acquired_fd"}
+test_failed_ancestor_fstat_retires_partially_acquired_fd (test_successor_v6.BackingSuccessorTests.test_failed_ancestor_fstat_retires_partially_acquired_fd) ... ok
+
+{"elapsed_s": 0.002935842960141599, "event": "test_terminal", "monotonic_ns": 635131339401115, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_failed_ancestor_fstat_retires_partially_acquired_fd"}
+
+{"event": "test_started", "monotonic_ns": 635131339418292, "test_id": "test_successor_v6.BackingSuccessorTests.test_final_snapshot_persistence_error_never_authorizes_collection"}
+test_final_snapshot_persistence_error_never_authorizes_collection (test_successor_v6.BackingSuccessorTests.test_final_snapshot_persistence_error_never_authorizes_collection) ... ok
+
+{"elapsed_s": 0.004650586051866412, "event": "test_terminal", "monotonic_ns": 635131344069440, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_final_snapshot_persistence_error_never_authorizes_collection"}
+
+{"event": "test_started", "monotonic_ns": 635131344091554, "test_id": "test_successor_v6.BackingSuccessorTests.test_growth_after_admission_cannot_enlarge_original_hash_read_bound"}
+test_growth_after_admission_cannot_enlarge_original_hash_read_bound (test_successor_v6.BackingSuccessorTests.test_growth_after_admission_cannot_enlarge_original_hash_read_bound) ... ok
+
+{"elapsed_s": 0.0027821010444313288, "event": "test_terminal", "monotonic_ns": 635131346874185, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_growth_after_admission_cannot_enlarge_original_hash_read_bound"}
+
+{"event": "test_started", "monotonic_ns": 635131346897726, "test_id": "test_successor_v6.BackingSuccessorTests.test_held_bytes_changed_during_probe_remain_epoch_failure"}
+test_held_bytes_changed_during_probe_remain_epoch_failure (test_successor_v6.BackingSuccessorTests.test_held_bytes_changed_during_probe_remain_epoch_failure) ... ok
+
+{"elapsed_s": 0.003306967904791236, "event": "test_terminal", "monotonic_ns": 635131350204782, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_held_bytes_changed_during_probe_remain_epoch_failure"}
+
+{"event": "test_started", "monotonic_ns": 635131350224515, "test_id": "test_successor_v6.BackingSuccessorTests.test_original_selected_owner_and_complete_ranges_are_bracketed"}
+test_original_selected_owner_and_complete_ranges_are_bracketed (test_successor_v6.BackingSuccessorTests.test_original_selected_owner_and_complete_ranges_are_bracketed) ... ok
+
+{"elapsed_s": 0.00856455706525594, "event": "test_terminal", "monotonic_ns": 635131358789256, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_original_selected_owner_and_complete_ranges_are_bracketed"}
+
+{"event": "test_started", "monotonic_ns": 635131358808321, "test_id": "test_successor_v6.BackingSuccessorTests.test_original_tiny_child_exit_during_collection_is_rejected"}
+test_original_tiny_child_exit_during_collection_is_rejected (test_successor_v6.BackingSuccessorTests.test_original_tiny_child_exit_during_collection_is_rejected) ... ok
+
+{"elapsed_s": 0.013018807047046721, "event": "test_terminal", "monotonic_ns": 635131371827608, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_original_tiny_child_exit_during_collection_is_rejected"}
+
+{"event": "test_started", "monotonic_ns": 635131371849284, "test_id": "test_successor_v6.BackingSuccessorTests.test_owner_change_and_selected_range_change_refuse_before_final_snapshot"}
+test_owner_change_and_selected_range_change_refuse_before_final_snapshot (test_successor_v6.BackingSuccessorTests.test_owner_change_and_selected_range_change_refuse_before_final_snapshot) ... ok
+
+{"elapsed_s": 0.008796839974820614, "event": "test_terminal", "monotonic_ns": 635131380646831, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_owner_change_and_selected_range_change_refuse_before_final_snapshot"}
+
+{"event": "test_started", "monotonic_ns": 635131380670015, "test_id": "test_successor_v6.BackingSuccessorTests.test_owner_reads_use_original_channel_limit_and_sentinel"}
+test_owner_reads_use_original_channel_limit_and_sentinel (test_successor_v6.BackingSuccessorTests.test_owner_reads_use_original_channel_limit_and_sentinel) ... ok
+
+{"elapsed_s": 0.003250093897804618, "event": "test_terminal", "monotonic_ns": 635131383920542, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_owner_reads_use_original_channel_limit_and_sentinel"}
+
+{"event": "test_started", "monotonic_ns": 635131383942755, "test_id": "test_successor_v6.BackingSuccessorTests.test_parse_primary_survives_release_and_mapping_close_errors"}
+test_parse_primary_survives_release_and_mapping_close_errors (test_successor_v6.BackingSuccessorTests.test_parse_primary_survives_release_and_mapping_close_errors) ... ok
+
+{"elapsed_s": 0.0028946989914402366, "event": "test_terminal", "monotonic_ns": 635131386837588, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_parse_primary_survives_release_and_mapping_close_errors"}
+
+{"event": "test_started", "monotonic_ns": 635131386858452, "test_id": "test_successor_v6.BackingSuccessorTests.test_pin_close_attempts_all_descriptors_and_preserves_first_error"}
+test_pin_close_attempts_all_descriptors_and_preserves_first_error (test_successor_v6.BackingSuccessorTests.test_pin_close_attempts_all_descriptors_and_preserves_first_error) ... ok
+
+{"elapsed_s": 0.0026817870093509555, "event": "test_terminal", "monotonic_ns": 635131389540472, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_pin_close_attempts_all_descriptors_and_preserves_first_error"}
+
+{"event": "test_started", "monotonic_ns": 635131389559987, "test_id": "test_successor_v6.BackingSuccessorTests.test_real_held_fd_bridge_accepts_explicit_synthetic_visible_device"}
+test_real_held_fd_bridge_accepts_explicit_synthetic_visible_device (test_successor_v6.BackingSuccessorTests.test_real_held_fd_bridge_accepts_explicit_synthetic_visible_device) ... ok
+
+{"elapsed_s": 0.0038105950225144625, "event": "test_terminal", "monotonic_ns": 635131393371323, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_real_held_fd_bridge_accepts_explicit_synthetic_visible_device"}
+
+{"event": "test_started", "monotonic_ns": 635131393394868, "test_id": "test_successor_v6.BackingSuccessorTests.test_real_readonly_probe_retires_export_mapping_and_fd"}
+test_real_readonly_probe_retires_export_mapping_and_fd (test_successor_v6.BackingSuccessorTests.test_real_readonly_probe_retires_export_mapping_and_fd) ... ok
+
+{"elapsed_s": 0.004003463080152869, "event": "test_terminal", "monotonic_ns": 635131397398893, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_real_readonly_probe_retires_export_mapping_and_fd"}
+
+{"event": "test_started", "monotonic_ns": 635131397422810, "test_id": "test_successor_v6.BackingSuccessorTests.test_selected_ambiguous_escapes_fail_classifier_and_actual_collector"}
+test_selected_ambiguous_escapes_fail_classifier_and_actual_collector (test_successor_v6.BackingSuccessorTests.test_selected_ambiguous_escapes_fail_classifier_and_actual_collector) ... ok
+
+{"elapsed_s": 0.005370168946683407, "event": "test_terminal", "monotonic_ns": 635131402793710, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_selected_ambiguous_escapes_fail_classifier_and_actual_collector"}
+
+{"event": "test_started", "monotonic_ns": 635131402817125, "test_id": "test_successor_v6.BackingSuccessorTests.test_self_selected_bracket_excludes_only_actual_unique_bridge"}
+test_self_selected_bracket_excludes_only_actual_unique_bridge (test_successor_v6.BackingSuccessorTests.test_self_selected_bracket_excludes_only_actual_unique_bridge) ... ok
+
+{"elapsed_s": 0.008270429098047316, "event": "test_terminal", "monotonic_ns": 635131411087989, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_self_selected_bracket_excludes_only_actual_unique_bridge"}
+
+{"event": "test_started", "monotonic_ns": 635131411109536, "test_id": "test_successor_v6.BackingSuccessorTests.test_unreleased_real_export_causes_genuine_mapping_close_failure"}
+test_unreleased_real_export_causes_genuine_mapping_close_failure (test_successor_v6.BackingSuccessorTests.test_unreleased_real_export_causes_genuine_mapping_close_failure) ... ok
+
+{"elapsed_s": 0.0034479800378903747, "event": "test_terminal", "monotonic_ns": 635131414558114, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_unreleased_real_export_causes_genuine_mapping_close_failure"}
+
+{"event": "test_started", "monotonic_ns": 635131414580287, "test_id": "test_successor_v6.BackingSuccessorTests.test_wrong_backing_identity_fails_and_retires_real_probe"}
+test_wrong_backing_identity_fails_and_retires_real_probe (test_successor_v6.BackingSuccessorTests.test_wrong_backing_identity_fails_and_retires_real_probe) ... ok
+
+{"elapsed_s": 0.003975579049438238, "event": "test_terminal", "monotonic_ns": 635131418556157, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_wrong_backing_identity_fails_and_retires_real_probe"}
+
+{"event": "test_started", "monotonic_ns": 635131418576473, "test_id": "test_successor_v6.BackingSuccessorTests.test_wrong_pybuffer_field_offsets_reject_before_mapping_or_c_api"}
+test_wrong_pybuffer_field_offsets_reject_before_mapping_or_c_api (test_successor_v6.BackingSuccessorTests.test_wrong_pybuffer_field_offsets_reject_before_mapping_or_c_api) ... ok
+
+{"elapsed_s": 0.003202241030521691, "event": "test_terminal", "monotonic_ns": 635131421779194, "outcome": "success", "test_id": "test_successor_v6.BackingSuccessorTests.test_wrong_pybuffer_field_offsets_reject_before_mapping_or_c_api"}
+
+{"event": "test_started", "monotonic_ns": 635131421814081, "test_id": "test_successor_v6.GuestConstructionSuccessorTests.test_code_descriptor_drift_and_nonfinite_budget_retire_acquired_pins"}
+test_code_descriptor_drift_and_nonfinite_budget_retire_acquired_pins (test_successor_v6.GuestConstructionSuccessorTests.test_code_descriptor_drift_and_nonfinite_budget_retire_acquired_pins) ... ok
+
+{"elapsed_s": 0.052815585979260504, "event": "test_terminal", "monotonic_ns": 635131474629799, "outcome": "success", "test_id": "test_successor_v6.GuestConstructionSuccessorTests.test_code_descriptor_drift_and_nonfinite_budget_retire_acquired_pins"}
+
+{"event": "test_started", "monotonic_ns": 635131474652262, "test_id": "test_successor_v6.GuestConstructionSuccessorTests.test_remaining_budget_and_exact_mounted_code_are_bound"}
+test_remaining_budget_and_exact_mounted_code_are_bound (test_successor_v6.GuestConstructionSuccessorTests.test_remaining_budget_and_exact_mounted_code_are_bound) ... ok
+
+{"elapsed_s": 0.06187845894601196, "event": "test_terminal", "monotonic_ns": 635131536531537, "outcome": "success", "test_id": "test_successor_v6.GuestConstructionSuccessorTests.test_remaining_budget_and_exact_mounted_code_are_bound"}
+
+{"event": "test_started", "monotonic_ns": 635131536557005, "test_id": "test_successor_v6.GuestConstructionSuccessorTests.test_required_mode_validated_before_metadata_and_no_fd_leak"}
+test_required_mode_validated_before_metadata_and_no_fd_leak (test_successor_v6.GuestConstructionSuccessorTests.test_required_mode_validated_before_metadata_and_no_fd_leak) ... ok
+
+{"elapsed_s": 0.023360071005299687, "event": "test_terminal", "monotonic_ns": 635131559917808, "outcome": "success", "test_id": "test_successor_v6.GuestConstructionSuccessorTests.test_required_mode_validated_before_metadata_and_no_fd_leak"}
+
+{"event": "test_started", "monotonic_ns": 635131559947232, "test_id": "test_successor_v6.GuestModeSuccessorTests.test_metadata_completion_has_no_source_cohort_result_or_research_authority"}
+test_metadata_completion_has_no_source_cohort_result_or_research_authority (test_successor_v6.GuestModeSuccessorTests.test_metadata_completion_has_no_source_cohort_result_or_research_authority) ... ok
+
+{"elapsed_s": 0.00851819000672549, "event": "test_terminal", "monotonic_ns": 635131568465481, "outcome": "success", "test_id": "test_successor_v6.GuestModeSuccessorTests.test_metadata_completion_has_no_source_cohort_result_or_research_authority"}
+
+{"event": "test_started", "monotonic_ns": 635131568483738, "test_id": "test_successor_v6.GuestModeSuccessorTests.test_metadata_final_close_obeys_remaining_prelaunch_not_new600_clock"}
+test_metadata_final_close_obeys_remaining_prelaunch_not_new600_clock (test_successor_v6.GuestModeSuccessorTests.test_metadata_final_close_obeys_remaining_prelaunch_not_new600_clock) ... ok
+
+{"elapsed_s": 0.07384976302273571, "event": "test_terminal", "monotonic_ns": 635131642335112, "outcome": "success", "test_id": "test_successor_v6.GuestModeSuccessorTests.test_metadata_final_close_obeys_remaining_prelaunch_not_new600_clock"}
+
+{"event": "test_started", "monotonic_ns": 635131642372652, "test_id": "test_successor_v6.GuestModeSuccessorTests.test_metadata_original_preflight_error_keeps_identity_and_zero_runs"}
+test_metadata_original_preflight_error_keeps_identity_and_zero_runs (test_successor_v6.GuestModeSuccessorTests.test_metadata_original_preflight_error_keeps_identity_and_zero_runs) ... ok
+
+{"elapsed_s": 0.022792984964326024, "event": "test_terminal", "monotonic_ns": 635131665165995, "outcome": "success", "test_id": "test_successor_v6.GuestModeSuccessorTests.test_metadata_original_preflight_error_keeps_identity_and_zero_runs"}
+
+{"event": "test_started", "monotonic_ns": 635131665186084, "test_id": "test_successor_v6.GuestModeSuccessorTests.test_metadata_pin_close_failure_blocks_provisional_success"}
+test_metadata_pin_close_failure_blocks_provisional_success (test_successor_v6.GuestModeSuccessorTests.test_metadata_pin_close_failure_blocks_provisional_success) ... ok
+
+{"elapsed_s": 0.014898365014232695, "event": "test_terminal", "monotonic_ns": 635131680085113, "outcome": "success", "test_id": "test_successor_v6.GuestModeSuccessorTests.test_metadata_pin_close_failure_blocks_provisional_success"}
+
+{"event": "test_started", "monotonic_ns": 635131680104952, "test_id": "test_successor_v6.GuestModeSuccessorTests.test_metadata_unexpected_run_namespace_blocks_body_completion"}
+test_metadata_unexpected_run_namespace_blocks_body_completion (test_successor_v6.GuestModeSuccessorTests.test_metadata_unexpected_run_namespace_blocks_body_completion) ... ok
+
+{"elapsed_s": 0.019993902067653835, "event": "test_terminal", "monotonic_ns": 635131700099406, "outcome": "success", "test_id": "test_successor_v6.GuestModeSuccessorTests.test_metadata_unexpected_run_namespace_blocks_body_completion"}
+
+{"event": "test_started", "monotonic_ns": 635131700117679, "test_id": "test_successor_v6.GuestModeSuccessorTests.test_missing_or_mismatched_mode_never_enters_preflight"}
+test_missing_or_mismatched_mode_never_enters_preflight (test_successor_v6.GuestModeSuccessorTests.test_missing_or_mismatched_mode_never_enters_preflight) ... ok
+
+{"elapsed_s": 0.052026382996700704, "event": "test_terminal", "monotonic_ns": 635131752144667, "outcome": "success", "test_id": "test_successor_v6.GuestModeSuccessorTests.test_missing_or_mismatched_mode_never_enters_preflight"}
+
+{"event": "test_started", "monotonic_ns": 635131752166093, "test_id": "test_successor_v6.GuestModeSuccessorTests.test_primary_survives_late_companion_write_and_close_failure"}
+test_primary_survives_late_companion_write_and_close_failure (test_successor_v6.GuestModeSuccessorTests.test_primary_survives_late_companion_write_and_close_failure) ... ok
+
+{"elapsed_s": 0.015385039965622127, "event": "test_terminal", "monotonic_ns": 635131767551693, "outcome": "success", "test_id": "test_successor_v6.GuestModeSuccessorTests.test_primary_survives_late_companion_write_and_close_failure"}
+
+{"event": "test_started", "monotonic_ns": 635131767572997, "test_id": "test_successor_v6.GuestModeSuccessorTests.test_research_exact_four_order_and_complete_pairing_are_preserved"}
+test_research_exact_four_order_and_complete_pairing_are_preserved (test_successor_v6.GuestModeSuccessorTests.test_research_exact_four_order_and_complete_pairing_are_preserved) ... ok
+
+{"elapsed_s": 0.013169865007512271, "event": "test_terminal", "monotonic_ns": 635131780743480, "outcome": "success", "test_id": "test_successor_v6.GuestModeSuccessorTests.test_research_exact_four_order_and_complete_pairing_are_preserved"}
+
+{"event": "test_started", "monotonic_ns": 635131780762240, "test_id": "test_successor_v6.GuestModeSuccessorTests.test_research_first_failure_stops_before_later_setting"}
+test_research_first_failure_stops_before_later_setting (test_successor_v6.GuestModeSuccessorTests.test_research_first_failure_stops_before_later_setting) ... ok
+
+{"elapsed_s": 0.018032216001302004, "event": "test_terminal", "monotonic_ns": 635131798794700, "outcome": "success", "test_id": "test_successor_v6.GuestModeSuccessorTests.test_research_first_failure_stops_before_later_setting"}
+
+{"event": "test_started", "monotonic_ns": 635131798822452, "test_id": "test_successor_v6.GuestRunRetirementTests.test_registry_reader_start_failure_preserves_primary_and_retires_auxiliary_fds"}
+test_registry_reader_start_failure_preserves_primary_and_retires_auxiliary_fds (test_successor_v6.GuestRunRetirementTests.test_registry_reader_start_failure_preserves_primary_and_retires_auxiliary_fds) ... ok
+
+{"elapsed_s": 0.02545421407558024, "event": "test_terminal", "monotonic_ns": 635131824276652, "outcome": "success", "test_id": "test_successor_v6.GuestRunRetirementTests.test_registry_reader_start_failure_preserves_primary_and_retires_auxiliary_fds"}
+
+{"event": "test_started", "monotonic_ns": 635131824295936, "test_id": "test_successor_v6.GuestRunRetirementTests.test_run_drain_handoff_and_retirement_keep_real_fd_and_first_cause"}
+test_run_drain_handoff_and_retirement_keep_real_fd_and_first_cause (test_successor_v6.GuestRunRetirementTests.test_run_drain_handoff_and_retirement_keep_real_fd_and_first_cause) ... ok
+
+{"elapsed_s": 0.022837594035081565, "event": "test_terminal", "monotonic_ns": 635131847134337, "outcome": "success", "test_id": "test_successor_v6.GuestRunRetirementTests.test_run_drain_handoff_and_retirement_keep_real_fd_and_first_cause"}
+
+{"event": "test_started", "monotonic_ns": 635131847153342, "test_id": "test_successor_v6.GuestRunRetirementTests.test_run_partial_pipe_acquisition_retires_real_first_pair"}
+test_run_partial_pipe_acquisition_retires_real_first_pair (test_successor_v6.GuestRunRetirementTests.test_run_partial_pipe_acquisition_retires_real_first_pair) ... ok
+
+{"elapsed_s": 0.01991451997309923, "event": "test_terminal", "monotonic_ns": 635131867068563, "outcome": "success", "test_id": "test_successor_v6.GuestRunRetirementTests.test_run_partial_pipe_acquisition_retires_real_first_pair"}
+
+{"event": "test_started", "monotonic_ns": 635131867087008, "test_id": "test_successor_v6.GuestRunRetirementTests.test_run_retirement_errors_preserve_primary_and_attempt_remaining"}
+test_run_retirement_errors_preserve_primary_and_attempt_remaining (test_successor_v6.GuestRunRetirementTests.test_run_retirement_errors_preserve_primary_and_attempt_remaining) ... ok
+
+{"elapsed_s": 0.039543753024190664, "event": "test_terminal", "monotonic_ns": 635131906631372, "outcome": "success", "test_id": "test_successor_v6.GuestRunRetirementTests.test_run_retirement_errors_preserve_primary_and_attempt_remaining"}
+
+----------------------------------------------------------------------
+Ran 170 tests in 53.173s
+
+OK

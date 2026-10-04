@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "kind": "actual_S6_failed_CI_original_retention_tool_record",
+  "command": "wsl.exe -d Ubuntu -- /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S6f9cde5ec-v1/retain_originals_v1.py",
+  "binding_original": {
+    "chunk_id": "364188",
+    "wall_time_seconds": 0.9331182,
+    "exit_code": 0,
+    "original_token_count": 169,
+    "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000{\"existing_known_failed_retainer_literal_binding_only\":true,\"path\":\"/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S6f9cde5ec-v1/retain_originals_v1.py\",\"size_bytes\":5923,\"sha256\":\"e59130c8a3aec73391f3827a99e6a0f1e874edc674c95895eaed60f494aa03fe\",\"base_sha256\":\"12830e55951b8d0a63d16f501a76a4263c141e099ddc624a3853131ea6ec3609\",\"prior_success_binding_never_executed\":true,\"capture_not_yet_executed\":true}\n"
+  },
+  "initiating_original": {
+    "chunk_id": "fa7dde",
+    "wall_time_seconds": 8.6792254,
+    "exit_code": 0,
+    "original_token_count": 93,
+    "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000{\"run_id\": 37240747391, \"status\": \"originals_retained\", \"retained_count\": 4, \"elapsed_s\": 7.764847164973617}\n"
+  },
+  "followup_tools": [],
+  "provider_jobs_artifacts_originals": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Action completed."
+          }
+        ],
+        "structuredContent": {
+          "jobs": [
+            {
+              "id": 111548803858,
+              "name": "Original host prerequisite diagnostics",
+              "status": "completed",
+              "conclusion": "success",
+              "run_id": 37240747391,
+              "logs_url": null,
+              "steps": [
+                {
+                  "name": "Set up job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 1
+                },
+                {
+                  "name": "Check out the same actual head for the independent diagnostic",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 2
+                },
+                {
+                  "name": "Preserve exact source bytes",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 3
+                },
+                {
+                  "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 4
+                },
+                {
+                  "name": "Install the same pinned diagnostic dependencies",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 5
+                },
+                {
+                  "name": "Verify installed dependency consistency",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 6
+                },
+                {
+                  "name": "Retain the two original prerequisite and host outcomes",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 7
+                },
+                {
+                  "name": "Preserve original diagnostics even on failure",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 8
+                },
+                {
+                  "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 15
+                },
+                {
+                  "name": "Post Check out the same actual head for the independent diagnostic",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 16
+                },
+                {
+                  "name": "Complete job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 17
+                }
+              ]
+            },
+            {
+              "id": 111548804016,
+              "name": "cpu-checks",
+              "status": "completed",
+              "conclusion": "failure",
+              "run_id": 37240747391,
+              "logs_url": null,
+              "steps": [
+                {
+                  "name": "Set up job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 1
+                },
+                {
+                  "name": "Record the original CPU job clock",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 2
+                },
+                {
+                  "name": "Check out the actual PR head or push commit",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 3
+                },
+                {
+                  "name": "Preserve exact source bytes",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 4
+                },
+                {
+                  "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 5
+                },
+                {
+                  "name": "Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 6
+                },
+                {
+                  "name": "Install the agreed OpenSpec version in this ephemeral runner",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 7
+                },
+                {
+                  "name": "Validate OpenSpec structure, including completed archives",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 8
+                },
+                {
+                  "name": "Install CPU build prerequisites in this ephemeral runner",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 9
+                },
+                {
+                  "name": "Install the recorded CPU test dependencies",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 10
+                },
+                {
+                  "name": "Verify installed dependency consistency",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 11
+                },
+                {
+                  "name": "Check source, build six CPU targets and execute test discovery",
+                  "status": "completed",
+                  "conclusion": "failure",
+                  "number": 12
+                },
+                {
+                  "name": "Preserve original CPU logs and explicit hardware gaps",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 13
+                },
+                {
+                  "name": "Post Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 24
+                },
+                {
+                  "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 25
+                },
+                {
+                  "name": "Post Check out the actual PR head or push commit",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 26
+                },
+                {
+                  "name": "Complete job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 27
+                }
+              ]
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Action completed."
+          }
+        ],
+        "structuredContent": {
+          "artifacts": [
+            {
+              "id": 11317766410,
+              "name": "vast-host-diagnostics-f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+              "size_in_bytes": 564898,
+              "url": "https://api.github.com/repos/lordcoudy/VAST/actions/artifacts/11317766410",
+              "archive_download_url": "https://api.github.com/repos/lordcoudy/VAST/actions/artifacts/11317766410/zip",
+              "expired": false,
+              "created_at": "2026-10-04T22:38:37Z",
+              "expires_at": "2026-10-11T22:38:36Z",
+              "updated_at": "2026-10-04T22:38:37Z",
+              "digest": "sha256:0a4a25d99d3efc6b22540bfecb98cc354c29b0e2651fd610acde23d5503a3c1e",
+              "workflow_run": {
+                "id": 37240747391,
+                "repository_id": 1189703654,
+                "head_repository_id": 1189703654,
+                "head_branch": "codex/fix-decoder-preflight",
+                "head_sha": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab"
+              }
+            },
+            {
+              "id": 11317199807,
+              "name": "vast-cpu-checks-f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+              "size_in_bytes": 2227474,
+              "url": "https://api.github.com/repos/lordcoudy/VAST/actions/artifacts/11317199807",
+              "archive_download_url": "https://api.github.com/repos/lordcoudy/VAST/actions/artifacts/11317199807/zip",
+              "expired": false,
+              "created_at": "2026-10-04T23:01:12Z",
+              "expires_at": "2026-10-11T23:01:10Z",
+              "updated_at": "2026-10-04T23:01:12Z",
+              "digest": "sha256:1fe454723d051c28033d837c81e784fe5825557d4ab98c7d4f02b98c28fef428",
+              "workflow_run": {
+                "id": 37240747391,
+                "repository_id": 1189703654,
+                "head_repository_id": 1189703654,
+                "head_branch": "codex/fix-decoder-preflight",
+                "head_sha": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab"
+              }
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "e387d2",
+        "wall_time_seconds": 0.9857369,
+        "exit_code": 0,
+        "original_token_count": 992,
+        "output": "\"\"\"Retain one completed original hosted run; GCM credentials/redirect URLs stay in memory.\"\"\"\r\nimport hashlib,json,os,pathlib,stat,subprocess,time,urllib.request,urllib.parse,zipfile\r\nROOT=pathlib.Path('/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004')\r\nOUT=ROOT/'ci-S411471c5e-v1/original-retention-v1'\r\nRUN=37229785524\r\nCPU=111516849439\r\nHOST=111516849664\r\nEXPECTED='11471c5e13787dd7eac710738cd67472dc60b591'\r\nSTART=time.monotonic();END=START+180\r\nclass Redirect(urllib.request.HTTPRedirectHandler):\r\n def redirect_request(self,req,fp,code,msg,headers,newurl):\r\n  result=super().redirect_request(req,fp,code,msg,headers,newurl)\r\n  if urllib.parse.urlsplit(newurl).hostname!='api.github.com':result.remove_header('Authorization')\r\n  return result\r\ndef clock():\r\n if time.monotonic()>=END:raise TimeoutError('original hosted retention180s')\r\ndef save(name,value):\r\n raw=(json.dumps(value,sort_keys=True,indent=2)+'\\n').encode();assert len(raw)<=8*1024*1024\r\n with (OUT/name).open('xb') as f:f.write(raw);f.flush();os.fsync(f.fileno())\r\n return {'path':str((OUT/name).relative_to(ROOT)),'size_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}\r\nrows=[];first=None\r\ntry:\r\n environment=dict(os.environ,GIT_TERMINAL_PROMPT='0',GCM_INTERACTIVE='Never')\r\n credential=subprocess.run(['/mnt/c/Program Files/Git/cmd/git.exe','credential','fill'],input=b'protocol=https\\nhost=github.com\\n\\n',stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,env=environment,timeout=20,check=True)\r\n fields=dict(line.split(b'=',1) for line in credential.stdout.splitlines() if b'=' in line);token=fields[b'password'].decode();del credential,fields\r\n opener=urllib.request.build_opener(Redirect())\r\n def request(suffix):\r\n  return urllib.request.Request('https://api.github.com/repos/lordcoudy/VAST/'+suffix,headers={'Authorization':'Bearer '+token,'User-Agent':'VAST-readonly-original-CI-capture','Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})\r\n def data(suffix,cap):\r\n  clock();parts=[];count=0\r\n  with opener.open(request(suffix),timeout=min(45,END-time.monotonic())) as response:\r\n   while block:=response.read(65536):clock();count+=len(block);assert count<=cap;parts.append(block)\r\n  return b''.join(parts)\r\n run=json.loads(data('actions/runs/'+str(RUN),1048576));assert run['id']==RUN and run['head_sha']==EXPECTED and run['status']=='completed' and run['conclusion']=='failure'\r\n jobs=json.loads(data('actions/runs/'+str(RUN)+'/jobs?per_page=100',4*1024*1024));assert {j['id'] for j in jobs['jobs']}=={CPU,HOST} and all(j['run_id']==RUN and j['status']=='completed' and j['conclusion']==('failure' if j['id']==CPU else 'success') for j in jobs['jobs'])\r\n artifacts=json.loads(data('actions/runs/'+str(RUN)+'/artifacts?per_page=100',1048576));assert len(artifacts['artifacts'])==artifacts['total_count'] and 0<len(artifacts['artifacts'])<=8\r\n metadata=save('original-provider-metadata.v1.json',{'run':run,'jobs':jobs,'artifacts':artifacts})\r\n for job in (CPU,HOST):\r\n  raw=data('actions/jobs/'+str(job)+'/logs',32*1024*1024)\r\n  with (OUT/('job-'+str(job)+'.original.log')).open('xb') as f:f.write(raw);f.flush();os.fsync(f.fileno())\r\n  rows.append({'kind':'original_job_log','job_id':job,'path':str((OUT/('job-'+str(job)+'.original.log')).relative_to(ROOT)),'size_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()})\r\n for artifact in artifacts['artifacts']:\r\n  assert not artifact['expired'] and artifact['workflow_run']['id']==RUN and artifact['workflow_run']['head_sha']==EXPECTED\r\n  aid=artifact['id'];raw=data('actions/artifacts/'+str(aid)+'/zip',8*1024*1024)\r\n  assert len(raw)==artifact['size_in_bytes'] and artifact['digest']=='sha256:'+hashlib.sha256(raw).hexdigest()\r\n  destination=OUT/('artifact-'+str(aid)+'.original.zip')\r\n  with destination.open('xb') as f:f.write(raw);f.flush();os.fsync(f.fileno())\r\n  members=[];decoded=0;names=set()\r\n  with zipfile.ZipFile(destination) as archive:\r\n   assert len(archive.infolist())<=4096\r\n"
+      }
+    }
+  ],
+  "capture_rc0_distinct_from_original_CI_failure": true
+}
