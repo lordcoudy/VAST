@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "kind": "finite_component_study_independent_source_review",
+  "change": "run-finite-component-study",
+  "pull_request": "https://github.com/lordcoudy/VAST/pull/5",
+  "reviewed_planning_commit": "3288b0702b6b0136feb6596382566b8686f9bb5c",
+  "planning_comment_before_code": 5409655596,
+  "candidate_commit_join": "Parent reports A09562f7; reviewer performed no Git operation. Raw source hashes below identify the reviewed pre-correction candidate.",
+  "pin_semantics": "Reviewed before the root inherited-clock correction. Driver and its test pin are the actual earlier read pins; remaining pins were rechecked by 3c3b15 and equal earlier read pins. Current driver/tests changed afterwards and are not approved by this v1 receipt.",
+  "reviewable": true,
+  "verdict": "FAIL",
+  "blocking_findings": [
+    {
+      "id": "PREP-CLOCK-1",
+      "priority": "P1",
+      "path": "scripts/run_canonical_systems_study_v1.py",
+      "line": 415,
+      "trigger": "Owned private-root bootstrap performs source/tool hashes or transfer before invoking prepare/study.",
+      "actual": "prepare always samples a new time.monotonic() start and sets a fresh 14,400s Commands deadline; reviewed source has no inherited preparation clock/domain flags.",
+      "required": "Approved design.md:116 and finite-component-study spec.md:105 start preparation at the first physical source/tool hash/transfer/build; bootstrap and driver/native must share that original deadline.",
+      "correction_status": "Root reported a minimal inherited-start/actual-boot/time-namespace correction after this finding; exact successor source and current CI still require review. No successor acceptance inferred."
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\run_canonical_systems_study_v1.py",
+      "size_bytes": 79679,
+      "sha256": "a38451450e157ae7d578559c5ba138bc710ff2c4d54ea1375a99fc9904ce4ac2"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_admission.py",
+      "size_bytes": 22506,
+      "sha256": "83accf22d62cb4872931e0034b02a46e84900bfa1633c26a3fd1fde7c10e3718"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_gstreamer_analytics_bridge.py",
+      "size_bytes": 40666,
+      "sha256": "50b8914ef00a7e3ce280705816024a595f2ee91e4e66fd6c6c9a918a542039f4"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_gstreamer_analytics_sidecar.py",
+      "size_bytes": 309013,
+      "sha256": "650dae70f6b2d04cd5e43a43486a43b8496e9e7eeb7d1b67ef445604391e6350"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_gstreamer_runtime.py",
+      "size_bytes": 182604,
+      "sha256": "1d08aef32b630333ce8264e6366d857b6c0ca652a5af6c750e2f7a343d8e9657"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_native_policy_runtime.py",
+      "size_bytes": 77172,
+      "sha256": "e01de91be7b9658b54350aeddd32c2b2b78935cfbcb231729b2ba67837899509"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_runtime.py",
+      "size_bytes": 100006,
+      "sha256": "f772ba7506f16da47f7d5da0908ca7de541972675628b0c97b83ec6051161ee1"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_runtime_plan.py",
+      "size_bytes": 36327,
+      "sha256": "a9bcd4ae99c229e5fecb94cec3b3668f16ec8527bfa6167f8574b50967bf1963"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_gstreamer_component_inputs_v1.py",
+      "size_bytes": 39687,
+      "sha256": "c9168e1fcc19084a5a3c8c3c9f23488d846d48f75489cd54008d0fc2a9134fa0"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_guardian_component_preprocessing_contract_v1.py",
+      "size_bytes": 23040,
+      "sha256": "e446ccd814ace3f2ccf0fd1252aa888d8f9bed0eb9d7c4192a9658e2127a6065"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_guardian_operational_recorder_v1.py",
+      "size_bytes": 29665,
+      "sha256": "a3f78dcd887d00606412c1b786c84e78bc4b5529126492667309a5b9d4b6a564"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_image_build_v1.py",
+      "size_bytes": 34022,
+      "sha256": "7a8d6cf67de32515cf330073f3933b7af4216e552c5d606e8a17df500cf7938a"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_operational_capture_plan_v1.py",
+      "size_bytes": 28597,
+      "sha256": "0699ac22975ddd2af25db04626fad0bd2eedc77a83cf8fdd5c26f6d46a62262b"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_operational_request_domain_v1.py",
+      "size_bytes": 29892,
+      "sha256": "db2ea042b2709edccf24817a4e4ea350876cf9d44d4c1f00538f029a8bc7d912"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_operational_runtime_context_v1.py",
+      "size_bytes": 12377,
+      "sha256": "1ffc0a391bb7673987bad7df0f9d2acdb26d7d53a7790eb23b381e3d9f01c603"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\gstreamer_custom\\publication\\Dockerfile",
+      "size_bytes": 8275,
+      "sha256": "7bb9575b8dc2fa906412a486f55c8adf0fd79252834689222a6f8ba812b60aef"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\gstreamer_custom\\publication\\runtime-source-allowlist.txt",
+      "size_bytes": 3636,
+      "sha256": "eaaae386b65b0dc99714e80b05d24d0e581b7083d953243be390d13e9f009dce"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\native_gst_probe\\Dockerfile.openvino",
+      "size_bytes": 8026,
+      "sha256": "7740f862a6d4613501f3751b4f1c9aa1a4ca9135b02b9a8122d13ce0dea9e896"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\native_gst_probe\\publication\\openvino-source-allowlist.txt",
+      "size_bytes": 949,
+      "sha256": "d6325ef592b00ed30e8231df1427e7532cc97904a3ce7e24ffa334bf4dcc45d4"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_checkpoint_gstreamer_analytics_bridge.py",
+      "size_bytes": 35209,
+      "sha256": "a4fbb2d80f0d815c499abc1c909ff09861415849e2347d37d94c40375a1a24db"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_checkpoint_runtime.py",
+      "size_bytes": 133349,
+      "sha256": "bcb492023fdd4e24745b9378e36c86d7119a162107622680716997e92dccbae8"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_checkpoint_runtime_plan.py",
+      "size_bytes": 15059,
+      "sha256": "213f9616f624570f9e252d8b11c5afe80de0a258ceed41c9fcd588ab1ee93f65"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_publication_guardian_operational_recorder_v1.py",
+      "size_bytes": 16026,
+      "sha256": "f84963621803c2e378804aeda4ac17a020b9f26037d8e1717708ba8526100c14"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_run_canonical_systems_study_v1.py",
+      "size_bytes": 11149,
+      "sha256": "3cda3cf51ff862820a449481b3de62a032c651d598acae6b6d00708c19795027"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\canonical_systems_study_plan_v1.py",
+      "size_bytes": 10775,
+      "sha256": "68ce41d00fbb974ffa582446541ac4ee8ac3a1b0195c9b840b14e6524f14ee67"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\reduce_canonical_systems_study_v1.py",
+      "size_bytes": 52339,
+      "sha256": "066c52a4629e2aa4b0fc3146c1f037f4ee2f7f203c036a4f8fbd57a3df1d868f"
+    }
+  ],
+  "reviewed_evidence": [
+    "E:/STUDY/VAST/tmp/finite-component-study-implementation-v1/author-freeze.v1.json (complete read)",
+    "E:/STUDY/VAST/tmp/finite-component-study-20261005/python_eol_apply01.original-tool.json (complete read; seven unchanged-line raw EOL restorations)",
+    "openspec/changes/run-finite-component-study/evidence/planning-P3288-independent-v1/review.v1.json (complete read; exact approved six-file planning, 7 requirements/20 scenarios)"
+  ],
+  "assessment": [
+    {
+      "topic": "Invocation/current material/builds",
+      "result": "Complete driver/plan/reducer read; prepare/run/study exact handoff, genuine held material, selected private native/Gst build fields and compiled inventory/reference seams join. No fabricated QualificationInputs or old receipt retargeting found."
+    },
+    {
+      "topic": "Typed bounds and legacy isolation",
+      "result": "Validated separate study plan propagates 442 frames/10608 requests/32 operations through source/admission/native/recorder/cold. Reviewed changes retain legacy300s, encoded600/timebase1/600 and legacy admission/frame/operation predicates."
+    },
+    {
+      "topic": "Pool/variants",
+      "result": "Eight workers held once per variant; actual idle/pending checks and lifetime deltas precede arms. Full final journals join earlier prefix ranges. CLI branch canonicalizes to branch-channel; one prebuilt switch only on the declared valid pilot trigger."
+    },
+    {
+      "topic": "Accounting/science",
+      "result": "Durable central admission precedes ACK. Source per-recipient transport and native/guardian terminals reconcile; unknown/infra prefixes block raw completion. Planned-frame Y100, separate branch populations and secondary common-completed comparisons retain descriptive limits."
+    },
+    {
+      "topic": "Two final producer/consumer joins",
+      "result": "Native original writer and reader share2048B row/64MiB total caps. Recorder capture uses actual begin_seq semantics, retains original header/control identity, and records prefix/range bytes for final full-journal reconciliation. No second concrete schema incompatibility found."
+    },
+    {
+      "topic": "Owned closure",
+      "result": "Reviewed positive child registration, absolute waits, authentic TERM/KILL plus actual reap, owned stream/container retirement and primary cleanup companions; no physical closure is established by source review."
+    }
+  ],
+  "review_tool_limits": [
+    "Some broad prints were truncated; relevant complete new module/planning ranges were recovered through bounded reads.",
+    "Missing AGENTS/EOL locator and one missing historical before-file were read errors, not target failures.",
+    "An attempted metadata-only Python receipt command was automatically rejected as blocked by policy before process creation. It wrote no receipt. This receipt is written through apply_patch in the authorized external namespace.",
+    "Author software result metadata was read; this receipt does not independently accept all fixtures or hosted CI. Native I/O source/fault scope also has its designated peer."
+  ],
+  "performed": "Read-only source/metadata/stdlib AST/diff/hash analysis; no Git, source/docs edits, project import, tests/CI replay, physical prep, engine/GI, media/model read, build, benchmark or producer execution.",
+  "limits": [
+    "Actual selected build/material/toolchain/readiness,448-AU sufficiency, deterministic encodes, strict derived YUV/RGB/full-EOS/offered-prefix parity and all24 effect arms remain unaccepted/unexecuted by this reviewer.",
+    "Exact inherited-clock correction and current-source CI are required before physical preparation.",
+    "This is source-only technical review, neither physical/scientific/release approval nor human GitHub APPROVE. Historical failures remain failures."
+  ],
+  "current_ci_accepted": false,
+  "physical_preparation_accepted": false,
+  "canonical_study_complete": false,
+  "full_qualification_accepted": false,
+  "release_approved": false,
+  "reviewer_handles_released": true
+}

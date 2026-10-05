@@ -72,4 +72,8 @@
 
 ## Открытые acceptance gates
 
+Final independent source-only [v2 review](evidence/software-v1/source-review/source-independent-review.v2.json) завершён PASS на exact26 current pins, driver81879/f8d4b54d и tests15703/1db486ae. PREP-CLOCK-1 закрыт; прежний v1 FAIL сохранён. Это закрывает source review candidate, а обязательные current corrected-commit CI и физические сценарии пока не закрыты.
+
+Независимый source review выявил PREP-CLOCK-1: bootstrap transfer/hash должен входить в исходные4h (§design116), а A09562f7 обновлял start внутри `prepare`. Исправление в том же driver передаёт original integer endpoint с actual boot/time namespace;5 новых genuine software clock/intake tests прошли вместе с прежними10 (RED84f0de→GREEN76865b). Документы не объявляют старый A CI проверкой этих новых bytes; exact corrected source review/CI и physical gates остаются обязательными.
+
 Driver author handoff получен и software results связаны с original tools. Остаются final source bytes после EOL restoration/independent review; latest-head mandatory CI; actual bounded derivative/selected-image/model/readiness preparation; first four и максимум четыре conditional pilots; все24 effects/12 pairs с owner closure; independent reduction и scenario-specific conformance. После этого — sync/archive с сохранением R1/остальных требований и отдельный release ledger для latest archived-head CI, exact final review и authorized merge. Checkbox archive не должен зависеть от CI того же ещё не созданного archive commit. Настоящий integrity/clock/cleanup failure блокирует success, но truthful отрицательные SLO/capacity results допустимы.

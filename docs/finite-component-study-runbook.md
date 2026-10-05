@@ -10,6 +10,8 @@ Benchmark измеряет baseline/shared topology при CPU OpenVINO и GPU T
 
 Задайте абсолютные пути `ROOT`, `PYTHON`, `ENGINE`, `ENGINE_SOCKET`, `CAPABILITY`, `CALIBRATION`, `MODEL_PARITY`, `WORKER_FREEZE`, `CODE_CLOSURE`, `FRONT_GATE`, `UNDERBODY`. `OUTPUT` должен быть новым, ещё не существующим каталогом под `ROOT`. Используйте короткий private root, чтобы фактические Unix socket paths помещались в108 bytes. Хранилище должно вмещать реальный20GiB reserve и все ограниченные input/media/raw файлы.
 
+Если Linux root и current inputs требуют переноса, перед **первым** source/tool hash, transfer, build или preflight сохраните настоящее `time.monotonic_ns()`, `/proc/sys/kernel/random/boot_id` и `readlink('/proc/self/ns/time')` в execution kernel. Передайте их в ту же команду как `--preparation-started-monotonic-ns "$PREPARATION_STARTED_NS" --preparation-boot-id "$PREPARATION_BOOT" --preparation-time-namespace "$PREPARATION_TIME_NAMESPACE"`. Все три поля обязательны вместе: driver проверит actual clock domain, запретит future/expired start и передаст исходный endpoint native helpers. Copy/bootstrap/current code closure расходуют этот же4h срок. При уже подготовленном root команда без этих полей начинает отсчёт сама. Campaign имеет свой отдельный исходный clock.
+
 ```bash
 "$PYTHON" -B "$ROOT/scripts/run_canonical_systems_study_v1.py" study \
   --project-root "$ROOT" --output-dir "$OUTPUT" \

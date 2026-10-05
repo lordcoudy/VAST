@@ -1,0 +1,289 @@
+{
+  "schema_version": 2,
+  "kind": "finite_component_study_independent_source_review",
+  "change": "run-finite-component-study",
+  "pull_request": "https://github.com/lordcoudy/VAST/pull/5",
+  "reviewed_planning_commit": "3288b0702b6b0136feb6596382566b8686f9bb5c",
+  "planning_comment_before_code": 5409655596,
+  "candidate_commit_join": "Correction is reviewed by exact physical source pins below before root's successor commit. No Git operation or latest-source CI acceptance is asserted by reviewer.",
+  "scope": "Source-only review of complete original driver/plan/reducer and selected existing seams, plus the complete narrow original retained A09562f7-to-current driver/test diff and actual finite clock RED/GREEN records.",
+  "reviewable": true,
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "closed_findings": [
+    {
+      "id": "PREP-CLOCK-1",
+      "original_receipt": {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-implementation-v1\\source-independent-review.v1.json",
+        "size_bytes": 12614,
+        "sha256": "778012dca684947fe760e1c0078185331b07f6e76bc28f4899aeacb6bb96e4dd"
+      },
+      "required": "One preparation14,400s budget beginning before the first owned bootstrap hash/transfer/build, design.md:116/spec.md:105.",
+      "closure": "preparation_clock validates all three inherited fields together, exact nonfuture positive integer start, actual boot and time namespace, and nonexpired original endpoint before prepare/study output or source/engine IO. study forwards that same start/domain to prepare; standalone begins actual-now. Commands carries original integer endpoint to inventory/reference/STOP/source/native arguments. Prepared receipt retains original clock/domain/start. Campaign remains a separate clock.",
+      "source_anchors": [
+        "scripts/run_canonical_systems_study_v1.py:45",
+        "scripts/run_canonical_systems_study_v1.py:124",
+        "scripts/run_canonical_systems_study_v1.py:439",
+        "scripts/run_canonical_systems_study_v1.py:535",
+        "scripts/run_canonical_systems_study_v1.py:1137",
+        "scripts/run_canonical_systems_study_v1.py:1164"
+      ],
+      "evidence": "RED02 actual bootstrap file read exposed old endpoint reset, invalid stamps/domains reaching source and old CLI rejection. GREEN15 actual software cases close the reviewed path. Initial v1 FAIL remains immutable."
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\run_canonical_systems_study_v1.py",
+      "size_bytes": 81879,
+      "sha256": "f8d4b54d4185478413f2b412f3f067869d69544c4eb1fc243fbbf7a15b5e6ec4"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_admission.py",
+      "size_bytes": 22506,
+      "sha256": "83accf22d62cb4872931e0034b02a46e84900bfa1633c26a3fd1fde7c10e3718"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_gstreamer_analytics_bridge.py",
+      "size_bytes": 40666,
+      "sha256": "50b8914ef00a7e3ce280705816024a595f2ee91e4e66fd6c6c9a918a542039f4"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_gstreamer_analytics_sidecar.py",
+      "size_bytes": 309013,
+      "sha256": "650dae70f6b2d04cd5e43a43486a43b8496e9e7eeb7d1b67ef445604391e6350"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_gstreamer_runtime.py",
+      "size_bytes": 182604,
+      "sha256": "1d08aef32b630333ce8264e6366d857b6c0ca652a5af6c750e2f7a343d8e9657"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_native_policy_runtime.py",
+      "size_bytes": 77172,
+      "sha256": "e01de91be7b9658b54350aeddd32c2b2b78935cfbcb231729b2ba67837899509"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_runtime.py",
+      "size_bytes": 100006,
+      "sha256": "f772ba7506f16da47f7d5da0908ca7de541972675628b0c97b83ec6051161ee1"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_runtime_plan.py",
+      "size_bytes": 36327,
+      "sha256": "a9bcd4ae99c229e5fecb94cec3b3668f16ec8527bfa6167f8574b50967bf1963"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_gstreamer_component_inputs_v1.py",
+      "size_bytes": 39687,
+      "sha256": "c9168e1fcc19084a5a3c8c3c9f23488d846d48f75489cd54008d0fc2a9134fa0"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_guardian_component_preprocessing_contract_v1.py",
+      "size_bytes": 23040,
+      "sha256": "e446ccd814ace3f2ccf0fd1252aa888d8f9bed0eb9d7c4192a9658e2127a6065"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_guardian_operational_recorder_v1.py",
+      "size_bytes": 29665,
+      "sha256": "a3f78dcd887d00606412c1b786c84e78bc4b5529126492667309a5b9d4b6a564"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_image_build_v1.py",
+      "size_bytes": 34022,
+      "sha256": "7a8d6cf67de32515cf330073f3933b7af4216e552c5d606e8a17df500cf7938a"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_operational_capture_plan_v1.py",
+      "size_bytes": 28597,
+      "sha256": "0699ac22975ddd2af25db04626fad0bd2eedc77a83cf8fdd5c26f6d46a62262b"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_operational_request_domain_v1.py",
+      "size_bytes": 29892,
+      "sha256": "db2ea042b2709edccf24817a4e4ea350876cf9d44d4c1f00538f029a8bc7d912"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\publication_operational_runtime_context_v1.py",
+      "size_bytes": 12377,
+      "sha256": "1ffc0a391bb7673987bad7df0f9d2acdb26d7d53a7790eb23b381e3d9f01c603"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\gstreamer_custom\\publication\\Dockerfile",
+      "size_bytes": 8275,
+      "sha256": "7bb9575b8dc2fa906412a486f55c8adf0fd79252834689222a6f8ba812b60aef"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\gstreamer_custom\\publication\\runtime-source-allowlist.txt",
+      "size_bytes": 3636,
+      "sha256": "eaaae386b65b0dc99714e80b05d24d0e581b7083d953243be390d13e9f009dce"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\native_gst_probe\\Dockerfile.openvino",
+      "size_bytes": 8026,
+      "sha256": "7740f862a6d4613501f3751b4f1c9aa1a4ca9135b02b9a8122d13ce0dea9e896"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\native_gst_probe\\publication\\openvino-source-allowlist.txt",
+      "size_bytes": 949,
+      "sha256": "d6325ef592b00ed30e8231df1427e7532cc97904a3ce7e24ffa334bf4dcc45d4"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_checkpoint_gstreamer_analytics_bridge.py",
+      "size_bytes": 35209,
+      "sha256": "a4fbb2d80f0d815c499abc1c909ff09861415849e2347d37d94c40375a1a24db"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_checkpoint_runtime.py",
+      "size_bytes": 133349,
+      "sha256": "bcb492023fdd4e24745b9378e36c86d7119a162107622680716997e92dccbae8"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_checkpoint_runtime_plan.py",
+      "size_bytes": 15059,
+      "sha256": "213f9616f624570f9e252d8b11c5afe80de0a258ceed41c9fcd588ab1ee93f65"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_publication_guardian_operational_recorder_v1.py",
+      "size_bytes": 16026,
+      "sha256": "f84963621803c2e378804aeda4ac17a020b9f26037d8e1717708ba8526100c14"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_run_canonical_systems_study_v1.py",
+      "size_bytes": 15703,
+      "sha256": "1db486ae63414b1549fe6464ae2fecab46f258aff7dfb0d154f53779ee02b035"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\canonical_systems_study_plan_v1.py",
+      "size_bytes": 10775,
+      "sha256": "68ce41d00fbb974ffa582446541ac4ee8ac3a1b0195c9b840b14e6524f14ee67"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\reduce_canonical_systems_study_v1.py",
+      "size_bytes": 52339,
+      "sha256": "066c52a4629e2aa4b0fc3146c1f037f4ee2f7f203c036a4f8fbd57a3df1d868f"
+    }
+  ],
+  "prior_scope_assessment": [
+    {
+      "topic": "Invocation/current material/builds",
+      "result": "Complete driver/plan/reducer read; prepare/run/study exact handoff, genuine held material, selected private native/Gst build fields and compiled inventory/reference seams join. No fabricated QualificationInputs or old receipt retargeting found."
+    },
+    {
+      "topic": "Typed bounds and legacy isolation",
+      "result": "Validated separate study plan propagates 442 frames/10608 requests/32 operations through source/admission/native/recorder/cold. Reviewed changes retain legacy300s, encoded600/timebase1/600 and legacy admission/frame/operation predicates."
+    },
+    {
+      "topic": "Pool/variants",
+      "result": "Eight workers held once per variant; actual idle/pending checks and lifetime deltas precede arms. Full final journals join earlier prefix ranges. CLI branch canonicalizes to branch-channel; one prebuilt switch only on the declared valid pilot trigger."
+    },
+    {
+      "topic": "Accounting/science",
+      "result": "Durable central admission precedes ACK. Source per-recipient transport and native/guardian terminals reconcile; unknown/infra prefixes block raw completion. Planned-frame Y100, separate branch populations and secondary common-completed comparisons retain descriptive limits."
+    },
+    {
+      "topic": "Two final producer/consumer joins",
+      "result": "Native original writer and reader share2048B row/64MiB total caps. Recorder capture uses actual begin_seq semantics, retains original header/control identity, and records prefix/range bytes for final full-journal reconciliation. No second concrete schema incompatibility found."
+    },
+    {
+      "topic": "Owned closure",
+      "result": "Reviewed positive child registration, absolute waits, authentic TERM/KILL plus actual reap, owned stream/container retirement and primary cleanup companions; no physical closure is established by source review."
+    }
+  ],
+  "amendment_scope": {
+    "retained_original_diff": "E:/STUDY/VAST/tmp/finite-component-study-20261005/preparation-clock-testfirst-v1/actual-current-source-diff.original-tool.json",
+    "retained_original_diff_size_bytes": 17245,
+    "retained_original_diff_sha256": "f1c23ef95904c6f2a2df6ae1c54dbac9259e27efacea23d6fd5df12a64188611",
+    "full_read_tool_chunk": "e84496",
+    "actual_original_diff_tool": "e664c2 exit0",
+    "result": "Only driver inherited-clock helper/propagation/receipt/integer wire endpoint and five added driver software tests. Existing ten test bodies retained by the original diff. Source review found no expanded worker, queue, media, model, legacy authority or scientific-policy change.",
+    "docs": "Read complete finite-component-study-runbook.md and changed dated implementation-validation/conformance notes; three flags and first-physical-operation clock are explicit. Normative design/new delta/old R1 delta hashes equal reviewed P; current tasks state is a later implementation snapshot.",
+    "normative_pins": [
+      {
+        "path": "openspec/changes/run-finite-component-study/design.md",
+        "size_bytes": 77167,
+        "sha256": "65d86f20e8e622ec6e91f54bd99cfe3d31f82ab9d6998dc303559434fe72abed"
+      },
+      {
+        "path": "openspec/changes/run-finite-component-study/specs/finite-component-study/spec.md",
+        "size_bytes": 24002,
+        "sha256": "700f26b1b579c933975717bdda82d74c2f0b390c84de4439b85f106782b9e745"
+      },
+      {
+        "path": "openspec/changes/run-finite-component-study/specs/benchmark-launch-preparation/spec.md",
+        "size_bytes": 2773,
+        "sha256": "481bae540adeef262b2cb9490f18b8888f7b1898f627681a2452d056fd03af5a"
+      }
+    ]
+  },
+  "clock_fixture_originals": {
+    "refs": [
+      {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\preparation-clock-testfirst-v1\\red01.original-tool.json",
+        "size_bytes": 12427,
+        "sha256": "3acadc85d10ed2c66f1e8d7cfd296da7a656d48b70e8a376b7440ca30c01c5e7"
+      },
+      {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\preparation-clock-testfirst-v1\\red02.original-tool.json",
+        "size_bytes": 12533,
+        "sha256": "757d10f88b3a7b18dcb436d248bc35c2a2febe1776f91f542e22e8776e37102e"
+      },
+      {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\preparation-clock-testfirst-v1\\green01.original-tool.json",
+        "size_bytes": 4792,
+        "sha256": "96559c9a4fced27a4dcdbf8df87e32aeb161b3aace2d779f1f4477451576cfc1"
+      }
+    ],
+    "red01": {
+      "actual_tool_chunk": "fb1097",
+      "exit_code": 1,
+      "tests": 14,
+      "failures": 2,
+      "errors": 2,
+      "status": "FAILED retained; includes wrong expected exception in bootstrap fixture, not clean first-cause reproduction"
+    },
+    "red02": {
+      "actual_tool_chunk": "84f0de",
+      "exit_code": 1,
+      "tests": 15,
+      "failures": 4,
+      "errors": 1,
+      "meaningful_endpoint_mismatch": "675869.208350269 != 675869.207059433",
+      "status": "FAILED retained; old source admits renewed clock and lacks new CLI/domain checks"
+    },
+    "green01": {
+      "actual_tool_chunk": "76865b",
+      "exit_code": 0,
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_test_seconds": 2.665,
+      "new_test_cases": 5,
+      "unchanged_old_cases": 10,
+      "status": "All15 explicit test starts/ok outcomes retained. Reviewer read originals without execution or rerun."
+    },
+    "limitation": "These tool objects expose actual arguments/results but no per-run source-before/after hash table. Reviewer pins identify exact current frozen source and original diff; future hosted source-table join is separately mandatory and is not inferred."
+  },
+  "read_tool_limits": [
+    "Some broad prints were truncated; relevant complete new module/planning ranges were recovered through bounded reads.",
+    "Missing AGENTS/EOL locator and one missing historical before-file were read errors, not target failures.",
+    "An attempted metadata-only Python receipt command was automatically rejected as blocked by policy before process creation. It wrote no receipt. This receipt is written through apply_patch in the authorized external namespace.",
+    "Author software result metadata was read; this receipt does not independently accept all fixtures or hosted CI. Native I/O source/fault scope also has its designated peer."
+  ],
+  "performed": "Read-only code/planning/original metadata and review hashes. Reviewer wrote only exclusive external v1/v2 receipts. No Git operation, project import, tests/CI replay, source/docs edit, physical study preparation hash/transfer, media/model/build/engine/GI/cold/producer execution.",
+  "remaining_gates": [
+    "Commit/push this exact successor source and accept actual latest-source mandatory hosted CI with source/fixture identity join.",
+    "Only then perform actual owned preparation under the inherited first-operation clock, with real source/tool hashes/transfer/private source and model/code-closure binds.",
+    "Actual selected builds/current material/readiness,448-AU sufficiency, deterministic encodes, full and offered-prefix derived YUV/RGB/EOS gates remain pending.",
+    "Pilot and all24 effect arms/12 pairs, independent numerical raw re-reduction, actual physical owner closure, conformance/archive/latest final review and authorized merge remain pending."
+  ],
+  "limits": [
+    "Actual selected build/material/toolchain/readiness,448-AU sufficiency, deterministic encodes, strict derived YUV/RGB/full-EOS/offered-prefix parity and all24 effect arms remain unaccepted/unexecuted by this reviewer.",
+    "This is source-only technical review, neither physical/scientific/release approval nor human GitHub APPROVE. Historical failures remain failures."
+  ],
+  "current_ci_accepted": false,
+  "physical_preparation_accepted": false,
+  "canonical_study_complete": false,
+  "full_qualification_accepted": false,
+  "release_approved": false,
+  "reviewer_handles_released": true
+}

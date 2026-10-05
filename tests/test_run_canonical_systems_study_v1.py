@@ -61,6 +61,78 @@ class FiniteStudyDriverTests(unittest.TestCase):
         self.assertEqual(invalid.returncode,2)
         self.assertIn(b"required",invalid.stderr)
 
+    def preparation_args(self,root,out,started):
+        return argparse.Namespace(project_root=root,output_dir=out,
+            preparation_started_monotonic_ns=started,
+            preparation_boot_id=Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
+            preparation_time_namespace=os.readlink("/proc/self/ns/time"))
+
+    def test_original_preparation_expired_stamp_is_refused_before_output_or_input(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);out=root/"expired"
+            args=self.preparation_args(root,out,time.monotonic_ns()-14_401_000_000_000)
+            with self.assertRaisesRegex(ValueError,"original preparation clock"):
+                driver.prepare(args)
+            self.assertFalse(out.exists())
+
+    def test_original_preparation_foreign_or_partial_domain_is_refused_before_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            for field,value in (("preparation_boot_id","foreign-boot"),
+                                ("preparation_time_namespace","time:[foreign]"),
+                                ("preparation_boot_id",None)):
+                out=root/(field+str(value))
+                args=self.preparation_args(root,out,time.monotonic_ns())
+                setattr(args,field,value)
+                with self.assertRaisesRegex(ValueError,"original preparation clock"):
+                    driver.prepare(args)
+                self.assertFalse(out.exists())
+
+    def test_actual_preparation_bootstrap_read_retains_original_endpoint(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);out=root/"prepared";actual=root/"bootstrap.raw"
+            actual.write_bytes(b"original bootstrap bytes"*65536)
+            started=time.monotonic_ns()
+            # Real earlier read under the same observed kernel clock, not a fake clock.
+            expected=hashlib.sha256(actual.read_bytes()).hexdigest()
+            args=self.preparation_args(root,out,started);captured=[]
+            original=driver.Commands
+            def observe(*values,**kwargs):
+                commands=original(*values,**kwargs);captured.append(commands);return commands
+            with mock.patch.object(driver,"Commands",side_effect=observe):
+                # The temporary root intentionally lacks the first source allowlist.
+                # This ends the software-only case at real original source intake.
+                with self.assertRaisesRegex(ValueError,"publication image input is absent"):driver.prepare(args)
+            self.assertEqual(len(captured),1)
+            commands=captured[0]
+            self.assertEqual(commands.deadline,(started+14_400_000_000_000)/1e9)
+            self.assertEqual(commands.deadline_monotonic_ns,started+14_400_000_000_000)
+            self.assertLess(commands.remaining(),14400.0)
+            self.assertEqual(driver.descriptor(actual,deadline=commands.deadline)["sha256"],expected)
+
+    def test_original_preparation_invalid_stamp_and_study_parent_are_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            for index,started in enumerate((True,0,-1,time.monotonic_ns()+60_000_000_000)):
+                out=root/str(index);args=self.preparation_args(root,out,started)
+                with self.assertRaisesRegex(ValueError,"original preparation clock"):
+                    driver.study(args)
+                self.assertFalse(out.exists())
+
+    def test_study_cli_propagates_original_preparation_stamp_without_new_start(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);out=root/"study";started=time.monotonic_ns()
+            boot=Path("/proc/sys/kernel/random/boot_id").read_text().strip()
+            namespace=os.readlink("/proc/self/ns/time")
+            argv=self.args(root,out)+["--preparation-started-monotonic-ns",str(started),
+                "--preparation-boot-id",boot,"--preparation-time-namespace",namespace]
+            def prepare(args):
+                self.assertEqual((args.preparation_started_monotonic_ns,args.preparation_boot_id,args.preparation_time_namespace),
+                    (started,boot,namespace))
+                args.output_dir.mkdir();return driver.write_json(args.output_dir/"actual.json",{"software_only":True})
+            with mock.patch.object(driver,"prepare",side_effect=prepare),mock.patch.object(driver,"run",return_value={"software_only":True}),redirect_stdout(io.StringIO()):
+                self.assertEqual(driver.main(argv),0)
+
     def test_real_partial_file_reads_keep_hash_deadline_and_reject_named_drift(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/"raw";path.write_bytes(b"abcdefg");before=len(list(Path("/proc/self/fd").iterdir()))

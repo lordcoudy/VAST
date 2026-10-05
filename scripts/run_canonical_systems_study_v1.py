@@ -42,6 +42,27 @@ def require(ok, message):
         raise ValueError(message)
 
 
+def preparation_clock(args):
+    """Retain the first bootstrap operation's observed original kernel clock."""
+    boot = Path("/proc/sys/kernel/random/boot_id").read_text().strip()
+    namespace = os.readlink("/proc/self/ns/time")
+    supplied = tuple(getattr(args, name, None) for name in (
+        "preparation_started_monotonic_ns", "preparation_boot_id", "preparation_time_namespace"))
+    now = time.monotonic_ns()
+    if all(value is None for value in supplied):
+        started = now
+    else:
+        require(all(value is not None for value in supplied), "original preparation clock requires its full domain")
+        started, expected_boot, expected_namespace = supplied
+        require(type(started) is int and 0 < started <= now and
+                expected_boot == boot and expected_namespace == namespace,
+                "original preparation clock stamp or actual domain is invalid")
+    deadline = started + 14_400_000_000_000
+    require(now < deadline, "original preparation clock has expired")
+    return {"clock": "CLOCK_MONOTONIC", "boot_id": boot, "time_namespace": namespace,
+        "started_monotonic_ns": started, "deadline_monotonic_ns": deadline}
+
+
 def epoch(info):
     return (info.st_dev, info.st_ino, info.st_mode, info.st_nlink, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
 
@@ -100,8 +121,11 @@ def release_space(path, identity):
 
 class Commands:
     """Only the driver's actual owned children and the original absolute clock."""
-    def __init__(self, output, deadline):
+    def __init__(self, output, deadline, *, deadline_monotonic_ns=None):
         self.output, self.deadline, self.records = Path(output), deadline, []
+        self.deadline_monotonic_ns = int(deadline*1e9) if deadline_monotonic_ns is None else deadline_monotonic_ns
+        require(type(self.deadline_monotonic_ns) is int and self.deadline_monotonic_ns > 0 and
+            (deadline_monotonic_ns is None or deadline == self.deadline_monotonic_ns/1e9), "original command clock endpoint mismatch")
         self.children = []
         self.containers = []
         self.closing_deadline = None
@@ -412,11 +436,13 @@ def _probe(commands, path, *, original=False, frames=False):
 
 
 def prepare(args):
-    started = time.monotonic()
+    clock = preparation_clock(args)
+    started = clock["started_monotonic_ns"]/1e9
     output, root = Path(args.output_dir), Path(args.project_root).resolve(strict=True)
     require(output.is_absolute() and output.is_relative_to(root) and not os.path.lexists(output), "preparation requires new owned project namespace")
     output.mkdir(mode=0o700, parents=False)
-    commands = Commands(output, started+14400.0)
+    commands = Commands(output, clock["deadline_monotonic_ns"]/1e9,
+        deadline_monotonic_ns=clock["deadline_monotonic_ns"])
     primary = None
     reservation = None
     reservation_identity = None
@@ -483,7 +509,7 @@ def prepare(args):
                 "derived_probe": probe, "deterministic_second": second_descriptor, "vui_trace": commands.describe(Path(commands.records[-1]["stderr_path"])), "software": tools, "dependencies": list(dependencies.values())})
             inv_path = output/(name+".inventory.original.jsonl")
             child, record = _native(commands, args.engine, images["gstreamer"]["image_id"], root, output,
-                ["--checkpoint-study-au-inventory", first, width, height, int(commands.deadline*1e9)],
+                ["--checkpoint-study-au-inventory", first, width, height, commands.deadline_monotonic_ns],
                 entrypoint="/usr/local/bin/vast_checkpoint_source")
             inventory_raw = commands.wait(child, record, maximum=8*1024**2)
             with inv_path.open("xb") as stream: stream.write(inventory_raw)
@@ -505,7 +531,8 @@ def prepare(args):
         commands.remaining()
         receipt = {"schema_version": 1, "kind": "finite-component-study-prepared-v1", "plan": plan,
             "control": control, "source_pins":source_pins, "images": images, "tools": tools, "dependencies": list(dependencies.values()),
-            "offered_prefix_stop_gate": stop_gate, "original_epochs": saved_epochs, "commands": commands.records, "started_monotonic_ns": int(started*1e9),
+            "offered_prefix_stop_gate": stop_gate, "original_epochs": saved_epochs, "commands": commands.records,
+            "started_monotonic_ns": clock["started_monotonic_ns"], "preparation_clock": clock,
             "preparation_elapsed_s": time.monotonic()-started, "accepted": False, "publication_ready": False}
         commands.retire()
         release_space(reservation, reservation_identity)
@@ -599,10 +626,10 @@ def reference_gate(commands, engine, image, root, output, name, media, units):
     _, _, width, height, _ = PARENTS[name]
     hardware, software = output/(name+".hardware-reference.original.jsonl"), output/(name+".software-reference.original.jsonl")
     child, record = _native(commands, engine, image, root, output,
-        ["--checkpoint-study-reference", media, hardware, width, height, int(commands.deadline*1e9), 442])
+        ["--checkpoint-study-reference", media, hardware, width, height, commands.deadline_monotonic_ns, 442])
     commands.wait(child, record, maximum_files=((str(hardware), 8*1024**2),))
     native, native_record = _native(commands, engine, image, root, output,
-        ["--checkpoint-study-reference-nv12", software, width, height, int(commands.deadline*1e9), 442], stdin=subprocess.PIPE)
+        ["--checkpoint-study-reference-nv12", software, width, height, commands.deadline_monotonic_ns, 442], stdin=subprocess.PIPE)
     decode, decoded = commands.launch(["/usr/bin/ffmpeg", "-v", "error", "-nostdin", "-threads:v", "1", "-filter_threads", "1",
         "-i", str(media), "-map", "0:v:0", "-an", "-frames:v", "442", "-fps_mode", "passthrough",
         "-f", "rawvideo", "-pix_fmt", "yuv420p", "pipe:1"], stdout=subprocess.PIPE)
@@ -768,7 +795,7 @@ def offered_prefix_stop_gate(commands,args,root,output,plan,images):
     child,record=_native(commands,args.engine,images["gstreamer"]["image_id"],root,output,
         ["--config",root/"configs/experiments.yaml","--scenario",scenario,"--finite-study-plan",plan_ref["path"],
          "--finite-study-source-gate","--output-dir",gate,"--source-binary","/usr/local/bin/vast_checkpoint_source",
-         "--finite-study-campaign-deadline-ns",int(commands.deadline*1e9),
+         "--finite-study-campaign-deadline-ns",commands.deadline_monotonic_ns,
          "--finite-study-expected-boot",Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
          "--finite-study-expected-time-namespace",os.readlink("/proc/self/ns/time")],
          entrypoint="/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3")
@@ -784,7 +811,7 @@ def offered_prefix_stop_gate(commands,args,root,output,plan,images):
         with spool.open("rb") as source:
             require(epoch(os.fstat(source.fileno()))==before,"source reference transport changed before original stdin")
             child,record=_native(commands,args.engine,images["gstreamer"]["image_id"],root,output,
-                ["--checkpoint-study-reference-transport",destination,width,height,int(commands.deadline*1e9),len(wire)],stdin=source)
+                ["--checkpoint-study-reference-transport",destination,width,height,commands.deadline_monotonic_ns,len(wire)],stdin=source)
             commands.wait(child,record,maximum_files=((str(destination),8*1024**2),))
             require(epoch(os.fstat(source.fileno()))==before==epoch(spool.lstat()),"source reference transport drifted")
         actual,ref=reference_rows(destination,completion="offered_prefix_transport_eof",count=len(wire),input_sha="",width=width,height=height,deadline=commands.deadline)
@@ -1006,7 +1033,7 @@ def execute_arm(commands,args,root,prepared,plan,arm,service,clock_proof,materia
     control=prepared["control"]
     arguments=["--config",root/"configs/experiments.yaml","--scenario",operation["scenario"],"--finite-study-plan",control["plan"]["path"],
         "--finite-study-arm",arm["arm_id"],"--finite-study-client-mode","branch" if variant=="branch-channel" else "global-client",
-        "--finite-study-campaign-deadline-ns",int(commands.deadline*1e9),"--operational-request-context",control["native"][arm["arm_id"]]["path"],
+        "--finite-study-campaign-deadline-ns",commands.deadline_monotonic_ns,"--operational-request-context",control["native"][arm["arm_id"]]["path"],
         "--policy-capability-manifest",root/material["descriptors"]["capability_manifest"]["path"],"--policy-calibration",root/material["descriptors"]["calibration"]["path"],
         "--analytics-execution-manifest",control["execution_manifest"]["path"],"--analytics-model-manifest",control["model_manifest"]["path"],
         "--analytics-execution-socket",service.front_socket,"--analytics-preprocessing-contract-sha256",hashlib.sha256(canonical_json_v1(material["preprocessing_contract"])).hexdigest(),
@@ -1107,10 +1134,14 @@ def run(args):
 
 
 def study(args):
+    clock=preparation_clock(args)
     root=Path(args.project_root).resolve(strict=True);parent=Path(args.output_dir)
     require(parent.is_absolute() and parent.is_relative_to(root) and not os.path.lexists(parent),"study requires one exclusive parent namespace")
     parent.mkdir(mode=0o700)
     preparation=copy.copy(args);preparation.operation="prepare";preparation.output_dir=parent/"prepare"
+    preparation.preparation_started_monotonic_ns=clock["started_monotonic_ns"]
+    preparation.preparation_boot_id=clock["boot_id"]
+    preparation.preparation_time_namespace=clock["time_namespace"]
     prepared=prepare(preparation)
     campaign=copy.copy(args);campaign.operation="run";campaign.output_dir=parent/"run"
     campaign.prepared=Path(prepared["path"]);campaign.prepared_size_bytes=prepared["size_bytes"];campaign.prepared_sha256=prepared["sha256"]
@@ -1130,6 +1161,9 @@ def main(argv=None):
             current.add_argument("--"+option,required=True)
         if operation in ("prepare","study"):
             current.add_argument("--front-gate",required=True,type=Path);current.add_argument("--underbody",required=True,type=Path)
+            current.add_argument("--preparation-started-monotonic-ns",type=int)
+            current.add_argument("--preparation-boot-id")
+            current.add_argument("--preparation-time-namespace")
         else:
             current.add_argument("--prepared",required=True,type=Path)
             current.add_argument("--prepared-size-bytes",required=True,type=int)
