@@ -170,7 +170,7 @@ class Commands:
                 else:raise failures[0]
         return child, record
 
-    def wait(self, child, record, *, maximum=1024**2, maximum_files=()):
+    def wait(self, child, record, *, maximum=1024**2, maximum_files=(), accept_nonzero=False):
         paths = [(record["stderr_path"], maximum)] + [(p, maximum) for p in [record["stdout_path"]] if p]
         paths += list(maximum_files)
         while child.poll() is None:
@@ -185,7 +185,7 @@ class Commands:
         record.update(returncode=child.returncode, closed_monotonic_ns=time.monotonic_ns())
         if record.get("container") is not None:
             self.close_container(record["container"], positive=child.returncode == 0)
-        require(child.returncode == 0, "owned study command failed: " + str(record["argv"]))
+        require(accept_nonzero or child.returncode == 0, "owned study command failed: " + str(record["argv"]))
         self.remaining()
         return Path(record["stdout_path"]).read_bytes() if record["stdout_path"] is not None else b""
 
@@ -851,6 +851,33 @@ def write_rows(path,rows):
     return descriptor(Path(path),maximum=64*1024**2)
 
 
+def owned_subprocess_runner(commands,engine):
+    """The sidecar command runner over the driver's owned command records."""
+    def runner(command,**kwargs):
+        command=[str(engine) if command[0]=="docker" else command[0],*command[1:]]
+        timeout=float(kwargs.get("timeout",120))
+        child,record=commands.launch(command,env=kwargs.get("env"))
+        record["deadline"]=min(commands.deadline,time.monotonic()+timeout)
+        try:
+            raw=commands.wait(child,record,maximum=1024**2,accept_nonzero=True)
+        except ValueError:
+            # Kill and reap the owned group first; only the per-call bound is a retryable timeout.
+            if child.poll() is None:
+                try: os.killpg(child.pid,signal.SIGKILL)
+                except ProcessLookupError: pass
+                child.wait(timeout=5)
+                record.update(returncode=child.returncode,closed_monotonic_ns=time.monotonic_ns(),killed_after_bound=True)
+                if record["deadline"]<commands.deadline and time.monotonic()>=record["deadline"]:
+                    raise subprocess.TimeoutExpired(command,timeout)
+            raise
+        err=Path(record["stderr_path"]).read_bytes()
+        out,err=(raw.decode(),err.decode()) if kwargs.get("text",False) else (raw,err)
+        if kwargs.get("check",False) and child.returncode!=0:
+            raise subprocess.CalledProcessError(child.returncode,command,out,err)
+        return subprocess.CompletedProcess(command,child.returncode,out,err)
+    return runner
+
+
 def start_pool(commands,root,prepared,material,variant):
     from checkpoint_gstreamer_analytics_sidecar import (DockerWorkerProcessFactory,GStreamerAnalyticsProductionService,
         PRODUCTION_MAX_CONNECTIONS_MINIMUM,PRODUCTION_MAX_REQUESTS_PER_CONNECTION_MINIMUM,PRODUCTION_MAX_TOTAL_REQUESTS_MINIMUM)
@@ -861,14 +888,7 @@ def start_pool(commands,root,prepared,material,variant):
     context=read_json_descriptor(data["context"],deadline=commands.deadline)
     authority=read_json_descriptor(data["authority"],deadline=commands.deadline)
     binding_root=(root/material["worker_projection"]["binding_set"]["index"]["path"]).parent
-    def runner(command,**kwargs):
-        command=[str(material["engine_pin"].path) if command[0]=="docker" else command[0],*command[1:]]
-        child,record=commands.launch(command,env=kwargs.get("env"))
-        record["deadline"]=min(commands.deadline,time.monotonic()+float(kwargs.get("timeout",120)))
-        raw=commands.wait(child,record,maximum=1024**2)
-        err=Path(record["stderr_path"]).read_bytes()
-        text=kwargs.get("text",False)
-        return subprocess.CompletedProcess(command,0,raw.decode() if text else raw,err.decode() if text else err)
+    runner=owned_subprocess_runner(commands,material["engine_pin"].path)
     def popen(command,**kwargs):
         commands.remaining();command=[str(material["engine_pin"].path),*command[1:]]
         child=subprocess.Popen(command,**kwargs,start_new_session=True)
@@ -938,6 +958,25 @@ def verify_guardian_ranges(pool_ref, ranges, commands):
                 before==epoch(os.fstat(stream.fileno()))==epoch(Path(ref["path"]).lstat()),"original arm prefix differs from closed held journal")
 
 
+def native_client_waits(wait_rows):
+    """Join each native client begin/released pair into one wait observation."""
+    paired={};waits=[]
+    for row in wait_rows:
+        key=(row["clock_domain"]["pid"],row["request_id"])
+        phase=row["phase"];require(phase not in paired.setdefault(key,{}),"duplicate original native wait phase")
+        paired[key][phase]=row
+    for pair in paired.values():
+        # Native persists begin after acquisition with attempt only; released carries the actual acquisition.
+        require(set(pair)=={"begin","released"} and all(pair["begin"].get(k) is None for k in ("acquired_ns","reply_ns","released_ns"))
+            and pair["released"].get("acquired_ns") is not None and pair["released"].get("released_ns") is not None,
+            "native wait lacks a genuine begin/released pair; failed/UNKNOWN arm")
+        row=pair["released"]
+        require(all(pair["begin"][k]==row[k] for k in ("request_id","attempt_ns","clock_domain","input_frame_key","worker_id","branch","stream_id")),
+            "native wait two-row identity drift")
+        waits.append({**row,"kind":"native_client"})
+    return waits
+
+
 def decode_arm(commands,plan,arm,facts,output,snapshot,clock_proof,pool_delta,material):
     from publication_operational_request_domain_v1 import iter_native_domain_v1
     from publication_policy_contract import validate_decision_record
@@ -995,17 +1034,7 @@ def decode_arm(commands,plan,arm,facts,output,snapshot,clock_proof,pool_delta,ma
             if row.get("kind")=="client":wait_rows.append(row)
             else:source_events.append(row)
     require(accounting_bytes<=64*1024**2,"aggregate actual source/native accounting+waits arm cap")
-    paired={}
-    for row in wait_rows:
-        key=(row["clock_domain"]["pid"],row["request_id"])
-        phase=row["phase"];require(phase not in paired.setdefault(key,{}),"duplicate original native wait phase")
-        paired[key][phase]=row
-    for pair in paired.values():
-        require(set(pair)=={"begin","released"} and pair["begin"]["acquired_ns"] is not None,
-            "native wait lacks genuine acquired begin; failed/UNKNOWN arm")
-        row=pair["released"]
-        require(all(pair["begin"][k]==row[k] for k in ("request_id","attempt_ns","acquired_ns","clock_domain")),"native wait two-row identity drift")
-        waits.append({**row,"kind":"native_client"})
+    waits.extend(native_client_waits(wait_rows))
     recipients={str(s["stream_id"]):({w["branch_id"]:w["process_id"] for w in s["workers"]} if arm["topology"]=="baseline" else
         {"shared":s["graph_process"]["process_id"]}) for s in layout["streams"]}
     actual_clock={**facts["clock_domain"],"clock":"CLOCK_REALTIME"}

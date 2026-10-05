@@ -1059,6 +1059,15 @@ def build_gstreamer_source_specs(
     return sources
 
 
+def finite_study_worker_arguments_v1(owner, worker_id, *, study_client_mode, study_output_root):
+    """Typed finite-study CLI contract of one native worker."""
+    return ("--checkpoint-study-kind", "finite-component-study",
+        "--checkpoint-study-width", str(owner["width"]), "--checkpoint-study-height", str(owner["height"]),
+        "--checkpoint-analytics-client-mode", "branch" if study_client_mode == "branch-channel" else "global-client",
+        "--checkpoint-study-accounting-path", str(study_output_root / ("native-" + worker_id + "-receives.jsonl")),
+        "--checkpoint-study-waits-path", str(study_output_root / ("native-" + worker_id + "-waits.jsonl")))
+
+
 def build_gstreamer_worker_specs(
     *,
     plan: dict[str, Any],
@@ -1079,6 +1088,7 @@ def build_gstreamer_worker_specs(
     inherited_native_fds: tuple[int, ...] = (),
     gst_plugin_path: str | None = None,
     study_client_mode: str = "global-client",
+    study_output_root: Path | None = None,
 ) -> list[WorkerLaunchSpec]:
     _require(plan.get("claim_status") == CLAIM_STATUS, "checkpoint launch plan must remain planning-only")
     study = plan.get("kind") == "finite-component-study"
@@ -1086,6 +1096,7 @@ def build_gstreamer_worker_specs(
         from checkpoint_runtime_plan import validate_finite_study_runtime_plan_v1
         validate_finite_study_runtime_plan_v1(plan)
         _require(study_client_mode in {"global-client", "branch-channel"}, "study client mode is not prebuilt")
+        _require(study_output_root is not None, "finite study workers require the arm study journal directory")
     _require(duration_s > 0, "checkpoint engineering duration must be positive")
     _require(
         analytics_terminal_mode in ANALYTICS_TERMINAL_MODES,
@@ -1409,11 +1420,8 @@ def build_gstreamer_worker_specs(
             owner = next((worker for stream in plan["streams"] for worker in
                 (stream["workers"] if plan["topology_kind"] == INDEPENDENT_PROCESSES else [stream["graph_process"]])
                 if worker["process_id"] == spec.worker_id))
-            command = spec.command + ("--checkpoint-study-kind", "finite-component-study",
-                "--checkpoint-study-width", str(owner["width"]), "--checkpoint-study-height", str(owner["height"]),
-                "--checkpoint-analytics-client-mode", "branch" if study_client_mode == "branch-channel" else "global-client",
-                "--checkpoint-study-waits-path", str(output_root / "study" / ("native-" + spec.worker_id + "-waits.jsonl")))
-            return replace(spec, command=command)
+            return replace(spec, command=spec.command + finite_study_worker_arguments_v1(
+                owner, spec.worker_id, study_client_mode=study_client_mode, study_output_root=study_output_root))
         specs = [bind(spec) for spec in specs]
     return specs
 
@@ -3094,7 +3102,7 @@ def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, ru
         analytics_queue_max_buffers=1, native_policy=policy, native_policy_deadline_ms=100.0,
         analytics_execution_socket=analytics_execution_socket, analytics_preprocessing_contract_sha256=preprocessing_sha256,
         native_policy_identities=native_policy_identity_environment(system="gstreamer_custom", capability_manifest=capability_manifest),
-        gst_plugin_path="/opt/vast/lib/gstreamer-1.0", study_client_mode=client_mode)
+        gst_plugin_path="/opt/vast/lib/gstreamer-1.0", study_client_mode=client_mode, study_output_root=accounting)
     specs = [dataclasses.replace(spec, environment={**spec.environment, **worker_clock_environment}) for spec in specs]
     sources = build_gstreamer_source_specs(plan=plan, source_binary=Path(source_binary), project_root=Path(project_root),
         run_id=run_id, gst_plugin_path="/opt/vast/lib/gstreamer-1.0", study_output_root=accounting)

@@ -304,6 +304,58 @@ os.waitpid(child,0);print(raw.decode())
         from checkpoint_runtime import canonical_consumer_fds_json
         self.assertEqual(canonical_consumer_fds_json({"b-1":3,"a-0":4}),'{"b-1":3,"a-0":4}')
 
+    def test_finite_study_worker_writes_both_journals_into_the_arm_study_directory(self):
+        import checkpoint_gstreamer_runtime as runtime
+        study=Path("/arm/study")
+        values=runtime.finite_study_worker_arguments_v1({"width":1920,"height":1080},"s0-plate",
+            study_client_mode="global-client",study_output_root=study)
+        flags=dict(zip(values[::2],values[1::2]))
+        # Native refuses a study worker without both journals; decode_arm reads only <arm>/study.
+        self.assertEqual(flags.get("--checkpoint-study-accounting-path"),str(study/"native-s0-plate-receives.jsonl"))
+        self.assertEqual(flags.get("--checkpoint-study-waits-path"),str(study/"native-s0-plate-waits.jsonl"))
+
+    def test_owned_sidecar_runner_has_subprocess_run_semantics(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            commands=driver.Commands(Path(tmp),time.monotonic()+60)
+            runner=driver.owned_subprocess_runner(commands,"/usr/bin/docker")
+            try:
+                ok=runner(["/bin/sh","-c","printf ok"],check=True,capture_output=True,text=True,timeout=5)
+                self.assertEqual((ok.returncode,ok.stdout),(0,"ok"))
+                three=runner(["/bin/sh","-c","echo bad >&2; exit 3"],check=False,capture_output=True,text=True,timeout=5)
+                self.assertEqual((three.returncode,three.stderr),(3,"bad\n"))
+                with self.assertRaises(subprocess.CalledProcessError) as failed:
+                    runner(["/bin/false"],check=True,capture_output=True,timeout=5)
+                self.assertEqual(failed.exception.returncode,1)
+                started=time.monotonic()
+                with self.assertRaises(subprocess.TimeoutExpired):
+                    runner(["/bin/sh","-c","sleep 30"],check=False,capture_output=True,timeout=0.5)
+                self.assertLess(time.monotonic()-started,10)
+                self.assertTrue(all(child.poll() is not None for child in commands.children))
+            finally:commands.retire()
+            (Path(tmp)/"short").mkdir()
+            short=driver.Commands(Path(tmp)/"short",time.monotonic()+16.5)
+            try:
+                # A closing campaign clock is never a retryable SubprocessError.
+                with self.assertRaises(ValueError):
+                    driver.owned_subprocess_runner(short,"/usr/bin/docker")(["/bin/sh","-c","sleep 30"],check=False,timeout=30)
+                self.assertTrue(all(child.poll() is not None for child in short.children))
+            finally:short.retire()
+
+    def test_native_client_wait_pairs_follow_the_native_row_contract(self):
+        domain={"clock":"CLOCK_MONOTONIC","boot_id":"b","time_namespace":"t","pid":7}
+        common={"kind":"client","run_id":"r","request_id":"q1","worker_id":"w","input_frame_key":"k","stream_id":0,
+            "frame_id":3,"transport_pts_ns":1,"branch":"plate_number","resource":"cpu","attempt_ns":100,"clock_domain":domain}
+        # Native exchange writes begin after acquisition with attempt only (0 -> null).
+        begin={**common,"phase":"begin","acquired_ns":None,"reply_ns":None,"released_ns":None}
+        released={**common,"phase":"released","acquired_ns":120,"reply_ns":150,"released_ns":151}
+        self.assertEqual(driver.native_client_waits([begin,released]),[{**released,"kind":"native_client"}])
+        unknown_reply={**released,"reply_ns":None}
+        self.assertEqual(driver.native_client_waits([unknown_reply,begin]),[{**unknown_reply,"kind":"native_client"}])
+        for rows in ([released],[begin],[begin,released,released],[{**begin,"acquired_ns":120},released],
+                     [begin,{**released,"acquired_ns":None}],[begin,{**released,"attempt_ns":99}],
+                     [begin,{**released,"input_frame_key":"other"}],[begin,{**released,"branch":"damage"}]):
+            with self.assertRaises(ValueError):driver.native_client_waits(rows)
+
     def test_control_failure_still_closes_actual_service_thread_and_preserves_primary(self):
         with tempfile.TemporaryDirectory() as tmp:
             commands=driver.Commands(Path(tmp),time.monotonic()+60);stop=threading.Event();thread=threading.Thread(target=stop.wait);thread.start()
