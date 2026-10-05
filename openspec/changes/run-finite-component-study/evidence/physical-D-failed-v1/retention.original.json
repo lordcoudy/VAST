@@ -1,0 +1,1404 @@
+{
+  "kind": "first-real-D-preparation-failure-preserved",
+  "source_commit": "42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a",
+  "first_error": "ValueError:actual SPS/VUI is not frozen30fps/auto<=5.1",
+  "files": [
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/git-head.stdout.original",
+      "path": "bootstrap/git-head.stdout.original",
+      "size_bytes": 41,
+      "sha256": "d52f113c1bd44266bfa7cd08a384f5d5c60af0c657e2510d1af64f9866778d03",
+      "source_epochs": [
+        2096,
+        662220,
+        33188,
+        1,
+        41,
+        1791189366150597429,
+        1791189366150597429
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/model-transfer.stdout.original",
+      "path": "bootstrap/model-transfer.stdout.original",
+      "size_bytes": 678,
+      "sha256": "e251091de214006f5ce5a8ca0f68c7ec30c122300c816a7340ce5525054b5632",
+      "source_epochs": [
+        2096,
+        662224,
+        33188,
+        1,
+        678,
+        1791189405239672458,
+        1791189405239672458
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/source-ci.original.json",
+      "path": "bootstrap/source-ci.original.json",
+      "size_bytes": 377,
+      "sha256": "c6d2b97d980d2859c67ccde1c4a878a4d66bcba326c038ece0093af9067931cc",
+      "source_epochs": [
+        2096,
+        662219,
+        33188,
+        1,
+        377,
+        1791189366098594796,
+        1791189366098594796
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/source-transfer.original.json",
+      "path": "bootstrap/source-transfer.original.json",
+      "size_bytes": 1820475,
+      "sha256": "254bc4aa11322ca2700d598cc53ee3711cecf73e9394a02076acb656ef3fb722",
+      "source_epochs": [
+        2096,
+        670089,
+        33188,
+        1,
+        1820475,
+        1791189386263178841,
+        1791189386263178841
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/current-code-closure.stdout.original",
+      "path": "bootstrap/current-code-closure.stdout.original",
+      "size_bytes": 217,
+      "sha256": "043ae10523056ac17d8ec4428dbf2ead3b10453fe7d3de991bd838aaaf9a9fa3",
+      "source_epochs": [
+        2096,
+        673109,
+        33188,
+        1,
+        217,
+        1791189407127768842,
+        1791189407127768842
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/current-code-closure.stderr.original",
+      "path": "bootstrap/current-code-closure.stderr.original",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673110,
+        33188,
+        1,
+        0,
+        1791189405247672866,
+        1791189405247672866
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/git-tree.stderr.original",
+      "path": "bootstrap/git-tree.stderr.original",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        662223,
+        33188,
+        1,
+        0,
+        1791189366158597834,
+        1791189366158597834
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/git-archive.stderr.original",
+      "path": "bootstrap/git-archive.stderr.original",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        662225,
+        33188,
+        1,
+        0,
+        1791189366262603102,
+        1791189366262603102
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/git-head.stderr.original",
+      "path": "bootstrap/git-head.stderr.original",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        662221,
+        33188,
+        1,
+        0,
+        1791189366102595000,
+        1791189366102595000
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/git-tree.stdout.original",
+      "path": "bootstrap/git-tree.stdout.original",
+      "size_bytes": 1148898,
+      "sha256": "5dede20d468ec1ae6bd18ea8a77e9e4489781fe898ef1136b53ea01232c8bd0a",
+      "source_epochs": [
+        2096,
+        662222,
+        33188,
+        1,
+        1148898,
+        1791189366238601885,
+        1791189366238601885
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/preparation-clock.original.json",
+      "path": "bootstrap/preparation-clock.original.json",
+      "size_bytes": 193,
+      "sha256": "3be9650890d21bcb6c752cbdf8ed8d211d3d66b38ca0116846e40b6118b49910",
+      "source_epochs": [
+        2096,
+        662218,
+        33188,
+        1,
+        193,
+        1791189366098594796,
+        1791189366098594796
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/bootstrap-closed.original.json",
+      "path": "bootstrap/bootstrap-closed.original.json",
+      "size_bytes": 3582,
+      "sha256": "0fd1e1548f1e5f71bd56710ab4857c140eb8fee2c67a39caf5ab11d3e092e6d3",
+      "source_epochs": [
+        2096,
+        673113,
+        33188,
+        1,
+        3582,
+        1791189407135769251,
+        1791189407135769251
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/current-code-closure.original.json",
+      "path": "bootstrap/current-code-closure.original.json",
+      "size_bytes": 30596,
+      "sha256": "60edb5ed8bf6a0c03d0c8698b04393c76f2c8123316c389e5461f4bb647e722c",
+      "source_epochs": [
+        2096,
+        673115,
+        33060,
+        1,
+        30596,
+        1791189407083766597,
+        1791189407095767209
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/b/model-transfer.stderr.original",
+      "path": "bootstrap/model-transfer.stderr.original",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        670090,
+        33188,
+        1,
+        0,
+        1791189386295180455,
+        1791189386295180455
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-002.stderr.raw",
+      "path": "preparation/command-002.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673119,
+        33188,
+        1,
+        0,
+        1791189454432548903,
+        1791189454432548903
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-005.stderr.raw",
+      "path": "preparation/command-005.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673126,
+        33188,
+        1,
+        0,
+        1791189455196587711,
+        1791189455196587711
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-022.stdout.raw",
+      "path": "preparation/command-022.stdout.raw",
+      "size_bytes": 181618,
+      "sha256": "770eff25282587259d22243744b6427a0343b17e1704132fdc875d430f6a7257",
+      "source_epochs": [
+        2096,
+        673184,
+        33188,
+        1,
+        181618,
+        1791189593862624194,
+        1791189593862624194
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-004.stderr.raw",
+      "path": "preparation/command-004.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673124,
+        33188,
+        1,
+        0,
+        1791189455016578568,
+        1791189455016578568
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-019.stderr.raw",
+      "path": "preparation/command-019.stderr.raw",
+      "size_bytes": 33212,
+      "sha256": "649ea4313e293ec9c9d038eaea42936a1bea35379d08b6d668844832fc0aea0b",
+      "source_epochs": [
+        2096,
+        673178,
+        33188,
+        1,
+        33212,
+        1791189590578458255,
+        1791189590578458255
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-023.stderr.raw",
+      "path": "preparation/command-023.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673187,
+        33188,
+        1,
+        0,
+        1791189593886625406,
+        1791189593886625406
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-029.stdout.raw",
+      "path": "preparation/command-029.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673197,
+        33188,
+        1,
+        0,
+        1791189610151448853,
+        1791189610151448853
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-007.stdout.raw",
+      "path": "preparation/command-007.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673129,
+        33188,
+        1,
+        0,
+        1791189455280591977,
+        1791189455280591977
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-027.stdout.raw",
+      "path": "preparation/command-027.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673193,
+        33188,
+        1,
+        0,
+        1791189602659069925,
+        1791189602659069925
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-014.stdout.raw",
+      "path": "preparation/command-014.stdout.raw",
+      "size_bytes": 6209,
+      "sha256": "0ba85ceacbad67d39523a2337212f25a52f9eb0e8751fc11e500e143d3e965c9",
+      "source_epochs": [
+        2096,
+        673167,
+        33188,
+        1,
+        6209,
+        1791189561073518912,
+        1791189561073518912
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/failed.original.json",
+      "path": "preparation/failed.original.json",
+      "size_bytes": 16501,
+      "sha256": "ccc4d14463a2f7c0d6cea125b8ae51df5f40ccea6b2248b7f3575dac0584665f",
+      "source_epochs": [
+        2096,
+        673199,
+        33188,
+        1,
+        16501,
+        1791189610219452290,
+        1791189610219452290
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-000.stderr.raw",
+      "path": "preparation/command-000.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673114,
+        33188,
+        1,
+        0,
+        1791189454168535493,
+        1791189454168535493
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-025.stdout.raw",
+      "path": "preparation/command-025.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673189,
+        33188,
+        1,
+        0,
+        1791189595414702616,
+        1791189595414702616
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-006.stderr.raw",
+      "path": "preparation/command-006.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673128,
+        33188,
+        1,
+        0,
+        1791189455236589743,
+        1791189455236589743
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-005.stdout.raw",
+      "path": "preparation/command-005.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673125,
+        33188,
+        1,
+        0,
+        1791189455196587711,
+        1791189455196587711
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-021.stdout.raw",
+      "path": "preparation/command-021.stdout.raw",
+      "size_bytes": 181620,
+      "sha256": "f47fb876b0668d378247858b538884bc60607a37516a6018420da66e67e126e7",
+      "source_epochs": [
+        2096,
+        673182,
+        33188,
+        1,
+        181620,
+        1791189593778619950,
+        1791189593778619950
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-003.stdout.raw",
+      "path": "preparation/command-003.stdout.raw",
+      "size_bytes": 16872,
+      "sha256": "0aa5906d0b91776489039de49dd15745390f10b34d11cf4726dbd5059e47b61e",
+      "source_epochs": [
+        2096,
+        673120,
+        33188,
+        1,
+        16872,
+        1791189454852570237,
+        1791189454852570237
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-019.stdout.raw",
+      "path": "preparation/command-019.stdout.raw",
+      "size_bytes": 5623,
+      "sha256": "8fb4d996ee63f51061cd75fd3b361eaf8b46261398e1182fed049186b1406160",
+      "source_epochs": [
+        2096,
+        673177,
+        33188,
+        1,
+        5623,
+        1791189593514606610,
+        1791189593514606610
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-012.stderr.raw",
+      "path": "preparation/command-012.stderr.raw",
+      "size_bytes": 12279,
+      "sha256": "cbec9e791189a45ea069d2185990862eeec009f9576bea370fe947feae5ff836",
+      "source_epochs": [
+        2096,
+        673162,
+        33188,
+        1,
+        12279,
+        1791189513108697407,
+        1791189513108697407
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-029.stderr.raw",
+      "path": "preparation/command-029.stderr.raw",
+      "size_bytes": 86223,
+      "sha256": "b4f7d2417a963803f93fda77db512be40fc63d5b352c800dc4f835c0ba41429e",
+      "source_epochs": [
+        2096,
+        673198,
+        33188,
+        1,
+        86223,
+        1791189610195451077,
+        1791189610195451077
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-023.stdout.raw",
+      "path": "preparation/command-023.stdout.raw",
+      "size_bytes": 406492,
+      "sha256": "4e858eedadfcbc94a5c5f4405a3c47d0652ad5fd35c9d4f507f5068d1e317f08",
+      "source_epochs": [
+        2096,
+        673186,
+        33188,
+        1,
+        406492,
+        1791189595398701807,
+        1791189595398701807
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-008.stderr.raw",
+      "path": "preparation/command-008.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673132,
+        33188,
+        1,
+        0,
+        1791189455320594010,
+        1791189455320594010
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-017.stderr.raw",
+      "path": "preparation/command-017.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673174,
+        33188,
+        1,
+        0,
+        1791189561177523966,
+        1791189561177523966
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-011.stderr.raw",
+      "path": "preparation/command-011.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673160,
+        33188,
+        1,
+        0,
+        1791189455600608232,
+        1791189455600608232
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-013.stderr.raw",
+      "path": "preparation/command-013.stderr.raw",
+      "size_bytes": 12149,
+      "sha256": "d464e44773def50da9e5a553de48803ebe811a85a854ad5e5ff4a75dc4f02f5a",
+      "source_epochs": [
+        2096,
+        673165,
+        33188,
+        1,
+        12149,
+        1791189560589495391,
+        1791189560589495391
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-013.stdout.raw",
+      "path": "preparation/command-013.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673164,
+        33188,
+        1,
+        0,
+        1791189513736730755,
+        1791189513736730755
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-012.stdout.raw",
+      "path": "preparation/command-012.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673161,
+        33188,
+        1,
+        0,
+        1791189455680612296,
+        1791189455680612296
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-009.stdout.raw",
+      "path": "preparation/command-009.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673133,
+        33188,
+        1,
+        0,
+        1791189455360596042,
+        1791189455360596042
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-021.stderr.raw",
+      "path": "preparation/command-021.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673183,
+        33188,
+        1,
+        0,
+        1791189593662614088,
+        1791189593662614088
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-018.stderr.raw",
+      "path": "preparation/command-018.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673176,
+        33188,
+        1,
+        0,
+        1791189561761552347,
+        1791189561761552347
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-025.stderr.raw",
+      "path": "preparation/command-025.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673190,
+        33188,
+        1,
+        0,
+        1791189595414702616,
+        1791189595414702616
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-003.stderr.raw",
+      "path": "preparation/command-003.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673121,
+        33188,
+        1,
+        0,
+        1791189454832569221,
+        1791189454832569221
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-011.stdout.raw",
+      "path": "preparation/command-011.stdout.raw",
+      "size_bytes": 10333,
+      "sha256": "c994d5819276b809607670dadb13386f4eb63dd81675299d9445c8fe52384c99",
+      "source_epochs": [
+        2096,
+        673159,
+        33188,
+        1,
+        10333,
+        1791189455664611484,
+        1791189455664611484
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-014.stderr.raw",
+      "path": "preparation/command-014.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673168,
+        33188,
+        1,
+        0,
+        1791189561029516774,
+        1791189561029516774
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-020.stderr.raw",
+      "path": "preparation/command-020.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673180,
+        33188,
+        1,
+        0,
+        1791189593542608024,
+        1791189593542608024
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-009.stderr.raw",
+      "path": "preparation/command-009.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673134,
+        33188,
+        1,
+        0,
+        1791189455360596042,
+        1791189455360596042
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-002.stdout.raw",
+      "path": "preparation/command-002.stdout.raw",
+      "size_bytes": 16872,
+      "sha256": "79562391ab75dae74a9d451613ba13e4e3fe7a64932474d6f4e65bead0afebcc",
+      "source_epochs": [
+        2096,
+        673118,
+        33188,
+        1,
+        16872,
+        1791189454448549716,
+        1791189454448549716
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-018.stdout.raw",
+      "path": "preparation/command-018.stdout.raw",
+      "size_bytes": 6284,
+      "sha256": "ec01a51778d791e1b8df9c00b7e8ec8709663fa36c7b247bce9e71fc51e3b923",
+      "source_epochs": [
+        2096,
+        673175,
+        33188,
+        1,
+        6284,
+        1791189561841556236,
+        1791189561841556236
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-027.stderr.raw",
+      "path": "preparation/command-027.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673194,
+        33188,
+        1,
+        0,
+        1791189602659069925,
+        1791189602659069925
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-016.stderr.raw",
+      "path": "preparation/command-016.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673172,
+        33188,
+        1,
+        0,
+        1791189561137522023,
+        1791189561137522023
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-028.stderr.raw",
+      "path": "preparation/command-028.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673196,
+        33188,
+        1,
+        0,
+        1791189610031442788,
+        1791189610031442788
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-017.stdout.raw",
+      "path": "preparation/command-017.stdout.raw",
+      "size_bytes": 106,
+      "sha256": "467d3162ccaecaaa16b5c8ca9c1d3eb8a1414a07e75ca80c2051f38c1cc64f81",
+      "source_epochs": [
+        2096,
+        673173,
+        33188,
+        1,
+        106,
+        1791189561497539517,
+        1791189561497539517
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-008.stdout.raw",
+      "path": "preparation/command-008.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673131,
+        33188,
+        1,
+        0,
+        1791189455320594010,
+        1791189455320594010
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-024.stderr.raw",
+      "path": "preparation/command-024.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673188,
+        33188,
+        1,
+        0,
+        1791189595414702616,
+        1791189595414702616
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-007.stderr.raw",
+      "path": "preparation/command-007.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673130,
+        33188,
+        1,
+        0,
+        1791189455280591977,
+        1791189455280591977
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-022.stderr.raw",
+      "path": "preparation/command-022.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673185,
+        33188,
+        1,
+        0,
+        1791189593782620152,
+        1791189593782620152
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-000.stdout.raw",
+      "path": "preparation/command-000.stdout.raw",
+      "size_bytes": 1838,
+      "sha256": "5b320c97f515e79171f10a2147d875ffb6b14bd2b25681047b73c46fe0a527ee",
+      "source_epochs": [
+        2096,
+        662212,
+        33188,
+        1,
+        1838,
+        1791189454372545855,
+        1791189454372545855
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-006.stdout.raw",
+      "path": "preparation/command-006.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673127,
+        33188,
+        1,
+        0,
+        1791189455236589743,
+        1791189455236589743
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-010.stdout.raw",
+      "path": "preparation/command-010.stdout.raw",
+      "size_bytes": 4332,
+      "sha256": "a5694c22c4b3b5e4551b6d88a7c27d2353e912d343ca2503939fa4fe32e0d7e9",
+      "source_epochs": [
+        2096,
+        673157,
+        33188,
+        1,
+        4332,
+        1791189455580607216,
+        1791189455580607216
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-001.stdout.raw",
+      "path": "preparation/command-001.stdout.raw",
+      "size_bytes": 1839,
+      "sha256": "1b6410f756d8b5ef5308d712b51d2543bf8c8e6bc5796b7ede9570d099131e0b",
+      "source_epochs": [
+        2096,
+        673116,
+        33188,
+        1,
+        1839,
+        1791189454416548091,
+        1791189454416548091
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-015.stderr.raw",
+      "path": "preparation/command-015.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673170,
+        33188,
+        1,
+        0,
+        1791189561093519884,
+        1791189561093519884
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-015.stdout.raw",
+      "path": "preparation/command-015.stdout.raw",
+      "size_bytes": 6209,
+      "sha256": "0ba85ceacbad67d39523a2337212f25a52f9eb0e8751fc11e500e143d3e965c9",
+      "source_epochs": [
+        2096,
+        673169,
+        33188,
+        1,
+        6209,
+        1791189561121521245,
+        1791189561121521245
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-016.stdout.raw",
+      "path": "preparation/command-016.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673171,
+        33188,
+        1,
+        0,
+        1791189561137522023,
+        1791189561137522023
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-026.stderr.raw",
+      "path": "preparation/command-026.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673192,
+        33188,
+        1,
+        0,
+        1791189602659069925,
+        1791189602659069925
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-028.stdout.raw",
+      "path": "preparation/command-028.stdout.raw",
+      "size_bytes": 207959,
+      "sha256": "bba122e28226241c48ad4c4e3203129a21bb51365a0afa3baad20c2c296437ff",
+      "source_epochs": [
+        2096,
+        673195,
+        33188,
+        1,
+        207959,
+        1791189610147448651,
+        1791189610147448651
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-001.stderr.raw",
+      "path": "preparation/command-001.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673117,
+        33188,
+        1,
+        0,
+        1791189454392546871,
+        1791189454392546871
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-004.stdout.raw",
+      "path": "preparation/command-004.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673123,
+        33188,
+        1,
+        0,
+        1791189455012578365,
+        1791189455012578365
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-010.stderr.raw",
+      "path": "preparation/command-010.stderr.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673158,
+        33188,
+        1,
+        0,
+        1791189455540605185,
+        1791189455540605185
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/home/s-a-balashov/vf42725b4f/s/prepare/command-020.stdout.raw",
+      "path": "preparation/command-020.stdout.raw",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_epochs": [
+        2096,
+        673179,
+        33188,
+        1,
+        0,
+        1791189593542608024,
+        1791189593542608024
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/physical-D-first-failure.original-tools.v1.json",
+      "path": "physical-D-first-failure.original-tools.v1.json",
+      "size_bytes": 6482,
+      "sha256": "7e1441f08c7ad4221d14e295e5131ef042e120c75e6201b19e5258e1a183c21d",
+      "source_epochs": [
+        69,
+        1688849862695761,
+        33279,
+        1,
+        6482,
+        1791189892814105200,
+        1791189892814105200
+      ],
+      "byte_equal": true
+    },
+    {
+      "source": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/bootstrap-D-stock-study-launch.original-tools.v1.json",
+      "path": "bootstrap-D-stock-study-launch.original-tools.v1.json",
+      "size_bytes": 9761,
+      "sha256": "f4af6bf3960ab660d63d34cf561ba5abce4c2ce7ab9dd8728a085f18a1dc4950",
+      "source_epochs": [
+        69,
+        1407374885985103,
+        33279,
+        1,
+        9761,
+        1791189470118657700,
+        1791189470118657700
+      ],
+      "byte_equal": true
+    }
+  ],
+  "total_retained_bytes": 4235870,
+  "media": [
+    {
+      "path": "/home/s-a-balashov/vf42725b4f/s/prepare/front_gate.context.avi",
+      "size_bytes": 10880550,
+      "sha256": "4264156da096fde9af3a98e278e31ddfda9bafb0c9a3a4be25cc57275476c600",
+      "epochs": [
+        2096,
+        673181,
+        33188,
+        1,
+        10880550,
+        1791189593658613886,
+        1791189593658613886
+      ],
+      "retained_original": true
+    },
+    {
+      "path": "/home/s-a-balashov/vf42725b4f/s/prepare/front_gate.derived.mp4",
+      "size_bytes": 35008885,
+      "sha256": "570ed8cb8138f0387521c7980dd91a5ad2a0e50bbef9d38aff75eb0d720953fb",
+      "epochs": [
+        2096,
+        673191,
+        33188,
+        1,
+        35008885,
+        1791189602651069519,
+        1791189602651069519
+      ],
+      "retained_original": true
+    }
+  ],
+  "observed_named_child_PIDs": [
+    {
+      "pid": 64006,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64007,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64008,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64015,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64022,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64036,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64050,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64066,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64080,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64094,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64110,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64123,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64138,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64203,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64257,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64271,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64286,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64301,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64316,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64329,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64727,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64730,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64731,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64732,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64733,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64734,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64769,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64770,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64809,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    },
+    {
+      "pid": 64810,
+      "returncode_recorded": 0,
+      "proc_path_present_now": false
+    }
+  ],
+  "absence_scope": "current named /proc paths only; no birth/group/global-quiescence claim",
+  "accepted": false,
+  "pilots": 0,
+  "effects": 0,
+  "original_clock": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "clock": "CLOCK_MONOTONIC",
+    "deadline_monotonic_ns": 686108114023685,
+    "started_monotonic_ns": 671708114023685,
+    "time_namespace": "time:[4026531834]"
+  },
+  "preparation_clock_renewed": false
+}

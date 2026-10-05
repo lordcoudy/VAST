@@ -1,0 +1,113 @@
+{
+  "commit": {
+    "args": {
+      "cmd": "git commit -m 'fix: bind qualification test fixtures to current native sources'",
+      "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+      "max_output_tokens": 4400
+    },
+    "result": {
+      "chunk_id": "92d026",
+      "wall_time_seconds": 1.0376246,
+      "exit_code": 0,
+      "original_token_count": 1175,
+      "output": "[codex/run-finite-component-study 42725b4f] fix: bind qualification test fixtures to current native sources\n 38 files changed, 5059 insertions(+), 9 deletions(-)\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/bootstrap-before-bounds-v1/bootstrap-copy-model-bundle-v1.py\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/bootstrap-before-bounds-v1/bootstrap-private-current-root-v1.py\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/bootstrap-bound-software-original-tools.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/bootstrap-cap-software-probe-v1.py\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/bootstrap-cleanup02-software-original-tools.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/bootstrap-copy-model-bundle-v1.py\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/bootstrap-positive-silent-software-probe-v1.py\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/bootstrap-private-current-root-v1.py\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/bootstrap-source-only-independent-review.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/bootstrap-source-only-independent-review.v2.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/ci-C-child-diagnosis-original-tool.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/ci-C81492fb1-v1/failed-original-retention-v1/artifact-11329518534.original.zip\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/ci-C81492fb1-v1/failed-original-retention-v1/artifact-11330382818.original.zip\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/ci-C81492fb1-v1/failed-original-retention-v1/job-111647445837.original.log\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/ci-C81492fb1-v1/failed-original-retention-v1/job-111647445987.original.log\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/ci-C81492fb1-v1/failed-original-retention-v1/original-provider-metadata.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/ci-C81492fb1-v1/failed-original-retention-v1/original-retention-terminal.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/ci-C81492fb1-v1/failed-retention.original-tool.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/fixture-retention.original.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/fragment-source-fixture-regression-v1/author-proof.original-tool.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/fragment-source-fixture-regression-v1/author-review.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/fragment-source-fixture-regression-v1/green-01/stderr.original.log\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/fragment-source-fixture-regression-v1/green-02/result.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/fragment-source-fixture-regression-v1/green-02/stderr.original.log\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/fragment-source-fixture-regression-v1/original-tools.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/fragment-source-fixture-regression-v1/red-01/result.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/fragment-source-fixture-regression-v1/red-01/stderr.original.log\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/fragment-source-fixture-regression-v1/source-scope.diff\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/retention.original.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/source-fix-independent-v4/original-readonly-tools.v1.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/source-fix-independent-v4/retention.original.json\n create mode 100644 openspec/changes/run-finite-component-study/evidence/software-v3/source-fix-independent-v4/review.v1.json\n"
+    }
+  },
+  "push": {
+    "args": {
+      "cmd": "git push origin codex/run-finite-component-study",
+      "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+      "max_output_tokens": 1800
+    },
+    "result": {
+      "chunk_id": "b2aa45",
+      "wall_time_seconds": 5.3609577999999996,
+      "exit_code": 0,
+      "original_token_count": 34,
+      "output": "To https://github.com/lordcoudy/VAST.git\n   81492fb1..42725b4f  codex/run-finite-component-study -> codex/run-finite-component-study\n"
+    }
+  },
+  "head": {
+    "chunk_id": "f476ab",
+    "wall_time_seconds": 0.9742837,
+    "exit_code": 0,
+    "original_token_count": 17,
+    "output": "42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a\n?? openspec/config.yaml\n"
+  },
+  "review": {
+    "args": {
+      "action": "COMMENT",
+      "commit_id": "42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a",
+      "pr_number": 5,
+      "repo_full_name": "lordcoudy/VAST",
+      "review": "Technical source review of exact 42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a: independent PASS_SOURCE_ONLY_V4 (receipt SHA256 427b746d8a072ecff310906bde6d72e20156e3b707950c46072f7214c3ec71f7). Only two existing fixture helpers now bind/restore the actual native source subset alongside current runtime SHA. Both production fragments equal raw C81492fb1 bytes; historical source/image hashes and strict predicates are unchanged. All eight old test methods and 78 assertions are unchanged. Genuine source-identity RED2errors → focused GREEN2success/0errors/failures/skips,21.928s,FD6→6; the broader local FAILED16/2missing-artifacterrors/1skip and serializer fault remain original failures.\n\nFull CI C37274182291 remains FAILED3101/3007success/88skips/6errors/0failures with both original provider ZIP/logs/metadata retained. All38 staged D files equal Git raw blobs; CRLF-aware source/document whitespace check passed without modifying preserved original bytes. Original A/B/C and all RED/GREEN evidence remain immutable.\n\nThis is an automated technical COMMENT, not a fabricated human approval, successful latest CI, or physical grant. The user's explicit continuing carte-blanche implementation/delivery authorization remains recorded in this task. Mandatory full CI on this exact D head must complete and be independently accepted before physical preparation. Actual prep/pilot/effects are zero; all24 arms/12 pairs, independent re-reduction, original budgets, conformance, supported archive/latest CI/final review/authorized merge remain required in this same PR/change."
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Action completed."
+        }
+      ],
+      "structuredContent": {
+        "success": true,
+        "review_id": 5411401634
+      },
+      "isError": false
+    }
+  },
+  "pr": {
+    "args": {
+      "repository_full_name": "lordcoudy/VAST",
+      "pr_number": 5,
+      "body": "VAST's benchmark needs a finite executable study with truthful accounting before any performance conclusion. This change adds one bounded preparation/campaign path: genuine CPU/GPU × baseline/shared × three rates × two repeats, all24 original effect arms/12 pairs, and independent reduction of the closed raw inputs.\n\nOpenSpec change: `run-finite-component-study`; [planning and evidence](https://github.com/lordcoudy/VAST/tree/codex/run-finite-component-study/openspec/changes/run-finite-component-study). Reviewed planning commit3288b0702b6b0136feb6596382566b8686f9bb5c; technical COMMENT5409655596 preceded dependent code. The user's explicit continuing carte-blanche authority authorizes implementation/delivery. Phase: implementation; actual physical preparation/pilot/effects remain0, four planning tasks of24 complete. No scientific completion is claimed.\n\nCurrent published source42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a has independent PASS_SOURCE_ONLY_V4 and exact-head technical COMMENT5411401634. Production identity predicates/historical hashes are preserved; two test fixtures now bind the current native subset alongside runtime SHA. All eight old fixture test methods/78 assertions are unchanged; genuine RED2errors→focusedGREEN2success. Three earlier full CI runs A/B/C failed; their original logs/provider ZIPs/digests/CRC are retained. C ran3101 tests:3007 successes/88 existing skips/6 source-identity errors/0 failures. Broader local missing-artifact failures remain failures.\n\nAcceptance requires mandatory full CI success and original-result review on this exact head before the first physical operation; one original4h preparation clock including all source/model transfer/builds, actual two AVI/442-AU normalization and four deterministic encodes, genuine NVDEC YUV/RGB/EOS/STOP gates; four initial pilots and at most one prescribed prebuilt connection switch; all24/12 effects on one final variant under the separate original4h campaign clock; full planned/admission/delivery/branch reconciliation and independent raw re-reduction; conformance7requirements/20scenarios+R1; supported sync/archive committed and pushed here, final latest-head CI/review and authorized merge. A valid negative performance result is acceptable; partial, unknown, missing or infrastructure-failed results cannot complete the study. Historical qualification/Q4/publication/full eligibility stays unchanged."
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Action completed."
+        }
+      ],
+      "structuredContent": {
+        "url": "https://github.com/lordcoudy/VAST/pull/5",
+        "number": 5,
+        "state": "open",
+        "merged": false,
+        "mergeable": true,
+        "draft": true,
+        "body": "VAST's benchmark needs a finite executable study with truthful accounting before any performance conclusion. This change adds one bounded preparation/campaign path: genuine CPU/GPU × baseline/shared × three rates × two repeats, all24 original effect arms/12 pairs, and independent reduction of the closed raw inputs.\n\nOpenSpec change: `run-finite-component-study`; [planning and evidence](https://github.com/lordcoudy/VAST/tree/codex/run-finite-component-study/openspec/changes/run-finite-component-study). Reviewed planning commit3288b0702b6b0136feb6596382566b8686f9bb5c; technical COMMENT5409655596 preceded dependent code. The user's explicit continuing carte-blanche authority authorizes implementation/delivery. Phase: implementation; actual physical preparation/pilot/effects remain0, four planning tasks of24 complete. No scientific completion is claimed.\n\nCurrent published source42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a has independent PASS_SOURCE_ONLY_V4 and exact-head technical COMMENT5411401634. Production identity predicates/historical hashes are preserved; two test fixtures now bind the current native subset alongside runtime SHA. All eight old fixture test methods/78 assertions are unchanged; genuine RED2errors→focusedGREEN2success. Three earlier full CI runs A/B/C failed; their original logs/provider ZIPs/digests/CRC are retained. C ran3101 tests:3007 successes/88 existing skips/6 source-identity errors/0 failures. Broader local missing-artifact failures remain failures.\n\nAcceptance requires mandatory full CI success and original-result review on this exact head before the first physical operation; one original4h preparation clock including all source/model transfer/builds, actual two AVI/442-AU normalization and four deterministic encodes, genuine NVDEC YUV/RGB/EOS/STOP gates; four initial pilots and at most one prescribed prebuilt connection switch; all24/12 effects on one final variant under the separate original4h campaign clock; full planned/admission/delivery/branch reconciliation and independent raw re-reduction; conformance7requirements/20scenarios+R1; supported sync/archive committed and pushed here, final latest-head CI/review and authorized merge. A valid negative performance result is acceptable; partial, unknown, missing or infrastructure-failed results cannot complete the study. Historical qualification/Q4/publication/full eligibility stays unchanged.",
+        "title": "Make VAST a finite, verifiable component benchmark",
+        "base": "master",
+        "base_sha": "a1b76a63ac7aa08a34a32cc2f0b177e4b45891ee",
+        "head": "codex/run-finite-component-study",
+        "head_sha": "42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a",
+        "head_repo_id": 1189703654,
+        "head_repo_full_name": "lordcoudy/VAST",
+        "merge_commit_sha": "60e48a65756db66e2c2ae8a24304f1e51f3d110b",
+        "user": {
+          "login": "lordcoudy",
+          "name": "lordcoudy",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/33630660?v=4",
+          "id": 33630660
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-10-05T02:57:58Z",
+        "updated_at": "2026-10-05T07:46:50Z",
+        "closed_at": null,
+        "merged_at": null,
+        "commits": 7,
+        "changed_files": 185,
+        "additions": 36223,
+        "deletions": 423,
+        "display_url": "https://github.com/lordcoudy/VAST/pull/5",
+        "display_title": "Make VAST a finite, verifiable component benchmark"
+      },
+      "isError": false
+    }
+  }
+}
