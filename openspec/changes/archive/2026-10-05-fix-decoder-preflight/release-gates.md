@@ -1,3 +1,17 @@
+## Authoritative postarchive release ledger — bookkeeping correction
+
+Actual bdff2e5177293dbad07d6ffded79326f6ecfbbc6 archive/main commit and push completed (700ddf, rc0). Hosted run37255525083 FAILED only at archived task completeness:55/56; CPU build/test step did not run. Local openspec validate --archived corroborated that exact circular condition (754209, rc1). Independent technical review accepted the process-only correction:8.5 retains its ID but records completed archive delivery plus the explicit handoff below. No source, normative behavior, CI checks, raw evidence or release criterion is weakened. Archived implementation/delivery checklist is56/56; release_complete:false and merge_ready:false.
+
+Mandatory postarchive gates (all PENDING at this commit):
+- Required CI PASS on the latest corrective commit, including actual native and decoder tests; the failed bdff run and earlier S8 green are not substitutes.
+- Independent exact-head final review of the archive, source identity, required checks and preserved evidence.
+- Authorized removal of Draft and merge on that exact final head.
+
+Original8.5 obligation, preserved verbatim:
+- [ ] 8.5 Commit/push the supported archive and main-spec result in the same PR only under root's authorization; verify latest-commit required CI includes the actual V6 adapter/observer tests and obtain exact final review before merge. No local archive or earlier green check substitutes for these release gates.
+
+Original authored50/56 snapshot and earlier55/56 release state below are historical, not overwritten. The external final ledger/PR records actual gates when performed.
+
 ## Actual root release state after independent review and archive
 
 Technical COMMENT5409456727 accepts the frozen conformance/document snapshot at S8. Root closed7.4/8.1/8.2/8.3 after that review. Inline sync preserved all28 R15 scenarios and19 other requirements; supported CLI archive completed into2026-10-05-fix-decoder-preflight (f216c8, rc0). Task8.4 is complete; current task flags55/56. Final archive commit/push, latest exact-head CI, final review and authorized merge remain pending8.5. The original author50/56 snapshot below and machine traceability remain immutable review inputs, not a claim of current release completion.
