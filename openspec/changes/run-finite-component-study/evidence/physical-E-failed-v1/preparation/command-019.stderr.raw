@@ -1,0 +1,196 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 8.30kB done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/vast/finite-study-native:a18e7d6c4dfd4a335dca85c8
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [native-provider 1/1] FROM docker.io/vast/finite-study-native:a18e7d6c4dfd4a335dca85c8@sha256:def5698565c914e31d50efef71a9275e5e83f49079c73fe8b7a6dedfbade5282
+#4 resolve docker.io/vast/finite-study-native:a18e7d6c4dfd4a335dca85c8@sha256:def5698565c914e31d50efef71a9275e5e83f49079c73fe8b7a6dedfbade5282 0.0s done
+#4 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 32.40MB 0.1s done
+#5 DONE 0.2s
+
+#6 [runtime_builder  2/17] RUN install -d -m 0755       /opt/vast/runtime-root/opt/vast/checkpoint       /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0       /opt/vast/runtime-root/opt/vast/python       /opt/vast/runtime-root/opt/vast/share       /opt/vast/runtime-root/usr/local/bin       /opt/vast/wheels
+#6 0.101 + install -d -m 0755 /opt/vast/runtime-root/opt/vast/checkpoint /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0 /opt/vast/runtime-root/opt/vast/python /opt/vast/runtime-root/opt/vast/share /opt/vast/runtime-root/usr/local/bin /opt/vast/wheels
+#6 DONE 0.2s
+
+#7 [runtime_builder  3/17] COPY deploy/gstreamer_custom/publication/requirements.lock /opt/vast/requirements.lock
+#7 DONE 0.1s
+
+#8 [runtime_builder  4/17] COPY deploy/gstreamer_custom/publication/wheels/ /opt/vast/wheels/
+#8 DONE 0.1s
+
+#9 [runtime_builder  5/17] RUN /usr/bin/python3 -m pip install       --no-index --no-deps --no-compile --require-hashes       --find-links=/opt/vast/wheels       --target=/opt/vast/runtime-root/opt/vast/python       --requirement=/opt/vast/requirements.lock
+#9 0.117 + /usr/bin/python3 -m pip install --no-index --no-deps --no-compile --require-hashes --find-links=/opt/vast/wheels --target=/opt/vast/runtime-root/opt/vast/python --requirement=/opt/vast/requirements.lock
+#9 0.549 Looking in links: /opt/vast/wheels
+#9 0.557 Processing /opt/vast/wheels/numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /opt/vast/requirements.lock (line 2))
+#9 0.593 Processing /opt/vast/wheels/pandas-3.0.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (from -r /opt/vast/requirements.lock (line 3))
+#9 0.614 Processing /opt/vast/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl (from -r /opt/vast/requirements.lock (line 4))
+#9 0.618 Processing /opt/vast/wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from -r /opt/vast/requirements.lock (line 5))
+#9 0.623 Processing /opt/vast/wheels/six-1.17.0-py2.py3-none-any.whl (from -r /opt/vast/requirements.lock (line 6))
+#9 0.628 Installing collected packages: six, PyYAML, python-dateutil, pandas, numpy
+#9 1.214 Successfully installed PyYAML-6.0.3 numpy-2.5.2 pandas-3.0.5 python-dateutil-2.9.0.post0 six-1.17.0
+#9 1.215 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#9 DONE 1.4s
+
+#10 [runtime_builder  6/17] COPY   scripts/analytics_execution_endpoint.py   scripts/analytics_execution_protocol.py   scripts/analytics_execution_worker.py   scripts/analytics_model_contract.py   scripts/backend_publication_dispatch.py   scripts/backend_publication_launcher_invocation_v3.py   scripts/backend_publication_output_receipt.py   scripts/backend_publication_runtime_authority.py   scripts/backend_runtime_grant.py   scripts/backend_runtime_qualification_v3.py   scripts/benchmark_contract.py   scripts/checkpoint_acceptance_metadata_binding.py   scripts/checkpoint_admission.py   scripts/checkpoint_deepstream_protocol_bridge.py   scripts/checkpoint_deepstream_qualification_fragment_v1.py   scripts/checkpoint_gstreamer_analytics_bridge.py   scripts/checkpoint_gstreamer_analytics_sidecar.py   scripts/checkpoint_gstreamer_custom_container_coordinator_v3.py   scripts/checkpoint_gstreamer_runtime.py   scripts/checkpoint_model_parity.py   scripts/checkpoint_model_parity_acceptance.py   scripts/checkpoint_model_parity_acceptance_v4.py   scripts/checkpoint_model_parity_v4.py   scripts/checkpoint_native_policy_runtime.py   scripts/checkpoint_publication_runtime.py   scripts/checkpoint_qualification_pilot_acceptance_v1.py   scripts/checkpoint_runtime.py   scripts/checkpoint_runtime_plan.py   scripts/canonical_systems_study_plan_v1.py   scripts/extract_kpp_legacy_iss.py   scripts/formal_aw_heft_reference.py   scripts/freeze_kpp_frozen_reconstruction_v1.py   scripts/freeze_kpp_iss_publication_v3.py   scripts/freeze_kpp_legacy_iss_v2_transcodes.py   scripts/full_resource_contract.py   scripts/kpp_frozen_reconstruction_v1_dataset.py   scripts/kpp_iss_publication_v3_dataset.py   scripts/kpp_legacy_iss_v2_manifest.py   scripts/model_parity_grant.py   scripts/publication_acceptance_evidence.py   scripts/publication_child_evidence_materializer_v1.py   scripts/publication_gstreamer_component_authority_v1.py   scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py   scripts/publication_guardian_component_preprocessing_contract_v1.py   scripts/publication_guardian_operational_recorder_v1.py   scripts/publication_guardian_preprocessing_contract_v1.py   scripts/publication_guardian_runtime_expectations_v1.py   scripts/publication_operational_capture_plan_v1.py   scripts/publication_operational_container_custody_v1.py   scripts/publication_operational_process_custody_v1.py   scripts/publication_operational_request_domain_v1.py   scripts/publication_operational_request_reconciliation_v1.py   scripts/publication_operational_runtime_context_v1.py   scripts/publication_owned_staging_cleanup_v1.py   scripts/publication_physical_io_v1.py   scripts/publication_policy_contract.py   scripts/publication_policy_frozen_replay_v1.py   scripts/publication_policy_projection_v1.py   scripts/publication_policy_qualification.py   scripts/publication_policy_qualification_execution_closure_v1.py   scripts/publication_qualification_image_refreeze_v1.py   scripts/resource_interval_contract.py   scripts/topology_contract.py   /opt/vast/runtime-root/opt/vast/checkpoint/
+#10 DONE 0.5s
+
+#11 [runtime_builder  7/17] COPY   deploy/native_gst_probe/checkpoint_admission_transport.hpp   deploy/native_gst_probe/checkpoint_study_reference.hpp   deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp   deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp   deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp   deploy/native_gst_probe/checkpoint_native_policy_client.hpp   deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp   deploy/native_gst_probe/checkpoint_runtime_emitter.hpp   deploy/native_gst_probe/vast_native_gst_probe.cpp   /opt/vast/native-src/
+#11 DONE 0.1s
+
+#12 [runtime_builder  8/17] COPY deploy/gstreamer_custom/publication/runtime-source-allowlist.txt   /opt/vast/runtime-root/opt/vast/runtime-source-allowlist.txt
+#12 DONE 0.1s
+
+#13 [runtime_builder  9/17] COPY deploy/gstreamer_custom/publication/vast_gstreamer_custom_publication_runtime_v3   /opt/vast/runtime-root/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3
+#13 DONE 0.1s
+
+#14 [runtime_builder 10/17] COPY --from=native-provider /usr/local/bin/vast_native_gst_probe /opt/vast/runtime-root/usr/local/bin/vast_native_gst_probe
+#14 DONE 0.1s
+
+#15 [runtime_builder 11/17] COPY --from=native-provider /usr/local/bin/vast_checkpoint_source /opt/vast/runtime-root/usr/local/bin/vast_checkpoint_source
+#15 DONE 0.1s
+
+#16 [runtime_builder 12/17] COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so
+#16 DONE 0.1s
+
+#17 [runtime_builder 13/17] COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so
+#17 DONE 0.1s
+
+#18 [runtime_builder 14/17] COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so
+#18 DONE 0.1s
+
+#19 [runtime_builder 15/17] COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so
+#19 DONE 0.1s
+
+#20 [runtime_builder 16/17] COPY --from=native-provider /opt/vast/share/gstreamer-registry.bin /opt/vast/runtime-root/opt/vast/share/gstreamer-registry.bin
+#20 DONE 0.1s
+
+#21 [runtime_builder 17/17] RUN chmod 0555       /opt/vast/runtime-root/usr/local/bin/vast_native_gst_probe       /opt/vast/runtime-root/usr/local/bin/vast_checkpoint_source       /opt/vast/runtime-root/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3       /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/*.so   && chmod 0444       /opt/vast/runtime-root/opt/vast/checkpoint/*.py       /opt/vast/runtime-root/opt/vast/share/gstreamer-registry.bin       /opt/vast/runtime-root/opt/vast/runtime-source-allowlist.txt   && find /opt/vast/runtime-root -exec touch -h -d "@0" {} +   && PYTHONDONTWRITEBYTECODE=1      PYTHONPATH=/opt/vast/runtime-root/opt/vast/checkpoint:/opt/vast/runtime-root/opt/vast/python      /usr/bin/python3 -B -c 'import checkpoint_gstreamer_custom_container_coordinator_v3; import checkpoint_gstreamer_analytics_bridge; import checkpoint_gstreamer_analytics_sidecar'
+#21 0.114 + chmod 0555 /opt/vast/runtime-root/usr/local/bin/vast_native_gst_probe /opt/vast/runtime-root/usr/local/bin/vast_checkpoint_source /opt/vast/runtime-root/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3 /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so
+#21 0.138 + chmod 0444 /opt/vast/runtime-root/opt/vast/checkpoint/analytics_execution_endpoint.py /opt/vast/runtime-root/opt/vast/checkpoint/analytics_execution_protocol.py /opt/vast/runtime-root/opt/vast/checkpoint/analytics_execution_worker.py /opt/vast/runtime-root/opt/vast/checkpoint/analytics_model_contract.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_publication_dispatch.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_publication_launcher_invocation_v3.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_publication_output_receipt.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_publication_runtime_authority.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_runtime_grant.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_runtime_qualification_v3.py /opt/vast/runtime-root/opt/vast/checkpoint/benchmark_contract.py /opt/vast/runtime-root/opt/vast/checkpoint/canonical_systems_study_plan_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_acceptance_metadata_binding.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_admission.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_deepstream_protocol_bridge.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_deepstream_qualification_fragment_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_gstreamer_analytics_bridge.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_gstreamer_analytics_sidecar.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_model_parity.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_model_parity_acceptance.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_model_parity_acceptance_v4.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_model_parity_v4.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_native_policy_runtime.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_publication_runtime.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_qualification_pilot_acceptance_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_runtime.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_runtime_plan.py /opt/vast/runtime-root/opt/vast/checkpoint/extract_kpp_legacy_iss.py /opt/vast/runtime-root/opt/vast/checkpoint/formal_aw_heft_reference.py /opt/vast/runtime-root/opt/vast/checkpoint/freeze_kpp_frozen_reconstruction_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/freeze_kpp_iss_publication_v3.py /opt/vast/runtime-root/opt/vast/checkpoint/freeze_kpp_legacy_iss_v2_transcodes.py /opt/vast/runtime-root/opt/vast/checkpoint/full_resource_contract.py /opt/vast/runtime-root/opt/vast/checkpoint/kpp_frozen_reconstruction_v1_dataset.py /opt/vast/runtime-root/opt/vast/checkpoint/kpp_iss_publication_v3_dataset.py /opt/vast/runtime-root/opt/vast/checkpoint/kpp_legacy_iss_v2_manifest.py /opt/vast/runtime-root/opt/vast/checkpoint/model_parity_grant.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_acceptance_evidence.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_child_evidence_materializer_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_gstreamer_component_authority_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_guardian_accepted_policy_preprocessing_contract_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_guardian_component_preprocessing_contract_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_guardian_operational_recorder_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_guardian_preprocessing_contract_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_guardian_runtime_expectations_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_capture_plan_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_container_custody_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_process_custody_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_request_domain_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_request_reconciliation_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_runtime_context_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_owned_staging_cleanup_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_physical_io_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_policy_contract.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_policy_frozen_replay_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_policy_projection_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_policy_qualification.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_policy_qualification_execution_closure_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_qualification_image_refreeze_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/resource_interval_contract.py /opt/vast/runtime-root/opt/vast/checkpoint/topology_contract.py /opt/vast/runtime-root/opt/vast/share/gstreamer-registry.bin /opt/vast/runtime-root/opt/vast/runtime-source-allowlist.txt
+#21 0.324 + find /opt/vast/runtime-root -exec touch -h -d @0 '{}' +
+#21 6.334 + PYTHONDONTWRITEBYTECODE=1
+#21 6.334 + PYTHONPATH=/opt/vast/runtime-root/opt/vast/checkpoint:/opt/vast/runtime-root/opt/vast/python
+#21 6.334 + /usr/bin/python3 -B -c 'import checkpoint_gstreamer_custom_container_coordinator_v3; import checkpoint_gstreamer_analytics_bridge; import checkpoint_gstreamer_analytics_sidecar'
+#21 DONE 7.4s
+
+#22 [stage-2 2/2] COPY --from=runtime_builder /opt/vast/runtime-root/ /
+#22 DONE 0.4s
+
+#23 exporting to image
+#23 exporting layers
+#23 exporting layers 2.2s done
+#23 exporting manifest sha256:77c2823d0bfebed0910d5bd42e4d2825a77070c58ba2b36a591216fff1b2cdd8 done
+#23 exporting config sha256:26eedffc328bfcc991281d6e72def2bb0a9172c2e24d62035ed40661667d19c4 done
+#23 naming to docker.io/vast/finite-study-gstreamer:a18e7d6c4dfd4a335dca85c8-determinism-a done
+#23 unpacking to docker.io/vast/finite-study-gstreamer:a18e7d6c4dfd4a335dca85c8-determinism-a 0.0s done
+#23 DONE 2.2s
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 8.30kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/vast/finite-study-native:a18e7d6c4dfd4a335dca85c8
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [native-provider 1/1] FROM docker.io/vast/finite-study-native:a18e7d6c4dfd4a335dca85c8@sha256:def5698565c914e31d50efef71a9275e5e83f49079c73fe8b7a6dedfbade5282
+#4 resolve docker.io/vast/finite-study-native:a18e7d6c4dfd4a335dca85c8@sha256:def5698565c914e31d50efef71a9275e5e83f49079c73fe8b7a6dedfbade5282 0.0s done
+#4 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 5.22kB done
+#5 DONE 0.1s
+
+#6 [runtime_builder  2/17] RUN install -d -m 0755       /opt/vast/runtime-root/opt/vast/checkpoint       /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0       /opt/vast/runtime-root/opt/vast/python       /opt/vast/runtime-root/opt/vast/share       /opt/vast/runtime-root/usr/local/bin       /opt/vast/wheels
+#6 0.122 + install -d -m 0755 /opt/vast/runtime-root/opt/vast/checkpoint /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0 /opt/vast/runtime-root/opt/vast/python /opt/vast/runtime-root/opt/vast/share /opt/vast/runtime-root/usr/local/bin /opt/vast/wheels
+#6 DONE 0.2s
+
+#7 [runtime_builder  3/17] COPY deploy/gstreamer_custom/publication/requirements.lock /opt/vast/requirements.lock
+#7 DONE 0.1s
+
+#8 [runtime_builder  4/17] COPY deploy/gstreamer_custom/publication/wheels/ /opt/vast/wheels/
+#8 DONE 0.2s
+
+#9 [runtime_builder  5/17] RUN /usr/bin/python3 -m pip install       --no-index --no-deps --no-compile --require-hashes       --find-links=/opt/vast/wheels       --target=/opt/vast/runtime-root/opt/vast/python       --requirement=/opt/vast/requirements.lock
+#9 0.116 + /usr/bin/python3 -m pip install --no-index --no-deps --no-compile --require-hashes --find-links=/opt/vast/wheels --target=/opt/vast/runtime-root/opt/vast/python --requirement=/opt/vast/requirements.lock
+#9 0.321 Looking in links: /opt/vast/wheels
+#9 0.331 Processing /opt/vast/wheels/numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /opt/vast/requirements.lock (line 2))
+#9 0.365 Processing /opt/vast/wheels/pandas-3.0.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (from -r /opt/vast/requirements.lock (line 3))
+#9 0.386 Processing /opt/vast/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl (from -r /opt/vast/requirements.lock (line 4))
+#9 0.391 Processing /opt/vast/wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from -r /opt/vast/requirements.lock (line 5))
+#9 0.396 Processing /opt/vast/wheels/six-1.17.0-py2.py3-none-any.whl (from -r /opt/vast/requirements.lock (line 6))
+#9 0.401 Installing collected packages: six, PyYAML, python-dateutil, pandas, numpy
+#9 0.989 Successfully installed PyYAML-6.0.3 numpy-2.5.2 pandas-3.0.5 python-dateutil-2.9.0.post0 six-1.17.0
+#9 0.990 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#9 DONE 1.2s
+
+#10 [runtime_builder  6/17] COPY   scripts/analytics_execution_endpoint.py   scripts/analytics_execution_protocol.py   scripts/analytics_execution_worker.py   scripts/analytics_model_contract.py   scripts/backend_publication_dispatch.py   scripts/backend_publication_launcher_invocation_v3.py   scripts/backend_publication_output_receipt.py   scripts/backend_publication_runtime_authority.py   scripts/backend_runtime_grant.py   scripts/backend_runtime_qualification_v3.py   scripts/benchmark_contract.py   scripts/checkpoint_acceptance_metadata_binding.py   scripts/checkpoint_admission.py   scripts/checkpoint_deepstream_protocol_bridge.py   scripts/checkpoint_deepstream_qualification_fragment_v1.py   scripts/checkpoint_gstreamer_analytics_bridge.py   scripts/checkpoint_gstreamer_analytics_sidecar.py   scripts/checkpoint_gstreamer_custom_container_coordinator_v3.py   scripts/checkpoint_gstreamer_runtime.py   scripts/checkpoint_model_parity.py   scripts/checkpoint_model_parity_acceptance.py   scripts/checkpoint_model_parity_acceptance_v4.py   scripts/checkpoint_model_parity_v4.py   scripts/checkpoint_native_policy_runtime.py   scripts/checkpoint_publication_runtime.py   scripts/checkpoint_qualification_pilot_acceptance_v1.py   scripts/checkpoint_runtime.py   scripts/checkpoint_runtime_plan.py   scripts/canonical_systems_study_plan_v1.py   scripts/extract_kpp_legacy_iss.py   scripts/formal_aw_heft_reference.py   scripts/freeze_kpp_frozen_reconstruction_v1.py   scripts/freeze_kpp_iss_publication_v3.py   scripts/freeze_kpp_legacy_iss_v2_transcodes.py   scripts/full_resource_contract.py   scripts/kpp_frozen_reconstruction_v1_dataset.py   scripts/kpp_iss_publication_v3_dataset.py   scripts/kpp_legacy_iss_v2_manifest.py   scripts/model_parity_grant.py   scripts/publication_acceptance_evidence.py   scripts/publication_child_evidence_materializer_v1.py   scripts/publication_gstreamer_component_authority_v1.py   scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py   scripts/publication_guardian_component_preprocessing_contract_v1.py   scripts/publication_guardian_operational_recorder_v1.py   scripts/publication_guardian_preprocessing_contract_v1.py   scripts/publication_guardian_runtime_expectations_v1.py   scripts/publication_operational_capture_plan_v1.py   scripts/publication_operational_container_custody_v1.py   scripts/publication_operational_process_custody_v1.py   scripts/publication_operational_request_domain_v1.py   scripts/publication_operational_request_reconciliation_v1.py   scripts/publication_operational_runtime_context_v1.py   scripts/publication_owned_staging_cleanup_v1.py   scripts/publication_physical_io_v1.py   scripts/publication_policy_contract.py   scripts/publication_policy_frozen_replay_v1.py   scripts/publication_policy_projection_v1.py   scripts/publication_policy_qualification.py   scripts/publication_policy_qualification_execution_closure_v1.py   scripts/publication_qualification_image_refreeze_v1.py   scripts/resource_interval_contract.py   scripts/topology_contract.py   /opt/vast/runtime-root/opt/vast/checkpoint/
+#10 DONE 0.6s
+
+#11 [runtime_builder  7/17] COPY   deploy/native_gst_probe/checkpoint_admission_transport.hpp   deploy/native_gst_probe/checkpoint_study_reference.hpp   deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp   deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp   deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp   deploy/native_gst_probe/checkpoint_native_policy_client.hpp   deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp   deploy/native_gst_probe/checkpoint_runtime_emitter.hpp   deploy/native_gst_probe/vast_native_gst_probe.cpp   /opt/vast/native-src/
+#11 DONE 0.1s
+
+#12 [runtime_builder  8/17] COPY deploy/gstreamer_custom/publication/runtime-source-allowlist.txt   /opt/vast/runtime-root/opt/vast/runtime-source-allowlist.txt
+#12 DONE 0.1s
+
+#13 [runtime_builder  9/17] COPY deploy/gstreamer_custom/publication/vast_gstreamer_custom_publication_runtime_v3   /opt/vast/runtime-root/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3
+#13 DONE 0.1s
+
+#14 [runtime_builder 10/17] COPY --from=native-provider /usr/local/bin/vast_native_gst_probe /opt/vast/runtime-root/usr/local/bin/vast_native_gst_probe
+#14 DONE 0.1s
+
+#15 [runtime_builder 11/17] COPY --from=native-provider /usr/local/bin/vast_checkpoint_source /opt/vast/runtime-root/usr/local/bin/vast_checkpoint_source
+#15 DONE 0.1s
+
+#16 [runtime_builder 12/17] COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so
+#16 DONE 0.1s
+
+#17 [runtime_builder 13/17] COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so
+#17 DONE 0.1s
+
+#18 [runtime_builder 14/17] COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so
+#18 DONE 0.1s
+
+#19 [runtime_builder 15/17] COPY --from=native-provider /opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so
+#19 DONE 0.1s
+
+#20 [runtime_builder 16/17] COPY --from=native-provider /opt/vast/share/gstreamer-registry.bin /opt/vast/runtime-root/opt/vast/share/gstreamer-registry.bin
+#20 DONE 0.1s
+
+#21 [runtime_builder 17/17] RUN chmod 0555       /opt/vast/runtime-root/usr/local/bin/vast_native_gst_probe       /opt/vast/runtime-root/usr/local/bin/vast_checkpoint_source       /opt/vast/runtime-root/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3       /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/*.so   && chmod 0444       /opt/vast/runtime-root/opt/vast/checkpoint/*.py       /opt/vast/runtime-root/opt/vast/share/gstreamer-registry.bin       /opt/vast/runtime-root/opt/vast/runtime-source-allowlist.txt   && find /opt/vast/runtime-root -exec touch -h -d "@0" {} +   && PYTHONDONTWRITEBYTECODE=1      PYTHONPATH=/opt/vast/runtime-root/opt/vast/checkpoint:/opt/vast/runtime-root/opt/vast/python      /usr/bin/python3 -B -c 'import checkpoint_gstreamer_custom_container_coordinator_v3; import checkpoint_gstreamer_analytics_bridge; import checkpoint_gstreamer_analytics_sidecar'
+#21 0.107 + chmod 0555 /opt/vast/runtime-root/usr/local/bin/vast_native_gst_probe /opt/vast/runtime-root/usr/local/bin/vast_checkpoint_source /opt/vast/runtime-root/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3 /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so /opt/vast/runtime-root/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so
+#21 0.131 + chmod 0444 /opt/vast/runtime-root/opt/vast/checkpoint/analytics_execution_endpoint.py /opt/vast/runtime-root/opt/vast/checkpoint/analytics_execution_protocol.py /opt/vast/runtime-root/opt/vast/checkpoint/analytics_execution_worker.py /opt/vast/runtime-root/opt/vast/checkpoint/analytics_model_contract.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_publication_dispatch.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_publication_launcher_invocation_v3.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_publication_output_receipt.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_publication_runtime_authority.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_runtime_grant.py /opt/vast/runtime-root/opt/vast/checkpoint/backend_runtime_qualification_v3.py /opt/vast/runtime-root/opt/vast/checkpoint/benchmark_contract.py /opt/vast/runtime-root/opt/vast/checkpoint/canonical_systems_study_plan_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_acceptance_metadata_binding.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_admission.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_deepstream_protocol_bridge.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_deepstream_qualification_fragment_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_gstreamer_analytics_bridge.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_gstreamer_analytics_sidecar.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_model_parity.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_model_parity_acceptance.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_model_parity_acceptance_v4.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_model_parity_v4.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_native_policy_runtime.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_publication_runtime.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_qualification_pilot_acceptance_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_runtime.py /opt/vast/runtime-root/opt/vast/checkpoint/checkpoint_runtime_plan.py /opt/vast/runtime-root/opt/vast/checkpoint/extract_kpp_legacy_iss.py /opt/vast/runtime-root/opt/vast/checkpoint/formal_aw_heft_reference.py /opt/vast/runtime-root/opt/vast/checkpoint/freeze_kpp_frozen_reconstruction_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/freeze_kpp_iss_publication_v3.py /opt/vast/runtime-root/opt/vast/checkpoint/freeze_kpp_legacy_iss_v2_transcodes.py /opt/vast/runtime-root/opt/vast/checkpoint/full_resource_contract.py /opt/vast/runtime-root/opt/vast/checkpoint/kpp_frozen_reconstruction_v1_dataset.py /opt/vast/runtime-root/opt/vast/checkpoint/kpp_iss_publication_v3_dataset.py /opt/vast/runtime-root/opt/vast/checkpoint/kpp_legacy_iss_v2_manifest.py /opt/vast/runtime-root/opt/vast/checkpoint/model_parity_grant.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_acceptance_evidence.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_child_evidence_materializer_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_gstreamer_component_authority_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_guardian_accepted_policy_preprocessing_contract_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_guardian_component_preprocessing_contract_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_guardian_operational_recorder_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_guardian_preprocessing_contract_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_guardian_runtime_expectations_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_capture_plan_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_container_custody_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_process_custody_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_request_domain_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_request_reconciliation_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_operational_runtime_context_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_owned_staging_cleanup_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_physical_io_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_policy_contract.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_policy_frozen_replay_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_policy_projection_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_policy_qualification.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_policy_qualification_execution_closure_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/publication_qualification_image_refreeze_v1.py /opt/vast/runtime-root/opt/vast/checkpoint/resource_interval_contract.py /opt/vast/runtime-root/opt/vast/checkpoint/topology_contract.py /opt/vast/runtime-root/opt/vast/share/gstreamer-registry.bin /opt/vast/runtime-root/opt/vast/runtime-source-allowlist.txt
+#21 0.305 + find /opt/vast/runtime-root -exec touch -h -d @0 '{}' +
+#21 6.549 + PYTHONDONTWRITEBYTECODE=1
+#21 6.549 + PYTHONPATH=/opt/vast/runtime-root/opt/vast/checkpoint:/opt/vast/runtime-root/opt/vast/python
+#21 6.549 + /usr/bin/python3 -B -c 'import checkpoint_gstreamer_custom_container_coordinator_v3; import checkpoint_gstreamer_analytics_bridge; import checkpoint_gstreamer_analytics_sidecar'
+#21 DONE 7.6s
+
+#22 [stage-2 2/2] COPY --from=runtime_builder /opt/vast/runtime-root/ /
+#22 DONE 0.4s
+
+#23 exporting to image
+#23 exporting layers
+#23 exporting layers 2.2s done
+#23 exporting manifest sha256:77c2823d0bfebed0910d5bd42e4d2825a77070c58ba2b36a591216fff1b2cdd8 done
+#23 exporting config sha256:26eedffc328bfcc991281d6e72def2bb0a9172c2e24d62035ed40661667d19c4 done
+#23 naming to docker.io/vast/finite-study-gstreamer:a18e7d6c4dfd4a335dca85c8-determinism-b done
+#23 unpacking to docker.io/vast/finite-study-gstreamer:a18e7d6c4dfd4a335dca85c8-determinism-b 0.0s done
+#23 DONE 2.2s
