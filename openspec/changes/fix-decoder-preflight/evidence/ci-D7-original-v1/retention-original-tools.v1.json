@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "D7_original_CI_retention_faithful_root_tools_v1",
+  "literal_command": "wsl.exe -d Ubuntu --exec /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-D7233abc01-v1/retain_originals_v1.py",
+  "initiating_tool_return": {
+    "chunk_id": "bb28a4",
+    "wall_time_seconds": 8.5566819,
+    "exit_code": 0,
+    "original_token_count": 93,
+    "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000{\"run_id\": 37242973038, \"status\": \"originals_retained\", \"retained_count\": 4, \"elapsed_s\": 7.642122542951256}\n"
+  },
+  "completed_in_initiating_return": true,
+  "polls": [],
+  "retainer_binding_original": {
+    "chunk_id": "ad2bdd",
+    "wall_time_seconds": 1.1049795,
+    "exit_code": 0,
+    "original_token_count": 123,
+    "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000{\"existing_retainer_literal_binding_only\":true,\"size_bytes\":5860,\"sha256\":\"f7d48f47ea3917c39df48e54943a2489bb3d9d2ebd21b3f9261de50756103089\",\"run_id\":37242973038,\"source\":\"233abc019bb7a92a3e50a531468418ad24a3d065\",\"executed\":false}\n"
+  },
+  "original_provider_metadata_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-D7233abc01-v1/original-retention-v1/original-provider-metadata.v1.json",
+  "record_write_first_attempt_failure": "CreateProcess rejected command length before any process/file write; original provider wrapper omitted here because full fetched originals already retained separately."
+}

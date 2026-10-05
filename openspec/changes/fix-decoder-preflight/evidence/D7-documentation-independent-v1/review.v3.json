@@ -1,0 +1,1151 @@
+{
+  "schema_version": 1,
+  "kind": "vast_decoder_preflight_D7_documentation_independent_review_v1",
+  "verdict": "PASS_EXACT_D7_DOCUMENTATION_ONLY_COMPATIBILITY",
+  "reviewable": true,
+  "blocking_findings": [],
+  "reviewed_commit": "233abc019bb7a92a3e50a531468418ad24a3d065",
+  "parent_source_commit": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+  "change": "fix-decoder-preflight",
+  "previous_metadata_attempt": {
+    "tool_reference": "4abd4e",
+    "receipt_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/D7-documentation-independent-v1/review.v1.json",
+    "size_bytes": 964,
+    "sha256": "e96c523d123bb78b8ccf81cbba464483757cd3c8867488b5f144d0115d877c09",
+    "disposition": "FAILED before scope checks: native WSL Git cannot interpret managed Windows worktree gitdir pointer; no source/target operation",
+    "fd_before": 6,
+    "fd_after": 6,
+    "close_errors": []
+  },
+  "native_object_query_repository": "/mnt/e/STUDY/VAST/.git",
+  "explicit_commit_queries_only": true,
+  "global_HEAD_not_read": true,
+  "additional_metadata_attempt": {
+    "tool_reference": "c19295",
+    "receipt_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/D7-documentation-independent-v1/review.v2.json",
+    "size_bytes": 951,
+    "sha256": "33af925f2481d2d1233458a4f42171492948f2155ddceda0647f23b6b607244d",
+    "disposition": "FAILED metadata admission on existing progress.md1251418B against auditor-local1MiB guard; only this known document now admitted up to2MiB",
+    "fd_before": 6,
+    "fd_after": 6,
+    "close_errors": []
+  },
+  "finite_read_scope": {
+    "changed23_total_bytes": 2267600,
+    "progress_document_bytes": 1251418,
+    "progress_only_local_auditor_limit": 2097152,
+    "runtime_or_scientific_limits_changed": false
+  },
+  "exact_git_scope": {
+    "entries": 23,
+    "modified": 5,
+    "added_original_evidence": 17,
+    "raw_rename100": 1,
+    "no_production_test_CI_attrs_main_spec_or_normative_change": true,
+    "paths": [
+      [
+        "M",
+        "PLAN.md"
+      ],
+      [
+        "A",
+        "docs/decoder-preflight-20261004/P6-implementation-independent-v1/original-tool-results.v1.json"
+      ],
+      [
+        "A",
+        "docs/decoder-preflight-20261004/P6-implementation-independent-v1/review.v1.json"
+      ],
+      [
+        "A",
+        "docs/decoder-preflight-20261004/P6-implementation-v1/author-review.v1.json"
+      ],
+      [
+        "A",
+        "docs/decoder-preflight-20261004/P6-implementation-v1/canonical-closed-metadata.v1.json"
+      ],
+      [
+        "A",
+        "docs/decoder-preflight-20261004/P6-implementation-v1/canonical.adapter-final-close.v1.json"
+      ],
+      [
+        "A",
+        "docs/decoder-preflight-20261004/P6-implementation-v1/canonical.adapter-terminal.v1.json"
+      ],
+      [
+        "A",
+        "docs/decoder-preflight-20261004/P6-implementation-v1/canonical.nested-suite.v1.json"
+      ],
+      [
+        "A",
+        "docs/decoder-preflight-20261004/P6-implementation-v1/canonical.original.stderr.raw"
+      ],
+      [
+        "A",
+        "docs/decoder-preflight-20261004/P6-implementation-v1/canonical.original.stdout.raw"
+      ],
+      [
+        "A",
+        "docs/decoder-preflight-20261004/P6-implementation-v1/original-tools.v1.json"
+      ],
+      [
+        "M",
+        "openspec/changes/fix-decoder-preflight/design.md"
+      ],
+      [
+        "A",
+        "openspec/changes/fix-decoder-preflight/evidence/S6-source-readiness-original-tools.v1.json"
+      ],
+      [
+        "A",
+        "openspec/changes/fix-decoder-preflight/evidence/S6-source-readiness.v1.json"
+      ],
+      [
+        "R100",
+        "docs/decoder-preflight-20261004/ci-S5-original-v1/independent-original-tools.v1.json",
+        "openspec/changes/fix-decoder-preflight/evidence/ci-S5-independent-original-tools.v1.json"
+      ],
+      [
+        "A",
+        "openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/job-111548803858.original.log"
+      ],
+      [
+        "A",
+        "openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/job-111548804016.original.log"
+      ],
+      [
+        "A",
+        "openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/original-provider-metadata.v1.json"
+      ],
+      [
+        "A",
+        "openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/original-retention-terminal.v1.json"
+      ],
+      [
+        "A",
+        "openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/retention-original-tools.v1.json"
+      ],
+      [
+        "M",
+        "openspec/changes/fix-decoder-preflight/proposal.md"
+      ],
+      [
+        "M",
+        "openspec/changes/fix-decoder-preflight/tasks.md"
+      ],
+      [
+        "M",
+        "progress.md"
+      ]
+    ]
+  },
+  "planning_compatibility": {
+    "P7_appended_only": [
+      {
+        "git_path": "openspec/changes/fix-decoder-preflight/proposal.md",
+        "old_S6_prefix": {
+          "size_bytes": 14447,
+          "sha256": "8da4687b6ba5b9554938da50431f1697a1e6457d2ee6e8f0f20d55e09a350672"
+        },
+        "new_D7": {
+          "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/proposal.md",
+          "size_bytes": 16107,
+          "sha256": "2d8902d34037ddeb56481e45cfc48e2ba92331f361a915595dbf528c4fd01bde",
+          "epoch7": [
+            68,
+            2533274792077551,
+            33279,
+            1,
+            16107,
+            1791155363498383800,
+            1791155363498383800
+          ]
+        },
+        "appended_bytes": 1660,
+        "appended_sha256": "c0d704287e0de1aa89d2eeb2d41f2b2bcb3651be20b90eb3e5de7002ec54b906"
+      },
+      {
+        "git_path": "openspec/changes/fix-decoder-preflight/design.md",
+        "old_S6_prefix": {
+          "size_bytes": 75703,
+          "sha256": "c49c13ed95cffc708e1e01e152d3a10b7ce3fb297e8e7220f33b0fc62ee8dde4"
+        },
+        "new_D7": {
+          "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/design.md",
+          "size_bytes": 77939,
+          "sha256": "d498f5bbd9d6c1111202e87a623721d30747935113c3ea375bb2507c32bca269",
+          "epoch7": [
+            68,
+            122441614870155827,
+            33279,
+            1,
+            77939,
+            1791155363511043500,
+            1791155363511043500
+          ]
+        },
+        "appended_bytes": 2236,
+        "appended_sha256": "f7f827e38b08c75b097895e366bd56ad623acc25f27ba441d08595b9764c530b"
+      },
+      {
+        "git_path": "openspec/changes/fix-decoder-preflight/tasks.md",
+        "old_S6_prefix": {
+          "size_bytes": 27630,
+          "sha256": "b2124e29f2a545990127aa2cdaa7b86617f3e69fef51ec6757b954d2a8f48a1b"
+        },
+        "new_D7": {
+          "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/tasks.md",
+          "size_bytes": 28807,
+          "sha256": "11c9e6167dc444132c9414edd9d8c02644b95e8b4f8969dd2f8ff5c238c86a95",
+          "epoch7": [
+            68,
+            40532396647376409,
+            33279,
+            1,
+            28807,
+            1791155363512042600,
+            1791155363512042600
+          ]
+        },
+        "appended_bytes": 1177,
+        "appended_sha256": "3d2743570badcd05add4e6b01eafa9d0039f788987f892b4d635f786bcd183ce"
+      }
+    ],
+    "old_S6_planning_prefixes_exact": true,
+    "original53_ids_full_text_and45_flags_exact": true,
+    "delta28_full_raw_unchanged": {
+      "size_bytes": 23273,
+      "sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d"
+    },
+    "other19_requirements_and_diagnostics_unchanged_by_exact_scope": true,
+    "adjudication": "P7 changes only latest repository CI head to reviewed documentation-only D7 while executed observer remains frozen S6. Original S6 canonical/source evidence retains its version; latest complete D7 CI, ordinary readiness and separate once-read grant remain mandatory. No task, scientific predicate, producer/helper/runtime behavior or failed disposition is waived."
+  },
+  "current15_sources_raw_S6_D7_full_hash_epoch7_equal": [
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_mapped_inputs_v4.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_mapped_inputs_v4.py",
+        "size_bytes": 11433,
+        "sha256": "831cbd07388af9994d2684ab2248e299c95b29ee4ad799f26375d603b2f2f986",
+        "epoch7": [
+          68,
+          4785074605749788,
+          33279,
+          1,
+          11433,
+          1791107896746919500,
+          1791107896746919500
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_pin_diagnostics_v3.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_pin_diagnostics_v3.py",
+        "size_bytes": 11543,
+        "sha256": "a693f9fea9cc583d236447023745c612d3762da41d3103b474aa03dbddcfac14",
+        "epoch7": [
+          68,
+          3096224745485858,
+          33279,
+          1,
+          11543,
+          1791109088755188200,
+          1791109088755188200
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_preflight_diagnostics_v5.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_preflight_diagnostics_v5.py",
+        "size_bytes": 11980,
+        "sha256": "ade99a45510b042fc55ce2c888f029301ae67defea2776524101aa8d158f3afe",
+        "epoch7": [
+          68,
+          23080948091955480,
+          33279,
+          1,
+          11980,
+          1791109088754187700,
+          1791109088754187700
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+        "size_bytes": 106331,
+        "sha256": "3d6eac7facb0e1fd87ad0acd3caf9c9ead396370a6d62e8caf626263a03463f1",
+        "epoch7": [
+          68,
+          4785074605762841,
+          33279,
+          1,
+          106331,
+          1791152514994109700,
+          1791152514994109700
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_setup_v2.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_setup_v2.py",
+        "size_bytes": 34262,
+        "sha256": "f0f5bdb2be0f834e9795aa35c665e1703a0b120df24a9a4b56afe425a90fe4cd",
+        "epoch7": [
+          68,
+          8162774326290722,
+          33279,
+          1,
+          34262,
+          1791110052702391000,
+          1791110052702391000
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_successor_v6.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_successor_v6.py",
+        "size_bytes": 54172,
+        "sha256": "2d1b3ac6ab031ac49449f28f453b165b19780fbc30e5fb9f451d15a5afd555f6",
+        "epoch7": [
+          68,
+          39125021762869887,
+          33279,
+          1,
+          54172,
+          1791114693080789400,
+          1791114693080789400
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+        "size_bytes": 53060,
+        "sha256": "3db163f5d90043bddb07fbabd29ee4f500b5ccc070d844a8e6d67b2d595e1bce",
+        "epoch7": [
+          68,
+          4785074605590591,
+          33279,
+          1,
+          53060,
+          1791110107915893900,
+          1791110107915893900
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+        "size_bytes": 64637,
+        "sha256": "bc2a3a618fab6e53ed15835d327f611cc63f18543cc16648a5d6b7e084f073ec",
+        "epoch7": [
+          68,
+          8444249302829122,
+          33279,
+          1,
+          64637,
+          1791134947062299300,
+          1791134947062299300
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+        "size_bytes": 36624,
+        "sha256": "f0685e19a3072736f8262aad32d868a2021650381e8beaef989d4f5339358d63",
+        "epoch7": [
+          68,
+          6192449489143878,
+          33279,
+          1,
+          36624,
+          1791111029135697300,
+          1791111029135697300
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+        "size_bytes": 93774,
+        "sha256": "1cdfbbeffbbf859e83ba127a07b5ae214887b20bb4deab3615a1c1aa9bb124e8",
+        "epoch7": [
+          68,
+          4785074605590882,
+          33279,
+          1,
+          93774,
+          1791152612452065500,
+          1791152612452065500
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "tests/test_decoder_research_v6.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+        "size_bytes": 50190,
+        "sha256": "15ebb1f97da46e19358bc4d460c396abb607725a08dcc0018da8d92fc0ed0153",
+        "epoch7": [
+          68,
+          147774362773175885,
+          33279,
+          1,
+          50190,
+          1791152612454500900,
+          1791152612454500900
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "scripts/run_ci_checks.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/run_ci_checks.py",
+        "size_bytes": 29477,
+        "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+        "epoch7": [
+          68,
+          1407374885234622,
+          33279,
+          1,
+          29477,
+          1791104455323487500,
+          1791104455323487500
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "scripts/ci_external_test_observer_v1.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/ci_external_test_observer_v1.py",
+        "size_bytes": 20916,
+        "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+        "epoch7": [
+          68,
+          1407374885234523,
+          33279,
+          1,
+          20916,
+          1791104455283089200,
+          1791104455283089200
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "scripts/ci_test_selection_v1.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/ci_test_selection_v1.py",
+        "size_bytes": 9978,
+        "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d",
+        "epoch7": [
+          68,
+          1407374885234525,
+          33279,
+          1,
+          9978,
+          1791104455284090800,
+          1791104455284090800
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    },
+    {
+      "git_path": "scripts/ci_userns_profile_v1.py",
+      "physical_current": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/ci_userns_profile_v1.py",
+        "size_bytes": 28890,
+        "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+        "epoch7": [
+          68,
+          1407374885234526,
+          33279,
+          1,
+          28890,
+          1791104455284090800,
+          1791104455284090800
+        ]
+      },
+      "canonical_S6_epoch7_exact": true
+    }
+  ],
+  "original17_retained_copies_byte_exact": [
+    {
+      "git_path": "docs/decoder-preflight-20261004/P6-implementation-independent-v1/original-tool-results.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P6-implementation-independent-v1/original-tool-results.v1.json",
+        "size_bytes": 116232,
+        "sha256": "5f2a0f7a14c5368c45de68ae3d32a62de117227d896b4f4252778fadcb34636a",
+        "epoch7": [
+          68,
+          25332747905526562,
+          33279,
+          1,
+          116232,
+          1791154543869831100,
+          1791154543869831100
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-independent-v1/original-tool-results.v1.json",
+        "size_bytes": 116232,
+        "sha256": "5f2a0f7a14c5368c45de68ae3d32a62de117227d896b4f4252778fadcb34636a",
+        "epoch7": [
+          69,
+          1970324839405667,
+          33279,
+          1,
+          116232,
+          1791153711166054300,
+          1791153711166054300
+        ]
+      }
+    },
+    {
+      "git_path": "docs/decoder-preflight-20261004/P6-implementation-independent-v1/review.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P6-implementation-independent-v1/review.v1.json",
+        "size_bytes": 11407,
+        "sha256": "9396658256d1f9f5d25b834b6ae33cbd034261a3e1e108b976bb59b7542ca107",
+        "epoch7": [
+          68,
+          15481123720653600,
+          33279,
+          1,
+          11407,
+          1791154543860126100,
+          1791154543860126100
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-independent-v1/review.v1.json",
+        "size_bytes": 11407,
+        "sha256": "9396658256d1f9f5d25b834b6ae33cbd034261a3e1e108b976bb59b7542ca107",
+        "epoch7": [
+          69,
+          1970324839405665,
+          33279,
+          1,
+          11407,
+          1791153711166054300,
+          1791153711166054300
+        ]
+      }
+    },
+    {
+      "git_path": "docs/decoder-preflight-20261004/P6-implementation-v1/author-review.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P6-implementation-v1/author-review.v1.json",
+        "size_bytes": 9802,
+        "sha256": "4b9a6bba93f79581da45d0ca3f065ada9688001b413c3e179101ec05257c18d4",
+        "epoch7": [
+          68,
+          25895697858944547,
+          33279,
+          1,
+          9802,
+          1791154543770071400,
+          1791154543770071400
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/author-review.v1.json",
+        "size_bytes": 9802,
+        "sha256": "4b9a6bba93f79581da45d0ca3f065ada9688001b413c3e179101ec05257c18d4",
+        "epoch7": [
+          69,
+          2533274792826949,
+          33279,
+          1,
+          9802,
+          1791153433460388800,
+          1791153433460388800
+        ]
+      }
+    },
+    {
+      "git_path": "docs/decoder-preflight-20261004/P6-implementation-v1/canonical-closed-metadata.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P6-implementation-v1/canonical-closed-metadata.v1.json",
+        "size_bytes": 14424,
+        "sha256": "75425a87dbfdd225d246a1d437cdf975acba192f2f590722d480c8cbef49a36f",
+        "epoch7": [
+          68,
+          27866022695919234,
+          33279,
+          1,
+          14424,
+          1791154543790134100,
+          1791154543790134100
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical-closed-metadata.v1.json",
+        "size_bytes": 14424,
+        "sha256": "75425a87dbfdd225d246a1d437cdf975acba192f2f590722d480c8cbef49a36f",
+        "epoch7": [
+          69,
+          1407374885984323,
+          33279,
+          1,
+          14424,
+          1791153106441448800,
+          1791153106441448800
+        ]
+      }
+    },
+    {
+      "git_path": "docs/decoder-preflight-20261004/P6-implementation-v1/canonical.adapter-final-close.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P6-implementation-v1/canonical.adapter-final-close.v1.json",
+        "size_bytes": 758,
+        "sha256": "f15b11c5eee46d9778f97447b11f98a7d0349174f4011239279e5e3edd97f95d",
+        "epoch7": [
+          68,
+          58265320180670083,
+          33279,
+          1,
+          758,
+          1791154543803172000,
+          1791154543803172000
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.adapter-final-close.v1.json",
+        "size_bytes": 758,
+        "sha256": "f15b11c5eee46d9778f97447b11f98a7d0349174f4011239279e5e3edd97f95d",
+        "epoch7": [
+          69,
+          1407374885984320,
+          33279,
+          1,
+          758,
+          1791153106394914800,
+          1791153106394914800
+        ]
+      }
+    },
+    {
+      "git_path": "docs/decoder-preflight-20261004/P6-implementation-v1/canonical.adapter-terminal.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P6-implementation-v1/canonical.adapter-terminal.v1.json",
+        "size_bytes": 1912,
+        "sha256": "a61c2b87feb47c20c61a0c1d01bceaf9c53861259eafe4a9a82d553b76106a11",
+        "epoch7": [
+          68,
+          8444249302883972,
+          33279,
+          1,
+          1912,
+          1791154543813002000,
+          1791154543813002000
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.adapter-terminal.v1.json",
+        "size_bytes": 1912,
+        "sha256": "a61c2b87feb47c20c61a0c1d01bceaf9c53861259eafe4a9a82d553b76106a11",
+        "epoch7": [
+          69,
+          1407374885984319,
+          33279,
+          1,
+          1912,
+          1791153106392631900,
+          1791153106392631900
+        ]
+      }
+    },
+    {
+      "git_path": "docs/decoder-preflight-20261004/P6-implementation-v1/canonical.nested-suite.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P6-implementation-v1/canonical.nested-suite.v1.json",
+        "size_bytes": 103333,
+        "sha256": "52b48c697f579a5cb2836ca51a519cfe5b6d6bf0b7d5ee600f35754885ea0d63",
+        "epoch7": [
+          68,
+          28428972649343772,
+          33279,
+          1,
+          103333,
+          1791154543826904500,
+          1791154543826904500
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.nested-suite.v1.json",
+        "size_bytes": 103333,
+        "sha256": "52b48c697f579a5cb2836ca51a519cfe5b6d6bf0b7d5ee600f35754885ea0d63",
+        "epoch7": [
+          69,
+          2251799816116286,
+          33279,
+          1,
+          103333,
+          1791153106389632200,
+          1791153106389632200
+        ]
+      }
+    },
+    {
+      "git_path": "docs/decoder-preflight-20261004/P6-implementation-v1/canonical.original.stderr.raw",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P6-implementation-v1/canonical.original.stderr.raw",
+        "size_bytes": 101386,
+        "sha256": "cdd2d217ad7406313bbb7ce806df6b00cab7d3a59f7d771d935c67b982e276f0",
+        "epoch7": [
+          68,
+          9851624186440477,
+          33279,
+          1,
+          101386,
+          1791154543838669700,
+          1791154543838669700
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.original.stderr.raw",
+        "size_bytes": 101386,
+        "sha256": "cdd2d217ad7406313bbb7ce806df6b00cab7d3a59f7d771d935c67b982e276f0",
+        "epoch7": [
+          69,
+          1970324839405634,
+          33279,
+          1,
+          101386,
+          1791153106400998000,
+          1791153106400998000
+        ]
+      }
+    },
+    {
+      "git_path": "docs/decoder-preflight-20261004/P6-implementation-v1/canonical.original.stdout.raw",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P6-implementation-v1/canonical.original.stdout.raw",
+        "size_bytes": 8168,
+        "sha256": "b244063f5f1fd719f975f65271a73f877091c8636483da5eef621cdf0589fd89",
+        "epoch7": [
+          68,
+          27021597765790494,
+          33279,
+          1,
+          8168,
+          1791154543848222700,
+          1791154543848222700
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.original.stdout.raw",
+        "size_bytes": 8168,
+        "sha256": "b244063f5f1fd719f975f65271a73f877091c8636483da5eef621cdf0589fd89",
+        "epoch7": [
+          69,
+          1407374885984321,
+          33279,
+          1,
+          8168,
+          1791153106397021400,
+          1791153106397021400
+        ]
+      }
+    },
+    {
+      "git_path": "docs/decoder-preflight-20261004/P6-implementation-v1/original-tools.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P6-implementation-v1/original-tools.v1.json",
+        "size_bytes": 66653,
+        "sha256": "53ba1120558155b297b9bd65538e94d80e24bd9d79226090c19f5882adb8c0cc",
+        "epoch7": [
+          68,
+          36310271997238912,
+          33279,
+          1,
+          66653,
+          1791154543778230700,
+          1791154543778230700
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/original-tools.v1.json",
+        "size_bytes": 66653,
+        "sha256": "53ba1120558155b297b9bd65538e94d80e24bd9d79226090c19f5882adb8c0cc",
+        "epoch7": [
+          69,
+          1407374885984324,
+          33279,
+          1,
+          66653,
+          1791153173199668200,
+          1791153173199668200
+        ]
+      }
+    },
+    {
+      "git_path": "openspec/changes/fix-decoder-preflight/evidence/S6-source-readiness-original-tools.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/evidence/S6-source-readiness-original-tools.v1.json",
+        "size_bytes": 34563,
+        "sha256": "fe8e65a8d942c088022408162444407c7b56216c83d24e4f6da636cd81d93cff",
+        "epoch7": [
+          68,
+          2251799815380796,
+          33279,
+          1,
+          34563,
+          1791155396241061300,
+          1791155396241061300
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/S6-corrected-cold-readiness-original-tools.v1.json",
+        "size_bytes": 34563,
+        "sha256": "fe8e65a8d942c088022408162444407c7b56216c83d24e4f6da636cd81d93cff",
+        "epoch7": [
+          69,
+          1407374885984367,
+          33279,
+          1,
+          34563,
+          1791155278943847300,
+          1791155278943847300
+        ]
+      }
+    },
+    {
+      "git_path": "openspec/changes/fix-decoder-preflight/evidence/S6-source-readiness.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/evidence/S6-source-readiness.v1.json",
+        "size_bytes": 40561,
+        "sha256": "b5ff7613b5578ca0f486e6b657342f40b4cfb2caed61e28f623c8dd016cbe219",
+        "epoch7": [
+          68,
+          2251799815380795,
+          33279,
+          1,
+          40561,
+          1791155396231061600,
+          1791155396231061600
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/S6-corrected-cold-conditional-review.v1.json",
+        "size_bytes": 40561,
+        "sha256": "b5ff7613b5578ca0f486e6b657342f40b4cfb2caed61e28f623c8dd016cbe219",
+        "epoch7": [
+          69,
+          1407374885984366,
+          33279,
+          1,
+          40561,
+          1791155140717592100,
+          1791155140717592100
+        ]
+      }
+    },
+    {
+      "git_path": "openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/job-111548803858.original.log",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/job-111548803858.original.log",
+        "size_bytes": 33968,
+        "sha256": "52bc17af573a9617e0c89b1ddc9bb75a8ed1fd423ddcf93095868dc8540c80e6",
+        "epoch7": [
+          68,
+          2251799815380793,
+          33279,
+          1,
+          33968,
+          1791155396209703500,
+          1791155396209703500
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S6f9cde5ec-v1/original-retention-v1/job-111548803858.original.log",
+        "size_bytes": 33968,
+        "sha256": "52bc17af573a9617e0c89b1ddc9bb75a8ed1fd423ddcf93095868dc8540c80e6",
+        "epoch7": [
+          69,
+          1407374885984361,
+          33279,
+          1,
+          33968,
+          1791154938442664800,
+          1791154938442664800
+        ]
+      }
+    },
+    {
+      "git_path": "openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/job-111548804016.original.log",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/job-111548804016.original.log",
+        "size_bytes": 94669,
+        "sha256": "dd5db6106df6f1c78896425447aff37286dbc8e3f62e089dd21bd2cb97eb21a5",
+        "epoch7": [
+          68,
+          2251799815380792,
+          33279,
+          1,
+          94669,
+          1791155396198136100,
+          1791155396198136100
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S6f9cde5ec-v1/original-retention-v1/job-111548804016.original.log",
+        "size_bytes": 94669,
+        "sha256": "dd5db6106df6f1c78896425447aff37286dbc8e3f62e089dd21bd2cb97eb21a5",
+        "epoch7": [
+          69,
+          1407374885984360,
+          33279,
+          1,
+          94669,
+          1791154937442814200,
+          1791154937442814200
+        ]
+      }
+    },
+    {
+      "git_path": "openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/original-provider-metadata.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/original-provider-metadata.v1.json",
+        "size_bytes": 26742,
+        "sha256": "ce22e7b49130b0419cfbfd3bc7fff3bfb4d359d04d13bf636c173fa06e275f95",
+        "epoch7": [
+          68,
+          8725724279725839,
+          33279,
+          1,
+          26742,
+          1791155396177497700,
+          1791155396177497700
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S6f9cde5ec-v1/original-retention-v1/original-provider-metadata.v1.json",
+        "size_bytes": 26742,
+        "sha256": "ce22e7b49130b0419cfbfd3bc7fff3bfb4d359d04d13bf636c173fa06e275f95",
+        "epoch7": [
+          69,
+          4222124653090919,
+          33279,
+          1,
+          26742,
+          1791154936255080000,
+          1791154936255080000
+        ]
+      }
+    },
+    {
+      "git_path": "openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/original-retention-terminal.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/original-retention-terminal.v1.json",
+        "size_bytes": 60975,
+        "sha256": "720a1c59ce732cb6f5aca5138ee344df6148d3435aa93f06063ba1555b8da1ec",
+        "epoch7": [
+          68,
+          2814749768802102,
+          33279,
+          1,
+          60975,
+          1791155396187852000,
+          1791155396187852000
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S6f9cde5ec-v1/original-retention-v1/original-retention-terminal.v1.json",
+        "size_bytes": 60975,
+        "sha256": "720a1c59ce732cb6f5aca5138ee344df6148d3435aa93f06063ba1555b8da1ec",
+        "epoch7": [
+          69,
+          1407374885984364,
+          33279,
+          1,
+          60975,
+          1791154942467253600,
+          1791154942467253600
+        ]
+      }
+    },
+    {
+      "git_path": "openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/retention-original-tools.v1.json",
+      "committed_and_physical": {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/evidence/ci-S6-original-v1/retention-original-tools.v1.json",
+        "size_bytes": 17007,
+        "sha256": "01aea9abccdda1d5bbb29cc3e0ac4d9fba289a3dc5d42b6509bf1fc1a66ec336",
+        "epoch7": [
+          68,
+          2251799815380794,
+          33279,
+          1,
+          17007,
+          1791155396220315600,
+          1791155396220315600
+        ]
+      },
+      "original_donor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S6f9cde5ec-v1/retention-original-tools.v1.json",
+        "size_bytes": 17007,
+        "sha256": "01aea9abccdda1d5bbb29cc3e0ac4d9fba289a3dc5d42b6509bf1fc1a66ec336",
+        "epoch7": [
+          69,
+          1407374885984365,
+          33279,
+          1,
+          17007,
+          1791155007724543000,
+          1791155007724543000
+        ]
+      }
+    }
+  ],
+  "transcript_relocation": {
+    "original_S6_path": "docs/decoder-preflight-20261004/ci-S5-original-v1/independent-original-tools.v1.json",
+    "new_D7_path": "openspec/changes/fix-decoder-preflight/evidence/ci-S5-independent-original-tools.v1.json",
+    "raw_bytes_exact": {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/openspec/changes/fix-decoder-preflight/evidence/ci-S5-independent-original-tools.v1.json",
+      "size_bytes": 123461,
+      "sha256": "9778aaaaf68bc35c119d18687308c75e5856c5fa3d9189a2cd603c8efda79f71",
+      "epoch7": [
+        68,
+        2533274791959951,
+        33279,
+        1,
+        123461,
+        1791150289540856600,
+        1791155313223945200
+      ]
+    },
+    "old_physical_path_absent": true,
+    "embedded_historical_paths_not_rewritten": true,
+    "guard_bytes_unchanged": true,
+    "guard_preexisting_OpenSpec_evidence_exclusion": true,
+    "source_semantic_limit": "A recorded command/string under a declared evidence boundary is not production integration; this review does not rerun the guard or whole CI."
+  },
+  "canonical_reuse": {
+    "source_version": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+    "root_tests": 12,
+    "root_count_basis": "unchanged accepted P6 independent review and original root tool return; not rerun",
+    "nested170_all_success": true,
+    "source15_epoch7_and_raw_current_exact": true,
+    "nested_original": {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.nested-suite.v1.json",
+      "size_bytes": 103333,
+      "sha256": "52b48c697f579a5cb2836ca51a519cfe5b6d6bf0b7d5ee600f35754885ea0d63",
+      "epoch7": [
+        69,
+        2251799816116286,
+        33279,
+        1,
+        103333,
+        1791153106389632200,
+        1791153106389632200
+      ]
+    },
+    "adapter_terminal": {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.adapter-terminal.v1.json",
+      "size_bytes": 1912,
+      "sha256": "a61c2b87feb47c20c61a0c1d01bceaf9c53861259eafe4a9a82d553b76106a11",
+      "epoch7": [
+        69,
+        1407374885984319,
+        33279,
+        1,
+        1912,
+        1791153106392631900,
+        1791153106392631900
+      ]
+    },
+    "adapter_final_close": {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P6-implementation-v1/canonical.adapter-final-close.v1.json",
+      "size_bytes": 758,
+      "sha256": "f15b11c5eee46d9778f97447b11f98a7d0349174f4011239279e5e3edd97f95d",
+      "epoch7": [
+        69,
+        1407374885984320,
+        33279,
+        1,
+        758,
+        1791153106394914800,
+        1791153106394914800
+      ]
+    },
+    "original_provisional_fields_preserved": true
+  },
+  "S6_failed_CI": {
+    "run_id": 37240747391,
+    "source_commit": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+    "CPU_job": 111548804016,
+    "CPU": "failure",
+    "HOST_job": 111548803858,
+    "HOST": "success",
+    "failure_retained": true,
+    "whole_CI_accepted": false
+  },
+  "latest_D7_CI": {
+    "status": "PENDING",
+    "actual_success_not_observed_by_this_review": true
+  },
+  "corrected_cold_dispatch_approved": false,
+  "research_complete": false,
+  "raw_join_complete": false,
+  "root_document_repair": {
+    "unsafe_precommit_WSL_text_handling_reported_by_root": true,
+    "final_raw_Git_planning_prefixes_and_intended_P7_text_checked": true,
+    "not_product_execution_failure": true,
+    "limit": "Precommit shell repair chronology is root-reported; this independent review binds the final committed bytes, not a reconstructed original shell return."
+  },
+  "limitations": [
+    "Author previously authored the copied S6 conditional readiness receipt; this D7 scope/raw-Git/copy review is an independent fresh check, not a second readiness execution.",
+    "No tests, target imports, observer/cold/producer calls, provider request, ZIP/full-source-table replay, Git mutation or model/engine/media action.",
+    "S6 FAILED CI remains FAILED; D7 latest mandatory full CI/source review and a separate once-read grant are still required.",
+    "Source-only compatibility does not accept128/64 research or future24 benchmark arms."
+  ],
+  "reader_original": {
+    "pid": 51816,
+    "ppid": 51813,
+    "pgid": 51816,
+    "sid": 51816,
+    "starttime_ticks": 63858986,
+    "uid": 1000,
+    "gid": 1000,
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+  },
+  "first_failure": null,
+  "reviewer_handles_released": true,
+  "custody": {
+    "fd_before": 6,
+    "fd_after": 6,
+    "held_leaf_count": 56,
+    "close_errors": [],
+    "own_later_absence_not_claimed": true
+  },
+  "read_only_Git_commands": {
+    "count": 67,
+    "all_returncodes_zero": true,
+    "per_command_timeout_s": 5,
+    "record_projection_sha256": "1e85370c83c11c765769ef966e891f6d549e3b796c50a62971a2cc2b75cd4825"
+  },
+  "elapsed_s": 1.9752646710257977
+}
