@@ -225,6 +225,39 @@ class FiniteStudyDriverTests(unittest.TestCase):
             self.assertEqual(arm.call_args.kwargs["campaign_deadline_ns"],123)
             self.assertEqual(arm.call_args.kwargs["detect_bin"],DETECT_BIN)
 
+    def test_actual_x264_recipe_writes_fixed_rate_sps_and_strict_vui_refusals_are_kept(self):
+        import json
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);commands=driver.Commands(root,time.monotonic()+120);encoded=root/"derived.mp4"
+            argv=driver.encode_command(64,64,encoded)
+            frames=root/"frames.yuv"
+            with frames.open("xb") as stream:
+                for ordinal in range(442):
+                    stream.write(bytes((ordinal+i)%256 for i in range(64*64))+bytes([128])*(2*32*32))
+            with frames.open("rb") as stream:
+                child,record=commands.launch(argv,stdin=stream);commands.wait(child,record,maximum_files=((str(encoded),driver.MAX_MEDIA),))
+            packets=json.loads(commands.run(["/usr/bin/ffprobe","-v","error","-select_streams","v:0","-show_streams","-show_packets",
+                "-of","json",str(encoded)],maximum=8*1024**2))
+            stream=packets["streams"][0]
+            self.assertEqual((stream["r_frame_rate"],stream["avg_frame_rate"],stream["time_base"],stream["has_b_frames"]),("30/1","30/1","1/600",0))
+            self.assertEqual([(p["pts"],p["dts"],p["duration"],"K" in p["flags"]) for p in packets["packets"]],
+                [(20*i,20*i,20,True) for i in range(442)])
+            commands.run(["/usr/bin/ffmpeg","-v","verbose","-nostdin","-i",str(encoded),"-map","0:v:0","-c:v","copy",
+                "-bsf:v","trace_headers","-frames:v","1","-f","null","-"])
+            trace=Path(commands.records[-1]["stderr_path"]).read_text()
+            fields=driver.validate_vui_trace(trace)
+            self.assertEqual((fields["fixed_frame_rate_flag"],fields["num_units_in_tick"]*60),(1,fields["time_scale"]))
+            self.assertLessEqual(fields["level_idc"],51)
+            def field(name,value,text=trace):
+                import re
+                return re.sub(r"(\b"+name+r"\s+[^\r\n]*?=\s*)\d+",lambda m:m.group(1)+str(value),text)
+            old=(ROOT/"openspec/changes/run-finite-component-study/evidence/physical-D-failed-v1/preparation/command-029.stderr.raw").read_text()
+            for changed in (old,field("fixed_frame_rate_flag",0),field("time_scale",1200*fields["num_units_in_tick"]),
+                    field("level_idc",52),field("timing_info_present_flag",0),trace.replace("fixed_frame_rate_flag","absent_flag"),
+                    trace+"\n[trace_headers] fixed_frame_rate_flag 0 = 0\n"):
+                with self.assertRaises(ValueError):driver.validate_vui_trace(changed)
+            self.assertEqual(argv[argv.index("-x264-params")+1],"open-gop=0:threads=1:lookahead-threads=1:force-cfr=1")
+
     def test_control_failure_still_closes_actual_service_thread_and_preserves_primary(self):
         with tempfile.TemporaryDirectory() as tmp:
             commands=driver.Commands(Path(tmp),time.monotonic()+60);stop=threading.Event();thread=threading.Thread(target=stop.wait);thread.start()

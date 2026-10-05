@@ -297,18 +297,22 @@ def normalization_filter(recording):
     return base+"in_color_matrix=bt601:out_color_matrix=bt601:in_range=pc:out_range=pc:in_h_chr_pos=128:in_v_chr_pos=0,format=pix_fmts=bgr24,"+base+"in_color_matrix=bt709:out_color_matrix=bt709:in_range=pc:out_range=tv:out_h_chr_pos=0:out_v_chr_pos=128,format=pix_fmts=yuv420p"
 
 
+def encode_command(width, height, destination):
+    return ["/usr/bin/ffmpeg", "-v", "error", "-nostdin", "-f", "rawvideo", "-pixel_format", "yuv420p",
+        "-video_size", f"{width}x{height}", "-framerate", "30/1", "-i", "pipe:0", "-an", "-c:v", "libx264",
+        "-preset", "veryfast", "-crf", "23", "-pix_fmt", "yuv420p", "-threads:v", "1", "-g", "1",
+        "-keyint_min", "1", "-sc_threshold", "0", "-bf", "0", "-x264-params", "open-gop=0:threads=1:lookahead-threads=1:force-cfr=1",
+        "-frames:v", "442", "-fps_mode", "cfr", "-enc_time_base:v", "1:30", "-video_track_timescale", "600",
+        "-color_range", "tv", "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
+        "-chroma_sample_location", "left", "-n", str(destination)]
+
+
 def encode_recording(commands, name, prefix, destination):
     _, _, width, height, _ = PARENTS[name]
     decode = ["/usr/bin/ffmpeg", "-v", "error", "-nostdin", "-filter_threads", "1", "-threads:v", "1",
         "-i", str(prefix), "-map", "0:v:0", "-an", "-vf", normalization_filter(name),
         "-frames:v", "442", "-fps_mode", "passthrough", "-f", "rawvideo", "-pix_fmt", "yuv420p", "pipe:1"]
-    encode = ["/usr/bin/ffmpeg", "-v", "error", "-nostdin", "-f", "rawvideo", "-pixel_format", "yuv420p",
-        "-video_size", f"{width}x{height}", "-framerate", "30/1", "-i", "pipe:0", "-an", "-c:v", "libx264",
-        "-preset", "veryfast", "-crf", "23", "-pix_fmt", "yuv420p", "-threads:v", "1", "-g", "1",
-        "-keyint_min", "1", "-sc_threshold", "0", "-bf", "0", "-x264-params", "open-gop=0:threads=1:lookahead-threads=1",
-        "-frames:v", "442", "-fps_mode", "cfr", "-enc_time_base:v", "1:30", "-video_track_timescale", "600",
-        "-color_range", "tv", "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
-        "-chroma_sample_location", "left", "-n", str(destination)]
+    encode = encode_command(width, height, destination)
     source, source_record = commands.launch(decode, stdout=subprocess.PIPE)
     sink, sink_record = commands.launch(encode, stdin=subprocess.PIPE)
     os.set_blocking(source.stdout.fileno(), False); os.set_blocking(sink.stdin.fileno(), False)
