@@ -48,7 +48,7 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def current_runtime_source_sha256() -> str:
+def current_runtime_source_sha256(*, native_only: bool = False) -> str:
     validator = (
         ROOT / "deploy" / "gstreamer_custom" / "publication"
         / "validate_runtime_source_closure_v3.py"
@@ -66,6 +66,8 @@ def current_runtime_source_sha256() -> str:
     )
     rows = bytearray()
     for relative in result["all_sources"]:
+        if native_only and not relative.startswith("deploy/native_gst_probe/"):
+            continue
         digest = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
         rows.extend(f"{digest}  {relative}\n".encode("ascii"))
     return hashlib.sha256(rows).hexdigest()
@@ -108,10 +110,13 @@ def unit_fragment_project(project_root: Path) -> Path:
 class GstreamerCustomQualificationFragmentV3Tests(unittest.TestCase):
     def setUp(self) -> None:
         self._runtime_source_sha256 = target.GSTREAMER_RUNTIME_SOURCE_SHA256
+        self._native_source_sha256 = target.GSTREAMER_NATIVE_SOURCE_SHA256
         target.GSTREAMER_RUNTIME_SOURCE_SHA256 = current_runtime_source_sha256()
+        target.GSTREAMER_NATIVE_SOURCE_SHA256 = current_runtime_source_sha256(native_only=True)
 
     def tearDown(self) -> None:
         target.GSTREAMER_RUNTIME_SOURCE_SHA256 = self._runtime_source_sha256
+        target.GSTREAMER_NATIVE_SOURCE_SHA256 = self._native_source_sha256
 
     def test_phase_one_materializes_exact_physical_binding_fragment(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as temporary:

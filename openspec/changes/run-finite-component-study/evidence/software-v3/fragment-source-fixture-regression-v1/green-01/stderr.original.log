@@ -1,0 +1,51 @@
+unittest.case.FunctionTestCase (gstreamer_existing_fixture_source_identity) ... ok
+test_physical_source_drift_is_rejected_after_fixture_is_pinned (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_physical_source_drift_is_rejected_after_fixture_is_pinned) ... ok
+test_current_qualification_fragments_match_physical_receipts (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts) ... ERROR
+test_deepstream_child_failure_diagnostic_is_bounded_and_single_line (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_deepstream_child_failure_diagnostic_is_bounded_and_single_line) ... ok
+test_deepstream_dynamic_image_contract_keeps_exact_frozen_base_and_entrypoint (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_deepstream_dynamic_image_contract_keeps_exact_frozen_base_and_entrypoint) ... ok
+test_fix_benchmark_patch_matches_exact_runtime_constants (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants) ... ERROR
+test_gstreamer_current_runtime_is_exactly_refrozen (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_gstreamer_current_runtime_is_exactly_refrozen) ... ok
+test_live_fix_benchmark_preflight_matches_runtime_materializer (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer) ... skipped 'requires VAST_LIVE_PREFLIGHT=1, live WSL Docker and OMZ proxy models'
+test_openvino_current_runtime_is_exactly_refrozen (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_openvino_current_runtime_is_exactly_refrozen) ... ok
+test_runtime_input_materializer_inspects_the_candidate_reference_not_only_id (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_runtime_input_materializer_inspects_the_candidate_reference_not_only_id) ... ok
+test_savant_native_builder_is_the_frozen_attempt14_builder (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_savant_native_builder_is_the_frozen_attempt14_builder) ... ok
+test_docker_copy_and_build_hash_use_only_the_validated_allowlist (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_docker_copy_and_build_hash_use_only_the_validated_allowlist) ... ok
+test_missing_and_extraneous_python_imports_fail_closed (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_missing_and_extraneous_python_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_reachable_runtime_closure (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure) ... ok
+test_missing_and_extraneous_imports_fail_closed (test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_missing_and_extraneous_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_transitive_closure (test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure) ... ok
+
+======================================================================
+ERROR: test_current_qualification_fragments_match_physical_receipts (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_frozen_identity_constants_v1.py", line 85, in test_current_qualification_fragments_match_physical_receipts
+    patch = json.loads((base / "qualification_image_identity_patch.json").read_bytes())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/artifacts/fix_benchmark_preparations_20260928g/qualification_image_identity_patch.json'
+
+======================================================================
+ERROR: test_fix_benchmark_patch_matches_exact_runtime_constants (test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_frozen_identity_constants_v1.py", line 69, in test_fix_benchmark_patch_matches_exact_runtime_constants
+    patch = json.loads(patch_path.read_bytes())
+                       ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/artifacts/fix_benchmark_preparations_20260928g/qualification_image_identity_patch.json'
+
+----------------------------------------------------------------------
+Ran 16 tests in 27.549s
+
+FAILED (errors=2, skipped=1)

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "finite_study_bootstrap_source_only_independent_review",
+  "review_date": "2026-10-05",
+  "reviewer": "/root/architecture_review",
+  "scope": "Read-only review of two unrun external bootstrap scripts and existing stock validator source; no bootstrap, test, engine, model, media, source hash or copy operation by this reviewer.",
+  "source_commit_supplied_by_root": "81492fb1e4343736ec61b500579f7bc25c58911d",
+  "ci_run_supplied_by_root": 37274182291,
+  "ci_acceptance": "pending; no dispatch authority inferred",
+  "reviewed_sources": [
+    "E:/STUDY/VAST/tmp/finite-component-study-20261005/bootstrap-private-current-root-v1.py",
+    "E:/STUDY/VAST/tmp/finite-component-study-20261005/bootstrap-copy-model-bundle-v1.py"
+  ],
+  "original_software_results": "E:/STUDY/VAST/tmp/finite-component-study-20261005/bootstrap-bound-software-original-tools.v1.json",
+  "read_observation": {
+    "complete_current_source_tool_chunk": "f0a06a",
+    "software_original_result_read_chunk": "2d9378",
+    "source_identity_hashes_recomputed": false,
+    "numeric_fd_observation": null,
+    "handle_scope": "Ordinary completed read-only shell file reads; no persistent reviewer file handles or target process launched."
+  },
+  "stock_compatibility": {
+    "root_relative_v4_model_receipts": true,
+    "proven_missing_model_paths": [],
+    "material_scope": "Recursive ordinary descriptors cover accepted manifest parity16, binding support, original2453 indexed transaction leaves, four dataset media and eight proxy blobs. Actual donor/destination physical validation remains future stock-loader work.",
+    "fresh_code_closure_cli": "Existing --project-root and --receipt match the stock materializer; it checks physical source/interpreter closure and does not require Git metadata in the destination.",
+    "worker_current_dependency_checks": "Retained unchanged; no original image/model acceptance is rebound by copying.",
+    "preparation_clock_handoff": "Root will pass started_monotonic_ns, boot_id and time_namespace through the three existing --preparation-* CLI fields. No fresh preparation clock is permitted for the dependent study."
+  },
+  "resolved_original_findings": [
+    "Child stdout/stderr caps are checked before retained writes in the current selector loop.",
+    "Copier enforces initial admitted source/destination sizes and aggregate8GiB before hash/write progress.",
+    "Successful save checks the original clock after fsync, and final positive print has another clock check."
+  ],
+  "blocking_findings": [
+    {
+      "id": "owned_group_after_leader_exit",
+      "source": "bootstrap-private-current-root-v1.py::run except branch",
+      "predicate": "if child is not None and child.poll() is None",
+      "issue": "On deadline or output-cap failure, an exited leader with a live descendant retaining a pipe skips all owned-group TERM/KILL containment. Direct-child reap alone does not establish retirement of that owned group.",
+      "minimal_correction": "Attempt owned PGID containment independently of leader liveness, retain factual direct-child wait/reap and remaining cleanup errors; preserve existing clocks and containment scope."
+    },
+    {
+      "id": "independent_pipe_retirement",
+      "source": "bootstrap-private-current-root-v1.py::run finally branch",
+      "predicate": "for stream ... stream.close()",
+      "issue": "An exception closing the first pipe prevents the second close and command-record append, and can replace the primary failure.",
+      "minimal_correction": "Attempt each remaining retirement independently, latch close errors, preserve the first cause and append the factual command row even after cleanup error."
+    }
+  ],
+  "software_evidence_limits": "Original root software results demonstrate direct-child overcap RED/GREEN, two full pipes and TERM-ignore kill/wait. They do not demonstrate the two remaining failure-cleanup branches above. They are not bootstrap/model/engine readiness or scientific acceptance.",
+  "reviewable": true,
+  "source_only_gate_passed": false,
+  "bootstrap_executed": false,
+  "study_complete": false,
+  "reviewer_handles_released": true
+}

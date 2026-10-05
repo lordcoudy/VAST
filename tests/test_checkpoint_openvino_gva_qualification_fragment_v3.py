@@ -92,6 +92,15 @@ class OpenVINOGVAQualificationFragmentV3Tests(unittest.TestCase):
         )
         source_pin.start()
         self.addCleanup(source_pin.stop)
+        native_rows = b"".join(
+            row for row in rows.splitlines(keepends=True)
+            if row.split(b"  ", 1)[1].startswith(b"deploy/native_gst_probe/")
+        )
+        native_pin = mock.patch.object(
+            target, "OPENVINO_GVA_NATIVE_SOURCE_SHA256", hashlib.sha256(native_rows).hexdigest(),
+        )
+        native_pin.start()
+        self.addCleanup(native_pin.stop)
         allowlist_pin = mock.patch.object(
             target, "OPENVINO_GVA_SOURCE_ALLOWLIST_SHA256",
             hashlib.sha256(self.allowlist.read_bytes()).hexdigest(),

@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "finite_study_bootstrap_source_only_independent_review",
+  "review_date": "2026-10-05",
+  "reviewer": "/root/architecture_review",
+  "prior_failed_review_preserved": "E:/STUDY/VAST/tmp/finite-component-study-20261005/bootstrap-source-only-independent-review.v1.json",
+  "scope": "Minimal read-only reread of the unrun external bootstrap cleanup correction. No bootstrap, source/data hashes, copy, build, test, preflight, model, media or engine operation by this reviewer.",
+  "reviewed_sources": [
+    "E:/STUDY/VAST/tmp/finite-component-study-20261005/bootstrap-private-current-root-v1.py",
+    "E:/STUDY/VAST/tmp/finite-component-study-20261005/bootstrap-copy-model-bundle-v1.py"
+  ],
+  "source_commit_supplied_by_root": "81492fb1e4343736ec61b500579f7bc25c58911d",
+  "ci_run_supplied_by_root": 37274182291,
+  "ci_disposition_at_review": "in_progress, acceptance pending",
+  "current_cleanup_read": "73bd44",
+  "resolved_blockers": [
+    "Failure cleanup attempts original owned PGID TERM and KILL independently of whether the direct leader already exited; bounded direct child wait/reap remains.",
+    "Finally attempts stdout and stderr pipe closes separately, latches cleanup_errors and adds notes to the original primary error.",
+    "Original command record is appended after close attempts; cleanup-only failure refuses an otherwise positive child result."
+  ],
+  "retained_prior_bounds": "Pre-write stdout/stderr caps, initial source/destination-size limits, aggregate8GiB, original preparation clock and final post-fsync checks remain as reviewed in v1. No stock/source-C changes or clock restart authorized.",
+  "stock_compatibility": "Prior root-relative model-receipt traversal and fresh physical source/interpreter code-closure checks remain compatible. Actual current worker dependencies, engine/image identities and physical donor/destination material remain future mandatory checks.",
+  "software_evidence": {
+    "physically_read_record": "E:/STUDY/VAST/tmp/finite-component-study-20261005/bootstrap-bound-software-original-tools.v1.json",
+    "original_results_in_that_record": ["2d3db1", "5b2691", "d1619f"],
+    "post_cleanup_record": "E:/STUDY/VAST/tmp/finite-component-study-20261005/bootstrap-cleanup02-software-original-tools.v1.json",
+    "post_cleanup_original_read": "77a8af",
+    "post_cleanup_result": "36072d rc0; real two full pipes child63559/PGID63559 rc0 and TERM-ignore child63560/PGID63560 KILL rc-9/wait/reap in2.252322121988982s; both cleanup_errors[]",
+    "post_cleanup_original_result_physically_joined_by_this_reviewer": true,
+    "limit": "Root-executed software-only probe is joined without replay; no deployed bootstrap/model/engine acceptance or global process absence is inferred."
+  },
+  "reviewer_metadata_error_retained": {
+    "chunk_id": "73bd44",
+    "exit_code": 1,
+    "error": "Select-Object: Property positive_silent_cleanup_corrected cannot be found.",
+    "disposition": "Source excerpt was read; record-property lookup failed. Subsequent read7d3b4e established existing positive_silent still names d1619f. No target attempt or retry occurred."
+  },
+  "blocking_findings": [],
+  "reviewable": true,
+  "source_only_gate_passed": true,
+  "bootstrap_executed": false,
+  "physical_material_accepted": false,
+  "study_complete": false,
+  "numeric_fd_observation": null,
+  "reviewer_handles_released": true,
+  "handle_scope": "Completed ordinary read-only shell file reads; no persistent reviewer handles or target child owned by this review."
+}

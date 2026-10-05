@@ -1,0 +1,72 @@
+{
+  "kind": "software-v3-fixture-original-supplement",
+  "files": [
+    {
+      "source": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\fragment-source-fixture-regression-v1\\author-proof.original-tool.v1.json",
+      "path": "fragment-source-fixture-regression-v1/author-proof.original-tool.v1.json",
+      "size_bytes": 8373,
+      "sha256": "1125fc2c2435a199cd00257edb96f61b9005228d226c842c94acee7c28e9e31d",
+      "byte_equal": true
+    },
+    {
+      "source": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\fragment-source-fixture-regression-v1\\author-review.v1.json",
+      "path": "fragment-source-fixture-regression-v1/author-review.v1.json",
+      "size_bytes": 5359,
+      "sha256": "e24488858f67b53cfc6185d4e82a3e53457276edf8f897e7bb07252757f2ce60",
+      "byte_equal": true
+    },
+    {
+      "source": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\fragment-source-fixture-regression-v1\\original-tools.v1.json",
+      "path": "fragment-source-fixture-regression-v1/original-tools.v1.json",
+      "size_bytes": 23116,
+      "sha256": "1ac4557baa58b7a67d069cd60ff2dea9782a04d894edf5644bd518d04e0fd8e4",
+      "byte_equal": true
+    },
+    {
+      "source": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\fragment-source-fixture-regression-v1\\source-scope.diff",
+      "path": "fragment-source-fixture-regression-v1/source-scope.diff",
+      "size_bytes": 2489,
+      "sha256": "70d451b54bce1e9edbabe8b65440e91994c0fc5e25cbee0163cd31e62274eede",
+      "byte_equal": true
+    },
+    {
+      "source": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\fragment-source-fixture-regression-v1\\green-01\\stderr.original.log",
+      "path": "fragment-source-fixture-regression-v1/green-01/stderr.original.log",
+      "size_bytes": 6370,
+      "sha256": "101064374ebd5e41d72ef58ba764b1b4ee38b893979ff9d22333ab953bd2d2fd",
+      "byte_equal": true
+    },
+    {
+      "source": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\fragment-source-fixture-regression-v1\\green-02\\result.v1.json",
+      "path": "fragment-source-fixture-regression-v1/green-02/result.v1.json",
+      "size_bytes": 2354,
+      "sha256": "bbf8d8c76c71f48526243a24df9c4de1537c7e71f8bd0b46368b1fc218c3a83a",
+      "byte_equal": true
+    },
+    {
+      "source": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\fragment-source-fixture-regression-v1\\green-02\\stderr.original.log",
+      "path": "fragment-source-fixture-regression-v1/green-02/stderr.original.log",
+      "size_bytes": 412,
+      "sha256": "7515d810335fb8c98a48a216068dca9e9aad20e39bc5fe6b0bdc05c372c7c6bd",
+      "byte_equal": true
+    },
+    {
+      "source": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\fragment-source-fixture-regression-v1\\red-01\\result.v1.json",
+      "path": "fragment-source-fixture-regression-v1/red-01/result.v1.json",
+      "size_bytes": 4134,
+      "sha256": "daa3c81f097eb14c0162ea2a481ea3e5e9c928c0fcc8051e2a77b8c4f841867c",
+      "byte_equal": true
+    },
+    {
+      "source": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\fragment-source-fixture-regression-v1\\red-01\\stderr.original.log",
+      "path": "fragment-source-fixture-regression-v1/red-01/stderr.original.log",
+      "size_bytes": 2572,
+      "sha256": "f05eac20ea19417e8e80bacb1f921536541d086677607b284097be692c5f1f62",
+      "byte_equal": true
+    }
+  ],
+  "total_bytes": 55179,
+  "scope": "two fixture native SHA pins; preserves original RED/GREEN and broader local failure",
+  "full_ci_accepted": false,
+  "physical_acceptance": false
+}

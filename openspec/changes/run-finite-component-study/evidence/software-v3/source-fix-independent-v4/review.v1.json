@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS_SOURCE_ONLY_V4",
+  "blocking_findings": [],
+  "baseline_commit": "81492fb1e4343736ec61b500579f7bc25c58911d",
+  "approved_planning_commit": "3288b0702b6b0136feb6596382566b8686f9bb5c",
+  "change": "run-finite-component-study",
+  "scope": "Frozen fixture-only correction in two existing test modules. Native Git source/config/CI scoped diff lists exactly these two paths. Production fragments, validators, image/native historical constants and reviewed v3 corrections remain unchanged; this is not full-CI acceptance.",
+  "frozen_test_pins": [
+    {
+      "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+      "size_bytes": 15126,
+      "sha256": "4d435e9130c77f330f68dbbf27d5da8b2919338538dbd7055d58ed4e8173d54a"
+    },
+    {
+      "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "size_bytes": 11951,
+      "sha256": "f8ef46423bb6659f61a9a2bda501ab0ed2f030571176a695e6ed12e0ed2c1186"
+    }
+  ],
+  "production_raw_C_equality": [
+    {
+      "path": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+      "size_bytes": 39251,
+      "sha256": "67f175282df9b26bbfb7a9fe4340edccf5f14ff2d82ac74c8dbfdb5cd402c301"
+    },
+    {
+      "path": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+      "size_bytes": 24165,
+      "sha256": "a33d15175f56c34dd5b07912d3c56f758d5e84d77d9b000039f0d47c8053b309"
+    }
+  ],
+  "original_C_failure": {
+    "run_id": 37274182291,
+    "head": "81492fb1e4343736ec61b500579f7bc25c58911d",
+    "conclusion": "failure",
+    "tests_run": 3101,
+    "successes": 3007,
+    "skips": 88,
+    "errors": 6,
+    "failures": 0,
+    "original_directory": "E:/STUDY/VAST/tmp/finite-component-study-20261005/ci-C81492fb1-v1/failed-original-retention-v1",
+    "original_CPU_artifact": "artifact-11330382818.original.zip",
+    "original_member": "unittest-child.report.json",
+    "cause": "All six actual tracebacks reach unchanged conjunctive runtime/native SHA equality (GStreamer _source_set_identity line492, OpenVINO line140). Existing current-byte unit fixtures patched runtime SHA but kept historical native SHA. The failure is not missing reachable paths or an exhausted scientific clock."
+  },
+  "assessment": [
+    {
+      "decision": "PASS",
+      "source": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py:51",
+      "finding": "Existing helper still obtains genuine exact closure from unchanged validator and retains full aggregate default. Optional native_only filters the same ordered rows by the same deploy/native_gst_probe/ prefix as production; no reachable source is excluded from the full closure. setUp now pins current native fixture SHA alongside runtime, and tearDown restores both historical constants."
+    },
+    {
+      "decision": "PASS",
+      "source": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py:95",
+      "finding": "Existing setUp derives native subset from the already calculated full byte rows, pins only test-local native expected SHA, and registers stop with existing addCleanup. It retains full closure/allowlist checks and actual source-drift negative; no production predicate or image binding changes."
+    },
+    {
+      "decision": "PASS",
+      "finding": "Independent raw C AST and source-segment comparisons show all8 original test IDs/bodies/ASTs and all78 assertion calls unchanged. Only GST current_runtime_source_sha256/setUp/tearDown and GVA setUp helper ASTs change. Whole native Git diff read agrees with the 2489-byte author diff."
+    },
+    {
+      "decision": "PASS",
+      "finding": "The causal production-identity risk was resolved by fixture-only scope: both entire production files equal raw C bytes; original image/native/model constants and strict equality remain exact. This preserves approved P legacy guards and scientific nonpromotion. Current source fixtures are not accepted current images."
+    }
+  ],
+  "genuine_test_evidence": {
+    "RED": {
+      "init": "863a5c",
+      "session_id": 2232,
+      "final": "cf75c0",
+      "exit_code": 1,
+      "tests": 2,
+      "errors": 2,
+      "failures": 0,
+      "skips": 0,
+      "elapsed_s": 10.865460238070227,
+      "reason": "Both real production source identity conjunctive guards refused; no missing API or fabricated failing source text."
+    },
+    "GREEN02": {
+      "init": "27ca99",
+      "session_id": 8935,
+      "final": "d033a8",
+      "exit_code": 0,
+      "tests": 2,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "elapsed_s": 21.928372954018414,
+      "checks": "Genuine existing GVA test_physical_source_drift_is_rejected_after_fixture_is_pinned, plus direct GST original fixture/source-identity route with independent zero-runtime and zero-native expected-SHA refusals. GST route is an external FunctionTestCase, not a new persistent test method."
+    },
+    "custody": "For RED and GREEN02 source4 before==after hashes/sizes/seven epochs, production2 equal across both runs, current frozen test2 hashes match GREEN02. Actual FD6→6. Original initiating/final session IDs, exit statuses, counts and elapsed output join closed result files.",
+    "later_owner_scope": "Original author-proof call9b952c rc0 retains two later named child and parent PID-path absence observations: RED63643/63642; GREEN63700/63699. PGID/SID were recorded as63642/63699 but no group-member scan, boot/start/credentials proof or global quiescence is claimed.",
+    "preserved_broader_GREEN01": "FAILED original f07e26/session86740→8217de rc1. stderr records16 tests,2 missing local qualification_image_identity_patch.json errors and1 unchanged live platform skip. External result serialization then failed on a skipped unittest object. No broader GREEN or complete-six-CI-outcomes claim."
+  },
+  "originals": [
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/fragment-source-fixture-regression-v1/author-review.v1.json",
+      "size_bytes": 5359,
+      "sha256": "e24488858f67b53cfc6185d4e82a3e53457276edf8f897e7bb07252757f2ce60"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/fragment-source-fixture-regression-v1/source-scope.diff",
+      "size_bytes": 2489,
+      "sha256": "70d451b54bce1e9edbabe8b65440e91994c0fc5e25cbee0163cd31e62274eede"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/fragment-source-fixture-regression-v1/original-tools.v1.json",
+      "size_bytes": 23116,
+      "sha256": "1ac4557baa58b7a67d069cd60ff2dea9782a04d894edf5644bd518d04e0fd8e4"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/fragment-source-fixture-regression-v1/author-proof.original-tool.v1.json",
+      "size_bytes": 8373,
+      "sha256": "1125fc2c2435a199cd00257edb96f61b9005228d226c842c94acee7c28e9e31d"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/fragment-source-fixture-regression-v1/red-01/result.v1.json",
+      "size_bytes": 4134,
+      "sha256": "daa3c81f097eb14c0162ea2a481ea3e5e9c928c0fcc8051e2a77b8c4f841867c"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/fragment-source-fixture-regression-v1/green-02/result.v1.json",
+      "size_bytes": 2354,
+      "sha256": "bbf8d8c76c71f48526243a24df9c4de1537c7e71f8bd0b46368b1fc218c3a83a"
+    }
+  ],
+  "limits": [
+    "This independent review launched no tests, CI, image/model/media/engine/preparation or science target.",
+    "v3 PASS is preserved as its unchanged11-file source/software scope; failed A/B/C originals remain failures.",
+    "Actual latest corrected committed-head full CI must prove all mandatory methods and exact skip/deferred dispositions; local asset-dependent full-fragment methods were not claimed GREEN.",
+    "Physical current selected build/model/source parity/readiness, pilots and all24/12 actual effects remain unexecuted and required.",
+    "Source review provides no physical grant or fabricated human approval. Candidate frozen working bytes await root commit."
+  ],
+  "remaining_gate": "Mandatory latest corrected HEAD full CI plus original-result acceptance before physical preparation; all original finite preparation/campaign/lifecycle/science requirements remain."
+}
