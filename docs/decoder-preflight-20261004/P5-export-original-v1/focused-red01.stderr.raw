@@ -1,0 +1,15 @@
+test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding (__main__.FullPublicationResultsTests.test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding) ... ERROR
+
+======================================================================
+ERROR: test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding (__main__.FullPublicationResultsTests.test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_full_publication_results.py", line 384, in test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding
+    real_require_epochs = physical_io._require_epochs
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_physical_io_v1' has no attribute '_require_epochs'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+FAILED (errors=1)

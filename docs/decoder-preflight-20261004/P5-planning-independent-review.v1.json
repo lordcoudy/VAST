@@ -1,0 +1,116 @@
+{
+  "kind": "independent_exact_P5_planning_review_v1",
+  "verdict": "PASS_PLANNING_SOURCE_FEASIBILITY",
+  "change": "fix-decoder-preflight",
+  "exact_commit": "2ad1d8b55b5cdf33e0c435e20510ee6b403830f4",
+  "parent": "11471c5e13787dd7eac710738cd67472dc60b591",
+  "scope": "Same PR4/change. Read-only native raw Git and existing source/closed evidence; no code, tests, CI, scientific target, imports or approval COMMENT executed.",
+  "planning": [
+    {
+      "path": "openspec/changes/fix-decoder-preflight/proposal.md",
+      "bytes": 11871,
+      "sha256": "cdeefaf752a32381269919cf57d85a45b49f39709d5612450fe38e78b82286b5",
+      "blob": "569afff07c7a7319807d0d7966dceaede5ead082"
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/design.md",
+      "bytes": 67278,
+      "sha256": "6c036e5d99ebdb4afdc67039547c650cf7320338f6918343d1051bdc18c92dda",
+      "blob": "bcb712296bfccc8a550bf525ebad0cd59d989325"
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/tasks.md",
+      "bytes": 24460,
+      "sha256": "357b7bfa96d30a2d4c849510467ab28d634d5875ac273825a419fd7eb3ae9685",
+      "blob": "2e891d1fa2d6756ee39e3d0a6e4ea19be25e879f"
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "bytes": 23273,
+      "sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d",
+      "blob": "c1bc6757983b41df87f031f36101157d8949722f",
+      "unchanged": true
+    }
+  ],
+  "raw_checks": {
+    "four_complete_raw_documents_read_in_memory": true,
+    "four_physical_equal_raw_commit": true,
+    "complete_commit_scope_only_three_planning_paths": true,
+    "code_tests_CI_main_specs_and_diagnostics_git_unchanged": true,
+    "old47_flags_equal": true,
+    "checked": 38,
+    "total": 50,
+    "new_unchecked": [
+      "12.1",
+      "12.2",
+      "12.3"
+    ],
+    "delta_scenarios": 28,
+    "working_tree_tracked_diff_paths_at_read": [
+      "PLAN.md",
+      "progress.md"
+    ]
+  },
+  "source_bindings": [
+    {
+      "path": "scripts/full_publication_results.py",
+      "bytes": 23051,
+      "sha256": "dde01c5bb9e88e036e0dc9de11f233efd6504b46c99dae4df53a3fa9ef98c8ca",
+      "physical_equal_raw_P5": true
+    },
+    {
+      "path": "tests/test_full_publication_results.py",
+      "bytes": 14223,
+      "sha256": "680235b031de3e2e0b4116111863ec1e9a0ed9440dfb74d6734ebfaac76f2ab7",
+      "physical_equal_raw_P5": true
+    },
+    {
+      "path": "scripts/publication_physical_io_v1.py",
+      "bytes": 132238,
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "physical_equal_raw_P5": true
+    },
+    {
+      "path": "scripts/publication_guardian_preprocessing_contract_v1.py",
+      "bytes": 68402,
+      "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+      "physical_equal_raw_P5": true
+    }
+  ],
+  "findings": [],
+  "feasibility": [
+    {
+      "source": "scripts/full_publication_results.py:473-596",
+      "finding": "Current custody acquisition is followed by mutable intent bootstrap/lock-leaf creation before the existing bundle lock. The prescribed private outer POSIX root-directory lock encloses that real window and final bundle checks. Exporter plus its existing test module are sufficient; PhysicalIO API changes are unnecessary."
+    },
+    {
+      "source": "scripts/publication_physical_io_v1.py:200-218,251-349; scripts/publication_guardian_preprocessing_contract_v1.py:308-327,357-388",
+      "finding": "Existing custody pins directory identity and ancestor chain, not mutable epochs. Public root/verify plus an owned read-only FD tied to the original custody can verify identity/type/no-symlink before and after waiting. Mutable per-operation epoch checks remain authoritative after coordination."
+    },
+    {
+      "source": "scripts/publication_physical_io_v1.py:1612-1674; scripts/full_publication_results.py:122-188",
+      "finding": "The per-operation atomic lock uses a distinct staging/.lock inode; it is not a lock on the run-root directory. Root-directory -> existing bundle leaf -> per-operation staging leaf is coherent. The existing bundle helper and Windows fallback remain unchanged."
+    },
+    {
+      "source": "scripts/publication_physical_io_v1.py:2888-2938; tests/test_full_publication_results.py:49-146,201-215",
+      "finding": "The fresh fixture precreates neither intent nor staging/results. Parking A after the actual parent epoch snapshot at line2918 and allowing B to reach its real old bundle-lock acquisition can expose B's intervening bootstrap/staging mutation. This is a feasible genuine guard-Refusal RED, not a missing-API surrogate."
+    }
+  ],
+  "required_implementation_checks": [
+    "The ONE new POSIX method must retain two actual exporters and delegate actual flock; checkpoint recognizes only root-directory new inode or bundle-leaf old inode and ignores staging locks. B must block before mutable bootstrap after the fix; both exporters adopt the same exact four-file bundle and one intent.",
+    "Separate real root replacement after FD acquisition must refuse before yielding/writing into the replacement root. Post-wait identity verification must be tied to original custody, not merely the latest named root.",
+    "The new outer helper must independently attempt unlock and close on all acquired paths, preserve primary failures, and fail closed on cleanup-only errors; exercise these real acquisitions and retirement attempts in the same proposed method with bounded synchronization and FD closure.",
+    "No weakening of per-operation epoch checks, receipt-last/crash-window behavior, PhysicalIO API, old bundle helper, Windows fallback, decoder bounds120/15, or scientific acceptance predicates."
+  ],
+  "source_semantics_primary_doc": {
+    "url": "https://man7.org/linux/man-pages/man2/flock.2.html",
+    "use": "Linux advisory locks associate with open-file descriptions; distinct opens can conflict even in one process. Read-only FD exclusive locking is supported locally. This supports the proposed local POSIX mechanism, not a universal NFS/CIFS claim or an executed result."
+  },
+  "pending_gates": [
+    "Actual meaningful RED, two-file implementation, GREEN/source review and latest exact S5 full hosted CI remain unexecuted. Current S4 hosted CI FAILED and its original failure remains immutable.",
+    "Historical canonical S4 root12/nested167 applies only to unchanged decoder bytes; it must not be relabelled as an S5 execution. Latest S5 CI must report actual whole inventory plus the one new case, native six targets and three required regressions, original88 allowed skips/nine deferred cases and unchanged decoder12/167.",
+    "Corrected P4 cold observation is still UNEXECUTED. Before one shared11.4/12.3 invocation: independently bind current ordinary checkout S5/epochs/paired roots, immutable S3 producer/external observer, P4/P5 ancestry and separate S5 observer source; original S3 failures remain immutable. No producer retry or cold grant is supplied by this review.",
+    "Actual conformance/archive/final release checks remain pending. Legacy full32/Q4/5600 and future canonical24 scientific completion are not promoted."
+  ],
+  "limits": "Planning coherence and source feasibility only. The original CI traceback proves an epoch refusal during concurrency, not the exact competing syscall/inode; the prescribed deterministic regression must prove the mechanism. No runtime fix or actual corrected cold/science acceptance is claimed. One final read-only source-binding command initially used a nonexistent filename and exited1 before any writes; corrected filename command closed0 and is retained alongside it."
+}

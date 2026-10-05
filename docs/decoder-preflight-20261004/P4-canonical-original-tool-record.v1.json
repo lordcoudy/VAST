@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "P4_canonical_actual_tools",
+  "planning_commit": "ee15ffdefcbeae92716d1dc816254229d51bc752",
+  "planning_review_COMMENT": 5407789217,
+  "tool_calls": [
+    {
+      "tool_name": "exec_command",
+      "arguments": {
+        "cmd": "wsl -d Ubuntu --exec /usr/bin/setsid --wait /usr/bin/timeout -k 15 180 /usr/bin/env RUNNER_TEMP=/tmp/vast-decoder-p4-fixtures-20261004-full01 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py -v",
+        "yield_time_ms": 10000,
+        "max_output_tokens": 6000
+      },
+      "result": {
+        "chunk_id": "6515f6",
+        "wall_time_seconds": 10.0121955,
+        "session_id": 4639,
+        "original_token_count": 561,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000test_descriptor_failure_after_real_close_is_retained (__main__.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained) ... ok\ntest_descriptor_time_after_real_close_cannot_bypass_cleanup_clock (__main__.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock) ... ok\ntest_final_receipt_persist_time_after_actual_close_still_blocks_success (__main__.DecoderResearchV6CaptureLifecycleTests.test_final_receipt_persist_time_after_actual_close_still_blocks_success) ... ok\ntest_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt (__main__.DecoderResearchV6CaptureLifecycleTests.test_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt) ... ok\ntest_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause (__main__.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause) ... ok\ntest_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement (__main__.DecoderResearchV6CaptureLifecycleTests.test_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement) ... ok\ntest_partial_log_acquisition_retires_first_writer_and_keeps_collision (__main__.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision) ... ok\ntest_partial_terminal_write_keeps_primary_and_actual_flush_close_failures (__main__.DecoderResearchV6CaptureLifecycleTests.test_partial_terminal_write_keeps_primary_and_actual_flush_close_failures) ... ok\ntest_terminal_close_failure_retains_real_prefix_without_recursion (__main__.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion) ... ok\ntest_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock (__main__.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock) ... "
+      }
+    },
+    {
+      "tool_name": "write_stdin",
+      "arguments": {
+        "session_id": 4639,
+        "chars": "",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 6000
+      },
+      "result": {
+        "chunk_id": "091f3c",
+        "wall_time_seconds": 5.0096859,
+        "session_id": 4639,
+        "original_token_count": 59,
+        "output": "ok\ntest_validation_time_cannot_bypass_cleanup_clock (__main__.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock) ... ok\ntest_full_v6_suite (__main__.DecoderResearchV6Tests.test_full_v6_suite) ... "
+      }
+    },
+    {
+      "tool_name": "write_stdin",
+      "arguments": {
+        "session_id": 4639,
+        "chars": "",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 6000
+      },
+      "result": {
+        "chunk_id": "a7f2b8",
+        "wall_time_seconds": 0.0000061,
+        "exit_code": 0,
+        "original_token_count": 26,
+        "output": "ok\n\n----------------------------------------------------------------------\nRan 12 tests in 73.736s\n\nOK\n"
+      }
+    }
+  ]
+}

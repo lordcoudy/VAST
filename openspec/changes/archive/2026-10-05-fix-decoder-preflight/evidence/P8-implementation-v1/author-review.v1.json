@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "kind": "P8_scoped_author_review",
+  "planning": {
+    "change": "fix-decoder-preflight",
+    "commit": "da0a3f93e060c87b35423729c48388f4e77fab13",
+    "comment": 5408991278,
+    "comment_preceded_source_edits": true
+  },
+  "scope": {
+    "production": "existing Replay temporal join and nonauthorizing clock diagnostics",
+    "test": "one appended IndependentColdTests method plus approved run_fixture timestamp-only changes",
+    "adapter": "one qualified ID and104→105",
+    "tasks": "only14.1 checkbox;14.2/14.3 unchecked",
+    "no_stage_commit_push": true
+  },
+  "source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 94512,
+      "sha256": "bba914fd5bdd2a70fa6a600f6762b56620a596c4b02411d6a2a4325a461338f9"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 110152,
+      "sha256": "77067761c9fc61b7f923d0792edd5919772fb373d997b74b63767f8f138e22d3"
+    },
+    {
+      "path": "tests/test_decoder_research_v6.py",
+      "size_bytes": 50316,
+      "sha256": "039fa6478cbd316d8c0aba139969f0df88ec1a5a77b535517d6698a732429380"
+    }
+  ],
+  "original_focused_runs": {
+    "red": {
+      "original_tool": "b56564",
+      "exit_code": 1,
+      "outer_wall_seconds": 1.2462754,
+      "unittest_seconds": 0.165,
+      "tests": 1,
+      "errors": 1,
+      "first_exception": "Refusal: original startup/actualEOF/drain bounds",
+      "meaningful_old_predicate_failure": true,
+      "no_fixture_or_missing_API_error": true,
+      "cold_source_sha256": "1cdfbbeffbbf859e83ba127a07b5ae214887b20bb4deab3615a1c1aa9bb124e8",
+      "test_source_sha256": "afe0d1e53fe413a938cd1ac51bc6513605878638f799c3caa8a8834a672393f3"
+    },
+    "green": {
+      "original_tool": "e7734c",
+      "exit_code": 0,
+      "outer_wall_seconds": 1.1964314,
+      "unittest_seconds": 0.188,
+      "tests": 1,
+      "successes": 1,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "faithful_args_and_returned_objects": {
+      "path": "original-tools.v1.json",
+      "size_bytes": 4153,
+      "sha256": "fbfffbff6a9889506a10335fee3437651974689d0c14373b3db11ceb3133622d"
+    },
+    "raw_red_stderr": {
+      "path": "focused-red01.stderr.raw",
+      "size_bytes": 1896,
+      "sha256": "651dd3971258a4136f06dcb48cd7ca8c1b116556e9fa32a95a0e6526641c010d"
+    },
+    "raw_green_stderr": {
+      "path": "focused-green01.stderr.raw",
+      "size_bytes": 286,
+      "sha256": "5af846a50b3d6d95ab088ab498f0525f9a36b1ee833106b642c594523d758bca"
+    },
+    "both_raw_stdout_empty": true,
+    "no_test_retry_or_extra_test_execution": true
+  },
+  "behavior": {
+    "ordered_join": "observed EOF <= float-derived bookkeeping EOF <= actual sink EOS <= completion",
+    "earlier_EOF_bound": "unchanged inclusive0..10_000_000_000ns",
+    "unchanged_predicates": [
+      "startup0..45s",
+      "declared drain elapsed0..10s",
+      "exact EOF document/journal identity",
+      "exact sink EOS identity",
+      "immutable observations recomputation",
+      "existing packet/byte/hash/epoch/FD/deadline/prefix/close guards"
+    ],
+    "diagnostics": "source_eof_clock_joins list is appended only after original observations recomputation; execute exposes it outside reconstructed actual fields",
+    "representation": "No rounding/normalization/fitted tolerance or universal nanosecond accuracy claim",
+    "positive_recorded_shape": [
+      621837867081512,
+      621837867082806,
+      621837888893260,
+      621837943651606
+    ],
+    "same_method_subcases": [
+      "exact original10s inclusive boundary",
+      "bookkeeping before observed EOF",
+      "bookkeeping after sink EOS",
+      "sink EOS after completion",
+      "completion before observed EOF",
+      "10s+1ns from earlier EOF although later bookkeeping interval is10s"
+    ],
+    "fixture": {
+      "nonflush": [
+        2000000,
+        2000000,
+        2500000,
+        3000000
+      ],
+      "flush": [
+        100000,
+        100000,
+        200000,
+        3000000
+      ],
+      "declared_elapsed": 1,
+      "output_timestamps_residence_cohorts_minus10_deltas_and_flush_classification_unchanged": true
+    }
+  },
+  "static_proof": {
+    "original_tool": "dcd398",
+    "exit_code": 0,
+    "old_test_methods_AST_preserved": 60,
+    "old_class_methods": 84,
+    "only_changed_old_helper": "IndependentColdTests.run_fixture",
+    "whole_test_AST_authorized_inverse": true,
+    "adapter_whole_AST_literal_inverse": true,
+    "old170_IDs_retained": true,
+    "expected_membership171_not_actual_full_suite_outcome": true,
+    "audit": {
+      "path": "source-audit.v1.json",
+      "size_bytes": 1858,
+      "sha256": "fdca4837307ba2005e820f658b234ea19dfb53b437da9f0240222e5bab8a9b8d"
+    },
+    "audit_original_tool": {
+      "path": "source-audit-original-tool.v1.json",
+      "size_bytes": 8449,
+      "sha256": "016f5cec7e485db599d53be50ab4566fd46a5dcacdf1efb86277ac52504188b2"
+    },
+    "diff": {
+      "path": "source.diff",
+      "size_bytes": 12631,
+      "sha256": "9a162aab9bcee1dfbb699eaa7e5323b1b023c1c5ad8f6c1d76181d95ed12b553"
+    },
+    "audit_FD_before": 6,
+    "audit_FD_after": 6,
+    "all_audit_read_handles_closed": true
+  },
+  "limits": [
+    "Focused test retirement is checked by existing tearDown and new real held-FD close/assertions; numeric focused FD counts and launch PID/birth/group identities were not printed, so none are synthesized.",
+    "Direct setsid --wait/timeout returned original unittest exit codes; no global process or descendant absence claim.",
+    "Root owns the one complete canonical invocation1b1273/session77452, current required CI and independent source/cold review; this author executed no canonical, CI, producer, observer target, engine, media or scientific invocation.",
+    "Original S3 and every FAILED report/tool are untouched. This receipt approves no scientific acceptance or new once-read."
+  ]
+}

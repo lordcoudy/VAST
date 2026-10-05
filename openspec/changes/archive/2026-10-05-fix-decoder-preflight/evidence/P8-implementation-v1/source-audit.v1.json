@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "planning_commit": "da0a3f93e060c87b35423729c48388f4e77fab13",
+  "planning_comment": 5408991278,
+  "old_test_methods_preserved": 60,
+  "old_class_methods": 84,
+  "only_changed_old_test_helper": "IndependentColdTests.run_fixture",
+  "whole_test_AST_equals_authorized_timestamp_transform_plus_one_method": true,
+  "new_test_method": "IndependentColdTests.test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound",
+  "inherited_adapter_IDs_preserved": 66,
+  "prior_new_adapter_IDs_preserved": 104,
+  "new_adapter_ID": "test_research_protocol.IndependentColdTests.test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound",
+  "expected_membership": 171,
+  "actual_full_suite_pending": true,
+  "adapter_whole_AST_inverse_exact": true,
+  "cold_changed_methods": [
+    "Replay.__init__",
+    "Replay.run",
+    "Replay.execute"
+  ],
+  "source_pins": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 94512,
+      "sha256": "bba914fd5bdd2a70fa6a600f6762b56620a596c4b02411d6a2a4325a461338f9"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 110152,
+      "sha256": "77067761c9fc61b7f923d0792edd5919772fb373d997b74b63767f8f138e22d3"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+      "size_bytes": 50316,
+      "sha256": "039fa6478cbd316d8c0aba139969f0df88ec1a5a77b535517d6698a732429380"
+    }
+  ],
+  "fd_before": 6,
+  "fd_after": 6,
+  "all_read_handles_closed": true,
+  "no_production_target_imports": true
+}

@@ -1,0 +1,231 @@
+{
+  "actual_file_stat_hash_epoch_ancestor_FD_checks_unchanged": true,
+  "actual_interpreter": {
+    "executable": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "resolved_path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "version": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]"
+  },
+  "all_40_original_test_methods_AST_identical": true,
+  "authorization": "parent delegated narrow repair after original S hosted18 errors; no new normative behavior",
+  "blocking_findings": [],
+  "exact_diff": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-fixture-portability-v1/source.diff",
+    "sha256": "f01f050f939f050c36673cdfea763b8883ffb2c3c37b13c12324f1ee07b9459a",
+    "size_bytes": 4033
+  },
+  "focused_GREEN": {
+    "capture_elapsed_s": 9.071166731999256,
+    "child_reaped": true,
+    "dispatch": {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-fixture-portability-v1/green-01/dispatch.v1.json",
+      "sha256": "c490baafa07fc39516ab928d9f9edb8f28bb8c567ca8b591c947423ce79d90ea",
+      "size_bytes": 2704
+    },
+    "errors": 0,
+    "execution": {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-fixture-portability-v1/green-01/execution.v1.json",
+      "sha256": "ffbb82395688122430977e632711b9682be4bef34751ffb276559ffad41069d9",
+      "size_bytes": 4684
+    },
+    "failures": 0,
+    "fd_after": 6,
+    "fd_before": 6,
+    "original_tool": {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-fixture-portability-v1/green-01/original-tool.v1.json",
+      "sha256": "b9430332903724a1508cc22b0021d85a6e495d780bcc4c7f5154e385b1cfdccc",
+      "size_bytes": 5606
+    },
+    "raw": [
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-fixture-portability-v1/green-01/original.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-fixture-portability-v1/green-01/original.stderr",
+        "sha256": "3c55a7380ee15dea22dbd37d861fe5570a641eafeaf16f56bf51102228c4ec03",
+        "size_bytes": 7451
+      }
+    ],
+    "skips": 0,
+    "source_bytes_and_7epochs_stable": true,
+    "streams_closed": true,
+    "successes": 40,
+    "tests_run": 40,
+    "two_original_child_group_scans_absent": true,
+    "unittest_elapsed_s": 8.779
+  },
+  "full_CI_acceptance": false,
+  "hosted_RED": {
+    "descriptor": {
+      "epoch7": [
+        69,
+        1407374885982393,
+        33279,
+        1,
+        82793,
+        1791117792552164100,
+        1791117792552164100
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S7666e79f-v1/ci-independent-review.v1.json",
+      "sha256": "285e06c538cb2df46ad8195d41ca310ae5bc33324d92e9686c15bb9daa88a356",
+      "size_bytes": 82793
+    },
+    "first_cause": {
+      "cold_dispatch_guard_line": 711,
+      "exception": "FileNotFoundError",
+      "fixture_interpreter_literal_line": 503,
+      "host_argv_literal_line": 498,
+      "line": 504,
+      "not_timeout_or_missing_envelope": true,
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "same_cause_error_count": 18,
+      "source_file": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "test_id": "test_complete_metadata_positive_uses_real_git_and_holds_all_files (test_research_protocol.IndependentColdTests.test_complete_metadata_positive_uses_real_git_and_holds_all_files)"
+    },
+    "nested": {
+      "elapsed_s": 38.55798830599997,
+      "errors": 18,
+      "failed_ids": [
+        "test_research_protocol.IndependentColdTests.test_complete_metadata_positive_uses_real_git_and_holds_all_files",
+        "test_research_protocol.IndependentColdTests.test_complete_research_positive_reconstructs128_au64_pairs_and_legal_ack_interleaving",
+        "test_research_protocol.IndependentColdTests.test_controller_positive_body_does_not_override_post_close_failure",
+        "test_research_protocol.IndependentColdTests.test_current_task_progress_does_not_replace_reviewed_p_blobs",
+        "test_research_protocol.IndependentColdTests.test_external_provisional_success_needs_genuine_final_tool_rc",
+        "test_research_protocol.IndependentColdTests.test_failed_main_invalidates_prefix_after_real_held_epoch_mutation",
+        "test_research_protocol.IndependentColdTests.test_failed_main_retains_prefix_and_independent_close_status_without_promotion",
+        "test_research_protocol.IndependentColdTests.test_flush_only_outputs_remain_insufficient_without_changing_cohorts",
+        "test_research_protocol.IndependentColdTests.test_mapping_bridge_observer_owner_range_and_close_are_replayed",
+        "test_research_protocol.IndependentColdTests.test_metadata_positive_cannot_authorize_foreign_owner_or_partial_maps",
+        "test_research_protocol.IndependentColdTests.test_old_provisional_success_with_close_failure_companion_is_rejected",
+        "test_research_protocol.IndependentColdTests.test_original_admission_types_u64_and_reserved_duration_are_rejected",
+        "test_research_protocol.IndependentColdTests.test_raw_payload_corruption_has_independent_valid_prefix_only",
+        "test_research_protocol.IndependentColdTests.test_resealed_journal_pts_caps_digest_eos_order_and_cohort_corruption_is_refused",
+        "test_research_protocol.IndependentColdTests.test_resealed_raw_header_payload_ack_control_and_trailing_corruption_is_refused",
+        "test_research_protocol.IndependentColdTests.test_source_and_reviewed_planning_raw_mutations_are_rejected_by_git",
+        "test_research_protocol.IndependentColdTests.test_source_start_requires_ready_loaded_observation_and_enabling_intent",
+        "test_research_protocol.IndependentColdTests.test_unknown_extra_output_and_foreign_mode_cannot_borrow_positive_body"
+      ],
+      "failures": 0,
+      "skips": 0,
+      "successes": 132,
+      "tests_run": 150
+    },
+    "run_id": 37201708733,
+    "source_commit": "7666e79f5a9cd27530ac6ea95b6629b4f2adb9d4"
+  },
+  "implementation_source": [
+    {
+      "epoch": [
+        68,
+        4785074605762841,
+        33279,
+        1,
+        72112,
+        1791117935357753100,
+        1791117935357753100
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "sha256": "d174ea18c513e914d33c0e9270dbb0c4b073238a4137848e5803e786c0a202d7",
+      "size_bytes": 72112
+    },
+    {
+      "epoch": [
+        68,
+        4785074605590591,
+        33279,
+        1,
+        53060,
+        1791110107915893900,
+        1791110107915893900
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+      "sha256": "3db163f5d90043bddb07fbabd29ee4f500b5ccc070d844a8e6d67b2d595e1bce",
+      "size_bytes": 53060
+    },
+    {
+      "epoch": [
+        68,
+        6192449489143878,
+        33279,
+        1,
+        36624,
+        1791111029135697300,
+        1791111029135697300
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+      "sha256": "f0685e19a3072736f8262aad32d868a2021650381e8beaef989d4f5339358d63",
+      "size_bytes": 36624
+    },
+    {
+      "epoch": [
+        68,
+        4785074605590882,
+        33279,
+        1,
+        87504,
+        1791117935355753000,
+        1791117935355753000
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "sha256": "30f996a4a35b6c4bfd3cfbcf6870e6c9a816dabb653358bd9dbb3d7b9bca979c",
+      "size_bytes": 87504
+    }
+  ],
+  "kind": "vast_decoder_v6_cold_fixture_portability_author_review_v1",
+  "later_owner_closure": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-fixture-portability-v1/later-owner-closure.v1.json",
+    "sha256": "3d92068b39ee67fbe7c3a50a0d68afd82585ff556eeb21ba73b92a7cbe282046",
+    "size_bytes": 1191
+  },
+  "limitations": [
+    "Author review, not independent approval.",
+    "Canonical WSL40 focused pass is not new hosted/full150 acceptance; root owns exact successor CI.",
+    "No production metadata/research, GI, source/decoder/model/container/engine operation was performed.",
+    "Outer timeout PID/PGID is known via helper ppid/group, but its original birth/UID/session were not recorded; not reconstructed.",
+    "No global descendant/quiescence claim; later scans concern the three exact original owner PIDs/groups only."
+  ],
+  "metadata_or_research_dispatch": false,
+  "original_preedit_sources": [
+    {
+      "epoch7": [
+        69,
+        1407374885982395,
+        33279,
+        1,
+        87468,
+        1791117891929971200,
+        1791117891929971200
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-fixture-portability-v1/cold_reader.before.py",
+      "sha256": "dac3af43d124f6b76c18bd7e1409741c5f71b902e56c7d453ae29a590fab84bd",
+      "size_bytes": 87468
+    },
+    {
+      "epoch7": [
+        69,
+        1407374885982396,
+        33279,
+        1,
+        72080,
+        1791117891944128400,
+        1791117891944128400
+      ],
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-fixture-portability-v1/test_research_protocol.before.py",
+      "sha256": "33cf8313d61794bd4f61927aea4d2c92030864ad088b61dbc9ffeada7b76e0bf",
+      "size_bytes": 72080
+    }
+  ],
+  "production_exact_argv_unchanged": true,
+  "production_host_interpreter": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+  "reviewable": true,
+  "reviewer_handles_released": true,
+  "scope": "two owned files only; test helper portability, unchanged production canonical interpreter",
+  "source_audit": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-fixture-portability-v1/source-audit.v1.json",
+    "sha256": "ae2e47356d84270f5659669a694722f3b98e1f1f47a167b7fd98a4371e0500a8",
+    "size_bytes": 6206
+  },
+  "source_byte_inverse_exact": true,
+  "synthetic_binding": "str(Path(sys.executable).resolve(strict=True)) via existing patch_anchor/restoration"
+}

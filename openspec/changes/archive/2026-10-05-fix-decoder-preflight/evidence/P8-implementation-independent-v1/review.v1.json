@@ -1,0 +1,210 @@
+{
+  "schema": "vast.exact-source-canonical-independent-review.v1",
+  "verdict": "PASS_EXACT_S8_SOURCE_AND_CLOSED_CANONICAL_ONLY",
+  "reviewed_commit": "470120a3b3f9692775656cdb8114471ab991f14b",
+  "parent_commit": "da0a3f93e060c87b35423729c48388f4e77fab13",
+  "planning_COMMENT": 5408991278,
+  "raw_source_pins": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 94512,
+      "sha256": "bba914fd5bdd2a70fa6a600f6762b56620a596c4b02411d6a2a4325a461338f9"
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 110152,
+      "sha256": "77067761c9fc61b7f923d0792edd5919772fb373d997b74b63767f8f138e22d3"
+    },
+    {
+      "path": "tests/test_decoder_research_v6.py",
+      "size_bytes": 50316,
+      "sha256": "039fa6478cbd316d8c0aba139969f0df88ec1a5a77b535517d6698a732429380"
+    }
+  ],
+  "raw_scope": {
+    "changed_paths": 26,
+    "code_paths": 3,
+    "other_paths": "tasks14.1 checkbox; two current PLAN/progress prefixes; twenty original evidence additions",
+    "all20_evidence_raw_blobs_byteexact_external": true,
+    "task14_1_only_changed": true,
+    "planning_delta_main_CI_unchanged": true,
+    "other12_fixture_sources_rawP8_unchanged": true,
+    "no_whole_source_table_generated": true
+  },
+  "source_review": {
+    "cold_changed_methods": [
+      "Replay.__init__",
+      "Replay.run",
+      "Replay.execute"
+    ],
+    "temporal_condition": "eof.observed_monotonic_ns <= drained.source_eof_monotonic_ns <= actual decoder-sink EOS <= drained.completed_monotonic_ns",
+    "exact_earliest_EOF_budget": "0 <= drained.completed_monotonic_ns - eof.observed_monotonic_ns <= 10000000000",
+    "preserved": "Run/guest owner, startup0..45s, declared drain0..10s, exact EOF/EOS journal joins, unchanged original observations recomputation and all other packet/hash/PTS/RGB/cohort/pair/namespace/mapping/source/FD/epoch/120s/15s/prefix/final-close guards.",
+    "diagnostics": "source_eof_clock_joins initialized empty; append occurs after successful unchanged actual-vs-original observations comparison; execute exposes separate diagnostics and a precise float representation limitation.",
+    "no_fitted_tolerance_no_float_normalization_no_producer_format_change": true,
+    "metadata_only_behavior": "No runs yields an empty diagnostic list; no producer invocation or new authority is implied."
+  },
+  "independent_static_preservation": {
+    "old60_test_method_ASTs_exact": true,
+    "old84_class_methods_preserved_except_explicit_run_fixture_transform": true,
+    "other23_old_helpers_exact": true,
+    "helper_exact_timestamp_inverse": true,
+    "whole_test_module_AST_after_authorized_inverse_exact": true,
+    "adapter_whole_bytes_after_one_ID_and105_to104_literal_inverse_exact": true,
+    "old170_IDs_exact_plus_one171": true,
+    "new_method": "IndependentColdTests.test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound",
+    "new_real_sealed_entry_point": "Fresh Replay.run using regular fixture/journal/documents and real reseals/held reads; no predicate/hash/epoch mocking.",
+    "cases": "Original-derived1294ns distinct-clock positive, inclusive earliest10s success, bookkeeping-before-EOF/after-EOS, sinkEOS-after-completion, completion-before-EOF and earliest10s+1ns refusal while declared later-bookkeeping elapsed remains1.",
+    "original_fixture_output_timestamps_residence_cohorts_minus10ns_and_flush_only_insufficiency_assertions_preserved": true
+  },
+  "focused_originals": {
+    "author_review": {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/author-review.v1.json",
+      "size_bytes": 6003,
+      "sha256": "7971eba27aea5fa91342a26a1599de71875af780fd20c4cb7d05daf9b40b71c0"
+    },
+    "faithful_tools": {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/original-tools.v1.json",
+      "size_bytes": 4153,
+      "sha256": "fbfffbff6a9889506a10335fee3437651974689d0c14373b3db11ceb3133622d"
+    },
+    "RED": {
+      "tool": "b56564",
+      "returncode": 1,
+      "unittest_elapsed_s": 0.165,
+      "tests": 1,
+      "causal_exception": "Refusal: original startup/actualEOF/drain bounds at old cold_reader.py532",
+      "stderr_size": 1896,
+      "stderr_sha256": "651dd3971258a4136f06dcb48cd7ca8c1b116556e9fa32a95a0e6526641c010d"
+    },
+    "GREEN": {
+      "tool": "e7734c",
+      "returncode": 0,
+      "unittest_elapsed_s": 0.188,
+      "tests": 1,
+      "stderr_size": 286,
+      "stderr_sha256": "5af846a50b3d6d95ab088ab498f0525f9a36b1ee833106b642c594523d758bca"
+    },
+    "RED_test_source": "Same new-method AST as S8, all old test/helper ASTs still original. The explicitly planned run_fixture chronology correction occurs before GREEN; RED snapshot is not falsely labelled byte-identical to S8.",
+    "focused_FD_limits": "New method and inherited tearDown assert real held-FD retirement; numeric focused before/after values and original launch birth/group were not printed and are not synthesized."
+  },
+  "canonical_originals": {
+    "original_root_tools_path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/canonical-root-original-tools.v1.json",
+    "original_root_initiating": "1b1273",
+    "original_root_session": 77452,
+    "original_root_final": "894040",
+    "actual_root_returncode": 0,
+    "actual_root_tests": 12,
+    "actual_root_unittest_elapsed_s": 62.329,
+    "wrapper_limit": "Actual root command timeout-k15/180; unchanged nested capture120s/body15s cleanup; no limit changed in adapter.",
+    "actual_nested_tests": 171,
+    "actual_nested_elapsed_s": 53.47998403699603,
+    "actual_nested_zero_failures_errors_skips_expected_failures_unexpected_successes": true,
+    "actual_all_selected_IDs_unique_equal_static171": true,
+    "actual171_raw_start_and_terminal_events_unique_all_success": true,
+    "CPython": "3.12.3 -I -B",
+    "hardware_acceptance": false,
+    "research_executed": false,
+    "five_original_raw_SHA_size_terminal_finalclose_join": true,
+    "closed_metadata": {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/canonical-closed-metadata.v1.json",
+      "size_bytes": 7746,
+      "sha256": "34c7c71deb3f793ab7ee06900f43f5a425a5804be84ec6777cdd1df9c3accf89"
+    },
+    "actual_two15s": [
+      {
+        "elapsed_s": 15.043128942954354,
+        "event": "test_terminal",
+        "monotonic_ns": 643257870293803,
+        "outcome": "success",
+        "test_id": "test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed"
+      },
+      {
+        "elapsed_s": 15.045499264029786,
+        "event": "test_terminal",
+        "monotonic_ns": 643272915924051,
+        "outcome": "success",
+        "test_id": "test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success"
+      }
+    ],
+    "original_capture": {
+      "child_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 52342,
+        "pid": 52342,
+        "ppid": 52331,
+        "sid": 52342,
+        "starttime_ticks": 64322347,
+        "uid": 1000
+      },
+      "returncode": 0,
+      "child_reaped": true,
+      "logs_closed": true,
+      "close_errors": [],
+      "elapsed_s": 56.21226741594728,
+      "cleanup_elapsed_s": 0.7434471719898283,
+      "successful": false,
+      "provisional_until_owner_final_close": true
+    },
+    "original_finalclose": {
+      "candidate_success": true,
+      "elapsed_s": 56.215827245032415,
+      "cleanup_elapsed_s": 0.7470070010749623,
+      "successful": false,
+      "provisional_until_capture_return": true
+    },
+    "later_original_named_child_parent_group_absences": [
+      {
+        "monotonic_ns": 643577628025532,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "named_pid_or_group_matches": []
+      },
+      {
+        "monotonic_ns": 643577831680330,
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "named_pid_or_group_matches": []
+      }
+    ],
+    "original_metadata_reader_FD": [
+      6,
+      6
+    ],
+    "root_retention_shape_error": "b095e0 incorrectly indexed dict outcomes as a list; original error retained. Corrected b0f6d2 only read metadata, no test rerun.",
+    "limitations": [
+      "Parent birth/SID/credentials and global descendant quiescence remain unavailable.",
+      "Root whole FD counts were not captured; metadata reader counts are scoped.",
+      "Original successful:false/provisional:true fields remain intact; actual root/child rc0 and final candidate_success:true establish fixture success at their recorded scope."
+    ]
+  },
+  "reviewer_current_full_held_proof": {
+    "actual_tool": "d1542b",
+    "returncode": 0,
+    "actual_source15_current_before_after_hash_size_seven_epochs_equal": true,
+    "all_five_closed_originals_current_hash_size_seven_epochs_equal": true,
+    "full_held_reads": true,
+    "no_target_imports": true,
+    "fd_before": 6,
+    "fd_after": 6,
+    "held_leaf_count": 22,
+    "all_owned_fds_closed": true,
+    "close_errors": [],
+    "elapsed_s": 0.05359259806573391
+  },
+  "own_readonly_shape_error": {
+    "tool": "e219cf",
+    "returncode": 1,
+    "cause": "Reviewer initially required RED test-source bytes identical to S8 despite explicitly authorized helper chronology correction after RED. Corrected comparison proves same new-test AST and otherwise complete original RED AST; original failure retained."
+  },
+  "pending_gates": [
+    "Latest required S8-compatible hosted CI actual original acceptance.",
+    "Fresh ordinary S8 source/epoch readiness and separate exact once-read grant.",
+    "Actual corrected cold whole128/64/scoped scientific acceptance or truthful new FAILED disposition."
+  ],
+  "no_scientific_or_publication_authority_from_this_review": true,
+  "original_three_failed_cold_reports_preserved": true,
+  "concrete_source_canonical_blockers": [],
+  "technical_COMMENT_text": "Independent source/canonical technical review PASS for exact S8 470120a3b3f9692775656cdb8114471ab991f14b, parent reviewed P8 da0a3f93e060c87b35423729c48388f4e77fab13 / COMMENT5408991278. The only cold behavior change joins observed EOF <= bookkeeping EOF <= actual sink EOS <= completion while keeping the exact inclusive10s origin at EARLIEST observed EOF and all original startup/elapsed/journal/scientific/custody guards. Raw clock diagnostics remain outside immutable producer observations comparison. All60 inherited test-method ASTs, other helpers and170 IDs/assertions remain exact, with only the explicitly reviewed run_fixture timestamp exception and one sealed original-entry test/adapter literal. Original causal RED b56564 and focused GREEN e7734c, one canonical1b1273→894040 rc0/root12/nested171 with actual unique raw starts/terminals, two real15s cases and current15 source/hash/epoch/FD/closed-original joins pass. Original provisional successful:false fields are preserved, and no global quiescence is inferred. Latest mandatory hosted CI is still a separate gate; scientific/cold acceptance and a new exact once-read grant remain absent.",
+  "own_original_readonly_tools": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-independent-v1/original-readonly-tools.v1.json"
+}
+

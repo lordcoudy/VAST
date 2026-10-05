@@ -1,0 +1,233 @@
+{
+  "artifact_kind": "same_review_exact_C_raw_Git_closure_v1",
+  "result": "PASS",
+  "independent_review": "review.v1.md",
+  "independent_review_sha256": "28a9d21b7a800e26ad1b5468c9b7829c08de1c35b6e798da8e9d344e50315041",
+  "commit": "6cdb60023fd07878cb65bf9d61bfe97b252c8878",
+  "exact_parent": "684ea836a27fa002bc231117fbe445d0ec5579ab",
+  "original_planning": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+  "original_producer": "503b33b224b8f98b429d9a9cf80a0cf30402fcba",
+  "observer_planning": "684ea836a27fa002bc231117fbe445d0ec5579ab",
+  "sources": [
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 93103,
+      "sha256": "5501000b5cc057562460843701b654c95b5ea24565cab3773148e38bb501afcc",
+      "full_raw_C_read": true,
+      "exact_bytes_equal_reviewed_snapshot": true
+    },
+    {
+      "git_path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 85216,
+      "sha256": "ba375930e337ad7bb65d07f1ccf54ccb735f4bc5343dd5e25ce798a4024cd708",
+      "full_raw_C_read": true,
+      "exact_bytes_equal_reviewed_snapshot": true
+    },
+    {
+      "git_path": "tests/test_decoder_research_v6.py",
+      "size_bytes": 48918,
+      "sha256": "11a65d762530d34c6cfbd3a8a40dbd571ecf0e7bf09548bc95b94090b9949ba1",
+      "full_raw_C_read": true,
+      "exact_bytes_equal_reviewed_snapshot": true
+    }
+  ],
+  "committed_three_file_diff_exact_equal_reviewed_diff": true,
+  "source_diff_bytes": 41602,
+  "source_diff_sha256": "f537713976ed610fcb0b108893510e4f4686ccd3844a334c39e93401b3ee8948",
+  "changed_paths_count": 41,
+  "source_code_paths": [
+    "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+    "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+    "tests/test_decoder_research_v6.py"
+  ],
+  "documentation_taskflag_receipt_paths_count": 38,
+  "scope_raw_file": "C-scope.stdout.raw",
+  "native_readonly_git_commands": [
+    {
+      "label": "commit",
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "--no-replace-objects",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+        "rev-parse",
+        "6cdb60023fd07878cb65bf9d61bfe97b252c8878^{commit}"
+      ],
+      "returncode": 0,
+      "stdout_bytes": 41,
+      "stdout_sha256": "ad01a5a8771a516e11ea505bb6509ff3861e172697751c249ce2918363e6ce56",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "parent",
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "--no-replace-objects",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+        "show",
+        "-s",
+        "--format=%P",
+        "6cdb60023fd07878cb65bf9d61bfe97b252c8878"
+      ],
+      "returncode": 0,
+      "stdout_bytes": 41,
+      "stdout_sha256": "0eca38bbaa6577953dd9ace9530a9fd6d627851cf1603483eff2c0a5b6d3a08e",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "P1-S2",
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "--no-replace-objects",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+        "merge-base",
+        "--is-ancestor",
+        "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+        "503b33b224b8f98b429d9a9cf80a0cf30402fcba"
+      ],
+      "returncode": 0,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "S2-P2",
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "--no-replace-objects",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+        "merge-base",
+        "--is-ancestor",
+        "503b33b224b8f98b429d9a9cf80a0cf30402fcba",
+        "684ea836a27fa002bc231117fbe445d0ec5579ab"
+      ],
+      "returncode": 0,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "P2-C",
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "--no-replace-objects",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+        "merge-base",
+        "--is-ancestor",
+        "684ea836a27fa002bc231117fbe445d0ec5579ab",
+        "6cdb60023fd07878cb65bf9d61bfe97b252c8878"
+      ],
+      "returncode": 0,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "scope",
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "--no-replace-objects",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+        "diff",
+        "--name-only",
+        "684ea836a27fa002bc231117fbe445d0ec5579ab",
+        "6cdb60023fd07878cb65bf9d61bfe97b252c8878"
+      ],
+      "returncode": 0,
+      "stdout_bytes": 3266,
+      "stdout_sha256": "5accaae993640ab71fed3d65a002b23203cceb957b279c8b6efc9faee2c49e48",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "source-0",
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "--no-replace-objects",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+        "cat-file",
+        "blob",
+        "6cdb60023fd07878cb65bf9d61bfe97b252c8878:artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py"
+      ],
+      "returncode": 0,
+      "stdout_bytes": 93103,
+      "stdout_sha256": "5501000b5cc057562460843701b654c95b5ea24565cab3773148e38bb501afcc",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "source-1",
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "--no-replace-objects",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+        "cat-file",
+        "blob",
+        "6cdb60023fd07878cb65bf9d61bfe97b252c8878:artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py"
+      ],
+      "returncode": 0,
+      "stdout_bytes": 85216,
+      "stdout_sha256": "ba375930e337ad7bb65d07f1ccf54ccb735f4bc5343dd5e25ce798a4024cd708",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "source-2",
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "--no-replace-objects",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+        "cat-file",
+        "blob",
+        "6cdb60023fd07878cb65bf9d61bfe97b252c8878:tests/test_decoder_research_v6.py"
+      ],
+      "returncode": 0,
+      "stdout_bytes": 48918,
+      "stdout_sha256": "11a65d762530d34c6cfbd3a8a40dbd571ecf0e7bf09548bc95b94090b9949ba1",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "diff",
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "--no-replace-objects",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+        "diff",
+        "--binary",
+        "684ea836a27fa002bc231117fbe445d0ec5579ab",
+        "6cdb60023fd07878cb65bf9d61bfe97b252c8878",
+        "--",
+        "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+        "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+        "tests/test_decoder_research_v6.py"
+      ],
+      "returncode": 0,
+      "stdout_bytes": 41602,
+      "stdout_sha256": "f537713976ed610fcb0b108893510e4f4686ccd3844a334c39e93401b3ee8948",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "no_new_general_audit": true,
+  "no_tests_readers_engine_deploy_or_repository_mutations": true,
+  "gates_remaining": [
+    "Exact-C hosted required CI",
+    "Source/once-read checkpoint and the exclusive actual corrected S2 cold result",
+    "Separate conditional research/release gates"
+  ]
+}

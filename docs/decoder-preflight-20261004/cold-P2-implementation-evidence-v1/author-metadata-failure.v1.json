@@ -1,0 +1,10 @@
+{
+  "kind": "author_metadata_selfcheck_failure_transcript_v1",
+  "provenance": "Faithful transcript of displayed exec_command tool1361ff; no original machine-result object was stored.",
+  "exit_code": 1,
+  "cause": "Author-only AST selfcheck named nonexistent Replay.pair; raw source/test diffs had already been written. No production/tests changed and no test execution was repeated.",
+  "source": "write_author_review_v1.py",
+  "source_line": 40,
+  "original_exception": "AssertionError",
+  "disposed": "Prepare v2 deleting only that nonexistent assertion name; independently compare/reuse already-written diff bytes."
+}

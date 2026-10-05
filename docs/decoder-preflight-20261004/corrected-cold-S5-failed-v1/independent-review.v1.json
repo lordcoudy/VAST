@@ -1,0 +1,228 @@
+{
+  "artifact_kind": "independent_corrected_S5_failed_cold_original_and_custody_review_v1",
+  "verdict": "FAILED_COLD_ORIGINAL_AND_CUSTODY_VALIDATED",
+  "source_commit_observer": "cfa959d2aacbc84a589671dbdf13ae36ae76a2a6",
+  "source_commit_producer": "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+  "original_producer_planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+  "once_grant_comment": 5408368341,
+  "report": {
+    "path": "E:/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-metadata-namespace-verification.v1.json",
+    "bytes": 93113,
+    "sha256": "d847af344229c40f6c4a16ccfe901ab6394b19dedaf2a1f395361faca2eac004",
+    "complete_bounded_held_read": true,
+    "own_held_named_current_epochs_equal": true,
+    "canonical_without_sha256": "3b2af9d3cfd85942b85fbe562f6e45c05d91359371d3619b47ad5f79e27a7fd7",
+    "embedded_sha256_equal": true,
+    "held_input_descriptors": 223,
+    "held_descriptor_paths_unique": true
+  },
+  "actual_failure": {
+    "type": "Refusal",
+    "message": "short original transport",
+    "elapsed_s": 31.631822622031905,
+    "accepted": false,
+    "raw_join_complete": false,
+    "research_complete": false,
+    "operation_completed": false,
+    "publication_ready": false,
+    "metadata_preflight_completed": false,
+    "benchmark_arm_count": 0,
+    "native_pair_count": 0,
+    "qualification_count": 0,
+    "model_or_parity_evidence": false,
+    "provisional_until_owner_final_close": true
+  },
+  "original_tool_join": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-corrected-cold-original-tool-record.S5cfa959d2.v1.json",
+    "bytes": 3999,
+    "sha256": "9fb209637d004d1b408f334d5824be972458c32974c85f7d7a5ab4f2fe4a3a5b",
+    "complete_original_arguments_and_returned_objects_read": true,
+    "source_commit_S5_and_once_comment_join": true,
+    "initiating_chunk": "f5bab9",
+    "session_id": 6576,
+    "final_chunk": "2d6b08",
+    "actual_final_exit_code": 1,
+    "actual_final_stdout_successful": false,
+    "actual_final_report_pin_matches": true,
+    "close_errors": [],
+    "late_failure": null,
+    "late_failure_scope": "null is from actual final tool stdout; report has no separate late_failure field."
+  },
+  "distinct_observer_bindings": {
+    "executed_S5": {
+      "bytes": 93578,
+      "sha256": "ecd99e9c4f17448ca85d16fdd810cc361a5160f3d2403d88426fe4f001628bf7"
+    },
+    "original_S3": {
+      "bytes": 93103,
+      "sha256": "5501000b5cc057562460843701b654c95b5ea24565cab3773148e38bb501afcc"
+    },
+    "own_current_held_named_epoch_type_link_size_hash_checks": true,
+    "producer_source_and_planning_not_retargeted": true
+  },
+  "original_controls": {
+    "bounded_read_scope": "Twelve already-closed small original control/log/tool records, each at most30000 bytes, plus two observer source files at most100000 bytes. Every selected size/hash and current held/named epoch7 equals report's recorded witness. No media or raw transport was read or rehashed.",
+    "all_selected_current_pins_joined": true,
+    "controller": {
+      "bytes": 9741,
+      "sha256": "a1cbf41511315bc585172d7fdc8ec0e54d51267a93da14d8ca8cb85f8bfb7cf4",
+      "runs_completed": 4,
+      "operation_completed": true,
+      "research_complete": true,
+      "errors": [],
+      "failure": null,
+      "container_not_found_after_owned_remove": true,
+      "container_exitcode": 0,
+      "container_oom_killed": false,
+      "accepted": false
+    },
+    "external_controller": {
+      "bytes": 7113,
+      "sha256": "f6bf60027fa73c079a12f78cc8a131a445b9448971b9b727322355f689982220",
+      "external_capture_completed": true,
+      "all_streams_closed": true,
+      "log_eof": {
+        "stderr": true,
+        "stdout": true
+      },
+      "close_errors": [],
+      "capture_exceeded": [],
+      "failures": [],
+      "timed_out": false,
+      "accepted": false
+    },
+    "guest_terminal_physical_and_stdout_alias_and_held": {
+      "bytes": 3377,
+      "sha256": "71b94e1a175e93cd31756c8df0793ff17190c0f647107f8013c3ace63f722fcd",
+      "physical_alias_held_descriptors_join": true,
+      "own_physical_current_epoch_hash_join": true,
+      "runs_completed": 4,
+      "operation_completed": true,
+      "research_complete": true,
+      "failure": null,
+      "accepted": false
+    },
+    "run_terminals": "All four original terminal documents have run_successful=true, source_returncode0, errors=[]/cleanup_errors=[], and accepted=false. They remain producer observations, not independently accepted scientific cohorts."
+  },
+  "recorded_prefixes": [
+    {
+      "run": 1,
+      "clip": "front_gate",
+      "setting": "default",
+      "hash_valid_packet_prefix": 32,
+      "hash_valid_prefix_bytes": 153277,
+      "causal_join_complete": false,
+      "promoted_cohort": false
+    },
+    {
+      "run": 2,
+      "clip": "front_gate",
+      "setting": "zero",
+      "hash_valid_packet_prefix": 32,
+      "hash_valid_prefix_bytes": 153277,
+      "causal_join_complete": false,
+      "promoted_cohort": false
+    },
+    {
+      "run": 3,
+      "clip": "underbody",
+      "setting": "zero",
+      "hash_valid_packet_prefix": 32,
+      "hash_valid_prefix_bytes": 1514651,
+      "causal_join_complete": false,
+      "promoted_cohort": false
+    },
+    {
+      "run": 4,
+      "clip": "underbody",
+      "setting": "default",
+      "hash_valid_packet_prefix": 32,
+      "hash_valid_prefix_bytes": 1514651,
+      "causal_join_complete": false,
+      "promoted_cohort": false
+    }
+  ],
+  "recorded_prefix_limit": "These are original failed-reader findings, hash-bound to the retained report. This review does not rehash packet/media bytes or promote them to complete128AU/64paired causal reconstruction.",
+  "custody": {
+    "reader_original_equals_reader_after": true,
+    "reader_original": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pid": 48871,
+      "ppid": 48867,
+      "process_group_id": 48871,
+      "starttime_ticks": 63278715,
+      "uid": 1000
+    },
+    "reader_SID": null,
+    "reader_SID_status": "Not reported; original PID absent later, so unavailable and not invented.",
+    "reported_fd_before": 6,
+    "reported_fd_after": 6,
+    "reported_all_held_fds_released": true,
+    "reported_close_errors": [],
+    "same_boot_id_for_later_checks": true,
+    "later_named_reader_parent_and_original_group_checks": [
+      {
+        "actual_time_ns_decimal": "1791150800527015107",
+        "named": {
+          "48867": {
+            "present": false
+          },
+          "48871": {
+            "present": false
+          }
+        },
+        "original_group_48871_members": [],
+        "scan_errors": []
+      },
+      {
+        "actual_time_ns_decimal": "1791150800528824874",
+        "named": {
+          "48867": {
+            "present": false
+          },
+          "48871": {
+            "present": false
+          }
+        },
+        "original_group_48871_members": [],
+        "scan_errors": []
+      }
+    ],
+    "own_bounded_metadata_reader": {
+      "pid": 48928,
+      "actual_tool_chunk": "bdf539",
+      "actual_exit_code": 0,
+      "fd_before": 6,
+      "fd_after": 6,
+      "owned_file_descriptors_released": true
+    },
+    "scope": "Two later snapshots establish named48871/48867 and original process group48871 absence at those instants, with no scan errors; no universal or future descendant-quiescence claim."
+  },
+  "preserved_prior_failed_original": {
+    "path": "../verification.v1.json",
+    "bytes": 44168,
+    "sha256": "b1054cfe3fe53d7f30cd2853f9607d510722e9f9d9f387afce8b0484390f80c7",
+    "first_failure": {
+      "type": "Refusal",
+      "message": "namespace count"
+    },
+    "accepted": false,
+    "raw_join_complete": false,
+    "complete_small_metadata_read": true
+  },
+  "gate_disposition": {
+    "scientific128AU_64paired_acceptance": false,
+    "corrected_cold_success": false,
+    "promotion": false,
+    "new_producer_or_reader_retry_grant": false,
+    "S5_hosted_CI_PASS_remains_distinct": true,
+    "legacy32_Q4_5600_and_future24_completion": false
+  },
+  "limitations": [
+    "Strict failed result accepted as a faithfully preserved closed observation only. This is not actual research acceptance.",
+    "Source cause diagnosis belongs to the parallel reviewer; no duplicate cold-reader cause audit, imports, engine/build/model/media/producer/decoder/test/CI/scientific invocation or source/spec/Git mutation was performed.",
+    "Current own hash/epoch checks cover selected small control and source records, not every223 recorded input or raw scientific channel. Prior unchanged producer/readiness/source reviews are reused without a new verifier or manifest.",
+    "One control-detail display was truncated after completed bounded hash/epoch and process checks. Its complete pre-controls custody portion is preserved; separate compact full control reads and complete original tool record provide relied-on terminal facts. Original timestamp decimals are retained as text to avoid JavaScript numeric rounding."
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "kind": "independent_P5_frozen_implementation_source_review_v1",
+  "verdict": "PASS_SOURCE_AND_RETAINED_MODULE_FIXTURES",
+  "change": "fix-decoder-preflight",
+  "approved_planning_commit": "2ad1d8b55b5cdf33e0c435e20510ee6b403830f4",
+  "implementation_gate_comment": "https://github.com/lordcoudy/VAST/pull/4#issuecomment-5408186908",
+  "baseline_S4": "11471c5e13787dd7eac710738cd67472dc60b591",
+  "exact_S5_commit": null,
+  "frozen_source": [
+    {
+      "path": "scripts/full_publication_results.py",
+      "bytes": 25805,
+      "sha256": "d634eb9e2faacbc826aa9b9f35292e159d12af545eec784d7e0fc2e9cdefb054"
+    },
+    {
+      "path": "tests/test_full_publication_results.py",
+      "bytes": 23344,
+      "sha256": "f5c59bb164d9925c347af565e8c3ac792f9b3462d78d264470c938aee7cb9802"
+    }
+  ],
+  "blockers": [],
+  "scope_and_preservation": {
+    "complete_two_file_bytes_read_in_memory_and_full_diff_reviewed": true,
+    "only_production_changes": "72-line private helper and one extra with-context around original mutable/final verification region",
+    "only_test_changes": "Four imports and ONE approved new test method",
+    "every_seven_old_test_method_and_assertion_AST_equal": true,
+    "old_fixture_and_full_test_AST_equal_after_removing_only_approved_additions": true,
+    "full_exporter_AST_equal_after_removing_only_private_helper_and_extra_with_item": true,
+    "existing_bundle_helper_byte_identical": true,
+    "Windows_old_bundle_fallback_unchanged": true,
+    "PhysicalIO_byte_equal_rawS4": true,
+    "source15_equal_accepted_S4_canonical_size_hash_and_native_rawGit": true,
+    "historical_canonical": {
+      "path": "docs/decoder-preflight-20261004/P4-canonical-original-v1/nested-suite.v1.json",
+      "bytes": 101730,
+      "sha256": "810a58113dea7b2967c59e2f8c457d091c38f968dcafa3a91a4e882199fe1923",
+      "before_after_source15_equal": true,
+      "status": "Historical root12/nested167 evidence only; not a new S5/canonical run."
+    }
+  },
+  "source_findings": [
+    {
+      "lines": "scripts/full_publication_results.py:189-229,544-668",
+      "finding": "The new POSIX root-directory lock begins before any intent bootstrap and encloses all original mutable bundle operations and final namespace/identity reads. Non-POSIX hosts retain the original bundle fallback. O_RDONLY/O_DIRECTORY/O_NOFOLLOW/O_CLOEXEC FD is registered immediately; custody is verified before reading expected dev/inode and again before and after actual blocking flock, before yield."
+    },
+    {
+      "lines": "scripts/full_publication_results.py:203-214,233-258",
+      "finding": "Each root check combines original custody/ancestor identity with named/held dev-inode and directory/no-symlink checks. Pre-unlock verification failure cannot suppress unlock or close. Acquisition-attempt registration also retires genuine acquisition followed by an injected acquisition error. At most three cleanup notes of at most512 chars preserve the primary exception; cleanup-only errors raise ContractError."
+    },
+    {
+      "lines": "tests/test_full_publication_results.py:387-457",
+      "finding": "Two genuine exporters use a fresh fixture with no prior intent/staging/result. A parks at the original real epoch check; B's wrapper signals only real root or old bundle acquisition and delegates actual flock, excluding staging locks. Finite waits/futures and finally release avoid parked-barrier leakage. Both GREEN exporters adopt equal bundle/payload bytes, exactly four files and one receipt-last intent, and restore actual FD count."
+    },
+    {
+      "lines": "tests/test_full_publication_results.py:459-546",
+      "finding": "Real root rename/replacement occurs after owned FD opening and before real flock return; post-lock check refuses before yield and preserves foreign sentinel/no foreign writes. Same method also proves actual acquire/unlock/close sequences for post-acquisition fault, cleanup-only and primary-with-cleanup; root descriptors are closed, FD counts recover, and primary object/cleanup notes are preserved."
+    }
+  ],
+  "retained_execution": {
+    "noncausal_red01": {
+      "disposition": "Preserved setup failure; NOT counted as RED.",
+      "stderr_bytes": 1051,
+      "sha256": "822c9b533f5a442ff954e4e0f9fc0f538a749c8e8d0c1c3cba4cd4c7d033e60f"
+    },
+    "causal_red02": {
+      "disposition": "Actual original epoch Refusal at ensure_directory_owned2920 -> original _require_epochs403, compact intent root parent mutation, one test .441s/error1. No missing API.",
+      "stderr_bytes": 3197,
+      "sha256": "0f4ffc4820116627a8068f3f463b0a5bd90f71161fe872a1902227763d07115c"
+    },
+    "focused_green01": {
+      "tests": 1,
+      "successes": 1,
+      "elapsed_s": 0.952,
+      "stderr_bytes": 279,
+      "sha256": "a68994d172655da7a2f92cc0036cc6de13eb8b8dcb3927f9a320c65df3a7c995"
+    },
+    "module_green01": {
+      "tests": 8,
+      "successes": 8,
+      "elapsed_s": 3.543,
+      "stderr_bytes": 1360,
+      "sha256": "8f4992c3362f6354a20d6a1a77aff959565c92f9572406bd82fd17c553669031"
+    },
+    "module_source_retirement": {
+      "receipt_bytes": 1604,
+      "sha256": "687c9ac9175c92dc22fe9e2fc1db0c02f7f80bf29c5b0e4d405eab1bc5f7d969",
+      "source2_sha_and_seven_field_epochs_before_after_equal": true,
+      "reader_fd_before": 6,
+      "reader_fd_after": 6,
+      "held_files_closed": true,
+      "recorded_shell_timeout_pids": [
+        48316,
+        48363,
+        48421,
+        48467
+      ],
+      "two_later_scans": "All four recorded PID numbers and same-number groups absent; birth/test child PID were not captured. No general descendant-quiescence claim."
+    }
+  },
+  "limits": "Independent source and retained finite fixture review only. No tests/canonical/CI/target imports/scientific target/producer/observer executed by this reviewer, and no code/spec/Git/PR-comment changes. Exact S5 commit/raw blob closure, latest full hosted CI, current ordinary checkout/predispatch source grant, one corrected cold read and scientific result acceptance remain pending. S4 FAILED CI and original S3 failures are immutable. Legacy32/Q4/5600/future24 completion are not promoted.",
+  "original_records": {
+    "tools": {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/original-unittest-tools.v1.json",
+      "bytes": 8300,
+      "sha256": "0e8bf58032455812b8cde7e19bd4cddae86dc8954fe247fc75d8da65a8a9497e",
+      "fully_read": true
+    },
+    "author": {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/author-review.v1.json",
+      "bytes": 11656,
+      "sha256": "c0ebb6a0d83daf41255bd6d0721f043f86d4fa3ab2bf1e58739a692fec84d53d",
+      "fully_read": true
+    },
+    "actual_tool_joins": [
+      {
+        "chunk": "21899b",
+        "rc": 1,
+        "disposition": "RED01 setup failure only"
+      },
+      {
+        "chunk": "4ce2f8",
+        "rc": 1,
+        "disposition": "RED02 genuine original epoch refusal"
+      },
+      {
+        "chunk": "6884af",
+        "rc": 0,
+        "disposition": "Focused one-method GREEN"
+      },
+      {
+        "chunk": "913c41",
+        "rc": 0,
+        "disposition": "Full existing module eight-method GREEN"
+      }
+    ],
+    "launch_scope": "Direct actual CPython -I -B unittest calls, real setsid --wait/timeout120s+kill-after10s, exclusive raw logs; no added target observer or execution wrapper."
+  },
+  "readonly_handoff_errors": "Initial speculative author-directory locator and the root-supplied underscore tool filename were absent; corrected authoritative directory/hyphen filename were fully read. These own read-only failures are retained and are not product/test failures."
+}

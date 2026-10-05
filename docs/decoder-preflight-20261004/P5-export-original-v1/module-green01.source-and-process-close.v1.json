@@ -1,0 +1,68 @@
+{
+  "all_owned_file_fds_closed": true,
+  "reader_fd_after": 6,
+  "reader_fd_before": 6,
+  "reader_pid": 48512,
+  "recorded_launch_pids": {
+    "focused-green01.original-pid": 48421,
+    "focused-red01.original-pid": 48316,
+    "focused-red02.original-pid": 48363,
+    "module-green01.original-pid": 48467
+  },
+  "scans": [
+    {
+      "errors": [],
+      "recorded_pids_absent": [
+        48316,
+        48363,
+        48421,
+        48467
+      ],
+      "same_number_groups": [],
+      "time_ns": 1791148119942839031
+    },
+    {
+      "errors": [],
+      "recorded_pids_absent": [
+        48316,
+        48363,
+        48421,
+        48467
+      ],
+      "same_number_groups": [],
+      "time_ns": 1791148119944736128
+    }
+  ],
+  "scope": "recorded direct shell/timeout PID numbers and same-number process groups only; launch birth and test child PID were not captured",
+  "source_before_after_exact": true,
+  "source_rows": [
+    {
+      "epochs": [
+        68,
+        1407374885234541,
+        33279,
+        1,
+        25805,
+        1791147959174566900,
+        1791147959174566900
+      ],
+      "path": "scripts/full_publication_results.py",
+      "sha256": "d634eb9e2faacbc826aa9b9f35292e159d12af545eec784d7e0fc2e9cdefb054",
+      "size": 25805
+    },
+    {
+      "epochs": [
+        68,
+        1407374885234802,
+        33279,
+        1,
+        23344,
+        1791147845876788300,
+        1791147845876788300
+      ],
+      "path": "tests/test_full_publication_results.py",
+      "sha256": "f5c59bb164d9925c347af565e8c3ac792f9b3462d78d264470c938aee7cb9802",
+      "size": 23344
+    }
+  ]
+}

@@ -1,0 +1,406 @@
+{
+  "kind": "corrected_C_read_current_scoped_source_and_original_control_recheck_v1",
+  "result": "PASS",
+  "C": "6cdb60023fd07878cb65bf9d61bfe97b252c8878",
+  "current_full_held_rows": [
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/.git/HEAD",
+      "size_bytes": 44,
+      "sha256": "7e8c15e2afc0db5d291d4bce1fb4cbc9a34b0cda7d86efc679e8c4f3c83e3b99",
+      "epoch": [
+        2096,
+        607147,
+        33188,
+        1,
+        44,
+        1791128035566565984,
+        1791128035566565984
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/.git/config",
+      "size_bytes": 343,
+      "sha256": "f001b5f565e541c0e877a395c22ff7f9e9096f8aefdb4905cc1e625a8ff80350",
+      "epoch": [
+        2096,
+        607143,
+        33188,
+        1,
+        343,
+        1791128035570566404,
+        1791128035570566404
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/.git/HEAD",
+      "size_bytes": 44,
+      "sha256": "7e8c15e2afc0db5d291d4bce1fb4cbc9a34b0cda7d86efc679e8c4f3c83e3b99",
+      "epoch": [
+        2096,
+        599660,
+        33188,
+        1,
+        44,
+        1791120089497599520,
+        1791120089497599520
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/.git/config",
+      "size_bytes": 343,
+      "sha256": "f001b5f565e541c0e877a395c22ff7f9e9096f8aefdb4905cc1e625a8ff80350",
+      "epoch": [
+        2096,
+        599656,
+        33188,
+        1,
+        343,
+        1791120089501599798,
+        1791120089501599798
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+      "size_bytes": 53060,
+      "sha256": "3db163f5d90043bddb07fbabd29ee4f500b5ccc070d844a8e6d67b2d595e1bce",
+      "epoch": [
+        2096,
+        612410,
+        33188,
+        1,
+        53060,
+        1791128036122624285,
+        1791128036122624285
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+      "size_bytes": 64590,
+      "sha256": "025d4a18e56fef4329ae5cfe757411ae476283ad1016d1f50a864184cf723708",
+      "epoch": [
+        2096,
+        612411,
+        33188,
+        1,
+        64590,
+        1791128036122624285,
+        1791128036122624285
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+      "size_bytes": 36624,
+      "sha256": "f0685e19a3072736f8262aad32d868a2021650381e8beaef989d4f5339358d63",
+      "epoch": [
+        2096,
+        612412,
+        33188,
+        1,
+        36624,
+        1791128036122624285,
+        1791128036122624285
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/README.md",
+      "size_bytes": 7760,
+      "sha256": "4607c67af75206a7c7cde6341660a662dea9f894db5eccbeca0e10aa85a04a5b",
+      "epoch": [
+        2096,
+        612409,
+        33188,
+        1,
+        7760,
+        1791128036122624285,
+        1791128036122624285
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_mapped_inputs_v4.py",
+      "size_bytes": 11433,
+      "sha256": "831cbd07388af9994d2684ab2248e299c95b29ee4ad799f26375d603b2f2f986",
+      "epoch": [
+        2096,
+        612413,
+        33188,
+        1,
+        11433,
+        1791128036122624285,
+        1791128036122624285
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_pin_diagnostics_v3.py",
+      "size_bytes": 11543,
+      "sha256": "a693f9fea9cc583d236447023745c612d3762da41d3103b474aa03dbddcfac14",
+      "epoch": [
+        2096,
+        612414,
+        33188,
+        1,
+        11543,
+        1791128036122624285,
+        1791128036122624285
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_preflight_diagnostics_v5.py",
+      "size_bytes": 11980,
+      "sha256": "ade99a45510b042fc55ce2c888f029301ae67defea2776524101aa8d158f3afe",
+      "epoch": [
+        2096,
+        612415,
+        33188,
+        1,
+        11980,
+        1791128036122624285,
+        1791128036122624285
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 85216,
+      "sha256": "ba375930e337ad7bb65d07f1ccf54ccb735f4bc5343dd5e25ce798a4024cd708",
+      "epoch": [
+        2096,
+        612416,
+        33188,
+        1,
+        85216,
+        1791128036122624285,
+        1791128036122624285
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_setup_v2.py",
+      "size_bytes": 34262,
+      "sha256": "f0f5bdb2be0f834e9795aa35c665e1703a0b120df24a9a4b56afe425a90fe4cd",
+      "epoch": [
+        2096,
+        612417,
+        33188,
+        1,
+        34262,
+        1791128036122624285,
+        1791128036122624285
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_successor_v6.py",
+      "size_bytes": 54172,
+      "sha256": "2d1b3ac6ab031ac49449f28f453b165b19780fbc30e5fb9f451d15a5afd555f6",
+      "epoch": [
+        2096,
+        612418,
+        33188,
+        1,
+        54172,
+        1791128036122624285,
+        1791128036122624285
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 93103,
+      "sha256": "5501000b5cc057562460843701b654c95b5ea24565cab3773148e38bb501afcc",
+      "epoch": [
+        2096,
+        612047,
+        33188,
+        1,
+        93103,
+        1791128036110623026,
+        1791128036110623026
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/tests/test_decoder_research_v6.py",
+      "size_bytes": 48918,
+      "sha256": "11a65d762530d34c6cfbd3a8a40dbd571ecf0e7bf09548bc95b94090b9949ba1",
+      "epoch": [
+        2096,
+        614505,
+        33188,
+        1,
+        48918,
+        1791128036354648612,
+        1791128036354648612
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+      "size_bytes": 53060,
+      "sha256": "3db163f5d90043bddb07fbabd29ee4f500b5ccc070d844a8e6d67b2d595e1bce",
+      "epoch": [
+        2096,
+        604924,
+        33188,
+        1,
+        53060,
+        1791120090069639159,
+        1791120090069639159
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+      "size_bytes": 64590,
+      "sha256": "025d4a18e56fef4329ae5cfe757411ae476283ad1016d1f50a864184cf723708",
+      "epoch": [
+        2096,
+        604925,
+        33188,
+        1,
+        64590,
+        1791120090069639159,
+        1791120090069639159
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+      "size_bytes": 36624,
+      "sha256": "f0685e19a3072736f8262aad32d868a2021650381e8beaef989d4f5339358d63",
+      "epoch": [
+        2096,
+        604926,
+        33188,
+        1,
+        36624,
+        1791120090069639159,
+        1791120090069639159
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 87504,
+      "sha256": "30f996a4a35b6c4bfd3cfbcf6870e6c9a816dabb653358bd9dbb3d7b9bca979c",
+      "epoch": [
+        2096,
+        604561,
+        33188,
+        1,
+        87504,
+        1791120090057638327,
+        1791120090057638327
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture_original_v6.py",
+      "size_bytes": 25799,
+      "sha256": "43864a7a27c2647d4d968ab0e2eee63ec7e2ccabdbb9e4474d53f1ebf240d063",
+      "epoch": [
+        69,
+        1407374885981620,
+        33279,
+        1,
+        25799,
+        1791112274299472800,
+        1791112274299472800
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "size_bytes": 8020928,
+      "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+      "epoch": [
+        2096,
+        87545,
+        33261,
+        1,
+        8020928,
+        1787574148546271435,
+        1787574148546271435
+      ]
+    },
+    {
+      "path": "/usr/bin/git",
+      "size_bytes": 4066232,
+      "sha256": "2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668",
+      "epoch": [
+        2096,
+        1668,
+        33261,
+        1,
+        4066232,
+        1751487822000000000,
+        1757410189163646898
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/metadata-original-tool-record.S503b33b2.v1.json",
+      "size_bytes": 2629,
+      "sha256": "952b6302fbf62ad5ed1c0f1767452cc68b0979cee978bf12f79aee49069a9740",
+      "epoch": [
+        69,
+        1407374885982939,
+        33279,
+        1,
+        2629,
+        1791122282418444700,
+        1791122282418444700
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/terminal.v1.json",
+      "size_bytes": 7097,
+      "sha256": "a43b03fb4e6ff0181ce309bd3270968c6528237f58c0ad4c336d7765c204bd62",
+      "epoch": [
+        69,
+        1407374885982938,
+        33279,
+        1,
+        7097,
+        1791122277421509100,
+        1791122277421509100
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01/controller/terminal.v1.json",
+      "size_bytes": 9851,
+      "sha256": "138a20e7640596dc0790820ac2792ac90f55e8210c26f4d244fe4478f72d9ce1",
+      "epoch": [
+        69,
+        1407374885982937,
+        33279,
+        1,
+        9851,
+        1791122277381826600,
+        1791122277381826600
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01/guest/metadata/metadata-preflight-terminal.v1.json",
+      "size_bytes": 1204,
+      "sha256": "1397cd637748b9e076a2d005c2eb03c48cba94ed8d3a3c366058574279dd302f",
+      "epoch": [
+        69,
+        1407374885982920,
+        33279,
+        1,
+        1204,
+        1791122273379266800,
+        1791122273379266800
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold/attempt-01/verification.v1.json",
+      "size_bytes": 55542,
+      "sha256": "c03203b2e1b397c405ee690aacfa20c54801aba4e7f550b97ac11b7d92151164",
+      "epoch": [
+        69,
+        1407374885982943,
+        33279,
+        1,
+        55542,
+        1791122476767528000,
+        1791122476767528000
+      ]
+    }
+  ],
+  "unchanged_C_preparation_epochs": 23,
+  "original_control_leaves": 5,
+  "report_absent": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold/attempt-01/corrected-owner-join-verification.v1.json",
+  "fd_before": 6,
+  "fd_after": 6,
+  "handles_released": true,
+  "scope": "Current source authority and five original control leaves only; actual observer still uninvoked and full metadata/body replay remains its once-read obligation. No engine query, new all-input manifest or scientific run."
+}

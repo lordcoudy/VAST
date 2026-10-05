@@ -1,0 +1,185 @@
+{
+  "adapter_inherited_count": 66,
+  "adapter_new_count": 101,
+  "adapter_old_new_ids_preserved": 95,
+  "adapter_raw_inverse_exact": true,
+  "all_other_function_AST_identical": true,
+  "bounds": {
+    "continuous_cold_seconds": 120,
+    "controller_leaves": 128,
+    "directory_FD": 128,
+    "files_FD": 256,
+    "general_JSON_bytes": 1048576,
+    "mapping_only_JSON_bytes": 2097152,
+    "metadata_bytes": 16777216,
+    "metadata_leaves": 40,
+    "run_leaves": 32
+  },
+  "capture_facts": {
+    "FD_after": 6,
+    "FD_before": 6,
+    "actual_child_reaped": true,
+    "source_bytes_and_epochs_stable": true,
+    "source_rows": 11,
+    "streams_closed": true,
+    "two_saved_child_group_scans_empty": true
+  },
+  "evidence": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\before.v1.json",
+      "sha256": "7be7e17111edb441f74152d11d48855aef05e1781e8593abc8072b4ddf91f2e9",
+      "size_bytes": 1212
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\red-original-tools.v1.json",
+      "sha256": "be6de968ec5c71d3294b34ab4390d100dcbc28697780d697818eb324193f4568",
+      "size_bytes": 10767
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\green-original-tools.v1.json",
+      "sha256": "ecf93875e26684b0f10ac19e6b39d41458ed0df2f5d231c2a2adb6e398d01d82",
+      "size_bytes": 10762
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\red-01\\execution.v1.json",
+      "sha256": "f96fb220bca41a0a8d2e9a432bf5701c2876ec3a42fbc7eba9e37c47aa3d27b0",
+      "size_bytes": 11100
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\green-01\\execution.v1.json",
+      "sha256": "2c822828d5a8c5ee8b6ec759555101571369014e72b08178f034803fccd904d3",
+      "size_bytes": 11103
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\red-01\\dispatch.v1.json",
+      "sha256": "ccb357f44b65f257a3916b5cd3188e48ae0aa07f1da38fc30c7ec0c8a08b980d",
+      "size_bytes": 6173
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\green-01\\dispatch.v1.json",
+      "sha256": "be5261de1830d810108cc834a3d940bec22579bd81002982d7674ae5fe37a9f3",
+      "size_bytes": 6173
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\red-01\\original.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\red-01\\original.stderr",
+      "sha256": "f2cee8c626a835bae320b857dd1e2576dfa485b4b81a8935e428dd14a6049282",
+      "size_bytes": 10832
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\green-01\\original.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\green-01\\original.stderr",
+      "sha256": "c2fff4899ee796902935bdf6037c71e46558b94eafe2caf3b0713804ee765340",
+      "size_bytes": 1156
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\owned-source.diff",
+      "sha256": "4174f93ff0486b273e2df43eac007f2c39f4d1a4608f38ec342852b5674869d9",
+      "size_bytes": 20348
+    }
+  ],
+  "full_canonical_or_hosted_accepted": false,
+  "green": {
+    "elapsed_s": 0.8389723260188475,
+    "errors": 0,
+    "failures": 0,
+    "methods": 6,
+    "returncode": 0,
+    "skips": 0,
+    "successes": 6,
+    "suite_elapsed_s": 0.529,
+    "tool": "2d2c80"
+  },
+  "kind": "decoder_p4_focused_author_review_v1",
+  "limits": [
+    "Six targeted synthetic methods only; full canonical suite is root-owned and not run by author.",
+    "512-row CLOSED/source-READY use legal joined synthetic fields with real physical held files, not deployed observations.",
+    "Large BEFORE and exact2MiB whitespace fixtures are explicitly isolated admission checks, not full scientific originals.",
+    "Focused capture inherits60s child wait/5s containment,75s external backstop; raw finite logs observed0/10832 RED and0/1156 GREEN, no claim of a new generic streaming cap.",
+    "Two saved scans cover focused child PID/group; later capture/timeout-owner absence has not yet been observed by this author.",
+    "No metadata/cold/research/engine/image/source workload or CI replay; S3 producer and original FAILED cold evidence immutable."
+  ],
+  "new_test_ids": [
+    "test_research_protocol.IndependentColdTests.test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds",
+    "test_research_protocol.IndependentColdTests.test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow",
+    "test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_40_and_rejects_41",
+    "test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape",
+    "test_research_protocol.IndependentColdTests.test_P4_run_33_and_controller_129_leaves_still_reject",
+    "test_research_protocol.IndependentColdTests.test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept"
+  ],
+  "old_test_method_count": 51,
+  "old_test_methods_AST_identical": true,
+  "original_mapping_guest_predicates_AST_preserved": true,
+  "original_sources": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\before\\cold_reader.py.raw",
+      "sha256": "5501000b5cc057562460843701b654c95b5ea24565cab3773148e38bb501afcc",
+      "size_bytes": 93103
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\before\\test_research_protocol.py.raw",
+      "sha256": "7961621bbbee98855cf401496252a603a9283a1dfba639e2dbd7b125eca370a9",
+      "size_bytes": 87992
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\P4-implementation-v1\\before\\test_decoder_research_v6.py.raw",
+      "sha256": "a6982705711c6ad13867bd1e83d524a635bb1a1424de5950e135e42f0cf3dcea",
+      "size_bytes": 49161
+    }
+  ],
+  "owned_sources": [
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\decoder-preflight-v6\\VAST\\artifacts\\benchmark_recovery_20260930\\decoder-independent-v6\\cold_reader.py",
+      "sha256": "ecd99e9c4f17448ca85d16fdd810cc361a5160f3d2403d88426fe4f001628bf7",
+      "size_bytes": 93578
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\decoder-preflight-v6\\VAST\\artifacts\\benchmark_recovery_20260930\\decoder-research-implementation-v6\\test_research_protocol.py",
+      "sha256": "69aa29d807661118b30a5eefc82967443aab56003b4b6666d764826db6d1ecdb",
+      "size_bytes": 100392
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\decoder-preflight-v6\\VAST\\tests\\test_decoder_research_v6.py",
+      "sha256": "6aeba18d3b313aacd74e046dd413cda8084c8fbdae8da2ae03db5ee45f5d15cb",
+      "size_bytes": 49838
+    }
+  ],
+  "planning_commit": "ee15ffdefcbeae92716d1dc816254229d51bc752",
+  "precode_approval_comment": 5407789217,
+  "production_changed_functions": [
+    "Held.document",
+    "Replay.doc",
+    "Replay.guest",
+    "Replay.mappings",
+    "Replay.namespace"
+  ],
+  "red": {
+    "actual_missing_guard": [
+      "orphan BEFORE15 and alternate BEFORE1 below32: Refusal not raised"
+    ],
+    "actual_refusals": [
+      "namespace count at 36 and40",
+      "cached physical cap at original mappings route"
+    ],
+    "elapsed_s": 0.6803395609604195,
+    "errors": 4,
+    "methods": 6,
+    "missing_API_error_used_as_RED": false,
+    "returncode": 1,
+    "subtest_failures": 2,
+    "successful_method": "test_P4_run_33_and_controller_129_leaves_still_reject",
+    "tool": "34543e"
+  },
+  "role": "author implementation and focused evidence; not independent approval",
+  "schema_version": 1,
+  "scientific_complete": false,
+  "source_frozen": true
+}

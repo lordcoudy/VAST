@@ -1,0 +1,150 @@
+--- before/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py
++++ current/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py
+@@ -288,6 +288,7 @@
+         self.observer_binding = {'planning_commit':OBSERVER_PLANNING,'source_commit':self.observer_commit,
+             'review_repository_root':str(self.observer_repository)}
+         self.guest_terminal_join = None
++        self.source_eof_clock_joins = []
+         self.require = require
+         self.h = Held(self.attempt, time.monotonic()+120)
+         self.git_commands = []
+@@ -533,7 +534,7 @@
+             and started["controller"]==guest_owner and 0<=startup["elapsed_s"]<=45
+             and 0<=drained["elapsed_from_source_eof_s"]<=10
+             and drained["actual_decoder_sink_eos_ns"]==sink_eos
+-            and abs(drained["source_eof_monotonic_ns"]-eof["observed_monotonic_ns"])<=2
++            and eof["observed_monotonic_ns"]<=drained["source_eof_monotonic_ns"]<=sink_eos<=drained["completed_monotonic_ns"]
+             and 0<=drained["completed_monotonic_ns"]-eof["observed_monotonic_ns"]<=10000000000,
+             "original startup/actualEOF/drain bounds")
+         self.require(self.one(events,"source_transport_eof")["observed_monotonic_ns"]==eof["observed_monotonic_ns"], "actual EOF journal")
+@@ -544,6 +545,11 @@
+             raw_bytes=raw_bytes,maximum_actual_au_payload_bytes=max(r["payload_size_bytes"] for r in records),
+             pipeline=PIPELINE,property_default_readback=-1,property_readback=0 if setting=="zero" else -1)
+         self.require(all(observations.get(k)==v for k,v in actual.items()), "independent run recomputation differs from guest report")
++        self.source_eof_clock_joins.append(dict(run=index,
++            observed_source_eof_monotonic_ns=eof["observed_monotonic_ns"],
++            drain_bookkeeping_source_eof_monotonic_ns=drained["source_eof_monotonic_ns"],
++            actual_decoder_sink_eos_ns=sink_eos,drain_completed_monotonic_ns=drained["completed_monotonic_ns"],
++            completion_from_observed_eof_ns=drained["completed_monotonic_ns"]-eof["observed_monotonic_ns"]))
+         return actual,started
+ 
+     def namespace(self):
+@@ -1157,9 +1163,10 @@
+             'raw_join_complete':True,'actual_original_au_count':sum(r['actual_packets'] for r in completed),
+             'paired_timing_count':len(pairs),'central_steady_state_sufficient_by_run':[r['central_steady_state_sufficient'] for r in completed],
+             'paired_timings':pairs,'observer_binding':self.observer_binding,
+-            'guest_terminal_join':self.guest_terminal_join,
++            'guest_terminal_join':self.guest_terminal_join,'source_eof_clock_joins':self.source_eof_clock_joins,
+             'git_observations':self.git_commands,'held_inputs':self.h.observations(),
+-            'limitations':['Selected original VMA rows and backing probes are replayed; full unselected maps and mapped memory bytes are unavailable.',
++            'limitations':['Drain bookkeeping EOF is a separate float-derived clock sample; ordered raw representations give no universal nanosecond precision guarantee.',
++                'Selected original VMA rows and backing probes are replayed; full unselected maps and mapped memory bytes are unavailable.',
+                 'Disposed image package/library descriptors are original observations, not current host rehashes.',
+                 'Pixel hashes are original observed RGB active-row hashes, compared but not independently decoded.',
+                 'Same-guest sink/src wall residence includes queueing/backpressure; it is not decoder utilization.',
+--- before/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py
++++ current/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py
+@@ -783,7 +783,8 @@
+         rows.extend([dict(kind='stop_intent',raw_ascii=stop.decode()),dict(kind='stop_sent',raw_ascii=stop.decode()),
+             dict(kind='pipeline_created',text=c.PIPELINE,setting=setting,property_default_readback=-1,property_readback=0 if setting=='zero' else -1,default_was_unset=setting=='default')])
+         for status in ('ADMISSION_STOPPED','DRAINED'):rows.append(dict(kind='source_status',status=status,original_timestamp=2000))
+-        eos=1 if flush else 1000000000000
++        eos=200_000 if flush else 2_500_000
++        eof=100_000 if flush else 2_000_000
+         for n,point in enumerate(pts,1):
+             enter=1000000+n*10000;exit=enter+(100 if setting=='default' else 90)
+             fields=dict(caps='video/x-raw,format=RGB',caps_features=[])
+@@ -796,16 +797,16 @@
+                 cohort='startup' if n<=8 else 'central' if n<=24 else 'tail',after_actual_decoder_sink_eos=flush))
+             rows.append(dict(kind='appsrc_submission',sequence=n,pts=point,fifo_depth=0,blocking_ns=0,push_return_monotonic_ns=100000+len(rows)+1))
+         rows.extend([dict(kind='decoder_sink_eos_observed',observed_monotonic_ns=eos),dict(kind='decoder_src_eos_observed'),
+-            dict(kind='pipeline_bus_eos'),dict(kind='appsrc_eos_requested'),dict(kind='source_transport_eof',observed_monotonic_ns=2000000)])
++            dict(kind='pipeline_bus_eos'),dict(kind='appsrc_eos_requested'),dict(kind='source_transport_eof',observed_monotonic_ns=eof)])
+         self.raw(directory/'events.jsonl',b''.join(c.canonical(dict(event_seq=i,observed_monotonic_ns=100000+i)|row)+b'\n' for i,row in enumerate(rows,1)))
+         for name,data in [('source-control.raw',start+stop),('source-status.raw',b''.join(f'1 {s} {worker} 2000\n'.encode() for s in ('READY','STARTED','ADMISSION_STOPPED','DRAINED'))),
+             ('source-admission.raw',b''.join(c.canonical(e)+b'\n' for e in declarations)),('source-ack.raw',b''.join(f'1 ACK {n}\n'.encode() for n in range(1,33))),
+             ('source-transport.raw',b''.join(transport)),('source.stdout',b''),('source.stderr',b'')]:self.raw(directory/name,data)
+         self.document(directory/'run-started.v1.json','vast_decoder_research_run_started_v1',run=index,controller=guest,guest_elapsed_at_start_s=index*40)
+         self.document(directory/'startup-completed.v1.json','vast_decoder_research_startup_v1',run=index,elapsed_s=1)
+-        self.document(directory/'source-transport-eof.v1.json','vast_decoder_research_source_transport_eof_v1',run=index,observed_monotonic_ns=2000000)
++        self.document(directory/'source-transport-eof.v1.json','vast_decoder_research_source_transport_eof_v1',run=index,observed_monotonic_ns=eof)
+         self.document(directory/'decoder-drain-completed.v1.json','vast_decoder_research_decoder_drain_v1',run=index,elapsed_from_source_eof_s=1,actual_decoder_sink_eos_ns=eos,
+-            source_eof_monotonic_ns=2000000,completed_monotonic_ns=3000000)
++            source_eof_monotonic_ns=eof,completed_monotonic_ns=3000000)
+         actual=dict(clip=role,setting=setting,outputs=rgb,timings=timings,packets=packets,input_pts_decode_order=pts,actual_decoder_sink_eos_ns=eos,
+             central_steady_state_sufficient=not flush,actual_admissions=32,actual_packets=32,raw_bytes=len(b''.join(transport)),maximum_actual_au_payload_bytes=5,
+             pipeline=c.PIPELINE,property_default_readback=-1,property_readback=0 if setting=='zero' else -1)
+@@ -1332,4 +1333,54 @@
+         self.assertEqual(len(list(Path('/proc/self/fd').iterdir())),self.fd_before)
+ 
+ 
++
++    def test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound(self):
++        import json
++        replay=self.fixture('research');replay.h.close()
++        directory=self.attempt/'guest/run-01-front_gate-default';source=self.plan['sources'][0]
++        original_rows=[json.loads(line) for line in (directory/'events.jsonl').read_bytes().splitlines()]
++        original_observations=self.decoded(directory/'observations.v1.json')
++        def check(observed,bookkeeping,sink,completed,positive):
++            rows=[dict(row) for row in original_rows]
++            next(row for row in rows if row['kind']=='source_transport_eof')['observed_monotonic_ns']=observed
++            next(row for row in rows if row['kind']=='decoder_sink_eos_observed')['observed_monotonic_ns']=sink
++            self.raw(directory/'events.jsonl',b''.join(self.cold.canonical(row)+b'\n' for row in rows))
++            self.replace_document(directory/'source-transport-eof.v1.json',observed_monotonic_ns=observed)
++            self.replace_document(directory/'decoder-drain-completed.v1.json',
++                source_eof_monotonic_ns=bookkeeping,actual_decoder_sink_eos_ns=sink,completed_monotonic_ns=completed)
++            self.replace_document(directory/'observations.v1.json',actual_decoder_sink_eos_ns=sink)
++            self.reseal_run_leaves(directory)
++            fresh=self.cold.Replay(self.project,self.repository,self.attempt,'research',self.S,self.P)
++            fresh.plan=self.plan;self.replays.append(fresh)
++            try:
++                if positive:
++                    actual,_=fresh.run(1,'front_gate','default',source,self.guest_owner)
++                    self.assertEqual(actual['actual_decoder_sink_eos_ns'],sink)
++                    self.assertEqual(actual['timings'],original_observations['timings'])
++                    self.assertEqual(fresh.source_eof_clock_joins,[dict(run=1,
++                        observed_source_eof_monotonic_ns=observed,
++                        drain_bookkeeping_source_eof_monotonic_ns=bookkeeping,
++                        actual_decoder_sink_eos_ns=sink,drain_completed_monotonic_ns=completed,
++                        completion_from_observed_eof_ns=completed-observed)])
++                    self.assertNotIn('source_eof_clock_joins',actual)
++                else:
++                    with self.assertRaisesRegex(self.cold.Refusal,'original startup/actualEOF/drain bounds'):
++                        fresh.run(1,'front_gate','default',source,self.guest_owner)
++                self.assertEqual(self.decoded(directory/'decoder-drain-completed.v1.json')['elapsed_from_source_eof_s'],1)
++                fresh.h.check(True)
++            finally:fresh.h.close()
++            self.assertEqual(fresh.h.close_errors,[])
++            self.assertEqual(len(list(Path('/proc/self/fd').iterdir())),self.fd_before)
++        # Actual retained run01 samples, not a fitted tolerance or a synthetic clock precision claim.
++        check(621837867081512,621837867082806,621837888893260,621837943651606,True)
++        cases=[
++            ('original inclusive10s boundary',2_000_000,2_000_001,2_500_000,10_002_000_000,True),
++            ('bookkeeping before observed EOF',2_000_000,1_999_999,2_500_000,3_000_000,False),
++            ('bookkeeping after actual sink EOS',2_000_000,2_000_002,2_000_001,3_000_000,False),
++            ('sink EOS after completion',2_000_000,2_000_001,3_500_000,3_000_000,False),
++            ('completion before observed EOF',2_000_000,2_000_001,2_500_000,1_999_999,False),
++            ('earlier EOF10s+1 despite later bookkeeping10s',2_000_000,2_000_001,2_500_000,10_002_000_001,False)]
++        for name,observed,bookkeeping,sink,completed,positive in cases:
++            with self.subTest(name=name):check(observed,bookkeeping,sink,completed,positive)
++
+ if __name__=='__main__':unittest.main(verbosity=2)
+--- before/tests/test_decoder_research_v6.py
++++ current/tests/test_decoder_research_v6.py
+@@ -195,6 +195,7 @@
+     'test_research_protocol.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload',
+     'test_research_protocol.IndependentColdTests.test_P6_transport_zero_progress_refuses_without_spinning',
+     'test_research_protocol.IndependentColdTests.test_P6_transport_partial_progress_keeps_original_absolute_deadline',
++    'test_research_protocol.IndependentColdTests.test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound',
+ ))
+ 
+ 
+@@ -251,7 +252,7 @@
+     ids=report['selected_test_ids'];outcomes=report['outcomes']
+     if report.get('isolated') is not True or report.get('dont_write_bytecode') is not True:
+         raise AssertionError('nested fixture process was not isolated -I -B')
+-    if len(INHERITED_IDS)!=66 or len(APPROVED_NEW_IDS)!=104 or INHERITED_IDS & APPROVED_NEW_IDS or \
++    if len(INHERITED_IDS)!=66 or len(APPROVED_NEW_IDS)!=105 or INHERITED_IDS & APPROVED_NEW_IDS or \
+             len(ids)!=len(set(ids)) or set(ids)!=INHERITED_IDS | APPROVED_NEW_IDS:
+         raise AssertionError('full frozen inherited66 inventory missing or duplicated')
+     if not any(name.startswith('test_successor_v6.') for name in ids):

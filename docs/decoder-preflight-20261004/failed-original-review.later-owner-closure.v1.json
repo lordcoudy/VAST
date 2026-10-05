@@ -1,0 +1,39 @@
+{
+  "closed": true,
+  "kind": "failed_original_review_later_named_owner_closure",
+  "original_owner": {
+    "pgid": 40212,
+    "pid": 40212,
+    "ppid": 40209,
+    "sid": 40212,
+    "starttime_ticks": 61488052
+  },
+  "review": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-result-independent-v1/failed-original-review.v1.json",
+    "sha256": "13d71c9740a132899fb4fcd6cc86c999867143de0bc175314ebc9c3dc95b9a2a",
+    "size_bytes": 46118
+  },
+  "scans": [
+    {
+      "errors": [],
+      "group": 40212,
+      "group_members": [],
+      "monotonic_ns": 615070527789184,
+      "named_pids": {
+        "40209": null,
+        "40212": null
+      }
+    },
+    {
+      "errors": [],
+      "group": 40212,
+      "group_members": [],
+      "monotonic_ns": 615070528961733,
+      "named_pids": {
+        "40209": null,
+        "40212": null
+      }
+    }
+  ],
+  "scope": "Successful static prefix reviewer40212/parent40209 only. Prior helper KeyError tool is retained; no scientific retry or global quiescence inferred."
+}

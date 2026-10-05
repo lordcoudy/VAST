@@ -1,0 +1,1578 @@
+{
+  "elapsed_s": 7.683309611980803,
+  "evidence_acceptance_reviewed": false,
+  "metadata": {
+    "path": "ci-S8470120a3-v1/original-retention-v1/original-provider-metadata.v1.json",
+    "sha256": "ef76f4bd5eecd5ac504d37b16a9cd7178b0d72bd84698f98df657a1af91f86b7",
+    "size_bytes": 26760
+  },
+  "originals": [
+    {
+      "job_id": 111573039850,
+      "kind": "original_job_log",
+      "path": "ci-S8470120a3-v1/original-retention-v1/job-111573039850.original.log",
+      "sha256": "2b920770660c9a6c98f2b456512b3d9b0fef19880f3aa11d364a06768f6d26d2",
+      "size_bytes": 95747
+    },
+    {
+      "job_id": 111573039772,
+      "kind": "original_job_log",
+      "path": "ci-S8470120a3-v1/original-retention-v1/job-111573039772.original.log",
+      "sha256": "2dff1ae99d27747f446efac5613f1872c1099a77784209f3988dcfbbf37fd6f1",
+      "size_bytes": 34897
+    },
+    {
+      "all_member_crc_verified": true,
+      "artifact_id": 11320942742,
+      "artifact_name": "vast-cpu-checks-470120a3b3f9692775656cdb8114471ab991f14b",
+      "decoded_size_bytes": 11826584,
+      "kind": "original_artifact",
+      "member_count": 202,
+      "members": [
+        {
+          "crc32": 3954000672,
+          "name": "build/CMakeCache.txt",
+          "sha256": "d2ededdfaa2e7f33e224fcbd4aae891daba779f11006c609bd4eb0ee85cb0821",
+          "size_bytes": 45482
+        },
+        {
+          "crc32": 227362031,
+          "name": "build/CMakeFiles/3.31.6/CMakeCCompiler.cmake",
+          "sha256": "c09db21c84070e0acbba45d1989fc6a4c4e3c405fd34ec4a3d613bee2285a60d",
+          "size_bytes": 2779
+        },
+        {
+          "crc32": 1534526427,
+          "name": "build/CMakeFiles/3.31.6/CMakeCXXCompiler.cmake",
+          "sha256": "1cbc1944c6301020e36a76cb7ffa595f6d4c564d2e46dc61abf9c1fb7e68abe3",
+          "size_bytes": 6079
+        },
+        {
+          "crc32": 224645080,
+          "name": "build/CMakeFiles/3.31.6/CMakeDetermineCompilerABI_C.bin",
+          "sha256": "ba6646aa78bf3dd0a7997f89bcc1154630fcb86d28103e0bfcd5200b21f54c7c",
+          "size_bytes": 15968
+        },
+        {
+          "crc32": 2059205181,
+          "name": "build/CMakeFiles/3.31.6/CMakeDetermineCompilerABI_CXX.bin",
+          "sha256": "879b5d31eac14d7b0ca6cd3b96320041ad8d87b538fea24a17e8707f0656bc96",
+          "size_bytes": 15992
+        },
+        {
+          "crc32": 1590785989,
+          "name": "build/CMakeFiles/3.31.6/CMakeSystem.cmake",
+          "sha256": "bfeaa5fe49380c89811a9327e0338dd7e0edeba818521fc8f514550f44275ca8",
+          "size_bytes": 402
+        },
+        {
+          "crc32": 4086081708,
+          "name": "build/CMakeFiles/3.31.6/CompilerIdC/CMakeCCompilerId.c",
+          "sha256": "60d0dc2f177f0317302cef41d454988d9d49759ad3e011365bd6f6c544dfd126",
+          "size_bytes": 27620
+        },
+        {
+          "crc32": 2814821843,
+          "name": "build/CMakeFiles/3.31.6/CompilerIdC/a.out",
+          "sha256": "88aa2744b35746a2f6464f0d7f31c3991c8fdb255d08727ecfbf676478e051b8",
+          "size_bytes": 16088
+        },
+        {
+          "crc32": 1273236300,
+          "name": "build/CMakeFiles/3.31.6/CompilerIdCXX/CMakeCXXCompilerId.cpp",
+          "sha256": "911d6deb85661272b2ddc7a8e26810febd726944c61e1d9495e6a1abb11d9eff",
+          "size_bytes": 28457
+        },
+        {
+          "crc32": 316925261,
+          "name": "build/CMakeFiles/3.31.6/CompilerIdCXX/a.out",
+          "sha256": "a3d366f5f634a9cc0d9340115704a2d978e930f75ce0aceac02d7177849a8a1a",
+          "size_bytes": 16096
+        },
+        {
+          "crc32": 121846800,
+          "name": "build/CMakeFiles/CMakeConfigureLog.yaml",
+          "sha256": "00af991a13fb6bfda565e2e62c0ff5ef8008ccecddd0935065ea31843217351f",
+          "size_bytes": 62593
+        },
+        {
+          "crc32": 3108741500,
+          "name": "build/CMakeFiles/CMakeDirectoryInformation.cmake",
+          "sha256": "f18c0d0b74335ce7ef6846b6f9ea94189773d954c45b805fb97221130eee5308",
+          "size_bytes": 648
+        },
+        {
+          "crc32": 3804168455,
+          "name": "build/CMakeFiles/Makefile.cmake",
+          "sha256": "4dd60f275686dd370c7ba432da64fc3d35187e5db258d95e2579ef22a6dfb6b7",
+          "size_bytes": 9851
+        },
+        {
+          "crc32": 3330903810,
+          "name": "build/CMakeFiles/Makefile2",
+          "sha256": "8f0e1733a23cb552cac045c1f904663e6f5fe7a3303491974eb976708c5a5331",
+          "size_bytes": 15236
+        },
+        {
+          "crc32": 325564569,
+          "name": "build/CMakeFiles/TargetDirectories.txt",
+          "sha256": "d5dd8219db94df9ff98174f251623fbbc6c3f4c02f6f06e5812776dcfd3cd97d",
+          "size_bytes": 655
+        },
+        {
+          "crc32": 1045741580,
+          "name": "build/CMakeFiles/cmake.check_cache",
+          "sha256": "a26189e394421da57f45706a07713c5720acd200a41711b0c0c590c3c63371c4",
+          "size_bytes": 85
+        },
+        {
+          "crc32": 1538589134,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/DependInfo.cmake",
+          "sha256": "59e6222b9cea8c6bc85f9eb9bf0865096529a2a553b0d4ce4336e3e41c86e74a",
+          "size_bytes": 968
+        },
+        {
+          "crc32": 2663495438,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/build.make",
+          "sha256": "388aac7840f9873cc9346844bc51bda2cb08c73ec64664c2359b0a8fc3e16a4c",
+          "size_bytes": 6468
+        },
+        {
+          "crc32": 1419273216,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/cmake_clean.cmake",
+          "sha256": "8b50b9480ce03b0dff09aced65a13c99b27d9073f94eddc346b5cf0b516afb1e",
+          "size_bytes": 507
+        },
+        {
+          "crc32": 1224996136,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/compiler_depend.make",
+          "sha256": "ad58e3ef468326dc026f280f148b1ba70b31aef3a190a251c83fb01a477284e3",
+          "size_bytes": 123
+        },
+        {
+          "crc32": 3376902943,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/compiler_depend.ts",
+          "sha256": "138e1b950b4f4824d221f8f4e8f507c321ddbbd5e376c5bc129a256de0470264",
+          "size_bytes": 127
+        },
+        {
+          "crc32": 3301089059,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/depend.make",
+          "sha256": "8c89991fb69cae6702cae14a72523bf2ed6af9daa6602489ad83021ebdd389e6",
+          "size_bytes": 104
+        },
+        {
+          "crc32": 2303237190,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c.o",
+          "sha256": "8110269f643a344638e80d1b54f56b26db98f2fb4840d83d6e0a2ab69965f3f6",
+          "size_bytes": 13360
+        },
+        {
+          "crc32": 1207060246,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c.o.d",
+          "sha256": "9b558a906c3af6726fd699b48653ccfe2c6cc6c5bc18d21314d4e3d518e8b715",
+          "size_bytes": 16045
+        },
+        {
+          "crc32": 4166587256,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/flags.make",
+          "sha256": "df01326bba7290d665db6251eab73bf0c8ebc713195e3deef7da57be36570b6a",
+          "size_bytes": 405
+        },
+        {
+          "crc32": 3514995169,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/link.d",
+          "sha256": "2f0760c8f4653e64342a1d174c7939f53f4cadeec4850ef85b9920555805c3f3",
+          "size_bytes": 3048
+        },
+        {
+          "crc32": 107858600,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/link.txt",
+          "sha256": "141638d2b4b45a8311f8843b7c5ce69d36b6462eeb0cfac32c099becd90b8ce0",
+          "size_bytes": 456
+        },
+        {
+          "crc32": 1940841730,
+          "name": "build/CMakeFiles/gstadaptivescheduler.dir/progress.make",
+          "sha256": "c06e644090b09d41eaddf59d10bcf03c6db6499eb51fa0d03e5128e5a165cc3c",
+          "size_bytes": 43
+        },
+        {
+          "crc32": 1528966612,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/DependInfo.cmake",
+          "sha256": "22c8ccf355c1974b47a333ae575aa93be3c55bda346688fb7962cbd6ed121ecb",
+          "size_bytes": 984
+        },
+        {
+          "crc32": 1089851166,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/build.make",
+          "sha256": "384d388f5759bf40c27b8bb9c4e7dcf6ae9b38b8f88e4c41f26c7066e7132d34",
+          "size_bytes": 6623
+        },
+        {
+          "crc32": 420910381,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/cmake_clean.cmake",
+          "sha256": "b8c286de3a8944e61c6f65a64d47f2572bf78e475cc8781974845983c896c662",
+          "size_bytes": 523
+        },
+        {
+          "crc32": 133985475,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/compiler_depend.make",
+          "sha256": "91b3c5a108c1bbd528f410d72b1bb70eb58c83c1cbc0a03ab60a4fe69f0b9f31",
+          "size_bytes": 124
+        },
+        {
+          "crc32": 483291978,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/compiler_depend.ts",
+          "sha256": "a0b62daa04eeaf3c9c9d4b5854f7ffa7af3111b2b75108b433f2728b653587b2",
+          "size_bytes": 128
+        },
+        {
+          "crc32": 2426629153,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/depend.make",
+          "sha256": "d7cdaf1e740a94c5fc72bdb4cf2e77b7b91a2215ad984f3bd1dd292e36eec5f1",
+          "size_bytes": 105
+        },
+        {
+          "crc32": 163615952,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp.o",
+          "sha256": "ff4dd950579e0c619e1aa9a4bf4d69d7ad17e3e4e0072f2aa83ec23d4dbca71e",
+          "size_bytes": 76976
+        },
+        {
+          "crc32": 740240381,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp.o.d",
+          "sha256": "b6d24a0b1757e85e2be893f3e4175da26618e226283730d838fd9f5ba6bac61e",
+          "size_bytes": 21207
+        },
+        {
+          "crc32": 47174377,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/flags.make",
+          "sha256": "d211fb6574df7d46d4da9e3eddd498666f8a6691fb5f7ff98e3f6f28a539e673",
+          "size_bytes": 537
+        },
+        {
+          "crc32": 1468921382,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/link.d",
+          "sha256": "8e54734921828f1c14515ebc05ee147c353d1ba24f9a6806c88efc4563e98206",
+          "size_bytes": 3543
+        },
+        {
+          "crc32": 3928581979,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/link.txt",
+          "sha256": "f0692a58fd96297671e89e96ff30b6614ba697ce4ba7e525ee75563eb9883bfc",
+          "size_bytes": 464
+        },
+        {
+          "crc32": 2920830399,
+          "name": "build/CMakeFiles/gstvastanalyticsqueue.dir/progress.make",
+          "sha256": "2c0c69e4af70b4caed2b8e1bd9f161f3ee9eb525d5f041631eee6d0661e5a02f",
+          "size_bytes": 43
+        },
+        {
+          "crc32": 1455271330,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/DependInfo.cmake",
+          "sha256": "8663da15c302c206936fdedc8dc6362af556abb4586d823074154e4bf185604f",
+          "size_bytes": 1005
+        },
+        {
+          "crc32": 22863681,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/build.make",
+          "sha256": "57a64b69e0287d6f4d398229998ecc4aefc4354d9ef167103318944aadc7843b",
+          "size_bytes": 6830
+        },
+        {
+          "crc32": 2566860742,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/cmake_clean.cmake",
+          "sha256": "17e51ecc71a6058842d595f910457ea58ef35011006c17b7e75e619d582bc362",
+          "size_bytes": 547
+        },
+        {
+          "crc32": 419836742,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/compiler_depend.make",
+          "sha256": "be70deb0092bb5a57a573ab331a18e97981629d43a3d43be7581833999912a9a",
+          "size_bytes": 127
+        },
+        {
+          "crc32": 4214050162,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/compiler_depend.ts",
+          "sha256": "0b2f13f111e6175c91dc8d0f69aef00eb9d86b6785517143d9c6e007c50e37d1",
+          "size_bytes": 131
+        },
+        {
+          "crc32": 3400524579,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/depend.make",
+          "sha256": "0fe24ab4dd9c640b1550ad9b6c9d1f434fce6a5532586209e363a31d46c56f6d",
+          "size_bytes": 108
+        },
+        {
+          "crc32": 2496618892,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp.o.d",
+          "sha256": "f7c41593cb19152217cfece14687510b42a5212d1fe2e3571f0ace28fb0c2cf9",
+          "size_bytes": 23642
+        },
+        {
+          "crc32": 1986291825,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp.o",
+          "sha256": "5e2c6ab1bf8d39e2154d8a77ca5a90e5826a01420296d8c2469a8f4dbe59ef81",
+          "size_bytes": 75192
+        },
+        {
+          "crc32": 1258508032,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/flags.make",
+          "sha256": "f9a0b79173ce6a9a09a0f2463747148293d54b0619bf2e0f09a59f9dc947e8b7",
+          "size_bytes": 474
+        },
+        {
+          "crc32": 3888010811,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/link.d",
+          "sha256": "226b0ab4280ae7066af3d7e895fe228f44ab62aa3abb7d063b1d1029115a8eca",
+          "size_bytes": 3558
+        },
+        {
+          "crc32": 2125456502,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/link.txt",
+          "sha256": "89c86262f379138070816391c42c99c62232df0f4de3b4287fe960942c3ababe",
+          "size_bytes": 476
+        },
+        {
+          "crc32": 497144705,
+          "name": "build/CMakeFiles/gstvastanalyticsterminal.dir/progress.make",
+          "sha256": "a3194f88ef5ae65b7a30877bdb3f7ab384e043aa110d7219d72f1e666ac6246b",
+          "size_bytes": 43
+        },
+        {
+          "crc32": 3155725799,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/DependInfo.cmake",
+          "sha256": "3d0dd03c315bd805a62c32d30a20fed725787b0b1ac9ea405dd19969e82bb588",
+          "size_bytes": 1033
+        },
+        {
+          "crc32": 2329808523,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/build.make",
+          "sha256": "c00c31094179f8096848397889c255669a22337583662e8379e0a6716f306ec0",
+          "size_bytes": 7106
+        },
+        {
+          "crc32": 978658590,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/cmake_clean.cmake",
+          "sha256": "f2efc22b881acaf78bb190a4a772487db4da6e0bbc898c654d66157b23ce3601",
+          "size_bytes": 579
+        },
+        {
+          "crc32": 3206133229,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/compiler_depend.make",
+          "sha256": "2870d3865ec02a63c3f975bff4485808c61782e20822be3e9d4c117c5f560f5c",
+          "size_bytes": 131
+        },
+        {
+          "crc32": 2209979315,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/compiler_depend.ts",
+          "sha256": "6ef77d34e7225c0faf49cc155cb2ff7009df03136072ddbfd7be7962b4dbff86",
+          "size_bytes": 135
+        },
+        {
+          "crc32": 1584857890,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/depend.make",
+          "sha256": "0b42d5f100bc3452f925272306b543124dd2274eaf80b667546625e869c79c3f",
+          "size_bytes": 112
+        },
+        {
+          "crc32": 626389460,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp.o",
+          "sha256": "516a2faace6275a52355eaa645ecd9095c0ebe2e7a71d36f1c9734fa413d82f7",
+          "size_bytes": 64808
+        },
+        {
+          "crc32": 1855362360,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp.o.d",
+          "sha256": "ef5eeff0c3721797664baba20a6551f1ee996302df40c75ef4c5b157fc5a6d7b",
+          "size_bytes": 20076
+        },
+        {
+          "crc32": 3882879138,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/flags.make",
+          "sha256": "4dfe36afcdea36bb3700bbb4193988ccae33711130996bcf1fe8972b5c94b5f1",
+          "size_bytes": 478
+        },
+        {
+          "crc32": 1311006433,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/link.d",
+          "sha256": "f8a9c1af41a61c46ad66a2a773d5626e7434f4285df101ffdc8a5d6fda710a92",
+          "size_bytes": 3578
+        },
+        {
+          "crc32": 4278028232,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/link.txt",
+          "sha256": "ee62fe02d4446745539178940925b2b264eb0fee387faa9a0c4d20755e09ee39",
+          "size_bytes": 492
+        },
+        {
+          "crc32": 3456381572,
+          "name": "build/CMakeFiles/gstvastcheckpointprefixqueue.dir/progress.make",
+          "sha256": "d07ef668326a9a562e0a72f93d199267d5a0b8fb4172c2286a56a2cb5ef77dd0",
+          "size_bytes": 43
+        },
+        {
+          "crc32": 3612208090,
+          "name": "build/CMakeFiles/progress.marks",
+          "sha256": "a1fb50e6c86fae1679ef3351296fd6713411a08cf8dd1790a4fd05fae8688164",
+          "size_bytes": 3
+        },
+        {
+          "crc32": 89790738,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/DependInfo.cmake",
+          "sha256": "7c8397b538fd74ba54e2fa81b2df314458942e8d6eedc7814f0b9b1298ac0e3e",
+          "size_bytes": 970
+        },
+        {
+          "crc32": 306040753,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/build.make",
+          "sha256": "1355bed229cc32df2ce890679c86daee27f9af64b42424fc3501921b13a76e67",
+          "size_bytes": 6670
+        },
+        {
+          "crc32": 1922308211,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/cmake_clean.cmake",
+          "sha256": "eab73600400f130ebcd7d998727e14ebf933f2423cc9745eb4eee59ae987cfee",
+          "size_bytes": 512
+        },
+        {
+          "crc32": 3250409675,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/compiler_depend.make",
+          "sha256": "ca27a12c6481a740caf0f829fc1fbdba11b705ad566acaf32233af03a8bb4db0",
+          "size_bytes": 125
+        },
+        {
+          "crc32": 843949793,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/compiler_depend.ts",
+          "sha256": "2d1737567e894b82a4f3d294c779b654a5a950ea4888546a62206d3208f02483",
+          "size_bytes": 129
+        },
+        {
+          "crc32": 2402192519,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/depend.make",
+          "sha256": "92ee78b8fdce42b919f0fdf52de9f90730767af2e31087e1c53f7def39d7d351",
+          "size_bytes": 106
+        },
+        {
+          "crc32": 3287887730,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/deploy/native_gst_probe/checkpoint_source_coordinator.cpp.o",
+          "sha256": "2b605d2b9e5756aab17d1adf5787f894860d8e4b19c6e5e85cf4c57661b705af",
+          "size_bytes": 162296
+        },
+        {
+          "crc32": 3473807311,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/deploy/native_gst_probe/checkpoint_source_coordinator.cpp.o.d",
+          "sha256": "1b2dac2912d11f3fe41476e282539c85a232db1b3ace7d0c5a20e4babd88ace6",
+          "size_bytes": 22380
+        },
+        {
+          "crc32": 1064422381,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/flags.make",
+          "sha256": "951f09e28753228627a7bb56d2b621a8313bb3cc850d3700af08d0bfd78956b9",
+          "size_bytes": 367
+        },
+        {
+          "crc32": 1117022326,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/link.d",
+          "sha256": "08f4b15ef803d29f07f6f52b5ea123ae0b9c37c6f9c3d1200c359bf9a5886255",
+          "size_bytes": 5034
+        },
+        {
+          "crc32": 3079996579,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/link.txt",
+          "sha256": "d8dd877d8e186cd45bdc06d17375483253a33ed40d15ce172f85c1fbe52a473a",
+          "size_bytes": 528
+        },
+        {
+          "crc32": 3421017413,
+          "name": "build/CMakeFiles/vast_checkpoint_source.dir/progress.make",
+          "sha256": "ed3daec5b65a9ed4ecd23ef55e215b9ba204c1e5e0226807abaec0693c6df14c",
+          "size_bytes": 44
+        },
+        {
+          "crc32": 4137373686,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/DependInfo.cmake",
+          "sha256": "24ed1a6feb7b9ca085566c704ad69955a1f66e5d9337d43ab8b77cc7bc17cfaf",
+          "size_bytes": 942
+        },
+        {
+          "crc32": 554654955,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/build.make",
+          "sha256": "f6a2f094b4c01a8da3fd03dccc0df482156396768935fcd8064fa91126ccb7d3",
+          "size_bytes": 6466
+        },
+        {
+          "crc32": 151343928,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/cmake_clean.cmake",
+          "sha256": "5efaaa0d28b844437d87da937aff4c487e8eefccb0c6e6f603a56c981b01b80d",
+          "size_bytes": 490
+        },
+        {
+          "crc32": 343439426,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/compiler_depend.ts",
+          "sha256": "735e60c306cb3f78d7c874fa2ce00ab8b9c69582cd59f1da2eaf3f83b473230f",
+          "size_bytes": 128
+        },
+        {
+          "crc32": 1254850292,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/compiler_depend.make",
+          "sha256": "4379081cb4da0174fa752985cc26eacc966c9d3c6248d5db056c5c1d28feb988",
+          "size_bytes": 124
+        },
+        {
+          "crc32": 3629042023,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/deploy/native_gst_probe/vast_native_gst_probe.cpp.o",
+          "sha256": "95553ee66aafcafbd08ab883ea829d82066087b12dfc87984a1a17464f2c7206",
+          "size_bytes": 971072
+        },
+        {
+          "crc32": 3717490198,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/depend.make",
+          "sha256": "640b9e4cfcdd004702303a8eef7688fcff90471c1230ca8eba8efdcd0c07c955",
+          "size_bytes": 105
+        },
+        {
+          "crc32": 32317429,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/deploy/native_gst_probe/vast_native_gst_probe.cpp.o.d",
+          "sha256": "9387b82be30c70f75ae28b465446022d2029989890f5e08753adbaf8e4d09126",
+          "size_bytes": 29780
+        },
+        {
+          "crc32": 1064422381,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/flags.make",
+          "sha256": "951f09e28753228627a7bb56d2b621a8313bb3cc850d3700af08d0bfd78956b9",
+          "size_bytes": 367
+        },
+        {
+          "crc32": 3102147310,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/link.d",
+          "sha256": "4381cda4da3daf88d62ca0ee1cdeb0c7e1b8a188a8239553bf0520ca0bf5aabc",
+          "size_bytes": 5097
+        },
+        {
+          "crc32": 3375207974,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/link.txt",
+          "sha256": "f21678aef9320599f3a2cbb8f6ac2201af90c7320f528b57d546c933a2b270f2",
+          "size_bytes": 517
+        },
+        {
+          "crc32": 1858892286,
+          "name": "build/CMakeFiles/vast_native_gst_probe.dir/progress.make",
+          "sha256": "b2cd0974e570a8a9216e89228e7d0c65225f2b2ccd9be7d685a1f2ee210a2a4b",
+          "size_bytes": 45
+        },
+        {
+          "crc32": 4093323579,
+          "name": "build/Makefile",
+          "sha256": "724e44d6d468e9506985f56c12710024a322d9eca79b83ff2edbef51a17f718e",
+          "size_bytes": 18538
+        },
+        {
+          "crc32": 2140167653,
+          "name": "build/bin/vast_checkpoint_source",
+          "sha256": "73651ca72a01c2c4ff8439ff4dfca30f59fe3ce7c90fe7382a070b96c46d4ac0",
+          "size_bytes": 120152
+        },
+        {
+          "crc32": 68919131,
+          "name": "build/bin/vast_native_gst_probe",
+          "sha256": "d0b4916761da431828fd81bd48a0b4199abf6ee6ba5073bb3cecbb5ba195f991",
+          "size_bytes": 552288
+        },
+        {
+          "crc32": 2466457505,
+          "name": "build/cmake_install.cmake",
+          "sha256": "e084754bf42c3e3164514743b5b17785ee5301c519ff2d2845ccdc21ece0ab0d",
+          "size_bytes": 2126
+        },
+        {
+          "crc32": 3761037558,
+          "name": "build/lib/libgstadaptivescheduler.so",
+          "sha256": "e62dfcae29e884da7448029a0b4a47a20a7d2c81a07e5cb10a540b10664e716a",
+          "size_bytes": 26584
+        },
+        {
+          "crc32": 3760028597,
+          "name": "build/lib/libgstvastanalyticsterminal.so",
+          "sha256": "21928d8937de8e8bdf4742d7eb870d18e37c6a7b71eaa3edda6196d9fd61095e",
+          "size_bytes": 65784
+        },
+        {
+          "crc32": 4032287820,
+          "name": "build/lib/libgstvastanalyticsqueue.so",
+          "sha256": "6f3f6d573aa8b22862bfd28192687deeedec2dc1bc99dc9d9949f2e962ed9bcc",
+          "size_bytes": 71224
+        },
+        {
+          "crc32": 3616808021,
+          "name": "build/lib/libgstvastcheckpointprefixqueue.so",
+          "sha256": "31942055b6ff49253a0593f43b62296789328435ae56341779c115f228a20ab7",
+          "size_bytes": 62016
+        },
+        {
+          "crc32": 1141003399,
+          "name": "decoder-v6-fixtures/attempt-19cb7c316b8e4bbdb751de7f35a2d962/adapter-final-close.v1.json",
+          "sha256": "2cb8abf710ca74b21da7b9dcd9d7f23540233268d212c8469d7fdf054cc82750",
+          "size_bytes": 736
+        },
+        {
+          "crc32": 2581892662,
+          "name": "decoder-v6-fixtures/attempt-19cb7c316b8e4bbdb751de7f35a2d962/adapter-terminal.v1.json",
+          "sha256": "34e8dd9e3fbb7388eb335c8fb4f8d14f9bbed1036911ceb0c5424335577c7e95",
+          "size_bytes": 1755
+        },
+        {
+          "crc32": 1182719832,
+          "name": "decoder-v6-fixtures/attempt-19cb7c316b8e4bbdb751de7f35a2d962/nested-suite.v1.json",
+          "sha256": "5dae1334ab48864626e80de6430ced46cee84487f311b1c5b406ea67d4883c38",
+          "size_bytes": 95064
+        },
+        {
+          "crc32": 2555765967,
+          "name": "decoder-v6-fixtures/attempt-19cb7c316b8e4bbdb751de7f35a2d962/original.stderr",
+          "sha256": "6d7c6e7c917152c6ec21af9891bc8a3b667f888a0c3fc8ffe76bea7f35277a4a",
+          "size_bytes": 101018
+        },
+        {
+          "crc32": 491157821,
+          "name": "decoder-v6-fixtures/attempt-19cb7c316b8e4bbdb751de7f35a2d962/original.stdout",
+          "sha256": "4b708246e078460eda220f54cc54d61b37a847cdf775b626e0a33b2f066010f0",
+          "size_bytes": 7860
+        },
+        {
+          "crc32": 1916962406,
+          "name": "external-test-observer/events.original.jsonl",
+          "sha256": "3660b1b8623a3959974f204382617391b0a095b75d7260589619f4d1a2313693",
+          "size_bytes": 24047
+        },
+        {
+          "crc32": 1280616364,
+          "name": "external-test-observer/launch.v1.json",
+          "sha256": "3078fc2eee43b567697718225d6889f679b98d8e8b63cd034cd778e74ba048b0",
+          "size_bytes": 788
+        },
+        {
+          "crc32": 779592451,
+          "name": "external-test-observer/responses.original.jsonl",
+          "sha256": "814c7e3eb9b1cc66e9e6eaf25533e789c10898bcafe5114ead7a5215f5e84f62",
+          "size_bytes": 4904
+        },
+        {
+          "crc32": 2570268565,
+          "name": "external-test-observer/terminal.v1.json",
+          "sha256": "1f7f094d390097bcdc02b8e4e5e9b043e1c7f5f3d6f3d9c8ac1a154cd96fc17f",
+          "size_bytes": 1483
+        },
+        {
+          "crc32": 35027739,
+          "name": "external-test-observer/trace.original.log",
+          "sha256": "9ca5b1b69e504f13a107768249f7a8ee15ebe01606bee86842cf4b1141e129e9",
+          "size_bytes": 57265
+        },
+        {
+          "crc32": 2885840678,
+          "name": "factory-appsrc.json",
+          "sha256": "8267abd70d0707a69fb221def557c9fd625861513134db9af939d83e2c189f63",
+          "size_bytes": 167
+        },
+        {
+          "crc32": 0,
+          "name": "factory-appsrc.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 1537524846,
+          "name": "factory-queue.json",
+          "sha256": "09696078526074a9d1c184d10e375fe4cd3c629ed1b5dc00f19ecfcef712992b",
+          "size_bytes": 167
+        },
+        {
+          "crc32": 3413401097,
+          "name": "factory-appsrc.stdout",
+          "sha256": "f856c19875dd3f4e9db164fbfca71639fc4e2c7c60c7bed1643c1d9c23f34f91",
+          "size_bytes": 9007
+        },
+        {
+          "crc32": 0,
+          "name": "factory-queue.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3150396858,
+          "name": "factory-queue.stdout",
+          "sha256": "f73affca7c13abc0843dc576660c929b2b3a29b25aaad608e1a5ddd583af8147",
+          "size_bytes": 5218
+        },
+        {
+          "crc32": 2772521637,
+          "name": "factory-videoconvert.json",
+          "sha256": "00e9cc899cfa7bd80423bf402c81be0ab98d420a5a395fa6ea2ec61edfe36582",
+          "size_bytes": 175
+        },
+        {
+          "crc32": 0,
+          "name": "factory-videoconvert.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 266514936,
+          "name": "factory-videoconvert.stdout",
+          "sha256": "8b01aef76679ca1743624ef160857330a4c95c9fa2a4dcce73d3ddae8ee6f019",
+          "size_bytes": 17518
+        },
+        {
+          "crc32": 1764809594,
+          "name": "gstreamer-packages.json",
+          "sha256": "9f6d5ba8560835ca3cf718050dede7cbb0a2ff20de60587e11e59910246cb450",
+          "size_bytes": 242
+        },
+        {
+          "crc32": 0,
+          "name": "gstreamer-packages.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 1667758596,
+          "name": "gstreamer-packages.stdout",
+          "sha256": "21b23bf6fb7a3e6c97a5745c52c3f81a90f7030b2d3eabd0495a43682b26432a",
+          "size_bytes": 81
+        },
+        {
+          "crc32": 51362228,
+          "name": "host-facts.original.json",
+          "sha256": "c2315e96de430117a8e79683a7c1245f0ae03dc9193a7160908c27c6d9b4e5ba",
+          "size_bytes": 1274
+        },
+        {
+          "crc32": 1576504331,
+          "name": "model-acquisition/asset-00.dispatch.json",
+          "sha256": "bcf1799c0b9d313dfb663a54faa0a811dc5c1d51a52e63dcc5edf71c3e9cced4",
+          "size_bytes": 843
+        },
+        {
+          "crc32": 2666520846,
+          "name": "model-acquisition/asset-00.json",
+          "sha256": "e376539bf253076dbb7fa74b5710c0c563085763c10bdda640741582922b5672",
+          "size_bytes": 1822
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-00.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3204977485,
+          "name": "model-acquisition/asset-00.stdout",
+          "sha256": "7fd8ab37a19d096f5c3483103d1279829e0678b7ece6cc6bab2bb0039092517e",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 2609896631,
+          "name": "model-acquisition/asset-00.terminal.json",
+          "sha256": "40686e6133f553f32d49a9173acc80384e0d06d25812ee5b83824bebdd4a6c96",
+          "size_bytes": 601
+        },
+        {
+          "crc32": 2882247985,
+          "name": "model-acquisition/asset-01.dispatch.json",
+          "sha256": "ee48deea91c81b9c5e2a4272ee201baf23fff3cccf958a312ab3383554c16ce7",
+          "size_bytes": 833
+        },
+        {
+          "crc32": 3492849930,
+          "name": "model-acquisition/asset-01.json",
+          "sha256": "150d30269897b37cce5b95e80893900562f83225b2a08cee86541db02eccd1c4",
+          "size_bytes": 1838
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-01.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3200940410,
+          "name": "model-acquisition/asset-01.stdout",
+          "sha256": "74a6c4418dd0054274c48620b45ffb0322e7e8c669e5198297bbcc528c72a430",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 543673254,
+          "name": "model-acquisition/asset-01.terminal.json",
+          "sha256": "318c7a1d983521184c73c61dcf63f85e165a537f3138b4ba413345b80481c786",
+          "size_bytes": 600
+        },
+        {
+          "crc32": 3724911570,
+          "name": "model-acquisition/asset-02.dispatch.json",
+          "sha256": "90db85b2c008d68706dab35d6c4b07d6de5d59a07327e64156c56daf3e8911f2",
+          "size_bytes": 831
+        },
+        {
+          "crc32": 2681424101,
+          "name": "model-acquisition/asset-02.json",
+          "sha256": "d3794af52d82fc6017962d75c1e63fb3b396b1fd05bb1d60bc703ff72742f92d",
+          "size_bytes": 1910
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-02.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3163342627,
+          "name": "model-acquisition/asset-02.stdout",
+          "sha256": "00118c14d4b199bf04b13888564cb710ca7dc534e84d04f43cd0a61c001f587c",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 129902577,
+          "name": "model-acquisition/asset-02.terminal.json",
+          "sha256": "6182be081f6001b0a11dc046e10968f22c299fda5d7e75e4b62b8591e474fe22",
+          "size_bytes": 599
+        },
+        {
+          "crc32": 1369345200,
+          "name": "model-acquisition/asset-03.dispatch.json",
+          "sha256": "00e3c9c3df1e2561277d66de9721219dfb949534ff149f159e7840c878d4581e",
+          "size_bytes": 832
+        },
+        {
+          "crc32": 2296133430,
+          "name": "model-acquisition/asset-03.json",
+          "sha256": "fe9106fa57ec20d95716924462efe8d2f378a6b64fafd2fb9448223e9bc0d6e6",
+          "size_bytes": 1926
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-03.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3176049940,
+          "name": "model-acquisition/asset-03.stdout",
+          "sha256": "894e4005e4f4be608717721b08e1f98f56fd8d5eb4c1026f30d643e07e29119d",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 590547097,
+          "name": "model-acquisition/asset-04.dispatch.json",
+          "sha256": "00a4581b315ebae1376302ec5827e12d542dd8247b3253e835ab8b78d02d2760",
+          "size_bytes": 843
+        },
+        {
+          "crc32": 4031899697,
+          "name": "model-acquisition/asset-03.terminal.json",
+          "sha256": "47b31155dc400b31295d6bdfcb96d163be41aa8aff7396ecbeacefb16c86efb1",
+          "size_bytes": 600
+        },
+        {
+          "crc32": 1743517245,
+          "name": "model-acquisition/asset-04.json",
+          "sha256": "1577b37a24f0cc7beba7838ee4e9d2ee748d89c4f887d1fc7fc1bf1f82765fb7",
+          "size_bytes": 1908
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-04.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 469065754,
+          "name": "model-acquisition/asset-04.terminal.json",
+          "sha256": "eb2b8cc61c86e8cf7a5881a66ff93723fbcdd87cd966581b750da7e846428e7e",
+          "size_bytes": 599
+        },
+        {
+          "crc32": 1765162379,
+          "name": "model-acquisition/asset-05.dispatch.json",
+          "sha256": "006c0124b5976e3119441b1806f3c2d00e696e866ed04a017bcc93e1f95208ea",
+          "size_bytes": 833
+        },
+        {
+          "crc32": 3087121297,
+          "name": "model-acquisition/asset-04.stdout",
+          "sha256": "4728d51e5350c5bdb02169744c3ca4574a83762cc12f1896ca383ca58875a5fd",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 1424018524,
+          "name": "model-acquisition/asset-05.json",
+          "sha256": "5d1e75c87252a69390fce250125e71bb805d8eda492b9a839eb4a48a1cc0726c",
+          "size_bytes": 1924
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-05.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3116618150,
+          "name": "model-acquisition/asset-05.stdout",
+          "sha256": "67162acd026e397d5ee7be315ea8733065d59fdcace293ce4a71e08f3f649e16",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 3719135928,
+          "name": "model-acquisition/asset-05.terminal.json",
+          "sha256": "117c7791dfdf0355583a3e924d4dc4c25ba83db7ef1f0b664bf567e86f65795a",
+          "size_bytes": 599
+        },
+        {
+          "crc32": 3841624947,
+          "name": "model-acquisition/asset-06.dispatch.json",
+          "sha256": "3534e9e98887b61b2e40ebb8ec9a6ee07313f2acba393fdff2158f715887c082",
+          "size_bytes": 833
+        },
+        {
+          "crc32": 2504367208,
+          "name": "model-acquisition/asset-06.json",
+          "sha256": "0a5e6095244472e24b4c0f083bc2a89c276cb8eb3b4bc05f2937c2ee82744267",
+          "size_bytes": 1733
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-06.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3146084351,
+          "name": "model-acquisition/asset-06.stdout",
+          "sha256": "448b6bad1025cc9c60c633959f8410626f1d336e472f8392127779adcbf66650",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 2812727160,
+          "name": "model-acquisition/asset-06.terminal.json",
+          "sha256": "d31fee07216832a8202ea38039ec997f53b679e805f3d7ce7a19c111420a5fd7",
+          "size_bytes": 600
+        },
+        {
+          "crc32": 91288898,
+          "name": "model-acquisition/asset-07.dispatch.json",
+          "sha256": "b50678aa68076baf94acfbcc872c4530cef6fa7ea1670d1ac2b1bc61e9c94465",
+          "size_bytes": 833
+        },
+        {
+          "crc32": 2742971274,
+          "name": "model-acquisition/asset-07.json",
+          "sha256": "659e9145541a437843fa8c758cc5c59f6c05d330fd4b784bf74bbbe5d6379d98",
+          "size_bytes": 1748
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-07.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3125216712,
+          "name": "model-acquisition/asset-07.stdout",
+          "sha256": "ad5bd0d870140b3ea9f39fc02a864e54877d1d67e07367c495ec5c0b8f0d08d3",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 2072329620,
+          "name": "model-acquisition/asset-07.terminal.json",
+          "sha256": "30d850735e950d0d08934eae4a52dc1a4d4652c84d4ace12cdfb3a0828870431",
+          "size_bytes": 599
+        },
+        {
+          "crc32": 2799659233,
+          "name": "model-acquisition/report.json",
+          "sha256": "ef720cbffaacca69ed0720e9ca79b8135ebc6c0904ade91ae151251d7ce70c4e",
+          "size_bytes": 3463
+        },
+        {
+          "crc32": 4051420080,
+          "name": "model-assets.json",
+          "sha256": "aef81f29111a55a713676f9a80284d44758641a9279442e60147d02899f9688d",
+          "size_bytes": 355
+        },
+        {
+          "crc32": 1046524475,
+          "name": "model-assets.stdout",
+          "sha256": "e6e545ea0ad9fa9d97a587917f06b3526c484047cd4f7a57c13eb8cbaf04d134",
+          "size_bytes": 36
+        },
+        {
+          "crc32": 0,
+          "name": "model-assets.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 612066141,
+          "name": "namespace-diagnostic/capture.json",
+          "sha256": "967993e59eccce0e1c9d120bac672382d080eca93b4c4af6b7b6656db62f79e2",
+          "size_bytes": 983
+        },
+        {
+          "crc32": 1248445555,
+          "name": "namespace-diagnostic/kernel-denial.json",
+          "sha256": "7e87b4d0158c11982d057dedfaa200b34b1a8257dcb8096b7b4e542abe67b202",
+          "size_bytes": 1553
+        },
+        {
+          "crc32": 4136773935,
+          "name": "namespace-diagnostic/kernel-query/capture.json",
+          "sha256": "03c482c95d0162ce7416b61fb7eb823c7e4e16338a42a6ce31146119c0ab112b",
+          "size_bytes": 1296
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-diagnostic/kernel-query/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 2064488113,
+          "name": "namespace-diagnostic/kernel-query/stdout.raw",
+          "sha256": "211fd2ffa0a50b262f2fc195c206ed6e73e371e9001b01268e8f5d15ab04f8d1",
+          "size_bytes": 772
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-diagnostic/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 2613683448,
+          "name": "namespace-diagnostic/stdout.raw",
+          "sha256": "723ab3361c2cc901985c4be6e8eb17031e5d7e783874bf2a8346097a9803d96f",
+          "size_bytes": 2326
+        },
+        {
+          "crc32": 398451721,
+          "name": "namespace-profile/joined-denial.json",
+          "sha256": "768b152a018aaecd63f2642e8b5fd1b064c022a5a8c2089bbeca639448f87f30",
+          "size_bytes": 1564
+        },
+        {
+          "crc32": 1491671443,
+          "name": "namespace-profile/load/capture.json",
+          "sha256": "c43ca034bcd29847746e9931fff09f0e83b829c4790605e808b3e69d1102207c",
+          "size_bytes": 1344
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/load/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/load/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 2283719518,
+          "name": "namespace-profile/load-after/capture.json",
+          "sha256": "fdcb1bbe51be67ec4eaf1b55be4e3661e6736056f5689ef6f5e8159e1ff419d6",
+          "size_bytes": 1313
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/load-after/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3564519078,
+          "name": "namespace-profile/load-after/stdout.raw",
+          "sha256": "d9c5a1356455f0f0f6bbaeb38ff0c577ea8e20eeb483f439df7894e10994cc2a",
+          "size_bytes": 3195
+        },
+        {
+          "crc32": 106778145,
+          "name": "namespace-profile/load-before/capture.json",
+          "sha256": "f958fe1120af1843855f084960a7f50dc98ea59660e4178f7f7ee387ebe103ad",
+          "size_bytes": 1313
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/load-before/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 2525007693,
+          "name": "namespace-profile/load-before/stdout.raw",
+          "sha256": "5175834c962754c175ab60fbffb8f39eb975af57ffe208c6f45afe70f3996ed0",
+          "size_bytes": 3134
+        },
+        {
+          "crc32": 584001536,
+          "name": "namespace-profile/load-intent.json",
+          "sha256": "a530e6db050bbf719d81339c80abbb6758103c9a178523467d590e82976168ca",
+          "size_bytes": 599
+        },
+        {
+          "crc32": 3555843314,
+          "name": "namespace-profile/owned.profile",
+          "sha256": "3bc437fa230778d6015adf32e1853e3c75dcaba0366ae100819d613f5aef3be4",
+          "size_bytes": 158
+        },
+        {
+          "crc32": 3640071051,
+          "name": "namespace-profile/profile-lifecycle.json",
+          "sha256": "5ac5533d7e005fd794f6ba106de686b57657dc07ed78a0cf6300333552c8142d",
+          "size_bytes": 973
+        },
+        {
+          "crc32": 4289320738,
+          "name": "namespace-profile/unload/capture.json",
+          "sha256": "0fc288346cdc09331810eea1daabc5f7565a114fadb0c224803ab2271c795653",
+          "size_bytes": 1352
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/unload/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/unload/stdout.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3098584615,
+          "name": "namespace-profile/unload-after/capture.json",
+          "sha256": "888377e7f516544833ee9b1d3bd366ad5dd4add5086497a59e9efb79a8a79dd8",
+          "size_bytes": 1316
+        },
+        {
+          "crc32": 0,
+          "name": "namespace-profile/unload-after/stderr.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 2525007693,
+          "name": "namespace-profile/unload-after/stdout.raw",
+          "sha256": "5175834c962754c175ab60fbffb8f39eb975af57ffe208c6f45afe70f3996ed0",
+          "size_bytes": 3134
+        },
+        {
+          "crc32": 0,
+          "name": "native-build.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 1073885154,
+          "name": "native-build.json",
+          "sha256": "c46c5d43ced8f69cadea3d50d7a1e587620b8988d9a578e27dc4a90eedf9915b",
+          "size_bytes": 427
+        },
+        {
+          "crc32": 1807691966,
+          "name": "native-configure.json",
+          "sha256": "0ca88e59419593e6f829f80257931a3b1bdb3972a4a5dad6a3c704e4b1030eef",
+          "size_bytes": 494
+        },
+        {
+          "crc32": 1602369800,
+          "name": "native-build.stdout",
+          "sha256": "d199d7043f067508672c15822c174770e27228a090367801414cde5cddf47003",
+          "size_bytes": 1408
+        },
+        {
+          "crc32": 0,
+          "name": "native-configure.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 4046895277,
+          "name": "native-configure.stdout",
+          "sha256": "3a4fb2ca2f3c864e7000737aa8ced55d862e6cfd4f78efeb8ced9dc893c3e779",
+          "size_bytes": 760
+        },
+        {
+          "crc32": 1883236286,
+          "name": "report.json",
+          "sha256": "2704698b0854bc05adc770ce8909be84b587ae1d12a10bbca71a89caa1ef3a52",
+          "size_bytes": 1859352
+        },
+        {
+          "crc32": 3950866247,
+          "name": "specification-inventory.json",
+          "sha256": "6a9e0508a10cad954f163812c111df6ee27b59a452bfe992554236f55c833fc2",
+          "size_bytes": 25556
+        },
+        {
+          "crc32": 582380445,
+          "name": "tracked-source.after.json",
+          "sha256": "fa3c87511c9b558bc1b686acc9721aaddaa61f702356326708d77bbac173481d",
+          "size_bytes": 1482983
+        },
+        {
+          "crc32": 582380445,
+          "name": "tracked-source.before.json",
+          "sha256": "fa3c87511c9b558bc1b686acc9721aaddaa61f702356326708d77bbac173481d",
+          "size_bytes": 1482983
+        },
+        {
+          "crc32": 2176076472,
+          "name": "unittest-child.report.json",
+          "sha256": "5f6849e5b28ada63f73b46a517158cf4bb9555e2c2217f5d876f5efe9395891f",
+          "size_bytes": 1788361
+        },
+        {
+          "crc32": 3825156514,
+          "name": "unittest.original.log",
+          "sha256": "41168b673a2f94d98e9cd9d0f0d371a4b36caa817fe27a7b88ee4c2b3f39f22b",
+          "size_bytes": 2038074
+        }
+      ],
+      "path": "ci-S8470120a3-v1/original-retention-v1/artifact-11320942742.original.zip",
+      "provider_digest_matched": true,
+      "sha256": "174ec1f57ca0acba59c8651919d0475cc0a030aab2a45b04ded6ece59a5b6335",
+      "size_bytes": 2232966
+    },
+    {
+      "all_member_crc_verified": true,
+      "artifact_id": 11320311928,
+      "artifact_name": "vast-host-diagnostics-470120a3b3f9692775656cdb8114471ab991f14b",
+      "decoded_size_bytes": 3001383,
+      "kind": "original_artifact",
+      "member_count": 51,
+      "members": [
+        {
+          "crc32": 2836368184,
+          "name": "host-facts.original.json",
+          "sha256": "57a2adb0323e199d48d5ce9d83e27ddc9d8c6d0a773c02f100ba7a26741339c3",
+          "size_bytes": 1274
+        },
+        {
+          "crc32": 1657071011,
+          "name": "host-prerequisites.json",
+          "sha256": "0085e5c1eb01c3b60f3d684bd10513ea5940f3bfcca8c9fdeb5eb3f78547b0cb",
+          "size_bytes": 902
+        },
+        {
+          "crc32": 664973141,
+          "name": "host-prerequisites.stderr",
+          "sha256": "47734f1da02aae15557277f72bc48ffaf5fa0c842e786e11d287d445058affd3",
+          "size_bytes": 1345
+        },
+        {
+          "crc32": 0,
+          "name": "host-prerequisites.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 1941212680,
+          "name": "model-acquisition/asset-00.dispatch.json",
+          "sha256": "04c652cd656da5bb35a8f6764f08cf67e5f492f91b278c466583ace60afd1f38",
+          "size_bytes": 835
+        },
+        {
+          "crc32": 3416080234,
+          "name": "model-acquisition/asset-00.json",
+          "sha256": "245a0c8e4182097dd7c78e1b239e249da16f5aebd2174bbde44cfe2885349c56",
+          "size_bytes": 1821
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-00.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3204977485,
+          "name": "model-acquisition/asset-00.stdout",
+          "sha256": "7fd8ab37a19d096f5c3483103d1279829e0678b7ece6cc6bab2bb0039092517e",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 1281606012,
+          "name": "model-acquisition/asset-00.terminal.json",
+          "sha256": "ffeb2a17463cd6caa966ac816dece1bea73370e8db15dfe64d8fa20b4f2405d4",
+          "size_bytes": 596
+        },
+        {
+          "crc32": 1747974381,
+          "name": "model-acquisition/asset-01.dispatch.json",
+          "sha256": "6d9057494160f2afea898e70766635d49a54272f4eae4f5775c520d8178ddd3d",
+          "size_bytes": 835
+        },
+        {
+          "crc32": 578573552,
+          "name": "model-acquisition/asset-01.json",
+          "sha256": "f7978318fe7b575bb8a5c16c4a32a91f32afd5b7e856eaf0bf42a9b55de7c8ff",
+          "size_bytes": 1837
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-01.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3200940410,
+          "name": "model-acquisition/asset-01.stdout",
+          "sha256": "74a6c4418dd0054274c48620b45ffb0322e7e8c669e5198297bbcc528c72a430",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 3891200733,
+          "name": "model-acquisition/asset-01.terminal.json",
+          "sha256": "afa39d91c6ad49c1335d7db37fe2e69a84536928e2970d84e18c3e7b32b76c64",
+          "size_bytes": 595
+        },
+        {
+          "crc32": 2819524657,
+          "name": "model-acquisition/asset-02.dispatch.json",
+          "sha256": "0a36f7878f8b1ef70e2505e621c24ea16a4fa49692f22554e26a9d5b55e7690f",
+          "size_bytes": 835
+        },
+        {
+          "crc32": 2966185907,
+          "name": "model-acquisition/asset-02.json",
+          "sha256": "2eba7fe827c8a3efeea3e6bfdd34a35b1ebb14c1d00ec1552e135724f47644d4",
+          "size_bytes": 1910
+        },
+        {
+          "crc32": 3163342627,
+          "name": "model-acquisition/asset-02.stdout",
+          "sha256": "00118c14d4b199bf04b13888564cb710ca7dc534e84d04f43cd0a61c001f587c",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-02.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3595831030,
+          "name": "model-acquisition/asset-02.terminal.json",
+          "sha256": "7e4956a846e4154bb576e45e2b11e0272deec1dc02b7736ec4eb340c032fcfa0",
+          "size_bytes": 596
+        },
+        {
+          "crc32": 4226231438,
+          "name": "model-acquisition/asset-03.dispatch.json",
+          "sha256": "a313d8498a3307767a226a11b2c992fd1955bc22987dc3d0cc3ebf09d7fc7f09",
+          "size_bytes": 835
+        },
+        {
+          "crc32": 4131751911,
+          "name": "model-acquisition/asset-03.json",
+          "sha256": "8c393dff261cd31a2bddf1eac31abcd50d50f912f5d23b560189d99dfdb766c4",
+          "size_bytes": 1926
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-03.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3176049940,
+          "name": "model-acquisition/asset-03.stdout",
+          "sha256": "894e4005e4f4be608717721b08e1f98f56fd8d5eb4c1026f30d643e07e29119d",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 3034382573,
+          "name": "model-acquisition/asset-03.terminal.json",
+          "sha256": "0410719cde9327f5a2f35ce7ae17fa8a61c9fcf98a6bba03174a4b03ed324235",
+          "size_bytes": 596
+        },
+        {
+          "crc32": 1249293921,
+          "name": "model-acquisition/asset-04.dispatch.json",
+          "sha256": "95d6928563a636c377a651f530a6ebd66a55a873e938606d077e03faa42301f4",
+          "size_bytes": 835
+        },
+        {
+          "crc32": 2013063642,
+          "name": "model-acquisition/asset-04.json",
+          "sha256": "2762044322419ce66c367a630d6b01e9ce37ac6c7cfe84a56a97497985ee3111",
+          "size_bytes": 1909
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-04.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3087121297,
+          "name": "model-acquisition/asset-04.stdout",
+          "sha256": "4728d51e5350c5bdb02169744c3ca4574a83762cc12f1896ca383ca58875a5fd",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 2874828499,
+          "name": "model-acquisition/asset-04.terminal.json",
+          "sha256": "46ea0214aa2d6f4be6eda4b024951e2a01a4faa6c24af34ccb5a5346721dd1b8",
+          "size_bytes": 595
+        },
+        {
+          "crc32": 2750006703,
+          "name": "model-acquisition/asset-05.dispatch.json",
+          "sha256": "1955a19bbc8dd9cb17079b0517a5a3e497c5bb55a57887b72d9324f9d3858ea5",
+          "size_bytes": 835
+        },
+        {
+          "crc32": 2991644097,
+          "name": "model-acquisition/asset-05.json",
+          "sha256": "495a12bf5b7238ab74e75f04d5e943120a7b444422ecc50974d3ca7cdc048edc",
+          "size_bytes": 1924
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-05.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3116618150,
+          "name": "model-acquisition/asset-05.stdout",
+          "sha256": "67162acd026e397d5ee7be315ea8733065d59fdcace293ce4a71e08f3f649e16",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 15696358,
+          "name": "model-acquisition/asset-05.terminal.json",
+          "sha256": "6a71cad54dfed38aa4767f9419edee4088ede1da128a673d283a46cb550828e0",
+          "size_bytes": 596
+        },
+        {
+          "crc32": 991552419,
+          "name": "model-acquisition/asset-06.dispatch.json",
+          "sha256": "b5f2b7fffcb9472a3d0955344975a62d5dc07f90f2ee898892aa7c9bb872eaca",
+          "size_bytes": 833
+        },
+        {
+          "crc32": 3146648597,
+          "name": "model-acquisition/asset-06.json",
+          "sha256": "0fc1caeab4c04af0d0a4e17a75bcd05a6225c3e03090bfac4a55bea92a25e668",
+          "size_bytes": 1732
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-06.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3146084351,
+          "name": "model-acquisition/asset-06.stdout",
+          "sha256": "448b6bad1025cc9c60c633959f8410626f1d336e472f8392127779adcbf66650",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 276859650,
+          "name": "model-acquisition/asset-06.terminal.json",
+          "sha256": "9ff640b9bfe8c589a11752957205a9c425fc05792b21a6e70cc639a05c9c2a23",
+          "size_bytes": 596
+        },
+        {
+          "crc32": 3349013133,
+          "name": "model-acquisition/asset-07.dispatch.json",
+          "sha256": "d2d8267255ba292a43ae41791704f589bea7564404acdddb1b835606cf1bad5d",
+          "size_bytes": 835
+        },
+        {
+          "crc32": 500882706,
+          "name": "model-acquisition/asset-07.json",
+          "sha256": "89fbcf2e88148fffb4e481d151227f7991272f6316a442836de55371f70150cd",
+          "size_bytes": 1748
+        },
+        {
+          "crc32": 0,
+          "name": "model-acquisition/asset-07.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 3125216712,
+          "name": "model-acquisition/asset-07.stdout",
+          "sha256": "ad5bd0d870140b3ea9f39fc02a864e54877d1d67e07367c495ec5c0b8f0d08d3",
+          "size_bytes": 37
+        },
+        {
+          "crc32": 3132049478,
+          "name": "model-acquisition/asset-07.terminal.json",
+          "sha256": "a941572a9f56a63c9ba0c8cc1e8c5e576edf9b3d4ff04fa1e69590de01eb5f55",
+          "size_bytes": 596
+        },
+        {
+          "crc32": 1107983884,
+          "name": "model-acquisition/report.json",
+          "sha256": "cda98890ac8d67e183b34cb07d4adb5099095d67620927886c8f0d99baac0eeb",
+          "size_bytes": 3469
+        },
+        {
+          "crc32": 1711526346,
+          "name": "model-assets.json",
+          "sha256": "880f952453c2d8c4479937b2bf68d8965aa368e68f3be9a30ebb1345d9b9d7b2",
+          "size_bytes": 357
+        },
+        {
+          "crc32": 0,
+          "name": "model-assets.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "crc32": 1046524475,
+          "name": "model-assets.stdout",
+          "sha256": "e6e545ea0ad9fa9d97a587917f06b3526c484047cd4f7a57c13eb8cbaf04d134",
+          "size_bytes": 36
+        },
+        {
+          "crc32": 3338739569,
+          "name": "report.json",
+          "sha256": "d283d879e3b77f5558a24d5f9f46a9292417bf4842a399f6c1966336fded27f5",
+          "size_bytes": 1487
+        },
+        {
+          "crc32": 582380445,
+          "name": "tracked-source.after.json",
+          "sha256": "fa3c87511c9b558bc1b686acc9721aaddaa61f702356326708d77bbac173481d",
+          "size_bytes": 1482983
+        },
+        {
+          "crc32": 582380445,
+          "name": "tracked-source.before.json",
+          "sha256": "fa3c87511c9b558bc1b686acc9721aaddaa61f702356326708d77bbac173481d",
+          "size_bytes": 1482983
+        }
+      ],
+      "path": "ci-S8470120a3-v1/original-retention-v1/artifact-11320311928.original.zip",
+      "provider_digest_matched": true,
+      "sha256": "54fbd105347da90af6fc0e66e9119adb8d71e81082f278486b5a85671a32386e",
+      "size_bytes": 570295
+    }
+  ],
+  "provider_run_success": true,
+  "run_id": 37249161136,
+  "schema_version": 1,
+  "source_commit": "470120a3b3f9692775656cdb8114471ab991f14b",
+  "status": "originals_retained",
+  "temporary_signed_URL_or_token_saved": false,
+  "workflow_action": null
+}

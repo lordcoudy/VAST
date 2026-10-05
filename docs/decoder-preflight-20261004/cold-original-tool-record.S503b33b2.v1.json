@@ -1,0 +1,50 @@
+{
+  "tool_calls": [
+    {
+      "tool_name": "exec_command",
+      "arguments": {
+        "cmd": "@'\nimport pathlib,json,hashlib,os,sys\nbase=pathlib.Path('/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004')\nroot=pathlib.Path('/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930')\nfresh=pathlib.Path('/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2')\ncold=fresh/'artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py'\nassert sys.executable=='/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python'\nassert sys.version_info[:3]==(3,12,3)\nassert hashlib.sha256(cold.read_bytes()).hexdigest()=='30f996a4a35b6c4bfd3cfbcf6870e6c9a816dabb653358bd9dbb3d7b9bca979c'\ntools=json.loads((base/'metadata-original-tool-record.S503b33b2.v1.json').read_bytes())['tool_calls']\nassert tools[-1]['result']['exit_code']==0\nconsole=json.loads(tools[-1]['result']['output'])\np=root/'decoder-research-v6-metadata-preflight-original-controller/attempt-01/terminal.v1.json'\nraw=p.read_bytes();assert len(raw)==7097 and hashlib.sha256(raw).hexdigest()=='a43b03fb4e6ff0181ce309bd3270968c6528237f58c0ad4c336d7765c204bd62'\nt=json.loads(raw);assert t['external_capture_completed'] and t['original_controller_returncode']==0 and not t['close_errors'] and not t['timed_out']\nassert console['external_capture_completed'] and not console['close_errors'] and console['late_terminal'] is None\nassert {x.name for x in p.parent.iterdir()}=={'launch.v1.json','process-start.v1.json','original.stdout','original.stderr','terminal.v1.json'}\nparent=root/'decoder-research-v6-metadata-preflight-cold';attempt=parent/'attempt-01'\nassert not parent.exists() and not parent.is_symlink()\nparent.mkdir(mode=0o700);attempt.mkdir(mode=0o700)\nassert parent.resolve(strict=True)==parent and attempt.resolve(strict=True)==attempt\nprint(json.dumps({'closed_metadata_original_verified':True,'canonical_python':sys.version.split()[0],'created_only_absent_cold_dirs':[str(parent),str(attempt)],'observer_not_yet_invoked':True}))\n'@ | wsl.exe -d Ubuntu --exec /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -",
+        "max_output_tokens": 1500,
+        "yield_time_ms": 10000
+      },
+      "result": {
+        "chunk_id": "0a7b98",
+        "wall_time_seconds": 1.0065029,
+        "exit_code": 0,
+        "original_token_count": 181,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000{\"closed_metadata_original_verified\": true, \"canonical_python\": \"3.12.3\", \"created_only_absent_cold_dirs\": [\"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold\", \"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold/attempt-01\"], \"observer_not_yet_invoked\": true}\n"
+      }
+    },
+    {
+      "tool_name": "exec_command",
+      "arguments": {
+        "cmd": "wsl.exe -d Ubuntu --exec '/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python' '-I' '-B' '/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py' '--project-root' '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec' '--review-repository-root' '/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2' '--planning-commit' '3aa35c3b2eedc05d22cf16ba37d470143d080f6b' '--source-commit' '503b33b224b8f98b429d9a9cf80a0cf30402fcba' '--mode' 'metadata-only' '--attempt' '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-attempt-01' '--external-terminal' '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-original-controller/attempt-01/terminal.v1.json' '--capture-source-sha256' '43864a7a27c2647d4d968ab0e2eee63ec7e2ccabdbb9e4474d53f1ebf240d063' '--capture-tool-record' '/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/metadata-original-tool-record.S503b33b2.v1.json' '--report' '/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold/attempt-01/verification.v1.json'",
+        "yield_time_ms": 10000,
+        "max_output_tokens": 6000
+      },
+      "result": {
+        "chunk_id": "197ebe",
+        "wall_time_seconds": 10.0035548,
+        "session_id": 91155,
+        "original_token_count": 65,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000"
+      }
+    },
+    {
+      "tool_name": "write_stdin",
+      "arguments": {
+        "session_id": 91155,
+        "chars": "",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 6000
+      },
+      "result": {
+        "chunk_id": "fcda64",
+        "wall_time_seconds": 0.0000068,
+        "exit_code": 1,
+        "original_token_count": 90,
+        "output": "{\"close_errors\":[],\"late_failure\":null,\"report\":{\"path\":\"/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-metadata-preflight-cold/attempt-01/verification.v1.json\",\"sha256\":\"c03203b2e1b397c405ee690aacfa20c54801aba4e7f550b97ac11b7d92151164\",\"size_bytes\":55542},\"successful\":false}\n"
+      }
+    }
+  ]
+}

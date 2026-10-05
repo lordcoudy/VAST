@@ -1,0 +1,104 @@
+test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds (test_research_protocol.IndependentColdTests.test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds) ... 
+  test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds (test_research_protocol.IndependentColdTests.test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds) (orphan_before='mapped-inputs-15.v1.json') ... FAIL
+  test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds (test_research_protocol.IndependentColdTests.test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds) (orphan_before='mapped-inputs-1.v1.json') ... FAIL
+test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow (test_research_protocol.IndependentColdTests.test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow) ... ERROR
+test_P4_metadata_namespace_accepts_40_and_rejects_41 (test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_40_and_rejects_41) ... ERROR
+test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape (test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape) ... ERROR
+test_P4_run_33_and_controller_129_leaves_still_reject (test_research_protocol.IndependentColdTests.test_P4_run_33_and_controller_129_leaves_still_reject) ... ok
+test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept (test_research_protocol.IndependentColdTests.test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept) ... ERROR
+
+======================================================================
+ERROR: test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow (test_research_protocol.IndependentColdTests.test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1211, in test_P4_mapping_document_2MiB_boundary_and_one_byte_overflow
+    replay.mappings(*args);replay.h.check(True);replay.h.close()
+    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 989, in mappings
+    value = self.doc(path,'vast_decoder_research_original_mapped_inputs_v1')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 295, in doc
+    value = self.h.document(path, kind, under_root=Path(path).is_relative_to(self.attempt))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 229, in document
+    value = strict_json(self.read(path, under_root=under_root), sealed=True)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 217, in read
+    path = Path(path); self.pin(path, maximum=maximum, under_root=under_root)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 209, in pin
+    require(before is not None and before[4] <= maximum, 'cached physical cap')
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 76, in require
+    raise Refusal(message)
+independent_decoder_cold_v6.Refusal: cached physical cap
+
+======================================================================
+ERROR: test_P4_metadata_namespace_accepts_40_and_rejects_41 (test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_40_and_rejects_41)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1140, in test_P4_metadata_namespace_accepts_40_and_rejects_41
+    self.assertEqual(len(replay.namespace()),40);replay.h.check(True);replay.h.close()
+                         ^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 552, in namespace
+    require(len(names) <= (128 if directory.name == 'controller' else 32), 'namespace count')
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 76, in require
+    raise Refusal(message)
+independent_decoder_cold_v6.Refusal: namespace count
+
+======================================================================
+ERROR: test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape (test_research_protocol.IndependentColdTests.test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1134, in test_P4_metadata_namespace_accepts_actual_36_leaf_research_shape
+    inventory=replay.namespace()
+              ^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 552, in namespace
+    require(len(names) <= (128 if directory.name == 'controller' else 32), 'namespace count')
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 76, in require
+    raise Refusal(message)
+independent_decoder_cold_v6.Refusal: namespace count
+
+======================================================================
+ERROR: test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept (test_research_protocol.IndependentColdTests.test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1180, in test_P4_typed_before_and_closed_mapping_documents_above_1MiB_accept
+    replay.mappings(dict(mapped_library_collections=self.collections),dict(mapped_library_collections=self.collections[:1]),
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 989, in mappings
+    value = self.doc(path,'vast_decoder_research_original_mapped_inputs_v1')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 295, in doc
+    value = self.h.document(path, kind, under_root=Path(path).is_relative_to(self.attempt))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 229, in document
+    value = strict_json(self.read(path, under_root=under_root), sealed=True)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 217, in read
+    path = Path(path); self.pin(path, maximum=maximum, under_root=under_root)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 209, in pin
+    require(before is not None and before[4] <= maximum, 'cached physical cap')
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 76, in require
+    raise Refusal(message)
+independent_decoder_cold_v6.Refusal: cached physical cap
+
+======================================================================
+FAIL: test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds (test_research_protocol.IndependentColdTests.test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds) (orphan_before='mapped-inputs-15.v1.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1239, in test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds
+    with self.assertRaisesRegex(self.cold.Refusal,'before mapping collections'):
+AssertionError: Refusal not raised
+
+======================================================================
+FAIL: test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds (test_research_protocol.IndependentColdTests.test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds) (orphan_before='mapped-inputs-1.v1.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1239, in test_P4_mapping_cap_cannot_admit_general_docs_or_foreign_paths_kinds
+    with self.assertRaisesRegex(self.cold.Refusal,'before mapping collections'):
+AssertionError: Refusal not raised
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.350s
+
+FAILED (failures=2, errors=4)

@@ -1,0 +1,391 @@
+{
+  "schema": "vast.source-only-predispatch-refresh.v1",
+  "verdict": "PASS_SOURCE_ONLY_PREDISPATCH_REFRESH_NO_ONCE_GRANT",
+  "source_roles": {
+    "producer_P1": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+    "producer_S3": "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+    "observer_P6": "39797d30644a5b889802acbdd67420838cc66821",
+    "observer_S6": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab"
+  },
+  "accepted_latest_CI_head": "233abc019bb7a92a3e50a531468418ad24a3d065",
+  "current_original_CI_receipt": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-D7233abc01-v1/original-independent-review-v1/review.v1.json",
+    "size_bytes": 12428,
+    "sha256": "6b95d49fb9b6cba64861f16970c17e8c3cd09b9f31326fd7d7dbad6acc11170c",
+    "own_epoch7": [
+      "69",
+      "1407374885984421",
+      "33279",
+      "1",
+      "12428",
+      "1791157938252291500",
+      "1791157938252291500"
+    ]
+  },
+  "previous_conditional": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/S6-corrected-cold-conditional-review.v1.json",
+    "size_bytes": 40561,
+    "sha256": "b5ff7613b5578ca0f486e6b657342f40b4cfb2caed61e28f623c8dd016cbe219",
+    "own_epoch7": [
+      "69",
+      "1407374885984366",
+      "33279",
+      "1",
+      "40561",
+      "1791155140717592100",
+      "1791155140717592100"
+    ]
+  },
+  "immutable_failed_witness": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-metadata-namespace-verification.v1.json",
+    "size_bytes": 93113,
+    "sha256": "d847af344229c40f6c4a16ccfe901ab6394b19dedaf2a1f395361faca2eac004",
+    "own_epoch7": [
+      "69",
+      "1407374885984255",
+      "33279",
+      "1",
+      "93113",
+      "1791150479447448700",
+      "1791150479447448700"
+    ]
+  },
+  "named_epochs": {
+    "count": 223,
+    "before_projection_sha256": "a76707b00d8396edcbd7c4066347831937894479a6649f4982f88d6ea0c52d91",
+    "after_projection_sha256": "a76707b00d8396edcbd7c4066347831937894479a6649f4982f88d6ea0c52d91",
+    "media_or_transport_rehashed": false
+  },
+  "ordinary_checkout": {
+    "root": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+    "root_identity_unchanged": true,
+    "HEAD": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+    "own_dotgit": true,
+    "no_alternates": true,
+    "clean_before_after": true,
+    "git_control_leaves": [
+      {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/.git/HEAD",
+        "size_bytes": 41,
+        "sha256": "8f0dfa6e78eacb2434537efb95d64e27e8ccd1c28fcc905b69648fb134e68886",
+        "own_epoch7": [
+          "2096",
+          "652176",
+          "33188",
+          "1",
+          "41",
+          "1791153948629321075",
+          "1791153948629321075"
+        ]
+      },
+      {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/.git/config",
+        "size_bytes": 232,
+        "sha256": "da171c68a5c5da839816da8b231edc8f5b68384f05a0af8d0b09dc046f53bccf",
+        "own_epoch7": [
+          "2096",
+          "642271",
+          "33188",
+          "1",
+          "232",
+          "1791153906591931234",
+          "1791153906591931234"
+        ]
+      }
+    ]
+  },
+  "current_source3_raw_S6_full_hash_epoch_unchanged": [
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 93774,
+      "sha256": "1cdfbbeffbbf859e83ba127a07b5ae214887b20bb4deab3615a1c1aa9bb124e8",
+      "own_epoch7": [
+        "2096",
+        "649462",
+        "33188",
+        "1",
+        "93774",
+        "1791153948193295817",
+        "1791153948193295817"
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 106331,
+      "sha256": "3d6eac7facb0e1fd87ad0acd3caf9c9ead396370a6d62e8caf626263a03463f1",
+      "own_epoch7": [
+        "2096",
+        "649831",
+        "33188",
+        "1",
+        "106331",
+        "1791153948205296512",
+        "1791153948205296512"
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/tests/test_decoder_research_v6.py",
+      "size_bytes": 50190,
+      "sha256": "15ebb1f97da46e19358bc4d460c396abb607725a08dcc0018da8d92fc0ed0153",
+      "own_epoch7": [
+        "2096",
+        "652040",
+        "33188",
+        "1",
+        "50190",
+        "1791153948605319684",
+        "1791153948605319684"
+      ]
+    }
+  ],
+  "helper_and_interpreter_full_hash_epoch_unchanged": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/clock-fixed-original/capture_original_v6.py",
+      "size_bytes": 25823,
+      "sha256": "0f6e7a40f14f25690694542a193dc4ba0fea54ffd0345dbd835244e241582666",
+      "own_epoch7": [
+        "69",
+        "1688849862694168",
+        "33279",
+        "1",
+        "25823",
+        "1791135630228921700",
+        "1791135630228921700"
+      ]
+    },
+    {
+      "path": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "size_bytes": 8020928,
+      "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+      "own_epoch7": [
+        "2096",
+        "87545",
+        "33261",
+        "1",
+        "8020928",
+        "1787574148546271435",
+        "1787574148546271435"
+      ]
+    }
+  ],
+  "read_only_Git_executable": {
+    "path": "/usr/bin/git",
+    "size_bytes": 4066232,
+    "sha256": "2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668",
+    "own_epoch7": [
+      "2096",
+      "1668",
+      "33261",
+      "1",
+      "4066232",
+      "1751487822000000000",
+      "1757410189163646898"
+    ]
+  },
+  "original_small_controls_full_hash_epoch_unchanged": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-original-controller/attempt-01/terminal.v1.json",
+      "size_bytes": 7113,
+      "sha256": "f6bf60027fa73c079a12f78cc8a131a445b9448971b9b727322355f689982220",
+      "own_epoch7": [
+        "69",
+        "2533274792826593",
+        "33279",
+        "1",
+        "7113",
+        "1791139618706821900",
+        "1791139618706821900"
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-original-tool-record.S3bdb6cd81.v1.json",
+      "size_bytes": 3356,
+      "sha256": "bf4fdcb52cce239fba8ffc44c932fe5fdf51f0a16bce6cb0b86ea42f593e811f",
+      "own_epoch7": [
+        "69",
+        "1407374885983970",
+        "33279",
+        "1",
+        "3356",
+        "1791139671120608700",
+        "1791139671120608700"
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/verification.v1.json",
+      "size_bytes": 44168,
+      "sha256": "b1054cfe3fe53d7f30cd2853f9607d510722e9f9d9f387afce8b0484390f80c7",
+      "own_epoch7": [
+        "69",
+        "1407374885983973",
+        "33279",
+        "1",
+        "44168",
+        "1791139694938960400",
+        "1791139694938960400"
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/research-result-namespace-diagnosis.v2.json",
+      "size_bytes": 31808,
+      "sha256": "8acd86e45b7287d5a68ee95c992a441a3fd709d44f2ac98ed5dffde633648c82",
+      "own_epoch7": [
+        "69",
+        "1407374885983995",
+        "33279",
+        "1",
+        "31808",
+        "1791140534104762200",
+        "1791140534104762200"
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/research-result-namespace-diagnosis.later-owner-closure.v1.json",
+      "size_bytes": 1258,
+      "sha256": "8c0a0f270ee9a778a44faadbf5acf010f66f9795cbadbd8f8cff26c03776cfe3",
+      "own_epoch7": [
+        "69",
+        "1407374885983996",
+        "33279",
+        "1",
+        "1258",
+        "1791140589498574700",
+        "1791140589498574700"
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/controller/terminal.v1.json",
+      "size_bytes": 9741,
+      "sha256": "a1cbf41511315bc585172d7fdc8ec0e54d51267a93da14d8ca8cb85f8bfb7cf4",
+      "own_epoch7": [
+        "69",
+        "1407374885983968",
+        "33279",
+        "1",
+        "9741",
+        "1791139618665166900",
+        "1791139618665166900"
+      ]
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/metadata/research-terminal.v1.json",
+      "size_bytes": 3377,
+      "sha256": "71b94e1a175e93cd31756c8df0793ff17190c0f647107f8013c3ace63f722fcd",
+      "own_epoch7": [
+        "69",
+        "1407374885983951",
+        "33279",
+        "1",
+        "3377",
+        "1791139614280088600",
+        "1791139614280088600"
+      ]
+    }
+  ],
+  "exact_future_corrected_cold_argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+    "--project-root",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec",
+    "--review-repository-root",
+    "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s3bdb6cd81",
+    "--planning-commit",
+    "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+    "--source-commit",
+    "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+    "--mode",
+    "research",
+    "--attempt",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01",
+    "--external-terminal",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-original-controller/attempt-01/terminal.v1.json",
+    "--capture-source-sha256",
+    "0f6e7a40f14f25690694542a193dc4ba0fea54ffd0345dbd835244e241582666",
+    "--capture-tool-record",
+    "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-original-tool-record.S3bdb6cd81.v1.json",
+    "--observer-repository-root",
+    "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+    "--observer-commit",
+    "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+    "--report",
+    "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-transport-read-verification.v1.json"
+  ],
+  "argv_count": 28,
+  "changed_from_original_S5_indices": [
+    3,
+    23,
+    25,
+    27
+  ],
+  "other24_fields_unchanged": true,
+  "new_report_absent": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-transport-read-verification.v1.json",
+  "actual_cold_reader_late_companion_naming_confirmed": true,
+  "late_companion_absent": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-transport-read-verification.v1.json.late-failure.v1.json",
+  "rawGit_scope": {
+    "command_count": 12,
+    "all_rc0_and_wait_returned": true,
+    "source3_complete_raw_S6_blobs_equal": true,
+    "ancestry_original_P1_S3_S5_P6_S6_preserved": true,
+    "no_full_tree_table_or_manifest": true
+  },
+  "reader_original": {
+    "pid": 52031,
+    "ppid": 52028,
+    "process_group_id": 52031,
+    "session_id": 52031,
+    "starttime_ticks": 64052220,
+    "uid": 1000,
+    "gid": 1000,
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+  },
+  "reader_after": {
+    "pid": 52031,
+    "ppid": 52028,
+    "process_group_id": 52031,
+    "session_id": 52031,
+    "starttime_ticks": 64052220,
+    "uid": 1000,
+    "gid": 1000,
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+  },
+  "custody": {
+    "fd_before": 6,
+    "fd_after": 6,
+    "held_leaf_count": 19,
+    "held_ancestor_count": 42,
+    "all_owned_FDs_closed": true,
+    "close_errors": []
+  },
+  "elapsed_s": 0.28963459795340896,
+  "actual_readonly_tool": {
+    "reference": "e581f1",
+    "exit_code": 0,
+    "wall_time_seconds": 1.1627161,
+    "original_record": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-D7233abc01-v1/original-independent-review-v1/predispatch-refresh.original-tools.v1.json"
+  },
+  "prior_original_snapshot_pattern": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/S6-corrected-cold-readiness-original-tools.v1.json",
+    "size_bytes": 34563,
+    "sha256": "fe8e65a8d942c088022408162444407c7b56216c83d24e4f6da636cd81d93cff",
+    "reused_named_order_projection": "sha256(json.dumps([[descriptor.path, actual_named_epoch7], ...], separators=(',', ':')).encode())"
+  },
+  "limitations": [
+    "223 old input names compared to original seven epochs only; original byte proof reused, no media/raw-transport rehash.",
+    "Source readiness does not execute observer/producer/tests/engine or grant a once invocation.",
+    "Both FAILED cold originals and original S3 producer roles remain immutable.",
+    "Current metadata reader identity is in-process; no own later absence or global descendant quiescence claimed.",
+    "Seven-epoch nanosecond values in held-control/source descriptors are decimal strings to retain exact original integer precision.",
+    "The existing 40561-byte conditional retains its historical FAILED-S6-CI blocker. This refresh links independently accepted latest D7 original CI and does not rewrite that historical receipt.",
+    "Exploratory conditional output and existing pattern excerpts were truncated by tool output limits; the final bounded actual read fully read/hash-checked and parsed the conditional and failed witness.",
+    "The empty .py pattern locator rc1 is a no-match query, not a target failure. The WSL localhost proxy warning was emitted by the launcher; this local filesystem/Git review used no network target.",
+    "Git subcommands record actual rc0/wait return and byte hashes. No complete per-subcommand birth identity or global quiescence is asserted."
+  ],
+  "corrected_cold_dispatch_approved": false,
+  "research_complete": false,
+  "raw_join_complete": false,
+  "no_target_import_or_execution": true,
+  "concrete_blockers_in_refreshed_source_scope": []
+}
+

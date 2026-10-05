@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS_EXACT_S3_SOURCE_AND_RETAINED_FIXTURES_ONLY",
+  "source_commit": "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+  "parent_approved_P3": "914f9c0852ebc77d56a148c1cddff8da9ef13f28",
+  "prior_COMMENT": 5407330527,
+  "candidate_source_pins": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+      "size_bytes": 64637,
+      "sha256": "bc2a3a618fab6e53ed15835d327f611cc63f18543cc16648a5d6b7e084f073ec",
+      "epochs_before_after_named": [
+        68,
+        8444249302829122,
+        33279,
+        1,
+        64637,
+        1791134947062299300,
+        1791134947062299300
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 87992,
+      "sha256": "7961621bbbee98855cf401496252a603a9283a1dfba639e2dbd7b125eca370a9",
+      "epochs_before_after_named": [
+        68,
+        4785074605762841,
+        33279,
+        1,
+        87992,
+        1791134822981816900,
+        1791134822981816900
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+      "size_bytes": 49161,
+      "sha256": "a6982705711c6ad13867bd1e83d524a635bb1a1424de5950e135e42f0cf3dcea",
+      "epochs_before_after_named": [
+        68,
+        147774362773175885,
+        33279,
+        1,
+        49161,
+        1791134947065315700,
+        1791134947065315700
+      ]
+    }
+  ],
+  "new_helper": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/clock-fixed-original/capture_original_v6.py",
+    "size_bytes": 25823,
+    "sha256": "0f6e7a40f14f25690694542a193dc4ba0fea54ffd0345dbd835244e241582666",
+    "epochs_before_after_named": [
+      69,
+      1688849862694168,
+      33279,
+      1,
+      25823,
+      1791135630228921700,
+      1791135630228921700
+    ]
+  },
+  "unchanged_original_helper": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture_original_v6.py",
+    "size_bytes": 25799,
+    "sha256": "43864a7a27c2647d4d968ab0e2eee63ec7e2ccabdbb9e4474d53f1ebf240d063",
+    "epochs_before_after_named": [
+      69,
+      1407374885981620,
+      33279,
+      1,
+      25799,
+      1791112274299472800,
+      1791112274299472800
+    ]
+  },
+  "raw_S3_diff15": [
+    "M\tPLAN.md",
+    "M\tartifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+    "M\tartifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+    "A\tdocs/decoder-preflight-20261004/P3-implementation-original-v1/P3-implementation-original-tool-record.v1.json",
+    "A\tdocs/decoder-preflight-20261004/P3-implementation-original-v1/adapter-final-close.v1.json",
+    "A\tdocs/decoder-preflight-20261004/P3-implementation-original-v1/adapter-terminal.v1.json",
+    "A\tdocs/decoder-preflight-20261004/P3-implementation-original-v1/capture_original_clock_fixed_v6.py",
+    "A\tdocs/decoder-preflight-20261004/P3-implementation-original-v1/nested-suite.v1.json",
+    "A\tdocs/decoder-preflight-20261004/P3-implementation-original-v1/original.stderr",
+    "A\tdocs/decoder-preflight-20261004/P3-implementation-original-v1/original.stdout",
+    "A\tdocs/decoder-preflight-20261004/P3-implementation-original-v1/scoped-review.v1.json",
+    "A\tdocs/decoder-preflight-20261004/P3-planning-independent-review.v1.json",
+    "M\topenspec/changes/fix-decoder-preflight/tasks.md",
+    "M\tprogress.md",
+    "M\ttests/test_decoder_research_v6.py"
+  ],
+  "independent_checks": {
+    "three_raw_S3_source_blobs_equal_physical": true,
+    "guest_raw_inverse_single_deadline_assignment": true,
+    "test_module_AST_inverse_exactly_two_methods": true,
+    "all70_prior_class_methods_including49_test_and21_helpers_preserved": true,
+    "adapter_raw_inverse_only_two_IDs_and93_to95": true,
+    "old159_test_IDs_retained": true,
+    "helper_raw_inverse_exactly_two_prefix_literals": true,
+    "helper_ten_other_functions_direct_AST_equal_and_main_literal_inverse_equal": true,
+    "helper_retained_Git_copy_exact": true,
+    "production_Pin_protocol_API_hash_FD_epochs_custody_phase_bounds_unchanged": true,
+    "source_CI_main_scope_only_three_source_test_deltas": true
+  },
+  "substantive_findings": [
+    "The one-line cached assignment uses the existing absolute self.phase_deadline immediately before unchanged full verify(rehash=True); no relative-clock reset, budget enlargement, omitted hash, new FD, mapping grant or epoch bypass. Existing per-block and outer phase/final-cleanup guards remain; no post-final-block API guarantee is added.",
+    "Both new cases use real1MiB+23-byte held files and real Pin/hash/verify. Positive pread observation forwards to real os.pread and checks complete blocks/sentinel and same FD/descriptor/epochs; negative live-old/expired-current refuses. Finally closes held Pins.",
+    "Helper main differs only in two approved quoted prefix literals; all other ten function ASTs direct-identical, entire raw/function AST inverse exact. No engine argv/cap/isolation/input/owner/cleanup change.",
+    "No code blocker. Exact-source CI, current fresh checkout/input/quiet/namespace checks and separate metadata then research grants remain required."
+  ],
+  "retained_evidence": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/scoped-review.v1.json",
+      "size_bytes": 4574,
+      "sha256": "fc97665ec77a24405444f829e66b15299db91fab30fc44a899aabd97666d1fb4"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/adapter-terminal.v1.json",
+      "size_bytes": 1909,
+      "sha256": "f22c0fead3ff1d517bd959456fa14bc45acb50bf57f351ce84c3310559307813"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/adapter-final-close.v1.json",
+      "size_bytes": 758,
+      "sha256": "05484feaccd3c850d5aee20e334a1793bfec748f9c690fa43fc15f46b46a78cf"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/nested-suite.v1.json",
+      "size_bytes": 98607,
+      "sha256": "1b158d2527fd1f84f36eb53c3c231c7bbb65c24d18c3b73d2c83d9727902a4ef"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/original.stdout",
+      "size_bytes": 8168,
+      "sha256": "5596059f14d898249effa2e74eb4a0d3ada57a3b62d443b9e021a5d835dfe881"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/original.stderr",
+      "size_bytes": 95992,
+      "sha256": "5b1ad3cb7b04041b4f4bba6bd2b9ad737c5ac2fdd74634dfeb583101336549be"
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/docs/decoder-preflight-20261004/P3-implementation-original-v1/P3-implementation-original-tool-record.v1.json",
+      "size_bytes": 11997,
+      "sha256": "ec20d3ad566b68babce917aa59b99a631c0fe396d75c2a51e1fbb78d5c7999e1"
+    }
+  ],
+  "original_retained_raw_copy_joins": [
+    {
+      "path": "/tmp/vast-decoder-p3-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-369cf2f339a64535994933567c28e1ca/adapter-terminal.v1.json",
+      "raw_copy_equal": true
+    },
+    {
+      "path": "/tmp/vast-decoder-p3-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-369cf2f339a64535994933567c28e1ca/adapter-final-close.v1.json",
+      "raw_copy_equal": true
+    },
+    {
+      "path": "/tmp/vast-decoder-p3-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-369cf2f339a64535994933567c28e1ca/nested-suite.v1.json",
+      "raw_copy_equal": true
+    },
+    {
+      "path": "/tmp/vast-decoder-p3-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-369cf2f339a64535994933567c28e1ca/original.stdout",
+      "raw_copy_equal": true
+    },
+    {
+      "path": "/tmp/vast-decoder-p3-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-369cf2f339a64535994933567c28e1ca/original.stderr",
+      "raw_copy_equal": true
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P3-implementation-original-tool-record.v1.json",
+      "raw_copy_equal": true
+    }
+  ],
+  "actual_original_results": {
+    "RED_tool": "02b86f",
+    "RED_rc": 1,
+    "RED_errors": 1,
+    "RED_failures": 1,
+    "GREEN_tool": "16a7b9",
+    "GREEN_rc": 0,
+    "focused_cases": 2,
+    "root_tools": [
+      "f2b9a3",
+      "12d6b9"
+    ],
+    "root_session": 97997,
+    "root_rc": 0,
+    "root_cases": 12,
+    "root_elapsed_s": 72.12,
+    "nested_tests": 161,
+    "nested_unique_starts": 161,
+    "nested_unique_terminals": 161,
+    "nested_all_success": true,
+    "nested_elapsed_s": 52.374479084974155,
+    "source15_before_after_current_full_SHA_size_7epochs_equal": true,
+    "two_actual_15s_cases": [
+      {
+        "elapsed_s": 15.046396240941249,
+        "event": "test_terminal",
+        "monotonic_ns": 617334262039517,
+        "outcome": "success",
+        "test_id": "test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed"
+      },
+      {
+        "elapsed_s": 15.048711093026213,
+        "event": "test_terminal",
+        "monotonic_ns": 617349310830006,
+        "outcome": "success",
+        "test_id": "test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success"
+      }
+    ]
+  },
+  "provisional_original_truth": {
+    "terminal_successful": false,
+    "terminal_provisional": true,
+    "final_close_successful": false,
+    "final_close_provisional": true,
+    "candidate_success": true,
+    "actual_outer_tool_rc": 0,
+    "child_reaped": true,
+    "logs_closed": true,
+    "close_errors": [],
+    "root_launcher_full_owner_unknown": true,
+    "no_original_fields_relabelled": true
+  },
+  "later_named_child_group_scans": [
+    {
+      "at_ns": 1791136475246308323,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "PID40587_absent": true,
+      "PGID40587_members": [],
+      "errors": []
+    },
+    {
+      "at_ns": 1791136475298723895,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "PID40587_absent": true,
+      "PGID40587_members": [],
+      "errors": []
+    }
+  ],
+  "blockers": [],
+  "limits": [
+    "Source review and fixture evidence only; no invocation or science/deployment/release acceptance. Latest exact-S3 CI is a separate gate.",
+    "Root launcher FD/startticks/SID/full owner unavailable, not inferred. Known40587/group absence is named-scope proof, not global quiescence.",
+    "Original failed S2 research/C cold remain immutable; full128/64, adoption, SLO, legacy32/Q4/5600 remain unearned.",
+    "Own metadata reads0bc6e6,cddf87,d4cd8a stopped on reviewer assumptions: LF-only inserted line, conflating70 all methods with test_*49, and direct main AST identity despite the explicitly changed prefix constants. All corrected against actual bytes/AST; no input edits or fixture/target replay."
+  ],
+  "reviewer_custody": {
+    "fd_before": 6,
+    "fd_after": 6,
+    "regular_single_link_full_byte_SHA_named7epochs": true,
+    "all_input_FDs_closed": true,
+    "source3_helper_final_recheck": true,
+    "elapsed_before_report_s": 0.45099602499976754
+  }
+}

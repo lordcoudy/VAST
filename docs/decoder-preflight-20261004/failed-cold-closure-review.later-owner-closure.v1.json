@@ -1,0 +1,35 @@
+{
+  "closed": true,
+  "kind": "failed_cold_result_review_later_owner_closure",
+  "original_owner": {
+    "pgid": 40257,
+    "pid": 40257,
+    "ppid": 40253,
+    "sid": 40257,
+    "starttime_ticks": 61538980
+  },
+  "review_sha256": "86647f6a22f9bf308bce1fbd283e1dd446092d34c0b097b6c129406b1f3a46ff",
+  "scans": [
+    {
+      "errors": [],
+      "group": 40257,
+      "group_members": [],
+      "monotonic_ns": 615469083809346,
+      "named_pids": {
+        "40253": null,
+        "40257": null
+      }
+    },
+    {
+      "errors": [],
+      "group": 40257,
+      "group_members": [],
+      "monotonic_ns": 615469085072517,
+      "named_pids": {
+        "40253": null,
+        "40257": null
+      }
+    }
+  ],
+  "scope": "Named successful result reviewer40257/parent40253/group only; no target replay or global host quiescence."
+}

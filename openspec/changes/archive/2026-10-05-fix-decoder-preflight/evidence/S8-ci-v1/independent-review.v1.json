@@ -1,0 +1,242 @@
+{
+  "schema": "vast.independent-original-ci-review.v1",
+  "verdict": "PASS_EXACT_S8_ORIGINAL_HOSTED_CI_ONLY",
+  "reviewed_commit": "470120a3b3f9692775656cdb8114471ab991f14b",
+  "parent_commit": "da0a3f93e060c87b35423729c48388f4e77fab13",
+  "scope": "Independent original hosted CI acceptance; exact accepted D7 source baseline plus complete bounded native raw D7-to-S8 delta, full original artifacts and current actual outcomes. No CI retry/test/build/cold/producer/engine/model/media execution by reviewer.",
+  "original_directory": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S8470120a3-v1/original-retention-v1",
+  "actual_original_joins": {
+    "provider": {
+      "run": 37249161136,
+      "attempt": 1,
+      "number": 65,
+      "head": "470120a3b3f9692775656cdb8114471ab991f14b",
+      "conclusion": "success",
+      "updated_at": "2026-10-05T01:18:35Z",
+      "all_job_steps_success": true,
+      "CPU": 111573039850,
+      "HOST": 111573039772
+    },
+    "retention": {
+      "actual_tool": "1013ae",
+      "actual_rc0": true,
+      "completed_in_initial_call_no_polls": true,
+      "elapsed_s": 7.683309611980803,
+      "four_original_objects": 4,
+      "record_size": 31598,
+      "record_sha256": "da77755262c5b5a3976581d8751aa9f70687f9ceddf9102152eaeee101334fa5",
+      "retainer_size": 5860,
+      "retainer_sha256": "21ffc78e02ec0bcac2aeded7f7894c206239b00b3e9b0773a86939eb84dd42f2",
+      "five_literal_inverse_exact_accepted_D7": true
+    },
+    "artifacts": [
+      {
+        "artifact_id": 11320942742,
+        "size_bytes": 2232966,
+        "sha256": "174ec1f57ca0acba59c8651919d0475cc0a030aab2a45b04ded6ece59a5b6335",
+        "member_count": 202,
+        "decoded_size_bytes": 11826584
+      },
+      {
+        "artifact_id": 11320311928,
+        "size_bytes": 570295,
+        "sha256": "54fbd105347da90af6fc0e66e9119adb8d71e81082f278486b5a85671a32386e",
+        "member_count": 51,
+        "decoded_size_bytes": 3001383
+      }
+    ],
+    "logs": [
+      {
+        "job_id": 111573039850,
+        "size_bytes": 95747,
+        "sha256": "2b920770660c9a6c98f2b456512b3d9b0fef19880f3aa11d364a06768f6d26d2"
+      },
+      {
+        "job_id": 111573039772,
+        "size_bytes": 34897,
+        "sha256": "2dff1ae99d27747f446efac5613f1872c1099a77784209f3988dcfbbf37fd6f1"
+      }
+    ],
+    "all253_original_members_CRC_size_SHA_provider_digest": true,
+    "source": {
+      "baseline_D7_rows": 6474,
+      "baseline_SHA256": "813a487addbb40387144e5085042589938e3d1bd81b51e09aaff9d2f02710d38",
+      "raw_named_entries": 43,
+      "raw_named_statuses": {
+        "M": 8,
+        "A": 35
+      },
+      "no_rename_logical_paths": 43,
+      "logical_statuses": {
+        "M": 8,
+        "A": 35
+      },
+      "modes_and_old_new_full_blobs_verified": true,
+      "current_rows": 6509,
+      "current_table_bytes": 1482983,
+      "current_table_SHA256": "fa3c87511c9b558bc1b686acc9721aaddaa61f702356326708d77bbac173481d",
+      "all_both_jobs_before_after_equal_baseline_plus_raw_delta": true,
+      "source15_exact_S8_changed3_other12_immutable_D7": true,
+      "changed_tracked_paths": [],
+      "raw_checkout_bytes_match_commit": true
+    },
+    "root": {
+      "discovered": 3049,
+      "selected": 3040,
+      "success": 2952,
+      "allowed_skips": 88,
+      "deferred": 9,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_s": 1521.466273897,
+      "exact_D7_selection_allowed_skips_deferred_audit": true,
+      "original_evidence_boundary_guard_success": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_no_production_consumer_or_readiness_path_exists",
+      "successful": true
+    },
+    "native": {
+      "six_build_targets_rc0": [
+        "vast_native_gst_probe",
+        "vast_checkpoint_source",
+        "gstadaptivescheduler",
+        "gstvastanalyticsterminal",
+        "gstvastanalyticsqueue",
+        "gstvastcheckpointprefixqueue"
+      ],
+      "three_required_successes": [
+        "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+        "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+        "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+      ]
+    },
+    "decoder": {
+      "root_tests_success": 12,
+      "nested171_exact_S8_all_unique_selected_raw_started_terminal_outcomes_success": true,
+      "source15_before_after_seven_epochs_and_exact_current_source_table": true,
+      "isolated_python": "3.12.3 (main, Sep 26 2024, 18:18:55) [GCC 13.2.0]",
+      "nested_elapsed_s": 55.05248335900001,
+      "child_owner": {
+        "boot_id": "dc1b86ba-560e-4ee5-bd64-b82d30e77a74",
+        "gid": 1001,
+        "pgid": 5799,
+        "pid": 5799,
+        "ppid": 3968,
+        "sid": 5799,
+        "starttime_ticks": 67313,
+        "uid": 1001
+      },
+      "capture": {
+        "returncode": 0,
+        "elapsed_s": 55.609882094,
+        "cleanup_elapsed_s": 0.016528235000009772,
+        "child_reaped": true,
+        "logs_closed": true,
+        "close_errors": [],
+        "failure": null,
+        "signal_observation": null,
+        "successful": false,
+        "provisional_until_owner_final_close": true
+      },
+      "finalclose": {
+        "candidate_success": true,
+        "elapsed_s": 55.610492920999945,
+        "cleanup_elapsed_s": 0.01713906199995563,
+        "successful": false,
+        "provisional_until_capture_return": true
+      },
+      "two_real15s": [
+        {
+          "elapsed_s": 15.041432355999973,
+          "event": "test_terminal",
+          "monotonic_ns": 708945781934,
+          "outcome": "success",
+          "test_id": "test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed"
+        },
+        {
+          "elapsed_s": 15.041379806000009,
+          "event": "test_terminal",
+          "monotonic_ns": 723987205923,
+          "outcome": "success",
+          "test_id": "test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success"
+        }
+      ]
+    },
+    "suite_owner": {
+      "owner": {
+        "boot_id": "dc1b86ba-560e-4ee5-bd64-b82d30e77a74",
+        "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+        "executable_stat": {
+          "st_dev": 2049,
+          "st_gid": 1001,
+          "st_ino": 8912904,
+          "st_mode": 33261,
+          "st_nlink": 1,
+          "st_size": 17744,
+          "st_uid": 1001
+        },
+        "gid": 1001,
+        "pgid": 3968,
+        "pid": 3968,
+        "ppid": 3648,
+        "startticks": 11454,
+        "uid": 1001
+      },
+      "returncode": 0,
+      "successful": true,
+      "forced_signals": false,
+      "EOF_control_trace": true,
+      "requests": 24,
+      "responses_started": 24,
+      "responses_finished": 24,
+      "raw_channels_byte_count_complete_JSONL_join": true,
+      "descendant_quiescence": "not established by original-child status"
+    },
+    "profile": {
+      "load_unload_rc0_verified": true,
+      "held_fds_released": true,
+      "actual_child_label_boot_owner_join": true
+    },
+    "HOST": {
+      "two_diagnostics_actual0": true,
+      "full_ci_successful": false
+    },
+    "gate": "PASS_EXACT_S8_ORIGINAL_HOSTED_CI_ONLY"
+  },
+  "source_canonical_review": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-independent-v1/review.v1.json",
+    "size_bytes": 11345,
+    "sha256": "b96a196a1e86e7e81d41f8782e62307e0aef1a3dd5a1da45deb6c7ec861d4932",
+    "technical_comment": 5409109847
+  },
+  "baseline_review": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-D7233abc01-v1/original-independent-review-v1/review.v1.json",
+    "size_bytes": 12428,
+    "sha256": "6b95d49fb9b6cba64861f16970c17e8c3cd09b9f31326fd7d7dbad6acc11170c"
+  },
+  "checks": [
+    "Exact completed provider run37249161136/attempt1/#65/S8 head; both actual jobs and all returned steps successful. Original authenticated retention ran once with actual rc0; retainer is exactly accepted D7 after only five literal binding replacements.",
+    "All253 current original ZIP members fully read and checked: safe unique names, original CRC32, size, SHA256, provider artifact digest/head/name/size. Both complete original job logs join authenticated retention descriptors.",
+    "Both job source before/after tables equal accepted D7 baseline plus every actual raw Git change, full old/new blobs and modes. Eight modifications and35 additions yield6509 rows; no new whole-tree generator/table copy. Protected main requirements,28-scenario delta and CI raw bytes unchanged.",
+    "Root discovered3049/selected3040/success2952/errors0/failures0. Actual successful IDs, selected/discovered IDs,88 skip IDs/reasons/portable audit and9 deferred declarations exactly match accepted D7; no suppression or deferred promotion.",
+    "Actual six native target builds/configure rc0; all three required native regressions successful. Decoder12 root cases successful;171 nested selected IDs equal old170 order plus exact P8 original-entry case. All raw171 unique start/terminal IDs and original outcomes successful.",
+    "All15 nested source full hash/size/current raw S8 blobs and seven before/after epochs joined; exact three frozen S8 pins and other12 D7-equal. Both unchanged real15s cleanup cases actually passed.",
+    "Original nested owner matches external root owner by parent PID/boot. Original return0/reaped/logsclosed/close[]/no forced signal/final candidate true establish bounded fixture success while original successful:false/provisional flags remain literal.",
+    "External control/trace EOF, original response JSONL counts/channel byte counts and completed profile load/unload rc0/held-descriptor release/current child label and owner joined. HOST two actual diagnostics remain diagnostic-only/full_ci_successful:false."
+  ],
+  "limitations": [
+    "This accepts only exact S8 original hosted CI. It does not authorize or execute a corrected cold reader, producer/research replay, scientific128-AU/64-pair acceptance, canonical24-arm/12-pair campaign, or legacy32/Q4/5600 completion.",
+    "Original decoder terminal successful:false/provisional_until_owner_final_close:true and final-close successful:false/provisional_until_capture_return:true are preserved. Success is joined to actual root suite success, original child rc0, closed cleanup and final candidate_success; no terminal field is fabricated.",
+    "Whole-suite owner SID is absent from original record; unavailable. Decoder child SID5799 is explicitly recorded. Original reaped status does not prove global descendant quiescence.",
+    "No numeric whole-suite FD before/after count is claimed. Only original profile held-descriptor release, logs_closed/reaped/close_errors and authentic EOF/capture ownership are established.",
+    "Initial reviewer complete join3789cc stopped with native Git128 after guessing openspec/specs/benchmark/spec.md. Two scoped rg results identified actual benchmark-launch-preparation paths; final7745ca complete join passed. The original failed lookup and corrected command/results are retained; no software/test/CI rerun occurred.",
+    "Five spaced read-only provider polls and one job snapshot preceded once retention; no workflow retry or mutation was made. Original connector responses and actual retention arguments/returned object are preserved faithfully outside repository."
+  ],
+  "previous_failed_CI_and_cold_dispositions": "S4/S6 hosted CI failures and all original failed cold reports remain immutable and distinct from current S8 hosted CI success.",
+  "readonly_original_tool_results": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S8470120a3-v1/original-independent-review-v1/original-tool-results.v1.json",
+  "retention_original_tools": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S8470120a3-v1/retention-original-tools.v1.json",
+    "size_bytes": 31598,
+    "sha256": "da77755262c5b5a3976581d8751aa9f70687f9ceddf9102152eaeee101334fa5"
+  },
+  "concrete_blockers_in_reviewed_CI_scope": [],
+  "no_cold_grant_assumed": true
+}

@@ -9,6 +9,8 @@ import os
 import sys
 import tempfile
 import unittest
+import threading
+from unittest.mock import patch
 from pathlib import Path
 
 
@@ -17,6 +19,8 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from benchmark_contract import ContractError  # noqa: E402
 from full_publication_results import export_finalized_results  # noqa: E402
+import full_publication_results as result_module  # noqa: E402
+import publication_physical_io_v1 as physical_io  # noqa: E402
 
 
 MATRIX_SHA = "a" * 64
@@ -364,6 +368,182 @@ class FullPublicationResultsTests(unittest.TestCase):
                     "identity drift|qualification authorit",
                 ):
                     export_finalized_results(runner)
+
+
+    def test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding(self) -> None:
+        if os.name != "posix":
+            with tempfile.TemporaryDirectory() as tmp:
+                runner, _ = fixture(Path(tmp) / "run")
+                self.assertEqual(
+                    export_finalized_results(runner), export_finalized_results(runner)
+                )
+            return
+
+        real_flock = result_module.fcntl.flock
+        real_close = os.close
+        real_require_epochs = physical_io.PhysicalRootCustodyV1._require_epochs
+        fd_count = lambda: len(os.listdir("/proc/self/fd"))
+        initial_fds = fd_count()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "run"
+            runner, _ = fixture(root)
+            root_identity = (root.stat().st_dev, root.stat().st_ino)
+            parked = threading.Event()
+            release = threading.Event()
+            second_lock = threading.Event()
+            actors: dict[str, int] = {}
+
+            def require_epochs(*args, **kwargs):
+                if (
+                    threading.get_ident() == actors.get("first")
+                    and kwargs.get("label") == "compact result intent root"
+                    and not parked.is_set()
+                ):
+                    parked.set()
+                    if not release.wait(10):
+                        raise AssertionError("parked original epoch check was not released")
+                return real_require_epochs(*args, **kwargs)
+
+            def flock(descriptor, operation):
+                if (
+                    threading.get_ident() == actors.get("second")
+                    and operation == result_module.fcntl.LOCK_EX
+                ):
+                    info = os.fstat(descriptor)
+                    identity = (info.st_dev, info.st_ino)
+                    bundle_lock = root / ".full-publication-results-intents-v1" / ".bundle.lock"
+                    bundle_identity = None
+                    if bundle_lock.exists():
+                        named = bundle_lock.lstat()
+                        bundle_identity = (named.st_dev, named.st_ino)
+                    # Ignore atomic-staging locks: only the old bundle or new root counts.
+                    if identity in (root_identity, bundle_identity):
+                        second_lock.set()
+                return real_flock(descriptor, operation)
+
+            def export(actor):
+                actors[actor] = threading.get_ident()
+                bundle = export_finalized_results(runner)
+                return bundle, {
+                    name: (root / "results" / name).read_bytes()
+                    for name in RESULT_NAMES
+                }
+
+            with patch.object(physical_io.PhysicalRootCustodyV1, "_require_epochs", staticmethod(require_epochs)), patch.object(
+                result_module.fcntl, "flock", flock
+            ), ThreadPoolExecutor(max_workers=2) as executor:
+                first = executor.submit(export, "first")
+                try:
+                    self.assertTrue(parked.wait(10), "first actual epoch snapshot not observed")
+                    second = executor.submit(export, "second")
+                    self.assertTrue(second_lock.wait(10), "second actual coordination not observed")
+                    release.set()
+                    first_bundle, first_bytes = first.result(timeout=15)
+                    second_bundle, second_bytes = second.result(timeout=15)
+                finally:
+                    release.set()
+            self.assertEqual(first_bundle, second_bundle)
+            self.assertEqual(first_bytes, second_bytes)
+            self.assertEqual(set(first_bytes), set(RESULT_NAMES))
+            self.assertEqual(
+                set(path.name for path in (root / "results").iterdir()), set(RESULT_NAMES)
+            )
+            self.assertEqual(json.loads(first_bytes[RESULT_NAMES[-1]]), first_bundle)
+            intents = list((root / ".full-publication-results-intents-v1").glob("*.json"))
+            self.assertEqual(len(intents), 1)
+            intent = json.loads(intents[0].read_bytes())
+            self.assertEqual(intent["receipt_last"], RESULT_NAMES[-1])
+            self.assertEqual(set(intent["files"]), set(RESULT_NAMES))
+        self.assertEqual(fd_count(), initial_fds)
+
+        with self.subTest(case="held root rebound"), tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "run"
+            runner, _ = fixture(root)
+            identity = (root.stat().st_dev, root.stat().st_ino)
+            acquired: list[int] = []
+
+            def rebind(descriptor, operation):
+                info = os.fstat(descriptor)
+                if operation == result_module.fcntl.LOCK_EX and (
+                    info.st_dev, info.st_ino
+                ) == identity:
+                    acquired.append(descriptor)
+                    root.rename(Path(tmp) / "original-run")
+                    root.mkdir()
+                    (root / "sentinel").write_bytes(b"foreign-root\n")
+                return real_flock(descriptor, operation)
+
+            with patch.object(result_module.fcntl, "flock", rebind):
+                with self.assertRaisesRegex(ContractError, "physical namespace rejected|run-root"):
+                    export_finalized_results(runner)
+            self.assertEqual(len(acquired), 1)
+            self.assertEqual((root / "sentinel").read_bytes(), b"foreign-root\n")
+            self.assertEqual(set(path.name for path in root.iterdir()), {"sentinel"})
+            self.assertEqual(
+                set(path.name for path in (Path(tmp) / "original-run").iterdir()),
+                {"accepted_pairs"},
+            )
+            with self.assertRaises(OSError):
+                os.fstat(acquired[0])
+        self.assertEqual(fd_count(), initial_fds)
+
+        for case in ("acquisition", "cleanup_only", "primary_with_cleanup"):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp) / "run"
+                runner, _ = fixture(root)
+                identity = (root.stat().st_dev, root.stat().st_ino)
+                root_fd: list[int] = []
+                actions: list[str] = []
+                primary = SyntheticResultCrash("original publication failure")
+
+                def fault_flock(descriptor, operation):
+                    info = os.fstat(descriptor)
+                    is_root = (info.st_dev, info.st_ino) == identity
+                    result = real_flock(descriptor, operation)
+                    if is_root and operation == result_module.fcntl.LOCK_EX:
+                        root_fd.append(descriptor)
+                        actions.append("acquire")
+                        if case == "acquisition":
+                            raise OSError("injected after genuine root acquisition")
+                    elif is_root and operation == result_module.fcntl.LOCK_UN:
+                        actions.append("unlock")
+                        if case != "acquisition":
+                            raise OSError("injected after genuine root unlock")
+                    return result
+
+                def fault_close(descriptor):
+                    result = real_close(descriptor)
+                    if root_fd and descriptor == root_fd[0]:
+                        actions.append("close")
+                        if case != "acquisition":
+                            raise OSError("injected after genuine root close")
+                    return result
+
+                def fail_publication(step, path):
+                    if case == "primary_with_cleanup" and step == "mid_write":
+                        raise primary
+
+                with patch.object(result_module.fcntl, "flock", fault_flock), patch.object(
+                    result_module.os, "close", fault_close
+                ):
+                    expected_error = SyntheticResultCrash if case == "primary_with_cleanup" else ContractError
+                    with self.assertRaises(expected_error) as refused:
+                        export_finalized_results(
+                            runner, after_physical_commit_step=fail_publication
+                        )
+                self.assertEqual(actions, ["acquire", "unlock", "close"])
+                self.assertEqual(len(root_fd), 1)
+                with self.assertRaises(OSError):
+                    os.fstat(root_fd[0])
+                if case == "primary_with_cleanup":
+                    self.assertIs(refused.exception, primary)
+                    notes = getattr(primary, "__notes__", [])
+                    self.assertTrue(any("unlock" in note for note in notes))
+                    self.assertTrue(any("close" in note for note in notes))
+                    self.assertTrue(all(len(note) <= 512 for note in notes))
+                else:
+                    self.assertIn("run-root lock", str(refused.exception))
+            self.assertEqual(fd_count(), initial_fds)
 
 
 if __name__ == "__main__":

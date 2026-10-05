@@ -1,0 +1,271 @@
+{
+  "actual_unittest_originals": [
+    {
+      "actual_shell_timeout_pid": 48316,
+      "disposition": "fixture_anchor_error",
+      "original": "focused-red01",
+      "returned_tool_exit_code": 1,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/focused-red01.stderr.raw",
+        "sha256": "822c9b533f5a442ff954e4e0f9fc0f538a749c8e8d0c1c3cba4cd4c7d033e60f",
+        "size": 1051
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/focused-red01.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "tools": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/original-unittest-tools.v1.json",
+      "unittest_count": 1,
+      "unittest_elapsed_s": 0.005
+    },
+    {
+      "actual_shell_timeout_pid": 48363,
+      "disposition": "meaningful_original_epoch_refusal",
+      "original": "focused-red02",
+      "returned_tool_exit_code": 1,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/focused-red02.stderr.raw",
+        "sha256": "0f4ffc4820116627a8068f3f463b0a5bd90f71161fe872a1902227763d07115c",
+        "size": 3197
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/focused-red02.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "tools": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/original-unittest-tools.v1.json",
+      "unittest_count": 1,
+      "unittest_elapsed_s": 0.441
+    },
+    {
+      "actual_shell_timeout_pid": 48421,
+      "disposition": "new_method_all_subcases_success",
+      "original": "focused-green01",
+      "returned_tool_exit_code": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/focused-green01.stderr.raw",
+        "sha256": "a68994d172655da7a2f92cc0036cc6de13eb8b8dcb3927f9a320c65df3a7c995",
+        "size": 279
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/focused-green01.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "tools": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/original-unittest-tools.v1.json",
+      "unittest_count": 1,
+      "unittest_elapsed_s": 0.952
+    },
+    {
+      "actual_shell_timeout_pid": 48467,
+      "disposition": "seven_prior_plus_one_new_success",
+      "original": "module-green01",
+      "returned_tool_exit_code": 0,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/module-green01.stderr.raw",
+        "sha256": "8f4992c3362f6354a20d6a1a77aff959565c92f9572406bd82fd17c553669031",
+        "size": 1360
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/module-green01.stdout.raw",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "tools": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/original-unittest-tools.v1.json",
+      "unittest_count": 8,
+      "unittest_elapsed_s": 3.543
+    }
+  ],
+  "author_fd_after": 6,
+  "author_fd_before": 6,
+  "author_owned_read_fds_released": true,
+  "author_pid": 48522,
+  "direct_original_tool_objects": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/original-unittest-tools.v1.json",
+    "sha256": "0e8bf58032455812b8cde7e19bd4cddae86dc8954fe247fc75d8da65a8a9497e",
+    "size": 8300
+  },
+  "elapsed_s": 0.11767136806156486,
+  "exact_source_inverse": {
+    "existing_bundle_helper_windows_and_all_other_source_bytes_unchanged": true,
+    "remove_only_new_outer_helper_and_reverse_multi_with": true
+  },
+  "frozen_sources": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/full_publication_results.py",
+      "sha256": "d634eb9e2faacbc826aa9b9f35292e159d12af545eec784d7e0fc2e9cdefb054",
+      "size": 25805
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_full_publication_results.py",
+      "sha256": "f5c59bb164d9925c347af565e8c3ac792f9b3462d78d264470c938aee7cb9802",
+      "size": 23344
+    }
+  ],
+  "implementation": {
+    "cleanup_only_refusal": true,
+    "coordination_before_bootstrap_through_final_exact_close": true,
+    "existing_root_directory_fd_only": true,
+    "first_primary_preserved_bounded_notes": true,
+    "order": [
+      "root_directory",
+      "bundle_leaf",
+      "atomic_staging"
+    ],
+    "pre_acquire_post_acquire_pre_unlock_custody_named_held_checks": true,
+    "public_custody_root_and_verify_only": true,
+    "retirement_attempts_independent": true
+  },
+  "limits": [
+    "Author review is not independent approval.",
+    "Direct test launcher recorded shell/timeout PID numbers; child PID/birth/session were not captured. Two later scans assert only named recorded numbers and same-number groups, no global quiescence.",
+    "FD equality is directly asserted by the new real-file positive/rebinding/retirement tests; no invented numeric whole-test child FD count.",
+    "Old source meaningful RED02 is separate from preserved fixture-only RED01. The first production text-edit anchor assertion failed before writing; corrected original label was preserved.",
+    "Whole latest S5 hosted CI, source peer, new observer checkout and exact corrected cold grant remain pending. No scientific/cold/engine/producer execution, Git commit/push, planning or third-source edit."
+  ],
+  "original_snapshots": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/before-full_publication_results.py.raw",
+      "sha256": "dde01c5bb9e88e036e0dc9de11f233efd6504b46c99dae4df53a3fa9ef98c8ca",
+      "size": 23051
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/before-test_full_publication_results.py.raw",
+      "sha256": "680235b031de3e2e0b4116111863ec1e9a0ed9440dfb74d6734ebfaac76f2ab7",
+      "size": 14223
+    }
+  ],
+  "owned_diff": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/owned-source.v1.diff",
+    "sha256": "5e80c683c12a26e52e0ecaffd2bda1ccbe7076b9058fccad5f52b86eff975010",
+    "size": 13329
+  },
+  "planning_comment": 5408186908,
+  "planning_commit": "2ad1d8b55b5cdf33e0c435e20510ee6b403830f4",
+  "runtime_scope": {
+    "decoder_rerun": false,
+    "decoder_sources": 15,
+    "new_source_only_two_files": true,
+    "physical_io_unchanged": true
+  },
+  "schema": "p5_compact_author_review_v1",
+  "scope": [
+    "scripts/full_publication_results.py",
+    "tests/test_full_publication_results.py"
+  ],
+  "source_full_hash_seven_epochs_and_two_actual_pid_group_scans": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P5-implementation-v1/module-green01.source-and-process-close.v1.json",
+    "sha256": "687c9ac9175c92dc22fe9e2fc1db0c02f7f80bf29c5b0e4d405eab1bc5f7d969",
+    "size": 1604
+  },
+  "status": "source_and_focused_module_closed_waiting_independent_peer_and_latest_ci",
+  "test_preservation": {
+    "all_old_class_methods_ast_identical": 9,
+    "all_old_top_level_functions_ast_identical": 2,
+    "new_methods": [
+      "FullPublicationResultsTests.test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding"
+    ],
+    "no_new_skip": true,
+    "old_assertions_and_decorators_unchanged": true,
+    "old_test_ids": 7
+  },
+  "unchanged_raw_s4_sources": [
+    {
+      "exact_raw_s4_blob": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_mapped_inputs_v4.py",
+      "sha256": "831cbd07388af9994d2684ab2248e299c95b29ee4ad799f26375d603b2f2f986",
+      "size": 11433
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_pin_diagnostics_v3.py",
+      "sha256": "a693f9fea9cc583d236447023745c612d3762da41d3103b474aa03dbddcfac14",
+      "size": 11543
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_preflight_diagnostics_v5.py",
+      "sha256": "ade99a45510b042fc55ce2c888f029301ae67defea2776524101aa8d158f3afe",
+      "size": 11980
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "sha256": "69aa29d807661118b30a5eefc82967443aab56003b4b6666d764826db6d1ecdb",
+      "size": 100392
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_setup_v2.py",
+      "sha256": "f0f5bdb2be0f834e9795aa35c665e1703a0b120df24a9a4b56afe425a90fe4cd",
+      "size": 34262
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_successor_v6.py",
+      "sha256": "2d1b3ac6ab031ac49449f28f453b165b19780fbc30e5fb9f451d15a5afd555f6",
+      "size": 54172
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+      "sha256": "3db163f5d90043bddb07fbabd29ee4f500b5ccc070d844a8e6d67b2d595e1bce",
+      "size": 53060
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+      "sha256": "bc2a3a618fab6e53ed15835d327f611cc63f18543cc16648a5d6b7e084f073ec",
+      "size": 64637
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+      "sha256": "f0685e19a3072736f8262aad32d868a2021650381e8beaef989d4f5339358d63",
+      "size": 36624
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "sha256": "ecd99e9c4f17448ca85d16fdd810cc361a5160f3d2403d88426fe4f001628bf7",
+      "size": 93578
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "tests/test_decoder_research_v6.py",
+      "sha256": "6aeba18d3b313aacd74e046dd413cda8084c8fbdae8da2ae03db5ee45f5d15cb",
+      "size": 49838
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "scripts/run_ci_checks.py",
+      "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c",
+      "size": 29477
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "scripts/ci_external_test_observer_v1.py",
+      "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+      "size": 20916
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "scripts/ci_test_selection_v1.py",
+      "sha256": "c9883b041ec2b52f1796677d0baeee6bdd64394c576ecdc4c8b48134ec6d7f1d",
+      "size": 9978
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "scripts/ci_userns_profile_v1.py",
+      "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+      "size": 28890
+    },
+    {
+      "exact_raw_s4_blob": true,
+      "path": "scripts/publication_physical_io_v1.py",
+      "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+      "size": 132238
+    }
+  ]
+}

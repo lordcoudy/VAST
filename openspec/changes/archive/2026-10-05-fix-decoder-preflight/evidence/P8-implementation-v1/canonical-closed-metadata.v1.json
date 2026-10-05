@@ -1,0 +1,224 @@
+{
+  "schema": "vast.actual-canonical-closed-metadata.v1",
+  "originals": [
+    {
+      "path": "/tmp/vast-decoder-p8-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-14a39f67d7ba4b4291b47e2991921336/nested-suite.v1.json",
+      "size_bytes": 103892,
+      "sha256": "e8b5ea0b6c3d10371854a5d09beaa6392e872ca09ee1955e5f8c88a9a3b2c713",
+      "epoch": [
+        2096,
+        652184,
+        33188,
+        1,
+        103892,
+        1791160937998005838,
+        1791160937998005838
+      ],
+      "retained_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/canonical-nested-suite.v1.json"
+    },
+    {
+      "path": "/tmp/vast-decoder-p8-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-14a39f67d7ba4b4291b47e2991921336/adapter-terminal.v1.json",
+      "size_bytes": 1911,
+      "sha256": "4c31e964e2f43bd83cd1e06f5fc69749ce09e6030af40303981f3db0d7bf844d",
+      "epoch": [
+        2096,
+        652183,
+        33188,
+        1,
+        1911,
+        1791160939510109740,
+        1791160939510109740
+      ],
+      "retained_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/canonical-adapter-terminal.v1.json"
+    },
+    {
+      "path": "/tmp/vast-decoder-p8-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-14a39f67d7ba4b4291b47e2991921336/adapter-final-close.v1.json",
+      "size_bytes": 759,
+      "sha256": "fde32fb2edee4dc6962a9f2cc30719f73b0af840cea6917b4686e5081ec7ce81",
+      "epoch": [
+        2096,
+        652185,
+        33188,
+        1,
+        759,
+        1791160939514110014,
+        1791160939514110014
+      ],
+      "retained_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/canonical-adapter-final-close.v1.json"
+    },
+    {
+      "path": "/tmp/vast-decoder-p8-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-14a39f67d7ba4b4291b47e2991921336/original.stdout",
+      "size_bytes": 8168,
+      "sha256": "5cceec16238e1b0798bc5825d58994b7554cb63257a8cc823ebf34da2ad55e84",
+      "epoch": [
+        2096,
+        652180,
+        33188,
+        1,
+        8168,
+        1791160938766058612,
+        1791160938766058612
+      ],
+      "retained_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/canonical-original.stdout"
+    },
+    {
+      "path": "/tmp/vast-decoder-p8-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-14a39f67d7ba4b4291b47e2991921336/original.stderr",
+      "size_bytes": 102032,
+      "sha256": "d1ceb153075bf73250976d240b7bf3b3190082ba570f847f7c4c6f194d89cc1d",
+      "epoch": [
+        2096,
+        652181,
+        33188,
+        1,
+        102032,
+        1791160938770058888,
+        1791160938770058888
+      ],
+      "retained_path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/canonical-original.stderr"
+    }
+  ],
+  "root_actual_rc": 0,
+  "root_tests_run": 12,
+  "root_unittest_elapsed_s": 62.329,
+  "nested_tests_run": 171,
+  "nested_elapsed_s": 53.47998403699603,
+  "nested_counts": {
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "expected_failures": 0,
+    "unexpected_successes": 0
+  },
+  "actual_raw_joins": {
+    "test_started": 171,
+    "test_terminal": 171
+  },
+  "two_actual_15s_cases": [
+    {
+      "elapsed_s": 15.043128942954354,
+      "event": "test_terminal",
+      "monotonic_ns": 643257870293803,
+      "outcome": "success",
+      "test_id": "test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed"
+    },
+    {
+      "elapsed_s": 15.045499264029786,
+      "event": "test_terminal",
+      "monotonic_ns": 643272915924051,
+      "outcome": "success",
+      "test_id": "test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success"
+    }
+  ],
+  "source15_original_before_after_and_current_epoch_hash_equal": true,
+  "terminal_original": {
+    "acquired_logs": [
+      "stdout",
+      "stderr"
+    ],
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+      "--v6-child",
+      "/tmp/vast-decoder-p8-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-14a39f67d7ba4b4291b47e2991921336"
+    ],
+    "artifact_kind": "vast_decoder_v6_fixture_capture_v1",
+    "child_owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 52342,
+      "pid": 52342,
+      "ppid": 52331,
+      "sid": 52342,
+      "starttime_ticks": 64322347,
+      "uid": 1000
+    },
+    "child_reaped": true,
+    "cleanup_elapsed_s": 0.7434471719898283,
+    "close_errors": [],
+    "elapsed_s": 56.21226741594728,
+    "failure": null,
+    "failure_type": null,
+    "logs_closed": true,
+    "pid": 52342,
+    "provisional_until_owner_final_close": true,
+    "research_executed": false,
+    "returncode": 0,
+    "signal_observation": null,
+    "stderr": {
+      "epoch": [
+        2096,
+        652181,
+        33188,
+        1,
+        102032,
+        1791160938770058888,
+        1791160938770058888
+      ],
+      "path": "/tmp/vast-decoder-p8-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-14a39f67d7ba4b4291b47e2991921336/original.stderr",
+      "sha256": "d1ceb153075bf73250976d240b7bf3b3190082ba570f847f7c4c6f194d89cc1d",
+      "size_bytes": 102032
+    },
+    "stdout": {
+      "epoch": [
+        2096,
+        652180,
+        33188,
+        1,
+        8168,
+        1791160938766058612,
+        1791160938766058612
+      ],
+      "path": "/tmp/vast-decoder-p8-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-14a39f67d7ba4b4291b47e2991921336/original.stdout",
+      "sha256": "5cceec16238e1b0798bc5825d58994b7554cb63257a8cc823ebf34da2ad55e84",
+      "size_bytes": 8168
+    },
+    "successful": false
+  },
+  "final_close_original": {
+    "artifact_kind": "vast_decoder_v6_fixture_final_close_v1",
+    "candidate_success": true,
+    "cleanup_elapsed_s": 0.7470070010749623,
+    "elapsed_s": 56.215827245032415,
+    "observed_after_terminal_persist_monotonic_s": 643279.690707567,
+    "provisional_until_capture_return": true,
+    "research_executed": false,
+    "successful": false,
+    "terminal": {
+      "epoch": [
+        2096,
+        652183,
+        33188,
+        1,
+        1911,
+        1791160939510109740,
+        1791160939510109740
+      ],
+      "path": "/tmp/vast-decoder-p8-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-14a39f67d7ba4b4291b47e2991921336/adapter-terminal.v1.json",
+      "sha256": "4c31e964e2f43bd83cd1e06f5fc69749ce09e6030af40303981f3db0d7bf844d",
+      "size_bytes": 1911
+    }
+  },
+  "two_later_named_child_parent_group_absences": [
+    {
+      "monotonic_ns": 643577628025532,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "named_pid_or_group_matches": []
+    },
+    {
+      "monotonic_ns": 643577831680330,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "named_pid_or_group_matches": []
+    }
+  ],
+  "metadata_reader_fd_before": 6,
+  "metadata_reader_fd_after": 6,
+  "all_metadata_read_handles_closed": true,
+  "limitations": [
+    "Root whole FD counts were not captured. Metadata FD counts are this reader only.",
+    "Parent birth/SID/credentials and global descendant quiescence are not established.",
+    "Canonical fixture success gives no hardware or scientific acceptance.",
+    "Root earlier diagnostic b095e0 used list indexing for a dict outcome and exited1 before emitting a result; corrected b0f6d2 is a read-only schema correction, not a test rerun."
+  ]
+}

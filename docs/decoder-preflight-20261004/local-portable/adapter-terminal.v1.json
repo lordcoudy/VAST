@@ -1,0 +1,66 @@
+{
+  "acquired_logs": [
+    "stdout",
+    "stderr"
+  ],
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+    "--v6-child",
+    "/home/s-a-balashov/work/vast-decoder-v6-fixtures-20261004-local03/vast-cpu-checks/decoder-v6-fixtures/attempt-68819f0ebbc04095900ae3279ea6fc56"
+  ],
+  "artifact_kind": "vast_decoder_v6_fixture_capture_v1",
+  "child_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 30927,
+    "pid": 30927,
+    "ppid": 30916,
+    "sid": 30927,
+    "starttime_ticks": 60056180,
+    "uid": 1000
+  },
+  "child_reaped": true,
+  "cleanup_elapsed_s": 1.4932182700140402,
+  "close_errors": [],
+  "elapsed_s": 52.69318886497058,
+  "failure": null,
+  "failure_type": null,
+  "logs_closed": true,
+  "pid": 30927,
+  "provisional_until_owner_final_close": true,
+  "research_executed": false,
+  "returncode": 0,
+  "signal_observation": null,
+  "stderr": {
+    "epoch": [
+      2096,
+      599621,
+      33188,
+      1,
+      89287,
+      1791118275912749951,
+      1791118275912749951
+    ],
+    "path": "/home/s-a-balashov/work/vast-decoder-v6-fixtures-20261004-local03/vast-cpu-checks/decoder-v6-fixtures/attempt-68819f0ebbc04095900ae3279ea6fc56/original.stderr",
+    "sha256": "052b1f169f67c8cf877fb0537774ae37a55050feba0af8825ca0917ced79c170",
+    "size_bytes": 89287
+  },
+  "stdout": {
+    "epoch": [
+      2096,
+      599620,
+      33188,
+      1,
+      8448,
+      1791118275912749951,
+      1791118275912749951
+    ],
+    "path": "/home/s-a-balashov/work/vast-decoder-v6-fixtures-20261004-local03/vast-cpu-checks/decoder-v6-fixtures/attempt-68819f0ebbc04095900ae3279ea6fc56/original.stdout",
+    "sha256": "4c3fabd36746a752c9d33e977350e1e55f2ce3dab864bbbe22d29312beffc6e1",
+    "size_bytes": 8448
+  },
+  "successful": false
+}

@@ -1,0 +1,7 @@
+# Decoder V6: source approved and fresh S2 checkout closed
+
+Independent exact-source raw binding PASS7f2edf preceded rootCOMMENT5406386373 and fresh ordinary ext4 clone68a410/rc0. The sealed source-only receipt was finalized afterward and retains that source-only scope; it is not retroactively described as a pre-clone sealed report. Source review35363/SHA2e85f756a2e0fb48d5088fb5af655d062a8f7a6977b58fa559c0a6bf1ca74e2d was fully root-read9c2f24.
+
+Fresh root /home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2 is ordinary Git, clean before/after, exactS2/Pancestor/S1parent. Rootf6bc8a/rc0 verified6303 complete held SHA/size/GitOID/modes and own stable seven epochs,348103589bytes, FD6->6. Independent76ad77/rc0 reviewed clone original, proof, full manifests/all6303 current saved epochs/names/modes/no alternates, actual13 source/P4/helper/interpreter hashes and concrete metadata/cold argv. Its32983/SHAe8d9f3908b2517ba82d2656c6912ce19ec13b1933ca5f494c88665e4578b6b3f receipt grants preparation only and was fully read by root. S1 clone and old originals remain unchanged.
+
+Task6.1 is complete:19/33 closed. Source2 same-value portability correction/current150 local GREEN unchanged. ExactS2 CPUCI37204647176, strict final input saved-epoch/full rehash/quiet once checks, final metadata dispatch review and actual original operation remain pending. Metadata/research0; old full32/Q4/5600 and qualification/publication unexecuted/false. No prepared cold/helper/source/checkout evidence grants real guest ABI/decoder/research or deployment acceptance.

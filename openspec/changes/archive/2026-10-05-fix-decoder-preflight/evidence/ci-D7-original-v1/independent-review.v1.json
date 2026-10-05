@@ -1,0 +1,262 @@
+{
+  "schema": "vast.independent-original-ci-review.v1",
+  "verdict": "PASS_EXACT_D7_ORIGINAL_HOSTED_CI_ONLY",
+  "reviewed_commit": "233abc019bb7a92a3e50a531468418ad24a3d065",
+  "parent_commit": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+  "scope": "Independent full retained original hosted CI review; reuse verified S6 source table plus complete bounded native raw S6-to-D7 Git delta. No target/test/build/CI retry/cold/engine/media execution by this reviewer.",
+  "original_directory": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-D7233abc01-v1/original-retention-v1",
+  "original_controls": [
+    {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-D7233abc01-v1/original-retention-v1/original-provider-metadata.v1.json",
+      "size_bytes": 26742,
+      "sha256": "6230e73d880c755e00adfbdb47712600c01a21dc17b07936ee53fef1860bbcfa"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-D7233abc01-v1/original-retention-v1/original-retention-terminal.v1.json",
+      "size_bytes": 60971,
+      "sha256": "78aae0fb0a9096d3d3b1813a73d92f298929f8be3b3b029f100209b090d9d90d"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-D7233abc01-v1/retention-original-tools.v1.json",
+      "size_bytes": 3291,
+      "sha256": "103b8db75f7b0aa697a25baffbbd14cb20a6fe36e5d8a4e146751d9e15b94472"
+    }
+  ],
+  "actual_original_joins": {
+    "provider": {
+      "run": 37242973038,
+      "attempt": 1,
+      "number": 63,
+      "head": "233abc019bb7a92a3e50a531468418ad24a3d065",
+      "conclusion": "success",
+      "updated_at": "2026-10-04T23:40:32Z",
+      "all_job_steps_success": true,
+      "CPU": 111555187212,
+      "HOST": 111555187159
+    },
+    "retention": {
+      "actual_tool": "bb28a4",
+      "actual_rc0": true,
+      "completed_in_initial_call_no_polls": true,
+      "elapsed_s": 7.642122542951256,
+      "four_original_objects": 4,
+      "record_size": 3291,
+      "record_sha256": "103b8db75f7b0aa697a25baffbbd14cb20a6fe36e5d8a4e146751d9e15b94472",
+      "retainer_size": 5860,
+      "retainer_sha256": "f7d48f47ea3917c39df48e54943a2489bb3d9d2ebd21b3f9261de50756103089",
+      "five_literal_inverse_exact_accepted_S5": true
+    },
+    "artifacts": [
+      {
+        "artifact_id": 11318014518,
+        "size_bytes": 2229901,
+        "sha256": "39298a53ca6a841f0b12901d6f322f0ec1c4f1465306e6fd3c696f2e697b3ac1",
+        "member_count": 202,
+        "decoded_size_bytes": 11820823
+      },
+      {
+        "artifact_id": 11317339131,
+        "size_bytes": 566691,
+        "sha256": "c242679c8d00ad3010b916d6858d338c783b3427b3cdafad08ab4f74c4100c0e",
+        "member_count": 51,
+        "decoded_size_bytes": 2986341
+      }
+    ],
+    "logs": [
+      {
+        "job_id": 111555187212,
+        "size_bytes": 95717,
+        "sha256": "caaf948cdd52b8d4355c863e00cf578bfff3129d691949f705e35e6bbc252d16"
+      },
+      {
+        "job_id": 111555187159,
+        "size_bytes": 33966,
+        "sha256": "6dd017d771fcc3686e61aa38c04d46d2d5b2219004a4f1b20f58c30fe116665c"
+      }
+    ],
+    "all253_original_members_CRC_size_SHA_provider_digest": true,
+    "source": {
+      "baseline_S6_rows": 6457,
+      "baseline_SHA256": "4ba1ea4f2b64c61118a89f21941677496392fae58ca5c70d3dbaf0b78413ee10",
+      "raw_named_entries": 23,
+      "raw_named_statuses": {
+        "M": 5,
+        "A": 17,
+        "R100": 1
+      },
+      "no_rename_logical_paths": 24,
+      "logical_statuses": {
+        "M": 5,
+        "A": 18,
+        "D": 1
+      },
+      "modes_and_old_new_full_blobs_verified": true,
+      "current_rows": 6474,
+      "current_table_bytes": 1475443,
+      "current_table_SHA256": "813a487addbb40387144e5085042589938e3d1bd81b51e09aaff9d2f02710d38",
+      "all_both_jobs_before_after_equal_baseline_plus_raw_delta": true,
+      "source15_equal_immutable_S6": true,
+      "original_transcript_exact_R100": [
+        "docs/decoder-preflight-20261004/ci-S5-original-v1/independent-original-tools.v1.json",
+        "openspec/changes/fix-decoder-preflight/evidence/ci-S5-independent-original-tools.v1.json"
+      ],
+      "changed_tracked_paths": [],
+      "raw_checkout_bytes_match_commit": true
+    },
+    "root": {
+      "discovered": 3049,
+      "selected": 3040,
+      "success": 2952,
+      "allowed_skips": 88,
+      "deferred": 9,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_s": 1552.57144634,
+      "exact_S6_selection_allowed_skips_deferred_audit": true,
+      "repaired_guard_actual_success": "test_replay_broker_artifact_bytes_observation_v4.ReplayBrokerArtifactBytesObservationV4Tests.test_no_production_consumer_or_readiness_path_exists",
+      "successful": true
+    },
+    "native": {
+      "six_build_targets_rc0": [
+        "vast_native_gst_probe",
+        "vast_checkpoint_source",
+        "gstadaptivescheduler",
+        "gstvastanalyticsterminal",
+        "gstvastanalyticsqueue",
+        "gstvastcheckpointprefixqueue"
+      ],
+      "three_required_successes": [
+        "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+        "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+        "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+      ]
+    },
+    "decoder": {
+      "root_tests_success": 12,
+      "nested170_exact_S6_all_unique_selected_raw_started_terminal_outcomes_success": true,
+      "source15_before_after_seven_epochs_and_exact_current_source_table": true,
+      "isolated_python": "3.12.3 (main, Sep 26 2024, 18:18:55) [GCC 13.2.0]",
+      "nested_elapsed_s": 54.922562231999905,
+      "child_owner": {
+        "boot_id": "454102ce-76f2-448e-afe6-885aada2154f",
+        "gid": 1001,
+        "pgid": 5805,
+        "pid": 5805,
+        "ppid": 3972,
+        "sid": 5805,
+        "starttime_ticks": 82605,
+        "uid": 1001
+      },
+      "capture": {
+        "returncode": 0,
+        "elapsed_s": 55.477876133999985,
+        "cleanup_elapsed_s": 0.016722389999927145,
+        "child_reaped": true,
+        "logs_closed": true,
+        "close_errors": [],
+        "failure": null,
+        "signal_observation": null,
+        "successful": false,
+        "provisional_until_owner_final_close": true
+      },
+      "finalclose": {
+        "candidate_success": true,
+        "elapsed_s": 55.47856991699996,
+        "cleanup_elapsed_s": 0.01741617299990139,
+        "successful": false,
+        "provisional_until_capture_return": true
+      },
+      "two_real15s": [
+        {
+          "elapsed_s": 15.040883692999955,
+          "event": "test_terminal",
+          "monotonic_ns": 861778959750,
+          "outcome": "success",
+          "test_id": "test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed"
+        },
+        {
+          "elapsed_s": 15.042120181999962,
+          "event": "test_terminal",
+          "monotonic_ns": 876821120949,
+          "outcome": "success",
+          "test_id": "test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success"
+        }
+      ]
+    },
+    "suite_owner": {
+      "owner": {
+        "boot_id": "454102ce-76f2-448e-afe6-885aada2154f",
+        "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+        "executable_stat": {
+          "st_dev": 2049,
+          "st_gid": 1001,
+          "st_ino": 2440323,
+          "st_mode": 33261,
+          "st_nlink": 1,
+          "st_size": 17744,
+          "st_uid": 1001
+        },
+        "gid": 1001,
+        "pgid": 3972,
+        "pid": 3972,
+        "ppid": 3647,
+        "startticks": 25119,
+        "uid": 1001
+      },
+      "returncode": 0,
+      "successful": true,
+      "forced_signals": false,
+      "EOF_control_trace": true,
+      "requests": 25,
+      "responses_started": 25,
+      "responses_finished": 25,
+      "raw_channels_byte_count_complete_JSONL_join": true,
+      "descendant_quiescence": "not established by original-child status"
+    },
+    "profile": {
+      "load_unload_rc0_verified": true,
+      "held_fds_released": true,
+      "actual_child_label_boot_owner_join": true
+    },
+    "HOST": {
+      "two_diagnostics_actual0": true,
+      "full_ci_successful": false
+    },
+    "gate": "PASS_EXACT_D7_ORIGINAL_HOSTED_CI_ONLY"
+  },
+  "evidence_placement": {
+    "raw_transcript_size_bytes": 123461,
+    "raw_transcript_sha256": "9778aaaaf68bc35c119d18687308c75e5856c5fa3d9189a2cd603c8efda79f71",
+    "byte_exact_move": true,
+    "original_guard_unchanged_and_actual_success": true,
+    "original_S6_failed_CI_disposition_preserved": true,
+    "no_evidence_transcript_production_consumer_or_readiness_path_introduced": true
+  },
+  "checks": [
+    "Full decoded reads of all 253 current ZIP members: safe unique names, CRC32, size and SHA; ZIP size/SHA/provider digest and job logs join retained original metadata.",
+    "Both actual source before/after inventories equal verified S6 baseline plus complete raw Git add/delete/change/modes/blobs; exact D7 parent S6; no whole-tree table regenerated or copied.",
+    "Actual root inventory and selections, successful IDs, allowed skip IDs/reasons and deferred IDs/reasons joined S6; sole added successful ID is the formerly failing unchanged evidence-boundary guard.",
+    "All 170 decoder IDs/order and outcomes matched selected inventory and raw unique start/terminal JSONL; 15 source hashes/sizes and seven epochs before/after stable; both unchanged 15-second cleanup cases actually executed successfully.",
+    "Actual child owner, original return status, authenticated control/trace EOF, request/response counts and channel byte lengths joined; original provisional capture/final-close fields preserved without rewriting them.",
+    "Profile load/unload completed with rc0 and verified current child label/boot/owner and held descriptor release; actual native configure/build completed with six built targets and all three required native regressions successful.",
+    "HOST two diagnostics completed rc0 with diagnostic-only scope; HOST full_ci_successful:false remains original and is not promoted into whole-suite authority."
+  ],
+  "limitations": [
+    "This accepts actual latest D7 hosted CI only. It does not authorize or execute corrected cold observation, producer/research replay, scientific 128-AU/64-pair acceptance, canonical 24-arm/12-pair campaign, or legacy 32/Q4/5600 completion.",
+    "Original decoder terminal successful:false/provisional_until_owner_final_close:true and final-close successful:false/provisional_until_capture_return:true remain original. Fixture success is joined to actual root rc0, child rc0, candidate_success and closed cleanup, not fabricated terminal successful:true.",
+    "Whole-suite owner SID is absent from the original record and is unavailable; decoder child SID5805 is explicitly recorded. Original child status does not establish global descendant quiescence.",
+    "No numeric whole-suite FD before/after count is asserted. The original profile held-descriptor release, capture logs_closed/reaped/close_errors and retained EOF/ownership evidence establish only their recorded scope.",
+    "The root retention record truthfully notes a preceding record-writer CreateProcess command-length rejection before process/file write. Its full failed initiating object was not supplied in that record; no reconstruction is made.",
+    "The first reviewer inspection returned1 after reading authentic retention/provider data because it asked for a nonexistent successful-report failure field. This reviewer shape error is preserved and was corrected by the subsequent actual root and final complete joins."
+  ],
+  "previous_failed_CI_reference": {
+    "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S6f9cde5ec-v1/original-independent-review-v1/review.v1.json",
+    "size_bytes": 13740,
+    "sha256": "5700ceceeab5a0e3805eee5f76c06354c9146fa3b400af8f50a7e38e81ee6442",
+    "disposition": "Accepted as faithful FAILED-CI evidence; remains immutable and distinct from D7 SUCCESS."
+  },
+  "readonly_original_tool_results": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-D7233abc01-v1/original-independent-review-v1/original-tool-results.v1.json",
+  "no_additional_cold_grant_assumed": true,
+  "concrete_blockers_in_reviewed_CI_scope": []
+}
+

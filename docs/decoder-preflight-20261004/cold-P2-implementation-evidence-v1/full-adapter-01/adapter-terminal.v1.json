@@ -1,0 +1,66 @@
+{
+  "acquired_logs": [
+    "stdout",
+    "stderr"
+  ],
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-I",
+    "-B",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+    "--v6-child",
+    "/tmp/vast-decoder-p2-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-b3646b53d774469d9d9054b7494d5339"
+  ],
+  "artifact_kind": "vast_decoder_v6_fixture_capture_v1",
+  "child_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pgid": 36902,
+    "pid": 36902,
+    "ppid": 36883,
+    "sid": 36902,
+    "starttime_ticks": 60930293,
+    "uid": 1000
+  },
+  "child_reaped": true,
+  "cleanup_elapsed_s": 1.6609101560898125,
+  "close_errors": [],
+  "elapsed_s": 58.67787352402229,
+  "failure": null,
+  "failure_type": null,
+  "logs_closed": true,
+  "pid": 36902,
+  "provisional_until_owner_final_close": true,
+  "research_executed": false,
+  "returncode": 0,
+  "signal_observation": null,
+  "stderr": {
+    "epoch": [
+      2096,
+      607109,
+      33188,
+      1,
+      94718,
+      1791127022216621360,
+      1791127022216621360
+    ],
+    "path": "/tmp/vast-decoder-p2-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-b3646b53d774469d9d9054b7494d5339/original.stderr",
+    "sha256": "b3e369bc7d94196a623daf718f94dbbc5b1a9278310c40ac99c1638dcb520ce4",
+    "size_bytes": 94718
+  },
+  "stdout": {
+    "epoch": [
+      2096,
+      607108,
+      33188,
+      1,
+      8168,
+      1791127022212620999,
+      1791127022212620999
+    ],
+    "path": "/tmp/vast-decoder-p2-fixtures-20261004-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-b3646b53d774469d9d9054b7494d5339/original.stdout",
+    "sha256": "5ed512abb33c0012b599ed72045322ed44d7cb2fdd98e9debfd97bc846530511",
+    "size_bytes": 8168
+  },
+  "successful": false
+}

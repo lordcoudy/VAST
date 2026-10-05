@@ -1,0 +1,82 @@
+test_P6_transport_partial_positive_reads_complete_header_text_and_payload (__main__.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload) ... 
+  test_P6_transport_partial_positive_reads_complete_header_text_and_payload (__main__.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload) (region='header') ... ERROR
+  test_P6_transport_partial_positive_reads_complete_header_text_and_payload (__main__.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload) (region='text') ... ERROR
+  test_P6_transport_partial_positive_reads_complete_header_text_and_payload (__main__.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload) (region='payload') ... ERROR
+test_P6_transport_zero_progress_refuses_without_spinning (__main__.IndependentColdTests.test_P6_transport_zero_progress_refuses_without_spinning) ... FAIL
+test_P6_transport_partial_progress_keeps_original_absolute_deadline (__main__.IndependentColdTests.test_P6_transport_partial_progress_keeps_original_absolute_deadline) ... FAIL
+
+======================================================================
+ERROR: test_P6_transport_partial_positive_reads_complete_header_text_and_payload (__main__.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload) (region='header')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1266, in test_P6_transport_partial_positive_reads_complete_header_text_and_payload
+    actual=replay.packets(directory,admissions,source,run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 356, in packets
+    magic, version, flags, seq, cycle, aupts, pts, dts, duration, a, k, n, size = HEADER.unpack(read(80))
+                                                                                                ^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 343, in read
+    self.require(len(raw) == size, "short original transport")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 77, in require
+    raise Refusal(message)
+independent_decoder_cold_v6.Refusal: short original transport
+
+======================================================================
+ERROR: test_P6_transport_partial_positive_reads_complete_header_text_and_payload (__main__.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload) (region='text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1266, in test_P6_transport_partial_positive_reads_complete_header_text_and_payload
+    actual=replay.packets(directory,admissions,source,run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 360, in packets
+    admission, input_key, payload_sha = (read(x).decode("utf8") for x in (a, k, n))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 360, in <genexpr>
+    admission, input_key, payload_sha = (read(x).decode("utf8") for x in (a, k, n))
+                                         ^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 343, in read
+    self.require(len(raw) == size, "short original transport")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 77, in require
+    raise Refusal(message)
+independent_decoder_cold_v6.Refusal: short original transport
+
+======================================================================
+ERROR: test_P6_transport_partial_positive_reads_complete_header_text_and_payload (__main__.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload) (region='payload')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1266, in test_P6_transport_partial_positive_reads_complete_header_text_and_payload
+    actual=replay.packets(directory,admissions,source,run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 377, in packets
+    chunk = read(min(65536, remaining))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 343, in read
+    self.require(len(raw) == size, "short original transport")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 77, in require
+    raise Refusal(message)
+independent_decoder_cold_v6.Refusal: short original transport
+
+======================================================================
+FAIL: test_P6_transport_zero_progress_refuses_without_spinning (__main__.IndependentColdTests.test_P6_transport_zero_progress_refuses_without_spinning)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1295, in test_P6_transport_zero_progress_refuses_without_spinning
+    self.assertEqual(len(calls),2)
+AssertionError: 1 != 2
+
+======================================================================
+FAIL: test_P6_transport_partial_progress_keeps_original_absolute_deadline (__main__.IndependentColdTests.test_P6_transport_partial_progress_keeps_original_absolute_deadline)
+----------------------------------------------------------------------
+independent_decoder_cold_v6.Refusal: short original transport
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1321, in test_P6_transport_partial_progress_keeps_original_absolute_deadline
+    with self.assertRaisesRegex(self.cold.Refusal,'cold120s limit'):
+AssertionError: "cold120s limit" does not match "short original transport"
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.323s
+
+FAILED (failures=2, errors=3)

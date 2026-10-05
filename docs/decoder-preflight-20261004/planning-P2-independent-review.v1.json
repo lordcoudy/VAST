@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "kind": "decoder_v6_P2_independent_exact_planning_review_v1",
+  "reviewer": "/root/adversarial_review; not the P2 author",
+  "created_utc": "2026-10-04T14:50:25.470115+00:00",
+  "change": "fix-decoder-preflight",
+  "PR": 4,
+  "planning_amendment_commit": "684ea836a27fa002bc231117fbe445d0ec5579ab",
+  "original_producer_planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+  "immutable_producer_source_commit": "503b33b224b8f98b429d9a9cf80a0cf30402fcba",
+  "verdict": "PASS_EXACT_P2_PLANNING_ONLY",
+  "reviewable": true,
+  "blocking_findings": [],
+  "authorization_scope": {
+    "independent_planning_review_complete": true,
+    "human_GitHub_APPROVE_claim": false,
+    "standing_human_authorization_preserved": true,
+    "root_exact_P2_PR_COMMENT_before_dependent_implementation_required": true,
+    "corrected_observer_source_C_or_tests_approved_by_this_review": false,
+    "target_metadata_research_engine_or_scientific_invocation_granted": false,
+    "research_eligibility_or_release_acceptance": false
+  },
+  "four_committed_planning_artifacts": [
+    {
+      "path": "openspec/changes/fix-decoder-preflight/proposal.md",
+      "P2_blob": "b03d8f200a773ab5b347b8ea1df306711a857a04",
+      "size_bytes": 4810,
+      "sha256": "5d0e58c715724a09d9dc30587865d891d2af936e7cc15b11d0060f0d4f21566b",
+      "current_physical_equal": true,
+      "preedit_snapshot": {
+        "size_bytes": 2948,
+        "sha256": "e77529520f6467d9deca20fcfe1a891f13c6a882cbf74f36ec948c8a3edcd177"
+      }
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/design.md",
+      "P2_blob": "b6ae87c075a7c16909caa6fa7cd7b13f48f96b41",
+      "size_bytes": 36677,
+      "sha256": "1d2bc29d95d851de8f0da9d1a89284b374502546d67c806f5e0ad27eda89af93",
+      "current_physical_equal": true,
+      "preedit_snapshot": {
+        "size_bytes": 28405,
+        "sha256": "814a9593f53854195f5eba408a7f737f7b51b9fd7665ef142ea8e9e559d786a6"
+      }
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/tasks.md",
+      "P2_blob": "3f2c7455ea922ccf008a4dbd2ec8006855bc2835",
+      "size_bytes": 13753,
+      "sha256": "8c2e53ee48365d25616bbde29adcd83ba472688f2e654b94d3cfcc0a457f4a42",
+      "current_physical_equal": true,
+      "preedit_snapshot": {
+        "size_bytes": 10948,
+        "sha256": "b8ba34d144ec2cb04bccefe7db8825538b4b83e904e9275dbe12038382ad84d4"
+      }
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "P2_blob": "8c3b65b5675ab67fe82ace225c82d59ab09e15a8",
+      "size_bytes": 19129,
+      "sha256": "f399b5cfc1777ec800fbbaefdf75ba879e4c43f9c7669772ff19f505c5df9a22",
+      "current_physical_equal": true,
+      "preedit_snapshot": {
+        "size_bytes": 15625,
+        "sha256": "7aac212b3904bc1b42eb8a93f72e03c28503a8bee8c5f2ef4989aadf8a7ec64e"
+      }
+    }
+  ],
+  "read_and_preservation_evidence": {
+    "native_raw_Git_and_held_physical_proof": {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\planning-P2-cold-owner-source-split-independent-review-v1\\raw-planning-and-source-proof.v1.json",
+      "size_bytes": 11729,
+      "sha256": "b7ef316178f3d54bfad2c6f2560908b6d9efbf129abbff11bbd36dd2bcfc9aae"
+    },
+    "P2_parent_is_exact_S2": true,
+    "P1_ancestor_P2": true,
+    "only_four_planning_paths_changed_in_P2": [
+      "openspec/changes/fix-decoder-preflight/design.md",
+      "openspec/changes/fix-decoder-preflight/proposal.md",
+      "openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "openspec/changes/fix-decoder-preflight/tasks.md"
+    ],
+    "full_proposal_design_tasks_and_25_scenarios_read": true,
+    "ten_original_main_requirement_scenarios_retained": true,
+    "all_22_P1_delta_scenarios_exact_raw_byte_prefix": true,
+    "total_delta_scenarios": 25,
+    "new_scenarios": [
+      "External containment extends the controller owner record",
+      "Guest and controller retain different paths for the same terminal",
+      "A corrected observer reads an immutable original attempt"
+    ],
+    "main_requirements_and_diagnostics_capability_unchanged": [
+      {
+        "path": "openspec/specs/benchmark-launch-preparation/spec.md",
+        "S2_P2_oid": "6b1049d72e2c0daf81c3ff7d503bf3a521243907",
+        "size_bytes": 75126,
+        "sha256": "d777fca9299def232e13c75e484c0863a639d4acdfdf5445e38e8a925873d36b",
+        "current_physical_equal": true
+      },
+      {
+        "path": "openspec/specs/component-latency-diagnostics/spec.md",
+        "S2_P2_oid": "951e2a4fea9605edcf3964a1a799ca298b4533b9",
+        "size_bytes": 6554,
+        "sha256": "4ad6263d274252d8e1f9178210b32463de00526542b12edbdcfc94bf83e152ca",
+        "current_physical_equal": true
+      }
+    ],
+    "thirteen_protected_files_including_twelve_source_test_README_and_attributes_exact_S2": [
+      {
+        "path": ".gitattributes",
+        "S2_P2_oid": "928ea58df353c2a3313856a7e77c951602857f61",
+        "size_bytes": 18475,
+        "sha256": "46d59007096826dc74dda6e94e6c71ef0796185fa34f0c7b0e5b91931f968a48",
+        "current_physical_equal": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+        "S2_P2_oid": "9ccb89a22c524e82ac8664087c97efda812021b8",
+        "size_bytes": 87504,
+        "sha256": "30f996a4a35b6c4bfd3cfbcf6870e6c9a816dabb653358bd9dbb3d7b9bca979c",
+        "current_physical_equal": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/README.md",
+        "S2_P2_oid": "65261b8d143f727db21a4fe85f0b4e5dd007e71e",
+        "size_bytes": 7760,
+        "sha256": "4607c67af75206a7c7cde6341660a662dea9f894db5eccbeca0e10aa85a04a5b",
+        "current_physical_equal": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/controller.py",
+        "S2_P2_oid": "55af886de502d0245c20771a65e2c21d5fbc67d2",
+        "size_bytes": 53060,
+        "sha256": "3db163f5d90043bddb07fbabd29ee4f500b5ccc070d844a8e6d67b2d595e1bce",
+        "current_physical_equal": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+        "S2_P2_oid": "0bd97f5edecdcbb3ffad858cc1777da0e1700c67",
+        "size_bytes": 64590,
+        "sha256": "025d4a18e56fef4329ae5cfe757411ae476283ad1016d1f50a864184cf723708",
+        "current_physical_equal": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/research_protocol.py",
+        "S2_P2_oid": "9ef2bcb48823097db5a6f26f330abc23b5c22bf3",
+        "size_bytes": 36624,
+        "sha256": "f0685e19a3072736f8262aad32d868a2021650381e8beaef989d4f5339358d63",
+        "current_physical_equal": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_mapped_inputs_v4.py",
+        "S2_P2_oid": "57c1b0010054c3ed360061f74c59405d4594b099",
+        "size_bytes": 11433,
+        "sha256": "831cbd07388af9994d2684ab2248e299c95b29ee4ad799f26375d603b2f2f986",
+        "current_physical_equal": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_pin_diagnostics_v3.py",
+        "S2_P2_oid": "35dca4db0c0760724cbe5133974e06f35763db98",
+        "size_bytes": 11543,
+        "sha256": "a693f9fea9cc583d236447023745c612d3762da41d3103b474aa03dbddcfac14",
+        "current_physical_equal": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_preflight_diagnostics_v5.py",
+        "S2_P2_oid": "eaafcbacc3240a5eab1c89e444ad03c4d9e22c80",
+        "size_bytes": 11980,
+        "sha256": "ade99a45510b042fc55ce2c888f029301ae67defea2776524101aa8d158f3afe",
+        "current_physical_equal": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+        "S2_P2_oid": "44c1c1b30973c2b8d5330b28319a856a58284e40",
+        "size_bytes": 72112,
+        "sha256": "d174ea18c513e914d33c0e9270dbb0c4b073238a4137848e5803e786c0a202d7",
+        "current_physical_equal": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_setup_v2.py",
+        "S2_P2_oid": "5f77206f1e576cb0aab56df734a2d70aa6935e46",
+        "size_bytes": 34262,
+        "sha256": "f0f5bdb2be0f834e9795aa35c665e1703a0b120df24a9a4b56afe425a90fe4cd",
+        "current_physical_equal": true
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_successor_v6.py",
+        "S2_P2_oid": "0d16d865f3bdcddffd8a5bb2b241d74e51c50d15",
+        "size_bytes": 54172,
+        "sha256": "2d1b3ac6ab031ac49449f28f453b165b19780fbc30e5fb9f451d15a5afd555f6",
+        "current_physical_equal": true
+      },
+      {
+        "path": "tests/test_decoder_research_v6.py",
+        "S2_P2_oid": "bbc0503556bfe2c7f9dbe55f9dbb9602a3fb0365",
+        "size_bytes": 47882,
+        "sha256": "ab6d118577b7bc384e1e3e97b412d8d106f50716c6351b066d407ab8b8f2ba6f",
+        "current_physical_equal": true
+      }
+    ],
+    "preedit_original_33_IDs_and_states_preserved": true,
+    "current_tasks": {
+      "checked": 20,
+      "total": 38,
+      "new_unchecked_ids": [
+        "9.1",
+        "9.2",
+        "9.3",
+        "9.4",
+        "9.5"
+      ]
+    },
+    "explicit_raw_S2_to_P2_progress_only_changes": [
+      {
+        "id": "5.3",
+        "S2_checked": false,
+        "P2_checked": true
+      },
+      {
+        "id": "6.1",
+        "S2_checked": false,
+        "P2_checked": true
+      }
+    ],
+    "progress_disposition": "5.3 hosted S2 CI and6.1 fresh clone were actually completed after S2. P2 preserves all33 immediately preedit states; it does not claim raw S2 had20 checked tasks. Original failed6.4 and scientific/release gates remain unchecked.",
+    "author_review": {
+      "size_bytes": 8682,
+      "sha256": "179f8de5d7ae06e36a25a734362e40af8a0a3c91f1b3ea0a29cc8ba9171fcc26",
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/planning-P2-cold-owner-source-split-v1/author-revision.v1.json"
+    }
+  },
+  "independent_semantic_assessment": [
+    {
+      "topic": "strict owner schema join",
+      "source": "design Decision9 Owner projection; added external-containment scenario; tasks9.2",
+      "assessment": "Addresses the demonstrated line757 failure. Exact controller core6 equals the exact external-child core projection; both external parent and child must retain validated exact8 schemas. The original PPID/boot/birth joins and child PID=PGID=SID containment remain mandatory. Parent group/session leadership is not invented. Missing/extra keys or changed core/group/session facts refuse."
+    },
+    {
+      "topic": "two original terminal path domains",
+      "source": "design Decision9 Guest-terminal namespace; added terminal-path scenario; tasks9.2",
+      "assessment": "Addresses both demonstrated989/999 comparisons without rewriting data. The exact physical mode leaf and only its permitted /opt/vast/output alias independently join the same held regular file, size/full SHA/epochs/ancestors. Both original paths remain recorded. The general translator cannot admit arbitrary physical roots or basename-only matches."
+    },
+    {
+      "topic": "immutable producer versus executed observer",
+      "source": "design Decision9 Separate observer authority; corrected-observer scenario; tasks9.3",
+      "assessment": "P1/S2/H/producer root, original plan/P1 copies/runtime3/launch/original S2 observer descriptor remain original. A distinct P2/C/H_C/observer root verifies supported pinned Git, raw approved P2 blobs and executed cold C bytes/full hash/held epochs. P1<=S2<=C and P1<=P2<=C are feasible because P2 parent is S2. One-sided paired inputs refuse; S2 cannot default itself to corrected C. Separate observer_binding avoids contaminating producer comparisons."
+    },
+    {
+      "topic": "original failure and once-read continuation",
+      "source": "design Decisions8/9 and Migration continuation; tasks6.4,7.1,9.4,9.5",
+      "assessment": "The explicit P2 continuation permits only a separately reviewed corrected read of already closed metadata, not repair or repeat of the producer. The new corrected-owner-join-verification.v1.json is exclusive and distinct from immutable FAILED verification.v1.json. Existing original tool/EOF/return/membership/mode/package/VMA/late/cleanup predicates and120s/FD/byte/report limits remain mandatory. Any further refusal stops eligibility; no automatic second corrected read is authorized."
+    },
+    {
+      "topic": "verification and scientific gate",
+      "source": "tasks9.2-9.5,7.1-7.4,8.2-8.5; last new scenario",
+      "assessment": "Meaningful recorded-shape owner/path negatives and disposable real-Git cross-version positives/negatives are required, preserving existing predicates/IDs/full inventory. Exact-C canonical GREEN, required hosted CI and independent source/once-read review precede the single corrected invocation. Historical S2 CI cannot substitute. Only an actual fully accepted corrected result plus independent review can satisfy6.4; separate original P1/S2 research-dispatch review remains required. All scientific clocks/cohorts/image/grants and later conformance/archive/final-CI/merge gates are preserved."
+    }
+  ],
+  "actual_evidence_disposition": {
+    "original_metadata_capture": "Original S2 metadata-only capture completed with return0 and zero source/AU/run. This positive producer result remains distinct from cold acceptance.",
+    "original_cold": "Original once-only cold returned1, artifact_kind vast_decoder_research_independent_cold_refusal_v6, first Refusal external/controller original identity. That report remains FAILED and immutable.",
+    "demonstrated_defects": "Exactly two defects at three comparisons: line757 six-versus-eight whole-record comparison; lines989/999 physical versus guest-alias terminal domain comparisons.",
+    "original_terminal_descriptor_join": {
+      "size_bytes": 1204,
+      "sha256": "1397cd637748b9e076a2d005c2eb03c48cba94ed8d3a3c366058574279dd302f"
+    },
+    "independent_original_audits": [
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/metadata-dispatch-S503b33b2-independent-review-v1/cold-result-independent-review.v1.json",
+        "size_bytes": 31201,
+        "sha256": "9753ab3cdf46a6c71ee98a3ea8e5c994b205ef3ae36e0f583977749ea1c3b7d5"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/metadata-dispatch-S503b33b2-independent-review-v1/cold-reader-owner-closure.v1.json",
+        "size_bytes": 2214,
+        "sha256": "4490d41179130a27e66d0388933b4a1cd602fe4913dd8bc9ae20a2a687e8502b"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/metadata-dispatch-S503b33b2-independent-review-v1/downstream-interoperability-audit.v1.json",
+        "size_bytes": 19158,
+        "sha256": "76c5ac033067c0dcd7ef837ad034fbd445e4ccc793df439d5e2a4a041dfeadba"
+      }
+    ],
+    "downstream_compatibility_limit": "Source/JSON audit found the remaining metadata-mode terminal/package/init/registry/ABI/two-mapping-collection field families compatible. It did not execute the corrected observer, independently accept backing/ABI facts or waive a later refusal.",
+    "current_corrected_observer_C": "not implemented, tested, committed or accepted by this receipt",
+    "research": "unexecuted and not eligible yet"
+  },
+  "own_read_custody": {
+    "held_leaves": 29,
+    "full_bytes_and_same_view_seven_epochs_rechecked": true,
+    "numeric_original_WSL_epochs_not_equated_to_Windows_view": true,
+    "all_FDs_released": true,
+    "close_errors": [],
+    "native_same_view_read_elapsed_s": 0.4029347309842706,
+    "read_helper": {
+      "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\planning-P2-cold-owner-source-split-independent-review-v1\\read_exact_P2_v2.py",
+      "size_bytes": 7529,
+      "sha256": "abbac50beeafef73850f62155ee04f61d7964724d3e860e8a0d4366040d6efde"
+    }
+  },
+  "preserved_reader_rejections": [
+    {
+      "tool_chunk": "199cc7",
+      "scope": "Plain Windows full-doc print encountered cp1251 Unicode output encoding after proposal read; no producer operation or original modification."
+    },
+    {
+      "tool_chunk": "266314",
+      "source": {
+        "path": "E:\\STUDY\\VAST\\tmp\\decoder-preflight-v6-20261004\\planning-P2-cold-owner-source-split-independent-review-v1\\read_exact_P2.py",
+        "size_bytes": 7401,
+        "sha256": "e17d8676b43d4ee9a727695b6ff9ea6b5ed0892d3e453a02097664fbc74ebccb"
+      },
+      "scope": "Windows helper refused fstat/name ctime view inequality. All opened handles retired in finally. Subsequent read uses native WSL same-view full seven epochs, not a weaker producer predicate."
+    }
+  ],
+  "limitations": [
+    "This is an independent exact planning review, not human APPROVE, corrected-C source approval, empirical corrected cold PASS or research authorization.",
+    "No producer/observer/GI imports, test/CI rerun, engine/model/source/decoder invocation, raw-media reread, Git mutation, original-data or source edit occurred.",
+    "No additional concrete downstream incompatibility was found by the finite source/JSON audit; execution can still reveal a genuine refusal and must remain failed.",
+    "No current global process/container absence, historical missing facts or retroactive producer authority is inferred."
+  ]
+}

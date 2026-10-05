@@ -1,0 +1,47 @@
+{
+  "schema": "vast.actual-root-canonical-tool-record.v1",
+  "planning_commit": "da0a3f93e060c87b35423729c48388f4e77fab13",
+  "planning_technical_comment": 5408991278,
+  "source_candidate_sha256": {
+    "cold": "bba914fd5bdd2a70fa6a600f6762b56620a596c4b02411d6a2a4325a461338f9",
+    "protocol": "77067761c9fc61b7f923d0792edd5919772fb373d997b74b63767f8f138e22d3",
+    "adapter": "039fa6478cbd316d8c0aba139969f0df88ec1a5a77b535517d6698a732429380"
+  },
+  "exact_command": "wsl.exe -d Ubuntu --exec /usr/bin/setsid --wait /usr/bin/timeout -k 15 180 /usr/bin/env RUNNER_TEMP=/tmp/vast-decoder-p8-fixtures-20261005-full01 '/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python' -I -B '/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py' -v",
+  "preflight": {
+    "chunk_id": "64705e",
+    "wall_time_seconds": 0.9463057,
+    "exit_code": 0,
+    "original_token_count": 81,
+    "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000Absent canonical namespace; three frozen source SHA/size exact.\n"
+  },
+  "calls": [
+    {
+      "method": "exec_command",
+      "result": {
+        "chunk_id": "1b1273",
+        "wall_time_seconds": 10.0165255,
+        "session_id": 77452,
+        "original_token_count": 619,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000test_descriptor_failure_after_real_close_is_retained (__main__.DecoderResearchV6CaptureLifecycleTests.test_descriptor_failure_after_real_close_is_retained) ... ok\ntest_descriptor_time_after_real_close_cannot_bypass_cleanup_clock (__main__.DecoderResearchV6CaptureLifecycleTests.test_descriptor_time_after_real_close_cannot_bypass_cleanup_clock) ... ok\ntest_final_receipt_persist_time_after_actual_close_still_blocks_success (__main__.DecoderResearchV6CaptureLifecycleTests.test_final_receipt_persist_time_after_actual_close_still_blocks_success) ... ok\ntest_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt (__main__.DecoderResearchV6CaptureLifecycleTests.test_healthy_tiny_capture_observes_terminal_close_and_returns_after_final_receipt) ... ok\ntest_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause (__main__.DecoderResearchV6CaptureLifecycleTests.test_invalid_executable_retires_both_actual_logs_and_keeps_launch_cause) ... ok\ntest_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement (__main__.DecoderResearchV6CaptureLifecycleTests.test_launch_primary_survives_actual_flush_close_faults_and_remaining_retirement) ... ok\ntest_partial_log_acquisition_retires_first_writer_and_keeps_collision (__main__.DecoderResearchV6CaptureLifecycleTests.test_partial_log_acquisition_retires_first_writer_and_keeps_collision) ... ok\ntest_partial_terminal_write_keeps_primary_and_actual_flush_close_failures (__main__.DecoderResearchV6CaptureLifecycleTests.test_partial_terminal_write_keeps_primary_and_actual_flush_close_failures) ... ok\ntest_terminal_close_failure_retains_real_prefix_without_recursion (__main__.DecoderResearchV6CaptureLifecycleTests.test_terminal_close_failure_retains_real_prefix_without_recursion) ... ok\ntest_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock (__main__.DecoderResearchV6CaptureLifecycleTests.test_terminal_persist_time_after_real_close_cannot_bypass_cleanup_clock) ... ok\ntest_validation_time_cannot_bypass_cleanup_clock (__main__.DecoderResearchV6CaptureLifecycleTests.test_validation_time_cannot_bypass_cleanup_clock) ... ok\ntest_full_v6_suite (__main__.DecoderResearchV6Tests.test_full_v6_suite) ... "
+      }
+    },
+    {
+      "method": "write_stdin",
+      "parameters": {
+        "session_id": 77452,
+        "chars": "",
+        "yield_time_ms": 10000,
+        "max_output_tokens": 5000
+      },
+      "result": {
+        "chunk_id": "894040",
+        "wall_time_seconds": 0.0000066,
+        "exit_code": 0,
+        "original_token_count": 26,
+        "output": "ok\n\n----------------------------------------------------------------------\nRan 12 tests in 62.329s\n\nOK\n"
+      }
+    }
+  ],
+  "interpretation": "These are the literal original command/results. The rc0/12-test root result does not itself prove nested inventory, source closure, global descendant quiescence, or scientific acceptance."
+}

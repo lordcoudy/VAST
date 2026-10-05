@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "kind": "P6_independent_exact_source_and_original_canonical_review",
+  "verdict": "PASS_EXACT_S6_SOURCE_AND_ORIGINAL_CANONICAL",
+  "change": "fix-decoder-preflight",
+  "source_commit": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab",
+  "planning_commit": "39797d30644a5b889802acbdd67420838cc66821",
+  "planning_comment_id": 5408522443,
+  "frozen_raw_sources": [
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 93774,
+      "sha256": "1cdfbbeffbbf859e83ba127a07b5ae214887b20bb4deab3615a1c1aa9bb124e8",
+      "raw_equals_frozen_physical": true
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 106331,
+      "sha256": "3d6eac7facb0e1fd87ad0acd3caf9c9ead396370a6d62e8caf626263a03463f1",
+      "raw_equals_frozen_physical": true
+    },
+    {
+      "path": "tests/test_decoder_research_v6.py",
+      "size_bytes": 50190,
+      "sha256": "15ebb1f97da46e19358bc4d460c396abb607725a08dcc0018da8d92fc0ed0153",
+      "raw_equals_frozen_physical": true
+    }
+  ],
+  "scope": {
+    "raw_changed_paths": 15,
+    "source_paths": 3,
+    "other_paths": "tasks13.1 fact/PLAN/progress plus nine direct retained documents; no other code, CI, producer or main/delta changes",
+    "source_only_local_packets_read": true,
+    "exact_actual_diff": {
+      "size_bytes": 8965,
+      "sha256": "a819c9a1f56714b49013916f013ee42631dcf6220d28dea7180b9a89c4f09e49"
+    }
+  },
+  "findings": [],
+  "implementation_review": [
+    {
+      "source": "decoder-independent-v6/cold_reader.py:339-349",
+      "result": "PASS",
+      "detail": "Same held FD/extent; check original Held.deadline before every pread, request only remaining bytes at offset+received, accumulate actual positive bytes, refuse empty result, advance caller offset only after completion. Caller bounds, all header/text/payload/hash/epoch/exact32/trailing and failed-prefix guards are unchanged."
+    },
+    {
+      "source": "decoder-research-implementation-v6/test_research_protocol.py:1244-1334",
+      "result": "PASS",
+      "detail": "Three genuine regular-file/held-FD cases narrowly delegate real positive fragments at actual offsets for header/text/payload, then exercise injected empty-progress refusal and original absolute clock crossing. Other descriptors delegate unchanged; final real hash/epochs and FD retirement are checked outside syscall/time patches."
+    },
+    {
+      "source": "tests/test_decoder_research_v6.py:195-197,254",
+      "result": "PASS",
+      "detail": "Only three qualified IDs and101-to104 count. Normalizing only these literals restores the complete old adapter AST. Normalizing only appended methods restores the complete old protocol AST; replacing only local read restores the complete old reader AST."
+    }
+  ],
+  "preservation": {
+    "protocol_old_class_methods": 81,
+    "protocol_old_test_methods": 57,
+    "protocol_old_helpers": 24,
+    "all_old_AST_and_assertions_unchanged": true,
+    "adapter_old_class_methods": 17,
+    "adapter_old_test_methods": 12,
+    "old167_IDs_retained": true,
+    "new_IDs": 3,
+    "inherited66_plus_approved104_actual": true,
+    "before_snapshots_equal_raw_P6": true,
+    "author_label_clarification": "Author receipt's all_12_old_adapter_class_method_ASTs_equal names the12 tests; actual old adapter class method count17. Original receipt retained; complete AST comparison independently proves preservation."
+  },
+  "focused_originals": {
+    "RED": {
+      "tool": "b79d5f",
+      "returncode": 1,
+      "tests": 3,
+      "elapsed_s": 0.323,
+      "stderr_size": 7848,
+      "stderr_sha256": "6be8d98f7f3ef23c95cbdb5f672ae39b6ef3360f3ca174e6b8166319a86ebffb",
+      "meaningful": "Original343 exact-length Refusal independently reached in header/text/payload; zero case old1 vs expected2 calls, clock case oldshort instead of clock. No missing API error."
+    },
+    "GREEN": {
+      "tool": "51d770",
+      "returncode": 0,
+      "tests": 3,
+      "elapsed_s": 0.268,
+      "stderr_size": 613,
+      "stderr_sha256": "467fa0f61bdab92e6e8e008d5eda7c25eeb7cbf75500642c9db3f8a1286c2a91",
+      "real_hash_epoch_and_FD_assertions_passed": true
+    }
+  },
+  "canonical_original": {
+    "invocation_count": 1,
+    "tool_chain": [
+      "7d81ae/session99913",
+      "535b4d",
+      "67617e"
+    ],
+    "actual_returncode": 0,
+    "root_tests": 12,
+    "root_unittest_elapsed_s": 73.117,
+    "attempt": "/tmp/vast-decoder-p6-fixtures-20261005-full01/vast-cpu-checks/decoder-v6-fixtures/attempt-70c3bb1983b84da2bc6cb6ad5934a37e",
+    "suite": {
+      "tests_run": 170,
+      "elapsed_s": 53.202989136916585,
+      "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+      "isolated": true,
+      "dont_write_bytecode": true,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "hardware_acceptance": false,
+      "research_executed": false
+    },
+    "inventory": {
+      "inherited": 66,
+      "approved": 104,
+      "all170unique_exact_selected_outcomes_success": true,
+      "all170unique_actual_start_terminal_success": true,
+      "test_modules": 6,
+      "runtime_module_origins": [
+        "controller",
+        "guest_consumer",
+        "research_protocol"
+      ],
+      "all170_test_origins_and_runtime_reported_origins_join": true
+    },
+    "source15": {
+      "before_after_exact_epoch7_equal": true,
+      "all_current_physical_size_hash_equal": true,
+      "rawP6_changed_only": [
+        "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+        "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+        "tests/test_decoder_research_v6.py"
+      ],
+      "other_rawP6_unchanged": 12
+    },
+    "originals": [
+      {
+        "name": "nested-suite.v1.json",
+        "size_bytes": 103333,
+        "sha256": "52b48c697f579a5cb2836ca51a519cfe5b6d6bf0b7d5ee600f35754885ea0d63"
+      },
+      {
+        "name": "adapter-terminal.v1.json",
+        "size_bytes": 1912,
+        "sha256": "a61c2b87feb47c20c61a0c1d01bceaf9c53861259eafe4a9a82d553b76106a11"
+      },
+      {
+        "name": "adapter-final-close.v1.json",
+        "size_bytes": 758,
+        "sha256": "f15b11c5eee46d9778f97447b11f98a7d0349174f4011239279e5e3edd97f95d"
+      },
+      {
+        "name": "original.stdout",
+        "size_bytes": 8168,
+        "sha256": "b244063f5f1fd719f975f65271a73f877091c8636483da5eef621cdf0589fd89"
+      },
+      {
+        "name": "original.stderr",
+        "size_bytes": 101386,
+        "sha256": "cdd2d217ad7406313bbb7ce806df6b00cab7d3a59f7d771d935c67b982e276f0"
+      }
+    ],
+    "five_external_copies_byte_exact": true,
+    "two_actual15s": [
+      {
+        "elapsed_s": 15.04703714104835,
+        "event": "test_terminal",
+        "monotonic_ns": 635111588672638,
+        "outcome": "success",
+        "test_id": "test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed"
+      },
+      {
+        "elapsed_s": 15.044504021061584,
+        "event": "test_terminal",
+        "monotonic_ns": 635126633209485,
+        "outcome": "success",
+        "test_id": "test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success"
+      }
+    ],
+    "child_owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pgid": 49207,
+      "pid": 49207,
+      "ppid": 49196,
+      "sid": 49207,
+      "starttime_ticks": 63507608,
+      "uid": 1000
+    },
+    "capture": {
+      "returncode": 0,
+      "child_reaped": true,
+      "elapsed_s": 59.549762120936066,
+      "cleanup_elapsed_s": 1.7684882609173656,
+      "close_errors": [],
+      "failure": null,
+      "failure_type": null,
+      "logs_closed": true,
+      "signal_observation": null,
+      "successful": false,
+      "provisional_until_owner_final_close": true,
+      "research_executed": false
+    },
+    "finalclose": {
+      "candidate_success": true,
+      "successful": false,
+      "provisional_until_capture_return": true,
+      "elapsed_s": 59.55450715101324,
+      "cleanup_elapsed_s": 1.7732332909945399,
+      "research_executed": false,
+      "terminal_descriptor_join": true
+    },
+    "unchanged_inner_body120_retirement15": true,
+    "root_outer_wrapper180": "Inherited outer shell limit; adapter inner clocks and behavior unchanged."
+  },
+  "closed_metadata": {
+    "path": "P6-implementation-v1/canonical-closed-metadata.v1.json",
+    "size_bytes": 14424,
+    "sha256": "75425a87dbfdd225d246a1d437cdf975acba192f2f590722d480c8cbef49a36f",
+    "original_tool": "161cde",
+    "actual_returncode": 0,
+    "emitted_descriptor_and_counts_join_physical_record": true,
+    "source15_current_epoch7_rows_match_nested_before_after": true,
+    "later_scans": 2,
+    "observed_monotonic_ns": [
+      "635446033597998",
+      "635446035472055"
+    ],
+    "named_child49207_and_known_parent49196_absent": true,
+    "child_PGID49207_and_SID49207_empty": true,
+    "errors": [],
+    "metadata_reader_FD_before": 6,
+    "metadata_reader_FD_after": 6,
+    "close_errors": [],
+    "limit": "Only child has authentic birth/boot/PGID/SID/credentials. Parent49196 is authentic PPID number; parent birth/session/credentials and global descendant quiescence were not established. No numeric root-suite FD count is invented."
+  },
+  "retained_author_records": {
+    "original_tools": {
+      "path": "P6-implementation-v1/original-tools.v1.json",
+      "size_bytes": 66653,
+      "sha256": "53ba1120558155b297b9bd65538e94d80e24bd9d79226090c19f5882adb8c0cc"
+    },
+    "author_review": {
+      "path": "P6-implementation-v1/author-review.v1.json",
+      "size_bytes": 9802,
+      "sha256": "4b9a6bba93f79581da45d0ca3f065ada9688001b413c3e179101ec05257c18d4"
+    },
+    "source_freeze": {
+      "size_bytes": 2204,
+      "sha256": "276eea1be69b67aad69d067c3e770b083eee39d286337c4caebf8fe87278a703"
+    },
+    "source_scope_audit": {
+      "size_bytes": 923,
+      "sha256": "cc0230a765dae9b49e47c74c293766d1aff86af9c73aa80a683c71bcaf1f5c8a"
+    }
+  },
+  "limitations": [
+    "PASS is exact source plus closed unit/canonical originals; latest exact-S6 hosted CI, ordinary checkout/readiness and new separately granted corrected cold remain pending.",
+    "Original S5 short-read failure mechanism remains unknown. Injected syscall/time fixtures do not reproduce or attribute that event. Both FAILED original reports and all nonpromotion criteria remain intact.",
+    "Original adapter terminal/finalclose successful=false/provisional flags are preserved; suite success comes from actual closed root rc0, exact170 outcomes and released capture, not relabelled provisional fields.",
+    "Absolute clock checks occur before each syscall; no new kernel blocking-call timeout or post-final-block guarantee is claimed.",
+    "Full bounded original streams were read. Own initial inspection sliced a dict, guessed runtime-origin count9 (actual3) and printed too much; failures/truncations retained. Final compact joins use actual schemas, six test modules, three reported runtime module origins and all15 source pins.",
+    "No tests, CI, cold reader, producer/scientific/engine/model/media target, source/Git mutation or additional process scan was executed by this reviewer."
+  ]
+}

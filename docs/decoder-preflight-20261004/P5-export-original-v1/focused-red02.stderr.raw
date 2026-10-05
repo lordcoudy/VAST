@@ -1,0 +1,44 @@
+test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding (__main__.FullPublicationResultsTests.test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding) ... ERROR
+
+======================================================================
+ERROR: test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding (__main__.FullPublicationResultsTests.test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/full_publication_results.py", line 476, in export_finalized_results
+    custody.ensure_directory_owned(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/publication_physical_io_v1.py", line 2920, in ensure_directory_owned
+    self._require_epochs(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_full_publication_results.py", line 405, in require_epochs
+    return real_require_epochs(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/publication_physical_io_v1.py", line 403, in _require_epochs
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/publication_physical_io_v1.py", line 92, in _require
+    raise PublicationPhysicalIoV1Error(message)
+publication_physical_io_v1.PublicationPhysicalIoV1Error: compact result intent root parent directory mutated during custody
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_full_publication_results.py", line 441, in test_posix_run_root_lock_serializes_bootstrap_and_rejects_rebinding
+    first_bundle, first_bytes = first.result(timeout=15)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_full_publication_results.py", line 426, in export
+    bundle = export_finalized_results(runner)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/scripts/full_publication_results.py", line 596, in export_finalized_results
+    raise ContractError(f"compact result physical namespace rejected: {error}") from error
+benchmark_contract.ContractError: compact result physical namespace rejected: compact result intent root parent directory mutated during custody
+
+----------------------------------------------------------------------
+Ran 1 test in 0.441s
+
+FAILED (errors=1)

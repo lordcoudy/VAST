@@ -186,6 +186,78 @@ def _exclusive_bundle_lock(
                 pass
 
 
+@contextmanager
+def _exclusive_run_root_lock(custody: PhysicalRootCustodyV1) -> Iterator[None]:
+    """Serialize bootstrap and publication before mutable-directory snapshots."""
+
+    if os.name != "posix":  # pragma: no cover - existing Windows bundle fallback
+        yield
+        return
+    if fcntl is None:  # pragma: no cover - unsupported POSIX host
+        raise ContractError("compact result run-root lock is unavailable")
+    descriptor = -1
+    acquisition_attempted = False
+    primary: BaseException | None = None
+    expected_identity: tuple[int, int] | None = None
+
+    def verify_root() -> None:
+        custody.verify()
+        named = custody.root.lstat()
+        held = os.fstat(descriptor)
+        if (
+            not stat.S_ISDIR(named.st_mode)
+            or stat.S_ISLNK(named.st_mode)
+            or not stat.S_ISDIR(held.st_mode)
+            or _file_identity(named) != expected_identity
+            or _file_identity(held) != expected_identity
+        ):
+            raise ContractError("compact result run-root lock identity drifted")
+
+    try:
+        try:
+            custody.verify()
+            expected_identity = _file_identity(custody.root.lstat())
+            descriptor = os.open(
+                custody.root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
+            )
+            verify_root()
+            acquisition_attempted = True
+            fcntl.flock(descriptor, fcntl.LOCK_EX)
+            verify_root()
+        except OSError as error:
+            raise ContractError("compact result run-root lock failed") from error
+        yield
+    except BaseException as error:
+        primary = error
+        raise
+    finally:
+        failures: list[tuple[str, BaseException]] = []
+        if descriptor >= 0:
+            if acquisition_attempted:
+                try:
+                    verify_root()
+                except BaseException as error:
+                    failures.append(("verify", error))
+                try:
+                    fcntl.flock(descriptor, fcntl.LOCK_UN)
+                except BaseException as error:
+                    failures.append(("unlock", error))
+            try:
+                os.close(descriptor)
+            except BaseException as error:
+                failures.append(("close", error))
+        if failures:
+            notes = [
+                (f"compact result run-root lock {action} failed: {type(error).__name__}: {error}")[:512]
+                for action, error in failures
+            ]
+            if primary is not None:
+                for note in notes:
+                    primary.add_note(note)
+            else:
+                raise ContractError("; ".join(notes)) from failures[0][1]
+
+
 def _commit_result_leaf(
     custody: PhysicalRootCustodyV1,
     relative: str,
@@ -470,9 +542,10 @@ def export_finalized_results(
     intent_payload = _canonical_json(intent) + b"\n"
 
     try:
-        with PhysicalRootCustodyV1.open(
-            run_root, label="compact result finalized run root"
-        ) as custody:
+        with (
+            PhysicalRootCustodyV1.open(run_root, label="compact result finalized run root") as custody,
+            _exclusive_run_root_lock(custody),
+        ):
             custody.ensure_directory_owned(
                 _INTENT_ROOT,
                 label="compact result intent root",

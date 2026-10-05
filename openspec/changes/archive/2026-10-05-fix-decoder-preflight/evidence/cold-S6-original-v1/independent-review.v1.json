@@ -1,0 +1,723 @@
+{
+  "schema": "vast.closed-failed-cold-independent-review.v1",
+  "verdict": "PASS_AS_FAITHFUL_CLOSED_FAILED_COLD_EVIDENCE_SCIENTIFIC_ACCEPTANCE_REFUSED",
+  "scientific_acceptance": false,
+  "original_once_grant_COMMENT": 5408880947,
+  "original_execution": {
+    "initiating": "19dd00",
+    "session_id": 92262,
+    "final": "fdfb88",
+    "returncode": 1,
+    "elapsed_s": 32.33637405000627,
+    "actual_stdout": {
+      "close_errors": [],
+      "late_failure": null,
+      "report": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-transport-read-verification.v1.json",
+        "sha256": "6d3386c0468d4505f5150f383c3c0b61ae0fe5e16fbc0caf4fe8671eda873e8f",
+        "size_bytes": 93167
+      },
+      "successful": false
+    }
+  },
+  "report": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-transport-read-verification.v1.json",
+    "size_bytes": 93167,
+    "sha256": "6d3386c0468d4505f5150f383c3c0b61ae0fe5e16fbc0caf4fe8671eda873e8f",
+    "own_epoch7": [
+      "69",
+      "1407374885984425",
+      "33279",
+      "1",
+      "93167",
+      "1791158339367599600",
+      "1791158339367599600"
+    ]
+  },
+  "root_faithful_original_tools": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/corrected-cold-S6-original-tools.v1.json",
+    "size_bytes": 5899,
+    "sha256": "38d6cd9b1e0abebb9e7d3353bee8efbc8e7bf386c2d8665201df0c8ad52e59e7",
+    "own_epoch7": [
+      "69",
+      "1407374885984426",
+      "33279",
+      "1",
+      "5899",
+      "1791158362744132900",
+      "1791158362744132900"
+    ]
+  },
+  "accepted_predispatch_source_receipt": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-D7233abc01-v1/original-independent-review-v1/predispatch-refresh.v1.json",
+    "size_bytes": 15081,
+    "sha256": "c272713babd72e0e7fa391713203a10bd37839f7e1da57823e4d3f8d67c86ec2",
+    "own_epoch7": [
+      "69",
+      "1407374885984423",
+      "33279",
+      "1",
+      "15081",
+      "1791158238288957600",
+      "1791158238288957600"
+    ]
+  },
+  "immutable_prior_failed_cold": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-metadata-namespace-verification.v1.json",
+    "size_bytes": 93113,
+    "sha256": "d847af344229c40f6c4a16ccfe901ab6394b19dedaf2a1f395361faca2eac004",
+    "own_epoch7": [
+      "69",
+      "1407374885984255",
+      "33279",
+      "1",
+      "93113",
+      "1791150479447448700",
+      "1791150479447448700"
+    ]
+  },
+  "actual_first_failure": {
+    "message": "original startup/actualEOF/drain bounds",
+    "type": "Refusal"
+  },
+  "first_refused_run": "run-01-front_gate-default",
+  "source_roles": {
+    "producer_P1": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+    "producer_S3": "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+    "observer_P6": "39797d30644a5b889802acbdd67420838cc66821",
+    "observer_S6": "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab"
+  },
+  "executed_cold_source": {
+    "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+    "size_bytes": 93774,
+    "sha256": "1cdfbbeffbbf859e83ba127a07b5ae214887b20bb4deab3615a1c1aa9bb124e8",
+    "own_epoch7": [
+      "2096",
+      "649462",
+      "33188",
+      "1",
+      "93774",
+      "1791153948193295817",
+      "1791153948193295817"
+    ]
+  },
+  "original_guest_source_rawS3_currentS6_physical_join": {
+    "original": {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s3bdb6cd81/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+      "size_bytes": 64637,
+      "sha256": "bc2a3a618fab6e53ed15835d327f611cc63f18543cc16648a5d6b7e084f073ec",
+      "own_epoch7": [
+        "2096",
+        "619972",
+        "33188",
+        "1",
+        "64637",
+        "1791135950408374081",
+        "1791135950408374081"
+      ]
+    },
+    "current": {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+      "size_bytes": 64637,
+      "sha256": "bc2a3a618fab6e53ed15835d327f611cc63f18543cc16648a5d6b7e084f073ec",
+      "own_epoch7": [
+        "2096",
+        "649826",
+        "33188",
+        "1",
+        "64637",
+        "1791153948205296512",
+        "1791153948205296512"
+      ]
+    },
+    "raw_git": [
+      {
+        "argv": [
+          "/usr/bin/git",
+          "--no-replace-objects",
+          "--no-optional-locks",
+          "-C",
+          "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s3bdb6cd81",
+          "cat-file",
+          "blob",
+          "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73:artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py"
+        ],
+        "returncode": 0,
+        "stdout_size": 64637,
+        "stdout_sha256": "bc2a3a618fab6e53ed15835d327f611cc63f18543cc16648a5d6b7e084f073ec",
+        "stderr_size": 0,
+        "wait_returned": true
+      },
+      {
+        "argv": [
+          "/usr/bin/git",
+          "--no-replace-objects",
+          "--no-optional-locks",
+          "-C",
+          "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5",
+          "cat-file",
+          "blob",
+          "f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab:artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py"
+        ],
+        "returncode": 0,
+        "stdout_size": 64637,
+        "stdout_sha256": "bc2a3a618fab6e53ed15835d327f611cc63f18543cc16648a5d6b7e084f073ec",
+        "stderr_size": 0,
+        "wait_returned": true
+      }
+    ]
+  },
+  "exact_28argv_original_equals_predispatch": true,
+  "source_control_custody": {
+    "common221_old_current_descriptor_path_size_SHA_and_epoch_exact": true,
+    "expected_two_observer_specific_replacements": {
+      "old_only": [
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s5cfa959d2/.git/HEAD",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s5cfa959d2/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py"
+      ],
+      "new_only": [
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/.git/HEAD",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py"
+      ],
+      "new_pins": [
+        {
+          "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/.git/HEAD",
+          "size_bytes": 41,
+          "sha256": "8f0dfa6e78eacb2434537efb95d64e27e8ccd1c28fcc905b69648fb134e68886",
+          "own_epoch7": [
+            "2096",
+            "652176",
+            "33188",
+            "1",
+            "41",
+            "1791153948629321075",
+            "1791153948629321075"
+          ]
+        },
+        {
+          "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+          "size_bytes": 93774,
+          "sha256": "1cdfbbeffbbf859e83ba127a07b5ae214887b20bb4deab3615a1c1aa9bb124e8",
+          "own_epoch7": [
+            "2096",
+            "649462",
+            "33188",
+            "1",
+            "93774",
+            "1791153948193295817",
+            "1791153948193295817"
+          ]
+        }
+      ]
+    },
+    "old223_projection_before": "a76707b00d8396edcbd7c4066347831937894479a6649f4982f88d6ea0c52d91",
+    "old223_projection_after": "a76707b00d8396edcbd7c4066347831937894479a6649f4982f88d6ea0c52d91",
+    "current223_projection_before": "1504933895b91575e23c34cf8a59f5d60a63e5f48ad69dc6617d5ed7f10eea24",
+    "current223_projection_after": "1504933895b91575e23c34cf8a59f5d60a63e5f48ad69dc6617d5ed7f10eea24",
+    "no_media_or_transport_rehash": true,
+    "original_small_controls_full_hash_and_seven_epochs_preserved": [
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-original-controller/attempt-01/terminal.v1.json",
+        "size_bytes": 7113,
+        "sha256": "f6bf60027fa73c079a12f78cc8a131a445b9448971b9b727322355f689982220"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-original-tool-record.S3bdb6cd81.v1.json",
+        "size_bytes": 3356,
+        "sha256": "bf4fdcb52cce239fba8ffc44c932fe5fdf51f0a16bce6cb0b86ea42f593e811f"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/verification.v1.json",
+        "size_bytes": 44168,
+        "sha256": "b1054cfe3fe53d7f30cd2853f9607d510722e9f9d9f387afce8b0484390f80c7"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/research-result-namespace-diagnosis.v2.json",
+        "size_bytes": 31808,
+        "sha256": "8acd86e45b7287d5a68ee95c992a441a3fd709d44f2ac98ed5dffde633648c82"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S3-metadata-dispatch-independent-review-v1/research-result-namespace-diagnosis.later-owner-closure.v1.json",
+        "size_bytes": 1258,
+        "sha256": "8c0a0f270ee9a778a44faadbf5acf010f66f9795cbadbd8f8cff26c03776cfe3"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/controller/terminal.v1.json",
+        "size_bytes": 9741,
+        "sha256": "a1cbf41511315bc585172d7fdc8ec0e54d51267a93da14d8ca8cb85f8bfb7cf4"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/metadata/research-terminal.v1.json",
+        "size_bytes": 3377,
+        "sha256": "71b94e1a175e93cd31756c8df0793ff17190c0f647107f8013c3ace63f722fcd"
+      }
+    ],
+    "guest_terminal_physical_alias_held_join": {
+      "controller_physical": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/metadata/research-terminal.v1.json",
+        "sha256": "71b94e1a175e93cd31756c8df0793ff17190c0f647107f8013c3ace63f722fcd",
+        "size_bytes": 3377
+      },
+      "guest_stdout_alias": {
+        "path": "/opt/vast/output/metadata/research-terminal.v1.json",
+        "sha256": "71b94e1a175e93cd31756c8df0793ff17190c0f647107f8013c3ace63f722fcd",
+        "size_bytes": 3377
+      },
+      "held_physical": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/metadata/research-terminal.v1.json",
+        "sha256": "71b94e1a175e93cd31756c8df0793ff17190c0f647107f8013c3ace63f722fcd",
+        "size_bytes": 3377
+      }
+    }
+  },
+  "owner_and_retirement": {
+    "original_reader": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pid": 52077,
+      "ppid": 52075,
+      "process_group_id": 52077,
+      "starttime_ticks": 64064695,
+      "uid": 1000
+    },
+    "original_reader_after": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pid": 52077,
+      "ppid": 52075,
+      "process_group_id": 52077,
+      "starttime_ticks": 64064695,
+      "uid": 1000
+    },
+    "original_SID": null,
+    "SID_status": "Unavailable: original cold report does not record SID.",
+    "original_fd_before": 6,
+    "original_fd_after": 6,
+    "original_223_held_inputs_released": true,
+    "original_close_errors": [],
+    "original_provisional_until_owner_final_close": true,
+    "root_final_actual_rc1_close_errors_empty_late_failure_null": true,
+    "late_companion_absent": true,
+    "later_named_absence": [
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "named_reader_pid": 52077,
+        "named_parent_pid": 52075,
+        "recorded_reader_pgid": 52077,
+        "matches": [],
+        "monotonic_ns": "641089504654791"
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "named_reader_pid": 52077,
+        "named_parent_pid": 52075,
+        "recorded_reader_pgid": 52077,
+        "matches": [],
+        "monotonic_ns": "641089742332668"
+      }
+    ],
+    "limitations": [
+      "Later scans establish named reader PID52077, numeric parent PID52075 and recorded PGID52077 absent on the recorded boot; parent birth identity was not recorded, and no global quiescence is asserted."
+    ]
+  },
+  "timing_diagnosis": {
+    "exact_cold_predicate_source": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py:532-537",
+    "source_condition": "same run and original guest owner; startup 0..45s; reported drain elapsed 0..10s; drain sink EOS equals original journal; abs(bookkeeping EOF - observed EOF)<=2ns; completed-minus-observed EOF 0..10s.",
+    "source_sequential_first_run": "cold_reader.py:1119 calls run 1 before subsequent runs; first run independently reproduces this predicate failure.",
+    "run_values": [
+      {
+        "run": "run-01-front_gate-default",
+        "startup_elapsed_s": 0.6228068680502474,
+        "drain_elapsed_from_source_eof_s": 0.07656898209825158,
+        "source_eof_document_ns": "621837867081512",
+        "source_eof_drain_document_ns": "621837867082806",
+        "source_eof_delta_ns": 1294,
+        "drain_completed_ns": "621837943651606",
+        "completed_minus_actual_eof_ns": 76570094,
+        "actual_sink_eos_ns": "621837888893260",
+        "predicate_values": {
+          "same_run": true,
+          "started_owner_equals_original_guest": true,
+          "startup_0_45": true,
+          "elapsed_drain_0_10": true,
+          "sink_eos_equal": true,
+          "eof_delta_abs_le2": false,
+          "completed_delta_0_10s": true
+        },
+        "failed_predicates": [
+          "eof_delta_abs_le2"
+        ],
+        "original_run_successful": true,
+        "original_terminal_errors": [],
+        "original_cleanup_errors": [],
+        "recorded_observed_bookkeeping_sink_completed_order": true,
+        "EOF_journal_matches_document": true,
+        "sinkEOS_journal_matches_document": true,
+        "clock_domain": "same guest monotonic; no realtime subtraction"
+      },
+      {
+        "run": "run-02-front_gate-zero",
+        "startup_elapsed_s": 0.5884577879915014,
+        "drain_elapsed_from_source_eof_s": 0.06725920492317528,
+        "source_eof_document_ns": "621873214696025",
+        "source_eof_drain_document_ns": "621873214697506",
+        "source_eof_delta_ns": 1481,
+        "drain_completed_ns": "621873281956557",
+        "completed_minus_actual_eof_ns": 67260532,
+        "actual_sink_eos_ns": "621873229945053",
+        "predicate_values": {
+          "same_run": true,
+          "started_owner_equals_original_guest": true,
+          "startup_0_45": true,
+          "elapsed_drain_0_10": true,
+          "sink_eos_equal": true,
+          "eof_delta_abs_le2": false,
+          "completed_delta_0_10s": true
+        },
+        "failed_predicates": [
+          "eof_delta_abs_le2"
+        ],
+        "original_run_successful": true,
+        "original_terminal_errors": [],
+        "original_cleanup_errors": [],
+        "recorded_observed_bookkeeping_sink_completed_order": true,
+        "EOF_journal_matches_document": true,
+        "sinkEOS_journal_matches_document": true,
+        "clock_domain": "same guest monotonic; no realtime subtraction"
+      },
+      {
+        "run": "run-03-underbody-zero",
+        "startup_elapsed_s": 0.5872246000217274,
+        "drain_elapsed_from_source_eof_s": 0.049447979079559445,
+        "source_eof_document_ns": "621908550045951",
+        "source_eof_drain_document_ns": "621908550046698",
+        "source_eof_delta_ns": 747,
+        "drain_completed_ns": "621908599494518",
+        "completed_minus_actual_eof_ns": 49448567,
+        "actual_sink_eos_ns": "621908575411172",
+        "predicate_values": {
+          "same_run": true,
+          "started_owner_equals_original_guest": true,
+          "startup_0_45": true,
+          "elapsed_drain_0_10": true,
+          "sink_eos_equal": true,
+          "eof_delta_abs_le2": false,
+          "completed_delta_0_10s": true
+        },
+        "failed_predicates": [
+          "eof_delta_abs_le2"
+        ],
+        "original_run_successful": true,
+        "original_terminal_errors": [],
+        "original_cleanup_errors": [],
+        "recorded_observed_bookkeeping_sink_completed_order": true,
+        "EOF_journal_matches_document": true,
+        "sinkEOS_journal_matches_document": true,
+        "clock_domain": "same guest monotonic; no realtime subtraction"
+      },
+      {
+        "run": "run-04-underbody-default",
+        "startup_elapsed_s": 0.5734271060209721,
+        "drain_elapsed_from_source_eof_s": 0.04230142408050597,
+        "source_eof_document_ns": "621946445739684",
+        "source_eof_drain_document_ns": "621946445740102",
+        "source_eof_delta_ns": 418,
+        "drain_completed_ns": "621946488041385",
+        "completed_minus_actual_eof_ns": 42301701,
+        "actual_sink_eos_ns": "621946464134922",
+        "predicate_values": {
+          "same_run": true,
+          "started_owner_equals_original_guest": true,
+          "startup_0_45": true,
+          "elapsed_drain_0_10": true,
+          "sink_eos_equal": true,
+          "eof_delta_abs_le2": false,
+          "completed_delta_0_10s": true
+        },
+        "failed_predicates": [
+          "eof_delta_abs_le2"
+        ],
+        "original_run_successful": true,
+        "original_terminal_errors": [],
+        "original_cleanup_errors": [],
+        "recorded_observed_bookkeeping_sink_completed_order": true,
+        "EOF_journal_matches_document": true,
+        "sinkEOS_journal_matches_document": true,
+        "clock_domain": "same guest monotonic; no realtime subtraction"
+      }
+    ],
+    "all_four_failed_only_abs_EOF_delta_le2": true,
+    "all_four_original_45s_and_10s_bounds_satisfied": true,
+    "all_four_observed_bookkeeping_sink_completed_order_true": true,
+    "all_four_original_EOF_and_sinkEOS_journal_document_exact": true,
+    "original_source_capture": "guest_consumer.py:633-634 records eof_observed=time.monotonic_ns(), then separately appends time.monotonic() to source_eof.",
+    "original_source_serialization": "guest_consumer.py:765-769 serializes int(source_eof[0]*1_000_000_000) as source_eof_monotonic_ns; completed and elapsed use later clock calls.",
+    "conclusion": "The observer compares two distinct same-domain samples as if they were one identical sample. Original recorded gaps 1294/1481/747/418ns violate the approved <=2ns predicate; they do not show a 45s startup or 10s drain exhaustion. Original FAILED disposition is mandatory.",
+    "source_grounded_next_contract": "A separately reviewed clock join should preserve both observed EOF and later bookkeeping representations, validate same guest clock/owner and event binding, and use causal ordering with the unchanged exact <=10s completed-minus-EARLIER-observed-EOF bound. Retain original producer elapsed 0..10s and startup 0..45s. Do not fit a numeric EOF tolerance to these four observations or identify the two samples.",
+    "representation_limit": "Bookkeeping is serialized from a binary floating-point monotonic value. Its integer-ns representation and any roundoff rule must be explicit in the next exact design; these original samples are not a universal equality or accuracy guarantee.",
+    "acceptance_limit": "This diagnoses the identified refused composite only. Downstream whole 128-AU/64-pair/cohort/mapping acceptance has not completed and is not inferred from producer success, four hash-valid prefix summaries, or timing-control success."
+  },
+  "closed_timing_control_source_bindings": {
+    "prelaunch": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/metadata/prelaunch.v1.json",
+      "size_bytes": 4530,
+      "sha256": "3f631d21a67b4eeee414e416dd358e4b2feec4b8df21cdd94d26f0c37fcb4e9b",
+      "own_epoch7": [
+        "69",
+        "1407374885983857",
+        "33279",
+        "1",
+        "4530",
+        "1791139464607694200",
+        "1791139464607694200"
+      ]
+    },
+    "original_guest_owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pid": 1,
+      "ppid": 0,
+      "starttime_ticks": 62179888,
+      "uid": 1000
+    },
+    "bounded_original_leaves": [
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-01-front_gate-default/run-started.v1.json",
+        "size_bytes": 454,
+        "sha256": "5b74ac25f57df8a88bd49e46ce0cddfe350a56f7540b7763e77880d7957a6b60"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-01-front_gate-default/startup-completed.v1.json",
+        "size_bytes": 185,
+        "sha256": "1fe6f161c34169d7a4c5df769ee9323f71a6460e9be7d5dec5dc181887d0dcb3"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-01-front_gate-default/source-transport-eof.v1.json",
+        "size_bytes": 250,
+        "sha256": "1ad05aa37a531a739e957bbe81c29ed5401e37988b51c67ff65cc7c54a3d73ea"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-01-front_gate-default/decoder-drain-completed.v1.json",
+        "size_bytes": 336,
+        "sha256": "97aca291b30d7c12fd1dfd185575fb020665cadc5a1f48b0704f4656e55256f8"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-01-front_gate-default/terminal.v1.json",
+        "size_bytes": 3019,
+        "sha256": "00eecd78d9052705c52dd837b4f99282e2cdad15b1d4d44d396daf8413061fee"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-01-front_gate-default/observations.v1.json",
+        "size_bytes": 38034,
+        "sha256": "2e7fd75575d0b40af22b008d5801337689da602d15a95470c493d030e3b4b557"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-01-front_gate-default/events.jsonl",
+        "size_bytes": 126723,
+        "sha256": "96af405d7db06918d32e59180eb786f25b128740de38014757c90d8b02b54196"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-02-front_gate-zero/run-started.v1.json",
+        "size_bytes": 451,
+        "sha256": "279383aa0c8fd381d75f95813e0471132162cb9c2c870e4c3a3373ad7543349c"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-02-front_gate-zero/startup-completed.v1.json",
+        "size_bytes": 185,
+        "sha256": "6e268baa6e07a4deacb46cd0b65a72c9b51f454d89b6c81883c94bdc1220d21b"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-02-front_gate-zero/source-transport-eof.v1.json",
+        "size_bytes": 250,
+        "sha256": "eed5350a27e436ad2a732dc92ea622f37230ace78bbeec2ecf3a5f905a09b050"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-02-front_gate-zero/decoder-drain-completed.v1.json",
+        "size_bytes": 336,
+        "sha256": "80af0994e3e19fc0e975781fc11f76bb2daec1f7bf99c50ebd01c33167f84860"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-02-front_gate-zero/terminal.v1.json",
+        "size_bytes": 2974,
+        "sha256": "6c41b0fbc9c8bf1e9ef054bc69f4282ab8a23d03c944a9dd3c76573cf36e18ad"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-02-front_gate-zero/observations.v1.json",
+        "size_bytes": 38029,
+        "sha256": "07fbcb02af8abee9de78c8917cb1fe2443304ad59b4ba87165590c023cd647e4"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-02-front_gate-zero/events.jsonl",
+        "size_bytes": 127383,
+        "sha256": "6b337f212233f8bc952981217080ff013d9454a306f9178db6834b1b052a8265"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-03-underbody-zero/run-started.v1.json",
+        "size_bytes": 449,
+        "sha256": "dee3cd68ce6723d5f94aad658b127569bf22fe477cb222d1f156711216682c76"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-03-underbody-zero/startup-completed.v1.json",
+        "size_bytes": 185,
+        "sha256": "a909938343becc2aa36d2601e6cf86f9130405350209fe704aa0b3551ee116f2"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-03-underbody-zero/source-transport-eof.v1.json",
+        "size_bytes": 251,
+        "sha256": "46cf528ff5350551bda463b01a6bc59d7ea7614db58b3adda45bf459355d1216"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-03-underbody-zero/decoder-drain-completed.v1.json",
+        "size_bytes": 337,
+        "sha256": "c6386c04c6b6e42f8ee4528fb395acd62819ffb57ed8db66313364377bb1ab1d"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-03-underbody-zero/terminal.v1.json",
+        "size_bytes": 2961,
+        "sha256": "01c9de065b30bde48ce7b9eb3eb2238a635c42a02e60bb149c95423537c7b00e"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-03-underbody-zero/observations.v1.json",
+        "size_bytes": 38879,
+        "sha256": "a914fe9698b2e572ba3cdc35b1eac1caaef315a3ff09f32b99b82dc50581742b"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-03-underbody-zero/events.jsonl",
+        "size_bytes": 131360,
+        "sha256": "2ea53cf81d3aa9fb5910928b66154158b722334366569ba332b6ce68301ae443"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-04-underbody-default/run-started.v1.json",
+        "size_bytes": 454,
+        "sha256": "f77af65d44f5c83c8c0c74646c76988cafd55257b8159680de3b0584654c04c6"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-04-underbody-default/startup-completed.v1.json",
+        "size_bytes": 185,
+        "sha256": "1de41c0cc9dde96d32129be1735574b59c4fb9c1cdb289227a1870476849fa42"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-04-underbody-default/source-transport-eof.v1.json",
+        "size_bytes": 250,
+        "sha256": "9283b08162b39460744f8ee88f76eef3e137f550f3b101b991d9485339a2002f"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-04-underbody-default/decoder-drain-completed.v1.json",
+        "size_bytes": 336,
+        "sha256": "a204f206a60fd8a6031b9271087a0dc5b383da5843f5ca32be67f041f6050a36"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-04-underbody-default/terminal.v1.json",
+        "size_bytes": 3006,
+        "sha256": "e233d474df4afd418480f8eeca8025f4e8d45f1cebe7691fca656afb2f7deb74"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-04-underbody-default/observations.v1.json",
+        "size_bytes": 38881,
+        "sha256": "a610525d2600ab26d7590809ec525c3704909d650c65647165639bc41a35898a"
+      },
+      {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-04-underbody-default/events.jsonl",
+        "size_bytes": 131515,
+        "sha256": "1569458ea804af28e610a8718feef0f87710bcf5bda8f96fa19e31437899a427"
+      }
+    ],
+    "full_held_seven_epoch_before_after_verified": true
+  },
+  "original_prefix_findings": [
+    {
+      "causal_join_complete": false,
+      "clip": "front_gate",
+      "first_prefix_refusal": null,
+      "hash_valid_packet_prefix": 32,
+      "hash_valid_prefix_bytes": 153277,
+      "promoted_cohort": false,
+      "run": 1,
+      "setting": "default"
+    },
+    {
+      "causal_join_complete": false,
+      "clip": "front_gate",
+      "first_prefix_refusal": null,
+      "hash_valid_packet_prefix": 32,
+      "hash_valid_prefix_bytes": 153277,
+      "promoted_cohort": false,
+      "run": 2,
+      "setting": "zero"
+    },
+    {
+      "causal_join_complete": false,
+      "clip": "underbody",
+      "first_prefix_refusal": null,
+      "hash_valid_packet_prefix": 32,
+      "hash_valid_prefix_bytes": 1514651,
+      "promoted_cohort": false,
+      "run": 3,
+      "setting": "zero"
+    },
+    {
+      "causal_join_complete": false,
+      "clip": "underbody",
+      "first_prefix_refusal": null,
+      "hash_valid_packet_prefix": 32,
+      "hash_valid_prefix_bytes": 1514651,
+      "promoted_cohort": false,
+      "run": 4,
+      "setting": "default"
+    }
+  ],
+  "nonpromotion": {
+    "accepted": false,
+    "research_complete": false,
+    "raw_join_complete": false,
+    "benchmark_arm_count": 0,
+    "native_pair_count": 0,
+    "qualification_count": 0,
+    "publication_ready": false,
+    "model_or_parity_evidence": false
+  },
+  "review_execution": {
+    "tool_reference": "fc4ceb",
+    "exit_code": 0,
+    "wall_time_seconds": 1.3245125,
+    "elapsed_s": 0.4409526699455455,
+    "custody": {
+      "fd_before": 6,
+      "fd_after": 6,
+      "held_leaf_count": 44,
+      "held_ancestor_count": 39,
+      "close_errors": [],
+      "all_owned_FDs_closed": true
+    },
+    "original_tools": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/corrected-cold-S6-independent-v1/original-readonly-tools.v1.json"
+  },
+  "own_review_errors_preserved": [
+    {
+      "tool": "2e19ec",
+      "returncode": 1,
+      "cause": "Reviewer incorrectly required all old S5/current S6 held rows identical. Correct comparison preserves 221 common rows and joins exactly two authorized observer HEAD/source replacements.",
+      "fd_before": 6,
+      "fd_after": 6,
+      "close_errors": []
+    },
+    {
+      "tool": "d95a45",
+      "returncode": 1,
+      "cause": "Reviewer queried journal event with key event rather than original schema key kind. Original cold_reader.one at313-315 confirms kind; corrected actual full-held timing join uses that unchanged schema.",
+      "fd_before": 6,
+      "fd_after": 6,
+      "close_errors": []
+    }
+  ],
+  "limitations": [
+    "No observer/producer/test/build/engine/model/media execution or target import by this reviewer; no raw media/AU/transport hash replay.",
+    "Original report successful:false, accepted:false and provisional flag remain intact; actual closed rc1/late:null/close:[] is preserved.",
+    "Current accepted D7 hosted CI is distinct from this FAILED scientific cold disposition. New source/design/CI review and an explicit new once grant are prerequisites to any future reader invocation.",
+    "The four prefix byte/hash findings are original observer findings; causal_join_complete:false and promoted_cohort:false are retained.",
+    "Seven-epoch nanosecond and monotonic-ns values in descriptors are decimal strings to preserve exact integer precision.",
+    "Review owner retirement is FD/held-source scope only; no own later process absence or global descendant quiescence is claimed.",
+    "The locator emitted a truncated descriptor listing; the final bounded review fully read/hash-checked every listed timing control it used."
+  ],
+  "concrete_scientific_blocker": "Approved original <=2ns EOF equality fails; whole original cohort acceptance remains refused."
+}
+

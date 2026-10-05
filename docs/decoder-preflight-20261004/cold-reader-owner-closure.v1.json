@@ -1,0 +1,58 @@
+{
+  "FD_before_after": [
+    6,
+    6
+  ],
+  "actual_peer_report": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/metadata-dispatch-S503b33b2-independent-review-v1/cold-result-independent-review.v1.json",
+    "sha256": "9753ab3cdf46a6c71ee98a3ea8e5c994b205ef3ae36e0f583977749ea1c3b7d5",
+    "size_bytes": 31201
+  },
+  "actual_peer_tool": {
+    "chunk_id": "8a41f7",
+    "exit_code": 0,
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/metadata-dispatch-S503b33b2-independent-review-v1/cold-result-original-metadata-tool.v1.json",
+    "sha256": "a1bfbce968989cf1b35ae0039194a23156d30ca12c9b4014ece821ddbda4ab4b",
+    "size_bytes": 1903
+  },
+  "cold_original_tool_record": {
+    "actualexec": "197ebe",
+    "actualwait": "fcda64",
+    "final_returncode": 1,
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/cold-original-tool-record.S503b33b2.v1.json",
+    "sha256": "d5729a565d593551f3ade63f7001b59e058d72e2a4a6e348f32d6633fb9404e7",
+    "size_bytes": 7346
+  },
+  "kind": "decoder_v6_closed_failed_cold_original_tool_and_reviewer_owner_closure_v1",
+  "late_cold_companion_absent": true,
+  "limits": "Reviewer actual PID and observed PPID only; its birth/group/session were not recorded and are not fabricated. Original cold/capture process-group/session closure is in the pinned actual peer. No global absence claim.",
+  "metadata_eligibility": false,
+  "own_scanner_PID": 33644,
+  "peer_observed_owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "observed_ppid": 33630,
+    "pid": 33637
+  },
+  "peer_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/metadata-dispatch-S503b33b2-independent-review-v1/review_failed_cold.py",
+    "sha256": "833c9405b4b2c28ea86334a84ee7ac8ab38d946299fcfaf71cc7599266ccee17",
+    "size_bytes": 16401
+  },
+  "research_approval": false,
+  "two_later_named_PID_absence_scans": [
+    {
+      "named_observed_PID_paths_absent": {
+        "33630": true,
+        "33637": true
+      },
+      "time_monotonic_ns": 605442566377428
+    },
+    {
+      "named_observed_PID_paths_absent": {
+        "33630": true,
+        "33637": true
+      },
+      "time_monotonic_ns": 605442566389423
+    }
+  ]
+}

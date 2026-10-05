@@ -1,0 +1,38 @@
+{
+  "P_ancestor_S_and_exact_S1_parent": true,
+  "all6303_full_held_SHA_size_and_GitOID_match_independent_S2_Git_manifest": true,
+  "all6303_own_named_held_seven_epochs_stable_during_full_read": true,
+  "all_physical_raw_GitOIDs_exact": true,
+  "clean_tracked_tree_before_after": true,
+  "count": 6303,
+  "elapsed_s": 1.0142526839626953,
+  "fd_before_after": [
+    6,
+    6
+  ],
+  "file_epoch_manifest": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/fresh-ext4-S503b33b2-file-epochs.v1.json",
+    "sha256": "d2eb02513b738885d53b1a98a107ef9fa65eb4c16e0b6f2786b1228fe3071342",
+    "size_bytes": 1138708
+  },
+  "input_manifest": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S503b33b2-v1/S.raw-blob-sha256.manifest.json",
+    "sha256": "33c2e962f578f47f66385d6408a811b313dd11ed4ebb535a57f9ea42cddaf242",
+    "size_bytes": 1441253
+  },
+  "kind": "vast_decoder_v6_fresh_ext4_committed_checkout_preparation_v1",
+  "limits": [
+    "Supported fresh native clone preparation and physical source custody only; required CI and physical quiet/input/namespace checks remain separate.",
+    "No original/global runtime, source, media, container or existing checkout reset or modification."
+  ],
+  "metadata_operations": 0,
+  "ordinary_git_directory": true,
+  "original_clone_tools": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/fresh-ext4-S503b33b2-clone-original-tools.v1.json",
+  "planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+  "rawP4_original_hashes_exact": true,
+  "research_operations": 0,
+  "review_checkout": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s503b33b2",
+  "source_commit": "503b33b224b8f98b429d9a9cf80a0cf30402fcba",
+  "source_review_COMMENT": 5406386373,
+  "total_bytes": 348103589
+}

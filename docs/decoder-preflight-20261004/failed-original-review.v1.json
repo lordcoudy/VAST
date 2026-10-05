@@ -1,0 +1,1302 @@
+{
+  "schema_version": 1,
+  "verdict": "CLOSED_FAILED_ORIGINAL_WITH_HASH_VALID_PREFIXES",
+  "original_tools": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-original-tool-record.S503b33b2.v1.json",
+    "size_bytes": 2978,
+    "sha256": "6fe7031ca15276179e803f71a67a60589d5d1233eee9ce1d48ecac367e131cf4"
+  },
+  "external_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-original-controller/attempt-01/terminal.v1.json",
+    "size_bytes": 7059,
+    "sha256": "5734281f148a0078bcfd13adb5f18db1ce0950090e8ae6f2d5d4ef0dbdfd6bcd"
+  },
+  "controller_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/controller/terminal.v1.json",
+    "size_bytes": 8899,
+    "sha256": "ed40f2adb0883588f3d71ac34b68f7a9aa3678b3eb79e9f622463ab577b2a773"
+  },
+  "guest_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/metadata/research-terminal.v1.json",
+    "size_bytes": 1608,
+    "sha256": "5742be5099851654bd241cd5fcccb2228cd2600a0c0152b929b1d036a6086db3"
+  },
+  "failure_chain": {
+    "external": [
+      "RuntimeError: original child returned nonzero"
+    ],
+    "controller": "original process/container did not finish successfully",
+    "controller_errors": [
+      "original container terminal: original container failed or remains running"
+    ],
+    "guest": "original research run failed; no retry or subsequent setting allowed",
+    "stage": "original_run_2",
+    "retained_run02_cleanup": [
+      "physical hash deadline exceeded"
+    ],
+    "cleanup_cause": "Not established by the error string; separate source diagnosis pending."
+  },
+  "domain_counts": {
+    "controller_runs_completed": 0,
+    "guest_runs_completed": 1,
+    "retained_observational_runs": 2,
+    "hash_valid_raw_AUs": 64,
+    "expected_full_AUs": 128,
+    "full_pair_observations": 0,
+    "expected_full_pairs": 64
+  },
+  "checks": [
+    {
+      "predicate": "actual one original session rc1 and external final descriptor",
+      "passed": true
+    },
+    {
+      "predicate": "original immutable source epochs and explicit research mode",
+      "passed": true
+    },
+    {
+      "predicate": "failed original statuses retain domain-specific counts",
+      "passed": true
+    },
+    {
+      "predicate": "original owner core6 external8 join despite failure",
+      "passed": true
+    },
+    {
+      "predicate": "owned failure capture closes without containment or OOM",
+      "passed": true
+    },
+    {
+      "predicate": "run1 exact original closed-leaf coverage",
+      "passed": true
+    },
+    {
+      "predicate": "run1 raw32 full hash-valid AU prefix, exact journal and no trailing bytes",
+      "passed": true
+    },
+    {
+      "predicate": "run1 original ACK1..32",
+      "passed": true
+    },
+    {
+      "predicate": "run1 original source-child READY/library/START owner join",
+      "passed": true
+    },
+    {
+      "predicate": "run1 complete sink/src/RGB PTS and EOS observational prefix",
+      "passed": true
+    },
+    {
+      "predicate": "run1 observed residence/cohort/EOS recomputation",
+      "passed": true
+    },
+    {
+      "predicate": "run2 exact original closed-leaf coverage",
+      "passed": true
+    },
+    {
+      "predicate": "run2 raw32 full hash-valid AU prefix, exact journal and no trailing bytes",
+      "passed": true
+    },
+    {
+      "predicate": "run2 original ACK1..32",
+      "passed": true
+    },
+    {
+      "predicate": "run2 original source-child READY/library/START owner join",
+      "passed": true
+    },
+    {
+      "predicate": "run2 complete sink/src/RGB PTS and EOS observational prefix",
+      "passed": true
+    },
+    {
+      "predicate": "run2 observed residence/cohort/EOS recomputation",
+      "passed": true
+    },
+    {
+      "predicate": "run01 succeeds run02 fails solely at retained cleanup condition",
+      "passed": true
+    },
+    {
+      "predicate": "no underbody runs or full paired timing receipt",
+      "passed": true
+    },
+    {
+      "predicate": "later host original owned PID/group absence",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-original-tool-record.S503b33b2.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-original-controller/attempt-01/terminal.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/controller/terminal.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/metadata/research-terminal.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/controller/execution-plan.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-original-controller/attempt-01/original.stdout",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/metadata/original-failure-traceback.txt",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/terminal.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/decoder-drain-completed.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/events.jsonl",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/observations.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/run-started.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-ack.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-admission.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-control.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-status.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-transport-eof.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-transport.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source.stderr",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source.stdout",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/startup-completed.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/metadata/mapped-inputs-04-closed.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/terminal.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/decoder-drain-completed.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/events.jsonl",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/observations.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/run-started.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-ack.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-admission.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-control.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-status.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-transport-eof.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-transport.raw",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source.stderr",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source.stdout",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/startup-completed.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "held final epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/metadata/mapped-inputs-07-closed.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "own selected handles close",
+      "passed": true
+    }
+  ],
+  "review_issues": [],
+  "runs": [
+    {
+      "run": 1,
+      "name": "run-01-front_gate-default",
+      "terminal": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/terminal.v1.json",
+        "size_bytes": 3019,
+        "sha256": "4a6e04571a82b132559e1ff735c42ca847400b1a9ff00210e1004df1144d7bd9"
+      },
+      "run_successful": true,
+      "source_returncode": 0,
+      "body_errors": [],
+      "cleanup_errors": [],
+      "elapsed_s": 35.33600431995001,
+      "valid_original_AUs": 32,
+      "raw_transport": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-transport.raw",
+        "size_bytes": 153277,
+        "sha256": "fbffcfe0cf4af38f79380a2a8038ea2aa184ca3b2b895b44a6c393e2a7cdf110"
+      },
+      "observations": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/observations.v1.json",
+        "size_bytes": 38035,
+        "sha256": "26737c8c314e5e7d12ac6e61c7a3d39f66cb017414b78164964056006668b83b"
+      },
+      "source_original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 23,
+        "ppid": 1,
+        "starttime_ticks": 61407353,
+        "uid": 1000
+      },
+      "source_owner_namespace": "original container, not host PID",
+      "loaded_libraries_descriptor": {
+        "path": "/opt/vast/output/metadata/mapped-inputs-04-closed.v1.json",
+        "sha256": "43c1b93bec82f61fe1a65634a5c26022683bbf7c69751b77073e51520ecb6838",
+        "size_bytes": 136826
+      },
+      "mapped_pins": 17,
+      "cohorts": [
+        {
+          "cohort": "startup",
+          "count": 8,
+          "after_sink_EOS": 0,
+          "residence_ms_min": 1000.132193,
+          "residence_ms_median": 1513.7459225,
+          "residence_ms_max": 6005.62863
+        },
+        {
+          "cohort": "central",
+          "count": 16,
+          "after_sink_EOS": 0,
+          "residence_ms_min": 1001.568723,
+          "residence_ms_median": 1514.6070535,
+          "residence_ms_max": 6007.448249
+        },
+        {
+          "cohort": "tail",
+          "count": 8,
+          "after_sink_EOS": 3,
+          "residence_ms_min": 1002.403868,
+          "residence_ms_median": 1515.5956855,
+          "residence_ms_max": 6017.067588
+        }
+      ],
+      "promoted_cohort": false
+    },
+    {
+      "run": 2,
+      "name": "run-02-front_gate-zero",
+      "terminal": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/terminal.v1.json",
+        "size_bytes": 3009,
+        "sha256": "3f5ea17d8166142312ea841ecd6b17765ae4d09ad37492faeb565eabc9499172"
+      },
+      "run_successful": false,
+      "source_returncode": 0,
+      "body_errors": [],
+      "cleanup_errors": [
+        "physical hash deadline exceeded"
+      ],
+      "elapsed_s": 34.876265152939595,
+      "valid_original_AUs": 32,
+      "raw_transport": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-transport.raw",
+        "size_bytes": 153277,
+        "sha256": "f3a987ada66269e8ef515f0264a895dcdd71cf69c72db4a575ea903e939b3519"
+      },
+      "observations": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/observations.v1.json",
+        "size_bytes": 38030,
+        "sha256": "ff3e66572d9418c12f3907453dd653b4a8d7ce8903051f7320a622809ee47691"
+      },
+      "source_original_owner": {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pid": 52,
+        "ppid": 1,
+        "starttime_ticks": 61410883,
+        "uid": 1000
+      },
+      "source_owner_namespace": "original container, not host PID",
+      "loaded_libraries_descriptor": {
+        "path": "/opt/vast/output/metadata/mapped-inputs-07-closed.v1.json",
+        "sha256": "24bc92d73309f0b66481f11b3d0d9ebd92603a56464e206aa0b8a3851e43d1c0",
+        "size_bytes": 136826
+      },
+      "mapped_pins": 17,
+      "cohorts": [
+        {
+          "cohort": "startup",
+          "count": 8,
+          "after_sink_EOS": 0,
+          "residence_ms_min": 999.53638,
+          "residence_ms_median": 1515.709819,
+          "residence_ms_max": 6008.320941
+        },
+        {
+          "cohort": "central",
+          "count": 16,
+          "after_sink_EOS": 0,
+          "residence_ms_min": 1001.476117,
+          "residence_ms_median": 1512.8235065,
+          "residence_ms_max": 6012.373209
+        },
+        {
+          "cohort": "tail",
+          "count": 8,
+          "after_sink_EOS": 3,
+          "residence_ms_min": 1005.924686,
+          "residence_ms_median": 1513.0416115,
+          "residence_ms_max": 6012.944809
+        }
+      ],
+      "promoted_cohort": false
+    }
+  ],
+  "front_gate_prefix_bytes_pts_rgb_equal": true,
+  "unaccepted_front_gate_prefix_pair_observations": [
+    {
+      "sequence": 1,
+      "cohort": "startup",
+      "zero_minus_default_residence_ms": -0.595813,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 2,
+      "cohort": "startup",
+      "zero_minus_default_residence_ms": -1.099669,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 3,
+      "cohort": "startup",
+      "zero_minus_default_residence_ms": 1.19564,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 4,
+      "cohort": "startup",
+      "zero_minus_default_residence_ms": 1.083883,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 5,
+      "cohort": "startup",
+      "zero_minus_default_residence_ms": -1.919995,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 6,
+      "cohort": "startup",
+      "zero_minus_default_residence_ms": 2.692311,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 7,
+      "cohort": "startup",
+      "zero_minus_default_residence_ms": 5.117075,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 8,
+      "cohort": "startup",
+      "zero_minus_default_residence_ms": 3.729236,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 9,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": -2.768674,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 10,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": 3.106115,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 11,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": -0.295888,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 12,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": 1.015864,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 13,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": 0.811102,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 14,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": -0.656289,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 15,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": -5.608928,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 16,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": -3.425457,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 17,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": -3.127955,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 18,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": 9.529483,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 19,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": 1.009934,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 20,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": 2.314025,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 21,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": -3.520719,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 22,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": 0.749508,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 23,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": -4.378196,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 24,
+      "cohort": "central",
+      "zero_minus_default_residence_ms": -4.922915,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 25,
+      "cohort": "tail",
+      "zero_minus_default_residence_ms": 3.913442,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 26,
+      "cohort": "tail",
+      "zero_minus_default_residence_ms": -4.122779,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 27,
+      "cohort": "tail",
+      "zero_minus_default_residence_ms": -5.850618,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 28,
+      "cohort": "tail",
+      "zero_minus_default_residence_ms": 3.688432,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 29,
+      "cohort": "tail",
+      "zero_minus_default_residence_ms": 1.716511,
+      "both_before_sink_EOS": true
+    },
+    {
+      "sequence": 30,
+      "cohort": "tail",
+      "zero_minus_default_residence_ms": -3.797637,
+      "both_before_sink_EOS": false
+    },
+    {
+      "sequence": 31,
+      "cohort": "tail",
+      "zero_minus_default_residence_ms": 2.297367,
+      "both_before_sink_EOS": false
+    },
+    {
+      "sequence": 32,
+      "cohort": "tail",
+      "zero_minus_default_residence_ms": -0.179193,
+      "both_before_sink_EOS": false
+    }
+  ],
+  "full_held_inputs": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-original-tool-record.S503b33b2.v1.json",
+        "size_bytes": 2978,
+        "sha256": "6fe7031ca15276179e803f71a67a60589d5d1233eee9ce1d48ecac367e131cf4"
+      },
+      "epoch7": [
+        69,
+        1407374885983427,
+        33279,
+        1,
+        2978,
+        1791131842657034400,
+        1791131842657034400
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-original-controller/attempt-01/terminal.v1.json",
+        "size_bytes": 7059,
+        "sha256": "5734281f148a0078bcfd13adb5f18db1ce0950090e8ae6f2d5d4ef0dbdfd6bcd"
+      },
+      "epoch7": [
+        69,
+        1407374885983426,
+        33279,
+        1,
+        7059,
+        1791131806339951500,
+        1791131806339951500
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/controller/terminal.v1.json",
+        "size_bytes": 8899,
+        "sha256": "ed40f2adb0883588f3d71ac34b68f7a9aa3678b3eb79e9f622463ab577b2a773"
+      },
+      "epoch7": [
+        69,
+        2251799816115393,
+        33279,
+        1,
+        8899,
+        1791131806293011000,
+        1791131806293011000
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/metadata/research-terminal.v1.json",
+        "size_bytes": 1608,
+        "sha256": "5742be5099851654bd241cd5fcccb2228cd2600a0c0152b929b1d036a6086db3"
+      },
+      "epoch7": [
+        69,
+        1407374885983411,
+        33279,
+        1,
+        1608,
+        1791131805184053000,
+        1791131805184053000
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/controller/execution-plan.v1.json",
+        "size_bytes": 8381,
+        "sha256": "a61f15f5ad78bd25fb40cecb370c0e309acc02a5f863a34b75f3bd93cd992000"
+      },
+      "epoch7": [
+        69,
+        1970324839404660,
+        33279,
+        1,
+        8381,
+        1791131730374686900,
+        1791131730374686900
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-original-controller/attempt-01/original.stdout",
+        "size_bytes": 762,
+        "sha256": "42fe5c64ffc668f707e7ab5e903a00ccbfa5a3ef62a9dd8133182fb24c641ff6"
+      },
+      "epoch7": [
+        69,
+        1688849862693921,
+        33279,
+        1,
+        762,
+        1791131806312630400,
+        1791131806312630400
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/metadata/original-failure-traceback.txt",
+        "size_bytes": 579,
+        "sha256": "b309fa2192ad6a44e76a7e10c4ccfedb46ae9c25fe40d4ebd81d39f75389a966"
+      },
+      "epoch7": [
+        69,
+        1970324839404722,
+        33279,
+        1,
+        579,
+        1791131805179665700,
+        1791131805179665700
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/terminal.v1.json",
+        "size_bytes": 3019,
+        "sha256": "4a6e04571a82b132559e1ff735c42ca847400b1a9ff00210e1004df1144d7bd9"
+      },
+      "epoch7": [
+        69,
+        1407374885983388,
+        33279,
+        1,
+        3019,
+        1791131770258117800,
+        1791131770258117800
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/decoder-drain-completed.v1.json",
+        "size_bytes": 336,
+        "sha256": "45baacacb7b41b82f5b09d7085f437fbfc66ec28c0c6b0c897bc004ff58a8adb"
+      },
+      "epoch7": [
+        69,
+        1407374885983384,
+        33279,
+        1,
+        336,
+        1791131769634553300,
+        1791131769634553300
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/events.jsonl",
+        "size_bytes": 126723,
+        "sha256": "3cab0958fff7c32fba6f99e0ee13c91ebb87ee5f0f04c4469aa8c87f570079c3"
+      },
+      "epoch7": [
+        69,
+        1970324839404681,
+        33279,
+        1,
+        126723,
+        1791131769633054000,
+        1791131769633054000
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/observations.v1.json",
+        "size_bytes": 38035,
+        "sha256": "26737c8c314e5e7d12ac6e61c7a3d39f66cb017414b78164964056006668b83b"
+      },
+      "epoch7": [
+        69,
+        1407374885983385,
+        33279,
+        1,
+        38035,
+        1791131769638895300,
+        1791131769638895300
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/run-started.v1.json",
+        "size_bytes": 455,
+        "sha256": "f4ceb3e2985dac05bdb6cabc06a0a0ce8b59a6c6de9131d0f27a30c480ec1919"
+      },
+      "epoch7": [
+        69,
+        1407374885983370,
+        33279,
+        1,
+        455,
+        1791131734924941000,
+        1791131734924941000
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-ack.raw",
+        "size_bytes": 279,
+        "sha256": "8c8e8132f84f0cee730410ab57e49a4d24889c95b86cf65cfcc9bbf0b3e28768"
+      },
+      "epoch7": [
+        69,
+        1970324839404687,
+        33279,
+        1,
+        279,
+        1791131768567958200,
+        1791131768567958200
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-admission.raw",
+        "size_bytes": 22973,
+        "sha256": "9cbdada4f96bd8cd264204f38d859728955c5e0fe0dc2a7589f783109564c957"
+      },
+      "epoch7": [
+        69,
+        1407374885983373,
+        33279,
+        1,
+        22973,
+        1791131768558693000,
+        1791131768558693000
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-control.raw",
+        "size_bytes": 87,
+        "sha256": "3dc2d1653e32b3f85f052b4e7c1c7f940833e5d0f1b161fca36e0b872642de6c"
+      },
+      "epoch7": [
+        69,
+        1407374885983376,
+        33279,
+        1,
+        87,
+        1791131768573538900,
+        1791131768573538900
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-status.raw",
+        "size_bytes": 226,
+        "sha256": "426f727f478013e72ebe97ca22dd7545c87750e40416a7e0866241881ff645d6"
+      },
+      "epoch7": [
+        69,
+        1407374885983374,
+        33279,
+        1,
+        226,
+        1791131769563884900,
+        1791131769563884900
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-transport-eof.v1.json",
+        "size_bytes": 250,
+        "sha256": "1a933d05a3d6378b07fc5e5252fdfab044867ffe5119940492b7dde8daa1c208"
+      },
+      "epoch7": [
+        69,
+        1970324839404695,
+        33279,
+        1,
+        250,
+        1791131769571298900,
+        1791131769571298900
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-transport.raw",
+        "size_bytes": 153277,
+        "sha256": "fbffcfe0cf4af38f79380a2a8038ea2aa184ca3b2b895b44a6c393e2a7cdf110"
+      },
+      "epoch7": [
+        69,
+        1407374885983377,
+        33279,
+        1,
+        153277,
+        1791131768577408900,
+        1791131768577408900
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source.stderr",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "epoch7": [
+        69,
+        1970324839404691,
+        33279,
+        1,
+        0,
+        1791131735494027200,
+        1791131735494027200
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source.stdout",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "epoch7": [
+        69,
+        1688849862694034,
+        33279,
+        1,
+        0,
+        1791131735492542700,
+        1791131735492542700
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/startup-completed.v1.json",
+        "size_bytes": 185,
+        "sha256": "7cdcf82389c3596ff9fb75708d4668cd03017d830ba17fe07302fcd0dce99323"
+      },
+      "epoch7": [
+        69,
+        1688849862694038,
+        33279,
+        1,
+        185,
+        1791131735566224600,
+        1791131735566224600
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/metadata/mapped-inputs-04-closed.v1.json",
+        "size_bytes": 136826,
+        "sha256": "43c1b93bec82f61fe1a65634a5c26022683bbf7c69751b77073e51520ecb6838"
+      },
+      "epoch7": [
+        69,
+        1407374885983381,
+        33279,
+        1,
+        136826,
+        1791131735555080200,
+        1791131735555080200
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/terminal.v1.json",
+        "size_bytes": 3009,
+        "sha256": "3f5ea17d8166142312ea841ecd6b17765ae4d09ad37492faeb565eabc9499172"
+      },
+      "epoch7": [
+        69,
+        1407374885983408,
+        33279,
+        1,
+        3009,
+        1791131805167518900,
+        1791131805167518900
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/decoder-drain-completed.v1.json",
+        "size_bytes": 336,
+        "sha256": "cbb97c827b68a408420356c98f5ead5e507044bc89b6dbc76e0ed884e269312a"
+      },
+      "epoch7": [
+        69,
+        1407374885983405,
+        33279,
+        1,
+        336,
+        1791131804925844700,
+        1791131804925844700
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/events.jsonl",
+        "size_bytes": 127383,
+        "sha256": "fa31faff70e37711e0fd43db1b413b249b14e7947cf0fde954fc9d548c6ee909"
+      },
+      "epoch7": [
+        69,
+        1970324839404702,
+        33279,
+        1,
+        127383,
+        1791131804923372500,
+        1791131804923372500
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/observations.v1.json",
+        "size_bytes": 38030,
+        "sha256": "ff3e66572d9418c12f3907453dd653b4a8d7ce8903051f7320a622809ee47691"
+      },
+      "epoch7": [
+        69,
+        1407374885983406,
+        33279,
+        1,
+        38030,
+        1791131804930703600,
+        1791131804930703600
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/run-started.v1.json",
+        "size_bytes": 451,
+        "sha256": "88af7cfaef99dabdf325f44a7c9de459802d78989009b853dc36aefee85ddc9d"
+      },
+      "epoch7": [
+        69,
+        1407374885983391,
+        33279,
+        1,
+        451,
+        1791131770295656600,
+        1791131770295656600
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-ack.raw",
+        "size_bytes": 279,
+        "sha256": "8c8e8132f84f0cee730410ab57e49a4d24889c95b86cf65cfcc9bbf0b3e28768"
+      },
+      "epoch7": [
+        69,
+        1970324839404708,
+        33279,
+        1,
+        279,
+        1791131803857634300,
+        1791131803857634300
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-admission.raw",
+        "size_bytes": 22973,
+        "sha256": "6998bdbd67045da7ac58caf00e7f636db71a661237b55d938ab33565135e6230"
+      },
+      "epoch7": [
+        69,
+        1407374885983394,
+        33279,
+        1,
+        22973,
+        1791131803850460200,
+        1791131803850460200
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-control.raw",
+        "size_bytes": 87,
+        "sha256": "259fb3ab1597d88214d14c42c059c51050b53ffc93161c9668a299c04568b423"
+      },
+      "epoch7": [
+        69,
+        1407374885983397,
+        33279,
+        1,
+        87,
+        1791131803863978700,
+        1791131803863978700
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-status.raw",
+        "size_bytes": 226,
+        "sha256": "00745a1cb3ad138b4428a006bab070b56ae0c320d68f54694474f7353aac65c9"
+      },
+      "epoch7": [
+        69,
+        1407374885983395,
+        33279,
+        1,
+        226,
+        1791131804854139500,
+        1791131804854139500
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-transport-eof.v1.json",
+        "size_bytes": 249,
+        "sha256": "dd2280b1d55691689d2080dd30dd27e1a9bd494b0776c41cad4ab88926b9d1b1"
+      },
+      "epoch7": [
+        69,
+        1970324839404716,
+        33279,
+        1,
+        249,
+        1791131804856139300,
+        1791131804856139300
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-transport.raw",
+        "size_bytes": 153277,
+        "sha256": "f3a987ada66269e8ef515f0264a895dcdd71cf69c72db4a575ea903e939b3519"
+      },
+      "epoch7": [
+        69,
+        1407374885983398,
+        33279,
+        1,
+        153277,
+        1791131803866969800,
+        1791131803866969800
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source.stderr",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "epoch7": [
+        69,
+        1970324839404712,
+        33279,
+        1,
+        0,
+        1791131770783452400,
+        1791131770783452400
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source.stdout",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "epoch7": [
+        69,
+        1688849862694055,
+        33279,
+        1,
+        0,
+        1791131770783452400,
+        1791131770783452400
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/startup-completed.v1.json",
+        "size_bytes": 185,
+        "sha256": "0e3716b1b4b97f62f95017726e85579bba0d2131b01e85c43c820ba64a9f763d"
+      },
+      "epoch7": [
+        69,
+        1407374885983403,
+        33279,
+        1,
+        185,
+        1791131770857645400,
+        1791131770857645400
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/metadata/mapped-inputs-07-closed.v1.json",
+        "size_bytes": 136826,
+        "sha256": "24bc92d73309f0b66481f11b3d0d9ebd92603a56464e206aa0b8a3851e43d1c0"
+      },
+      "epoch7": [
+        69,
+        1407374885983402,
+        33279,
+        1,
+        136826,
+        1791131770846380400,
+        1791131770846380400
+      ],
+      "full_read": true
+    }
+  ],
+  "later_host_named_owner_scans": [
+    {
+      "monotonic_ns": 614880618213177,
+      "named_pids": {
+        "39776": null,
+        "40051": null,
+        "39799": null
+      },
+      "groups": [
+        39776,
+        39799
+      ],
+      "group_members": [],
+      "errors": []
+    },
+    {
+      "monotonic_ns": 614880619494472,
+      "named_pids": {
+        "39776": null,
+        "40051": null,
+        "39799": null
+      },
+      "groups": [
+        39776,
+        39799
+      ],
+      "group_members": [],
+      "errors": []
+    }
+  ],
+  "own_owner": {
+    "pid": 40212,
+    "ppid": 40209,
+    "pgid": 40212,
+    "sid": 40212,
+    "starttime_ticks": 61488052
+  },
+  "own_fd_before": 6,
+  "own_fd_after": 6,
+  "own_close_errors": [],
+  "elapsed_before_receipt_s": 0.05169844895135611,
+  "actual_C_failed_cold_review": "pending separately dispatched original cold evidence; this script never invokes cold reader",
+  "limits": [
+    "Run02 cleanup failed, so full package/library retirement custody is not earned. Original successful-looking decoder/RGB observations remain unaccepted prefixes.",
+    "Source-child PIDs23/52 are original container PIDs; host scans are not substituted for namespace retirement.",
+    "One front_gate prefix pair does not complete the counterbalanced two-clip experiment or license decoder setting/intake adoption.",
+    "Observed sink/src residence includes queueing/backpressure; no utilization/capacity/independent repetition claim.",
+    "Original underbody runs, full paired receipt and full research acceptance are absent."
+  ],
+  "full_research_accepted": false,
+  "intake_or_zero_setting_adopted": false,
+  "publication_ready": false,
+  "legacy_full32": 0,
+  "legacy_Q4": 0,
+  "legacy_publication5600": 0
+}

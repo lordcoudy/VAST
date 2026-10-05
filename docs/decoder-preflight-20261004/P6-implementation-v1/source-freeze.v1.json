@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "P6_scoped_source_freeze_before_canonical",
+  "planning_commit": "39797d30644a5b889802acbdd67420838cc66821",
+  "planning_comment": 5408522443,
+  "source_rows": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 93774,
+      "sha256": "1cdfbbeffbbf859e83ba127a07b5ae214887b20bb4deab3615a1c1aa9bb124e8",
+      "epoch7": [
+        68,
+        4785074605590882,
+        33279,
+        1,
+        93774,
+        1791152612452065500,
+        1791152612452065500
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+      "size_bytes": 106331,
+      "sha256": "3d6eac7facb0e1fd87ad0acd3caf9c9ead396370a6d62e8caf626263a03463f1",
+      "epoch7": [
+        68,
+        4785074605762841,
+        33279,
+        1,
+        106331,
+        1791152514994109700,
+        1791152514994109700
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/tests/test_decoder_research_v6.py",
+      "size_bytes": 50190,
+      "sha256": "15ebb1f97da46e19358bc4d460c396abb607725a08dcc0018da8d92fc0ed0153",
+      "epoch7": [
+        68,
+        147774362773175885,
+        33279,
+        1,
+        50190,
+        1791152612454500900,
+        1791152612454500900
+      ]
+    }
+  ],
+  "old_protocol_class_methods_AST_equal": 81,
+  "old_protocol_test_methods_AST_equal": 57,
+  "only_new_qualified_ids": [
+    "test_research_protocol.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload",
+    "test_research_protocol.IndependentColdTests.test_P6_transport_partial_progress_keeps_original_absolute_deadline",
+    "test_research_protocol.IndependentColdTests.test_P6_transport_zero_progress_refuses_without_spinning"
+  ],
+  "all_old_167_adapter_ids_preserved": true,
+  "adapter_existing_class_method_AST_count_unchanged": 17,
+  "adapter_guard_101_to_104": true,
+  "canonical_nested170_is_not_yet_actual_result": true
+}

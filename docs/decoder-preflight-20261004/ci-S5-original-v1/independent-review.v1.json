@@ -1,0 +1,249 @@
+{
+  "artifact_kind": "independent_exact_S5_original_hosted_CI_review_v1",
+  "verdict": "PASS_EXACT_S5_ORIGINAL_HOSTED_CI",
+  "source_commit": "cfa959d2aacbc84a589671dbdf13ae36ae76a2a6",
+  "run_id": 37235417252,
+  "run_attempt": 1,
+  "provider_url": "https://github.com/lordcoudy/VAST/actions/runs/37235417252",
+  "actual_provider": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-04T21:32:40Z",
+    "cpu_job": 111533418579,
+    "cpu_conclusion": "success",
+    "host_job": 111533418465,
+    "host_conclusion": "success",
+    "all_returned_job_steps_successful": true,
+    "host_diagnostic_only": true
+  },
+  "blockers": [],
+  "original_retention": {
+    "root": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S5cfa959d2-v1/original-retention-v1",
+    "provider_metadata": {
+      "bytes": 27072,
+      "sha256": "4102238404ffa42cee8ed2535238d348b8ed01d17e48e9feaa70003963385fcf"
+    },
+    "terminal": {
+      "bytes": 60972,
+      "sha256": "24d53b681e7fa6aced42339bd2c5ec9bfbad827c79066006111135c611e61908",
+      "status": "originals_retained",
+      "elapsed_s": 10.713913162006065
+    },
+    "faithful_actual_tool_record": {
+      "path": "../retention-original-tools.v1.json",
+      "bytes": 2125,
+      "sha256": "326e51b279ba6bd691d67cd51b417f62e52851dadb67b1cece21142d9214e888",
+      "initiating_chunk": "2ffa1a",
+      "session": 12462,
+      "final_chunk": "78ac76",
+      "final_exit_code": 0,
+      "complete_initial_arguments_and_returned_objects_available": true
+    },
+    "retainer": {
+      "bytes": 5860,
+      "sha256": "81a0acc1da08e8d4b97486f6c04242ea9666d9f7c4bf13df2a7ab94b2c02bde9",
+      "five_bindings_inverse_equal_accepted_S4": true
+    },
+    "archives": {
+      "cpu": {
+        "id": 11316011735,
+        "bytes": 2221044,
+        "sha256": "f4dbeb28b73d6aafab3a42f1c0894e99612c9bf011f412c75f3d10bbdaee77c2",
+        "members": 202,
+        "decoded_bytes": 11751878
+      },
+      "host": {
+        "id": 11314874193,
+        "bytes": 562453,
+        "sha256": "b2e06392370955f6c84a1efebcf8768a185370f9a7307943ea2a5edca4c36153",
+        "members": 51,
+        "decoded_bytes": 2968977
+      }
+    },
+    "original_logs": [
+      {
+        "job_id": 111533418579,
+        "bytes": 94825,
+        "sha256": "8e8c2d098e0248bb81b68a30da61a29697fc0b559a3a5efae6b26de1b7b33309"
+      },
+      {
+        "job_id": 111533418465,
+        "bytes": 34830,
+        "sha256": "42ba256383cb71ce983ff14fe09b90b07b9880f1980230637ca4c9059ab9209b"
+      }
+    ],
+    "full_original_member_join": "All253 actual members independently read in memory; ZIP read CRC plus explicit CRC/size/SHA equal original descriptors; safe unique file names, provider exact artifact size/digest/run/head, finite aggregate decoded bytes. Full original job logs match retained pins. No new full member list/manifest produced."
+  },
+  "source_binding": {
+    "baseline": {
+      "commit": "11471c5e13787dd7eac710738cd67472dc60b591",
+      "rows": 6399,
+      "sha256": "d12bd2c8f272269f79a846d003338770c7161a42ba17f199f42d13544f463b2b",
+      "status": "Previously independently verified S4 CPU source-before original; historical FAILED whole CI retained."
+    },
+    "native_raw_delta": {
+      "paths": 39,
+      "modified": 7,
+      "added": 32,
+      "deleted": 0,
+      "modes": "Only000000->100644 additions and100644->100644 modifications; complete old/new modes/blob bytes checked in memory.",
+      "old_raw_blobs_match_baseline": true,
+      "new_raw_blobs_applied_to_expected_table": true
+    },
+    "only_code_changes": [
+      "scripts/full_publication_results.py",
+      "tests/test_full_publication_results.py"
+    ],
+    "frozen_source_pins": [
+      {
+        "path": "scripts/full_publication_results.py",
+        "bytes": 25805,
+        "sha256": "d634eb9e2faacbc826aa9b9f35292e159d12af545eec784d7e0fc2e9cdefb054"
+      },
+      {
+        "path": "tests/test_full_publication_results.py",
+        "bytes": 23344,
+        "sha256": "f5c59bb164d9925c347af565e8c3ac792f9b3462d78d264470c938aee7cb9802"
+      }
+    ],
+    "both_actual_job_tables": {
+      "rows": 6431,
+      "bytes": 1466771,
+      "sha256": "43501992512aafef02ccad7aeaabc118433eb1ce2d9f5b26c16dc4f686043f87",
+      "all_rows_equal_baseline_plus_exact_delta": true,
+      "before_after_raw_bytes_equal_in_both_jobs": true,
+      "CPU_HOST_raw_tables_equal": true,
+      "changed_tracked_paths": [],
+      "raw_checkout_bytes_match_commit": true
+    },
+    "new_full_tree_inventory_generated": false
+  },
+  "actual_checks": {
+    "root": {
+      "discovered": 3049,
+      "selected": 3040,
+      "success": 2952,
+      "skips": 88,
+      "deferred": 9,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_s": 917.700936687
+    },
+    "root_successful": true,
+    "full_child_report_equal_embedded_report": true,
+    "exact_inventory_join": "All3049 discovery/3040 portable IDs equal S4 plus ONE approved new POSIX case; successful IDs equal S4 successes plus repaired old concurrent case and the new case. All88 actual skips and portable audit fields, allowed declarations and all9 deferred IDs/reasons/source/capability fields exactly equal S4. No coercion/predicted success counts.",
+    "exporter": {
+      "old_methods": 7,
+      "new_methods": 1,
+      "all_eight_actual_success_ids_and_original_log_ok_lines": true,
+      "original_S4_failed_concurrent_case_now_success": true
+    },
+    "native_built_targets": [
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ],
+    "required_native_regressions": [
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+    ],
+    "configure_build_returncode": 0,
+    "actual_build_stdout_target_markers": true,
+    "decoder": {
+      "root_module_successes": 12,
+      "nested_tests": 167,
+      "nested_elapsed_s": 48.219359905999966,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "isolated": true,
+      "dont_write_bytecode": true,
+      "python": "3.12.3",
+      "source15_before_after_seven_epochs_equal": true,
+      "source15_hash_size_join_exact_current_source_table": true,
+      "all167_unique_raw_start_terminal_and_success_outcome_join": true,
+      "all167_IDs_equal_S4_original": true,
+      "original_stdout_stderr_and_final_terminal_descriptors_hash_size_epoch_join": true,
+      "pid": 5543,
+      "ppid": 3764,
+      "pgid": 5543,
+      "sid": 5543,
+      "boot_id": "33f9e0fd-7b23-48f0-a9a2-702d1678014b",
+      "starttime_ticks": 44657,
+      "capture_returncode": 0,
+      "capture_elapsed_s": 48.5743956,
+      "cleanup_elapsed_s": 0.010092376999978114,
+      "final_close_elapsed_s": 48.574959336999996,
+      "final_close_cleanup_elapsed_s": 0.01065611399997124,
+      "child_reaped": true,
+      "logs_closed": true,
+      "close_errors": [],
+      "failure": null,
+      "signal_observation": null,
+      "original_successful": false,
+      "original_provisional_until_owner_final_close": true,
+      "final_original_successful": false,
+      "final_original_provisional_until_capture_return": true,
+      "candidate_success": true,
+      "two_real_cleanup15_cases": {
+        "test_setup_v2.SetupTests.test_outer_failed_body_preserves_cause_when_original_cleanup15_is_crossed": 15.032259400000044,
+        "test_setup_v2.SetupTests.test_outer_successful_body_crosses_original_cleanup15_and_rejects_success": 15.047783474000028
+      }
+    },
+    "original_suite_owner": {
+      "pid": 3764,
+      "ppid": 3445,
+      "pgid": 3764,
+      "sid": null,
+      "sid_status": "Not present in original root observer owner; not invented.",
+      "starttime_ticks": 9577,
+      "boot_id": "33f9e0fd-7b23-48f0-a9a2-702d1678014b",
+      "returncode": 0,
+      "successful": true,
+      "forced_sigterm": false,
+      "forced_sigkill": false,
+      "control_EOF": true,
+      "trace_EOF": true,
+      "pidfd_failure": null,
+      "requests_sent": 14,
+      "responses_started": 14,
+      "responses_completed": 14,
+      "raw_events_and_responses_JSONL_complete_parse": true,
+      "raw_response_and_trace_byte_counts_join": true,
+      "descendant_quiescence": "not established by original-child status"
+    },
+    "profile": {
+      "load_verified": true,
+      "unload_verified": true,
+      "load_and_unload_capture_returncode": 0,
+      "held_fds_released": true,
+      "status": "completed",
+      "original_child_label_and_boot_and_parent_identity_join": true
+    },
+    "host": {
+      "diagnostic_tests": 2,
+      "returncode": 0,
+      "diagnostic_passed": true,
+      "full_ci_successful": false
+    }
+  },
+  "gate_disposition": {
+    "latest_exact_S5_hosted_CI_pass": true,
+    "original_S4_FAILED_immutable": true,
+    "corrected_cold_grant": false,
+    "corrected_cold_executed": false,
+    "scientific_acceptance": false,
+    "hardware_acceptance": false,
+    "no_provider_action_or_target_rerun_by_reviewer": true
+  },
+  "limits": [
+    "This accepts actual hosted CI at the exact retained head/attempt, not actual scientific cold reconstruction or historic/future campaigns. Current ordinary-checkout/source readiness and a separate once-cold grant remain root-owned.",
+    "Original provisional/false adapter fields remain unchanged. Fixture acceptance follows measured child return0, reaping/log closure, final candidate status and actual root-module success.",
+    "Some initial own shape output was truncated and three own shape reads failed on guessed JSON container fields. They are not target failures; final untruncated eed021 closed0 uses complete actual container shapes and all required joins. No source/helper/script/manifest/tests/CI/scientific/decoder runs or provider polls performed.",
+    "Original-child status does not establish descendant quiescence; the retained statement remains explicit."
+  ]
+}

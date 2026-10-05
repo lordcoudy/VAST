@@ -1,0 +1,210 @@
+{
+  "RED04_original_predicates": [
+    "Original Thread.start primary was replaced by subsequent genuine stream-close fault.",
+    "Actual first stdout closed then injected EBADF fault prevented second stderr close.",
+    "Actual duplicated registry FD was leaked on failed thread start."
+  ],
+  "accepted": false,
+  "actual_added_IDs": [
+    "test_successor_v6.GuestRunRetirementTests.test_registry_reader_start_failure_preserves_primary_and_retires_auxiliary_fds",
+    "test_successor_v6.GuestRunRetirementTests.test_run_drain_handoff_and_retirement_keep_real_fd_and_first_cause",
+    "test_successor_v6.GuestRunRetirementTests.test_run_partial_pipe_acquisition_retires_real_first_pair",
+    "test_successor_v6.GuestRunRetirementTests.test_run_retirement_errors_preserve_primary_and_attempt_remaining"
+  ],
+  "actual_added_method_count": 4,
+  "actual_original_tool_chunk": "001db1",
+  "actual_original_tool_exit_code": 0,
+  "all_prior71_scoped_IDs_preserved": true,
+  "approved_P": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+  "at_UTC": "2026-10-04T11:53:14.464626+00:00",
+  "author": "/root/latency_diagnosis",
+  "benchmark_arm_count": 0,
+  "change": "fix-decoder-preflight",
+  "changed_Guest_methods_only": [
+    "drain",
+    "preflight",
+    "run"
+  ],
+  "exact_discovered_started_terminal_success_membership": true,
+  "final_scoped75_GREEN": true,
+  "fixture_facts": [
+    "One genuine tiny canonical CPython auxiliary child with new session/pinned executable; no actual gst-inspect/GI/packaged source/decoder/model/Docker.",
+    "All Pin inputs are actual isolated regular files/canonical interpreter; historical source/plugin/media paths and global /tmp registry are routed only in the fixture to a private ext4 temporary namespace.",
+    "Actual native pipe duplicate and real process stdout/stderr closure exercised; underlying stdout closes before injected EBADF-shaped error. Subject primary record/traceback keeps Thread.start first and separate cleanup companion; both stream calls happen once, duplicate is closed, real auxiliary child is reaped, metadata success remains false and runs0.",
+    "Prior run/drain three methods remain included in final75; current original method bytes/IDs preserved outside newly appended GuestRunRetirementTests class."
+  ],
+  "genuine_before_registry_correction": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/guest_consumer.before-registry-retirement.py",
+    "sha256": "45ebef8b11004bbee09637248c4850a7242b6e4bd8fb1292b2f85acbaa9b4d56",
+    "size_bytes": 63098
+  },
+  "genuine_original_guest_before": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/guest_consumer.before-run-retirement.py",
+    "sha256": "6e9da26ca5e7f8aaa12bc7fd0e2304f18cc078f4e18f7817a8eb0299cc30f084",
+    "size_bytes": 61927
+  },
+  "kind": "guest_owned_retirement_final_author_receipt_v2",
+  "limitations": [
+    "Scoped75 guest methods, comprising prior71 plus4 exact new IDs; this receipt does not establish full6module/root adapter/hosted CI or final S/code approval.",
+    "Original75 physical stderr/unit report contains all individual started/terminal IDs/outcomes. Final returned original tool is untruncated compact post-close summary joined to capture SHA, not a reconstructed per-case stdout.",
+    "Original e9fb test bytes are explicitly verified inverse, not genuine machine-before snapshot; original6e9 guest and45eb before-registry files are genuine pre-correction copies.",
+    "Interim author v1 and all RED/GREEN/raw/tool records remain immutable; earlier fixture bug and truncated interimGREEN summary retained without relabelling.",
+    "No hardware metadata/research or scientific run was executed; modes/order4x32AU/caps/clocks/cadence/property controls unchanged. Root owns full inventory/CI/source review/conformance/once-dispatch/archive/release."
+  ],
+  "native_pair_count": 0,
+  "original_test_inverse": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/test_successor_v6.original-e9fb.inverse.py",
+    "sha256": "e9fb3fa5dd942f393f8107ef5838f5c58fe7579e8e305790c896eadaf89ca8e0",
+    "size_bytes": 36716
+  },
+  "original_test_provenance": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/original-test-reconstruction.v1.json",
+    "sha256": "9d1b0b77722957a652dda8877f6752b3a8f67f4f7f85d8e9332dd5e641709af2",
+    "size_bytes": 1436
+  },
+  "phases": {
+    "green03": {
+      "capture": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/green03/capture.v1.json",
+        "sha256": "2756231bb7f7cb9adb1b02481fe26531a5e8de9b62b2f10b738f03ff603173da",
+        "size_bytes": 20701
+      },
+      "child": {
+        "boot": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 28764,
+        "pid": 28764,
+        "ppid": 28763,
+        "sid": 28764,
+        "startticks": 59703089,
+        "uid": 1000
+      },
+      "close_errors": [],
+      "containment": false,
+      "elapsed_s": 1.5354333679424599,
+      "errors": 0,
+      "expected_failures": 0,
+      "failures": 0,
+      "inner_fd": [
+        4,
+        4
+      ],
+      "original_tool": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/green03/original-tool.v1.json",
+        "sha256": "52aa78507c99df24c98e40cdaccad38276b5d5395870c6b27e721f148f8f4bba",
+        "size_bytes": 6082
+      },
+      "outer_fd": [
+        6,
+        6
+      ],
+      "reaped": true,
+      "returncode": 0,
+      "skips": 0,
+      "source_stable": true,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/green03/original.stderr",
+        "sha256": "fffed9d7db2505c07edf28c5917a85e3c55b68a0dfc5100f23d80c57e055d54d",
+        "size_bytes": 45255
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/green03/original.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "successes": 75,
+      "tests_run": 75,
+      "unexpected_successes": 0,
+      "unique_started_terminal_count": 75,
+      "unit": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/green03/unit/unit.v1.json",
+        "sha256": "898d94c0a47ce5b7b1a9bfffaa16a0dccffba89eb8b106ac60dcedc0e439880b",
+        "size_bytes": 32691
+      }
+    },
+    "red04": {
+      "capture": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/red04/capture.v1.json",
+        "sha256": "42ada4b7b46a2623f783db1b8e95d4bed4a1974256c4737232047d0145a7c1db",
+        "size_bytes": 2554
+      },
+      "child": {
+        "boot": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "gid": 1000,
+        "pgid": 28749,
+        "pid": 28749,
+        "ppid": 28748,
+        "sid": 28749,
+        "startticks": 59694483,
+        "uid": 1000
+      },
+      "close_errors": [],
+      "containment": false,
+      "elapsed_s": 0.42420144309289753,
+      "errors": 0,
+      "expected_failures": 0,
+      "failures": 3,
+      "inner_fd": [
+        4,
+        4
+      ],
+      "original_tool": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/red04/original-tool.v1.json",
+        "sha256": "270335d6bebde3a50f322b7f09aeac684db02224529dd3e8969d2703416565fd",
+        "size_bytes": 7308
+      },
+      "outer_fd": [
+        6,
+        6
+      ],
+      "reaped": true,
+      "returncode": 1,
+      "skips": 0,
+      "source_stable": true,
+      "stderr": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/red04/original.stderr",
+        "sha256": "68e6d96848bf0002a800b7721cdccdb177c84ef2d14928c02533a83d7255ccbb",
+        "size_bytes": 6213
+      },
+      "stdout": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/red04/original.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0
+      },
+      "successes": 0,
+      "tests_run": 1,
+      "unexpected_successes": 0,
+      "unique_started_terminal_count": 1,
+      "unit": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/red04/unit/unit.v1.json",
+        "sha256": "a08056fcc44ce24044336615959188d722cb7894020858c70509b4949602bdba",
+        "size_bytes": 6382
+      }
+    }
+  },
+  "prior_intermediate_author_receipt": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/guest-run-retirement-v1/author-receipt.v1.json",
+    "sha256": "711cd9a836803a0baf66a66715b9bb362f9a76b20474d97bdc6eab483e326269",
+    "size_bytes": 13732
+  },
+  "publication_ready": false,
+  "qualification_count": 0,
+  "registry_correction": "Immediate actual dup registration and ownership transfer only after thread starts. Remaining pending duplicates removed before one close; each process wait/signal/FD/stream/thread retirement guarded and attempted. Original primary preserved by re-raise; cleanup errors retained as primary notes and bounded registry_owned_cleanup_failures event, using shared drain retirement callback. Original command/environment, clocks, pipeline/grants and mode interfaces unchanged.",
+  "root_tasks_Git_CI_edits": false,
+  "schema_version": 1,
+  "scientific_operations": 0,
+  "source_frozen": true,
+  "source_pins": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/guest_consumer.py",
+      "sha256": "025d4a18e56fef4329ae5cfe757411ae476283ad1016d1f50a864184cf723708",
+      "size_bytes": 64590
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_successor_v6.py",
+      "sha256": "2d1b3ac6ab031ac49449f28f453b165b19780fbc30e5fb9f451d15a5afd555f6",
+      "size_bytes": 54172
+    }
+  ],
+  "untruncated_tool_capture_SHA_join": true
+}

@@ -1,0 +1,40 @@
+{
+  "P_parent_and_ancestor_S": true,
+  "all6289_held_SHA_size_and_GitOID_match_independent_S_manifest": true,
+  "all6289_own_same_view_held_named_7epochs_stable_during_original_preparation": true,
+  "all_physical_raw_GitOIDs_exact": true,
+  "clean_tracked_tree_before_after": true,
+  "count": 6289,
+  "descriptor_wording_clarification": "Git manifest stores bytes/size, not POSIX epochs. The original preparation separately matched raw SHA/size/GitOID and bracketed each actual held/named seven-epoch tuple. No new clone or file/hash verification performed by this metadata clarification.",
+  "elapsed_s": 1.8392268209718168,
+  "fd_before_after": [
+    6,
+    6
+  ],
+  "file_epoch_manifest": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/fresh-ext4-file-epochs.v1.json",
+    "sha256": "13d501161c55188362bbe0af0a5b63ab6c373a0b6d2adb86d69c8bb625198af4",
+    "size_bytes": 1136751
+  },
+  "input_manifest": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S7666e79f-v1/S.raw-blob-sha256.manifest.json",
+    "sha256": "36e95245f71dd244f903365ce0885565ce4c0e16242a19ee26d46deb85384781",
+    "size_bytes": 1438624
+  },
+  "kind": "vast_decoder_v6_fresh_ext4_committed_checkout_preparation_v2",
+  "limits": [
+    "Supported fresh native clone preparation and physical source custody only; required CI and physical quiet/input/namespace checks remain separate.",
+    "No original/global runtime, source, media, container or existing checkout reset or modification."
+  ],
+  "metadata_operations": 0,
+  "ordinary_git_directory": true,
+  "original_clone_tools": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/fresh-ext4-clone-original-tools.v1.json",
+  "original_preparation_receipt": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/fresh-ext4-preparation.v1.json",
+  "planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+  "rawP4_original_hashes_exact": true,
+  "research_operations": 0,
+  "review_checkout": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s7666e79f",
+  "source_commit": "7666e79f5a9cd27530ac6ea95b6629b4f2adb9d4",
+  "source_review_COMMENT": 5406120493,
+  "total_bytes": 347714725
+}

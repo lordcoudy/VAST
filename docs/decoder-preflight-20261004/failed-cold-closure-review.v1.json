@@ -1,0 +1,321 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS_CLOSED_FAILURE_AND_PREFIX_RETENTION_ONLY",
+  "actual_C_cold_refusal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-cold/attempt-01/verification.v1.json",
+    "size_bytes": 69117,
+    "sha256": "c2b64e11a6b628442d04f63459732d1840ecaf1ca3568baa31dc9df176b786a1"
+  },
+  "original_C_tool_record": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-cold-original-tool-record.C6cdb6002.v1.json",
+    "size_bytes": 3530,
+    "sha256": "78ff5371ea28a46e25208613f07491b2b1d3f3c3a608c1dbb858c27524cb9a5b"
+  },
+  "independent_original_failure_review": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-result-independent-v1/failed-original-review.v1.json",
+    "size_bytes": 46118,
+    "sha256": "13d71c9740a132899fb4fcd6cc86c999867143de0bc175314ebc9c3dc95b9a2a"
+  },
+  "checks": [
+    {
+      "predicate": "exact actual original refusal physical bytes",
+      "passed": true
+    },
+    {
+      "predicate": "one original C cold session74923 final exit1 stdout join",
+      "passed": true
+    },
+    {
+      "predicate": "actual readonly argv equals prepared unchanged failed-research scope",
+      "passed": true
+    },
+    {
+      "predicate": "P1 S2 unchanged and C P2 observer stays separate",
+      "passed": true
+    },
+    {
+      "predicate": "original external refusal retained and no complete causal join",
+      "passed": true
+    },
+    {
+      "predicate": "actual original report owner fd retirement within120",
+      "passed": true
+    },
+    {
+      "predicate": "no optimistic late companion or scientific promotion",
+      "passed": true
+    },
+    {
+      "predicate": "reuse exact previously closed original failure/prefix review",
+      "passed": true
+    },
+    {
+      "predicate": "unpromoted hash-valid prefix matches original run1",
+      "passed": true
+    },
+    {
+      "predicate": "unpromoted hash-valid prefix matches original run2",
+      "passed": true
+    },
+    {
+      "predicate": "exactly two retained prefixes, no underbody/full128 claim",
+      "passed": true
+    },
+    {
+      "predicate": "two later original C reader40163 parent40160 and group absent",
+      "passed": true
+    },
+    {
+      "predicate": "final held epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-cold/attempt-01/verification.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "final held epoch /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-cold-original-tool-record.C6cdb6002.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "final held epoch /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-result-independent-v1/failed-original-review.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "final held epoch /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-dispatch-P1-S2-C-v1/review.final.v1.json",
+      "passed": true
+    },
+    {
+      "predicate": "final held epoch /home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "passed": true
+    },
+    {
+      "predicate": "final held epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-transport.raw",
+      "passed": true
+    },
+    {
+      "predicate": "final held epoch /mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-transport.raw",
+      "passed": true
+    },
+    {
+      "predicate": "own current review handles closed",
+      "passed": true
+    }
+  ],
+  "review_issues": [],
+  "first_failure": {
+    "message": "external original completion",
+    "type": "Refusal"
+  },
+  "prefix_findings": [
+    {
+      "causal_join_complete": false,
+      "clip": "front_gate",
+      "first_prefix_refusal": null,
+      "hash_valid_packet_prefix": 32,
+      "hash_valid_prefix_bytes": 153277,
+      "promoted_cohort": false,
+      "run": 1,
+      "setting": "default"
+    },
+    {
+      "causal_join_complete": false,
+      "clip": "front_gate",
+      "first_prefix_refusal": null,
+      "hash_valid_packet_prefix": 32,
+      "hash_valid_prefix_bytes": 153277,
+      "promoted_cohort": false,
+      "run": 2,
+      "setting": "zero"
+    }
+  ],
+  "prefix_epoch_joins": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-transport.raw",
+      "original_review_C_report_current_epoch_exact": true
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-transport.raw",
+      "original_review_C_report_current_epoch_exact": true
+    }
+  ],
+  "C_original_held_inputs_count": 171,
+  "selected_full_held_inputs": [
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-cold/attempt-01/verification.v1.json",
+        "size_bytes": 69117,
+        "sha256": "c2b64e11a6b628442d04f63459732d1840ecaf1ca3568baa31dc9df176b786a1"
+      },
+      "epoch7": [
+        69,
+        1407374885983431,
+        33279,
+        1,
+        69117,
+        1791132411344106800,
+        1791132411344106800
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-cold-original-tool-record.C6cdb6002.v1.json",
+        "size_bytes": 3530,
+        "sha256": "78ff5371ea28a46e25208613f07491b2b1d3f3c3a608c1dbb858c27524cb9a5b"
+      },
+      "epoch7": [
+        69,
+        1970324839404745,
+        33279,
+        1,
+        3530,
+        1791132469209231800,
+        1791132469209231800
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-result-independent-v1/failed-original-review.v1.json",
+        "size_bytes": 46118,
+        "sha256": "13d71c9740a132899fb4fcd6cc86c999867143de0bc175314ebc9c3dc95b9a2a"
+      },
+      "epoch7": [
+        69,
+        1407374885983435,
+        33279,
+        1,
+        46118,
+        1791132542536892500,
+        1791132542536892500
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-dispatch-P1-S2-C-v1/review.final.v1.json",
+        "size_bytes": 27105,
+        "sha256": "c5b095f476f3bf92dc62eec97daf2ae4af5999c4c8c76cc421a6b7e4dbe068d1"
+      },
+      "epoch7": [
+        69,
+        1407374885983261,
+        33279,
+        1,
+        27105,
+        1791131607328838500,
+        1791131607328838500
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-c6cdb6002/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+        "size_bytes": 93103,
+        "sha256": "5501000b5cc057562460843701b654c95b5ea24565cab3773148e38bb501afcc"
+      },
+      "epoch7": [
+        2096,
+        612047,
+        33188,
+        1,
+        93103,
+        1791128036110623026,
+        1791128036110623026
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-01-front_gate-default/source-transport.raw",
+        "size_bytes": 153277,
+        "sha256": "fbffcfe0cf4af38f79380a2a8038ea2aa184ca3b2b895b44a6c393e2a7cdf110"
+      },
+      "epoch7": [
+        69,
+        1407374885983377,
+        33279,
+        1,
+        153277,
+        1791131768577408900,
+        1791131768577408900
+      ],
+      "full_read": true
+    },
+    {
+      "descriptor": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-attempt-01/guest/run-02-front_gate-zero/source-transport.raw",
+        "size_bytes": 153277,
+        "sha256": "f3a987ada66269e8ef515f0264a895dcdd71cf69c72db4a575ea903e939b3519"
+      },
+      "epoch7": [
+        69,
+        1407374885983398,
+        33279,
+        1,
+        153277,
+        1791131803866969800,
+        1791131803866969800
+      ],
+      "full_read": true
+    }
+  ],
+  "original_reader": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "gid": 1000,
+    "pid": 40163,
+    "ppid": 40160,
+    "process_group_id": 40163,
+    "starttime_ticks": 61473735,
+    "uid": 1000
+  },
+  "original_reader_SID": "Unavailable in original seven-field owner; not inferred.",
+  "later_original_reader_scans": [
+    {
+      "monotonic_ns": 615389863038151,
+      "named_pids": {
+        "40160": null,
+        "40163": null
+      },
+      "named_groups": [
+        40163
+      ],
+      "group_members": [],
+      "errors": []
+    },
+    {
+      "monotonic_ns": 615389864231454,
+      "named_pids": {
+        "40160": null,
+        "40163": null
+      },
+      "named_groups": [
+        40163
+      ],
+      "group_members": [],
+      "errors": []
+    }
+  ],
+  "own_owner": {
+    "pid": 40257,
+    "ppid": 40253,
+    "pgid": 40257,
+    "sid": 40257,
+    "starttime_ticks": 61538980
+  },
+  "own_fd_before": 6,
+  "own_fd_after": 6,
+  "own_close_errors": [],
+  "elapsed_before_receipt_s": 0.014710544957779348,
+  "limits": [
+    "C correctly refuses external original completion before full controller/guest causal replay. Prefix hashes are not completed or accepted cohorts.",
+    "Preserved run02 cleanup failure prevents full retirement/package custody, original full research acceptance, underbody conclusions or zero-setting/intake adoption.",
+    "Original failed capture/read runs remain one each; no target replay, new model/engine/test run, source/Git/spec mutation or global quiescence proof."
+  ],
+  "failed_operation_preservation_accepted": true,
+  "original_research_complete": false,
+  "full128_AUs_accepted": false,
+  "full64_pairs_accepted": false,
+  "intake_or_zero_setting_adopted": false,
+  "publication_ready": false,
+  "legacy_full32": 0,
+  "legacy_Q4": 0,
+  "legacy_publication5600": 0
+}

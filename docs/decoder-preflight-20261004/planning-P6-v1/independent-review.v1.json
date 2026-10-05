@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "kind": "P6_independent_exact_planning_review",
+  "verdict": "PASS_EXACT_P6_PLANNING",
+  "change": "fix-decoder-preflight",
+  "reviewed_commit": "39797d30644a5b889802acbdd67420838cc66821",
+  "parent_commit": "cfa959d2aacbc84a589671dbdf13ae36ae76a2a6",
+  "review_scope": "Source-only exact planning continuation; technical review does not post approval or authorize an observation.",
+  "artifacts": {
+    "proposal.md": {
+      "path": "openspec/changes/fix-decoder-preflight/proposal.md",
+      "size": 14447,
+      "sha256": "8da4687b6ba5b9554938da50431f1697a1e6457d2ee6e8f0f20d55e09a350672",
+      "raw_equals_frozen_draft": true,
+      "raw_equals_physical": true,
+      "old_exact_prefix": true,
+      "raw_unchanged_from_S5": false
+    },
+    "design.md": {
+      "path": "openspec/changes/fix-decoder-preflight/design.md",
+      "size": 75703,
+      "sha256": "c49c13ed95cffc708e1e01e152d3a10b7ce3fb297e8e7220f33b0fc62ee8dde4",
+      "raw_equals_frozen_draft": true,
+      "raw_equals_physical": true,
+      "old_exact_prefix": true,
+      "raw_unchanged_from_S5": false
+    },
+    "tasks.md": {
+      "path": "openspec/changes/fix-decoder-preflight/tasks.md",
+      "size": 27630,
+      "sha256": "111bb28ac0c21f9be277d54a6c0621d023b813108220917a552087977255f55a",
+      "raw_equals_frozen_draft": true,
+      "raw_equals_physical": true,
+      "old_exact_prefix": false,
+      "raw_unchanged_from_S5": false
+    },
+    "delta-spec.md": {
+      "path": "openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "size": 23273,
+      "sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d",
+      "raw_equals_frozen_draft": true,
+      "raw_equals_physical": true,
+      "old_exact_prefix": true,
+      "raw_unchanged_from_S5": true
+    }
+  },
+  "raw_change_scope": {
+    "total": 22,
+    "modified": 5,
+    "added": 17,
+    "deleted": 0,
+    "mode_changes": 0,
+    "planning_changed": [
+      "proposal.md",
+      "design.md",
+      "tasks.md"
+    ],
+    "delta_changed": false,
+    "remaining": "PLAN/progress factual prefixes and seventeen retained evidence/author documents; no code, tests, CI or main-spec delta"
+  },
+  "protected_raw_S5_and_physical": {
+    "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py": {
+      "size": 93578,
+      "sha256": "ecd99e9c4f17448ca85d16fdd810cc361a5160f3d2403d88426fe4f001628bf7",
+      "raw_S5_equal": true,
+      "physical_equal": true
+    },
+    "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py": {
+      "size": 100392,
+      "sha256": "69aa29d807661118b30a5eefc82967443aab56003b4b6666d764826db6d1ecdb",
+      "raw_S5_equal": true,
+      "physical_equal": true
+    },
+    "tests/test_decoder_research_v6.py": {
+      "size": 49838,
+      "sha256": "6aeba18d3b313aacd74e046dd413cda8084c8fbdae8da2ae03db5ee45f5d15cb",
+      "raw_S5_equal": true,
+      "physical_equal": true
+    },
+    "openspec/specs/benchmark-launch-preparation/spec.md": {
+      "size": 75126,
+      "sha256": "d777fca9299def232e13c75e484c0863a639d4acdfdf5445e38e8a925873d36b",
+      "raw_S5_equal": true,
+      "physical_equal": true
+    },
+    "openspec/specs/component-latency-diagnostics/spec.md": {
+      "size": 6554,
+      "sha256": "4ad6263d274252d8e1f9178210b32463de00526542b12edbdcfc94bf83e152ca",
+      "raw_S5_equal": true,
+      "physical_equal": true
+    }
+  },
+  "preserved_contract": {
+    "delta_scenarios": 28,
+    "main_requirements_and_diagnostics": "Raw main2 unchanged, preserving nineteen other main requirements and diagnostics.",
+    "pre_P6_reviewed_tasks": {
+      "size_bytes": 24460,
+      "sha256": "645e7853bbd93a02ac1b4baf0fe7f77eb86f01a45187dc74d6c91f78c6f8ae15",
+      "exact_draft_prefix": true,
+      "count": 50,
+      "checked": 44
+    },
+    "raw_S5_task_transition": [
+      [
+        "10.5",
+        " ",
+        "x"
+      ],
+      [
+        "11.3",
+        " ",
+        "x"
+      ],
+      [
+        "11.4",
+        " ",
+        "x"
+      ],
+      [
+        "12.2",
+        " ",
+        "x"
+      ],
+      [
+        "12.3",
+        " ",
+        "x"
+      ]
+    ],
+    "old_task_ids_and_text_preserved": true,
+    "new_total": 53,
+    "new_checked": 44,
+    "new_unchecked": [
+      "13.1",
+      "13.2",
+      "13.3"
+    ],
+    "pending": [
+      "7.4",
+      "8.1",
+      "8.2",
+      "8.3",
+      "8.4",
+      "8.5"
+    ],
+    "unchanged_bounds": [
+      "continuous absolute cold120s",
+      "canonical body120s/retirement15s and two genuine15s cases",
+      "metadata40/run32/controller128",
+      "general1MiB/mapping-only2MiB/metadata16MiB",
+      "fileFD256/directoryFD128",
+      "held size, full original hashes/seven epochs, exact32/no trailing bytes"
+    ]
+  },
+  "findings": [],
+  "assessment": [
+    {
+      "source": "cold_reader.py:334-345,356-386",
+      "conclusion": "The unique exact-length predicate is the correct local seam. Accumulate actual positive bytes using the same held FD and admitted request, remaining-count offset+received, and publish caller offset only after completion. This does not change wire, hash, PTS/cadence or exact32 acceptance."
+    },
+    {
+      "source": "cold_reader.py:164-165,217-226,280-292",
+      "conclusion": "Reuse the existing absolute Held.deadline before every syscall; no relative clock reset, reopened FD or generic helper. The existing Held.read already uses positive progress. These are between-syscall checks and do not create a kernel per-syscall timeout."
+    },
+    {
+      "source": "test_research_protocol.py:743-816,824-828,918-932",
+      "conclusion": "Existing genuine regular-file32-packet fixtures expose header/text/payload seams and full source/hash/epoch custody; three narrowly targeted syscall cases can give causal old-source RED plus positive, empty-progress and expired-deadline outcomes while old corruption methods stay unchanged."
+    },
+    {
+      "source": "tests/test_decoder_research_v6.py:23-194",
+      "conclusion": "Current AST inventory actually contains66 inherited plus101 approved IDs; planned append3/count104 predicts170, which must be discovered and proven by the new canonical original."
+    },
+    {
+      "source": "P6 proposal/design/tasks appended sections",
+      "conclusion": "Historical pending prose is explicitly superseded. Closed original short return proves neither positive versus zero nor a filesystem cause; later686 full reads are not a reproduction. Both failed originals remain immutable, and source/CI success cannot promote128/64 scientific acceptance."
+    },
+    {
+      "source": "P6 design Existing producer authority and one separately reviewed read; tasks13.2/13.3",
+      "conclusion": "Producer P1/S3, runtime/input/image/helper and original observer authority remain separate from future S6 observer. Current canonical/CI/source review and a separately granted once-only exclusive corrected report remain prerequisites; no scientific producer replay or automatic repeat is introduced."
+    }
+  ],
+  "proposed_case_ids": [
+    "test_research_protocol.IndependentColdTests.test_P6_transport_partial_positive_reads_complete_header_text_and_payload",
+    "test_research_protocol.IndependentColdTests.test_P6_transport_zero_progress_refuses_without_spinning",
+    "test_research_protocol.IndependentColdTests.test_P6_transport_partial_progress_keeps_original_absolute_deadline"
+  ],
+  "primary_interface": {
+    "url": "https://man7.org/linux/man-pages/man2/pread.2.html",
+    "verified_statement": "Linux pread permits successful short transfers; zero indicates EOF. This verifies the interface, not the cause of the historical short return."
+  },
+  "prior_closed_facts_reused": {
+    "failed_cold_review": "research-corrected-cold-independent-v1/review.v1.json;9087;eb31ec775e12ebc374ae84347e67e887cc6a66ccf9eebf627d2c1173c6454b52",
+    "failed_cold_report": "corrected-metadata-namespace-verification.v1.json;93113;d847af344229c40f6c4a16ccfe901ab6394b19dedaf2a1f395361faca2eac004;FAILED short original transport",
+    "source_cause": "S3-metadata-dispatch-independent-review-v1/S5-short-original-transport.finding.v1.json;7770;96108646e9c66b62ef1ac114915d4ee9b821f508b7e4635e9337da4e597fee8f",
+    "exact_S5_CI": "ci-S5cfa959d2-v1/original-independent-review-v1/review.v1.json;10233;942ceb62a63c4fa4ac5fb59bd7665f902f7e2aea024714b4e6e4f32b692f2543;PASS original exact-S5 CI"
+  },
+  "author_read": {
+    "path": "P6-planning-author-v1/author-review.v1.json",
+    "size_bytes": 7603,
+    "sha256": "b1cf55ebb91eb7391f7d71fc1999fb657a64da189d3e1c92311dcc7c3772e152",
+    "independent_authority": false
+  },
+  "full_diff_read": {
+    "path": "P6-planning-author-v1/planning.v1.diff",
+    "size_bytes": 20524,
+    "sha256": "6782ce312b8aab1432d4e47623943d6761789d9be8554027a400c5f39c310ff6"
+  },
+  "limits": [
+    "All four complete draft/current byte streams and the full bounded amendment diff were read; unchanged inherited semantics reuse the completed prior planning/source reviews.",
+    "No target import, tests, CI invocation, decoder/producer/cold observation, media/hash replay or Git/source mutation.",
+    "S6 implementation, actual170 canonical inventory, exact-S6 CI, ordinary-source review and corrected once-cold are pending. This is not benchmark/research acceptance.",
+    "One read-only command guessed the wrong diagnostics path and returned128; lookup corrected it. Early range output was truncated; no conclusion uses an unseen truncated range.",
+    "Root separately records exact technical COMMENT before code; this reviewer did not post it."
+  ]
+}
