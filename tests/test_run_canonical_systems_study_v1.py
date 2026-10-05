@@ -293,6 +293,17 @@ os.waitpid(child,0);print(raw.decode())
                 with self.assertRaises(ValueError):driver.validate_vui_trace(changed)
             self.assertEqual(argv[argv.index("-x264-params")+1],"open-gop=0:threads=1:lookahead-threads=1:force-cfr=1")
 
+    def test_finite_source_gate_emits_the_canonical_consumer_fd_map(self):
+        import checkpoint_gstreamer_runtime as runtime
+        from types import SimpleNamespace
+        spec=SimpleNamespace(environment={},stream_id=5,source_process_id="source-5",dataset_id="kpp",source_sha256="a"*64)
+        pipes={kind:(10+index,20+index) for index,kind in enumerate(("admission","ack","control","status","transport"))}
+        env=runtime.finite_study_source_environment_v1(spec,pipes,startup=time.monotonic()+5,run_id="r",topology_kind="video_dag_shared")
+        # Native parse_consumer_fds accepts only the compact canonical consumer FD map.
+        self.assertEqual(env["VAST_CHECKPOINT_ADMISSION_CONSUMER_FDS_JSON"],'{"reference-5":24}')
+        from checkpoint_runtime import canonical_consumer_fds_json
+        self.assertEqual(canonical_consumer_fds_json({"b-1":3,"a-0":4}),'{"b-1":3,"a-0":4}')
+
     def test_control_failure_still_closes_actual_service_thread_and_preserves_primary(self):
         with tempfile.TemporaryDirectory() as tmp:
             commands=driver.Commands(Path(tmp),time.monotonic()+60);stop=threading.Event();thread=threading.Thread(target=stop.wait);thread.start()

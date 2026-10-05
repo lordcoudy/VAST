@@ -377,6 +377,18 @@ bool inventory_cli_is_genuinely_dispatched() {
   }
   return true;
 }
+bool canonical_consumer_fd_map_only() {
+  // The Python producers must emit the compact map; the native parser stays strict.
+  try {
+    const auto parsed=parse_consumer_fds("{\"reference-5\":24,\"reference-0\":7}");
+    if(parsed.size()!=2||parsed.at("reference-5")!=24||parsed.at("reference-0")!=7) return false;
+  } catch(const std::exception& exc) { std::cerr<<"canonical consumer map refused: "<<exc.what()<<'\n'; return false; }
+  for(const char* spaced:{"{\"reference-5\": 24}","{\"reference-5\":24, \"reference-0\":7}"}) {
+    try { (void)parse_consumer_fds(spaced); std::cerr<<"spaced consumer map accepted\n"; return false; }
+    catch(const std::runtime_error&) {}
+  }
+  return true;
+}
 }
 int main(int argc,char** argv) {
   gst_init(&argc,&argv); std::signal(SIGPIPE,SIG_IGN);
@@ -385,5 +397,6 @@ int main(int argc,char** argv) {
   const bool inventory=inventory_cli_is_genuinely_dispatched();
   const bool journal=source_journal_ack_and_partial_fanout();
   const bool finish=source_journal_finish_ownership_and_retirement();
-  return bounded&&finite&&inventory&&journal&&finish?0:1;
+  const bool consumers=canonical_consumer_fd_map_only();
+  return bounded&&finite&&inventory&&journal&&finish&&consumers?0:1;
 }

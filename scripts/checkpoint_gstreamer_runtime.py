@@ -2875,6 +2875,20 @@ def _study_clock_domain():
     return actual_clock_domain_label()
 
 
+def finite_study_source_environment_v1(spec, pipes, *, startup, run_id, topology_kind):
+    """The actual finite source child environment of the offered-prefix STOP gate."""
+    from checkpoint_runtime import canonical_consumer_fds_json, native_subprocess_environment
+    env=native_subprocess_environment(spec.environment)
+    env.update(VAST_CHECKPOINT_STARTUP_DEADLINE_MONOTONIC_NS=str(int(startup*1e9)),
+        VAST_CHECKPOINT_ADMISSION_EVENT_FD=str(pipes["admission"][1]),VAST_CHECKPOINT_ADMISSION_ACK_FD=str(pipes["ack"][0]),
+        VAST_CHECKPOINT_CONTROL_FD=str(pipes["control"][0]),VAST_CHECKPOINT_STATUS_FD=str(pipes["status"][1]),
+        VAST_CHECKPOINT_ADMISSION_CONSUMER_FDS_JSON=canonical_consumer_fds_json({"reference-"+str(spec.stream_id):pipes["transport"][1]}),
+        VAST_CHECKPOINT_WORKER_ID=spec.source_process_id,VAST_CHECKPOINT_RUN_ID=run_id,
+        VAST_CHECKPOINT_TOPOLOGY_KIND=topology_kind,VAST_CHECKPOINT_STREAM_ID=str(spec.stream_id),
+        VAST_CHECKPOINT_DATASET_ID=spec.dataset_id,VAST_CHECKPOINT_SOURCE_SHA256=spec.source_sha256)
+    return env
+
+
 def run_finite_study_source_gate_v1(*, study_plan, project_root, output_root, source_binary,
         deadline_ns, expected_boot, expected_time_namespace):
     """Real two-source START/STOP/EOF, with durable central ACK and original wire spools."""
@@ -2976,14 +2990,7 @@ def run_finite_study_source_gate_v1(*, study_plan, project_root, output_root, so
                     pipes[key]=os.pipe();open_fds.update(pipes[key])
                 parent={"ack":pipes["ack"][1],"control":pipes["control"][1]};parents[spec.source_process_id]=parent
                 inherited=[pipes["admission"][1],pipes["ack"][0],pipes["control"][0],pipes["status"][1],pipes["transport"][1]]
-                env=native_subprocess_environment(spec.environment)
-                env.update(VAST_CHECKPOINT_STARTUP_DEADLINE_MONOTONIC_NS=str(int(startup*1e9)),
-                    VAST_CHECKPOINT_ADMISSION_EVENT_FD=str(pipes["admission"][1]),VAST_CHECKPOINT_ADMISSION_ACK_FD=str(pipes["ack"][0]),
-                    VAST_CHECKPOINT_CONTROL_FD=str(pipes["control"][0]),VAST_CHECKPOINT_STATUS_FD=str(pipes["status"][1]),
-                    VAST_CHECKPOINT_ADMISSION_CONSUMER_FDS_JSON=json.dumps({"reference-"+str(spec.stream_id):pipes["transport"][1]}),
-                    VAST_CHECKPOINT_WORKER_ID=spec.source_process_id,VAST_CHECKPOINT_RUN_ID=run_id,
-                    VAST_CHECKPOINT_TOPOLOGY_KIND=plan["topology_kind"],VAST_CHECKPOINT_STREAM_ID=str(spec.stream_id),
-                    VAST_CHECKPOINT_DATASET_ID=spec.dataset_id,VAST_CHECKPOINT_SOURCE_SHA256=spec.source_sha256)
+                env=finite_study_source_environment_v1(spec,pipes,startup=startup,run_id=run_id,topology_kind=plan["topology_kind"])
                 with (out/(str(spec.stream_id)+".stderr.raw")).open("xb") as stderr:
                     child=subprocess.Popen(spec.command,env=env,pass_fds=tuple(inherited),stdout=subprocess.DEVNULL,stderr=stderr,start_new_session=True)
                     children[spec.source_process_id]=child

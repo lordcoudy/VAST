@@ -80,6 +80,11 @@ def _require(condition: bool, message: str) -> None:
         raise ContractError(message)
 
 
+def canonical_consumer_fds_json(consumers: Mapping[str, int]) -> str:
+    """The canonical consumer FD map parsed by native parse_consumer_fds: compact, ASCII, insertion order."""
+    return json.dumps(dict(consumers), separators=(",", ":"), ensure_ascii=True)
+
+
 def native_subprocess_environment(overrides: dict[str, str]) -> dict[str, str]:
     """Build a native child environment without leaking Python import paths to GStreamer."""
     environment = os.environ.copy()
@@ -1492,7 +1497,7 @@ def run_worker_processes(
                 {
                     RUNTIME_ADMISSION_EVENT_FD_ENV: str(event_write_fd),
                     RUNTIME_ADMISSION_ACK_FD_ENV: str(ack_read_fd),
-                    RUNTIME_ADMISSION_CONSUMER_FDS_ENV: json.dumps(consumers, separators=(",", ":")),
+                    RUNTIME_ADMISSION_CONSUMER_FDS_ENV: canonical_consumer_fds_json(consumers),
                     RUNTIME_CONTROL_FD_ENV: str(control_read_fd),
                     RUNTIME_STATUS_FD_ENV: str(status_write_fd),
                     "VAST_CHECKPOINT_WORKER_ID": spec.source_process_id,
