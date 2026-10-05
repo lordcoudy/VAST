@@ -288,6 +288,7 @@ class Replay:
         self.observer_binding = {'planning_commit':OBSERVER_PLANNING,'source_commit':self.observer_commit,
             'review_repository_root':str(self.observer_repository)}
         self.guest_terminal_join = None
+        self.source_eof_clock_joins = []
         self.require = require
         self.h = Held(self.attempt, time.monotonic()+120)
         self.git_commands = []
@@ -533,7 +534,7 @@ class Replay:
             and started["controller"]==guest_owner and 0<=startup["elapsed_s"]<=45
             and 0<=drained["elapsed_from_source_eof_s"]<=10
             and drained["actual_decoder_sink_eos_ns"]==sink_eos
-            and abs(drained["source_eof_monotonic_ns"]-eof["observed_monotonic_ns"])<=2
+            and eof["observed_monotonic_ns"]<=drained["source_eof_monotonic_ns"]<=sink_eos<=drained["completed_monotonic_ns"]
             and 0<=drained["completed_monotonic_ns"]-eof["observed_monotonic_ns"]<=10000000000,
             "original startup/actualEOF/drain bounds")
         self.require(self.one(events,"source_transport_eof")["observed_monotonic_ns"]==eof["observed_monotonic_ns"], "actual EOF journal")
@@ -544,6 +545,11 @@ class Replay:
             raw_bytes=raw_bytes,maximum_actual_au_payload_bytes=max(r["payload_size_bytes"] for r in records),
             pipeline=PIPELINE,property_default_readback=-1,property_readback=0 if setting=="zero" else -1)
         self.require(all(observations.get(k)==v for k,v in actual.items()), "independent run recomputation differs from guest report")
+        self.source_eof_clock_joins.append(dict(run=index,
+            observed_source_eof_monotonic_ns=eof["observed_monotonic_ns"],
+            drain_bookkeeping_source_eof_monotonic_ns=drained["source_eof_monotonic_ns"],
+            actual_decoder_sink_eos_ns=sink_eos,drain_completed_monotonic_ns=drained["completed_monotonic_ns"],
+            completion_from_observed_eof_ns=drained["completed_monotonic_ns"]-eof["observed_monotonic_ns"]))
         return actual,started
 
     def namespace(self):
@@ -1157,9 +1163,10 @@ class Replay:
             'raw_join_complete':True,'actual_original_au_count':sum(r['actual_packets'] for r in completed),
             'paired_timing_count':len(pairs),'central_steady_state_sufficient_by_run':[r['central_steady_state_sufficient'] for r in completed],
             'paired_timings':pairs,'observer_binding':self.observer_binding,
-            'guest_terminal_join':self.guest_terminal_join,
+            'guest_terminal_join':self.guest_terminal_join,'source_eof_clock_joins':self.source_eof_clock_joins,
             'git_observations':self.git_commands,'held_inputs':self.h.observations(),
-            'limitations':['Selected original VMA rows and backing probes are replayed; full unselected maps and mapped memory bytes are unavailable.',
+            'limitations':['Drain bookkeeping EOF is a separate float-derived clock sample; ordered raw representations give no universal nanosecond precision guarantee.',
+                'Selected original VMA rows and backing probes are replayed; full unselected maps and mapped memory bytes are unavailable.',
                 'Disposed image package/library descriptors are original observations, not current host rehashes.',
                 'Pixel hashes are original observed RGB active-row hashes, compared but not independently decoded.',
                 'Same-guest sink/src wall residence includes queueing/backpressure; it is not decoder utilization.',

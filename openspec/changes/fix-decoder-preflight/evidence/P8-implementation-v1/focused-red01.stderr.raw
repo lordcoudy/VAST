@@ -1,0 +1,21 @@
+test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound (__main__.IndependentColdTests.test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound) ... ERROR
+
+======================================================================
+ERROR: test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound (__main__.IndependentColdTests.test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1374, in test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound
+    check(621837867081512,621837867082806,621837888893260,621837943651606,True)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py", line 1356, in check
+    actual,_=fresh.run(1,'front_gate','default',source,self.guest_owner)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 532, in run
+    self.require(started["run"]==startup["run"]==eof["run"]==drained["run"]==index
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py", line 77, in require
+    raise Refusal(message)
+independent_decoder_cold_v6.Refusal: original startup/actualEOF/drain bounds
+
+----------------------------------------------------------------------
+Ran 1 test in 0.165s
+
+FAILED (errors=1)

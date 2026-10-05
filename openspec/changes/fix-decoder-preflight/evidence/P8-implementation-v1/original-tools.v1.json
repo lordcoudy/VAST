@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "P8_original_focused_unittest_tools",
+  "planning_commit": "da0a3f93e060c87b35423729c48388f4e77fab13",
+  "planning_comment": 5408991278,
+  "original_unittest_tool_calls": [
+    {
+      "tool_name": "exec_command",
+      "arguments": {
+        "cmd": "wsl.exe -d Ubuntu --exec /usr/bin/bash -c 'set -C; exec /usr/bin/setsid --wait /usr/bin/timeout -k 15 120 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py IndependentColdTests.test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound -v > /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/focused-red01.stdout.raw 2> /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/focused-red01.stderr.raw'",
+        "yield_time_ms": 10000,
+        "max_output_tokens": 1000
+      },
+      "result": {
+        "chunk_id": "b56564",
+        "wall_time_seconds": 1.2462754,
+        "exit_code": 1,
+        "original_token_count": 65,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000"
+      }
+    },
+    {
+      "tool_name": "exec_command",
+      "arguments": {
+        "cmd": "wsl.exe -d Ubuntu --exec /usr/bin/bash -c 'set -C; exec /usr/bin/setsid --wait /usr/bin/timeout -k 15 120 /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/c/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST/artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py IndependentColdTests.test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound -v > /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/focused-green01.stdout.raw 2> /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-implementation-v1/focused-green01.stderr.raw'",
+        "yield_time_ms": 10000,
+        "max_output_tokens": 1000
+      },
+      "result": {
+        "chunk_id": "e7734c",
+        "wall_time_seconds": 1.1964314,
+        "exit_code": 0,
+        "original_token_count": 65,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000"
+      }
+    }
+  ],
+  "full_canonical_executed_by_this_author": false,
+  "original_output_limit": 1000
+}

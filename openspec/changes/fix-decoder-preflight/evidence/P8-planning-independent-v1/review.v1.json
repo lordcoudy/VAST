@@ -1,0 +1,141 @@
+{
+  "schema": "vast.exact-planning-independent-review.v1",
+  "verdict": "PASS_EXACT_P8_PLANNING_SOURCE_GROUNDED_ONLY",
+  "reviewed_commit": "da0a3f93e060c87b35423729c48388f4e77fab13",
+  "parent_commit": "233abc019bb7a92a3e50a531468418ad24a3d065",
+  "planning": [
+    {
+      "path": "openspec/changes/fix-decoder-preflight/proposal.md",
+      "size_bytes": 19891,
+      "sha256": "6bea1334462c06697507be1135f2c7ac09029dd8570bbcc26c8bf9990af20962"
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/design.md",
+      "size_bytes": 88065,
+      "sha256": "5d8aece5aef62785b2a10f543124bfdefd1382b639f20bb1a5fe178357d68e07"
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/tasks.md",
+      "size_bytes": 32771,
+      "sha256": "08122275e6db3f530c0ccce56c5d3a2e489bede445799f462907966b6d36dd14"
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/specs/benchmark-launch-preparation/spec.md",
+      "size_bytes": 23273,
+      "sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d",
+      "unchanged_from_D7": true
+    }
+  ],
+  "raw_read_scope": {
+    "complete_four_raw_blobs_read_hashchecked_physical_equal": true,
+    "full_three_planning_diff_read": true,
+    "proposal_design_append_only": true,
+    "exact_commit_changed_paths": 20,
+    "scope": "Three planning append/actual flags, two PLAN/progress prefixes, fifteen original evidence additions under existing OpenSpec evidence boundary.",
+    "no_source_test_CI_delta": true,
+    "operational_docs_conformance_uncommitted_excluded": true,
+    "no_whole_source_table_or_new_verifier": true
+  },
+  "exact_preservation": {
+    "P8": "da0a3f93e060c87b35423729c48388f4e77fab13",
+    "parent": "233abc019bb7a92a3e50a531468418ad24a3d065",
+    "old_task_count": 53,
+    "new_task_count": 56,
+    "old_checked": 45,
+    "new_checked": 47,
+    "inherited53_task_ID_text_equal": true,
+    "actual_changed_flags_only": [
+      "13.2",
+      "13.3"
+    ],
+    "all_other_task_history_prefix_exact": true,
+    "proposal_design_append_only": true,
+    "protected_raw_sources_and_main_specs_unchanged": [
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+        "size_bytes": 93774,
+        "sha256": "1cdfbbeffbbf859e83ba127a07b5ae214887b20bb4deab3615a1c1aa9bb124e8"
+      },
+      {
+        "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/test_research_protocol.py",
+        "size_bytes": 106331,
+        "sha256": "3d6eac7facb0e1fd87ad0acd3caf9c9ead396370a6d62e8caf626263a03463f1"
+      },
+      {
+        "path": "tests/test_decoder_research_v6.py",
+        "size_bytes": 50190,
+        "sha256": "15ebb1f97da46e19358bc4d460c396abb607725a08dcc0018da8d92fc0ed0153"
+      },
+      {
+        "path": "openspec/specs/benchmark-launch-preparation/spec.md",
+        "size_bytes": 75126,
+        "sha256": "d777fca9299def232e13c75e484c0863a639d4acdfdf5445e38e8a925873d36b"
+      },
+      {
+        "path": "openspec/specs/component-latency-diagnostics/spec.md",
+        "size_bytes": 6554,
+        "sha256": "4ad6263d274252d8e1f9178210b32463de00526542b12edbdcfc94bf83e152ca"
+      }
+    ],
+    "existing_protocol_class_methods": 84,
+    "existing_test_methods": 60,
+    "existing_helpers": 24,
+    "no_source_test_CI_delta": true
+  },
+  "scientific_causal_chain": {
+    "source": "guest_consumer.py:629-647 and648-675, immutable raw S3/current P8 bytes64637/SHA256bc2a3a618fab6e53ed15835d327f611cc63f18543cc16648a5d6b7e084f073ec",
+    "capture": "EOF observed_monotonic_ns is captured first; bookkeeping monotonic() is a separate later call; bookkeeping precedes binary_done; feeder sees binary_done/empty queue before appsrc EOS request.",
+    "observer": "cold_reader.py:532-537 currently imposes <=2ns identity; original actual FAILED review proves only this predicate false in all four runs.",
+    "accepted_plan_relation": "observedEOF <= recorded bookkeepingEOF <= actual decoder-sink EOS <= completion",
+    "earliest_origin_bound": "0 <= completion_ns - EARLIEST observedEOF_ns <= 10000000000",
+    "preserved": "Original startup0..45s, reported drain0..10s, run/guest owner, exact sinkEOS and EOF journal/document binding; every other byte/hash/epoch/FD/caps/namespace/mapping/PTS/RGB/cohort/pair/source120s/cleanup15s/first failure/final-close guard.",
+    "float_representation": "Raw bookkeeping derives from binary float seconds. The plan retains it unchanged, states no universal ns precision guarantee and introduces no fitted tolerance or normalization.",
+    "new_clock_diagnostics": "Separate nonauthorizing data outside the exact original observations comparison; tiny plumbing to retain diagnostics is within the stated diagnostic scope, not a producer-format change.",
+    "original_scientific_state": "S6 corrected transport cold93167/SHA6d3386c0468d4505f5150f383c3c0b61ae0fe5e16fbc0caf4fe8671eda873e8f remains FAILED. Current D7 CI PASS is compatible-source CI evidence only."
+  },
+  "fixture_feasibility": {
+    "raw_source": "test_research_protocol.py:743-816, reseal_run_leaves:910-916; immutable source106331/SHA3d6eac7facb0e1fd87ad0acd3caf9c9ead396370a6d62e8caf626263a03463f1",
+    "explicit_helper_exception": "Only run_fixture timestamp chronology fields; nonflush EOF/bookkeeping2M, EOS2.5M, completion3M; flush EOF/bookkeeping100k, EOS200k, completion3M.",
+    "unchanged_old_outputs": "Existing enter/exit1.01M..1.32M remain below nonflushEOS2.5M and above flushEOS200k, preserving after-EOS/cohort/insufficiency assertions and -10ns paired deltas.",
+    "unchanged_declared_elapsed": 1,
+    "inherited_test_methods": 60,
+    "inherited_class_helpers": 24,
+    "preservation_interpretation": "The explicitly authorized run_fixture chronology edit is the bounded helper exception. All old test-method ASTs/IDs/assertions remain exact; every other helper remains exact.",
+    "new_method": "IndependentColdTests.test_P8_distinct_source_eof_clocks_preserve_order_and_original_drain_bound",
+    "genuine_RED_contract": "Real sealed regular-file original run entry point with original-derived distinct clock values; old <=2ns Refusal must be causal, not missing API/stale seal/type failure.",
+    "positive_and_negatives": "Ordered original-derived positive; bookkeeping-before-EOF/after-sinkEOS, sinkEOS-after-completion, completion-before-EOF; exact EARLIEST-EOF10s inclusive success and10s+1ns refusal even when later-bookkeeping elapsed fits.",
+    "adapter_scope": "Only append one qualified ID and104-to105 literal. Existing170 IDs and root12 methods/assertions unchanged; nested171 is predicted until actual evidence.",
+    "no_fixture_decoder_claim": true
+  },
+  "coherent_task_flags": {
+    "inherited53_ID_text_exact": true,
+    "parent_D7_checked": 45,
+    "P8_checked": 47,
+    "actual_flag_changes": [
+      "13.2: compatible accepted D7 CI/current immutable S6 canonical/source obligations closed",
+      "13.3: actual once S6 cold and independently closed FAILED custody disposition"
+    ],
+    "added_three_tasks_unchecked": true,
+    "historical_pending_paragraphs_retained_with_explicit_P8_supersession": true,
+    "task14_1_ID_text_wording": "IDs/full text are unchanged. Actual raw flag changes are both13.2 and13.3; this receipt does not reduce them to only13.3.",
+    "failed_disposition_not_scientific_acceptance": true
+  },
+  "future_required_gates": [
+    "Parent technical COMMENT bound exact reviewed P8 before dependent code.",
+    "Meaningful RED/GREEN and independently reviewed frozen S8 source; one actual current canonical root/nested and latest mandatory CI with original120/15/two15s scope.",
+    "Fresh ordinary compatible S8/executed bytes/held epochs bound separately to immutable producer P1/S3.",
+    "Absent exclusive corrected-eof-clock-join-verification.v1.json and late companion, followed by separate exact once-read grant.",
+    "Independent actual complete128/64 joins or truthful new refusal; no scientific adoption from code/tests/CI or a closed FAILED outcome."
+  ],
+  "limitations": [
+    "Source-only/planning review: no code/test/CI/cold/producer/import/model/engine/media/runtime invocation or mutation by reviewer.",
+    "Exact raw20-path scope is observed; this receipt does not replace the separately retained original CI/cold/evidence-byte receipts with a new archive manifest.",
+    "Existing helper chronology values are synthetic fixtures; new original-derived timestamps do not imply a real decoder was executed by the test.",
+    "A conservative recorded-order failure still refuses; source-order rationale does not promise universal float representation precision.",
+    "An initial protected diagnostic read guessed a nonexistent benchmark-release-diagnostics path and failed before result emission; exact existing component-latency-diagnostics path was located and the final bounded read passed. Original failure retained."
+  ],
+  "concrete_blockers": [],
+  "technical_COMMENT_text": "Technical planning review PASS for exact P8 da0a3f93e060c87b35423729c48388f4e77fab13 (parent D7 233abc019bb7a92a3e50a531468418ad24a3d065). The original source records distinct observed EOF and later bookkeeping clocks; the reviewed join is observedEOF <= bookkeepingEOF <= actualSinkEOS <= completion with the unchanged inclusive 10s completion bound from EARLIEST observedEOF, original 45s startup/10s reported drain, exact EOF/EOS journal joins and all other custody/scientific guards. Dependent implementation is limited to the existing cold temporal join and separate nonauthorizing diagnostics, the explicitly specified run_fixture chronology fields plus one genuine sealed Replay.run regression, and one adapter ID/count104-to105. Existing60 test methods/170 IDs/assertions remain unchanged; run_fixture is the explicit bounded helper exception. Require genuine old-source RED, current canonical/source review and latest mandatory CI, then independently bound ordinary S8 readiness and a separate exact once-read grant. S6 cold remains FAILED; D7 CI PASS is separate. This technical source/planning review does not grant a producer/scientific replay or cold invocation.",
+  "original_readonly_tools": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/P8-planning-independent-v1/original-readonly-tools.v1.json"
+}
+
