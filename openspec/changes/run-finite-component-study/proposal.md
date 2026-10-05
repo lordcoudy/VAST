@@ -1,0 +1,29 @@
+## Why
+
+У VAST уже есть закрытые component arms и описательные decoder observations, но ещё нет конечного воспроизводимого systems study с несколькими offered rates, полными потерями/denominators и действительными24 effect arms. Нужен исполнимый bounded путь до этого результата: исходные32/Q4/5600 reproduction campaigns сохраняются, но перестают быть completion prerequisites новой selected цели.
+
+## What Changes
+
+- **BREAKING для определения новой canonical цели:** добавить `finite-component-study` и уточнить R1 существующей `benchmark-launch-preparation`: completion требует actual24arms/12pairs, а legacy32 qualification/Q4/5600 не является его prerequisite. Исторические false/zero/unexecuted, original72/82 register и strict legacy full-kind/readiness validators сохраняются; новый study kind не даёт qualification/promotion/Q4/publication/full authority.
+- Использовать первые442 software-decoder presentation ordinals0..441 двух original AVI, не normalized600fps prefix. Decode context ограничен448 contiguous coded AUs+initialization. Два fixed inputs нормализуются без resize в8-bit420 limitedBT709/left: front420 с явными assumptions, underbody full601/center422 через два pinned swscale contexts и boundedBGR24. Ровно четыре encodes одной recipe, all-I/no-B, encoded30/1, encoderTB1/30, MP4timescale600/20tick packets; actual VUI30fps/level<=5.1/hardware/YUV/RGB/EOS gate до pilot. Это искусственный workload proxy, не accuracy или ordinary-camera capacity.
+- Реализовать три небольших модуля study-plan/driver/raw reducer и необходимые typed seams в existing runtime/source/admission/recorder/material. Новый context получает limits из finite schedule≤442/stream и ordered pilot/effect operations≤32; legacy241/281 admissions,≈1s cadence, frame280 и2/37operation consumers остаются strict.
+- Провести CPU/OpenVINO и GPU/TensorRT ×0.25/1/2offeredfps ×baseline/shared ×два AB/BA repetitions:24arms/12pairs, seed20260323,30/180/10s и100ms. Planned/offered/central admitted/per-consumer delivered/completed/loss и source lateness сохраняются раздельно в реальном порядке admission до ACK/fanout; queued не означает delivered, early admitted key сохраняется при delivery failure. Y100 использует full planned denominator и actual common admission. Negative complete matrix допустима; partial/pilot не завершает study.
+- Добавить actual native-client/bridge-route selfwaits и использовать existing worker self-clocks с их owner/domain. Не строить queue timestamps, cross-process differences или pure-kernel/utilization/energy claims без соответствующих фактов. Обе transport variants готовятся и CI-tested до pilot;4pilot при1fps и единственный prespecified medianwaitfraction>=0.10/min30 switch допускают ещё4pilot, без новых workers/capacity/deadlines.
+- Сделать owned analytics/policy client/source I/O и lock acquisition bounded исходными deadlines: MSG_DONTWAIT/poll, exact partial progress, двухэтапный STOP, abort до GST_NULL/joins, actual wait/reap послеKILL. Policy decide/path_ack/terminal_ack использует original native START/window/drain clock, без нового300s или policy100ms RPC deadline. Real no-reply/silent-policy-ACK/source-ACK/full-pipe/partial-frame/software-Gst/route-overlap gates проверяются до deployment; no successful cancellation или global-quiescence claim.
+- Preparation≤4h включает derivative/reference, selected native/runtime builds обеих variants, current bindings и при необходимости8×30 selected calibration. Campaign≤4h непрерывно включает pilot/switch/all24/reduction/retirement; no retry, active rebuild/remoteCI или clock reset. Storage/capture caps, exact raw reconciliation, conformance, supported archive и latest-commit CI/final review остаются обязательными.
+
+## Capabilities
+
+### New Capabilities
+
+- `finite-component-study`: bounded selected systems study с независимой derivative reference, exact scheduling/accounting, fair24/12 matrix, actual wait domains, prespecified pilot и finite lifecycle/completion.
+
+### Modified Capabilities
+
+- `benchmark-launch-preparation`: R1 получает отдельный canonical24 completion contract и явное supersession legacy32/Q4/5600 как prerequisites этой новой цели; его исходный body/две scenarios и остальные19 requirements, включая28 R15 scenarios, сохраняются. Main Scope получает отдельное явно согласованное append при archive, не unsupported Scope delta.
+
+## Impact
+
+Изменяются existing native client/coordinator/admission/GStreamer probe, bridge/sidecar/recorder/runtime, selected material/operational contexts и их tests; новые study-plan/driver/reducer используют stock factory/executor/custody/cold seams. Legacy public entrypoints и full validators не ослабляются. Selected OpenVINO native-provider и GStreamer image потребуют actual rebuild; worker2 reuse допустим только при current source/dependency/model associations, иначе genuine selected refresh со study-only binding.
+
+Approved host FFmpeg6.1.1/libswscale/libx264, exact original AVI2 и derived converter tuple входят physical preparation. Новых worker protocol clocks, observer hierarchy, generic publication rewrite или remote full-capacity grant нет. Данный change пока содержит только planning; исходные S3 research/S8 cold accepted descriptively, а derived preparation, pilot и24 study ещё не исполнены. Standing user carte-blanche/continuing apply authority сохраняется; independent exact planning commit review в том же PR требуется до dependent code/media.
