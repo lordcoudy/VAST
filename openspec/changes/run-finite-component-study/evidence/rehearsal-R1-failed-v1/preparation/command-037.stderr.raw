@@ -1,0 +1,6 @@
+
+** (gst-plugin-scanner:7): CRITICAL **: 14:06:10.748: Couldn't set __plugin__ attribute
+
+(gst-plugin-scanner:7): GStreamer-CRITICAL **: 14:06:10.748: gst_object_unref: assertion '((GObject *) object)->ref_count > 0' failed
+[study-reference] actual nv12 caps sha256=98c46adbad94110ab84ab5936a64d53ea30537969acfae5c0f59d47f32267370 video/x-raw, format=(string)NV12, width=(int)1920, height=(int)1080, interlace-mode=(string)progressive, pixel-aspect-ratio=(fraction)1/1, chroma-site=(string)mpeg2, colorimetry=(string)bt709, framerate=(fraction)30/1, multiview-mode=(string)mono, multiview-flags=(GstVideoMultiviewFlagsSet)0:ffffffff:/right-view-first/left-flipped/left-flopped/right-flipped/right-flopped/half-aspect/mixed-mono
+[study-reference] actual rgb caps sha256=eea7ed247e72174c02c2783471f0e6e9b963b7ea1eef1e7e0f760c13b4211052 video/x-raw, width=(int)1920, height=(int)1080, interlace-mode=(string)progressive, pixel-aspect-ratio=(fraction)1/1, framerate=(fraction)30/1, multiview-mode=(string)mono, multiview-flags=(GstVideoMultiviewFlagsSet)0:ffffffff:/right-view-first/left-flipped/left-flopped/right-flipped/right-flopped/half-aspect/mixed-mono, format=(string)RGB, chroma-site=(string)jpeg, colorimetry=(string)1:1:5:1

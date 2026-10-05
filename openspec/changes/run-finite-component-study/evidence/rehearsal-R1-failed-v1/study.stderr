@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/vf2264e99R/scripts/run_canonical_systems_study_v1.py", line 1187, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/s-a-balashov/vf2264e99R/scripts/run_canonical_systems_study_v1.py", line 1181, in main
+    result={"prepare":prepare,"run":run,"study":study}[args.operation](args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vf2264e99R/scripts/run_canonical_systems_study_v1.py", line 531, in prepare
+    stop_gate = offered_prefix_stop_gate(commands, args, root, output, plan, images)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vf2264e99R/scripts/run_canonical_systems_study_v1.py", line 808, in offered_prefix_stop_gate
+    commands.wait(child,record,maximum_files=((str(gate/"0.transport.original.raw"),MAX_MEDIA),(str(gate/"5.transport.original.raw"),MAX_MEDIA)))
+  File "/home/s-a-balashov/vf2264e99R/scripts/run_canonical_systems_study_v1.py", line 188, in wait
+    require(child.returncode == 0, "owned study command failed: " + str(record["argv"]))
+  File "/home/s-a-balashov/vf2264e99R/scripts/run_canonical_systems_study_v1.py", line 42, in require
+    raise ValueError(message)
+ValueError: owned study command failed: ['/usr/bin/docker', 'run', '--name', 'vast-finite-fbaf581b962bae26bc3ab703', '--cidfile', '/home/s-a-balashov/vf2264e99R/s/native-fbaf581b962bae26bc3ab703.cid', '--label', 'vast.finite-study=fbaf581b962bae26bc3ab703', '--network', 'none', '--gpus', 'all', '--read-only', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges', '--user', '1000:1000', '--tmpfs', '/tmp:rw,nosuid,nodev,size=67108864,mode=1777', '--mount', 'type=bind,src=/home/s-a-balashov/vf2264e99R,dst=/home/s-a-balashov/vf2264e99R,readonly', '--mount', 'type=bind,src=/home/s-a-balashov/vf2264e99R/s,dst=/home/s-a-balashov/vf2264e99R/s', '--entrypoint', '/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3', '--env', 'VAST_CHECKPOINT_PREPARATION_CLOCK_BOOT_ID=dde50e69-39bf-45bd-bdb7-bc33c9adcb0b', '--env', 'VAST_CHECKPOINT_PREPARATION_CLOCK_TIME_NAMESPACE=timens-offsets:monotonic=0,0;boottime=0,0', 'sha256:c74964c449ee7dc1bfed0932fa7846666c2ac88168b746f1bf76a652e7e7938b', '--config', '/home/s-a-balashov/vf2264e99R/configs/experiments.yaml', '--scenario', 'checkpoint_video_dag_shared', '--finite-study-plan', '/home/s-a-balashov/vf2264e99R/s/source-gate-plan.original.json', '--finite-study-source-gate', '--output-dir', '/home/s-a-balashov/vf2264e99R/s/offered-prefix-stop', '--source-binary', '/usr/local/bin/vast_checkpoint_source', '--finite-study-campaign-deadline-ns', '705756161265348', '--finite-study-expected-boot', 'dde50e69-39bf-45bd-bdb7-bc33c9adcb0b', '--finite-study-expected-time-namespace', 'timens-offsets:monotonic=0,0;boottime=0,0']
