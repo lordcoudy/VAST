@@ -37,6 +37,83 @@ def message(branch="plate_number",resource="cpu"):
     return {"schema_version":1,"message_type":"analytics_execute","run_id":"frozen-run","arm_id":"a"*64,"gstreamer_worker_id":"checkpoint-stream-0","request_id":"d"*64,"frame":{"input_frame_key":"dataset:0:"+"e"*64+":0:0","stream_id":0,"frame_id":0,"transport_pts_ns":0,"branch":branch},"decision":{"decision_id":"original-decision","selected_resource":resource}}
 
 class RecorderTests(unittest.TestCase):
+    def test_study_frame_and_sequence_bounds_do_not_relax_legacy(self):
+        from publication_operational_request_domain_v1 import (
+            validate_guardian_event_v1, OperationalDomainError)
+        scope = {"kind": "finite-component-study", "plan_sha256": "a" * 64,
+                 "max_frame_id": 441, "max_requests_per_arm": 10608,
+                 "max_operations": 32}
+        for study in (False, True):
+            with tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                hs = headers(root)
+                if study:
+                    for header in hs.values():
+                        header["study_scope"] = scope
+                        header["artifact_kind"] = "vast_finite_study_guardian_journal_v1"
+                        header["budgets"]["max_terminal_bytes"] = 2048
+                rec = GuardianOperationalRecorder(root / "journal", hs)
+                try:
+                    msg = message()
+                    msg["frame"]["frame_id"] = 441
+                    if not study:
+                        with self.assertRaises(GuardianOperationalError):
+                            rec.begin(msg, ("plate_number", "cpu"), "gstreamer", 1, 10608)
+                        self.assertEqual(rec.snapshot()["requests_started"], 0)
+                    else:
+                        token = rec.begin(msg, ("plate_number", "cpu"), "gstreamer", 1, 10608)
+                        rec.terminal(token, None, outcome="failed", send="closed")
+                finally:
+                    rec.close()
+                if study:
+                    rows = [json.loads(line) for line in
+                            (root / "journal" / "plate_number-cpu.jsonl").read_bytes().splitlines()]
+                    validate_guardian_event_v1(rows[1], previous_sha256=rows[0]["sha256"],
+                                               study_scope=scope)
+                    with self.assertRaises(OperationalDomainError):
+                        validate_guardian_event_v1(rows[1], previous_sha256=rows[0]["sha256"])
+                    for field, value in (("frame_id", 442), ("local_seq", 10609)):
+                        bad = dict(rows[1], **{field: value})
+                        with self.assertRaises(OperationalDomainError):
+                            validate_guardian_event_v1(bad, previous_sha256=rows[0]["sha256"],
+                                                       study_scope=scope)
+
+    def test_idle_study_snapshot_is_prefix_of_actual_closed_pool_without_resetting_counters(self):
+        import time
+        from publication_operational_request_domain_v1 import payload_with_sha256_v1
+        import run_canonical_systems_study_v1 as driver
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);hs=headers(root)
+            scope={"kind":"finite-component-study","plan_sha256":"a"*64,"max_frame_id":441,"max_requests_per_arm":10608,"max_operations":32}
+            for route,header in hs.items():
+                header.update(study_scope=scope,artifact_kind="vast_finite_study_guardian_journal_v1")
+                header["budgets"]["max_terminal_bytes"]=2048
+                second=dict(header["contexts"][0],id=1,run_id="later-run")
+                header["contexts"].append(second);header["bindings"].append({"id":1,"context":1,"front_worker":0})
+                header.pop("sha256");hs[route]=payload_with_sha256_v1(header)
+            rec=GuardianOperationalRecorder(root/"journal",hs)
+            try:
+                token=rec.begin(message(),("plate_number","cpu"),"gstreamer",1,1)
+                output=root/"snapshot";output.mkdir()
+                with self.assertRaisesRegex(GuardianOperationalError,"idle"):rec.capture_study_arm_v1("frozen-run",output,deadline=time.monotonic()+5)
+                rec.terminal(token,{"original":True},outcome="completed",send="sent")
+                before=rec.snapshot();snapshot=rec.capture_study_arm_v1("frozen-run",output,deadline=time.monotonic()+5)
+                self.assertEqual(rec.snapshot(),before);self.assertEqual(len(snapshot["decoded"]),1)
+                later=message();later.update(run_id="later-run",request_id="9"*64)
+                token=rec.begin(later,("plate_number","cpu"),"gstreamer",2,1)
+                rec.terminal(token,{"later":True},outcome="completed",send="sent")
+                group=rec.finish({"requests_started":2,"requests_completed":2,"requests_failed":0,"connections_accepted":2,
+                    "requests_by_worker":{b+":"+r:2*int((b,r)==("plate_number","cpu")) for b in BRANCHES for r in ("cpu","gpu")}})
+                pool_ref=driver.write_json(root/"pool.json",{"operational_group":group})
+                commands=driver.Commands(root,time.monotonic()+60)
+                driver.verify_guardian_ranges(pool_ref,snapshot["ranges"],commands)
+                self.assertEqual(json.loads(Path(group["path"]).read_bytes())["counts"]["requests_started"],2)
+                path=Path(snapshot["ranges"][0]["original_journal_path"])
+                raw=path.read_bytes();path.write_bytes(b"X"+raw[1:])
+                with self.assertRaisesRegex(ValueError,"journal descriptor drifted"):
+                    driver.verify_guardian_ranges(pool_ref,snapshot["ranges"],commands)
+            finally:rec.close()
+
     def make(self, root, **budgets):
         hs=headers(root)
         if budgets:

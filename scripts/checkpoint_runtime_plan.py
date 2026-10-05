@@ -405,6 +405,77 @@ def build_checkpoint_runtime_plan(
     return plan
 
 
+def build_finite_study_runtime_plan_v1(study_plan, arm_id):
+    """Use the existing native topology with separately validated finite inputs."""
+    from canonical_systems_study_plan_v1 import validate_study_plan, RATES
+    validate_study_plan(study_plan)
+    candidates = study_plan["arms"] + sum(study_plan["pilots"].values(), [])
+    matches = [arm for arm in candidates if arm["arm_id"] == arm_id]
+    _require(len(matches) == 1, "study arm is not an original plan operation")
+    arm = matches[0]
+    branches = list(study_plan["branches"])
+    source_rows, streams = [], []
+    for mapping in study_plan["streams"]:
+        sid, name = mapping["stream_id"], mapping["recording"]
+        recording = study_plan["intake"]["recordings"][name]
+        units, descriptor = recording["access_units"], recording["descriptor"]
+        width, height = ((1920, 1080) if name == "front_gate" else (1700, 236))
+        _require(recording.get("width", width) == width and recording.get("height", height) == height,
+                 "study original dimensions drifted")
+        native_duration = sum(unit["duration_ns"] for unit in units)
+        source = {"input_path": descriptor["path"], "source_sha256": descriptor["sha256"],
+            "source_container": "mp4", "source_codec": "h264", "native_source_duration_ns": native_duration,
+            "source_duration_ns": native_duration * RATES[arm["rate"]],
+            "playback_timestamp_scale": RATES[arm["rate"]], "playback_fps": float(arm["rate"]),
+            "source_frame_count": 442, "continuous_replay_required": False, "source_replay": "finite",
+            "width": width, "height": height}
+        source_rows.append({"process_id": f"stream-{sid}-source-coordinator",
+            "process_kind": "native_common_source_coordinator", "stream_id": sid, **source,
+            "admission_delivery": "direct_runtime_ipc_before_worker_source_read",
+            "consumer_payload_delivery": "native_framed_compressed_access_unit_broadcast_required"})
+        if arm["topology"] == "baseline":
+            streams.append({"stream_id": sid, "source_id": name, "workers": [
+                {"process_id": f"stream-{sid}-branch-{branch}", "process_kind": "independent_branch_worker",
+                 "branch_id": branch, **source, "stages": [f"decode_{branch}", f"preprocess_{branch}", branch],
+                 "analytics_queue": dict(PRIMARY_ANALYTICS_QUEUE_CONTRACT), "completion_delivery": "direct_runtime_ipc"}
+                for branch in branches], "join": {"coordinator_scope": "run", "required_branch_ids": branches,
+                 "emission_trigger": "all_branch_completion_events_for_input_frame_key"}})
+        else:
+            streams.append({"stream_id": sid, "source_id": name, "graph_process": {
+                "process_id": f"stream-{sid}-shared-video-dag", "process_kind": "shared_video_dag_worker", **source,
+                "shared_prefix_stages": ["decode", "preprocess"], "fanout_primitive": "gstreamer_tee",
+                "branches": [{"branch_id": branch, "queue_required": True,
+                    "analytics_queue": dict(PRIMARY_ANALYTICS_QUEUE_CONTRACT), "stages": [branch]} for branch in branches],
+                "join": {"required_branch_ids": branches, "emission_trigger": "all_branch_completion_events_for_input_frame_key"}}})
+    decoder = dict(PRIMARY_ARCHITECTURE_DECODER_PLACEMENT_CONTRACT)
+    decoder.update(codec="h264", allowed_factories=["nvh264dec"])
+    return {"schema_version": 1, "artifact_kind": "finite_component_study_runtime_blueprint_v1",
+        "kind": "finite-component-study", "claim_status": CLAIM_STATUS, "study_plan": study_plan, "arm_id": arm_id,
+        "scenario": ("checkpoint_independent_processes_baseline" if arm["topology"] == "baseline" else "checkpoint_video_dag_shared"),
+        "dataset": study_plan["intake"]["dataset_id"], "system": "gstreamer_custom", "benchmark_status": "supported",
+        "topology_contract_version": 2, "topology_kind": CHECKPOINT_SCENARIOS[
+            "checkpoint_independent_processes_baseline" if arm["topology"] == "baseline" else "checkpoint_video_dag_shared"],
+        "routing_mode": "all_branches_per_stream", "required_branches": branches,
+        "analytics_queue": dict(PRIMARY_ANALYTICS_QUEUE_CONTRACT), "decoder_placement": decoder,
+        "decoder_placement_runtime_gate": dict(DECODER_PLACEMENT_RUNTIME_GATE),
+        "frame_identity": dict(FRAME_IDENTITY_CONTRACT), "external_admission": dict(COMMON_ADMISSION_CONTRACT),
+        "source_playback": {"kind": "finite-component-study", "timestamp_scale": RATES[arm["rate"]],
+            "measurement_end_boundary_guard_ns": 1000000, "mode": "finite_no_seek"},
+        "cohort_protocol": {"contract_version": 1, "warmup_s": 30, "measurement_s": 180,
+            "total_runtime_s": 210, "window_clock": "wall_clock_after_common_start_barrier",
+            "ingress_stage": "compressed_access_unit_before_decode"},
+        "runtime_join": {"source": "direct_runtime_completion_events", "transport": "local_ipc", "posthoc_csv_join_prohibited": True},
+        "source_coordinators": source_rows, "streams": streams,
+        "publication_eligible": False, "full_run_eligible": False}
+
+
+def validate_finite_study_runtime_plan_v1(plan):
+    _require(plan.get("artifact_kind") == "finite_component_study_runtime_blueprint_v1" and
+             plan.get("kind") == "finite-component-study", "finite study runtime kind required")
+    expected = build_finite_study_runtime_plan_v1(plan["study_plan"], plan["arm_id"])
+    _require(plan == expected, "study runtime layout/source binding drifted")
+
+
 def validate_checkpoint_runtime_plan(plan: dict[str, Any]) -> None:
     _require(int(plan.get("schema_version", 0) or 0) == BLUEPRINT_CONTRACT_VERSION, "invalid blueprint version")
     _require(plan.get("claim_status") == CLAIM_STATUS, "runtime blueprint must remain planning-only")

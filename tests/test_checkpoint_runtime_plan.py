@@ -240,5 +240,34 @@ class CheckpointRuntimePlanTests(unittest.TestCase):
             self.assertEqual({path.name for path in Path(tmp).iterdir()}, {"checkpoint-runtime-plan.json"})
 
 
+    def test_finite_study_layout_has_real_workers_and_keeps_legacy_kind_strict(self):
+        import checkpoint_runtime_plan as runtime_plan
+        import canonical_systems_study_plan_v1 as study
+        recordings = {}
+        for recording, dimensions in (("front_gate", (1920, 1080)), ("underbody", (1700, 236))):
+            recordings[recording] = {
+                "descriptor": {"path": "/synthetic/" + recording + ".mp4",
+                               "size_bytes": 44200, "sha256": "a" * 64},
+                "width": dimensions[0], "height": dimensions[1],
+                "access_units": [{"ordinal": i, "pts_ns": i * 20 * 1000000000 // 600,
+                    "dts_ns": i * 20 * 1000000000 // 600, "duration_ns": 33333333,
+                    "payload_sha256": "b" * 64, "payload_size_bytes": 100} for i in range(442)]}
+        plan = study.build_study_plan({"dataset_id": "synthetic", "recordings": recordings}, {"fixture_only": True})
+        for topology, expected in (("baseline", 24), ("shared", 6)):
+            arm = next(a for a in plan["arms"] if a["topology"] == topology and a["rate"] == "2")
+            runtime = runtime_plan.build_finite_study_runtime_plan_v1(plan, arm["arm_id"])
+            runtime_plan.validate_finite_study_runtime_plan_v1(runtime)
+            from checkpoint_runtime import expected_worker_assignments
+            self.assertEqual(len(expected_worker_assignments(runtime)), expected)
+            self.assertEqual(len(runtime["source_coordinators"]), 6)
+            self.assertTrue(all(s["source_frame_count"] == 442 and
+                s["source_replay"] == "finite" and s["playback_timestamp_scale"] == 15
+                for s in runtime["source_coordinators"]))
+            with self.assertRaises(ContractError):
+                runtime_plan.validate_checkpoint_runtime_plan(runtime)
+            runtime["source_coordinators"][0]["source_frame_count"] = 443
+            with self.assertRaises(ContractError):
+                runtime_plan.validate_finite_study_runtime_plan_v1(runtime)
+
 if __name__ == "__main__":
     unittest.main()

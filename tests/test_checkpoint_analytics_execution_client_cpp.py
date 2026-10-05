@@ -64,6 +64,28 @@ class CheckpointAnalyticsExecutionClientCppTest(unittest.TestCase):
     def test_native_client_regression(self) -> None:
         self._compile_and_run("checkpoint_analytics_execution_client_test.cpp", ("glib-2.0",))
 
+    def test_admission_transport_original_deadline(self) -> None:
+        self._compile_and_run("checkpoint_admission_transport_test.cpp", ("glib-2.0",))
+
+    def test_native_event_pipe_original_deadline(self) -> None:
+        self._compile_and_run("checkpoint_runtime_emitter_deadline_test.cpp", ("glib-2.0",))
+
+    def test_source_original_drain_and_stop_latch(self) -> None:
+        self._compile_and_run("checkpoint_source_lifecycle_test.cpp",
+                              ("gstreamer-1.0", "gstreamer-app-1.0", "gstreamer-video-1.0"))
+
+    def test_native_study_common_original_geometry_prefix(self) -> None:
+        self._compile_and_run("checkpoint_native_study_prefix_test.cpp",
+                              ("gstreamer-1.0", "gstreamer-app-1.0", "gstreamer-rtp-1.0", "gstreamer-video-1.0"))
+
+    def test_study_reference_actual_software_eos_and_deadline(self) -> None:
+        self._compile_and_run("checkpoint_study_reference_test.cpp",
+                              ("gstreamer-1.0", "gstreamer-app-1.0", "gstreamer-video-1.0"))
+
+    def test_native_abort_precedes_gstreamer_null(self) -> None:
+        self._compile_and_run("checkpoint_native_shutdown_test.cpp",
+                              ("gstreamer-1.0", "gstreamer-app-1.0", "gstreamer-rtp-1.0", "gstreamer-video-1.0"))
+
     def test_native_policy_topology_regression(self) -> None:
         self._compile_and_run(
             "checkpoint_native_policy_topology_test.cpp",

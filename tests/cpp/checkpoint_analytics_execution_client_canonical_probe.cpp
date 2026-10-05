@@ -37,7 +37,7 @@ int main() {
   r.decision.emitter_sha256 = std::string(64, 'f');
   r.decision.selected_implementation_id = "openvino_gva-qualification-authority-v2:damage:cpu:" + std::string(64, 'e');
   r.decision.selected_resource = "cpu";
-  r.deadline_monotonic_ns = 1234567890123ULL;
+  r.deadline_monotonic_ns = vast::CheckpointIoDeadline::monotonic_now_ns() + 60'000'000'000ULL;
   r.format = "BGR"; r.width = 640; r.height = 360; r.stride = 1920;
   r.preprocessing_contract_sha256 = std::string(64, 'a');
   { gchar* d = g_compute_checksum_for_data(G_CHECKSUM_SHA256, payload.data(), payload.size()); r.raw_input_sha256 = d; g_free(d); }

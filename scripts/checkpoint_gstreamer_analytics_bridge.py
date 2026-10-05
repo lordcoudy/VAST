@@ -16,6 +16,7 @@ import re
 import socket
 import stat
 import threading
+import time
 from collections.abc import Mapping
 from typing import Any
 
@@ -687,7 +688,7 @@ class AnalyticsExecutionBridge:
         """Validate the complete attribution envelope without reading bytes."""
         return self._validated_request_context(value)[0]
 
-    def execute(self, value: Mapping[str, Any], payload: bytes | bytearray | memoryview) -> dict[str, Any]:
+    def execute(self, value: Mapping[str, Any], payload: bytes | bytearray | memoryview, *, timing_observer=None) -> dict[str, Any]:
         request, key, policy, binding = self._validated_request_context(value)
         branch, resource = key
         decision = request["decision"]
@@ -745,8 +746,34 @@ class AnalyticsExecutionBridge:
             )},
             "expected_output_contract_sha256": capability["output_contract_sha256"],
         }
-        with self._locks[key]:
-            response, output = self._clients[key].infer(inference_request, inference_payload)
+        if timing_observer is None:
+            with self._locks[key]:
+                response, output = self._clients[key].infer(inference_request, inference_payload)
+        else:
+            attempt = time.monotonic_ns()
+            acquired = reply = None
+            primary = None
+            response = None
+            try:
+                with self._locks[key]:
+                    acquired = time.monotonic_ns()
+                    response, output = self._clients[key].infer(inference_request, inference_payload)
+                    reply = time.monotonic_ns()
+            except BaseException as error:
+                primary = error
+                raise
+            finally:
+                interval = {"begin_ns": attempt, "acquired_ns": acquired, "reply_ns": reply, "end_ns": time.monotonic_ns(),
+                    "pid": os.getpid(), "clock": "CLOCK_MONOTONIC", "route": branch + ":" + resource}
+                worker = None if response is None else {field: response["timing"][field] for field in (
+                    "worker_received_monotonic_ns", "inference_started_monotonic_ns",
+                    "inference_finished_monotonic_ns", "worker_completed_monotonic_ns")}
+                try:
+                    timing_observer({"bridge_route": interval, "worker": worker})
+                except BaseException as error:
+                    if primary is None:
+                        raise
+                    primary.add_note("study timing persistence also failed: " + str(error)[:512])
         provenance = response["provenance"]
         terminal = response["terminal"]
         timing = response["timing"]

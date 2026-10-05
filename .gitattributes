@@ -262,3 +262,7 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 /artifacts/benchmark_recovery_20260930/decision29-runtime-bind-owned-cleanup-preparation-v1/metadata-authoring-attempt01-failure.v1.json -text !eol
 /progress.md -text !eol
 /docs/decoder-preflight-20261004/** -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve finite-study original evidence bytes before and after supported archive.
+/openspec/changes/run-finite-component-study/evidence/** -text !eol
+/openspec/changes/archive/*-run-finite-component-study/evidence/** -text !eol

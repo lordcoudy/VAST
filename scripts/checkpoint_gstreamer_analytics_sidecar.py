@@ -420,6 +420,11 @@ def _execution_config_identity(config: Mapping[str, Any]) -> str:
     return _sha(identity.get("sha256"), "analytics execution config identity")
 
 
+from publication_guardian_component_preprocessing_contract_v1 import (
+    STUDY_AUTHORITY_KIND_V1, validate_finite_study_guardian_authority_v1,
+    validate_finite_study_operational_context_v1, validate_finite_study_front_request_v1,
+)
+
 def _validate_preprocessing_authority_v1(
     value: Mapping[str, Any],
 ) -> dict[str, Any]:
@@ -429,6 +434,8 @@ def _validate_preprocessing_authority_v1(
             return validate_guardian_preprocessing_authority_v1(value)
         if kind == "vast_guardian_accepted_policy_preprocessing_contract_authority_v1":
             return validate_accepted_policy_guardian_preprocessing_authority_v1(value)
+        if kind == STUDY_AUTHORITY_KIND_V1:
+            return validate_finite_study_guardian_authority_v1(dict(value))
         if kind == COMPONENT_PREPROCESSING_AUTHORITY_KIND:
             return validate_component_guardian_preprocessing_authority_v1(dict(value))
     except (
@@ -3726,6 +3733,7 @@ class DockerWorkerHandle:
         worker_image_id: str | None = None,
         route: tuple[str, str] | None = None,
         launched_at_utc: str | None = None,
+        worker_entrypoint: str | None = None,
     ) -> None:
         self._process = process
         self.container_name = container_name
@@ -3735,6 +3743,7 @@ class DockerWorkerHandle:
         self._stdout_capture = stdout_capture
         self._stderr_capture = stderr_capture
         self._worker_image_id = worker_image_id
+        self._worker_entrypoint = worker_entrypoint
         self._route = route
         self._container_id: str | None = None
         self._last_engine_state: dict[str, Any] | None = None
@@ -3862,6 +3871,36 @@ class DockerWorkerHandle:
             "kernel_observation": {"status": "unavailable", "reason": "kernel_log_authority_not_established"}}
         _require(len(canonical_json_bytes(core)) <= 16384, "worker termination facts exceed bounded capture")
         return {**core, "sha256": canonical_sha256(core)}
+
+    def observe_study_clock_domain_v1(self):
+        """Read the actual owned worker, never infer a clock domain from StatePid."""
+        before = self._observe_engine_state()
+        _require(before["status"] == "observed" and before["facts"]["running"] is True,
+                 "study worker is not originally running")
+        script = ('cat /proc/1/stat; printf "\\n"; cat /proc/1/cmdline; printf "\\n"; '
+                  'cat /proc/sys/kernel/random/boot_id; readlink /proc/1/ns/time; '
+                  'readlink /proc/1/ns/time_for_children')
+        command = ["docker", "exec", before["facts"]["id"], "/bin/sh", "-c", script]
+        completed = self._observe(command)
+        _require(completed.returncode == 0 and len(completed.stdout.encode()) <= 8192,
+                 "study owned worker clock observation failed")
+        raw = completed.stdout
+        rows = raw.splitlines()
+        _require(len(rows) == 6 and rows[1] == "" and rows[0].startswith("1 (") and
+                 self._worker_entrypoint is not None and self._worker_entrypoint in rows[2].split(chr(0)) and "--binding" in rows[2].split(chr(0)),
+                 "study observed init is not the actual launched analytics worker")
+        birth = int(rows[0].rsplit(")", 1)[1].split()[19])
+        _require(birth > 0 and re.fullmatch(r"[0-9a-f-]{36}", rows[3]) is not None and
+                 all(re.fullmatch(r"time:\[([0-9]+)\]", row) for row in rows[4:]),
+                 "study worker clock identity is malformed")
+        after = self._observe_engine_state()
+        _require(after["status"] == "observed" and after["facts"] == before["facts"],
+                 "study owned worker changed during clock observation")
+        return {"route": list(self._route), "container": before["facts"], "command": command,
+            "stdout": raw, "stderr": completed.stderr, "returncode": completed.returncode,
+            "actual_worker_pid_in_container": 1, "starttime_ticks": birth,
+            "boot_id": rows[3], "time_namespace": rows[4], "time_for_children_namespace": rows[5],
+            "observed_monotonic_ns": time.monotonic_ns()}
 
     def failure_diagnostic(self) -> str:
         return (
@@ -4180,6 +4219,7 @@ class DockerWorkerProcessFactory:
             worker_image_id=str(spec.worker_config["image_id"]),
             route=(spec.branch, spec.resource),
             launched_at_utc=launched_at_utc,
+            worker_entrypoint=str(worker["entrypoint"]),
         )
 
 
@@ -4255,6 +4295,11 @@ class GStreamerAnalyticsSidecar:
                 )
             )
         )
+        self._study_active_operation = None
+        self._study_arm_counters = None
+        if self.preprocessing_authority is not None and self.preprocessing_authority["artifact_kind"] == STUDY_AUTHORITY_KIND_V1:
+            _require(service_mode == PRODUCTION_SERVICE_MODE, "study requires the genuine production worker owner")
+            validate_finite_study_operational_context_v1(self.preprocessing_authority, operational_context)
         if self.preprocessing_authority is not None and self.preprocessing_authority["artifact_kind"] == COMPONENT_PREPROCESSING_AUTHORITY_KIND:
             _require(service_mode == PRODUCTION_SERVICE_MODE,
                      "component preprocessing authority requires explicit production activation")
@@ -4365,6 +4410,7 @@ class GStreamerAnalyticsSidecar:
                 "vast_guardian_preprocessing_contract_authority_v1": "candidate_manifest_file_sha256",
                 "vast_guardian_accepted_policy_preprocessing_contract_authority_v1": "accepted_policy_capability_manifest_file_sha256",
                 COMPONENT_PREPROCESSING_AUTHORITY_KIND: "capability_manifest_file_sha256",
+                STUDY_AUTHORITY_KIND_V1: "capability_manifest_file_sha256",
             }[authority_kind]
             _require(
                 self.preprocessing_authority[manifest_field]
@@ -5363,6 +5409,7 @@ class GStreamerAnalyticsSidecar:
                 request_completed = False
                 attributed_request: Mapping[str, Any] | None = None
                 failure_stage = "control_envelope"
+                study_timings = None
                 operational_token: int | None = None
                 response = None
                 operational_send = "closed"
@@ -5490,12 +5537,18 @@ class GStreamerAnalyticsSidecar:
                                 message, request_route, protocol_mode,
                                 connection_seq, handled_requests + 1,
                             )
+                        if self.preprocessing_authority["artifact_kind"] == STUDY_AUTHORITY_KIND_V1:
+                            failure_stage = "study_scope"
+                            validate_finite_study_front_request_v1(self.preprocessing_authority,
+                                self.policy_capability_manifest, message, request_route, protocol_mode,
+                                self._study_active_operation)
                         if self.preprocessing_authority["artifact_kind"] == COMPONENT_PREPROCESSING_AUTHORITY_KIND:
                             failure_stage = "component_scope"
                             _require(self._operational_recorder is not None,
                                      "component guardian operational capture is inactive")
                             validate_component_front_request_v1(self.preprocessing_authority,
                                 self.policy_capability_manifest, message, request_route, protocol_mode)
+                    study_timings = None
                     failure_stage = "payload_integrity"
                     payload = verify_sealed_memfd(
                         descriptors[0],
@@ -5503,6 +5556,7 @@ class GStreamerAnalyticsSidecar:
                         expected_sha256=digest,
                     )
                     failure_stage = "inference"
+                    study_timings = None
                     try:
                         output: bytes | None = None
                         if protocol_mode == "worker":
@@ -5519,7 +5573,13 @@ class GStreamerAnalyticsSidecar:
                             )
                             response = dict(worker_response)
                         else:
-                            response = dict(self._bridge.execute(message, payload))
+                            if self.preprocessing_authority is not None and self.preprocessing_authority["artifact_kind"] == STUDY_AUTHORITY_KIND_V1:
+                                def observed(value):
+                                    nonlocal study_timings
+                                    study_timings = value
+                                response = dict(self._bridge.execute(message, payload, timing_observer=observed))
+                            else:
+                                response = dict(self._bridge.execute(message, payload))
                     except BaseException as execution_error:
                         if not self._production:
                             manifest = self.evidence.persist_call(
@@ -5565,6 +5625,7 @@ class GStreamerAnalyticsSidecar:
                         self._operational_recorder.terminal(
                             operational_token, response,
                             outcome="completed", send="sent",
+                            timings=study_timings,
                         )
                         operational_token = None
                     if self._production:
@@ -5585,6 +5646,7 @@ class GStreamerAnalyticsSidecar:
                             self._operational_recorder.terminal(
                                 operational_token, response,
                                 outcome="failed", send=operational_send,
+                                timings=locals().get("study_timings"),
                             )
                         except Exception as recorder_error:
                             self._operational_recorder.fail(str(recorder_error))
@@ -5695,7 +5757,7 @@ class GStreamerAnalyticsSidecar:
                     break
             if self._stop.is_set():
                 for thread in threads:
-                    thread.join(timeout=self.shutdown_timeout_s)
+                    thread.join(timeout=(self._study_shutdown_remaining_v1() if hasattr(self,"_study_shutdown_remaining_v1") else self.shutdown_timeout_s))
             else:
                 for thread in threads:
                     thread.join()
@@ -5711,7 +5773,7 @@ class GStreamerAnalyticsSidecar:
             self._stop.set()
             self._close_front_connections()
             for thread in threads:
-                thread.join(timeout=self.shutdown_timeout_s)
+                thread.join(timeout=(self._study_shutdown_remaining_v1() if hasattr(self,"_study_shutdown_remaining_v1") else self.shutdown_timeout_s))
             _require(
                 not any(thread.is_alive() for thread in threads),
                 "analytics front service thread survived bounded shutdown",
@@ -5772,7 +5834,7 @@ class GStreamerAnalyticsSidecar:
                 pass
         self._connections.clear()
 
-        graceful_deadline = time.monotonic() + self.shutdown_timeout_s
+        graceful_deadline = time.monotonic() + (self._study_shutdown_remaining_v1() if hasattr(self,"_study_shutdown_remaining_v1") else self.shutdown_timeout_s)
         for key, handle in self._handles.items():
             if handle.poll() is None:
                 try:
@@ -5787,7 +5849,7 @@ class GStreamerAnalyticsSidecar:
                     handle.terminate()
                 except BaseException as error:
                     errors.append(f"worker_terminate:{key[0]}/{key[1]}:{error}")
-        terminate_deadline = time.monotonic() + self.shutdown_timeout_s
+        terminate_deadline = time.monotonic() + (self._study_shutdown_remaining_v1() if hasattr(self,"_study_shutdown_remaining_v1") else self.shutdown_timeout_s)
         for key, handle in self._handles.items():
             if handle.poll() is None:
                 try:
@@ -5804,7 +5866,7 @@ class GStreamerAnalyticsSidecar:
                     handle.kill()
                 except BaseException as error:
                     errors.append(f"worker_kill:{key[0]}/{key[1]}:{error}")
-        kill_deadline = time.monotonic() + self.shutdown_timeout_s
+        kill_deadline = time.monotonic() + (self._study_shutdown_remaining_v1() if hasattr(self,"_study_shutdown_remaining_v1") else self.shutdown_timeout_s)
         for key, handle in self._handles.items():
             if handle.poll() is None:
                 try:
@@ -6023,6 +6085,82 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
             operational_context=operational_context,
         )
 
+    def set_study_deadline_v1(self, deadline):
+        from publication_guardian_component_preprocessing_contract_v1 import STUDY_AUTHORITY_KIND_V1
+        now=time.monotonic()
+        _require(self.preprocessing_authority.get("artifact_kind") == STUDY_AUTHORITY_KIND_V1
+            and type(deadline) in (int,float) and now<deadline<=now+14400.0
+            and getattr(self,"_study_absolute_deadline",None) is None,
+            "study original absolute deadline is invalid")
+        self._study_absolute_deadline=float(deadline)
+        self._study_retirement_deadline=None
+
+    def _study_shutdown_remaining_v1(self):
+        absolute=getattr(self,"_study_absolute_deadline",None)
+        if absolute is None:return self.shutdown_timeout_s
+        if self._study_retirement_deadline is None:
+            self._study_retirement_deadline=min(absolute,time.monotonic()+15.0)
+        return max(0.0,min(self.shutdown_timeout_s,self._study_retirement_deadline-time.monotonic()))
+
+    def study_idle_boundary_v1(self):
+        _require(self.preprocessing_authority["artifact_kind"] == STUDY_AUTHORITY_KIND_V1,
+                 "study boundary cannot adopt another service kind")
+        self._assert_production_internal_live()
+        self._assert_workers_live(phase="study idle boundary")
+        counters = self._production_counters.snapshot()
+        pending = self._operational_recorder.snapshot()["unfinished_requests"]
+        _require(counters["connections_active"] == 0 and pending == 0 and
+            counters["requests_started"] == counters["requests_completed"] + counters["requests_failed"] and
+            counters["requests_failed"] == 0 and counters["connections_failed"] == 0 and
+            self._production_failure is None, "study held pool is not idle/failure-free")
+        return {"counters": counters, "pending": pending, "lifecycle_id": self.lifecycle_id,
+                "owner_process": dict(self._production_authority["owner_process"]),
+                "worker_peers": _canonical_clone(self._production_authority["peer_identities"])}
+
+    def study_worker_clock_domains_v1(self):
+        self.study_idle_boundary_v1()
+        observations = []
+        for handle in self._handles.values():
+            _require(type(handle) is DockerWorkerHandle, "study clock proof requires original owned Docker workers")
+            observations.append(handle.observe_study_clock_domain_v1())
+        _require(len(observations) == 8 and {tuple(row["route"]) for row in observations} == EXPECTED_KEYS,
+                 "study clock observations lack actual eight routes")
+        clocks = {(row["boot_id"], row["time_namespace"]) for row in observations}
+        _require(len(clocks) == 1, "study workers have different actual clock namespaces")
+        self.study_idle_boundary_v1()
+        boot, namespace = next(iter(clocks))
+        return {"observations": observations, "native_environment": {
+            "VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID": boot,
+            "VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE": namespace}}
+
+    def activate_study_arm_v1(self, operation_id):
+        _require(self._study_active_operation is None, "previous study arm was not closed")
+        _require(sum(row["operation_id"] == operation_id for row in self.preprocessing_authority["allowed_operations"]) == 1,
+                 "study operation is outside original plan")
+        boundary = self.study_idle_boundary_v1()
+        self._study_arm_counters = boundary
+        self._study_active_operation = operation_id
+        return boundary
+
+    def finish_study_arm_v1(self, operation_id):
+        _require(self._study_active_operation == operation_id, "study arm closure identity drifted")
+        boundary = self.study_idle_boundary_v1()
+        before = self._study_arm_counters["counters"]
+        delta = {key: boundary["counters"][key] - before[key]
+                 for key in ("requests_started", "requests_completed", "requests_failed", "connections_accepted")}
+        _require(0 <= delta["requests_started"] <= 10608 and
+            delta["requests_started"] == delta["requests_completed"] and delta["requests_failed"] == 0,
+            "study per-arm counter domain or closure failed")
+        self._study_active_operation = None
+        self._study_arm_counters = None
+        return {"before": before, "after": boundary["counters"], "delta": delta, "held_boundary": boundary}
+
+    def capture_study_arm_v1(self, run_id, outdir, *, deadline):
+        before=self.study_idle_boundary_v1()
+        result=self._operational_recorder.capture_study_arm_v1(run_id,outdir,deadline=deadline)
+        _require(self.study_idle_boundary_v1()["counters"]==before["counters"],"study pool changed during idle journal snapshot")
+        return result
+
     def _execution_config_identity(self) -> str:
         identity = _exact(
             self.execution_config.get("identity"),
@@ -6228,7 +6366,7 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
                 self._production_control_thread,
             ):
                 if thread is not None:
-                    thread.join(timeout=self.shutdown_timeout_s)
+                    thread.join(timeout=(self._study_shutdown_remaining_v1() if hasattr(self,"_study_shutdown_remaining_v1") else self.shutdown_timeout_s))
             cleanup_errors = self._shutdown()
             try:
                 self._close_runtime_directory_custody()
@@ -6320,7 +6458,7 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
 
     def _join_service_threads(self) -> list[str]:
         errors: list[str] = []
-        deadline = time.monotonic() + self.shutdown_timeout_s
+        deadline = time.monotonic() + (self._study_shutdown_remaining_v1() if hasattr(self,"_study_shutdown_remaining_v1") else self.shutdown_timeout_s)
         for thread in (
             self._production_front_thread,
             self._production_control_thread,
@@ -6336,7 +6474,7 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
         surviving = tuple(thread for thread in connection_threads if thread.is_alive())
         if surviving:
             self._close_front_connections()
-            forced_deadline = time.monotonic() + self.shutdown_timeout_s
+            forced_deadline = time.monotonic() + (self._study_shutdown_remaining_v1() if hasattr(self,"_study_shutdown_remaining_v1") else self.shutdown_timeout_s)
             for thread in surviving:
                 thread.join(timeout=max(0.0, forced_deadline - time.monotonic()))
                 if thread.is_alive():

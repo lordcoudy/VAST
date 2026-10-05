@@ -6,9 +6,10 @@ import hashlib
 import os
 import socket
 import subprocess
+import sys
 import threading
 import time
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping
 
@@ -389,6 +390,7 @@ class RuntimeRunResult:
     terminal_ingress_rows: tuple[dict[str, Any], ...] = ()
     terminal_admission_audit: dict[str, Any] | None = None
     branch_terminal_records: tuple[dict[str, Any], ...] = ()
+    runtime_frame_terminals: tuple[dict[str, Any], ...] = ()
 
 
 @dataclass(frozen=True)
@@ -557,7 +559,11 @@ def build_runtime_reset_evidence(
 
 
 def expected_worker_assignments(plan: dict[str, Any]) -> list[tuple[str, int, str | None]]:
-    validate_checkpoint_runtime_plan(plan)
+    if plan.get("kind") == "finite-component-study":
+        from checkpoint_runtime_plan import validate_finite_study_runtime_plan_v1
+        validate_finite_study_runtime_plan_v1(plan)
+    else:
+        validate_checkpoint_runtime_plan(plan)
     assignments: list[tuple[str, int, str | None]] = []
     if plan["topology_kind"] == INDEPENDENT_PROCESSES:
         for stream in plan["streams"]:
@@ -1174,16 +1180,38 @@ def build_runtime_terminal_ingress_ledger(
     return tuple(ledger_rows), audit
 
 
-def _terminate_processes(processes: dict[str, subprocess.Popen[Any]]) -> None:
-    for process in processes.values():
-        if process.poll() is None:
-            process.terminate()
-    for process in processes.values():
-        if process.poll() is None:
-            try:
-                process.wait(timeout=2)
-            except subprocess.TimeoutExpired:
+def _terminate_processes(
+    processes: dict[str, subprocess.Popen[Any]], *, deadline: float | None = None
+) -> None:
+    # One cleanup clock for every authentic child. Signal delivery is not reap.
+    deadline = time.monotonic() + 15.0 if deadline is None else deadline
+    grace_end = min(deadline, time.monotonic() + 2.0)
+    errors: list[str] = []
+    for name, process in processes.items():
+        try:
+            if process.poll() is None:
+                process.terminate()
+        except Exception as error:
+            errors.append(f"{name} TERM: {type(error).__name__}: {error}")
+    for name, process in processes.items():
+        try:
+            process.wait(timeout=max(0.0, grace_end - time.monotonic()))
+        except subprocess.TimeoutExpired:
+            pass
+        except Exception as error:
+            errors.append(f"{name} TERM wait: {type(error).__name__}: {error}")
+    for name, process in processes.items():
+        try:
+            if process.poll() is None:
                 process.kill()
+        except Exception as error:
+            errors.append(f"{name} KILL: {type(error).__name__}: {error}")
+    for name, process in processes.items():
+        try:
+            process.wait(timeout=max(0.0, deadline - time.monotonic()))
+        except Exception as error:
+            errors.append(f"{name} final wait: {type(error).__name__}: {error}")
+    _require(not errors, "checkpoint owned child cleanup failed: " + "; ".join(errors)[:4096])
 
 
 def _write_fd_line(fd: int, value: str) -> None:
@@ -1206,6 +1234,9 @@ def run_worker_processes(
     timeout_s: float = 30.0,
     ready_timeout_s: float | None = None,
     on_event: Callable[[dict[str, Any]], None] | None = None,
+    on_raw_event: Callable[[str, str, int], None] | None = None,
+    on_admission: Callable[[dict[str, Any]], None] | None = None,
+    absolute_deadline_monotonic_ns: int | None = None,
     synchronized_lifecycle: bool = False,
     warmup_s: float = 0.0,
     measurement_s: float = 0.0,
@@ -1215,8 +1246,12 @@ def run_worker_processes(
     measurement_end_boundary_guard_ns: int = 0,
     policy_socket_handler: Callable[[str, socket.socket], None] | None = None,
     operational_admission_limits: Mapping[str, Any] | None = None,
+    study_runtime_plan: Mapping[str, Any] | None = None,
 ) -> RuntimeRunResult:
     _require(os.name == "posix", "direct checkpoint event pipes require a POSIX runtime")
+    if absolute_deadline_monotonic_ns is not None:
+        _require(type(absolute_deadline_monotonic_ns) is int and study_runtime_plan is not None and
+            absolute_deadline_monotonic_ns > time.monotonic_ns(), "absolute deadline requires the actual finite study")
     spec_values = list(specs)
     source_spec_values = list(source_specs)
     _require(bool(spec_values), "no checkpoint workers were configured")
@@ -1262,6 +1297,14 @@ def run_worker_processes(
     if require_decoder_placement_verification:
         _require(synchronized_lifecycle, "decoder placement verification requires synchronized lifecycle")
         _require(warmup_s > 0, "decoder placement verification requires a positive warmup")
+    study_startup_deadline = None
+    if study_runtime_plan is not None:
+        from checkpoint_runtime_plan import validate_finite_study_runtime_plan_v1
+        validate_finite_study_runtime_plan_v1(study_runtime_plan)
+        _require(synchronized_lifecycle, "finite study requires original synchronized lifecycle")
+        study_startup_deadline = time.monotonic() + resolved_ready_timeout_s
+        if absolute_deadline_monotonic_ns is not None:
+            study_startup_deadline = min(study_startup_deadline, absolute_deadline_monotonic_ns / 1_000_000_000)
     processes: dict[str, subprocess.Popen[Any]] = {}
     source_processes: dict[str, subprocess.Popen[Any]] = {}
     stderr_tails: dict[str, bytearray] = {}
@@ -1332,6 +1375,22 @@ def run_worker_processes(
         for thread in stderr_threads.values():
             thread.join(timeout=max(0.0, join_deadline - time.monotonic()))
 
+    def close_all(fds=(), endpoints=(), *, primary=None):
+        errors = []
+        for endpoint in endpoints:
+            try: endpoint.close()
+            except BaseException as error: errors.append(error)
+        for fd in fds:
+            if fd >= 0:
+                try: os.close(fd)
+                except BaseException as error: errors.append(error)
+        if errors:
+            if primary is None:
+                primary = errors.pop(0)
+                for error in errors: primary.add_note(str(error)[:1024])
+                raise primary
+            for error in errors: primary.add_note("owned descriptor retirement: " + str(error)[:1024])
+
     try:
         if source_spec_values:
             admission_delivery_fds = {spec.worker_id: os.pipe() for spec in spec_values}
@@ -1351,6 +1410,8 @@ def run_worker_processes(
                 control_write_fds[spec.worker_id] = control_write_fd
                 status_read_fds[spec.worker_id] = status_read_fd
             environment = native_subprocess_environment(spec.environment)
+            if study_startup_deadline is not None:
+                environment["VAST_CHECKPOINT_STARTUP_DEADLINE_MONOTONIC_NS"] = str(int(study_startup_deadline * 1000000000))
             environment.update(
                 {
                     RUNTIME_EVENT_FD_ENV: str(write_fd),
@@ -1386,18 +1447,14 @@ def run_worker_processes(
                     pass_fds=_combined_inherited_fds(spec, tuple(inherited_fds)),
                     stderr=subprocess.PIPE,
                 )
+                processes[spec.worker_id] = process
+                capture_stderr(spec.worker_id, process)
             finally:
-                os.close(write_fd)
-                if policy_child_endpoint is not None:
-                    policy_child_endpoint.close()
-                if synchronized_lifecycle:
-                    os.close(control_read_fd)
-                    os.close(status_write_fd)
+                fds = [write_fd, control_read_fd, status_write_fd]
                 if source_spec_values:
-                    os.close(admission_delivery_fds[spec.worker_id][0])
+                    fds.append(admission_delivery_fds[spec.worker_id][0])
                     admission_delivery_fds[spec.worker_id] = (-1, admission_delivery_fds[spec.worker_id][1])
-            processes[spec.worker_id] = process
-            capture_stderr(spec.worker_id, process)
+                close_all(fds, () if policy_child_endpoint is None else (policy_child_endpoint,), primary=sys.exception())
             domain = f"{socket.gethostname()}:pid-{process.pid}:worker-{spec.worker_id}"
             bindings.append(
                 WorkerBinding(
@@ -1429,6 +1486,8 @@ def run_worker_processes(
             }
             _require(bool(consumers), f"admission source {spec.source_process_id} has no consumers")
             environment = native_subprocess_environment(spec.environment)
+            if study_startup_deadline is not None:
+                environment["VAST_CHECKPOINT_STARTUP_DEADLINE_MONOTONIC_NS"] = str(int(study_startup_deadline * 1000000000))
             environment.update(
                 {
                     RUNTIME_ADMISSION_EVENT_FD_ENV: str(event_write_fd),
@@ -1458,18 +1517,14 @@ def run_worker_processes(
                     pass_fds=_combined_inherited_fds(spec, tuple(inherited_fds)),
                     stderr=subprocess.PIPE,
                 )
+                source_processes[spec.source_process_id] = process
+                capture_stderr(spec.source_process_id, process)
             finally:
-                os.close(event_write_fd)
-                os.close(ack_read_fd)
-                os.close(control_read_fd)
-                os.close(status_write_fd)
+                fds = [event_write_fd, ack_read_fd, control_read_fd, status_write_fd]
                 for worker_id in consumers:
-                    write_fd = admission_delivery_fds[worker_id][1]
-                    if write_fd >= 0:
-                        os.close(write_fd)
-                        admission_delivery_fds[worker_id] = (-1, -1)
-            source_processes[spec.source_process_id] = process
-            capture_stderr(spec.source_process_id, process)
+                    fds.append(admission_delivery_fds[worker_id][1])
+                    admission_delivery_fds[worker_id] = (-1, -1)
+                close_all(fds, primary=sys.exception())
             source_bindings.append(
                 SourceBinding(
                     source_process_id=spec.source_process_id,
@@ -1480,47 +1535,51 @@ def run_worker_processes(
                     native_source=spec.native_source,
                 )
             )
-    except Exception:
-        for endpoint in policy_endpoints.values():
-            endpoint.close()
-        for read_fd in read_fds.values():
-            os.close(read_fd)
-        for fd in control_write_fds.values():
-            os.close(fd)
-        for fd in status_read_fds.values():
-            os.close(fd)
-        for fd in source_read_fds.values():
-            os.close(fd)
-        for fd in source_ack_write_fds.values():
-            os.close(fd)
-        for read_fd, write_fd in admission_delivery_fds.values():
-            for fd in (read_fd, write_fd):
-                if fd >= 0:
-                    os.close(fd)
-        _terminate_processes(processes)
-        _terminate_processes(source_processes)
-        join_stderr_threads(2.0)
+    except Exception as error:
+        cleanup_deadline = time.monotonic() + 15.0
+        close_all((*read_fds.values(), *control_write_fds.values(), *status_read_fds.values(),
+                   *source_read_fds.values(), *source_ack_write_fds.values(),
+                   *(fd for pair in admission_delivery_fds.values() for fd in pair)),
+                  policy_endpoints.values(), primary=error)
+        try:
+            _terminate_processes(
+                {**processes, **source_processes}, deadline=cleanup_deadline
+            )
+        except Exception as cleanup_error:
+            error.add_note(f"owned child cleanup: {cleanup_error}"[:4096])
+        join_stderr_threads(max(0.0, cleanup_deadline - time.monotonic()))
         raise
 
-    admission_coordinator = (
-        DirectAdmissionCoordinator(
+    try:
+        admission_coordinator = (
+            DirectAdmissionCoordinator(
+                run_id=run_id,
+                topology_kind=topology_kind,
+                branches=branches,
+                bindings=source_bindings,
+                operational_admission_limits=operational_admission_limits,
+                study_runtime_plan=study_runtime_plan,
+            )
+            if source_bindings
+            else None
+        )
+        coordinator = DirectRuntimeJoinCoordinator(
             run_id=run_id,
             topology_kind=topology_kind,
+            topology_contract_version=topology_contract_version,
             branches=branches,
-            bindings=source_bindings,
-            operational_admission_limits=operational_admission_limits,
+            bindings=bindings,
+            admission_coordinator=admission_coordinator,
         )
-        if source_bindings
-        else None
-    )
-    coordinator = DirectRuntimeJoinCoordinator(
-        run_id=run_id,
-        topology_kind=topology_kind,
-        topology_contract_version=topology_contract_version,
-        branches=branches,
-        bindings=bindings,
-        admission_coordinator=admission_coordinator,
-    )
+    except BaseException as error:
+        cleanup_deadline = time.monotonic()+15.0
+        close_all((*read_fds.values(), *source_read_fds.values(), *source_ack_write_fds.values(),
+            *status_read_fds.values(), *control_write_fds.values()), policy_endpoints.values(), primary=error)
+        try: _terminate_processes({**processes, **source_processes}, deadline=cleanup_deadline)
+        except BaseException as cleanup: error.add_note(str(cleanup)[:4096])
+        join_stderr_threads(max(0.0, cleanup_deadline-time.monotonic()))
+        raise
+
     events: list[dict[str, Any]] = []
     observed_ns: dict[str, int] = {}
     exit_ns: dict[str, int] = {}
@@ -1536,6 +1595,8 @@ def run_worker_processes(
                 for line in source:
                     if not line.strip():
                         continue
+                    if on_raw_event is not None:
+                        with output_lock: on_raw_event(line, worker_id, pid)
                     emitted = coordinator.accept(line, observed_worker_id=worker_id, observed_pid=pid)
                     now_ns = time.monotonic_ns()
                     with output_lock:
@@ -1579,12 +1640,22 @@ def run_worker_processes(
                         observed_source_process_id=source_process_id,
                         observed_pid=pid,
                     )
+                    if on_admission is not None:
+                        # accept validated and committed this key in memory. The
+                        # study callback persists that exact original row before ACK.
+                        if absolute_deadline_monotonic_ns is not None:
+                            _require(time.monotonic_ns() < absolute_deadline_monotonic_ns, "central admission persistence is late")
+                        on_admission(asdict(message))
+                        if absolute_deadline_monotonic_ns is not None:
+                            _require(time.monotonic_ns() < absolute_deadline_monotonic_ns, "central admission persistence closed late")
                     _write_fd_line(ack_write_fd, f"1 ACK {message.sequence}\n")
         except BaseException as exc:
             with output_lock:
                 errors.append(exc)
         finally:
-            os.close(ack_write_fd)
+            try: os.close(ack_write_fd)
+            except OSError as error:
+                with output_lock: errors.append(error)
 
     def consume_policy(worker_id: str, endpoint: socket.socket) -> None:
         try:
@@ -1649,7 +1720,7 @@ def run_worker_processes(
     for thread in policy_threads:
         thread.start()
 
-    ready_deadline = time.monotonic() + (
+    ready_deadline = study_startup_deadline if study_startup_deadline is not None else time.monotonic() + (
         resolved_ready_timeout_s if synchronized_lifecycle else timeout_s
     )
     deadline = ready_deadline
@@ -1706,6 +1777,8 @@ def run_worker_processes(
             # process has reached READY, so a cold startup cannot shorten warmup,
             # measurement, or terminal drain.
             deadline = time.monotonic() + timeout_s
+            if absolute_deadline_monotonic_ns is not None:
+                deadline = min(deadline, absolute_deadline_monotonic_ns / 1_000_000_000)
 
             with output_lock:
                 ready_statuses = {
@@ -1890,22 +1963,27 @@ def run_worker_processes(
                     f"{worker_id}: lifecycle must end with DRAINED or CENSORED",
                 )
     except Exception as error:
-        for endpoint in policy_endpoints.values():
-            endpoint.close()
-        for fd in control_write_fds.values():
-            os.close(fd)
+        cleanup_deadline = time.monotonic() + 15.0
+        close_all(control_write_fds.values(), policy_endpoints.values(), primary=error)
         control_write_fds.clear()
-        _terminate_processes(processes)
-        _terminate_processes(source_processes)
-        join_stderr_threads(2.0)
+        try:
+            _terminate_processes(
+                all_processes, deadline=cleanup_deadline
+            )
+        except Exception as cleanup_error:
+            error.add_note(f"owned child cleanup: {cleanup_error}"[:4096])
+        join_stderr_threads(max(0.0, cleanup_deadline - time.monotonic()))
         final_stderr_context = stderr_failure_context(
             all_processes,
             label="final_stderr_tails",
         )
         for thread in (*threads, *admission_threads, *status_threads, *policy_threads):
-            thread.join(timeout=2)
+            thread.join(timeout=max(0.0, cleanup_deadline - time.monotonic()))
         if isinstance(error, ContractError) and final_stderr_context:
-            raise ContractError(f"{error}{final_stderr_context}") from error
+            enriched = ContractError(f"{error}{final_stderr_context}")
+            for note in getattr(error, "__notes__", ()):
+                enriched.add_note(note)
+            raise enriched from error
         raise
 
     lifecycle_state_values = {
@@ -1955,4 +2033,5 @@ def run_worker_processes(
         terminal_ingress_rows=terminal_ingress_rows,
         terminal_admission_audit=terminal_admission_audit,
         branch_terminal_records=coordinator.branch_terminal_records(),
+        runtime_frame_terminals=coordinator.terminal_frame_records(),
     )

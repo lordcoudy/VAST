@@ -13,6 +13,7 @@
 #include <vector>
 
 #include <sys/socket.h>
+#include <sys/un.h>
 #include <unistd.h>
 
 struct NativeProbeRuntimeTestAccess {
@@ -45,6 +46,22 @@ struct NativeProbeRuntimeTestAccess {
   static bool has_admitted_pts(const NativeProbeRuntime& runtime, std::uint64_t pts) {
     return runtime.states_.front().local_traces_by_pts.count(pts) != 0;
   }
+  static std::string execute_branch(NativeProbeRuntime& runtime,const std::string& branch,std::uint64_t pts) {
+    vast::CheckpointAnalyticsExecutionRequest request;
+    request.request_id=NativeProbeRuntime::sha256_text(branch);request.run_id=runtime.args_.run_id;
+    request.arm_id=std::string(64,'2');request.worker_id=runtime.checkpoint_worker_id_;
+    request.input_frame_key="kpp:0:"+runtime.args_.source_sha256+":0:"+std::to_string(pts);
+    request.stream_id=0;request.frame_id=7;request.transport_pts_ns=pts;request.branch=branch;
+    request.decision={"decision-"+branch,1,"cpu","implementation","emitter",std::string(64,'e')};
+    request.deadline_monotonic_ns=vast::CheckpointIoDeadline::monotonic_now_ns()+500'000'000ULL;
+    request.format="RGB";request.width=1;request.height=1;request.stride=3;
+    request.preprocessing_contract_sha256=std::string(64,'f');
+    const std::vector<std::uint8_t> pixels{1,2,3};request.raw_input_sha256=NativeProbeRuntime::sha256_raw_bytes(pixels);
+    try {runtime.checkpoint_execution_client_for_branch(branch).execute(request,pixels.data(),pixels.size());}
+    catch(const std::exception& exc) {return exc.what();}
+    return "unexpected success";
+  }
+  static void receive(NativeProbeRuntime& runtime) {runtime.receive_checkpoint_access_units();}
 };
 
 namespace {
@@ -495,6 +512,111 @@ void expect_rejected(const Args& args, const char* expected) {
   }
 }
 
+void exercise_real_independent_study_channels(const std::filesystem::path& output) {
+  Descriptors descriptors;
+  configure_environment(descriptors,"stream-0-shared");
+  const auto path=(output.parent_path()/"study-channels.sock").string();
+  const int listener=::socket(AF_UNIX,SOCK_SEQPACKET|SOCK_CLOEXEC|SOCK_NONBLOCK,0);
+  sockaddr_un address{};address.sun_family=AF_UNIX;
+  std::memcpy(address.sun_path,path.c_str(),path.size()+1);
+  if(listener<0||::bind(listener,reinterpret_cast<sockaddr*>(&address),sizeof(address))||::listen(listener,8))
+    throw std::runtime_error("real study channel listener failed");
+  ::unsetenv("VAST_CHECKPOINT_ANALYTICS_EXECUTION_FD");
+  ::setenv("VAST_CHECKPOINT_ANALYTICS_EXECUTION_SOCKET",path.c_str(),1);
+  ::setenv("VAST_CHECKPOINT_STARTUP_DEADLINE_MONOTONIC_NS",
+      std::to_string(vast::CheckpointIoDeadline::monotonic_now_ns()+5'000'000'000ULL).c_str(),1);
+  std::ifstream boot("/proc/sys/kernel/random/boot_id");std::string boot_id;std::getline(boot,boot_id);
+  std::array<char,256> clock_name{};const auto clock_length=::readlink("/proc/self/ns/time",clock_name.data(),clock_name.size());
+  if(boot_id.empty()||clock_length<=0) throw std::runtime_error("actual fixture clock domain unavailable");
+  ::setenv("VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID",boot_id.c_str(),1);
+  ::setenv("VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE",std::string(clock_name.data(),clock_length).c_str(),1);
+  auto args=drop_args(output,true);
+  args.checkpoint_study_kind="finite-component-study";args.source_replay="finite";
+  args.checkpoint_study_width=1920;args.checkpoint_study_height=1080;
+  args.checkpoint_study_waits_path=(output.parent_path()/"waits.jsonl").string();
+  args.checkpoint_study_accounting_path=(output.parent_path()/"receives.jsonl").string();
+  args.checkpoint_analytics_client_mode="branch";
+  std::vector<int> accepted;
+  std::size_t simultaneous_requests=0;
+  bool sealed_payloads=true;
+  std::string expected_payload_sha;
+  {
+    NativeProbeRuntime runtime(args);
+    if(!std::filesystem::is_regular_file(args.checkpoint_study_waits_path)||
+       !std::filesystem::is_regular_file(args.checkpoint_study_accounting_path))
+      throw std::runtime_error("native study has no owned wait/receive journals before callbacks");
+    while(true) {int socket=::accept4(listener,nullptr,nullptr,SOCK_CLOEXEC|SOCK_NONBLOCK);
+      if(socket<0) {if(errno!=EAGAIN&&errno!=EWOULDBLOCK) throw std::runtime_error("actual accept failed"); break;}
+      accepted.push_back(socket);
+    }
+    NativeProbeRuntimeTestAccess::admit(runtime,kTestPts);
+    std::array<std::string,2> failures;
+    std::thread first([&]{failures[0]=NativeProbeRuntimeTestAccess::execute_branch(runtime,"damage",kTestPts);});
+    std::thread second([&]{failures[1]=NativeProbeRuntimeTestAccess::execute_branch(runtime,"foreign_object",kTestPts);});
+    std::vector<pollfd> pending;for(int socket:accepted) pending.push_back({socket,POLLIN,0});
+    const auto inspect_end=std::chrono::steady_clock::now()+std::chrono::milliseconds(200);
+    while(simultaneous_requests<2&&std::chrono::steady_clock::now()<inspect_end) {
+      if(::poll(pending.data(),pending.size(),10)<0) throw std::runtime_error("real branch-channel poll failed");
+      for(auto& item:pending) if(item.fd>=0&&(item.revents&POLLIN)) {
+        std::array<char,65536> bytes{};std::array<char,CMSG_SPACE(sizeof(int))> ancillary{};
+        iovec iov{bytes.data(),bytes.size()};msghdr message{};message.msg_iov=&iov;message.msg_iovlen=1;
+        message.msg_control=ancillary.data();message.msg_controllen=ancillary.size();
+        const auto size=::recvmsg(item.fd,&message,MSG_DONTWAIT|MSG_CMSG_CLOEXEC);
+        auto* control=CMSG_FIRSTHDR(&message);int payload=-1;
+        if(control&&control->cmsg_level==SOL_SOCKET&&control->cmsg_type==SCM_RIGHTS)
+          std::memcpy(&payload,CMSG_DATA(control),sizeof(int));
+        const int required=F_SEAL_WRITE|F_SEAL_GROW|F_SEAL_SHRINK|F_SEAL_SEAL;
+        sealed_payloads=sealed_payloads&&size>0&&payload>=0&&(::fcntl(payload,F_GET_SEALS)&required)==required;
+        if(payload>=0) ::close(payload);
+        ++simultaneous_requests;item.fd=-1;
+      }
+    }
+    // No reply or peer close occurs before this overlap observation.
+    first.join();second.join();
+    if(failures[0].find("deadline")==std::string::npos||failures[1].find("deadline")==std::string::npos)
+      throw std::runtime_error("independent branch requests did not retain original deadlines");
+    vast::CheckpointAdmissionFrame delivered;
+    delivered.sequence=1;delivered.keyframe=true;delivered.source_cycle=0;
+    delivered.access_unit_pts_ns=0;delivered.transport_pts_ns=0;delivered.access_unit_dts_ns=0;
+    delivered.duration_ns=500'000'000;delivered.admission_id=args.run_id+":0:admission:1";
+    delivered.input_frame_key="kpp:0:"+args.source_sha256+":0:0";
+    delivered.payload={0,0,0,1,0x65,0x88,0x84};
+    gchar* digest=g_compute_checksum_for_data(G_CHECKSUM_SHA256,delivered.payload.data(),delivered.payload.size());
+    delivered.payload_sha256=digest;g_free(digest);
+    expected_payload_sha=delivered.payload_sha256;
+    vast::CheckpointAdmissionTransport::write_frame(descriptors.data_pipe[1],delivered);
+    ::close(descriptors.data_pipe[1]);descriptors.data_pipe[1]=-1;
+    NativeProbeRuntimeTestAccess::receive(runtime);
+  }
+  const auto read_original=[](const std::string& path) {
+    std::ifstream source(path);return std::string(std::istreambuf_iterator<char>(source),{});};
+  const auto waits=read_original(args.checkpoint_study_waits_path);
+  const auto receives=read_original(args.checkpoint_study_accounting_path);
+  const auto occurrences=[](const std::string& text,const std::string& needle) {
+    std::size_t count=0,offset=0;while((offset=text.find(needle,offset))!=std::string::npos) {++count;offset+=needle.size();}return count;};
+  if(occurrences(waits,"\"phase\":\"begin\"")!=2||occurrences(waits,"\"phase\":\"released\"")!=2||
+      occurrences(waits,"\"reply_ns\":null")!=4||occurrences(waits,"\"boot_id\":\""+boot_id+"\"")!=4||
+      occurrences(receives,"\"type\":\"recipient_received\"")!=1||
+      receives.find("\"planned_schedule_offset_ns\":0")==std::string::npos||
+      receives.find("\"payload_sha256\":\""+expected_payload_sha+"\"")==std::string::npos)
+    throw std::runtime_error("native journals did not retain actual wait failure/receive/self-clock observations");
+  auto foreign=args;
+  foreign.checkpoint_study_waits_path=(output.parent_path()/"foreign-waits.jsonl").string();
+  foreign.checkpoint_study_accounting_path=(output.parent_path()/"foreign-receives.jsonl").string();
+  ::setenv("VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE","unknown",1);
+  expect_rejected(foreign,"clock namespace proof is missing or mismatched");
+  if(std::filesystem::exists(foreign.checkpoint_study_waits_path)||std::filesystem::exists(foreign.checkpoint_study_accounting_path))
+    throw std::runtime_error("foreign clock projection allocated study state before rejection");
+  bool closed=true;
+  for(int socket:accepted) {char byte;closed=closed&&::recv(socket,&byte,1,MSG_DONTWAIT)==0;::close(socket);}
+  ::close(listener);::unlink(path.c_str());
+  ::unsetenv("VAST_CHECKPOINT_ANALYTICS_EXECUTION_SOCKET");
+  ::unsetenv("VAST_CHECKPOINT_STARTUP_DEADLINE_MONOTONIC_NS");
+  ::unsetenv("VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID");::unsetenv("VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE");
+  if(accepted.size()!=4||!closed||simultaneous_requests!=2||!sealed_payloads)
+    throw std::runtime_error("study branch mode did not overlap and retire genuine independent sealed requests: "+std::to_string(accepted.size()));
+}
+
 }  // namespace
 
 int main() {
@@ -527,6 +649,7 @@ int main() {
           "requires a stable worker ID");
     }
     configure_model_bindings();
+    exercise_real_independent_study_channels(temporary / "study-branches");
     exercise_valid_drop(temporary / "independent-prefix-drop", false, true);
     exercise_valid_drop(temporary / "independent-detector-drop", false, false);
     exercise_valid_drop(temporary / "shared-prefix-drop", true, true);

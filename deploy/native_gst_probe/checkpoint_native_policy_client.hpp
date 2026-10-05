@@ -1,12 +1,17 @@
 #pragma once
 
+#include "checkpoint_admission_transport.hpp"
+
 #include <array>
 #include <cerrno>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
+#include <atomic>
+#include <functional>
 #include <iomanip>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <set>
 #include <sstream>
@@ -90,7 +95,10 @@ class CheckpointNativePolicyClient {
   CheckpointNativePolicyClient(const CheckpointNativePolicyClient&) = delete;
   CheckpointNativePolicyClient& operator=(const CheckpointNativePolicyClient&) = delete;
 
-  CheckpointNativePolicyClient(CheckpointNativePolicyClient&& other) noexcept : fd_(other.fd_) {
+  CheckpointNativePolicyClient(CheckpointNativePolicyClient&& other) noexcept
+      : fd_(other.fd_), io_(std::move(other.io_)), eligibility_(std::move(other.eligibility_)),
+        exchange_started_(other.exchange_started_.load()),
+        lifecycle_bound_(other.lifecycle_bound_), channel_failed_(other.channel_failed_) {
     other.fd_ = -1;
   }
 
@@ -98,12 +106,33 @@ class CheckpointNativePolicyClient {
     if (this != &other) {
       close_fd();
       fd_ = other.fd_;
+      io_ = std::move(other.io_);
+      eligibility_ = std::move(other.eligibility_);
+      exchange_started_.store(other.exchange_started_.load());
+      lifecycle_bound_ = other.lifecycle_bound_;
+      channel_failed_ = other.channel_failed_;
       other.fd_ = -1;
     }
     return *this;
   }
 
   ~CheckpointNativePolicyClient() { close_fd(); }
+
+  // Bind once before callers start. The owner establishes its original START
+  // drain endpoint on this shared clock and retains all callbacks before FD
+  // retirement; abort only publishes state, never closes a live caller's FD.
+  void bind_lifecycle(
+      std::shared_ptr<CheckpointIoDeadline> io,
+      std::function<bool(const std::string&)> eligibility = {}) {
+    if (!io || lifecycle_bound_ || exchange_started_.load()) {
+      throw std::runtime_error("native policy lifecycle cannot be rebound");
+    }
+    io_ = std::move(io);
+    eligibility_ = std::move(eligibility);
+    lifecycle_bound_ = true;
+  }
+
+  void abort() noexcept { if (io_) io_->abort(); }
 
   CheckpointNativePolicyDecision decide(const CheckpointNativePolicyRequest& request) {
     validate_request(request);
@@ -124,8 +153,9 @@ class CheckpointNativePolicyClient {
          << ",\"trace_id\":\"" << escape(request.trace_id)
          << "\",\"transport_pts_ns\":" << request.transport_pts_ns
          << ",\"worker_id\":\"" << escape(request.worker_id) << "\"}";
-    const FlatObject response = exchange(json.str());
-    require_response_fields(
+    CheckpointNativePolicyDecision decision;
+    exchange(json.str(), request, [&](const FlatObject& response) {
+      require_response_fields(
         response,
         "decision_response",
         {
@@ -138,7 +168,6 @@ class CheckpointNativePolicyClient {
             "emitter_id",
             "emitter_sha256",
         });
-    CheckpointNativePolicyDecision decision;
     decision.decision_id = string_value(response, "decision_id");
     decision.decision_seq = integer_value(response, "decision_seq");
     decision.selected_resource = string_value(response, "selected_resource");
@@ -154,6 +183,7 @@ class CheckpointNativePolicyClient {
     require_stable_text(decision.selected_implementation_id, "selected_implementation_id");
     require_stable_text(decision.emitter_id, "emitter_id");
     require_sha256(decision.emitter_sha256, "emitter_sha256");
+    });
     return decision;
   }
 
@@ -185,7 +215,9 @@ class CheckpointNativePolicyClient {
          << "\",\"timestamp_ms\":" << number(timestamp_ms)
          << ",\"transport_pts_ns\":" << request.transport_pts_ns
          << ",\"worker_id\":\"" << escape(request.worker_id) << "\"}";
-    require_ack(exchange(json.str()), "path_ack", decision.decision_id);
+    exchange(json.str(), request, [&](const FlatObject& response) {
+      require_ack(response, "path_ack", decision.decision_id);
+    });
   }
 
   void terminal(
@@ -226,7 +258,9 @@ class CheckpointNativePolicyClient {
          << ",\"terminal_timestamp_ms\":" << number(terminal_timestamp_ms)
          << ",\"transport_pts_ns\":" << request.transport_pts_ns
          << ",\"worker_id\":\"" << escape(request.worker_id) << "\"}";
-    require_ack(exchange(json.str()), "terminal_ack", decision.decision_id);
+    exchange(json.str(), request, [&](const FlatObject& response) {
+      require_ack(response, "terminal_ack", decision.decision_id);
+    });
   }
 
  private:
@@ -242,7 +276,12 @@ class CheckpointNativePolicyClient {
   using FlatObject = std::map<std::string, FlatValue>;
 
   int fd_ = -1;
-  std::mutex mutex_;
+  std::timed_mutex mutex_;
+  std::shared_ptr<CheckpointIoDeadline> io_ = std::make_shared<CheckpointIoDeadline>();
+  std::function<bool(const std::string&)> eligibility_;
+  std::atomic<bool> exchange_started_{false};
+  bool lifecycle_bound_ = false;
+  bool channel_failed_ = false;
 
   void close_fd() noexcept {
     if (fd_ >= 0) {
@@ -362,27 +401,59 @@ class CheckpointNativePolicyClient {
     return output.str();
   }
 
-  FlatObject exchange(const std::string& request) {
+  void exchange(
+      const std::string& request,
+      const CheckpointNativePolicyRequest& source,
+      const std::function<void(const FlatObject&)>& validate_response) {
     if (request.empty() || request.size() >= kMaximumMessageBytes) {
       throw std::runtime_error("native policy request size is invalid");
     }
-    std::lock_guard<std::mutex> lock(mutex_);
-    ssize_t written = -1;
-    do {
-      written = ::send(fd_, request.data(), request.size(), 0);
-    } while (written < 0 && errno == EINTR);
-    if (written < 0 || static_cast<std::size_t>(written) != request.size()) {
-      throw std::runtime_error("failed to send native policy request");
+    exchange_started_.store(true);
+    auto lock = io_->acquire(mutex_);
+    if (channel_failed_) throw std::runtime_error("native policy channel failed; reuse refused");
+    if (eligibility_ && !eligibility_(source.input_frame_key)) {
+      throw std::runtime_error("native policy input key is not eligible after client lock");
     }
-    std::array<char, kMaximumMessageBytes> buffer{};
-    ssize_t received = -1;
-    do {
-      received = ::recv(fd_, buffer.data(), buffer.size(), MSG_TRUNC);
-    } while (received < 0 && errno == EINTR);
-    if (received <= 0 || static_cast<std::size_t>(received) >= buffer.size()) {
-      throw std::runtime_error("native policy response is missing or truncated");
+    io_->check();
+    try {
+      while (true) {
+        io_->check();
+        const ssize_t written = ::send(
+            fd_, request.data(), request.size(), MSG_NOSIGNAL | MSG_DONTWAIT);
+        if (written < 0 && errno == EINTR) continue;
+        if (written < 0 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+          io_->wait(fd_, POLLOUT);
+          continue;
+        }
+        if (written < 0 || static_cast<std::size_t>(written) != request.size()) {
+          throw std::runtime_error("failed to send native policy request");
+        }
+        break;
+      }
+      std::array<char, kMaximumMessageBytes> buffer{};
+      while (true) {
+        io_->check();
+        const ssize_t received = ::recv(
+            fd_, buffer.data(), buffer.size(), MSG_TRUNC | MSG_DONTWAIT);
+        if (received < 0 && errno == EINTR) continue;
+        if (received < 0 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+          io_->wait(fd_, POLLIN);
+          continue;
+        }
+        if (received <= 0 || static_cast<std::size_t>(received) >= buffer.size()) {
+          throw std::runtime_error("native policy response is missing or truncated");
+        }
+        io_->check();
+        validate_response(parse_object(std::string(buffer.data(), static_cast<std::size_t>(received))));
+        io_->check();
+        return;
+      }
+    } catch (...) {
+      // A sent RPC may still have a late reply. Never let another caller adopt
+      // that reply as its own; preserve the first failure without closing FD.
+      channel_failed_ = true;
+      throw;
     }
-    return parse_object(std::string(buffer.data(), static_cast<std::size_t>(received)));
   }
 
   static void skip_space(const std::string& json, std::size_t& offset) {

@@ -13,7 +13,7 @@ from pathlib import Path
 import re
 import threading
 import time
-from publication_operational_request_domain_v1 import canonical_json_v1, payload_with_sha256_v1, seal_guardian_event_v1
+from publication_operational_request_domain_v1 import canonical_json_v1, payload_with_sha256_v1, seal_guardian_event_v1, validate_study_scope_v1, STUDY_GUARDIAN_KIND_V1
 from typing import Any, Callable, Mapping
 
 BRANCHES = ("plate_number", "vehicle_type", "damage", "foreign_object")
@@ -98,9 +98,12 @@ def _table(header: Mapping[str, Any], name: str, fields: set[str], maximum: int)
 
 
 def _header(value: Mapping[str, Any], route: tuple[str, str], budgets: Mapping[str, int]) -> tuple[dict[str, Any], dict[tuple[Any, ...], int]]:
-    _require(type(value) is dict and set(value) == HEADER_FIELDS,
+    study_scope = value.get("study_scope")
+    if study_scope is not None:
+        validate_study_scope_v1(study_scope)
+    _require(type(value) is dict and set(value) == (HEADER_FIELDS if study_scope is None else HEADER_FIELDS | {"study_scope"}),
              "operational header fields drifted")
-    _require(type(value["schema_version"]) is int and value["schema_version"] == 1 and value["artifact_kind"] == HEADER_KIND
+    _require(type(value["schema_version"]) is int and value["schema_version"] == 1 and value["artifact_kind"] == (HEADER_KIND if study_scope is None else STUDY_GUARDIAN_KIND_V1)
              and value["record_kind"] == "header" and value["digest_algorithm"] == "sha256",
              "operational header version drifted")
     _require(value["route"] == {"branch": route[0], "resource": route[1]},
@@ -121,7 +124,7 @@ def _header(value: Mapping[str, Any], route: tuple[str, str], budgets: Mapping[s
     _require(type(value["budgets"]) is dict and all(type(number) is int for number in value["budgets"].values())
              and value["budgets"] == budgets, "operational header budgets drifted")
     protocols = _table(value, "protocols", {"id", "schema_version", "message_type", "transport", "source_descriptor"}, 2)
-    contexts = _table(value, "contexts", {"id", "protocol", "run_id", "arm_id", "system", "policy"}, 37)
+    contexts = _table(value, "contexts", {"id", "protocol", "run_id", "arm_id", "system", "policy"}, 37 if study_scope is None else 32)
     workers = _table(value, "front_workers", {"id", "worker_id", "stream_id"}, 24)
     bindings = _table(value, "bindings", {"id", "context", "front_worker"}, 222)
     lookup = {}
@@ -162,9 +165,14 @@ class GuardianOperationalRecorder:
                  *, budgets: Mapping[str, int] | None = None,
                  clock_ns: Callable[[], int] = time.time_ns) -> None:
         self._budgets = dict(DEFAULT_BUDGETS)
+        study_scopes = [header.get("study_scope") for header in headers_by_route.values()]
+        if any(scope is not None for scope in study_scopes):
+            _require(all(scope is not None and scope == study_scopes[0] for scope in study_scopes),
+                     "study scope differs across held routes")
+            self._budgets["max_terminal_bytes"] = 2048
         for key, number in (budgets or {}).items():
             _require(key in DEFAULT_BUDGETS, "unknown operational budget")
-            _integer(number, DEFAULT_BUDGETS[key], key, 1)
+            _integer(number, self._budgets[key], key, 1)
             self._budgets[key] = number
         _require(set(headers_by_route) == ROUTES, "operational headers must cover exact eight routes")
         checked = {route: _header(dict(header), route, self._budgets) for route, header in headers_by_route.items()}
@@ -194,7 +202,7 @@ class GuardianOperationalRecorder:
                 path = self._outdir / (route[0] + "-" + route[1] + ".jsonl")
                 raw = _canonical(header) + b"\n"
                 stream = self._open_exclusive(path.name)
-                row = {"path": path, "stream": stream, "lookup": lookup, "sha": header["sha256"],
+                row = {"study_scope": header.get("study_scope"), "path": path, "stream": stream, "lookup": lookup, "sha": header["sha256"],
                        "digest": hashlib.sha256(), "bytes": 0, "pending": 0,
                        "file_identity": (os.fstat(stream.fileno()).st_dev, os.fstat(stream.fileno()).st_ino),
                        "event_count": 0, "requests_started": 0, "requests_completed": 0, "requests_failed": 0}
@@ -248,7 +256,7 @@ class GuardianOperationalRecorder:
                 self._failure = str(reason)[:2048]
 
     def _event(self, row: dict[str, Any], core: dict[str, Any], cap: int) -> bytes:
-        raw = _canonical(seal_guardian_event_v1(core, previous_sha256=row["sha"])) + b"\n"
+        raw = _canonical(seal_guardian_event_v1(core, previous_sha256=row["sha"], study_scope=row.get("study_scope"))) + b"\n"
         _require(len(raw) <= cap, "operational event byte capacity exhausted")
         return raw
 
@@ -260,7 +268,8 @@ class GuardianOperationalRecorder:
                 _require(route in self._routes, "operational request route invalid")
                 _require(protocol_mode in {"gstreamer", "worker"}, "operational front protocol mode invalid")
                 _integer(connection_seq, 1000000, "connection", 1)
-                _integer(local_seq, 6744, "local sequence", 1)
+                scope = self._headers[route].get("study_scope")
+                _integer(local_seq, 6744 if scope is None else scope["max_requests_per_arm"], "local sequence", 1)
                 _require(len(self._pending) < self._budgets["max_pending"], "operational pending capacity exhausted")
                 _require(self._counts["requests_started"] < self._budgets["max_requests"], "operational request capacity exhausted")
                 _require(self._seq + len(self._pending) + 2 <= self._budgets["max_events"], "operational event terminal reservation exhausted")
@@ -284,7 +293,7 @@ class GuardianOperationalRecorder:
                         "connection": connection_seq, "local_seq": local_seq, "binding": row["lookup"][key],
                         "request_id": _text(message["request_id"], 64, "request id"),
                         "input_key": _text(frame["input_frame_key"], 136, "input frame key"),
-                        "frame_id": _integer(frame["frame_id"], 280, "frame id"),
+                        "frame_id": _integer(frame["frame_id"], 280 if scope is None else scope["max_frame_id"], "frame id"),
                         "pts_ns": _integer(frame["transport_pts_ns"], (1 << 64) - 1, "transport PTS"),
                         "decision_id": decision, "control_sha256": hashlib.sha256(_canonical(message)).hexdigest(),
                         "at_ns": _integer(self._clock_ns(), (1 << 64) - 1, "observed clock")}
@@ -309,7 +318,7 @@ class GuardianOperationalRecorder:
                     raise
                 raise GuardianOperationalError("operational begin validation failed") from error
 
-    def terminal(self, token: int, response: Mapping[str, Any] | None, *, outcome: str, send: str) -> None:
+    def terminal(self, token: int, response: Mapping[str, Any] | None, *, outcome: str, send: str, timings=None) -> None:
         with self._lock:
             try:
                 _require(not self._finished and token in self._pending, "operational terminal has no unique pending begin")
@@ -321,6 +330,10 @@ class GuardianOperationalRecorder:
                         "at_ns": _integer(self._clock_ns(), (1 << 64) - 1, "observed clock"),
                         "response": None if response is None else hashlib.sha256(_canonical(response)).hexdigest(),
                         "outcome": outcome, "send": send}
+                if row["study_scope"] is not None:
+                    core["timings"] = timings
+                else:
+                    _require(timings is None, "legacy terminal cannot adopt study timing fields")
                 raw = self._event(row, core, self._budgets["max_terminal_bytes"])
                 _require(len(raw) <= self._budgets["terminal_reservation_bytes"], "operational terminal reservation exhausted")
                 self._write(row, raw)
@@ -345,6 +358,52 @@ class GuardianOperationalRecorder:
     def snapshot(self) -> dict[str, int]:
         with self._lock:
             return {**self._counts, "unfinished_requests": len(self._pending)}
+
+    def capture_study_arm_v1(self, run_id, outdir, *, deadline):
+        """Copy actual closed arm ranges from the idle held journals, without closing the pool."""
+        from publication_operational_request_domain_v1 import expand_guardian_identity_v1, validate_guardian_event_v1
+        with self._lock:
+            _require(not self._closed and not self._finished and self._failure is None and not self._pending,
+                "study journal snapshot requires a live idle original recorder")
+            _require(all(h.get("study_scope") is not None for h in self._headers.values()),"journal snapshot requires separately typed study")
+            out=Path(outdir);_require(out.is_dir() and not any(out.iterdir()),"journal snapshot output is not exclusive")
+            decoded=[];ranges=[]
+            for route,row in sorted(self._routes.items()):
+                _require(time.monotonic()<deadline,"original campaign snapshot deadline")
+                self._assert_custody(row);row["stream"].flush();os.fsync(row["stream"].fileno())
+                before=os.stat(row["path"],follow_symlinks=False)
+                with row["path"].open("rb") as source:
+                    raw=source.read(self._budgets["max_route_bytes"]+1)
+                    _require(len(raw)==row["bytes"] and hashlib.sha256(raw).hexdigest()==row["digest"].hexdigest(),"held journal snapshot digest/size")
+                    after=os.fstat(source.fileno())
+                fields=lambda value:(value.st_dev,value.st_ino,value.st_mode,value.st_nlink,value.st_size,value.st_mtime_ns,value.st_ctime_ns)
+                _require(fields(before)==fields(after)==fields(os.stat(row["path"],follow_symlinks=False)),"idle original journal drifted")
+                lines=raw.splitlines(keepends=True);header=json.loads(lines[0]);previous=header["sha256"];begins={};tokens=set();selected=[];offset=len(lines[0])
+                for line in lines[1:]:
+                    _require(time.monotonic()<deadline,"original journal snapshot deadline")
+                    event=json.loads(line);validate_guardian_event_v1(event,previous_sha256=previous,study_scope=header["study_scope"])
+                    previous=event["sha256"]
+                    if "begin_seq" not in event:
+                        identity=expand_guardian_identity_v1(header,event)
+                        if identity["run_id"]==run_id:
+                            begins[event["seq"]]=(identity,event);tokens.add(event["seq"])
+                    elif event.get("begin_seq") in begins:
+                        identity,begin=begins.pop(event["begin_seq"])
+                        decoded.append({"identity":identity,"begin":begin,"terminal":event,"original_header":header,
+                            "original_journal_path":str(row["path"]),"original_terminal_offset":offset})
+                    if ("begin_seq" not in event and event["seq"] in tokens) or event.get("begin_seq") in tokens:
+                        selected.append(line)
+                    offset+=len(line)
+                _require(not begins,"idle snapshot has unfinished original arm begins")
+                path=out/(route[0]+"-"+route[1]+".original-range.jsonl")
+                payload=lines[0]+b"".join(selected)
+                with path.open("xb") as output:
+                    _require(output.write(payload)==len(payload),"short original journal range copy");output.flush();os.fsync(output.fileno())
+                ranges.append({"route":list(route),"path":str(path),"size_bytes":len(payload),"sha256":hashlib.sha256(payload).hexdigest(),
+                    "original_journal_path":str(row["path"]),"original_prefix_size_bytes":len(raw),"original_prefix_sha256":hashlib.sha256(raw).hexdigest(),
+                    "original_prefix_epochs":list(fields(before)),"range_is_complete_journal":False})
+            _require(time.monotonic()<deadline,"original idle snapshot closed late")
+            return {"decoded":decoded,"ranges":ranges}
 
     def finish(self, counters: Mapping[str, Any]) -> dict[str, Any]:
         with self._lock:

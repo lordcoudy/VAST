@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "change": "run-finite-component-study",
+  "reviewed_planning_commit": "3288b0702b6b0136feb6596382566b8686f9bb5c",
+  "verdict": "PASS_SCOPED_SOFTWARE_SOURCE_FIXTURES",
+  "ownership": "Only tests/cpp/checkpoint_source_lifecycle_test.cpp edited by this agent; production source written by parent. Test ownership now released to parent. This receipt freezes completed test7f2e and actual sourceeaf8 in GREEN01, not later parent edits.",
+  "frozen_green_source_pins": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
+      "bytes": 38000,
+      "sha256": "eaf85279dc19b1ba74a75c8294e9607f77804463d0467bfbe2b665432f6c3d97",
+      "epoch": [
+        68,
+        1407374885286055,
+        38000,
+        1791175616515112200,
+        1791175616515112200,
+        33279,
+        1
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp",
+      "bytes": 23327,
+      "sha256": "7f2e03267f97e34dc3060a652db022f37c6096285785588d22a75efead92996b",
+      "epoch": [
+        68,
+        5910974512617700,
+        23327,
+        1791175759229293500,
+        1791175759229293500,
+        33279,
+        1
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/native_gst_probe/checkpoint_admission_transport.hpp",
+      "bytes": 15498,
+      "sha256": "f4d48713868f00ca115b35837b1013873dda64bb6e45a814a1c1d6b7cf535b93",
+      "epoch": [
+        68,
+        1407374885286048,
+        15498,
+        1791174999430527100,
+        1791174999430527100,
+        33279,
+        1
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/native_gst_probe/checkpoint_study_reference.hpp",
+      "bytes": 37522,
+      "sha256": "a97a81a54b04a865ae4609ed92219151b6a85c8ffdfeb932969f3e2dc579941b",
+      "epoch": [
+        68,
+        16325548650793604,
+        37522,
+        1791173975309223700,
+        1791173975309223700,
+        33279,
+        1
+      ]
+    }
+  ],
+  "new_test_methods": [
+    "source_journal_ack_and_partial_fanout",
+    "source_journal_finish_ownership_and_retirement"
+  ],
+  "old_methods_and_assertions": {
+    "all_three_raw_exact": true,
+    "names": [
+      "silent_ack_and_stop_retire",
+      "typed_finite_contract",
+      "inventory_cli_is_genuinely_dispatched"
+    ]
+  },
+  "actual_cases": {
+    "ack_prefix": "Actual source entry wrote source_offered before live withheld ACK. source_admitted/source_ack/fanout/recipient-delivered absent before ACK; original event had AU32891 bytes. ACK then admitted+ACK rows preceded both fanout rows.",
+    "two_recipients": "a-full read complete actual80B-header transport and32891B synthetic compressed AU; payload/hash matched. b-partial pipe was actually filled, one page freed, peer held until original650ms START/drain failed. Retained wire prefix374/33142 bytes included123B payload. Journal kept both enqueues, delivered row only a-full; partial delivery was never promoted.",
+    "retirement": "Actual sender and fixture threads joined before fixture FD retirement, matched in-process FD count. Independent wrapper actualFD6\u21926 and compile/run children reaped. No global/process-group quiescence claim.",
+    "normal_finish": "Actual owner study_row advanced exact byte counter; within same original bound, callback abort then finisher fsync/close succeeded, study_fd=-1 and originalfd physicallyEBADF; original bytes retained.",
+    "path_replaced": "Actual journal path renamed and foreign regular replacement created; finisher refused and retired original fd. Foreign bytes untouched and original held prefix preserved.",
+    "lost_fd": "Actual close(originalfd), no intervening reuse; finisher refused and retired field. Captured custody primary survived accompanying actual close error."
+  },
+  "test_history": {
+    "red01": {
+      "tool_chunk": "13c826",
+      "compile_returncode": 0,
+      "run_returncode": 1,
+      "elapsed_seconds": 4.489792982931249,
+      "causality": "Real pre-fix source had no finisher. Friend SFINAE test-only fallback noop compiled; normal/path/lost failed refusal-retirement assertions. ACK/fanout passed.",
+      "source_test_red_retention": "reconstructed exact bytes by approved fixture-only inverse, SHA equals actual RED01; not machine-before snapshot"
+    },
+    "parent_first_candidate": {
+      "tool_chunk": "d43420",
+      "status": "failed fixture: direct raw write bypassed owner byte counter; strict production exact-size guard correct",
+      "retention": {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\native-io-testfirst-v1\\source-journal-first-candidate.observed-tool-transcript.v1.json",
+        "bytes": 3516,
+        "sha256": "73f8de8d672ff9efee759b1cd84f3e84e98aa8d0b0cb37acbfdb7815964be04e"
+      },
+      "limitation": "Explicit MANUAL observed response transcription. Machine returned object not recovered; identical WSL prefix copied from another retained response. Not merged into faithful own test tool objects."
+    },
+    "fixture_correction": "Replaced direct write with actual owner study_row; asserted physicalfd close and original-prefix retention after callbackabort. Production guard unchanged.",
+    "green01": {
+      "tool_chunk": "49e838",
+      "compile_returncode": 0,
+      "run_returncode": 0,
+      "elapsed_seconds": 3.9401391190476716,
+      "all_four_sources_SHA_size_7epochs_before_after_equal": true,
+      "wrapper_fd_before": 6,
+      "wrapper_fd_after": 6,
+      "children_reaped": true
+    }
+  },
+  "evidence": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-journal-testfirst-v1\\original-tools.v1.json",
+      "bytes": 18484,
+      "sha256": "56a1a2c2334aee45238944fdd4fcff2e0a8de3ea73ade3b736ce3e245bcb98eb"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-journal-testfirst-v1\\red-original-tools.v1.json",
+      "bytes": 9272,
+      "sha256": "638cdc817c2fafd6a3acbff93e727037cb14fca5e7855f13a599e3b02edf5fec"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-journal-testfirst-v1\\source-preservation.v1.json",
+      "bytes": 1972,
+      "sha256": "385825f27a0536c6f3b8371033cb2e29a803845fcab8eca4ac54b2e0644ac38d"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-journal-testfirst-v1\\owned-test.v1.diff",
+      "bytes": 18146,
+      "sha256": "281816cfb02685b3ae356eea3e4c3151e1205fa07be47969a062dff8fb6aa046"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-journal-testfirst-v1\\source-test.final.cpp",
+      "bytes": 23327,
+      "sha256": "7f2e03267f97e34dc3060a652db022f37c6096285785588d22a75efead92996b"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-journal-testfirst-v1\\source-test.red01.reconstructed.cpp",
+      "bytes": 22398,
+      "sha256": "46f8751589eb9cacc68d68e7fff8f29645a3e17b14bbac0e07a605b10d31ee2f"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-journal-testfirst-v1\\red-01\\execution.v1.json",
+      "bytes": 4901,
+      "sha256": "b3f388de8feb01e24402040af77ae11451671b2ffc6fe22f71dd5f9f9d6e6f30"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-journal-testfirst-v1\\red-01\\original.stderr",
+      "bytes": 378,
+      "sha256": "8f38bad8143718001db6a5a0ed2484ac713f63d4fb316e934eba726da06efc3b"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-journal-testfirst-v1\\green-01\\execution.v1.json",
+      "bytes": 4910,
+      "sha256": "c05dea79b620bc2e4c570c9c3840079609e4ac2a61ec3c2389953780966d0352"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-journal-testfirst-v1\\green-01\\original.stderr",
+      "bytes": 451,
+      "sha256": "34a7b7bac682a8eae9926328ba47c2ee5940c8bfb7ee6a08c7377ed668928e47"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-journal-testfirst-v1\\candidate-transcript-read.original-tools.v1.json",
+      "bytes": 4198,
+      "sha256": "f0035cedb6f0a63a0781d0dd3088b68671a3cdc59d9640b57f887da7406846e8"
+    }
+  ],
+  "limits": [
+    "Software source-entry/real-pipe tests; synthetic compressed AU was never decoded. No physical recording/model/engine/hardware/benchmark/CI invocation.",
+    "Source ACK-confirmed journal fixture does not replace separate central durable admission-before-ACK test.",
+    "Successful root15CPP suite remains parent-owned historical source checkpoint, not rerun or relabeled here.",
+    "Remaining native/source implementation and real selected-image/media/pilot/full24 gates are outside this fixture receipt."
+  ]
+}

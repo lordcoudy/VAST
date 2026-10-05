@@ -1,0 +1,165 @@
+{
+  "kind": "finite_component_study_plan_reducer_author_addendum_v2",
+  "planning_commit": "3288b0702b6b0136feb6596382566b8686f9bb5c",
+  "technical_comment": "https://github.com/lordcoudy/VAST/pull/5#issuecomment-5409655596",
+  "review_role": "author self-review; independent source/current CI and actual campaign remain separate",
+  "previous_author_receipt": {
+    "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/plan-reducer-implementation-v1/author-review.v1.json",
+    "size_bytes": 13804,
+    "sha256": "02942803f64dff53bef51f5d72b21368f5dca71f87b028e98f7a0fe64117e45a",
+    "disposition": "historical prior32/sourcebb59, retained unchanged; current implementation/evidence below supersedes its missing branch-drop limit"
+  },
+  "owned_source": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/canonical_systems_study_plan_v1.py",
+      "size_bytes": 10775,
+      "sha256": "68ce41d00fbb974ffa582446541ac4ee8ac3a1b0195c9b840b14e6524f14ee67",
+      "seven_epochs": [
+        68,
+        22517998138414660,
+        33279,
+        1,
+        10775,
+        1791173172206660000,
+        1791173172206660000
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/reduce_canonical_systems_study_v1.py",
+      "size_bytes": 52339,
+      "sha256": "066c52a4629e2aa4b0fc3146c1f037f4ee2f7f203c036a4f8fbd57a3df1d868f",
+      "seven_epochs": [
+        68,
+        6192449489328335,
+        33279,
+        1,
+        52339,
+        1791174972830772000,
+        1791174972830772000
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_canonical_systems_study_plan_v1.py",
+      "size_bytes": 8263,
+      "sha256": "1a80416cc538c72eb521277b0bcef6f310982e0d00c84d583787410d46af0e31",
+      "seven_epochs": [
+        68,
+        15199648743943184,
+        33279,
+        1,
+        8263,
+        1791173171033040600,
+        1791173171033040600
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_reduce_canonical_systems_study_v1.py",
+      "size_bytes": 36708,
+      "sha256": "8482ccc5013ceb0485d8f0b4273abcaf1041393ef44d61e5930b13e97c2b1e29",
+      "seven_epochs": [
+        68,
+        54043195530013510,
+        33279,
+        1,
+        36708,
+        1791174972824174600,
+        1791174972824174600
+      ]
+    }
+  ],
+  "source_frozen": true,
+  "current_results": {
+    "original_exec": "3acb26",
+    "session_id": 52857,
+    "original_final_wait": "22089f",
+    "exit_code": 0,
+    "tests": 33,
+    "plan": 10,
+    "reducer": 23,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "test_elapsed_s": 9.03,
+    "capture_elapsed_s": 9.084698366001248,
+    "source4_fullSHA_sevenepochs_before_after_equal": true,
+    "FD_before": 6,
+    "FD_after": 6,
+    "source_FDs_acquired": 4,
+    "source_FDs_released": true,
+    "close_errors": [],
+    "owner": {
+      "pid": 57935,
+      "ppid": 57934,
+      "pgid": 57935,
+      "sid": 57935,
+      "start_ticks": 65731496,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b"
+    },
+    "owner_scans": [
+      "9379b3",
+      "4dd715"
+    ],
+    "owner_PID_and_PGID_absent_both": true,
+    "scan_errors_both": []
+  },
+  "changes_since_v1": [
+    {
+      "issue": "Genuine native queue losses were rejected by policy/path-only and all-completed assumptions.",
+      "RED": "422405 actual original-shaped v3 drop refused missing native policy/path; no fake execution path.",
+      "GREEN": "New method actual_native_queue_drop_reconciles_closed_negative_frame_and_branch; both exact queue reasons,1drop+3actualnative/guardian completions,whole24 numerical rawmatrixtrue,model/key/admission/payload/objects/reason/frame-ledger negatives.",
+      "behavior": "Verify original result.branch_terminal + original protocol-v3 branch_drop + forced arm resource; match central admissionID/payload,exact2nativequeue reasons/objects0/frozenmodelbinding; require original native aggregate frame drop and original measured runtimeledger when measured. Missing actual branch stays UNKNOWN, aggregate censor never creates perbranch outcomes. Fully reconciled controlled drop permits truthful negative rawmatrix;Y100 remains wholeplanned,frame drop gets no latency/complete/on-time."
+    },
+    {
+      "issue": "Higher shared ancestor timestamp changes were incorrectly treated as named-directory replacement.",
+      "historical_failure": "3388be full23 preserved FAILED; it did not capture exact path, so original cause is not falsely proved.",
+      "RED": "52dbc8 deterministic actual sibling /tmp directory create/remove kept dev2096/ino73729/mode17407/nlink39/size32768, changed onlymtime/ctime and triggered old full7epoch refusal.",
+      "behavior": "Retain original nofollow held ancestors; require higher named/held directories dev/ino/mode/type, preserving rebind/symlink refusal. Regular input leaf and its directly containing closed input directory still require all7epochs. Both read-phase and post-reduction checks follow this scope; no global /tmp inactivity claim."
+    }
+  ],
+  "additional_driver_fields": {
+    "native_terminals_drop": "{branch_terminal:<unchanged result.branch_terminal_records row>,original_event:<genuine raw protocol-v3 branch_drop with admissionID/payload>,resource:<existing forcedarm>,original raw descriptor/index refs retained by driver}",
+    "closure_native_drop_bindings": "exact4branch dictionary {detector,backend} from original frozen DROP_DETECTOR/FACTORY binding; this is checked data, not new model authority",
+    "closure_runtime_frame_terminals": "original coordinator.terminal_frame_records across allphases;measurement runtime_ledger continues unchanged"
+  },
+  "current_physical_read_scope": [
+    "Regular source input fullSHA and held/named sevenepochs,positive-progress reads and deadline beforeeachcall.",
+    "Containing closed input directory fullsevenepochs; higher nofollow ancestorsdev/ino/mode/type checked.",
+    "Named records rechecked after numerical reduction; independentallFDclose attempts and firstfailure retained.",
+    "Exclusive output fd/name collision/rebind guard remains,originalabsolute CLI clock unchanged."
+  ],
+  "caps_unchanged_from_v1": true,
+  "all_previous_test_IDs_retained": true,
+  "new_method_id": "test_reduce_canonical_systems_study_v1.CanonicalStudyReducerTests.test_actual_native_queue_drop_reconciles_closed_negative_frame_and_branch",
+  "evidence": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\plan-reducer-implementation-v1\\original-drop-ancestor-tools.v2.json",
+      "size_bytes": 51349,
+      "sha256": "170b63d8350a279debea4e8e70bbf3cc068f6f3ed19bd5d89f2a4d9501af0bed"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\plan-reducer-implementation-v1\\final-owned33.console-result.v2.json",
+      "size_bytes": 15689,
+      "sha256": "549676f31978bf922d1f750a78893669fa94cefcb2fc87099664e0c5b0988c0e"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\plan-reducer-implementation-v1\\final-owned33-owner-tools.v2.json",
+      "size_bytes": 8884,
+      "sha256": "4a741ecdf3bef2e7e40b53c8f651dd726ca2676cbe7fea2a2ddacec5d6f668b0"
+    }
+  ],
+  "limitations": [
+    "All33 methods are explicit synthetic original-shaped records/real local files/socket-free subprocessCLI fixtures,not actual native queue/hardware/scientific effects.",
+    "Original native/model/source/CI/lifecycle authority remains driver-owned; reducer verifies retained numericalraw+physicalfiles and never grants qualification/publication/full.",
+    "Known aggregate censor with missing branches remains incomplete; current native reason validation permits only two source-proved queue reasons.",
+    "Prior original tools/RED failures,tool-truncation and metadata error notes remain unchanged; no target retry or overwritten original.",
+    "Actual source integration and independent source review/currentmandatoryCI are pending. No model/media/engine/prepare/pilot/24effects were run.",
+    "Exact original ownprocess/groupabsence and FD observations are reported; no globalquiescence or original container closure is claimed."
+  ],
+  "workflow_tasks_changed": false,
+  "git_mutated": false,
+  "canonical_study_complete": false,
+  "qualification_eligible": false,
+  "q4_eligible": false,
+  "publication_eligible": false,
+  "full_run_eligible": false
+}

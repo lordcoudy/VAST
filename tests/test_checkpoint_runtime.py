@@ -125,6 +125,118 @@ def admission_message(
 
 
 class CheckpointRuntimeTests(unittest.TestCase):
+    @unittest.skipUnless(os.name == "posix", "requires actual POSIX TERM/KILL")
+    def test_term_ignoring_children_are_killed_and_reaped_before_cleanup_returns(self):
+        from checkpoint_runtime import _terminate_processes
+        before = len(os.listdir("/proc/self/fd"))
+        children = {}
+        try:
+            for name in ("native", "source"):
+                child = subprocess.Popen(
+                    [sys.executable, "-I", "-B", "-c",
+                     "import signal,sys; signal.signal(signal.SIGTERM, signal.SIG_IGN); "
+                     "print('READY',flush=True); sys.stdin.buffer.read()"],
+                    stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                )
+                children[name] = child
+                self.assertEqual(child.stdout.readline(), b"READY\n")
+            _terminate_processes(children)
+            # returncode is published only by an actual poll/wait/reap. Do not
+            # poll after the call: a signal alone must not satisfy this gate.
+            self.assertEqual([p.returncode for p in children.values()], [-9, -9])
+            for child in children.values():
+                with self.assertRaises(ChildProcessError):
+                    os.waitpid(child.pid, os.WNOHANG)
+        finally:
+            for child in children.values():
+                if child.returncode is None:
+                    child.kill()
+                    child.wait(timeout=5)
+                for stream in (child.stdin, child.stdout, child.stderr):
+                    stream.close()
+        self.assertEqual(len(os.listdir("/proc/self/fd")), before)
+
+    @unittest.skipUnless(os.name == "posix", "requires actual owned child and descriptors")
+    def test_spawn_fd_close_failure_still_reaps_the_original_child(self):
+        import checkpoint_runtime as runtime
+        children = []
+        real_popen, real_close = subprocess.Popen, os.close
+        failed = False
+        before = set(os.listdir("/proc/self/fd"))
+        def launch(*args, **kwargs):
+            child = real_popen(*args, **kwargs)
+            children.append(child)
+            self.assertEqual(child.stderr.readline(), b"READY\n")
+            return child
+        def close(fd):
+            nonlocal failed
+            real_close(fd)
+            if children and not failed:
+                failed = True
+                raise OSError("actual post-spawn FD retirement fault")
+        spec = WorkerLaunchSpec(worker_id="owned", stream_id=0, branch_id=None,
+            command=(sys.executable, "-I", "-B", "-c",
+                "import sys,signal;print('READY',file=sys.stderr,flush=True);signal.pause()"))
+        try:
+            with mock.patch.object(runtime.subprocess, "Popen", side_effect=launch), mock.patch.object(runtime.os, "close", side_effect=close):
+                with self.assertRaisesRegex(OSError, "post-spawn FD retirement fault"):
+                    run_worker_processes(run_id="spawn-close", topology_kind=SHARED_VIDEO_DAG,
+                        branches=BRANCHES, specs=[spec], timeout_s=1.0)
+            self.assertIsNotNone(children[0].returncode)
+            with self.assertRaises(ChildProcessError): os.waitpid(children[0].pid, os.WNOHANG)
+        finally:
+            for child in children:
+                if child.returncode is None: child.kill(); child.wait(timeout=3)
+                if child.stderr is not None: child.stderr.close()
+            # The failed original implementation can leave its parent event FD.
+            for fd in set(os.listdir("/proc/self/fd"))-before:
+                try: real_close(int(fd))
+                except OSError: pass
+        self.assertEqual(set(os.listdir("/proc/self/fd")), before)
+
+    @unittest.skipUnless(os.name == "posix", "real inherited source/ACK pipes require POSIX")
+    def test_central_admission_is_durable_before_failed_ack(self):
+        import checkpoint_runtime as runtime
+        ack_seen, durable_at_ack = [], []
+        real_write = runtime._write_fd_line
+        before = set(os.listdir("/proc/self/fd"))
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "accepted.original.jsonl"
+            with path.open("xb") as journal:
+                def accepted(row):
+                    raw = json.dumps(row, sort_keys=True, separators=(",", ":")).encode()+b"\n"
+                    self.assertEqual(journal.write(raw), len(raw))
+                    journal.flush(); os.fsync(journal.fileno())
+                def send(fd, line):
+                    if line.startswith("1 ACK "):
+                        ack_seen.append(line)
+                        durable_at_ack.append(bool(path.stat().st_size))
+                        # A real missing ACK recipient: release the real pipe FD,
+                        # then let the original write fail, without synthetic ACK.
+                        os.close(fd)
+                        return real_write(fd, line)
+                    return real_write(fd, line)
+                worker = WorkerLaunchSpec(worker_id="shared", stream_id=0, branch_id=None,
+                    command=(sys.executable, "-I", "-B", str(FIXTURE), "--mode", "shared",
+                        "--branches", ",".join(BRANCHES), "--admission-linked"))
+                source = SourceLaunchSpec(source_process_id="source", stream_id=0,
+                    dataset_id="actual-fixture", source_sha256="a"*64, native_source=True,
+                    command=(sys.executable, "-I", "-B", str(ROOT / "tests/fixtures/checkpoint_admission_source.py")))
+                with mock.patch.object(runtime, "_write_fd_line", side_effect=send):
+                    with self.assertRaises(Exception) as failure:
+                        run_worker_processes(run_id="durable-ack", topology_kind=SHARED_VIDEO_DAG,
+                            topology_contract_version=2, branches=BRANCHES, specs=[worker], source_specs=[source],
+                            timeout_s=3, ready_timeout_s=2, synchronized_lifecycle=True, warmup_s=0,
+                            measurement_s=.05, drain_timeout_s=.5, start_lead_s=.02, on_admission=accepted)
+            self.assertEqual(ack_seen, ["1 ACK 1\n"], str(failure.exception))
+            self.assertEqual(durable_at_ack, [True])
+            rows = [json.loads(line) for line in path.read_bytes().splitlines()]
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["admission_id"], "durable-ack:0:admission:1")
+            self.assertEqual(rows[0]["payload_sha256"], hashlib.sha256(b"compressed-access-unit").hexdigest())
+            self.assertEqual(rows[0]["event_provenance"], "native_common_source_coordinator")
+        self.assertEqual(set(os.listdir("/proc/self/fd")), before)
+
     def test_full_publication_pair_plan_binds_h264_and_h265_exactly(self) -> None:
         config = load_config(ROOT / "configs" / "experiments.yaml")
         datasets = load_config(ROOT / "configs" / "datasets.yaml")["datasets"]
@@ -2203,7 +2315,7 @@ class CheckpointRuntimeTests(unittest.TestCase):
     def test_gstreamer_native_runtime_selects_v2_join_contract(self) -> None:
         tree = ast.parse((ROOT / "scripts/checkpoint_gstreamer_runtime.py").read_text(encoding="utf-8"))
         calls = [
-            node for node in ast.walk(tree)
+            node for node in ast.walk(next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "main"))
             if isinstance(node, ast.Call)
             and isinstance(node.func, ast.Name)
             and node.func.id == "run_worker_processes"
@@ -2211,6 +2323,12 @@ class CheckpointRuntimeTests(unittest.TestCase):
         self.assertEqual(len(calls), 1)
         keywords = {item.arg: item.value for item in calls[0].keywords}
         self.assertEqual(ast.literal_eval(keywords["topology_contract_version"]), 2)
+        typed = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "run_finite_study_arm_v1")
+        typed_calls = [node for node in ast.walk(typed) if isinstance(node, ast.Call) and
+            isinstance(node.func, ast.Name) and node.func.id == "run_worker_processes"]
+        self.assertEqual(len(typed_calls), 1)
+        typed_keywords = {item.arg:item.value for item in typed_calls[0].keywords}
+        self.assertEqual(ast.literal_eval(typed_keywords["topology_contract_version"]), 2)
 
     def test_join_coordinator_keeps_v1_and_v2_shapes_strictly_separate(self) -> None:
         bindings = [

@@ -156,6 +156,8 @@ class DirectAdmissionCoordinator:
         branches: Iterable[str],
         bindings: Iterable[SourceBinding],
         operational_admission_limits: Mapping[str, Any] | None = None,
+        study_runtime_plan: Mapping[str, Any] | None = None,
+        study_source_stream_ids: tuple[int, ...] | None = None,
     ) -> None:
         self.run_id = _text(run_id, "run_id")
         _require(topology_kind in {INDEPENDENT_PROCESSES, SHARED_VIDEO_DAG}, "unsupported admission topology")
@@ -182,6 +184,21 @@ class DirectAdmissionCoordinator:
         self._last_source_cycle: dict[str, int] = {}
         self._admissions: dict[str, _AdmissionState] = {}
         self._input_keys: set[str] = set()
+        _require(study_source_stream_ids is None or study_runtime_plan is not None, "source subset requires separately typed study")
+        self._study_schedules = None
+        if study_runtime_plan is not None:
+            from checkpoint_runtime_plan import validate_finite_study_runtime_plan_v1
+            from canonical_systems_study_plan_v1 import stream_schedule
+            validate_finite_study_runtime_plan_v1(study_runtime_plan)
+            plan = study_runtime_plan["study_plan"]
+            operations = plan["arms"] + sum(plan["pilots"].values(), [])
+            arm = next(a for a in operations if a["arm_id"] == study_runtime_plan["arm_id"])
+            self._study_schedules = {sid: stream_schedule(plan, sid, arm["rate"]) for sid in range(6)}
+            expected_streams = set(range(6)) if study_source_stream_ids is None else set(study_source_stream_ids)
+            _require(study_source_stream_ids is None or study_source_stream_ids == (0, 5), "unsupported preparation source subset")
+            _require({b.stream_id for b in binding_values} == expected_streams and all(binding.dataset_id == plan["intake"]["dataset_id"] and
+                binding.source_sha256 == self._study_schedules[binding.stream_id][0]["source_sha256"]
+                for binding in binding_values), "study admission original source bindings drifted")
         self._operational_limits = None
         self._operational_error: str | None = None
         if operational_admission_limits is not None:
@@ -189,9 +206,11 @@ class DirectAdmissionCoordinator:
             _require(
                 set(limits) == {"max_admissions_per_stream", "min_schedule_step_ns"}
                 and type(limits["max_admissions_per_stream"]) is int
-                and limits["max_admissions_per_stream"] in {241, 281}
+                and limits["max_admissions_per_stream"] in ({442} if self._study_schedules is not None else {241, 281})
                 and type(limits["min_schedule_step_ns"]) is int
-                and limits["min_schedule_step_ns"] == 999_999_600,
+                and limits["min_schedule_step_ns"] == (min(rows[i]["schedule_offset_ns"] - rows[i-1]["schedule_offset_ns"]
+                    for rows in self._study_schedules.values() for i in range(1, len(rows)))
+                    if self._study_schedules is not None else 999_999_600),
                 "unsupported operational source admission limits",
             )
             self._operational_limits = limits
@@ -222,6 +241,17 @@ class DirectAdmissionCoordinator:
         _require(message.source_sha256 == binding.source_sha256, "admission source SHA-256 differs from binding")
         expected_sequence = self._sequences[observed_source_process_id] + 1
         _require(message.sequence == expected_sequence, "source admission sequence is not gap-free")
+        if self._study_schedules is not None:
+            schedule = self._study_schedules[message.stream_id]
+            _require(message.sequence <= len(schedule), "study admission exceeds finite AU inventory")
+            slot = schedule[message.sequence - 1]
+            _require(slot["planned"] and message.source_cycle == 0 and
+                message.input_frame_key == slot["input_frame_key"] and
+                message.access_unit_pts_ns == slot["access_unit_pts_ns"] and
+                message.payload_sha256 == slot["payload_sha256"] and
+                message.payload_size_bytes == slot["payload_size_bytes"] and
+                message.schedule_offset_ns == slot["schedule_offset_ns"],
+                "study admission differs from the original planned AU before ACK")
         if self._operational_limits is not None:
             _require(
                 message.sequence <= self._operational_limits["max_admissions_per_stream"],
