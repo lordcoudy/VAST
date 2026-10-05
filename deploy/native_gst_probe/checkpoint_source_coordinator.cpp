@@ -304,12 +304,8 @@ class SourceCoordinator {
       }
       std::ifstream boot("/proc/sys/kernel/random/boot_id");
       std::getline(boot, boot_id_);
-      std::array<char, 256> name{};
-      const ssize_t length = ::readlink("/proc/self/ns/time", name.data(), name.size());
-      if (boot_id_.empty() || length <= 0 || static_cast<std::size_t>(length) == name.size()) {
-        throw std::runtime_error("finite source clock namespace identity is unavailable");
-      }
-      time_namespace_.assign(name.data(), static_cast<std::size_t>(length));
+      if (boot_id_.empty()) throw std::runtime_error("finite source clock namespace identity is unavailable");
+      time_namespace_ = vast::study::detail::actual_clock_domain_label();
       study_fd_ = ::open(args_.study_accounting_path.c_str(), O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, 0600);
       if (study_fd_ < 0) throw std::runtime_error("finite source accounting path must be new and exclusively owned");
       struct stat identity{};

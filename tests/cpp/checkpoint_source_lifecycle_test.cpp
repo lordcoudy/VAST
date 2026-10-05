@@ -361,9 +361,8 @@ bool typed_finite_contract() {
 }
 bool inventory_cli_is_genuinely_dispatched() {
   std::ifstream boot_file("/proc/sys/kernel/random/boot_id"); std::string boot;
-  char time_name[256]; const auto count=::readlink("/proc/self/ns/time",time_name,sizeof(time_name));
-  if(!std::getline(boot_file,boot)||boot.empty()||count<=0||count>=static_cast<ssize_t>(sizeof(time_name))) return false;
-  const std::string time_namespace(time_name,count);
+  if(!std::getline(boot_file,boot)||boot.empty()) return false;
+  const std::string time_namespace=vast::study::detail::actual_clock_domain_label();
   if(::setenv("VAST_CHECKPOINT_PREPARATION_CLOCK_BOOT_ID",boot.c_str(),1)!=0 ||
      ::setenv("VAST_CHECKPOINT_PREPARATION_CLOCK_TIME_NAMESPACE",time_namespace.c_str(),1)!=0) return false;
   std::vector<std::string> words={"source","--checkpoint-study-au-inventory",

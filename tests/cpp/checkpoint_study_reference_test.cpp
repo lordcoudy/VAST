@@ -42,9 +42,7 @@ std::string read_file(const std::string& path) {
 void bind_actual_preparation_clock() {
   std::ifstream boot_file("/proc/sys/kernel/random/boot_id"); std::string boot;
   require(bool(std::getline(boot_file, boot)) && !boot.empty(), "actual boot identity unavailable");
-  char name[256]; const auto count = ::readlink("/proc/self/ns/time", name, sizeof(name));
-  require(count > 0 && count < static_cast<ssize_t>(sizeof(name)), "actual time namespace unavailable");
-  const std::string time_namespace(name, count);
+  const std::string time_namespace = vast::study::detail::actual_clock_domain_label();
   require(::setenv("VAST_CHECKPOINT_PREPARATION_CLOCK_BOOT_ID", boot.c_str(), 1) == 0 &&
           ::setenv("VAST_CHECKPOINT_PREPARATION_CLOCK_TIME_NAMESPACE", time_namespace.c_str(), 1) == 0,
           "actual clock proof fixture setup failed");
@@ -53,10 +51,15 @@ void actual_clock_domain_guard(const std::string& directory) {
   const int before = fd_count();
   const std::string output = directory + "/foreign-clock.jsonl";
   const auto deadline = std::to_string(vast::CheckpointIoDeadline::monotonic_now_ns() + 1000000000ULL);
-  for (bool inventory : {true, false}) for (bool missing : {true, false}) {
+  char inode[256]; const auto inode_count = ::readlink("/proc/self/ns/time", inode, sizeof(inode));
+  require(inode_count > 0 && inode_count < static_cast<ssize_t>(sizeof(inode)), "actual time namespace unavailable");
+  // The former inode proof value is no longer a clock-domain proof.
+  const std::string old_inode_proof(inode, static_cast<std::size_t>(inode_count));
+  for (bool inventory : {true, false}) for (int variant : {0, 1, 2}) {
     bind_actual_preparation_clock();
-    if (missing) ::unsetenv("VAST_CHECKPOINT_PREPARATION_CLOCK_BOOT_ID");
-    else ::setenv("VAST_CHECKPOINT_PREPARATION_CLOCK_TIME_NAMESPACE", "time:[foreign-fixture]", 1);
+    if (variant == 0) ::unsetenv("VAST_CHECKPOINT_PREPARATION_CLOCK_BOOT_ID");
+    else ::setenv("VAST_CHECKPOINT_PREPARATION_CLOCK_TIME_NAMESPACE",
+                  variant == 1 ? "time:[foreign-fixture]" : old_inode_proof.c_str(), 1);
     std::vector<std::string> text = inventory ?
         std::vector<std::string>{"unit", "--checkpoint-study-au-inventory", "/proc/vast-clock-fixture-missing.mp4", "8", "4", deadline} :
         std::vector<std::string>{"unit", "--checkpoint-study-reference", "/proc/vast-clock-fixture-missing.mp4", output, "8", "4", deadline, "442"};

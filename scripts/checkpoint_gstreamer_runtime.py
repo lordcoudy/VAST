@@ -2870,6 +2870,11 @@ def _native_binary_path(path: Path) -> Path:
     return path.resolve()
 
 
+def _study_clock_domain():
+    from canonical_systems_study_plan_v1 import actual_clock_domain_label
+    return actual_clock_domain_label()
+
+
 def run_finite_study_source_gate_v1(*, study_plan, project_root, output_root, source_binary,
         deadline_ns, expected_boot, expected_time_namespace):
     """Real two-source START/STOP/EOF, with durable central ACK and original wire spools."""
@@ -2881,7 +2886,7 @@ def run_finite_study_source_gate_v1(*, study_plan, project_root, output_root, so
     from checkpoint_runtime import _terminate_processes, native_subprocess_environment, RuntimeLifecycleStatus
     from checkpoint_runtime_plan import build_finite_study_runtime_plan_v1
     _require(Path("/proc/sys/kernel/random/boot_id").read_text().strip() == expected_boot and
-        os.readlink("/proc/self/ns/time") == expected_time_namespace, "source gate clock namespace differs")
+        _study_clock_domain() == expected_time_namespace, "source gate clock namespace differs")
     arm = next(a for a in study_plan["arms"] if a["rate"] == "2" and a["resource"] == "cpu" and a["topology"] == "shared")
     plan = build_finite_study_runtime_plan_v1(study_plan, arm["arm_id"])
     out = Path(output_root); _require(out.is_dir() and not any(out.iterdir()), "source gate output is not new")
@@ -3054,7 +3059,7 @@ def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, ru
         "VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE"}, "study worker clocks were not actually observed")
     _require(Path("/proc/sys/kernel/random/boot_id").read_text().strip() ==
         worker_clock_environment["VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID"] and
-        os.readlink("/proc/self/ns/time") == worker_clock_environment["VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE"],
+        _study_clock_domain() == worker_clock_environment["VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE"],
         "study native/worker clock namespaces differ")
     output = Path(output_root)
     _require(output.is_dir() and not output.is_symlink() and not any(output.iterdir()),
@@ -3134,7 +3139,7 @@ def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, ru
     facts = {"schema_version": 1, "kind": "finite-component-study-arm-original-v1", "arm_id": arm_id, "run_id": run_id,
         "plan_sha256": study_plan["sha256"], "result": dataclasses.asdict(result), "native_domain": domain,
         "clock_domain": {"boot_id": Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
-            "time_namespace": os.readlink("/proc/self/ns/time"), "clock": "CLOCK_MONOTONIC"},
+            "time_namespace": _study_clock_domain(), "clock": "CLOCK_MONOTONIC"},
         "final_variant": client_mode, "accepted": False, "publication_ready": False}
     raw = json.dumps(facts, sort_keys=True, separators=(",", ":"), default=str).encode()+b"\n"
     _require(len(raw) <= 64*1024*1024 and time.monotonic_ns() < campaign_deadline_ns,

@@ -160,6 +160,21 @@ class CanonicalStudyPlanTests(unittest.TestCase):
             allow_nan=False).encode("ascii")).hexdigest())
         self.assertEqual(self.plan_module.validate_study_plan(plan), plan)
 
+    def test_clock_domain_label_requires_zero_offsets_of_the_running_namespace(self):
+        label = self.plan_module.clock_domain_label
+        zero = "monotonic           0         0\nboottime            0         0\n"
+        self.assertEqual(label(zero, "time:[7]", "time:[7]"), self.plan_module.CLOCK_DOMAIN_LABEL)
+        for offsets, own, child in ((zero, "time:[7]", "time:[8]"), (zero, "unknown", "unknown"),
+                                    ("monotonic 7 0\nboottime 0 0\n", "time:[7]", "time:[7]"),
+                                    ("monotonic 0 0\nboottime 0 1\n", "time:[7]", "time:[7]"),
+                                    ("monotonic 0 0\n", "time:[7]", "time:[7]"), ("", "time:[7]", "time:[7]"),
+                                    ("boottime 0 0\nmonotonic 0 0\n", "time:[7]", "time:[7]"),
+                                    (zero + "realtime 0 0\n", "time:[7]", "time:[7]")):
+            with self.assertRaises(ValueError):
+                label(offsets, own, child)
+        if Path("/proc/self/timens_offsets").exists():
+            self.assertEqual(self.plan_module.actual_clock_domain_label(), self.plan_module.CLOCK_DOMAIN_LABEL)
+
 if __name__ == "__main__":
     unittest.main()
 

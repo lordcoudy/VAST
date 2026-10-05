@@ -22,7 +22,7 @@ import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from canonical_systems_study_plan_v1 import build_study_plan, validate_study_plan, stream_schedule
+from canonical_systems_study_plan_v1 import build_study_plan, validate_study_plan, stream_schedule, actual_clock_domain_label
 from publication_physical_io_v1 import PhysicalRootCustodyV1
 from publication_operational_request_domain_v1 import canonical_json_v1, payload_with_sha256_v1
 
@@ -45,7 +45,9 @@ def require(ok, message):
 def preparation_clock(args):
     """Retain the first bootstrap operation's observed original kernel clock."""
     boot = Path("/proc/sys/kernel/random/boot_id").read_text().strip()
-    namespace = os.readlink("/proc/self/ns/time")
+    try: namespace = actual_clock_domain_label()
+    except (OSError, UnicodeDecodeError, ValueError) as error:
+        raise ValueError("original preparation clock domain is unproven: "+str(error)) from error
     supplied = tuple(getattr(args, name, None) for name in (
         "preparation_started_monotonic_ns", "preparation_boot_id", "preparation_time_namespace"))
     now = time.monotonic_ns()
@@ -423,7 +425,7 @@ def _native(commands, engine, image, root, output, arguments, *, stdin=None, std
         "--mount", f"type=bind,src={output},dst={output}", "--entrypoint", entrypoint]
     for mount in mounts: command += ["--mount",mount]
     environment = {"VAST_CHECKPOINT_PREPARATION_CLOCK_BOOT_ID":Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
-        "VAST_CHECKPOINT_PREPARATION_CLOCK_TIME_NAMESPACE":os.readlink("/proc/self/ns/time"),**(environment or {})}
+        "VAST_CHECKPOINT_PREPARATION_CLOCK_TIME_NAMESPACE":actual_clock_domain_label(),**(environment or {})}
     for key,value in environment.items(): command += ["--env",key+"="+value]
     command.append(image)
     if stdin is not None: command.insert(2, "-i")
@@ -801,7 +803,7 @@ def offered_prefix_stop_gate(commands,args,root,output,plan,images):
          "--finite-study-source-gate","--output-dir",gate,"--source-binary","/usr/local/bin/vast_checkpoint_source",
          "--finite-study-campaign-deadline-ns",commands.deadline_monotonic_ns,
          "--finite-study-expected-boot",Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
-         "--finite-study-expected-time-namespace",os.readlink("/proc/self/ns/time")],
+         "--finite-study-expected-time-namespace",actual_clock_domain_label()],
          entrypoint="/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3")
     commands.wait(child,record,maximum_files=((str(gate/"0.transport.original.raw"),MAX_MEDIA),(str(gate/"5.transport.original.raw"),MAX_MEDIA)))
     facts=json.loads((gate/"source-stop.original.json").read_bytes())
@@ -963,7 +965,7 @@ def decode_arm(commands,plan,arm,facts,output,snapshot,clock_proof,pool_delta,ma
                 "original_raw_descriptor":descriptor(output/"native-protocol.original.jsonl",maximum=64*1024**2,deadline=commands.deadline)})
     guardians=[];waits=[]
     bridge_domain={"clock":"CLOCK_MONOTONIC","boot_id":Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
-        "time_namespace":os.readlink("/proc/self/ns/time"),"pid":os.getpid()}
+        "time_namespace":actual_clock_domain_label(),"pid":os.getpid()}
     for row in snapshot["decoded"]:
         identity=row["identity"]
         require(identity["run_id"]==run_id and identity["arm_id"]==next(r for r in material["active_allowed"] if r["run_id"]==run_id)["wire_arm_id"],"original guardian wire arm/run mismatch")

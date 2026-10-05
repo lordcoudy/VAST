@@ -3718,6 +3718,11 @@ def _bounded_engine_observation(command: Sequence[str], *, timeout: float = 2.0)
         stderr=values["stderr"].decode("utf-8", errors="replace"))
 
 
+def _study_clock_domain_label(offsets_text: str, time_namespace: str, time_for_children: str) -> str:
+    from canonical_systems_study_plan_v1 import clock_domain_label
+    return clock_domain_label(offsets_text, time_namespace, time_for_children)
+
+
 class DockerWorkerHandle:
     """Foreground `docker run` handle with host PID attestation via inspect."""
 
@@ -3879,19 +3884,19 @@ class DockerWorkerHandle:
                  "study worker is not originally running")
         script = ('cat /proc/1/stat; printf "\\n"; cat /proc/1/cmdline; printf "\\n"; '
                   'cat /proc/sys/kernel/random/boot_id; readlink /proc/1/ns/time; '
-                  'readlink /proc/1/ns/time_for_children')
+                  'readlink /proc/1/ns/time_for_children; cat /proc/1/timens_offsets')
         command = ["docker", "exec", before["facts"]["id"], "/bin/sh", "-c", script]
         completed = self._observe(command)
         _require(completed.returncode == 0 and len(completed.stdout.encode()) <= 8192,
                  "study owned worker clock observation failed")
         raw = completed.stdout
         rows = raw.splitlines()
-        _require(len(rows) == 6 and rows[1] == "" and rows[0].startswith("1 (") and
+        _require(len(rows) == 8 and rows[1] == "" and rows[0].startswith("1 (") and
                  self._worker_entrypoint is not None and self._worker_entrypoint in rows[2].split(chr(0)) and "--binding" in rows[2].split(chr(0)),
                  "study observed init is not the actual launched analytics worker")
         birth = int(rows[0].rsplit(")", 1)[1].split()[19])
         _require(birth > 0 and re.fullmatch(r"[0-9a-f-]{36}", rows[3]) is not None and
-                 all(re.fullmatch(r"time:\[([0-9]+)\]", row) for row in rows[4:]),
+                 all(re.fullmatch(r"time:\[([0-9]+)\]", row) for row in rows[4:6]),
                  "study worker clock identity is malformed")
         after = self._observe_engine_state()
         _require(after["status"] == "observed" and after["facts"] == before["facts"],
@@ -3899,7 +3904,8 @@ class DockerWorkerHandle:
         return {"route": list(self._route), "container": before["facts"], "command": command,
             "stdout": raw, "stderr": completed.stderr, "returncode": completed.returncode,
             "actual_worker_pid_in_container": 1, "starttime_ticks": birth,
-            "boot_id": rows[3], "time_namespace": rows[4], "time_for_children_namespace": rows[5],
+            "boot_id": rows[3], "time_namespace": _study_clock_domain_label(chr(10).join(rows[6:8]), rows[4], rows[5]),
+            "time_namespace_inode": rows[4], "time_for_children_namespace": rows[5],
             "observed_monotonic_ns": time.monotonic_ns()}
 
     def failure_diagnostic(self) -> str:

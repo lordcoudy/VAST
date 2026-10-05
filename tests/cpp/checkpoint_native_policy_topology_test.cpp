@@ -526,10 +526,9 @@ void exercise_real_independent_study_channels(const std::filesystem::path& outpu
   ::setenv("VAST_CHECKPOINT_STARTUP_DEADLINE_MONOTONIC_NS",
       std::to_string(vast::CheckpointIoDeadline::monotonic_now_ns()+5'000'000'000ULL).c_str(),1);
   std::ifstream boot("/proc/sys/kernel/random/boot_id");std::string boot_id;std::getline(boot,boot_id);
-  std::array<char,256> clock_name{};const auto clock_length=::readlink("/proc/self/ns/time",clock_name.data(),clock_name.size());
-  if(boot_id.empty()||clock_length<=0) throw std::runtime_error("actual fixture clock domain unavailable");
+  if(boot_id.empty()) throw std::runtime_error("actual fixture clock domain unavailable");
   ::setenv("VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID",boot_id.c_str(),1);
-  ::setenv("VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE",std::string(clock_name.data(),clock_length).c_str(),1);
+  ::setenv("VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE",vast::study::detail::actual_clock_domain_label().c_str(),1);
   auto args=drop_args(output,true);
   args.checkpoint_study_kind="finite-component-study";args.source_replay="finite";
   args.checkpoint_study_width=1920;args.checkpoint_study_height=1080;

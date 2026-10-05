@@ -1547,11 +1547,8 @@ class NativeProbeRuntime {
       throw std::runtime_error("native study requires its original verified startup deadline");
     std::ifstream boot("/proc/sys/kernel/random/boot_id");
     std::getline(boot, checkpoint_study_boot_id_);
-    std::array<char, 256> name{};
-    const auto length = ::readlink("/proc/self/ns/time", name.data(), name.size());
-    if (checkpoint_study_boot_id_.empty() || length <= 0 || static_cast<std::size_t>(length) == name.size())
-      throw std::runtime_error("native study clock namespace is unavailable");
-    checkpoint_study_time_namespace_.assign(name.data(), static_cast<std::size_t>(length));
+    if (checkpoint_study_boot_id_.empty()) throw std::runtime_error("native study clock namespace is unavailable");
+    checkpoint_study_time_namespace_ = vast::study::detail::actual_clock_domain_label();
     const char* worker_boot = std::getenv("VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID");
     const char* worker_time = std::getenv("VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE");
     if (!worker_boot || !worker_time || checkpoint_study_boot_id_ != worker_boot || checkpoint_study_time_namespace_ != worker_time)

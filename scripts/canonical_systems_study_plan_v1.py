@@ -7,6 +7,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 import random
 import re
 
@@ -201,6 +202,25 @@ def validate_study_plan(plan):
     expected = build_study_plan(plan["intake"], plan["selected_material"])
     _require(canonical_bytes(plan) == canonical_bytes(expected), "plan hash/coordinates/bindings drifted")
     return plan
+
+
+CLOCK_DOMAIN_LABEL = "timens-offsets:monotonic=0,0;boottime=0,0"
+
+
+def clock_domain_label(offsets_text, time_namespace, time_for_children):
+    """Zero monotonic/boottime offsets of the namespace the process actually runs in share the initial clock."""
+    _require(type(time_namespace) is str and re.fullmatch(r"time:\[[0-9]+\]", time_namespace) is not None and
+             time_namespace == time_for_children, "study clock time and time_for_children namespaces differ")
+    _require(type(offsets_text) is str and len(offsets_text) <= 4096 and
+             [row.split() for row in offsets_text.splitlines()] == [["monotonic", "0", "0"], ["boottime", "0", "0"]],
+             "study clock namespace offsets are missing, malformed or nonzero")
+    return CLOCK_DOMAIN_LABEL
+
+
+def actual_clock_domain_label(proc="/proc/self"):
+    with open(proc+"/timens_offsets", "rb") as stream:
+        raw = stream.read(4097)
+    return clock_domain_label(raw.decode("ascii"), os.readlink(proc+"/ns/time"), os.readlink(proc+"/ns/time_for_children"))
 
 
 def stream_schedule(plan, stream_id, rate):

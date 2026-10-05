@@ -32,16 +32,34 @@ inline constexpr std::size_t kMaximumRowBytes = 2048;
 inline void require(bool condition, const char* message) {
   if (!condition) throw std::runtime_error(message);
 }
+inline constexpr const char* kClockDomainLabel = "timens-offsets:monotonic=0,0;boottime=0,0";
+// Zero monotonic/boottime offsets of the namespace this process runs in share the initial clock;
+// a container runtime may still give each container its own namespace inode.
+inline std::string actual_clock_domain_label() {
+  const auto link = [](const char* path) {
+    char name[256];
+    const auto count = ::readlink(path, name, sizeof(name));
+    require(count > 0 && count < static_cast<ssize_t>(sizeof(name)), "study clock namespace is unavailable");
+    return std::string(name, static_cast<std::size_t>(count));
+  };
+  require(link("/proc/self/ns/time") == link("/proc/self/ns/time_for_children"),
+          "study clock time and time_for_children namespaces differ");
+  std::ifstream input("/proc/self/timens_offsets");
+  std::vector<std::string> words; std::string word;
+  while (words.size() <= 6 && input >> word) words.push_back(word);
+  require(words == std::vector<std::string>{"monotonic", "0", "0", "boottime", "0", "0"},
+          "study clock namespace offsets are missing, malformed or nonzero");
+  return kClockDomainLabel;
+}
 inline void verify_original_preparation_clock() {
   const char* expected_boot = std::getenv("VAST_CHECKPOINT_PREPARATION_CLOCK_BOOT_ID");
   const char* expected_namespace = std::getenv("VAST_CHECKPOINT_PREPARATION_CLOCK_TIME_NAMESPACE");
   std::ifstream input("/proc/sys/kernel/random/boot_id"); std::string actual_boot;
-  char namespace_name[256];
-  const auto count = ::readlink("/proc/self/ns/time", namespace_name, sizeof(namespace_name));
+  std::string actual_domain;
+  try { actual_domain = actual_clock_domain_label(); } catch (const std::exception&) {}
   require(expected_boot && *expected_boot && expected_namespace && *expected_namespace &&
           bool(std::getline(input, actual_boot)) && actual_boot == expected_boot &&
-          count > 0 && count < static_cast<ssize_t>(sizeof(namespace_name)) &&
-          std::string(namespace_name, count) == expected_namespace,
+          !actual_domain.empty() && actual_domain == expected_namespace,
           "clock namespace proof missing or mismatched");
 }
 inline std::string quote(const std::string& input) {

@@ -81,8 +81,8 @@ Native client SHALL записывать actual lock attempt/acquisition/reply-o
 - **THEN** reducer SHALL вычислять только поддерживаемые self-intervals/distributions и overlapping residence limits, без utilization/energy или additive-work claim.
 
 #### Scenario: Containers have distinct zero-offset time namespaces
-- **WHEN** driver, native helpers и workers имеют одинаковый boot_id, разные time namespace inodes и actual monotonic/boottime offsets `0 0`
-- **THEN** они SHALL считаться одним CLOCK_MONOTONIC domain; nonzero, missing или malformed offsets, foreign boot или отсутствие proof SHALL оставаться refusal/unknown, без вычитания endpoints.
+- **WHEN** driver, native helpers и workers имеют одинаковый boot_id, разные time namespace inodes, у каждого process ns/time==ns/time_for_children и actual monotonic/boottime offsets `0 0`
+- **THEN** они SHALL считаться одним CLOCK_MONOTONIC domain; nonzero, missing или malformed offsets, time≠time_for_children, foreign boot или отсутствие proof SHALL оставаться refusal/unknown, без вычитания endpoints.
 
 #### Scenario: A worker interval or queue estimate is mislabeled
 - **WHEN** received occurred after verify, backend includes mapping/copies или queue events отсутствуют

@@ -65,7 +65,7 @@ class FiniteStudyDriverTests(unittest.TestCase):
         return argparse.Namespace(project_root=root,output_dir=out,
             preparation_started_monotonic_ns=started,
             preparation_boot_id=Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
-            preparation_time_namespace=os.readlink("/proc/self/ns/time"))
+            preparation_time_namespace=driver.actual_clock_domain_label())
 
     def test_original_preparation_expired_stamp_is_refused_before_output_or_input(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -110,6 +110,41 @@ class FiniteStudyDriverTests(unittest.TestCase):
             self.assertLess(commands.remaining(),14400.0)
             self.assertEqual(driver.descriptor(actual,deadline=commands.deadline)["sha256"],expected)
 
+    def unshared_preparation_clock(self,mode):
+        """Real fresh time namespace: parent stamp, then a child/grandchild in an unshared zero-offset domain."""
+        code=r"""
+import argparse,json,os,sys,time
+from pathlib import Path
+sys.path.insert(0,sys.argv[1]);import run_canonical_systems_study_v1 as driver
+mode=sys.argv[2];parent=driver.preparation_clock(argparse.Namespace())
+args=argparse.Namespace(preparation_started_monotonic_ns=parent["started_monotonic_ns"],
+    preparation_boot_id="foreign-boot" if mode=="foreign" else parent["boot_id"],preparation_time_namespace=parent["time_namespace"])
+os.unshare(os.CLONE_NEWUSER|os.CLONE_NEWTIME)
+if mode=="nonzero":Path("/proc/self/timens_offsets").write_text("monotonic 7 0\n")
+def attempt():
+    try:return {"accepted":True,"domain":driver.preparation_clock(args)["time_namespace"]}
+    except ValueError as error:return {"accepted":False,"error":str(error)}
+if mode=="self":print(json.dumps(attempt()));sys.exit(0)
+read,write=os.pipe();child=os.fork()
+if child==0:
+    os.close(read);os.write(write,json.dumps({**attempt(),"actual_ns":os.readlink("/proc/self/ns/time"),"parent_ns":parent_ns}).encode());os._exit(0)
+os.close(write);raw=b""
+while chunk:=os.read(read,65536):raw+=chunk
+os.waitpid(child,0);print(raw.decode())
+""".replace("parent_ns}",'os.readlink("/proc/%d/ns/time"%os.getppid())}')
+        done=subprocess.run([sys.executable,"-I","-B","-c",code,str(ROOT/"scripts"),mode],capture_output=True,text=True,timeout=30)
+        self.assertEqual(done.returncode,0,done.stderr)
+        import json;return json.loads(done.stdout)
+
+    def test_actual_fresh_zero_offset_time_namespace_is_the_same_monotonic_domain(self):
+        same=self.unshared_preparation_clock("zero")
+        self.assertNotEqual(same.get("actual_ns"),same.get("parent_ns"))
+        self.assertTrue(same["accepted"],same)
+        for mode in ("nonzero","self","foreign"):
+            refused=self.unshared_preparation_clock(mode)
+            self.assertFalse(refused["accepted"],(mode,refused))
+            self.assertIn("original preparation clock",refused["error"])
+
     def test_original_preparation_invalid_stamp_and_study_parent_are_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp)
@@ -123,7 +158,7 @@ class FiniteStudyDriverTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);out=root/"study";started=time.monotonic_ns()
             boot=Path("/proc/sys/kernel/random/boot_id").read_text().strip()
-            namespace=os.readlink("/proc/self/ns/time")
+            namespace=driver.actual_clock_domain_label()
             argv=self.args(root,out)+["--preparation-started-monotonic-ns",str(started),
                 "--preparation-boot-id",boot,"--preparation-time-namespace",namespace]
             def prepare(args):
