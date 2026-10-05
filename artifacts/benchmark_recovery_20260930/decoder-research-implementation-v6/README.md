@@ -1,111 +1,96 @@
-# V6 decoder setup and unchanged research protocol
+# V6 decoder: preparation и независимое чтение закрытого результата
 
-This copy implements OpenSpec change `fix-decoder-preflight`, reviewed planning commit
-`3aa35c3b2eedc05d22cf16ba37d470143d080f6b` (P). V5 and original attempts remain
-immutable. No actual metadata or research operation is authorized by this README or
-by a successful CPU fixture suite.
+## Текущий этап — 5 октября 2026
 
-Controller requires `--project-root`, `--review-repository-root`, exact lowercase
-40-hex `--source-commit` (S), `--mode metadata-only|research` and a fresh
-`--output-dir`. Guest requires the same explicit mode in its sealed plan and argv.
-There is no default, resume or retry. P is fixed in V6 source; S must have separate
-exact-source review and dispatch approval. Current checkout H may contain later task
-progress/archive while S remains its ancestor and all three held runtime files match
-raw S blobs. Native Linux Git uses its held executable and supported `-C` commands;
-the controller saves four exact raw P blobs as exclusive `reviewed-*.md` leaves.
-A fresh standard ext4 Git checkout avoids Windows managed-worktree Git path issues.
-The physical root remains the original prerequisite/media checkout, separately bound
-to its frozen ledger, source citations, custody helper and original media descriptors.
+OpenSpec change `fix-decoder-preflight`, Draft [PR4](https://github.com/lordcoudy/VAST/pull/4). Immutable producer S3 однажды завершил четыре run32. S8 `470120a3b3f9692775656cdb8114471ab991f14b` прошёл независимый source review, один canonical root12/nested171 и latest hosted CI37249161136: 3040 selected, 2952 successes, 88 audited skips, zero failures/errors, все шесть native builds и три required regressions. Одна corrected cold-проверка закрытых S3 originals завершилась с rc0 за 42.715633661 с: `operation_completed`, `raw_join_complete` и `research_complete` true, 128 AU и 64 paired observations. Все 223 holds released, FD6→6, close errors пусты, late companion отсутствует. **Independent cold review PASS в scoped original research 4×32/128 AU/64 pairs** (review28578/e394e9fd; technical COMMENT5409320401); исходные `accepted:false`, `provisional_until_owner_final_close:true` и `publication_ready:false` сохранены. Этот guide описывает маршрут и состоявшиеся commands, а не разрешает новую операцию.
 
-The shared fresh/cache mapped-input verifier keeps all visible named/held file and
-ancestor guards. A distinct backing identity requires a short readonly mapping of the
-held FD, an actual checked buffer range and strict backing/offset/permission joins.
-Selected target-owner/library rows are bracketed while the owner is alive; the guest
-probe owner is recorded separately for source-child rows. Only selected original maps
-rows are retained. Full-view maps SHA is an original observation; unavailable
-unselected bytes and mapped-memory integrity are not independently proved.
+Исходный producer и проверяющий reader имеют **разные** source/repository bindings. Исправление reader не ретаргетит старую попытку. P1 `3aa35c3b2eedc05d22cf16ba37d470143d080f6b` остаётся original producer planning commit; последующие P2–P8 reviews расширяют только согласованные исправления. Фактические отказы и их причины разобраны в [decoder diagnosis](../../../docs/decoder-preflight-20261004/decoder-diagnosis.md).
 
-`metadata-only` performs packaged registry/GI/plugin/library preflight and creates no
-original source, AUs, run directory or decoder pipeline. Its terminal is
-`metadata-preflight-terminal.v1.json`, with result null, runs_completed0 and
-research_complete false. `research` retains four32-AU operations in this exact order:
-front_gate/default, front_gate/zero, underbody/zero, underbody/default. Source cadence,
-transport600scale, cohorts and all byte/time limits remain unchanged. The existing
-600s whole, shared120s prelaunch,120s run,45s startup,10s drain and15s cleanup clocks
-are enforced; natural fast exit does not bypass the metadata body deadline.
+## Что запускается и что остаётся проверкой файлов
 
-A sealed terminal is provisional until its owner finally closes. Success additionally
-requires actual post-close stdout and rc0, unchanged physical receipt size/SHA, exact
-closed namespaces, no primary/close/late failure companions and the original positive
-container terminal, owned removal and separate CID/name absence. Controller final close
-has its own original post-close observation. CPU fixture results and external PID reap
-facts do not prove Docker cleanup or research acceptance.
+Controller требует `--project-root`, `--review-repository-root`, lowercase40-hex `--source-commit`, явный `--mode metadata-only|research` и fresh `--output-dir`. Guest получает тот же mode в sealed plan и argv. Нет default mode, resume или retry. Physical root содержит исходные input/evidence; ordinary Linux ext4 review checkout содержит рассматриваемый source commit. Held runtime files сверяются с raw Git blobs. Позднейшие task-progress/archive документы могут отличаться от P1, поэтому original четыре raw P1 blobs читаются именно из P1, а не подменяются текущими tasks.
 
-## CPU fixtures visible to repository CI
+`metadata-only` выполняет packaged registry/GI/plugin/library/ABI preflight, но не создаёт source, AU, run directory или decoder pipeline. Его terminal имеет resultnull, runs_completed0 и research_completefalse. S3 metadata и независимый cold уже приняты в этом zero-AU scope. Это не допускает автоматический переход к research.
 
-`tests/test_decoder_research_v6.py` runs one fresh CPython3.12.3 `-I -B` child. That
-child discovers all six local test modules, including appended classes, and uses the
-existing CI `RecordedResult` for individual started/terminal/outcome records. The
-adapter freezes the original66 IDs from the initial-copy inventory, verifies all
-origins and runtime modules, rejects partial/foreign/skipped inventories and checks
-that source bytes stayed unchanged. Both original real15s controller-finalization
-negatives execute. No parent import of generic research modules occurs.
+`research` выполняет только front_gate/default → front_gate/zero → underbody/zero → underbody/default, по32 AU. Source cadence, transport scale600, cohorts и ограничения сохраняются. Whole600s, shared prelaunch120s, run120s, startup45s, drain10s и cleanup15s — существующие абсолютные clocks; fast exit не отменяет final checks. Исходные metadata/research namespaces S2 и S3 уже заняты. Их producer commands приведены в original tool records и не являются рецептами повтора.
 
-Run the same discoverable adapter on the canonical interpreter:
+Cold reader — self-contained stdlib проверка закрытых original files; он не импортирует producer/GI/model и не запускает Docker/source/decoder. Он проверяет namespace members, declared source/P/observer identity, original tool returns, held FD/full SHA/seven epochs/ancestors, ABI backings и, в research, packet/ACK/causal/PTS/pixel/caps/cohort joins. Mapping backing identity не означает независимой проверки всех mapped memory bytes; unavailable unselected bytes остаются unknown.
 
-```sh
-RUNNER_TEMP=/path/to/fresh-native-ext4-fixture-root python -I -B tests/test_decoder_research_v6.py -v
+## Проверка fixtures
+
+Canonical host — CPython3.12.3 с `-I -B`. Disposable fixtures и их originals размещаются на native ext4: DrvFS может не позволить rename открытого файла и исчерпать фиксированный budget. Для самостоятельной CPU fixture проверки задайте **новый** `FIXTURES`; это не decoder experiment:
+
+```bash
+PY=/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python
+CODE=/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s8470120a3-from-s6
+: "${FIXTURES:?set a fresh native-ext4 fixture directory}"
+RUNNER_TEMP="$FIXTURES" "$PY" -I -B "$CODE/tests/test_decoder_research_v6.py" -v
 ```
 
-Original stdout/stderr, child suite report and parent terminal remain under
-`RUNNER_TEMP/vast-cpu-checks/decoder-v6-fixtures/attempt-<unique-id>/`. Each channel
-is limited to1MiB; the child has120s and owned final close at most15s. The report lists
-actual inherited66 plus every discovered new case; one root adapter case is not a
-claim that the historical baseline CI already included those nested tests. Fixtures
-use real temporary files, readonly mappings, Git repos/worktrees and tiny CPython
-children with explicit synthetic engine/GI metadata; they launch no Docker, packaged
-source, decoder, model or research operation. Hosted required CI must pass on final S.
+Adapter запускает один fresh child и обнаруживает шесть implementation test modules. Текущий проверенный S8 inventory —66 inherited+105 implementation=171 unique cases, root adapter12. Существующие120s body,15s retirement и1MiB на stdout/stderr сохраняются. Actual starts/terminals/origins/outcomes и before/after source15 записаны; nested count нельзя прибавлять арифметически к whole hosted discovery. Fixtures используют реальные temporary files/maps/Git/CPython children с явно synthetic engine/GI facts, без Docker/model/decoder workloads.
 
-Use native ext4 for the disposable Git and held-file fixtures as well as their
-originals. The adapter deliberately sets its temporary fixture directory beneath
-RUNNER_TEMP. DrVFS can reject renaming an open file and consume the fixed120s limit.
-Root lifecycle regressions also verify partial acquisition, primary/cleanup errors
-and actual after-persist/close clock observations. Adapter receipts remain
-provisional; successful return requires completed bounded validation and retirement.
+Единственный canonical S8 original завершился root12/nested171 GREEN, включая новую P8 EOF-clock regression и обе реальные15s close negatives. Old170 IDs сохранены; P6 partial-read cases остаются. P8 изменяет только допустимую timestamp chronology `run_fixture`, сохраняя старые outputs/assertions. Persisted adapter `successful:false` и provisional fields остаются исходными; отдельный actual outer rc0 закрывает fixture invocation. Fixtures не принимают реальные media или scientific cohort. [Originals](../../../openspec/changes/archive/2026-10-05-fix-decoder-preflight/evidence/P8-implementation-v1/) и [independent source review](../../../openspec/changes/archive/2026-10-05-fix-decoder-preflight/evidence/P8-implementation-independent-v1/review.v1.json) показывают этот scope. Latest exact-S8 hosted CI отдельно принят; следующий archived/docs commit ещё потребует своего final CI.
 
-## Separate original dispatch and cold review
+## Исполненный S6 reader — не повторять
 
-After exact S/observer/helper review, required CI and namespace/input prechecks, root
-uses the separately frozen external helper below on canonical host CPython3.12.3.
-`PHYS` is the frozen original physical root; `REVIEW` is the prepared standard ext4
-Git checkout; `S` and `REVIEWED_HELPER_SHA` are the actual approved source identities,
-not placeholders that confer authority. The helper is outside Git S and its full
-reviewed SHA is required independently; no digest is invented here.
+После accepted D7 CI и current readiness grant COMMENT5408880947 уже исполнен **один** раз. Команда ниже — запись состоявшегося FAILED чтения старых S3 research originals; её report namespace занят. Ни producer, ни source/AU не повторяются. Concrete argv разделяет immutable producer S3 и observer S6; до этого чтения report и literal late companion отсутствовали; нынешний report сохраняется неизменным:
 
-```sh
-/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/capture_original_v6.py --project-root "$PHYS" --review-repository-root "$REVIEW" --source-commit "$S" --mode metadata-only --capture-source-sha256 "$REVIEWED_HELPER_SHA"
+```bash
+PY=/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python
+PHYS=/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec
+PRODUCER=/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s3bdb6cd81
+PRODUCER_S=bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73
+OBSERVER=/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s6f9cde5ec-from-s5
+OBSERVER_S=f9cde5ec53752d9f2af4fa5bffc1fb2c7e9c28ab
+BASE="$PHYS/artifacts/benchmark_recovery_20260930"
+ATTEMPT="$BASE/decoder-research-v6-clock-fixed-attempt-01"
+EXTERNAL="$BASE/decoder-research-v6-clock-fixed-original-controller/attempt-01/terminal.v1.json"
+TOOL=/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-original-tool-record.S3bdb6cd81.v1.json
+REPORT="$BASE/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-transport-read-verification.v1.json"
+"$PY" -I -B "$OBSERVER/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py" \
+  --project-root "$PHYS" --review-repository-root "$PRODUCER" \
+  --planning-commit 3aa35c3b2eedc05d22cf16ba37d470143d080f6b \
+  --source-commit "$PRODUCER_S" --mode research --attempt "$ATTEMPT" \
+  --external-terminal "$EXTERNAL" \
+  --capture-source-sha256 0f6e7a40f14f25690694542a193dc4ba0fea54ffd0345dbd835244e241582666 \
+  --capture-tool-record "$TOOL" --observer-repository-root "$OBSERVER" \
+  --observer-commit "$OBSERVER_S" --report "$REPORT"
 ```
 
-One invocation consumes the exact P-prescribed metadata attempt/capture namespaces.
-The external helper owns only its exact CPython child/group and original capture;
-the controller owns Docker custody. A Git-tracked, separately reviewed
-`artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py` then
-checks the closed metadata evidence without importing producer/GI/model code.
+SHA указывает неизменный external helper copy, использованный original S3 producer; сам helper здесь не вызывается. Required flag —`--observer-commit`, не выдуманный `--observer-source-commit`. Capture tool record находится вне закрытого original namespace и содержит faithful exec/wait objects; producer не может сам доказать собственный последний write рекурсивным self-hash.
 
-```sh
-/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B "$REVIEW/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py" --project-root "$PHYS" --review-repository-root "$REVIEW" --planning-commit 3aa35c3b2eedc05d22cf16ba37d470143d080f6b --source-commit "$S" --mode metadata-only --attempt "$CLOSED_ATTEMPT" --external-terminal "$EXTERNAL_TERMINAL" --capture-source-sha256 "$REVIEWED_HELPER_SHA" --capture-tool-record "$ORIGINAL_TOOL_RECORD" --report "$NEW_EXCLUSIVE_REPORT"
+Original S3 `verification.v1.json` с namespace failure и corrected S5 `corrected-metadata-namespace-verification.v1.json` с short transport failure не заменяются. Новый report exclusive. Одна неуспешная проверка сохраняет failure/prefix и останавливает этот шаг; бюджет/caps/epoch guards не расширяются по результату.
+
+## Исполненный S8 reader — namespace уже consumed
+
+COMMENT5409200896 разрешил ровно одно corrected read после принятого exact-S8 CI. Следующий argv уже исполнен с rc0; это запись операции, **не команда для повтора и не reusable grant**. Producer S3/P1, physical attempt, helper hash и original producer tool record сохранены, observer отдельно S8:
+
+```bash
+PY=/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python
+PHYS=/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec
+PRODUCER=/home/s-a-balashov/work/vast-decoder-preflight-v6-20261004-s3bdb6cd81
+PRODUCER_S=bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73
+OBSERVER=/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s8470120a3-from-s6
+OBSERVER_S=470120a3b3f9692775656cdb8114471ab991f14b
+BASE="$PHYS/artifacts/benchmark_recovery_20260930"
+ATTEMPT="$BASE/decoder-research-v6-clock-fixed-attempt-01"
+EXTERNAL="$BASE/decoder-research-v6-clock-fixed-original-controller/attempt-01/terminal.v1.json"
+TOOL=/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-original-tool-record.S3bdb6cd81.v1.json
+REPORT="$BASE/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-eof-clock-join-verification.v1.json"
+"$PY" -I -B "$OBSERVER/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py" \
+  --project-root "$PHYS" --review-repository-root "$PRODUCER" \
+  --planning-commit 3aa35c3b2eedc05d22cf16ba37d470143d080f6b \
+  --source-commit "$PRODUCER_S" --mode research --attempt "$ATTEMPT" \
+  --external-terminal "$EXTERNAL" \
+  --capture-source-sha256 0f6e7a40f14f25690694542a193dc4ba0fea54ffd0345dbd835244e241582666 \
+  --capture-tool-record "$TOOL" --observer-repository-root "$OBSERVER" \
+  --observer-commit "$OBSERVER_S" --report "$REPORT"
 ```
 
-The cold report is exclusive. The external terminal and original exec/write_stdin
-tool record provide separate after-close facts; the external producer cannot attest
-to its own final write using a recursive self hash. No current global absence is inferred.
+Original `corrected-eof-clock-join-verification.v1.json` содержит128 AU/64 pairs, research/raw/operation complete,223 released holds, FD6→6/close[]/42.715633661s и no late companion. `accepted:false`, `provisional_until_owner_final_close:true`, `publication_ready:false` остаются literal. Independent cold review PASS в original research scope (review28578/e394e9fd). Original S3 namespace failure, S5 shortread и S6 clock-identity refusal сохранены отдельно; S6 failure disposition уже независимо закрыт. Ни один consumed report не перезаписывается. [Independent scoped review](../../../openspec/changes/archive/2026-10-05-fix-decoder-preflight/evidence/S8-cold-v1/) сохраняет original nonpromotion fields и named ownership limits.
 
-Only accepted closed metadata preflight plus a separate exact research-dispatch review
-permits one equivalent helper invocation with `--mode research`, on the same P/S
-and the separate P-prescribed research/capture/cold namespaces. It has no automatic
-transition after metadata success. Independent research replay must reconstruct all
-128 AUs, ACK/control/causal gates, PTS/pixel/caps joins and fixed cohorts from original
-closed evidence. A partial/failing operation retains its prefix and stops; missing
-stages remain unexecuted. Metadata, research and cold checking stay nonpromoting:
-no pipeline adoption, benchmark/native pair, qualification, model/parity or publication
-acceptance, and no completion of the outstanding full32/Q4/5600 campaigns.
+## Когда результат можно интерпретировать
+
+Sealed terminal provisional до actual owner final close. Нужны original post-close stdout/rc0, неизменный terminal size/SHA, exact namespaces, отсутствие primary/close/late failures, original positive container terminal, nonforce exact-CID removal и отдельное CID/name absence. External helper владеет только своим CPython child/group/streams; controller — Docker custody; reader — held input/report closure. Эти разные domains нельзя заменить одним outer exit0 или global-quiescence предположением.
+
+Независимо сверенные descriptive числа этого закрытого report относятся к 16 central pairs на clip. Front-gate: p50 default 1013.664823 мс, zero 1009.732428 мс; median paired zero−default −2.445557 мс. Underbody: p50 default 2002.406025 мс, zero 2004.325781 мс; median paired Δ +1.648382 мс. Column p50 — nearest rank8 из16 central samples; paired Δ — statistical median16 per-AU differences, не разность column p50 и не median каждой even-sized колонки. Central pre-EOS означает положение samples относительно EOS, а не доказанную stationarity. Равные paired RGB hashes сравнивают наблюдавшиеся outputs, а не независимый software reference. Эти данные не доказывают causal setting benefit, pure NVDEC service/utilization, accuracy или 100 ms capacity. Для future decoder engineering default/unset остаётся provisional выбором только после отдельно accepted derived-YUV/RGB/EOS intake, а не adopted regime по этому report. Whole scoped result независимо прочитан; это не publication или campaign acceptance. Decoder adoption, qualification/parity/publication и legacy32/Q4/5600 не следуют из report. Следующий finite24/12 route требует отдельной официальной постановки, material/reference и native lifecycle/fault gates; property tuning не заменяет эти шаги. PR4 final conformance/sync/archive/final CI/review/merge ещё pending.

@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_PR4_final_scoped_implementation_conformance_independent_review_v1",
+  "verdict": "PASS_FROZEN_OPERATIONAL_DOCUMENTS_AND_SCOPED_IMPLEMENTATION_CONFORMANCE",
+  "change": "fix-decoder-preflight",
+  "PR": "https://github.com/lordcoudy/VAST/pull/4",
+  "reviewed_source_commit": "470120a3b3f9692775656cdb8114471ab991f14b",
+  "producer_source_commit": "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+  "producer_planning_commit": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+  "planning_P8": "da0a3f93e060c87b35423729c48388f4e77fab13",
+  "reviewed_worktree": "C:/Users/s-a-balashov/.codex/worktrees/decoder-preflight-v6/VAST",
+  "document_scope": [
+    {
+      "path": "README.md",
+      "size_bytes": 64273,
+      "sha256": "5642a21f91828b6ac94dcc2b8a420f6e35c51ed4be0dd3e73fadae3df07ee29d",
+      "complete_read": true
+    },
+    {
+      "path": "docs/benchmark-preparation-runbook.md",
+      "size_bytes": 21092,
+      "sha256": "e9c3095fc369dec88fbe175be494999ae8e39041e156ff817366afcbca138d69",
+      "complete_read": true
+    },
+    {
+      "path": "docs/gstreamer-component-benchmark-runbook.md",
+      "size_bytes": 22903,
+      "sha256": "4f492e59653dafae47751cd05812d6c5a1f16966b9b139511c98a5f6f0fa98f0",
+      "complete_read": true
+    },
+    {
+      "path": "docs/decoder-preflight-20261004/decoder-diagnosis.md",
+      "size_bytes": 15753,
+      "sha256": "0055197ab663fdfa19e40109990d75dd801de8cb41c1a3ff97ee948bde135bc9",
+      "complete_read": true
+    },
+    {
+      "path": "artifacts/benchmark_recovery_20260930/decoder-research-implementation-v6/README.md",
+      "size_bytes": 15026,
+      "sha256": "507157a458451fadf028dcefb1bc8a3cc05de9005d0dbcf4808a340db1f05054",
+      "complete_read": true
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/conformance-report.md",
+      "size_bytes": 51918,
+      "sha256": "f8327a050b160119580e76aa1be59a31bf86877ae0dfac3a283d568bfe5f732f",
+      "complete_read": true
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/release-gates.md",
+      "size_bytes": 4989,
+      "sha256": "e139144bc93a06d186cb70caaa0e3ff39a49c428b5b60c2b749cf67cb14827bc",
+      "complete_read": true
+    },
+    {
+      "path": "openspec/changes/fix-decoder-preflight/evidence/conformance-traceability.v1.json",
+      "size_bytes": 1263801,
+      "sha256": "d20bb7f8f157db1008f183b8b704700d3cc3e6acf1e579742955a77a2c71f70b",
+      "complete_read": true
+    }
+  ],
+  "source_and_normative_scope": {
+    "exact_S8_three_code_blobs_equal_current_physical_freeze": true,
+    "main_benchmark_raw": {
+      "size_bytes": 75126,
+      "sha256": "d777fca9299def232e13c75e484c0863a639d4acdfdf5445e38e8a925873d36b"
+    },
+    "delta_raw": {
+      "size_bytes": 23273,
+      "sha256": "c54fe1c19720dc6ecc8d403ddfde6337f01de84da8a06b7b2a51939cbfe7885d"
+    },
+    "diagnostics_raw": {
+      "size_bytes": 6554,
+      "sha256": "4ad6263d274252d8e1f9178210b32463de00526542b12edbdcfc94bf83e152ca"
+    },
+    "exact_R15_clauses": 28,
+    "old_R15_clauses_preserved": 10,
+    "other_exact_full_requirement_bodies": 19,
+    "other_exact_scenarios": 108,
+    "diagnostic_exact_full_bodies": 4,
+    "diagnostic_exact_scenarios": 12,
+    "human_machine_unique_scenario_ID_memberships": 148,
+    "historical_register": {
+      "scenarios": 82,
+      "tasks": 72,
+      "accepted_reference_full_SHA": "8d8b80bbc7a50c87e519f40f37a4bd2e3c965d3c8dca02af72fd04699770e583",
+      "names_memberships_exact": true,
+      "execution_status_not_relabelled": true
+    },
+    "method_assertion_index": {
+      "methods": 402,
+      "AST_and_recorded_assertion_texts_resolve": true,
+      "interpreter": "CPython 3.12.3 stdlib AST only",
+      "source_anchors": 252,
+      "all_recorded_snippets_and_boundary_ASTs_resolve": true,
+      "unresolved": []
+    },
+    "current_named_test_outcomes": {
+      "mapped_root_successes": 309,
+      "mapped_nested_successes": 93,
+      "total": 402,
+      "unjoined": [],
+      "basis": "Already accepted exact S8 CPU ZIP report.json and nested-suite.v1.json; no rerun"
+    },
+    "preserved_P8_fixture_exception": "Only reviewed IndependentColdTests.run_fixture timestamp chronology changes; old60 test method ASTs, old170 IDs, outputs/residence/cohorts/assertions preserved by exact S8 source/canonical peer.",
+    "actual_read_only_results": [
+      "98b698: all normative clauses/registers/402 method assertion ASTs/252 anchors/148 human IDs resolve, rc0",
+      "e1fd1e: current402 actual outcome joins and accepted evidence copy pins, rc0",
+      "ac3527: physical3 == raw exact S8 and consumed guide command == genuine28argv, rc0",
+      "5b4561/423abe/a30620: final frozen pins and corrected semantic labels, rc0"
+    ]
+  },
+  "accepted_evidence_reused": {
+    "source_canonical": {
+      "receipt_bytes": 11345,
+      "sha256": "b96a196a1e86e7e81d41f8782e62307e0aef1a3dd5a1da45deb6c7ec861d4932",
+      "root_tests": 12,
+      "nested_tests": 171,
+      "two_real_15s_cases": true,
+      "source15_before_after_equal": true,
+      "old170_plus_one_P8": true
+    },
+    "current_CI": {
+      "run": 37249161136,
+      "attempt": 1,
+      "number": 65,
+      "head": "470120a3b3f9692775656cdb8114471ab991f14b",
+      "receipt_bytes": 12260,
+      "sha256": "b5c920d3dd2e9f0c0594f9537881078e69bd8295244c67460aa6eecbb899b230",
+      "provider_conclusion": "success",
+      "discovered": 3049,
+      "selected": 3040,
+      "successes": 2952,
+      "allowed_skips": 88,
+      "deferred": 9,
+      "failures": 0,
+      "errors": 0,
+      "native_builds": 6,
+      "required_native_regressions": 3,
+      "decoder_root": 12,
+      "decoder_nested": 171,
+      "source_rows": 6509,
+      "source_before_after_equal": true,
+      "HOST_scope": "diagnostic only"
+    },
+    "actual_scoped_original_research": {
+      "receipt_bytes": 28578,
+      "sha256": "e394e9fdf4ee3e525f3171994ddf373307170282337ee0ac55d762977531bc5c",
+      "original_report_bytes": 128372,
+      "original_report_SHA": "a423192aa6501228ba63001faaeb8960e018d9ff3a3ba7997ac2df9e5cc25b66",
+      "root_tool_bytes": 11305,
+      "root_tool_SHA": "ef559b2ac81c9df379a7e6e4302500268080272ded0436956f873b57b3309542",
+      "runs": 4,
+      "AUs": 128,
+      "setting_pairs": 64,
+      "scope": "Descriptive immutable original S3 data plus closed S8 observer; raw transport/admission/ACK/control/PTS/RGB/caps/cohorts/backing/ABI/clock/ownership joins accepted separately.",
+      "original_literal_fields": {
+        "accepted": false,
+        "provisional_until_owner_final_close": true,
+        "operation_completed": true,
+        "research_complete": true,
+        "raw_join_complete": true,
+        "publication_ready": false,
+        "model_or_parity_evidence": false,
+        "benchmark_arm_count": 0,
+        "native_pair_count": 0,
+        "qualification_count": 0
+      },
+      "held_inputs": 223,
+      "FD_before": 6,
+      "FD_after": 6,
+      "all_released": true,
+      "close_errors": [],
+      "late_failure": null,
+      "elapsed_s": 42.71563366102055
+    }
+  },
+  "scientific_and_operational_semantics": {
+    "producer_S3_not_retargeted_to_observer_S8": true,
+    "consumed_S6_and_S8_reader_commands_not_reusable_grants": true,
+    "fixed_80B_protocol_header_is_not_H264_payload": true,
+    "matched_RGB_hashes_are_not_independent_software_pixel_reference": true,
+    "earliest_observed_EOF_inclusive_10s_and_ordering_preserved": true,
+    "column_p50_is_nearest_rank8_of16_paired_delta_is_statistical_median_of16": true,
+    "central_pre_EOS_is_not_stationarity_or_proven_pure_service": true,
+    "original_failures_and_negative_100ms_data_remain_failed_or_negative": true,
+    "no_supported_meaningful_zero_setting_latency_benefit": true,
+    "default_unset_is_provisional_future_engineering_choice_requires_actual_derived_YUV_RGB_EOS_gate": true,
+    "legacy_32_Q4_1120_5600_2800_and_future_24_12_are_unexecuted_unaccepted_scopes": true
+  },
+  "resolved_document_findings": [
+    "Historical53-obligation label explicitly identifies pre-P8 history; current56 separates54 implementation and2 release process tasks.",
+    "All12 DIAG line refs retained with explicit historical/manual original-evidence provenance, not current line identity.",
+    "Release guide precisely preserves successful:false and terminal/final-close provisional:true, separately joining genuine outer rc0.",
+    "Five ops documents distinguish unsupported setting benefit, provisional default/unset engineering and mandatory final derived-YUV/RGB/EOS intake."
+  ],
+  "remaining_limits_and_process": {
+    "manual_scenarios": [
+      "R5/S5",
+      "R12/S1",
+      "R14/S2",
+      "R20/S1"
+    ],
+    "R13_S6": "Exact-kind source/manual guard evidence retained; direct negative tests at every full qualification/promotion/Q4/publication consumer remain an explicit inherited coverage limit. No new software defect inferred from that limit.",
+    "historical_diagnostic_measurements_not_replayed": true,
+    "source_AST_checks_are_not_transitive_or_hardware_proof": true,
+    "actual_task_flags_at_review": {
+      "complete": 50,
+      "total": 56,
+      "unchecked": [
+        "7.4",
+        "8.1",
+        "8.2",
+        "8.3",
+        "8.4",
+        "8.5"
+      ]
+    },
+    "bounded_implementation_scope": 54,
+    "documentation_tasks_root_may_close_after_this_review": [
+      "7.4",
+      "8.1",
+      "8.2",
+      "8.3"
+    ],
+    "release_tasks_still_pending": {
+      "8.4": "Supported same-PR sync/archive preserving delta/main/diagnostics/evidence/.openspec.yaml.",
+      "8.5": "Commit/push archive/documents, required CI on latest commit, exact final review and authorized merge."
+    },
+    "review_does_not_claim_current_doc_commit_CI_or_actual_archive_or_merge": true,
+    "merge_ready": false,
+    "human_APPROVE_fabricated": false,
+    "new_dispatch_grant": false,
+    "critical_remaining_implementation_discrepancies": []
+  },
+  "reviewer_actions": {
+    "read_only_source_docs_and_accepted_closed_metadata": true,
+    "target_imports": false,
+    "tests": false,
+    "CI_or_target_reruns": false,
+    "media_or_transport_replay": false,
+    "process_scans": false,
+    "source_doc_task_Git_mutations": false,
+    "new_verifier_or_source_manifest": false,
+    "external_receipt_and_faithful_return_record_only": true
+  },
+  "technical_COMMENT_text": "Technical COMMENT: PASS frozen PR4 scoped implementation conformance and five operational documents at observer S8 470120a3b3f9692775656cdb8114471ab991f14b with machine d20bb7f8f157db1008f183b8b704700d3cc3e6acf1e579742955a77a2c71f70b. All28 R15 clauses,19 other requirements,4 diagnostics/148 scenarios and historical82/72 registers are preserved;402 named test outcomes and252 source anchors resolve against accepted S8 originals. No remaining critical implementation discrepancy;54 bounded implementation obligations are evidenced, while actual task flags remain50/56 until root closes documentation checks. Sync/archive, latest final-head CI, exact final review and authorized merge remain pending. This is technical review, not human APPROVE, archive/merge completion or another dispatch grant."
+}

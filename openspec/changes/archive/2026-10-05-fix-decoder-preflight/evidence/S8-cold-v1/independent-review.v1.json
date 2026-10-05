@@ -1,0 +1,692 @@
+{
+  "schema": "vast.independent-scoped-decoder-research-result-review.v1",
+  "verdict": "PASS_SCOPED_ORIGINAL_S3_FOUR_RUN_RESEARCH_OBSERVATION_AND_CLOSED_S8_COLD_READER",
+  "scope": "Accept independently joined descriptive observation of the one immutable original S3 research attempt: four native decoder runs,128 admitted AU packets/outputs and64 setting pairs. Preserve literal nonpromotion fields. This receipt neither executes nor authorizes any producer/cold/test/build/engine/model/media replay.",
+  "reviewed_observer_commit": "470120a3b3f9692775656cdb8114471ab991f14b",
+  "reviewed_EOF_join_planning_commit": "da0a3f93e060c87b35423729c48388f4e77fab13",
+  "source_roles": {
+    "producer": "bdb6cd8104e2dc8d1dd764777bdbcfccbb6ded73",
+    "producer_planning": "3aa35c3b2eedc05d22cf16ba37d470143d080f6b",
+    "observer": "470120a3b3f9692775656cdb8114471ab991f14b",
+    "observer_base_planning": "684ea836a27fa002bc231117fbe445d0ec5579ab",
+    "EOF_join_planning": "da0a3f93e060c87b35423729c48388f4e77fab13"
+  },
+  "original_report": {
+    "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-eof-clock-join-verification.v1.json",
+    "size_bytes": 128372,
+    "sha256": "a423192aa6501228ba63001faaeb8960e018d9ff3a3ba7997ac2df9e5cc25b66",
+    "own_epoch7": [
+      "69",
+      "1407374885984543",
+      "33279",
+      "1",
+      "128372",
+      "1791163780539946900",
+      "1791163780539946900"
+    ]
+  },
+  "original_root_tools": {
+    "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S8-corrected-cold-original-tools.v1.json",
+    "size_bytes": 11305,
+    "sha256": "ef559b2ac81c9df379a7e6e4302500268080272ded0436956f873b57b3309542",
+    "own_epoch7": [
+      "69",
+      "1407374885984544",
+      "33279",
+      "1",
+      "11305",
+      "1791163826253794300",
+      "1791163826253794300"
+    ]
+  },
+  "original_once_grant": 5409200896,
+  "original_once_execution": {
+    "initiating_chunk": "89d75d",
+    "session_id": 47027,
+    "final_chunk": "e4ed32",
+    "actual_returncode": 0,
+    "exact_argv_count": 28,
+    "root_stdout": {
+      "close_errors": [],
+      "late_failure": null,
+      "report": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-cold/attempt-01/corrected-eof-clock-join-verification.v1.json",
+        "sha256": "a423192aa6501228ba63001faaeb8960e018d9ff3a3ba7997ac2df9e5cc25b66",
+        "size_bytes": 128372
+      },
+      "successful": true
+    },
+    "elapsed_s": 42.71563366102055
+  },
+  "literal_original_report_fields": {
+    "accepted": false,
+    "provisional_until_owner_final_close": true,
+    "operation_completed": true,
+    "research_complete": true,
+    "raw_join_complete": true,
+    "metadata_preflight_completed": false,
+    "actual_original_au_count": 128,
+    "paired_timing_count": 64,
+    "publication_ready": false,
+    "model_or_parity_evidence": false,
+    "benchmark_arm_count": 0,
+    "native_pair_count": 0,
+    "qualification_count": 0
+  },
+  "raw_recomputation": {
+    "original_namespace_full_hash_leaf_count": 195,
+    "full_held_original_namespace_bytes": 17300824,
+    "actual_AU_count": 128,
+    "protocol_fixed_header_bytes_per_AU": 80,
+    "header_is_not_H264_payload": true,
+    "all128_actual_compressed_H264_payload_hashes_independently_recomputed": true,
+    "all_original_admission_packet_identity_PTS_DTS_duration_driven_schedule_control_ACK_journal_causality_joined": true,
+    "AU_transport_prefix_identity_default_zero_by_clip": true,
+    "decoder_sink_count": 128,
+    "decoder_src_count": 128,
+    "RGB_output_count": 128,
+    "observed_RGB_hash_matched_pairs": 64,
+    "paired_timing_count": 64,
+    "presentation_PTS_geometry_caps_features_and_original_observed_RGB_hashes_match_in_each_pair": true,
+    "RGB_hashes_independently_decoded": false,
+    "per_run_payload_bytes": [
+      {
+        "run": 1,
+        "clip": "front_gate",
+        "setting": "default",
+        "AU_count": 32,
+        "protocol_header_bytes_per_AU": 80,
+        "compressed_H264_payload_total_bytes": 144234,
+        "compressed_H264_payload_min_bytes": 73,
+        "compressed_H264_payload_max_bytes": 131563,
+        "raw_transport_total_bytes": 153277,
+        "header_and_text_overhead_total_bytes": 9043,
+        "basis": "Original packet records, already independently joined to complete raw headers/text/payload hashes in08fbc6; no AU payload reread here."
+      },
+      {
+        "run": 2,
+        "clip": "front_gate",
+        "setting": "zero",
+        "AU_count": 32,
+        "protocol_header_bytes_per_AU": 80,
+        "compressed_H264_payload_total_bytes": 144234,
+        "compressed_H264_payload_min_bytes": 73,
+        "compressed_H264_payload_max_bytes": 131563,
+        "raw_transport_total_bytes": 153277,
+        "header_and_text_overhead_total_bytes": 9043,
+        "basis": "Original packet records, already independently joined to complete raw headers/text/payload hashes in08fbc6; no AU payload reread here."
+      },
+      {
+        "run": 3,
+        "clip": "underbody",
+        "setting": "zero",
+        "AU_count": 32,
+        "protocol_header_bytes_per_AU": 80,
+        "compressed_H264_payload_total_bytes": 1505608,
+        "compressed_H264_payload_min_bytes": 28,
+        "compressed_H264_payload_max_bytes": 147874,
+        "raw_transport_total_bytes": 1514651,
+        "header_and_text_overhead_total_bytes": 9043,
+        "basis": "Original packet records, already independently joined to complete raw headers/text/payload hashes in08fbc6; no AU payload reread here."
+      },
+      {
+        "run": 4,
+        "clip": "underbody",
+        "setting": "default",
+        "AU_count": 32,
+        "protocol_header_bytes_per_AU": 80,
+        "compressed_H264_payload_total_bytes": 1505608,
+        "compressed_H264_payload_min_bytes": 28,
+        "compressed_H264_payload_max_bytes": 147874,
+        "raw_transport_total_bytes": 1514651,
+        "header_and_text_overhead_total_bytes": 9043,
+        "basis": "Original packet records, already independently joined to complete raw headers/text/payload hashes in08fbc6; no AU payload reread here."
+      }
+    ],
+    "per_run_facts": [
+      {
+        "run": 1,
+        "clip": "front_gate",
+        "setting": "default",
+        "original_owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "gid": 1000,
+          "pid": 23,
+          "ppid": 1,
+          "starttime_ticks": 62180379,
+          "uid": 1000
+        },
+        "event_count": 275,
+        "au_count": 32,
+        "raw_transport_bytes": 153277,
+        "payload_bytes": 144234,
+        "maximum_payload_bytes": 131563,
+        "RGB_count": 32,
+        "sink_count": 32,
+        "source_count": 32,
+        "central_preEOS": 16,
+        "afterEOS_by_cohort": {
+          "tail": 3
+        },
+        "startup_elapsed_s": 0.6228068680502474,
+        "drain_bookkeeping_elapsed_s": 0.07656898209825158,
+        "earliestEOF_to_completion_ns": 76570094,
+        "resident_medians_by_cohort_ms": {
+          "startup": 1512.995865,
+          "central": 1515.008094,
+          "tail": 1517.386964
+        },
+        "run_start_elapsed_s": 3.951402568956837
+      },
+      {
+        "run": 2,
+        "clip": "front_gate",
+        "setting": "zero",
+        "original_owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "gid": 1000,
+          "pid": 52,
+          "ppid": 1,
+          "starttime_ticks": 62183914,
+          "uid": 1000
+        },
+        "event_count": 275,
+        "au_count": 32,
+        "raw_transport_bytes": 153277,
+        "payload_bytes": 144234,
+        "maximum_payload_bytes": 131563,
+        "RGB_count": 32,
+        "sink_count": 32,
+        "source_count": 32,
+        "central_preEOS": 16,
+        "afterEOS_by_cohort": {
+          "tail": 3
+        },
+        "startup_elapsed_s": 0.5884577879915014,
+        "drain_bookkeeping_elapsed_s": 0.06725920492317528,
+        "earliestEOF_to_completion_ns": 67260532,
+        "resident_medians_by_cohort_ms": {
+          "startup": 1515.9173785,
+          "central": 1509.9474525,
+          "tail": 1515.5632635
+        },
+        "run_start_elapsed_s": 39.33255786600057
+      },
+      {
+        "run": 3,
+        "clip": "underbody",
+        "setting": "zero",
+        "original_owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "gid": 1000,
+          "pid": 74,
+          "ppid": 1,
+          "starttime_ticks": 62187447,
+          "uid": 1000
+        },
+        "event_count": 275,
+        "au_count": 32,
+        "raw_transport_bytes": 1514651,
+        "payload_bytes": 1505608,
+        "maximum_payload_bytes": 147874,
+        "RGB_count": 32,
+        "sink_count": 32,
+        "source_count": 32,
+        "central_preEOS": 16,
+        "afterEOS_by_cohort": {
+          "tail": 3
+        },
+        "startup_elapsed_s": 0.5872246000217274,
+        "drain_bookkeeping_elapsed_s": 0.049447979079559445,
+        "earliestEOF_to_completion_ns": 49448567,
+        "resident_medians_by_cohort_ms": {
+          "startup": 2006.2561135,
+          "central": 2004.8342485,
+          "tail": 1511.769805
+        },
+        "run_start_elapsed_s": 74.6676710989559
+      },
+      {
+        "run": 4,
+        "clip": "underbody",
+        "setting": "default",
+        "original_owner": {
+          "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+          "gid": 1000,
+          "pid": 96,
+          "ppid": 1,
+          "starttime_ticks": 62191237,
+          "uid": 1000
+        },
+        "event_count": 275,
+        "au_count": 32,
+        "raw_transport_bytes": 1514651,
+        "payload_bytes": 1505608,
+        "maximum_payload_bytes": 147874,
+        "RGB_count": 32,
+        "sink_count": 32,
+        "source_count": 32,
+        "central_preEOS": 16,
+        "afterEOS_by_cohort": {
+          "tail": 3
+        },
+        "startup_elapsed_s": 0.5734271060209721,
+        "drain_bookkeeping_elapsed_s": 0.04230142408050597,
+        "earliestEOF_to_completion_ns": 42301701,
+        "resident_medians_by_cohort_ms": {
+          "startup": 2007.7008795,
+          "central": 2003.6330225,
+          "tail": 1512.174204
+        },
+        "run_start_elapsed_s": 112.57846143795177
+      }
+    ]
+  },
+  "original_clock_joins": {
+    "same_guest_monotonic_only": true,
+    "ordered_observed_EOF_bookkeeping_EOF_sinkEOS_completion": true,
+    "earliest_observed_EOF_origin_and_inclusive10s_guard_unchanged": true,
+    "startup45s_and_declared_drain10s_all_pass": true,
+    "source_EOF_and_sink_EOS_original_journal_documents_match": true,
+    "raw_tuples": [
+      {
+        "run": 1,
+        "observed_source_eof_monotonic_ns": 621837867081512,
+        "drain_bookkeeping_source_eof_monotonic_ns": 621837867082806,
+        "actual_decoder_sink_eos_ns": 621837888893260,
+        "drain_completed_monotonic_ns": 621837943651606,
+        "completion_from_observed_eof_ns": 76570094
+      },
+      {
+        "run": 2,
+        "observed_source_eof_monotonic_ns": 621873214696025,
+        "drain_bookkeeping_source_eof_monotonic_ns": 621873214697506,
+        "actual_decoder_sink_eos_ns": 621873229945053,
+        "drain_completed_monotonic_ns": 621873281956557,
+        "completion_from_observed_eof_ns": 67260532
+      },
+      {
+        "run": 3,
+        "observed_source_eof_monotonic_ns": 621908550045951,
+        "drain_bookkeeping_source_eof_monotonic_ns": 621908550046698,
+        "actual_decoder_sink_eos_ns": 621908575411172,
+        "drain_completed_monotonic_ns": 621908599494518,
+        "completion_from_observed_eof_ns": 49448567
+      },
+      {
+        "run": 4,
+        "observed_source_eof_monotonic_ns": 621946445739684,
+        "drain_bookkeeping_source_eof_monotonic_ns": 621946445740102,
+        "actual_decoder_sink_eos_ns": 621946464134922,
+        "drain_completed_monotonic_ns": 621946488041385,
+        "completion_from_observed_eof_ns": 42301701
+      }
+    ]
+  },
+  "cohort_interpretation": {
+    "startup_ordinals": "1..8",
+    "central_ordinals": "9..24",
+    "tail_ordinals": "25..32",
+    "central_pre_sinkEOS_counts": [
+      16,
+      16,
+      16,
+      16
+    ],
+    "tail_outputs_at_or_after_sinkEOS_counts": [
+      3,
+      3,
+      3,
+      3
+    ],
+    "steady_state_pair_field_means": "Both setting outputs precede actual sink EOS; startup pairs may therefore have steady_state_pair:true. It does not establish stationarity.",
+    "central_steady_state_sufficient_field_means": "All16 central outputs precede actual sink EOS for each run; this does not establish independent steady-state stationarity or color accuracy."
+  },
+  "descriptive_statistics": {
+    "column_p50_definition": "Nearest-rank p50 among16 central rows: sorted value at one-based rank8. These are distinct from statistical median of even-sized columns.",
+    "paired_delta_definition": "Statistical median of16 per-AU zero-minus-default residence deltas.",
+    "values": [
+      {
+        "clip": "front_gate",
+        "central_pairs": 16,
+        "default_nearest_rank_p50_ms": 1013.664823,
+        "zero_nearest_rank_p50_ms": 1009.732428,
+        "paired_statistical_median_zero_minus_default_ms": -2.445557,
+        "observed_RGB_pairs": 32,
+        "tail_max_residence_ms": 6005.64511
+      },
+      {
+        "clip": "underbody",
+        "central_pairs": 16,
+        "default_nearest_rank_p50_ms": 2002.406025,
+        "zero_nearest_rank_p50_ms": 2004.325781,
+        "paired_statistical_median_zero_minus_default_ms": 1.648382,
+        "observed_RGB_pairs": 32,
+        "tail_max_residence_ms": 4018.262568
+      }
+    ],
+    "measured_domain": "Same-guest native decoder sink/src monotonic wall residence, including queueing/backpressure; original encoded600fps/timebase and scale600 paced1fps.",
+    "causal_limits": "One serial setting pair per clip; reversed order across two different clips. No repeat-level confidence interval, scalar-property causal effect, independent pixel accuracy, utilization or general arrival-rate capacity inference.",
+    "engineering_interpretation": "No supported meaningful zero-setting latency benefit is established by these mixed small descriptive deltas. Default/unset remains a reasonable provisional engineering choice for the future study only after its separately reviewed derived-YUV/RGB/EOS intake gate."
+  },
+  "metadata_loaded_source_and_backing": {
+    "original_prelaunch_GI_version": "3.50.0",
+    "original_GStreamer_version": [
+      1,
+      28,
+      2,
+      0
+    ],
+    "CPython_Py_buffer_bytes": 80,
+    "mapped_collections": 14,
+    "paired_before_and_closed_membership_complete": true,
+    "selected_original_rows_owner_before_after_stable": true,
+    "package_pin_count": 47,
+    "backing_bridge_observations": 262,
+    "direct_backing_observations": 8,
+    "original_full_buffer_ABI_and_selected_VMA_identity_range_retirement_joined": true,
+    "actual_source_READY_loaded_libraries_joined_to_four_source_owners_and_package_pins": true,
+    "closed_guest_physical_alias_held_descriptor": {
+      "controller_physical": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/metadata/research-terminal.v1.json",
+        "sha256": "71b94e1a175e93cd31756c8df0793ff17190c0f647107f8013c3ace63f722fcd",
+        "size_bytes": 3377
+      },
+      "guest_stdout_alias": {
+        "path": "/opt/vast/output/metadata/research-terminal.v1.json",
+        "sha256": "71b94e1a175e93cd31756c8df0793ff17190c0f647107f8013c3ace63f722fcd",
+        "size_bytes": 3377
+      },
+      "held_physical": {
+        "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/metadata/research-terminal.v1.json",
+        "sha256": "71b94e1a175e93cd31756c8df0793ff17190c0f647107f8013c3ace63f722fcd",
+        "size_bytes": 3377
+      }
+    },
+    "disposed_package_libraries_current_host_rehashed": false
+  },
+  "original_external_and_controller": {
+    "external_descriptor": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-original-controller/attempt-01/terminal.v1.json",
+      "size_bytes": 7113,
+      "sha256": "f6bf60027fa73c079a12f78cc8a131a445b9448971b9b727322355f689982220",
+      "own_epoch7": [
+        "69",
+        "2533274792826593",
+        "33279",
+        "1",
+        "7113",
+        "1791139618706821900",
+        "1791139618706821900"
+      ]
+    },
+    "original_producer_tool_record": {
+      "path": "/mnt/e/STUDY/VAST/tmp/decoder-preflight-v6-20261004/research-original-tool-record.S3bdb6cd81.v1.json",
+      "size_bytes": 3356,
+      "sha256": "bf4fdcb52cce239fba8ffc44c932fe5fdf51f0a16bce6cb0b86ea42f593e811f",
+      "own_epoch7": [
+        "69",
+        "1407374885983970",
+        "33279",
+        "1",
+        "3356",
+        "1791139671120608700",
+        "1791139671120608700"
+      ]
+    },
+    "producer_initiating_chunk": "59d14a",
+    "producer_final_chunk": "987f4b",
+    "producer_actual_rc0": true,
+    "producer_external_original_owner": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pid": 44994,
+      "ppid": 44992,
+      "process_group_id": 44994,
+      "session_id": 44994,
+      "starttime_ticks": 62179446,
+      "uid": 1000
+    },
+    "producer_external_original_child": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pid": 45017,
+      "ppid": 44994,
+      "process_group_id": 45017,
+      "session_id": 45017,
+      "starttime_ticks": 62179459,
+      "uid": 1000
+    },
+    "external_elapsed_s": 162.82980529102497,
+    "external_original_four_source_epochs_before_after_equal": true,
+    "external_raw_logs_hash_EOF_and_capture_source_joined": true,
+    "controller_descriptor": {
+      "path": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/controller/terminal.v1.json",
+      "size_bytes": 9741,
+      "sha256": "a1cbf41511315bc585172d7fdc8ec0e54d51267a93da14d8ca8cb85f8bfb7cf4",
+      "own_epoch7": [
+        "69",
+        "1407374885983968",
+        "33279",
+        "1",
+        "9741",
+        "1791139618665166900",
+        "1791139618665166900"
+      ]
+    },
+    "controller_elapsed_s": 162.68175976607017,
+    "controller_cleanup_after_close_s": 0.31293827609624714,
+    "owned_container_removed_and_original_absence_evidence_joined": true,
+    "OOM_observed": false,
+    "all_original_producer_nonpromotion_fields_preserved": true
+  },
+  "namespace_bounds": {
+    "directories": [
+      {
+        "directory": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/controller",
+        "leaf_count": 103,
+        "byte_count": 316444,
+        "count_cap": 128,
+        "byte_cap": 16777216
+      },
+      {
+        "directory": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/metadata",
+        "leaf_count": 36,
+        "byte_count": 12866614,
+        "count_cap": 40,
+        "byte_cap": 16777216
+      },
+      {
+        "directory": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-01-front_gate-default",
+        "leaf_count": 14,
+        "byte_count": 345843,
+        "count_cap": 32,
+        "byte_cap": 268435456
+      },
+      {
+        "directory": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-02-front_gate-zero",
+        "leaf_count": 14,
+        "byte_count": 346450,
+        "count_cap": 32,
+        "byte_cap": 268435456
+      },
+      {
+        "directory": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-03-underbody-zero",
+        "leaf_count": 14,
+        "byte_count": 1712634,
+        "count_cap": 32,
+        "byte_cap": 268435456
+      },
+      {
+        "directory": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/benchmark_recovery_20260930/decoder-research-v6-clock-fixed-attempt-01/guest/run-04-underbody-default",
+        "leaf_count": 14,
+        "byte_count": 1712839,
+        "count_cap": 32,
+        "byte_cap": 268435456
+      }
+    ],
+    "total_bytes": 17300824,
+    "metadata36_within40": true,
+    "metadata_bytes12866614_within16MiB": true,
+    "mapping_only2MiB_bound_unchanged": true,
+    "generalDOC1MiB_CHANNEL1MiB_run32_controller128_bounds_unchanged": true
+  },
+  "current_original_custody": {
+    "current223_rows_full_held_seven_epochs_match_report": true,
+    "common_original221_descriptor_hash_epoch_rows_exact": true,
+    "observer_two_replacements": {
+      "old_only": [
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s5cfa959d2/.git/HEAD",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s5cfa959d2/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py"
+      ],
+      "new_only": [
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s8470120a3-from-s6/.git/HEAD",
+        "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s8470120a3-from-s6/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py"
+      ]
+    },
+    "old_original223_projection": "a76707b00d8396edcbd7c4066347831937894479a6649f4982f88d6ea0c52d91",
+    "current223_projection_before": "41fca989ac9259987d692a0994d95f0f8a18de9177a9b0abba434dec5b32dccf",
+    "current223_projection_after": "41fca989ac9259987d692a0994d95f0f8a18de9177a9b0abba434dec5b32dccf",
+    "executed_S8_source": {
+      "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s8470120a3-from-s6/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+      "size_bytes": 94512,
+      "sha256": "bba914fd5bdd2a70fa6a600f6762b56620a596c4b02411d6a2a4325a461338f9",
+      "own_epoch7": [
+        "2096",
+        "659404",
+        "33188",
+        "1",
+        "94512",
+        "1791161664047518050",
+        "1791161664047518050"
+      ]
+    },
+    "S8_own_HEAD_and_source_full_hash_pins": [
+      {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s8470120a3-from-s6/artifacts/benchmark_recovery_20260930/decoder-independent-v6/cold_reader.py",
+        "size_bytes": 94512,
+        "sha256": "bba914fd5bdd2a70fa6a600f6762b56620a596c4b02411d6a2a4325a461338f9",
+        "own_epoch7": [
+          "2096",
+          "659404",
+          "33188",
+          "1",
+          "94512",
+          "1791161664047518050",
+          "1791161664047518050"
+        ]
+      },
+      {
+        "path": "/home/s-a-balashov/work/vast-decoder-preflight-v6-20261005-s8470120a3-from-s6/.git/HEAD",
+        "size_bytes": 41,
+        "sha256": "6de39e01819e8653d9cf56a69e96ca5a7b95c6635ff23d2e26e77746702fc02c",
+        "own_epoch7": [
+          "2096",
+          "662178",
+          "33188",
+          "1",
+          "41",
+          "1791161664587587067",
+          "1791161664655595759"
+        ]
+      }
+    ],
+    "media_or_AU_current_rehash_beyond_original_closed_transport": false,
+    "own_raw_join_custody": {
+      "fd_before": 6,
+      "fd_after": 6,
+      "held_leaf_count": 226,
+      "held_ancestor_count": 57,
+      "close_errors": [],
+      "all_owned_FDs_closed": true
+    },
+    "own_raw_join_elapsed_s": 0.9677557139657438,
+    "own_small_external_join_custody": {
+      "fd_before": 6,
+      "fd_after": 6,
+      "held_leaf_count": 225,
+      "held_ancestor_count": 57,
+      "close_errors": [],
+      "all_owned_FDs_closed": true
+    },
+    "own_small_external_join_elapsed_s": 0.5970106269232929
+  },
+  "original_reader_closure": {
+    "reader_before": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pid": 54783,
+      "ppid": 54779,
+      "process_group_id": 54783,
+      "starttime_ticks": 64607812,
+      "uid": 1000
+    },
+    "reader_after": {
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "gid": 1000,
+      "pid": 54783,
+      "ppid": 54779,
+      "process_group_id": 54783,
+      "starttime_ticks": 64607812,
+      "uid": 1000
+    },
+    "reader_SID": "UNREPORTED/UNKNOWN",
+    "original_fd_before": 6,
+    "original_fd_after": 6,
+    "all_held_fds_released": true,
+    "close_errors": [],
+    "actual_final_tool_rc0": true,
+    "late_failure": null,
+    "literal_late_failure_companion_absent": true,
+    "later_named_identity_and_process_group_absence": [
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "named_reader_pid": 54783,
+        "named_parent_pid": 54779,
+        "recorded_reader_pgid": 54783,
+        "matches": [],
+        "monotonic_ns": "646745399874613"
+      },
+      {
+        "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+        "named_reader_pid": 54783,
+        "named_parent_pid": 54779,
+        "recorded_reader_pgid": 54783,
+        "matches": [],
+        "monotonic_ns": "646745888533187"
+      }
+    ],
+    "parent_birth_SID_credentials": "UNAVAILABLE/UNKNOWN",
+    "global_host_or_descendant_quiescence": "NOT ESTABLISHED"
+  },
+  "planning_source_CI_evidence": {
+    "P8_planning_comment": 5408991278,
+    "S8_source_canonical_comment": 5409109847,
+    "S8_CI_original_review": {
+      "path": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/ci-S8470120a3-v1/original-independent-review-v1/review.v1.json",
+      "size_bytes": 12260,
+      "sha256": "b5c920d3dd2e9f0c0594f9537881078e69bd8295244c67460aa6eecbb899b230"
+    },
+    "producer_P1_and_original_S3_observer_bindings_unchanged": true
+  },
+  "limitations": [
+    "Drain bookkeeping EOF is a separate float-derived clock sample; ordered raw representations give no universal nanosecond precision guarantee.",
+    "Selected original VMA rows and backing probes are replayed; full unselected maps and mapped memory bytes are unavailable.",
+    "Disposed image package/library descriptors are original observations, not current host rehashes.",
+    "Pixel hashes are original observed RGB active-row hashes, compared but not independently decoded.",
+    "Same-guest sink/src wall residence includes queueing/backpressure; it is not decoder utilization.",
+    "ACK_sent is observed after its write and can follow transport validation; enabling ACK intent must precede it.",
+    "Central outputs at/after actual sink EOS are flush-only and insufficient for central steady-state conclusions.",
+    "No global host/process quiescence, six-stream100ms, model, parity, qualification or benchmark acceptance is inferred.",
+    "The three historical cold failures remain immutable: original namespace-cap refusal, short-original-transport refusal, and original2ns-clock-identity refusal. Positive S8 observation does not relabel their original results.",
+    "Observed H264 bytes are hashed original native source transport payloads. No original media replay/reencoding, independent software decode, pixels/model/engine execution, decoder adoption or benchmark arm is performed or implied.",
+    "The initial large explanatory source/leaf print was output-truncated by the tool; its authentic returned truncation is retained. Final independent results derive from subsequent complete bounded held reads/raw recomputation, not unavailable printed bytes.",
+    "No historical syscall timing is reconstructed from present-day reads. Current seven-epoch/source checks and named absence scans establish only their recorded later scope."
+  ],
+  "concrete_blockers_in_this_scoped_observation_review": [],
+  "unfulfilled_other_objectives": [
+    "Independent software pixel parity and decoder adoption remain unaccepted.",
+    "Six-stream100ms benchmark, canonical24-arm/12-pair campaign and legacy32/Q4/5600 campaigns remain outside this result; their historical counts and requirements are unchanged."
+  ],
+  "readonly_original_tools": "E:/STUDY/VAST/tmp/decoder-preflight-v6-20261004/S8-cold-independent-v1/original-readonly-tools.v1.json"
+}
