@@ -1,0 +1,270 @@
+test_all_runtime_validators_accept_the_same_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) ... 
+  test_all_runtime_validators_accept_the_same_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='deepstream') ... ERROR
+  test_all_runtime_validators_accept_the_same_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='savant') ... ERROR
+  test_all_runtime_validators_accept_the_same_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='openvino_gva') ... ERROR
+  test_all_runtime_validators_accept_the_same_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='gstreamer_custom') ... ERROR
+test_all_runtime_validators_reject_the_same_missing_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) ... 
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='deepstream') ... FAIL
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='savant') ... FAIL
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='openvino_gva') ... FAIL
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='gstreamer_custom') ... FAIL
+test_dependency_closure_rejects_extraneous_symlinked_wheel (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_dependency_closure_rejects_extraneous_symlinked_wheel) ... ok
+test_docker_copy_and_isolated_build_context_match_validated_sets (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets) ... ERROR
+test_missing_extraneous_and_unrelated_module_drift_fail_as_expected (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_missing_extraneous_and_unrelated_module_drift_fail_as_expected) ... ok
+test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure) ... ERROR
+test_constant_dynamic_local_import_is_in_the_reachable_set (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_constant_dynamic_local_import_is_in_the_reachable_set) ... ok
+test_docker_copy_and_ab_build_use_only_validated_allowlist (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist) ... ERROR
+test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image) ... ERROR
+test_missing_and_extraneous_transitive_imports_fail_closed (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_missing_and_extraneous_transitive_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure) ... ERROR
+test_runtime_consumes_the_native_foundation_drop_queue (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue) ... ERROR
+test_missing_and_extraneous_imports_fail_closed (test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_missing_and_extraneous_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_transitive_closure (test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure) ... ERROR
+test_docker_copy_and_build_hash_use_only_the_validated_allowlist (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_docker_copy_and_build_hash_use_only_the_validated_allowlist) ... ok
+test_missing_and_extraneous_python_imports_fail_closed (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_missing_and_extraneous_python_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_reachable_runtime_closure (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure) ... ERROR
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='deepstream')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 52, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 200, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='savant')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 52, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='openvino_gva')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 57, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 104, in validate_python_source_closure
+    _require(not missing, "missing reachable Python source: " + ", ".join(missing))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='gstreamer_custom')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 57, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+ERROR: test_docker_copy_and_isolated_build_context_match_validated_sets (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_deepstream_runtime_source_closure_v3.py", line 120, in test_docker_copy_and_isolated_build_context_match_validated_sets
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 397, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 200, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_deepstream_runtime_source_closure_v3.py", line 33, in test_production_allowlist_is_exact_multi_entry_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 397, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 200, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+ERROR: test_docker_copy_and_ab_build_use_only_validated_allowlist (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 167, in test_docker_copy_and_ab_build_use_only_validated_allowlist
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+ERROR: test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 47, in test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 66, in test_production_allowlist_is_exact_multi_entry_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+ERROR: test_runtime_consumes_the_native_foundation_drop_queue (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 42, in test_runtime_consumes_the_native_foundation_drop_queue
+    self.assertEqual(_validator_module().validate_runtime_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_transitive_closure (test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_openvino_gva_runtime_source_closure_v3.py", line 28, in test_production_allowlist_is_exact_transitive_closure
+    result = _module().validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 181, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 104, in validate_python_source_closure
+    _require(not missing, "missing reachable Python source: " + ", ".join(missing))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_reachable_runtime_closure (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_gstreamer_custom_runtime_source_closure_v3.py", line 43, in test_production_allowlist_is_exact_reachable_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 235, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='deepstream')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_closure_v1.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_closure_v1.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py"
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='savant')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_closure_v1.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_closure_v1.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py"
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='openvino_gva')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_closure_v1.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/canonical_systems_study_plan_v1.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_closure_v1.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py"
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='gstreamer_custom')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_closure_v1.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/analytics_execution_capability.py, scripts/backend_publication_dispatch_v3.py, scripts/checkpoint_deepstream_publication_runtime_v3.py, scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_gstreamer_publication_runtime_v3.py, scripts/checkpoint_openvino_gva_publication_runtime_v3.py, scripts/checkpoint_publication_launcher_adapter_v3.py, scripts/checkpoint_publication_launcher_guard_v3.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/checkpoint_savant_publication_runtime_v3.py, scripts/collect_metrics.py, scripts/production_arm_evidence_finalizer_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_bootstrap_v2.py, scripts/publication_policy_qualification_execution_closure_v1.py, scripts/publication_policy_qualification_execution_code_closure_v1.py, scripts/publication_policy_qualification_fragments_from_authority_v2.py, scripts/publication_policy_qualification_index_v2.py, scripts/publication_policy_qualification_pilot_executor_v2.py, scripts/publication_policy_qualification_runtime_inputs_v2.py, scripts/publication_policy_qualification_transaction_v2.py"
+
+----------------------------------------------------------------------
+Ran 17 tests in 18.046s
+
+FAILED (failures=4, errors=12)

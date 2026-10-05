@@ -1,0 +1,407 @@
+test_all_runtime_validators_accept_the_same_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) ... ok
+test_all_runtime_validators_reject_the_same_missing_guardian_closure (test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) ... ok
+test_dependency_closure_rejects_extraneous_symlinked_wheel (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_dependency_closure_rejects_extraneous_symlinked_wheel) ... ok
+test_docker_copy_and_isolated_build_context_match_validated_sets (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets) ... ERROR
+test_missing_extraneous_and_unrelated_module_drift_fail_as_expected (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_missing_extraneous_and_unrelated_module_drift_fail_as_expected) ... ok
+test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure) ... ERROR
+test_constant_dynamic_local_import_is_in_the_reachable_set (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_constant_dynamic_local_import_is_in_the_reachable_set) ... ok
+test_docker_copy_and_ab_build_use_only_validated_allowlist (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist) ... ERROR
+test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image) ... ERROR
+test_missing_and_extraneous_transitive_imports_fail_closed (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_missing_and_extraneous_transitive_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure) ... ERROR
+test_runtime_consumes_the_native_foundation_drop_queue (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue) ... ERROR
+test_missing_and_extraneous_imports_fail_closed (test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_missing_and_extraneous_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_transitive_closure (test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure) ... ERROR
+test_docker_copy_and_build_hash_use_only_the_validated_allowlist (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_docker_copy_and_build_hash_use_only_the_validated_allowlist) ... ok
+test_missing_and_extraneous_python_imports_fail_closed (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_missing_and_extraneous_python_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_reachable_runtime_closure (test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure) ... ok
+test_materialization_is_idempotent_but_refuses_physical_binding_drift (test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_materialization_is_idempotent_but_refuses_physical_binding_drift) ... ok
+test_materializes_exact_ten_unique_physical_bindings_and_no_pilots (test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_materializes_exact_ten_unique_physical_bindings_and_no_pilots) ... ok
+test_repository_refrozen_endpoint_materials_are_exactly_accepted (test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_repository_refrozen_endpoint_materials_are_exactly_accepted) ... ok
+test_validator_rejects_hardlink_alias_and_image_identity_drift (test_checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Tests.test_validator_rejects_hardlink_alias_and_image_identity_drift) ... ok
+test_phase_one_materializes_ten_physical_bindings_and_no_pilots (test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_phase_one_materializes_ten_physical_bindings_and_no_pilots) ... ERROR
+test_refreeze_and_exact_runtime_identity_fields_are_bound (test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_refreeze_and_exact_runtime_identity_fields_are_bound) ... ERROR
+test_source_and_dependency_hashes_use_only_exact_build_inputs (test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_source_and_dependency_hashes_use_only_exact_build_inputs) ... ERROR
+test_exact_worker_receipt_and_resource_v2_evidence_are_bound (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_exact_worker_receipt_and_resource_v2_evidence_are_bound) ... ERROR
+test_phase_one_materializes_exact_policy_and_resource_bindings (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_phase_one_materializes_exact_policy_and_resource_bindings) ... ERROR
+test_physical_source_drift_is_rejected_after_fixture_is_pinned (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_physical_source_drift_is_rejected_after_fixture_is_pinned) ... ERROR
+test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant) ... ERROR
+test_assessment_recomputes_and_rejects_stale_runtime_source_closure (test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_assessment_recomputes_and_rejects_stale_runtime_source_closure) ... ERROR
+test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound (test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound) ... ERROR
+test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed (test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed) ... ERROR
+test_phase_one_materializes_exact_physical_binding_fragment (test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment) ... ERROR
+test_actual_closed_child_output_cap_refuses_retains_bytes_and_reaps (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_closed_child_output_cap_refuses_retains_bytes_and_reaps) ... ok
+test_actual_preparation_bootstrap_read_retains_original_endpoint (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_preparation_bootstrap_read_retains_original_endpoint) ... ok
+test_actual_term_ignoring_child_is_killed_waited_and_shared_closing_clock_retained (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_term_ignoring_child_is_killed_waited_and_shared_closing_clock_retained) ... ok
+test_control_failure_still_closes_actual_service_thread_and_preserves_primary (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_control_failure_still_closes_actual_service_thread_and_preserves_primary) ... ok
+test_incomplete_pilot_cannot_trigger_or_authorize_effects (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_incomplete_pilot_cannot_trigger_or_authorize_effects) ... ok
+test_isolated_executable_cli_has_study_and_missing_intake_never_runs_engine (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_isolated_executable_cli_has_study_and_missing_intake_never_runs_engine) ... ok
+test_original_preparation_expired_stamp_is_refused_before_output_or_input (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_expired_stamp_is_refused_before_output_or_input) ... ok
+test_original_preparation_foreign_or_partial_domain_is_refused_before_output (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_foreign_or_partial_domain_is_refused_before_output) ... ok
+test_original_preparation_invalid_stamp_and_study_parent_are_refused (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_invalid_stamp_and_study_parent_are_refused) ... ok
+test_original_runtime_main_translates_branch_once_to_canonical_receipt_mode (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_runtime_main_translates_branch_once_to_canonical_receipt_mode) ... ok
+test_real_partial_file_reads_keep_hash_deadline_and_reject_named_drift (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_real_partial_file_reads_keep_hash_deadline_and_reject_named_drift) ... ok
+test_single_study_cli_hands_off_actual_exclusive_descriptor_and_no_run_after_failure (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_single_study_cli_hands_off_actual_exclusive_descriptor_and_no_run_after_failure) ... ok
+test_source_inventory_binary_clock_proof_and_cid_outside_empty_arm (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_source_inventory_binary_clock_proof_and_cid_outside_empty_arm) ... ok
+test_stderr_collision_closes_first_acquired_stream_without_child_or_overwrite (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_stderr_collision_closes_first_acquired_stream_without_child_or_overwrite) ... ok
+test_study_cli_propagates_original_preparation_stamp_without_new_start (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_study_cli_propagates_original_preparation_stamp_without_new_start) ... ok
+
+======================================================================
+ERROR: test_docker_copy_and_isolated_build_context_match_validated_sets (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_deepstream_runtime_source_closure_v3.py", line 120, in test_docker_copy_and_isolated_build_context_match_validated_sets
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 364, in validate_runtime_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: runtime source allowlist must be non-empty, unique, and sorted
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_deepstream_runtime_source_closure_v3.py", line 33, in test_production_allowlist_is_exact_multi_entry_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 364, in validate_runtime_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: runtime source allowlist must be non-empty, unique, and sorted
+
+======================================================================
+ERROR: test_docker_copy_and_ab_build_use_only_validated_allowlist (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 167, in test_docker_copy_and_ab_build_use_only_validated_allowlist
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 349, in validate_runtime_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: runtime source allowlist must be non-empty, unique, and sorted
+
+======================================================================
+ERROR: test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 47, in test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 349, in validate_runtime_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: runtime source allowlist must be non-empty, unique, and sorted
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_multi_entry_runtime_closure (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 66, in test_production_allowlist_is_exact_multi_entry_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 349, in validate_runtime_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: runtime source allowlist must be non-empty, unique, and sorted
+
+======================================================================
+ERROR: test_runtime_consumes_the_native_foundation_drop_queue (test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 42, in test_runtime_consumes_the_native_foundation_drop_queue
+    self.assertEqual(_validator_module().validate_runtime_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 349, in validate_runtime_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: runtime source allowlist must be non-empty, unique, and sorted
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_transitive_closure (test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_openvino_gva_runtime_source_closure_v3.py", line 28, in test_production_allowlist_is_exact_transitive_closure
+    result = _module().validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 184, in validate_runtime_source_closure
+    native_sources = validate_native_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 145, in validate_native_source_closure
+    _require(not missing, "missing reachable native source: " + ", ".join(missing))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable native source: deploy/native_gst_probe/checkpoint_study_reference.hpp
+
+======================================================================
+ERROR: test_phase_one_materializes_ten_physical_bindings_and_no_pilots (test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_phase_one_materializes_ten_physical_bindings_and_no_pilots)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_savant_qualification_fragment_v3.py", line 150, in _validated_runtime_source_paths
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp72ysr2cj/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 349, in validate_runtime_source_closure
+  File "/tmp/tmp72ysr2cj/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+ValueError: runtime source allowlist must be non-empty, unique, and sorted
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 73, in test_phase_one_materializes_ten_physical_bindings_and_no_pilots
+    manifest = self.image_manifest(base / "runtime-image.json", project_root)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 43, in image_manifest
+    source_sha = target.runtime_source_sha256(project_root)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_savant_qualification_fragment_v3.py", line 164, in runtime_source_sha256
+    return _aggregate_sha256(root, _validated_runtime_source_paths(root))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_savant_qualification_fragment_v3.py", line 154, in _validated_runtime_source_paths
+    raise QualificationFragmentError(
+checkpoint_gstreamer_custom_qualification_fragment_v3.QualificationFragmentError: runtime source closure validation failed
+
+======================================================================
+ERROR: test_refreeze_and_exact_runtime_identity_fields_are_bound (test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_refreeze_and_exact_runtime_identity_fields_are_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_savant_qualification_fragment_v3.py", line 150, in _validated_runtime_source_paths
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmpw6qmsqt8/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 349, in validate_runtime_source_closure
+  File "/tmp/tmpw6qmsqt8/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+ValueError: runtime source allowlist must be non-empty, unique, and sorted
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 145, in test_refreeze_and_exact_runtime_identity_fields_are_bound
+    manifest = self.image_manifest(base / "runtime-image.json", project_root)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 43, in image_manifest
+    source_sha = target.runtime_source_sha256(project_root)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_savant_qualification_fragment_v3.py", line 164, in runtime_source_sha256
+    return _aggregate_sha256(root, _validated_runtime_source_paths(root))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_savant_qualification_fragment_v3.py", line 154, in _validated_runtime_source_paths
+    raise QualificationFragmentError(
+checkpoint_gstreamer_custom_qualification_fragment_v3.QualificationFragmentError: runtime source closure validation failed
+
+======================================================================
+ERROR: test_source_and_dependency_hashes_use_only_exact_build_inputs (test_checkpoint_savant_qualification_fragment_v3.SavantQualificationFragmentV3Tests.test_source_and_dependency_hashes_use_only_exact_build_inputs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_savant_qualification_fragment_v3.py", line 150, in _validated_runtime_source_paths
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 349, in validate_runtime_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: runtime source allowlist must be non-empty, unique, and sorted
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_qualification_fragment_v3.py", line 206, in test_source_and_dependency_hashes_use_only_exact_build_inputs
+    target.runtime_source_sha256(ROOT),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_savant_qualification_fragment_v3.py", line 164, in runtime_source_sha256
+    return _aggregate_sha256(root, _validated_runtime_source_paths(root))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_savant_qualification_fragment_v3.py", line 154, in _validated_runtime_source_paths
+    raise QualificationFragmentError(
+checkpoint_gstreamer_custom_qualification_fragment_v3.QualificationFragmentError: runtime source closure validation failed
+
+======================================================================
+ERROR: test_exact_worker_receipt_and_resource_v2_evidence_are_bound (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_exact_worker_receipt_and_resource_v2_evidence_are_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 82, in setUp
+    closure = module.validate_runtime_source_closure(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 184, in validate_runtime_source_closure
+    native_sources = validate_native_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 145, in validate_native_source_closure
+    _require(not missing, "missing reachable native source: " + ", ".join(missing))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable native source: deploy/native_gst_probe/checkpoint_study_reference.hpp
+
+======================================================================
+ERROR: test_phase_one_materializes_exact_policy_and_resource_bindings (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_phase_one_materializes_exact_policy_and_resource_bindings)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 82, in setUp
+    closure = module.validate_runtime_source_closure(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 184, in validate_runtime_source_closure
+    native_sources = validate_native_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 145, in validate_native_source_closure
+    _require(not missing, "missing reachable native source: " + ", ".join(missing))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable native source: deploy/native_gst_probe/checkpoint_study_reference.hpp
+
+======================================================================
+ERROR: test_physical_source_drift_is_rejected_after_fixture_is_pinned (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_physical_source_drift_is_rejected_after_fixture_is_pinned)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 82, in setUp
+    closure = module.validate_runtime_source_closure(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 184, in validate_runtime_source_closure
+    native_sources = validate_native_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 145, in validate_native_source_closure
+    _require(not missing, "missing reachable native source: " + ", ".join(missing))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable native source: deploy/native_gst_probe/checkpoint_study_reference.hpp
+
+======================================================================
+ERROR: test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 82, in setUp
+    closure = module.validate_runtime_source_closure(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 184, in validate_runtime_source_closure
+    native_sources = validate_native_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 145, in validate_native_source_closure
+    _require(not missing, "missing reachable native source: " + ", ".join(missing))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable native source: deploy/native_gst_probe/checkpoint_study_reference.hpp
+
+======================================================================
+ERROR: test_assessment_recomputes_and_rejects_stale_runtime_source_closure (test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_assessment_recomputes_and_rejects_stale_runtime_source_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 319, in test_assessment_recomputes_and_rejects_stale_runtime_source_closure
+    project_root = unit_fragment_project(Path(temporary).resolve())
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 91, in unit_fragment_project
+    model_manifest, bindings = target._openvino_bindings(ROOT)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 387, in _openvino_bindings
+    model = (root / "configs" / str(binding["model_path"])).resolve(strict=True)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1242, in resolve
+    s = self._flavour.realpath(self, strict=strict)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 432, in realpath
+  File "<frozen posixpath>", line 476, in _joinrealpath
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/models'
+
+======================================================================
+ERROR: test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound (test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 216, in test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound
+    target.materialize_qualification_fragment(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 874, in materialize_qualification_fragment
+    fragment, payloads = _expected(root, output)
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 750, in _expected
+    for role, branch, coordinate, artifact in _material_values(root):
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 578, in _material_values
+    binding_index, bindings = _analytics_bindings(root)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 282, in _analytics_bindings
+    descriptor = _exact_descriptor(root, ANALYTICS_INDEX, "analytics binding index")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 213, in _exact_descriptor
+    value = _descriptor(root, raw, label)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 207, in _descriptor
+    size, digest = _stable_hash(_relative_file(root, raw, label), label)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 179, in _relative_file
+    _require(not _is_link(cursor), f"{label} path contains a link")
+                 ^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 156, in _is_link
+    info = path.lstat()
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 849, in lstat
+    return self.stat(follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/artifacts/fix_benchmark_preparations_20260928g'
+
+======================================================================
+ERROR: test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed (test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 282, in test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed
+    project_root = unit_fragment_project(Path(temporary).resolve())
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 91, in unit_fragment_project
+    model_manifest, bindings = target._openvino_bindings(ROOT)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 387, in _openvino_bindings
+    model = (root / "configs" / str(binding["model_path"])).resolve(strict=True)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1242, in resolve
+    s = self._flavour.realpath(self, strict=strict)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 432, in realpath
+  File "<frozen posixpath>", line 476, in _joinrealpath
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/models'
+
+======================================================================
+ERROR: test_phase_one_materializes_exact_physical_binding_fragment (test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 119, in test_phase_one_materializes_exact_physical_binding_fragment
+    result = target.materialize_qualification_fragment(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 874, in materialize_qualification_fragment
+    fragment, payloads = _expected(root, output)
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 750, in _expected
+    for role, branch, coordinate, artifact in _material_values(root):
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 578, in _material_values
+    binding_index, bindings = _analytics_bindings(root)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 282, in _analytics_bindings
+    descriptor = _exact_descriptor(root, ANALYTICS_INDEX, "analytics binding index")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 213, in _exact_descriptor
+    value = _descriptor(root, raw, label)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 207, in _descriptor
+    size, digest = _stable_hash(_relative_file(root, raw, label), label)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 179, in _relative_file
+    _require(not _is_link(cursor), f"{label} path contains a link")
+                 ^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 156, in _is_link
+    info = path.lstat()
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 849, in lstat
+    return self.stat(follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/artifacts/fix_benchmark_preparations_20260928g'
+
+----------------------------------------------------------------------
+Ran 47 tests in 22.648s
+
+FAILED (errors=18)

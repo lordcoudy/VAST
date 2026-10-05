@@ -210,17 +210,20 @@ class FiniteStudyDriverTests(unittest.TestCase):
 
     def test_original_runtime_main_translates_branch_once_to_canonical_receipt_mode(self):
         import checkpoint_gstreamer_runtime as runtime
+        from publication_policy_qualification_runtime_inputs_v2 import DETECT_BIN
         command=["--scenario","checkpoint_video_dag_shared","--finite-study-plan","/fixture/plan",
             "--finite-study-arm","fixture-arm","--finite-study-client-mode","branch",
             "--finite-study-campaign-deadline-ns","123","--operational-request-context","/fixture/context",
             "--policy-capability-manifest","/fixture/capability","--policy-calibration","/fixture/calibration",
             "--analytics-execution-manifest","/fixture/execution","--analytics-model-manifest","/fixture/model",
-            "--analytics-execution-socket","/fixture/socket","--analytics-preprocessing-contract-sha256","a"*64]
+            "--analytics-execution-socket","/fixture/socket","--analytics-preprocessing-contract-sha256","a"*64,
+            "--detect-bin",DETECT_BIN]
         with mock.patch.object(runtime,"_load_yaml",return_value={"software_fixture_only":True}),mock.patch.object(runtime,"run_finite_study_arm_v1") as arm:
             self.assertEqual(runtime.main(command),0)
             arm.assert_called_once()
             self.assertEqual(arm.call_args.kwargs["client_mode"],"branch-channel")
             self.assertEqual(arm.call_args.kwargs["campaign_deadline_ns"],123)
+            self.assertEqual(arm.call_args.kwargs["detect_bin"],DETECT_BIN)
 
     def test_control_failure_still_closes_actual_service_thread_and_preserves_primary(self):
         with tempfile.TemporaryDirectory() as tmp:

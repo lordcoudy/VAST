@@ -1,0 +1,650 @@
+schema_version: 2
+project:
+  name: video-pipeline-scheduler-experiments
+  description: Reproducible checkpoint benchmark suite for real KPP AVI video analytics.
+benchmark:
+  dataset_manifest: configs/datasets.yaml
+  default_dataset:
+    smoke: smoke_testsrc
+    benchmark: kpp_iss_publication_v3_h264
+  telemetry_schema_version: 2
+  publishable_telemetry_sources:
+  - native
+  scheduler_policies:
+  - cpu_only
+  - gpu_only
+  - static_hybrid
+  - heft
+  - deadline_aware_heft
+  - queue_aware_edf
+  - adaptive_weights
+  default_seed: 20260323
+  ql_heft_policy_artifact: policies/ql_heft_frozen.policy
+  formal_aw_heft_reference:
+    reference_version: 1
+    status: reference_only_not_runtime_bound
+    artifact: policies/aw_heft_reference_v1.json
+    artifact_sha256: c7c1b0fda7ea571238f92da23c9b9d5ffcd1224bfb4f3481227947ccc355271d
+    implementation_module: scripts/formal_aw_heft_reference.py
+    implementation_sha256: 812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34
+    trace_contract_version: 1
+    replay_entrypoint: formal_aw_heft_reference.replay_formal_aw_heft_trace
+    replay_numeric_tolerance: 1.0e-9
+    replay_status: implemented_not_executed_on_accepted_trace
+    runtime_binding: null
+    benchmark_eligible: false
+  resource_interval_extension:
+    contract_version: 2
+    status: validator_and_native_interval_sources_ready_not_emitted_not_publication_bound
+    validator: scripts/resource_interval_contract.py
+    validator_sha256: c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a
+    fanout_emitter: deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp
+    fanout_emitter_sha256: 6eb7c3b5f6cd31820727b6cd0808707873b9b01a45547a5549b8dde9b7b728b6
+    fanout_binding: deploy/native_gst_probe/vast_native_gst_probe.cpp
+    fanout_binding_sha256: c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f
+    fanout_runtime_sidecar: resource_intervals.runtime.csv
+    fanout_runtime_status: source_implemented_not_target_executed_not_accepted
+    sidecar: resource_intervals.csv
+    components:
+    - transfer
+    - nvdec_submit_complete
+    - fanout
+    duration_provenance:
+      transfer: native_cuda_event_interval_v1
+      nvdec_submit_complete: native_decoder_submit_complete_interval_v1
+      fanout: native_gstreamer_pad_probe_interval_v1
+    duration_semantics:
+      transfer: device_event_elapsed_additive_resource_work
+      nvdec_submit_complete: decoder_submit_to_output_elapsed_nonadditive_diagnostic
+      fanout: queue_sink_to_src_elapsed_nonadditive_diagnostic
+    additive_duration_components:
+    - transfer
+    nonadditive_elapsed_components:
+    - fanout
+    - nvdec_submit_complete
+    true_nvdec_busy_status: not_measured
+    fanout_resource_work_status: not_measured
+    counter_scope: per_trace_interval
+    current_publication_bundle_scope: primary_architecture_raw_evidence_v1
+    future_publication_scope_required: primary_architecture_full_resource_raw_evidence_v2
+    publication_bundle_bound: false
+    evidence_accepted: false
+  active_scenarios:
+  - checkpoint_independent_processes_baseline
+  - checkpoint_video_dag_shared
+  smoke_scenarios:
+  - checkpoint_video_dag_shared
+  report_scenarios:
+  - checkpoint_independent_processes_baseline
+  - checkpoint_video_dag_shared
+  deadline_ms:
+  - 16.7
+  - 33.3
+  - 50
+  - 100
+  - 500
+  smoke_deadline_ms:
+  - 100
+  report_deadline_ms:
+  - 16.7
+  - 33.3
+  - 50
+  - 100
+  - 500
+  benchmark_datasets:
+  - kpp_iss_publication_v3_h264
+  - kpp_iss_publication_v3_h265
+  report_datasets:
+  - kpp_iss_publication_v3_h264
+  - kpp_iss_publication_v3_h265
+  scheduler_ablations:
+  - no_queues
+  - no_transfer_cost
+  - no_deadline_penalty
+  - no_adaptive_weights
+  primary_architecture_contrast:
+    preregistration_version: 5
+    status: preregistered_blocked_execution
+    selection_basis: amended_for_frozen_kpp_iss_publication_v3_before_any_full_matrix_results
+    baseline_scenario: checkpoint_independent_processes_baseline
+    shared_scenario: checkpoint_video_dag_shared
+    system: gstreamer_custom
+    policy: static_hybrid
+    dataset: kpp_iss_publication_v3_h264
+    codec: h264
+    deadline_ms: 100
+    streams: 6
+    routing_mode: all_branches_per_stream
+    routing_scope: topology_only_stress
+    required_branches:
+    - plate_number
+    - vehicle_type
+    - damage
+    - foreign_object
+    effective_batch_size: 1
+    repeats: 10
+    seed: 20260323
+    warmup_s: 30
+    measurement_s: 180
+    analytics_queue:
+      contract_version: 1
+      scope: per_branch_waiting_queue_before_verified_detector
+      max_buffers: 1
+      capacity_semantics: waiting_buffers_excluding_inflight_detector_buffer
+      overflow_policy: drop_newest
+      terminal_reason: native_pre_detector_queue_full_drop_newest
+      non_overflow_terminal_policy: flush_failure_or_missing_output_not_drop
+      selection_basis: minimal_positive_capacity_to_bound_backlog_before_results
+      posthoc_retuning: prohibited_for_primary_cell
+    decoder_placement:
+      contract_version: 1
+      codec: h264
+      required_resource: nvdec
+      allowed_factories:
+      - nvh264dec
+      - nvv4l2decoder
+      factory_identity_source: stage_contracts.decode.implementation_config_json.decoder_factory
+      software_fallback: prohibited
+      pair_rule: exact_factory_match_across_baseline_and_shared
+      evidence_limit: factory_selection_does_not_measure_nvdec_busy_time
+    arm_order:
+      strategy: counterbalanced_alternating
+      first_arm_by_pair:
+      - checkpoint_independent_processes_baseline
+      - checkpoint_video_dag_shared
+      - checkpoint_independent_processes_baseline
+      - checkpoint_video_dag_shared
+      - checkpoint_independent_processes_baseline
+      - checkpoint_video_dag_shared
+      - checkpoint_independent_processes_baseline
+      - checkpoint_video_dag_shared
+      - checkpoint_independent_processes_baseline
+      - checkpoint_video_dag_shared
+    reset_contract:
+      evidence_contract_version: 1
+      before_each_arm: restart_all_source_and_worker_processes
+      source_replay_origin: cycle_0_admission_seq_1
+      analytics_queues: empty
+      telemetry_sink: new_run_directory
+      warmup_included_in_measurement: false
+      admission_after_measurement: stopped_before_drain
+      drain_terminal_rule: no_censored_frames
+    pairing_keys:
+    - repeat
+    - seed
+    - run_seed
+    - input_schedule_sha256
+    - input_frame_key_sequence_sha256
+    - measurement_window_duration_ms
+    - ingress_censoring_rule
+    - resource_attribution
+    - measurement_signature
+    primary_estimands:
+    - delta_reuse_obs_c_obs_in
+    - decode_preprocess_event_factor_difference
+    estimand_contract:
+      delta_reuse_obs_c_obs_in:
+        per_pair_definition: baseline_minus_shared_over_positive_baseline_c_obs_in
+        primary_summary: median
+        favorable_direction: positive
+      decode_preprocess_event_factor_difference:
+        per_stage_definition: baseline_minus_shared_completed_cohort_event_factor
+        stages:
+        - decode
+        - preprocess
+        denominator: completed_frames_same_ingress_cohort
+        primary_summary: median
+        favorable_direction: positive
+        stage_rule: both_stages_required
+    quality_guardrail_estimands:
+      shared_minus_baseline_vmax_completed_slo_violation_rate_percentage_points:
+        primary_summary: median
+        favorable_direction: nonpositive
+      shared_minus_baseline_drop_max_ingress_rate_percentage_points:
+        primary_summary: median
+        favorable_direction: nonpositive
+    guardrails:
+      identical_ingress_input_frame_keys: true
+      identical_measurement_signature: true
+      identical_resource_attribution: true
+      positive_baseline_c_obs_in: true
+      censored_rate_percent_each_arm: 0.0
+      require_positive_ingress_frames_per_stream: true
+      require_positive_completed_frames_per_stream: true
+    interval:
+      method: paired_percentile_bootstrap
+      statistic: median
+      confidence_level: 0.95
+      resamples: 10000
+      seed: 20260323
+      multiplicity_rule: intersection_union_all_coprimary_bounds_no_compensation
+      claim_rule: all_coprimary_lower_bounds_above_zero_and_quality_upper_bounds_at_or_below_zero_and_all_gates_pass
+    secondary_estimands:
+    - c_obs_comp
+    - p50_p95_p99
+    - per_stream_slo_violation_rate
+    - per_stream_drop_rate
+    - cpu_gpu_nvdec_time
+    - native_h2d_d2h_transfer
+    required_sidecars:
+    - frames.csv
+    - frame_events.csv
+    - resource_events.csv
+    - policy_decisions.csv
+    - drop_counters.csv
+    - topology_events.csv
+    - ingress_ledger.csv
+    - branch_terminals.csv
+    - stage_contracts.csv
+    - reset_evidence.csv
+    acceptance_gates:
+    - topology_trace_complete
+    - ingress_ledger_complete
+    - branch_terminal_trace_complete
+    - stage_semantic_contract_complete
+    - decoder_placement_verified
+    - resource_attribution_complete
+    - measurement_signature_match
+    - paired_input_schedule_identity
+    - reset_state_verified
+    - slo_drop_balance
+  primary_policy_ablation:
+    preregistration_version: 5
+    status: preregistered_blocked_execution
+    selection_basis: reuse_preregistered_shared_cell_before_policy_results
+    architecture_scenario: checkpoint_video_dag_shared
+    architecture_prerequisite: primary_architecture_contrast_accepted
+    interpretation_scope: formal_aw_heft_claim_blocked_until_implementation_equivalence
+    system: gstreamer_custom
+    frozen_policy: ql_heft_frozen
+    online_policy: ql_heft_online
+    policy_version_prefix: simplified-cpu-gpu-weighted-proxy-v4
+    feedback_lag_semantics: max_staleness_from_oldest_applied_snapshot
+    policy_artifact: policies/ql_heft_frozen.policy
+    policy_artifact_sha256: 0a961ae5e9e500dc3f07b386743b1a17c1991398018a44c5756d0f3a3b6045b5
+    dataset: kpp_iss_publication_v3_h264
+    codec: h264
+    deadline_ms: 100
+    streams: 6
+    routing_mode: all_branches_per_stream
+    routing_scope: topology_only_stress
+    required_branches:
+    - plate_number
+    - vehicle_type
+    - damage
+    - foreign_object
+    effective_batch_size: 1
+    repeats: 10
+    seed: 20260323
+    warmup_s: 30
+    measurement_s: 180
+    analytics_queue:
+      contract_version: 1
+      scope: per_branch_waiting_queue_before_verified_detector
+      max_buffers: 1
+      capacity_semantics: waiting_buffers_excluding_inflight_detector_buffer
+      overflow_policy: drop_newest
+      terminal_reason: native_pre_detector_queue_full_drop_newest
+      non_overflow_terminal_policy: flush_failure_or_missing_output_not_drop
+      selection_basis: minimal_positive_capacity_to_bound_backlog_before_results
+      posthoc_retuning: prohibited_for_primary_cell
+    policy_passport:
+      artifact_schema_version: 2
+      resource_scope:
+      - cpu
+      - gpu
+      initial_weights:
+        cpu: 1.322315
+        gpu: 0.677685
+      weight_lower_bound: 0.5
+      weight_upper_bound: 1.5
+      projection_rule: euclidean_box_mean_one_v1
+      feedback_lag_limit: 8
+      feedback_cooldown_events: 2
+      variation_budget: 0.25
+      feedback_update_rule: simplified_gpu_queue_terminal_signal_v1
+      feedback_penalty_step: 0.002
+      feedback_reward_step: 0.0002
+      heavy_object_threshold: 32
+      heavy_gpu_bonus: 1.968103
+      score_epsilon: 1.0e-9
+      tie_break_rule: score_then_queue_depth_then_stage_preference
+    arm_order:
+      strategy: counterbalanced_alternating
+      first_arm_by_pair:
+      - ql_heft_frozen
+      - ql_heft_online
+      - ql_heft_frozen
+      - ql_heft_online
+      - ql_heft_frozen
+      - ql_heft_online
+      - ql_heft_frozen
+      - ql_heft_online
+      - ql_heft_frozen
+      - ql_heft_online
+    reset_contract:
+      architecture_reset_evidence_contract_version: 1
+      warmup_feedback_updates: disabled
+      before_each_measurement: reload_artifact_and_clear_feedback_state
+      feedback_seq: 0
+      update_seq: 0
+      accumulated_variation: 0.0
+      pending_feedback: empty
+      terminal_history: empty
+    pairing_keys:
+    - repeat
+    - seed
+    - run_seed
+    - input_schedule_sha256
+    - input_frame_key_sequence_sha256
+    primary_estimand:
+      name: delta_vmax_policy_online_minus_frozen
+      definition: vmax_completed_slo_violation_rate_online_minus_frozen
+      denominator: completed_frames_per_stream
+      favorable_direction: negative
+    guardrails:
+      identical_ingress_input_frame_keys: true
+      identical_terminal_status_by_input_frame_key: true
+      censored_rate_percent_each_arm: 0.0
+      max_online_minus_frozen_drop_rate_percent: 0.0
+      require_positive_completed_frames_per_stream: true
+    interval:
+      method: paired_percentile_bootstrap
+      confidence_level: 0.95
+      resamples: 10000
+      seed: 20260323
+      claim_rule: upper_bound_below_zero_and_all_guardrails_pass
+    secondary_estimands:
+    - p95_max
+    - scheduler_call_time_ms
+    - applied_update_count
+    - cpu_gpu_nvdec_time
+    - native_h2d_d2h_transfer
+    required_sidecars:
+      both_arms:
+      - frames.csv
+      - frame_events.csv
+      - ingress_ledger.csv
+      - policy_decisions.csv
+      - drop_counters.csv
+      - reset_evidence.csv
+      online_arm:
+      - policy_feedback.csv
+    acceptance_gates:
+      both_arms:
+      - architecture_scenario_accepted
+      - dataset_consuming_policy_path
+      - ingress_ledger_complete
+      - slo_drop_balance
+      - policy_trace_complete
+      - policy_causal_trace_complete
+      online_arm:
+      - policy_online_trace_complete
+      pair:
+      - policy_implementation_equivalence
+      - paired_ingress_terminal_identity
+      - reset_state_verified
+transport:
+  kind: gstreamer_rtp_udp
+  trace_metadata: rtp_header_extension
+  clock_sync: chrony
+  max_clock_offset_ms: 5
+  startup_grace_s: 5
+  role_ports:
+    edge_to_gpu_worker: 5600
+    gpu_worker_to_aggregator: 5700
+  stream_port_stride: 1
+hardware_target:
+  gpu_model: NVIDIA GeForce RTX 3060
+  cpu_model: Intel Core i7-14700K
+  ram_gb: 22
+  deadline_s: 0.1
+protocol:
+  warmup_s: 30
+  measurement_s: 180
+  repeats: 10
+  metric_interval_s: 1
+  custom_cpp_cuda_qt_metric_interval_s: 0.2
+scenarios:
+  checkpoint_independent_processes_baseline:
+    description: Native KPP baseline over six logical stream entries replicated from
+      two recorded sources with one isolated process per detector branch and direct terminal joins.
+    benchmark_status: supported
+    benchmark_reason: The local gstreamer_custom publication adapter launches native process-per-detector workers, a common source coordinator, and fail-closed accepted telemetry.
+    topology:
+      contract_version: 2
+      kind: independent_processes
+      routing_mode: all_branches_per_stream
+      runtime_blueprint:
+        contract_version: 1
+        branch_isolation: os_process
+        join_source: direct_runtime_completion_events
+      required_branches:
+      - plate_number
+      - vehicle_type
+      - damage
+      - foreign_object
+    workload:
+      seed_group: kpp_iss_publication_v3_codecs_v1
+      streams: 6
+      logical_stream_instances: 6
+      recorded_source_count: 2
+      analytics_function_types: 4
+      routing_mode: all_branches_per_stream
+      routing_profile: architecture_reuse_all_branches_v1
+      routing_scope: topology_only_stress
+      routing_reason: Deliberate non-production stress profile for the architecture contrast; it does not reinterpret camera_role or establish six-camera semantics.
+      camera_layout:
+      - stream_id: 0
+        camera_role: plate_number
+        source_binding: selected_dataset_stream
+        source_role: front_gate
+      - stream_id: 1
+        camera_role: plate_number
+        source_binding: selected_dataset_stream
+        source_role: front_gate
+      - stream_id: 2
+        camera_role: vehicle_type
+        source_binding: selected_dataset_stream
+        source_role: front_gate
+      - stream_id: 3
+        camera_role: damage
+        source_binding: selected_dataset_stream
+        source_role: front_gate
+      - stream_id: 4
+        camera_role: damage
+        source_binding: selected_dataset_stream
+        source_role: front_gate
+      - stream_id: 5
+        camera_role: foreign_object
+        source_binding: selected_dataset_stream
+        source_role: underbody
+      object_density:
+        min: 1
+        max: 12
+    pipeline:
+    - decode_plate_number
+    - preprocess_plate_number
+    - plate_number
+    - postprocess_plate_number
+    - decode_vehicle_type
+    - preprocess_vehicle_type
+    - vehicle_type
+    - postprocess_vehicle_type
+    - decode_damage
+    - preprocess_damage
+    - damage
+    - postprocess_damage
+    - decode_foreign_object
+    - preprocess_foreign_object
+    - foreign_object
+    - postprocess_foreign_object
+    - aggregate
+    - record
+    placement:
+      policy: checkpoint_independent_local_cpu_gpu
+      stages:
+        decode_plate_number: local
+        preprocess_plate_number: local
+        plate_number: local
+        postprocess_plate_number: local
+        decode_vehicle_type: local
+        preprocess_vehicle_type: local
+        vehicle_type: local
+        postprocess_vehicle_type: local
+        decode_damage: local
+        preprocess_damage: local
+        damage: local
+        postprocess_damage: local
+        decode_foreign_object: local
+        preprocess_foreign_object: local
+        foreign_object: local
+        postprocess_foreign_object: local
+        aggregate: local
+        record: local
+    network:
+      profile: local
+      latency_ms: 0
+      bandwidth_mbps: 0
+      packet_loss_percent: 0
+    distributed:
+      enabled: false
+  checkpoint_video_dag_shared:
+    description: Native shared Video-DAG over six logical stream entries replicated
+      from two recorded sources with one decode/preprocess prefix, queued tee fanout, and direct terminal joins.
+    benchmark_status: supported
+    benchmark_reason: The local gstreamer_custom publication adapter launches the physical shared graph, a common source coordinator, and fail-closed accepted telemetry.
+    topology:
+      contract_version: 2
+      kind: shared_video_dag
+      routing_mode: all_branches_per_stream
+      runtime_blueprint:
+        contract_version: 1
+        fanout_primitive: gstreamer_tee
+        branch_queue_per_route: true
+        join_source: direct_runtime_completion_events
+      required_branches:
+      - plate_number
+      - vehicle_type
+      - damage
+      - foreign_object
+    workload:
+      seed_group: kpp_iss_publication_v3_codecs_v1
+      streams: 6
+      logical_stream_instances: 6
+      recorded_source_count: 2
+      analytics_function_types: 4
+      routing_mode: all_branches_per_stream
+      routing_profile: architecture_reuse_all_branches_v1
+      routing_scope: topology_only_stress
+      routing_reason: Deliberate non-production stress profile for the architecture contrast; it does not reinterpret camera_role or establish six-camera semantics.
+      camera_layout:
+      - stream_id: 0
+        camera_role: plate_number
+        source_binding: selected_dataset_stream
+        source_role: front_gate
+      - stream_id: 1
+        camera_role: plate_number
+        source_binding: selected_dataset_stream
+        source_role: front_gate
+      - stream_id: 2
+        camera_role: vehicle_type
+        source_binding: selected_dataset_stream
+        source_role: front_gate
+      - stream_id: 3
+        camera_role: damage
+        source_binding: selected_dataset_stream
+        source_role: front_gate
+      - stream_id: 4
+        camera_role: damage
+        source_binding: selected_dataset_stream
+        source_role: front_gate
+      - stream_id: 5
+        camera_role: foreign_object
+        source_binding: selected_dataset_stream
+        source_role: underbody
+      object_density:
+        min: 1
+        max: 12
+    pipeline:
+    - decode
+    - preprocess
+    - plate_number
+    - postprocess_plate_number
+    - vehicle_type
+    - postprocess_vehicle_type
+    - damage
+    - postprocess_damage
+    - foreign_object
+    - postprocess_foreign_object
+    - aggregate
+    - record
+    placement:
+      policy: checkpoint_video_dag_local_cpu_gpu
+      stages:
+        decode: local
+        preprocess: local
+        plate_number: local
+        postprocess_plate_number: local
+        vehicle_type: local
+        postprocess_vehicle_type: local
+        damage: local
+        postprocess_damage: local
+        foreign_object: local
+        postprocess_foreign_object: local
+        aggregate: local
+        record: local
+    network:
+      profile: local
+      latency_ms: 0
+      bandwidth_mbps: 0
+      packet_loss_percent: 0
+    distributed:
+      enabled: false
+systems:
+  deepstream:
+    label: NVIDIA DeepStream SDK
+    detector: native_deepstream
+    backend: tensorrt
+    container_image: nvcr.io/nvidia/deepstream:7.0-triton-multiarch
+    supports_distributed: true
+    command: bash scripts/run_system_template.sh --system deepstream --scenario {scenario}
+      --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects
+      {max_objects} --output {output_dir}/frames.csv --deadline-ms {deadline_ms}
+  savant:
+    label: Savant
+    detector: peoplenet
+    backend: deepstream_tensorrt
+    container_image: ghcr.io/insight-platform/savant-deepstream:0.5.17-7.0
+    supports_distributed: true
+    command: bash scripts/run_system_template.sh --system savant --scenario {scenario}
+      --duration {duration_s} --streams {streams} --min-objects {min_objects} --max-objects
+      {max_objects} --output {output_dir}/frames.csv --deadline-ms {deadline_ms}
+  openvino_gva:
+    label: Intel OpenVINO + GVA
+    detector: person-vehicle-bike-detection-crossroad-0078
+    backend: openvino_cpu
+    container_image: vast/openvino-native-probe:dlstreamer-2026.1
+    supports_distributed: true
+    command: bash scripts/run_system_template.sh --system openvino_gva --scenario
+      {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects}
+      --max-objects {max_objects} --output {output_dir}/frames.csv --deadline-ms {deadline_ms}
+  gstreamer_custom:
+    label: GStreamer + custom plugin
+    detector: custom_gstreamer_native
+    backend: gstreamer
+    container_image: vast/openvino-native-probe:dlstreamer-2026.1
+    supports_distributed: true
+    command: bash scripts/run_system_template.sh --system gstreamer_custom --scenario
+      {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects}
+      --max-objects {max_objects} --output {output_dir}/frames.csv --deadline-ms {deadline_ms}
+  custom_cpp_cuda_qt:
+    label: Custom C++ + CUDA + Qt
+    detector: custom_cuda_signal
+    backend: cuda_qt
+    benchmark_status: diagnostic_only
+    benchmark_reason: The current binary generates an internal signal workload and does not consume the configured video dataset.
+    supports_distributed: true
+    command: bash scripts/run_system_template.sh --system custom_cpp_cuda_qt --scenario
+      {scenario} --duration {duration_s} --streams {streams} --min-objects {min_objects}
+      --max-objects {max_objects} --output {output_dir}/frames.csv --deadline-ms {deadline_ms}

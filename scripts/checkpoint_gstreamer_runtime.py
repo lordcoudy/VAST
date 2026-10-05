@@ -3039,12 +3039,11 @@ def run_finite_study_source_gate_v1(*, study_plan, project_root, output_root, so
 def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, run_id,
         native_context_path, capability_manifest, calibration, execution_manifest,
         analytics_model_manifest, analytics_execution_socket, preprocessing_sha256,
-        binary, source_binary, client_mode, campaign_deadline_ns, worker_clock_environment):
+        binary, source_binary, detect_bin, client_mode, campaign_deadline_ns, worker_clock_environment):
     """Execute an actually typed arm on the original native/control spine."""
     import time
     from checkpoint_runtime_plan import build_finite_study_runtime_plan_v1
     from publication_operational_runtime_context_v1 import load_native_operational_context_v1
-    from publication_policy_qualification_runtime_inputs_v2 import DETECT_BIN
     plan = build_finite_study_runtime_plan_v1(study_plan, arm_id)
     arm = next(row for row in [*study_plan["arms"], *study_plan["pilots"]["initial"],
         *study_plan["pilots"]["conditional"]] if row["arm_id"] == arm_id)
@@ -3078,7 +3077,7 @@ def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, ru
         calibration=calibration, operational_context=context, study_runtime_plan=plan)
     bindings = load_analytics_model_bindings(Path(analytics_model_manifest), required_branches=plan["required_branches"])
     specs = build_gstreamer_worker_specs(plan=plan, binary=Path(binary), output_root=native_output,
-        project_root=Path(project_root), run_id=run_id, duration_s=180, detect_bin=DETECT_BIN,
+        project_root=Path(project_root), run_id=run_id, duration_s=180, detect_bin=detect_bin,
         analytics_terminal_mode=NATIVE_TERMINAL_ANALYTICS_MODE, analytics_model_bindings=bindings,
         analytics_queue_max_buffers=1, native_policy=policy, native_policy_deadline_ms=100.0,
         analytics_execution_socket=analytics_execution_socket, analytics_preprocessing_contract_sha256=preprocessing_sha256,
@@ -3249,6 +3248,7 @@ def main(
             calibration=_load_yaml(args.policy_calibration), execution_manifest=_load_yaml(args.analytics_execution_manifest),
             analytics_model_manifest=args.analytics_model_manifest, analytics_execution_socket=args.analytics_execution_socket,
             preprocessing_sha256=args.analytics_preprocessing_contract_sha256, binary=args.binary, source_binary=args.source_binary,
+            detect_bin=args.detect_bin,
             client_mode="branch-channel" if args.finite_study_client_mode == "branch" else "global-client",
             campaign_deadline_ns=args.finite_study_campaign_deadline_ns,
             worker_clock_environment={key: os.environ.get(key) for key in

@@ -61,6 +61,7 @@ COPY \
   scripts/backend_runtime_grant.py \
   scripts/backend_runtime_qualification_v3.py \
   scripts/benchmark_contract.py \
+  scripts/canonical_systems_study_plan_v1.py \
   scripts/checkpoint_acceptance_metadata_binding.py \
   scripts/checkpoint_admission.py \
   scripts/checkpoint_deepstream_protocol_adapter.py \

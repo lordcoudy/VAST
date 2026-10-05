@@ -1025,6 +1025,7 @@ def decode_arm(commands,plan,arm,facts,output,snapshot,clock_proof,pool_delta,ma
 
 
 def execute_arm(commands,args,root,prepared,plan,arm,service,clock_proof,material):
+    from publication_policy_qualification_runtime_inputs_v2 import DETECT_BIN
     commands.remaining();material["verify_barrier"]();verify_source_pins(prepared["source_pins"],commands)
     operation=next(row for row in prepared["control"]["operations"] if row["arm_id"]==arm["arm_id"])
     out=commands.output/arm["arm_id"];out.mkdir(mode=0o700)
@@ -1037,7 +1038,8 @@ def execute_arm(commands,args,root,prepared,plan,arm,service,clock_proof,materia
         "--policy-capability-manifest",root/material["descriptors"]["capability_manifest"]["path"],"--policy-calibration",root/material["descriptors"]["calibration"]["path"],
         "--analytics-execution-manifest",control["execution_manifest"]["path"],"--analytics-model-manifest",control["model_manifest"]["path"],
         "--analytics-execution-socket",service.front_socket,"--analytics-preprocessing-contract-sha256",hashlib.sha256(canonical_json_v1(material["preprocessing_contract"])).hexdigest(),
-        "--binary","/usr/local/bin/vast_native_gst_probe","--source-binary","/usr/local/bin/vast_checkpoint_source","--output-dir",out,"--run-id",operation["run_id"]]
+        "--binary","/usr/local/bin/vast_native_gst_probe","--source-binary","/usr/local/bin/vast_checkpoint_source",
+        "--detect-bin",DETECT_BIN,"--output-dir",out,"--run-id",operation["run_id"]]
     child,record=_native(commands,args.engine,prepared["images"]["gstreamer"]["image_id"],root,out,arguments,
         entrypoint="/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3",environment=clock_proof["native_environment"])
     commands.wait(child,record,maximum_files=((str(out/"arm.original.json"),64*1024**2),))

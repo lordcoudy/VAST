@@ -1,0 +1,370 @@
+{
+  "ast_checks": [
+    {
+      "all_other_ast_equal": true,
+      "only_changed_functions": [
+        "main",
+        "run_finite_study_arm_v1"
+      ],
+      "original_method_ids_preserved": null,
+      "path": "scripts/checkpoint_gstreamer_runtime.py"
+    },
+    {
+      "all_other_ast_equal": true,
+      "only_changed_functions": [
+        "execute_arm"
+      ],
+      "original_method_ids_preserved": null,
+      "path": "scripts/run_canonical_systems_study_v1.py"
+    },
+    {
+      "all_other_ast_equal": true,
+      "only_changed_functions": [
+        "test_original_runtime_main_translates_branch_once_to_canonical_receipt_mode"
+      ],
+      "original_method_ids_preserved": true,
+      "path": "tests/test_run_canonical_systems_study_v1.py"
+    }
+  ],
+  "cause": "A function-local DETECT_BIN import made all literal AST runtime closures reach the qualification materializer and its heavy backend graph; common typed validation additionally reaches the real stdlib finite plan. Native source/probe now directly include the real study reference header.",
+  "correction": [
+    "Runtime takes the existing detector preset explicitly; external study driver supplies unchanged qualification DETECT_BIN through existing --detect-bin and main forwards it. Existing model/identity/placeholder checks stay in build_gstreamer_worker_specs.",
+    "Declare/COPY exactly the actual pure study plan in three other runtime images; GStreamer already declares it.",
+    "Declare/COPY exactly the reachable study-reference native header in DeepStream source and OpenVINO probe closures; GStreamer already declares it. No validator edits or broad dependency additions."
+  ],
+  "diff": {
+    "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\source-scope.diff",
+    "sha256": "1b5e99eb9cd45c4b466857df2de48795edce214e351b8a4e76309bc32072c793",
+    "size_bytes": 10542
+  },
+  "final_green_original_tools": {
+    "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\green-03\\original-tools.v1.json",
+    "sha256": "2a8ae2735426b8b7adf29f3a7556a7d8a05fe5cd77a18aa0cb6cd8dfcc4001c0",
+    "size_bytes": 6392
+  },
+  "green_test_ids": [
+    "test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure",
+    "test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure",
+    "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_dependency_closure_rejects_extraneous_symlinked_wheel",
+    "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets",
+    "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_missing_extraneous_and_unrelated_module_drift_fail_as_expected",
+    "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure",
+    "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_constant_dynamic_local_import_is_in_the_reachable_set",
+    "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist",
+    "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image",
+    "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_missing_and_extraneous_transitive_imports_fail_closed",
+    "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure",
+    "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue",
+    "test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_missing_and_extraneous_imports_fail_closed",
+    "test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure",
+    "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_docker_copy_and_build_hash_use_only_the_validated_allowlist",
+    "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_missing_and_extraneous_python_imports_fail_closed",
+    "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_closed_child_output_cap_refuses_retains_bytes_and_reaps",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_preparation_bootstrap_read_retains_original_endpoint",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_term_ignoring_child_is_killed_waited_and_shared_closing_clock_retained",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_control_failure_still_closes_actual_service_thread_and_preserves_primary",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_incomplete_pilot_cannot_trigger_or_authorize_effects",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_isolated_executable_cli_has_study_and_missing_intake_never_runs_engine",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_expired_stamp_is_refused_before_output_or_input",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_foreign_or_partial_domain_is_refused_before_output",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_invalid_stamp_and_study_parent_are_refused",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_runtime_main_translates_branch_once_to_canonical_receipt_mode",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_real_partial_file_reads_keep_hash_deadline_and_reject_named_drift",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_single_study_cli_hands_off_actual_exclusive_descriptor_and_no_run_after_failure",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_source_inventory_binary_clock_proof_and_cid_outside_empty_arm",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_stderr_collision_closes_first_acquired_stream_without_child_or_overwrite",
+    "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_study_cli_propagates_original_preparation_stamp_without_new_start"
+  ],
+  "later_process_scans": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\process-scan-01.v1.json",
+      "sha256": "2b4d4b16ca6f0bc1bb8015e3c318f1cd6d968bd5ccaecc34bf80b3eedccb0b8c",
+      "size_bytes": 412
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\process-scan-02.v1.json",
+      "sha256": "ce2fcaa708a18e6e7d1a7fb8d4170be34edd1da545078de05a736e3628ac1163",
+      "size_bytes": 412
+    }
+  ],
+  "limitations": [
+    "Final32 covers all existing strict closure checks and current entire driver software module; it is not whole hosted CI acceptance.",
+    "Expanded47 direct run remains failed. CI mandatory portable fragment units require its already implemented exact eight-asset acquisition; two existing full integrations remain deferred, never passed.",
+    "No image build/freeze, engine/model/media, physical copy or 24-arm study operation was run. Current in-flight hosted B was untouched.",
+    "Later scans prove only exact reported software-test owners/groups absent; no global descendant/quiescence claim.",
+    "Old initial capture command arguments were not separately retained; their genuine returned objects/raw physical logs/results are preserved. Final GREEN full exact arguments/returns are retained.",
+    "This author receipt requires fresh independent source review and latest-source mandatory CI before physical preparation."
+  ],
+  "local_model_limit": {
+    "CI_asset_script": "scripts/prepare_ci_model_assets.py; run_ci_checks.py:509 uses it, not the nonexistent ci_model_asset_acquisition_v1.py name",
+    "all_eight_downloaded_paths_match_current_manifest_hashes": {
+      "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin": "7f9344e41167d14179a0da136f87f2570a30ac5399e0363fd6787a9ae18d0fa0",
+      "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed",
+      "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin": "a7f04e3243aae3099a00c5276074bdbe57bc8bf91986093dfeafb3b065843f45",
+      "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml": "baed27b9dde81b75590a382d2aa458d63391cdb146e7ef20c12577c4cb0617d8",
+      "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin": "c0a602428cfd71ac63a533c23b7cdb8c83e144f118a81001420246701daf0c78",
+      "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml": "08b844a402a615605a626261fd9e27161a044845426ece5aa0872203c50bb5a2",
+      "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin": "7f96bfaa0ac3af65d136f6a185d1d78d68d03bab2e1f2faafe1d27ccd94b0dc1",
+      "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml": "69ed174cee70e19b098215f53d1fe6f27edc5b417790bbc44cde7f37cc082fae"
+    },
+    "four_missing_input_errors": "Two portable byte-contract units require eight CI-acquired OMZ files; two direct full-grant methods require unavailable original untracked full evidence and are already precisely deferred by CI selection. No file population/hash/model execution occurred here.",
+    "green01_failed_disposition_preserved": true,
+    "original_A_model_acquisition_member": {
+      "member": "model-acquisition/report.json",
+      "sha256": "bf8e3299c28357a7d135e93a1e6b97dff5295128dc8d7281ab374349667fb598",
+      "size_bytes": 3472
+    },
+    "unchanged_deferred_integration_ids": [
+      "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound",
+      "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment"
+    ]
+  },
+  "original_tools": {
+    "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\original-tools.v1.json",
+    "sha256": "ca9bee3995c8472c6ba7529a111a90a2207fe752c6f889c3612669c8c9958e35",
+    "size_bytes": 28645
+  },
+  "planning_commit": "3288b0702b6b0136feb6596382566b8686f9bb5c",
+  "process_tools": {
+    "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\process-scans.original-tools.v1.json",
+    "sha256": "73870f99107bbf95f45633a0ddcf073f0577997d68fbd6a404bd409c73bcc9f1",
+    "size_bytes": 6792
+  },
+  "reviewed_current_head": "8dba851dcb051fd12b7b7bfec8af164781bcdda3",
+  "role": "author conformance correction; not independent source approval",
+  "root": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST",
+  "schema_version": 1,
+  "scope": [
+    {
+      "after": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\checkpoint_gstreamer_runtime.py",
+        "sha256": "ca7138c19b52810075ecc5e5c600ef9d0aaf1500f38564b9a9b5797f23f261ee",
+        "size_bytes": 182578
+      },
+      "before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\source-before\\scripts__checkpoint_gstreamer_runtime.py",
+        "sha256": "1d08aef32b630333ce8264e6366d857b6c0ca652a5af6c750e2f7a343d8e9657",
+        "size_bytes": 182604
+      },
+      "relative_path": "scripts/checkpoint_gstreamer_runtime.py"
+    },
+    {
+      "after": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\run_canonical_systems_study_v1.py",
+        "sha256": "3a74f77646b48eb0bbe60ccfb3803f5936ed720d844bebdadd6387e245e452b0",
+        "size_bytes": 81992
+      },
+      "before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\source-before\\scripts__run_canonical_systems_study_v1.py",
+        "sha256": "f8d4b54d4185478413f2b412f3f067869d69544c4eb1fc243fbbf7a15b5e6ec4",
+        "size_bytes": 81879
+      },
+      "relative_path": "scripts/run_canonical_systems_study_v1.py"
+    },
+    {
+      "after": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_run_canonical_systems_study_v1.py",
+        "sha256": "8a4aad8b22ff5ed4e4fcdcf0c3aa37c1055ef1b71e5e0fa4c91a58cef6894f4b",
+        "size_bytes": 15900
+      },
+      "before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\source-before\\tests__test_run_canonical_systems_study_v1.py",
+        "sha256": "1db486ae63414b1549fe6464ae2fecab46f258aff7dfb0d154f53779ee02b035",
+        "size_bytes": 15703
+      },
+      "relative_path": "tests/test_run_canonical_systems_study_v1.py"
+    },
+    {
+      "after": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\deepstream\\checkpoint\\Dockerfile.runtime",
+        "sha256": "305f7e9608583c1d3aae34928cf4a0b9911019f8a7338ea36a5905c6123aa370",
+        "size_bytes": 7826
+      },
+      "before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\source-before\\deploy__deepstream__checkpoint__Dockerfile.runtime",
+        "sha256": "2235b11c12e4bd84656a986c0064200fabc964b16a42a83ea6090e70e9e3fd30",
+        "size_bytes": 7720
+      },
+      "relative_path": "deploy/deepstream/checkpoint/Dockerfile.runtime"
+    },
+    {
+      "after": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\deepstream\\checkpoint\\runtime-source-allowlist.txt",
+        "sha256": "f684e54842dc28a6903fab852d1d63364a2d49cdcf95e10c049ceaf7e0d2eca6",
+        "size_bytes": 3878
+      },
+      "before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\source-before\\deploy__deepstream__checkpoint__runtime-source-allowlist.txt",
+        "sha256": "43b41dee019fc730704d3c176a753d0e26c8f871da59714ce97e70e9209396cc",
+        "size_bytes": 3780
+      },
+      "relative_path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt"
+    },
+    {
+      "after": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\savant\\publication\\Dockerfile",
+        "sha256": "bd33b6e07a7de39cda07384ce75904a5399c1610065f32b71b03d2308af2fa6d",
+        "size_bytes": 8002
+      },
+      "before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\source-before\\deploy__savant__publication__Dockerfile",
+        "sha256": "8ec0991d4af832aff22fc0699b80b8cc68725d892b99cc7376f923ffac218672",
+        "size_bytes": 7955
+      },
+      "relative_path": "deploy/savant/publication/Dockerfile"
+    },
+    {
+      "after": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\savant\\publication\\runtime-source-allowlist.txt",
+        "sha256": "64514aaf2154e3ee2062a0f1f1d8c65f74fb343baba0b69035be37125d1d438c",
+        "size_bytes": 3884
+      },
+      "before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\source-before\\deploy__savant__publication__runtime-source-allowlist.txt",
+        "sha256": "691feca866c3bfdd09fced300659f1f7888c2bdb298c427fa4f4204ce9eba9b4",
+        "size_bytes": 3841
+      },
+      "relative_path": "deploy/savant/publication/runtime-source-allowlist.txt"
+    },
+    {
+      "after": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\openvino_gva\\publication\\Dockerfile",
+        "sha256": "75ae66525ad45ddc405214217973c252ceadf7a09be9e615724ff8be3b45ace3",
+        "size_bytes": 8397
+      },
+      "before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\source-before\\deploy__openvino_gva__publication__Dockerfile",
+        "sha256": "594dc1f55c8249b1767324d110f84af605b4237b9589d0baa980df617919101f",
+        "size_bytes": 8291
+      },
+      "relative_path": "deploy/openvino_gva/publication/Dockerfile"
+    },
+    {
+      "after": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\openvino_gva\\publication\\runtime-source-allowlist.txt",
+        "sha256": "10cacd4cb55b03dcdb8fb4acaa395372fdceee802636fe265981871ae3cde657",
+        "size_bytes": 3555
+      },
+      "before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\source-before\\deploy__openvino_gva__publication__runtime-source-allowlist.txt",
+        "sha256": "f91760d199bf72651be9ea71bcec2effa43d0afdd7a7f89202f1885308fd6624",
+        "size_bytes": 3457
+      },
+      "relative_path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt"
+    }
+  ],
+  "source_frozen": true,
+  "test_refs": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\red-01\\result.v1.json",
+      "sha256": "c2765bec0cdd4e5f5adbac0a42313e7dc1e7706df4b6e6be0a20ca65cc5411e8",
+      "size_bytes": 49196
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\green-01\\result.v1.json",
+      "sha256": "00626d68d589d4bde23359c2665e37610971a13906c50417fdd24172f5a5a21b",
+      "size_bytes": 69420
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\green-02\\result.v1.json",
+      "sha256": "e001b4b4240d980819a9235fb4426f80f44a53365193394be204fd7375decaac",
+      "size_bytes": 29300
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\source-closure-regression-v1\\green-03\\result.v1.json",
+      "sha256": "ebffc018592bbac2c260dad8988fab0636e55d8df8b21fbb6b607e6b036130b3",
+      "size_bytes": 26681
+    }
+  ],
+  "test_summary": {
+    "green-01": {
+      "elapsed_s": 22.834539797971956,
+      "errors": 18,
+      "failures": 0,
+      "fd_after": 6,
+      "fd_before": 6,
+      "skips": 0,
+      "source_stable": true,
+      "successful": false,
+      "tests_run": 47
+    },
+    "green-02": {
+      "elapsed_s": 18.545031409012154,
+      "errors": 2,
+      "failures": 0,
+      "fd_after": 6,
+      "fd_before": 6,
+      "skips": 0,
+      "source_stable": true,
+      "successful": false,
+      "tests_run": 32
+    },
+    "green-03": {
+      "elapsed_s": 18.625248964992352,
+      "errors": 0,
+      "failures": 0,
+      "fd_after": 6,
+      "fd_before": 6,
+      "skips": 0,
+      "source_stable": true,
+      "successful": true,
+      "tests_run": 32
+    },
+    "red-01": {
+      "elapsed_s": 18.090039514005184,
+      "errors": 12,
+      "failures": 4,
+      "fd_after": 6,
+      "fd_before": 6,
+      "skips": 0,
+      "source_stable": true,
+      "successful": false,
+      "tests_run": 17
+    }
+  },
+  "unchanged_eol": [
+    {
+      "path": "scripts/checkpoint_gstreamer_runtime.py",
+      "unchanged_line_eol_changes": 0
+    },
+    {
+      "path": "scripts/run_canonical_systems_study_v1.py",
+      "unchanged_line_eol_changes": 0
+    },
+    {
+      "path": "tests/test_run_canonical_systems_study_v1.py",
+      "unchanged_line_eol_changes": 0
+    },
+    {
+      "path": "deploy/deepstream/checkpoint/Dockerfile.runtime",
+      "unchanged_line_eol_changes": 0
+    },
+    {
+      "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "unchanged_line_eol_changes": 0
+    },
+    {
+      "path": "deploy/savant/publication/Dockerfile",
+      "unchanged_line_eol_changes": 0
+    },
+    {
+      "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+      "unchanged_line_eol_changes": 0
+    },
+    {
+      "path": "deploy/openvino_gva/publication/Dockerfile",
+      "unchanged_line_eol_changes": 0
+    },
+    {
+      "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "unchanged_line_eol_changes": 0
+    }
+  ],
+  "validators_raw_equal_current_commit": [
+    "deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py",
+    "deploy/savant/publication/validate_runtime_source_closure_v3.py",
+    "deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py",
+    "deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py"
+  ]
+}
