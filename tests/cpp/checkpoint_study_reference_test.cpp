@@ -112,6 +112,28 @@ void actual_caps_and_strides() {
   refuses([&]() { (void)vast::study::detail::active_hashes(padded, caps, 8, 4, false, io); },
           "active chroma escaped its real allocation");
   meta->offset[1] = 48;
+  const std::string pinned = vast::study::detail::caps_text(caps);
+  require(hashes.caps == pinned, "pinned NV12 caps did not keep their canonical text");
+  // Actual negotiated converter input: pinned caps plus GStreamer default multiview fields.
+  GstCaps* defaults = gst_caps_copy(caps);
+  gst_caps_set_simple(defaults, "multiview-mode", G_TYPE_STRING, "mono", "multiview-flags",
+                      GST_TYPE_VIDEO_MULTIVIEW_FLAGSET, 0, GST_FLAG_SET_MASK_EXACT, nullptr);
+  const auto observed = vast::study::detail::active_hashes(padded, defaults, 8, 4, false, io);
+  require(observed.caps == pinned && observed.caps_actual_sha256.size() == 64 &&
+          observed.caps_actual_sha256 != hashes.caps_actual_sha256,
+          "default multiview fields were not structurally equal to the pinned caps");
+  for (int variant : {0, 1, 2}) {
+    GstCaps* foreign = gst_caps_copy(defaults);
+    if (variant == 0) gst_caps_set_simple(foreign, "multiview-mode", G_TYPE_STRING, "side-by-side", nullptr);
+    else if (variant == 1) gst_caps_set_simple(foreign, "multiview-flags", GST_TYPE_VIDEO_MULTIVIEW_FLAGSET,
+                                               GST_VIDEO_MULTIVIEW_FLAGS_RIGHT_VIEW_FIRST, GST_FLAG_SET_MASK_EXACT, nullptr);
+    else gst_caps_set_simple(foreign, "pixel-aspect-ratio", GST_TYPE_FRACTION, 2, 1, nullptr);
+    std::string text;
+    try { text = vast::study::detail::active_hashes(padded, foreign, 8, 4, false, io).caps; } catch (const std::exception&) {}
+    require(text != pinned, "non-default caps field was normalized into the pinned caps");
+    gst_caps_unref(foreign);
+  }
+  gst_caps_unref(defaults);
   gst_caps_set_simple(caps, "framerate", GST_TYPE_FRACTION, 600, 1, nullptr);
   refuses([&]() { (void)vast::study::detail::active_hashes(padded, caps, 8, 4, false, io); },
           "encoded600 caps accepted as nominal30");
@@ -224,6 +246,21 @@ void actual_software_reference(const std::string& directory) {
   while ((cursor = body.find("\"type\":\"frame\"", cursor)) != std::string::npos) { ++frames; ++cursor; }
   std::size_t exact_rgb = 0; cursor = 0;
   while ((cursor = body.find("\"rgb_sha256\":\"" + black + "\"", cursor)) != std::string::npos) { ++exact_rgb; ++cursor; }
+  const auto count = [&](const std::string& needle) {
+    std::size_t found = 0, at = 0;
+    while ((at = body.find(needle, at)) != std::string::npos) { ++found; ++at; }
+    return found;
+  };
+  for (bool rgb : {false, true}) {
+    GstCaps* pinned = vast::study::detail::raw_caps(8, 4, rgb);
+    const std::string field = std::string(rgb ? "\"rgb_caps\":" : "\"nv12_caps\":") +
+                              vast::study::detail::quote(vast::study::detail::caps_text(pinned));
+    gst_caps_unref(pinned);
+    // Header prefix plus every actual frame of the real software converter.
+    require(count(field) == 443, "actual converter caps are not structurally the pinned prefix caps");
+  }
+  require(count("\"nv12_caps_actual_sha256\":") == 442 && count("\"rgb_caps_actual_sha256\":") == 442,
+          "actual negotiated caps identities were not retained per frame");
   require(frames == 442 && exact_rgb == 442 &&
           body.find("\"completion_kind\":\"independent_nv12_full_eos\"") != std::string::npos &&
           body.find("\"success\":true") != std::string::npos,

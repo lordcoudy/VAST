@@ -16,6 +16,7 @@
 #include <iostream>
 #include <memory>
 #include <mutex>
+#include <set>
 #include <sstream>
 #include <string>
 #include <thread>
@@ -120,8 +121,26 @@ inline std::string bytes_sha(const std::uint8_t* bytes, std::size_t count) {
 struct ActiveHashes {
   std::string y_sha256, u_sha256, v_sha256, nv12_sha256, i420_sha256, rgb_sha256;
   std::uint64_t pts = GST_CLOCK_TIME_NONE, dts = GST_CLOCK_TIME_NONE, duration = GST_CLOCK_TIME_NONE;
-  std::string caps;
+  std::string caps, caps_actual, caps_actual_sha256;
 };
+// Pinned caps text only if the actual fixed caps, without the GStreamer default
+// multiview-mode=mono / multiview-flags=0:ffffffff fields, are structurally equal.
+inline std::string canonical_caps_text(GstCaps* actual, int width, int height, bool rgb) {
+  GstCaps* stripped = gst_caps_copy(actual);
+  GstStructure* structure = gst_caps_get_structure(stripped, 0);
+  const gchar* mode = gst_structure_get_string(structure, "multiview-mode");
+  if (mode && std::string(mode) == "mono") gst_structure_remove_field(structure, "multiview-mode");
+  guint flags = 0, mask = 0;
+  if (gst_structure_has_field(structure, "multiview-flags") &&
+      gst_structure_get_flagset(structure, "multiview-flags", &flags, &mask) &&
+      flags == 0 && mask == GST_FLAG_SET_MASK_EXACT)
+    gst_structure_remove_field(structure, "multiview-flags");
+  GstCaps* pinned = raw_caps(width, height, rgb);
+  const bool equal = gst_caps_is_equal(stripped, pinned);
+  const std::string text = caps_text(equal ? pinned : stripped);
+  gst_caps_unref(pinned); gst_caps_unref(stripped);
+  return text;
+}
 inline ActiveHashes active_hashes(
     GstBuffer* buffer, GstCaps* caps, int width, int height, bool rgb,
     const CheckpointIoDeadline& io) {
@@ -167,7 +186,9 @@ inline ActiveHashes active_hashes(
   ActiveHashes result;
   try {
     result.pts = GST_BUFFER_PTS(buffer); result.dts = GST_BUFFER_DTS(buffer);
-    result.duration = GST_BUFFER_DURATION(buffer); result.caps = caps_text(caps);
+    result.duration = GST_BUFFER_DURATION(buffer); result.caps_actual = caps_text(caps);
+    result.caps_actual_sha256 = bytes_sha(reinterpret_cast<const std::uint8_t*>(result.caps_actual.data()), result.caps_actual.size());
+    result.caps = canonical_caps_text(caps, width, height, rgb);
     require(GST_CLOCK_TIME_IS_VALID(result.pts), "study actual frame PTS is missing");
     if (rgb) {
       Checksum hash;
@@ -421,7 +442,8 @@ inline std::string frame_row(std::size_t ordinal, const ActiveHashes& yuv, const
       ",\"nv12_sha256\":" + quote(yuv.nv12_sha256) + ",\"i420_sha256\":" + quote(yuv.i420_sha256) +
       ",\"rgb_sha256\":" + quote(rgb.rgb_sha256) + ",\"active_y_bytes\":" + std::to_string(width * height) +
       ",\"active_u_bytes\":" + std::to_string(width * height / 4) + ",\"active_v_bytes\":" + std::to_string(width * height / 4) +
-      ",\"rgb_bytes\":" + std::to_string(width * height * 3) + ",\"nv12_caps\":" + quote(yuv.caps) + ",\"rgb_caps\":" + quote(rgb.caps) + "}";
+      ",\"rgb_bytes\":" + std::to_string(width * height * 3) + ",\"nv12_caps\":" + quote(yuv.caps) + ",\"rgb_caps\":" + quote(rgb.caps) +
+      ",\"nv12_caps_actual_sha256\":" + quote(yuv.caps_actual_sha256) + ",\"rgb_caps_actual_sha256\":" + quote(rgb.caps_actual_sha256) + "}";
 }
 
 inline int reference(const std::string& mode, const std::string& input, const std::string& output,
@@ -447,10 +469,20 @@ inline int reference(const std::string& mode, const std::string& input, const st
   if (held) g_object_set(pipeline.source, "location", ("/proc/self/fd/" + std::to_string(held->fd)).c_str(), nullptr);
   if (mode == "nv12") { GstCaps* caps = raw_caps(width, height, false); gst_app_src_set_caps(GST_APP_SRC(pipeline.source), caps); gst_caps_unref(caps); }
   Observation observation{io, width, height};
-  GstElement* identity = gst_bin_get_by_name(GST_BIN(pipeline.value), "study_nv12");
-  GstPad* pad = gst_element_get_static_pad(identity, "src"); gst_object_unref(identity);
+  GstElement* converter = nullptr;
+  {
+    GstIterator* iterator = gst_bin_iterate_all_by_element_factory_name(GST_BIN(pipeline.value), "videoconvert");
+    GValue item = G_VALUE_INIT; int found = 0;
+    while (gst_iterator_next(iterator, &item) == GST_ITERATOR_OK) {
+      ++found; if (!converter) converter = GST_ELEMENT(g_value_dup_object(&item)); g_value_reset(&item);
+    }
+    g_value_unset(&item); gst_iterator_free(iterator);
+    if (found != 1) { if (converter) gst_object_unref(converter); throw std::runtime_error("study reference requires exactly one pinned converter"); }
+  }
+  GstPad* pad = gst_element_get_static_pad(converter, "sink"); gst_object_unref(converter);
   const gulong probe = gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER, nv12_probe, &observation, nullptr);
   std::thread feeder; std::size_t count = 0; std::exception_ptr primary; bool actual_eos = false;
+  std::set<std::string> printed_caps;
   try {
     require(gst_element_set_state(pipeline.value, GST_STATE_PLAYING) != GST_STATE_CHANGE_FAILURE, "study reference PLAYING failed");
     if (mode != "media") feeder = std::thread([&]() {
@@ -502,6 +534,10 @@ inline int reference(const std::string& mode, const std::string& input, const st
         ActiveHashes yuv;
         { std::lock_guard<std::mutex> lock(observation.mutex); require(!observation.queue.empty(), "study RGB has no actual NV12 input"); yuv = std::move(observation.queue.front()); observation.queue.pop_front(); }
         require(count < expected && rgb.pts == yuv.pts, "study NV12/RGB actual ordinal/PTS/count join failed");
+        for (const auto* observed : {&yuv, &rgb})
+          if (printed_caps.insert(observed->caps_actual_sha256).second)
+            std::cerr << "[study-reference] actual " << (observed == &rgb ? "rgb" : "nv12") << " caps sha256="
+                      << observed->caps_actual_sha256 << " " << observed->caps_actual << '\n';
         writer.row(frame_row(count++, yuv, rgb, width, height));
       } catch (...) { gst_sample_unref(sample); throw; }
       gst_sample_unref(sample);
