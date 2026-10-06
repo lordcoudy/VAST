@@ -192,3 +192,16 @@ Ran 21 tests in 24.521s
 
 OK
 
+=== Task 2.5 GREEN: static gate on the tree
+# base commit 00653b5e3ce5739f752c756cbc610bd412cee1e4; uncommitted: ?? tests/test_legacy_wall_clock_static_gate_v1.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_legacy_wall_clock_static_gate_v1
+2026-10-06T22:23:13Z
+test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock) ... ok
+test_every_native_probe_dockerfile_copies_the_wall_clock_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_every_native_probe_dockerfile_copies_the_wall_clock_header) ... ok
+test_gate_reports_injected_direct_clock_and_missing_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_gate_reports_injected_direct_clock_and_missing_header) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.143s
+
+OK
+

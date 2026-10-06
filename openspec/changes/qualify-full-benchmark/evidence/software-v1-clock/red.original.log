@@ -512,3 +512,87 @@ Ran 21 tests in 26.101s
 
 FAILED (failures=4, errors=16)
 
+=== Task 2.5 RED (a): static gate on a temporary copy with injected violations (recorder default rebound to time.time_ns; Dockerfile.openvino without the clock header COPY). Tree files are not modified.
+# base commit 00653b5e3ce5739f752c756cbc610bd412cee1e4; uncommitted: tests/test_legacy_wall_clock_static_gate_v1.py
+$ wsl.exe -e /bin/bash openspec/changes/qualify-full-benchmark/evidence/software-v1-clock/gate_red_injection.sh
+2026-10-06T22:23:04Z
+# temporary copy: /tmp/vast-gate-red.pCNx4K
+168c168
+<                  clock_ns: Callable[[], int] = wall_time_ns) -> None:
+---
+>                  clock_ns: Callable[[], int] = time.time_ns) -> None:
+26d25
+< COPY deploy/native_gst_probe/checkpoint_admission_transport.hpp /workspace/project/deploy/native_gst_probe/checkpoint_admission_transport.hpp
+test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock) ... FAIL
+test_every_native_probe_dockerfile_copies_the_wall_clock_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_every_native_probe_dockerfile_copies_the_wall_clock_header) ... FAIL
+test_gate_reports_injected_direct_clock_and_missing_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_gate_reports_injected_direct_clock_and_missing_header) ... ok
+
+======================================================================
+FAIL: test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/vast-gate-red.pCNx4K/tests/test_legacy_wall_clock_static_gate_v1.py", line 125, in test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock
+    self.assertEqual(violations, [])
+AssertionError: Lists differ: ['scripts/publication_guardian_operational_recorder_v1.py:168: time.time_ns'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'scripts/publication_guardian_operational_recorder_v1.py:168: time.time_ns'
+
+- ['scripts/publication_guardian_operational_recorder_v1.py:168: time.time_ns']
++ []
+
+======================================================================
+FAIL: test_every_native_probe_dockerfile_copies_the_wall_clock_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_every_native_probe_dockerfile_copies_the_wall_clock_header)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/vast-gate-red.pCNx4K/tests/test_legacy_wall_clock_static_gate_v1.py", line 130, in test_every_native_probe_dockerfile_copies_the_wall_clock_header
+    self.assertEqual(missing, [])
+AssertionError: Lists differ: ['deploy/native_gst_probe/Dockerfile.openvino'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'deploy/native_gst_probe/Dockerfile.openvino'
+
+- ['deploy/native_gst_probe/Dockerfile.openvino']
++ []
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.059s
+
+FAILED (failures=2)
+
+=== Task 2.5 RED (b): the same gate on the covered runtime files and deploy Dockerfiles exported from the pre-change commit 36c395be (git show into a temporary directory)
+$ cd /mnt/c/Users/s-a-balashov/AppData/Local/Temp/vast-gate-base && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_legacy_wall_clock_static_gate_v1
+2026-10-06T22:23:06Z
+test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock) ... FAIL
+test_every_native_probe_dockerfile_copies_the_wall_clock_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_every_native_probe_dockerfile_copies_the_wall_clock_header) ... ok
+test_gate_reports_injected_direct_clock_and_missing_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_gate_reports_injected_direct_clock_and_missing_header) ... FAIL
+
+======================================================================
+FAIL: test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/AppData/Local/Temp/vast-gate-base/tests/test_legacy_wall_clock_static_gate_v1.py", line 125, in test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock
+    self.assertEqual(violations, [])
+AssertionError: Lists differ: ['scripts/checkpoint_deepstream_sdk_runtim[1418 chars]_v1'] != []
+
+First list contains 19 additional elements.
+First extra element 0:
+'scripts/checkpoint_deepstream_sdk_runtime.py:512: time.time_ns'
+
+Diff is 1551 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_gate_reports_injected_direct_clock_and_missing_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_gate_reports_injected_direct_clock_and_missing_header)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/AppData/Local/Temp/vast-gate-base/tests/test_legacy_wall_clock_static_gate_v1.py", line 143, in test_gate_reports_injected_direct_clock_and_missing_header
+    self.assertEqual(len(violations), 2, violations)
+AssertionError: 10 != 2 : ['scripts/checkpoint_deepstream_sdk_runtime.py:512: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:921: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1236: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1294: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1302: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1431: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1463: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1973: from time import time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1976: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py: does not import wall_time_ns from non_decreasing_wall_clock_v1']
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.139s
+
+FAILED (failures=2)
+
