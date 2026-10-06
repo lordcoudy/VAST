@@ -157,3 +157,358 @@ Ran 1 test in 0.281s
 
 FAILED (errors=1)
 
+=== Task 2.7 RED: existing image source-closure/allowlist tests after the runtimes import the shared clock but before it is added to the four runtime image Dockerfiles and runtime-source-allowlist.txt files (deploy/ changes stashed)
+# base commit 287c9edcd0f2dc2a11a465093fb6c1bbeee711cc; uncommitted:  M tests/test_publication_policy_qualification_execution_code_closure_v1.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_checkpoint_deepstream_runtime_source_closure_v3 tests.test_checkpoint_savant_runtime_source_closure_v3 tests.test_checkpoint_gstreamer_custom_runtime_source_closure_v3 tests.test_checkpoint_openvino_gva_runtime_source_closure_v3 tests.test_publication_runtime_source_closure_guardian_v1 tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3
+2026-10-06T22:19:33Z
+test_dependency_closure_rejects_extraneous_symlinked_wheel (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_dependency_closure_rejects_extraneous_symlinked_wheel) ... ok
+test_docker_copy_and_isolated_build_context_match_validated_sets (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets) ... ERROR
+test_missing_extraneous_and_unrelated_module_drift_fail_as_expected (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_missing_extraneous_and_unrelated_module_drift_fail_as_expected) ... ok
+test_production_allowlist_is_exact_multi_entry_runtime_closure (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure) ... ERROR
+test_constant_dynamic_local_import_is_in_the_reachable_set (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_constant_dynamic_local_import_is_in_the_reachable_set) ... ok
+test_docker_copy_and_ab_build_use_only_validated_allowlist (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist) ... ERROR
+test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image) ... ERROR
+test_missing_and_extraneous_transitive_imports_fail_closed (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_missing_and_extraneous_transitive_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_multi_entry_runtime_closure (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure) ... ERROR
+test_runtime_consumes_the_native_foundation_drop_queue (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue) ... ERROR
+test_docker_copy_and_build_hash_use_only_the_validated_allowlist (tests.test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_docker_copy_and_build_hash_use_only_the_validated_allowlist) ... ok
+test_missing_and_extraneous_python_imports_fail_closed (tests.test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_missing_and_extraneous_python_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_reachable_runtime_closure (tests.test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure) ... ERROR
+test_missing_and_extraneous_imports_fail_closed (tests.test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_missing_and_extraneous_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_transitive_closure (tests.test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure) ... ERROR
+test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) ... 
+  test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='deepstream') ... ERROR
+  test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='savant') ... ERROR
+  test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='openvino_gva') ... ERROR
+  test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='gstreamer_custom') ... ERROR
+test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) ... 
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='deepstream') ... FAIL
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='savant') ... FAIL
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='openvino_gva') ... FAIL
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='gstreamer_custom') ... FAIL
+test_assessment_recomputes_and_rejects_stale_runtime_source_closure (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_assessment_recomputes_and_rejects_stale_runtime_source_closure) ... ERROR
+test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound) ... ERROR
+test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed) ... ERROR
+test_phase_one_materializes_exact_physical_binding_fragment (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment) ... ERROR
+
+======================================================================
+ERROR: test_docker_copy_and_isolated_build_context_match_validated_sets (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_runtime_source_closure_v3.py", line 120, in test_docker_copy_and_isolated_build_context_match_validated_sets
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 397, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 200, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_multi_entry_runtime_closure (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_runtime_source_closure_v3.py", line 33, in test_production_allowlist_is_exact_multi_entry_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 397, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 200, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_docker_copy_and_ab_build_use_only_validated_allowlist (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 167, in test_docker_copy_and_ab_build_use_only_validated_allowlist
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 47, in test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_multi_entry_runtime_closure (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 66, in test_production_allowlist_is_exact_multi_entry_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_runtime_consumes_the_native_foundation_drop_queue (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 42, in test_runtime_consumes_the_native_foundation_drop_queue
+    self.assertEqual(_validator_module().validate_runtime_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_reachable_runtime_closure (tests.test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_runtime_source_closure_v3.py", line 43, in test_production_allowlist_is_exact_reachable_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 235, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_transitive_closure (tests.test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_openvino_gva_runtime_source_closure_v3.py", line 28, in test_production_allowlist_is_exact_transitive_closure
+    result = _module().validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 181, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 104, in validate_python_source_closure
+    _require(not missing, "missing reachable Python source: " + ", ".join(missing))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='deepstream')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 52, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 200, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='savant')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 52, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='openvino_gva')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 57, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 104, in validate_python_source_closure
+    _require(not missing, "missing reachable Python source: " + ", ".join(missing))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='gstreamer_custom')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 57, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_assessment_recomputes_and_rejects_stale_runtime_source_closure (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_assessment_recomputes_and_rejects_stale_runtime_source_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 114, in setUp
+    target.GSTREAMER_RUNTIME_SOURCE_SHA256 = current_runtime_source_sha256()
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 64, in current_runtime_source_sha256
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 235, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 114, in setUp
+    target.GSTREAMER_RUNTIME_SOURCE_SHA256 = current_runtime_source_sha256()
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 64, in current_runtime_source_sha256
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 235, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 114, in setUp
+    target.GSTREAMER_RUNTIME_SOURCE_SHA256 = current_runtime_source_sha256()
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 64, in current_runtime_source_sha256
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 235, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_phase_one_materializes_exact_physical_binding_fragment (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 114, in setUp
+    target.GSTREAMER_RUNTIME_SOURCE_SHA256 = current_runtime_source_sha256()
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 64, in current_runtime_source_sha256
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 235, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='deepstream')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py"
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='savant')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py"
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='openvino_gva')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py"
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='gstreamer_custom')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py"
+
+----------------------------------------------------------------------
+Ran 21 tests in 26.101s
+
+FAILED (failures=4, errors=16)
+
