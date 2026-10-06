@@ -1,0 +1,39 @@
+2026-10-06T10:22:36Z
+test_checker_refuses_a_real_undefined_function_global (tests.test_finite_study_static_names_v1.FiniteStudyStaticNamesTests.test_checker_refuses_a_real_undefined_function_global) ... ok
+test_study_modules_reference_only_defined_globals_and_local_imports (tests.test_finite_study_static_names_v1.FiniteStudyStaticNamesTests.test_study_modules_reference_only_defined_globals_and_local_imports) ... FAIL
+test_study_operational_persistence_refuses_a_missing_context_with_its_own_error (tests.test_finite_study_static_names_v1.FiniteStudyStaticNamesTests.test_study_operational_persistence_refuses_a_missing_context_with_its_own_error) ... ERROR
+
+======================================================================
+ERROR: test_study_operational_persistence_refuses_a_missing_context_with_its_own_error (tests.test_finite_study_static_names_v1.FiniteStudyStaticNamesTests.test_study_operational_persistence_refuses_a_missing_context_with_its_own_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_finite_study_static_names_v1.py", line 155, in test_study_operational_persistence_refuses_a_missing_context_with_its_own_error
+    coordinator.persist_study_operational_v1(measurement_input_keys=())
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_native_policy_runtime.py", line 664, in persist_study_operational_v1
+    _require(self._operational_context is not None and
+    ^^^^^^^^
+NameError: name '_require' is not defined
+
+======================================================================
+FAIL: test_study_modules_reference_only_defined_globals_and_local_imports (tests.test_finite_study_static_names_v1.FiniteStudyStaticNamesTests.test_study_modules_reference_only_defined_globals_and_local_imports)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_finite_study_static_names_v1.py", line 144, in test_study_modules_reference_only_defined_globals_and_local_imports
+    self.assertEqual(failures, [])
+AssertionError: Lists differ: ['checkpoint_gstreamer_runtime: undefined [191 chars]9])'] != []
+
+First list contains 3 additional elements.
+First extra element 0:
+'checkpoint_gstreamer_runtime: undefined threading (lines [3072])'
+
++ []
+- ['checkpoint_gstreamer_runtime: undefined threading (lines [3072])',
+-  'checkpoint_native_policy_runtime: undefined _require (lines [661, 692])',
+-  'publication_policy_qualification_execution_closure_v1: undefined '
+-  'ClosureError (lines [929])']
+
+----------------------------------------------------------------------
+Ran 3 tests in 9.678s
+
+FAILED (failures=1, errors=1)
+EXIT=1

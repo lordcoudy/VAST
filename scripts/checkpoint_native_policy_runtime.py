@@ -457,6 +457,11 @@ class NativePolicyRuntimeError(RuntimeError):
     """A native scheduling transport or execution invariant failed."""
 
 
+def _require(condition: bool, message: str) -> None:
+    if not condition:
+        raise NativePolicyRuntimeError(message)
+
+
 def _canonical_json(value: Any) -> str:
     try:
         return json.dumps(

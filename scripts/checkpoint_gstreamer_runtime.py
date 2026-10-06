@@ -3074,6 +3074,7 @@ def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, ru
         analytics_model_manifest, analytics_execution_socket, preprocessing_sha256,
         binary, source_binary, detect_bin, client_mode, campaign_deadline_ns, worker_clock_environment):
     """Execute an actually typed arm on the original native/control spine."""
+    import threading
     import time
     from checkpoint_runtime_plan import build_finite_study_runtime_plan_v1
     from canonical_systems_study_plan_v1 import admission_stop_lead_ns
