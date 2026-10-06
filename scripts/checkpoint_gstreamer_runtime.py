@@ -2897,6 +2897,19 @@ def finite_study_source_environment_v1(spec, pipes, *, startup, run_id, topology
     return env
 
 
+def wait_finite_study_sources_after_stop(children, errors, lock, *, until_monotonic):
+    """After STOP, wait for real sources but fail as soon as a capture/coordinator error exists."""
+    import time
+    while any(child.poll() is None for child in children.values()):
+        with lock:
+            _require(not errors, "source gate capture/coordinator failed after STOP: " + str(errors[:1]))
+        _require(time.monotonic() < until_monotonic, "source gate original sources did not drain after STOP")
+        time.sleep(0.02)
+    with lock:
+        _require(not errors, "source gate capture/coordinator failed after STOP: " + str(errors[:1]))
+    _require(all(child.returncode == 0 for child in children.values()), "source gate original source failed")
+
+
 def run_finite_study_source_gate_v1(*, study_plan, project_root, output_root, source_binary,
         deadline_ns, expected_boot, expected_time_namespace):
     """Real two-source START/STOP/EOF, with durable central ACK and original wire spools."""
@@ -3019,13 +3032,13 @@ def run_finite_study_source_gate_v1(*, study_plan, project_root, output_root, so
             window_start=(realtime+30_000_000_000)//1_000_000; window_end=(realtime+210_000_000_000)//1_000_000; drain_end=window_end+10000
             _require(start+220_000_000_000<deadline_ns,"source original drain exceeds preparation endpoint")
             for parent in parents.values(): write(parent["control"],f"1 START {start} {window_start} {window_end} {drain_end}\n".encode())
-            while time.monotonic_ns()<start+210_000_000_000:
+            from canonical_systems_study_plan_v1 import OFFER_END_NS, admission_stop_lead_ns
+            stop_at=start+OFFER_END_NS-admission_stop_lead_ns(study_plan,arm["rate"])
+            while time.monotonic_ns()<stop_at:
                 bound();_require(not errors and all(c.poll() is None for c in children.values()),"source gate failed before original STOP")
                 time.sleep(.02)
             for parent in parents.values(): write(parent["control"],f"1 STOP {window_end}\n".encode())
-            for child in children.values():
-                child.wait(timeout=max(0,min(deadline_ns/1e9,start/1e9+220.0)-time.monotonic()))
-                _require(child.returncode==0,"source gate original source failed")
+            wait_finite_study_sources_after_stop(children,errors,lock,until_monotonic=min(deadline_ns/1e9,start/1e9+220.0))
             for thread in threads: thread.join(timeout=max(0,deadline_ns/1e9-time.monotonic()))
             _require(not errors and all(not t.is_alive() for t in threads),"source gate capture/EOF failed: "+str(errors[:1]))
             _require(all([row["state"] for row in values]==["READY","STARTED","ADMISSION_STOPPED","DRAINED"] for values in states.values()),"source gate real STOP/drain statuses incomplete")
@@ -3063,6 +3076,7 @@ def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, ru
     """Execute an actually typed arm on the original native/control spine."""
     import time
     from checkpoint_runtime_plan import build_finite_study_runtime_plan_v1
+    from canonical_systems_study_plan_v1 import admission_stop_lead_ns
     from publication_operational_runtime_context_v1 import load_native_operational_context_v1
     plan = build_finite_study_runtime_plan_v1(study_plan, arm_id)
     arm = next(row for row in [*study_plan["arms"], *study_plan["pilots"]["initial"],
@@ -3147,6 +3161,7 @@ def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, ru
             on_raw_event=raw_event, on_admission=durable_admission, absolute_deadline_monotonic_ns=campaign_deadline_ns,
             synchronized_lifecycle=True, warmup_s=30.0, measurement_s=180.0, drain_timeout_s=10.0,
             start_lead_s=0.1, require_decoder_placement_verification=True, measurement_end_boundary_guard_ns=1_000_000,
+            admission_stop_lead_ns=admission_stop_lead_ns(study_plan, arm["rate"]),
             policy_socket_handler=coordinator.serve_worker_socket, operational_admission_limits=limits, study_runtime_plan=plan)
     measured = {row["input_frame_key"] for row in result.admission_records
                 if result.measurement_start_schedule_offset_ns <= row["schedule_offset_ns"] < result.measurement_end_schedule_offset_ns}

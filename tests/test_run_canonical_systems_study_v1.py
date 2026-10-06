@@ -396,6 +396,43 @@ os.waitpid(child,0);print(raw.decode())
             with self.assertRaisesRegex(ValueError,"metadata bound"):
                 driver.write_json(Path(tmp)/"control.json",completed)
 
+    def test_stop_precedes_the_half_open_offer_boundary_by_a_plan_proven_lead(self):
+        import checkpoint_runtime
+        from canonical_systems_study_plan_v1 import admission_stop_lead_ns, OFFER_END_NS
+        sys.path.insert(0,str(ROOT/"tests"));from test_canonical_systems_study_plan_v1 import intake_fixture,material_fixture
+        from canonical_systems_study_plan_v1 import build_study_plan
+        # Actual derived MP4 timeline: PTS i/30 s floored to ns (durations 33333333/33333333/33333334).
+        intake=intake_fixture()
+        for recording in intake["recordings"].values():
+            pts=[i*10**9//30 for i in range(443)]
+            for i,unit in enumerate(recording["access_units"]):
+                unit.update(pts_ns=pts[i],dts_ns=pts[i],duration_ns=pts[i+1]-pts[i])
+        plan=build_study_plan(intake,material_fixture())
+        for rate in ("0.25","1","2"):
+            self.assertEqual(admission_stop_lead_ns(plan,rate),250_000_000)
+        with self.assertRaises(ValueError):admission_stop_lead_ns(plan,"2",lead_ns=300_000_000)
+        # A drifting constant-duration timeline puts a planned AU 2.1 us before the offer end: refused.
+        with self.assertRaises(ValueError):admission_stop_lead_ns(build_study_plan(intake_fixture(),material_fixture()),"2")
+        # STOP no longer coincides with the boundary AU wake at start+210 s.
+        self.assertEqual(checkpoint_runtime.synchronized_stop_monotonic_ns(1000,30.0,180.0,250_000_000),1000+OFFER_END_NS-250_000_000)
+        self.assertEqual(checkpoint_runtime.synchronized_stop_monotonic_ns(1000,30.0,180.0,0),1000+OFFER_END_NS)
+        for lead in (-1,180_000_000_000,True):
+            with self.assertRaises(Exception):checkpoint_runtime.synchronized_stop_monotonic_ns(1000,30.0,180.0,lead)
+
+    def test_source_gate_fails_fast_on_a_capture_error_after_stop(self):
+        import checkpoint_gstreamer_runtime as runtime
+        child=subprocess.Popen(["/bin/sh","-c","sleep 30"],start_new_session=True)
+        try:
+            errors=[ValueError("study admission differs from the original planned AU before ACK")]
+            started=time.monotonic()
+            with self.assertRaisesRegex(Exception,"planned AU"):
+                runtime.wait_finite_study_sources_after_stop({"s0":child},errors,threading.Lock(),until_monotonic=time.monotonic()+10)
+            self.assertLess(time.monotonic()-started,2)
+        finally:
+            child.kill();child.wait()
+        done=subprocess.Popen(["/bin/true"]);done.wait()
+        runtime.wait_finite_study_sources_after_stop({"s0":done},[],threading.Lock(),until_monotonic=time.monotonic()+5)
+
     def test_control_failure_still_closes_actual_service_thread_and_preserves_primary(self):
         with tempfile.TemporaryDirectory() as tmp:
             commands=driver.Commands(Path(tmp),time.monotonic()+60);stop=threading.Event();thread=threading.Thread(target=stop.wait);thread.start()

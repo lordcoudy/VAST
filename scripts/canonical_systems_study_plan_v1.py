@@ -20,6 +20,7 @@ UINT64_MAX = (1 << 64) - 1
 MEASUREMENT_START_NS = 30_000_000_000
 OFFER_END_NS = 210_000_000_000
 MEASUREMENT_END_NS = OFFER_END_NS - 1_000_000
+ADMISSION_STOP_LEAD_NS = 250_000_000  # Amendment8: STOP before the half-open offer end.
 _SHA = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -202,6 +203,21 @@ def validate_study_plan(plan):
     expected = build_study_plan(plan["intake"], plan["selected_material"])
     _require(canonical_bytes(plan) == canonical_bytes(expected), "plan hash/coordinates/bindings drifted")
     return plan
+
+
+def admission_stop_lead_ns(plan, rate, *, lead_ns=ADMISSION_STOP_LEAD_NS):
+    """STOP lead before the offer end, proven against every stream schedule of this rate."""
+    _require(type(lead_ns) is int and 0 < lead_ns < OFFER_END_NS, "admission STOP lead is invalid")
+    planned = []
+    for stream_id in range(6):
+        for row in stream_schedule(plan, stream_id, rate):
+            if row["planned"]:
+                _require(row["schedule_offset_ns"] < OFFER_END_NS - lead_ns, "planned AU lies inside the STOP lead")
+                planned.append(row["schedule_offset_ns"])
+            else:
+                _require(row["schedule_offset_ns"] >= OFFER_END_NS, "unplanned AU precedes the half-open offer end")
+    _require(bool(planned) and 2 * lead_ns <= OFFER_END_NS - max(planned), "STOP lead exceeds half the final offer gap")
+    return lead_ns
 
 
 CLOCK_DOMAIN_LABEL = "timens-offsets:monotonic=0,0;boottime=0,0"

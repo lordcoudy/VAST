@@ -85,6 +85,15 @@ def canonical_consumer_fds_json(consumers: Mapping[str, int]) -> str:
     return json.dumps(dict(consumers), separators=(",", ":"), ensure_ascii=True)
 
 
+def synchronized_stop_monotonic_ns(coordinator_start_ns: int, warmup_s: float, measurement_s: float,
+        admission_stop_lead_ns: int = 0) -> int:
+    """Monotonic STOP time: the offer end, optionally led to precede a boundary AU wake."""
+    window_ns = int((warmup_s + measurement_s) * 1_000_000_000)
+    _require(type(admission_stop_lead_ns) is int and 0 <= admission_stop_lead_ns < int(measurement_s * 1_000_000_000),
+             "checkpoint admission STOP lead must be a non-negative integer shorter than measurement")
+    return coordinator_start_ns + window_ns - admission_stop_lead_ns
+
+
 def native_subprocess_environment(overrides: dict[str, str]) -> dict[str, str]:
     """Build a native child environment without leaking Python import paths to GStreamer."""
     environment = os.environ.copy()
@@ -1249,6 +1258,7 @@ def run_worker_processes(
     start_lead_s: float = 0.1,
     require_decoder_placement_verification: bool = False,
     measurement_end_boundary_guard_ns: int = 0,
+    admission_stop_lead_ns: int = 0,
     policy_socket_handler: Callable[[str, socket.socket], None] | None = None,
     operational_admission_limits: Mapping[str, Any] | None = None,
     study_runtime_plan: Mapping[str, Any] | None = None,
@@ -1809,8 +1819,8 @@ def run_worker_processes(
             window_start_timestamp_ms = start_timestamp_ms + int(warmup_s * 1000)
             window_end_timestamp_ms = window_start_timestamp_ms + int(measurement_s * 1000)
             drain_end_timestamp_ms = window_end_timestamp_ms + int(drain_timeout_s * 1000)
-            stop_monotonic_ns = coordinator_start_monotonic_ns + int(
-                (warmup_s + measurement_s) * 1_000_000_000
+            stop_monotonic_ns = synchronized_stop_monotonic_ns(
+                coordinator_start_monotonic_ns, warmup_s, measurement_s, admission_stop_lead_ns
             )
             start_command = (
                 f"{RUNTIME_LIFECYCLE_PROTOCOL_VERSION} START {common_start_monotonic_ns} "

@@ -1,0 +1,29 @@
+2026-10-06T08:27:54Z
+test_stop_precedes_the_half_open_offer_boundary_by_a_plan_proven_lead (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_stop_precedes_the_half_open_offer_boundary_by_a_plan_proven_lead) ... ERROR
+test_source_gate_fails_fast_on_a_capture_error_after_stop (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_source_gate_fails_fast_on_a_capture_error_after_stop) ... FAIL
+
+======================================================================
+ERROR: test_stop_precedes_the_half_open_offer_boundary_by_a_plan_proven_lead (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_stop_precedes_the_half_open_offer_boundary_by_a_plan_proven_lead)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py", line 401, in test_stop_precedes_the_half_open_offer_boundary_by_a_plan_proven_lead
+    from canonical_systems_study_plan_v1 import admission_stop_lead_ns, OFFER_END_NS
+ImportError: cannot import name 'admission_stop_lead_ns' from 'canonical_systems_study_plan_v1' (/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/canonical_systems_study_plan_v1.py)
+
+======================================================================
+FAIL: test_source_gate_fails_fast_on_a_capture_error_after_stop (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_source_gate_fails_fast_on_a_capture_error_after_stop)
+----------------------------------------------------------------------
+AttributeError: module 'checkpoint_gstreamer_runtime' has no attribute 'wait_finite_study_sources_after_stop'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py", line 420, in test_source_gate_fails_fast_on_a_capture_error_after_stop
+    with self.assertRaisesRegex(Exception,"planned AU"):
+AssertionError: "planned AU" does not match "module 'checkpoint_gstreamer_runtime' has no attribute 'wait_finite_study_sources_after_stop'"
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.484s
+
+FAILED (failures=1, errors=1)
+EXIT=1
