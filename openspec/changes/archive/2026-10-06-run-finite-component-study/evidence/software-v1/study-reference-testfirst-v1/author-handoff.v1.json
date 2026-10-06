@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "change": "run-finite-component-study",
+  "reviewed_planning": "3288b0702b6b0136feb6596382566b8686f9bb5c",
+  "scope": {
+    "owned_paths": [
+      "deploy/native_gst_probe/checkpoint_study_reference.hpp",
+      "tests/cpp/checkpoint_study_reference_test.cpp"
+    ],
+    "no_edits_to_existing_native_source_shared_utility_harness_specs_docs_git": true,
+    "hardware_media_engine_benchmark_invocations": 0
+  },
+  "source_freeze": {
+    "schema_version": 1,
+    "status": "FROZEN owned two new source paths; author handoff is not independent approval",
+    "owned_sources": [
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/native_gst_probe/checkpoint_study_reference.hpp",
+        "relative_path": "deploy/native_gst_probe/checkpoint_study_reference.hpp",
+        "bytes": 37522,
+        "sha256": "a97a81a54b04a865ae4609ed92219151b6a85c8ffdfeb932969f3e2dc579941b",
+        "epoch": [
+          68,
+          16325548650793604,
+          37522,
+          1791173975309223700,
+          1791173975309223700,
+          33279,
+          1
+        ]
+      },
+      {
+        "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_study_reference_test.cpp",
+        "relative_path": "tests/cpp/checkpoint_study_reference_test.cpp",
+        "bytes": 12023,
+        "sha256": "779bff02ad26266a6c27ba6c9cc17faa8ac6343b8bf7231906d28fc1c8c88813",
+        "epoch": [
+          68,
+          32088147346590183,
+          12023,
+          1791174057216224200,
+          1791174057216224200,
+          33279,
+          1
+        ]
+      }
+    ],
+    "final_original": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/study-reference-testfirst-v1/green-05/execution.v1.json",
+    "sources_equal_actual_closed_GREEN05": true,
+    "fd_before": 6,
+    "fd_after": 6
+  },
+  "original_test_dispositions": [
+    {
+      "phase": "RED01",
+      "kind": "allowed new ABI compile RED; missing header, no runtime behavioral claim",
+      "compile": 1
+    },
+    {
+      "phase": "GREEN01",
+      "compile": 0,
+      "run": 1,
+      "cause": "actual GStreamer validation bin started with caps and reported no element video; retained and fixed identity pads"
+    },
+    {
+      "phase": "GREEN02",
+      "compile": 0,
+      "run": 0
+    },
+    {
+      "phase": "GREEN03",
+      "compile": 0,
+      "run": 1,
+      "cause": "positive transport fixture inherited missing DTS; corrected fixture with explicit0 PTS/DTS; production equality retained"
+    },
+    {
+      "phase": "GREEN04",
+      "compile": 0,
+      "run": 0
+    },
+    {
+      "phase": "GREEN05",
+      "compile": 0,
+      "run": 0,
+      "scope": "final exact source: software NV12/common converter only"
+    }
+  ],
+  "meaningful_actual_assertions": [
+    "actual padded GstVideoMeta Y/UV strides and bounds; U80/V170 independent incremental hashes; active NV12 and canonicalI420 hashes exclude padding",
+    "invalid short stride, escaped plane offset, nominal600 caps and wrong colour tuple refuse",
+    "real shared80-byte protocol header and compressed synthetic payload preserve exact bytes; full transport EOF is distinct from truncated8-byte header; scaledPTS/DTS mismatch refuses before decoder",
+    "actual software appsrc supplies exactly4428x4 packed NV12 frames, same constructor yields442 exact96-byte black RGB hashes, real BUS EOS plus appsinkEOS",
+    "actual partial raw stdin frame and live silent peer fail under original deadline before peer-owned release; no terminal success on failed prefixes",
+    "real owned pipe endpoints and writer threads retired, stdin remains held until writer join and then is restored; actual fixture FD equality",
+    "original compiler and software binary children reaped; source3 size/SHA/7epochs before==after; capture wrapperFD6to6"
+  ],
+  "APIs": {
+    "public_namespace": "vast::study",
+    "constructor": "std::string color_prefix_fragment(int width,int height)",
+    "dispatches": [
+      "int dispatch_reference_cli(int argc,char**argv,bool&handled)",
+      "int dispatch_au_inventory_cli(int argc,char**argv,bool&handled)"
+    ],
+    "CLI": [
+      "--checkpoint-study-prefix-description WIDTH HEIGHT",
+      "--checkpoint-study-reference PATH OUT_JSONL WIDTH HEIGHT DEADLINE_NS COUNT",
+      "--checkpoint-study-reference-nv12 OUT_JSONL WIDTH HEIGHT DEADLINE_NS COUNT",
+      "--checkpoint-study-reference-transport OUT_JSONL WIDTH HEIGHT DEADLINE_NS COUNT",
+      "--checkpoint-study-au-inventory PATH WIDTH HEIGHT DEADLINE_NS"
+    ],
+    "reference_frame_fields": [
+      "schema_version",
+      "type",
+      "ordinal",
+      "pts_ns",
+      "dts_ns",
+      "duration_ns",
+      "width",
+      "height",
+      "y_sha256",
+      "u_sha256",
+      "v_sha256",
+      "nv12_sha256",
+      "i420_sha256",
+      "rgb_sha256",
+      "active_y_bytes",
+      "active_u_bytes",
+      "active_v_bytes",
+      "rgb_bytes",
+      "nv12_caps",
+      "rgb_caps"
+    ],
+    "inventory_au_fields": [
+      "schema_version",
+      "type",
+      "ordinal",
+      "pts_ns",
+      "dts_ns",
+      "duration_ns",
+      "payload_sha256",
+      "payload_size_bytes",
+      "keyframe"
+    ],
+    "prefix_description_fields": [
+      "nv12_caps",
+      "rgb_caps",
+      "converter_config",
+      "fragment",
+      "gstreamer_runtime"
+    ],
+    "count_rule": "media and NV12 exactly442; transport exact expected offered-prefix decoded count1..442, not upperbound",
+    "completion_kinds": [
+      "derived_full_eos",
+      "independent_nv12_full_eos",
+      "offered_prefix_transport_eof"
+    ],
+    "provisional_result": "reference terminal success is candidate actual EOS; accepted=false/provisional_until_owner_final_close=true until original process0; inventory provisional_until_capture_return=true"
+  },
+  "guards": [
+    "one original monotonic CheckpointIoDeadline, checks before progress reads/writes/hash rows and after actual closes; failure abort before NULL/join",
+    "encoded transport selected16MiB cap checked by shared read_frame before payload allocation; legacy default64MiB unchanged",
+    "owned active geometry even2..1920x2..1080; actual planes use allocation/stride/caps; incremental hashes with bounded chroma scratch, no all-frame arrays; transient active buffers64MiB bound",
+    "input regular no-link held path <=512MiB; full SHA/current epoch/path identity bound; pipeline closes before held input retirement",
+    "exclusive owned regular JSONL output, row<=2048 bytes and finite442+2 rows; actual fsync/path+descriptor custody and closes before returned0",
+    "exact442 inventory/allI/cycle0/PTS=DTS/positive duration, actual EOS; no silent decoder-property override or posthoc tolerance"
+  ],
+  "mandatory_external_joins_and_limits": [
+    "no hardwareNVDEC/selected-image/parity/inventory/derived media proof from these software tests; actual selected package and future derivative gates remain mandatory",
+    "driver must validate prepared actual AU inventory <=16MiB before any media-path NVDEC decode, retain full source/Python/helper/dependency material bindings and genuine stdin capture",
+    "stdin header input_sha256 is empty; actual raw FFmpeg or genuine source transport input binding belongs to caller original capture and later raw join, not fabricated media identity",
+    "GStreamer driver/library state changes can hang outside local poll loop; original owned process guardian remains containment backstop; these fixtures establish tested software actors only, not hardware/global quiescence",
+    "decoder output DTS may be null and is retained actual, not synthesized from PTS",
+    "strict failures retain provisional prefixes and process failure; full442 and offered-prefix EOS scopes are distinct; no benchmark24 completion or accuracy/100ms benefit claim"
+  ]
+}

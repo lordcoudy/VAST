@@ -740,5 +740,53 @@ class GStreamerAnalyticsBridgeTests(unittest.TestCase):
         self.assertEqual(worker_errors, [])
 
 
+    def test_study_independent_routes_overlap_on_real_transports_with_self_intervals(self):
+        from concurrent.futures import ThreadPoolExecutor
+        entered_first, entered_second, release = threading.Event(), threading.Event(), threading.Event()
+        routes = (("plate_number", "cpu"), ("vehicle_type", "cpu"))
+        intervals = {}
+        originals = {route: self.bridge._clients[route].infer for route in routes}
+        def first(*args):
+            entered_first.set()
+            if not release.wait(3):
+                raise AssertionError("first actual route was not released")
+            return originals[routes[0]](*args)
+        def second(*args):
+            entered_second.set()
+            return originals[routes[1]](*args)
+        self.bridge._clients[routes[0]].infer = first
+        self.bridge._clients[routes[1]].infer = second
+        before = len(list(Path("/proc/self/fd").iterdir()))
+        try:
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                def execute(route):
+                    payload = b"abcd"
+                    return self.bridge.execute(_request(*route, payload, sequence=1), payload,
+                        timing_observer=lambda value: intervals.__setitem__(route, value))
+                one = pool.submit(execute, routes[0])
+                try:
+                    self.assertTrue(entered_first.wait(3))
+                    two = pool.submit(execute, routes[1])
+                    self.assertTrue(entered_second.wait(3), "another genuine route must not share the first route lock")
+                finally:
+                    release.set()
+                self.assertEqual(one.result(timeout=3)["message_type"], "analytics_execute_response")
+                self.assertEqual(two.result(timeout=3)["message_type"], "analytics_execute_response")
+            for route, timing in intervals.items():
+                bridge = timing["bridge_route"]
+                self.assertEqual(bridge["pid"], os.getpid())
+                self.assertEqual(bridge["route"], ":".join(route))
+                self.assertLessEqual(bridge["begin_ns"], bridge["acquired_ns"])
+                self.assertLessEqual(bridge["acquired_ns"], bridge["reply_ns"])
+                self.assertLessEqual(bridge["reply_ns"], bridge["end_ns"])
+                worker = timing["worker"]
+                self.assertLessEqual(worker["worker_received_monotonic_ns"], worker["inference_started_monotonic_ns"])
+                self.assertLessEqual(worker["inference_finished_monotonic_ns"], worker["worker_completed_monotonic_ns"])
+            self.assertEqual(len(intervals), 2)
+            self.assertEqual(len(list(Path("/proc/self/fd").iterdir())), before)
+        finally:
+            release.set()
+            for route, original in originals.items(): self.bridge._clients[route].infer = original
+
 if __name__ == "__main__":
     unittest.main()

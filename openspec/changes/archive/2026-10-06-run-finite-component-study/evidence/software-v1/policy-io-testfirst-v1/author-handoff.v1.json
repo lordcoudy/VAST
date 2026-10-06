@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "policy_client_test_first_author_handoff",
+  "change": "run-finite-component-study",
+  "planning_commit": "3288b0702b6b0136feb6596382566b8686f9bb5c",
+  "owned_paths": [
+    "deploy/native_gst_probe/checkpoint_native_policy_client.hpp",
+    "tests/cpp/checkpoint_native_policy_client_test.cpp"
+  ],
+  "implementation": {
+    "api": "bind_lifecycle(shared_ptr<CheckpointIoDeadline>, function<bool(const string& input_frame_key)> eligibility={}); abort() noexcept",
+    "owner_contract": "Bind once before callers; shared original START/drain clock outlives callbacks. Root owns lifecycle wiring. Default legacy client has no invented phase deadline until owner binds; abort publishes shared state without lock/close.",
+    "exchange": "Shared original deadline acquires timed mutex; eligibility rechecked after acquisition and before wire I/O. MSG_DONTWAIT+MSG_NOSIGNAL send, MSG_DONTWAIT|MSG_TRUNC receive, original io.check/wait for EINTR/EAGAIN/POLL; no bound reset/cross-domain subtraction.",
+    "failure": "Full existing wire/parser/ACK/decision validation runs under exchange lock. Sent transport/validation/deadline failures poison the channel before reuse and rethrow the primary error. Descriptor stays held until actual callers retire; no successful cancellation or censor event."
+  },
+  "tests": {
+    "added_real_cases": [
+      "silent decision",
+      "silent path ACK",
+      "silent terminal ACK",
+      "queued caller at original deadline",
+      "owner abort plus queued caller",
+      "queued key revoked while original RPC holds mutex, rechecked after lock",
+      "partial JSON malformed reply plus poisoned reuse",
+      "actual >64KiB truncated seqpacket plus poisoned reuse"
+    ],
+    "RED": {
+      "compile_returncode": 0,
+      "binary_returncode": 1,
+      "all_eight_causal_failures": true,
+      "elapsed_seconds": 3.3887188610387966,
+      "original_policy_sha256": "85d2b64ccc977a76b6a9c250fd77ea8f02029382cc6121c52ff7ec3bc57acc0c",
+      "source3_stable": true,
+      "wrapper_fd_before": 6,
+      "wrapper_fd_after": 6,
+      "child_completed_and_reaped": true
+    },
+    "GREEN": {
+      "compile_returncode": 0,
+      "binary_returncode": 0,
+      "all_eight_named_cases_pass": true,
+      "original_legacy_assertions_executed": true,
+      "elapsed_seconds": 3.3009018739685416,
+      "source3_stable": true,
+      "wrapper_fd_before": 6,
+      "wrapper_fd_after": 6,
+      "child_completed_and_reaped": true
+    },
+    "fixtures": "Actual AF_UNIX SOCK_SEQPACKET endpoints, real caller/peer threads/futures, owner original absolute clock and post-lock predicate. Live silent peer releases only after deadline/abort/caller outcomes and held-FD checks; all joins precede descriptor destruction, before/after actual FD counts match. Old-header binding API detection is a test-only no-op so original RED reaches the real blocked RPC instead of a compile/constructor failure.",
+    "shared_utility_versions": "Root-owned utility e4341343.../14813 in RED and 9e316bc7.../14945 in GREEN; stable within each phase, not claimed identical across phases."
+  },
+  "source_preservation": {
+    "old_test_all_lines_preserved_in_order": true,
+    "request_binding_numeric_text_sha_guards_exact": true,
+    "response_parser_and_ack_helpers_exact": true,
+    "unittest_harness_not_edited": true
+  },
+  "current_sources": [
+    {
+      "path": "deploy/native_gst_probe/checkpoint_native_policy_client.hpp",
+      "bytes": 25126,
+      "sha256": "191045da67b1028e2d2b735f7f66ee7920491deea93652e24a15131296484201"
+    },
+    {
+      "path": "tests/cpp/checkpoint_native_policy_client_test.cpp",
+      "bytes": 25019,
+      "sha256": "f079a7edebf388f24412bcd79593dde485a8becdbf1f2017dc1d18ca7761c6b8"
+    }
+  ],
+  "pending": "Independent source review, root native START/drain/admitted-key/abort-before-teardown wiring, whole relevant tests and actual current CI remain separate. Scoped C++ success is not physical media/hardware/model/campaign acceptance.",
+  "evidence": [
+    "red-01/execution.v1.json",
+    "red-01/original.stderr",
+    "green-01/execution.v1.json",
+    "green-01/original.stdout",
+    "source-preservation.v1.json",
+    "owned-source.v1.diff",
+    "original-tools.v1.json"
+  ],
+  "operations": "Only two owned source/test files edited. No harness, shared utility, native/source cpp, specs/tasks/docs, Git or physical benchmark/media/engine/model mutation."
+}

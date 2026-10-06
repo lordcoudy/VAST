@@ -19,7 +19,7 @@ from publication_operational_request_domain_v1 import (
     POLICIES, canonical_json_v1, payload_with_sha256_v1, strict_json_object_v1,
     validate_descriptor_v1, validate_native_header_v1,
 )
-from publication_guardian_operational_recorder_v1 import BRANCHES, COUNTS, DEFAULT_BUDGETS, HEADER_KIND
+from publication_guardian_operational_recorder_v1 import BRANCHES, COUNTS, DEFAULT_BUDGETS, HEADER_KIND, STUDY_BUDGET_OVERRIDES
 from publication_physical_io_v1 import PhysicalRootCustodyV1, PublicationPhysicalIoV1Error
 
 QUALIFICATION_MODE = "complete_qualification_operational_identity_v1"
@@ -203,7 +203,7 @@ def _rows(mode, operations):
     return rows
 
 
-def _native_context(row, mode):
+def _native_context(row, mode, *, study_runtime_plan=None):
     arm = (f"{row['run_id']}:{row['scenario']}:{row['codec']}:{row['policy']}:{float(row['deadline_ms'])}"
            if row["system"] in NATIVE_SYSTEMS else row["arm_id"])
     header = payload_with_sha256_v1({"schema_version": 1, "artifact_kind": NATIVE_DOMAIN_KIND_V1,
@@ -214,13 +214,32 @@ def _native_context(row, mode):
                      "source_descriptor": "policy_request_source"}, "descriptors": row["descriptors"],
         "initial_state": {"arm_id": arm, "weights": {"cpu": 1.0, "gpu": 1.0}, "service_ewma_ms": {}},
         "counts": dict.fromkeys(NATIVE_COUNT_FIELDS_V1, 0), "adaptive_history": None})
+    if study_runtime_plan is not None:
+        from checkpoint_runtime_plan import validate_finite_study_runtime_plan_v1
+        from canonical_systems_study_plan_v1 import stream_schedule
+        from publication_operational_request_domain_v1 import STUDY_NATIVE_KIND_V1
+        validate_finite_study_runtime_plan_v1(study_runtime_plan)
+        scope = {"kind": "finite-component-study", "plan_sha256": study_runtime_plan["study_plan"]["sha256"],
+                 "max_frame_id": 441, "max_requests_per_arm": 10608, "max_operations": 32}
+        header["artifact_kind"], header["study_scope"] = STUDY_NATIVE_KIND_V1, scope
+        header = payload_with_sha256_v1(header)
+        validate_native_header_v1(header, study_scope=scope)
+        plan = study_runtime_plan["study_plan"]
+        operation = next(arm for arm in [*plan["arms"], *plan["pilots"]["initial"], *plan["pilots"]["conditional"]]
+                         if arm["arm_id"] == row["arm_id"])
+        schedules = [stream_schedule(plan, i, operation["rate"]) for i in range(6)]
+        step = min(b["schedule_offset_ns"] - a["schedule_offset_ns"]
+                   for rows in schedules for a, b in zip(rows, rows[1:]))
+        return payload_with_sha256_v1({"schema_version": 1,
+            "artifact_kind": "vast_finite_study_native_capture_context_v1", "mode": "finite-component-study",
+            "native_header": header, "admission_limits": {"max_admissions_per_stream": 442, "min_schedule_step_ns": step}})
     validate_native_header_v1(header)
     return payload_with_sha256_v1({"schema_version": 1, "artifact_kind": "vast_native_operational_capture_context_v1",
         "mode": mode, "native_header": header, "admission_limits": {"max_admissions_per_stream":
         241 if row["system"] in NATIVE_SYSTEMS else 281, "min_schedule_step_ns": 999_999_600}})
 
 
-def _guardian_context(rows, mode, descriptors, manifest_descriptor, inventory_descriptor, output_dir):
+def _guardian_context(rows, mode, descriptors, manifest_descriptor, inventory_descriptor, output_dir, *, study_plan=None):
     headers = {}
     for route in ROUTES:
         protocols, contexts, workers, bindings = [], [], [], []
@@ -258,6 +277,21 @@ def _guardian_context(rows, mode, descriptors, manifest_descriptor, inventory_de
             "worker_capability": None, "initial_counters": dict.fromkeys(COUNTS, 0), "budgets": dict(DEFAULT_BUDGETS)})
         _require(len(canonical_json_v1(headers[route])) + 1 + MAX_STARTUP_REPLACEMENT_BYTES <= 65536,
                  "guardian template lacks reviewed actual-startup header capacity")
+    if study_plan is not None:
+        from canonical_systems_study_plan_v1 import validate_study_plan
+        from publication_operational_request_domain_v1 import STUDY_GUARDIAN_KIND_V1
+        validate_study_plan(study_plan)
+        expected = [*study_plan["arms"], *study_plan["pilots"]["initial"], *study_plan["pilots"]["conditional"]]
+        _require(len(rows) == 32 and {r["arm_id"] for r in rows} == {a["arm_id"] for a in expected},
+                 "study guardian constants lack the exact original 32 operations")
+        scope = {"kind": "finite-component-study", "plan_sha256": study_plan["sha256"],
+                 "max_frame_id": 441, "max_requests_per_arm": 10608, "max_operations": 32}
+        for key, header in headers.items():
+            header["artifact_kind"], header["study_scope"] = STUDY_GUARDIAN_KIND_V1, scope
+            header["budgets"].update(STUDY_BUDGET_OVERRIDES)
+            headers[key] = payload_with_sha256_v1(header)
+        return payload_with_sha256_v1({"schema_version": 1, "artifact_kind": "vast_finite_study_guardian_capture_context_v1",
+            "mode": "finite-component-study", "headers_by_route": headers, "output_dir": str(output_dir)})
     return payload_with_sha256_v1({"schema_version": 1, "artifact_kind": "vast_guardian_operational_capture_context_v1",
         "mode": mode, "headers_by_route": headers, "output_dir": str(output_dir)})
 

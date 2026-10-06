@@ -1,0 +1,947 @@
+{
+  "CI_accepted": true,
+  "CPU_job_id": 111664198463,
+  "all253member_descriptor_canonical_sha256": "dc577a577cc49357850b80688d30bad84cde3fba21dd9f046062172fc5927038",
+  "blocking_findings": [],
+  "change": "run-finite-component-study",
+  "clock_profile_observer": {
+    "all24request_response_start_finish_raw_events_joined": true,
+    "both_control_trace_EOF": true,
+    "coarseclock_kerneldenial_original_join_verified": true,
+    "no_forced_TERM_KILL": true,
+    "observer": {
+      "absolute_deadline_ns": 5463513290014,
+      "argv": [
+        "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+        "-I",
+        "-B",
+        "/home/runner/work/VAST/VAST/scripts/run_ci_checks.py",
+        "--suite-child",
+        "--output-dir",
+        "/home/runner/work/_temp/vast-cpu-checks",
+        "--trace-fd",
+        "12",
+        "--event-fd",
+        "14",
+        "--stop-fd",
+        "15",
+        "--expected-profile",
+        "vast-ci-userns-e43dc7c7e6f64bc491907401da55d433 (unconfined)"
+      ],
+      "cleanup_deadline_ns": 1709522289679,
+      "clock": "same_kernel_monotonic_ns",
+      "descendant_quiescence": "not established by original-child status",
+      "failure": null,
+      "finished_monotonic_ns": 1694522574967,
+      "forced_sigkill": false,
+      "forced_sigterm": false,
+      "kind": "vast_external_ci_test_observer_v1",
+      "owner": {
+        "boot_id": "e0a981e8-4e26-4a1c-99ef-da8e4838d17c",
+        "executable_realpath": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+        "executable_stat": {
+          "st_dev": 2049,
+          "st_gid": 1001,
+          "st_ino": 2440570,
+          "st_mode": 33261,
+          "st_nlink": 1,
+          "st_size": 17744,
+          "st_uid": 1001
+        },
+        "gid": 1001,
+        "pgid": 4023,
+        "pid": 4023,
+        "ppid": 3704,
+        "startticks": 19424,
+        "uid": 1001
+      },
+      "pidfd_acquisition_failed": false,
+      "pidfd_failure": null,
+      "pipe_eof": {
+        "control": true,
+        "trace": true
+      },
+      "ready": true,
+      "requests_sent": 24,
+      "requests_stopped_before_disposition_restore": true,
+      "response_channel_bytes": 4906,
+      "response_matching": "ordinary signals may coalesce; no one-to-one or timely claim",
+      "responses_completed": 24,
+      "responses_started": 24,
+      "returncode": 0,
+      "signal": null,
+      "started_monotonic_ns": 194245310135,
+      "successful": true,
+      "trace_bytes": 57092,
+      "unmatched_or_coalesced_requests_possible": 0
+    },
+    "profile_child_label_verified": true,
+    "profile_load_unload_verified_and_held_FDs_released": true,
+    "profile_name": "vast-ci-userns-e43dc7c7e6f64bc491907401da55d433"
+  },
+  "criteria_disposition": "Prepared eight fixture ID criterion clarified from actual unchanged selection: six portable original successes plus two historical integration deferrals; no required selected method waived.",
+  "elapsed_s": 1.7966146629769355,
+  "full_qualification_accepted": false,
+  "hardware_accepted": false,
+  "historical_failures_preserved": [
+    "A09562f7 FAILED",
+    "B full hosted failures remain FAILED",
+    "C81492fb1 FAILED six errors",
+    "local broader fragment GREEN01 FAILED",
+    "genuine REDs remain RED"
+  ],
+  "host": {
+    "actual2test_outcomes_in_original_stderr_and_exit0": true,
+    "full_ci_successful_retained_false": true,
+    "hardware_acceptance_retained_false": true,
+    "original_report": {
+      "changed_tracked_paths": [],
+      "commit": "42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a",
+      "diagnostic_passed": true,
+      "diagnostic_tests_only": true,
+      "full_ci_successful": false,
+      "hardware_acceptance": false,
+      "kind": "vast_cpu_host_diagnostics_v1",
+      "original_process": {
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python",
+          "-I",
+          "-B",
+          "-c",
+          "import sys,unittest; sys.path[:0]=sys.argv[1:3]; import run_ci_checks as checks; suite=unittest.defaultTestLoader.loadTestsFromNames(sys.argv[3:]); result=unittest.TextTestRunner(verbosity=2,resultclass=checks.RecordedResult).run(suite); sys.exit(0 if result.wasSuccessful() and result.testsRun==2 and set(sys.argv[3:])<=set(result.successes) else 1)",
+          "/home/runner/work/VAST/VAST/tests",
+          "/home/runner/work/VAST/VAST/scripts",
+          "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+          "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+        ],
+        "cleanup_error": null,
+        "elapsed_s": 1.2693872709999994,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "test_ids": [
+        "test_analytics_model_contract.AnalyticsModelContractTests.test_repository_manifest_is_complete_and_hash_bound",
+        "test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection"
+      ]
+    }
+  },
+  "host_job_id": 111664198751,
+  "jobs": [
+    {
+      "completed_at": "2026-10-05T08:12:40Z",
+      "conclusion": "success",
+      "id": 111664198463,
+      "name": "cpu-checks",
+      "started_at": "2026-10-05T07:45:51Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-05T07:46:44Z",
+      "conclusion": "success",
+      "id": 111664198751,
+      "name": "Original host prerequisite diagnostics",
+      "started_at": "2026-10-05T07:45:51Z",
+      "status": "completed"
+    }
+  ],
+  "kind": "exact_D_original_source_CI_acceptance",
+  "merge_ready": false,
+  "model_assets": {
+    "CPU_and_host_original8_downloads_hash_size_dispatch_terminal_detail_verified": true,
+    "all_CPU_asset_terminals_precede_test_starts": true,
+    "asset_manifest_sha256": "225db21da5943a34d35c41e61c4fcda9623dd4e5eb973d7975d450ff421edab7",
+    "original_asset_rows": [
+      {
+        "index": 0,
+        "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+        "sha256": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed",
+        "sha384": "f9f35961bc5cffbb0d663bfc1e8b02efab0fbc4c9270578dad2bedac2634bd33428acde64f2e080347c2417948a690ee",
+        "size_bytes": 254351,
+        "status": "downloaded"
+      },
+      {
+        "index": 1,
+        "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin",
+        "sha256": "7f9344e41167d14179a0da136f87f2570a30ac5399e0363fd6787a9ae18d0fa0",
+        "sha384": "5f76bab11f3fd97d4313fa6e9d9f1fce0fc669aacfba9e688161c90c89baeb5f9a89a9f68e4ace49c180af35133fbda3",
+        "size_bytes": 3691778,
+        "status": "downloaded"
+      },
+      {
+        "index": 2,
+        "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml",
+        "sha256": "baed27b9dde81b75590a382d2aa458d63391cdb146e7ef20c12577c4cb0617d8",
+        "sha384": "812a89ced16938bb32c6648f5278cb4a34940912199de4c9644bbb0e63d5b0728f7f0e0e0f1c0bae6eab36c28b724c3b",
+        "size_bytes": 292640,
+        "status": "downloaded"
+      },
+      {
+        "index": 3,
+        "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin",
+        "sha256": "a7f04e3243aae3099a00c5276074bdbe57bc8bf91986093dfeafb3b065843f45",
+        "sha384": "fc945d7885733f86cef916b91e2791761abaa56bc005f6426ec48e7aa573e1529f479f723713944d4a81773a9140df9f",
+        "size_bytes": 5774062,
+        "status": "downloaded"
+      },
+      {
+        "index": 4,
+        "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml",
+        "sha256": "69ed174cee70e19b098215f53d1fe6f27edc5b417790bbc44cde7f37cc082fae",
+        "sha384": "b0a70cfc4ccbe85dd5ba5549c2d142d7f922a0a1116657cdcc9f48cb6afc7cc40a596a655b9e6566396c48b72232ff65",
+        "size_bytes": 325452,
+        "status": "downloaded"
+      },
+      {
+        "index": 5,
+        "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin",
+        "sha256": "7f96bfaa0ac3af65d136f6a185d1d78d68d03bab2e1f2faafe1d27ccd94b0dc1",
+        "sha384": "0406e296c9822f4a5e8ee300ad40e5c0a0eeeaf9206f829556cb836cb8f10a4f8a4dd94d1bb16a60562bf1568fd12618",
+        "size_bytes": 1286772,
+        "status": "downloaded"
+      },
+      {
+        "index": 6,
+        "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml",
+        "sha256": "08b844a402a615605a626261fd9e27161a044845426ece5aa0872203c50bb5a2",
+        "sha384": "397543ce3a53c629df7794fc13b919092a9e788003fb6bdf8ef1dafa77392b72732fe408c9d0d13e05ce4af4a7833b74",
+        "size_bytes": 254888,
+        "status": "downloaded"
+      },
+      {
+        "index": 7,
+        "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin",
+        "sha256": "c0a602428cfd71ac63a533c23b7cdb8c83e144f118a81001420246701daf0c78",
+        "sha384": "467802734ab235cf653d13707501fa3c44fb025a7ad02921ea958b3032865fce43bbafe4dfabbb2acfb18b0bcd6c0180",
+        "size_bytes": 3634654,
+        "status": "downloaded"
+      }
+    ],
+    "total_asset_bytes_per_lane": 15514597
+  },
+  "native_build": {
+    "bash_syntax_files": 16,
+    "controls": {
+      "gstreamer-packages.json": {
+        "argv": [
+          "dpkg-query",
+          "-W",
+          "-f=${Package}=${Version}\n",
+          "gstreamer1.0-plugins-base",
+          "gstreamer1.0-tools"
+        ],
+        "cleanup_error": null,
+        "elapsed_s": 0.015882427000008192,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "model-assets.json": {
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+          "-I",
+          "-B",
+          "/home/runner/work/VAST/VAST/scripts/prepare_ci_model_assets.py",
+          "--output-dir",
+          "/home/runner/work/_temp/vast-cpu-checks/model-acquisition"
+        ],
+        "cleanup_error": null,
+        "elapsed_s": 11.846396095000017,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "native-build.json": {
+        "argv": [
+          "cmake",
+          "--build",
+          "/home/runner/work/_temp/vast-cpu-checks/build",
+          "--parallel",
+          "2",
+          "--target",
+          "vast_native_gst_probe",
+          "vast_checkpoint_source",
+          "gstadaptivescheduler",
+          "gstvastanalyticsterminal",
+          "gstvastanalyticsqueue",
+          "gstvastcheckpointprefixqueue"
+        ],
+        "cleanup_error": null,
+        "elapsed_s": 18.872453739000008,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "native-configure.json": {
+        "argv": [
+          "cmake",
+          "-S",
+          "/home/runner/work/VAST/VAST",
+          "-B",
+          "/home/runner/work/_temp/vast-cpu-checks/build",
+          "-DCMAKE_BUILD_TYPE=Release",
+          "-DVAST_BUILD_CUSTOM_CUDA_QT=OFF",
+          "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/home/runner/work/_temp/vast-cpu-checks/build/bin",
+          "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/runner/work/_temp/vast-cpu-checks/build/lib"
+        ],
+        "cleanup_error": null,
+        "elapsed_s": 0.715977238999983,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "factories_original_stdout_SHA_size_joined": [
+      "appsrc",
+      "queue",
+      "videoconvert"
+    ],
+    "packages": [
+      {
+        "name": "contourpy",
+        "version": "1.3.3"
+      },
+      {
+        "name": "cycler",
+        "version": "0.12.1"
+      },
+      {
+        "name": "fonttools",
+        "version": "4.63.0"
+      },
+      {
+        "name": "kiwisolver",
+        "version": "1.5.0"
+      },
+      {
+        "name": "matplotlib",
+        "version": "3.11.1"
+      },
+      {
+        "name": "numpy",
+        "version": "2.5.2"
+      },
+      {
+        "name": "nvidia-ml-py",
+        "version": "13.610.43"
+      },
+      {
+        "name": "packaging",
+        "version": "26.3"
+      },
+      {
+        "name": "pandas",
+        "version": "3.0.5"
+      },
+      {
+        "name": "pillow",
+        "version": "12.3.0"
+      },
+      {
+        "name": "pip",
+        "version": "26.2.1"
+      },
+      {
+        "name": "psutil",
+        "version": "7.2.2"
+      },
+      {
+        "name": "pyparsing",
+        "version": "3.3.2"
+      },
+      {
+        "name": "python-dateutil",
+        "version": "2.9.0.post0"
+      },
+      {
+        "name": "PyYAML",
+        "version": "6.0.3"
+      },
+      {
+        "name": "seaborn",
+        "version": "0.13.2"
+      },
+      {
+        "name": "six",
+        "version": "1.17.0"
+      },
+      {
+        "name": "zstandard",
+        "version": "0.25.0"
+      }
+    ],
+    "python_syntax_files": 488,
+    "six_ELF_outputs_verified": [
+      "build/bin/vast_native_gst_probe",
+      "build/bin/vast_checkpoint_source",
+      "build/lib/libgstadaptivescheduler.so",
+      "build/lib/libgstvastanalyticsterminal.so",
+      "build/lib/libgstvastanalyticsqueue.so",
+      "build/lib/libgstvastcheckpointprefixqueue.so"
+    ],
+    "targets": [
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ]
+  },
+  "original_provider_metadata": {
+    "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/original-provider-metadata.v1.json",
+    "sha256": "cd0ad9a8d648560963bb7c62619a22ee4c5293d9adbb45a021afd795fbb01867",
+    "size_bytes": 26765
+  },
+  "original_retention_terminal": {
+    "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/original-retention-terminal.v1.json",
+    "sha256": "b7be5eacfec768da3b3db512dc932ab4576420e2cc67a6f1a3d94dd9467c7534",
+    "size_bytes": 60980
+  },
+  "originals": [
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/job-111664198463.original.log",
+      "sha256": "cf30b31f444f5cb1d806b18e2ff28343e9e6249868095d8c759e40ce5bb0273f",
+      "size_bytes": 95959
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/job-111664198751.original.log",
+      "sha256": "36ac25500d05f9e4a55bbb7267fea54f60abfb46b8447884aa15f4ab86db0657",
+      "size_bytes": 34468
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+      "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+      "size_bytes": 2402045
+    },
+    {
+      "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11331154732.original.zip",
+      "sha256": "89decec2bbc2114ebd77bb5054b72fdfd74280d5eb89004ce4344220328809f5",
+      "size_bytes": 586868
+    }
+  ],
+  "physical_preparation_accepted": false,
+  "provider_conclusion": "success",
+  "provider_status": "completed",
+  "pull_request": "https://github.com/lordcoudy/VAST/pull/5",
+  "reader_process_history": {
+    "actual_reader01": "75a0c4",
+    "cause": "Overbroad extra current checkout empty predicate rejected four root-owned progress docs after exact-D original source/Git joins had passed; reader02 records progress docs outside exact-D CI scope, without weakening any original-D acceptance.",
+    "exit_code": 1,
+    "source_pin": {
+      "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/final-independent-review-v1/review_D_originals_v1.py",
+      "sha256": "bf67af9ba53ad546f523c15d4429f92426fde269265fd90748a51900c6e6adac",
+      "size_bytes": 36921
+    },
+    "target_or_CI_replayed": false
+  },
+  "release_approved": false,
+  "required_controls": [
+    {
+      "original_member": {
+        "crc32": 1136827001,
+        "name": "report.json",
+        "sha256": "e4c3ed90c6cb92dde9e155b865c0494d27d1f06546289c3bcf2e89ba31d6157b",
+        "size_bytes": 1892702
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+        "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+        "size_bytes": 2402045
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 1208490202,
+        "name": "unittest-child.report.json",
+        "sha256": "a1034f613bf5882873fef032b57577058cdde1408a3d2f8ab1f40342ed6cccd7",
+        "size_bytes": 1820909
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+        "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+        "size_bytes": 2402045
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 783154112,
+        "name": "tracked-source.before.json",
+        "sha256": "93fd858e5d3e39f86f8bcb0bfb5786e136f758e8aa751d2fd01d4f38869d27dc",
+        "size_bytes": 1519950
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+        "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+        "size_bytes": 2402045
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 783154112,
+        "name": "tracked-source.after.json",
+        "sha256": "93fd858e5d3e39f86f8bcb0bfb5786e136f758e8aa751d2fd01d4f38869d27dc",
+        "size_bytes": 1519950
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+        "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+        "size_bytes": 2402045
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 2067153615,
+        "name": "unittest.original.log",
+        "sha256": "dd19dea6e0eb3723c4250a58d3294062755e49fabb5a9770b1fce8980a9c56ba",
+        "size_bytes": 2078072
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+        "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+        "size_bytes": 2402045
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 1659105372,
+        "name": "namespace-profile/profile-lifecycle.json",
+        "sha256": "03d62ad376512d87552d82b87ee9c6eafac5414197a048b36193b218e652f6a7",
+        "size_bytes": 973
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+        "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+        "size_bytes": 2402045
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 1433850232,
+        "name": "external-test-observer/terminal.v1.json",
+        "sha256": "51dd0a7d916268520409b06b9979924a4d1451cdef427b197c5c2c6cf88d38ee",
+        "size_bytes": 1483
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+        "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+        "size_bytes": 2402045
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 1782913696,
+        "name": "external-test-observer/events.original.jsonl",
+        "sha256": "bbc0b32dda77d5c88d73db1dbf7a4aab018fc6b3850da647317aa9a298b1dce0",
+        "size_bytes": 24057
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+        "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+        "size_bytes": 2402045
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 3244282653,
+        "name": "namespace-profile/joined-denial.json",
+        "sha256": "b729a6235890ad5d1d8fb1ce55aad55bda3ebb5515f0650a26983db47b84f922",
+        "size_bytes": 1564
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+        "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+        "size_bytes": 2402045
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 4174978636,
+        "name": "model-acquisition/report.json",
+        "sha256": "657f394b3f13fc1f152ff502314eb604395ffc5703a112afd999578b59dab9e2",
+        "size_bytes": 3470
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+        "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+        "size_bytes": 2402045
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 3539790170,
+        "name": "report.json",
+        "sha256": "52d23339f580914658966fd56cb6ed59f3912c77edb5e03f13fc8873c14be95e",
+        "size_bytes": 1487
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11331154732.original.zip",
+        "sha256": "89decec2bbc2114ebd77bb5054b72fdfd74280d5eb89004ce4344220328809f5",
+        "size_bytes": 586868
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 783154112,
+        "name": "tracked-source.before.json",
+        "sha256": "93fd858e5d3e39f86f8bcb0bfb5786e136f758e8aa751d2fd01d4f38869d27dc",
+        "size_bytes": 1519950
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11331154732.original.zip",
+        "sha256": "89decec2bbc2114ebd77bb5054b72fdfd74280d5eb89004ce4344220328809f5",
+        "size_bytes": 586868
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 783154112,
+        "name": "tracked-source.after.json",
+        "sha256": "93fd858e5d3e39f86f8bcb0bfb5786e136f758e8aa751d2fd01d4f38869d27dc",
+        "size_bytes": 1519950
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11331154732.original.zip",
+        "sha256": "89decec2bbc2114ebd77bb5054b72fdfd74280d5eb89004ce4344220328809f5",
+        "size_bytes": 586868
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 2419137522,
+        "name": "host-prerequisites.json",
+        "sha256": "97a93f3afa602b2f4546d9eda9807060f21fbe0948e3705b8892c6bc79007c1c",
+        "size_bytes": 902
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11331154732.original.zip",
+        "sha256": "89decec2bbc2114ebd77bb5054b72fdfd74280d5eb89004ce4344220328809f5",
+        "size_bytes": 586868
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 2638044078,
+        "name": "host-prerequisites.stderr",
+        "sha256": "fb340d4da5f05458f658be4f6257677b14eedfd901520d8a90dc4a427da510ea",
+        "size_bytes": 1345
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11331154732.original.zip",
+        "sha256": "89decec2bbc2114ebd77bb5054b72fdfd74280d5eb89004ce4344220328809f5",
+        "size_bytes": 586868
+      }
+    },
+    {
+      "original_member": {
+        "crc32": 3161194804,
+        "name": "model-acquisition/report.json",
+        "sha256": "b246e387b661322bd9b43a0c2649bdff8de44921b88acea27dad357cf4304cc1",
+        "size_bytes": 3470
+      },
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11331154732.original.zip",
+        "sha256": "89decec2bbc2114ebd77bb5054b72fdfd74280d5eb89004ce4344220328809f5",
+        "size_bytes": 586868
+      }
+    }
+  ],
+  "retainer_actual_tool_ids": [
+    "4bb138",
+    "68dc13"
+  ],
+  "retainer_genuine_original_tool_records": {
+    "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/retention.original-tools.json",
+    "sha256": "5dbe25424512d4b5f37eb29db554a5786a908d5864fe49c1a1ecee95b05d1c83",
+    "size_bytes": 1808
+  },
+  "retainer_no_extra_invocation_by_reviewer": true,
+  "retainer_source": {
+    "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/retain_originals_v1.py",
+    "sha256": "b20c6b719346322e1ebe17b43e667b619d0ebcd91fb9bced56c8f747c18265b0",
+    "size_bytes": 5963
+  },
+  "reviewable": true,
+  "reviewer": "/root/final_release_review",
+  "reviewer_handles_released": true,
+  "run_attempt": 1,
+  "run_id": 37279566144,
+  "run_number": 72,
+  "schema_version": 1,
+  "scientific_acceptance": false,
+  "scope_limits": [
+    "Only stdlib readers and bounded read-only Git object commands ran. No project import, tests, hosted command, model inference, engine/GI/physical prep/pilot/effect/research was executed by reviewer.",
+    "CPU hardware_acceptance false and original hardware gaps remain explicit. Nine deferrals and88approved skips do not prove their behavior.",
+    "Hosted assets are original producer hash/download facts; model bodies and interpreter/plugin backing binaries are not contained in the retained ZIP. Their byte claims cannot be independently rehashed locally.",
+    "Observer original-child exit/EOF/owned profile retirement does not establish global or unknown descendant quiescence or a numeric FD inventory.",
+    "Current source/CI gate permits subsequent separately controlled physical preparation. Physical build/reference/material/readiness, pilot/effects/reduction/closure, conformance/archive/latest CI/final release gates remain separate.",
+    "Earlier broad schema locator output was truncated; acceptance-critical fields were subsequently evaluated from complete actual original bytes inside this finite reader."
+  ],
+  "selection": {
+    "all88exact_skip_ID_reason_scope_joins": true,
+    "baseline_C_exact_ordered_discovery_portable_allowlist_and9declarations_preserved": true,
+    "integration_executed": false,
+    "manifest_path": ".ci/integration-test-selection.v1.json",
+    "manifest_sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805",
+    "nine_original_declarations": [
+      {
+        "reason": "Verifies exact historical image, dependency bytes and real frozen fragment, rather than a unit schema predicate",
+        "required_capabilities": [
+          "exact original DeepStream physical image evidence/dependency source scope"
+        ],
+        "source": {
+          "line": 59,
+          "path": "tests/test_checkpoint_deepstream_runtime_image_evidence_v1.py"
+        },
+        "test_id": "test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment"
+      },
+      {
+        "reason": "Actual historical all-system parity/model/image materialization chain",
+        "required_capabilities": [
+          "original physical full qualification/model/image inputs with matching source scope"
+        ],
+        "source": {
+          "line": 178,
+          "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+        },
+        "test_id": "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound"
+      },
+      {
+        "reason": "Actual historical all-system parity/model/image materialization chain",
+        "required_capabilities": [
+          "original physical full qualification/model/image inputs with matching source scope"
+        ],
+        "source": {
+          "line": 81,
+          "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+        },
+        "test_id": "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment"
+      },
+      {
+        "reason": "Explicit actual Docker run over held inputs, with real exact image/GPU requirements",
+        "required_capabilities": [
+          "exact live pinned Docker/socket/image/GPU"
+        ],
+        "source": {
+          "line": 900,
+          "path": "tests/test_checkpoint_openvino_gva_publication_runtime_v3.py"
+        },
+        "test_id": "test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy"
+      },
+      {
+        "reason": "Actual require_files=True rehashes original complete media/receipt graph",
+        "required_capabilities": [
+          "exact original complete corpus and receipt graph"
+        ],
+        "source": {
+          "line": 65,
+          "path": "tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py"
+        },
+        "test_id": "test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate"
+      },
+      {
+        "reason": "Actual require_files=True rehashes original complete media/receipt graph",
+        "required_capabilities": [
+          "exact original complete corpus and receipt graph"
+        ],
+        "source": {
+          "line": 126,
+          "path": "tests/test_kpp_iss_publication_v3_dataset_integration.py"
+        },
+        "test_id": "test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus"
+      },
+      {
+        "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+        "required_capabilities": [
+          "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+        ],
+        "source": {
+          "line": 83,
+          "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+        },
+        "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts"
+      },
+      {
+        "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+        "required_capabilities": [
+          "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+        ],
+        "source": {
+          "line": 67,
+          "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+        },
+        "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants"
+      },
+      {
+        "reason": "Actual full patch/receipt/module equality; old g cannot become current selected equality by copying metadata",
+        "required_capabilities": [
+          "matching current full qualification source/receipt domain; live method additionally exact Docker/worker/model grant"
+        ],
+        "source": {
+          "line": 406,
+          "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+        },
+        "test_id": "test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer"
+      }
+    ],
+    "skip_audit_canonical_sha256": "3fc8d60a8259068730cb707c460b7631c7836b4b267f0df0d7f60af0c9500370"
+  },
+  "source": {
+    "Git_batch_EOF_returncode0_and_reader_closed": true,
+    "all_raw_Git_blob_SHA1_and_SHA256_verified": true,
+    "bytes": 371788340,
+    "canonical_table_sha256": "76ae2646a71876f4dbba669970d68850d51e9549f8f2ff72e4a4f8460afffc81",
+    "current_dirty_progress_docs_outside_exact_D_CI_scope": [
+      "PLAN.md",
+      "openspec/changes/run-finite-component-study/conformance.md",
+      "openspec/changes/run-finite-component-study/implementation-validation.md",
+      "progress.md"
+    ],
+    "current_raw_diff_sha256": "3597a6010f7a1b4dc0bd2354aa1422a859ea668f8105ff6c34e26f6900a75aff",
+    "git_commands": [
+      [
+        "/mnt/c/Program Files/Git/cmd/git.exe",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "rev-parse",
+        "HEAD"
+      ],
+      [
+        "/mnt/c/Program Files/Git/cmd/git.exe",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "ls-tree",
+        "-rzl",
+        "--full-tree",
+        "42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a"
+      ],
+      [
+        "/mnt/c/Program Files/Git/cmd/git.exe",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "cat-file",
+        "--batch"
+      ],
+      [
+        "/mnt/c/Program Files/Git/cmd/git.exe",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "rev-parse",
+        "HEAD"
+      ],
+      [
+        "/mnt/c/Program Files/Git/cmd/git.exe",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-c",
+        "core.longpaths=true",
+        "-C",
+        "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "diff",
+        "--no-renames",
+        "--raw",
+        "-z",
+        "42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a",
+        "--"
+      ]
+    ],
+    "managed_HEAD_before_after": "42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a",
+    "managed_production_test_CI_spec_source_diff_from_D_empty": true,
+    "mode_path_object_size_sha_rows_canonical_sha256": "21dbf44bb84c88debc078d076d9f1846b07e5d5dc804a4ca9726fa7a87e0eb65",
+    "modes": {
+      "100644": 6661,
+      "100755": 4
+    },
+    "original_table_sha256": "93fd858e5d3e39f86f8bcb0bfb5786e136f758e8aa751d2fd01d4f38869d27dc",
+    "rows": 6665
+  },
+  "source_CI_gate_closed": true,
+  "source_commit": "42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a",
+  "status": "PASS_SOURCE_CI_ONLY",
+  "tests": {
+    "all3101unique_starts_terminals_actual_outcomes_joined": true,
+    "all6prior_errors_now_original_success": [
+      "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_assessment_recomputes_and_rejects_stale_runtime_source_closure",
+      "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed",
+      "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_exact_worker_receipt_and_resource_v2_evidence_are_bound",
+      "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_phase_one_materializes_exact_policy_and_resource_bindings",
+      "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_physical_source_drift_is_rejected_after_fixture_is_pinned",
+      "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant"
+    ],
+    "all8original_fixture_ids_discovered": [
+      "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_assessment_recomputes_and_rejects_stale_runtime_source_closure",
+      "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed",
+      "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_exact_worker_receipt_and_resource_v2_evidence_are_bound",
+      "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_phase_one_materializes_exact_policy_and_resource_bindings",
+      "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_physical_source_drift_is_rejected_after_fixture_is_pinned",
+      "test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_policy_identity_is_the_external_worker_and_topology_v2_is_invariant",
+      "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound",
+      "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment"
+    ],
+    "deferred_integration": 9,
+    "discovered": 3110,
+    "elapsed_s": 1537.8427825239999,
+    "error": 0,
+    "expected_failure": 0,
+    "failure": 0,
+    "missing_required": 0,
+    "required_native3_success": [
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_policy_topology_regression",
+      "test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_reset_queue_level_regression"
+    ],
+    "selected": 3101,
+    "skip": 88,
+    "success": 3013,
+    "two_unchanged_original_GST_fixture_integration_deferrals": [
+      "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound",
+      "test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment"
+    ],
+    "unexpected_success": 0
+  },
+  "verified_archives": [
+    {
+      "all_CRC_full_SHA_and_safe_paths_verified": true,
+      "decoded_size_bytes": 12470119,
+      "member_count": 202,
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11332613592.original.zip",
+        "sha256": "c8ec9432576bb7fc1dea2fec1152a44d3568d5b71ab7358af51692708cf43c49",
+        "size_bytes": 2402045
+      },
+      "provider_digest_matched": true
+    },
+    {
+      "all_CRC_full_SHA_and_safe_paths_verified": true,
+      "decoded_size_bytes": 3075345,
+      "member_count": 51,
+      "original_zip": {
+        "path": "/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/artifact-11331154732.original.zip",
+        "sha256": "89decec2bbc2114ebd77bb5054b72fdfd74280d5eb89004ce4344220328809f5",
+        "size_bytes": 586868
+      },
+      "provider_digest_matched": true
+    }
+  ]
+}

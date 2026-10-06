@@ -270,3 +270,57 @@ def load_component_guardian_preprocessing_contract_v1(*, project_root, preproces
             pins.verify()
             source["verify_barrier"]()
     return {"preprocessing_contract": contract, "receipt": receipt, "authority": authority}
+
+
+STUDY_AUTHORITY_KIND_V1 = "vast_guardian_finite_study_preprocessing_authority_v1"
+
+
+def validate_finite_study_guardian_authority_v1(value):
+    """A separate local input binding; it never authorizes legacy qualification."""
+    _require(type(value) is dict and set(value) == AUTHORITY_FIELDS | {"study_scope"} and
+        value["schema_version"] == 1 and value["artifact_kind"] == STUDY_AUTHORITY_KIND_V1 and
+        all(_valid_sha(value[key]) for key in AUTHORITY_SHA_FIELDS), "study preprocessing identities drifted")
+    from publication_operational_request_domain_v1 import validate_study_scope_v1
+    validate_study_scope_v1(value["study_scope"])
+    rows = value["allowed_operations"]
+    _require(type(rows) is list and len(rows) == 32 and len({r["operation_id"] for r in rows}) == 32,
+        "study preprocessing must cover the exact maximum original 32 operations")
+    for row in rows:
+        _require(type(row) is dict and set(row) == OPERATION_FIELDS and row["system"] == "gstreamer_custom" and
+            row["codec"] == "h264" and row["policy"] in {"cpu_only", "gpu_only"} and row["deadline_ms"] == 100.0 and
+            row["scenario"] in {"checkpoint_independent_processes_baseline", "checkpoint_video_dag_shared"},
+            "study operation coordinates drifted")
+        for key, maximum in (("operation_id", 128), ("arm_id", 68), ("run_id", 64)):
+            _require(type(row[key]) is str and 0 < len(row[key]) <= maximum and row[key].isascii() and
+                all(0x21 <= ord(char) < 0x7f and char not in {'"', chr(92)} for char in row[key]), "study ID is outside source bounds")
+        wire = hashlib.sha256(("analytics_execution_arm_v1\n" + row["run_id"] + "\n" + row["policy"] +
+            "\n" + f"{row['deadline_ms']:.6f}").encode("ascii")).hexdigest()
+        _require(row["wire_arm_id"] == wire, "study wire arm identity differs from original native constructor")
+    return copy.deepcopy(value)
+
+
+def validate_finite_study_operational_context_v1(authority, context):
+    validate_finite_study_guardian_authority_v1(authority)
+    _require(type(context) is dict and set(context) == {"headers_by_route", "output_dir"}, "study capture context fields drifted")
+    headers = context["headers_by_route"]
+    _require(set(headers) == {tuple(route.split(":")) for route in ROUTES} and
+        all(header.get("study_scope") == authority["study_scope"] for header in headers.values()),
+        "study capture lost the original plan/eight routes")
+    unsigned = {"schema_version": 1, "artifact_kind": "vast_finite_study_guardian_capture_context_v1",
+        "mode": "finite-component-study", "headers_by_route": {":".join(route): header for route, header in headers.items()},
+        "output_dir": context["output_dir"]}
+    document = {**unsigned, "sha256": _semantic_sha(unsigned)}
+    _require(document["sha256"] == authority["operational_context_identity_sha256"] and
+        hashlib.sha256(_canonical(document) + b"\n").hexdigest() == authority["operational_context_file_sha256"],
+        "study active context differs from original prelaunch bytes")
+
+
+def validate_finite_study_front_request_v1(authority, manifest, message, route, protocol_mode, active_operation):
+    matches = [row for row in authority["allowed_operations"] if row["operation_id"] == active_operation]
+    _require(len(matches) == 1, "study has no single active original arm")
+    # Reuse original implementation/emitter/forced-route checks, after the
+    # independent study operation gate rather than retargeting the old kind.
+    operation = matches[0]
+    _require(message.get("run_id") == operation["run_id"] and message.get("arm_id") == operation["wire_arm_id"],
+        "study request is not the currently active original arm")
+    validate_component_front_request_v1({"allowed_operations": [operation]}, manifest, message, route, protocol_mode)

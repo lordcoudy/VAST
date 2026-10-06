@@ -1,0 +1,61 @@
+2026-10-06T12:24:48Z
+test_native_client_regression (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression) ... FAIL
+test_source_original_drain_and_stop_latch (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_source_original_drain_and_stop_latch) ... FAIL
+
+======================================================================
+FAIL: test_native_client_regression (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_client_regression)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 65, in test_native_client_regression
+    self._compile_and_run("checkpoint_analytics_execution_client_test.cpp", ("glib-2.0",))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 58, in _compile_and_run
+    self.assertEqual(
+AssertionError: 1 != 0 : analytics peer close was reported as: analytics execution response is missing or truncated
+
+
+======================================================================
+FAIL: test_source_original_drain_and_stop_latch (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_source_original_drain_and_stop_latch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 74, in test_source_original_drain_and_stop_latch
+    self._compile_and_run("checkpoint_source_lifecycle_test.cpp",
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 50, in _compile_and_run
+    self.assertEqual(
+AssertionError: 1 != 0 : /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp: In function ‘bool {anonymous}::wall_clock_never_goes_backwards()’:
+/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:382:9: error: ‘NonDecreasingWallClock’ is not a member of ‘vast’
+  382 |   vast::NonDecreasingWallClock clock;
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:384:43: error: request for member ‘observe’ in ‘clock’, which is of non-class type ‘clock_t() noexcept’ {aka ‘long int() noexcept’}
+  384 |   const std::uint64_t observed[] = {clock.observe(base), clock.observe(base - 2'000'000ULL),
+      |                                           ^~~~~~~
+/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:384:64: error: request for member ‘observe’ in ‘clock’, which is of non-class type ‘clock_t() noexcept’ {aka ‘long int() noexcept’}
+  384 |   const std::uint64_t observed[] = {clock.observe(base), clock.observe(base - 2'000'000ULL),
+      |                                                                ^~~~~~~
+/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:385:13: error: request for member ‘observe’ in ‘clock’, which is of non-class type ‘clock_t() noexcept’ {aka ‘long int() noexcept’}
+  385 |       clock.observe(base - 1'999'999ULL), clock.observe(base + 5ULL), clock.observe(base + 5ULL)};
+      |             ^~~~~~~
+/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:385:49: error: request for member ‘observe’ in ‘clock’, which is of non-class type ‘clock_t() noexcept’ {aka ‘long int() noexcept’}
+  385 |       clock.observe(base - 1'999'999ULL), clock.observe(base + 5ULL), clock.observe(base + 5ULL)};
+      |                                                 ^~~~~~~
+/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:385:77: error: request for member ‘observe’ in ‘clock’, which is of non-class type ‘clock_t() noexcept’ {aka ‘long int() noexcept’}
+  385 |       clock.observe(base - 1'999'999ULL), clock.observe(base + 5ULL), clock.observe(base + 5ULL)};
+      |                                                                             ^~~~~~~
+/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:388:40: error: request for member ‘max_clamp_ns’ in ‘clock’, which is of non-class type ‘clock_t() noexcept’ {aka ‘long int() noexcept’}
+  388 |   if (observed[1] != base + 1 || clock.max_clamp_ns() != 2'000'001ULL) { std::cerr << "wall clamp drifted\n"; return false; }
+      |                                        ^~~~~~~~~~~~
+/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:389:21: error: request for member ‘observe’ in ‘clock’, which is of non-class type ‘clock_t() noexcept’ {aka ‘long int() noexcept’}
+  389 |   try { (void)clock.observe(base - 11'000'000ULL); std::cerr << "wall step beyond bound accepted\n"; return false; }
+      |                     ^~~~~~~
+/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:391:28: error: ‘vast::NonDecreasingWallClock’ has not been declared
+  391 |   const auto first = vast::NonDecreasingWallClock::now_ns();
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:392:16: error: ‘vast::NonDecreasingWallClock’ has not been declared
+  392 |   return vast::NonDecreasingWallClock::now_ns() > first;
+      |                ^~~~~~~~~~~~~~~~~~~~~~
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 3.270s
+
+FAILED (failures=2)
+EXIT=1

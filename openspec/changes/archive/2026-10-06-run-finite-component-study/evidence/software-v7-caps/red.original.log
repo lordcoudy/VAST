@@ -1,0 +1,20 @@
+2026-10-05T13:05:56Z
+test_study_reference_actual_software_eos_and_deadline (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_study_reference_actual_software_eos_and_deadline) ... FAIL
+
+======================================================================
+FAIL: test_study_reference_actual_software_eos_and_deadline (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_study_reference_actual_software_eos_and_deadline)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 82, in test_study_reference_actual_software_eos_and_deadline
+    self._compile_and_run("checkpoint_study_reference_test.cpp",
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 58, in _compile_and_run
+    self.assertEqual(
+AssertionError: 1 != 0 : study-reference actual clock-domain proof PASS
+default multiview fields were not structurally equal to the pinned caps
+
+
+----------------------------------------------------------------------
+Ran 1 test in 2.245s
+
+FAILED (failures=1)
+EXIT=1

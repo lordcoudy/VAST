@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py", line 27, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py", line 23, in main
+    return run_checkpoint_runtime(("--system", "gstreamer_custom", *values))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py", line 3238, in main
+    run_finite_study_source_gate_v1(study_plan=json.loads(args.finite_study_plan.read_bytes()), project_root=project_root,
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py", line 3001, in run_finite_study_source_gate_v1
+    _require(time.monotonic()<startup and all(c.poll() is None for c in children.values()),"source gate READY failed")
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py", line 456, in _require
+    raise ContractError(message)
+benchmark_contract.ContractError: source gate READY failed

@@ -1,0 +1,173 @@
+[
+    {
+        "Id": "sha256:2e584910a8e0c223b44ae4c8d6e2f207e013381ff3f27cee01e4aa8be6107690",
+        "RepoTags": [
+            "vast/finite-study-native:1bc92b0d56556b2ced118482",
+            "vast/finite-study-native:1bc92b0d56556b2ced118482-determinism-a",
+            "vast/finite-study-native:1bc92b0d56556b2ced118482-determinism-b",
+            "vast/finite-study-native:283c4032ae67501ea21010b9",
+            "vast/finite-study-native:283c4032ae67501ea21010b9-determinism-a",
+            "vast/finite-study-native:283c4032ae67501ea21010b9-determinism-b",
+            "vast/finite-study-native:2abf60fdea1c10c521fcbf15",
+            "vast/finite-study-native:2abf60fdea1c10c521fcbf15-determinism-a",
+            "vast/finite-study-native:2abf60fdea1c10c521fcbf15-determinism-b",
+            "vast/finite-study-native:360f41dd750fec837d4910a0",
+            "vast/finite-study-native:360f41dd750fec837d4910a0-determinism-a",
+            "vast/finite-study-native:360f41dd750fec837d4910a0-determinism-b",
+            "vast/finite-study-native:e0e20a97ec46b84fde168185",
+            "vast/finite-study-native:e0e20a97ec46b84fde168185-determinism-a",
+            "vast/finite-study-native:e0e20a97ec46b84fde168185-determinism-b",
+            "vast/finite-study-native:e30c0c1e4d12e7ea7d080957",
+            "vast/finite-study-native:e30c0c1e4d12e7ea7d080957-determinism-a",
+            "vast/finite-study-native:e30c0c1e4d12e7ea7d080957-determinism-b"
+        ],
+        "RepoDigests": [
+            "vast/finite-study-native@sha256:2e584910a8e0c223b44ae4c8d6e2f207e013381ff3f27cee01e4aa8be6107690"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2024-08-01T00:00:00Z",
+        "Config": {
+            "User": "dlstreamer",
+            "Env": [
+                "PATH=/opt/intel/dlstreamer/gstreamer/bin:/opt/intel/dlstreamer/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LIBVA_DRIVER_NAME=iHD",
+                "GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/",
+                "LD_LIBRARY_PATH=/opt/intel/dlstreamer/gstreamer/lib:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/lib/gstreamer-1.0:/opt/opencv:/opt/rdkafka:/opt/librealsense:/usr/local/lib/gstreamer-1.0:/usr/local/lib",
+                "LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri",
+                "GST_VA_ALL_DRIVERS=1",
+                "MODEL_PROC_PATH=/opt/intel/dlstreamer/samples/gstreamer/model_proc",
+                "PYTHONPATH=/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages:/opt/intel/dlstreamer/python:/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages:",
+                "TERM=xterm",
+                "GI_TYPELIB_PATH=/opt/intel/dlstreamer/gstreamer/lib/girepository-1.0:/opt/intel/dlstreamer/lib/girepository-1.0:/usr/lib/x86_64-linux-gnu/girepository-1.0",
+                "NVIDIA_DRIVER_CAPABILITIES=compute,utility,video",
+                "VAST_NATIVE_PYTHONPATH=/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages:/opt/intel/dlstreamer/python",
+                "VAST_GST_REGISTRY_TEMPLATE=/opt/vast/share/gstreamer-registry.bin"
+            ],
+            "Entrypoint": [
+                "/usr/local/bin/vast_native_gst_probe"
+            ],
+            "WorkingDir": "/home/dlstreamer",
+            "Labels": {
+                "org.opencontainers.image.version": "24.04",
+                "org.vast.component": "openvino-native-probe-publication-foundation",
+                "org.vast.native_probe.kind": "openvino-dlstreamer",
+                "org.vast.native_probe.source_sha": "5e8f1603c708bf8934ab313c92ccb678fc77d237b9e80e88e72effed615a3dea",
+                "org.vast.publication-image.base-image-id": "sha256:355435d2bdb986fe1d51f443d366da3ac1eb0c7175aa03ce2b31e4485f36b3bd",
+                "org.vast.publication-image.build-context-sha256": "6444ec4b505777ba46821f3ed356013dd1cfa92c7643a2a6a23ec32ed63796a0",
+                "org.vast.publication-image.build-image-id": "sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+                "org.vast.publication-image.dependency-set-sha256": "5f3b2eda1b2e93b48951515f01d961516a1e3661b84ad54608e45f91eca983d2",
+                "org.vast.publication-image.source-set-sha256": "5e8f1603c708bf8934ab313c92ccb678fc77d237b9e80e88e72effed615a3dea"
+            },
+            "ArgsEscaped": true,
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "bash",
+                    "-c",
+                    "pgrep bash > /dev/null || exit 1"
+                ],
+                "Interval": 30000000000,
+                "Timeout": 10000000000,
+                "StartPeriod": 5000000000,
+                "Retries": 3
+            },
+            "Shell": [
+                "/bin/bash",
+                "-xo",
+                "pipefail",
+                "-c"
+            ]
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 835707126,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:98effb2dfe85d4c431f97d90482075f19e5fc3a57c2dd423d8bdfd4813620043",
+                "sha256:a4922c786e99cabdeaaf6c0bc22c4ae0be1a106d2d345a46f5489bf24e1b9a3b",
+                "sha256:60ca64b01c88f6f3cf417c4729fc8dbe5d48449879af9bb7ad4ba4274d0393e5",
+                "sha256:f675eb9fbdc4811cc829247eb4ead5e3cc492c4f43be6ba70c8a49674d556460",
+                "sha256:f083a96678cac66e9edd158fd4a9e4f5db6c8a7fae781296f0b8d7f03a5011e3",
+                "sha256:9c5189838dc70f5f288df20f834055cdf9579cc3a0fd7b1bc60b21744dc27828",
+                "sha256:7810e2d98f6fb5f9ed7034b8c43352a5604043d8e764746c784b8e46a52fa86f",
+                "sha256:a736af9ca6c2e9a8234eb318dc4de351e86f124738a017bbe27a7106cf7ce8e8",
+                "sha256:59a33391f2cd5d174ead6c215179ee79a8ca058dd377fd157860f961dcd9c5e9",
+                "sha256:d0f1042332e16d96c87ce91db92ef18b49f91b05e55b8db484f28bfdcd2818ed",
+                "sha256:f75989a1efc719010f77a68a8a2d05d291b2959e57dd0ec949a09a83649b5710",
+                "sha256:b30d478f8ffa1230227eebb73fbd5ea3462529c01543a14ae42c2c9bbcc2dae2",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:2ed57121fa61ff0fd9c6285b7cdf9f6eb14db336d07bcd12b24fe929d8d09a26",
+                "sha256:272e4fa9da6f4d116fbd4c1ef6d6d79821ec74dd4e19a25a723c4a13e0700d29"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-06T10:07:18.427137814Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:2e584910a8e0c223b44ae4c8d6e2f207e013381ff3f27cee01e4aa8be6107690",
+            "size": 3324,
+            "annotations": {
+                "config.digest": "sha256:7e2e642b484806118dae460b1e6d805b977ef2a1af14d06eda5bbb9f3536363d"
+            }
+        },
+        "Identity": {
+            "Pull": [
+                {
+                    "Repository": "docker.io/vast/finite-study-native"
+                }
+            ],
+            "Build": [
+                {
+                    "Ref": "3m8lnlp12pz3wdppdttb5lein",
+                    "CreatedAt": "2026-10-06T10:07:01.827441829Z"
+                },
+                {
+                    "Ref": "4ixvlevuxbtk47yl9vnegewgo",
+                    "CreatedAt": "2026-10-05T13:35:07.426716872Z"
+                },
+                {
+                    "Ref": "gdyhv16ed2djdsbhenzn5aqf1",
+                    "CreatedAt": "2026-10-05T14:04:54.715560392Z"
+                },
+                {
+                    "Ref": "h4eanbyzr9iw4qnwgb0q8vfpa",
+                    "CreatedAt": "2026-10-06T09:11:33.974064868Z"
+                },
+                {
+                    "Ref": "ketdve4v6i3al7xr29937nj26",
+                    "CreatedAt": "2026-10-06T09:11:18.079093726Z"
+                },
+                {
+                    "Ref": "njubu9q6bm0l7z1nujn7enprk",
+                    "CreatedAt": "2026-10-06T08:10:56.0447638Z"
+                },
+                {
+                    "Ref": "nl3gz1o7371l1heulradhkrqo",
+                    "CreatedAt": "2026-10-05T13:35:38.951357617Z"
+                },
+                {
+                    "Ref": "scgdvcxpax7zdkml9ueztc5t5",
+                    "CreatedAt": "2026-10-06T09:03:04.416538584Z"
+                },
+                {
+                    "Ref": "tte6r4swwqi0rr35s18f246xp",
+                    "CreatedAt": "2026-10-06T08:10:39.938336359Z"
+                },
+                {
+                    "Ref": "usv055sd2jqyrj6azkou8sysd",
+                    "CreatedAt": "2026-10-06T09:02:49.316665772Z"
+                },
+                {
+                    "Ref": "xkm4zrvcwtg0a4n4j6f7ur146",
+                    "CreatedAt": "2026-10-05T14:05:15.658223202Z"
+                },
+                {
+                    "Ref": "yku02x8hkysmgv1a17z4i7zdo",
+                    "CreatedAt": "2026-10-06T10:07:17.68631692Z"
+                }
+            ]
+        }
+    }
+]

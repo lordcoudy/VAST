@@ -1,0 +1,169 @@
+--- before/scripts/checkpoint_gstreamer_runtime.py
++++ after/scripts/checkpoint_gstreamer_runtime.py
+@@ -3039,12 +3039,11 @@
+ def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, run_id,
+         native_context_path, capability_manifest, calibration, execution_manifest,
+         analytics_model_manifest, analytics_execution_socket, preprocessing_sha256,
+-        binary, source_binary, client_mode, campaign_deadline_ns, worker_clock_environment):
++        binary, source_binary, detect_bin, client_mode, campaign_deadline_ns, worker_clock_environment):
+     """Execute an actually typed arm on the original native/control spine."""
+     import time
+     from checkpoint_runtime_plan import build_finite_study_runtime_plan_v1
+     from publication_operational_runtime_context_v1 import load_native_operational_context_v1
+-    from publication_policy_qualification_runtime_inputs_v2 import DETECT_BIN
+     plan = build_finite_study_runtime_plan_v1(study_plan, arm_id)
+     arm = next(row for row in [*study_plan["arms"], *study_plan["pilots"]["initial"],
+         *study_plan["pilots"]["conditional"]] if row["arm_id"] == arm_id)
+@@ -3078,7 +3077,7 @@
+         calibration=calibration, operational_context=context, study_runtime_plan=plan)
+     bindings = load_analytics_model_bindings(Path(analytics_model_manifest), required_branches=plan["required_branches"])
+     specs = build_gstreamer_worker_specs(plan=plan, binary=Path(binary), output_root=native_output,
+-        project_root=Path(project_root), run_id=run_id, duration_s=180, detect_bin=DETECT_BIN,
++        project_root=Path(project_root), run_id=run_id, duration_s=180, detect_bin=detect_bin,
+         analytics_terminal_mode=NATIVE_TERMINAL_ANALYTICS_MODE, analytics_model_bindings=bindings,
+         analytics_queue_max_buffers=1, native_policy=policy, native_policy_deadline_ms=100.0,
+         analytics_execution_socket=analytics_execution_socket, analytics_preprocessing_contract_sha256=preprocessing_sha256,
+@@ -3249,6 +3248,7 @@
+             calibration=_load_yaml(args.policy_calibration), execution_manifest=_load_yaml(args.analytics_execution_manifest),
+             analytics_model_manifest=args.analytics_model_manifest, analytics_execution_socket=args.analytics_execution_socket,
+             preprocessing_sha256=args.analytics_preprocessing_contract_sha256, binary=args.binary, source_binary=args.source_binary,
++            detect_bin=args.detect_bin,
+             client_mode="branch-channel" if args.finite_study_client_mode == "branch" else "global-client",
+             campaign_deadline_ns=args.finite_study_campaign_deadline_ns,
+             worker_clock_environment={key: os.environ.get(key) for key in
+--- before/scripts/run_canonical_systems_study_v1.py
++++ after/scripts/run_canonical_systems_study_v1.py
+@@ -1025,6 +1025,7 @@
+ 
+ 
+ def execute_arm(commands,args,root,prepared,plan,arm,service,clock_proof,material):
++    from publication_policy_qualification_runtime_inputs_v2 import DETECT_BIN
+     commands.remaining();material["verify_barrier"]();verify_source_pins(prepared["source_pins"],commands)
+     operation=next(row for row in prepared["control"]["operations"] if row["arm_id"]==arm["arm_id"])
+     out=commands.output/arm["arm_id"];out.mkdir(mode=0o700)
+@@ -1037,7 +1038,8 @@
+         "--policy-capability-manifest",root/material["descriptors"]["capability_manifest"]["path"],"--policy-calibration",root/material["descriptors"]["calibration"]["path"],
+         "--analytics-execution-manifest",control["execution_manifest"]["path"],"--analytics-model-manifest",control["model_manifest"]["path"],
+         "--analytics-execution-socket",service.front_socket,"--analytics-preprocessing-contract-sha256",hashlib.sha256(canonical_json_v1(material["preprocessing_contract"])).hexdigest(),
+-        "--binary","/usr/local/bin/vast_native_gst_probe","--source-binary","/usr/local/bin/vast_checkpoint_source","--output-dir",out,"--run-id",operation["run_id"]]
++        "--binary","/usr/local/bin/vast_native_gst_probe","--source-binary","/usr/local/bin/vast_checkpoint_source",
++        "--detect-bin",DETECT_BIN,"--output-dir",out,"--run-id",operation["run_id"]]
+     child,record=_native(commands,args.engine,prepared["images"]["gstreamer"]["image_id"],root,out,arguments,
+         entrypoint="/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3",environment=clock_proof["native_environment"])
+     commands.wait(child,record,maximum_files=((str(out/"arm.original.json"),64*1024**2),))
+--- before/tests/test_run_canonical_systems_study_v1.py
++++ after/tests/test_run_canonical_systems_study_v1.py
+@@ -210,17 +210,20 @@
+ 
+     def test_original_runtime_main_translates_branch_once_to_canonical_receipt_mode(self):
+         import checkpoint_gstreamer_runtime as runtime
++        from publication_policy_qualification_runtime_inputs_v2 import DETECT_BIN
+         command=["--scenario","checkpoint_video_dag_shared","--finite-study-plan","/fixture/plan",
+             "--finite-study-arm","fixture-arm","--finite-study-client-mode","branch",
+             "--finite-study-campaign-deadline-ns","123","--operational-request-context","/fixture/context",
+             "--policy-capability-manifest","/fixture/capability","--policy-calibration","/fixture/calibration",
+             "--analytics-execution-manifest","/fixture/execution","--analytics-model-manifest","/fixture/model",
+-            "--analytics-execution-socket","/fixture/socket","--analytics-preprocessing-contract-sha256","a"*64]
++            "--analytics-execution-socket","/fixture/socket","--analytics-preprocessing-contract-sha256","a"*64,
++            "--detect-bin",DETECT_BIN]
+         with mock.patch.object(runtime,"_load_yaml",return_value={"software_fixture_only":True}),mock.patch.object(runtime,"run_finite_study_arm_v1") as arm:
+             self.assertEqual(runtime.main(command),0)
+             arm.assert_called_once()
+             self.assertEqual(arm.call_args.kwargs["client_mode"],"branch-channel")
+             self.assertEqual(arm.call_args.kwargs["campaign_deadline_ns"],123)
++            self.assertEqual(arm.call_args.kwargs["detect_bin"],DETECT_BIN)
+ 
+     def test_control_failure_still_closes_actual_service_thread_and_preserves_primary(self):
+         with tempfile.TemporaryDirectory() as tmp:
+--- before/deploy/deepstream/checkpoint/Dockerfile.runtime
++++ after/deploy/deepstream/checkpoint/Dockerfile.runtime
+@@ -49,6 +49,7 @@
+   scripts/backend_runtime_grant.py \
+   scripts/backend_runtime_qualification_v3.py \
+   scripts/benchmark_contract.py \
++  scripts/canonical_systems_study_plan_v1.py \
+   scripts/checkpoint_acceptance_metadata_binding.py \
+   scripts/checkpoint_admission.py \
+   scripts/checkpoint_deepstream_container_runtime_v3.py \
+@@ -109,6 +110,7 @@
+ COPY \
+   deploy/native_gst_probe/checkpoint_admission_transport.hpp \
+   deploy/native_gst_probe/checkpoint_source_coordinator.cpp \
++  deploy/native_gst_probe/checkpoint_study_reference.hpp \
+   /tmp/vast-source-build/deploy/native_gst_probe/
+ COPY \
+   deploy/deepstream/checkpoint/vast_deepstream_meta_bridge.cpp \
+--- before/deploy/deepstream/checkpoint/runtime-source-allowlist.txt
++++ after/deploy/deepstream/checkpoint/runtime-source-allowlist.txt
+@@ -8,6 +8,7 @@
+ deploy/deepstream/checkpoint/vast_deepstream_publication_runtime_v3
+ deploy/native_gst_probe/checkpoint_admission_transport.hpp
+ deploy/native_gst_probe/checkpoint_source_coordinator.cpp
++deploy/native_gst_probe/checkpoint_study_reference.hpp
+ scripts/analytics_execution_endpoint.py
+ scripts/analytics_execution_protocol.py
+ scripts/analytics_execution_worker.py
+@@ -20,6 +21,7 @@
+ scripts/backend_runtime_qualification_v3.py
+ scripts/benchmark_contract.py
+ scripts/build_deepstream_publication_runtime_v3.sh
++scripts/canonical_systems_study_plan_v1.py
+ scripts/checkpoint_acceptance_metadata_binding.py
+ scripts/checkpoint_admission.py
+ scripts/checkpoint_deepstream_container_runtime_v3.py
+--- before/deploy/savant/publication/Dockerfile
++++ after/deploy/savant/publication/Dockerfile
+@@ -61,6 +61,7 @@
+   scripts/backend_runtime_grant.py \
+   scripts/backend_runtime_qualification_v3.py \
+   scripts/benchmark_contract.py \
++  scripts/canonical_systems_study_plan_v1.py \
+   scripts/checkpoint_acceptance_metadata_binding.py \
+   scripts/checkpoint_admission.py \
+   scripts/checkpoint_deepstream_protocol_adapter.py \
+--- before/deploy/savant/publication/runtime-source-allowlist.txt
++++ after/deploy/savant/publication/runtime-source-allowlist.txt
+@@ -16,6 +16,7 @@
+ scripts/backend_runtime_qualification_v3.py
+ scripts/benchmark_contract.py
+ scripts/build_savant_publication_runtime_v3.sh
++scripts/canonical_systems_study_plan_v1.py
+ scripts/checkpoint_acceptance_metadata_binding.py
+ scripts/checkpoint_admission.py
+ scripts/checkpoint_deepstream_protocol_adapter.py
+--- before/deploy/openvino_gva/publication/Dockerfile
++++ after/deploy/openvino_gva/publication/Dockerfile
+@@ -38,6 +38,7 @@
+   scripts/backend_runtime_grant.py \
+   scripts/backend_runtime_qualification_v3.py \
+   scripts/benchmark_contract.py \
++  scripts/canonical_systems_study_plan_v1.py \
+   scripts/checkpoint_acceptance_metadata_binding.py \
+   scripts/checkpoint_admission.py \
+   scripts/checkpoint_deepstream_protocol_bridge.py \
+@@ -98,6 +99,7 @@
+   deploy/native_gst_probe/checkpoint_native_policy_client.hpp \
+   deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp \
+   deploy/native_gst_probe/checkpoint_runtime_emitter.hpp \
++  deploy/native_gst_probe/checkpoint_study_reference.hpp \
+   deploy/native_gst_probe/vast_native_gst_probe.cpp \
+   /opt/vast/native-src/
+ # END VAST_RUNTIME_SOURCE_ALLOWLIST
+--- before/deploy/openvino_gva/publication/runtime-source-allowlist.txt
++++ after/deploy/openvino_gva/publication/runtime-source-allowlist.txt
+@@ -5,6 +5,7 @@
+ deploy/native_gst_probe/checkpoint_native_policy_client.hpp
+ deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp
+ deploy/native_gst_probe/checkpoint_runtime_emitter.hpp
++deploy/native_gst_probe/checkpoint_study_reference.hpp
+ deploy/native_gst_probe/vast_native_gst_probe.cpp
+ deploy/openvino_gva/publication/Dockerfile
+ deploy/openvino_gva/publication/vast_openvino_gva_publication_runtime_v3
+@@ -19,6 +20,7 @@
+ scripts/backend_runtime_grant.py
+ scripts/backend_runtime_qualification_v3.py
+ scripts/benchmark_contract.py
++scripts/canonical_systems_study_plan_v1.py
+ scripts/checkpoint_acceptance_metadata_binding.py
+ scripts/checkpoint_admission.py
+ scripts/checkpoint_deepstream_protocol_bridge.py

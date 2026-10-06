@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "record_type": "faithful_original_returned_tool_objects",
+  "tool_calls": [
+    {
+      "tool_name": "exec_command",
+      "arguments": {
+        "cmd": "$script=@'\nfrom pathlib import Path\nimport json,os,time\nbase=Path('/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/source-closure-regression-v1')\nrecords=[json.loads((base/p/'result.v1.json').read_bytes()) for p in ('red-01','green-01','green-02','green-03')]\npids=set();pgids=set()\nfor r in records:\n for who in ([r['owner'],r['observed_parent']] if 'owner' in r else [r]):\n  pids.add(who['pid']);pgids.add(who['pgid'])\nerrors=[];members=[]\nfor entry in Path('/proc').iterdir():\n if not entry.name.isdecimal():continue\n try:\n  parts=(entry/'stat').read_text().split(') ',1)[1].split();group=int(parts[2])\n  if group in pgids:members.append({'pid':int(entry.name),'pgid':group,'start_ticks':int(parts[19])})\n except (FileNotFoundError,ProcessLookupError):pass\n except Exception as e:errors.append({'pid':entry.name,'error':str(e)[:512]})\nrecord={'observed_monotonic_ns':time.monotonic_ns(),'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'target_pids':sorted(pids),'target_pgids':sorted(pgids),'pid_paths_absent':all(not(Path('/proc')/str(p)).exists() for p in pids),'group_members':members,'scan_errors':errors,'scope':'only exact original software test actors/groups; no global quiescence assertion'}\n(base/'process-scan-01.v1.json').write_bytes((json.dumps(record,sort_keys=True,indent=2)+'\\n').encode());print(json.dumps(record,sort_keys=True));raise SystemExit(0 if record['pid_paths_absent'] and not members and not errors else 1)\n'@\nwsl.exe -d Ubuntu --exec /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -c $script",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 1800
+      },
+      "result": {
+        "chunk_id": "36b3f7",
+        "wall_time_seconds": 0.9271813,
+        "exit_code": 0,
+        "original_token_count": 153,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000{\"boot_id\": \"dde50e69-39bf-45bd-bdb7-bc33c9adcb0b\", \"group_members\": [], \"observed_monotonic_ns\": 664238698547729, \"pid_paths_absent\": true, \"scan_errors\": [], \"scope\": \"only exact original software test actors/groups; no global quiescence assertion\", \"target_pgids\": [63234, 63254, 63321, 63395], \"target_pids\": [63234, 63255, 63322, 63395, 63396]}\n"
+      }
+    },
+    {
+      "tool_name": "exec_command",
+      "arguments": {
+        "cmd": "$script=@'\nfrom pathlib import Path\nimport json,os,time\nbase=Path('/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/source-closure-regression-v1')\nrecords=[json.loads((base/p/'result.v1.json').read_bytes()) for p in ('red-01','green-01','green-02','green-03')]\npids=set();pgids=set()\nfor r in records:\n for who in ([r['owner'],r['observed_parent']] if 'owner' in r else [r]):\n  pids.add(who['pid']);pgids.add(who['pgid'])\nerrors=[];members=[]\nfor entry in Path('/proc').iterdir():\n if not entry.name.isdecimal():continue\n try:\n  parts=(entry/'stat').read_text().split(') ',1)[1].split();group=int(parts[2])\n  if group in pgids:members.append({'pid':int(entry.name),'pgid':group,'start_ticks':int(parts[19])})\n except (FileNotFoundError,ProcessLookupError):pass\n except Exception as e:errors.append({'pid':entry.name,'error':str(e)[:512]})\nrecord={'observed_monotonic_ns':time.monotonic_ns(),'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'target_pids':sorted(pids),'target_pgids':sorted(pgids),'pid_paths_absent':all(not(Path('/proc')/str(p)).exists() for p in pids),'group_members':members,'scan_errors':errors,'scope':'only exact original software test actors/groups; no global quiescence assertion'}\n(base/'process-scan-02.v1.json').write_bytes((json.dumps(record,sort_keys=True,indent=2)+'\\n').encode());print(json.dumps(record,sort_keys=True));raise SystemExit(0 if record['pid_paths_absent'] and not members and not errors else 1)\n'@\nwsl.exe -d Ubuntu --exec /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -c $script",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 1800
+      },
+      "result": {
+        "chunk_id": "411b29",
+        "wall_time_seconds": 0.9809186,
+        "exit_code": 0,
+        "original_token_count": 153,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000{\"boot_id\": \"dde50e69-39bf-45bd-bdb7-bc33c9adcb0b\", \"group_members\": [], \"observed_monotonic_ns\": 664271666245943, \"pid_paths_absent\": true, \"scan_errors\": [], \"scope\": \"only exact original software test actors/groups; no global quiescence assertion\", \"target_pgids\": [63234, 63254, 63321, 63395], \"target_pids\": [63234, 63255, 63322, 63395, 63396]}\n"
+      }
+    }
+  ],
+  "scope": "later exact original local-test PID/group observations only"
+}

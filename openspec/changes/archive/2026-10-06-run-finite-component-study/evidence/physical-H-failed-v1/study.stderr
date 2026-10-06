@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/vfcb00199H/scripts/run_canonical_systems_study_v1.py", line 1234, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/s-a-balashov/vfcb00199H/scripts/run_canonical_systems_study_v1.py", line 1228, in main
+    result={"prepare":prepare,"run":run,"study":study}[args.operation](args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vfcb00199H/scripts/run_canonical_systems_study_v1.py", line 1203, in study
+    return run(campaign)
+           ^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vfcb00199H/scripts/run_canonical_systems_study_v1.py", line 1140, in run
+    service,authority,proof=start_pool(commands,root,prepared,material,variant)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vfcb00199H/scripts/run_canonical_systems_study_v1.py", line 918, in start_pool
+    return service,actual,service.study_worker_clock_domains_v1()
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vfcb00199H/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 6127, in study_worker_clock_domains_v1
+    self.study_idle_boundary_v1()
+  File "/home/s-a-balashov/vfcb00199H/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 6124, in study_idle_boundary_v1
+    "worker_peers": _canonical_clone(self._production_authority["peer_identities"])}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vfcb00199H/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 316, in _canonical_clone
+    cloned = json.loads(canonical_json_bytes(dict(value)))
+                                             ^^^^^^^^^^^
+ValueError: dictionary update sequence element #0 has length 5; 2 is required

@@ -10,6 +10,7 @@
 #include "checkpoint_native_policy_client.hpp"
 #include "checkpoint_resource_interval_emitter.hpp"
 #include "checkpoint_runtime_emitter.hpp"
+#include "checkpoint_study_reference.hpp"
 
 #include <algorithm>
 #include <array>
@@ -38,6 +39,7 @@
 #include <vector>
 
 #include <poll.h>
+#include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -69,6 +71,12 @@ struct Args {
   std::string checkpoint_codec;
   std::string checkpoint_allowed_decoder_factories;
   std::string source_replay;
+  std::string checkpoint_study_kind;
+  std::string checkpoint_study_accounting_path;
+  std::string checkpoint_study_waits_path;
+  std::string checkpoint_analytics_client_mode = "global-client";
+  int checkpoint_study_width = 0;
+  int checkpoint_study_height = 0;
   std::string checkpoint_analytics_mode = "topology_only";
   std::uint64_t source_duration_ns = 0;
   int input_port_base = 0;
@@ -341,16 +349,21 @@ class NativeProbeRuntime {
   }
 
   ~NativeProbeRuntime() {
-    for (GstElement* pipeline : pipelines_) {
-      if (pipeline != nullptr) {
-        gst_element_set_state(pipeline, GST_STATE_NULL);
-      }
-    }
+    checkpoint_loop_finished_.store(true);
+    stop_pipelines();
+    join_checkpoint_threads();
     stop_checkpoint_analytics_terminal_reader();
+    const guint timer = measurement_timer_id_.exchange(0);
+    if (timer != 0) g_source_remove(timer);
+    if (loop_ != nullptr) { g_main_loop_unref(loop_); loop_ = nullptr; }
     for (GstElement* pipeline : pipelines_) {
       if (pipeline != nullptr) {
         gst_object_unref(pipeline);
       }
+    }
+    // All descriptor users and streaming callbacks have retired above.
+    for (int* fd : {&checkpoint_control_fd_, &checkpoint_status_fd_, &checkpoint_data_fd_}) {
+      if (*fd >= 0) { ::close(*fd); *fd = -1; }
     }
   }
 
@@ -404,6 +417,7 @@ class NativeProbeRuntime {
     g_main_loop_unref(loop);
     loop_ = nullptr;
     flush_outputs();
+    finish_checkpoint_study_journals();
     return failed_.load() ? 1 : 0;
   }
 
@@ -411,7 +425,75 @@ class NativeProbeRuntime {
 #ifdef VAST_NATIVE_PROBE_TESTING
   friend struct NativeProbeRuntimeTestAccess;
 #endif
+  struct StudyJournal {
+    int fd = -1;
+    std::uint64_t bytes = 0;
+    std::string path;
+    struct stat opened{};
+    std::timed_mutex mutex;
+    ~StudyJournal() { if (fd >= 0) ::close(fd); }
+    void open_new(const std::string& original_path) {
+      path = original_path;
+      fd = ::open(path.c_str(), O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, 0600);
+      if (fd < 0) throw std::runtime_error("native study journal must be exclusively new and owned");
+      struct stat identity{};
+      if (::fstat(fd, &identity) != 0 || !S_ISREG(identity.st_mode) || identity.st_nlink != 1) {
+        ::close(fd); fd = -1;
+        throw std::runtime_error("native study journal is not an owned regular file");
+      }
+      opened = identity;
+    }
+    void append(const std::string& row, const vast::CheckpointIoDeadline& io) {
+      auto lock = io.acquire(mutex);
+      if (row.empty() || row.back() != '\n' || row.size() > 2048 || bytes > 64ULL * 1024 * 1024 - row.size())
+        throw std::runtime_error("native study journal exceeded original row/file cap");
+      std::size_t offset = 0;
+      while (offset < row.size()) {
+        io.check();
+        const ssize_t size = ::write(fd, row.data() + offset, row.size() - offset);
+        if (size < 0 && errno == EINTR) continue;
+        if (size <= 0) throw std::runtime_error("native study journal write failed");
+        offset += static_cast<std::size_t>(size);
+      }
+      bytes += row.size();
+    }
+    void finish(const vast::CheckpointIoDeadline* io = nullptr) {
+      if (fd < 0) return;
+      std::exception_ptr primary;
+      const auto verify = [&] {
+        if (io) io->check_original_deadline();
+        struct stat held{}, visible{};
+        if (::fstat(fd, &held) || ::lstat(path.c_str(), &visible) ||
+            !S_ISREG(held.st_mode) || !S_ISREG(visible.st_mode) || held.st_nlink != 1 || visible.st_nlink != 1 ||
+            held.st_dev != opened.st_dev || held.st_ino != opened.st_ino ||
+            visible.st_dev != held.st_dev || visible.st_ino != held.st_ino ||
+            held.st_size < 0 || static_cast<std::uint64_t>(held.st_size) != bytes || visible.st_size != held.st_size)
+          throw std::runtime_error("native study journal final descriptor/path/bytes custody failed");
+      };
+      try {
+        verify();
+        while (::fsync(fd) != 0) {
+          if (errno != EINTR) throw std::runtime_error("native study journal final fsync failed");
+          if (io) io->check_original_deadline();
+        }
+        verify();
+      } catch (...) { primary = std::current_exception(); }
+      const int owned = fd; fd = -1;
+      if (::close(owned) != 0) {
+        std::cerr << "[native-probe][cleanup] native study journal final close failed\n";
+        if (!primary) primary = std::make_exception_ptr(std::runtime_error("native study journal final close failed"));
+      }
+      try { if (io) io->check_original_deadline(); } catch (...) { if (!primary) primary = std::current_exception(); }
+      if (primary) std::rethrow_exception(primary);
+    }
+  };
   Args args_;
+  StudyJournal checkpoint_study_waits_;
+  StudyJournal checkpoint_study_receives_;
+  std::string checkpoint_study_boot_id_;
+  std::string checkpoint_study_time_namespace_;
+  std::uint64_t checkpoint_study_receive_sequence_ = 0;
+  std::uint64_t checkpoint_study_receive_offset_ns_ = 0;
   int streams_ = 1;
   std::vector<StreamState> states_;
   std::vector<std::string> sources_;
@@ -424,6 +506,12 @@ class NativeProbeRuntime {
   std::unique_ptr<vast::CheckpointFanoutWorkCounterEmitter> checkpoint_fanout_work_emitter_;
   std::unique_ptr<vast::CheckpointNativePolicyClient> checkpoint_policy_client_;
   std::unique_ptr<vast::CheckpointAnalyticsExecutionClient> checkpoint_analytics_execution_client_;
+  std::unordered_map<std::string, std::unique_ptr<vast::CheckpointAnalyticsExecutionClient>> checkpoint_branch_execution_clients_;
+  std::shared_ptr<vast::CheckpointIoDeadline> checkpoint_io_ = std::make_shared<vast::CheckpointIoDeadline>();
+  std::shared_ptr<vast::CheckpointIoDeadline> checkpoint_startup_io_ = [] {
+    const char* raw = std::getenv("VAST_CHECKPOINT_STARTUP_DEADLINE_MONOTONIC_NS");
+    return std::make_shared<vast::CheckpointIoDeadline>(raw && *raw ? parse_uint64(raw, "original startup deadline") : 0);
+  }();
   bool checkpoint_external_execution_mode_ = false;
   std::string checkpoint_worker_id_;
   std::string checkpoint_policy_emitter_sha256_;
@@ -456,7 +544,7 @@ class NativeProbeRuntime {
   std::ofstream stage_contracts_;
   std::mutex mutex_;
   std::mutex output_mutex_;
-  std::mutex checkpoint_status_mutex_;
+  std::timed_mutex checkpoint_status_mutex_;
   std::unordered_set<std::uint64_t> written_frame_keys_;
   std::unordered_set<std::string> written_checkpoint_stage_contracts_;
   std::condition_variable checkpoint_ingress_ready_;
@@ -464,16 +552,9 @@ class NativeProbeRuntime {
   static constexpr std::size_t kMaximumQueuedCheckpointAccessUnits = 1024;
   std::atomic<bool> failed_{false};
 
-  static std::uint64_t now_ms() {
-    using namespace std::chrono;
-    return static_cast<std::uint64_t>(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count());
-  }
+  static std::uint64_t now_ms() { return vast::NonDecreasingWallClock::now_ns() / 1'000'000ULL; }
 
-  static std::uint64_t now_ns() {
-    using namespace std::chrono;
-    return static_cast<std::uint64_t>(
-        duration_cast<nanoseconds>(system_clock::now().time_since_epoch()).count());
-  }
+  static std::uint64_t now_ns() { return vast::NonDecreasingWallClock::now_ns(); }
 
   static std::uint64_t steady_now_ns() {
     using namespace std::chrono;
@@ -1050,6 +1131,8 @@ class NativeProbeRuntime {
   }
 
   static std::uint64_t parse_uint64(const std::string& raw, const char* name) {
+    if (raw.empty() || raw.find_first_not_of("0123456789") != std::string::npos)
+      throw std::runtime_error(std::string("invalid checkpoint lifecycle integer: ") + name);
     std::size_t consumed = 0;
     std::uint64_t value = 0;
     try {
@@ -1075,12 +1158,18 @@ class NativeProbeRuntime {
     return static_cast<int>(value);
   }
 
-  static std::string read_fd_line(int fd) {
+  static std::string read_fd_line(int fd, const vast::CheckpointIoDeadline* io) {
+    vast::CheckpointIoDeadline::set_owned_nonblocking(fd);
     std::string line;
     char character = '\0';
     while (true) {
+      io->check();
       const ssize_t result = ::read(fd, &character, 1);
       if (result < 0 && errno == EINTR) {
+        continue;
+      }
+      if (result < 0 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+        io->wait(fd, POLLIN);
         continue;
       }
       if (result <= 0) {
@@ -1098,6 +1187,7 @@ class NativeProbeRuntime {
 
   bool wait_for_checkpoint_stop_line(std::string& line) {
     while (!checkpoint_loop_finished_.load()) {
+      checkpoint_io_->check();
       pollfd descriptor{};
       descriptor.fd = checkpoint_control_fd_;
       descriptor.events = POLLIN;
@@ -1112,7 +1202,7 @@ class NativeProbeRuntime {
         continue;
       }
       if ((descriptor.revents & POLLIN) != 0) {
-        line = read_fd_line(checkpoint_control_fd_);
+        line = read_fd_line(checkpoint_control_fd_, checkpoint_io_.get());
         return true;
       }
       if ((descriptor.revents & (POLLERR | POLLHUP | POLLNVAL)) != 0) {
@@ -1123,7 +1213,9 @@ class NativeProbeRuntime {
   }
 
   void write_checkpoint_lifecycle_status(const std::string& state, std::uint64_t timestamp) {
-    std::lock_guard<std::mutex> lock(checkpoint_status_mutex_);
+    const auto& bound = state == "READY" ? checkpoint_startup_io_ : checkpoint_io_;
+    auto lock = bound->acquire(checkpoint_status_mutex_);
+    vast::CheckpointIoDeadline::set_owned_nonblocking(checkpoint_status_fd_);
     const char* worker_id = std::getenv("VAST_CHECKPOINT_WORKER_ID");
     if (worker_id == nullptr || std::string(worker_id).empty()) {
       throw std::runtime_error("missing checkpoint worker ID for lifecycle status");
@@ -1132,11 +1224,16 @@ class NativeProbeRuntime {
         "1 " + state + " " + std::string(worker_id) + " " + std::to_string(timestamp) + "\n";
     std::size_t offset = 0;
     while (offset < payload.size()) {
+      bound->check();
       const ssize_t written = ::write(
           checkpoint_status_fd_,
           payload.data() + offset,
           payload.size() - offset);
       if (written < 0 && errno == EINTR) {
+        continue;
+      }
+      if (written < 0 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+        bound->wait(checkpoint_status_fd_, POLLOUT);
         continue;
       }
       if (written <= 0) {
@@ -1147,7 +1244,7 @@ class NativeProbeRuntime {
   }
 
   void wait_for_checkpoint_start() {
-    const std::string line = read_fd_line(checkpoint_control_fd_);
+    const std::string line = read_fd_line(checkpoint_control_fd_, checkpoint_startup_io_.get());
     std::istringstream input(line);
     std::string version;
     std::string command;
@@ -1169,6 +1266,7 @@ class NativeProbeRuntime {
         checkpoint_window_end_ms_ > checkpoint_drain_end_ms_) {
       throw std::runtime_error("checkpoint START lifecycle boundaries are invalid");
     }
+    checkpoint_io_->bind_original_drain_end_ms(checkpoint_drain_end_ms_);
   }
 
   bool checkpoint_state_drained() const {
@@ -1228,6 +1326,12 @@ class NativeProbeRuntime {
     if (!checkpoint_drain_reported_.compare_exchange_strong(expected, true)) {
       return;
     }
+    if (censored) {
+      // An I/O expiry is an infrastructure failure. Unknown unfinished keys
+      // cannot be promoted to successful controlled cancellation.
+      failed_.store(true);
+      abort_checkpoint_io();
+    }
     try {
       write_checkpoint_lifecycle_status(
           censored ? "CENSORED" : "DRAINED",
@@ -1258,9 +1362,9 @@ class NativeProbeRuntime {
         throw std::runtime_error("invalid checkpoint STOP lifecycle command");
       }
       bool drained = false;
+      checkpoint_admission_stopped_.store(true);
       {
         std::lock_guard<std::mutex> lock(mutex_);
-        checkpoint_admission_stopped_.store(true);
         write_checkpoint_lifecycle_status("ADMISSION_STOPPED", checkpoint_window_end_ms_);
         drained = checkpoint_state_drained();
       }
@@ -1276,6 +1380,7 @@ class NativeProbeRuntime {
       }
     } catch (const std::exception& exc) {
       failed_ = true;
+      abort_checkpoint_io();
       std::cerr << "[native-probe][checkpoint] " << exc.what() << "\n";
       if (loop_ != nullptr) {
         g_main_loop_quit(loop_);
@@ -1306,9 +1411,25 @@ class NativeProbeRuntime {
     if (args_.source_duration_ns == 0) {
       throw std::runtime_error("checkpoint worker requires a positive source duration");
     }
-    if (args_.source_replay != "continuous") {
-      throw std::runtime_error("checkpoint worker requires continuous finite-source replay");
+    if (args_.checkpoint_study_kind.empty()) {
+      if (args_.source_replay != "continuous" || args_.checkpoint_analytics_client_mode != "global-client" ||
+          !args_.checkpoint_study_accounting_path.empty() || !args_.checkpoint_study_waits_path.empty() ||
+          args_.checkpoint_study_width != 0 || args_.checkpoint_study_height != 0) {
+        throw std::runtime_error("checkpoint worker requires continuous finite-source replay and original legacy mode");
+      }
+    } else if (args_.checkpoint_study_kind != "finite-component-study" || args_.source_replay != "finite" ||
+        args_.checkpoint_codec != "h264" || args_.logical_stream_id > 5 ||
+        args_.checkpoint_study_width <= 0 || args_.checkpoint_study_height <= 0 ||
+        args_.checkpoint_study_width > 8192 || args_.checkpoint_study_height > 8192 ||
+        args_.checkpoint_study_width % 2 || args_.checkpoint_study_height % 2 ||
+        args_.checkpoint_study_width != (args_.logical_stream_id == 5 ? 1700 : 1920) ||
+        args_.checkpoint_study_height != (args_.logical_stream_id == 5 ? 236 : 1080) ||
+        static_cast<std::uint64_t>(args_.checkpoint_study_width) * args_.checkpoint_study_height * 9 / 2 > 64ULL * 1024 * 1024 ||
+        args_.checkpoint_study_accounting_path.empty() || args_.checkpoint_study_waits_path.empty() ||
+        (args_.checkpoint_analytics_client_mode != "global-client" && args_.checkpoint_analytics_client_mode != "branch")) {
+      throw std::runtime_error("checkpoint worker has an incomplete or invalid typed finite study contract");
     }
+    initialize_checkpoint_study_contract();
     if (checkpoint_branches_.empty() ||
         std::any_of(checkpoint_branches_.begin(), checkpoint_branches_.end(), [](const std::string& branch) {
           return !NativeProbeRuntime::valid_checkpoint_name(branch);
@@ -1318,6 +1439,7 @@ class NativeProbeRuntime {
       throw std::runtime_error("checkpoint worker requires unique lowercase branch names");
     }
     checkpoint_emitter_ = vast::CheckpointRuntimeEmitter::make_from_environment();
+    checkpoint_emitter_->bind_lifecycle(checkpoint_io_);
     checkpoint_control_fd_ = required_checkpoint_fd("VAST_CHECKPOINT_CONTROL_FD");
     checkpoint_status_fd_ = required_checkpoint_fd("VAST_CHECKPOINT_STATUS_FD");
     checkpoint_data_fd_ = required_checkpoint_fd("VAST_CHECKPOINT_ADMISSION_DATA_FD");
@@ -1372,6 +1494,114 @@ class NativeProbeRuntime {
     checkpoint_analytics_execution_client_ =
         std::make_unique<vast::CheckpointAnalyticsExecutionClient>(
             vast::CheckpointAnalyticsExecutionClient::from_environment());
+    const auto eligible = [this](const std::string& key) {
+      std::lock_guard<std::mutex> lock(mutex_);
+      if (failed_.load() || checkpoint_ingress_abort_.load() || states_.empty()) return false;
+      for (const auto& item : states_.front().local_traces_by_pts) {
+        if (checkpoint_input_frame_key(item.second) == key) return true;
+      }
+      return false;
+    };
+    checkpoint_policy_client_->bind_lifecycle(checkpoint_io_, eligible);
+    checkpoint_analytics_execution_client_->bind_lifecycle(checkpoint_io_, eligible);
+    bind_checkpoint_study_waits(*checkpoint_analytics_execution_client_);
+    if (args_.checkpoint_analytics_client_mode == "branch" && checkpoint_branches_.size() > 1) {
+      if (raw_execution_socket == nullptr || std::string(raw_execution_socket).empty() ||
+          (raw_execution_fd != nullptr && !std::string(raw_execution_fd).empty())) {
+        throw std::runtime_error("study branch channels require an owned socket path and independent connections");
+      }
+      // The first branch owns the original connection; each remaining branch
+      // connects separately. Duplication of the first FD would share recv/lock
+      // state and would not implement the prespecified configuration.
+      for (std::size_t i = 1; i < checkpoint_branches_.size(); ++i) {
+        auto client = std::make_unique<vast::CheckpointAnalyticsExecutionClient>(
+            vast::CheckpointAnalyticsExecutionClient::from_environment());
+        client->bind_lifecycle(checkpoint_io_, eligible);
+        bind_checkpoint_study_waits(*client);
+        checkpoint_branch_execution_clients_.emplace(checkpoint_branches_[i], std::move(client));
+      }
+    }
+  }
+
+  static std::string study_json_string(const std::string& value) {
+    std::string result = "\"";
+    for (unsigned char character : value) {
+      if (character == '"' || character == '\\') { result.push_back('\\'); result.push_back(character); }
+      else if (character < 0x20) throw std::runtime_error("native study identity contains a control character");
+      else result.push_back(character);
+    }
+    return result + "\"";
+  }
+
+  void initialize_checkpoint_study_contract() {
+    if (args_.checkpoint_study_kind.empty()) return;
+    const char* startup = std::getenv("VAST_CHECKPOINT_STARTUP_DEADLINE_MONOTONIC_NS");
+    if (!startup || !*startup || parse_uint64(startup, "original startup deadline") <= steady_now_ns())
+      throw std::runtime_error("native study requires its original verified startup deadline");
+    std::ifstream boot("/proc/sys/kernel/random/boot_id");
+    std::getline(boot, checkpoint_study_boot_id_);
+    if (checkpoint_study_boot_id_.empty()) throw std::runtime_error("native study clock namespace is unavailable");
+    checkpoint_study_time_namespace_ = vast::study::detail::actual_clock_domain_label();
+    const char* worker_boot = std::getenv("VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID");
+    const char* worker_time = std::getenv("VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE");
+    if (!worker_boot || !worker_time || checkpoint_study_boot_id_ != worker_boot || checkpoint_study_time_namespace_ != worker_time)
+      throw std::runtime_error("native study worker clock namespace proof is missing or mismatched; projection is unknown");
+    checkpoint_study_waits_.open_new(args_.checkpoint_study_waits_path);
+    checkpoint_study_receives_.open_new(args_.checkpoint_study_accounting_path);
+  }
+
+  std::string checkpoint_study_self_clock() const {
+    return "{\"clock\":\"CLOCK_MONOTONIC\",\"boot_id\":" + study_json_string(checkpoint_study_boot_id_) +
+        ",\"time_namespace\":" + study_json_string(checkpoint_study_time_namespace_) + ",\"pid\":" + std::to_string(::getpid()) + "}";
+  }
+
+  void bind_checkpoint_study_waits(vast::CheckpointAnalyticsExecutionClient& client) {
+    if (args_.checkpoint_study_kind.empty()) return;
+    client.bind_wait_observer([this](const vast::CheckpointAnalyticsExecutionRequest& request, const std::string& phase,
+        std::uint64_t attempt, std::uint64_t acquired, std::uint64_t reply, std::uint64_t released) {
+      const auto point = [](std::uint64_t value) { return value ? std::to_string(value) : std::string("null"); };
+      std::ostringstream row;
+      row << "{\"kind\":\"client\",\"phase\":" << study_json_string(phase)
+          << ",\"run_id\":" << study_json_string(request.run_id) << ",\"request_id\":" << study_json_string(request.request_id)
+          << ",\"worker_id\":" << study_json_string(request.worker_id) << ",\"input_frame_key\":" << study_json_string(request.input_frame_key)
+          << ",\"stream_id\":" << request.stream_id << ",\"frame_id\":" << request.frame_id << ",\"transport_pts_ns\":" << request.transport_pts_ns
+          << ",\"branch\":" << study_json_string(request.branch) << ",\"resource\":" << study_json_string(request.decision.selected_resource)
+          << ",\"attempt_ns\":" << attempt << ",\"acquired_ns\":" << point(acquired) << ",\"reply_ns\":" << point(reply)
+          << ",\"released_ns\":" << point(released) << ",\"clock_domain\":" << checkpoint_study_self_clock() << "}\n";
+      checkpoint_study_waits_.append(row.str(), *checkpoint_io_);
+    });
+  }
+
+  void checkpoint_study_received(vast::CheckpointAdmissionFrame& frame) {
+    if (args_.checkpoint_study_kind.empty()) return;
+    if (frame.source_cycle != 0 || frame.sequence != checkpoint_study_receive_sequence_ + 1 || frame.sequence > 442)
+      throw std::runtime_error("native study received a nonsequential or foreign finite source key");
+    frame.source_schedule_offset_ns = checkpoint_study_receive_offset_ns_;
+    if (frame.duration_ns == 0 || checkpoint_study_receive_offset_ns_ > UINT64_MAX - frame.duration_ns)
+      throw std::runtime_error("native study received an invalid original schedule duration");
+    const auto observed = steady_now_ns();
+    std::ostringstream row;
+    row << "{\"study_kind\":\"finite-component-study\",\"type\":\"recipient_received\",\"run_id\":" << study_json_string(args_.run_id)
+        << ",\"worker_id\":" << study_json_string(checkpoint_worker_id_) << ",\"recipient_id\":" << study_json_string(checkpoint_worker_id_)
+        << ",\"stream_id\":" << args_.logical_stream_id << ",\"sequence\":" << frame.sequence << ",\"derived_ordinal\":" << frame.sequence - 1
+        << ",\"source_cycle\":0,\"input_frame_key\":" << study_json_string(frame.input_frame_key) << ",\"access_unit_pts_ns\":" << frame.access_unit_pts_ns
+        << ",\"planned_schedule_offset_ns\":" << frame.source_schedule_offset_ns << ",\"payload_sha256\":" << study_json_string(frame.payload_sha256)
+        << ",\"payload_size_bytes\":" << frame.payload.size() << ",\"pid\":" << ::getpid() << ",\"actual_monotonic_ns\":" << observed
+        << ",\"actual_realtime_ns\":" << now_ns() << ",\"clock_domain\":" << checkpoint_study_self_clock() << "}\n";
+    checkpoint_study_receives_.append(row.str(), *checkpoint_io_);
+    checkpoint_study_receive_offset_ns_ += frame.duration_ns;
+    checkpoint_study_receive_sequence_ = frame.sequence;
+  }
+
+  vast::CheckpointAnalyticsExecutionClient& checkpoint_execution_client_for_branch(const std::string& branch) {
+    if (args_.checkpoint_analytics_client_mode == "branch" && checkpoint_branches_.size() > 1 &&
+        branch != checkpoint_branches_.front()) {
+      const auto route = checkpoint_branch_execution_clients_.find(branch);
+      if (route == checkpoint_branch_execution_clients_.end()) throw std::runtime_error("study branch execution channel is missing");
+      return *route->second;
+    }
+    if (!checkpoint_analytics_execution_client_) throw std::runtime_error("native analytics execution client is missing");
+    return *checkpoint_analytics_execution_client_;
   }
 
   void initialize_checkpoint_external_execution_mode() {
@@ -2018,6 +2248,7 @@ class NativeProbeRuntime {
 
   void fail_checkpoint_ingress(const std::string& reason) {
     failed_.store(true);
+    abort_checkpoint_io();
     checkpoint_ingress_abort_.store(true);
     checkpoint_ingress_ready_.notify_all();
     std::cerr << "[native-probe][checkpoint] " << reason << "\n";
@@ -2030,19 +2261,22 @@ class NativeProbeRuntime {
     try {
       while (true) {
         vast::CheckpointAdmissionFrame frame;
-        if (!vast::CheckpointAdmissionTransport::read_frame(checkpoint_data_fd_, frame)) {
+        if (!vast::CheckpointAdmissionTransport::read_frame(checkpoint_data_fd_, frame, checkpoint_io_.get(),
+            args_.checkpoint_study_kind.empty() ? vast::CheckpointAdmissionTransport::kMaximumPayloadBytes : 16ULL * 1024 * 1024)) {
           break;
         }
         if (sha256_bytes(frame.payload) != frame.payload_sha256) {
           throw std::runtime_error("checkpoint worker received an AU with a mismatched payload SHA-256");
         }
+        checkpoint_study_received(frame);
 
         {
           std::unique_lock<std::mutex> lock(mutex_);
-          checkpoint_ingress_ready_.wait(lock, [this]() {
-            return checkpoint_ingress_abort_.load() ||
-                   checkpoint_ingress_queue_.size() < kMaximumQueuedCheckpointAccessUnits;
-          });
+          while (!checkpoint_ingress_abort_.load()) {
+            if (checkpoint_ingress_queue_.size() < kMaximumQueuedCheckpointAccessUnits) break;
+            checkpoint_ingress_ready_.wait_for(lock, std::chrono::milliseconds(10));
+            checkpoint_io_->check();
+          }
           if (checkpoint_ingress_abort_.load()) {
             continue;
           }
@@ -2071,11 +2305,10 @@ class NativeProbeRuntime {
         vast::CheckpointAdmissionFrame frame;
         {
           std::unique_lock<std::mutex> lock(mutex_);
-          checkpoint_ingress_ready_.wait(lock, [this]() {
-            return checkpoint_ingress_abort_.load() ||
-                   checkpoint_data_reader_eof_.load() ||
-                   !checkpoint_ingress_queue_.empty();
-          });
+          while (!checkpoint_ingress_abort_.load() && !checkpoint_data_reader_eof_.load() && checkpoint_ingress_queue_.empty()) {
+            checkpoint_ingress_ready_.wait_for(lock, std::chrono::milliseconds(10));
+            checkpoint_io_->check();
+          }
           if (checkpoint_ingress_abort_.load()) {
             checkpoint_ingress_queue_.clear();
             break;
@@ -2386,6 +2619,9 @@ class NativeProbeRuntime {
   }
 
   void stop_pipelines() {
+    // Streaming callbacks can own a client lock while awaiting a live peer.
+    // Publish cancellation BEFORE GStreamer waits for those callbacks in NULL.
+    abort_checkpoint_io();
     for (GstElement* pipeline : pipelines_) {
       if (pipeline != nullptr) {
         gst_element_set_state(pipeline, GST_STATE_NULL);
@@ -2396,6 +2632,34 @@ class NativeProbeRuntime {
         gst_element_get_state(pipeline, nullptr, nullptr, 5 * GST_SECOND);
       }
     }
+  }
+
+  void abort_checkpoint_io() noexcept {
+    checkpoint_io_->abort();
+    checkpoint_startup_io_->abort();
+    checkpoint_ingress_abort_.store(true);
+    checkpoint_ingress_ready_.notify_all();
+    if (checkpoint_policy_client_) checkpoint_policy_client_->abort();
+    if (checkpoint_analytics_execution_client_) checkpoint_analytics_execution_client_->abort();
+    for (auto& route : checkpoint_branch_execution_clients_) route.second->abort();
+  }
+
+  void join_checkpoint_threads() {
+    for (auto* thread : {&checkpoint_control_thread_, &checkpoint_data_thread_, &checkpoint_appsrc_thread_}) {
+      if (thread->joinable()) thread->join();
+    }
+  }
+
+  void finish_checkpoint_study_journals() {
+    std::exception_ptr primary;
+    for (auto* journal : {&checkpoint_study_waits_, &checkpoint_study_receives_}) {
+      try { journal->finish(checkpoint_io_.get()); }
+      catch (const std::exception& exc) {
+        std::cerr << "[native-probe][cleanup] " << exc.what() << '\n';
+        if (!primary) primary = std::current_exception();
+      }
+    }
+    if (primary) std::rethrow_exception(primary);
   }
 
   void flush_outputs() {
@@ -2848,7 +3112,7 @@ class NativeProbeRuntime {
         execution_request.raw_input_sha256 = self->sha256_raw_bytes(frame.payload);
         const vast::CheckpointAnalyticsExecutionResult result =
             vast::checkpoint_external_call(lock, [&]() {
-              return self->checkpoint_analytics_execution_client_->execute(
+              return self->checkpoint_execution_client_for_branch(ctx->branch).execute(
                   execution_request,
                   frame.payload.data(),
                   frame.payload.size());
@@ -3643,13 +3907,13 @@ class NativeProbeRuntime {
     return value.str();
   }
 
-    const std::string branch = args_.checkpoint_branch;
   std::string checkpoint_branch_pipeline(int stream_id) const {
+    const std::string branch = args_.checkpoint_branch;
     std::ostringstream p;
     p << checkpoint_source_pipeline(stream_id)
       << " ! " << checkpoint_decoder_factory_for_codec()
       << " name=checkpoint_nvdec" << stream_id
-      << " ! videoconvert ! video/x-raw,format=RGB"
+      << " ! " << checkpoint_color_prefix()
       << " ! queue name=checkpoint_decode" << stream_id
       << " ! vastcheckpointprefixqueue name=checkpoint_prefix_queue" << stream_id
       << " branch-ids=\"" << checkpoint_prefix_branch_ids() << "\""
@@ -3667,7 +3931,7 @@ class NativeProbeRuntime {
     p << checkpoint_source_pipeline(stream_id)
       << " ! " << checkpoint_decoder_factory_for_codec()
       << " name=checkpoint_nvdec" << stream_id
-      << " ! videoconvert ! video/x-raw,format=RGB"
+      << " ! " << checkpoint_color_prefix()
       << " ! queue name=checkpoint_decode" << stream_id
       << " ! vastcheckpointprefixqueue name=checkpoint_prefix_queue" << stream_id
       << " branch-ids=\"" << checkpoint_prefix_branch_ids() << "\""
@@ -3683,6 +3947,11 @@ class NativeProbeRuntime {
         << " ! fakesink sync=false async=false";
     }
     return p.str();
+  }
+
+  std::string checkpoint_color_prefix() const {
+    return args_.checkpoint_study_kind.empty() ? "videoconvert ! video/x-raw,format=RGB" :
+        vast::study::color_prefix_fragment(args_.checkpoint_study_width, args_.checkpoint_study_height);
   }
 
   std::string deepstream_local_pipeline(int stream_id) const {
@@ -3890,6 +4159,15 @@ static std::string resolve_executable_path(const char* argv0) {
 
 static Args parse_args(int argc, char** argv) {
   Args args;
+  const auto study_dimension = [](const std::string& raw) {
+    if (raw.empty() || raw.find_first_not_of("0123456789") != std::string::npos)
+      throw std::runtime_error("invalid canonical study geometry");
+    std::size_t consumed = 0;
+    const auto dimension = std::stoull(raw, &consumed);
+    if (consumed != raw.size() || dimension < 2 || dimension > 8192 || dimension % 2 != 0)
+      throw std::runtime_error("invalid bounded study geometry");
+    return static_cast<int>(dimension);
+  };
   args.system = env_or("VAST_PROBE_SYSTEM", "gstreamer_custom");
   args.role = env_or("EXPERIMENT_HOST_ROLE", "local");
   args.stages = env_or("EXPERIMENT_PIPELINE_STAGES", "");
@@ -3967,6 +4245,12 @@ static Args parse_args(int argc, char** argv) {
     }
     else if (key == "--source-duration-ns") args.source_duration_ns = std::stoull(value("--source-duration-ns"));
     else if (key == "--source-replay") args.source_replay = value("--source-replay");
+    else if (key == "--checkpoint-study-kind") args.checkpoint_study_kind = value("--checkpoint-study-kind");
+    else if (key == "--checkpoint-study-width") args.checkpoint_study_width = study_dimension(value("--checkpoint-study-width"));
+    else if (key == "--checkpoint-study-height") args.checkpoint_study_height = study_dimension(value("--checkpoint-study-height"));
+    else if (key == "--checkpoint-study-accounting-path") args.checkpoint_study_accounting_path = value("--checkpoint-study-accounting-path");
+    else if (key == "--checkpoint-study-waits-path") args.checkpoint_study_waits_path = value("--checkpoint-study-waits-path");
+    else if (key == "--checkpoint-analytics-client-mode") args.checkpoint_analytics_client_mode = value("--checkpoint-analytics-client-mode");
     else if (key == "--checkpoint-analytics-mode") {
       args.checkpoint_analytics_mode = value("--checkpoint-analytics-mode");
     }
@@ -3983,6 +4267,9 @@ static Args parse_args(int argc, char** argv) {
 
 int main(int argc, char** argv) {
   try {
+    bool handled = false;
+    const int reference_status = vast::study::dispatch_reference_cli(argc, argv, handled);
+    if (handled) return reference_status;
     if (argc == 2 && std::string(argv[1]) == "--help") {
       std::cout
           << "Usage: vast_native_gst_probe [--system NAME] [--role NAME] "
@@ -3994,7 +4281,9 @@ int main(int argc, char** argv) {
     Args args = parse_args(argc, argv);
     args.executable_path = executable_path;
     NativeProbeRuntime runtime(std::move(args));
-    return runtime.run();
+    const int status = runtime.run();
+    std::cerr << "[native-probe][wall-clock] max_clamp_ns=" << vast::NonDecreasingWallClock::process().max_clamp_ns() << "\n";
+    return status;
   } catch (const std::exception& exc) {
     std::cerr << "[native-probe][fatal] " << exc.what() << "\n";
     return 2;

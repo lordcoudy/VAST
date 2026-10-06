@@ -1074,7 +1074,7 @@ def _validate_retired_socket_ledger(
                 "guardian retired socket physical identity drifted",
             )
     except OSError as error:
-        raise ClosureError(
+        raise QualificationExecutionClosureV1Error(
             f"guardian socket retirement custody failed: {error}"
         ) from error
     finally:

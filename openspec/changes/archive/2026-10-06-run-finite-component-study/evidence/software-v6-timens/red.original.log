@@ -1,0 +1,16 @@
+2026-10-05T12:24:22Z
+test_actual_fresh_zero_offset_time_namespace_is_the_same_monotonic_domain (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_fresh_zero_offset_time_namespace_is_the_same_monotonic_domain) ... FAIL
+
+======================================================================
+FAIL: test_actual_fresh_zero_offset_time_namespace_is_the_same_monotonic_domain (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_fresh_zero_offset_time_namespace_is_the_same_monotonic_domain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py", line 142, in test_actual_fresh_zero_offset_time_namespace_is_the_same_monotonic_domain
+    self.assertTrue(same["accepted"],same)
+AssertionError: False is not true : {'accepted': False, 'error': 'original preparation clock stamp or actual domain is invalid', 'actual_ns': 'time:[4026532409]', 'parent_ns': 'time:[4026531834]'}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.085s
+
+FAILED (failures=1)
+EXIT=1

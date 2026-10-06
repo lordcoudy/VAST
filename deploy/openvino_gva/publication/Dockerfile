@@ -38,6 +38,7 @@ COPY \
   scripts/backend_runtime_grant.py \
   scripts/backend_runtime_qualification_v3.py \
   scripts/benchmark_contract.py \
+  scripts/canonical_systems_study_plan_v1.py \
   scripts/checkpoint_acceptance_metadata_binding.py \
   scripts/checkpoint_admission.py \
   scripts/checkpoint_deepstream_protocol_bridge.py \
@@ -98,6 +99,7 @@ COPY \
   deploy/native_gst_probe/checkpoint_native_policy_client.hpp \
   deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp \
   deploy/native_gst_probe/checkpoint_runtime_emitter.hpp \
+  deploy/native_gst_probe/checkpoint_study_reference.hpp \
   deploy/native_gst_probe/vast_native_gst_probe.cpp \
   /opt/vast/native-src/
 # END VAST_RUNTIME_SOURCE_ALLOWLIST

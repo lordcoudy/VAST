@@ -526,3 +526,70 @@ def main(argv=None):
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+@contextmanager
+def held_finite_study_model_material_v1(*, project_root, capability_manifest_path,
+        calibration_path, model_parity_receipt_path, worker_freeze_receipt_path,
+        execution_code_closure_path, container_engine=stock.DEFAULT_CONTAINER_ENGINE,
+        container_engine_socket=stock.DEFAULT_CONTAINER_ENGINE_SOCKET,
+        dependencies=DEFAULT_DEPENDENCIES):
+    """The complete original model assessment, independent of source-media kind.
+
+    This factual held inventory creates no old component/qualification object.
+    Its callers must bind their own validated intake and actual selected image.
+    """
+    from publication_gstreamer_component_authority_v1 import _worker_material
+    with PhysicalRootCustodyV1.open(project_root, label="finite study original model material") as custody:
+        root, pins = custody.root, ComponentPinsV1(custody)
+        try:
+            refs = {role: _ref(_pin(root, name)) for role, name in {
+                "capability_manifest": capability_manifest_path, "calibration": calibration_path,
+                "model_authority": model_parity_receipt_path, "worker_freeze_receipt": worker_freeze_receipt_path,
+                "execution_code_closure": execution_code_closure_path}.items()}
+            candidate, calibration = pins.object(refs["capability_manifest"]), pins.object(refs["calibration"])
+            engine = stock._external_executable_pin(Path(container_engine), label="study original engine")
+            socket_pin = stock._socket_record(Path(container_engine_socket), label="study original engine socket")
+            model = _model_material(root, model_parity_receipt_path, dependencies,
+                                    engine=engine, engine_socket=socket_pin)
+            _calibration(candidate, refs["capability_manifest"], calibration, model)
+            projection = {key: model["model_parity_refresh_authority"][key] for key in
+                          ("execution_config", "binding_set", "workers", "runtime_probes")}
+            inspections = {resource: dependencies.inspect_image(engine.path, Path(container_engine_socket),
+                projection["workers"][resource]["image_id"]) for resource in RESOURCES}
+            _current_workers(root, projection, root / worker_freeze_receipt_path, inspections)
+            closure = dependencies.code_closure_loader(project_root=root, receipt_path=execution_code_closure_path)
+            _require(closure["receipt_descriptor"] == refs["execution_code_closure"],
+                     "study current code closure differs from original source")
+            receipt = pins.object(refs["model_authority"])
+            parity = pins.object(receipt["accepted_manifest"])
+            preprocessing = parity["preprocessing_contract"]
+            checked, bindings, probes, capabilities, manifest, index = _worker_material(pins, projection, candidate, preprocessing)
+            workers = {"execution_config": checked, "bindings": bindings, "runtime_probes": probes,
+                "capabilities": capabilities, "execution_manifest": manifest, "binding_index": index}
+            for descriptor in [*model["acceptance_binding"]["files"], *model["physical_response_evidence"],
+                    model["accepted_manifest"], model["accepted_assessment"], model["accepted_receipt"], model["transaction_index"]]:
+                pins.read({key: descriptor[key] for key in ("path", "size_bytes", "sha256")}, capture=False)
+            proxy_manifest, proxy_pins = _proxy_pins(root)
+            models = stock._parity_model_inventory(root, parity)
+            for pin in (*models, *proxy_pins, proxy_manifest):
+                pins.read(_ref(pin), capture=False)
+            current_bindings = build_worker_bindings(parity, workers["execution_config"], project_root=root,
+                worker_project_root=workers["binding_index"]["worker_project_root"])
+            _require(all(current_bindings[branch][stock.ENGINE_BY_RESOURCE[resource]] == workers["bindings"][(branch, resource)]
+                for branch in BRANCHES for resource in RESOURCES), "study original physical model bindings differ")
+            def verify():
+                pins.verify()
+                stock._require_file_pin_unchanged(engine, label="study original held engine")
+                _require(stock._socket_record(Path(container_engine_socket), label="study held engine socket") == socket_pin,
+                         "study original engine socket drifted")
+            verify()
+            yield {"root": root, "pins": pins, "verify_barrier": verify, "descriptors": refs,
+                "capability_manifest": candidate, "calibration": calibration, "worker_projection": projection,
+                "preprocessing_contract": preprocessing, **workers, "model_descriptors": [_mount(pin) for pin in models],
+                "proxy_model_descriptors": [_mount(pin) for pin in proxy_pins], "proxy_manifest": _ref(proxy_manifest), "engine_pin": engine,
+                "engine_socket": socket_pin, "worker_inspections": inspections,
+                "nvidia": parity["toolchain_registry"]["tensorrt_cuda"]}
+            verify()
+        finally:
+            pins.close()

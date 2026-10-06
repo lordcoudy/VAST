@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS_SOURCE_ONLY_V3",
+  "blocking_findings": [],
+  "reviewed_planning_commit": "3288b0702b6b0136feb6596382566b8686f9bb5c",
+  "reviewed_base_head": "8dba851dcb051fd12b7b7bfec8af164781bcdda3",
+  "worktree": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+  "change": "run-finite-component-study",
+  "scope": "Frozen 11-file incremental correction after two genuine failed hosted CIs; no fresh physical or whole-benchmark acceptance.",
+  "candidate_pins": [
+    {
+      "path": "scripts/checkpoint_gstreamer_runtime.py",
+      "size_bytes": 182578,
+      "sha256": "ca7138c19b52810075ecc5e5c600ef9d0aaf1500f38564b9a9b5797f23f261ee"
+    },
+    {
+      "path": "scripts/run_canonical_systems_study_v1.py",
+      "size_bytes": 81992,
+      "sha256": "3a74f77646b48eb0bbe60ccfb3803f5936ed720d844bebdadd6387e245e452b0"
+    },
+    {
+      "path": "tests/test_run_canonical_systems_study_v1.py",
+      "size_bytes": 15900,
+      "sha256": "8a4aad8b22ff5ed4e4fcdcf0c3aa37c1055ef1b71e5e0fa4c91a58cef6894f4b"
+    },
+    {
+      "path": "deploy/deepstream/checkpoint/Dockerfile.runtime",
+      "size_bytes": 7826,
+      "sha256": "305f7e9608583c1d3aae34928cf4a0b9911019f8a7338ea36a5905c6123aa370"
+    },
+    {
+      "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "size_bytes": 3878,
+      "sha256": "f684e54842dc28a6903fab852d1d63364a2d49cdcf95e10c049ceaf7e0d2eca6"
+    },
+    {
+      "path": "deploy/savant/publication/Dockerfile",
+      "size_bytes": 8002,
+      "sha256": "bd33b6e07a7de39cda07384ce75904a5399c1610065f32b71b03d2308af2fa6d"
+    },
+    {
+      "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+      "size_bytes": 3884,
+      "sha256": "64514aaf2154e3ee2062a0f1f1d8c65f74fb343baba0b69035be37125d1d438c"
+    },
+    {
+      "path": "deploy/openvino_gva/publication/Dockerfile",
+      "size_bytes": 8397,
+      "sha256": "75ae66525ad45ddc405214217973c252ceadf7a09be9e615724ff8be3b45ace3"
+    },
+    {
+      "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "size_bytes": 3555,
+      "sha256": "10cacd4cb55b03dcdb8fb4acaa395372fdceee802636fe265981871ae3cde657"
+    },
+    {
+      "path": "configs/experiments.yaml",
+      "size_bytes": 23078,
+      "sha256": "b15e675e132e5f38c15ee6344435503387bded829d9940f2bd5fa35db071d2e2"
+    },
+    {
+      "path": "tests/cpp/checkpoint_gstreamer_cuda_transfer_v3_test.cpp",
+      "size_bytes": 14094,
+      "sha256": "695f7b08ce7db477eee2e368a8810d596134470e7498cb42a2c740f41263adc4"
+    }
+  ],
+  "original_source_scope": {
+    "author_nine_path_diff": "E:/STUDY/VAST/tmp/finite-component-study-20261005/source-closure-regression-v1/source-scope.diff",
+    "size_bytes": 10542,
+    "sha256": "1b5e99eb9cd45c4b466857df2de48795edce214e351b8a4e76309bc32072c793",
+    "nine_raw_before_equal_native_HEAD_blobs": true,
+    "all_eleven_scoped_diff_read": true,
+    "source_changes_after_freeze_seen": false,
+    "commit_identity_for_candidate": "PENDING root commit; frozen working bytes above are authority for this source review"
+  },
+  "findings": [
+    {
+      "decision": "PASS",
+      "source": [
+        "scripts/checkpoint_gstreamer_runtime.py:3039",
+        "scripts/checkpoint_gstreamer_runtime.py:3251",
+        "scripts/run_canonical_systems_study_v1.py:1028"
+      ],
+      "facts": "The unchanged selected DETECT_BIN constant moves to host driver execute_arm and crosses the existing --detect-bin CLI. main forwards it to the typed arm. The image runtime no longer imports the full qualification materializer graph. The canonical entrypoint always supplies the unchanged selected preset.",
+      "guards": "build_gstreamer_worker_specs native mode rejects identity/missing branch placeholders; policy identities, model binding, unique detector name, queue and preprocessing checks remain. Whole AST outside main/run_finite_study_arm_v1 and driver execute_arm is unchanged.",
+      "limit": "This is the canonical driver path and preserved runtime validators; no claim that arbitrary manually chosen CLI pipelines acquire canonical acceptance."
+    },
+    {
+      "decision": "PASS",
+      "source": [
+        "deploy/deepstream/checkpoint/Dockerfile.runtime:52",
+        "deploy/deepstream/checkpoint/Dockerfile.runtime:113",
+        "deploy/savant/publication/Dockerfile:64",
+        "deploy/openvino_gva/publication/Dockerfile:41",
+        "deploy/openvino_gva/publication/Dockerfile:102"
+      ],
+      "facts": "Each sibling image COPY and sorted exact allowlist gains only canonical_systems_study_plan_v1.py. DeepStream source and OpenVINO probe additionally gain the actual reachable checkpoint_study_reference.hpp. No old member is removed; four validators are raw HEAD-equal and retain exact reachable missing/extra rejection. DeepStream source already links gstreamer-video and app; Savant obtains its native binaries from the existing builder, and OpenVINO copies the provider binaries.",
+      "limit": "No sibling or selected image build was executed during this review; actual current selected build/readiness is still required."
+    },
+    {
+      "decision": "PASS",
+      "source": [
+        "tests/cpp/checkpoint_gstreamer_cuda_transfer_v3_test.cpp"
+      ],
+      "facts": "Only expired fixture deadline becomes real current CLOCK_MONOTONIC + 5s. Real socket/memfd validation, transfer/resource interval assertions and malformed binding negatives remain. Production request/drain deadlines are untouched.",
+      "evidence": "Genuine original RED8c74e1 rc1,2 tests/1.316s; GREENbbed03 rc0,2/1.190s. Full exact original tool JSON read and joined.",
+      "limit": "Test-only clock correction is not hardware evidence."
+    },
+    {
+      "decision": "PASS",
+      "source": [
+        "configs/experiments.yaml:44",
+        "scripts/benchmark_contract.py:1530"
+      ],
+      "facts": "Exactly one 64-byte fanout source hash changes to the genuine current native source hash 053970ac60adc7499f3970906a39b181dbbe2eb16bb76fab005c2cdad67af430; independent inverse raw-byte equality confirms all other YAML bytes unchanged. The resource assessor and six readiness/coverage/publication flags remain unchanged/false.",
+      "evidence": "Genuine RED723153 -> GREEN793453 and stale-binding negative b09579. Whole native source hash read; no hardware/source target execution.",
+      "limit": "Hash association does not promote NVDEC/fanout elapsed proxies to additive work or validated resource intervals."
+    },
+    {
+      "decision": "PASS",
+      "source": [
+        "tests/test_run_canonical_systems_study_v1.py:211"
+      ],
+      "facts": "Only existing CLI translation fixture gains explicit unchanged DETECT_BIN and one equality assertion. All 15 prior driver test IDs and all 60 old assert calls remain; only this method AST changes. The 17 unchanged strict closure tests remain mandatory software checks."
+    }
+  ],
+  "normative_binding": {
+    "proposal": {
+      "size_bytes": 6572,
+      "sha256": "4d1532e0ac868c9fb6e14a7d5b416d7ecd21f796be60b31a0bceac4aee57efe0"
+    },
+    "design": {
+      "size_bytes": 77167,
+      "sha256": "65d86f20e8e622ec6e91f54bd99cfe3d31f82ab9d6998dc303559434fe72abed"
+    },
+    "new_capability": {
+      "size_bytes": 24002,
+      "sha256": "700f26b1b579c933975717bdda82d74c2f0b390c84de4439b85f106782b9e745"
+    },
+    "R1_delta": {
+      "size_bytes": 2773,
+      "sha256": "481bae540adeef262b2cb9490f18b8888f7b1898f627681a2452d056fd03af5a"
+    },
+    "all_current_raw_equal_exact_P": true,
+    "contract": "Approved design sections 9–11 retain strict legacy/source closures, genuine selected image/model inputs, original owner deadlines/retirement, actual all24/12 and nonpromotion. This correction changes no requirement, physical bound, production clock, lifecycle logic, accounting/reducer, model bytes or scientific acceptance."
+  },
+  "actual_software": {
+    "final_GREEN03": {
+      "tests_run": 32,
+      "successes": 32,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "elapsed_s": 18.625248964992352,
+      "original_init": "9ceec2",
+      "session_id": 16190,
+      "original_final": "063e3c",
+      "exit_code": 0,
+      "unique_starts_successes_terminals_equal": true,
+      "source16_full_hashes_current_frozen_equal": true,
+      "source_stable": true,
+      "fd_before": 6,
+      "fd_after": 6,
+      "held_files_released": 16
+    },
+    "owner": {
+      "pid": 63396,
+      "ppid": 63395,
+      "pgid": 63395,
+      "sid": 63395,
+      "start_ticks": 66406553,
+      "uid": 1000,
+      "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "time_namespace": "time:[4026531834]"
+    },
+    "observed_parent": {
+      "pid": 63395,
+      "ppid": 63388,
+      "pgid": 63395,
+      "sid": 63395,
+      "start_ticks": 66406550,
+      "uid": 1000
+    },
+    "later_closure": "Two retained original scans show exact listed owner/parent PID paths absent and original groups empty, same boot, no scan errors. No global descendants/quiescence claim.",
+    "immutable_failed_local_attempts": [
+      {
+        "name": "red-01",
+        "run": 17,
+        "errors": 12,
+        "failures": 4,
+        "successful": false
+      },
+      {
+        "name": "green-01",
+        "run": 47,
+        "errors": 18,
+        "failures": 0,
+        "successful": false
+      },
+      {
+        "name": "green-02",
+        "run": 32,
+        "errors": 2,
+        "failures": 0,
+        "successful": false
+      }
+    ],
+    "local_model_limit": "Expanded47 failure remains failed. Canonical CI obtains exact eight existing OMZ assets for portable units; two full-grant integrations remain explicitly deferred. Final32 only proves named strict closure + complete driver software modules, not expanded47 or full hosted CI."
+  },
+  "original_failed_CIs": [
+    {
+      "head": "09562f7b8f735c07b2de181614b3e736f2a81069",
+      "run_id": 37268731005,
+      "attempt": 1,
+      "conclusion": "failure",
+      "run": 3096,
+      "successes": 2989,
+      "skips": 88,
+      "errors": 19,
+      "failures": 6,
+      "child_sha256": "0b74078111a7f60a2b4f64da994616ea64539c9c506f6441b87a72bf6ba2426b"
+    },
+    {
+      "head": "8dba851dcb051fd12b7b7bfec8af164781bcdda3",
+      "run_id": 37269918046,
+      "attempt": 1,
+      "conclusion": "failure",
+      "run": 3101,
+      "successes": 2994,
+      "skips": 88,
+      "errors": 19,
+      "failures": 6,
+      "child_sha256": "ba5b5e1c03e4da9111d32650e3eae65f08ac97922e04e1ca711252d2f5bd0892"
+    }
+  ],
+  "failed_CI_join": "Same exact sorted 25 failure/error IDs, independently compared; SHA256 c202c7ea1ae95bc5ac616c9a0642b5ba05008ed262ab3d37c9c3bd619fdc588f. Causes match source closure graph, expired CUDA fixture and stale resource pin. Source-only review cannot relabel either run or guarantee next CI.",
+  "references": [
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/source-closure-regression-v1/author-review.v1.json",
+      "size_bytes": 21620,
+      "sha256": "1747aa3f557b0bd12af4ffd241894746eb882f4e39b496a257ac78092d6fe8ff"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/source-closure-regression-v1/green-03/result.v1.json",
+      "size_bytes": 26681,
+      "sha256": "ebffc018592bbac2c260dad8988fab0636e55d8df8b21fbb6b607e6b036130b3"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/source-closure-regression-v1/green-03/original-tools.v1.json",
+      "size_bytes": 6392,
+      "sha256": "2a8ae2735426b8b7adf29f3a7556a7d8a05fe5cd77a18aa0cb6cd8dfcc4001c0"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/source-closure-regression-v1/original-tools.v1.json",
+      "size_bytes": 28645,
+      "sha256": "ca9bee3995c8472c6ba7529a111a90a2207fe752c6f889c3612669c8c9958e35"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/cuda-transfer-fixture-clock-v1/original-tools.v1.json",
+      "size_bytes": 3920,
+      "sha256": "53a011af90598966976098ae81aa5a5b4c41a8e265b48403fec6df67b5991a9d"
+    },
+    {
+      "path": "E:/STUDY/VAST/tmp/finite-component-study-20261005/resource-interval-pin-testfirst-v1/receipt.v1.json",
+      "size_bytes": 9454,
+      "sha256": "f3807a845d42be0ddd7c99c1375e08178d36a69523154ce17aaeb78a6e2f4078"
+    }
+  ],
+  "remaining_mandatory": [
+    "Actual latest corrected committed-head full CI and provider-original acceptance.",
+    "Current physical source/model/env/selected-image preparation and parity/EOS/readiness within original preparation clock.",
+    "Prespecified pilots, any single permitted transport switch, full24 effect arms/12 pairs, complete raw accounting and independent reduction within original continuous campaign bound.",
+    "Final physical conformance, sync/archive and required latest release CI/review/merge ledger."
+  ],
+  "disposition": {
+    "physical_preparation_invocations_by_reviewer": 0,
+    "physical_effect_arms": 0,
+    "legacy_full_32_Q4_5600_executed": 0,
+    "current_corrected_CI": "PENDING",
+    "grant_to_execute": "NONE; root controls once grants",
+    "human_approval_fabricated": false
+  },
+  "own_read_limits": "Read-only source/Git and closed metadata only. Initial oversized print outputs and one own metadata shape error are retained, not product failures; decisive reads/joins were completed cleanly. Earlier author initial test arguments unavailable remain explicitly unavailable. No new verifier files, full source table, test rerun, CI restart or scientific target execution."
+}

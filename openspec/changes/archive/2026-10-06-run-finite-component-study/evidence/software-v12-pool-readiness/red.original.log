@@ -1,0 +1,23 @@
+2026-10-06T09:35:33Z
+test_study_idle_boundary_clones_the_validated_worker_peer_list (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_study_idle_boundary_clones_the_validated_worker_peer_list) ... ERROR
+
+======================================================================
+ERROR: test_study_idle_boundary_clones_the_validated_worker_peer_list (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_study_idle_boundary_clones_the_validated_worker_peer_list)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py", line 449, in test_study_idle_boundary_clones_the_validated_worker_peer_list
+    boundary=sidecar.GStreamerAnalyticsProductionService.study_idle_boundary_v1(service)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 6124, in study_idle_boundary_v1
+    "worker_peers": _canonical_clone(self._production_authority["peer_identities"])}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 316, in _canonical_clone
+    cloned = json.loads(canonical_json_bytes(dict(value)))
+                                             ^^^^^^^^^^^
+ValueError: dictionary update sequence element #0 has length 5; 2 is required
+
+----------------------------------------------------------------------
+Ran 1 test in 0.508s
+
+FAILED (errors=1)
+EXIT=1

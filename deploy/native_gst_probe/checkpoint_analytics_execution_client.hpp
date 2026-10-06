@@ -1,6 +1,7 @@
 #pragma once
 
 #include "checkpoint_native_policy_client.hpp"
+#include "checkpoint_admission_transport.hpp"
 
 #include <glib.h>
 
@@ -10,7 +11,10 @@
 #include <cstdint>
 #include <cstring>
 #include <fcntl.h>
+#include <functional>
 #include <map>
+#include <memory>
+#include <thread>
 #include <mutex>
 #include <set>
 #include <sstream>
@@ -163,16 +167,54 @@ class CheckpointAnalyticsExecutionClient {
           "analytics execution socket path is invalid");
       address.sun_family = AF_UNIX;
       std::memcpy(address.sun_path, path.c_str(), path.size() + 1);
-      const int socket_fd = ::socket(AF_UNIX, SOCK_SEQPACKET | SOCK_CLOEXEC, 0);
+      const char* original_deadline = std::getenv("VAST_CHECKPOINT_STARTUP_DEADLINE_MONOTONIC_NS");
+      std::uint64_t startup_end = 0;
+      if (original_deadline && *original_deadline) {
+        require(std::string(original_deadline).find_first_not_of("0123456789") == std::string::npos,
+                "invalid original analytics startup deadline");
+        std::size_t consumed = 0;
+        try { startup_end = std::stoull(original_deadline, &consumed); }
+        catch (...) { throw std::runtime_error("invalid original analytics startup deadline"); }
+        require(consumed == std::strlen(original_deadline) && startup_end != 0,
+                "invalid original analytics startup deadline");
+      }
+      CheckpointIoDeadline startup(startup_end);
+      startup.check();
+      const int socket_fd = ::socket(AF_UNIX, SOCK_SEQPACKET | SOCK_CLOEXEC | SOCK_NONBLOCK, 0);
       if (socket_fd < 0) {
         throw std::runtime_error("failed to create analytics execution socket");
       }
-      if (::connect(
-              socket_fd,
-              reinterpret_cast<const sockaddr*>(&address),
-              static_cast<socklen_t>(offsetof(sockaddr_un, sun_path) + path.size() + 1)) != 0) {
-        ::close(socket_fd);
-        throw std::runtime_error("failed to connect analytics execution sidecar");
+      try {
+        while (true) {
+          startup.check();
+          const int connected = ::connect(socket_fd, reinterpret_cast<const sockaddr*>(&address),
+              static_cast<socklen_t>(offsetof(sockaddr_un, sun_path) + path.size() + 1));
+          if (connected == 0 || errno == EISCONN) break;
+          const int failure = errno;
+          if (failure == EINTR) continue;
+          if (failure == EAGAIN || failure == EWOULDBLOCK) {
+            require(startup_end != 0, "analytics listener backlog requires original startup deadline");
+            // AF_UNIX EAGAIN is a full backlog, not an initiated connection.
+            // Retry the original connect under the SAME bound; writable poll
+            // and SO_ERROR=0 alone cannot prove that this socket is connected.
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            continue;
+          }
+          if (failure == EINPROGRESS || failure == EALREADY) {
+            require(startup_end != 0, "analytics connect requires original startup deadline");
+            startup.wait(socket_fd, POLLOUT);
+            int error = 0; socklen_t length = sizeof(error);
+            if (::getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, &error, &length) != 0 || error != 0)
+              throw std::runtime_error("failed to connect analytics execution sidecar");
+            sockaddr_un peer{}; socklen_t peer_size = sizeof(peer);
+            if (::getpeername(socket_fd, reinterpret_cast<sockaddr*>(&peer), &peer_size) == 0) break;
+            continue;
+          }
+          throw std::runtime_error("failed to connect analytics execution sidecar");
+        }
+        startup.check();
+      } catch (...) {
+        ::close(socket_fd); throw;
       }
       return CheckpointAnalyticsExecutionClient(socket_fd);
     }
@@ -193,7 +235,8 @@ class CheckpointAnalyticsExecutionClient {
   CheckpointAnalyticsExecutionClient& operator=(const CheckpointAnalyticsExecutionClient&) = delete;
 
   CheckpointAnalyticsExecutionClient(CheckpointAnalyticsExecutionClient&& other) noexcept
-      : fd_(other.fd_) {
+      : fd_(other.fd_), io_(std::move(other.io_)), eligible_(std::move(other.eligible_)),
+        wait_observer_(std::move(other.wait_observer_)), started_(other.started_.load()), poisoned_(other.poisoned_) {
     other.fd_ = -1;
   }
 
@@ -201,12 +244,37 @@ class CheckpointAnalyticsExecutionClient {
     if (this != &other) {
       close_fd();
       fd_ = other.fd_;
+      io_ = std::move(other.io_);
+      eligible_ = std::move(other.eligible_);
+      wait_observer_ = std::move(other.wait_observer_);
+      started_.store(other.started_.load());
+      poisoned_ = other.poisoned_;
       other.fd_ = -1;
     }
     return *this;
   }
 
   ~CheckpointAnalyticsExecutionClient() { close_fd(); }
+
+  // Bound before callbacks start. The owner publishes abort without acquiring
+  // the exchange mutex; its descriptor is closed only after those users retire.
+  void bind_lifecycle(
+      std::shared_ptr<CheckpointIoDeadline> io,
+      std::function<bool(const std::string&)> eligible = {}) {
+    if (!io) throw std::runtime_error("analytics lifecycle bound is missing");
+    if (started_.load()) throw std::runtime_error("analytics lifecycle cannot be rebound after use");
+    io_ = std::move(io);
+    eligible_ = std::move(eligible);
+  }
+
+  void abort() noexcept { if (io_) io_->abort(); }
+
+  using WaitObserver = std::function<void(const CheckpointAnalyticsExecutionRequest&,
+      const std::string&, std::uint64_t, std::uint64_t, std::uint64_t, std::uint64_t)>;
+  void bind_wait_observer(WaitObserver observer) {
+    if (started_.load()) throw std::runtime_error("analytics wait observer cannot be rebound after use");
+    wait_observer_ = std::move(observer);
+  }
 
   CheckpointAnalyticsExecutionResult execute(
       const CheckpointAnalyticsExecutionRequest& request,
@@ -248,7 +316,7 @@ class CheckpointAnalyticsExecutionClient {
     const int payload_fd = create_sealed_memfd(snapshot.data(), snapshot.size());
     FlatObject response;
     try {
-      response = exchange(json.str(), payload_fd);
+      response = exchange(json.str(), payload_fd, request);
     } catch (...) {
       ::close(payload_fd);
       throw;
@@ -271,7 +339,12 @@ class CheckpointAnalyticsExecutionClient {
   using FlatObject = std::map<std::string, FlatValue>;
 
   int fd_ = -1;
-  std::mutex mutex_;
+  std::timed_mutex mutex_;
+  std::shared_ptr<CheckpointIoDeadline> io_ = std::make_shared<CheckpointIoDeadline>();
+  std::function<bool(const std::string&)> eligible_;
+  WaitObserver wait_observer_;
+  std::atomic<bool> started_{false};
+  bool poisoned_ = false;  // Accessed only under the exchange lock.
 
   void close_fd() noexcept {
     if (fd_ >= 0) {
@@ -402,10 +475,27 @@ class CheckpointAnalyticsExecutionClient {
     return output.str();
   }
 
-  FlatObject exchange(const std::string& request, int payload_fd) {
+  FlatObject exchange(
+      const std::string& request, int payload_fd,
+      const CheckpointAnalyticsExecutionRequest& identity) {
     require(!request.empty() && request.size() < kMaximumMessageBytes,
             "analytics execution request size is invalid");
-    std::lock_guard<std::mutex> lock(mutex_);
+    started_.store(true);
+    const auto attempt = CheckpointIoDeadline::monotonic_now_ns();
+    std::uint64_t acquired = 0, reply = 0;
+    bool sent = false;
+    bool released_observed = false;
+    std::unique_lock<std::timed_mutex> lock;
+    try {
+    lock = io_->acquire(mutex_, identity.deadline_monotonic_ns);
+    acquired = CheckpointIoDeadline::monotonic_now_ns();
+    // Persist the observed attempt after acquisition. Synchronous journal I/O
+    // must not be counted as time spent waiting for this client mutex.
+    if (wait_observer_) wait_observer_(identity, "begin", attempt, 0, 0, 0);
+    require(!poisoned_, "analytics execution channel is poisoned after an earlier failed exchange");
+    if (eligible_ && !eligible_(identity.input_frame_key)) {
+      throw std::runtime_error("analytics request is no longer an eligible original admitted key");
+    }
     std::array<char, CMSG_SPACE(sizeof(int))> control{};
     iovec vector{};
     vector.iov_base = const_cast<char*>(request.data());
@@ -421,21 +511,60 @@ class CheckpointAnalyticsExecutionClient {
     header->cmsg_len = CMSG_LEN(sizeof(int));
     std::memcpy(CMSG_DATA(header), &payload_fd, sizeof(payload_fd));
     ssize_t written = -1;
-    do {
-      written = ::sendmsg(fd_, &message, MSG_NOSIGNAL);
-    } while (written < 0 && errno == EINTR);
+    while (true) {
+      io_->check(identity.deadline_monotonic_ns);
+      written = ::sendmsg(fd_, &message, MSG_NOSIGNAL | MSG_DONTWAIT);
+      if (written >= 0) break;
+      if (errno == EINTR) continue;
+      if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        io_->wait(fd_, POLLOUT, identity.deadline_monotonic_ns);
+        continue;
+      }
+      break;
+    }
     if (written < 0 || static_cast<std::size_t>(written) != request.size()) {
       throw std::runtime_error("failed to send analytics execution request");
     }
-    std::array<char, kMaximumMessageBytes> buffer{};
+    sent = true;
+    std::array<char, kMaximumMessageBytes + 1> buffer{};  // MSG_TRUNC: a maximal reply still fits.
     ssize_t received = -1;
-    do {
-      received = ::recv(fd_, buffer.data(), buffer.size(), MSG_TRUNC);
-    } while (received < 0 && errno == EINTR);
-    if (received <= 0 || static_cast<std::size_t>(received) >= buffer.size()) {
+    while (true) {
+      io_->check(identity.deadline_monotonic_ns);
+      received = ::recv(fd_, buffer.data(), buffer.size(), MSG_TRUNC | MSG_DONTWAIT);
+      if (received >= 0) break;
+      if (errno == EINTR) continue;
+      if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        io_->wait(fd_, POLLIN, identity.deadline_monotonic_ns);
+        continue;
+      }
+      break;
+    }
+    if (received == 0) {
+      throw std::runtime_error("analytics execution peer closed before its response");
+    }
+    if (received < 0 || static_cast<std::size_t>(received) > kMaximumMessageBytes) {
       throw std::runtime_error("analytics execution response is missing or truncated");
     }
-    return parse_object(std::string(buffer.data(), static_cast<std::size_t>(received)));
+    auto response = parse_object(std::string(buffer.data(), static_cast<std::size_t>(received)));
+    (void)validate_response(response, identity);  // Validate while owning this channel.
+    io_->check(identity.deadline_monotonic_ns);
+    reply = CheckpointIoDeadline::monotonic_now_ns();
+    lock.unlock();
+    const auto released = CheckpointIoDeadline::monotonic_now_ns();
+    released_observed = true;
+    if (wait_observer_) wait_observer_(identity, "released", attempt, acquired, reply, released);
+    return response;
+    } catch (...) {
+      if (lock.owns_lock()) {
+        if (sent) poisoned_ = true;
+        lock.unlock();
+      }
+      const auto released = CheckpointIoDeadline::monotonic_now_ns();
+      // Retain the actual primary failure if accounting itself cannot be written.
+      try { if (!released_observed && wait_observer_) wait_observer_(identity, "released", attempt, acquired, reply, released); }
+      catch (...) {}
+      throw;
+    }
   }
 
   static void skip_space(const std::string& json, std::size_t& offset) {

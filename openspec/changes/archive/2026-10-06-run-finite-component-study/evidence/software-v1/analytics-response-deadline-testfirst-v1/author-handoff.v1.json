@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "change": "run-finite-component-study",
+  "reviewed_planning_commit": "3288b0702b6b0136feb6596382566b8686f9bb5c",
+  "verdict": "PASS_SCOPED_ANALYTICS_RESPONSE_ORIGINAL_DEADLINE_FIXTURE",
+  "ownership": "Only analytics execution client header and existing analytics C++ test edited. Source/test now frozen; parent owns subsequent integration and release. No Git/spec/docs/CI/physical operations by this agent.",
+  "production_change": {
+    "path": "deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+    "line": 547,
+    "one_added_statement": "io_->check(identity.deadline_monotonic_ns);",
+    "behavior": "After parsing/validating a genuine reply while holding its channel, recheck the same applicable request/phase clock before accepted reply capture/unlock/return. Existing sent-failure catch poisons channel and preserves primary.",
+    "unchanged": "Existing native300s constant, wire/schema/identity/hash/validation rules, nonblocking send/recv/queued eligibility and request/phase endpoints unchanged."
+  },
+  "frozen_green_source_pins": [
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+      "bytes": 47411,
+      "sha256": "fa293797ca33ea065b1d252ab8e1d627dc5560760be047f66b0f41be709e48c8",
+      "epoch": [
+        68,
+        1407374885286049,
+        47411,
+        1791176823741173200,
+        1791176823741173200,
+        33279,
+        1
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/cpp/checkpoint_analytics_execution_client_test.cpp",
+      "bytes": 40940,
+      "sha256": "9d2f09a1585570d758ab2f54a7f588a50981077ce2e2d912f2a57547ef58e04f",
+      "epoch": [
+        68,
+        844424931865995,
+        40940,
+        1791176763378768500,
+        1791176763378768500,
+        33279,
+        1
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/native_gst_probe/checkpoint_admission_transport.hpp",
+      "bytes": 15498,
+      "sha256": "f4d48713868f00ca115b35837b1013873dda64bb6e45a814a1c1d6b7cf535b93",
+      "epoch": [
+        68,
+        1407374885286048,
+        15498,
+        1791174999430527100,
+        1791174999430527100,
+        33279,
+        1
+      ]
+    },
+    {
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/native_gst_probe/checkpoint_native_policy_client.hpp",
+      "bytes": 25126,
+      "sha256": "191045da67b1028e2d2b735f7f66ee7920491deea93652e24a15131296484201",
+      "epoch": [
+        68,
+        1407374885286052,
+        25126,
+        1791171888316280600,
+        1791171888316280600,
+        33279,
+        1
+      ]
+    }
+  ],
+  "new_existing_binary_method": "test_post_response_validation_preserves_original_deadline",
+  "old_preservation": {
+    "production_exactly_one_added_post_response_validation_original_clock_check": true,
+    "all_old_test_methods_helpers_assertions_and_main_protocol_fixture_raw_exact_after_removing_new_sections_and_one_call": true,
+    "same_RED02_test_bytes_exact_GREEN01": true,
+    "other_protocol_and_deadline_validation_bytes_unchanged": true
+  },
+  "genuine_fixture": {
+    "syscall_seam": "Test-only recv macro forwards real recv with exact FD/buffer/size/flags and unaltered returned packet. Only one designated successful receive is held until the real original request deadline+20ms, modeling actual scheduling pause after syscall return. No fake clock or packet injected.",
+    "peer": "Genuine connected SOCK_SEQPACKET peer verifies received SCM_RIGHTS memfd size/seals/SHA and request ID/raw digest/deadline; sends valid synthetic CPU protocol response and remains open until client retires. No actual OpenVINO/model/inference claim.",
+    "control": "Unpaused actual valid response is accepted and bound to request/digest/resource/completed fields.",
+    "deadline_case": "Actual intact1868B reply was received before the fixed300ms software request deadline; post-syscall pause returned after it. RED oldclient accepted; GREEN same test refused original deadline.300ms is only this finite fixture endpoint, not a production constant change.",
+    "poison_case": "Following GREEN refusal, a distinct new request ID with its own endpoint is only a negative reuse probe; it fails poisoned before sending, peer observes no additional packet. It does not renew failed request or owner lifecycle.",
+    "retirement": "Caller completes while peer held live; received snapshotfd closed, peer thread joined and both sockets closed by respective owners. In-process FD count matched; independent wrapper actual6\u21926 and compiler/test children reaped. No global/process-group quiescence claim."
+  },
+  "actual_originals": {
+    "RED01": {
+      "tool_chunk": "0509c4",
+      "compile_returncode": 0,
+      "run_returncode": 1,
+      "elapsed_seconds": 2.3531533199129626,
+      "disposition": "Original failed combined gate retained; no product edit. RED02 only added actual disposition/timestamps to fixture output for unambiguous causal evidence."
+    },
+    "RED02": {
+      "tool_chunk": "acce1d",
+      "compile_returncode": 0,
+      "run_returncode": 1,
+      "elapsed_seconds": 2.5019734520465136,
+      "observed": {
+        "actual_reply_bytes": 1868,
+        "actual_received_monotonic_ns": 659107762842558,
+        "original_deadline_monotonic_ns": 659108062723790,
+        "actual_returned_monotonic_ns": 659108083461837,
+        "observed_disposition_and_reuse": "unexpected_success reuse=",
+        "return_after_original_deadline_ns": 20738047
+      },
+      "sources_SHA_size_7epochs_stable": true
+    },
+    "GREEN01": {
+      "tool_chunk": "c95812",
+      "compile_returncode": 0,
+      "run_returncode": 0,
+      "elapsed_seconds": 3.5626278860727325,
+      "observed": {
+        "actual_reply_bytes": 1868,
+        "actual_received_monotonic_ns": 659167963169927,
+        "original_deadline_monotonic_ns": 659168263094857,
+        "actual_returned_monotonic_ns": 659168283775623,
+        "observed_disposition_and_reuse": "checkpoint I/O original deadline exceeded reuse=analytics execution channel is poisoned after an earlier failed exchange",
+        "return_after_original_deadline_ns": 20680766
+      },
+      "full_existing_analytics_binary_including_old_methods_and_main_protocol_passed": true,
+      "sources_SHA_size_7epochs_stable": true,
+      "wrapper_fd_before": 6,
+      "wrapper_fd_after": 6,
+      "children_reaped": true
+    }
+  },
+  "evidence": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\original-tools.v1.json",
+      "bytes": 27068,
+      "sha256": "79655d40db48bf042b77a079346a61e61f4225b11cf22a3fef6fe13a0cf6aad4"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\red-original-tools.v1.json",
+      "bytes": 17974,
+      "sha256": "d26ff6676a3c6b980341beec2bf49172cb38edf9a51a530f1d563b4af3958e4e"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\source-preservation.v1.json",
+      "bytes": 2715,
+      "sha256": "5f22c987efc7d69c2c828b8424359b918f38a2bc058fd527a35e99f70a7d9ea3"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\analytics-client.v1.diff",
+      "bytes": 481,
+      "sha256": "e556e5f6ae39116a617843722ea49451be4a46a548d2326a75a2668c133fb2ca"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\analytics-test.v1.diff",
+      "bytes": 10826,
+      "sha256": "62b634519597f74e9eead5474e407268f62993bdb129e6b68da18663489e1ed4"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\analytics-client.before.hpp",
+      "bytes": 47362,
+      "sha256": "0b03830a63ea72f748e161701e5dedba28f22a35dbb2b367e8931079f5c4de8b"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\analytics-client.final.hpp",
+      "bytes": 47411,
+      "sha256": "fa293797ca33ea065b1d252ab8e1d627dc5560760be047f66b0f41be709e48c8"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\analytics-test.before.cpp",
+      "bytes": 30997,
+      "sha256": "e62102a909616350b5184edc26a78d54bdaa8408d6d0d3d61ed7e0f197017aac"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\analytics-test.red02.cpp",
+      "bytes": 40940,
+      "sha256": "9d2f09a1585570d758ab2f54a7f588a50981077ce2e2d912f2a57547ef58e04f"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\analytics-test.final.cpp",
+      "bytes": 40940,
+      "sha256": "9d2f09a1585570d758ab2f54a7f588a50981077ce2e2d912f2a57547ef58e04f"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\red-02\\execution.v1.json",
+      "bytes": 4814,
+      "sha256": "1ff7537b4aa22facfbe5bd08eb778ec1cc912a51c09986644929a6576da8af91"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\red-02\\original.stderr",
+      "bytes": 273,
+      "sha256": "efd8a131aedc5bbc60cad53fecda46702e811334b42d9e8186846d45df9cbffb"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\green-01\\execution.v1.json",
+      "bytes": 4818,
+      "sha256": "27a8394bc09bdd108c57320869774727792c321be3440bc903adc4de78c4377b"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\analytics-response-deadline-testfirst-v1\\green-01\\original.stderr",
+      "bytes": 371,
+      "sha256": "9685e0ce3758cd20e0178679399f1ac284d445ad77de17e7061c539f3455abc4"
+    }
+  ],
+  "limits": [
+    "Software protocol/syscall scheduling fixture only, no hardware/selected-image/physical benchmark acceptance.",
+    "Current typed study released-journal also checks common drain; this finding is not retrospective evidence of a historical late-success science result.",
+    "No full CPP suite/CI/campaign rerun. Latest full source/CI/derived reference/pilot/all24 remain parent-controlled gates."
+  ]
+}

@@ -457,6 +457,11 @@ class NativePolicyRuntimeError(RuntimeError):
     """A native scheduling transport or execution invariant failed."""
 
 
+def _require(condition: bool, message: str) -> None:
+    if not condition:
+        raise NativePolicyRuntimeError(message)
+
+
 def _canonical_json(value: Any) -> str:
     try:
         return json.dumps(
@@ -558,6 +563,7 @@ class NativePolicyRuntimeCoordinator:
         calibration: Mapping[str, Any],
         static_hybrid_map: Mapping[str, Any] | None = None,
         operational_context: Mapping[str, Any] | None = None,
+        study_runtime_plan: Mapping[str, Any] | None = None,
     ) -> None:
         self.run_id = _text(run_id, "run_id")
         self.arm_id = _text(arm_id, "arm_id")
@@ -627,7 +633,13 @@ class NativePolicyRuntimeCoordinator:
                 raise NativePolicyRuntimeError("operational context fields mismatch")
             header = copy.deepcopy(dict(operational_context["header"]))
             try:
-                validate_native_header_v1(header, require_sha="sha256" in header)
+                scope = None
+                if study_runtime_plan is not None:
+                    from checkpoint_runtime_plan import validate_finite_study_runtime_plan_v1
+                    validate_finite_study_runtime_plan_v1(study_runtime_plan)
+                    scope = {"kind": "finite-component-study", "plan_sha256": study_runtime_plan["study_plan"]["sha256"],
+                        "max_frame_id": 441, "max_requests_per_arm": 10608, "max_operations": 32}
+                validate_native_header_v1(header, require_sha="sha256" in header, study_scope=scope)
             except ValueError as exc:
                 raise NativePolicyRuntimeError(f"operational context is blocked: {exc}") from exc
             for key, expected in (("run_id", self.run_id), ("system", self.system),
@@ -650,6 +662,44 @@ class NativePolicyRuntimeCoordinator:
         self._history_events: list[dict[str, Any]] = []
         self._history_capture_bytes = 4096  # bounded header reservation
         self._history_error: str | None = None
+
+    def persist_study_operational_v1(self, *, measurement_input_keys):
+        """Retain real accepted decisions without promoting a legacy full export."""
+        with self._lock:
+            _require(self._operational_context is not None and
+                self._operational_context["header"].get("study_scope") is not None,
+                "finite study requires its original separately typed context")
+            header = copy.deepcopy(self._operational_context["header"])
+            scope = header["study_scope"]
+            ordered = sorted(self._states.values(), key=lambda state: state.record["decision_seq"])
+            _require(len(ordered) <= scope["max_requests_per_arm"] and self._operational_error is None,
+                     "finite native source gate has failed")
+            measured = set(measurement_input_keys)
+            records = []
+            for state in ordered:
+                _require(state.decision_request is not None and state.accepted is not None and
+                    state.path is not None and state.terminal is not None,
+                    "finite native occurrence is unresolved; no completion may be invented")
+                records.append(build_native_occurrence_v1(runtime_decision_seq=state.record["decision_seq"],
+                    measurement=state.input_frame_key in measured, decision_request=state.decision_request,
+                    accepted_record=state.accepted, path=state.path, terminal=state.terminal,
+                    issued_record_sha256=state.record["sha256"], study_scope=scope))
+            count = sum(record["measurement"] for record in records)
+            header["counts"] = {"complete_decision_count": len(records), "measurement_decision_count": count,
+                "excluded_decision_count": len(records)-count, "runtime_feedback_count": self._next_feedback_seq-1,
+                "measurement_feedback_count": sum(state.feedback is not None and state.input_frame_key in measured for state in ordered),
+                "excluded_feedback_count": sum(state.feedback is not None and state.input_frame_key not in measured for state in ordered)}
+            header["initial_state"] = copy.deepcopy(self._initial_policy_state)
+            header["adaptive_history"] = None
+            header = payload_with_sha256_v1(header)
+            # Existing decision validator checks the complete original capability,
+            # and occurrence validation joins the raw request/path/terminal.
+            def original_authority(record):
+                assessment = validate_decision_record(record["accepted_record"], self._capability_manifest)
+                _require(assessment["passed"], "study original native authority validation failed: " + str(assessment["blockers"]))
+            destination = self._operational_context["output_dir"] / NATIVE_OPERATIONAL_JSONL
+            return write_native_domain_v1(destination, header, records,
+                original_authority_validator=original_authority, study_scope=scope)
 
     def _capture_history_event(self, event: Mapping[str, Any]) -> None:
         if self.policy != "adaptive_weights":
@@ -687,9 +737,11 @@ class NativePolicyRuntimeCoordinator:
         _require_exact_fields(message, _REQUEST_FIELDS)
         if self._operational_context is not None:
             try:
-                validate_native_request_source_v1(message)
-                if len(self._states) >= MAX_NATIVE_DECISIONS_V1:
-                    raise OperationalDomainError("native operational state exceeds 6744 decisions")
+                scope = self._operational_context["header"].get("study_scope")
+                validate_native_request_source_v1(message, study_scope=scope)
+                maximum = scope["max_requests_per_arm"] if scope is not None else MAX_NATIVE_DECISIONS_V1
+                if len(self._states) >= maximum:
+                    raise OperationalDomainError("native operational state exceeds original bounded decisions")
             except ValueError as exc:
                 self._operational_error = str(exc)
                 raise NativePolicyRuntimeError(self._operational_error) from exc

@@ -1,0 +1,27 @@
+{
+ "accepted": false,
+ "cause": "NV12 probe is on identity before the pinned NV12 capsfilter: it records nvh264dec output caps (no chroma-site, default multiview-mode=mono/flags 0); RGB appsink caps carry the same default multiview fields",
+ "distinct_hw_nv12_caps": 1,
+ "distinct_hw_rgb_caps": 1,
+ "equal_frames_per_key": {
+  "height": 442,
+  "i420_sha256": 442,
+  "nv12_sha256": 442,
+  "pts_ns": 442,
+  "rgb_sha256": 442,
+  "u_sha256": 442,
+  "v_sha256": 442,
+  "width": 442,
+  "y_sha256": 442
+ },
+ "first_error": "actual reference active-plane/caps/domain mismatch",
+ "frames": 442,
+ "hardware_frame0_nv12_caps": "video/x-raw, format=(string)NV12, width=(int)1920, height=(int)1080, interlace-mode=(string)progressive, multiview-mode=(string)mono, multiview-flags=(GstVideoMultiviewFlagsSet)0:ffffffff:/right-view-first/left-flipped/left-flopped/right-flipped/right-flopped/half-aspect/mixed-mono, pixel-aspect-ratio=(fraction)1/1, colorimetry=(string)bt709, framerate=(fraction)30/1",
+ "hardware_frame0_rgb_caps": "video/x-raw, width=(int)1920, height=(int)1080, interlace-mode=(string)progressive, pixel-aspect-ratio=(fraction)1/1, framerate=(fraction)30/1, multiview-mode=(string)mono, multiview-flags=(GstVideoMultiviewFlagsSet)0:ffffffff:/right-view-first/left-flipped/left-flopped/right-flipped/right-flopped/half-aspect/mixed-mono, format=(string)RGB, chroma-site=(string)jpeg, colorimetry=(string)1:1:5:1",
+ "kind": "F-reference-gate-failure-analysis",
+ "prefix_equal": true,
+ "prefix_nv12_caps": "video/x-raw, format=(string)NV12, width=(int)1920, height=(int)1080, interlace-mode=(string)progressive, pixel-aspect-ratio=(fraction)1/1, chroma-site=(string)mpeg2, colorimetry=(string)bt709, framerate=(fraction)30/1",
+ "prefix_rgb_caps": "video/x-raw, format=(string)RGB, width=(int)1920, height=(int)1080, interlace-mode=(string)progressive, pixel-aspect-ratio=(fraction)1/1, chroma-site=(string)jpeg, colorimetry=(string)1:1:5:1, framerate=(fraction)30/1",
+ "software_frame0_nv12_caps": "video/x-raw, format=(string)NV12, width=(int)1920, height=(int)1080, interlace-mode=(string)progressive, pixel-aspect-ratio=(fraction)1/1, chroma-site=(string)mpeg2, colorimetry=(string)bt709, framerate=(fraction)30/1",
+ "software_frame0_rgb_caps": "video/x-raw, width=(int)1920, height=(int)1080, interlace-mode=(string)progressive, pixel-aspect-ratio=(fraction)1/1, framerate=(fraction)30/1, format=(string)RGB, chroma-site=(string)jpeg, colorimetry=(string)1:1:5:1"
+}

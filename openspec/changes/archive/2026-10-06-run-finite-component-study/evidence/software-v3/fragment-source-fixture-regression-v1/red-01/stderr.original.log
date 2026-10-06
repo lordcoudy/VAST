@@ -1,0 +1,31 @@
+unittest.case.FunctionTestCase (gstreamer_existing_fixture_source_identity) ... ERROR
+test_physical_source_drift_is_rejected_after_fixture_is_pinned (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_physical_source_drift_is_rejected_after_fixture_is_pinned) ... ERROR
+
+======================================================================
+ERROR: unittest.case.FunctionTestCase (gstreamer_existing_fixture_source_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 21, in gstreamer_existing_fixture_source_identity
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 492, in _source_set_identity
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 138, in _require
+    raise QualificationFragmentError(message)
+checkpoint_gstreamer_custom_qualification_fragment_v3.QualificationFragmentError: GStreamer transitive runtime source identity drifted
+
+======================================================================
+ERROR: test_physical_source_drift_is_rejected_after_fixture_is_pinned (test_checkpoint_openvino_gva_qualification_fragment_v3.OpenVINOGVAQualificationFragmentV3Tests.test_physical_source_drift_is_rejected_after_fixture_is_pinned)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py", line 109, in test_physical_source_drift_is_rejected_after_fixture_is_pinned
+    expected = target._source_set_identity(root)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 140, in _source_set_identity
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_openvino_gva_qualification_fragment_v3.py", line 111, in _require
+    raise QualificationFragmentError(message)
+checkpoint_gstreamer_custom_qualification_fragment_v3.QualificationFragmentError: OpenVINO transitive runtime source identity drifted
+
+----------------------------------------------------------------------
+Ran 2 tests in 10.839s
+
+FAILED (errors=2)

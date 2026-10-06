@@ -982,8 +982,14 @@ def build_gstreamer_source_specs(
     pinned_source_paths_by_sha256: dict[str, str] | None = None,
     inherited_native_fds: tuple[int, ...] = (),
     gst_plugin_path: str | None = None,
+    study_output_root: Path | None = None,
 ) -> list[SourceLaunchSpec]:
     _require(plan.get("claim_status") == CLAIM_STATUS, "checkpoint launch plan must remain planning-only")
+    study = plan.get("kind") == "finite-component-study"
+    if study:
+        from checkpoint_runtime_plan import validate_finite_study_runtime_plan_v1
+        validate_finite_study_runtime_plan_v1(plan)
+        _require(study_output_root is not None, "finite source accounting output is required")
     sources: list[SourceLaunchSpec] = []
     for source in plan["source_coordinators"]:
         source_id = str(source["process_id"])
@@ -1016,10 +1022,14 @@ def build_gstreamer_source_specs(
             "--playback-timestamp-scale",
             str(source["playback_timestamp_scale"]),
             "--source-replay",
-            "continuous",
+            "finite" if study else "continuous",
             "--logical-stream-id",
             str(stream_id),
         )
+        if study:
+            command += ("--checkpoint-study-kind", "finite-component-study",
+                "--checkpoint-study-accounting-path", str(study_output_root / f"source-{stream_id}.jsonl"),
+                "--checkpoint-study-width", str(source["width"]), "--checkpoint-study-height", str(source["height"]))
         sources.append(
             SourceLaunchSpec(
                 source_process_id=source_id,
@@ -1035,7 +1045,7 @@ def build_gstreamer_source_specs(
                     "VAST_CHECKPOINT_SOURCE_CODEC": str(source["source_codec"]),
                     "VAST_CHECKPOINT_SOURCE_DURATION_NS": str(source["source_duration_ns"]),
                     "VAST_CHECKPOINT_PLAYBACK_TIMESTAMP_SCALE": str(source["playback_timestamp_scale"]),
-                    "VAST_CHECKPOINT_SOURCE_REPLAY": "continuous",
+                    "VAST_CHECKPOINT_SOURCE_REPLAY": "finite" if study else "continuous",
                     "VAST_CHECKPOINT_ADMISSION_MODE": "native_common_source_coordinator",
                 },
                 native_source=True,
@@ -1047,6 +1057,15 @@ def build_gstreamer_source_specs(
         "GStreamer source specs must contain exactly one source per stream",
     )
     return sources
+
+
+def finite_study_worker_arguments_v1(owner, worker_id, *, study_client_mode, study_output_root):
+    """Typed finite-study CLI contract of one native worker."""
+    return ("--checkpoint-study-kind", "finite-component-study",
+        "--checkpoint-study-width", str(owner["width"]), "--checkpoint-study-height", str(owner["height"]),
+        "--checkpoint-analytics-client-mode", "branch" if study_client_mode == "branch-channel" else "global-client",
+        "--checkpoint-study-accounting-path", str(study_output_root / ("native-" + worker_id + "-receives.jsonl")),
+        "--checkpoint-study-waits-path", str(study_output_root / ("native-" + worker_id + "-waits.jsonl")))
 
 
 def build_gstreamer_worker_specs(
@@ -1068,8 +1087,16 @@ def build_gstreamer_worker_specs(
     native_policy_identities: dict[str, str] | None = None,
     inherited_native_fds: tuple[int, ...] = (),
     gst_plugin_path: str | None = None,
+    study_client_mode: str = "global-client",
+    study_output_root: Path | None = None,
 ) -> list[WorkerLaunchSpec]:
     _require(plan.get("claim_status") == CLAIM_STATUS, "checkpoint launch plan must remain planning-only")
+    study = plan.get("kind") == "finite-component-study"
+    if study:
+        from checkpoint_runtime_plan import validate_finite_study_runtime_plan_v1
+        validate_finite_study_runtime_plan_v1(plan)
+        _require(study_client_mode in {"global-client", "branch-channel"}, "study client mode is not prebuilt")
+        _require(study_output_root is not None, "finite study workers require the arm study journal directory")
     _require(duration_s > 0, "checkpoint engineering duration must be positive")
     _require(
         analytics_terminal_mode in ANALYTICS_TERMINAL_MODES,
@@ -1160,7 +1187,7 @@ def build_gstreamer_worker_specs(
     source_codec = next(iter(worker_codecs))
     decoder_placement = dict(plan.get("decoder_placement") or {})
     _require(
-        decoder_placement == _decoder_placement_contract(source_codec),
+        decoder_placement == (plan["decoder_placement"] if study else _decoder_placement_contract(source_codec)),
         "checkpoint worker specs require the codec-specific frozen decoder-placement contract",
     )
     allowed_decoder_factories = ",".join(
@@ -1233,7 +1260,7 @@ def build_gstreamer_worker_specs(
                     "--source-duration-ns",
                     str(worker["source_duration_ns"]),
                     "--source-replay",
-                    "continuous",
+                    "finite" if study else "continuous",
                     "--detect-bin",
                     detect_bin,
                     "--checkpoint-analytics-mode",
@@ -1255,7 +1282,7 @@ def build_gstreamer_worker_specs(
                             "VAST_CHECKPOINT_SOURCE_CODEC": str(worker["source_codec"]),
                             "VAST_CHECKPOINT_ALLOWED_DECODER_FACTORIES": allowed_decoder_factories,
                             "VAST_CHECKPOINT_SOURCE_DURATION_NS": str(worker["source_duration_ns"]),
-                            "VAST_CHECKPOINT_SOURCE_REPLAY": "continuous",
+                            "VAST_CHECKPOINT_SOURCE_REPLAY": "finite" if study else "continuous",
                             "VAST_CHECKPOINT_ADMISSION_MODE": "native_common_source_coordinator",
                             "VAST_CHECKPOINT_ANALYTICS_MODE": analytics_terminal_mode,
                             **(
@@ -1328,7 +1355,7 @@ def build_gstreamer_worker_specs(
                 "--source-duration-ns",
                 str(graph["source_duration_ns"]),
                 "--source-replay",
-                "continuous",
+                "finite" if study else "continuous",
                 "--detect-bin",
                 detect_bin,
                 "--checkpoint-analytics-mode",
@@ -1351,7 +1378,7 @@ def build_gstreamer_worker_specs(
                         "VAST_CHECKPOINT_SOURCE_CODEC": str(graph["source_codec"]),
                         "VAST_CHECKPOINT_ALLOWED_DECODER_FACTORIES": allowed_decoder_factories,
                         "VAST_CHECKPOINT_SOURCE_DURATION_NS": str(graph["source_duration_ns"]),
-                        "VAST_CHECKPOINT_SOURCE_REPLAY": "continuous",
+                        "VAST_CHECKPOINT_SOURCE_REPLAY": "finite" if study else "continuous",
                         "VAST_CHECKPOINT_ADMISSION_MODE": "native_common_source_coordinator",
                         "VAST_CHECKPOINT_ANALYTICS_MODE": analytics_terminal_mode,
                         **(
@@ -1387,6 +1414,15 @@ def build_gstreamer_worker_specs(
                     inherited_fds=inherited_native_fds,
                 )
             )
+    if study:
+        from dataclasses import replace
+        def bind(spec):
+            owner = next((worker for stream in plan["streams"] for worker in
+                (stream["workers"] if plan["topology_kind"] == INDEPENDENT_PROCESSES else [stream["graph_process"]])
+                if worker["process_id"] == spec.worker_id))
+            return replace(spec, command=spec.command + finite_study_worker_arguments_v1(
+                owner, spec.worker_id, study_client_mode=study_client_mode, study_output_root=study_output_root))
+        specs = [bind(spec) for spec in specs]
     return specs
 
 
@@ -1399,7 +1435,10 @@ def _assert_output_location(output_root: Path, project_root: Path) -> None:
     )
 
 
-def validate_worker_source_provenance(specs: list[WorkerLaunchSpec]) -> None:
+def validate_worker_source_provenance(specs: list[WorkerLaunchSpec], *, study_runtime_plan=None) -> None:
+    if study_runtime_plan is not None:
+        from checkpoint_runtime_plan import validate_finite_study_runtime_plan_v1
+        validate_finite_study_runtime_plan_v1(study_runtime_plan)
     for spec in specs:
         command = list(spec.command)
         _require(
@@ -1417,13 +1456,13 @@ def validate_worker_source_provenance(specs: list[WorkerLaunchSpec]) -> None:
         source_replay = command[command.index("--source-replay") + 1]
         _require(source_container == "mp4", f"{spec.worker_id}: checkpoint container must be MP4")
         _require(source_codec in {"h264", "h265"}, f"{spec.worker_id}: checkpoint codec is unsupported")
-        expected_decoder_factories = ",".join(checkpoint_decoder_factories(source_codec))
+        expected_decoder_factories = ",".join(study_runtime_plan["decoder_placement"]["allowed_factories"] if study_runtime_plan is not None else checkpoint_decoder_factories(source_codec))
         _require(
             allowed_decoder_factories == expected_decoder_factories,
             f"{spec.worker_id}: decoder-factory allowlist differs from codec contract",
         )
         _require(int(source_duration_ns) > 0, f"{spec.worker_id}: source duration must be positive")
-        _require(source_replay == "continuous", f"{spec.worker_id}: finite source replay must be continuous")
+        _require(source_replay == ("finite" if study_runtime_plan is not None else "continuous"), f"{spec.worker_id}: source replay differs from typed original plan")
         _require(
             spec.environment.get("VAST_CHECKPOINT_DATASET_ID") == dataset_id,
             f"{spec.worker_id}: dataset ID differs between command and runtime environment",
@@ -1459,7 +1498,10 @@ def validate_worker_source_provenance(specs: list[WorkerLaunchSpec]) -> None:
         )
 
 
-def validate_source_provenance(specs: list[SourceLaunchSpec]) -> None:
+def validate_source_provenance(specs: list[SourceLaunchSpec], *, study_runtime_plan=None) -> None:
+    if study_runtime_plan is not None:
+        from checkpoint_runtime_plan import validate_finite_study_runtime_plan_v1
+        validate_finite_study_runtime_plan_v1(study_runtime_plan)
     for spec in specs:
         command = list(spec.command)
         source = Path(command[command.index("--source-path") + 1])
@@ -1479,7 +1521,8 @@ def validate_source_provenance(specs: list[SourceLaunchSpec]) -> None:
         _require(source_codec in {"h264", "h265"}, f"{spec.source_process_id}: checkpoint codec is unsupported")
         _require(int(source_duration_ns) > 0, f"{spec.source_process_id}: source duration must be positive")
         _require(int(playback_timestamp_scale) > 0, f"{spec.source_process_id}: playback timestamp scale must be positive")
-        _require(source_replay == "continuous", f"{spec.source_process_id}: finite source replay must be continuous")
+        _require(source_replay == ("finite" if study_runtime_plan is not None else "continuous"),
+                 f"{spec.source_process_id}: source replay kind differs from validated plan")
         _require(spec.native_source, f"{spec.source_process_id}: source process is not marked native")
         _require(
             spec.environment.get("VAST_CHECKPOINT_PLAYBACK_TIMESTAMP_SCALE") == playback_timestamp_scale,
@@ -2835,6 +2878,309 @@ def _native_binary_path(path: Path) -> Path:
     return path.resolve()
 
 
+def _study_clock_domain():
+    from canonical_systems_study_plan_v1 import actual_clock_domain_label
+    return actual_clock_domain_label()
+
+
+def finite_study_source_environment_v1(spec, pipes, *, startup, run_id, topology_kind):
+    """The actual finite source child environment of the offered-prefix STOP gate."""
+    from checkpoint_runtime import canonical_consumer_fds_json, native_subprocess_environment
+    env=native_subprocess_environment(spec.environment)
+    env.update(VAST_CHECKPOINT_STARTUP_DEADLINE_MONOTONIC_NS=str(int(startup*1e9)),
+        VAST_CHECKPOINT_ADMISSION_EVENT_FD=str(pipes["admission"][1]),VAST_CHECKPOINT_ADMISSION_ACK_FD=str(pipes["ack"][0]),
+        VAST_CHECKPOINT_CONTROL_FD=str(pipes["control"][0]),VAST_CHECKPOINT_STATUS_FD=str(pipes["status"][1]),
+        VAST_CHECKPOINT_ADMISSION_CONSUMER_FDS_JSON=canonical_consumer_fds_json({"reference-"+str(spec.stream_id):pipes["transport"][1]}),
+        VAST_CHECKPOINT_WORKER_ID=spec.source_process_id,VAST_CHECKPOINT_RUN_ID=run_id,
+        VAST_CHECKPOINT_TOPOLOGY_KIND=topology_kind,VAST_CHECKPOINT_STREAM_ID=str(spec.stream_id),
+        VAST_CHECKPOINT_DATASET_ID=spec.dataset_id,VAST_CHECKPOINT_SOURCE_SHA256=spec.source_sha256)
+    return env
+
+
+def wait_finite_study_sources_after_stop(children, errors, lock, *, until_monotonic):
+    """After STOP, wait for real sources but fail as soon as a capture/coordinator error exists."""
+    import time
+    while any(child.poll() is None for child in children.values()):
+        with lock:
+            _require(not errors, "source gate capture/coordinator failed after STOP: " + str(errors[:1]))
+        _require(time.monotonic() < until_monotonic, "source gate original sources did not drain after STOP")
+        time.sleep(0.02)
+    with lock:
+        _require(not errors, "source gate capture/coordinator failed after STOP: " + str(errors[:1]))
+    _require(all(child.returncode == 0 for child in children.values()), "source gate original source failed")
+
+
+def run_finite_study_source_gate_v1(*, study_plan, project_root, output_root, source_binary,
+        deadline_ns, expected_boot, expected_time_namespace):
+    """Real two-source START/STOP/EOF, with durable central ACK and original wire spools."""
+    import time
+    import selectors
+    import threading
+    from dataclasses import asdict
+    from checkpoint_admission import DirectAdmissionCoordinator, SourceBinding
+    from checkpoint_runtime import _terminate_processes, native_subprocess_environment, RuntimeLifecycleStatus
+    from checkpoint_runtime_plan import build_finite_study_runtime_plan_v1
+    _require(Path("/proc/sys/kernel/random/boot_id").read_text().strip() == expected_boot and
+        _study_clock_domain() == expected_time_namespace, "source gate clock namespace differs")
+    arm = next(a for a in study_plan["arms"] if a["rate"] == "2" and a["resource"] == "cpu" and a["topology"] == "shared")
+    plan = build_finite_study_runtime_plan_v1(study_plan, arm["arm_id"])
+    out = Path(output_root); _require(out.is_dir() and not any(out.iterdir()), "source gate output is not new")
+    accounting = out/"accounting"; accounting.mkdir(mode=0o700)
+    run_id = "finite-source-gate-"+study_plan["sha256"][:16]
+    specs = [spec for spec in build_gstreamer_source_specs(plan=plan, source_binary=Path(source_binary),
+        project_root=Path(project_root), run_id=run_id, gst_plugin_path="/opt/vast/lib/gstreamer-1.0",
+        study_output_root=accounting) if spec.stream_id in (0,5)]
+    seed_gstreamer_registry_copies([], specs, template_path=Path("/opt/vast/share/gstreamer-registry.bin"), refresh_hardware_plugins=True)
+    startup = min(deadline_ns/1e9-230.0, time.monotonic()+120.0)
+    _require(startup > time.monotonic(), "original preparation lacks source gate")
+    children, parents, threads, states, errors = {}, {}, [], {spec.source_process_id:[] for spec in specs}, []
+    open_fds=set()
+    lock = threading.RLock(); coordinator_ready = threading.Event(); central = None; primary = None
+    def bound():
+        _require(time.monotonic_ns() < deadline_ns, "original preparation source gate deadline exceeded")
+    def lines(fd):
+        pending = bytearray(); os.set_blocking(fd, False)
+        with selectors.DefaultSelector() as poll:
+            poll.register(fd, selectors.EVENT_READ)
+            while True:
+                bound()
+                if not poll.select(min(.05, (deadline_ns-time.monotonic_ns())/1e9)): continue
+                chunk = os.read(fd, 2048)
+                if not chunk:
+                    _require(not pending, "source gate partial original control line"); return
+                pending.extend(chunk)
+                while b"\n" in pending:
+                    line, _, rest = pending.partition(b"\n"); pending = bytearray(rest)
+                    _require(len(line)<2048, "source gate control line cap")
+                    yield line.decode()
+                _require(len(pending)<2048, "source gate pending control line cap")
+    def write(fd, raw):
+        os.set_blocking(fd, False); offset = 0
+        with selectors.DefaultSelector() as poll:
+            poll.register(fd, selectors.EVENT_WRITE)
+            while offset<len(raw):
+                bound()
+                if not poll.select(min(.05,(deadline_ns-time.monotonic_ns())/1e9)): continue
+                try: n=os.write(fd,raw[offset:])
+                except BlockingIOError: continue
+                _require(n>0,"source gate control write made no progress"); offset+=n
+    def reader(spec, kind, fd):
+        try:
+            if kind == "transport":
+                path = out/(str(spec.stream_id)+".transport.original.raw"); total=0
+                os.set_blocking(fd,False)
+                with path.open("xb") as stream, selectors.DefaultSelector() as poll:
+                    poll.register(fd,selectors.EVENT_READ)
+                    while True:
+                        bound()
+                        if not poll.select(min(.05,(deadline_ns-time.monotonic_ns())/1e9)): continue
+                        chunk=os.read(fd,65536)
+                        if not chunk: break
+                        total+=len(chunk); _require(total<=512*1024*1024,"source transport spool cap")
+                        _require(stream.write(chunk)==len(chunk),"short original transport spool write")
+                    stream.flush();os.fsync(stream.fileno())
+            else:
+                for line in lines(fd):
+                    if kind=="status":
+                        status=RuntimeLifecycleStatus.parse(line)
+                        _require(status.worker_id==spec.source_process_id,"source gate status owner")
+                        with lock: states[spec.source_process_id].append(asdict(status))
+                    else:
+                        _require(coordinator_ready.wait(max(0,(deadline_ns-time.monotonic_ns())/1e9)),"source gate coordinator unavailable")
+                        with lock:
+                            accepted=central.accept(line,observed_source_process_id=spec.source_process_id,
+                                observed_pid=children[spec.source_process_id].pid)
+                            raw=json.dumps(asdict(accepted),sort_keys=True,separators=(",",":")).encode()+b"\n"
+                            _require(len(raw)<=2048,"source admission row cap")
+                            _require(journal.write(raw)==len(raw),"short durable source admission write")
+                            journal.flush();os.fsync(journal.fileno());bound()
+                            write(parents[spec.source_process_id]["ack"],f"1 ACK {accepted.sequence}\n".encode())
+        except BaseException as error:
+            with lock: errors.append(error)
+        finally:
+            try:
+                os.close(fd)
+                with lock:open_fds.discard(fd)
+            except OSError as error:
+                with lock: errors.append(error)
+    with (out/"admissions.original.jsonl").open("xb") as journal:
+        try:
+            for spec in specs:
+                pipes={}
+                for key in ("admission","ack","control","status","transport"):
+                    pipes[key]=os.pipe();open_fds.update(pipes[key])
+                parent={"ack":pipes["ack"][1],"control":pipes["control"][1]};parents[spec.source_process_id]=parent
+                inherited=[pipes["admission"][1],pipes["ack"][0],pipes["control"][0],pipes["status"][1],pipes["transport"][1]]
+                env=finite_study_source_environment_v1(spec,pipes,startup=startup,run_id=run_id,topology_kind=plan["topology_kind"])
+                with (out/(str(spec.stream_id)+".stderr.raw")).open("xb") as stderr:
+                    child=subprocess.Popen(spec.command,env=env,pass_fds=tuple(inherited),stdout=subprocess.DEVNULL,stderr=stderr,start_new_session=True)
+                    children[spec.source_process_id]=child
+                for fd in inherited:
+                    os.close(fd);open_fds.discard(fd)
+                for kind in ("admission","status","transport"):
+                    thread=threading.Thread(target=reader,args=(spec,kind,pipes[kind][0]),daemon=False)
+                    threads.append(thread);thread.start()
+            central=DirectAdmissionCoordinator(run_id=run_id,topology_kind=plan["topology_kind"],branches=plan["required_branches"],
+                bindings=[SourceBinding(spec.source_process_id,spec.stream_id,children[spec.source_process_id].pid,
+                    spec.dataset_id,spec.source_sha256,True) for spec in specs],study_runtime_plan=plan,study_source_stream_ids=(0,5))
+            coordinator_ready.set()
+            while not all(values and values[0]["state"]=="READY" for values in states.values()):
+                _require(not errors,"source READY capture failed: "+str(errors[:1]))
+                _require(time.monotonic()<startup and all(c.poll() is None for c in children.values()),"source gate READY failed")
+                time.sleep(.01)
+            start=time.monotonic_ns()+100_000_000; realtime=time.time_ns()+100_000_000
+            window_start=(realtime+30_000_000_000)//1_000_000; window_end=(realtime+210_000_000_000)//1_000_000; drain_end=window_end+10000
+            _require(start+220_000_000_000<deadline_ns,"source original drain exceeds preparation endpoint")
+            for parent in parents.values(): write(parent["control"],f"1 START {start} {window_start} {window_end} {drain_end}\n".encode())
+            from canonical_systems_study_plan_v1 import OFFER_END_NS, admission_stop_lead_ns
+            stop_at=start+OFFER_END_NS-admission_stop_lead_ns(study_plan,arm["rate"])
+            while time.monotonic_ns()<stop_at:
+                bound();_require(not errors and all(c.poll() is None for c in children.values()),"source gate failed before original STOP")
+                time.sleep(.02)
+            for parent in parents.values(): write(parent["control"],f"1 STOP {window_end}\n".encode())
+            wait_finite_study_sources_after_stop(children,errors,lock,until_monotonic=min(deadline_ns/1e9,start/1e9+220.0))
+            for thread in threads: thread.join(timeout=max(0,deadline_ns/1e9-time.monotonic()))
+            _require(not errors and all(not t.is_alive() for t in threads),"source gate capture/EOF failed: "+str(errors[:1]))
+            _require(all([row["state"] for row in values]==["READY","STARTED","ADMISSION_STOPPED","DRAINED"] for values in states.values()),"source gate real STOP/drain statuses incomplete")
+            facts={"kind":"finite-study-source-stop-original-v1","run_id":run_id,"states":states,
+                "source_process_ids":{k:c.pid for k,c in children.items()},"returncodes":{k:c.returncode for k,c in children.items()},
+                "start_monotonic_ns":start,"window_start_timestamp_ms":window_start,"window_end_timestamp_ms":window_end,
+                "drain_end_timestamp_ms":drain_end,"actual_transport_eof":True,"accepted":False}
+        except BaseException as error: primary=error;raise
+        finally:
+            coordinator_ready.set()
+            closing=min(deadline_ns/1e9,time.monotonic()+15.0);cleanup=[]
+            try:_terminate_processes(children,deadline=closing)
+            except BaseException as error:cleanup.append(error)
+            for thread in threads:thread.join(timeout=max(0,closing-time.monotonic()))
+            if any(thread.is_alive() for thread in threads):cleanup.append(ValueError("source gate capture thread survived retirement"))
+            for fd in list(open_fds):
+                try:os.close(fd);open_fds.discard(fd)
+                except OSError as error:cleanup.append(error)
+            if cleanup:
+                if primary is not None:
+                    for error in cleanup:primary.add_note(str(error)[:1024])
+                else:raise ValueError("source gate owned cleanup failed: "+str(cleanup)[:2048])
+    _require(not errors,"source gate original capture failed: "+str(errors[:1]))
+    bound()
+    facts["all_owned_fds_and_children_closed"]=True
+    raw=json.dumps(facts,sort_keys=True,separators=(",",":")).encode()+b"\n"
+    with (out/"source-stop.original.json").open("xb") as stream:stream.write(raw);stream.flush();os.fsync(stream.fileno())
+    bound();return facts
+
+
+def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, run_id,
+        native_context_path, capability_manifest, calibration, execution_manifest,
+        analytics_model_manifest, analytics_execution_socket, preprocessing_sha256,
+        binary, source_binary, detect_bin, client_mode, campaign_deadline_ns, worker_clock_environment):
+    """Execute an actually typed arm on the original native/control spine."""
+    import threading
+    import time
+    from checkpoint_runtime_plan import build_finite_study_runtime_plan_v1
+    from canonical_systems_study_plan_v1 import admission_stop_lead_ns
+    from publication_operational_runtime_context_v1 import load_native_operational_context_v1
+    plan = build_finite_study_runtime_plan_v1(study_plan, arm_id)
+    arm = next(row for row in [*study_plan["arms"], *study_plan["pilots"]["initial"],
+        *study_plan["pilots"]["conditional"]] if row["arm_id"] == arm_id)
+    policy = arm["resource"] + "_only"
+    _require(type(campaign_deadline_ns) is int and campaign_deadline_ns > time.monotonic_ns(),
+             "original study campaign deadline is already closed")
+    _require(set(worker_clock_environment) == {"VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID",
+        "VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE"}, "study worker clocks were not actually observed")
+    _require(Path("/proc/sys/kernel/random/boot_id").read_text().strip() ==
+        worker_clock_environment["VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID"] and
+        _study_clock_domain() == worker_clock_environment["VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE"],
+        "study native/worker clock namespaces differ")
+    output = Path(output_root)
+    _require(output.is_dir() and not output.is_symlink() and not any(output.iterdir()),
+             "study arm output must be a fresh owned empty directory")
+    native_output, accounting, operational = output / "native", output / "study", output / "operational"
+    for path in (native_output, accounting, operational):
+        path.mkdir(mode=0o700)
+    context, limits = load_native_operational_context_v1(native_context_path, operational,
+        run_id=run_id, system="gstreamer_custom", scenario=plan["scenario"], codec="h264",
+        policy=policy, deadline_ms=100.0, study_runtime_plan=plan)
+    assessment = assess_gstreamer_native_policy_execution_manifest(execution_manifest,
+        system="gstreamer_custom", capability_manifest=capability_manifest,
+        preprocessing_contract_sha256=preprocessing_sha256)
+    _require(assessment["passed"] and policy in assessment["eligible_policies"],
+             "study original full execution assessment failed: " + str(assessment["blockers"]))
+    coordinator = NativePolicyRuntimeCoordinator(run_id=run_id,
+        arm_id=f"{run_id}:{plan['scenario']}:h264:{policy}:100.0", system="gstreamer_custom",
+        scenario=plan["scenario"], codec="h264", policy=policy, deadline_ms=100.0,
+        branches=plan["required_branches"], capability_manifest=capability_manifest,
+        calibration=calibration, operational_context=context, study_runtime_plan=plan)
+    bindings = load_analytics_model_bindings(Path(analytics_model_manifest), required_branches=plan["required_branches"])
+    specs = build_gstreamer_worker_specs(plan=plan, binary=Path(binary), output_root=native_output,
+        project_root=Path(project_root), run_id=run_id, duration_s=180, detect_bin=detect_bin,
+        analytics_terminal_mode=NATIVE_TERMINAL_ANALYTICS_MODE, analytics_model_bindings=bindings,
+        analytics_queue_max_buffers=1, native_policy=policy, native_policy_deadline_ms=100.0,
+        analytics_execution_socket=analytics_execution_socket, analytics_preprocessing_contract_sha256=preprocessing_sha256,
+        native_policy_identities=native_policy_identity_environment(system="gstreamer_custom", capability_manifest=capability_manifest),
+        gst_plugin_path="/opt/vast/lib/gstreamer-1.0", study_client_mode=client_mode, study_output_root=accounting)
+    specs = [dataclasses.replace(spec, environment={**spec.environment, **worker_clock_environment}) for spec in specs]
+    sources = build_gstreamer_source_specs(plan=plan, source_binary=Path(source_binary), project_root=Path(project_root),
+        run_id=run_id, gst_plugin_path="/opt/vast/lib/gstreamer-1.0", study_output_root=accounting)
+    validate_worker_source_provenance(specs, study_runtime_plan=plan)
+    validate_source_provenance(sources, study_runtime_plan=plan)
+    seed_gstreamer_registry_copies(specs, sources, template_path=Path("/opt/vast/share/gstreamer-registry.bin"),
+                                 refresh_hardware_plugins=True)
+    for spec in specs:
+        Path(spec.command[spec.command.index("--output-dir") + 1]).mkdir(mode=0o700, parents=True)
+    remaining = (campaign_deadline_ns-time.monotonic_ns())/1e9
+    _require(remaining >= 230.0, "study original campaign lacks one arm and closure budget")
+    total = 0
+    with (output / "topology.original.jsonl").open("xb") as stream, (output / "native-protocol.original.jsonl").open("xb") as original, (output / "admissions.original.jsonl").open("xb") as admissions:
+        def observed(event):
+            nonlocal total
+            raw = json.dumps(event, sort_keys=True, separators=(",", ":")).encode()+b"\n"
+            total += len(raw)
+            _require(len(raw) <= 2048 and total <= 128*1024*1024, "study topology capture exceeded original cap")
+            stream.write(raw); stream.flush()
+        raw_total = 0
+        def raw_event(line, worker_id, pid):
+            nonlocal raw_total
+            raw = line.encode("utf-8")
+            raw_total += len(raw)
+            _require(len(raw) <= 2048 and raw_total <= 128*1024*1024, "native original protocol exceeded cap")
+            original.write(raw); original.flush()
+        admission_total = 0
+        admission_lock = threading.Lock()
+        def durable_admission(row):
+            nonlocal admission_total
+            raw = json.dumps(row, sort_keys=True, separators=(",", ":")).encode()+b"\n"
+            with admission_lock:
+                admission_total += len(raw)
+                _require(len(raw) <= 2048 and admission_total <= 64*1024*1024 and
+                    time.monotonic_ns() < campaign_deadline_ns, "central admission journal exceeded original bound")
+                _require(admissions.write(raw) == len(raw), "short central admission journal write")
+                admissions.flush(); os.fsync(admissions.fileno())
+                _require(time.monotonic_ns() < campaign_deadline_ns, "central admission journal durability is late")
+        result = run_worker_processes(run_id=run_id, topology_kind=plan["topology_kind"], topology_contract_version=2,
+            branches=plan["required_branches"], specs=specs, source_specs=sources,
+            timeout_s=min(remaining, 540.0), ready_timeout_s=min(300.0, remaining-230.0), on_event=observed,
+            on_raw_event=raw_event, on_admission=durable_admission, absolute_deadline_monotonic_ns=campaign_deadline_ns,
+            synchronized_lifecycle=True, warmup_s=30.0, measurement_s=180.0, drain_timeout_s=10.0,
+            start_lead_s=0.1, require_decoder_placement_verification=True, measurement_end_boundary_guard_ns=1_000_000,
+            admission_stop_lead_ns=admission_stop_lead_ns(study_plan, arm["rate"]),
+            policy_socket_handler=coordinator.serve_worker_socket, operational_admission_limits=limits, study_runtime_plan=plan)
+    measured = {row["input_frame_key"] for row in result.admission_records
+                if result.measurement_start_schedule_offset_ns <= row["schedule_offset_ns"] < result.measurement_end_schedule_offset_ns}
+    domain = coordinator.persist_study_operational_v1(measurement_input_keys=measured)
+    facts = {"schema_version": 1, "kind": "finite-component-study-arm-original-v1", "arm_id": arm_id, "run_id": run_id,
+        "plan_sha256": study_plan["sha256"], "result": dataclasses.asdict(result), "native_domain": domain,
+        "clock_domain": {"boot_id": Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
+            "time_namespace": _study_clock_domain(), "clock": "CLOCK_MONOTONIC"},
+        "final_variant": client_mode, "accepted": False, "publication_ready": False}
+    raw = json.dumps(facts, sort_keys=True, separators=(",", ":"), default=str).encode()+b"\n"
+    _require(len(raw) <= 256*1024*1024 and time.monotonic_ns() < campaign_deadline_ns,
+             "study arm receipt is late or too large")
+    with (output / "arm.original.json").open("xb") as stream:
+        stream.write(raw); stream.flush(); os.fsync(stream.fileno())
+    _require(time.monotonic_ns() < campaign_deadline_ns, "study arm receipt closure is late")
+    return facts
+
+
 def main(
     argv: list[str] | tuple[str, ...] | None = None,
     *,
@@ -2879,6 +3225,13 @@ def main(
     parser.add_argument("--policy-capability-manifest", type=Path)
     parser.add_argument("--policy-calibration", type=Path)
     parser.add_argument("--static-hybrid-map", type=Path)
+    parser.add_argument("--finite-study-plan", type=Path)
+    parser.add_argument("--finite-study-arm")
+    parser.add_argument("--finite-study-source-gate", action="store_true")
+    parser.add_argument("--finite-study-expected-boot")
+    parser.add_argument("--finite-study-expected-time-namespace")
+    parser.add_argument("--finite-study-client-mode", choices=("global-client", "branch"))
+    parser.add_argument("--finite-study-campaign-deadline-ns", type=int)
     parser.add_argument("--operational-request-context", type=Path)
     parser.add_argument("--operational-output-dir", type=Path)
     parser.add_argument("--gst-registry-template", type=Path)
@@ -2910,6 +3263,35 @@ def main(
     )
 
     project_root = args.config.resolve().parents[1]
+    if args.finite_study_source_gate:
+        _require(args.finite_study_plan is not None and not args.execute_engineering_runtime and not args.execute_publication_runtime,
+            "source reference gate requires actual separately typed study")
+        run_finite_study_source_gate_v1(study_plan=json.loads(args.finite_study_plan.read_bytes()), project_root=project_root,
+            output_root=args.output_dir, source_binary=args.source_binary, deadline_ns=args.finite_study_campaign_deadline_ns,
+            expected_boot=args.finite_study_expected_boot,expected_time_namespace=args.finite_study_expected_time_namespace)
+        return 0
+    if args.finite_study_plan is not None:
+        _require(not args.execute_publication_runtime and not args.execute_engineering_runtime and
+            args.finite_study_arm is not None and args.finite_study_client_mode is not None and
+            args.finite_study_campaign_deadline_ns is not None and args.operational_request_context is not None and
+            args.policy_capability_manifest is not None and args.policy_calibration is not None and
+            args.analytics_execution_manifest is not None and args.analytics_model_manifest is not None and
+            args.analytics_execution_socket is not None and args.analytics_preprocessing_contract_sha256 is not None,
+            "study invocation lacks actual typed originals or attempts a legacy execution grant")
+        run_finite_study_arm_v1(study_plan=_load_yaml(args.finite_study_plan), arm_id=args.finite_study_arm,
+            project_root=project_root, output_root=args.output_dir, run_id=args.run_id,
+            native_context_path=args.operational_request_context, capability_manifest=_load_yaml(args.policy_capability_manifest),
+            calibration=_load_yaml(args.policy_calibration), execution_manifest=_load_yaml(args.analytics_execution_manifest),
+            analytics_model_manifest=args.analytics_model_manifest, analytics_execution_socket=args.analytics_execution_socket,
+            preprocessing_sha256=args.analytics_preprocessing_contract_sha256, binary=args.binary, source_binary=args.source_binary,
+            detect_bin=args.detect_bin,
+            client_mode="branch-channel" if args.finite_study_client_mode == "branch" else "global-client",
+            campaign_deadline_ns=args.finite_study_campaign_deadline_ns,
+            worker_clock_environment={key: os.environ.get(key) for key in
+                ("VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID", "VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE")})
+        return 0
+    _require(args.finite_study_arm is None and args.finite_study_client_mode is None and
+        args.finite_study_campaign_deadline_ns is None, "study flags require the separate typed plan")
     config = _load_yaml(args.config)
     datasets = dict(_load_yaml(args.datasets).get("datasets") or {})
     publication_mode = bool(args.execute_publication_runtime)

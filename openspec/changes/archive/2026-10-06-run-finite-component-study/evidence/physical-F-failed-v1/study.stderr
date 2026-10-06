@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/vfc3e0c9aF/scripts/run_canonical_systems_study_v1.py", line 1187, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/s-a-balashov/vfc3e0c9aF/scripts/run_canonical_systems_study_v1.py", line 1181, in main
+    result={"prepare":prepare,"run":run,"study":study}[args.operation](args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vfc3e0c9aF/scripts/run_canonical_systems_study_v1.py", line 1153, in study
+    prepared=prepare(preparation)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vfc3e0c9aF/scripts/run_canonical_systems_study_v1.py", line 523, in prepare
+    reference = reference_gate(commands, args.engine, images["gstreamer"]["image_id"], root, output, name, first, units)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vfc3e0c9aF/scripts/run_canonical_systems_study_v1.py", line 658, in reference_gate
+    hw, hw_ref = reference_rows(hardware, completion="derived_full_eos", count=442,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vfc3e0c9aF/scripts/run_canonical_systems_study_v1.py", line 619, in reference_rows
+    require(frame.get("type") == "frame" and frame.get("ordinal") == ordinal and
+  File "/home/s-a-balashov/vfc3e0c9aF/scripts/run_canonical_systems_study_v1.py", line 42, in require
+    raise ValueError(message)
+ValueError: actual reference active-plane/caps/domain mismatch

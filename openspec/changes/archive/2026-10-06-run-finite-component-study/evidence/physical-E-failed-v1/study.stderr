@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/vf95a51ae5/scripts/run_canonical_systems_study_v1.py", line 1185, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/s-a-balashov/vf95a51ae5/scripts/run_canonical_systems_study_v1.py", line 1179, in main
+    result={"prepare":prepare,"run":run,"study":study}[args.operation](args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vf95a51ae5/scripts/run_canonical_systems_study_v1.py", line 1151, in study
+    prepared=prepare(preparation)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vf95a51ae5/scripts/run_canonical_systems_study_v1.py", line 518, in prepare
+    inventory_raw = commands.wait(child, record, maximum=8*1024**2)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vf95a51ae5/scripts/run_canonical_systems_study_v1.py", line 186, in wait
+    require(child.returncode == 0, "owned study command failed: " + str(record["argv"]))
+  File "/home/s-a-balashov/vf95a51ae5/scripts/run_canonical_systems_study_v1.py", line 42, in require
+    raise ValueError(message)
+ValueError: owned study command failed: ['/usr/bin/docker', 'run', '--name', 'vast-finite-d022b2ee9f7c24750c41dc96', '--cidfile', '/home/s-a-balashov/vf95a51ae5/s/prepare/native-d022b2ee9f7c24750c41dc96.cid', '--label', 'vast.finite-study=d022b2ee9f7c24750c41dc96', '--network', 'none', '--gpus', 'all', '--read-only', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges', '--user', '1000:1000', '--tmpfs', '/tmp:rw,nosuid,nodev,size=67108864,mode=1777', '--mount', 'type=bind,src=/home/s-a-balashov/vf95a51ae5,dst=/home/s-a-balashov/vf95a51ae5,readonly', '--mount', 'type=bind,src=/home/s-a-balashov/vf95a51ae5/s/prepare,dst=/home/s-a-balashov/vf95a51ae5/s/prepare', '--entrypoint', '/usr/local/bin/vast_checkpoint_source', '--env', 'VAST_CHECKPOINT_PREPARATION_CLOCK_BOOT_ID=dde50e69-39bf-45bd-bdb7-bc33c9adcb0b', '--env', 'VAST_CHECKPOINT_PREPARATION_CLOCK_TIME_NAMESPACE=time:[4026531834]', 'sha256:77c2823d0bfebed0910d5bd42e4d2825a77070c58ba2b36a591216fff1b2cdd8', '--checkpoint-study-au-inventory', '/home/s-a-balashov/vf95a51ae5/s/prepare/front_gate.derived.mp4', '1920', '1080', '686108114023685']

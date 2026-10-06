@@ -55,6 +55,7 @@ COPY \
   scripts/checkpoint_qualification_pilot_acceptance_v1.py \
   scripts/checkpoint_runtime.py \
   scripts/checkpoint_runtime_plan.py \
+  scripts/canonical_systems_study_plan_v1.py \
   scripts/extract_kpp_legacy_iss.py \
   scripts/formal_aw_heft_reference.py \
   scripts/freeze_kpp_frozen_reconstruction_v1.py \
@@ -92,6 +93,7 @@ COPY \
   /opt/vast/runtime-root/opt/vast/checkpoint/
 COPY \
   deploy/native_gst_probe/checkpoint_admission_transport.hpp \
+  deploy/native_gst_probe/checkpoint_study_reference.hpp \
   deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp \
   deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp \
   deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp \

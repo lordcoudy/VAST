@@ -494,6 +494,150 @@ def _validate_built_image(
     _require(record.get("Created") == _expected_created(int(image["source_date_epoch"])), "built image creation time drifted")
 
 
+def _build_selected_image_v1(*, root, image, work, docker, producer_rows,
+                             environment, command_runner, target_reference=None):
+    """Original per-image checks and two builds, with an explicit owned runner/ref."""
+    target_reference = image["target_reference"] if target_reference is None else target_reference
+    _require(type(target_reference) is str and _TARGET_REFERENCE.fullmatch(target_reference),
+             "selected image reference invalid")
+    def inspect(reference):
+        payload = json.loads(command_runner((docker, "image", "inspect", reference)))
+        _require(type(payload) is list and len(payload) == 1 and type(payload[0]) is dict,
+                 "selected image inspect cardinality drifted")
+        return payload[0]
+    context_root = work / image["name"]
+    context_root.mkdir(mode=0o700)
+    context = materialize_image_context(
+        project_root=root,
+        image=image,
+        output_dir=context_root,
+    )
+    base = image["base"]
+    base_reference = base["reference"]
+    base_record = inspect(base_reference)
+    base_id = base_record.get("Id")
+    _require(type(base_id) is str and _SHA256.fullmatch(base_id) is not None, f"base image ID is invalid: {image['name']}")
+    if base["kind"] == "remote_digest":
+        repo_digests = base_record.get("RepoDigests") or []
+        _require(base_reference in repo_digests, f"remote base RepoDigest is not physically present: {image['name']}")
+    else:
+        producer = producer_rows.get(base["producer"])
+        _require(producer is not None, f"producer image is absent from freeze receipt: {image['name']}")
+        _require(producer.get("target_reference") == base_reference and producer.get("image_id") == base_id, f"produced base physical identity drifted: {image['name']}")
+
+    builder = image["builder"]
+    if builder["kind"] == "base":
+        build_reference = base_reference
+        build_id = base_id
+    else:
+        build_reference = builder["reference"]
+        build_record = inspect(build_reference)
+        build_id = build_record.get("Id")
+        _require(
+            type(build_id) is str and _SHA256.fullmatch(build_id) is not None,
+            f"build image ID is invalid: {image['name']}",
+        )
+        build_repo_digests = build_record.get("RepoDigests") or []
+        _require(
+            build_reference in build_repo_digests,
+            f"remote build image RepoDigest is not physically present: {image['name']}",
+        )
+
+    first_ref = target_reference + "-determinism-a"
+    second_ref = target_reference + "-determinism-b"
+    build_args = (
+        ("BASE_IMAGE", base_reference),
+        ("BUILD_IMAGE", build_reference),
+        ("SOURCE_DATE_EPOCH", str(image["source_date_epoch"])),
+        ("VAST_SOURCE_SET_SHA256", context["source_set_sha256"]),
+        ("VAST_DEPENDENCY_SET_SHA256", context["dependency_set_sha256"]),
+        ("VAST_BUILD_CONTEXT_SHA256", context["build_context_sha256"]),
+        ("VAST_BASE_IMAGE_ID", base_id),
+        ("VAST_BUILD_IMAGE_ID", build_id),
+    )
+    if image["group"] == "analytics_worker":
+        build_args = build_args + (("EXPECTED_BASE_IMAGE_ID", base_id),)
+
+    def build_one(target: str) -> None:
+        command = [docker, "buildx", "build"]
+        command.extend([
+            "--no-cache",
+            "--pull=false",
+            "--network=none",
+            "--provenance=false",
+            "--sbom=false",
+            "--output",
+            "type=docker,rewrite-timestamp=true,unpack=false",
+        ])
+        for key, value in build_args:
+            command.extend(("--build-arg", f"{key}={value}"))
+        command.extend((
+            "--tag", target,
+            "--file", str(context_root / image["dockerfile"]),
+            str(context_root),
+        ))
+        command_runner(command, env=environment)
+
+    build_one(first_ref)
+    build_one(second_ref)
+    first = inspect(first_ref)
+    second = inspect(second_ref)
+    first_id = first.get("Id")
+    second_id = second.get("Id")
+    _require(first_id == second_id, f"deterministic image IDs differ: {first_id} != {second_id}")
+    _validate_built_image(record=first, image=image, base_id=base_id, build_id=build_id, context=context)
+    _validate_built_image(record=second, image=image, base_id=base_id, build_id=build_id, context=context)
+    _require(_set_sha256(root, _read_allowlist(root, image["source_allowlist"])) == context["source_set_sha256"], "workspace source changed during image build")
+    _require(_set_sha256(root, _read_allowlist(root, image["dependency_allowlist"])) == context["dependency_set_sha256"], "workspace dependency changed during image build")
+    _require(_set_sha256(context_root, context["relative_paths"]) == context["build_context_sha256"], "materialized context changed during image build")
+    command_runner((docker, "tag", first_id, target_reference))
+    command_runner((docker, "run", "--rm", "--network", "none", first_id, "--help"))
+    final_record = inspect(target_reference)
+    _require(final_record.get("Id") == first_id, "final image tag identity drifted")
+    projection = _inspect_projection(final_record)
+    labels = projection["config"]["labels"]
+    return {
+        "name": image["name"],
+        "group": image["group"],
+        "target_reference": target_reference,
+        "image_id": first_id,
+        "repo_digests": projection["repo_digests"],
+        "image_inspect_sha256": hashlib.sha256(_canonical_json(projection)).hexdigest(),
+        "base_reference": base_reference,
+        "base_image_id": base_id,
+        "build_reference": build_reference,
+        "build_image_id": build_id,
+        "source_set_sha256": context["source_set_sha256"],
+        "dependency_set_sha256": context["dependency_set_sha256"],
+        "build_context_sha256": context["build_context_sha256"],
+        "source_date_epoch": image["source_date_epoch"],
+        "entrypoint": image["entrypoint"],
+        "user": image["user"],
+        "labels": {key: labels[key] for key in _STANDARD_LABELS},
+        "previous_accepted_image_id": image["accepted_image_id"],
+        "identity_changed": first_id != image["accepted_image_id"],
+    }
+
+
+def build_finite_study_native_image_v1(*, project_root, work_root, docker,
+        target_reference, command_runner):
+    """One genuinely selected producer, never a three-image freeze or global retag."""
+    root = Path(project_root).resolve(strict=True)
+    registry = load_publication_image_registry(project_root=root, registry_path=root / REGISTRY_RELATIVE_PATH)
+    selected = [row for row in registry["images"] if row["name"] == "native_probe_openvino"]
+    _require(len(selected) == 1 and target_reference != selected[0]["target_reference"] and
+        target_reference.startswith("vast/finite-study-"), "study must use its own selected native reference")
+    work = Path(work_root)
+    _require(work.is_dir() and not work.is_symlink() and not any(work.iterdir()) and
+        not work.resolve().is_relative_to(root), "study selected native work root is not fresh/external")
+    row = _build_selected_image_v1(root=root, image=selected[0], work=work, docker=docker,
+        producer_rows={}, environment={**os.environ, "DOCKER_BUILDKIT": "1"},
+        command_runner=command_runner, target_reference=target_reference)
+    unsigned = {"schema_version": 1, "artifact_kind": "vast_finite_study_selected_native_image_v1",
+        "registry_sha256": registry["registry_sha256"], "images": [row], "full_image_freeze": False}
+    return {**unsigned, "receipt_sha256": _receipt_sha256(unsigned)}
+
+
 def build_publication_image_group(
     *,
     project_root: Path,
@@ -533,118 +677,11 @@ def build_publication_image_group(
     environment = dict(os.environ)
     environment["DOCKER_BUILDKIT"] = "1"
     for image in selected:
-        context_root = work / image["name"]
-        context_root.mkdir(mode=0o700)
-        context = materialize_image_context(
-            project_root=root,
-            image=image,
-            output_dir=context_root,
-        )
-        base = image["base"]
-        base_reference = base["reference"]
-        base_record = _inspect(docker, base_reference)
-        base_id = base_record.get("Id")
-        _require(type(base_id) is str and _SHA256.fullmatch(base_id) is not None, f"base image ID is invalid: {image['name']}")
-        if base["kind"] == "remote_digest":
-            repo_digests = base_record.get("RepoDigests") or []
-            _require(base_reference in repo_digests, f"remote base RepoDigest is not physically present: {image['name']}")
-        else:
-            producer = producer_rows.get(base["producer"])
-            _require(producer is not None, f"producer image is absent from freeze receipt: {image['name']}")
-            _require(producer.get("target_reference") == base_reference and producer.get("image_id") == base_id, f"produced base physical identity drifted: {image['name']}")
-
-        builder = image["builder"]
-        if builder["kind"] == "base":
-            build_reference = base_reference
-            build_id = base_id
-        else:
-            build_reference = builder["reference"]
-            build_record = _inspect(docker, build_reference)
-            build_id = build_record.get("Id")
-            _require(
-                type(build_id) is str and _SHA256.fullmatch(build_id) is not None,
-                f"build image ID is invalid: {image['name']}",
-            )
-            build_repo_digests = build_record.get("RepoDigests") or []
-            _require(
-                build_reference in build_repo_digests,
-                f"remote build image RepoDigest is not physically present: {image['name']}",
-            )
-
-        first_ref = image["target_reference"] + "-determinism-a"
-        second_ref = image["target_reference"] + "-determinism-b"
-        build_args = (
-            ("BASE_IMAGE", base_reference),
-            ("BUILD_IMAGE", build_reference),
-            ("SOURCE_DATE_EPOCH", str(image["source_date_epoch"])),
-            ("VAST_SOURCE_SET_SHA256", context["source_set_sha256"]),
-            ("VAST_DEPENDENCY_SET_SHA256", context["dependency_set_sha256"]),
-            ("VAST_BUILD_CONTEXT_SHA256", context["build_context_sha256"]),
-            ("VAST_BASE_IMAGE_ID", base_id),
-            ("VAST_BUILD_IMAGE_ID", build_id),
-        )
-        if group == "analytics_worker":
-            build_args = build_args + (("EXPECTED_BASE_IMAGE_ID", base_id),)
-
-        def build_one(target: str) -> None:
-            command = [docker, "buildx", "build"]
-            command.extend([
-                "--no-cache",
-                "--pull=false",
-                "--network=none",
-                "--provenance=false",
-                "--sbom=false",
-                "--output",
-                "type=docker,rewrite-timestamp=true,unpack=false",
-            ])
-            for key, value in build_args:
-                command.extend(("--build-arg", f"{key}={value}"))
-            command.extend((
-                "--tag", target,
-                "--file", str(context_root / image["dockerfile"]),
-                str(context_root),
-            ))
-            _run(command, env=environment)
-
-        build_one(first_ref)
-        build_one(second_ref)
-        first = _inspect(docker, first_ref)
-        second = _inspect(docker, second_ref)
-        first_id = first.get("Id")
-        second_id = second.get("Id")
-        _require(first_id == second_id, f"deterministic image IDs differ: {first_id} != {second_id}")
-        _validate_built_image(record=first, image=image, base_id=base_id, build_id=build_id, context=context)
-        _validate_built_image(record=second, image=image, base_id=base_id, build_id=build_id, context=context)
-        _require(_set_sha256(root, _read_allowlist(root, image["source_allowlist"])) == context["source_set_sha256"], "workspace source changed during image build")
-        _require(_set_sha256(root, _read_allowlist(root, image["dependency_allowlist"])) == context["dependency_set_sha256"], "workspace dependency changed during image build")
-        _require(_set_sha256(context_root, context["relative_paths"]) == context["build_context_sha256"], "materialized context changed during image build")
-        _run((docker, "tag", first_id, image["target_reference"]))
-        _run((docker, "run", "--rm", "--network", "none", first_id, "--help"))
-        final_record = _inspect(docker, image["target_reference"])
-        _require(final_record.get("Id") == first_id, "final image tag identity drifted")
-        projection = _inspect_projection(final_record)
-        labels = projection["config"]["labels"]
-        receipt_rows.append({
-            "name": image["name"],
-            "group": image["group"],
-            "target_reference": image["target_reference"],
-            "image_id": first_id,
-            "repo_digests": projection["repo_digests"],
-            "image_inspect_sha256": hashlib.sha256(_canonical_json(projection)).hexdigest(),
-            "base_reference": base_reference,
-            "base_image_id": base_id,
-            "build_reference": build_reference,
-            "build_image_id": build_id,
-            "source_set_sha256": context["source_set_sha256"],
-            "dependency_set_sha256": context["dependency_set_sha256"],
-            "build_context_sha256": context["build_context_sha256"],
-            "source_date_epoch": image["source_date_epoch"],
-            "entrypoint": image["entrypoint"],
-            "user": image["user"],
-            "labels": {key: labels[key] for key in _STANDARD_LABELS},
-            "previous_accepted_image_id": image["accepted_image_id"],
-            "identity_changed": first_id != image["accepted_image_id"],
-        })
+        receipt_rows.append(_build_selected_image_v1(
+            root=root, image=image, work=work, docker=docker,
+            producer_rows=producer_rows, environment=environment,
+            command_runner=_run,
+        ))
 
     receipt: dict[str, object] = {
         "artifact_kind": RECEIPT_KIND,

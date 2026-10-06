@@ -1,0 +1,52 @@
+--- a/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py
++++ b/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py
+@@ -48,7 +48,7 @@
+     return hashlib.sha256(path.read_bytes()).hexdigest()
+ 
+ 
+-def current_runtime_source_sha256() -> str:
++def current_runtime_source_sha256(*, native_only: bool = False) -> str:
+     validator = (
+         ROOT / "deploy" / "gstreamer_custom" / "publication"
+         / "validate_runtime_source_closure_v3.py"
+@@ -66,6 +66,8 @@
+     )
+     rows = bytearray()
+     for relative in result["all_sources"]:
++        if native_only and not relative.startswith("deploy/native_gst_probe/"):
++            continue
+         digest = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
+         rows.extend(f"{digest}  {relative}\n".encode("ascii"))
+     return hashlib.sha256(rows).hexdigest()
+@@ -108,10 +110,13 @@
+ class GstreamerCustomQualificationFragmentV3Tests(unittest.TestCase):
+     def setUp(self) -> None:
+         self._runtime_source_sha256 = target.GSTREAMER_RUNTIME_SOURCE_SHA256
++        self._native_source_sha256 = target.GSTREAMER_NATIVE_SOURCE_SHA256
+         target.GSTREAMER_RUNTIME_SOURCE_SHA256 = current_runtime_source_sha256()
++        target.GSTREAMER_NATIVE_SOURCE_SHA256 = current_runtime_source_sha256(native_only=True)
+ 
+     def tearDown(self) -> None:
+         target.GSTREAMER_RUNTIME_SOURCE_SHA256 = self._runtime_source_sha256
++        target.GSTREAMER_NATIVE_SOURCE_SHA256 = self._native_source_sha256
+ 
+     def test_phase_one_materializes_exact_physical_binding_fragment(self) -> None:
+         with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as temporary:
+--- a/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py
++++ b/tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py
+@@ -92,6 +92,15 @@
+         )
+         source_pin.start()
+         self.addCleanup(source_pin.stop)
++        native_rows = b"".join(
++            row for row in rows.splitlines(keepends=True)
++            if row.split(b"  ", 1)[1].startswith(b"deploy/native_gst_probe/")
++        )
++        native_pin = mock.patch.object(
++            target, "OPENVINO_GVA_NATIVE_SOURCE_SHA256", hashlib.sha256(native_rows).hexdigest(),
++        )
++        native_pin.start()
++        self.addCleanup(native_pin.stop)
+         allowlist_pin = mock.patch.object(
+             target, "OPENVINO_GVA_SOURCE_ALLOWLIST_SHA256",
+             hashlib.sha256(self.allowlist.read_bytes()).hexdigest(),

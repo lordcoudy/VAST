@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "kind": "resource_interval_current_source_binding_regression_fix",
+  "change": "run-finite-component-study",
+  "pull_request": "https://github.com/lordcoudy/VAST/pull/5",
+  "verdict": "PASS_TARGETED_FIX",
+  "blocking_findings": [],
+  "reviewable": true,
+  "reviewer_handles_released": true,
+  "owned_files": [
+    {
+      "path": "configs/experiments.yaml",
+      "line": 44,
+      "change": "Replace only fanout_binding_sha256 with actual frozen current vast_native_gst_probe.cpp hash",
+      "before_sha256": "18b69285690cdb6ad2f8e9fa528122a05fd3e4abe647a776e60c8e5eed4344e0",
+      "after_sha256": "b15e675e132e5f38c15ee6344435503387bded829d9940f2bd5fa35db071d2e2",
+      "size_bytes": 23078
+    }
+  ],
+  "modified_tests": [],
+  "modified_production_code": [],
+  "diagnosis": {
+    "actual_hosted_failure": "test_scenario_planning.ScenarioPlanningTests.test_resource_interval_extension_is_verified_but_not_publication_bound: blocked_resource_interval_contract_invalid != ready_validator_and_native_interval_sources_not_target_verified_not_publication_bound",
+    "original_hosted_evidence": {
+      "archive_path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\ci-A09562f7-v1\\original-retention-v1\\artifact-11328026848.original.zip",
+      "archive_sha256": "57590d50765598838c65185a6c5dea08280bcca7aa8850d0877e1bbbc732ecf7",
+      "archive_size_bytes": 2402652,
+      "member": "unittest.original.log",
+      "member_bytes": 2199093,
+      "member_crc32": "278922cb",
+      "member_sha256": "bfdfadab24d7995a993e6f1a93e476c74c60aa455f20e9fac1d14556c1b5a840"
+    },
+    "actual_local_blockers_before": [
+      "resource_interval_fanout_binding_sha256_mismatch"
+    ],
+    "expected_old_binding": "c0e3f80ec32bdf539815ca59b5eee1b121c87905240e28b14ab0ba4b360d4c6f",
+    "current_whole_cpp_binding": "053970ac60adc7499f3970906a39b181dbbe2eb16bb76fab005c2cdad67af430",
+    "cause": "Strict assess_resource_interval_extension hashes the whole current native CPP. Approved finite-study native changes made the previous expected source SHA stale; validator and emitter header still exactly match their existing pins, with no missing contract markers.",
+    "rationale": "resource_interval_extension is explicitly non-publication current source readiness, not an accepted historical hardware receipt. Refreshing this current source hash restores its exact-byte contract. No schema, duration semantics, version2, publication scope, validator rule or original historical scientific receipt is changed; no version bump or validation bypass is needed."
+  },
+  "byte_scope": {
+    "single_pin_replacement": true,
+    "verification_tool": "41bde9 exit0",
+    "proof": "After bytes equal the immutable before raw bytes with exactly one64-byte hash replacement. All other YAML bytes, including every false/status/semantics field, are identical."
+  },
+  "source_and_test_pins": [
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\configs\\experiments.yaml",
+      "size_bytes": 23078,
+      "sha256": "b15e675e132e5f38c15ee6344435503387bded829d9940f2bd5fa35db071d2e2"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\benchmark_contract.py",
+      "size_bytes": 344569,
+      "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\scripts\\resource_interval_contract.py",
+      "size_bytes": 33557,
+      "sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\native_gst_probe\\checkpoint_resource_interval_emitter.hpp",
+      "size_bytes": 19721,
+      "sha256": "6eb7c3b5f6cd31820727b6cd0808707873b9b01a45547a5549b8dde9b7b728b6"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\deploy\\native_gst_probe\\vast_native_gst_probe.cpp",
+      "size_bytes": 185971,
+      "sha256": "053970ac60adc7499f3970906a39b181dbbe2eb16bb76fab005c2cdad67af430"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\finite-component-study\\VAST\\tests\\test_scenario_planning.py",
+      "size_bytes": 93666,
+      "sha256": "7d4f0a72c7277f589fe53601542cd05f97e98f442924de9248891fe842035420"
+    }
+  ],
+  "original_external_evidence": [
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\resource-interval-pin-testfirst-v1\\assessment-red01.original-tool.json",
+      "size_bytes": 2218,
+      "sha256": "00417e90aed048df7c9a20c3041cb464667324e95dd421d2d46047fa71031a1b"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\resource-interval-pin-testfirst-v1\\assessment-red02.original-tool.json",
+      "size_bytes": 4231,
+      "sha256": "53656860ad93aed48c3f7ec0deb2b0d55fb81fcb13d69ebb01c19c2216c70729"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\resource-interval-pin-testfirst-v1\\binding-negative-green01.original-tool.json",
+      "size_bytes": 7608,
+      "sha256": "58e24629f3f1114816916bb181bd16e8fa4d0b4d3658033066e5de57ebcfd1dc"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\resource-interval-pin-testfirst-v1\\experiments.before.v1.raw",
+      "size_bytes": 23078,
+      "sha256": "18b69285690cdb6ad2f8e9fa528122a05fd3e4abe647a776e60c8e5eed4344e0"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\resource-interval-pin-testfirst-v1\\green01.original-tool.json",
+      "size_bytes": 1853,
+      "sha256": "d4a568130dcb949a7a29308d4c19ee97d82f007391badab38197895705a9341b"
+    },
+    {
+      "path": "E:\\STUDY\\VAST\\tmp\\finite-component-study-20261005\\resource-interval-pin-testfirst-v1\\red01.original-tool.json",
+      "size_bytes": 2742,
+      "sha256": "b51301370a1684fd5be7b112abbc0eb5d640bb45e2a8bd22d141ddce346135a3"
+    }
+  ],
+  "genuine_tdd": {
+    "red": {
+      "tool": "723153",
+      "exit_code": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "elapsed_test_seconds": 0.031,
+      "status": "Existing actual test failed before configuration mutation, matching hosted failure."
+    },
+    "green": {
+      "tool": "793453",
+      "exit_code": 0,
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_test_seconds": 0.072,
+      "status": "Same unmodified existing test passed after the single current-source hash replacement."
+    },
+    "negative_guard": {
+      "tool": "b09579",
+      "exit_code": 0,
+      "status": "Restoring the old/stale binding only in a copied in-memory config remains blocked by exact SHA mismatch. Good and bad configs both preserve all six acceptance/emission/coverage/publication flags false; contract_version remains2."
+    },
+    "diagnostic_metadata_failure": {
+      "tool": "38d506",
+      "exit_code": 1,
+      "cause": "Reviewer diagnostic imported load_config from benchmark_contract instead of run_experiments; retained as failure, not target/regression evidence.",
+      "corrected_tool": "ce00a4 exit0 gives sole actual blocker"
+    }
+  },
+  "validation_preserved": {
+    "assessor_sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+    "interval_validator_sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+    "interval_emitter_sha256": "6eb7c3b5f6cd31820727b6cd0808707873b9b01a45547a5549b8dde9b7b728b6",
+    "test_sha256": "7d4f0a72c7277f589fe53601542cd05f97e98f442924de9248891fe842035420",
+    "all_four_unchanged": true,
+    "source_only_status": "ready_validator_and_native_interval_sources_not_target_verified_not_publication_bound",
+    "passed": false,
+    "native_sidecar_emitted": false,
+    "validated_interval_packet_available": false,
+    "coverage_complete": false,
+    "publication_bundle_bound": false,
+    "evidence_accepted": false,
+    "remaining_gates_unchanged": [
+      "native_cuda_transfer_interval_emitter_missing",
+      "native_nvdec_submit_complete_interval_emitter_not_target_executed_or_accepted",
+      "native_nvdec_busy_resource_counter_missing",
+      "native_fanout_interval_emitter_not_target_executed_or_accepted",
+      "native_fanout_resource_work_counter_missing",
+      "full_resource_publication_scope_not_preregistered",
+      "accepted_interval_sidecars_not_available"
+    ]
+  },
+  "performed": "Read retained hosted failure and source contract; executed one existing targeted test RED then GREEN, plus source-only assessor diagnostics/negative control. Applied only one config source hash. Retained original tools and immutable before YAML in external tmp. No docs/Git/CI cancellation or rerun, engine, hardware, media, build, physical preparation or scientific execution.",
+  "limits": [
+    "This is an authored targeted regression correction, not an independent final review of all current source.",
+    "Original hosted A failure remains FAILED; current B CI is not canceled or relabeled. Mandatory latest corrected commit CI/conformance remains pending.",
+    "This does not close other hosted regressions owned by parent/architecture peer, nor any target/hardware/scientific/publication/24-arm/full qualification/release gate."
+  ],
+  "current_ci_accepted": false,
+  "physical_preparation_accepted": false,
+  "release_approved": false
+}

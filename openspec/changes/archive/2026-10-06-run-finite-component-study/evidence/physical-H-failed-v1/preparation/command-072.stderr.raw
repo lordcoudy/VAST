@@ -1,0 +1,6 @@
+
+** (gst-plugin-scanner:7): CRITICAL **: 09:13:09.894: Couldn't set __plugin__ attribute
+
+(gst-plugin-scanner:7): GStreamer-CRITICAL **: 09:13:09.894: gst_object_unref: assertion '((GObject *) object)->ref_count > 0' failed
+[study-reference] actual nv12 caps sha256=a091401a03cdf80db161d5472d1593313e1e1fbf0e729403b00e7c2c700ba172 video/x-raw, format=(string)NV12, width=(int)1700, height=(int)236, interlace-mode=(string)progressive, pixel-aspect-ratio=(fraction)1/1, chroma-site=(string)mpeg2, colorimetry=(string)bt709, framerate=(fraction)30/1
+[study-reference] actual rgb caps sha256=61e7193566cf5bb1acb853ccb3e88cbba0fa64b9e6ea0037368099573ab04812 video/x-raw, width=(int)1700, height=(int)236, interlace-mode=(string)progressive, pixel-aspect-ratio=(fraction)1/1, framerate=(fraction)30/1, format=(string)RGB, chroma-site=(string)jpeg, colorimetry=(string)1:1:5:1

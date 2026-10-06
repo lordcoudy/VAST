@@ -19,6 +19,7 @@ NATIVE_OPERATIONAL_JSONL = "native_operational_requests.v1.jsonl"
 NATIVE_DOMAIN_KIND_V1 = "vast_qualification_operational_native_domain_v1"
 GUARDIAN_JOURNAL_KIND_V1 = "vast_guardian_operational_request_journal_v1"
 MAX_NATIVE_DOMAIN_BYTES_V1 = 64 * 1024 * 1024
+MAX_STUDY_NATIVE_DOMAIN_BYTES_V1 = 192 * 1024 * 1024  # Finite study only (measured ~58 MiB).
 MAX_NATIVE_HEADER_BYTES_V1 = 64 * 1024
 MAX_NATIVE_RECORD_BYTES_V1 = 9_216
 MAX_NATIVE_DECISIONS_V1 = 6_744
@@ -147,13 +148,40 @@ def validate_descriptor_v1(value):
     _sha(value["sha256"])
 
 
-def validate_native_header_v1(header, *, require_sha=True):
+STUDY_NATIVE_KIND_V1 = "vast_finite_study_operational_native_domain_v1"
+STUDY_GUARDIAN_KIND_V1 = "vast_finite_study_guardian_journal_v1"
+
+
+def validate_study_scope_v1(scope):
+    """Typed bounded metadata only; model/execution authority remains separate."""
+    _fields(scope, {"kind", "plan_sha256", "max_frame_id", "max_requests_per_arm",
+                    "max_operations"}, "study scope")
+    if (scope["kind"] != "finite-component-study" or
+            any(type(scope[key]) is not int or scope[key] != expected for key, expected in
+                (("max_frame_id", 441), ("max_requests_per_arm", 10608), ("max_operations", 32)))):
+        raise OperationalDomainError("study scope finite bounds drifted")
+    _sha(scope["plan_sha256"])
+    return scope
+
+
+def _request_bounds(study_scope):
+    if study_scope is None:
+        return 280, MAX_NATIVE_DECISIONS_V1
+    validate_study_scope_v1(study_scope)
+    return study_scope["max_frame_id"], study_scope["max_requests_per_arm"]
+
+
+def validate_native_header_v1(header, *, require_sha=True, study_scope=None):
     fields = NATIVE_HEADER_FIELDS_V1 if require_sha else NATIVE_HEADER_FIELDS_V1 - {"sha256"}
+    if study_scope is not None:
+        validate_study_scope_v1(study_scope)
+        fields = fields | {"study_scope"}
+        _same(header.get("study_scope"), study_scope, "study header scope")
     _fields(header, fields, "native header")
     if len(canonical_json_v1(header)) + 1 > MAX_NATIVE_HEADER_BYTES_V1:
         raise OperationalDomainError("native header exceeds its byte bound")
     if (type(header["schema_version"]) is not int or header["schema_version"] != 1
-            or header["artifact_kind"] != NATIVE_DOMAIN_KIND_V1
+            or header["artifact_kind"] != (NATIVE_DOMAIN_KIND_V1 if study_scope is None else STUDY_NATIVE_KIND_V1)
             or header["record_kind"] != "header" or header["digest_algorithm"] != "sha256"):
         raise OperationalDomainError("native header version/kind mismatch")
     for key, cap in (("run_id", 64), ("context_arm_id", 68)):
@@ -178,7 +206,7 @@ def validate_native_header_v1(header, *, require_sha=True):
     counts = header["counts"]
     _fields(counts, NATIVE_COUNT_FIELDS_V1, "native counts")
     for key, count in counts.items():
-        _integer(count, key, MAX_NATIVE_DECISIONS_V1)
+        _integer(count, key, _request_bounds(study_scope)[1])
     for total, measured, excluded in (("complete_decision_count", "measurement_decision_count", "excluded_decision_count"),
                                      ("runtime_feedback_count", "measurement_feedback_count", "excluded_feedback_count")):
         if counts[total] != counts[measured] + counts[excluded]:
@@ -191,13 +219,13 @@ def validate_native_header_v1(header, *, require_sha=True):
         _self_hash(header)
 
 
-def validate_native_occurrence_v1(record, *, expected_header, original_authority_validator):
+def validate_native_occurrence_v1(record, *, expected_header, original_authority_validator, study_scope=None):
     _fields(record, NATIVE_OCCURRENCE_FIELDS_V1, "native occurrence")
     if len(canonical_json_v1(record)) + 1 > MAX_NATIVE_RECORD_BYTES_V1:
         raise OperationalDomainError("native occurrence exceeds its byte bound")
-    if type(record["schema_version"]) is not int or record["schema_version"] != 1 or record["artifact_kind"] != NATIVE_DOMAIN_KIND_V1:
+    if type(record["schema_version"]) is not int or record["schema_version"] != 1 or record["artifact_kind"] != (NATIVE_DOMAIN_KIND_V1 if study_scope is None else STUDY_NATIVE_KIND_V1):
         raise OperationalDomainError("native occurrence version/kind mismatch")
-    _integer(record["runtime_decision_seq"], "runtime sequence", MAX_NATIVE_DECISIONS_V1, 1)
+    _integer(record["runtime_decision_seq"], "runtime sequence", _request_bounds(study_scope)[1], 1)
     _text(record["decision_id"], "decision_id", 157)
     if type(record["measurement"]) is not bool:
         raise OperationalDomainError("measurement membership must be boolean")
@@ -210,7 +238,7 @@ def validate_native_occurrence_v1(record, *, expected_header, original_authority
     for value, label in ((raw, "decision_request"), (path, "path_enter"), (terminal, "terminal")):
         if type(value["schema_version"]) is not int or value["schema_version"] != 1 or value["message_type"] != label:
             raise OperationalDomainError("original native protocol mismatch")
-    validate_native_request_source_v1(raw)
+    validate_native_request_source_v1(raw, study_scope=study_scope)
     if not isinstance(accepted, Mapping) or accepted.get("record_status") != "accepted_native_runtime_decision":
         raise OperationalDomainError("original accepted record missing")
     _self_hash(accepted)
@@ -263,7 +291,7 @@ def validate_native_occurrence_v1(record, *, expected_header, original_authority
     return record
 
 
-def validate_native_request_source_v1(raw):
+def validate_native_request_source_v1(raw, *, study_scope=None):
     """Supported-mode bounds before coordinator retained-state allocation."""
     _fields(raw, _REQUEST_FIELDS, "original request")
     if type(raw["schema_version"]) is not int or raw["schema_version"] != 1 or raw["message_type"] != "decision_request":
@@ -271,7 +299,7 @@ def validate_native_request_source_v1(raw):
     for key, cap in (("run_id", 64), ("worker_id", 37), ("input_frame_key", 136), ("trace_id", 108)):
         _text(raw[key], key, cap)
     _integer(raw["stream_id"], "stream_id", 5)
-    _integer(raw["frame_id"], "frame_id", 280)
+    _integer(raw["frame_id"], "frame_id", _request_bounds(study_scope)[0])
     _integer(raw["transport_pts_ns"], "transport_pts_ns")
     if raw["branch"] not in BRANCHES:
         raise OperationalDomainError("native request branch is unsupported")
@@ -290,9 +318,9 @@ def validate_native_request_source_v1(raw):
 
 
 def build_native_occurrence_v1(*, runtime_decision_seq, measurement, decision_request,
-                               accepted_record, path, terminal, issued_record_sha256):
+                               accepted_record, path, terminal, issued_record_sha256, study_scope=None):
     return payload_with_sha256_v1({
-        "schema_version": 1, "artifact_kind": NATIVE_DOMAIN_KIND_V1,
+        "schema_version": 1, "artifact_kind": NATIVE_DOMAIN_KIND_V1 if study_scope is None else STUDY_NATIVE_KIND_V1,
         "runtime_decision_seq": runtime_decision_seq, "decision_id": accepted_record["decision_id"],
         "measurement": measurement, "decision_request": decision_request, "accepted_record": accepted_record,
         "path": path, "terminal": terminal, "issued_record_sha256": issued_record_sha256,
@@ -300,7 +328,8 @@ def build_native_occurrence_v1(*, runtime_decision_seq, measurement, decision_re
     })
 
 
-def _guardian_shape(event):
+def _guardian_shape(event, *, study_scope=None):
+    frame_cap, request_cap = _request_bounds(study_scope)
     if not isinstance(event, Mapping):
         raise OperationalDomainError("guardian event must be an object")
     fields = set(event) - {"sha256"}
@@ -309,7 +338,7 @@ def _guardian_shape(event):
             raise OperationalDomainError("guardian begin kind mismatch")
         _integer(event["seq"], "begin seq", MAX_GUARDIAN_EVENTS_V1 - 1, 1)
         for key, cap, minimum in (("request_seq", 500_000, 1), ("connection", 1_000_000, 1),
-                                  ("local_seq", 6_744, 1), ("binding", 221, 0), ("frame_id", 280, 0)):
+                                  ("local_seq", request_cap, 1), ("binding", 221, 0), ("frame_id", frame_cap, 0)):
             _integer(event[key], key, cap, minimum)
         for key, cap in (("request_id", 64), ("input_key", 136)):
             _text(event[key], key, cap)
@@ -318,22 +347,48 @@ def _guardian_shape(event):
         _integer(event["pts_ns"], "pts_ns")
         _sha(event["control_sha256"])
         cap = MAX_GUARDIAN_BEGIN_BYTES_V1
-    elif fields == GUARDIAN_TERMINAL_FIELDS_V1 - {"sha256"}:
+    elif fields == (GUARDIAN_TERMINAL_FIELDS_V1 - {"sha256"}) | ({"timings"} if study_scope is not None else set()):
         seq = _integer(event["seq"], "terminal seq", MAX_GUARDIAN_EVENTS_V1, 2)
         _integer(event["begin_seq"], "begin_seq", seq - 1, 1)
         if event["response"] is not None:
             _sha(event["response"], "response")
         if event["outcome"] not in {"completed", "failed"} or event["send"] not in {"sent", "failed", "closed"}:
             raise OperationalDomainError("guardian terminal outcome mismatch")
-        cap = MAX_GUARDIAN_TERMINAL_BYTES_V1
+        cap = 2048 if study_scope is not None else MAX_GUARDIAN_TERMINAL_BYTES_V1
+        if study_scope is not None and event["timings"] is not None:
+            timings = event["timings"]
+            _fields(timings, {"bridge_route", "worker"}, "study timings")
+            interval = timings["bridge_route"]
+            _fields(interval, {"begin_ns", "acquired_ns", "reply_ns", "end_ns", "pid", "clock", "route"}, "bridge self interval")
+            for key in ("begin_ns", "end_ns", "pid"):
+                _integer(interval[key], key, minimum=1)
+            _text(interval["route"], "timing route", 32)
+            if interval["clock"] != "CLOCK_MONOTONIC" or interval["begin_ns"] > interval["end_ns"]:
+                raise OperationalDomainError("study bridge self clock order drifted")
+            if interval["acquired_ns"] is not None:
+                _integer(interval["acquired_ns"], "route acquired", minimum=1)
+                if not interval["begin_ns"] <= interval["acquired_ns"] <= interval["end_ns"]:
+                    raise OperationalDomainError("study route acquisition order drifted")
+            if interval["reply_ns"] is not None:
+                _integer(interval["reply_ns"], "route reply", minimum=1)
+                if interval["acquired_ns"] is None or not interval["acquired_ns"] <= interval["reply_ns"] <= interval["end_ns"]:
+                    raise OperationalDomainError("study route reply order drifted")
+            worker = timings["worker"]
+            if worker is not None:
+                keys = ("worker_received_monotonic_ns", "inference_started_monotonic_ns",
+                        "inference_finished_monotonic_ns", "worker_completed_monotonic_ns")
+                _fields(worker, set(keys), "original worker self timings")
+                for key in keys: _integer(worker[key], key, minimum=1)
+                if [worker[key] for key in keys] != sorted(worker.values()):
+                    raise OperationalDomainError("study worker self clock order drifted")
     else:
         raise OperationalDomainError("guardian event fields mismatch")
     _integer(event["at_ns"], "at_ns")
     return cap
 
 
-def seal_guardian_event_v1(event, *, previous_sha256):
-    cap = _guardian_shape(event)
+def seal_guardian_event_v1(event, *, previous_sha256, study_scope=None):
+    cap = _guardian_shape(event, study_scope=study_scope)
     if "sha256" in event:
         raise OperationalDomainError("refusing to reseal a guardian event")
     result = copy.deepcopy(dict(event))
@@ -343,14 +398,14 @@ def seal_guardian_event_v1(event, *, previous_sha256):
     return result
 
 
-def validate_guardian_event_v1(event, *, previous_sha256):
-    cap = _guardian_shape(event)
+def validate_guardian_event_v1(event, *, previous_sha256, study_scope=None):
+    cap = _guardian_shape(event, study_scope=study_scope)
     if len(canonical_json_v1(event)) + 1 > cap:
         raise OperationalDomainError("guardian event exceeds its byte bound")
     _sha(event.get("sha256"))
     unsigned = dict(event)
     unsigned.pop("sha256")
-    if seal_guardian_event_v1(unsigned, previous_sha256=previous_sha256)["sha256"] != event["sha256"]:
+    if seal_guardian_event_v1(unsigned, previous_sha256=previous_sha256, study_scope=study_scope)["sha256"] != event["sha256"]:
         raise OperationalDomainError("guardian event chain mismatch")
     return event
 
@@ -374,7 +429,7 @@ def _table_row(rows, reference, label):
 def expand_guardian_identity_v1(header, begin):
     if set(begin) != GUARDIAN_BEGIN_FIELDS_V1:
         raise OperationalDomainError("identity expansion requires a complete begin")
-    _guardian_shape(begin)
+    _guardian_shape(begin, study_scope=header.get("study_scope"))
     binding = _table_row(header["bindings"], begin["binding"], "binding")
     _fields(binding, {"id", "context", "front_worker"}, "binding")
     context = _table_row(header["contexts"], binding["context"], "context")
@@ -404,8 +459,16 @@ def _physical_file(path):
     return info
 
 
-def write_native_domain_v1(path, header, occurrences: Iterable, *, original_authority_validator):
-    validate_native_header_v1(header)
+def native_domain_byte_limit_v1(study_scope):
+    """The legacy domain keeps its reviewed 64 MiB; only a validated finite-study scope gets its own bound."""
+    if study_scope is None:
+        return MAX_NATIVE_DOMAIN_BYTES_V1
+    validate_study_scope_v1(study_scope)
+    return MAX_STUDY_NATIVE_DOMAIN_BYTES_V1
+
+
+def write_native_domain_v1(path, header, occurrences: Iterable, *, original_authority_validator, study_scope=None):
+    validate_native_header_v1(header, study_scope=study_scope)
     path = Path(path)
     digest = hashlib.sha256()
     size = complete = measured = 0
@@ -414,7 +477,7 @@ def write_native_domain_v1(path, header, occurrences: Iterable, *, original_auth
         def append(payload, cap):
             nonlocal size
             line = canonical_json_v1(payload) + b"\n"
-            if len(line) > cap or size + len(line) > MAX_NATIVE_DOMAIN_BYTES_V1:
+            if len(line) > cap or size + len(line) > native_domain_byte_limit_v1(study_scope):
                 raise OperationalDomainError("native domain exceeds its byte budget")
             if stream.write(line) != len(line):
                 raise OperationalDomainError("short native domain write")
@@ -422,10 +485,10 @@ def write_native_domain_v1(path, header, occurrences: Iterable, *, original_auth
             digest.update(line)
         append(header, MAX_NATIVE_HEADER_BYTES_V1)
         for record in occurrences:
-            if complete >= MAX_NATIVE_DECISIONS_V1:
+            if complete >= _request_bounds(study_scope)[1]:
                 raise OperationalDomainError("native domain exceeds its occurrence budget")
             validate_native_occurrence_v1(record, expected_header=header,
-                                          original_authority_validator=original_authority_validator)
+                                          original_authority_validator=original_authority_validator, study_scope=study_scope)
             if record["runtime_decision_seq"] != complete + 1:
                 raise OperationalDomainError("native runtime sequence is incomplete or duplicated")
             append(record, MAX_NATIVE_RECORD_BYTES_V1)
@@ -439,13 +502,13 @@ def write_native_domain_v1(path, header, occurrences: Iterable, *, original_auth
     return {"path": str(path.resolve()), "size_bytes": size, "sha256": digest.hexdigest()}
 
 
-def iter_native_domain_v1(path, *, expected_descriptor, original_authority_validator):
+def iter_native_domain_v1(path, *, expected_descriptor, original_authority_validator, study_scope=None):
     path = Path(path)
     validate_descriptor_v1(expected_descriptor)
     if path.absolute() != Path(expected_descriptor["path"]).absolute():
         raise OperationalDomainError("native domain descriptor path mismatch")
     before = _physical_file(path)
-    if before.st_size > MAX_NATIVE_DOMAIN_BYTES_V1 or before.st_size != expected_descriptor["size_bytes"]:
+    if before.st_size > native_domain_byte_limit_v1(study_scope) or before.st_size != expected_descriptor["size_bytes"]:
         raise OperationalDomainError("native domain file size mismatch")
     digest = hashlib.sha256()
     complete = measured = 0
@@ -465,12 +528,12 @@ def iter_native_domain_v1(path, *, expected_descriptor, original_authority_valid
             digest.update(line)
             return value
         header = read(MAX_NATIVE_HEADER_BYTES_V1)
-        validate_native_header_v1(header)
+        validate_native_header_v1(header, study_scope=study_scope)
         while (record := read(MAX_NATIVE_RECORD_BYTES_V1)) is not None:
-            if complete >= MAX_NATIVE_DECISIONS_V1:
+            if complete >= _request_bounds(study_scope)[1]:
                 raise OperationalDomainError("native domain count exceeds supported scope")
             validate_native_occurrence_v1(record, expected_header=header,
-                                          original_authority_validator=original_authority_validator)
+                                          original_authority_validator=original_authority_validator, study_scope=study_scope)
             if record["runtime_decision_seq"] != complete + 1:
                 raise OperationalDomainError("native runtime sequence is incomplete or duplicated")
             complete += 1

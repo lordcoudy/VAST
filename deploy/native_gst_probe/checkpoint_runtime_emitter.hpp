@@ -13,6 +13,8 @@
 
 #include <unistd.h>
 
+#include "checkpoint_admission_transport.hpp"
+
 namespace vast {
 
 class CheckpointRuntimeEmitter {
@@ -50,6 +52,16 @@ class CheckpointRuntimeEmitter {
         run_id_(nonempty(std::move(run_id), "run_id")),
         topology_kind_(nonempty(std::move(topology_kind), "topology_kind")),
         stream_id_(parse_nonnegative_integer(stream_id, "VAST_CHECKPOINT_STREAM_ID")) {}
+
+  // The owner installs its original bound before exposing this emitter to
+  // callbacks. Publishing abort never closes a descriptor used by a callback.
+  void bind_lifecycle(std::shared_ptr<CheckpointIoDeadline> io) {
+    if (!io || started_) {
+      throw std::runtime_error("checkpoint event lifecycle must be bound before use");
+    }
+    CheckpointIoDeadline::set_owned_nonblocking(event_fd_);
+    io_ = std::move(io);
+  }
 
   void emit(
       const std::string& trace_id,
@@ -159,7 +171,7 @@ class CheckpointRuntimeEmitter {
   }
 
   std::uint64_t sequence() const {
-    std::lock_guard<std::mutex> lock(mutex_);
+    auto lock = io_ ? io_->acquire(mutex_) : std::unique_lock<std::timed_mutex>(mutex_);
     return sequence_;
   }
 
@@ -169,7 +181,9 @@ class CheckpointRuntimeEmitter {
   std::string run_id_;
   std::string topology_kind_;
   int stream_id_ = 0;
-  mutable std::mutex mutex_;
+  mutable std::timed_mutex mutex_;
+  std::shared_ptr<CheckpointIoDeadline> io_;
+  bool started_ = false;
   std::uint64_t sequence_ = 0;
   std::uint64_t last_timestamp_ms_ = 0;
 
@@ -190,7 +204,8 @@ class CheckpointRuntimeEmitter {
       std::uint64_t objects,
       const std::string& detector,
       const std::string& backend) {
-    std::lock_guard<std::mutex> lock(mutex_);
+    auto lock = io_ ? io_->acquire(mutex_) : std::unique_lock<std::timed_mutex>(mutex_);
+    started_ = true;
     const std::uint64_t sequence = ++sequence_;
     // Callbacks can sample wall time before competing for this lock. Bind the
     // event timestamp to the serialized sequence without moving it backwards.
@@ -301,8 +316,13 @@ class CheckpointRuntimeEmitter {
   void write_all(const std::string& payload) const {
     std::size_t offset = 0;
     while (offset < payload.size()) {
+      if (io_) io_->check();
       const ssize_t written = ::write(event_fd_, payload.data() + offset, payload.size() - offset);
       if (written < 0 && errno == EINTR) {
+        continue;
+      }
+      if (written < 0 && (errno == EAGAIN || errno == EWOULDBLOCK) && io_) {
+        io_->wait(event_fd_, POLLOUT);
         continue;
       }
       if (written <= 0) {

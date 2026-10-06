@@ -1,0 +1,23 @@
+Python 3.12.3
+ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-10-05T11:40:05Z
+test_actual_x264_recipe_writes_fixed_rate_sps_and_strict_vui_refusals_are_kept (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_x264_recipe_writes_fixed_rate_sps_and_strict_vui_refusals_are_kept) ... ERROR
+
+======================================================================
+ERROR: test_actual_x264_recipe_writes_fixed_rate_sps_and_strict_vui_refusals_are_kept (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_x264_recipe_writes_fixed_rate_sps_and_strict_vui_refusals_are_kept)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py", line 248, in test_actual_x264_recipe_writes_fixed_rate_sps_and_strict_vui_refusals_are_kept
+    fields=driver.validate_vui_trace(trace)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py", line 599, in validate_vui_trace
+    require(fields["vui_parameters_present_flag"] == fields["timing_info_present_flag"] == fields["fixed_frame_rate_flag"] == 1 and
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py", line 42, in require
+    raise ValueError(message)
+ValueError: actual SPS/VUI is not frozen30fps/auto<=5.1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.480s
+
+FAILED (errors=1)
+EXIT=1

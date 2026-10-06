@@ -1,0 +1,91 @@
+{
+  "kind": "actual-bootstrap-and-stock-study-launch-original-tools",
+  "progress_v18": {
+    "chunk_id": "3b06b7",
+    "wall_time_seconds": 1.1552816,
+    "exit_code": 0,
+    "original_token_count": 605,
+    "output": "{\"acceptance_files\": [{\"source\": \"E:\\\\STUDY\\\\VAST\\\\tmp\\\\finite-component-study-20261005\\\\ci-D42725b4f-v1\\\\final-independent-review-v1\\\\review.v1.json\", \"path\": \"review.v1.json\", \"size_bytes\": 40086, \"sha256\": \"151957920c485ba9fa5cadb71912398ac05642a7a98aac46d959364a2900802f\", \"byte_equal\": true}, {\"source\": \"E:\\\\STUDY\\\\VAST\\\\tmp\\\\finite-component-study-20261005\\\\ci-D42725b4f-v1\\\\final-independent-review-v1\\\\original-review-tools.v1.json\", \"path\": \"original-review-tools.v1.json\", \"size_bytes\": 50212, \"sha256\": \"bc53eb8c3c8c13f682af03b8aa2554714d2f55ef8e287528b455098b8f19f8c3\", \"byte_equal\": true}, {\"source\": \"E:\\\\STUDY\\\\VAST\\\\tmp\\\\finite-component-study-20261005\\\\ci-D42725b4f-v1\\\\final-independent-review-v1\\\\receipt-closure.original-tool.json\", \"path\": \"receipt-closure.original-tool.json\", \"size_bytes\": 5650, \"sha256\": \"36f419bb8e9b0a82345a36fbecedf8012723ea43a086406278adaf26637357f9\", \"byte_equal\": true}, {\"source\": \"E:\\\\STUDY\\\\VAST\\\\tmp\\\\finite-component-study-20261005\\\\ci-D42725b4f-v1\\\\final-independent-review-v1\\\\review_D_originals_v1.py\", \"path\": \"review_D_originals_v1.py\", \"size_bytes\": 36921, \"sha256\": \"bf67af9ba53ad546f523c15d4429f92426fde269265fd90748a51900c6e6adac\", \"byte_equal\": true}, {\"source\": \"E:\\\\STUDY\\\\VAST\\\\tmp\\\\finite-component-study-20261005\\\\ci-D42725b4f-v1\\\\final-independent-review-v1\\\\review_D_originals_v2.py\", \"path\": \"review_D_originals_v2.py\", \"size_bytes\": 38068, \"sha256\": \"604f2d88cc014d6b5f9be2114b40235b503bbc5dfa7346291ad71e054a5f1844\", \"byte_equal\": true}], \"documents\": [{\"path\": \"E:\\\\STUDY\\\\VAST\\\\PLAN.md\", \"historical_tail_sha256\": \"19597d38c26f08d0ee0270baf6e5e125b2236a515643d293d356ffc0f7d2def9\", \"historical_tail_preserved\": true}, {\"path\": \"E:\\\\STUDY\\\\VAST\\\\progress.md\", \"historical_tail_sha256\": \"161cbc9f6b2389537720b284d0e2f938a9df1221a857b835e1c40d9f880a3024\", \"historical_tail_preserved\": true}, {\"path\": \"C:\\\\Users\\\\s-a-balashov\\\\.codex\\\\worktrees\\\\finite-component-study\\\\VAST\\\\PLAN.md\", \"historical_tail_sha256\": \"cc8bebf8a1d53282b5f9adfb3ef425d29ff30d3c8df91070ca41395c9c6ce35a\", \"historical_tail_preserved\": true}, {\"path\": \"C:\\\\Users\\\\s-a-balashov\\\\.codex\\\\worktrees\\\\finite-component-study\\\\VAST\\\\progress.md\", \"historical_tail_sha256\": \"15c0d3c6930a41a181d8f2a81d11a4a7abb2db1060d70fdcb290165b2fa2174c\", \"historical_tail_preserved\": true}], \"tasks_completed\": 10, \"tasks_total\": 24, \"physical\": 0, \"next\": \"actual bootstrap then stock study\"}\r\n"
+  },
+  "bootstrap": {
+    "arguments": {
+      "cmd": "wsl.exe --exec /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/bootstrap-private-current-root-v1.py --commit 42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a --ci-proof /mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/ci-D42725b4f-v1/original-retention-v1/original-provider-metadata.v1.json --project-root /home/s-a-balashov/vf42725b4f --source-root /home/s-a-balashov/work/vast-component-release-20260930-d27",
+      "yield_time_ms": 10000,
+      "max_output_tokens": 2800
+    },
+    "initial_result": {
+      "chunk_id": "39a2d6",
+      "wall_time_seconds": 10.0149565,
+      "session_id": 21226,
+      "original_token_count": 65,
+      "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000"
+    },
+    "polls": [
+      {
+        "chunk_id": "09a6df",
+        "wall_time_seconds": 5.0070479,
+        "session_id": 21226,
+        "original_token_count": 0,
+        "output": ""
+      },
+      {
+        "chunk_id": "055fac",
+        "wall_time_seconds": 0.0000102,
+        "exit_code": 0,
+        "original_token_count": 44,
+        "output": "{\"path\": \"/home/s-a-balashov/vf42725b4f/b/bootstrap-closed.original.json\", \"size_bytes\": 3582, \"sha256\": \"0fd1e1548f1e5f71bd56710ab4857c140eb8fee2c67a39caf5ab11d3e092e6d3\"}\n"
+      }
+    ]
+  },
+  "study": {
+    "argv": [
+      "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "-I",
+      "-B",
+      "/home/s-a-balashov/vf42725b4f/scripts/run_canonical_systems_study_v1.py",
+      "study",
+      "--project-root",
+      "/home/s-a-balashov/vf42725b4f",
+      "--output-dir",
+      "/home/s-a-balashov/vf42725b4f/s",
+      "--engine",
+      "/usr/bin/docker",
+      "--engine-socket",
+      "/run/docker.sock",
+      "--capability-manifest",
+      "/home/s-a-balashov/vf42725b4f/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json",
+      "--calibration",
+      "/home/s-a-balashov/vf42725b4f/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+      "--model-parity-receipt",
+      "/home/s-a-balashov/vf42725b4f/configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+      "--worker-freeze-receipt",
+      "/home/s-a-balashov/vf42725b4f/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json",
+      "--execution-code-closure",
+      "/home/s-a-balashov/vf42725b4f/b/current-code-closure.original.json",
+      "--front-gate",
+      "/mnt/e/STUDY/VAST/data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi",
+      "--underbody",
+      "/mnt/e/STUDY/VAST/data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_underbody.avi",
+      "--preparation-started-monotonic-ns",
+      "671708114023685",
+      "--preparation-boot-id",
+      "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+      "--preparation-time-namespace",
+      "time:[4026531834]"
+    ],
+    "arguments": {
+      "cmd": "& wsl.exe --exec '/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python' '-I' '-B' '/home/s-a-balashov/vf42725b4f/scripts/run_canonical_systems_study_v1.py' 'study' '--project-root' '/home/s-a-balashov/vf42725b4f' '--output-dir' '/home/s-a-balashov/vf42725b4f/s' '--engine' '/usr/bin/docker' '--engine-socket' '/run/docker.sock' '--capability-manifest' '/home/s-a-balashov/vf42725b4f/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json' '--calibration' '/home/s-a-balashov/vf42725b4f/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json' '--model-parity-receipt' '/home/s-a-balashov/vf42725b4f/configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json' '--worker-freeze-receipt' '/home/s-a-balashov/vf42725b4f/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json' '--execution-code-closure' '/home/s-a-balashov/vf42725b4f/b/current-code-closure.original.json' '--front-gate' '/mnt/e/STUDY/VAST/data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi' '--underbody' '/mnt/e/STUDY/VAST/data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_underbody.avi' '--preparation-started-monotonic-ns' '671708114023685' '--preparation-boot-id' 'dde50e69-39bf-45bd-bdb7-bc33c9adcb0b' '--preparation-time-namespace' 'time:[4026531834]'",
+      "yield_time_ms": 10000,
+      "max_output_tokens": 3600
+    },
+    "initial_result": {
+      "chunk_id": "6e04bb",
+      "wall_time_seconds": 10.0062923,
+      "session_id": 13684,
+      "original_token_count": 65,
+      "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000"
+    }
+  },
+  "physical_preparation_accepted": false,
+  "canonical_study_complete": false
+}

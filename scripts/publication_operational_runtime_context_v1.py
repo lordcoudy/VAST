@@ -163,7 +163,7 @@ def operational_runtime_scratch_v1(raw, *, prefix, dir, request=None):
 
 
 def load_native_operational_context_v1(path, output_dir, *, run_id, system,
-        scenario, codec, policy, deadline_ms):
+        scenario, codec, policy, deadline_ms, study_runtime_plan=None):
     if path is None and output_dir is None:
         return None, None
     _require(path is not None and output_dir is not None,
@@ -185,8 +185,9 @@ def load_native_operational_context_v1(path, output_dir, *, run_id, system,
         value = strict_json_object_v1(raw, max_bytes=65_536)
         _require(canonical_json_v1(value) + b"\n" == raw and
                  set(value) == CONTEXT_FIELDS and value["schema_version"] == 1 and
-                 value["artifact_kind"] == "vast_native_operational_capture_context_v1" and
-                 value["mode"] in MODES, "operational capture context schema drifted")
+                 value["artifact_kind"] == ("vast_finite_study_native_capture_context_v1" if study_runtime_plan is not None
+                    else "vast_native_operational_capture_context_v1") and
+                 value["mode"] in ({"finite-component-study"} if study_runtime_plan is not None else MODES), "operational capture context schema drifted")
         unsigned = {key: item for key, item in value.items() if key != "sha256"}
         _require(value["sha256"] == hashlib.sha256(canonical_json_v1(unsigned)).hexdigest(),
                  "operational capture context semantic seal drifted")
@@ -199,16 +200,32 @@ def load_native_operational_context_v1(path, output_dir, *, run_id, system,
     finally:
         os.close(fd)
     header = value["native_header"]
-    validate_native_header_v1(header)
+    study_scope = None
+    if study_runtime_plan is not None:
+        from checkpoint_runtime_plan import validate_finite_study_runtime_plan_v1
+        from canonical_systems_study_plan_v1 import stream_schedule
+        validate_finite_study_runtime_plan_v1(study_runtime_plan)
+        plan = study_runtime_plan["study_plan"]
+        study_scope = {"kind": "finite-component-study", "plan_sha256": plan["sha256"],
+            "max_frame_id": 441, "max_requests_per_arm": 10608, "max_operations": 32}
+    validate_native_header_v1(header, study_scope=study_scope)
     for key, actual in {"run_id": run_id, "system": system, "scenario": scenario,
                         "codec": codec, "policy": policy, "deadline_ms": deadline_ms}.items():
         _require(header[key] == actual, f"operational original {key} binding drifted")
     _require(type(run_id) is str and run_id.isascii() and len(run_id) <= 64 and
              deadline_ms == 100.0, "operational request is outside the proved constructor domain")
     max_count = 241 if system in {"gstreamer_custom", "openvino_gva"} else 281
+    min_step = 999_999_600
+    if study_scope is not None:
+        max_count = 442
+        operations = plan["arms"] + sum(plan["pilots"].values(), [])
+        arm = next(a for a in operations if a["arm_id"] == study_runtime_plan["arm_id"])
+        rows = [stream_schedule(plan, sid, arm["rate"]) for sid in range(6)]
+        min_step = min(r[i]["schedule_offset_ns"] - r[i-1]["schedule_offset_ns"]
+                       for r in rows for i in range(1, len(r)))
     limits = value["admission_limits"]
     _require(type(limits) is dict and limits == {"max_admissions_per_stream": max_count,
-              "min_schedule_step_ns": 999_999_600} and
+              "min_schedule_step_ns": min_step} and
               all(type(item) is int for item in limits.values()),
              "operational admission limits differ from supported original deadlines")
     _require(output_dir.is_dir(), "operational output must be reserved before execution")

@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/vf204e041G/scripts/run_canonical_systems_study_v1.py", line 1187, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/s-a-balashov/vf204e041G/scripts/run_canonical_systems_study_v1.py", line 1181, in main
+    result={"prepare":prepare,"run":run,"study":study}[args.operation](args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vf204e041G/scripts/run_canonical_systems_study_v1.py", line 1153, in study
+    prepared=prepare(preparation)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vf204e041G/scripts/run_canonical_systems_study_v1.py", line 528, in prepare
+    with model_material(args) as material:
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vf204e041G/scripts/publication_gstreamer_component_inputs_v1.py", line 546, in held_finite_study_model_material_v1
+    refs = {role: _ref(_pin(root, name)) for role, name in {
+                       ^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vf204e041G/scripts/publication_gstreamer_component_inputs_v1.py", line 72, in _pin
+    return stock._project_pin(root, path, label="selected component original input")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/vf204e041G/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 241, in _project_pin
+    _require(
+  File "/home/s-a-balashov/vf204e041G/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 189, in _require
+    _fail(message)
+  File "/home/s-a-balashov/vf204e041G/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 184, in _fail
+    raise QualificationRuntimeInputMaterializationV2Error(message)
+publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputMaterializationV2Error: selected component original input path is not a canonical project-relative path

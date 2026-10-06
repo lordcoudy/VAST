@@ -1,0 +1,47 @@
+2026-10-05T14:31:09Z
+test_finite_study_worker_writes_both_journals_into_the_arm_study_directory (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_finite_study_worker_writes_both_journals_into_the_arm_study_directory) ... FAIL
+test_owned_sidecar_runner_has_subprocess_run_semantics (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_owned_sidecar_runner_has_subprocess_run_semantics) ... ERROR
+test_native_client_wait_pairs_follow_the_native_row_contract (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_native_client_wait_pairs_follow_the_native_row_contract) ... ERROR
+
+======================================================================
+ERROR: test_owned_sidecar_runner_has_subprocess_run_semantics (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_owned_sidecar_runner_has_subprocess_run_semantics)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py", line 324, in test_owned_sidecar_runner_has_subprocess_run_semantics
+    three=runner(["/bin/sh","-c","echo bad >&2; exit 3"],check=False,capture_output=True,text=True,timeout=5)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py", line 860, in runner
+    raw=commands.wait(child,record,maximum=1024**2)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py", line 188, in wait
+    require(child.returncode == 0, "owned study command failed: " + str(record["argv"]))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py", line 42, in require
+    raise ValueError(message)
+ValueError: owned study command failed: ['/bin/sh', '-c', 'echo bad >&2; exit 3']
+
+======================================================================
+ERROR: test_native_client_wait_pairs_follow_the_native_row_contract (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_native_client_wait_pairs_follow_the_native_row_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py", line 351, in test_native_client_wait_pairs_follow_the_native_row_contract
+    self.assertEqual(driver.native_client_waits([begin,released]),[{**released,"kind":"native_client"}])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py", line 955, in native_client_waits
+    require(set(pair)=={"begin","released"} and pair["begin"]["acquired_ns"] is not None,
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py", line 42, in require
+    raise ValueError(message)
+ValueError: native wait lacks genuine acquired begin; failed/UNKNOWN arm
+
+======================================================================
+FAIL: test_finite_study_worker_writes_both_journals_into_the_arm_study_directory (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_finite_study_worker_writes_both_journals_into_the_arm_study_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py", line 314, in test_finite_study_worker_writes_both_journals_into_the_arm_study_directory
+    self.assertEqual(flags.get("--checkpoint-study-accounting-path"),str(study/"native-s0-plate-receives.jsonl"))
+AssertionError: None != '/arm/study/native-s0-plate-receives.jsonl'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.610s
+
+FAILED (failures=1, errors=2)
+EXIT=1

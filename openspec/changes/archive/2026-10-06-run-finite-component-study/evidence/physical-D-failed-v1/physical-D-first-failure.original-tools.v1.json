@@ -1,0 +1,71 @@
+{
+  "kind": "actual-failed-D-study-tools",
+  "launch": {
+    "chunk_id": "6e04bb",
+    "wall_time_seconds": 10.0062923,
+    "session_id": 13684,
+    "original_token_count": 65,
+    "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000"
+  },
+  "arguments": {
+    "cmd": "& wsl.exe --exec '/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python' '-I' '-B' '/home/s-a-balashov/vf42725b4f/scripts/run_canonical_systems_study_v1.py' 'study' '--project-root' '/home/s-a-balashov/vf42725b4f' '--output-dir' '/home/s-a-balashov/vf42725b4f/s' '--engine' '/usr/bin/docker' '--engine-socket' '/run/docker.sock' '--capability-manifest' '/home/s-a-balashov/vf42725b4f/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/candidate/checkpoint_policy_capability_candidate_manifest.json' '--calibration' '/home/s-a-balashov/vf42725b4f/artifacts/publication_policy_qualification_v2_fix_benchmark_20260928g/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json' '--model-parity-receipt' '/home/s-a-balashov/vf42725b4f/configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json' '--worker-freeze-receipt' '/home/s-a-balashov/vf42725b4f/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json' '--execution-code-closure' '/home/s-a-balashov/vf42725b4f/b/current-code-closure.original.json' '--front-gate' '/mnt/e/STUDY/VAST/data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_front_gate.avi' '--underbody' '/mnt/e/STUDY/VAST/data/videos/kpp/kpp_legacy_iss_v2/avi/iss_v2_underbody.avi' '--preparation-started-monotonic-ns' '671708114023685' '--preparation-boot-id' 'dde50e69-39bf-45bd-bdb7-bc33c9adcb0b' '--preparation-time-namespace' 'time:[4026531834]'",
+    "yield_time_ms": 10000,
+    "max_output_tokens": 3600
+  },
+  "polls": [
+    {
+      "chunk_id": "6818b5",
+      "wall_time_seconds": 5.0083623,
+      "session_id": 13684,
+      "original_token_count": 0,
+      "output": ""
+    },
+    {
+      "chunk_id": "753ce2",
+      "wall_time_seconds": 5.0117881,
+      "session_id": 13684,
+      "original_token_count": 0,
+      "output": ""
+    },
+    {
+      "chunk_id": "9401cc",
+      "wall_time_seconds": 0.0000063,
+      "exit_code": 1,
+      "original_token_count": 298,
+      "output": "Traceback (most recent call last):\n  File \"/home/s-a-balashov/vf42725b4f/scripts/run_canonical_systems_study_v1.py\", line 1181, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/home/s-a-balashov/vf42725b4f/scripts/run_canonical_systems_study_v1.py\", line 1175, in main\n    result={\"prepare\":prepare,\"run\":run,\"study\":study}[args.operation](args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/s-a-balashov/vf42725b4f/scripts/run_canonical_systems_study_v1.py\", line 1147, in study\n    prepared=prepare(preparation)\n             ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/s-a-balashov/vf42725b4f/scripts/run_canonical_systems_study_v1.py\", line 506, in prepare\n    validate_vui_trace(trace)\n  File \"/home/s-a-balashov/vf42725b4f/scripts/run_canonical_systems_study_v1.py\", line 595, in validate_vui_trace\n    require(fields[\"vui_parameters_present_flag\"] == fields[\"timing_info_present_flag\"] == fields[\"fixed_frame_rate_flag\"] == 1 and\n  File \"/home/s-a-balashov/vf42725b4f/scripts/run_canonical_systems_study_v1.py\", line 42, in require\n    raise ValueError(message)\nValueError: actual SPS/VUI is not frozen30fps/auto<=5.1\n"
+    }
+  ],
+  "bootstrap": {
+    "chunk_id": "055fac",
+    "wall_time_seconds": 0.0000102,
+    "exit_code": 0,
+    "original_token_count": 44,
+    "output": "{\"path\": \"/home/s-a-balashov/vf42725b4f/b/bootstrap-closed.original.json\", \"size_bytes\": 3582, \"sha256\": \"0fd1e1548f1e5f71bd56710ab4857c140eb8fee2c67a39caf5ab11d3e092e6d3\"}\n"
+  },
+  "technical_ci_review": {
+    "arguments": {
+      "action": "COMMENT",
+      "commit_id": "42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a",
+      "pr_number": 5,
+      "repo_full_name": "lordcoudy/VAST",
+      "review": "Independent exact-source CI review: PASS_SOURCE_CI_ONLY, no blocking findings, for 42725b4fc7b2e5c0cc71d79ea57a1f1fa48fef9a and original run37279566144. Verified both successful jobs,253 ZIP members with provider digests/CRC/SHA,6665 raw Git blobs matching original before/after source tables,3101 unique actual test starts/terminals (3013success+88unchangedskips),9 unchanged integration deferrals, six residual fixture successes/two original GST deferrals, native6+3, original8 model assets in both lanes, observer24/24/24 and EOF/profile closure. Receipt40086B SHA256151957920c485ba9fa5cadb71912398ac05642a7a98aac46d959364a2900802f; original reader tools preserve first FAILED reader and correction only of its overbroad empty-working-tree predicate for four owned progress documents. No target or CI replay; A/B/C and local failures remain original failures. Software tasks2.1–2.6 closed. Actual bootstrap closed41.043469261s; stock study preparation started under original inherited4h clock. Hardware/scientific/full/release/merge acceptance remains false. This is a technical COMMENT, not a fabricated human APPROVE."
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Action completed."
+        }
+      ],
+      "structuredContent": {
+        "success": true,
+        "review_id": 5411962964
+      },
+      "isError": false
+    }
+  },
+  "failed": true,
+  "physical_accepted": false,
+  "effects": 0,
+  "pilots": 0
+}

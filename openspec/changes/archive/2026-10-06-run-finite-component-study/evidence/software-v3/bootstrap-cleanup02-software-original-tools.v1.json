@@ -1,0 +1,13 @@
+{
+  "args": {
+    "cmd": "wsl -d Ubuntu -- /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/bootstrap-positive-silent-software-probe-v1.py",
+    "max_output_tokens": 2500
+  },
+  "result": {
+    "chunk_id": "36072d",
+    "wall_time_seconds": 3.2083913,
+    "exit_code": 0,
+    "original_token_count": 380,
+    "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000{\"software_only\": true, \"positive_two_full_pipes\": true, \"silent_TERM_ignore_KILL_wait_reaped\": true, \"elapsed_s\": 2.252322121988982, \"records\": [{\"argv\": [\"/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python\", \"-I\", \"-B\", \"-c\", \"import os;os.write(1,b'o'*131072);os.write(2,b'e'*131072)\"], \"stdout\": \"/tmp/vast-bootstrap-pipes-software-03u_drp7/real-positive.stdout.original\", \"stderr\": \"/tmp/vast-bootstrap-pipes-software-03u_drp7/real-positive.stderr.original\", \"owned_child_reaped\": true, \"cleanup_errors\": [], \"pid\": 63559, \"pgid\": 63559, \"returncode\": 0, \"closed_monotonic_ns\": 666291732539186}, {\"argv\": [\"/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python\", \"-I\", \"-B\", \"-c\", \"import signal,time;signal.signal(signal.SIGTERM,signal.SIG_IGN);time.sleep(100)\"], \"stdout\": \"/tmp/vast-bootstrap-pipes-software-03u_drp7/real-silent.stdout.original\", \"stderr\": \"/tmp/vast-bootstrap-pipes-software-03u_drp7/real-silent.stderr.original\", \"owned_child_reaped\": true, \"cleanup_errors\": [], \"pid\": 63560, \"pgid\": 63560, \"first_error\": \"AssertionError:original child command deadline expired\", \"returncode\": -9, \"closed_monotonic_ns\": 666293985078134}], \"model_media_engine\": 0}\n"
+  }
+}

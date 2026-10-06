@@ -1,5 +1,11 @@
 # GStreamer component benchmark
 
+## Актуальный путь finite24/12 — 5 октября2026
+
+Новый executable path и single-command процедура описаны в [finite study runbook](finite-component-study-runbook.md). Exact planning P3288 рассмотрен в PR5; пользователь дал continuing apply authority. Реализация и проверка исходников выполняются, actual preparation/pilot/24 ещё не закрыты. Статус задают [PLAN.md](../PLAN.md) и active `run-finite-component-study/tasks.md`.
+
+PR4 `fix-decoder-preflight` завершён: final003f102d, CI37255941715 SUCCESS, merge a1b76a63. Scoped accepted S8 research не является actual derived-input или24-arm acceptance. Следующие dated sections сохранены как процедура и история прежних sources; их future/pending status относится к моменту записи.
+
 ## Текущий этап — 5 октября 2026
 
 Принятые CPU08/GPU02 пары на benchmark source B `a00aa57f` и selected image222 сохраняются. Component CLI выполняет реальную baseline/shared пару с6 streams,4 branches,100ms и30/180/10s. Успешное original closure доказывает завершение выбранной операции; отрицательный100ms результат не становится положительным из-за successful CLI. `--resource cpu` выбирает CPU analytics, а NVDEC decode присутствует в обеих resource-парах. Это не сравнение CPU decoder с GPU decoder.

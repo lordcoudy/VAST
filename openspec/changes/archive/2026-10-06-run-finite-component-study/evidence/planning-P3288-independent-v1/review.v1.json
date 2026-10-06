@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "kind": "independent_exact_planning_source_review",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "change": "run-finite-component-study",
+  "pull_request": "https://github.com/lordcoudy/VAST/pull/5",
+  "reviewed_commit": "3288b0702b6b0136feb6596382566b8686f9bb5c",
+  "parent": "d26c8fd3a6868ba9dda61924645000cab6282128",
+  "scope": "Read-only technical review of complete official planning and selected real implementation seams. This is neither human APPROVE nor implementation/scientific/release acceptance.",
+  "planning": [
+    {
+      "path": ".openspec.yaml",
+      "bytes": 40,
+      "sha256": "c956e2a907cf0aa23d948e300827f91e46ab77d64e288d98285dfe990bb0d989"
+    },
+    {
+      "path": "proposal.md",
+      "bytes": 6572,
+      "sha256": "4d1532e0ac868c9fb6e14a7d5b416d7ecd21f796be60b31a0bceac4aee57efe0"
+    },
+    {
+      "path": "design.md",
+      "bytes": 77167,
+      "sha256": "65d86f20e8e622ec6e91f54bd99cfe3d31f82ab9d6998dc303559434fe72abed"
+    },
+    {
+      "path": "tasks.md",
+      "bytes": 14623,
+      "sha256": "c637241abd2c7e9a8cb40da65be1715d0a9a5d4bc10d010880f0fe39636ce6e5"
+    },
+    {
+      "path": "specs/finite-component-study/spec.md",
+      "bytes": 24002,
+      "sha256": "700f26b1b579c933975717bdda82d74c2f0b390c84de4439b85f106782b9e745"
+    },
+    {
+      "path": "specs/benchmark-launch-preparation/spec.md",
+      "bytes": 2773,
+      "sha256": "481bae540adeef262b2cb9490f18b8888f7b1898f627681a2452d056fd03af5a"
+    }
+  ],
+  "raw_commit_facts": {
+    "all_six_official_physical_files_equal_raw_P": true,
+    "complete_parent_diff": "Exactly these six added planning files; no modified/deleted preexisting path.",
+    "new_capability": {
+      "requirements": 7,
+      "scenarios": 20
+    },
+    "tasks": {
+      "unchecked": 24,
+      "checked": 0
+    },
+    "original_R1_body_and_two_scenarios_byte_exact": true,
+    "main_benchmark_bytes": 92466,
+    "main_benchmark_sha256": "c0a310336c1ee333dd7a9c4975eff42ccb9d7c7e329c81ad07be02e6161c08fa",
+    "existing_main_diagnostics_sources_tests_CI_preserved": "Raw parent->P scope contains only six additions. Direct main-byte comparison and 17 selected seam comparisons also passed."
+  },
+  "assessment": [
+    {
+      "topic": "Science and completion",
+      "planning": "proposal:7-13; design:58-93,169-171; newcap:7-21,43-73; tasks:5.1-5.4",
+      "result": "24 effect arms/12 descriptive pairs on one final bundle are mandatory. Seed/order/resource symmetry, planned-slot denominators, actual admission/delivery/completion/loss partitions, Y100 full planned N and explicit cross-rate content/burst limitations answer a selected systems topology-capacity question. Missing keys/integrity/infra failures do not become favourable drops or fabricated censored rows. Pilot/partial or historical four arms cannot complete the study; legacy qualification/Q4/full false/zero/history and exact-kind gates remain strict."
+    },
+    {
+      "topic": "Stimulus and references",
+      "planning": "design:25-53; newcap:23-41; tasks:3.1-3.2",
+      "result": "442 original presentation ordinals with <=448 AU context are conditional on actual sufficiency. Encoder/VUI30fps and encoder1/30 are distinct from MP4 timescale600/20 ticks; this avoids the previously known coded600 hardware-rate problem. Explicit two-context underbody conversion avoids implicit matrix/chroma propagation assumptions. Actual bounded deterministic encode, SPS/VUI/level/device acceptance, independent derivative YUV versus NV12 packing, SAME pinned Gst RGB and distinct prefix/full442 EOS gates precede pilot. No original-colour accuracy or independent RGB oracle is claimed."
+    },
+    {
+      "topic": "Admission before delivery",
+      "planning": "design:60-64,78-93,129-151; tasks:2.2,2.6",
+      "source": "checkpoint_source_coordinator.cpp:599-692 (event673, ACK675, fanout678); checkpoint_runtime.py:1570-1587; checkpoint_admission.py:180-250,279-308",
+      "result": "Actual source event is already emitted before central accept/ACK/fanout. Existing parent registry is in-memory and only later snapshotted; the study contract correctly requires a durable central actual-admission key before ACK and separate per-recipient delivered outcomes. Queue enqueue is not delivery. Original one-second/241/281 guards require an exact typed study seam, not global loosening."
+    },
+    {
+      "topic": "Owned lifecycle and clocks",
+      "planning": "design:139-151; tasks:2.6,3.3,5.2-5.3",
+      "source": "checkpoint_analytics_execution_client.hpp:405-438; checkpoint_native_policy_client.hpp:365-385; checkpoint_admission_transport.hpp:192-220; checkpoint_source_coordinator.cpp:523-573; vast_native_gst_probe.cpp:371-408,1150-1170,1252-1275,2388-2397; checkpoint_runtime.py:1177-1186,1738,1795-1805",
+      "result": "Both native clients currently serialize blocking send/recv without deadlines. Source STOP currently waits on admission mutex and native shutdown reaches GST_STATE_NULL before joins. The reviewed scope addresses both clients, same original absolute bounds through positive progress/EINTR/EAGAIN, source ACK/partial pipe backpressure, bounded lock then admitted-key eligibility, STOP latch followed by existing drain, abort before callback teardown, actual post-KILL wait/reap and fail-closed primary/cleanup. START has own monotonic start plus realtime window/drain fields; implementation must compare each in its own clock rather than cross-subtract/reset. Eligibility lookup can occur under runtime mutex while external-call lock is unheld. Real callback/two-route/fault regression gates are prescribed; current blocking paths are not asserted fixed."
+    },
+    {
+      "topic": "Genuine selected build/models and typed caps",
+      "planning": "design:125-164; tasks:2.1,2.4,2.6,3.3-3.4",
+      "source": "publication_gstreamer_component_inputs_v1.py:122-179,294-350; publication_image_build_v1.py:378-394,535-647; Dockerfile.openvino:20-56; gstreamer_custom/publication/Dockerfile:109-115; checkpoint_runtime_plan.py:463-505; publication_operational_capture_plan_v1.py:147-194,219-220; publication_operational_request_domain_v1.py:24,274,312,425",
+      "result": "Current material validation rejects stale worker/model/source/image associations; selected Gst physically copies rebuilt native binaries/plugins from its provider. Per-image extraction with actual current context/build/inspect, genuine model/runtime revalidation and bounded build runner is feasible without a fake QualificationInputs or sibling SDK rebuild. Exact study typed source/plan/recorder/cold paths must carry <=442 frames/<=32 ops/10608 attempts while legacy frame280/6744/2-or37 rules remain unchanged. Genuine readiness/calibration is not waived by retagging."
+    },
+    {
+      "topic": "Pilot, observations and pooled workers",
+      "planning": "design:98-111,141-151; newcap:75-101; tasks:2.3,4.1-4.4",
+      "source": "analytics_execution_worker.py:455-520; checkpoint_gstreamer_analytics_bridge.py:748-818; checkpoint_gstreamer_analytics_sidecar.py:2380-2477,4812-4880",
+      "result": "Worker inference timing brackets private mapping plus backend call after sealed-input verification, with process CPU as its own interval; route lock is real and native global mutex contribution is not yet known. Record actual wait intervals before intervention, retain clock/domain labels, and use prescribed median>=0.10/n>=30 trigger only from valid pilot. Two prebuilt variants, at most one conditional switch, distinct actual connected branch channels and real simultaneous-route regression precede effects. Eight owned workers may reuse lifetime counters only with actual zero-outstanding/readiness/reset checks and per-arm deltas; no lifetime counter reset is implied."
+    },
+    {
+      "topic": "Finite work and release procedure",
+      "planning": "design:116-120,185-206; tasks:3.1,3.4,4.1-4.4,5.1-5.4,6.1-6.2",
+      "result": "Preparation and continuous campaign each have a separate original four-hour ceiling; actual builds/refs/readiness/CI/calibration fall in declared preparation, pilot/24 arms/reduction/retirement in campaign. 117.33-minute scheduled lower bound is not a wall-time promise. Caps, no automatic retries/search and truthful partial FAILED results are explicit. Three new modules with reused VAST factory/executor/guardian/custody are sufficient architecture; another authority hierarchy is not required. Archive checkbox closes actual archive/commit/push/handoff only; mandatory latest archive-head CI, final review and authorized merge remain separate pending ledger obligations, avoiding the prior cycle."
+    }
+  ],
+  "actual_unknowns_before_dependent_physical_work": [
+    "Implementation does not exist at P; prescribed genuine old-RED/new-GREEN source/fault/legacy isolation gates and current mandatory implementation CI remain pending.",
+    "Actual 442-prefix context sufficiency, deterministic derived bytes, hardware/caps/YUV/RGB/EOS acceptance, selected native/Gst build and current worker/model/env/calibration readiness remain pending.",
+    "Actual transport wait contribution, pilot trigger/configuration, all24 integrity/performance outcomes and completion inside continuous budgets are unknown. Negative complete results are allowed; integrity failure or incomplete24 is not completion.",
+    "Existing analytics path constructor uses blocking connect before READY; owned startup bound and actual retirement must cover this path as part of the already prescribed lifecycle contract.",
+    "Existing fixed C++ test deadline9999999999 is expired against current monotonic clock; deadline-aware tests need a real current absolute deadline retaining the applicable original allowance."
+  ],
+  "performed": "Source/metadata/native raw Git reads only. No code, tests, CI target, media/model/engine/GI, cold/producer, source imports or scientific execution; no source/planning/Git edits.",
+  "transcript": "original-readonly-tools.v1.json preserves actual arguments/results, including locator errors, UTF-8 console error and explicitly recovered truncated print ranges. These are review-tool limitations, not target failures.",
+  "technical_comment": "Техническое независимое ревью exact planning 3288b0702b6b0136feb6596382566b8686f9bb5c: PASS, блокирующих замечаний нет. Полностью рассмотрены официальные 6 artifacts и реальные source seams. Подтверждены 7 requirements/20 scenarios/24 unchecked tasks, literal preservation старого R1+2 scenarios и отсутствие source/test/CI изменений. Контракт требует genuine implementation/fault/current-CI/intake gates, затем все24/12 с truthful negative allowed и finite physical closure; ни pilot, ни исторические results не заменяют completion. Это технический COMMENT, не fabricated human APPROVE и не научная/release acceptance."
+}

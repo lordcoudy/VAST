@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "record_type": "faithful_original_returned_tool_objects",
+  "tool_calls": [
+    {
+      "tool_name": "exec_command",
+      "arguments": {
+        "cmd": "$script = @'\nimport contextlib, hashlib, json, os, sys, time, unittest\nfrom pathlib import Path\nroot=Path('/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST')\nbase=Path('/mnt/e/STUDY/VAST/tmp/finite-component-study-20261005/source-closure-regression-v1')\nprevious=json.loads((base/'green-02/result.v1.json').read_bytes())\nout=base/'green-03';out.mkdir(exist_ok=False)\nsys.path[:0]=[str(root/'scripts'),str(root/'tests')]\nmodules=previous['modules']\nclass Recorded(unittest.TextTestResult):\n def startTest(self,t):super().startTest(t);self.events.append({'id':t.id(),'phase':'start'})\n def addSuccess(self,t):super().addSuccess(t);self.events.append({'id':t.id(),'phase':'success'})\n def addFailure(self,t,e):super().addFailure(t,e);self.events.append({'id':t.id(),'phase':'failure'})\n def addError(self,t,e):super().addError(t,e);self.events.append({'id':t.id(),'phase':'error'})\n def stopTest(self,t):super().stopTest(t);self.events.append({'id':t.id(),'phase':'terminal'})\n events=[]\ndef ep(s):return [s.st_dev,s.st_ino,s.st_mode,s.st_nlink,s.st_size,s.st_mtime_ns,s.st_ctime_ns]\ndef owner(pid):\n row=Path('/proc')/str(pid);parts=(row/'stat').read_text().split(') ',1)[1].split()\n return {'pid':pid,'ppid':int(parts[1]),'pgid':int(parts[2]),'sid':int(parts[3]),'start_ticks':int(parts[19]),'uid':row.stat().st_uid,'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'time_namespace':os.readlink(row/'ns/time')}\nwho=owner(os.getpid());parent=owner(who['ppid']);holds=[];pins=[];basefd=len(list(Path('/proc/self/fd').iterdir()));started=time.monotonic()\ntry:\n for old in previous['source_pins']:\n  path=Path(old['path']);f=path.open('rb');holds.append((path,f));info=os.fstat(f.fileno());raw=f.read();pins.append({'path':str(path),'size_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest(),'epoch':ep(info)})\n with (out/'stdout.original.log').open('x',encoding='utf-8',newline='\\n') as stdout,(out/'stderr.original.log').open('x',encoding='utf-8',newline='\\n') as stderr,contextlib.redirect_stdout(stdout),contextlib.redirect_stderr(stderr):\n  suite=unittest.TestSuite(unittest.defaultTestLoader.loadTestsFromName(m) for m in modules)\n  result=unittest.TextTestRunner(stream=stderr,verbosity=2,resultclass=Recorded).run(suite)\n stable=True\n for (path,f),pin in zip(holds,pins):\n  f.seek(0);stable &= ep(path.stat())==pin['epoch']==ep(os.fstat(f.fileno())) and hashlib.sha256(f.read()).hexdigest()==pin['sha256']\n closed=[]\n for path,f in reversed(holds):f.close();closed.append(str(path))\n holds=[]\n record={'phase':'GREEN final strict closure and full driver software modules','modules':modules,'tests_run':result.testsRun,'successful':result.wasSuccessful(),'failures':[{'id':str(t),'traceback':s} for t,s in result.failures],'errors':[{'id':str(t),'traceback':s} for t,s in result.errors],'skips':result.skipped,'events':result.events,'source_pins':pins,'source_stable':stable,'owner':who,'observed_parent':parent,'fd_before':basefd,'fd_after':len(list(Path('/proc/self/fd').iterdir())),'held_files_released':len(closed),'elapsed_s':time.monotonic()-started}\n (out/'result.v1.json').write_bytes((json.dumps(record,sort_keys=True,indent=2)+'\\n').encode())\n print(json.dumps({k:record[k] for k in ['phase','tests_run','successful','source_stable','owner','observed_parent','fd_before','fd_after','held_files_released','elapsed_s']},sort_keys=True))\n sys.exit(0 if result.wasSuccessful() and stable else 1)\nfinally:\n for path,f in reversed(holds):f.close()\n'@\nwsl.exe -d Ubuntu --exec /usr/bin/timeout --signal=TERM --kill-after=15s 120s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -c $script",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 2400
+      },
+      "result": {
+        "chunk_id": "9ceec2",
+        "wall_time_seconds": 10.004268,
+        "session_id": 16190,
+        "original_token_count": 65,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000"
+      }
+    },
+    {
+      "tool_name": "write_stdin",
+      "arguments": {
+        "session_id": 16190,
+        "chars": "",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 2600
+      },
+      "result": {
+        "chunk_id": "063e3c",
+        "wall_time_seconds": 0.0000111,
+        "exit_code": 0,
+        "original_token_count": 157,
+        "output": "{\"elapsed_s\": 18.625248964992352, \"fd_after\": 6, \"fd_before\": 6, \"held_files_released\": 16, \"observed_parent\": {\"boot_id\": \"dde50e69-39bf-45bd-bdb7-bc33c9adcb0b\", \"pgid\": 63395, \"pid\": 63395, \"ppid\": 63388, \"sid\": 63395, \"start_ticks\": 66406550, \"time_namespace\": \"time:[4026531834]\", \"uid\": 1000}, \"owner\": {\"boot_id\": \"dde50e69-39bf-45bd-bdb7-bc33c9adcb0b\", \"pgid\": 63395, \"pid\": 63396, \"ppid\": 63395, \"sid\": 63395, \"start_ticks\": 66406553, \"time_namespace\": \"time:[4026531834]\", \"uid\": 1000}, \"phase\": \"GREEN final strict closure and full driver software modules\", \"source_stable\": true, \"successful\": true, \"tests_run\": 32}\n"
+      }
+    }
+  ],
+  "scope": "Canonical CPython3.12.3 -I -B local strict-source closure and software-driver regression; no target/engine/model/media operation."
+}

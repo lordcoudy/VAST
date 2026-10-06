@@ -1,0 +1,526 @@
+{
+  "schema_version": 1,
+  "scope": "Faithful returned local software exec/poll objects only; no physical engine/media/model/study operation. Any tool truncation remains explicitly present.",
+  "records": [
+    {
+      "phase": "runtime-reap-red",
+      "arguments": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py -k test_term_ignoring_children_are_killed_and_reaped_before_cleanup_returns",
+        "max_output_tokens": 2000
+      },
+      "result": {
+        "chunk_id": "d4d9f3",
+        "wall_time_seconds": 6.3317199,
+        "exit_code": 1,
+        "original_token_count": 287,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000F\n======================================================================\nFAIL: test_term_ignoring_children_are_killed_and_reaped_before_cleanup_returns (test_checkpoint_runtime.CheckpointRuntimeTests.test_term_ignoring_children_are_killed_and_reaped_before_cleanup_returns)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_runtime.py\", line 146, in test_term_ignoring_children_are_killed_and_reaped_before_cleanup_returns\n    self.assertEqual([p.returncode for p in children.values()], [-9, -9])\nAssertionError: Lists differ: [None, None] != [-9, -9]\n\nFirst differing element 0:\nNone\n-9\n\n- [None, None]\n+ [-9, -9]\n\n----------------------------------------------------------------------\nRan 1 test in 4.023s\n\nFAILED (failures=1)\n"
+      }
+    },
+    {
+      "phase": "runtime-reap-green",
+      "arguments": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py -k test_term_ignoring_children_are_killed_and_reaped_before_cleanup_returns",
+        "max_output_tokens": 1200
+      },
+      "result": {
+        "chunk_id": "609ff3",
+        "wall_time_seconds": 4.2593211,
+        "exit_code": 0,
+        "original_token_count": 90,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000.\n----------------------------------------------------------------------\nRan 1 test in 2.018s\n\nOK\n"
+      }
+    },
+    {
+      "phase": "study-guardian-bounds-red",
+      "arguments": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_publication_guardian_operational_recorder_v1.py -k test_study_frame_and_sequence_bounds_do_not_relax_legacy",
+        "max_output_tokens": 1800
+      },
+      "result": {
+        "chunk_id": "4fae17",
+        "wall_time_seconds": 1.3822863,
+        "exit_code": 1,
+        "original_token_count": 484,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000E\n======================================================================\nERROR: test_study_frame_and_sequence_bounds_do_not_relax_legacy (test_publication_guardian_operational_recorder_v1.RecorderTests.test_study_frame_and_sequence_bounds_do_not_relax_legacy)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_guardian_operational_recorder_v1.py\", line 54, in test_study_frame_and_sequence_bounds_do_not_relax_legacy\n    rec = GuardianOperationalRecorder(root / \"journal\", hs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/publication_guardian_operational_recorder_v1.py\", line 170, in __init__\n    checked = {route: _header(dict(header), route, self._budgets) for route, header in headers_by_route.items()}\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/publication_guardian_operational_recorder_v1.py\", line 101, in _header\n    _require(type(value) is dict and set(value) == HEADER_FIELDS,\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/publication_guardian_operational_recorder_v1.py\", line 48, in _require\n    raise GuardianOperationalError(message)\npublication_guardian_operational_recorder_v1.GuardianOperationalError: operational header fields drifted\n\n----------------------------------------------------------------------\nRan 1 test in 0.009s\n\nFAILED (errors=1)\n"
+      }
+    },
+    {
+      "phase": "study-guardian-bounds-module",
+      "arguments": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_publication_guardian_operational_recorder_v1.py",
+        "max_output_tokens": 1700
+      },
+      "result": {
+        "chunk_id": "280083",
+        "wall_time_seconds": 1.4622149,
+        "exit_code": 0,
+        "original_token_count": 93,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000...........\n----------------------------------------------------------------------\nRan 11 tests in 0.097s\n\nOK\n"
+      }
+    },
+    {
+      "label": "study-runtime-layout-red",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime_plan.py -k finite_study_layout",
+        "max_output_tokens": 2500
+      },
+      "result": {
+        "chunk_id": "c3e215",
+        "wall_time_seconds": 2.1035059,
+        "exit_code": 1,
+        "original_token_count": 303,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000E\n======================================================================\nERROR: test_finite_study_layout_has_real_workers_and_keeps_legacy_kind_strict (test_checkpoint_runtime_plan.CheckpointRuntimePlanTests.test_finite_study_layout_has_real_workers_and_keeps_legacy_kind_strict)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_runtime_plan.py\", line 258, in test_finite_study_layout_has_real_workers_and_keeps_legacy_kind_strict\n    runtime = runtime_plan.build_finite_study_runtime_plan_v1(plan, arm[\"arm_id\"])\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'checkpoint_runtime_plan' has no attribute 'build_finite_study_runtime_plan_v1'\n\n----------------------------------------------------------------------\nRan 1 test in 0.108s\n\nFAILED (errors=1)\n"
+      }
+    },
+    {
+      "label": "study-runtime-layout-module",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime_plan.py",
+        "max_output_tokens": 3000
+      },
+      "result": {
+        "chunk_id": "70f575",
+        "wall_time_seconds": 3.8204442,
+        "exit_code": 0,
+        "original_token_count": 94,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000..............\n----------------------------------------------------------------------\nRan 14 tests in 2.049s\n\nOK\n"
+      }
+    },
+    {
+      "label": "legacy-admission-after-typed-propagation",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 60s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_admission.py",
+        "max_output_tokens": 3500
+      },
+      "result": {
+        "chunk_id": "ef3083",
+        "wall_time_seconds": 2.1198295,
+        "exit_code": 0,
+        "original_token_count": 92,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000........\n----------------------------------------------------------------------\nRan 8 tests in 0.291s\n\nOK\n"
+      }
+    },
+    {
+      "label": "study-real-bridge-route-overlap",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_gstreamer_analytics_bridge.py -k independent_routes_overlap",
+        "max_output_tokens": 3000
+      },
+      "result": {
+        "chunk_id": "d4c324",
+        "wall_time_seconds": 1.436126,
+        "exit_code": 1,
+        "original_token_count": 304,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000F\n======================================================================\nFAIL: test_study_independent_routes_overlap_on_real_transports_with_self_intervals (test_checkpoint_gstreamer_analytics_bridge.GStreamerAnalyticsBridgeTests.test_study_independent_routes_overlap_on_real_transports_with_self_intervals)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_gstreamer_analytics_bridge.py\", line 773, in test_study_independent_routes_overlap_on_real_transports_with_self_intervals\n    self.assertEqual(one.result(timeout=3)[\"message_type\"], \"analytics_completed\")\nAssertionError: 'analytics_execute_response' != 'analytics_completed'\n- analytics_execute_response\n+ analytics_completed\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.028s\n\nFAILED (failures=1)\n"
+      }
+    },
+    {
+      "label": "study-real-bridge-route-overlap-module-green",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 60s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_gstreamer_analytics_bridge.py",
+        "max_output_tokens": 3000
+      },
+      "result": {
+        "chunk_id": "472fe0",
+        "wall_time_seconds": 1.5903703999999999,
+        "exit_code": 0,
+        "original_token_count": 93,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000..........\n----------------------------------------------------------------------\nRan 10 tests in 0.226s\n\nOK\n"
+      }
+    },
+    {
+      "label": "study-guardian-timing-bounds",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_publication_guardian_operational_recorder_v1.py",
+        "max_output_tokens": 3000
+      },
+      "result": {
+        "chunk_id": "bf3b4e",
+        "wall_time_seconds": 1.4652283,
+        "exit_code": 0,
+        "original_token_count": 93,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000...........\n----------------------------------------------------------------------\nRan 11 tests in 0.094s\n\nOK\n"
+      }
+    },
+    {
+      "label": "spawn-close-retirement-red",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 20s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py -k spawn_fd_close",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 2000
+      },
+      "result": {
+        "chunk_id": "faa926",
+        "wall_time_seconds": 1.6511236999999999,
+        "exit_code": 1,
+        "original_token_count": 249,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000F\n======================================================================\nFAIL: test_spawn_fd_close_failure_still_reaps_the_original_child (test_checkpoint_runtime.CheckpointRuntimeTests.test_spawn_fd_close_failure_still_reaps_the_original_child)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_runtime.py\", line 185, in test_spawn_fd_close_failure_still_reaps_the_original_child\n    self.assertIsNotNone(children[0].returncode)\nAssertionError: unexpectedly None\n\n----------------------------------------------------------------------\nRan 1 test in 0.015s\n\nFAILED (failures=1)\n"
+      }
+    },
+    {
+      "label": "spawn-close-retirement-green",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 20s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py -k spawn_fd_close",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 1600
+      },
+      "result": {
+        "chunk_id": "7609be",
+        "wall_time_seconds": 1.8898587,
+        "exit_code": 0,
+        "original_token_count": 90,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000.\n----------------------------------------------------------------------\nRan 1 test in 0.010s\n\nOK\n"
+      }
+    },
+    {
+      "label": "central-durable-failed-ACK-red",
+      "arguments": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py -k test_central_admission_is_durable_before_failed_ack"
+      },
+      "result": {
+        "chunk_id": "b85e35",
+        "wall_time_seconds": 1.6334971,
+        "exit_code": 1,
+        "original_token_count": 382,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000/usr/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 58093 is still running\n  _warn(\"subprocess %s is still running\" % self.pid,\nResourceWarning: Enable tracemalloc to get the object allocation traceback\n/usr/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 58095 is still running\n  _warn(\"subprocess %s is still running\" % self.pid,\nResourceWarning: Enable tracemalloc to get the object allocation traceback\nF\n======================================================================\nFAIL: test_central_admission_is_durable_before_failed_ack (test_checkpoint_runtime.CheckpointRuntimeTests.test_central_admission_is_durable_before_failed_ack)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_runtime.py\", line 231, in test_central_admission_is_durable_before_failed_ack\n    self.assertEqual(ack_seen, [\"1 ACK 1\\n\"])\nAssertionError: Lists differ: [] != ['1 ACK 1\\n']\n\nSecond list contains 1 additional elements.\nFirst extra element 0:\n'1 ACK 1\\n'\n\n- []\n+ ['1 ACK 1\\n']\n\n----------------------------------------------------------------------\nRan 1 test in 0.009s\n\nFAILED (failures=1)\n"
+      }
+    },
+    {
+      "label": "central-durable-fixture-diagnosis",
+      "arguments": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py -k test_central_admission_is_durable_before_failed_ack"
+      },
+      "result": {
+        "chunk_id": "e77710",
+        "wall_time_seconds": 2.0010518,
+        "exit_code": 1,
+        "original_token_count": 397,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000/usr/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 58134 is still running\n  _warn(\"subprocess %s is still running\" % self.pid,\nResourceWarning: Enable tracemalloc to get the object allocation traceback\n/usr/lib/python3.12/subprocess.py:1127: ResourceWarning: subprocess 58136 is still running\n  _warn(\"subprocess %s is still running\" % self.pid,\nResourceWarning: Enable tracemalloc to get the object allocation traceback\nF\n======================================================================\nFAIL: test_central_admission_is_durable_before_failed_ack (test_checkpoint_runtime.CheckpointRuntimeTests.test_central_admission_is_durable_before_failed_ack)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_runtime.py\", line 231, in test_central_admission_is_durable_before_failed_ack\n    self.assertEqual(ack_seen, [\"1 ACK 1\\n\"], str(failure.exception))\nAssertionError: Lists differ: [] != ['1 ACK 1\\n']\n\nSecond list contains 1 additional elements.\nFirst extra element 0:\n'1 ACK 1\\n'\n\n- []\n+ ['1 ACK 1\\n'] : source coordinator must be native\n\n----------------------------------------------------------------------\nRan 1 test in 0.011s\n\nFAILED (failures=1)\n"
+      }
+    },
+    {
+      "label": "central-durable-causal-red",
+      "arguments": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py -k test_central_admission_is_durable_before_failed_ack"
+      },
+      "result": {
+        "chunk_id": "90c149",
+        "wall_time_seconds": 2.0954115,
+        "exit_code": 1,
+        "original_token_count": 383,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000Exception in thread checkpoint-admission-source:\nTraceback (most recent call last):\n  File \"/usr/lib/python3.12/threading.py\", line 1073, in _bootstrap_inner\n    self.run()\n  File \"/usr/lib/python3.12/threading.py\", line 1010, in run\n    self._target(*self._args, **self._kwargs)\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_runtime.py\", line 1637, in consume_admission\n    os.close(ack_write_fd)\nOSError: [Errno 9] Bad file descriptor\nF\n======================================================================\nFAIL: test_central_admission_is_durable_before_failed_ack (test_checkpoint_runtime.CheckpointRuntimeTests.test_central_admission_is_durable_before_failed_ack)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_runtime.py\", line 232, in test_central_admission_is_durable_before_failed_ack\n    self.assertEqual(durable_at_ack, [True])\nAssertionError: Lists differ: [False] != [True]\n\nFirst differing element 0:\nFalse\nTrue\n\n- [False]\n+ [True]\n\n----------------------------------------------------------------------\nRan 1 test in 0.056s\n\nFAILED (failures=1)\n"
+      }
+    },
+    {
+      "label": "central-durable-failed-ACK-green",
+      "arguments": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py -k test_central_admission_is_durable_before_failed_ack"
+      },
+      "result": {
+        "chunk_id": "aefeb1",
+        "wall_time_seconds": 1.7188085,
+        "exit_code": 1,
+        "original_token_count": 351,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000E\n======================================================================\nERROR: test_checkpoint_runtime (unittest.loader._FailedTest.test_checkpoint_runtime)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_checkpoint_runtime\nTraceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/loader.py\", line 394, in _find_test_path\n    module = self._get_module_from_name(name)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/loader.py\", line 337, in _get_module_from_name\n    __import__(name)\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_runtime.py\", line 42, in <module>\n    from checkpoint_gstreamer_runtime import (\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_runtime.py\", line 2880\n    from checkpoint_runtime_plan import build_finite_study_runtime_plan_v1\nIndentationError: unexpected indent\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)\n"
+      }
+    },
+    {
+      "label": "central-durable-failed-ACK-green02",
+      "arguments": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py -k test_central_admission_is_durable_before_failed_ack"
+      },
+      "result": {
+        "chunk_id": "305390",
+        "wall_time_seconds": 2.0394358,
+        "exit_code": 0,
+        "original_token_count": 90,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000.\n----------------------------------------------------------------------\nRan 1 test in 0.055s\n\nOK\n"
+      }
+    },
+    {
+      "label": "driver-cli-help-green",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 30s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py --help"
+      },
+      "result": {
+        "chunk_id": "66534a",
+        "wall_time_seconds": 0.9421159,
+        "exit_code": 0,
+        "original_token_count": 129,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000usage: run_canonical_systems_study_v1.py [-h] {prepare,run,study} ...\n\nPrepare and run the reviewed finite 24-arm study on existing native paths.\n\npositional arguments:\n  {prepare,run,study}\n\noptions:\n  -h, --help           show this help message and exit\n"
+      }
+    },
+    {
+      "label": "test_run_canonical_systems_study_v1.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_run_canonical_systems_study_v1.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "736846",
+        "wall_time_seconds": 3.8467712,
+        "exit_code": 1,
+        "original_token_count": 283,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000.....F...\n======================================================================\nFAIL: test_real_partial_file_reads_keep_hash_deadline_and_reject_named_drift (test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_real_partial_file_reads_keep_hash_deadline_and_reject_named_drift)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py\", line 73, in test_real_partial_file_reads_keep_hash_deadline_and_reject_named_drift\n    with mock.patch.object(driver.os,\"pread\",side_effect=mutate),self.assertRaisesRegex(ValueError,\"drifted\"):\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 9 tests in 2.553s\n\nFAILED (failures=1)\n"
+      }
+    },
+    {
+      "label": "test_checkpoint_runtime.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "b89a6c",
+        "wall_time_seconds": 10.0046304,
+        "session_id": 32406,
+        "original_token_count": 70,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000................."
+      }
+    },
+    {
+      "label": "test_checkpoint_gstreamer_analytics_bridge.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_gstreamer_analytics_bridge.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "83dce5",
+        "wall_time_seconds": 1.4175688,
+        "exit_code": 0,
+        "original_token_count": 93,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000..........\n----------------------------------------------------------------------\nRan 10 tests in 0.169s\n\nOK\n"
+      }
+    },
+    {
+      "label": "test_publication_guardian_operational_recorder_v1.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_publication_guardian_operational_recorder_v1.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "a908a6",
+        "wall_time_seconds": 1.3146097,
+        "exit_code": 0,
+        "original_token_count": 93,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000...........\n----------------------------------------------------------------------\nRan 11 tests in 0.109s\n\nOK\n"
+      }
+    },
+    {
+      "label": "runtime-full-module-poll",
+      "args": {
+        "session_id": 32406,
+        "chars": "",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "f2cb61",
+        "wall_time_seconds": 0.0000059,
+        "exit_code": 1,
+        "original_token_count": 48051,
+        "output": "Warning: truncated output (original token count: 48051)\nTotal output lines: 21\n\n..F.........F..................\n======================================================================\nFAIL: test_gstreamer_native_runtime_selects_v2_join_contract (test_checkpoint_runtime.CheckpointRuntimeTests.test_gstreamer_native_runtime_selects_v2_join_contract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_runtime.py\", line 2323, in test_gstreamer_native_runtime_selects_v2_join_contract\n    self.assertEqual(len(calls), 1)\nAssertionError: 2 != 1\n\n======================================================================\nFAIL: test_native_probe_source_contains_physical_checkpoint_graphs_and_direct_emitter (test_checkpoint_runtime.CheckpointRuntimeTests.test_native_probe_source_contains_physical_checkpoint_graphs_and_direct_emitter)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_runtime.py\", line 1105, in test_native_probe_source_contains_physical_checkpoint_graphs_and_direct_emitter\n    self.assertIn('checkpoint_ingress_queue_.size() < kMaximumQueuedCheckpointAccessUnits', body)\nAssertionError: 'checkpoint_ingress_queue_.size() < kMaximumQueuedCheckpointAccessUnits' not found in '#include <gst/gst.h>\\n#include <gst/app/gstappsrc.h>\\n#include <gst/rtp/rtp.h>\\n#include <gst/video/video.h>\\n\\n#include \"checkpoint_admission_transport.hpp\"\\n#include \"checkpoint_analytics_execution_client.hpp\"\\n#include \"checkpoint_gstreamer_analytics_bridge.hpp\"\\n#include \"checkpoint_analytics_terminal_transport.hpp\"\\n#include \"checkpoint_native_policy_client.hpp\"\\n#include \"checkpoint_resource_interval_emitter.hpp\"\\n#include \"checkpoint_runtime_emitter.hpp\"\\n#include \"checkpoint_study_reference.hpp\"\\n\\n#include <algorithm>\\n#include <array>\\n#include <cctype>\\n#include <atomic>\\n#include <chrono>\\n#include <cmath>\\n#include <condition_variable>\\n#include <cstddef>\\n#include <cstdint>\\n#include <cstdlib>\\n#include <deque>\\n#include <filesystem>\\n#include <fstream>\\n#include <iostream>\\n#include <limits>\\n#include <memory>\\n#include <mutex>\\n#include <sstream>\\n#include <stdexcept>\\n#include <string>\\n#include <thread>\\n#include <tuple>\\n#include <unordered_map>\\n#include <unordered_set>\\n#include <vector>\\n\\n#include <poll.h>\\n#include <sys/stat.h>\\n#include <time.h>\\n#include <unistd.h>\\n\\nnamespace fs = std::filesystem;\\n\\nconstexpr guint8 kTraceExtensionId = 1;\\nconstexpr std::uint16_t kTraceMagic = 0x5641;\\nconstexpr std::uint8_t kTraceVersion = 1;\\nconstexpr std::size_t kTracePayloadSize = 16;\\n\\nstruct Args {\\n  std::string executable_path;\\n  std::string system;\\n  std::string role;\\n  std::string stages;\\n  std::string run_id;\\n  std::string detector;\\n  std::string backend;\\n  std::string output_dir;\\n  std::string output_host;\\n  std::string video_layout_dir = \"data/videos\";\\n  std::string dataset_streams_json;\\n  std::string detect_bin = \"identity\";\\n  std::string checkpoint_branches;\\n  std::string checkpoint_branch;\\n  std::string dataset_id;\\n  std::string source_sha256;\\n  std::string checkpoint_container;\\n  std::string checkpoint_codec;\\n  std::string checkpoint_allowed_decoder_factories;\\n  std::string source_replay;\\n  std::string checkpoint_study_kind;\\n  std::string checkpoint_study_accounting_path;\\n  std::string checkpoint_study_waits_path;\\n  std::string checkpoint_analytics_client_mode = \"global-client\";\\n  int checkpoint_study_width = 0;\\n  int checkpoint_study_height = 0;\\n  std::string checkpoint_analytics_mode = \"topology_only\";\\n  std::uint64_t source_duration_ns = 0;\\n  int input_port_base = 0;\\n  int output_port_base = 0;\\n  int port_stride = 1;\\n  int streams = 1;\\n  int logical_stream_id = 0;\\n  int duration_s = 1;\\n  int min_objects = 0;\\n  int max_objects = 20;\\n  double deadline_ms = 100.0;\\n  std::string policy = \"static_hybrid\";\\n};\\n\\nstruct Trace {\\n  std::uint8_t stream_id = 0;\\n  std::uint32_t frame_id = 0;\\n  std::uint64_t ingress_ms = 0;\\n  std::uint64_t source_cycle = 0;\\n  std::uint64_t source_pts_ns = 0;\\n  std::string admission_id;\\n  std::string payload_sha256;\\n};\\n\\nstruct FanoutIntervalStart {\\n  std::uint64_t host_start_timestamp_ns = 0;\\n  std::uint64_t bytes = 0;\\n  std::uint32_t frame_id = 0;\\n};\\n\\nstruct NvdecIntervalStart {\\n  std::uint64_t host_start_timestamp_ns = 0;\\n  std::uint64_t bytes = 0;\\n  std::uint32_t frame_id = 0;\\n};\\n\\nstruct NativePolicyExecution {\\n  vast::CheckpointNativePolicyRequest request;\\n  vast::CheckpointNativePolicyDecision decision;\\n  vast::CheckpointNativeExecutionBinding binding;\\n  std::uint64_t path_entry_timestamp_ns = 0;\\n};\\n\\nstruct StreamState {\\n  std::uint32_t edge_frame_id = 0;\\n  std::uint32_t local_frame_id = 0;\\n  Trace current_output_trace{};\\n  bool has_output_trace = false;\\n  std::uint32_t last_input_frame_id = 0;\\n  bool has_last_input_frame = false;\\n  std::deque<Trace> traces;\\n  std::deque<Trace> aggregate_traces;\\n  std::unordered_map<std::uint64_t, Trace> local_traces_by_pts;\\n  std::unordered_map<std::uint64_t, Trace> checkpoint_deliveries_by_pts;\\n  std::unordered_map<std::uint64_t, NvdecIntervalStart> checkpoint_nvdec_starts_by_pts;\\n  std::unordered_map<std::uint64_t, std::unordered_set<std::string>> checkpoint_completed_branches_by_pts;\\n  std::unordered_map<std::string, std::unordered_map<std::uint64_t, FanoutIntervalStart>>\\n      checkpoint_fanout_starts_by_branch;\\n  std::unordered_map<std::string, std::unordered_map<std::uint64_t, NativePolicyExecution>>\\n      checkpoint_policy_executions_by_branch;\\n  std::uint64_t checkpoint_source_cycle = 0;\\n};\\n\\n// Elements disagree on the width of current-level-buffers: GstAppSrc exposes\\n// guint64 while queue elements expose guint. Read through a GValue of the\\n// declared type so a wider property can never overwrite adjacent storage.\\nbool read_current_level_buffers(GstElement* element, std::uint64_t& level) {\\n  GParamSpec* property =\\n      g_object_class_find_property(G_OBJECT_GET_CLASS(element), \"current-level-buffers\");\\n  if (property == nullptr) {\\n    return false;\\n  }\\n  if ((property->flags & G_PARAM_READABLE) == 0) {\\n    throw std::runtime_error(\"checkpoint queue level property is not readable\");\\n  }\\n  const GType type = G_PARAM_SPEC_VALUE_TYPE(property);\\n  if (type != G_TYPE_UINT && type != G_TYPE_UINT64) {\\n    throw std::runtime_error(\"checkpoint queue level property has an unsupported type\");\\n  }\\n  GValue level_value = G_VALUE_INIT;\\n  g_value_init(&level_value, type);\\n  g_object_get_property(G_OBJECT(element), \"current-level-buffers\", &level_value);\\n  level = type == G_TYPE_UINT64 ? g_value_get_uint64(&level_value)\\n                                : g_value_get_uint(&level_value);\\n  g_value_unset(&level_value);\\n  return true;\\n}\\n\\n// Transport bound for one analytics execution request; must equal the\\n// DeepStream adapter\\'s ANALYTICS_EXECUTION_TRANSPORT_TIMEOUT_NS.\\nconstexpr std::uint64_t kCheckpointAnalyticsExecutionTransportTimeoutNs = 300\\'000\\'000\\'000ULL;\\n\\n// Loaded plugin factories that identify the checkpoint decode stage. Its\\n// \"explicit_hardware_decoder\" autoplugger is a configuration label recorded in\\n// the stage config, not a GStreamer factory, so it is never resolved here.\\nstd::vector<std::pair<std::string, std::string>> checkpoint_decode_artifact_factories(\\n    const std::string& decoder_factory) {\\n  return {\\n      {\"decoder\", decoder_factory},\\n      {\"format_converter\", \"videoconvert\"},\\n  };\\n}\\n\\n// Frozen qualification-v2 policy identity injected by the runtime for one\\n// branch/resource. Returns false when no identity was injected at all; a\\n// partial or malformed identity is an error.\\nbool checkpoint_injected_policy_identity(\\n    const std::string& branch,\\n    const std::string& resource,\\n    vast::CheckpointNativeExecution…44051 tokens truncated…cal = fs::canonical(fs::path(argv0), error);\\n  if (error || !fs::is_regular_file(canonical)) {\\n    throw std::runtime_error(\"failed to resolve the loaded native-probe executable path\");\\n  }\\n  return canonical.string();\\n}\\n\\nstatic Args parse_args(int argc, char** argv) {\\n  Args args;\\n  const auto study_dimension = [](const std::string& raw) {\\n    if (raw.empty() || raw.find_first_not_of(\"0123456789\") != std::string::npos)\\n      throw std::runtime_error(\"invalid canonical study geometry\");\\n    std::size_t consumed = 0;\\n    const auto dimension = std::stoull(raw, &consumed);\\n    if (consumed != raw.size() || dimension < 2 || dimension > 8192 || dimension % 2 != 0)\\n      throw std::runtime_error(\"invalid bounded study geometry\");\\n    return static_cast<int>(dimension);\\n  };\\n  args.system = env_or(\"VAST_PROBE_SYSTEM\", \"gstreamer_custom\");\\n  args.role = env_or(\"EXPERIMENT_HOST_ROLE\", \"local\");\\n  args.stages = env_or(\"EXPERIMENT_PIPELINE_STAGES\", \"\");\\n  args.run_id = env_or(\"EXPERIMENT_RUN_ID\", \"native-probe\");\\n  args.detector = env_or(\"ADAPTER_DETECTOR\", args.system);\\n  args.backend = env_or(\"ADAPTER_BACKEND\", args.system);\\n  args.video_layout_dir = env_or(\"VIDEO_LAYOUT_DIR\", args.video_layout_dir);\\n  args.dataset_streams_json = env_or(\"DATASET_STREAMS_JSON\", \"\");\\n  args.checkpoint_branches = env_or(\"VAST_CHECKPOINT_BRANCHES\", \"\");\\n  args.checkpoint_branch = env_or(\"VAST_CHECKPOINT_BRANCH_ID\", \"\");\\n  args.dataset_id = env_or(\"VAST_CHECKPOINT_DATASET_ID\", \"\");\\n  args.source_sha256 = env_or(\"VAST_CHECKPOINT_SOURCE_SHA256\", \"\");\\n  args.checkpoint_container = env_or(\"VAST_CHECKPOINT_SOURCE_CONTAINER\", \"\");\\n  args.checkpoint_codec = env_or(\"VAST_CHECKPOINT_SOURCE_CODEC\", \"\");\\n  args.checkpoint_allowed_decoder_factories = env_or(\\n      \"VAST_CHECKPOINT_ALLOWED_DECODER_FACTORIES\",\\n      \"\");\\n  args.source_replay = env_or(\"VAST_CHECKPOINT_SOURCE_REPLAY\", \"\");\\n  args.checkpoint_analytics_mode = env_or(\\n      \"VAST_CHECKPOINT_ANALYTICS_MODE\",\\n      args.checkpoint_analytics_mode);\\n  if (!env_or(\"VAST_CHECKPOINT_SOURCE_DURATION_NS\").empty()) {\\n    args.source_duration_ns = std::stoull(env_or(\"VAST_CHECKPOINT_SOURCE_DURATION_NS\"));\\n  }\\n  if (!env_or(\"VAST_CHECKPOINT_STREAM_ID\").empty()) {\\n    args.logical_stream_id = std::stoi(env_or(\"VAST_CHECKPOINT_STREAM_ID\"));\\n  }\\n  args.policy = env_or(\"SCHEDULER_POLICY\", args.policy);\\n  if (!env_or(\"DEADLINE_MS\").empty()) {\\n    args.deadline_ms = std::stod(env_or(\"DEADLINE_MS\"));\\n  }\\n  args.output_host = env_or(\"EXPERIMENT_RTP_OUTPUT_HOST\", \"127.0.0.1\");\\n  args.output_dir = \".\";\\n  if (!env_or(\"EXPERIMENT_RTP_INPUT_PORT\").empty()) {\\n    args.input_port_base = std::stoi(env_or(\"EXPERIMENT_RTP_INPUT_PORT\"));\\n  }\\n  if (!env_or(\"EXPERIMENT_RTP_OUTPUT_PORT\").empty()) {\\n    args.output_port_base = std::stoi(env_or(\"EXPERIMENT_RTP_OUTPUT_PORT\"));\\n  }\\n  if (!env_or(\"EXPERIMENT_RTP_PORT_STRIDE\").empty()) {\\n    args.port_stride = std::max(1, std::stoi(env_or(\"EXPERIMENT_RTP_PORT_STRIDE\")));\\n  }\\n\\n  for (int i = 1; i < argc; ++i) {\\n    const std::string key = argv[i];\\n    auto value = [&](const char* flag) -> std::string {\\n      if (i + 1 >= argc) {\\n        throw std::runtime_error(std::string(\"missing value for \") + flag);\\n      }\\n      return argv[++i];\\n    };\\n    if (key == \"--system\") args.system = value(\"--system\");\\n    else if (key == \"--role\") args.role = value(\"--role\");\\n    else if (key == \"--stages\") args.stages = value(\"--stages\");\\n    else if (key == \"--run-id\") args.run_id = value(\"--run-id\");\\n    else if (key == \"--detector\") args.detector = value(\"--detector\");\\n    else if (key == \"--backend\") args.backend = value(\"--backend\");\\n    else if (key == \"--output-dir\") args.output_dir = value(\"--output-dir\");\\n    else if (key == \"--duration\") args.duration_s = std::stoi(value(\"--duration\"));\\n    else if (key == \"--streams\") args.streams = std::stoi(value(\"--streams\"));\\n    else if (key == \"--input-port-base\") args.input_port_base = std::stoi(value(\"--input-port-base\"));\\n    else if (key == \"--output-host\") args.output_host = value(\"--output-host\");\\n    else if (key == \"--output-port-base\") args.output_port_base = std::stoi(value(\"--output-port-base\"));\\n    else if (key == \"--port-stride\") args.port_stride = std::max(1, std::stoi(value(\"--port-stride\")));\\n    else if (key == \"--video-layout-dir\") args.video_layout_dir = value(\"--video-layout-dir\");\\n    else if (key == \"--dataset-streams-json\") args.dataset_streams_json = value(\"--dataset-streams-json\");\\n    else if (key == \"--checkpoint-branches\") args.checkpoint_branches = value(\"--checkpoint-branches\");\\n    else if (key == \"--checkpoint-branch\") args.checkpoint_branch = value(\"--checkpoint-branch\");\\n    else if (key == \"--dataset-id\") args.dataset_id = value(\"--dataset-id\");\\n    else if (key == \"--source-sha256\") args.source_sha256 = value(\"--source-sha256\");\\n    else if (key == \"--checkpoint-container\") args.checkpoint_container = value(\"--checkpoint-container\");\\n    else if (key == \"--checkpoint-codec\") args.checkpoint_codec = value(\"--checkpoint-codec\");\\n    else if (key == \"--checkpoint-allowed-decoder-factories\") {\\n      args.checkpoint_allowed_decoder_factories = value(\"--checkpoint-allowed-decoder-factories\");\\n    }\\n    else if (key == \"--source-duration-ns\") args.source_duration_ns = std::stoull(value(\"--source-duration-ns\"));\\n    else if (key == \"--source-replay\") args.source_replay = value(\"--source-replay\");\\n    else if (key == \"--checkpoint-study-kind\") args.checkpoint_study_kind = value(\"--checkpoint-study-kind\");\\n    else if (key == \"--checkpoint-study-width\") args.checkpoint_study_width = study_dimension(value(\"--checkpoint-study-width\"));\\n    else if (key == \"--checkpoint-study-height\") args.checkpoint_study_height = study_dimension(value(\"--checkpoint-study-height\"));\\n    else if (key == \"--checkpoint-study-accounting-path\") args.checkpoint_study_accounting_path = value(\"--checkpoint-study-accounting-path\");\\n    else if (key == \"--checkpoint-study-waits-path\") args.checkpoint_study_waits_path = value(\"--checkpoint-study-waits-path\");\\n    else if (key == \"--checkpoint-analytics-client-mode\") args.checkpoint_analytics_client_mode = value(\"--checkpoint-analytics-client-mode\");\\n    else if (key == \"--checkpoint-analytics-mode\") {\\n      args.checkpoint_analytics_mode = value(\"--checkpoint-analytics-mode\");\\n    }\\n    else if (key == \"--logical-stream-id\") args.logical_stream_id = std::stoi(value(\"--logical-stream-id\"));\\n    else if (key == \"--detect-bin\") args.detect_bin = value(\"--detect-bin\");\\n    else if (key == \"--min-objects\") args.min_objects = std::stoi(value(\"--min-objects\"));\\n    else if (key == \"--max-objects\") args.max_objects = std::stoi(value(\"--max-objects\"));\\n    else if (key == \"--deadline-ms\") args.deadline_ms = std::stod(value(\"--deadline-ms\"));\\n    else if (key == \"--policy\") args.policy = value(\"--policy\");\\n    else throw std::runtime_error(\"unknown argument: \" + key);\\n  }\\n  return args;\\n}\\n\\nint main(int argc, char** argv) {\\n  try {\\n    bool handled = false;\\n    const int reference_status = vast::study::dispatch_reference_cli(argc, argv, handled);\\n    if (handled) return reference_status;\\n    if (argc == 2 && std::string(argv[1]) == \"--help\") {\\n      std::cout\\n          << \"Usage: vast_native_gst_probe [--system NAME] [--role NAME] \"\\n             \"[--stages CSV] [--run-id ID] [runtime options]\\\\n\";\\n      return 0;\\n    }\\n    const std::string executable_path = resolve_executable_path(argv[0]);\\n    gst_init(&argc, &argv);\\n    Args args = parse_args(argc, argv);\\n    args.executable_path = executable_path;\\n    NativeProbeRuntime runtime(std::move(args));\\n    return runtime.run();\\n  } catch (const std::exception& exc) {\\n    std::cerr << \"[native-probe][fatal] \" << exc.what() << \"\\\\n\";\\n    return 2;\\n  }\\n}\\n'\n\n----------------------------------------------------------------------\nRan 48 tests in 16.378s\n\nFAILED (failures=2)\n"
+      }
+    },
+    {
+      "label": "test_run_canonical_systems_study_v1.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 50s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_run_canonical_systems_study_v1.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "40a515",
+        "wall_time_seconds": 3.805351,
+        "exit_code": 0,
+        "original_token_count": 93,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000..........\n----------------------------------------------------------------------\nRan 10 tests in 2.635s\n\nOK\n"
+      }
+    },
+    {
+      "label": "test_checkpoint_gstreamer_analytics_sidecar.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 50s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_gstreamer_analytics_sidecar.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "275421",
+        "wall_time_seconds": 6.0482938,
+        "exit_code": 0,
+        "original_token_count": 104,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000.......................................................\n----------------------------------------------------------------------\nRan 55 tests in 4.520s\n\nOK\n"
+      }
+    },
+    {
+      "label": "test_publication_guardian_operational_recorder_v1.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_publication_guardian_operational_recorder_v1.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 3500
+      },
+      "result": {
+        "chunk_id": "02decb",
+        "wall_time_seconds": 1.5531142,
+        "exit_code": 1,
+        "original_token_count": 375,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000...E........\n======================================================================\nERROR: test_idle_study_snapshot_is_prefix_of_actual_closed_pool_without_resetting_counters (test_publication_guardian_operational_recorder_v1.RecorderTests.test_idle_study_snapshot_is_prefix_of_actual_closed_pool_without_resetting_counters)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_guardian_operational_recorder_v1.py\", line 100, in test_idle_study_snapshot_is_prefix_of_actual_closed_pool_without_resetting_counters\n    before=rec.snapshot();snapshot=rec.capture_study_arm_v1(\"frozen-run\",output,deadline=time.monotonic()+5)\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/publication_guardian_operational_recorder_v1.py\", line 386, in capture_study_arm_v1\n    if event[\"type\"]==\"begin\":\n       ~~~~~^^^^^^^^\nKeyError: 'type'\n\n----------------------------------------------------------------------\nRan 12 tests in 0.272s\n\nFAILED (errors=1)\n"
+      }
+    },
+    {
+      "label": "test_publication_operational_request_domain_v1.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_publication_operational_request_domain_v1.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 3500
+      },
+      "result": {
+        "chunk_id": "d5ca62",
+        "wall_time_seconds": 1.7681821,
+        "exit_code": 1,
+        "original_token_count": 329,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000E\n======================================================================\nERROR: test_publication_operational_request_domain_v1 (unittest.loader._FailedTest.test_publication_operational_request_domain_v1)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_publication_operational_request_domain_v1\nTraceback (most recent call last):\n  File \"/usr/lib/python3.12/unittest/loader.py\", line 394, in _find_test_path\n    module = self._get_module_from_name(name)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/loader.py\", line 337, in _get_module_from_name\n    __import__(name)\n  File \"/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_operational_request_domain_v1.py\", line 22, in <module>\n    from tests.test_checkpoint_native_policy_runtime import (\nModuleNotFoundError: No module named 'tests'\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)\n"
+      }
+    },
+    {
+      "label": "test_publication_guardian_component_preprocessing_contract_v1.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_publication_guardian_component_preprocessing_contract_v1.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 3500
+      },
+      "result": {
+        "chunk_id": "914701",
+        "wall_time_seconds": 5.7064418,
+        "exit_code": 0,
+        "original_token_count": 93,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000..........\n----------------------------------------------------------------------\nRan 10 tests in 3.702s\n\nOK\n"
+      }
+    },
+    {
+      "label": "test_publication_gstreamer_component_inputs_v1.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_publication_gstreamer_component_inputs_v1.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 3500
+      },
+      "result": {
+        "chunk_id": "192433",
+        "wall_time_seconds": 4.4509287,
+        "exit_code": 0,
+        "original_token_count": 96,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000.......................\n----------------------------------------------------------------------\nRan 23 tests in 2.376s\n\nOK\n"
+      }
+    },
+    {
+      "label": "recorder-successor-green",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_publication_guardian_operational_recorder_v1.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "162118",
+        "wall_time_seconds": 1.2722551,
+        "exit_code": 0,
+        "original_token_count": 93,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000............\n----------------------------------------------------------------------\nRan 12 tests in 0.190s\n\nOK\n"
+      }
+    },
+    {
+      "label": "domain-packaged-green",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -c \"import sys,unittest;sys.path.insert(0,'/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST');s=unittest.defaultTestLoader.loadTestsFromName('tests.test_publication_operational_request_domain_v1');r=unittest.TextTestRunner(verbosity=1).run(s);sys.exit(not r.wasSuccessful())\"",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "95e51f",
+        "wall_time_seconds": 2.2587763,
+        "exit_code": 0,
+        "original_token_count": 94,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000.................\n----------------------------------------------------------------------\nRan 17 tests in 0.948s\n\nOK\n"
+      }
+    },
+    {
+      "label": "runtime-main-and-central-focused-green",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py -k gstreamer_native_runtime_selects_v2_join_contract",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "17d4a3",
+        "wall_time_seconds": 1.5273402,
+        "exit_code": 0,
+        "original_token_count": 90,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000.\n----------------------------------------------------------------------\nRan 1 test in 0.020s\n\nOK\n"
+      }
+    },
+    {
+      "label": "runtime-final-full-module",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 40s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_runtime.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 3500
+      },
+      "result": {
+        "chunk_id": "8e8df4",
+        "wall_time_seconds": 10.0031096,
+        "session_id": 75368,
+        "original_token_count": 70,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000................."
+      }
+    },
+    {
+      "label": "runtime-final-full-module-terminal",
+      "args": {
+        "session_id": 75368,
+        "chars": "",
+        "yield_time_ms": 1000,
+        "max_output_tokens": 1800
+      },
+      "result": {
+        "chunk_id": "f96c4f",
+        "wall_time_seconds": 0.0000054,
+        "exit_code": 0,
+        "original_token_count": 33,
+        "output": "...............................\n----------------------------------------------------------------------\nRan 48 tests in 16.632s\n\nOK\n"
+      }
+    },
+    {
+      "label": "final-test_run_canonical_systems_study_v1.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 50s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_run_canonical_systems_study_v1.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 2500
+      },
+      "result": {
+        "chunk_id": "06cca5",
+        "wall_time_seconds": 3.8512007,
+        "exit_code": 0,
+        "original_token_count": 93,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000..........\n----------------------------------------------------------------------\nRan 10 tests in 2.648s\n\nOK\n"
+      }
+    },
+    {
+      "label": "final-test_checkpoint_gstreamer_analytics_sidecar.py",
+      "args": {
+        "cmd": "wsl.exe --exec /usr/bin/timeout --signal=TERM --kill-after=5s 50s /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -I -B -m unittest discover -s /mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests -p test_checkpoint_gstreamer_analytics_sidecar.py",
+        "workdir": "C:/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST",
+        "max_output_tokens": 2500
+      },
+      "result": {
+        "chunk_id": "4c2214",
+        "wall_time_seconds": 6.2348784,
+        "exit_code": 0,
+        "original_token_count": 104,
+        "output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000.......................................................\n----------------------------------------------------------------------\nRan 55 tests in 4.541s\n\nOK\n"
+      }
+    }
+  ]
+}

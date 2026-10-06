@@ -1,0 +1,653 @@
+{
+  "elapsed_s": 18.625248964992352,
+  "errors": [],
+  "events": [
+    {
+      "id": "test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure",
+      "phase": "start"
+    },
+    {
+      "id": "test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure",
+      "phase": "success"
+    },
+    {
+      "id": "test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure",
+      "phase": "start"
+    },
+    {
+      "id": "test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure",
+      "phase": "success"
+    },
+    {
+      "id": "test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_dependency_closure_rejects_extraneous_symlinked_wheel",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_dependency_closure_rejects_extraneous_symlinked_wheel",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_dependency_closure_rejects_extraneous_symlinked_wheel",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_missing_extraneous_and_unrelated_module_drift_fail_as_expected",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_missing_extraneous_and_unrelated_module_drift_fail_as_expected",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_missing_extraneous_and_unrelated_module_drift_fail_as_expected",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_constant_dynamic_local_import_is_in_the_reachable_set",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_constant_dynamic_local_import_is_in_the_reachable_set",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_constant_dynamic_local_import_is_in_the_reachable_set",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_missing_and_extraneous_transitive_imports_fail_closed",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_missing_and_extraneous_transitive_imports_fail_closed",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_missing_and_extraneous_transitive_imports_fail_closed",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_missing_and_extraneous_imports_fail_closed",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_missing_and_extraneous_imports_fail_closed",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_missing_and_extraneous_imports_fail_closed",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_docker_copy_and_build_hash_use_only_the_validated_allowlist",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_docker_copy_and_build_hash_use_only_the_validated_allowlist",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_docker_copy_and_build_hash_use_only_the_validated_allowlist",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_missing_and_extraneous_python_imports_fail_closed",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_missing_and_extraneous_python_imports_fail_closed",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_missing_and_extraneous_python_imports_fail_closed",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure",
+      "phase": "start"
+    },
+    {
+      "id": "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure",
+      "phase": "success"
+    },
+    {
+      "id": "test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_closed_child_output_cap_refuses_retains_bytes_and_reaps",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_closed_child_output_cap_refuses_retains_bytes_and_reaps",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_closed_child_output_cap_refuses_retains_bytes_and_reaps",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_preparation_bootstrap_read_retains_original_endpoint",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_preparation_bootstrap_read_retains_original_endpoint",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_preparation_bootstrap_read_retains_original_endpoint",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_term_ignoring_child_is_killed_waited_and_shared_closing_clock_retained",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_term_ignoring_child_is_killed_waited_and_shared_closing_clock_retained",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_actual_term_ignoring_child_is_killed_waited_and_shared_closing_clock_retained",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_control_failure_still_closes_actual_service_thread_and_preserves_primary",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_control_failure_still_closes_actual_service_thread_and_preserves_primary",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_control_failure_still_closes_actual_service_thread_and_preserves_primary",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_incomplete_pilot_cannot_trigger_or_authorize_effects",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_incomplete_pilot_cannot_trigger_or_authorize_effects",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_incomplete_pilot_cannot_trigger_or_authorize_effects",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_isolated_executable_cli_has_study_and_missing_intake_never_runs_engine",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_isolated_executable_cli_has_study_and_missing_intake_never_runs_engine",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_isolated_executable_cli_has_study_and_missing_intake_never_runs_engine",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_expired_stamp_is_refused_before_output_or_input",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_expired_stamp_is_refused_before_output_or_input",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_expired_stamp_is_refused_before_output_or_input",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_foreign_or_partial_domain_is_refused_before_output",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_foreign_or_partial_domain_is_refused_before_output",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_foreign_or_partial_domain_is_refused_before_output",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_invalid_stamp_and_study_parent_are_refused",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_invalid_stamp_and_study_parent_are_refused",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_preparation_invalid_stamp_and_study_parent_are_refused",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_runtime_main_translates_branch_once_to_canonical_receipt_mode",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_runtime_main_translates_branch_once_to_canonical_receipt_mode",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_original_runtime_main_translates_branch_once_to_canonical_receipt_mode",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_real_partial_file_reads_keep_hash_deadline_and_reject_named_drift",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_real_partial_file_reads_keep_hash_deadline_and_reject_named_drift",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_real_partial_file_reads_keep_hash_deadline_and_reject_named_drift",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_single_study_cli_hands_off_actual_exclusive_descriptor_and_no_run_after_failure",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_single_study_cli_hands_off_actual_exclusive_descriptor_and_no_run_after_failure",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_single_study_cli_hands_off_actual_exclusive_descriptor_and_no_run_after_failure",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_source_inventory_binary_clock_proof_and_cid_outside_empty_arm",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_source_inventory_binary_clock_proof_and_cid_outside_empty_arm",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_source_inventory_binary_clock_proof_and_cid_outside_empty_arm",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_stderr_collision_closes_first_acquired_stream_without_child_or_overwrite",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_stderr_collision_closes_first_acquired_stream_without_child_or_overwrite",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_stderr_collision_closes_first_acquired_stream_without_child_or_overwrite",
+      "phase": "terminal"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_study_cli_propagates_original_preparation_stamp_without_new_start",
+      "phase": "start"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_study_cli_propagates_original_preparation_stamp_without_new_start",
+      "phase": "success"
+    },
+    {
+      "id": "test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_study_cli_propagates_original_preparation_stamp_without_new_start",
+      "phase": "terminal"
+    }
+  ],
+  "failures": [],
+  "fd_after": 6,
+  "fd_before": 6,
+  "held_files_released": 16,
+  "modules": [
+    "test_publication_runtime_source_closure_guardian_v1",
+    "test_checkpoint_deepstream_runtime_source_closure_v3",
+    "test_checkpoint_savant_runtime_source_closure_v3",
+    "test_checkpoint_openvino_gva_runtime_source_closure_v3",
+    "test_checkpoint_gstreamer_custom_runtime_source_closure_v3",
+    "test_run_canonical_systems_study_v1"
+  ],
+  "observed_parent": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "pgid": 63395,
+    "pid": 63395,
+    "ppid": 63388,
+    "sid": 63395,
+    "start_ticks": 66406550,
+    "time_namespace": "time:[4026531834]",
+    "uid": 1000
+  },
+  "owner": {
+    "boot_id": "dde50e69-39bf-45bd-bdb7-bc33c9adcb0b",
+    "pgid": 63395,
+    "pid": 63396,
+    "ppid": 63395,
+    "sid": 63395,
+    "start_ticks": 66406553,
+    "time_namespace": "time:[4026531834]",
+    "uid": 1000
+  },
+  "phase": "GREEN final strict closure and full driver software modules",
+  "skips": [],
+  "source_pins": [
+    {
+      "epoch": [
+        68,
+        844424931865728,
+        33279,
+        1,
+        182578,
+        1791181127039136200,
+        1791181127039136200
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_gstreamer_runtime.py",
+      "sha256": "ca7138c19b52810075ecc5e5c600ef9d0aaf1500f38564b9a9b5797f23f261ee",
+      "size_bytes": 182578
+    },
+    {
+      "epoch": [
+        68,
+        844424931865785,
+        33279,
+        1,
+        36327,
+        1791178338024983200,
+        1791178338024983200
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/checkpoint_runtime_plan.py",
+      "sha256": "a9bcd4ae99c229e5fecb94cec3b3668f16ec8527bfa6167f8574b50967bf1963",
+      "size_bytes": 36327
+    },
+    {
+      "epoch": [
+        68,
+        6755399442565723,
+        33279,
+        1,
+        81992,
+        1791181127040843400,
+        1791181127040843400
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py",
+      "sha256": "3a74f77646b48eb0bbe60ccfb3803f5936ed720d844bebdadd6387e245e452b0",
+      "size_bytes": 81992
+    },
+    {
+      "epoch": [
+        68,
+        22517998138414661,
+        33279,
+        1,
+        10775,
+        1791173172206660100,
+        1791173172206660100
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/canonical_systems_study_plan_v1.py",
+      "sha256": "68ce41d00fbb974ffa582446541ac4ee8ac3a1b0195c9b840b14e6524f14ee67",
+      "size_bytes": 10775
+    },
+    {
+      "epoch": [
+        68,
+        1407374885285988,
+        33279,
+        1,
+        7826,
+        1791181665338736300,
+        1791181665338736300
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/Dockerfile.runtime",
+      "sha256": "305f7e9608583c1d3aae34928cf4a0b9911019f8a7338ea36a5905c6123aa370",
+      "size_bytes": 7826
+    },
+    {
+      "epoch": [
+        68,
+        1407374885285993,
+        33279,
+        1,
+        3878,
+        1791181665339740800,
+        1791181665339740800
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+      "sha256": "f684e54842dc28a6903fab852d1d63364a2d49cdcf95e10c049ceaf7e0d2eca6",
+      "size_bytes": 3878
+    },
+    {
+      "epoch": [
+        68,
+        1688849861996750,
+        33279,
+        1,
+        8002,
+        1791181177407892300,
+        1791181177407892300
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/Dockerfile",
+      "sha256": "bd33b6e07a7de39cda07384ce75904a5399c1610065f32b71b03d2308af2fa6d",
+      "size_bytes": 8002
+    },
+    {
+      "epoch": [
+        68,
+        1688849861996752,
+        33279,
+        1,
+        3884,
+        1791181349440438700,
+        1791181349440438700
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/savant/publication/runtime-source-allowlist.txt",
+      "sha256": "64514aaf2154e3ee2062a0f1f1d8c65f74fb343baba0b69035be37125d1d438c",
+      "size_bytes": 3884
+    },
+    {
+      "epoch": [
+        68,
+        1407374885286078,
+        33279,
+        1,
+        8397,
+        1791181361801448100,
+        1791181361801448100
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/Dockerfile",
+      "sha256": "75ae66525ad45ddc405214217973c252ceadf7a09be9e615724ff8be3b45ace3",
+      "size_bytes": 8397
+    },
+    {
+      "epoch": [
+        68,
+        1407374885286080,
+        33279,
+        1,
+        3555,
+        1791181361801448100,
+        1791181361801448100
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+      "sha256": "10cacd4cb55b03dcdb8fb4acaa395372fdceee802636fe265981871ae3cde657",
+      "size_bytes": 3555
+    },
+    {
+      "epoch": [
+        68,
+        1407374885287696,
+        33279,
+        1,
+        4305,
+        1791167321000162700,
+        1791167321000162700
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py",
+      "sha256": "36651ad58a8776b372a352b09c29f10ef45a1ac9de2f0983c9f71f431d2048a3",
+      "size_bytes": 4305
+    },
+    {
+      "epoch": [
+        68,
+        844424931866122,
+        33279,
+        1,
+        8575,
+        1791167320939387400,
+        1791167320939387400
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_deepstream_runtime_source_closure_v3.py",
+      "sha256": "2b74544af58b0876554e3573b3e80069e30f2974923a6d36aabd3a590162174f",
+      "size_bytes": 8575
+    },
+    {
+      "epoch": [
+        68,
+        1407374885287523,
+        33279,
+        1,
+        10062,
+        1791167320957391400,
+        1791167320957391400
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py",
+      "sha256": "9e53f57c6f83839be66363813e2de6f1a8b7ed74530832a77f4ef9d2f70afd4c",
+      "size_bytes": 10062
+    },
+    {
+      "epoch": [
+        68,
+        1407374885287486,
+        33279,
+        1,
+        2853,
+        1791167320949391600,
+        1791167320949391600
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_openvino_gva_runtime_source_closure_v3.py",
+      "sha256": "bdaa1b1b834da822ecff99190081f8e2f4d49012517f7aa7c2f4d5f04533d26c",
+      "size_bytes": 2853
+    },
+    {
+      "epoch": [
+        68,
+        844424931866140,
+        33279,
+        1,
+        4976,
+        1791167320943387800,
+        1791167320943387800
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_checkpoint_gstreamer_custom_runtime_source_closure_v3.py",
+      "sha256": "86ba49ca165d9c2fce1c699bc3e87845aa8cbac8bc73103d8d4006e29dc2ef8d",
+      "size_bytes": 4976
+    },
+    {
+      "epoch": [
+        68,
+        20829148278164158,
+        33279,
+        1,
+        15900,
+        1791181127041847300,
+        1791181127041847300
+      ],
+      "path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py",
+      "sha256": "8a4aad8b22ff5ed4e4fcdcf0c3aa37c1055ef1b71e5e0fa4c91a58cef6894f4b",
+      "size_bytes": 15900
+    }
+  ],
+  "source_stable": true,
+  "successful": true,
+  "tests_run": 32
+}

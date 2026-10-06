@@ -170,7 +170,8 @@ vast::CheckpointAnalyticsExecutionRequest request(
   value.decision.emitter_id = "gstreamer-damage-gpu-emitter-v1";
   value.decision.emitter_sha256 =
       "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
-  value.deadline_monotonic_ns = 9999999999;
+  value.deadline_monotonic_ns =
+      vast::CheckpointIoDeadline::monotonic_now_ns() + 5'000'000'000ULL;
   value.format = "BGR";
   value.width = 1;
   value.height = 1;
