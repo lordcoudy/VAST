@@ -10,6 +10,8 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 sys.path.insert(0, str(ROOT / 'tests'))
 
 from checkpoint_deepstream_protocol_bridge import DeepStreamProtocolBridge, DeepStreamProtocolBridgeError
+import non_decreasing_wall_clock_v1 as wall_clock
+from non_decreasing_wall_clock_v1 import NonDecreasingWallClock
 from test_checkpoint_deepstream_protocol_bridge import (
     FakePolicyExchange, admission, endpoints, nvds_identity, tensor,
 )
@@ -34,8 +36,8 @@ class DeepStreamServiceClockTests(unittest.TestCase):
         bridge.observe_preprocessed_frame(identity, tensor_spec=spec, observed_timestamp_ms=1002)
         # Wall-clock observations are 2000 ms, 2001 ms, then an adjusted value.
         # The native worker fixture reports 0.8 ms inference and 1 ms total work.
-        with mock.patch('checkpoint_deepstream_protocol_bridge.time.time_ns',
-                        side_effect=[2_000_000_000, 2_001_000_000, wall_terminal_ns]), \
+        raw_wall_ns = iter([2_000_000_000, 2_001_000_000, wall_terminal_ns]).__next__
+        with mock.patch.object(wall_clock, '_PROCESS_CLOCK', NonDecreasingWallClock(raw_ns=raw_wall_ns)), \
              mock.patch('checkpoint_deepstream_protocol_bridge.time.monotonic_ns',
                         side_effect=[10_000_000, 10_000_000 + elapsed_ns]):
             return bridge.execute_branch(

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import csv
 import hashlib
+import io
 import json
 import os
 import struct
@@ -36,6 +38,9 @@ from checkpoint_deepstream_sdk_runtime import (  # noqa: E402
     read_admission_transport_frame,
     write_deepstream_stage_contracts,
 )
+from checkpoint_deepstream_resource_runtime_v3 import DeepStreamNativeResourceRecorderV3  # noqa: E402
+import non_decreasing_wall_clock_v1 as wall_clock  # noqa: E402
+from non_decreasing_wall_clock_v1 import ClockStepError, NonDecreasingWallClock  # noqa: E402
 
 
 def _transport_frame(
@@ -855,9 +860,10 @@ class DeepStreamFdAndQueueTests(unittest.TestCase):
         pipeline.Gst = _Gst
         pipeline.appsrc = _AppSrc()
         pipeline.source_duration_ns = 54_600_000_000
-        with mock.patch(
-            "checkpoint_deepstream_sdk_runtime.time.time_ns",
-            side_effect=[1_000_001, 2_000_000],
+        with mock.patch.object(
+            wall_clock,
+            "_PROCESS_CLOCK",
+            NonDecreasingWallClock(raw_ns=iter([1_000_001, 2_000_000]).__next__),
         ):
             pipeline.push(frame)
 
@@ -908,6 +914,190 @@ class DeepStreamFdAndQueueTests(unittest.TestCase):
         finally:
             timer.cancel()
             timer.join()
+
+
+WALL_BASE_NS = 1_790_000_000_000_000_000
+
+
+def step_back_host_wall_clock(test_case: unittest.TestCase, values: list[int]) -> None:
+    """Replay raw CLOCK_REALTIME ``values`` (then +1 ms per read) for both the
+    raw host clock and the shared per-process non-decreasing wrapper."""
+
+    pending = list(values)
+    current = [values[-1]]
+
+    def raw_ns() -> int:
+        current[0] = pending.pop(0) if pending else current[0] + 1_000_000
+        return current[0]
+
+    test_case.enterContext(mock.patch("time.time_ns", raw_ns))
+    test_case.enterContext(mock.patch.object(
+        wall_clock, "_PROCESS_CLOCK", NonDecreasingWallClock(raw_ns=raw_ns)
+    ))
+
+
+class DeepStreamHostWallClockStepTests(unittest.TestCase):
+    def _frame(self) -> AdmissionTransportFrame:
+        return AdmissionTransportFrame(
+            sequence=1, keyframe=True, source_cycle=0, access_unit_pts_ns=0,
+            transport_pts_ns=42, access_unit_dts_ns=MISSING_TIMESTAMP, duration_ns=1,
+            admission_id="run:0:admission:1", input_frame_key="dataset:0:" + "a" * 64 + ":0:0",
+            payload_sha256=hashlib.sha256(b"au").hexdigest(), payload=b"au",
+        )
+
+    def _pipeline(self, topology_kind: str, branches: tuple[str, ...], output: Path):
+        pipeline = object.__new__(DeepStreamSdkPipeline)
+        pipeline.graph = DeepStreamGraphSpec.build(
+            topology_kind=topology_kind, codec="h264", stream_id=0, branches=branches,
+        )
+        pipeline._pending_lock = threading.RLock()
+        pipeline._pending = {}
+        pipeline._seen_transport_pts = set()
+        pipeline.raise_callback_error = lambda: None
+        pipeline.errors = []
+        pipeline._record_error = pipeline.errors.append
+        pipeline.meta_bridge = mock.Mock()
+        pipeline._metadata_values = lambda _pending, _buffer: {}
+        pipeline.resource_recorder = DeepStreamNativeResourceRecorderV3(
+            output_dir=output, run_id="run", worker_id="worker", stream_id=0,
+            topology_kind=topology_kind, branches=branches, decoder_gpu_index=0,
+        )
+        self.addCleanup(pipeline.resource_recorder.close)
+        return pipeline
+
+    @staticmethod
+    def _intervals(output: Path) -> list[dict[str, str]]:
+        with (output / "resource_intervals.runtime.csv").open(encoding="utf-8", newline="") as handle:
+            return list(csv.DictReader(handle))
+
+    def test_nvdec_interval_survives_two_millisecond_host_clock_step_back(self) -> None:
+        frame = self._frame()
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)
+            pipeline = self._pipeline("independent_processes", ("damage",), output)
+
+            class _Buffer:
+                pts = dts = duration = None
+                fill = staticmethod(lambda _offset, payload: len(payload))
+                unset_flags = staticmethod(lambda _flags: None)
+
+            class _Gst:
+                CLOCK_TIME_NONE = (1 << 64) - 1
+                Buffer = SimpleNamespace(new_allocate=lambda *_args: _Buffer())
+                BufferFlags = SimpleNamespace(DELTA_UNIT=object())
+                FlowReturn = SimpleNamespace(OK="flow-ok")
+                PadProbeReturn = SimpleNamespace(OK="probe-ok", DROP="probe-drop")
+
+            pipeline.Gst = _Gst
+            pipeline.appsrc = SimpleNamespace(emit=lambda _signal, _buffer: "flow-ok")
+            pipeline.source_duration_ns = 54_600_000_000
+            pipeline.callbacks = SimpleNamespace(
+                admit_transport_frame=lambda _frame, **_values: None,
+                observe_decoded_frame=lambda _identity, **_values: None,
+            )
+            pipeline.decoded_seen = threading.Event()
+            step_back_host_wall_clock(
+                self, [WALL_BASE_NS, WALL_BASE_NS + 1_000, WALL_BASE_NS + 1_000 - 2_000_000]
+            )
+            pipeline.push(frame)
+            pending = pipeline._pending[frame.transport_pts_ns]
+            pipeline._pending_for_buffer = lambda _buffer, *, stage: pending
+            pipeline._native_identity = lambda *_args, **_values: {"frame_id": 0}
+            info = SimpleNamespace(get_buffer=lambda: SimpleNamespace(pts=7))
+            self.assertEqual(pipeline._on_mux_buffer(None, info), "probe-ok", pipeline.errors)
+            pipeline.resource_recorder.close()
+            self.assertEqual(pipeline.errors, [])
+            [row] = self._intervals(output)
+            self.assertEqual(
+                (int(row["host_start_timestamp_ns"]), int(row["host_end_timestamp_ns"])),
+                (WALL_BASE_NS + 1_000, WALL_BASE_NS + 1_001),
+            )
+            self.assertEqual(wall_clock.process_wall_clock().max_clamp_ns(), 2_000_001)
+
+    def test_shared_fanout_interval_survives_two_millisecond_host_clock_step_back(self) -> None:
+        frame = self._frame()
+        branches = ("plate_number", "vehicle_type", "damage", "foreign_object")
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)
+            pipeline = self._pipeline("shared_video_dag", branches, output)
+            pending = _PendingFrame(
+                frame=frame, identity_sha256=admission_identity_sha256(frame),
+                identity={"input_frame_key": frame.input_frame_key, "transport_pts_ns": 42},
+                preprocessed=True,
+            )
+            pipeline._pending_for_buffer = lambda _buffer, *, stage: pending
+            pipeline._queues = {branch: mock.Mock() for branch in branches}
+            pipeline.Gst = SimpleNamespace(FlowReturn=SimpleNamespace(OK="flow-ok", ERROR="flow-error"))
+            serialized: list[int] = []
+
+            def observe_fanout(_identity, *, branch: str, observed_timestamp_ms: int) -> int:
+                serialized.append(observed_timestamp_ms)
+                return observed_timestamp_ms
+
+            pipeline.callbacks = SimpleNamespace(observe_fanout=observe_fanout)
+            sample = SimpleNamespace(get_buffer=lambda: SimpleNamespace(get_size=lambda: 4096))
+            sink = SimpleNamespace(emit=lambda _signal: sample)
+            step_back_host_wall_clock(self, [WALL_BASE_NS, WALL_BASE_NS - 2_000_000])
+            with mock.patch(
+                "checkpoint_deepstream_sdk_runtime.time.thread_time_ns",
+                side_effect=[1_000, 2_000],
+            ):
+                self.assertEqual(pipeline._on_new_sample(sink, "damage"), "flow-ok", pipeline.errors)
+            pipeline.resource_recorder.close()
+            self.assertEqual(pipeline.errors, [])
+            self.assertEqual(serialized, [WALL_BASE_NS // 1_000_000 + 1])
+            [row] = self._intervals(output)
+            self.assertEqual(
+                (int(row["host_start_timestamp_ns"]), int(row["host_end_timestamp_ns"])),
+                (WALL_BASE_NS, WALL_BASE_NS + 1),
+            )
+            self.assertEqual(wall_clock.process_wall_clock().max_clamp_ns(), 2_000_001)
+
+    def test_lifecycle_and_callback_wall_stamps_use_the_shared_process_clock(self) -> None:
+        step_back_host_wall_clock(self, [WALL_BASE_NS, WALL_BASE_NS - 2_000_000])
+        self.assertEqual(
+            [sdk_runtime._now_ms(), sdk_runtime._now_ms()],
+            [WALL_BASE_NS // 1_000_000, WALL_BASE_NS // 1_000_000],
+        )
+        self.assertEqual(wall_clock.process_wall_clock().max_clamp_ns(), 2_000_001)
+        statuses: list[bytes] = []
+        with mock.patch.object(sdk_runtime, "_write_exact", lambda _fd, payload, _label: statuses.append(payload)):
+            LifecycleChannel(worker_id="worker", control_fd=0, status_fd=1).started()
+        self.assertEqual(statuses, [f"1 STARTED worker {WALL_BASE_NS // 1_000_000}\n".encode("ascii")])
+
+    def test_main_writes_one_wall_clock_line_on_every_controlled_exit(self) -> None:
+        argv = [
+            "run", "--codec", "h264", "--topology-kind", "independent_processes",
+            "--stream-id", "0", "--branches", "damage", "--arm-id", "arm-wall-clock-exit",
+            "--output-dir", "/tmp/deepstream-wall-clock-exit", "--callback-factory", "fixture:create",
+        ]
+        line = "[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001"
+        for label, effect, expected in (
+            ("normal", None, 0),
+            ("blocked", DeepStreamSdkRuntimeError("blocked fixture"), 2),
+            ("clock step", ClockStepError("host wall clock stepped back beyond the bounded clamp"), ClockStepError),
+        ):
+            with self.subTest(label=label):
+                clock = NonDecreasingWallClock(raw_ns=iter([WALL_BASE_NS, WALL_BASE_NS - 2_000_000]).__next__)
+                clock.now_ns(), clock.now_ns()
+                stderr = io.StringIO()
+                with mock.patch.object(wall_clock, "_PROCESS_CLOCK", clock), \
+                        mock.patch.object(sdk_runtime, "run_fd_worker", side_effect=effect), \
+                        mock.patch("sys.stderr", stderr):
+                    if expected is ClockStepError:
+                        with self.assertRaises(ClockStepError):
+                            sdk_runtime.main(argv)
+                    else:
+                        self.assertEqual(sdk_runtime.main(argv), expected)
+                lines = stderr.getvalue().splitlines()
+                self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+                self.assertEqual(lines[-1], line)
+
+    def test_host_clock_step_back_beyond_ten_milliseconds_fails_closed(self) -> None:
+        step_back_host_wall_clock(self, [WALL_BASE_NS, WALL_BASE_NS - 11_000_000])
+        sdk_runtime._now_ms()
+        with self.assertRaises(ClockStepError):
+            sdk_runtime._now_ms()
 
 
 if __name__ == "__main__":
