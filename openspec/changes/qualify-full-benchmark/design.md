@@ -7,7 +7,7 @@
 - **EPIPE.** J в PR5 доказан как шаг CLOCK_REALTIME назад примерно на 2 ms внутри процесса probe. CPU07 имеет ту же сигнатуру: native exit 1, затем sidecar EPIPE при `response_send`, но stderr не сохранён. Native probe теперь использует `NonDecreasingWallClock`. Python-рантаймы сохраняют сырой `time.time_ns()` при проверках порядка и ширины:
   - DeepStream: `checkpoint_deepstream_sdk_runtime.py` (fanout и NVDEC интервалы, проверки в `checkpoint_deepstream_resource_runtime_v3.py:185,232`) и `checkpoint_deepstream_protocol_bridge.py` (callback и admission, decision);
   - guardian recorder: `publication_guardian_operational_recorder_v1.py` (`at_ns`, проверка `terminal.at_ns >= begin.at_ns` в `publication_operational_request_reconciliation_v1.py:451`);
-  - Savant runtime уже защищён точечными `max()`.
+  - Savant runtime защищён лишь частично: точечные `max()` стоят на :445 и :554, но serialized fanout ms берётся из сырого `fanout_completed_ns` (:478), а `canonical_fanout_interval_end_ns` при откате может выдать «moved backwards».
 - **Транспорт.** Legacy-прогоны используют только `global-client`; `branch-channel` доступен лишь в finite study и от гонки часов не защищает.
 - **Owner 37 операций.** Есть stock planning (`publication_operational_stock_operations_v1.py --mode complete_qualification_operational_identity_v1`), capture plan, recorder и cold-closure с проверкой «ровно 37/32» (`publication_policy_qualification_execution_closure_v1.py`). Нет host owner, который открывает `capture_original_engine_processes_v1` для каждой операции; нет обёртки `runtime_registry` для 32 cells в pilot executor; нет stock-писателя `vast_original_operational_execution_binding_v1` (он есть только в тесте); prechecks и Savant в цепочке g запускались неотслеживаемыми ad hoc скриптами.
 - **R13/S6.** Прямых negative kind-тестов для full consumers нет. `publication_policy_qualification_runtime_inputs_v2` (`mkdir` на :1668, :2657) и `publication_q4_authority_plan_pipeline_v1` (:855), вероятно, создают каталоги раньше отказа.
@@ -31,10 +31,14 @@
 
 ## Decisions
 
-1. **Общий Python-модуль `scripts/non_decreasing_wall_clock_v1.py`.** Семантика как в C++ `NonDecreasingWallClock`: `max(last+1, raw)`, `ClockStepError` при шаге назад больше 10 ms, потокобезопасно, `max_clamp_ns()`. Подключается через существующие clock-параметры (`clock_ns`, `clock_ms`) как значение по умолчанию: тесты по-прежнему подставляют свои часы. `max_clamp_ns` пишется в существующую evidence процесса.
+1. **Общий Python-модуль `scripts/non_decreasing_wall_clock_v1.py`.** Семантика как в C++ `NonDecreasingWallClock`: `max(last+1, raw)`, `ClockStepError` при шаге назад больше 10 ms, потокобезопасно, `max_clamp_ns()`.
+   - **Seam.** Класс `NonDecreasingWallClock(raw_ns=time.time_ns)` оборачивает именно сырой источник; процессный экземпляр отдаёт `wall_time_ns()`.
+   - **Подключение.** В DeepStream SDK runtime и Savant runtime встроенные `time.time_ns()` для упорядоченных полей заменяются вызовом процессного экземпляра (новый тестовый seam — подстановка raw-источника). В DeepStream bridge и guardian recorder значение по умолчанию у `clock_ms`/`clock_ns` берётся от процессного экземпляра. Тесты RED→GREEN подставляют откатывающийся raw-источник в обёртку, а не готовые метки, иначе обёртка обходится.
+   - **Evidence.** `max_clamp_ns` пишется в существующую persisted evidence Python-процесса. Для native процессов значение из stderr попадает в evidence через owner-retained stderr capture (задача 2.6 проверяет оба пути).
+   - **Упаковка.** Модуль добавляется в Dockerfile и source allowlist тех runtime-образов, которые исполняют затронутые скрипты (по фактическим allowlist), и в execution code closure.
    - Почему: минимальное изменение, одинаковая семантика в native и Python. Проверки остаются строгими, а не допускают нулевую ширину.
    - Отклонено: ослабить предикаты (нарушает спеку), monotonic вместо wall (меняет сохраняемые форматы).
-   - Static gate в CI запрещает прямые `time.time_ns()` и `time.time()` для упорядоченных полей в перечисленных файлах.
+   - Static gate в CI запрещает прямые `time.time_ns()` и `time.time()` для упорядоченных полей в перечисленных файлах и проверяет, что каждый native Dockerfile, собирающий probe, копирует `checkpoint_admission_transport.hpp`.
 2. **Stock owner 37 операций `scripts/publication_qualification_operational_owner_v1.py`.** Тонкий слой над существующими компонентами:
    - читает stock plan и capture plan;
    - для каждой операции открывает `capture_original_engine_processes_v1`;
@@ -53,15 +57,19 @@
    - Запуск — независимым Windows-процессом (`Start-Process wsl.exe`), как в PR5.
    - Любой отказ означает FAILED Q1 с сохранением evidence. Новая попытка требует reviewed amendment и явного решения человека. Частичные cells не переиспользуются.
    - Перед стартом оператор подтверждает: сон Windows отключён, Windows Update отложен, Docker Desktop UI и extensions не трогаются. Это пункт runbook, не код.
+   - Q1 исполняется на одном зафиксированном commit (записывается в receipts). «Source» для фиксации — файлы образных allowlist и execution code closure. Перепривязка пинов меняет только тесты и host-константы вне этих файлов, что доказывается сравнением closure hashes до и после.
+   - Container terminal events и первый snapshot маршрута (существующее поведение PR2, задача 23.2 архива `2026-10-03-fix-benchmark-preparations-spec`) проверяются в evidence Q1.
+   - **Исход MR при FAILED Q1.** В MR фиксируется FAILED с evidence, пользователю задаётся вопрос. Варианты: (а) reviewed amendment и новая попытка в том же MR; (б) archive и merge уже проверенного кода с честным статусом qualification = failed — только по явному решению пользователя.
 7. **Roadmap.** Этапы 2 (Q4, sizing, capacity) и 3 (service, full matrix, `verify/finalize/export`) — отдельные будущие change. Их предпосылки фиксируются в PLAN:
-   - для этапа 2 — датированная гарантия ёмкости Seafile от пользователя;
+   - для этапа 2 — датированная гарантия ёмкости Seafile от пользователя нужна для приёмки этапа 2 (capacity attestation), а не для старта Q4: требование «Cloud admission uses an actual dated guarantee» не блокирует Q4;
    - для этапа 3 — работающий `systemctl --user` в WSL (WSLg overlay) и место на C:.
 
 ## Risks / Trade-offs
 
 - **[Неизвестная причина A269 memfd]** → PR2 diagnostic сохраняет первый отказ; при повторе — FAILED и amendment, без повторного запуска наугад.
 - **[Внешняя остановка Docker (g)]** → операторский запрет в runbook плюс сохранение container terminal events; код от этого не защищает.
-- **[Шаг часов больше 10 ms]** → fail closed с явной ошибкой; host clock (chrony/WSL) вне объёма.
+- **[Шаг часов больше 10 ms]** → fail closed с явной ошибкой. Это новый single-shot риск в Python-рантаймах (например, после resume WSL или makestep chrony), принимаемый осознанно: молча принимать неверный порядок хуже. Host clock вне объёма; наблюдаемые в PR5 шаги около 2 ms.
+- **[Одна попытка при неустановленной причине A269 memfd]** → риск принимается явно; диагностика PR2 сохраняет первый отказ.
 - **[Межпроцессные сравнения часов]** (`arrival_ms`, admission и `source_read`) → остаточный риск, уже задокументирован (≥5,7 ms и p1 = 3 ms запаса), предикаты не меняются.
 - **[Длительные сборки и parity, место на C:]** → сборки идут на ext4 (750 GB свободно), C: контролируется перед стартом; при нехватке — остановка и решение пользователя об очистке cache.
 - **[Объём change]** → большой, но связный: всё необходимо для одного принятого результата. Q4 и full run вынесены, чтобы MR не жил месяцами.
