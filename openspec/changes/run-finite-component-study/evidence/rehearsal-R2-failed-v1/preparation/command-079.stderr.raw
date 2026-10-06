@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py", line 27, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py", line 23, in main
+    return run_checkpoint_runtime(("--system", "gstreamer_custom", *values))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py", line 3253, in main
+    run_finite_study_source_gate_v1(study_plan=json.loads(args.finite_study_plan.read_bytes()), project_root=project_root,
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py", line 3027, in run_finite_study_source_gate_v1
+    child.wait(timeout=max(0,min(deadline_ns/1e9,start/1e9+220.0)-time.monotonic()))
+  File "/usr/lib/python3.12/subprocess.py", line 1264, in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 2045, in _wait
+    raise TimeoutExpired(self.args, timeout)
+subprocess.TimeoutExpired: Command '('/usr/local/bin/vast_checkpoint_source', '--source-path', '/home/s-a-balashov/vf8884f4fR/s/front_gate.derived.mp4', '--dataset-id', 'finite-kpp-original-442-v1', '--source-sha256', 'adf3cb4d5ebc87ab93541a1a79e46fed606898c93e5522f34c9f5200cd51d512', '--checkpoint-container', 'mp4', '--checkpoint-codec', 'h264', '--source-duration-ns', '220999999995', '--playback-timestamp-scale', '15', '--source-replay', 'finite', '--logical-stream-id', '0', '--checkpoint-study-kind', 'finite-component-study', '--checkpoint-study-accounting-path', '/home/s-a-balashov/vf8884f4fR/s/offered-prefix-stop/accounting/source-0.jsonl', '--checkpoint-study-width', '1920', '--checkpoint-study-height', '1080')' timed out after 9.980700709973462 seconds
