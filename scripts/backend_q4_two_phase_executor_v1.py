@@ -6206,10 +6206,10 @@ def execute_backend_q4_two_phase_v1(
                 _fault_hook=_fault_hook,
             )
     _active_physical_custody_v1(root)
-    work = _ensure_directory(root, work_dir, label="Q4 work directory")
     source_path, source_registry, source_descriptor = _validate_source_registry(
         root, source_registry_path
     )
+    work = _ensure_directory(root, work_dir, label="Q4 work directory")
     resolved_identity_inputs = (
         _default_identity_inputs_from_source_registry_v1(
             root=root,
