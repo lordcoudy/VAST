@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py", line 27, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_custom_container_coordinator_v3.py", line 23, in main
+    return run_checkpoint_runtime(("--system", "gstreamer_custom", *values))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py", line 3280, in main
+    run_finite_study_arm_v1(study_plan=_load_yaml(args.finite_study_plan), arm_id=args.finite_study_arm,
+  File "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py", line 3147, in run_finite_study_arm_v1
+    admission_lock = threading.Lock()
+                     ^^^^^^^^^
+NameError: name 'threading' is not defined. Did you forget to import 'threading'?
