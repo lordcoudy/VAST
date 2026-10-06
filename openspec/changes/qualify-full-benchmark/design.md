@@ -34,7 +34,7 @@
 1. **Общий Python-модуль `scripts/non_decreasing_wall_clock_v1.py`.** Семантика как в C++ `NonDecreasingWallClock`: `max(last+1, raw)`, `ClockStepError` при шаге назад больше 10 ms, потокобезопасно, `max_clamp_ns()`.
    - **Seam.** Класс `NonDecreasingWallClock(raw_ns=time.time_ns)` оборачивает именно сырой источник; процессный экземпляр отдаёт `wall_time_ns()`.
    - **Подключение.** В DeepStream SDK runtime и Savant runtime встроенные `time.time_ns()` для упорядоченных полей заменяются вызовом процессного экземпляра (новый тестовый seam — подстановка raw-источника). В DeepStream bridge и guardian recorder значение по умолчанию у `clock_ms`/`clock_ns` берётся от процессного экземпляра. Тесты RED→GREEN подставляют откатывающийся raw-источник в обёртку, а не готовые метки, иначе обёртка обходится.
-   - **Evidence.** `max_clamp_ns` пишется в существующую persisted evidence Python-процесса. Для native процессов значение из stderr попадает в evidence через owner-retained stderr capture (задача 2.6 проверяет оба пути).
+   - **Evidence.** Заменено Amendment 1: persisted поле только в guardian operational group; native и SDK процессы выводят clamp в stderr на всех контролируемых путях выхода.
    - **Упаковка.** Модуль добавляется в Dockerfile и source allowlist тех runtime-образов, которые исполняют затронутые скрипты (по фактическим allowlist), и в execution code closure.
    - Почему: минимальное изменение, одинаковая семантика в native и Python. Проверки остаются строгими, а не допускают нулевую ширину.
    - Отклонено: ослабить предикаты (нарушает спеку), monotonic вместо wall (меняет сохраняемые форматы).
@@ -76,6 +76,13 @@
   - `full_publication_supervisor` создаёт state и lock до проверки;
   - `full_publication_wsl_user_service_v1 materialize` не проверяет kind;
   - Q4 executor проверяет phase receipts только перед Phase B.
+
+- **Уточнения по ревью amendment 1:**
+  - (N1) строка clamp выводится и при выходе по исключению или с ненулевым кодом. Процесс, убитый owner (`_terminate_processes`), строку не выведет — остаточный риск.
+  - (N2) Q4 preflight проверяет только kind переданных путей, независимо от адаптера и без инжектируемого `production_receipt_loader`.
+  - (N3) checkpoint pilot executor — собственный resume-state, а не authority, поэтому вне 3.3. Строки раздела B с пометками «соответствует» и «не применимо» тоже вне 3.3.
+  - (N4) supervisor и WSL `materialize` вызывают существующий валидатор identity (`full_publication_identity_artifacts.py`), а не копию проверки.
+  - (N5) поле `max_clamp_ns` добавлено без смены `schema_version: 1` — осознанно. Отсутствие поля в исторической группе означает «не наблюдалось» и не отображается как clamp 0.
 
   Чтобы MODIFIED R13/S6 после archive описывал фактическое поведение, все они входят в этот change. Правило одно: read-only preflight kind до любого побочного эффекта. Временное создание с откатом считается нарушением. В Q4 executor добавляется только ранний read-only preflight переданных receipts, порядок Phase A/B и проверки под lock не меняются.
 
