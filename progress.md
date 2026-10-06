@@ -1,3 +1,27 @@
+<!-- CURRENT FULL CAMPAIGN 2026-10-06: qualify-full-benchmark -->
+## Текущая цель и roadmap (с 2026-10-06)
+
+**Цель:** полностью рабочий проверяемый продукт VAST. Входят полная qualification, Q4, датированная cloud capacity, полная матрица 5 600 arms / 2 800 пар и `verify → finalize → export`. Компонентный релиз (PR2) и finite study (PR5: attempt K, 24/24 arms, 12/12 пар) завершены. Ни одна стадия полной кампании ещё не исполнена: 0/32 cells, 0/1 120 Q4, 0/5 600 arms.
+
+Три последовательных этапа. Каждый оформляется отдельным OpenSpec change и MR и принимается только по своим fresh receipts:
+
+1. **`qualify-full-benchmark`** — [Draft PR7](https://github.com/lordcoudy/VAST/pull/7), [change](openspec/changes/qualify-full-benchmark/). Спека одобрена независимым ревью (PASS_WITH_NOTES на `d9b7a8ed`), идёт реализация. Состав:
+   - строго возрастающие wall stamps в Python runtime (класс отказов J/CPU07);
+   - stock owner 37 операций;
+   - отказ full consumers без побочных эффектов;
+   - пересборка native3 и 4 runtime образов, parity 480/32, перепривязка пинов, ext4 suite и CI, 9 физических integration тестов;
+   - одна попытка Q1: 4 prechecks, Savant diagnostic, 32 cells, authenticated stop, closure 37/37, promotion.
+2. **Q4 и capacity** (следующий change): 560 A, boundary, 560 B, 280 sizing; датированная Seafile capacity attestation.
+3. **Полная матрица** (следующий change): persistent WSL user service, 5 600 / 2 800 при `--max-unexpected-retries 0`, `verify → finalize → export`.
+
+Оценка: около 6–8 недель календарного времени, из них около 5 недель непрерывной работы стенда. Полная матрица с накладными расходами — около 27–30 суток.
+
+**Предпосылки от пользователя.** Агент их не выполняет, это системные или внешние действия:
+- **До Q1:** отключить сон Windows на AC и отложить перезагрузки Windows Update на время прогона; не трогать Docker Desktop UI и extensions.
+- **До приёмки этапа 2:** датированная гарантия ёмкости Seafile.
+- **До этапа 3:** рабочий `systemctl --user` в WSL (сейчас WSLg перекрывает `/run/user/1000`) и достаточно места на C: (свободно около 118 GB, там `docker_data.vhdx` 134 GB и build cache 98 GB). Очистка cache — только по решению пользователя.
+<!-- END CURRENT FULL CAMPAIGN -->
+
 <!-- CURRENT BENCHMARK RECOVERY 2026-10-04: run-finite-component-study -->
 **Статус 2026-10-06 (после attempt K): исследование выполнено, 24/24 effect arms и 12/12 pairs.** По решению пользователя («Расследовать и сразу K») и amendment 11 выполнена ровно одна attempt K на `fefab7a93ab5e850ddcb90ac4c9d8eb351811fa0` (corrected-source CI [37463682987](https://github.com/lordcoudy/VAST/actions/runs/37463682987) SUCCESS). Preparation 454 s из 4 h (start 773940841836485 ns, boot dde50e69…, `timens-offsets:monotonic=0,0;boottime=0,0`): 442 AU на stream, active YUV и common-prefix RGB bit-exact, full442 actual EOS, offered-prefix STOP gate PASS. Campaign 8277,7 s из 14400 s: 4 initial pilots → trigger TRUE (shared native-client median wait 0,795 CPU / 0,501 GPU ≥0,10, n≥30) → единственный switch на prebuilt `branch-channel` после закрытия global-client pool → 4 conditional pilots (shared native-client wait ≈1e-6) → 24 effect arms в stored order → closure branch-channel pool → `canonical_study_complete=true`, `study_rc=0`. Во всех 24 arms raw reconciliation complete, unknown/failed/censored = 0, original close/infra errors = []. Независимая повторная редукция (5.4) по binding `closed-inputs.original.json` (31496 B, SHA256 `8f92bb40…05ba90`) с исходным campaign deadline (788794,93 s monotonic) завершилась rc=0 и совпала с исходной `reduction` (JSON equality). Описательно: CPU насыщен уже на rate 1 (≈50 % controlled drops, completed p50 ≈3,5 s) и на rate 2 (≈97 % drops); CPU Y100_frame = 0 на всех rates. GPU: на rates 1–2 Y100 shared−baseline = +0,17…+0,21 в обоих повторах, на 0,25 — 0 / +0,03. Ограничения: K — не первое наблюдение (pilot J запечатан и не смешан); два повтора дают описательные диапазоны без significance; qualification/Q4/publication/legacy full eligibility = false. [Evidence K](openspec/changes/archive/2026-10-06-run-finite-component-study/evidence/physical-K-completed-v1/retention.original.json), [таблицы](openspec/changes/archive/2026-10-06-run-finite-component-study/evidence/physical-K-completed-v1/results-tables.v1.md); raw 7,64 GB (3318 файлов, size+SHA256) хранятся в `/home/s-a-balashov/vffefab7aK`.
 
