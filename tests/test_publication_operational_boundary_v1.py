@@ -575,19 +575,27 @@ class PublicationOperationalBoundaryTests(unittest.TestCase):
                 group = json.loads(Path(fixture.service.operational_group["path"]).read_bytes())
                 self.assertEqual(group["max_clamp_ns"], 2_000_001)
                 self.assertEqual(fixture.cold_workload()["request_count"], 4)
+
+                def resealed(mutate) -> dict[str, Any]:
+                    tampered = {key: item for key, item in copy.deepcopy(group).items() if key != "sha256"}
+                    mutate(tampered)
+                    directory = Path(tempfile.mkdtemp(prefix="clamp-", dir=fixture.root))
+                    return _write_json(directory / "companion.json", payload_with_sha256_v1(tampered))
+
+                # A historical v1 group predates the field and stays readable.
+                historical = resealed(lambda value: value.pop("max_clamp_ns"))
+                self.assertEqual(fixture.cold_workload(companion=historical)["request_count"], 4)
                 for label, mutate in (
-                    ("missing", lambda value: value.pop("max_clamp_ns")),
                     ("negative", lambda value: value.update(max_clamp_ns=-1)),
                     ("beyond bound", lambda value: value.update(max_clamp_ns=10_000_002)),
                     ("boolean", lambda value: value.update(max_clamp_ns=True)),
+                    ("float", lambda value: value.update(max_clamp_ns=1.0)),
+                    ("text", lambda value: value.update(max_clamp_ns="1")),
+                    ("null", lambda value: value.update(max_clamp_ns=None)),
                 ):
                     with self.subTest(label=label):
-                        tampered = {key: item for key, item in copy.deepcopy(group).items() if key != "sha256"}
-                        mutate(tampered)
-                        directory = Path(tempfile.mkdtemp(prefix="clamp-", dir=fixture.root))
-                        companion = _write_json(directory / "companion.json", payload_with_sha256_v1(tampered))
                         with self.assertRaisesRegex(ValueError, "guardian operational companion schema drifted"):
-                            fixture.cold_workload(companion=companion)
+                            fixture.cold_workload(companion=resealed(mutate))
             finally:
                 fixture.stop()
 

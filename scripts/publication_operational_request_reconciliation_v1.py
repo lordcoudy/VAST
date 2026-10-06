@@ -389,13 +389,14 @@ def reconcile_operational_request_domain_v1(*, producer_domains, guardian_compan
         _, companion_source = pin(guardian_companion, limit=1024 * 1024)
         companion = companion_source.object(1024 * 1024)
         _sealed(companion)
-        _require(set(companion) == {"schema_version", "artifact_kind", "lifecycle_id",
-                 "accounting_input", "journals", "counts", "max_clamp_ns", "sha256"} and
+        # Historical v1 groups predate max_clamp_ns; a present value is bounded.
+        clamp = companion.get("max_clamp_ns", 0)
+        _require(set(companion) - {"max_clamp_ns"} == {"schema_version", "artifact_kind", "lifecycle_id",
+                 "accounting_input", "journals", "counts", "sha256"} and
                  companion["schema_version"] == 1 and
                  companion["artifact_kind"] == "vast_guardian_operational_group_v1" and
                  type(companion["journals"]) is list and len(companion["journals"]) == 8 and
-                 type(companion["max_clamp_ns"]) is int and
-                 0 <= companion["max_clamp_ns"] <= MAXIMUM_BACKWARD_STEP_NS + 1,
+                 type(clamp) is int and 0 <= clamp <= MAXIMUM_BACKWARD_STEP_NS + 1,
                  "guardian operational companion schema drifted")
         seen_routes = set()
         totals = {key: 0 for key in ("requests_started", "requests_completed", "requests_failed",

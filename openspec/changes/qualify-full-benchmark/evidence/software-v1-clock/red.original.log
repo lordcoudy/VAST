@@ -616,3 +616,30 @@ Ran 1 test in 0.375s
 
 FAILED (errors=1)
 
+=== Task 2.6 follow-up RED: a historical v1 guardian group without max_clamp_ns must still reconcile; invalid present values stay rejected (current reader requires the field)
+# base commit 28f0cfb95893ac0eccd768259164029febfb1942; uncommitted:  M tests/test_publication_operational_boundary_v1.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it
+2026-10-06T22:29:25Z
+test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it) ... ERROR
+
+======================================================================
+ERROR: test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_operational_boundary_v1.py", line 587, in test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it
+    self.assertEqual(fixture.cold_workload(companion=historical)["request_count"], 4)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_operational_boundary_v1.py", line 457, in cold_workload
+    return reconcile_operational_request_domain_v1(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/publication_operational_request_reconciliation_v1.py", line 392, in reconcile_operational_request_domain_v1
+    _require(set(companion) == {"schema_version", "artifact_kind", "lifecycle_id",
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/publication_operational_request_reconciliation_v1.py", line 45, in _require
+    raise ValueError(message)
+ValueError: guardian operational companion schema drifted
+
+----------------------------------------------------------------------
+Ran 1 test in 0.379s
+
+FAILED (errors=1)
+
