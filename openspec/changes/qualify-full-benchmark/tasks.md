@@ -7,17 +7,19 @@
 
 ## 2. Часы Python runtime (test-first)
 
-- [ ] 2.1 RED: тесты `scripts/non_decreasing_wall_clock_v1.py`. Сырые `[t, t−2 ms, t+1]` дают строго растущий выход и `max_clamp`; `t−11 ms` даёт `ClockStepError`; проверить потокобезопасность. Готово, когда тесты падают на отсутствующем модуле.
-- [ ] 2.2 GREEN: модуль часов. Готово, когда тесты 2.1 проходят.
-- [ ] 2.3 RED→GREEN для DeepStream и Savant (откатывающийся raw-источник подставляется в обёртку):
+**Статус 2026-10-07.** Выполнено в `qfb/clock` (`f524f6e9`…`90d4e272`), слито в PR. RED/GREEN — [evidence/software-v1-clock](evidence/software-v1-clock/). Финальный прогон: 816 тестов OK, 2 skip. Native-исходники изменились, поэтому пересборка native3 и runtime-образов обязательна (раздел 5). Пин probe `fanout_binding_sha256` перепривязан.
+
+- [x] 2.1 RED: тесты `scripts/non_decreasing_wall_clock_v1.py`. Сырые `[t, t−2 ms, t+1]` дают строго растущий выход и `max_clamp`; `t−11 ms` даёт `ClockStepError`; проверить потокобезопасность. Готово, когда тесты падают на отсутствующем модуле.
+- [x] 2.2 GREEN: модуль часов. Готово, когда тесты 2.1 проходят.
+- [x] 2.3 RED→GREEN для DeepStream и Savant (откатывающийся raw-источник подставляется в обёртку):
   - fanout и NVDEC интервалы при откате на 2 ms проходят `record_fanout` и `record_nvdec`;
   - protocol bridge: callback/admission и decision/path при откате проходят;
   - Savant: serialized fanout и `canonical_fanout_interval_end_ns` при откате проходят.
   Предикаты `checkpoint_deepstream_resource_runtime_v3.py` и Savant не меняются. Готово при genuine RED на текущем коде и GREEN после подключения.
-- [ ] 2.4 RED→GREEN для guardian recorder: `clock_ns=[t, t−2 ms]` для begin и terminal, после чего `publication_operational_request_reconciliation_v1` сверку проходит. Готово при genuine RED и GREEN.
-- [ ] 2.5 Static gate в CI: в покрытых runtime-файлах нет прямых wall-clock вызовов для упорядоченных полей вне общего модуля; каждый native Dockerfile, собирающий probe, копирует `checkpoint_admission_transport.hpp`. Готово при RED на подставленном нарушении и GREEN на дереве.
-- [ ] 2.6 (Amendment 1) `max_clamp_ns` пишется в guardian operational group; reader принимает исторические группы без поля. Native, DeepStream и Savant выводят clamp в stderr на всех контролируемых путях выхода: обычный return, исключение (включая `ClockStepError`) и ненулевой код. Строку сохраняют existing owners как failure evidence. Готово, когда focused тесты проверяют writer, историческое чтение без отображения clamp 0, недопустимые значения и наличие строки stderr на путях исключения.
-- [ ] 2.7 Новый модуль добавлен в Dockerfile, source allowlist затронутых runtime-образов и в execution code closure. Готово, когда существующие closure и allowlist тесты проходят с модулем и падают без него.
+- [x] 2.4 RED→GREEN для guardian recorder: `clock_ns=[t, t−2 ms]` для begin и terminal, после чего `publication_operational_request_reconciliation_v1` сверку проходит. Готово при genuine RED и GREEN.
+- [x] 2.5 Static gate в CI: в покрытых runtime-файлах нет прямых wall-clock вызовов для упорядоченных полей вне общего модуля; каждый native Dockerfile, собирающий probe, копирует `checkpoint_admission_transport.hpp`. Готово при RED на подставленном нарушении и GREEN на дереве.
+- [x] 2.6 (Amendment 1) `max_clamp_ns` пишется в guardian operational group; reader принимает исторические группы без поля. Native, DeepStream и Savant выводят clamp в stderr на всех контролируемых путях выхода: обычный return, исключение (включая `ClockStepError`) и ненулевой код. Строку сохраняют existing owners как failure evidence. Готово, когда focused тесты проверяют writer, историческое чтение без отображения clamp 0, недопустимые значения и наличие строки stderr на путях исключения.
+- [x] 2.7 Новый модуль добавлен в Dockerfile, source allowlist затронутых runtime-образов и в execution code closure. Готово, когда существующие closure и allowlist тесты проходят с модулем и падают без него.
 
 ## 3. Full consumers (R13/S6, test-first)
 
