@@ -26,7 +26,7 @@
 
 - [ ] 4.1 RED: e2e тест `publication_qualification_operational_owner_v1` с реальными process и container validators на fixtures из 2 и 37 операций. Missing, extra, duplicate и foreign операции дают fail closed; binding валиден в cold-closure. Готово, когда тест падает на отсутствующем owner.
 - [ ] 4.2 GREEN: stock owner. Prechecks и Savant идут через held operation, 32 cells — через `runtime_registry` в pilot executor; stock writer `vast_original_operational_execution_binding_v1`. Готово, когда 4.1 проходит, а существующие тесты 37/32 и closure не изменены.
-- [ ] 4.3 Независимое source-ревью 2–4 и conformance раздела 5C из `openspec/changes/archive/2026-10-03-fix-benchmark-preparations-spec/verification-plan.md` (задачи 12.2–12.4). Готово, когда в MR есть ревью без блокеров.
+- [ ] 4.3 Независимое source-ревью 2–4 и conformance раздела «5C. Qualification reconciles the complete operational request domain» (`git show 0cf5f946:openspec/changes/fix-benchmark-preparations-spec/verification-plan.md`, строка 53; задачи 12.2–12.4 в архиве `2026-10-03-fix-benchmark-preparations-spec`). Готово, когда в MR есть ревью без блокеров.
 
 ## 5. Образы, parity, пины, CI
 

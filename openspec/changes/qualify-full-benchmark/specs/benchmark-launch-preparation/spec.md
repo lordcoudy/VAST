@@ -41,7 +41,7 @@ Recovery SHALL execute one forced-CPU baseline/shared pair and one separately ow
 - **THEN** component materialization/launch SHALL reject, preserving old receipt/declaration provenance without rebinding it or renewing siblings.
 
 #### Scenario: Component authority reaches a full entrypoint
-- **WHEN** a component receipt or unknown kind is supplied to qualification, accepted-policy, promotion, Q4 or full publication
+- **WHEN** a component receipt, a study artifact or an unknown kind is supplied to qualification, accepted-policy, promotion, Q4 or full publication
 - **THEN** the full entrypoint SHALL reject it even when an accepted=false flag or structurally complete historical table is present, before creating any directory or file under its output or work roots; both original full kinds SHALL retain their strict behavior.
 
 #### Scenario: Component request is outside its original pair
@@ -77,5 +77,5 @@ The full campaign SHALL resume in three sequential reviewed stages: (1) fresh fu
 - **THEN** the affected images SHALL be rebuilt through the existing deterministic build and refreeze verification, unchanged images SHALL be proven unchanged against their freeze receipts, parity SHALL be repeated against the new patch, and no qualification SHALL run on stale identities.
 
 #### Scenario: A stage attempt fails
-- **WHEN** any precheck, diagnostic, cell, stop, closure or promotion fails or is externally interrupted
+- **WHEN** any precheck, diagnostic, cell, stop, closure or promotion fails or the attempt suffers an unsupported interruption
 - **THEN** the attempt SHALL be recorded as failed with preserved evidence, no partial cell SHALL count, and a new attempt SHALL require a reviewed amendment and an explicit human decision.
