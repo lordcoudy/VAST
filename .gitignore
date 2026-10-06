@@ -31,7 +31,9 @@ tmp_*
 configs/hosts.yaml
 
 .cache/
-.agents/
+# Local agent state; OpenSpec skills for Codex are versioned.
+.agents/*
+!.agents/skills/
 .test-tmp/
 artifacts/
 tmp/
