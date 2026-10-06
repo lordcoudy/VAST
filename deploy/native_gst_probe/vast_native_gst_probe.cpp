@@ -4266,6 +4266,8 @@ static Args parse_args(int argc, char** argv) {
 }
 
 int main(int argc, char** argv) {
+  // Declared outside the try block: the clamp line follows any fatal line.
+  std::optional<vast::WallClockExitLine> wall_clock_exit;
   try {
     bool handled = false;
     const int reference_status = vast::study::dispatch_reference_cli(argc, argv, handled);
@@ -4276,14 +4278,13 @@ int main(int argc, char** argv) {
              "[--stages CSV] [--run-id ID] [runtime options]\n";
       return 0;
     }
+    wall_clock_exit.emplace(std::cerr, "native-probe");
     const std::string executable_path = resolve_executable_path(argv[0]);
     gst_init(&argc, &argv);
     Args args = parse_args(argc, argv);
     args.executable_path = executable_path;
     NativeProbeRuntime runtime(std::move(args));
-    const int status = runtime.run();
-    std::cerr << "[native-probe][wall-clock] max_clamp_ns=" << vast::NonDecreasingWallClock::process().max_clamp_ns() << "\n";
-    return status;
+    return runtime.run();
   } catch (const std::exception& exc) {
     std::cerr << "[native-probe][fatal] " << exc.what() << "\n";
     return 2;

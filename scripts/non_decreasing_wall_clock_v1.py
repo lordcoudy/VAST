@@ -8,6 +8,7 @@ the largest applied clamp is retained for the process evidence.
 
 from __future__ import annotations
 
+import re
 import threading
 import time
 from typing import Callable
@@ -56,10 +57,18 @@ def wall_time_ns() -> int:
     return _PROCESS_CLOCK.now_ns()
 
 
+def wall_clock_exit_line(role: str) -> str:
+    """The bounded per-process exit line, matching the native probe format."""
+    if re.fullmatch(r"[a-z0-9-]{1,64}", role) is None:
+        raise ValueError("wall-clock exit role is invalid")
+    return f"[{role}][wall-clock] max_clamp_ns={_PROCESS_CLOCK.max_clamp_ns()}"
+
+
 __all__ = [
     "MAXIMUM_BACKWARD_STEP_NS",
     "ClockStepError",
     "NonDecreasingWallClock",
     "process_wall_clock",
+    "wall_clock_exit_line",
     "wall_time_ns",
 ]

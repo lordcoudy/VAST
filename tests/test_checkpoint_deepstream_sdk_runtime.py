@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import hashlib
+import io
 import json
 import os
 import struct
@@ -1063,6 +1064,34 @@ class DeepStreamHostWallClockStepTests(unittest.TestCase):
         with mock.patch.object(sdk_runtime, "_write_exact", lambda _fd, payload, _label: statuses.append(payload)):
             LifecycleChannel(worker_id="worker", control_fd=0, status_fd=1).started()
         self.assertEqual(statuses, [f"1 STARTED worker {WALL_BASE_NS // 1_000_000}\n".encode("ascii")])
+
+    def test_main_writes_one_wall_clock_line_on_every_controlled_exit(self) -> None:
+        argv = [
+            "run", "--codec", "h264", "--topology-kind", "independent_processes",
+            "--stream-id", "0", "--branches", "damage", "--arm-id", "arm-wall-clock-exit",
+            "--output-dir", "/tmp/deepstream-wall-clock-exit", "--callback-factory", "fixture:create",
+        ]
+        line = "[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001"
+        for label, effect, expected in (
+            ("normal", None, 0),
+            ("blocked", DeepStreamSdkRuntimeError("blocked fixture"), 2),
+            ("clock step", ClockStepError("host wall clock stepped back beyond the bounded clamp"), ClockStepError),
+        ):
+            with self.subTest(label=label):
+                clock = NonDecreasingWallClock(raw_ns=iter([WALL_BASE_NS, WALL_BASE_NS - 2_000_000]).__next__)
+                clock.now_ns(), clock.now_ns()
+                stderr = io.StringIO()
+                with mock.patch.object(wall_clock, "_PROCESS_CLOCK", clock), \
+                        mock.patch.object(sdk_runtime, "run_fd_worker", side_effect=effect), \
+                        mock.patch("sys.stderr", stderr):
+                    if expected is ClockStepError:
+                        with self.assertRaises(ClockStepError):
+                            sdk_runtime.main(argv)
+                    else:
+                        self.assertEqual(sdk_runtime.main(argv), expected)
+                lines = stderr.getvalue().splitlines()
+                self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+                self.assertEqual(lines[-1], line)
 
     def test_host_clock_step_back_beyond_ten_milliseconds_fails_closed(self) -> None:
         step_back_host_wall_clock(self, [WALL_BASE_NS, WALL_BASE_NS - 11_000_000])

@@ -20,7 +20,7 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
-from non_decreasing_wall_clock_v1 import wall_time_ns
+from non_decreasing_wall_clock_v1 import wall_clock_exit_line, wall_time_ns
 
 
 _GOOGLE_API_CORE_PYTHON_310_EOL_WARNING = (
@@ -1120,6 +1120,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     ) as exc:
         print(str(exc), file=os.sys.stderr)
         return 2
+    finally:
+        # One bounded line on every exit this process controls; the owner
+        # retains child stderr as failure evidence.
+        print(wall_clock_exit_line("savant-sdk-runtime"), file=os.sys.stderr, flush=True)
 
 
 if __name__ == "__main__":

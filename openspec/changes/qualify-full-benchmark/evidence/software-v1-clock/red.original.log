@@ -643,3 +643,166 @@ Ran 1 test in 0.379s
 
 FAILED (errors=1)
 
+=== Task 2.6 amendment RED: native probe/source and Python DeepStream/Savant SDK runtime processes must emit one wall-clock clamp line on every controlled exit (normal, handled error, ClockStepError, fatal exception)
+# base commit a6407710a22e5c2724dbaba4d85abf6c1b410e18; uncommitted:  M tests/cpp/checkpoint_native_shutdown_test.cpp  M tests/cpp/checkpoint_source_lifecycle_test.cpp  M tests/test_checkpoint_deepstream_sdk_runtime.py  M tests/test_checkpoint_savant_sdk_runtime_v3.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_source_original_drain_and_stop_latch tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_abort_precedes_gstreamer_null tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit
+2026-10-06T23:10:11Z
+test_source_original_drain_and_stop_latch (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_source_original_drain_and_stop_latch) ... FAIL
+test_native_abort_precedes_gstreamer_null (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_abort_precedes_gstreamer_null) ... FAIL
+test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) ... 
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='normal') ... FAIL
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='blocked') ... FAIL
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='clock step') ... FAIL
+test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) ... 
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='normal') ... FAIL
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='blocked') ... FAIL
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='clock step') ... FAIL
+
+======================================================================
+FAIL: test_source_original_drain_and_stop_latch (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_source_original_drain_and_stop_latch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 74, in test_source_original_drain_and_stop_latch
+    self._compile_and_run("checkpoint_source_lifecycle_test.cpp",
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 50, in _compile_and_run
+    self.assertEqual(
+AssertionError: 1 != 0 : /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp: In function ‘bool {anonymous}::wall_clock_line_on_every_controlled_exit()’:
+/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:399:11: error: ‘WallClockExitLine’ is not a member of ‘vast’
+  399 |   { vast::WallClockExitLine line(normal, "unit-test", wall); }
+      |           ^~~~~~~~~~~~~~~~~
+/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:400:15: error: ‘WallClockExitLine’ is not a member of ‘vast’
+  400 |   try { vast::WallClockExitLine line(unwound, "unit-test", wall); throw std::runtime_error("unit"); }
+      |               ^~~~~~~~~~~~~~~~~
+
+
+======================================================================
+FAIL: test_native_abort_precedes_gstreamer_null (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_abort_precedes_gstreamer_null)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 86, in test_native_abort_precedes_gstreamer_null
+    self._compile_and_run("checkpoint_native_shutdown_test.cpp",
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 58, in _compile_and_run
+    self.assertEqual(
+AssertionError: 1 != 0 : [native-probe][checkpoint] checkpoint I/O owner aborted
+[native-probe][checkpoint] checkpoint I/O owner aborted
+[native-probe][cleanup] native study journal final close failed
+native exception exit lost its wall-clock line: [native-probe][fatal] unknown argument: --vast-unknown-test-argument
+
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='normal')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1093, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='blocked')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1093, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='clock step')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1093, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='normal')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_sdk_runtime_v3.py", line 641, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='blocked')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_sdk_runtime_v3.py", line 641, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='clock step')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_sdk_runtime_v3.py", line 641, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+----------------------------------------------------------------------
+Ran 4 tests in 8.491s
+
+FAILED (failures=8)
+
+=== Task 2.6 amendment pin RED: configs/experiments.yaml fanout_binding_sha256 still binds the previous vast_native_gst_probe.cpp bytes
+# base commit a6407710a22e5c2724dbaba4d85abf6c1b410e18; uncommitted:  M deploy/native_gst_probe/checkpoint_admission_transport.hpp  M deploy/native_gst_probe/checkpoint_source_coordinator.cpp  M deploy/native_gst_probe/vast_native_gst_probe.cpp  M scripts/checkpoint_deepstream_sdk_runtime.py  M scripts/checkpoint_savant_sdk_runtime_v3.py  M scripts/non_decreasing_wall_clock_v1.py  M tests/cpp/checkpoint_native_shutdown_test.cpp  M tests/cpp/checkpoint_source_lifecycle_test.cpp  M tests/test_checkpoint_deepstream_sdk_runtime.py  M tests/test_checkpoint_savant_sdk_runtime_v3.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_scenario_planning.ScenarioPlanningTests.test_resource_interval_extension_is_verified_but_not_publication_bound
+2026-10-06T23:17:45Z
+test_resource_interval_extension_is_verified_but_not_publication_bound (tests.test_scenario_planning.ScenarioPlanningTests.test_resource_interval_extension_is_verified_but_not_publication_bound) ... FAIL
+
+======================================================================
+FAIL: test_resource_interval_extension_is_verified_but_not_publication_bound (tests.test_scenario_planning.ScenarioPlanningTests.test_resource_interval_extension_is_verified_but_not_publication_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_scenario_planning.py", line 669, in test_resource_interval_extension_is_verified_but_not_publication_bound
+    self.assertEqual(
+AssertionError: 'blocked_resource_interval_contract_invalid' != 'ready_validator_and_native_interval_sourc[40 chars]ound'
+- blocked_resource_interval_contract_invalid
++ ready_validator_and_native_interval_sources_not_target_verified_not_publication_bound
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.033s
+
+FAILED (failures=1)
+

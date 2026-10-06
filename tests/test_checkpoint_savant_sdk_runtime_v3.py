@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import contextlib
 import csv
+import io
 import json
 import sys
 import tempfile
@@ -610,6 +612,34 @@ class SavantQueueDropTests(unittest.TestCase):
         self.assertEqual((int(row["host_start_timestamp_ns"]), int(row["host_end_timestamp_ns"])),
                          (WALL_BASE_NS + 1_000, WALL_BASE_NS + 1_001))
         self.assertEqual(wall_clock.process_wall_clock().max_clamp_ns(), 2_000_001)
+
+    def test_main_writes_one_wall_clock_line_on_every_controlled_exit(self):
+        argv = ["run", "--codec", "h264", "--topology-kind", "shared_video_dag", "--stream-id", "0",
+                "--branches", ",".join(BRANCHES), "--arm-id", "arm-wall-clock-exit",
+                "--output-dir", "/tmp/savant-wall-clock-exit"]
+        line = "[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001"
+        for label, effect, expected in (
+            ("normal", None, 0),
+            ("blocked", savant_sdk_runtime_v3.SavantSdkRuntimeV3Error("blocked fixture"), 2),
+            ("clock step", ClockStepError("host wall clock stepped back beyond the bounded clamp"), ClockStepError),
+        ):
+            with self.subTest(label=label):
+                clock = NonDecreasingWallClock(raw_ns=iter([WALL_BASE_NS, WALL_BASE_NS - 2_000_000]).__next__)
+                clock.now_ns(), clock.now_ns()
+                stderr = io.StringIO()
+                with mock.patch.object(wall_clock, "_PROCESS_CLOCK", clock), \
+                        mock.patch.object(savant_sdk_runtime_v3, "run_fd_worker", side_effect=effect), \
+                        mock.patch.object(savant_sdk_runtime_v3, "_capture_worker_native_stdout",
+                                          contextlib.nullcontext), \
+                        mock.patch("sys.stderr", stderr):
+                    if expected is ClockStepError:
+                        with self.assertRaises(ClockStepError):
+                            savant_sdk_runtime_v3.main(argv)
+                    else:
+                        self.assertEqual(savant_sdk_runtime_v3.main(argv), expected)
+                lines = stderr.getvalue().splitlines()
+                self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+                self.assertEqual(lines[-1], line)
 
     def test_savant_wall_milliseconds_use_the_shared_process_clock(self):
         step_back_host_wall_clock(self, [WALL_BASE_NS, WALL_BASE_NS - 2_000_000])

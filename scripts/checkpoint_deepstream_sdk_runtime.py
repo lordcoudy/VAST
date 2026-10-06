@@ -31,7 +31,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Mapping, Protocol, Sequence
 
-from non_decreasing_wall_clock_v1 import wall_time_ns
+from non_decreasing_wall_clock_v1 import wall_clock_exit_line, wall_time_ns
 
 
 ADMISSION_DATA_FD_ENV = "VAST_CHECKPOINT_ADMISSION_DATA_FD"
@@ -1967,6 +1967,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     except DeepStreamSdkRuntimeError as exc:
         print(f"deepstream sdk runtime blocked: {exc}", file=sys.stderr)
         return 2
+    finally:
+        # One bounded line on every exit this process controls; the owner
+        # retains child stderr as failure evidence.
+        print(wall_clock_exit_line("deepstream-sdk-runtime"), file=sys.stderr, flush=True)
 
 
 if __name__ == "__main__":
