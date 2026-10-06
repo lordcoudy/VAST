@@ -1,0 +1,145 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.openvino
+#1 transferring dockerfile: 8.07kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/intel/dlstreamer@sha256:355435d2bdb986fe1d51f443d366da3ac1eb0c7175aa03ce2b31e4485f36b3bd
+#2 DONE 0.0s
+
+#3 [auth] nvidia/deepstream:pull token for nvcr.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#4 ...
+
+#5 [auth] nvidia/deepstream:pull token for nvcr.io
+#5 DONE 0.0s
+
+#4 [internal] load metadata for nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#4 DONE 0.9s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 DONE 0.0s
+
+#8 [auth] nvidia/deepstream:pull token for nvcr.io
+#8 DONE 0.0s
+
+#9 [stage-1 1/3] FROM docker.io/intel/dlstreamer@sha256:355435d2bdb986fe1d51f443d366da3ac1eb0c7175aa03ce2b31e4485f36b3bd
+#9 resolve docker.io/intel/dlstreamer@sha256:355435d2bdb986fe1d51f443d366da3ac1eb0c7175aa03ce2b31e4485f36b3bd 0.0s done
+#9 CACHED
+
+#10 [native_builder  1/20] FROM nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#10 resolve nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#10 ...
+
+#11 [auth] nvidia/deepstream:pull token for nvcr.io
+#11 DONE 0.0s
+
+#10 [native_builder  1/20] FROM nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#10 resolve nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759 0.5s done
+#10 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 1.44kB done
+#7 DONE 0.0s
+
+#12 [native_builder  2/20] RUN command -v cc >/dev/null   && command -v c++ >/dev/null   && command -v pkg-config >/dev/null   && pkg-config --exists       gstreamer-1.0 gstreamer-app-1.0 gstreamer-base-1.0       gstreamer-rtp-1.0 gstreamer-video-1.0
+#12 DONE 0.1s
+
+#13 [native_builder  3/20] WORKDIR /workspace/project
+#13 DONE 0.1s
+
+#14 [native_builder  4/20] COPY CMakeLists.txt /workspace/project/CMakeLists.txt
+#14 DONE 0.1s
+
+#15 [native_builder  5/20] COPY deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c /workspace/project/deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c
+#15 DONE 0.1s
+
+#16 [native_builder  6/20] COPY deploy/gstreamer_analytics_terminal/checkpoint_analytics_model_provenance.hpp /workspace/project/deploy/gstreamer_analytics_terminal/checkpoint_analytics_model_provenance.hpp
+#16 DONE 0.1s
+
+#17 [native_builder  7/20] COPY deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp /workspace/project/deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp
+#17 DONE 0.1s
+
+#18 [native_builder  8/20] COPY deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp /workspace/project/deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp
+#18 DONE 0.1s
+
+#19 [native_builder  9/20] COPY deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp /workspace/project/deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp
+#19 DONE 0.1s
+
+#20 [native_builder 10/20] COPY deploy/native_gst_probe/checkpoint_admission_transport.hpp /workspace/project/deploy/native_gst_probe/checkpoint_admission_transport.hpp
+#20 DONE 0.1s
+
+#21 [native_builder 11/20] COPY deploy/native_gst_probe/checkpoint_study_reference.hpp /workspace/project/deploy/native_gst_probe/checkpoint_study_reference.hpp
+#21 DONE 0.1s
+
+#22 [native_builder 12/20] COPY deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp /workspace/project/deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp
+#22 DONE 0.1s
+
+#23 [native_builder 13/20] COPY deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp /workspace/project/deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp
+#23 DONE 0.1s
+
+#24 [native_builder 14/20] COPY deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp /workspace/project/deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp
+#24 DONE 0.2s
+
+#25 [native_builder 15/20] COPY deploy/native_gst_probe/checkpoint_native_policy_client.hpp /workspace/project/deploy/native_gst_probe/checkpoint_native_policy_client.hpp
+#25 DONE 0.1s
+
+#26 [native_builder 16/20] COPY deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp /workspace/project/deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp
+#26 DONE 0.1s
+
+#27 [native_builder 17/20] COPY deploy/native_gst_probe/checkpoint_runtime_emitter.hpp /workspace/project/deploy/native_gst_probe/checkpoint_runtime_emitter.hpp
+#27 DONE 0.1s
+
+#28 [native_builder 18/20] COPY deploy/native_gst_probe/checkpoint_source_coordinator.cpp /workspace/project/deploy/native_gst_probe/checkpoint_source_coordinator.cpp
+#28 DONE 0.1s
+
+#29 [native_builder 19/20] COPY deploy/native_gst_probe/vast_native_gst_probe.cpp /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp
+#29 DONE 0.1s
+
+#30 [native_builder 20/20] RUN install -d -m 0755       /opt/vast/image-root/usr/local/bin       /opt/vast/image-root/opt/vast/lib/gstreamer-1.0   && GST_CFLAGS="$(pkg-config --cflags       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)"   && GST_LIBS="$(pkg-config --libs       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)"   && GST_PLUGIN_CFLAGS="$(pkg-config --cflags       gstreamer-1.0 gstreamer-base-1.0 gstreamer-video-1.0)"   && GST_PLUGIN_LIBS="$(pkg-config --libs       gstreamer-1.0 gstreamer-base-1.0 gstreamer-video-1.0)"   && c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread       ${GST_CFLAGS}       /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp       ${GST_LIBS} -pie       -o /opt/vast/image-root/usr/local/bin/vast_native_gst_probe   && c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread       ${GST_CFLAGS}       /workspace/project/deploy/native_gst_probe/checkpoint_source_coordinator.cpp       ${GST_LIBS} -pie       -o /opt/vast/image-root/usr/local/bin/vast_checkpoint_source   && cc -std=c11 -O3 -DNDEBUG -fPIC -shared -DPACKAGE="vast"       ${GST_PLUGIN_CFLAGS}       /workspace/project/deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c       ${GST_PLUGIN_LIBS}       -o /opt/vast/image-root/opt/vast/lib/gstreamer-1.0/libgstadaptivescheduler.so   && c++ -std=c++17 -O3 -DNDEBUG -fPIC -shared -DPACKAGE="vast"       ${GST_PLUGIN_CFLAGS}       -I/workspace/project/deploy/native_gst_probe       /workspace/project/deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp       ${GST_PLUGIN_LIBS}       -o /opt/vast/image-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsterminal.so   && c++ -std=c++17 -O3 -DNDEBUG -fPIC -shared -DPACKAGE="vast"       ${GST_PLUGIN_CFLAGS}       -I/workspace/project/deploy/native_gst_probe       -I/workspace/project/deploy/gstreamer_analytics_terminal       /workspace/project/deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp       ${GST_PLUGIN_LIBS}       -o /opt/vast/image-root/opt/vast/lib/gstreamer-1.0/libgstvastanalyticsqueue.so   && c++ -std=c++17 -O3 -DNDEBUG -fPIC -shared -DPACKAGE="vast"       ${GST_PLUGIN_CFLAGS}       -I/workspace/project/deploy/native_gst_probe       /workspace/project/deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp       ${GST_PLUGIN_LIBS}       -o /opt/vast/image-root/opt/vast/lib/gstreamer-1.0/libgstvastcheckpointprefixqueue.so   && find /opt/vast/image-root -type f -exec chmod 0555 {} +   && find /opt/vast/image-root -exec touch -h -d "@1722470400" {} +
+#30 DONE 10.7s
+
+#31 [stage-1 2/3] COPY --from=native_builder /opt/vast/image-root/ /
+#31 DONE 0.1s
+
+#32 [stage-1 3/3] RUN command -v gst-inspect-1.0 >/dev/null   && install -d -m 0755 /opt/vast/share   && mv /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstpython.so       /tmp/libgstpython.so   && GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/      GST_REGISTRY=/opt/vast/share/gstreamer-registry.bin      GST_REGISTRY_FORK=no      gst-inspect-1.0 vastanalyticsqueue >/dev/null   && GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/      GST_REGISTRY=/opt/vast/share/gstreamer-registry.bin      GST_REGISTRY_FORK=no      gst-inspect-1.0 vastcheckpointprefixqueue >/dev/null   && mv /tmp/libgstpython.so       /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstpython.so   && touch -h -d "@1722470400"       /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstpython.so   && chmod 0444 /opt/vast/share/gstreamer-registry.bin   && touch -h -d "@1722470400" /opt/vast/share/gstreamer-registry.bin
+#32 0.135 + command -v gst-inspect-1.0
+#32 0.135 + install -d -m 0755 /opt/vast/share
+#32 0.137 + mv /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstpython.so /tmp/libgstpython.so
+#32 0.145 + GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/
+#32 0.145 + GST_REGISTRY=/opt/vast/share/gstreamer-registry.bin
+#32 0.145 + GST_REGISTRY_FORK=no
+#32 0.145 + gst-inspect-1.0 vastanalyticsqueue
+#32 0.311 
+#32 0.311 (gst-inspect-1.0:9): GStreamer-WARNING **: 13:01:32.017: Failed to load plugin '/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages/gi/overrides/_gi_gst.cpython-312-x86_64-linux-gnu.so': /opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages/gi/overrides/_gi_gst.cpython-312-x86_64-linux-gnu.so: undefined symbol: PyExc_ValueError
+#32 0.311 
+#32 0.311 (gst-inspect-1.0:9): GStreamer-WARNING **: 13:01:32.017: Failed to load plugin '/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages/gi/overrides/_gi_gst_analytics.cpython-312-x86_64-linux-gnu.so': /opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages/gi/overrides/_gi_gst_analytics.cpython-312-x86_64-linux-gnu.so: undefined symbol: _Py_NoneStruct
+#32 0.335 + GST_PLUGIN_PATH=/opt/vast/lib/gstreamer-1.0:/opt/intel/dlstreamer/lib:/opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0:/opt/intel/dlstreamer/gstreamer/lib/
+#32 0.335 + GST_REGISTRY=/opt/vast/share/gstreamer-registry.bin
+#32 0.335 + GST_REGISTRY_FORK=no
+#32 0.335 + gst-inspect-1.0 vastcheckpointprefixqueue
+#32 0.350 
+#32 0.350 (gst-inspect-1.0:10): GStreamer-WARNING **: 13:01:32.056: Failed to load plugin '/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages/gi/overrides/_gi_gst.cpython-312-x86_64-linux-gnu.so': /opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages/gi/overrides/_gi_gst.cpython-312-x86_64-linux-gnu.so: undefined symbol: PyExc_ValueError
+#32 0.350 
+#32 0.350 (gst-inspect-1.0:10): GStreamer-WARNING **: 13:01:32.056: Failed to load plugin '/opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages/gi/overrides/_gi_gst_analytics.cpython-312-x86_64-linux-gnu.so': /opt/intel/dlstreamer/gstreamer/lib/python3/dist-packages/gi/overrides/_gi_gst_analytics.cpython-312-x86_64-linux-gnu.so: undefined symbol: _Py_NoneStruct
+#32 0.355 + mv /tmp/libgstpython.so /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstpython.so
+#32 0.356 + touch -h -d @1722470400 /opt/intel/dlstreamer/gstreamer/lib/gstreamer-1.0/libgstpython.so
+#32 0.357 + chmod 0444 /opt/vast/share/gstreamer-registry.bin
+#32 0.357 + touch -h -d @1722470400 /opt/vast/share/gstreamer-registry.bin
+#32 DONE 0.4s
+
+#33 exporting to image
+#33 exporting layers
+#33 exporting layers 0.2s done
+#33 rewriting layers with source-date-epoch 1722470400 (2024-08-01 00:00:00 +0000 UTC)
+#33 rewriting layers with source-date-epoch 1722470400 (2024-08-01 00:00:00 +0000 UTC) 0.1s done
+#33 exporting manifest sha256:5e90fe3084e61f28ce6afb674eb018e97da167908ed5fdf73d2e32a5743a9c45 done
+#33 exporting config sha256:def1b916bed030649ce87ff9ff6fc0b7f0aa01f0cd02223471a8a5c1c7d51ed5 done
+#33 naming to docker.io/vast/finite-study-native:fe705368972024502f51a2d1-determinism-b done
+#33 DONE 0.3s

@@ -1,5 +1,43 @@
 # Соответствие `run-finite-component-study`
 
+## Текущее заключение после attempt K (2026-10-06)
+
+**Итог: 23/24 tasks выполнены (открыта только 6.2 archive), все 7 требований и 21 сценарий нового capability плюс 2 сохранённых R1 сценария сопоставлены с фактическими данными.** Implementation commit `fefab7a93ab5e850ddcb90ac4c9d8eb351811fa0`, corrected-source CI [37463682987](https://github.com/lordcoudy/VAST/actions/runs/37463682987) SUCCESS (cpu-checks, host prerequisite diagnostics). Attempt K: `study_rc=0`, `canonical_study_complete=true`, 24/24 effect arms, 12/12 pairs; независимая повторная редукция rc=0 и совпала с исходной. [Retention K](evidence/physical-K-completed-v1/retention.original.json): 935 скопированных originals (крупные JSON сохранены в gzip с mtime=0 и SHA256 обеих форм), 3318 raw файлов / 7 639 499 157 B записаны как size+SHA256 и остаются в `/home/s-a-balashov/vffefab7aK`. [Таблицы 24/12](evidence/physical-K-completed-v1/results-tables.v1.md). Абзацы ниже этого раздела описывают более ранние checkpoints и не отменяют это заключение.
+
+Критических расхождений нет. Предупреждения, разобранные в MR:
+- **W1. K не первое наблюдение.** Pilot J (cpu/baseline) уже был выполнен на том же входе; его данные запечатаны в `evidence/physical-J-failed-v1` и в K не входят. Правило trigger и 24-arm план до K не менялись.
+- **W2. Дефекты D–J исправлены amendments 1–11** с независимым ревью до каждой новой попытки. Ни одна попытка не повторяла уже принятый arm; научные значения получены только в K.
+- **W3. Wall-clock clamp.** Native wall stamps теперь строго возрастают (amendment 11). В двух захваченных stderr-записях max clamp равен 0 и 390 507 ns, это меньше fail-closed порога 10 ms. Clamp не влияет на SLO, они считаются по CLOCK_MONOTONIC.
+- **W4. Описательный характер.** Два повтора дают диапазоны, а не significance. CPU насыщен на rates 1 и 2, поэтому knee CPU лежит ниже rate 1 и не определён; grid не менялся.
+
+Не проверено автоматически: physical GPU/NVDEC поведение воспроизводится только на этом хосте (CI проверяет software paths); цветовая точность исходного AVI не заявляется; worker queue wait остаётся `unknown` по дизайну.
+
+| # | Сценарий | Фактическое подтверждение в K | Расхождения / ограничения |
+|---|---|---|---|
+| 1 | Canonical matrix completes | 24 effect arms в stored order, 12 pairs; `raw_effect_matrix_complete=true`, `actual_effect_arms=24`; повторная редукция равна исходной | нет |
+| 2 | Pilot or partial result exists | 8 pilot reductions лежат отдельно в `pilots`, в `arms` и `pairs` не входят; failed originals D–J сохранены, effect arms в них = 0 | нет |
+| 3 | Legacy full consumer receives a study kind | `finite-component-study-reduction`; `full_run_eligible`, `qualification_eligible`, `q4_eligible`, `publication_eligible` = false; legacy validators не изменены (CI SUCCESS) | нет |
+| 4 | Actual derived intake satisfies the gate | front_gate и underbody: 442 AU inventory, `active_yuv_bit_exact`, `common_prefix_rgb_bit_exact`, `full442_actual_eos` = true; `actual_full_prefix_stop_gate` = true | нет |
+| 5 | A flag hides an incompatible actual stream | Фактический SPS/VUI trace: fixed_frame_rate_flag 1, level_idc 40 (≤5.1), 30 fps; второй детерминированный encode совпал по SHA256 с derived (front adf3cb4d…, underbody a61ca80e…) | нет |
+| 6 | V6 does not establish a usable setting | Default/unset decoder прошёл reference gate только на новом derived input; исторические S3/S8 не переиспользованы как acceptance | decoder adoption не заявляется |
+| 7 | Timebase rounding changes boundary population | planned = 270 / 1080 / 2160 на rates 0,25 / 1 / 2 (6 streams × окно 180 s) по фактической cumsum AU duration | нет |
+| 8 | A slot is missing, late or not admitted | planned = offered = admitted во всех arms; source lateness распределение сохранено (пример p50 0,37 ms); Y100 над полным planned denominator | нет |
+| 9 | Raw accounting is incomplete | Partition equations сходятся во всех 24 arms: completed + controlled_dropped = delivered, unknown/failed/censored = 0; controlled queue drops CPU учтены как отрицательный raw outcome | нет |
+| 10 | Both repetitions finish on the final bundle | Final variant `branch-channel`, один `bundle_sha256` 5f402cd3… и `plan_sha256` 1eed659b… для всех 24; AB/BA порядок r1/r2 соблюдён | нет |
+| 11 | One pair changes a bound input or execution policy | `verify_source_pins` и material barrier прошли до и после матрицы; drift не обнаружен | нет |
+| 12 | All three rates give an unhelpful curve | Отрицательные и нулевые эффекты сохранены: CPU Y100 = 0 на всех rates, на rate 2 shared/baseline completed = 0,515 / 0,437 | knee CPU не определён (W4) |
+| 13 | Same-domain timing is complete | 408 clock-domain записей, все `CLOCK_MONOTONIC`, один boot_id; native_client, bridge_route и worker self-intervals посчитаны раздельно | нет |
+| 13a | Containers have distinct zero-offset time namespaces | Все домены помечены `timens-offsets:monotonic=0,0;boottime=0,0` по proof `/proc/<pid>/timens_offsets`; refusal paths покрыты тестами CI | нет |
+| 14 | Worker interval or queue estimate is mislabeled | `received_label` = «accepted/verified after sealed-memfd check», `backend_label` = «not pure GPU kernel time», worker `wait_ns.n=0`, `namespace_identity_unknown=true` | queue wait unknown по дизайну |
+| 15 | Pilot does not meet the trigger | Не применимо: trigger сработал (#16). Путь false покрыт тестами | — |
+| 16 | Pilot meets the trigger | Initial shared native-client median wait 0,795 (CPU) и 0,501 (GPU), n ≥ 30. Global-client pool закрыт (closure e6362cb5…), выполнен единственный switch на prebuilt branch-channel и 4 conditional pilots (wait ≈1e-6). Число workers = 8 без изменений | нет |
+| 17 | Pilot or correction fails | В K не наблюдалось. В D–J первичная ошибка и cleanup сохранены в failed originals, повтора и fallback не было | — |
+| 18 | Execution and reduction finish truthfully | Preparation 454 s < 4 h, campaign 8277,7 s < 4 h; closure вовремя; независимая редукция выполнена до исходного deadline (782729,7 < 788794,9 s) | нет |
+| 19 | Deadline, cap or final close fails | Не наблюдалось: original close/infra errors = [] во всех arms, raw caps соблюдены (7,6 GB < 24 GiB) | — |
+| 20 | Current source and executable do not match | Bootstrap проверил HEAD = fefab7a9 = CI commit; selected native rebuild, source pins и `fanout_binding_sha256` (probe) сверены перед arms | нет |
+| R1-21 | Preparation succeeds (legacy) | Сохранён без изменений; K не объявляет qualification/Q4/publication/full | нет |
+| R1-22 | Readiness ages or inputs change | Readiness, source pins и guardian ranges проверены на каждой границе pool; drift = 0 | нет |
+
 Current disposition after actual D preparation: **9/24 tasks closed;2.6 reopened**. Exact-D source/CI PASS below is a historical software checkpoint, preceding the physical SPS refusal. D first preparation FAILED before pilot on fixed_frame_rate_flag0; VUI timing30fps/level40/442 packet timeline otherwise passed. [Original failure](evidence/physical-D-failed-v1/retention.original.json) retains75 files/4235870B and the unchanged failed derivative/context. Amendment planning commit `bf9c5289cac3d659f10d87ee38c597ba881fa8bc` adds only explicit x264 force-cfr=1 before dependent code, keeps strict actual flag1 and all earlier criteria. Real encoder/SPS RED→GREEN, corrected exact-source CI and all physical stages remain pending. Original preparation endpoint671708114023685→686108114023685ns continues through diagnosis/review/CI/new namespace; no clock renewal. No accepted preparation/pilot/effect completion. Older paragraphs below describe their dated checkpoints and cannot override this current disposition.
 
 
