@@ -205,3 +205,78 @@ Ran 3 tests in 0.143s
 
 OK
 
+=== Task 2.6 GREEN (guardian only): operational_group.v1.json carries the process max_clamp_ns; cold reconciliation requires it as an int in [0, 10_000_001]
+# base commit 5246d2a1d2d04f9b1e38d845e86ac653dee6ba4b; uncommitted:  M scripts/publication_guardian_operational_recorder_v1.py  M scripts/publication_operational_request_reconciliation_v1.py  M tests/test_publication_operational_boundary_v1.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it
+2026-10-06T22:25:11Z
+test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.415s
+
+OK
+
+=== Task 2.6 GREEN (guardian only): recorder, boundary and execution-binding modules
+# base commit 5246d2a1d2d04f9b1e38d845e86ac653dee6ba4b; uncommitted:  M scripts/publication_guardian_operational_recorder_v1.py  M scripts/publication_operational_request_reconciliation_v1.py  M tests/test_publication_operational_boundary_v1.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_publication_guardian_operational_recorder_v1 tests.test_publication_operational_boundary_v1 tests.test_publication_operational_execution_binding_v1
+2026-10-06T22:25:13Z
+test_actual_stream_rejected_without_suffix_inference (tests.test_publication_guardian_operational_recorder_v1.RecorderTests.test_actual_stream_rejected_without_suffix_inference) ... ok
+test_event_terminal_reservation_rejects_before_begin (tests.test_publication_guardian_operational_recorder_v1.RecorderTests.test_event_terminal_reservation_rejects_before_begin) ... ok
+test_exact_maximum_valid_begin_and_last_terminal_bytes (tests.test_publication_guardian_operational_recorder_v1.RecorderTests.test_exact_maximum_valid_begin_and_last_terminal_bytes) ... ok
+test_idle_study_snapshot_is_prefix_of_actual_closed_pool_without_resetting_counters (tests.test_publication_guardian_operational_recorder_v1.RecorderTests.test_idle_study_snapshot_is_prefix_of_actual_closed_pool_without_resetting_counters) ... ok
+test_journal_substitution_fails_custody_without_appending (tests.test_publication_guardian_operational_recorder_v1.RecorderTests.test_journal_substitution_fails_custody_without_appending) ... ok
+test_overlimit_field_and_local_sequence_fail_before_begin (tests.test_publication_guardian_operational_recorder_v1.RecorderTests.test_overlimit_field_and_local_sequence_fail_before_begin) ... ok
+test_pending_exhaustion_sticky_but_original_terminal_retained (tests.test_publication_guardian_operational_recorder_v1.RecorderTests.test_pending_exhaustion_sticky_but_original_terminal_retained) ... ok
+test_persistence_failure_is_sticky (tests.test_publication_guardian_operational_recorder_v1.RecorderTests.test_persistence_failure_is_sticky) ... ok
+test_roundtrip_pair_and_physical_companion (tests.test_publication_guardian_operational_recorder_v1.RecorderTests.test_roundtrip_pair_and_physical_companion) ... ok
+test_study_frame_and_sequence_bounds_do_not_relax_legacy (tests.test_publication_guardian_operational_recorder_v1.RecorderTests.test_study_frame_and_sequence_bounds_do_not_relax_legacy) ... ok
+test_terminal_duplicate_and_unfinished_rejected (tests.test_publication_guardian_operational_recorder_v1.RecorderTests.test_terminal_duplicate_and_unfinished_rejected) ... ok
+test_complete_cold_workload_includes_warmup_measurement_and_drain (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_complete_cold_workload_includes_warmup_measurement_and_drain) ... ok
+test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back) ... ok
+test_default_scratch_file_exhaustion_is_bounded_and_cleans_only_private_files (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_default_scratch_file_exhaustion_is_bounded_and_cleans_only_private_files) ... ok
+test_duplicate_actual_terminal_is_rejected_without_an_extra_front_call (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_duplicate_actual_terminal_is_rejected_without_an_extra_front_call) ... ok
+test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it) ... ok
+test_lazy_canonical_ingress_provider_cannot_substitute_same_count_stream_mapping (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_lazy_canonical_ingress_provider_cannot_substitute_same_count_stream_mapping) ... ok
+test_lazy_canonical_ingress_provider_is_called_once_for_each_original_operation (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_lazy_canonical_ingress_provider_is_called_once_for_each_original_operation) ... ok
+test_legitimate_repeated_wire_identity_keeps_both_original_operations (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_legitimate_repeated_wire_identity_keeps_both_original_operations) ... ok
+test_observed_stream_substitution_is_rejected_before_inference (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_observed_stream_substitution_is_rejected_before_inference) ... ok
+test_resealed_guardian_identity_and_terminal_mutations_fail_cold_validation (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_resealed_guardian_identity_and_terminal_mutations_fail_cold_validation) ... ok
+test_same_count_foreign_front_frame_cannot_pass_complete_cold_join (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_same_count_foreign_front_frame_cannot_pass_complete_cold_join) ... ok
+test_stock_canonical_frame_mapping_can_differ_from_original_worker_frame (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_stock_canonical_frame_mapping_can_differ_from_original_worker_frame) ... ok
+test_actual_37_originals_join_32_selected_cells_and_all_three_phases (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_actual_37_originals_join_32_selected_cells_and_all_three_phases) ... ok
+test_foreign_external_engine_cannot_replace_original_runtime_bundle_authority (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_foreign_external_engine_cannot_replace_original_runtime_bundle_authority) ... ok
+test_original_binding_drift_during_full_cold_validation_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_binding_drift_during_full_cold_validation_is_rejected) ... ok
+test_original_validator_ancestor_alias_after_return_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_ancestor_alias_after_return_is_rejected) ... ok
+test_original_validator_empty_output_witness_is_held (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_empty_output_witness_is_held) ... ok
+test_original_validator_external_engine_witness_is_held (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_external_engine_witness_is_held) ... ok
+test_original_validator_leaf_drift_after_validator_return_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_leaf_drift_after_validator_return_is_rejected) ... ok
+test_original_validator_malformed_epoch_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_original_validator_malformed_epoch_is_rejected) ... ok
+test_physically_resealed_runtime_bundle_cannot_detach_original_capture_or_authority (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_physically_resealed_runtime_bundle_cannot_detach_original_capture_or_authority) ... ok
+test_resealed_equal_count_original_operation_substitution_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_resealed_equal_count_original_operation_substitution_is_rejected) ... ok
+test_same_bytes_original_binding_replacement_is_not_held_custody (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_bytes_original_binding_replacement_is_not_held_custody) ... ok
+test_same_bytes_original_validator_leaf_replacement_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_bytes_original_validator_leaf_replacement_is_rejected) ... ok
+test_same_count_32_cell_workload_substitution_is_rejected (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_32_cell_workload_substitution_is_rejected) ... ok
+test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority (tests.test_publication_operational_execution_binding_v1.OperationalExecutionBindingTests.test_same_count_foreign_preprocessing_candidate_cannot_supply_original_authority) ... ok
+
+----------------------------------------------------------------------
+Ran 38 tests in 19.804s
+
+OK
+
+=== Task 2.6 NOT COMPLETED for DeepStream, Savant and native processes (no code change; needs a spec/design decision)
+# Findings at commit 5246d2a1 (source references, no runtime execution):
+# - DeepStream/Savant SDK workers and vast_checkpoint_source / vast_native_gst_probe are children of
+#   scripts/checkpoint_runtime.py run_worker_processes (Popen stderr=PIPE, :1459-1466 and :1529-1536).
+#   capture_stderr (:1338-1361) keeps only a 16 KiB in-memory tail per process; it reaches evidence only
+#   inside a failure ContractError (final_stderr_tails, :1991-2001). On success the tail is discarded, so the
+#   native line "[native-probe|checkpoint-source][wall-clock] max_clamp_ns=" is not retained.
+# - No Python code parses that line.
+# - The in-container owners write their summaries under native_runtime/ (deepstream_runtime_manifest.json,
+#   native_stdio_audit, reset/cohort audits), which retire_owned_runtime_output_v1 removes at the end of the arm;
+#   the SDK worker exit summary (run_fd_worker) is not persisted because fd 1 is reserved for the nvstreammux audit.
+# - Everything that survives (terminal status, publication acceptance, CSV evidence, engine process capture
+#   terminal: stdout/stderr only as size+sha256) is validated with exact field sets downstream
+#   (e.g. checkpoint_deepstream_publication_runtime_v3.py:944-984).
+# Therefore "existing persisted evidence of the process" does not exist on the success path for these
+# processes, and adding max_clamp_ns there means a new persisted field or file through strict validators.
+# Per the regulation this goes back to the change documents (/opsx:update) before any code.

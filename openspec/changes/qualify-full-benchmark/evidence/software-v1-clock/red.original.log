@@ -596,3 +596,23 @@ Ran 3 tests in 0.139s
 
 FAILED (failures=2)
 
+=== Task 2.6 RED (guardian): the persisted guardian operational group does not retain the process max_clamp_ns, and cold reconciliation does not bound it
+# base commit 5246d2a1d2d04f9b1e38d845e86ac653dee6ba4b; uncommitted:  M tests/test_publication_operational_boundary_v1.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it
+2026-10-06T22:24:15Z
+test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it) ... ERROR
+
+======================================================================
+ERROR: test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_operational_boundary_v1.py", line 576, in test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it
+    self.assertEqual(group["max_clamp_ns"], 2_000_001)
+                     ~~~~~^^^^^^^^^^^^^^^^
+KeyError: 'max_clamp_ns'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.375s
+
+FAILED (errors=1)
+

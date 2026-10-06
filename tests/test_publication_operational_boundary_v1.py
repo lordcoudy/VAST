@@ -557,6 +557,40 @@ class PublicationOperationalBoundaryTests(unittest.TestCase):
             finally:
                 fixture.stop()
 
+    def test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it(self) -> None:
+        reads = itertools.count()
+
+        def raw_ns() -> int:
+            index = next(reads)
+            return WALL_BASE_NS + (index // 2) * 10_000_000 - (index % 2) * 2_000_000
+
+        with tempfile.TemporaryDirectory(prefix="vast-boundary-") as temporary, \
+                mock.patch.object(wall_clock, "_PROCESS_CLOCK", NonDecreasingWallClock(raw_ns=raw_ns)):
+            fixture = _BoundaryFixture(Path(temporary))
+            try:
+                fixture.start()
+                for branch in ANALYTICS_BRANCHES:
+                    fixture.complete(2, branch)
+                fixture.finish()
+                group = json.loads(Path(fixture.service.operational_group["path"]).read_bytes())
+                self.assertEqual(group["max_clamp_ns"], 2_000_001)
+                self.assertEqual(fixture.cold_workload()["request_count"], 4)
+                for label, mutate in (
+                    ("missing", lambda value: value.pop("max_clamp_ns")),
+                    ("negative", lambda value: value.update(max_clamp_ns=-1)),
+                    ("beyond bound", lambda value: value.update(max_clamp_ns=10_000_002)),
+                    ("boolean", lambda value: value.update(max_clamp_ns=True)),
+                ):
+                    with self.subTest(label=label):
+                        tampered = {key: item for key, item in copy.deepcopy(group).items() if key != "sha256"}
+                        mutate(tampered)
+                        directory = Path(tempfile.mkdtemp(prefix="clamp-", dir=fixture.root))
+                        companion = _write_json(directory / "companion.json", payload_with_sha256_v1(tampered))
+                        with self.assertRaisesRegex(ValueError, "guardian operational companion schema drifted"):
+                            fixture.cold_workload(companion=companion)
+            finally:
+                fixture.stop()
+
     def test_same_count_foreign_front_frame_cannot_pass_complete_cold_join(self) -> None:
         for field, foreign in (
             ("input_frame_key", "foreign-dataset:0:source:2:1000"),
