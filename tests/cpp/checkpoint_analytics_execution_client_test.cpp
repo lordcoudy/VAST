@@ -552,7 +552,7 @@ void test_maximum_snapshot_reuse_and_cleanup() {
       (void)client.execute(request, payload.data(), payload.size());
       throw std::runtime_error("closed test worker unexpectedly returned a response");
     } catch (const std::exception& error) {
-      if (!contains(error.what(), "response is missing or truncated")) {
+      if (!contains(error.what(), "peer closed before its response")) {
         client_error = std::current_exception();
       }
     }
@@ -667,8 +667,32 @@ void test_original_deadline_interrupts_silent_peer_and_queued_caller() {
 
 }  // namespace
 
+void test_peer_close_is_not_reported_as_truncation() {
+  // Real J: the sidecar failed closed and later clients saw EOF, not an oversized reply.
+  int sockets[2] = {-1, -1};
+  if (::socketpair(AF_UNIX, SOCK_SEQPACKET | SOCK_CLOEXEC, 0, sockets))
+    throw std::runtime_error("peer-close socketpair failed");
+  const std::vector<std::uint8_t> payload{1, 2, 3, 4};
+  auto request = make_request(payload.size(), sha256(payload.data(), payload.size()));
+  request.decision.selected_resource = "cpu";
+  request.deadline_monotonic_ns = vast::CheckpointIoDeadline::monotonic_now_ns() + 2'000'000'000ULL;
+  std::thread peer([&] {
+    try { const auto packet = receive_packet(sockets[1]); if (packet.fd >= 0) ::close(packet.fd); } catch (...) {}
+    ::close(sockets[1]);
+  });
+  std::string error;
+  {
+    vast::CheckpointAnalyticsExecutionClient client(sockets[0]);
+    try { (void)client.execute(request, payload.data(), payload.size()); } catch (const std::exception& exc) { error = exc.what(); }
+  }
+  peer.join();
+  if (error.find("peer closed") == std::string::npos || error.find("truncated") != std::string::npos)
+    throw std::runtime_error("analytics peer close was reported as: " + error);
+}
+
 int main() {
   try {
+    test_peer_close_is_not_reported_as_truncation();
     test_post_response_validation_preserves_original_deadline();
     test_path_connect_uses_original_startup_bound();
     test_original_startup_deadline_cannot_be_signed_or_coerced();

@@ -19,6 +19,43 @@
 
 namespace vast {
 
+// One process's wall stamps never go backwards: the host CLOCK_REALTIME was
+// observed stepping back ~2 ms every ~30 s (WSL time sync). Each stamp is
+// strictly after the previous one; a backward step beyond the bound fails closed.
+class NonDecreasingWallClock {
+ public:
+  static constexpr std::uint64_t kMaximumBackwardStepNs = 10'000'000ULL;
+  std::uint64_t observe(std::uint64_t raw_ns) {
+    std::uint64_t last = last_.load(std::memory_order_relaxed);
+    while (true) {
+      if (last != 0 && raw_ns + kMaximumBackwardStepNs < last) {
+        throw std::runtime_error("host wall clock stepped back beyond the bounded clamp");
+      }
+      const std::uint64_t next = raw_ns > last ? raw_ns : last + 1;
+      if (last_.compare_exchange_weak(last, next, std::memory_order_relaxed)) {
+        const std::uint64_t clamp = next - raw_ns;
+        std::uint64_t seen = max_clamp_.load(std::memory_order_relaxed);
+        while (clamp > seen && !max_clamp_.compare_exchange_weak(seen, clamp, std::memory_order_relaxed)) {}
+        return next;
+      }
+    }
+  }
+  std::uint64_t max_clamp_ns() const { return max_clamp_.load(std::memory_order_relaxed); }
+  static NonDecreasingWallClock& process() {
+    static NonDecreasingWallClock clock;
+    return clock;
+  }
+  static std::uint64_t now_ns() {
+    using namespace std::chrono;
+    return process().observe(static_cast<std::uint64_t>(
+        duration_cast<nanoseconds>(system_clock::now().time_since_epoch()).count()));
+  }
+
+ private:
+  std::atomic<std::uint64_t> last_{0};
+  std::atomic<std::uint64_t> max_clamp_{0};
+};
+
 // One owned lifecycle bound, shared by its callbacks and transports. Realtime
 // START/drain and per-request monotonic endpoints are checked in their own
 // domains; neither a readiness wakeup nor partial progress renews either bound.

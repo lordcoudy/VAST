@@ -526,7 +526,7 @@ class CheckpointAnalyticsExecutionClient {
       throw std::runtime_error("failed to send analytics execution request");
     }
     sent = true;
-    std::array<char, kMaximumMessageBytes> buffer{};
+    std::array<char, kMaximumMessageBytes + 1> buffer{};  // MSG_TRUNC: a maximal reply still fits.
     ssize_t received = -1;
     while (true) {
       io_->check(identity.deadline_monotonic_ns);
@@ -539,7 +539,10 @@ class CheckpointAnalyticsExecutionClient {
       }
       break;
     }
-    if (received <= 0 || static_cast<std::size_t>(received) >= buffer.size()) {
+    if (received == 0) {
+      throw std::runtime_error("analytics execution peer closed before its response");
+    }
+    if (received < 0 || static_cast<std::size_t>(received) > kMaximumMessageBytes) {
       throw std::runtime_error("analytics execution response is missing or truncated");
     }
     auto response = parse_object(std::string(buffer.data(), static_cast<std::size_t>(received)));

@@ -552,16 +552,9 @@ class NativeProbeRuntime {
   static constexpr std::size_t kMaximumQueuedCheckpointAccessUnits = 1024;
   std::atomic<bool> failed_{false};
 
-  static std::uint64_t now_ms() {
-    using namespace std::chrono;
-    return static_cast<std::uint64_t>(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count());
-  }
+  static std::uint64_t now_ms() { return vast::NonDecreasingWallClock::now_ns() / 1'000'000ULL; }
 
-  static std::uint64_t now_ns() {
-    using namespace std::chrono;
-    return static_cast<std::uint64_t>(
-        duration_cast<nanoseconds>(system_clock::now().time_since_epoch()).count());
-  }
+  static std::uint64_t now_ns() { return vast::NonDecreasingWallClock::now_ns(); }
 
   static std::uint64_t steady_now_ns() {
     using namespace std::chrono;
@@ -4288,7 +4281,9 @@ int main(int argc, char** argv) {
     Args args = parse_args(argc, argv);
     args.executable_path = executable_path;
     NativeProbeRuntime runtime(std::move(args));
-    return runtime.run();
+    const int status = runtime.run();
+    std::cerr << "[native-probe][wall-clock] max_clamp_ns=" << vast::NonDecreasingWallClock::process().max_clamp_ns() << "\n";
+    return status;
   } catch (const std::exception& exc) {
     std::cerr << "[native-probe][fatal] " << exc.what() << "\n";
     return 2;

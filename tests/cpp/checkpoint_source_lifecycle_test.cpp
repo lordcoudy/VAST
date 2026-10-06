@@ -377,6 +377,20 @@ bool inventory_cli_is_genuinely_dispatched() {
   }
   return true;
 }
+bool wall_clock_never_goes_backwards() {
+  // Real J: CLOCK_REALTIME stepped back ~2 ms every ~30 s between decision and path entry.
+  vast::NonDecreasingWallClock wall;
+  const std::uint64_t base = 1'791'284'239'197'000'000ULL;
+  const std::uint64_t observed[] = {wall.observe(base), wall.observe(base - 2'000'000ULL),
+      wall.observe(base - 1'999'999ULL), wall.observe(base + 5ULL), wall.observe(base + 5ULL)};
+  for (std::size_t index = 1; index < sizeof(observed) / sizeof(observed[0]); ++index)
+    if (observed[index] <= observed[index - 1]) { std::cerr << "wall clock is not strictly increasing\n"; return false; }
+  if (observed[1] != base + 1 || wall.max_clamp_ns() != 2'000'001ULL) { std::cerr << "wall clamp drifted\n"; return false; }
+  try { (void)wall.observe(base - 11'000'000ULL); std::cerr << "wall step beyond bound accepted\n"; return false; }
+  catch (const std::runtime_error&) {}
+  const auto first = vast::NonDecreasingWallClock::now_ns();
+  return vast::NonDecreasingWallClock::now_ns() > first;
+}
 bool canonical_consumer_fd_map_only() {
   // The Python producers must emit the compact map; the native parser stays strict.
   try {
@@ -398,5 +412,6 @@ int main(int argc,char** argv) {
   const bool journal=source_journal_ack_and_partial_fanout();
   const bool finish=source_journal_finish_ownership_and_retirement();
   const bool consumers=canonical_consumer_fd_map_only();
-  return bounded&&finite&&inventory&&journal&&finish&&consumers?0:1;
+  const bool wall=wall_clock_never_goes_backwards();
+  return bounded&&finite&&inventory&&journal&&finish&&consumers&&wall?0:1;
 }

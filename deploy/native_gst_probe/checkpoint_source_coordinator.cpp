@@ -208,10 +208,7 @@ std::unordered_map<std::string, int> parse_consumer_fds(const std::string& raw) 
   return result;
 }
 
-std::uint64_t now_ms() {
-  using namespace std::chrono;
-  return static_cast<std::uint64_t>(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count());
-}
+std::uint64_t now_ms() { return vast::NonDecreasingWallClock::now_ns() / 1'000'000ULL; }
 
 std::string payload_sha256(const GstMapInfo& map) {
   gchar* digest = g_compute_checksum_for_data(G_CHECKSUM_SHA256, map.data, map.size);
@@ -400,6 +397,7 @@ class SourceCoordinator {
     }
     if (!failed_.load()) write_status("DRAINED", now_ms());
     retire_owned_descriptors(true);
+    std::cerr << "[checkpoint-source][wall-clock] max_clamp_ns=" << vast::NonDecreasingWallClock::process().max_clamp_ns() << '\n';
     return failed_.load() ? 1 : 0;
   }
 

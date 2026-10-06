@@ -430,7 +430,7 @@ class CheckpointNativePolicyClient {
         }
         break;
       }
-      std::array<char, kMaximumMessageBytes> buffer{};
+      std::array<char, kMaximumMessageBytes + 1> buffer{};  // MSG_TRUNC: a maximal reply still fits.
       while (true) {
         io_->check();
         const ssize_t received = ::recv(
@@ -440,7 +440,8 @@ class CheckpointNativePolicyClient {
           io_->wait(fd_, POLLIN);
           continue;
         }
-        if (received <= 0 || static_cast<std::size_t>(received) >= buffer.size()) {
+        if (received == 0) throw std::runtime_error("native policy peer closed before its response");
+        if (received < 0 || static_cast<std::size_t>(received) > kMaximumMessageBytes) {
           throw std::runtime_error("native policy response is missing or truncated");
         }
         io_->check();
