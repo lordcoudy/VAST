@@ -64,6 +64,21 @@
    - для этапа 2 — датированная гарантия ёмкости Seafile от пользователя нужна для приёмки этапа 2 (capacity attestation), а не для старта Q4: требование «Cloud admission uses an actual dated guarantee» не блокирует Q4;
    - для этапа 3 — работающий `systemctl --user` в WSL (WSLg overlay) и место на C:.
 
+## Amendment 1 (2026-10-07, по результатам реализации разделов 2–3)
+
+- **Clamp в evidence.** Сохранять `max_clamp_ns` при успехе можно только там, где процесс уже пишет структурированную evidence. Это guardian operational group (`vast_guardian_operational_group_v1`): writer всегда пишет поле, reader принимает исторические группы без него (R14/S2), а при наличии требует целое 0..10 000 001.
+  - У native probe, DeepStream и Savant SDK runtime при успехе сохраняются только size и sha256 process capture, а `native_runtime/` удаляется после arm. Новое поле в строгих валидаторах terminal, acceptance и CSV было бы изменением форматов вне объёма.
+  - Поэтому эти процессы выводят clamp в stderr при выходе, а существующие owners сохраняют stderr как failure evidence. Требование уточнено соответственно; предикаты порядка не меняются.
+- **Полный перечень full consumers.** Grep показал ещё consumers, принимающие full kinds, с побочными эффектами до отказа или без проверки kind (`evidence/software-v1-consumers/consumers.v1.md`, разделы B и C):
+  - index builders не проверяют kind pilot acceptance;
+  - `publication_q4_authority_source_request_v1` и `full_publication_identity_manifest_v2` создают и потом откатывают файлы;
+  - `publication_q4_authority_source_material_v1` грузит вложенные sources после mkdir;
+  - `full_publication_supervisor` создаёт state и lock до проверки;
+  - `full_publication_wsl_user_service_v1 materialize` не проверяет kind;
+  - Q4 executor проверяет phase receipts только перед Phase B.
+
+  Чтобы MODIFIED R13/S6 после archive описывал фактическое поведение, все они входят в этот change. Правило одно: read-only preflight kind до любого побочного эффекта. Временное создание с откатом считается нарушением. В Q4 executor добавляется только ранний read-only preflight переданных receipts, порядок Phase A/B и проверки под lock не меняются.
+
 ## Risks / Trade-offs
 
 - **[Неизвестная причина A269 memfd]** → PR2 diagnostic сохраняет первый отказ; при повторе — FAILED и amendment, без повторного запуска наугад.

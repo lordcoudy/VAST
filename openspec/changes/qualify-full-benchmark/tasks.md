@@ -16,13 +16,14 @@
   Предикаты `checkpoint_deepstream_resource_runtime_v3.py` и Savant не меняются. Готово при genuine RED на текущем коде и GREEN после подключения.
 - [ ] 2.4 RED→GREEN для guardian recorder: `clock_ns=[t, t−2 ms]` для begin и terminal, после чего `publication_operational_request_reconciliation_v1` сверку проходит. Готово при genuine RED и GREEN.
 - [ ] 2.5 Static gate в CI: в покрытых runtime-файлах нет прямых wall-clock вызовов для упорядоченных полей вне общего модуля; каждый native Dockerfile, собирающий probe, копирует `checkpoint_admission_transport.hpp`. Готово при RED на подставленном нарушении и GREEN на дереве.
-- [ ] 2.6 `max_clamp_ns` сохраняется в persisted evidence Python-процессов DeepStream, Savant и guardian, а native значение — в owner-retained stderr capture. Готово, когда focused тесты проверяют оба пути.
+- [ ] 2.6 (Amendment 1) `max_clamp_ns` пишется в guardian operational group; reader принимает исторические группы без поля. Native, DeepStream и Savant выводят clamp в stderr при выходе, его сохраняют existing owners как failure evidence. Готово, когда focused тесты проверяют writer, историческое чтение, недопустимые значения и наличие строки stderr.
 - [ ] 2.7 Новый модуль добавлен в Dockerfile, source allowlist затронутых runtime-образов и в execution code closure. Готово, когда существующие closure и allowlist тесты проходят с модулем и падают без него.
 
 ## 3. Full consumers (R13/S6, test-first)
 
 - [ ] 3.1 RED: для каждого full consumer подать component, study и неизвестный kind. Перечень полный: все CLI и функции, принимающие full kinds qualification, accepted-policy, promotion, Q4 или full publication; сверить по grep принимаемых kind. Consumers: qualification runtime inputs v2, pilot executor v2, execution closure v1, accepted-policy preprocessing, policy promotion, resource promotion, Q4 authority plan pipeline, Q4 executor, full publication entrypoint. Ожидаемое поведение: отказ, в свежем root нет новых каталогов и файлов. Готово, когда все тесты есть, а падения записаны.
 - [ ] 3.2 GREEN: перенести проверку kind раньше создания каталогов только в упавших consumers. Готово, когда все тесты 3.1 проходят, а прежние тесты не изменены.
+- [ ] 3.3 (Amendment 1) RED→GREEN для consumers из разделов B и C `evidence/software-v1-consumers/consumers.v1.md`: index builders отклоняют чужой kind pilot acceptance до записи index; Q4 source request, source material (вложенные sources), identity manifest v2, supervisor, WSL service `materialize` и phase receipts Q4 executor (ранний read-only preflight) отклоняют component, study и неизвестный kind до любого создания файлов, включая временные. Готово, когда новые тесты проходят, существующие не изменены, а порядок Phase A/B не изменён.
 
 ## 4. Owner 37 операций (test-first)
 
