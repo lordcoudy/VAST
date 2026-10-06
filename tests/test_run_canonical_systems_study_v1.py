@@ -356,6 +356,37 @@ os.waitpid(child,0);print(raw.decode())
                      [begin,{**released,"input_frame_key":"other"}],[begin,{**released,"branch":"damage"}]):
             with self.assertRaises(ValueError):driver.native_client_waits(rows)
 
+    def test_decoded_guardian_rows_do_not_repeat_the_journal_header(self):
+        header={"sha256":"c"*64,"route":{"branch":"plate_number","resource":"cpu"},
+            "worker_capability":{"worker_id":"w"},"template":"t"*18500}
+        decoded=[{"identity":{"run_id":"r","arm_id":"wire","request_id":"q"+str(index),"input_frame_key":"k"+str(index)},
+            "begin":{"seq":2*index+1},"terminal":{"seq":2*index+2,"timings":None},"original_header":header,
+            "original_journal_path":"/held/plate_number-cpu.jsonl","original_terminal_offset":index} for index in range(4000)]
+        rows,waits=driver.decode_guardian_rows(decoded,{"arm_id":"pilot"},"r","wire",{},{})
+        self.assertEqual(waits,[])
+        self.assertTrue(all("original_header" not in row and row["original_header_sha256"]==header["sha256"] and
+            row["original_route"]==header["route"] and row["identity"]["arm_id"]=="pilot" for row in rows))
+        with tempfile.TemporaryDirectory() as tmp:
+            # 4000 rows x ~18.6 KB header would exceed the decoded role cap.
+            self.assertLess(driver.write_rows(Path(tmp)/"guardian.jsonl",rows)["size_bytes"],8*1024**2)
+
+    def test_study_storage_caps_are_the_measured_worst_case_with_margin(self):
+        import publication_operational_request_domain_v1 as domain
+        import publication_guardian_operational_recorder_v1 as recorder
+        import reduce_canonical_systems_study_v1 as reducer
+        from canonical_systems_study_plan_v1 import build_study_plan
+        self.assertEqual((driver.MAX_RAW_ARM,driver.MAX_RAW_CAMPAIGN),(1024**3,24*1024**3))
+        self.assertEqual((reducer.MAX_FILE_BYTES,reducer.MAX_DOCUMENT_BYTES),(192*1024**2,16*1024**2))
+        scope={"kind":"finite-component-study","plan_sha256":"a"*64,"max_frame_id":441,"max_requests_per_arm":10608,"max_operations":32}
+        # Only the finite study domain is re-fixed; the shared legacy domain stays 64 MiB.
+        self.assertEqual((domain.native_domain_byte_limit_v1(None),domain.native_domain_byte_limit_v1(scope)),(64*1024**2,192*1024**2))
+        self.assertEqual(domain.MAX_NATIVE_DOMAIN_BYTES_V1,64*1024**2)
+        self.assertEqual(recorder.STUDY_BUDGET_OVERRIDES,{"max_terminal_bytes":2048,"max_group_bytes":768*1024**2})
+        self.assertEqual(recorder.DEFAULT_BUDGETS["max_group_bytes"],256*1024**2)
+        # Measured worst case: ~445 MiB arm directory, ~161 MiB decoded per arm, ~7 GiB campaign.
+        self.assertGreaterEqual(driver.MAX_RAW_ARM,2*445*1024**2)
+        self.assertGreaterEqual(reducer.MAX_FILE_BYTES,2*58*1024**2)
+
     def test_control_failure_still_closes_actual_service_thread_and_preserves_primary(self):
         with tempfile.TemporaryDirectory() as tmp:
             commands=driver.Commands(Path(tmp),time.monotonic()+60);stop=threading.Event();thread=threading.Thread(target=stop.wait);thread.start()

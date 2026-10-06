@@ -27,6 +27,7 @@ DEFAULT_BUDGETS = {
     "max_requests": 500000, "max_pending": 128,
     "max_append_bytes": 65536, "terminal_reservation_bytes": 4096,
 }
+STUDY_BUDGET_OVERRIDES = {"max_terminal_bytes": 2048, "max_group_bytes": 768 * 1024 * 1024}  # Amendment7 pool lifetime.
 COUNTS = ("requests_started", "requests_completed", "requests_failed",
           "unfinished_requests", "connections_accepted", "event_count")
 HEADER_FIELDS = {"schema_version", "artifact_kind", "record_kind",
@@ -169,7 +170,7 @@ class GuardianOperationalRecorder:
         if any(scope is not None for scope in study_scopes):
             _require(all(scope is not None and scope == study_scopes[0] for scope in study_scopes),
                      "study scope differs across held routes")
-            self._budgets["max_terminal_bytes"] = 2048
+            self._budgets.update(STUDY_BUDGET_OVERRIDES)
         for key, number in (budgets or {}).items():
             _require(key in DEFAULT_BUDGETS, "unknown operational budget")
             _integer(number, self._budgets[key], key, 1)

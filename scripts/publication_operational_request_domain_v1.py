@@ -19,6 +19,7 @@ NATIVE_OPERATIONAL_JSONL = "native_operational_requests.v1.jsonl"
 NATIVE_DOMAIN_KIND_V1 = "vast_qualification_operational_native_domain_v1"
 GUARDIAN_JOURNAL_KIND_V1 = "vast_guardian_operational_request_journal_v1"
 MAX_NATIVE_DOMAIN_BYTES_V1 = 64 * 1024 * 1024
+MAX_STUDY_NATIVE_DOMAIN_BYTES_V1 = 192 * 1024 * 1024  # Finite study only (measured ~58 MiB).
 MAX_NATIVE_HEADER_BYTES_V1 = 64 * 1024
 MAX_NATIVE_RECORD_BYTES_V1 = 9_216
 MAX_NATIVE_DECISIONS_V1 = 6_744
@@ -458,6 +459,14 @@ def _physical_file(path):
     return info
 
 
+def native_domain_byte_limit_v1(study_scope):
+    """The legacy domain keeps its reviewed 64 MiB; only a validated finite-study scope gets its own bound."""
+    if study_scope is None:
+        return MAX_NATIVE_DOMAIN_BYTES_V1
+    validate_study_scope_v1(study_scope)
+    return MAX_STUDY_NATIVE_DOMAIN_BYTES_V1
+
+
 def write_native_domain_v1(path, header, occurrences: Iterable, *, original_authority_validator, study_scope=None):
     validate_native_header_v1(header, study_scope=study_scope)
     path = Path(path)
@@ -468,7 +477,7 @@ def write_native_domain_v1(path, header, occurrences: Iterable, *, original_auth
         def append(payload, cap):
             nonlocal size
             line = canonical_json_v1(payload) + b"\n"
-            if len(line) > cap or size + len(line) > MAX_NATIVE_DOMAIN_BYTES_V1:
+            if len(line) > cap or size + len(line) > native_domain_byte_limit_v1(study_scope):
                 raise OperationalDomainError("native domain exceeds its byte budget")
             if stream.write(line) != len(line):
                 raise OperationalDomainError("short native domain write")
@@ -499,7 +508,7 @@ def iter_native_domain_v1(path, *, expected_descriptor, original_authority_valid
     if path.absolute() != Path(expected_descriptor["path"]).absolute():
         raise OperationalDomainError("native domain descriptor path mismatch")
     before = _physical_file(path)
-    if before.st_size > MAX_NATIVE_DOMAIN_BYTES_V1 or before.st_size != expected_descriptor["size_bytes"]:
+    if before.st_size > native_domain_byte_limit_v1(study_scope) or before.st_size != expected_descriptor["size_bytes"]:
         raise OperationalDomainError("native domain file size mismatch")
     digest = hashlib.sha256()
     complete = measured = 0

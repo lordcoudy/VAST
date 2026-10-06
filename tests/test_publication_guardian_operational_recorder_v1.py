@@ -9,7 +9,7 @@ from unittest import mock
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from publication_guardian_operational_recorder_v1 import GuardianOperationalRecorder, GuardianOperationalError, DEFAULT_BUDGETS
+from publication_guardian_operational_recorder_v1 import GuardianOperationalRecorder, GuardianOperationalError, DEFAULT_BUDGETS, STUDY_BUDGET_OVERRIDES
 
 BRANCHES=("plate_number", "vehicle_type", "damage", "foreign_object")
 
@@ -51,7 +51,7 @@ class RecorderTests(unittest.TestCase):
                     for header in hs.values():
                         header["study_scope"] = scope
                         header["artifact_kind"] = "vast_finite_study_guardian_journal_v1"
-                        header["budgets"]["max_terminal_bytes"] = 2048
+                        header["budgets"].update(STUDY_BUDGET_OVERRIDES)
                 rec = GuardianOperationalRecorder(root / "journal", hs)
                 try:
                     msg = message()
@@ -87,7 +87,7 @@ class RecorderTests(unittest.TestCase):
             scope={"kind":"finite-component-study","plan_sha256":"a"*64,"max_frame_id":441,"max_requests_per_arm":10608,"max_operations":32}
             for route,header in hs.items():
                 header.update(study_scope=scope,artifact_kind="vast_finite_study_guardian_journal_v1")
-                header["budgets"]["max_terminal_bytes"]=2048
+                header["budgets"].update(STUDY_BUDGET_OVERRIDES)
                 second=dict(header["contexts"][0],id=1,run_id="later-run")
                 header["contexts"].append(second);header["bindings"].append({"id":1,"context":1,"front_worker":0})
                 header.pop("sha256");hs[route]=payload_with_sha256_v1(header)

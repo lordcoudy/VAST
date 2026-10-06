@@ -19,7 +19,7 @@ from publication_operational_request_domain_v1 import (
     POLICIES, canonical_json_v1, payload_with_sha256_v1, strict_json_object_v1,
     validate_descriptor_v1, validate_native_header_v1,
 )
-from publication_guardian_operational_recorder_v1 import BRANCHES, COUNTS, DEFAULT_BUDGETS, HEADER_KIND
+from publication_guardian_operational_recorder_v1 import BRANCHES, COUNTS, DEFAULT_BUDGETS, HEADER_KIND, STUDY_BUDGET_OVERRIDES
 from publication_physical_io_v1 import PhysicalRootCustodyV1, PublicationPhysicalIoV1Error
 
 QUALIFICATION_MODE = "complete_qualification_operational_identity_v1"
@@ -288,7 +288,7 @@ def _guardian_context(rows, mode, descriptors, manifest_descriptor, inventory_de
                  "max_frame_id": 441, "max_requests_per_arm": 10608, "max_operations": 32}
         for key, header in headers.items():
             header["artifact_kind"], header["study_scope"] = STUDY_GUARDIAN_KIND_V1, scope
-            header["budgets"]["max_terminal_bytes"] = 2048
+            header["budgets"].update(STUDY_BUDGET_OVERRIDES)
             headers[key] = payload_with_sha256_v1(header)
         return payload_with_sha256_v1({"schema_version": 1, "artifact_kind": "vast_finite_study_guardian_capture_context_v1",
             "mode": "finite-component-study", "headers_by_route": headers, "output_dir": str(output_dir)})

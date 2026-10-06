@@ -19,13 +19,14 @@ import time
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from canonical_systems_study_plan_v1 import stream_schedule, validate_study_plan
 
-MAX_FILE_BYTES = 64 * 1024 * 1024
+MAX_FILE_BYTES = 192 * 1024 * 1024  # Amendment7: measured worst file ~58 MiB.
 MAX_ROWS = 100_000
 MAX_ROW_BYTES = 64 * 1024  # Existing original native/guardian header cap.
 MAX_ARM_ROWS = 250_000
 MAX_FDS = 128
-MAX_DOCUMENT_BYTES = 4 * 1024 * 1024
+MAX_DOCUMENT_BYTES = 16 * 1024 * 1024  # Amendment7: measured closure ~3.9 MiB.
 MAX_INPUT_FILES = 2048
+MAX_CAMPAIGN_BYTES = 24 * 1024 * 1024 * 1024  # Amendment7: equals the plan campaign limit.
 
 
 def _deadline(deadline):
@@ -745,7 +746,7 @@ def reduce_closed_study(binding, *, deadline=None):
         seen.add(name)
         _require(len(seen) <= MAX_INPUT_FILES, "closed input file count cap")
         total_bytes += _integer(descriptor.get("size_bytes"), "closed input size")
-        _require(total_bytes <= 8*1024**3, "campaign raw byte cap")
+        _require(total_bytes <= MAX_CAMPAIGN_BYTES, "campaign raw byte cap")
         value = read_closed_rows(descriptor, max_bytes=MAX_DOCUMENT_BYTES if document else MAX_FILE_BYTES,
                                  deadline=deadline, document=document, observations=observations)
         descriptors.append(dict(descriptor))

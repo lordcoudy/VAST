@@ -3120,14 +3120,14 @@ def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, ru
             nonlocal total
             raw = json.dumps(event, sort_keys=True, separators=(",", ":")).encode()+b"\n"
             total += len(raw)
-            _require(len(raw) <= 2048 and total <= 64*1024*1024, "study topology capture exceeded original cap")
+            _require(len(raw) <= 2048 and total <= 128*1024*1024, "study topology capture exceeded original cap")
             stream.write(raw); stream.flush()
         raw_total = 0
         def raw_event(line, worker_id, pid):
             nonlocal raw_total
             raw = line.encode("utf-8")
             raw_total += len(raw)
-            _require(len(raw) <= 2048 and raw_total <= 64*1024*1024, "native original protocol exceeded cap")
+            _require(len(raw) <= 2048 and raw_total <= 128*1024*1024, "native original protocol exceeded cap")
             original.write(raw); original.flush()
         admission_total = 0
         admission_lock = threading.Lock()
@@ -3157,7 +3157,7 @@ def run_finite_study_arm_v1(*, study_plan, arm_id, project_root, output_root, ru
             "time_namespace": _study_clock_domain(), "clock": "CLOCK_MONOTONIC"},
         "final_variant": client_mode, "accepted": False, "publication_ready": False}
     raw = json.dumps(facts, sort_keys=True, separators=(",", ":"), default=str).encode()+b"\n"
-    _require(len(raw) <= 64*1024*1024 and time.monotonic_ns() < campaign_deadline_ns,
+    _require(len(raw) <= 256*1024*1024 and time.monotonic_ns() < campaign_deadline_ns,
              "study arm receipt is late or too large")
     with (output / "arm.original.json").open("xb") as stream:
         stream.write(raw); stream.flush(); os.fsync(stream.fileno())

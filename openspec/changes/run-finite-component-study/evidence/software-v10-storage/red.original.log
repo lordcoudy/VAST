@@ -1,0 +1,32 @@
+2026-10-06T07:25:53Z
+test_decoded_guardian_rows_do_not_repeat_the_journal_header (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_decoded_guardian_rows_do_not_repeat_the_journal_header) ... FAIL
+test_study_storage_caps_are_the_measured_worst_case_with_margin (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_study_storage_caps_are_the_measured_worst_case_with_margin) ... FAIL
+
+======================================================================
+FAIL: test_decoded_guardian_rows_do_not_repeat_the_journal_header (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_decoded_guardian_rows_do_not_repeat_the_journal_header)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py", line 367, in test_decoded_guardian_rows_do_not_repeat_the_journal_header
+    self.assertTrue(all("original_header" not in row and row["original_header_sha256"]==header["sha256"] and
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_study_storage_caps_are_the_measured_worst_case_with_margin (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_study_storage_caps_are_the_measured_worst_case_with_margin)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py", line 378, in test_study_storage_caps_are_the_measured_worst_case_with_margin
+    self.assertEqual((driver.MAX_RAW_ARM,driver.MAX_RAW_CAMPAIGN),(1024**3,24*1024**3))
+AssertionError: Tuples differ: (268435456, 8589934592) != (1073741824, 25769803776)
+
+First differing element 0:
+268435456
+1073741824
+
+- (268435456, 8589934592)
++ (1073741824, 25769803776)
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.031s
+
+FAILED (failures=2)
+EXIT=1

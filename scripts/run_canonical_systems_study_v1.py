@@ -33,8 +33,9 @@ PARENTS = {
 FFMPEG_SHA = "ed16af623947494a72e284b6eb8ff225f2da22b38b5d5069c2fd4b4ba3384e41"
 FFPROBE_SHA = "272f6ebc634a63d9c8b4ca68e964119d980f25154e5aa2c35e5487da48e9a58f"
 MAX_MEDIA = 512 * 1024**2
-MAX_RAW_ARM = 256 * 1024**2
-MAX_RAW_CAMPAIGN = 8 * 1024**3
+MAX_RAW_ARM = 1024**3  # Amendment7: measured worst arm ~445 MiB.
+MAX_RAW_CAMPAIGN = 24 * 1024**3  # Amendment7: measured ~7 GiB for 32 arms.
+MAX_STUDY_ROLE_BYTES = 192 * 1024**2  # Amendment7: decoded role/study journal bound.
 
 
 def require(ok, message):
@@ -556,7 +557,7 @@ def prepare(args):
             release_space(reservation, reservation_identity)
 
 
-def jsonl_rows(raw, *, maximum=64*1024**2):
+def jsonl_rows(raw, *, maximum=MAX_STUDY_ROLE_BYTES):
     require(len(raw) <= maximum and raw.endswith(b"\n"), "original JSONL cap/terminal newline")
     rows = []
     for line in raw.splitlines():
@@ -845,10 +846,10 @@ def write_rows(path,rows):
     with Path(path).open("xb") as stream:
         for row in rows:
             raw=canonical_json_v1(row)+b"\n";total+=len(raw)
-            require(total<=64*1024**2 and len(raw)<=1024**2,"decoded original role cap")
+            require(total<=MAX_STUDY_ROLE_BYTES and len(raw)<=1024**2,"decoded original role cap")
             require(stream.write(raw)==len(raw),"short original decoded role write")
         stream.flush();os.fsync(stream.fileno())
-    return descriptor(Path(path),maximum=64*1024**2)
+    return descriptor(Path(path),maximum=MAX_STUDY_ROLE_BYTES)
 
 
 def owned_subprocess_runner(commands,engine):
@@ -977,6 +978,36 @@ def native_client_waits(wait_rows):
     return waits
 
 
+def decode_guardian_rows(decoded,arm,run_id,wire_arm_id,clock_proof,bridge_domain):
+    """Decoded guardian rows of one arm plus their bridge/worker wait observations."""
+    guardians=[];waits=[]
+    for row in decoded:
+        identity=row["identity"]
+        require(identity["run_id"]==run_id and identity["arm_id"]==wire_arm_id,"original guardian wire arm/run mismatch")
+        # Explicit decoded alias to the logical plan ID; original identity retained.
+        header=row["original_header"]
+        # The held journal header stays in the retained range file; rows keep its chain anchor and route.
+        guardians.append({**{k:v for k,v in row.items() if k!="original_header"},"original_header_sha256":header["sha256"],
+            "original_route":header["route"],"original_wire_identity":identity,"identity":{**identity,"arm_id":arm["arm_id"]}})
+        timing=row["terminal"].get("timings")
+        if timing is not None:
+            interval=timing["bridge_route"];require(interval["pid"]==os.getpid(),"bridge timing owner differs from actual service owner")
+            waits.append({"kind":"bridge_route","request_id":identity["request_id"],"attempt_ns":interval["begin_ns"],
+                "acquired_ns":interval["acquired_ns"],"reply_ns":interval["reply_ns"],"released_ns":interval["end_ns"],"clock_domain":bridge_domain})
+            worker=timing["worker"]
+            if worker is not None:
+                capability=row["original_header"]["worker_capability"]
+                waits.append({"kind":"worker","request_id":identity["request_id"],
+                    **dict(zip(("received_ns","inference_started_ns","inference_finished_ns","completed_ns"),
+                        (worker[k] for k in ("worker_received_monotonic_ns","inference_started_monotonic_ns","inference_finished_monotonic_ns","worker_completed_monotonic_ns")))),
+                    "clock_domain":{"clock":"CLOCK_MONOTONIC","pid":None,
+                        "boot_id":clock_proof["native_environment"]["VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID"],
+                        "time_namespace":clock_proof["native_environment"]["VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE"]},
+                    "actual_route_clock_observation":next(observation for observation in clock_proof["observations"] if observation["route"]==[row["original_header"]["route"]["branch"],row["original_header"]["route"]["resource"]]),
+                    "worker_identity":{"worker_id":capability["worker_id"],"capability_sha256":hashlib.sha256(canonical_json_v1(capability)).hexdigest()}})
+    return guardians,waits
+
+
 def decode_arm(commands,plan,arm,facts,output,snapshot,clock_proof,pool_delta,material):
     from publication_operational_request_domain_v1 import iter_native_domain_v1
     from publication_policy_contract import validate_decision_record
@@ -1001,39 +1032,21 @@ def decode_arm(commands,plan,arm,facts,output,snapshot,clock_proof,pool_delta,ma
                     row.get("event_kind")=="branch_drop" and row.get("input_frame_key")==terminal["input_frame_key"] and row.get("branch_id")==terminal["branch_id"]]
             require(len(matched)==1,"original native drop raw protocol join is ambiguous")
             native.append({"branch_terminal":terminal,"original_event":matched[0],"resource":arm["resource"],
-                "original_raw_descriptor":descriptor(output/"native-protocol.original.jsonl",maximum=64*1024**2,deadline=commands.deadline)})
+                "original_raw_descriptor":descriptor(output/"native-protocol.original.jsonl",maximum=128*1024**2,deadline=commands.deadline)})
     guardians=[];waits=[]
     bridge_domain={"clock":"CLOCK_MONOTONIC","boot_id":Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
         "time_namespace":actual_clock_domain_label(),"pid":os.getpid()}
-    for row in snapshot["decoded"]:
-        identity=row["identity"]
-        require(identity["run_id"]==run_id and identity["arm_id"]==next(r for r in material["active_allowed"] if r["run_id"]==run_id)["wire_arm_id"],"original guardian wire arm/run mismatch")
-        # Explicit decoded alias to the logical plan ID; original identity retained.
-        guardians.append({**row,"original_wire_identity":identity,"identity":{**identity,"arm_id":arm["arm_id"]}})
-        timing=row["terminal"].get("timings")
-        if timing is not None:
-            interval=timing["bridge_route"];require(interval["pid"]==os.getpid(),"bridge timing owner differs from actual service owner")
-            waits.append({"kind":"bridge_route","request_id":identity["request_id"],"attempt_ns":interval["begin_ns"],
-                "acquired_ns":interval["acquired_ns"],"reply_ns":interval["reply_ns"],"released_ns":interval["end_ns"],"clock_domain":bridge_domain})
-            worker=timing["worker"]
-            if worker is not None:
-                capability=row["original_header"]["worker_capability"]
-                waits.append({"kind":"worker","request_id":identity["request_id"],
-                    **dict(zip(("received_ns","inference_started_ns","inference_finished_ns","completed_ns"),
-                        (worker[k] for k in ("worker_received_monotonic_ns","inference_started_monotonic_ns","inference_finished_monotonic_ns","worker_completed_monotonic_ns")))),
-                    "clock_domain":{"clock":"CLOCK_MONOTONIC","pid":None,
-                        "boot_id":clock_proof["native_environment"]["VAST_CHECKPOINT_WORKER_CLOCK_BOOT_ID"],
-                        "time_namespace":clock_proof["native_environment"]["VAST_CHECKPOINT_WORKER_CLOCK_TIME_NAMESPACE"]},
-                    "actual_route_clock_observation":next(observation for observation in clock_proof["observations"] if observation["route"]==[row["original_header"]["route"]["branch"],row["original_header"]["route"]["resource"]]),
-                    "worker_identity":{"worker_id":capability["worker_id"],"capability_sha256":hashlib.sha256(canonical_json_v1(capability)).hexdigest()}})
+    wire_arm_id=next(r for r in material["active_allowed"] if r["run_id"]==run_id)["wire_arm_id"]
+    guardians,guardian_waits=decode_guardian_rows(snapshot["decoded"],arm,run_id,wire_arm_id,clock_proof,bridge_domain)
+    waits.extend(guardian_waits)
     source_events=[];accounting_bytes=0;wait_rows=[]
     for path in sorted((output/"study").glob("*.jsonl")):
-        ref=descriptor(path,maximum=64*1024**2,deadline=commands.deadline);accounting_bytes+=ref["size_bytes"]
+        ref=descriptor(path,maximum=MAX_STUDY_ROLE_BYTES,deadline=commands.deadline);accounting_bytes+=ref["size_bytes"]
         rows=jsonl_rows(path.read_bytes())
         for row in rows:
             if row.get("kind")=="client":wait_rows.append(row)
             else:source_events.append(row)
-    require(accounting_bytes<=64*1024**2,"aggregate actual source/native accounting+waits arm cap")
+    require(accounting_bytes<=MAX_STUDY_ROLE_BYTES,"aggregate actual source/native accounting+waits arm cap")
     waits.extend(native_client_waits(wait_rows))
     recipients={str(s["stream_id"]):({w["branch_id"]:w["process_id"] for w in s["workers"]} if arm["topology"]=="baseline" else
         {"shared":s["graph_process"]["process_id"]}) for s in layout["streams"]}
@@ -1077,7 +1090,7 @@ def execute_arm(commands,args,root,prepared,plan,arm,service,clock_proof,materia
         "--detect-bin",DETECT_BIN,"--output-dir",out,"--run-id",operation["run_id"]]
     child,record=_native(commands,args.engine,prepared["images"]["gstreamer"]["image_id"],root,out,arguments,
         entrypoint="/usr/local/bin/vast_gstreamer_custom_publication_runtime_v3",environment=clock_proof["native_environment"])
-    commands.wait(child,record,maximum_files=((str(out/"arm.original.json"),64*1024**2),))
+    commands.wait(child,record,maximum_files=((str(out/"arm.original.json"),256*1024**2),))
     require(all(p.poll() is not None for p in [child]),"previous native frontend did not close")
     delta=service.finish_study_arm_v1(arm["arm_id"])
     capture=out/"guardian-ranges";capture.mkdir(mode=0o700)
