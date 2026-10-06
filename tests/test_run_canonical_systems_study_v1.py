@@ -433,6 +433,28 @@ os.waitpid(child,0);print(raw.decode())
         done=subprocess.Popen(["/bin/true"]);done.wait()
         runtime.wait_finite_study_sources_after_stop({"s0":done},[],threading.Lock(),until_monotonic=time.monotonic()+5)
 
+    def test_study_idle_boundary_clones_the_validated_worker_peer_list(self):
+        import checkpoint_gstreamer_analytics_sidecar as sidecar
+        from types import SimpleNamespace
+        from publication_guardian_component_preprocessing_contract_v1 import STUDY_AUTHORITY_KIND_V1
+        peers=[{"branch":b,"resource":r,"pid":100+i,"uid":1000,"gid":1000}
+               for i,(b,r) in enumerate((b,r) for b in ("plate_number","vehicle_type","damage","foreign_object") for r in ("cpu","gpu"))]
+        counters={"connections_active":0,"requests_started":3,"requests_completed":3,"requests_failed":0,"connections_failed":0}
+        service=SimpleNamespace(preprocessing_authority={"artifact_kind":STUDY_AUTHORITY_KIND_V1},
+            _assert_production_internal_live=lambda:None,_assert_workers_live=lambda phase:None,
+            _production_counters=SimpleNamespace(snapshot=lambda:dict(counters)),
+            _operational_recorder=SimpleNamespace(snapshot=lambda:{"unfinished_requests":0}),
+            lifecycle_id="lifecycle",_production_failure=None,
+            _production_authority={"owner_process":{"pid":1},"peer_identities":peers})
+        boundary=sidecar.GStreamerAnalyticsProductionService.study_idle_boundary_v1(service)
+        self.assertEqual(boundary["worker_peers"],peers)
+        self.assertIsNot(boundary["worker_peers"],peers)
+        seen=[]
+        handle=SimpleNamespace(_command_runner=lambda command,**kwargs:seen.append(kwargs["timeout"]))
+        sidecar.DockerWorkerHandle._observe(handle,["docker","exec"],timeout=10.0)
+        sidecar.DockerWorkerHandle._observe(handle,["docker","inspect"])
+        self.assertEqual(seen,[10.0,2.0])
+
     def test_control_failure_still_closes_actual_service_thread_and_preserves_primary(self):
         with tempfile.TemporaryDirectory() as tmp:
             commands=driver.Commands(Path(tmp),time.monotonic()+60);stop=threading.Event();thread=threading.Thread(target=stop.wait);thread.start()

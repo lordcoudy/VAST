@@ -1144,9 +1144,9 @@ def run(args):
                 pilots.append({"arm":arm,"raw":refs,"reduction":reduce_arm(plan,arm["arm_id"],roles,deadline=commands.deadline)})
             switch=pilot_select_branch(pilots)
             if switch:
-                pool_ref=stop_pool(commands,service,authority,out,variant)
+                pool_ref=stop_pool(commands,service,authority,out,variant);service=None
                 verify_guardian_ranges(pool_ref,material.get("guardian_ranges",{}).get(variant,[]),commands)
-                pool_closures.append(pool_ref);service=None
+                pool_closures.append(pool_ref)
                 variant="branch-channel";args._variant=variant
                 service,authority,proof=start_pool(commands,root,prepared,material,variant)
                 for arm in plan["pilots"]["conditional"]:
@@ -1157,9 +1157,9 @@ def run(args):
             for arm in plan["arms"]:
                 _,effects[arm["arm_id"]]=execute_arm(commands,args,root,prepared,plan,arm,service,proof,material)
                 require(sum(path.stat().st_size for path in out.rglob("*") if path.is_file() and path!=reservation)<=MAX_RAW_CAMPAIGN,"actual campaign raw aggregate exceeded original cap")
-            pool_ref=stop_pool(commands,service,authority,out,variant)
+            pool_ref=stop_pool(commands,service,authority,out,variant);service=None
             verify_guardian_ranges(pool_ref,material.get("guardian_ranges",{}).get(variant,[]),commands)
-            pool_closures.append(pool_ref);service=None
+            pool_closures.append(pool_ref)
             binding={"kind":"finite-component-study-closed-inputs","plan":prepared["control"]["plan"],"plan_sha256":plan["sha256"],
                 "bundle_sha256":plan["bundle_sha256"],"final_variant":variant,"arms":effects}
             binding_ref=write_json(out/"closed-inputs.original.json",binding)

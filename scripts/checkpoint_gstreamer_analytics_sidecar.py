@@ -3783,11 +3783,11 @@ class DockerWorkerHandle:
             payload = bytes(payload or b"")
         return payload.decode("utf-8", errors="replace")
 
-    def _observe(self, command: Sequence[str]) -> subprocess.CompletedProcess[str]:
+    def _observe(self, command: Sequence[str], *, timeout: float = 2.0) -> subprocess.CompletedProcess[str]:
         if self._command_runner is subprocess.run:
-            return _bounded_engine_observation(command)
+            return _bounded_engine_observation(command, timeout=timeout)
         return self._command_runner(list(command), check=False, capture_output=True,
-                                    text=True, timeout=2.0)
+                                    text=True, timeout=timeout)
 
     def _observe_engine_state(self) -> dict[str, Any]:
         formatter = '{"id":{{json .Id}},"image":{{json .Image}},"pid":{{.State.Pid}},"exit_code":{{.State.ExitCode}},"oom_killed":{{.State.OOMKilled}},"running":{{.State.Running}},"started_at":{{json .State.StartedAt}},"finished_at":{{json .State.FinishedAt}}}'
@@ -3886,7 +3886,7 @@ class DockerWorkerHandle:
                   'cat /proc/sys/kernel/random/boot_id; readlink /proc/1/ns/time; '
                   'readlink /proc/1/ns/time_for_children; cat /proc/1/timens_offsets')
         command = ["docker", "exec", before["facts"]["id"], "/bin/sh", "-c", script]
-        completed = self._observe(command)
+        completed = self._observe(command, timeout=10.0)
         _require(completed.returncode == 0 and len(completed.stdout.encode()) <= 8192,
                  "study owned worker clock observation failed")
         raw = completed.stdout
@@ -6121,7 +6121,7 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
             self._production_failure is None, "study held pool is not idle/failure-free")
         return {"counters": counters, "pending": pending, "lifecycle_id": self.lifecycle_id,
                 "owner_process": dict(self._production_authority["owner_process"]),
-                "worker_peers": _canonical_clone(self._production_authority["peer_identities"])}
+                "worker_peers": json.loads(canonical_json_bytes(list(self._production_authority["peer_identities"])))}
 
     def study_worker_clock_domains_v1(self):
         self.study_idle_boundary_v1()
