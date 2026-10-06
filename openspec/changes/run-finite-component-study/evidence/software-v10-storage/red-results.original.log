@@ -1,0 +1,24 @@
+2026-10-06T07:37:17Z
+test_final_results_document_has_its_own_measured_bound (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_final_results_document_has_its_own_measured_bound) ... ERROR
+
+======================================================================
+ERROR: test_final_results_document_has_its_own_measured_bound (tests.test_run_canonical_systems_study_v1.FiniteStudyDriverTests.test_final_results_document_has_its_own_measured_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/tests/test_run_canonical_systems_study_v1.py", line 394, in test_final_results_document_has_its_own_measured_bound
+    result=driver.write_study_results(Path(tmp),completed)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py", line 99, in write_study_results
+    return write_json(Path(out)/"study-results.original.json", completed)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py", line 104, in write_json
+    require(len(raw) <= 16*1024**2, "study control exceeds metadata bound")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/finite-component-study/VAST/scripts/run_canonical_systems_study_v1.py", line 43, in require
+    raise ValueError(message)
+ValueError: study control exceeds metadata bound
+
+----------------------------------------------------------------------
+Ran 1 test in 0.049s
+
+FAILED (errors=1)
+EXIT=1

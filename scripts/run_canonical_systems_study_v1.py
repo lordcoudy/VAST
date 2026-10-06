@@ -94,9 +94,14 @@ def descriptor(path, *, maximum=MAX_MEDIA, deadline=None):
             os.close(fd)
 
 
-def write_json(path, value):
+def write_study_results(out, completed):
+    """The final original campaign result document."""
+    return write_json(Path(out)/"study-results.original.json", completed, maximum=64*1024**2)  # Amendment7 addendum.
+
+
+def write_json(path, value, *, maximum=16*1024**2):
     raw = canonical_json_v1(value)+b"\n"
-    require(len(raw) <= 16*1024**2, "study control exceeds metadata bound")
+    require(len(raw) <= maximum, "study control exceeds metadata bound")
     with Path(path).open("xb") as output:
         output.write(raw); output.flush(); os.fsync(output.fileno())
     return {"path": str(path), "size_bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
@@ -1167,7 +1172,7 @@ def run(args):
                 "canonical_study_complete":True,"legacy_full_run_eligible":False,"qualification_eligible":False,"q4_eligible":False,
                 "publication_eligible":False,"started_monotonic_ns":int(started*1e9),"elapsed_s":time.monotonic()-started,"commands":commands.records}
         release_space(reservation,reservation_identity);reservation=None
-        result=write_json(out/"study-results.original.json",completed)
+        result=write_study_results(out,completed)
         require(time.monotonic()<commands.deadline,"original final result closed late")
         return result
     except BaseException as error:

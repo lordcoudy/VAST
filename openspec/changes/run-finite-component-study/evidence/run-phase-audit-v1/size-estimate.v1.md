@@ -23,3 +23,7 @@ guardian rows with `original_header` already replaced. Worst case: no drops, all
 
 Per-row: largest decoded row ~6.1 KB (native record) vs 9216 B record cap (1.5x); native event line 1136 B vs 2048 (1.8x).
 Without the guardian header fix the decoded guardian role would be ~100 MB (rate 1) / ~200 MB (rate 2).
+
+## Final results document (third audit pass, source 78a9fc2d)
+
+`study-results.original.json` embeds pilots (4, or 8 with the switch; each a full `reduce_arm` result, ~0.43 MiB), the 24-arm/12-pair reduction with per-frame key lists (~110 B per key, fractional latencies), pool closure descriptors and command records (~0.25 MiB; real `failed.original.json` files are 16–29 KB). Key/latency payload: 14.09 MiB without, 15.77 MiB with the switch; other fields ~0.5 MiB; totals ~14.6 / ~16.3 MiB vs the generic 16 MiB control bound. Other control documents: prepared receipt a few MiB (R1 `source-gate-plan.original.json` 1.2 MB), closure 3.88 MiB worst case, closed-inputs descriptors only.

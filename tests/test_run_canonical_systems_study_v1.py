@@ -387,6 +387,15 @@ os.waitpid(child,0);print(raw.decode())
         self.assertGreaterEqual(driver.MAX_RAW_ARM,2*445*1024**2)
         self.assertGreaterEqual(reducer.MAX_FILE_BYTES,2*58*1024**2)
 
+    def test_final_results_document_has_its_own_measured_bound(self):
+        # ~16.3 MiB measured with the conditional switch; other control documents keep 16 MiB.
+        completed={"kind":"finite-component-study-completed-v1","reduction":{"keys":["k"*100]*200_000}}
+        with tempfile.TemporaryDirectory() as tmp:
+            result=driver.write_study_results(Path(tmp),completed)
+            self.assertGreater(result["size_bytes"],16*1024**2)
+            with self.assertRaisesRegex(ValueError,"metadata bound"):
+                driver.write_json(Path(tmp)/"control.json",completed)
+
     def test_control_failure_still_closes_actual_service_thread_and_preserves_primary(self):
         with tempfile.TemporaryDirectory() as tmp:
             commands=driver.Commands(Path(tmp),time.monotonic()+60);stop=threading.Event();thread=threading.Thread(target=stop.wait);thread.start()
