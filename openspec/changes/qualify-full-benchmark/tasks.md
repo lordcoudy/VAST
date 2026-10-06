@@ -1,7 +1,9 @@
 ## 1. Постановка
 
-- [ ] 1.1 Draft MR с этим change и независимое техническое ревью спеки на exact planning commit. Готово, когда в MR есть комментарий с вердиктом без блокеров и указанием commit.
-- [ ] 1.2 Обновить PLAN.md и progress.md: этапный roadmap (qualification → Q4 + capacity → full matrix + `verify/finalize/export`), текущий этап и пользовательские предпосылки. Готово, когда ссылки на этот change резолвятся.
+**Статус 2026-10-06.** Спека одобрена: BLOCK на `da5b0e95` → PASS_WITH_NOTES на `d9b7a8ed`, примечания применены в `36c395be` ([комментарий](https://github.com/lordcoudy/VAST/pull/7#issuecomment-6022112930)). Roadmap внесён в PLAN.md и progress.md.
+
+- [x] 1.1 Draft MR с этим change и независимое техническое ревью спеки на exact planning commit. Готово, когда в MR есть комментарий с вердиктом без блокеров и указанием commit.
+- [x] 1.2 Обновить PLAN.md и progress.md: этапный roadmap (qualification → Q4 + capacity → full matrix + `verify/finalize/export`), текущий этап и пользовательские предпосылки. Готово, когда ссылки на этот change резолвятся.
 
 ## 2. Часы Python runtime (test-first)
 
