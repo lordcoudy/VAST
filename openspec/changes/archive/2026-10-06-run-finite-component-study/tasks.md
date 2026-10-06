@@ -46,4 +46,16 @@
 ## 6. Review и завершение
 
 - [x] 6.1 Обновить conformance каждого нового requirement/scenario и conditionallegacy isolation, actual counts/negative/unknown limits; закрыть remaining code/source currentCI по последнему implementation commit без rerun passed scientific arms из-за docs.
-- [ ] 6.2 Выполнить поддерживаемый sync/archive в том же PR после actual implementation/conformance; сохранить unrelated requirements/history/raw inputs и `.openspec.yaml`, применить только review-approved main Scope append, commit/push archive. Проверить physical archive/main preservation и перенести ещё НЕ выполненные mandatory latest archive-commit CI/final technical review/authorized merge в явный same-PR release ledger с actual pending statuses. Implementation checkbox closes only actual archive/commit/push/handoff; ledger obligations остаются обязательными до merge, без speculative[x], waiver или bookkeeping commit→CI loop. Latest CI failure сохраняется и блокирует merge; final ledger фиксирует authentic CI/review/merge transitions. Отрицательный performance result не заменяет incomplete24, а valid complete24 не выдаёт full campaign authority.
+- [x] 6.2 Выполнить поддерживаемый sync/archive в том же PR после actual implementation/conformance; сохранить unrelated requirements/history/raw inputs и `.openspec.yaml`, применить только review-approved main Scope append, commit/push archive. Проверить physical archive/main preservation и перенести ещё НЕ выполненные mandatory latest archive-commit CI/final technical review/authorized merge в явный same-PR release ledger с actual pending statuses. Implementation checkbox closes only actual archive/commit/push/handoff; ledger obligations остаются обязательными до merge, без speculative[x], waiver или bookkeeping commit→CI loop. Latest CI failure сохраняется и блокирует merge; final ledger фиксирует authentic CI/review/merge transitions. Отрицательный performance result не заменяет incomplete24, а valid complete24 не выдаёт full campaign authority.
+
+## Release ledger (same PR5)
+
+6.2 закрыта фактическим supported archive (`openspec archive`, 2026-10-06): delta specs синхронизированы (finite-component-study: +7 requirements / 21 scenario; benchmark-launch-preparation: R1 MODIFIED с сохранением обоих сценариев и остальных requirements байт-в-байт), main Scope получил только review-approved append из design §5.4, `.openspec.yaml` и evidence перенесены в `openspec/changes/archive/2026-10-06-run-finite-component-study/`. Ссылки PLAN/progress/runbook и путь фикстуры D в `tests/test_run_canonical_systems_study_v1.py` переведены на archive-путь.
+
+| Обязательство до merge | Статус |
+|---|---|
+| Mandatory CI на последнем archive commit | pending (первая фактическая запись по завершении run) |
+| Финальное техническое ревью exact archive commit | pending |
+| Merge в master | pending — только с явного разрешения пользователя |
+
+Неуспешный CI сохраняется и блокирует merge; статусы фиксируются фактическими переходами, без speculative [x].

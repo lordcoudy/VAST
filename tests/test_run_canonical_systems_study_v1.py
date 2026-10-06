@@ -286,7 +286,7 @@ os.waitpid(child,0);print(raw.decode())
             def field(name,value,text=trace):
                 import re
                 return re.sub(r"(\b"+name+r"\s+[^\r\n]*?=\s*)\d+",lambda m:m.group(1)+str(value),text)
-            old=(ROOT/"openspec/changes/run-finite-component-study/evidence/physical-D-failed-v1/preparation/command-029.stderr.raw").read_text()
+            old=(ROOT/"openspec/changes/archive/2026-10-06-run-finite-component-study/evidence/physical-D-failed-v1/preparation/command-029.stderr.raw").read_text()
             for changed in (old,field("fixed_frame_rate_flag",0),field("time_scale",1200*fields["num_units_in_tick"]),
                     field("level_idc",52),field("timing_info_present_flag",0),trace.replace("fixed_frame_rate_flag","absent_flag"),
                     trace+"\n[trace_headers] fixed_frame_rate_flag 0 = 0\n"):

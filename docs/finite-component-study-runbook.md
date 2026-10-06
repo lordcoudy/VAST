@@ -1,6 +1,6 @@
 # Конечный VAST benchmark
 
-Рабочее изменение `run-finite-component-study`, [PR5](https://github.com/lordcoudy/VAST/pull/5), reviewed planning commit `3288b0702b6b0136feb6596382566b8686f9bb5c`. Это процедура для текущего executable path. На этапе реализации actual preparation, pilot и 24 effect arms ещё не выполнены; успешные программные тесты не являются результатом benchmark. Текущий статус и доказательства находятся в [плане](../PLAN.md) и [задачах](../openspec/changes/run-finite-component-study/tasks.md).
+Рабочее изменение `run-finite-component-study`, [PR5](https://github.com/lordcoudy/VAST/pull/5), reviewed planning commit `3288b0702b6b0136feb6596382566b8686f9bb5c`. Это процедура для текущего executable path. На этапе реализации actual preparation, pilot и 24 effect arms ещё не выполнены; успешные программные тесты не являются результатом benchmark. Текущий статус и доказательства находятся в [плане](../PLAN.md) и [задачах](../openspec/changes/archive/2026-10-06-run-finite-component-study/tasks.md).
 
 Benchmark измеряет baseline/shared topology при CPU OpenVINO и GPU TensorRT analytics. Обе топологии используют NVDEC. Шесть логических потоков — пять копий front-gate и один underbody, четыре одинаково привязанные analytics branches. Это реплики двух записей. Результат не доказывает качество распознавания, чистое время GPU inference, энергопотребление или производительность при 30fps.
 
