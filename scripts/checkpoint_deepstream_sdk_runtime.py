@@ -31,6 +31,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Mapping, Protocol, Sequence
 
+from non_decreasing_wall_clock_v1 import wall_time_ns
+
 
 ADMISSION_DATA_FD_ENV = "VAST_CHECKPOINT_ADMISSION_DATA_FD"
 CONTROL_FD_ENV = "VAST_CHECKPOINT_CONTROL_FD"
@@ -509,7 +511,7 @@ class LifecycleChannel:
         control_fd: int,
         status_fd: int,
         monotonic_ns: Callable[[], int] = time.monotonic_ns,
-        wall_time_ms: Callable[[], int] = lambda: time.time_ns() // 1_000_000,
+        wall_time_ms: Callable[[], int] = lambda: wall_time_ns() // 1_000_000,
     ) -> None:
         _require(bool(worker_id.strip()), "DeepStream worker ID is empty")
         _require(control_fd >= 0 and status_fd >= 0, "DeepStream lifecycle FD is invalid")
@@ -918,7 +920,7 @@ class _BranchWork:
 
 
 def _now_ms() -> int:
-    return time.time_ns() // 1_000_000
+    return wall_time_ns() // 1_000_000
 
 
 def _ceil_epoch_ns_to_ms(value_ns: int) -> int:
@@ -1233,7 +1235,7 @@ class DeepStreamSdkPipeline:
                 observed,
                 mux_gst_buffer_pts_ns=int(buffer.pts),
             )
-            completed_ns = time.time_ns()
+            completed_ns = wall_time_ns()
             with self._pending_lock:
                 _require(pending.identity is None, "DeepStream decode callback was duplicated")
                 pending.identity = identity
@@ -1291,7 +1293,7 @@ class DeepStreamSdkPipeline:
             _require(buffer is not None, f"DeepStream appsink sample has no buffer: {branch}")
             pending = self._pending_for_buffer(buffer, stage="terminal")
             _require(pending.identity is not None and pending.preprocessed, "DeepStream route precedes preprocessing")
-            fanout_started_ns = time.time_ns()
+            fanout_started_ns = wall_time_ns()
             fanout_started_thread_ns = time.thread_time_ns()
             self.meta_bridge.verify(**self._metadata_values(pending, buffer))
             if self.graph.topology_kind == SHARED_VIDEO_DAG:
@@ -1299,7 +1301,7 @@ class DeepStreamSdkPipeline:
                     assert pending.fanout_branches is not None
                     _require(branch not in pending.fanout_branches, "DeepStream fanout callback was duplicated")
                     pending.fanout_branches.add(branch)
-                fanout_completed_ns = time.time_ns()
+                fanout_completed_ns = wall_time_ns()
                 serialized_fanout_timestamp_ms = self.callbacks.observe_fanout(
                     pending.identity,
                     branch=branch,
@@ -1428,7 +1430,7 @@ class DeepStreamSdkPipeline:
         # less than one quantization bucket on the WSL2/Docker boundary.
         self.callbacks.admit_transport_frame(
             frame,
-            observed_timestamp_ms=_ceil_epoch_ns_to_ms(time.time_ns()),
+            observed_timestamp_ms=_ceil_epoch_ns_to_ms(wall_time_ns()),
         )
         with self._pending_lock:
             _require(
@@ -1460,7 +1462,7 @@ class DeepStreamSdkPipeline:
                 and pending.decode_submit_start_ns is None,
                 "DeepStream NVDEC submission identity drifted",
             )
-            pending.decode_submit_start_ns = time.time_ns()
+            pending.decode_submit_start_ns = wall_time_ns()
         result = self.appsrc.emit("push-buffer", buffer)
         _require(result == self.Gst.FlowReturn.OK, f"DeepStream appsrc push failed: {result}")
 

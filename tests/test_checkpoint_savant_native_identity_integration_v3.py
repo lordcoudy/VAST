@@ -25,6 +25,8 @@ from checkpoint_savant_native_module import (
 )
 from checkpoint_savant_protocol_bridge import SavantProtocolBridge
 from checkpoint_savant_sdk_runtime_v3 import SavantSdkCallbackRuntime
+import non_decreasing_wall_clock_v1 as wall_clock
+from non_decreasing_wall_clock_v1 import NonDecreasingWallClock
 from test_checkpoint_deepstream_protocol_adapter import (
     FAKE_GST_MAP_READ, FakeBuffer, FakeCaps,
 )
@@ -66,7 +68,7 @@ class SavantNativeIdentityIntegrationV3Tests(unittest.TestCase):
         mock_service_clock(self)
         # Keep real SDK observations and the deterministic policy fixture on
         # the same unit-test epoch; no production clock behavior is changed.
-        patcher = mock.patch("checkpoint_savant_sdk_runtime_v3.time.time_ns", return_value=1_000_000_000)
+        patcher = mock.patch.object(wall_clock, "_PROCESS_CLOCK", NonDecreasingWallClock(raw_ns=lambda: 1_000_000_000))
         patcher.start()
         self.addCleanup(patcher.stop)
 

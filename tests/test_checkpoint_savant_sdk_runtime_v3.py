@@ -38,7 +38,26 @@ from checkpoint_savant_native_module import (  # noqa: E402
 )
 
 
+import non_decreasing_wall_clock_v1 as wall_clock  # noqa: E402
+from non_decreasing_wall_clock_v1 import ClockStepError, NonDecreasingWallClock  # noqa: E402
+
+
 BRANCHES = ("plate_number", "vehicle_type", "damage", "foreign_object")
+WALL_BASE_NS = 1_790_000_000_000_000_000
+
+
+def step_back_host_wall_clock(test_case, values):
+    """Replay raw CLOCK_REALTIME ``values`` (then +1 ms per read) for both the
+    raw host clock and the shared per-process non-decreasing wrapper."""
+    pending, current = list(values), [values[-1]]
+
+    def raw_ns():
+        current[0] = pending.pop(0) if pending else current[0] + 1_000_000
+        return current[0]
+
+    test_case.enterContext(mock.patch("time.time_ns", raw_ns))
+    test_case.enterContext(mock.patch.object(
+        wall_clock, "_PROCESS_CLOCK", NonDecreasingWallClock(raw_ns=raw_ns)))
 
 
 def plan(topology: str, codec: str = "h264") -> dict:
@@ -408,9 +427,10 @@ class SavantSdkRuntimeV3Tests(unittest.TestCase):
                 input_frame_key="input-key-0",
                 payload=b"encoded-access-unit",
             )
-            with mock.patch(
-                "checkpoint_savant_sdk_runtime_v3.time.time_ns",
-                side_effect=[1_000_001, 2_000_000],
+            with mock.patch.object(
+                wall_clock,
+                "_PROCESS_CLOCK",
+                NonDecreasingWallClock(raw_ns=iter([1_000_001, 2_000_000]).__next__),
             ):
                 runtime.admit_transport_frame(frame)
             identity = {
@@ -485,7 +505,7 @@ class SavantQueueDropTests(unittest.TestCase):
             lambda identity, **values: parent_times.append(values["observed_timestamp_ms"])
         )
         runtime.resource_recorder.record_fanout = lambda **values: intervals.append(values)
-        with mock.patch.object(savant_sdk_runtime_v3.time, "time_ns", side_effect=now_ns), \
+        with mock.patch.object(wall_clock, "_PROCESS_CLOCK", NonDecreasingWallClock(raw_ns=now_ns)), \
                 mock.patch.object(savant_sdk_runtime_v3, "_now_ms",
                                   side_effect=delayed_preprocess_observation):
             for branch in binding.branches:
@@ -566,6 +586,39 @@ class SavantQueueDropTests(unittest.TestCase):
         self.assertEqual(len(intervals), 1)
         self.assertNotIn((200, "damage"), runtime._fanout)
         self.assertEqual(runtime._pending_by_branch["damage"], [100, 200, 300, 400])
+
+    def test_shared_fanout_survives_two_millisecond_host_clock_step_back(self):
+        runtime, binding, _, _ = self.runtime_with_decoded_frames("shared_video_dag")
+        serialized = []
+        runtime.callbacks.observe_fanout = lambda identity, **values: (
+            serialized.append(values["observed_timestamp_ms"]) or values["observed_timestamp_ms"])
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary).resolve()
+            runtime.resource_recorder = SavantNativeResourceRecorderV3(
+                output_dir=output, run_id="queue-drop-regression", worker_id="savant-shared",
+                stream_id=0, topology_kind="shared_video_dag", branches=BRANCHES, decoder_gpu_index=0,
+            )
+            self.addCleanup(runtime.resource_recorder.close)
+            step_back_host_wall_clock(
+                self, [WALL_BASE_NS, WALL_BASE_NS + 1_000, WALL_BASE_NS + 1_000 - 2_000_000])
+            runtime.observe_queue_buffer(SimpleNamespace(pts=100, get_size=lambda: 8192),
+                                         binding, "damage", caps=object())
+            runtime.resource_recorder.close()
+            with (output / "resource_intervals.runtime.csv").open(encoding="utf-8", newline="") as handle:
+                [row] = list(csv.DictReader(handle))
+        self.assertEqual(serialized, [WALL_BASE_NS // 1_000_000 + 1])
+        self.assertEqual((int(row["host_start_timestamp_ns"]), int(row["host_end_timestamp_ns"])),
+                         (WALL_BASE_NS + 1_000, WALL_BASE_NS + 1_001))
+        self.assertEqual(wall_clock.process_wall_clock().max_clamp_ns(), 2_000_001)
+
+    def test_savant_wall_milliseconds_use_the_shared_process_clock(self):
+        step_back_host_wall_clock(self, [WALL_BASE_NS, WALL_BASE_NS - 2_000_000])
+        self.assertEqual([savant_sdk_runtime_v3._now_ms(), savant_sdk_runtime_v3._now_ms()],
+                         [WALL_BASE_NS // 1_000_000] * 2)
+        step_back_host_wall_clock(self, [WALL_BASE_NS, WALL_BASE_NS - 11_000_000])
+        savant_sdk_runtime_v3._now_ms()
+        with self.assertRaises(ClockStepError):
+            savant_sdk_runtime_v3._now_ms()
 
     def runtime_with_decoded_frames(self, topology="independent_processes"):
         specs = build_savant_publication_worker_specs(

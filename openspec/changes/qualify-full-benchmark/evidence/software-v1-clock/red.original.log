@@ -23,3 +23,137 @@ Ran 1 test in 0.000s
 
 FAILED (errors=1)
 
+=== Task 2.3 RED: DeepStream SDK runtime, DeepStream protocol bridge and Savant runtime on a raw 2 ms CLOCK_REALTIME step back (current raw time.time_ns code)
+# base commit f524f6e9dc0066129c3b239e9163010b1cde9158; uncommitted:  M tests/test_checkpoint_deepstream_protocol_bridge.py  M tests/test_checkpoint_deepstream_sdk_runtime.py  M tests/test_checkpoint_savant_sdk_runtime_v3.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests tests.test_checkpoint_deepstream_protocol_bridge.DeepStreamProtocolBridgeContractTests.test_default_clock_keeps_decision_after_admission_across_host_clock_step_back tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_shared_fanout_survives_two_millisecond_host_clock_step_back tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_savant_wall_milliseconds_use_the_shared_process_clock
+2026-10-06T18:01:57Z
+test_host_clock_step_back_beyond_ten_milliseconds_fails_closed (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_host_clock_step_back_beyond_ten_milliseconds_fails_closed) ... FAIL
+test_lifecycle_and_callback_wall_stamps_use_the_shared_process_clock (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_lifecycle_and_callback_wall_stamps_use_the_shared_process_clock) ... FAIL
+test_nvdec_interval_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_nvdec_interval_survives_two_millisecond_host_clock_step_back) ... FAIL
+test_shared_fanout_interval_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_shared_fanout_interval_survives_two_millisecond_host_clock_step_back) ... FAIL
+test_default_clock_keeps_decision_after_admission_across_host_clock_step_back (tests.test_checkpoint_deepstream_protocol_bridge.DeepStreamProtocolBridgeContractTests.test_default_clock_keeps_decision_after_admission_across_host_clock_step_back) ... ERROR
+test_shared_fanout_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_shared_fanout_survives_two_millisecond_host_clock_step_back) ... ERROR
+test_savant_wall_milliseconds_use_the_shared_process_clock (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_savant_wall_milliseconds_use_the_shared_process_clock) ... FAIL
+
+======================================================================
+ERROR: test_default_clock_keeps_decision_after_admission_across_host_clock_step_back (tests.test_checkpoint_deepstream_protocol_bridge.DeepStreamProtocolBridgeContractTests.test_default_clock_keeps_decision_after_admission_across_host_clock_step_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_protocol_bridge.py", line 510, in test_default_clock_keeps_decision_after_admission_across_host_clock_step_back
+    result = bridge.execute_branch(
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/checkpoint_deepstream_protocol_bridge.py", line 1012, in execute_branch
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/checkpoint_deepstream_protocol_bridge.py", line 197, in _require
+    raise DeepStreamProtocolBridgeError(message)
+checkpoint_deepstream_protocol_bridge.DeepStreamProtocolBridgeError: DeepStream policy decision precedes admission
+
+======================================================================
+ERROR: test_shared_fanout_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_shared_fanout_survives_two_millisecond_host_clock_step_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_sdk_runtime_v3.py", line 603, in test_shared_fanout_survives_two_millisecond_host_clock_step_back
+    runtime.observe_queue_buffer(SimpleNamespace(pts=100, get_size=lambda: 8192),
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/checkpoint_savant_sdk_runtime_v3.py", line 548, in observe_queue_buffer
+    self.resource_recorder.record_fanout(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/checkpoint_deepstream_resource_runtime_v3.py", line 475, in record_fanout
+    canonical_end_timestamp_ns = self.canonical_fanout_interval_end_ns(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/checkpoint_deepstream_resource_runtime_v3.py", line 194, in canonical_fanout_interval_end_ns
+    raise ValueError("DeepStream serialized fanout topology timestamp moved backwards")
+ValueError: DeepStream serialized fanout topology timestamp moved backwards
+
+======================================================================
+FAIL: test_host_clock_step_back_beyond_ten_milliseconds_fails_closed (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_host_clock_step_back_beyond_ten_milliseconds_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1069, in test_host_clock_step_back_beyond_ten_milliseconds_fails_closed
+    with self.assertRaises(ClockStepError):
+AssertionError: ClockStepError not raised
+
+======================================================================
+FAIL: test_lifecycle_and_callback_wall_stamps_use_the_shared_process_clock (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_lifecycle_and_callback_wall_stamps_use_the_shared_process_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1056, in test_lifecycle_and_callback_wall_stamps_use_the_shared_process_clock
+    self.assertEqual(
+AssertionError: Lists differ: [1790000000000, 1789999999998] != [1790000000000, 1790000000000]
+
+First differing element 1:
+1789999999998
+1790000000000
+
+- [1790000000000, 1789999999998]
++ [1790000000000, 1790000000000]
+
+======================================================================
+FAIL: test_nvdec_interval_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_nvdec_interval_survives_two_millisecond_host_clock_step_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1005, in test_nvdec_interval_survives_two_millisecond_host_clock_step_back
+    self.assertEqual(pipeline._on_mux_buffer(None, info), "probe-ok", pipeline.errors)
+AssertionError: 'probe-drop' != 'probe-ok'
+- probe-drop
+?       -- ^
++ probe-ok
+?        ^
+ : [ValueError('DeepStream resource end timestamp must follow start timestamp')]
+
+======================================================================
+FAIL: test_shared_fanout_interval_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_shared_fanout_interval_survives_two_millisecond_host_clock_step_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1043, in test_shared_fanout_interval_survives_two_millisecond_host_clock_step_back
+    self.assertEqual(pipeline._on_new_sample(sink, "damage"), "flow-ok", pipeline.errors)
+AssertionError: 'flow-error' != 'flow-ok'
+- flow-error
++ flow-ok
+ : [ValueError('DeepStream physical fanout interval must have positive width')]
+
+======================================================================
+FAIL: test_savant_wall_milliseconds_use_the_shared_process_clock (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_savant_wall_milliseconds_use_the_shared_process_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_sdk_runtime_v3.py", line 615, in test_savant_wall_milliseconds_use_the_shared_process_clock
+    self.assertEqual([savant_sdk_runtime_v3._now_ms(), savant_sdk_runtime_v3._now_ms()],
+AssertionError: Lists differ: [1790000000000, 1789999999998] != [1790000000000, 1790000000000]
+
+First differing element 1:
+1789999999998
+1790000000000
+
+- [1790000000000, 1789999999998]
++ [1790000000000, 1790000000000]
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.112s
+
+FAILED (failures=5, errors=2)
+
+=== Task 2.4 RED: guardian recorder default clock (production sidecar construction) with a raw CLOCK_REALTIME stepping back 2 ms between each begin and terminal; complete cold reconciliation (publication_operational_request_reconciliation_v1:451, unchanged) rejects the journal. The raw source is injected both into the shared process wrapper and into any recorder default still bound to time.time_ns (current code).
+# base commit f524f6e9dc0066129c3b239e9163010b1cde9158; uncommitted:  M scripts/checkpoint_deepstream_protocol_bridge.py  M scripts/checkpoint_deepstream_sdk_runtime.py  M scripts/checkpoint_savant_sdk_runtime_v3.py  M tests/test_checkpoint_deepstream_protocol_bridge.py  M tests/test_checkpoint_deepstream_sdk_runtime.py  M tests/test_checkpoint_deepstream_service_clock.py  M tests/test_checkpoint_savant_native_identity_integration_v3.py  M tests/test_checkpoint_savant_sdk_runtime_v3.py  M tests/test_publication_operational_boundary_v1.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back
+2026-10-06T22:14:40Z
+test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back) ... ERROR
+
+======================================================================
+ERROR: test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_operational_boundary_v1.py", line 549, in test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back
+    workload = fixture.cold_workload()
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_operational_boundary_v1.py", line 457, in cold_workload
+    return reconcile_operational_request_domain_v1(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/publication_operational_request_reconciliation_v1.py", line 451, in reconcile_operational_request_domain_v1
+    _require(began is not None and event["at_ns"] >= began and
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/publication_operational_request_reconciliation_v1.py", line 44, in _require
+    raise ValueError(message)
+ValueError: guardian operational request lacks exactly one successful full terminal
+
+----------------------------------------------------------------------
+Ran 1 test in 0.281s
+
+FAILED (errors=1)
+
