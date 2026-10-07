@@ -62,7 +62,23 @@
 - [x] 6.1 Runbook qualification. Команды каждого шага, отказ при отсутствии receipts, `bash -n` для примеров, флаги сверены с argparse. Предстартовые подтверждения оператора: сон Windows, Windows Update, запрет действий Docker Desktop UI. Готово при проверенном runbook. Итог: [docs/full-qualification-runbook.md](../../../docs/full-qualification-runbook.md) и [commands.sh](../../../docs/full-qualification-runbook-commands.sh); `bash -n` и сверка 16 вызовов с argparse на `1112af0b` — без расхождений.
 - [ ] 6.2 Предстартовая проверка хоста непосредственно перед Q1: место, GPU, отсутствие чужих контейнеров и процессов. Готово при сохранённом отчёте и подтверждении пользователем настроек питания и Windows Update. Предварительная read-only проверка 7 октября, 11:48 МСК — PASS: Docker Desktop 29.8.1, 10/10 pinned images, containers/VAST/CI/compute jobs 0, все тома ≥20 GiB, AC sleep/hibernate 0, Windows Update paused. [Snapshot](evidence/physical-v1-host/pre-q1-ready-host-check.v1.json). Q1 не запущена; финальный stock report и повтор текущей host-проверки — после отдельной команды пользователя непосредственно перед запуском.
 
+**Попытка 1 (7 октября 2026).** Stock 6.2 report попытки 1 сохранён ([host-check.before](evidence/physical-v1-q1-attempt1-failed/q1_control/host-check.before.txt)), шаги 0–1 PASS; шаг 2 — rc 78, попытка FAILED ([evidence](evidence/physical-v1-q1-attempt1-failed/README.md)). Для попытки 2 задача 6.2 выполняется заново после 6A.
+
+## 6A. Amendment 4: re-freeze и подготовка попытки 2
+
+- [x] 6A.1 Failure record попытки 1 в change: originals `q1_control`, манифест namespaces (size+SHA256), read-only диагностика. Готово при закоммиченном evidence.
+- [ ] 6A.2 Оператор отключил автообновления Docker Desktop (собственное, Chocolatey, UniGetUI) до конца Q1; версия Docker Desktop/engine/API записана. Готово при подтверждении пользователя в чате и сохранённом наблюдении версии.
+- [ ] 6A.3 Re-freeze без пересборки в тег `qualify_full_benchmark_20261008b`: побайтовые копии native/worker/savant-materialized receipts с манифестом, рецепт с diff только тега, capture ×4 → assemble → `verify-patch`, сырые `docker image inspect` в evidence. Готово при SUCCESS и равенстве `image_id`, `inspect_projection_sha256`, `embedded_set_sha256`, `source_identity` прежним receipts (отличается только `inspect_full_sha256`); иначе стоп и решение пользователя.
+- [ ] 6A.4 23 packaged checks на тех же образах. Готово при 23/23.
+- [ ] 6A.5 Parity 480/32 на новом patch (namespace `qfb-20261008b`) и независимый аудит против A244. Готово при accepted receipt и аудите без расхождений.
+- [ ] 6A.6 Перепривязка пинов по инвентарю фактических значений (как 5.4, B2 для `.ci`-фикстур), commit `C_Q1'`. Готово, когда diff от `C_Q1` состоит только из замен по плану и новых `configs/*qfb-20261008b*`.
+- [ ] 6A.7 Перевод корня `qfb-root-20261007a` на `C_Q1'`: untracked `configs/*qfb-20261008b*` из parity переносятся в `artifacts/qualify_full_benchmark_20261008b/untracked-configs-before-cq1/` с SHA256 (как перед `C_Q1`), затем `git checkout --detach C_Q1'` и проверка, что закоммиченные configs побайтно равны перенесённым; tracked drift вне `artifacts/` отсутствует до и после; artifacts попытки 1 не тронуты. Готово при сохранённых git status и сверке хешей.
+- [ ] 6A.8 Runbook попытки 2: константы `20261008b`, новые SHA256 receipts; в `q1_00_preflight` read-only сверка полного inspect четырёх runtime и projection двух worker с patch, сверка версии Docker; `bash -n` и сверка флагов с argparse. Готово при проверенном runbook.
+- [ ] 6A.9 На `C_Q1'`: hosted CI, ext4 suite (одобренный набор skips), integration 9/9, R5/S5; обновить R14/S2 и R12/S1. Готово при зелёных результатах с сохранёнными originals.
+
 ## 7. Физическая qualification Q1 (одна попытка)
+
+**Попытка 1 — FAILED** на 7.1 (transaction rc 78), 7 октября 2026. Задачи 7.1–7.6 относятся к попытке 2 на `C_Q1'` после 6A и 6.2 (Amendment 4).
 
 - [ ] 7.1 Свежие inputs, bootstrap, preprocessing, execution code closure, capture plan (37) и runtime inputs. Готово при сохранённых receipts.
 - [ ] 7.2 Guardian 8/8, 4 native prechecks и Savant diagnostic через owner со встроенными проверками process/container validators (Amendment 3). Готово при SUCCESS каждого шага.

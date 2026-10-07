@@ -130,6 +130,24 @@
 - **Место на дисках.** Используется существующий минимум 20 GiB на каждом нужном томе (C:, E:, ext4) перед стартом Q1.
 - **Перенос evidence Q1 (7.6)** — как в PR5: originals копируются в change, крупные файлы описываются size+SHA256 с указанием местоположения.
 
+## Amendment 4 (2026-10-08, после FAILED попытки 1 Q1)
+
+- **Факт.** Попытка 1 (7 октября, 18:57–19:01 UTC, `C_Q1` `1112af0b`) завершилась на шаге 2 `q1_02_transaction` с rc 78: «live deepstream runtime image differs from refreeze receipt». Предикат `_verify_live_images` требует равенства image ID **и** SHA256 полного `docker image inspect` значению `inspect_full_sha256` из patch (`requires_live_docker_inspect_equality: true`). ID всех четырёх runtime images и оба worker совпадают, полный inspect отличается у всех четырёх. Docker Desktop был обновлён Chocolatey до 4.93.0 (engine 29.8.1) в 10:38 МСК, после refreeze в 08:28 МСК. Проверки готовности сверяли только ID. Evidence: [physical-v1-q1-attempt1-failed](evidence/physical-v1-q1-attempt1-failed/README.md). Решение пользователя 8 октября — вариант (а): amendment, re-freeze, новая попытка в этом MR.
+- **Предикат не ослабляется.** Сужение проверки до projection отклонено: это изменение closure-модуля и ослабление предиката (см. решение 1). Вместо этого identity заново фиксируется под текущим engine, а дрейф ловится до начала попытки.
+- **Заморозка engine (оператор).** До re-freeze и до конца Q1 отключаются автообновления Docker Desktop: собственное, Chocolatey и UniGetUI (UniGetUI запущен на хосте). Версия Docker Desktop/engine/API записывается при re-freeze; перед Q1 она должна совпасть. Это пункт runbook, не код.
+- **Re-freeze без пересборки.** Новый тег `qualify_full_benchmark_20261008b`, namespace `qfb-20261008b`, тот же корень `qfb-root-20261007a`. Receipts попытки 1 и тега `20261007a` не изменяются.
+  - Входы, не меняющиеся без пересборки (`native-a/native_probe.freeze.json`, `worker_images/analytics-worker.freeze.json`, `runtime_images/savant.runtime_image.materialized.v3.json`), копируются в новый тег побайтно с манифестом path/size/SHA256 (инструмент `copy_with_manifest_v1.py`).
+  - Рецепт `capture_image_patch.sh` копируется с заменой только тега; diff сохраняется. Capture ×4 → assemble → `verify-patch` на существующих образах.
+  - Доказательство неизменности образов: для каждой из четырёх систем `image_id`, `inspect_projection_sha256`, `embedded_set_sha256` и `source_identity` нового receipt равны прежним; отличается только `inspect_full_sha256`. Иное расхождение — стоп и решение пользователя.
+  - Рядом с capture сохраняются сырые `docker image inspect` (final и обе determinism-ссылки) каждой системы. Это только evidence для диагностики; формат receipts не меняется.
+  - 23 packaged checks повторяются на тех же образах.
+- **Parity на новом patch.** По спеке parity повторяется против нового patch: 480/32 через `checkpoint_model_parity_materializer_v4.py` с namespace `qfb-20261008b` (новые `configs/*qfb-20261008b*`), затем независимый аудит tensor hashes против A244. Ожидается равенство tensors с parity `qfb-20261007a`; расхождение — стоп.
+- **Перепривязка пинов.** Как 5.4: инвентарь по фактическим старым значениям (patch path/SHA, parity configs path/size/SHA, bindings index и runtime probes, namespace-пути `qualify_full_benchmark_20261007a`/`qfb-20261007a` в `scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py`, тестах и `.ci/fixtures/additional-origins.v1.json`), план замен до применения, литеральные замены old→new, `.ci`-фикстуры — проверенные побайтовые копии по новым путям (B2). Новый commit `C_Q1'`; diff от `C_Q1` — только замены по плану и новые `configs/*qfb-20261008b*`.
+- **Повторы на `C_Q1'`** (как Amendment 3, после перевода корня): hosted CI, полный ext4 suite (skips — тот же одобренный набор), integration 9/9, R5/S5. R14/S2 и R12/S1 обновляются; R20/S1 неприменим.
+- **Корень.** До повторов корень `qfb-root-20261007a` переводится на `C_Q1'` по прецеденту `C_Q1`: untracked parity configs `qfb-20261008b` переносятся в `untracked-configs-before-cq1/` нового тега с SHA256, затем `git checkout --detach C_Q1'` и побайтовая сверка закоммиченных configs с перенесёнными; tracked drift вне `artifacts/` проверяется до и после. Ignored/untracked `artifacts/`, включая попытку 1, не трогаются. Relocation нет.
+- **Runbook (docs, не closure).** Константы попытки 2: тег/namespace `20261008b`, все Q1 namespaces с суффиксом `_qfb_20261008b`, `HOSTTMP=/var/tmp/vqfb1008b`, новые SHA256 receipts. В `q1_00_preflight` добавляются read-only проверки до создания namespaces: (1) для четырёх runtime images SHA256 канонического полного inspect равен `inspect_full_sha256` patch, для двух worker — `image_inspect_sha256` projection; (2) версия Docker Desktop/engine/API равна записанной при re-freeze. Отказ preflight — до начала попытки (попытка начинается шагом 2). Канонизация — та же функция, что в `_verify_live_images`.
+- **Попытка 2** — те же правила решения 6: одна попытка, любой отказ после шага 2 — FAILED, evidence сохраняется, решение пользователя. Namespaces попытки 1 не переиспользуются.
+
 ## Risks / Trade-offs
 
 - **[Неизвестная причина A269 memfd]** → PR2 diagnostic сохраняет первый отказ; при повторе — FAILED и amendment, без повторного запуска наугад.
@@ -138,6 +156,7 @@
 - **[Одна попытка при неустановленной причине A269 memfd]** → риск принимается явно; диагностика PR2 сохраняет первый отказ.
 - **[Межпроцессные сравнения часов]** (`arrival_ms`, admission и `source_read`) → остаточный риск, уже задокументирован (≥5,7 ms и p1 = 3 ms запаса), предикаты не меняются.
 - **[Длительные сборки и parity, место на C:]** → сборки идут на ext4 (750 GB свободно), C: контролируется перед стартом; при нехватке — остановка и решение пользователя об очистке cache.
+- **[Дрейф Docker engine между freeze и Q1]** (попытка 1) → автообновления выключены оператором, версия engine и полный inspect сверяются в preflight до начала попытки (Amendment 4). Причина изменения полного inspect не доказана; если дрейф повторится без смены версии, preflight откажет до начала попытки; дальше — диагностика и вопрос пользователю, а не ослабление предиката.
 - **[Объём change]** → большой, но связный: всё необходимо для одного принятого результата. Q4 и full run вынесены, чтобы MR не жил месяцами.
 - **[Время]** → около 1–2 недель работы плюс 5–8 ч физической цепочки.
 
