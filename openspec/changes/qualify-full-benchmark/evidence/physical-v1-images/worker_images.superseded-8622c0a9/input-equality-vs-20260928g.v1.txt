@@ -1,0 +1,11 @@
+new qfb-root-20261007a/artifacts/qualify_full_benchmark_20261007a/worker_images/analytics-worker.freeze.json 23e969157ceb29bb03b809a89f8fa49ad1493e758322de0fbcf57d1b21fbd914
+old openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g/worker_images/analytics-worker.freeze.json ff7dca7f25ffa9856cf0afdf97569e9ced3292866251e2523db00aa23875ef96
+registry_sha256 equal: True
+0 analytics_worker_openvino source_set equal: True
+0 analytics_worker_openvino dependency_set equal: True
+0 analytics_worker_openvino build_context equal: True
+0 differing keys: ['base_image_id', 'build_image_id', 'image_id', 'image_inspect_sha256', 'labels', 'repo_digests']
+1 analytics_worker_tensorrt source_set equal: True
+1 analytics_worker_tensorrt dependency_set equal: True
+1 analytics_worker_tensorrt build_context equal: True
+1 differing keys: ['base_image_id', 'build_image_id', 'image_id', 'image_inspect_sha256', 'labels', 'repo_digests']
