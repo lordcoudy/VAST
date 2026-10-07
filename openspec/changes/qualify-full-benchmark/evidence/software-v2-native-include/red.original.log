@@ -24,3 +24,13 @@ First extra element 0:
 Ran 2 tests in 0.350s
 
 FAILED (failures=2)
+$ python -m unittest tests.test_native_werror_compile_v1 (RED, before header fix)
+/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/deploy/native_gst_probe/checkpoint_study_reference.hpp:412:5: error: this ‘if’ clause does not guard... [-Werror=misleading-i
+/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/deploy/native_gst_probe/checkpoint_study_reference.hpp:413:5: error: this ‘if’ clause does not guard... [-Werror=misleading-i
+/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/deploy/native_gst_probe/checkpoint_study_reference.hpp:414:5: error: this ‘if’ clause does not guard... [-Werror=misleading-i
+/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/deploy/native_gst_probe/checkpoint_study_reference.hpp:434:5: error: this ‘if’ clause does not guard... [-Werror=misleading-i
+/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/deploy/native_gst_probe/checkpoint_study_reference.hpp:471:44: error: missing initializer for member ‘vast::study::detail::Obse
+/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/deploy/native_gst_probe/checkpoint_study_reference.hpp:471:44: error: missing initializer for member ‘vast::study::detail::Obse
+/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/deploy/native_gst_probe/checkpoint_study_reference.hpp:471:44: error: missing initializer for member ‘vast::study::detail::Obse
+Ran 1 test in 0.491s
+FAILED (failures=1)
