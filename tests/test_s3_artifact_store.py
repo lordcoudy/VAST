@@ -256,6 +256,60 @@ class S3StoreTests(unittest.TestCase):
         self.store.upload_and_verify(self.source)
         self.assertEqual(len([c for c in self.client.calls if c[0] == 'abort']), 1)
 
+    def test_successful_paginated_inventory_preserves_all_objects(self):
+        self.client.pages = [
+            {'IsTruncated': True, 'NextContinuationToken': 'page2', 'Contents': [
+                {'Key': self.store.prefix+'first.bin', 'Size': 17}]},
+            {'IsTruncated': False, 'Contents': [
+                {'Key': self.store.prefix+'second.bin', 'Size': 29}]},
+        ]
+        self.assertEqual(self.store.list_remote_files(), {
+            'first.bin': {'name': 'first.bin', 'key': self.store.prefix+'first.bin', 'size': 17},
+            'second.bin': {'name': 'second.bin', 'key': self.store.prefix+'second.bin', 'size': 29},
+        })
+        requests = [args for operation, args in self.client.calls if operation == 'list']
+        self.assertEqual(requests, [
+            {'Bucket': self.destination.bucket, 'Prefix': self.store.prefix, 'MaxKeys': 1000},
+            {'Bucket': self.destination.bucket, 'Prefix': self.store.prefix, 'MaxKeys': 1000,
+             'ContinuationToken': 'page2'},
+        ])
+
+    def test_inventory_object_bound_accepts_exact_limit_and_rejects_overflow(self):
+        for count in (10000, 10001):
+            with self.subTest(count=count):
+                pages = []
+                for offset in range(0, count, 1000):
+                    truncated = offset+1000 < count
+                    page = {'IsTruncated': truncated, 'Contents': [
+                        {'Key': self.store.prefix+f'object-{number}.bin', 'Size': number}
+                        for number in range(offset, min(offset+1000, count))]}
+                    if truncated:
+                        page['NextContinuationToken'] = str(offset+1000)
+                    pages.append(page)
+                self.client.pages = pages
+                if count == 10000:
+                    self.assertEqual(len(self.store.list_remote_files()), count)
+                else:
+                    with self.assertRaisesRegex(ArtifactPermanentError, 'listing exceeds its bound'):
+                        self.store.list_remote_files()
+
+    def test_inventory_encoded_byte_bound_rejects_hostile_large_size_metadata(self):
+        # An untrusted positive integer can have thousands of digits. Exercise
+        # real JSON encoding without replacing the serializer or raising a limit.
+        size = 10**3999
+        rows = [{'Key': self.store.prefix+f'{number:04d}'+('x'*251), 'Size': size}
+                for number in range(4096)]
+        self.client.pages = []
+        for offset in range(0, len(rows), 1000):
+            truncated = offset+1000 < len(rows)
+            page = {'IsTruncated': truncated, 'Contents': rows[offset:offset+1000]}
+            if truncated:
+                page['NextContinuationToken'] = str(offset+1000)
+            self.client.pages.append(page)
+        with self.assertRaisesRegex(ArtifactPermanentError, 'listing exceeds its bound'):
+            self.store.list_remote_files()
+        self.assertLessEqual(len([call for call in self.client.calls if call[0] == 'list']), 4)
+
     def test_hostile_inventory(self):
         for pages in [
             [{'IsTruncated': False, 'Contents': [{'Key': 'foreign', 'Size': 1}]}],
