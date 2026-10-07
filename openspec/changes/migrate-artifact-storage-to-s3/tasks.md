@@ -44,5 +44,12 @@
 
 - [x] 7.1 Обновить current runbook, PLAN.md, progress.md и безопасный config/env example с S3 commands и раздельными configured/write/capacity/launch states; проверить реальные flags и shell syntax, сохранить frozen Q1 и исторические Seafile dispositions.
 - [ ] 7.2 Push implementation в этот же PR и получить required CI на exact latest commit плюс conformance/source review; отсутствующие/failed обязательные checks должны оставаться blocking.
-- [ ] 7.3 После фактического завершения implementation выполнить reviewed delta sync/archive навыком openspec-archive-change в этой же ветке; проверить обе capabilities, сохранность всех artifacts/.openspec.yaml, отсутствие незавершённых acceptance gaps и commit/push archive в тот же PR.
-- [ ] 7.4 Пройти latest archive-head CI и финальное exact-commit approval; merge выполнять только после отдельного разрешения, с проверкой что approvals/archive/checks относятся к текущему head.
+- [ ] 7.3 После фактического завершения implementation выполнить reviewed delta sync/archive навыком openspec-archive-change в этой же ветке; проверить обе capabilities, сохранность всех artifacts/.openspec.yaml и отсутствие незавершённых implementation acceptance gaps.
+
+## Обязательные gates после физического archive
+
+Archive SHALL быть закоммичен и отправлен в тот же PR; локальный archive не завершает процесс. Эта обязанность сохранена из7.3 и проверяется до финального review.
+
+**Gate7.4:** Пройти latest archive-head CI и финальное exact-commit approval; merge выполнять только после отдельного разрешения, с проверкой что approvals/archive/checks относятся к текущему head.
+
+Эти gates SHALL оставаться обязательными и blocking до фактического выполнения. Они представлены вне implementation checkboxes, поскольку выполняются после создания/push archive, а `openspec validate --archived` требует завершённых checkboxes уже в опубликованном archive. Завершённый checklist сам по себе SHALL не считаться успешным archive-head CI, финальным approval, разрешением merge или workload launch; evidence финальных gates сохраняется в PR на exact head.
