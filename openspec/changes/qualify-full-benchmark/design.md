@@ -86,6 +86,24 @@
 
   Чтобы MODIFIED R13/S6 после archive описывал фактическое поведение, все они входят в этот change. Правило одно: read-only preflight kind до любого побочного эффекта. Временное создание с откатом считается нарушением. В Q4 executor добавляется только ранний read-only preflight переданных receipts, порядок Phase A/B и проверки под lock не меняются.
 
+## Amendment 2 (2026-10-07, перед разделом 5)
+
+- **Worker2 пересобираются, неизменность доказывается по входам.** В `configs/publication_image_build_v1.json` оба worker-образа имеют `base.kind = "produced_image"` от native-образов (OpenVINO и DeepStream). Native-исходники изменились, поэтому native image ID сменятся.
+  - `publication_image_build_v1.py` (:526) и refreeze `assemble`/`verify-patch` (`publication_qualification_image_refreeze_v1.py` :1197–1199, :1351) требуют, чтобы `base_image_id` worker был равен новому native `image_id`.
+  - Поэтому worker2 пересобираются (`--group analytics_worker --producer-receipt <native-a>`), как в цепочке `20260928g`.
+  - «Неизменность worker2» означает равенство `source_set`, `dependency_set` и `build_context` hashes нового `analytics-worker.freeze.json` и freeze `20260928g`. Image ID меняется только из-за base.
+  - Parity 480/32 и так повторяется на новом patch.
+- **Корень сборки и тег.** Тег `qualify_full_benchmark_20261007a`, namespace `qfb-20261007a`. Корень — свежий exact-commit checkout `E:/STUDY/VAST/tmp/qfb-root-20261007a` (NTFS, по схеме `20260928g`). Внутри — копии `models/`, `data/` и нужных git-ignored `artifacts/` (A244, шаблоны packaged checks `20260926d`, рецепты `20260928g`), каждая с проверкой SHA256 против источника.
+  - Рецепты `20260928g` копируются в `artifacts/qualify_full_benchmark_20261007a/` и меняются только в путях, теге и namespace. Diff сохраняется в evidence.
+  - Ext4 используется для полного suite (5.5): свежий clone, `scripts/run_ci_checks.py --expected-commit`.
+- **Перепривязка пинов шире инструмента `20260928g`.** Кроме 7 файлов g, пины есть в:
+  - `tests/test_publication_gstreamer_component_inputs_v1.py`;
+  - `.ci/fixtures/additional-origins.v1.json`;
+  - копиях фикстур `.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/**`.
+
+  Инструмент расширяется на эти файлы. План замен сохраняется до применения, применяются только строковые замены old→new, diff проверяется. Новые `configs/*qfb-20261007a*` из parity коммитятся.
+- **Сеть.** BuildKit обращается к registry за метаданными закреплённых по digest base-образов даже при `--pull=false`. Сеть доступна напрямую, proxy для git и API обходится. Base-образы проверяются `docker image inspect <ref@digest>` до сборки.
+
 ## Risks / Trade-offs
 
 - **[Неизвестная причина A269 memfd]** → PR2 diagnostic сохраняет первый отказ; при повторе — FAILED и amendment, без повторного запуска наугад.

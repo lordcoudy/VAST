@@ -41,10 +41,10 @@
 ## 5. Образы, parity, пины, CI
 
 - [ ] 5.0 Предварительная проверка хоста до сборок: место на C:, E: и ext4, отсутствие чужих контейнеров и процессов. Готово при сохранённом отчёте; при нехватке места — остановка и решение пользователя.
-- [ ] 5.1 Зафиксировать source commit сборки. «Source» — файлы образных allowlist и execution code closure; они не меняются до конца раздела 7. Пересобрать native3 A/B: receipts побайтно равны. Доказать неизменность worker2 против `analytics-worker.freeze.json`. Готово при сохранённых receipts и сравнении.
+- [ ] 5.1 Зафиксировать source commit сборки. «Source» — файлы образных allowlist и execution code closure; они не меняются до конца раздела 7. (Amendment 2) Подготовить корень `E:/STUDY/VAST/tmp/qfb-root-20261007a` (exact commit; копии `models/`, `data/` и нужных `artifacts/` с проверкой SHA256), проверить base-образы по digest. Пересобрать native3 A/B: receipts побайтно равны. Пересобрать worker2 от native-a и доказать равенство `source_set`, `dependency_set` и `build_context` hashes с freeze `20260928g`. Готово при сохранённых receipts и сравнении.
 - [ ] 5.2 Пересобрать четыре runtime-образа через существующую детерминированную сборку, затем refreeze (capture ×4, assemble, `verify-patch`) и 23 packaged checks. Готово при SUCCESS и сохранённых receipts.
 - [ ] 5.3 Parity 480/32 на новом patch и независимый аудит descriptors, groups и tensor hashes против A244. Готово при accepted parity receipt и аудите без расхождений.
-- [ ] 5.4 Перепривязать frozen-identity пины тестов и host-констант от `20260928g` к новым receipts. Готово при focused GREEN, diff только по пинам и равенстве closure hashes до и после.
+- [ ] 5.4 Перепривязать frozen-identity пины тестов, host-констант и `.ci`-фикстур (Amendment 2) от `20260928g` к новым receipts; план замен сохраняется до применения, новые `configs/*qfb-20261007a*` коммитятся. Готово при focused GREEN, diff только по пинам и равенстве closure hashes до и после.
 - [ ] 5.5 Полный ext4 suite и hosted CI на commit с пинами. Готово при 0 failures/errors и skips, равных разрешённому списку.
 - [ ] 5.6 Девять физических integration тестов на стенде. Готово, когда сохранены исходные логи и все тесты SUCCESS. FAILED тест блокирует раздел 7 до диагностики и reviewed amendment.
 - [ ] 5.7 Ручные проверки R5/S5 (две свежие checkout), R14/S2 (хеши g и A269), R20/S1 (relocation custody) и R12/S1 (runbook). Готово, когда сохранены результаты каждой.
