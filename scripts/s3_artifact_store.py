@@ -318,7 +318,7 @@ class S3ArtifactStore:
             inventory = self.list_remote_files()
             result = {'artifact_kind': 'vast_s3_preflight_v1', 'schema_version': 1,
                     'status': 'read_only_ready', 'destination': self.destination.identity,
-                    'run_prefix': self.prefix, 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+                    'run_prefix': self.prefix, 'observed_at_utc': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
                     'object_count': len(inventory), 'quota_visibility': 'not_exposed',
                     'write_verified': False, 'conditional_creation_verified': False, 'verification': None}
             result['sha256'] = hashlib.sha256(canonical_bytes(result)).hexdigest()
