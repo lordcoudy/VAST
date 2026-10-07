@@ -53,7 +53,7 @@
    - R12/S1 — runbook;
    - R14/S2 — хеши g и A269 не менялись;
    - R20/S1 — ext4 relocation custody.
-6. **Одна попытка Q1 с заранее объявленными правилами.** Порядок: inputs → bootstrap → preprocessing → execution code closure → capture plan (37) → runtime inputs → guardian 8/8 → 4 prechecks → Savant diagnostic → 32 cells → authenticated stop → closure (`--operational-accounting-binding`) → индексы → promotion.
+6. **Одна попытка Q1 с заранее объявленными правилами.** Порядок (уточнён Amendment 3): inputs (transaction v2, включая bootstrap) → preprocessing → execution code closure → capture plan (37) → guardian 8/8 → runtime inputs → 4 prechecks → Savant diagnostic → 32 cells → authenticated stop → bind → closure (`--operational-accounting-binding`) → индексы → promotion. Host-скрипты запускаются `python -B -E -s` с записью окружения.
    - Запуск — независимым Windows-процессом (`Start-Process wsl.exe`), как в PR5.
    - Любой отказ означает FAILED Q1 с сохранением evidence. Новая попытка требует reviewed amendment и явного решения человека. Частичные cells не переиспользуются.
    - Перед стартом оператор подтверждает: сон Windows отключён, Windows Update отложен, Docker Desktop UI и extensions не трогаются. Это пункт runbook, не код.

@@ -373,6 +373,8 @@ def main(argv=None):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--mode", choices=(QUALIFICATION_MODE, DIAGNOSTIC_MODE), required=True)
     parser.add_argument("--diagnostic-resource", choices=("cpu", "gpu"))
+    parser.add_argument("--container-engine-socket", dest="container_engine_socket_path", type=Path,
+                        default=Path("/var/run/docker.sock"))
     args = vars(parser.parse_args(argv))
     try:
         result = prepare_stock_operational_capture_plan_v1(**args)
