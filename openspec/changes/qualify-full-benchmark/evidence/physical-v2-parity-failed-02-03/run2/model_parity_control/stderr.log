@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer_v4.py", line 789, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer_v4.py", line 763, in main
+    result = materialize_and_promote_model_parity_v4(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer_v4.py", line 697, in materialize_and_promote_model_parity_v4
+    foundation = prepare_refresh_foundation_v4(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer_v4.py", line 527, in prepare_refresh_foundation_v4
+    probes = capture_live_runtime_probes_v4(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer_v4.py", line 308, in capture_live_runtime_probes_v4
+    publication = commit_or_adopt_immutable_directory_v1(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_immutable_directory_v1.py", line 227, in commit_or_adopt_immutable_directory_v1
+    _require(os.path.lexists(anchored_stage), "immutable directory writer is orphaned")
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_immutable_directory_v1.py", line 29, in _require
+    raise PublicationImmutableDirectoryV1Error(message)
+publication_immutable_directory_v1.PublicationImmutableDirectoryV1Error: immutable directory writer is orphaned
