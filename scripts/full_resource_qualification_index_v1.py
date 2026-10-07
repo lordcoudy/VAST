@@ -379,6 +379,13 @@ def _build_pilots(*, root: Path, pilot_root: Path) -> list[dict[str, Any]]:
                                 f"pilot evidence alias is prohibited: {coordinate}/{role}"
                             )
                         global_identities.add(identity)
+                        if role == "checkpoint_acceptance":
+                            try:
+                                policy_index._require_pilot_acceptance_kind(
+                                    root, item, f"pilot acceptance {coordinate}"
+                                )
+                            except policy_index.PolicyQualificationIndexV2Error as exc:
+                                raise FullResourceQualificationIndexV1Error(str(exc)) from exc
                         evidence[role] = item
                     pilots.append(
                         {

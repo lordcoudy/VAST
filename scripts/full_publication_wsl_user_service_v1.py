@@ -204,6 +204,38 @@ def _stable_file_descriptor(path: Path | str, *, label: str) -> dict[str, Any]:
     }
 
 
+def _reject_foreign_identity_manifest(descriptor: Mapping[str, Any]) -> None:
+    """Apply the shared identity manifest header validator before any staging exists.
+
+    Unparsable manifests are still rejected by the pinned entrypoint preflight.
+    """
+
+    import full_publication_identity_artifacts as identity
+
+    path = Path(str(descriptor["path"]))
+    try:
+        raw = path.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != descriptor["sha256"]:
+            raise ServiceContractError("identity artifact manifest identity drift")
+        text = raw.decode("utf-8")
+        if path.suffix.lower() in {".yaml", ".yml"}:
+            import yaml
+
+            document = yaml.safe_load(text)
+        else:
+            document = json.loads(text)
+    except ServiceContractError:
+        raise
+    except Exception:
+        return
+    if type(document) is not dict:
+        return
+    try:
+        identity.validate_full_publication_identity_manifest_header_v1(document)
+    except identity.IdentityArtifactError as error:
+        raise ServiceContractError(f"identity artifact manifest rejected: {error}") from None
+
+
 def _validate_descriptor(value: Any, *, label: str) -> Path:
     if type(value) is not dict or set(value) != {"path", "size_bytes", "sha256"}:
         raise ServiceContractError(f"{label} descriptor is invalid")
@@ -862,6 +894,7 @@ def materialize_bundle_v1(
             exact_cloud_links, label="Seafile link file"
         ),
     }
+    _reject_foreign_identity_manifest(sources["identity_artifacts"])
     entrypoint_args = _entrypoint_args_from_manifest_fields(
         project_root=root,
         run_root=run,
