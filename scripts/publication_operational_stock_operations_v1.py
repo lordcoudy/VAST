@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import dataclasses
 import json
 import os
 from contextlib import closing, contextmanager
@@ -24,6 +25,11 @@ from publication_physical_io_v1 import PhysicalRootCustodyV1
 
 QUALIFICATION_MODE = "complete_qualification_operational_identity_v1"
 DIAGNOSTIC_MODE = "bounded_native_diagnostic_operational_v1"
+# Held single originals: the bounded native pair, or the reviewed
+# qualification prechecks and Savant original that reuse their cell bundle.
+HELD_OPERATIONS = {(DIAGNOSTIC_MODE, "diagnostic"): frozenset({"gstreamer_custom"}),
+    (QUALIFICATION_MODE, "native_precheck"): frozenset({"gstreamer_custom", "openvino_gva"}),
+    (QUALIFICATION_MODE, "savant_original"): frozenset({"savant"})}
 
 
 def _require(ok, message):
@@ -219,6 +225,33 @@ def prepare_stock_operational_capture_plan_v1(*, project_root, output_dir, mode,
         return result
 
 
+def held_operation_runtime_inputs_v1(*, root, runtime_inputs, runtime_key, system, cell_context, own_context):
+    """Bind a held qualification original to its own planned native context.
+
+The stock 32-bundle activates its qualification cell context. A precheck or
+the Savant original reuses that exact bundle; only the pinned context file is
+replaced, so its process capture proves its own distinct original operation.
+"""
+    from publication_operational_runtime_context_v1 import CAPTURE_KEY, CAPTURE_ROLE, OUTPUT_PATH_RULE
+    result = copy.deepcopy(runtime_inputs)
+    contract = result["dataset"][runtime_key]
+    declared = contract["files"][CAPTURE_ROLE]
+    _require(type(declared) is dict and _abs_descriptor(root, declared) == cell_context and
+        contract.get(CAPTURE_KEY) == {"mode": QUALIFICATION_MODE, "output_dir": OUTPUT_PATH_RULE},
+        "stock qualification bundle did not activate its exact cell capture context")
+    _require(own_context != cell_context, "held original cannot reuse the qualification cell context")
+    relative = _absolute(root, own_context["path"]).relative_to(root).as_posix()
+    if system in {"deepstream", "savant"}:
+        container = declared["container_path"]
+    else:
+        _require(declared["container_path"] == "/workspace/project/" + declared["path"],
+                 "stock native context mount differs from its project path")
+        container = "/workspace/project/" + relative
+    contract["files"][CAPTURE_ROLE] = {**declared, "path": relative, "size_bytes": own_context["size_bytes"],
+        "sha256": own_context["sha256"], "container_path": container}
+    return result
+
+
 @contextmanager
 def held_stock_operational_request_v1(*, project_root, capture_plan_path, operation_id,
         runtime_bundle_path, candidate_index_path, preprocessing_contract_path, preprocessing_receipt_path,
@@ -240,10 +273,11 @@ finalizer arguments. It gets no replacement transaction or publication grant.
         token = pilot._ACTIVE_PHYSICAL_CUSTODY.set(custody)
         try:
             with held_operational_capture_plan_v1(project_root=root, index_path=_absolute(root, capture_plan_path)) as plan:
-                _require(plan["index"]["mode"] == DIAGNOSTIC_MODE and operation_id in plan["operations_by_id"],
+                mode = plan["index"]["mode"]
+                _require(mode in {DIAGNOSTIC_MODE, QUALIFICATION_MODE} and operation_id in plan["operations_by_id"],
                          "original bounded diagnostic mode/operation differs from plan")
                 operation = plan["operations_by_id"][operation_id]
-                _require(operation["phase"] == "diagnostic" and operation["system"] == "gstreamer_custom"
+                _require(operation["system"] in HELD_OPERATIONS.get((mode, operation["phase"]), ())
                     and operation["codec"] == "h264" and operation["policy"] in {"cpu_only", "gpu_only"},
                     "original adapter requires the authorized forced native pair")
                 original = _held_operational_object(custody, root, operation["original_operation"])
@@ -285,9 +319,16 @@ finalizer arguments. It gets no replacement transaction or publication grant.
                 contract = pilot._validate_request(request, inputs=inputs, cell=cell, output_dir=directory)
                 context_ref = next(row["descriptor"] for row in plan["index"]["native_contexts"]
                                    if row["operation_id"] == operation_id)
+                if mode == QUALIFICATION_MODE:
+                    request = dataclasses.replace(request, runtime_inputs=held_operation_runtime_inputs_v1(
+                        root=root, runtime_inputs=request.runtime_inputs,
+                        runtime_key=pilot.RUNTIME_INPUT_KEY_BY_SYSTEM[cell.system], system=cell.system,
+                        cell_context=plan["qualification_contexts_by_arm"][cell.arm_id]["descriptor"],
+                        own_context=context_ref))
+                    contract = pilot._validate_request(request, inputs=inputs, cell=cell, output_dir=directory)
                 declared = contract["files"].get(CAPTURE_ROLE)
                 _require(type(declared) is dict and _abs_descriptor(root, declared) == context_ref and
-                    contract.get(CAPTURE_KEY) == {"mode": DIAGNOSTIC_MODE, "output_dir": OUTPUT_PATH_RULE},
+                    contract.get(CAPTURE_KEY) == {"mode": mode, "output_dir": OUTPUT_PATH_RULE},
                     "stock original diagnostic bundle did not activate the exact capture context")
                 _require(contract["container_image"] == original["container_image"],
                          "original diagnostic image differs from stock runtime")
