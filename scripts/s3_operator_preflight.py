@@ -18,17 +18,10 @@ from s3_artifact_store import S3ArtifactStore, S3TransportError
 from s3_capacity_attestation import (build_s3_capacity_attestation, validate_s3_capacity_attestation,
                                      validate_preflight, utc_now, S3CapacityError)
 from s3_destination import S3Destination, canonical_bytes, read_physical_bytes
+from s3_source_identity import source_sha256
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SOURCE_FILES = ('artifact_store.py','s3_artifact_store.py','s3_credentials.py','s3_destination.py',
-                's3_publication_evidence.py','s3_capacity_attestation.py','s3_operator_preflight.py',
-                'publication_cloud_environment.py','publication_physical_io_v1.py')
 LIMIT = 64*1024**2
-
-
-def source_sha256():
-    return hashlib.sha256(canonical_bytes({name:hashlib.sha256(read_physical_bytes(
-        Path(__file__).parent/name, maximum=1024*1024)).hexdigest() for name in SOURCE_FILES})).hexdigest()
 
 
 def _finish(report):

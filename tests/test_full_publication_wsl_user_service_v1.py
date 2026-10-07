@@ -22,7 +22,7 @@ class InjectedCrash(BaseException):
 
 
 class Fixture:
-    def __init__(self, root: Path) -> None:
+    def __init__(self, root: Path, *, historical=True) -> None:
         self.root = root.resolve()
         (self.root / "scripts").mkdir(parents=True)
         (self.root / "configs").mkdir()
@@ -63,6 +63,14 @@ class Fixture:
             "upload link - https://seafile.example/u/d/UploadCapabilityToken99\n",
             encoding="utf-8",
         )
+        if historical:
+            from full_publication_runner import FullPublicationRunner
+            from tests.test_full_publication_runner import small_matrix_factory
+            identity = {'cloud_destination':{'schema_version':1,'transport':'https',
+                'same_origin_capability_pair':True,'origin_sha256':'a'*64,
+                'destination_id_sha256':'b'*64,'destination_sha256':'c'*64}}
+            FullPublicationRunner(self.run_root, config={}, identity_inputs=identity,
+                                  matrix_builder=small_matrix_factory)._initialize_or_resume()
 
     def materialize(self, **overrides: object) -> dict[str, object]:
         arguments: dict[str, object] = dict(
@@ -790,7 +798,7 @@ class FullPublicationWslUserServiceTests(unittest.TestCase):
         receipt = Path(str(result["receipt_path"]))
         bundle = service.validate_bundle_v1(receipt)
         self._install_exact_unit(result)
-        self.fixture.run_root.mkdir()
+        self.fixture.run_root.mkdir(exist_ok=True)
         state = {
             "schema_version": 1,
             "artifact_kind": "vast_full_publication_supervisor_state",

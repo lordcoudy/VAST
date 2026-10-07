@@ -455,7 +455,7 @@ class FullPublicationRuntime:
                     )
                 if self.capacity_confirmed_gib < MINIMUM_CONFIRMED_CLOUD_GIB:
                     return CallbackDecision.rejected(
-                        "Seafile capacity lower-bound attestation must be at least 500 GiB",
+                        "Cloud capacity lower-bound attestation must be at least 500 GiB",
                         retryable=False,
                     )
                 disk = (
@@ -467,10 +467,10 @@ class FullPublicationRuntime:
                 cloud = _json_copy(self.cloud_store.preflight())
                 expected_status = "read_only_ready" if getattr(self.cloud_store, "backend", None) == "s3" else "ready"
                 if type(cloud) is not dict or cloud.get("status") != expected_status:
-                    raise ArtifactStoreError("Seafile preflight did not return ready")
+                    raise ArtifactStoreError("Cloud preflight did not return ready")
                 remote_files = self.cloud_store.list_remote_files()
                 if type(remote_files) is not dict:
-                    raise ArtifactStoreError("Seafile remote listing is invalid")
+                    raise ArtifactStoreError("Cloud remote listing is invalid")
                 run_key = hashlib.sha256(
                     str(context.run_identity["sha256"]).encode("utf-8")
                 ).hexdigest()[:16]

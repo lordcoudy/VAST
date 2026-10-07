@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 
 from s3_destination import S3Destination, canonical_bytes, read_physical_bytes
+from s3_source_identity import source_sha256
 from seafile_capacity_attestation_v1 import build_sizing_projection, SeafileCapacityAttestationV1Error
 from seafile_operator_capacity_attestation_v2 import _validate_projection, SeafileOperatorCapacityAttestationV2Error
 
@@ -129,6 +130,9 @@ def validate_s3_capacity_attestation(value, *, destination, now_utc=None, projec
             or type(source) is not dict or set(source) != {'source_sha256','sdk_version'}
             or source['sdk_version'] != '1.43.62' or re.fullmatch(r'[0-9a-f]{64}',str(source['source_sha256'])) is None):
         raise S3CapacityError('S3 sizing/source descriptors are invalid')
+    proof = value['preflight_observation']['verification']
+    if source != {key:proof[key] for key in ('source_sha256','sdk_version')} or source['source_sha256'] != source_sha256():
+        raise S3CapacityError('S3 capacity live preflight or current adapter source changed')
     if project_root is not None:
         from backend_pair_archive_sizing_receipts_v1 import load_operator_sizing_rows_v1
         try:

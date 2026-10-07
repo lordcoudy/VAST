@@ -12,6 +12,8 @@ import os
 from pathlib import Path
 import re
 import stat
+import signal
+import threading
 import time
 from typing import Any
 from urllib.parse import urlsplit
@@ -37,8 +39,9 @@ class S3TransportError(ArtifactStoreError):
 
 class HeldFileRange(io.RawIOBase):
     """Seekable bounded view of the same FD; SDK cannot reopen or buffer a part."""
-    def __init__(self, descriptor: int, start: int, length: int):
+    def __init__(self, descriptor: int, start: int, length: int, *, check=None):
         self.descriptor, self.start, self.length, self.position = descriptor, start, length, 0
+        self.check = check or (lambda: None)
 
     def readable(self):
         return True
@@ -50,6 +53,7 @@ class HeldFileRange(io.RawIOBase):
         return self.position
 
     def seek(self, offset, whence=0):
+        self.check()
         base = {0: 0, 1: self.position, 2: self.length}.get(whence)
         if base is None or type(offset) is not int or not 0 <= base + offset <= self.length:
             raise ArtifactPermanentError('S3 held range seek is outside its bound')
@@ -57,8 +61,10 @@ class HeldFileRange(io.RawIOBase):
         return self.position
 
     def read(self, size=-1):
+        self.check()
         amount = min(self.length - self.position, _CHUNK, size if size >= 0 else _CHUNK)
         data = os.pread(self.descriptor, amount, self.start + self.position)
+        self.check()
         if amount and not data:
             raise ArtifactIntegrityError('S3 held upload source became short')
         self.position += len(data)
@@ -84,6 +90,7 @@ class S3ArtifactStore:
         self._multipart_threshold = self._part_size = _PART
         self._deadline = None
         self._sent = 0
+        self._transport_expired = False
         self._expected_versions = {}
         self._verified = {}
         self.uploaded_bytes = self.readback_bytes = 0
@@ -185,6 +192,25 @@ class S3ArtifactStore:
     def _check_deadline(self):
         self._remaining()
 
+    @contextmanager
+    def _transport_deadline(self):
+        """Interrupt even a continuously progressing blocking SDK operation."""
+        if (not hasattr(signal, 'setitimer') or threading.current_thread() is not threading.main_thread()
+                or signal.getitimer(signal.ITIMER_REAL) != (0.0, 0.0)):
+            raise ArtifactPermanentError('S3 transport requires its synchronous isolated timer context')
+        previous = signal.getsignal(signal.SIGALRM)
+        self._transport_expired = False
+        def expired(_signum, _frame):
+            self._transport_expired = True
+            raise S3TransportError('S3 operation deadline expired')
+        signal.signal(signal.SIGALRM, expired)
+        try:
+            signal.setitimer(signal.ITIMER_REAL, self._remaining())
+            yield
+        finally:
+            signal.setitimer(signal.ITIMER_REAL, 0)
+            signal.signal(signal.SIGALRM, previous)
+
     def _validate_source_size(self, size):
         if size >= self._multipart_threshold and math.ceil(size/self._part_size) > 10000:
             raise ArtifactPermanentError('S3 object exceeds the fixed multipart part limit')
@@ -218,7 +244,8 @@ class S3ArtifactStore:
             from urllib3.util import Timeout
             self.client._endpoint.http_session._timeout = Timeout(connect=min(10, self._remaining()), read=self._remaining())
         try:
-            result = getattr(self.client, operation)(**kwargs)
+            with self._transport_deadline():
+                result = getattr(self.client, operation)(**kwargs)
             self._remaining()
             if type(result) is not dict or result.get('Error'):
                 raise ArtifactPermanentError('S3 SDK returned an invalid operation result')
@@ -226,6 +253,8 @@ class S3ArtifactStore:
         except ArtifactStoreError:
             raise
         except Exception as error:
+            if self._transport_expired:
+                raise S3TransportError('S3 operation deadline expired') from None
             status = self._error_status(error)
             if status in {404, 409, 412}:
                 # Internal control branch only; callers never expose SDK messages.
@@ -340,8 +369,7 @@ class S3ArtifactStore:
         if type(expected_sha256) is not str or not _HEX.fullmatch(expected_sha256) or type(expected_size) is not int or expected_size < 0:
             raise ArtifactIntegrityError('S3 expected object digest or size is invalid')
         with self.operation():
-            if expected_version_id is not None:
-                self._expected_versions[name] = expected_version_id
+            self._expected_versions[name] = expected_version_id
             digest, size = hashlib.sha256(), 0
             with self._read_remote(name) as reader:
                 while chunk := reader.read(self.chunk_size):
@@ -361,11 +389,28 @@ class S3ArtifactStore:
         return {**self.storage_binding, 'key': self._key(name),
                 'version_id': self._expected_versions.get(name)}
 
+    def read_verified_bytes(self, name, *, expected_sha256, expected_size,
+                            expected_version_id=None, maximum=1024*1024):
+        if type(expected_size) is not int or not 0 <= expected_size <= maximum:
+            raise ArtifactIntegrityError('S3 verified bytes exceed the validation bound')
+        if type(expected_sha256) is not str or not _HEX.fullmatch(expected_sha256):
+            raise ArtifactIntegrityError('S3 expected verified-byte digest is invalid')
+        with self.operation():
+            self._expected_versions[name] = expected_version_id
+            payload = bytearray()
+            with self._read_remote(name) as reader:
+                while chunk := reader.read(min(self.chunk_size, maximum+1-len(payload))):
+                    payload.extend(chunk)
+                    if len(payload) > expected_size:
+                        raise ArtifactIntegrityError('S3 verified bytes exceed the expected size')
+            if len(payload) != expected_size or hashlib.sha256(payload).hexdigest() != expected_sha256:
+                raise ArtifactIntegrityError('S3 verified-byte digest or size mismatch')
+            return bytes(payload)
+
     def materialize_remote(self, name, *, destination, expected_sha256, expected_size,
                            expected_version_id=None):
         with self.operation():
-            if expected_version_id is not None:
-                self._expected_versions[name] = expected_version_id
+            self._expected_versions[name] = expected_version_id
             return physical_materialize(self, name, destination=destination,
                 expected_sha256=expected_sha256, expected_size=expected_size,
                 journal_root='.s3-materialization-v1', intent_kind='vast-s3-materialization-intent/v1',
@@ -396,6 +441,9 @@ class S3ArtifactStore:
         self.intent_root.mkdir(mode=0o700, parents=True, exist_ok=True)
         if self.intent_root.resolve(strict=True) != self.intent_root:
             raise ArtifactIntegrityError('S3 multipart journal is redirected')
+        root_info = self.intent_root.stat()
+        if root_info.st_uid != os.getuid() or stat.S_IMODE(root_info.st_mode) != 0o700:
+            raise ArtifactIntegrityError('S3 multipart journal is not private to its owner')
         with PhysicalRootCustodyV1.open(self.intent_root, label='S3 multipart journal') as custody:
             lock = self.intent_root / '.lock'
             fd = os.open(lock, os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW | os.O_NONBLOCK, 0o600)
@@ -479,7 +527,7 @@ class S3ArtifactStore:
         if source_size < self._multipart_threshold:
             try:
                 self._call('put_object', Bucket=self.destination.bucket, Key=key,
-                    Body=HeldFileRange(source_fd, 0, source_size), ContentLength=source_size, IfNoneMatch='*')
+                    Body=HeldFileRange(source_fd, 0, source_size, check=self._check_deadline), ContentLength=source_size, IfNoneMatch='*')
             except (_S3Status, S3TransportError) as error:
                 if isinstance(error, _S3Status) and error.status not in {409,412}:
                     raise ArtifactPermanentError('S3 conditional PUT was rejected') from None
@@ -489,9 +537,14 @@ class S3ArtifactStore:
         if count > 10000:
             raise ArtifactPermanentError('S3 object exceeds the fixed multipart part limit')
         with self._intent_custody() as custody:
-            leaves = [p.name for p in self.intent_root.iterdir() if p.name.endswith('.json')]
-            if len(leaves) > 2 or any(re.fullmatch(r'[0-9a-f]{64}\.json', leaf) is None for leaf in leaves):
-                raise ArtifactIntegrityError('S3 multipart journal inventory is invalid')
+            leaves = []
+            for item in self.intent_root.iterdir():
+                self._check_deadline()
+                if item.name == '.lock':
+                    continue
+                if len(leaves) >= 2 or re.fullmatch(r'[0-9a-f]{64}\.json', item.name) is None:
+                    raise ArtifactIntegrityError('S3 multipart journal inventory is invalid')
+                leaves.append(item.name)
             leaf = self._intent_name(name, digest, size)
             if leaf in leaves:
                 previous, _identity = self._read_intent(custody, leaf)
@@ -530,7 +583,7 @@ class S3ArtifactStore:
                     length = min(self._part_size, source_size-start)
                     part = self._call('upload_part', Bucket=self.destination.bucket, Key=key,
                         UploadId=uid, PartNumber=number, ContentLength=length,
-                        Body=HeldFileRange(source_fd, start, length))
+                        Body=HeldFileRange(source_fd, start, length, check=self._check_deadline))
                     etag = part.get('ETag')
                     if type(etag) is not str or not etag or len(etag) > 1024:
                         raise ArtifactIntegrityError('S3 multipart part identity is invalid')
@@ -594,8 +647,13 @@ class _BoundedBody:
         try:
             if hasattr(self.body, 'set_socket_timeout'):
                 self.body.set_socket_timeout(remaining)
-            chunk = self.body.read(min(amount, _CHUNK, max(1, self.size-self.observed+1)))
+            with self.store._transport_deadline():
+                chunk = self.body.read(min(amount, _CHUNK, max(1, self.size-self.observed+1)))
+        except ArtifactStoreError:
+            raise
         except Exception as error:
+            if self.store._transport_expired:
+                raise S3TransportError('S3 operation deadline expired') from None
             from botocore.exceptions import ReadTimeoutError, IncompleteReadError, ResponseStreamingError
             import http.client
             if isinstance(error, (OSError, http.client.IncompleteRead, ReadTimeoutError,

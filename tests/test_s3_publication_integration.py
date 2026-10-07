@@ -41,7 +41,7 @@ class S3IntegrationTests(unittest.TestCase):
     def test_s3_service_manifest_has_no_seafile_or_secret_descriptor(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
-            fixture = Fixture(root/'repo')
+            fixture = Fixture(root/'repo', historical=False)
             config = fixture.root/'configs/artifact-storage.yaml'
             shutil.copyfile(Path(__file__).parents[1]/'configs/artifact-storage.yaml',config)
             private = root/'private'
@@ -60,6 +60,13 @@ class S3IntegrationTests(unittest.TestCase):
             credentials.chmod(0o644)
             with self.assertRaises(service.ServiceContractError):
                 service.validate_bundle_v1(result['receipt_path'])
+
+    def test_new_legacy_service_materialization_is_rejected_before_writes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            fixture = Fixture(Path(temp)/'repo', historical=False)
+            with self.assertRaisesRegex(service.ServiceContractError, 'historical run'):
+                fixture.materialize()
+            self.assertFalse(fixture.output_dir.exists())
 
 
 if __name__ == '__main__':

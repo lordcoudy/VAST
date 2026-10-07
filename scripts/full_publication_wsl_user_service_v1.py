@@ -848,6 +848,12 @@ def materialize_bundle_v1(
     if cloud_links_file is not None:
         if cloud_config_file is not None or s3_credentials_file is not None:
             raise ServiceContractError("service cloud inputs mix storage backends")
+        from publication_legacy_context import require_historical_seafile_context
+        from benchmark_contract import ContractError
+        try:
+            require_historical_seafile_context(run)
+        except ContractError:
+            raise ServiceContractError('Seafile service materialization requires a verified historical run; new runs use S3') from None
         if type(cloud_destination_id) is not str or not cloud_destination_id.strip():
             raise ServiceContractError("cloud_destination_id is invalid")
         if any(character in cloud_destination_id for character in "\r\n\x00"):

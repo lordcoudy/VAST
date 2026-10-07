@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import sys
 import tempfile
+import time
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
@@ -98,6 +99,35 @@ class FakeS3:
 
 
 class S3StoreTests(unittest.TestCase):
+    def test_held_range_checks_deadline_during_reads_and_rewinds(self):
+        with tempfile.TemporaryFile() as source:
+            source.write(b'abc')
+            source.flush()
+            expired = False
+            def check():
+                if expired:
+                    raise ArtifactStoreError('deadline')
+            view = HeldFileRange(source.fileno(), 0, 3, check=check)
+            self.assertEqual(view.read(1), b'a')
+            expired = True
+            with self.assertRaises(ArtifactStoreError):
+                view.read(1)
+            with self.assertRaises(ArtifactStoreError):
+                view.seek(0)
+
+    def test_blocking_sdk_call_is_interrupted_at_absolute_deadline(self):
+        class Slow(FakeS3):
+            def head_bucket(self, **args):
+                time.sleep(2)
+                return {}
+        destination = S3Destination.from_file(Path(__file__).parents[1]/'configs/artifact-storage.yaml')
+        with tempfile.TemporaryDirectory() as root:
+            store = S3ArtifactStore(destination, client=Slow(), intent_root=Path(root), timeout_s=.05)
+            started = time.monotonic()
+            with self.assertRaises(ArtifactStoreError):
+                with store.operation():
+                    store._call('head_bucket', Bucket=destination.bucket)
+            self.assertLess(time.monotonic()-started, .5)
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name)

@@ -3463,6 +3463,8 @@ def create_application(
     if args.cloud_links_file is not None:
         if args.cloud_config_file is not None or args.s3_credentials_file is not None:
             raise ContractError("cloud inputs mix S3 and legacy Seafile")
+        from publication_legacy_context import require_historical_seafile_context
+        require_historical_seafile_context(run_root)
         links = _consume_cloud_links(project_root=project_root, links_file=args.cloud_links_file)
         destination_id = _destination_id_from_args(args)
         capacity_binding = _load_seafile_capacity_attestation(project_root=project_root,
@@ -3581,6 +3583,8 @@ def create_application(
         identity_inputs=material.identity_inputs,
         callbacks=runtime.callbacks(),
     )
+    if s3_destination is None:
+        runner._load_existing()
     return ProductionEntrypoint(
         runner=runner,
         runtime=runtime,

@@ -3203,14 +3203,9 @@ class PublicationCloudTransaction:
         if self._s3:
             if self._s3_object(archive, current, "archive") != current["archive_object"] or self._s3_object(receipt, current, "receipt") != current["receipt_object"]:
                 raise LedgerIntegrityError("S3 reverified object identity changed")
-            payload = bytearray()
-            with self.store._read_remote(str(current["receipt_remote_name"])) as response:
-                while chunk := response.read(8192):
-                    payload.extend(chunk)
-                    if len(payload) > 1024 * 1024:
-                        raise LedgerIntegrityError("S3 receipt exceeds validation bound")
-            if len(payload) != current["receipt_size_bytes"] or _sha256_bytes(payload) != current["receipt_sha256"]:
-                raise LedgerIntegrityError("S3 receipt changed across verification")
+            payload = self.store.read_verified_bytes(str(current["receipt_remote_name"]),
+                expected_size=current["receipt_size_bytes"], expected_sha256=current["receipt_sha256"],
+                expected_version_id=current["receipt_object"]["version_id"], maximum=1024*1024)
             try:
                 validate_s3_pair_receipt(json.loads(payload), current)
             except (S3EvidenceError, TypeError, ValueError, KeyError):
