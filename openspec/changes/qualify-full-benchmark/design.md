@@ -177,6 +177,7 @@
   - Отличие от 5.2: сборка выполняется на Docker Desktop 4.93.0; если A≠B (детерминизм нарушен новым BuildKit) — стоп и решение пользователя.
   - Ожидаемые изменения receipts: новые runtime `image_id`, `source_identity` (sidecar), embedded/projection и связанные хеши; native/worker — без изменений.
 - **Что остаётся из Amendment 4:** заморозка engine (без обновлений, перезапусков Docker Desktop/WSL/хоста и `apt upgrade` до конца Q1), запись и сверка идентичности engine (запись 6A.2 переносится в новый тег и сверяется перед сборкой), preflight с `_verify_live_images` и сверкой engine, WSL git в корне, повторы и runbook. Re-freeze `20261008b` (6A.3–6A.4) и parity 6A.5 устаревают и сохраняются как evidence; 6A.6–6A.9 заменяются разделом 6B.
+- **Уточнения по ревью (PASS_WITH_NOTES на `c461a0fc`):** RED/GREEN — в WSL (класс тестов пропускается без `SO_PEERCRED`); до сборки — hosted CI на `C_B'` и live-проверка projection/validator на реальном `docker info`; копируются `native-a`, `native-b`, `worker_images`; native3/worker2 сверяются live по ID; diff входов — по всем receipt-bound входам (allowlists, build-context, Dockerfiles, `build_*_runtime_v3.sh`); окно заморозки engine начинается заново с 6B.3 (Docker Desktop и WSL перезапускались в 6A.5); идентичность engine записывается до и после сборки, refreeze и parity; pin-инструмент v2 с recipe diff и проверкой plan-vs-inventory; `OPENVINO_GVA_EMBEDDED_SET_SHA256` не должен измениться (sidecar не входит в embedded sets).
 - **Попытка 2** — по-прежнему по правилам решения 6.
 
 ## Risks / Trade-offs

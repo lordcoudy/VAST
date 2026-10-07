@@ -38,6 +38,7 @@
   - новый общий модуль часов;
   - stock owner операций рядом с `scripts/publication_operational_stock_operations_v1.py`, `scripts/publication_policy_qualification_pilot_executor_v2.py` и `scripts/publication_benchmark_native_diagnostic_v1.py`;
   - все full consumers, принимающие full kinds (задачи 3.1 и 3.3 после Amendment 1); код меняется только там, где RED-тест покажет побочный эффект до отказа или отсутствие проверки kind;
+  - (Amendment 5) `scripts/checkpoint_gstreamer_analytics_sidecar.py` (точная карта наблюдённых сборок Docker Desktop) и `tests/test_analytics_peer_identity.py`;
   - тесты рядом.
 - **Образы и конфигурация:** native3 и четыре runtime образа, `configs/publication_qualification_image_refreeze_v1.json`, parity receipts, frozen-identity test pins. Packaged изменения требуют пересборки и parity по зависимостям.
 - **Хост и время:**
