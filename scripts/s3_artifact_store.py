@@ -99,6 +99,9 @@ class S3ArtifactStore:
         self.matrix_sha256 = self.run_id = None
         self.credential_source = None
         if client is None:
+            import botocore
+            if botocore.__version__ != '1.43.62':
+                raise ArtifactPermanentError('S3 requires the reviewed pinned SDK version')
             from botocore.config import Config
             from botocore.session import Session
             source = Path(os.path.abspath(os.fspath(credentials_file or default_credentials_path())))
@@ -481,8 +484,10 @@ class S3ArtifactStore:
                     or type(value['parts']) is not list or len(value['parts']) > 10000):
                 raise ValueError
             self._validate_remote_name(value['key'][len(self.prefix):])
+            if leaf != self._intent_name(value['key'][len(self.prefix):], value['sha256'], value['size_bytes']):
+                raise ValueError
             for number, part in enumerate(value['parts'], 1):
-                if (type(part) is not dict or set(part) != {'PartNumber','ETag'} or part['PartNumber'] != number
+                if (type(part) is not dict or set(part) != {'PartNumber','ETag'} or type(part['PartNumber']) is not int or part['PartNumber'] != number
                         or type(part['ETag']) is not str or not part['ETag'] or len(part['ETag']) > 1024):
                     raise ValueError
             return value, identity

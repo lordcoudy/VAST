@@ -99,6 +99,36 @@ class FakeS3:
 
 
 class S3StoreTests(unittest.TestCase):
+    def test_production_multipart_boundary_uses_whole_held_archive(self):
+        for size, multipart in ((64*1024**2-1, False),(64*1024**2, True),(64*1024**2+1, True)):
+            with self.subTest(size=size):
+                with self.source.open('wb') as source:
+                    source.truncate(size)
+                self.client.objects.clear()
+                self.client.calls.clear()
+                result = self.store.upload_and_verify(self.source)
+                self.assertEqual(result['size_bytes'],size)
+                self.assertEqual(any(call[0]=='create' for call in self.client.calls),multipart)
+                lengths = [call[1]['ContentLength'] for call in self.client.calls if call[0]=='part']
+                if multipart:
+                    self.assertEqual(lengths,[64*1024**2] + ([1] if size>64*1024**2 else []))
+
+    def test_multipart_intent_cannot_redirect_owned_key_before_abort(self):
+        self.store._multipart_threshold = self.store._part_size = 4
+        class Crash(BaseException):
+            pass
+        self.store.multipart_fault = lambda stage, _value: (_ for _ in ()).throw(Crash()) if stage=='part_durable' else None
+        with self.assertRaises(Crash):
+            self.store.upload_and_verify(self.source)
+        import json
+        path = next(self.store.intent_root.glob('*.json'))
+        intent = json.loads(path.read_bytes())
+        intent['key'] = self.store.prefix+'foreign.bin'
+        path.write_text(json.dumps(intent))
+        self.store.multipart_fault = None
+        with self.assertRaises(ArtifactIntegrityError):
+            self.store.upload_and_verify(self.source)
+        self.assertFalse(any(call[0]=='abort' for call in self.client.calls))
     def test_completed_http_body_may_release_socket_before_eof_read(self):
         class ReleasedSocket(io.BytesIO):
             def set_socket_timeout(self, value):
