@@ -76,9 +76,24 @@
 - [ ] 6A.8 Runbook попытки 2: константы `20261008b`, новые SHA256 receipts и `receipt-file.sha256`; в `q1_00_preflight` до создания namespaces — `_verify_live_images(patch, docker=$DOCKER, inspector=_default_inspect_image)` и сверка идентичности engine с 6A.2; `bash -n` и сверка флагов с argparse. Готово при проверенном runbook.
 - [ ] 6A.9 На `C_Q1'`: hosted CI, ext4 suite (ignored receipts `20261008b` скопированы в clone; одобренный набор skips), integration 9/9, R5/S5; обновить R14/S2 и R12/S1. Готово при зелёных результатах с сохранёнными originals.
 
+## 6B. Amendment 5: Docker Desktop 4.93.0 и пересборка runtime-образов
+
+6A.5–6A.9 заменены этим разделом; re-freeze `20261008b` и parity-запуски 1–3 сохранены как evidence.
+
+- [ ] 6B.1 RED: тесты `tests/test_analytics_peer_identity.py` — пара `29.8.1`/`1294c24a…` принимается построением projection и валидатором observation (roundtrip); смешанные пары и неизвестный commit отклоняются. Готово при genuine RED на текущем коде.
+- [ ] 6B.2 GREEN: точная карта наблюдённых сборок containerd → `ServerVersion` в `checkpoint_gstreamer_analytics_sidecar.py`; существующие тесты без изменений; commit `C_B'`. Готово при зелёных новых и прежних тестах sidecar/peer identity.
+- [ ] 6B.3 Корень на `C_B'` (WSL git, процедура Amendment 4); diff входов allowlists образов `C_Q1..C_B'` — ровно sidecar; идентичность engine равна 6A.2. Готово при сохранённых git status и проверках.
+- [ ] 6B.4 Тег `qualify_full_benchmark_20261008c`: побайтовые копии native/worker receipts с манифестом; сборка runtime ×4 с A==B; refreeze (capture ×4, assemble, `verify-patch`) и сырые inspect 12 ссылок; live `_verify_live_images` нового patch. Готово при SUCCESS; A≠B — стоп.
+- [ ] 6B.5 23 packaged checks на новых runtime-образах. Готово при 23/23.
+- [ ] 6B.6 Parity 480/32 (namespace `qfb-20261008c`) и независимый аудит против A244. Готово при accepted receipt и аудите без расхождений.
+- [ ] 6B.7 Перепривязка пинов (инвентарь старых значений `20261007a`, включая frozen-identity константы runtime-модулей; B2; selected-original copy), commit `C_Q1'`. Готово, когда diff от `C_B'` — только замены по плану, новые configs и проверенные копии.
+- [ ] 6B.8 Корень на `C_Q1'` (WSL git, процедура Amendment 4). Готово при сохранённых git status и сверке configs.
+- [ ] 6B.9 Runbook попытки 2 на `20261008c`/`C_Q1'` (константы, SHA256, preflight `_verify_live_images` и сверка engine; `bash -n`, argparse). Готово при проверенном runbook.
+- [ ] 6B.10 На `C_Q1'`: hosted CI, ext4 suite, integration 9/9, R5/S5; обновить R14/S2 и R12/S1. Готово при зелёных результатах с originals.
+
 ## 7. Физическая qualification Q1 (одна попытка)
 
-**Попытка 1 — FAILED** на 7.1 (transaction rc 78), 7 октября 2026. Задачи 7.1–7.6 относятся к попытке 2 на `C_Q1'` после 6A и 6.2 (Amendment 4).
+**Попытка 1 — FAILED** на 7.1 (transaction rc 78), 7 октября 2026. Задачи 7.1–7.6 относятся к попытке 2 на `C_Q1'` после 6A/6B и 6.2 (Amendments 4–5).
 
 - [ ] 7.1 Свежие inputs, bootstrap, preprocessing, execution code closure, capture plan (37) и runtime inputs. Готово при сохранённых receipts.
 - [ ] 7.2 Guardian 8/8, 4 native prechecks и Savant diagnostic через owner со встроенными проверками process/container validators (Amendment 3). Готово при SUCCESS каждого шага.
