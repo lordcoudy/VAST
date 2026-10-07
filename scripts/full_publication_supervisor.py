@@ -256,6 +256,59 @@ def _exclusive_lock(path: Path) -> Iterator[None]:
         handle.close()
 
 
+def _entrypoint_option_value(arguments: Sequence[str], option: str) -> str | None:
+    values: list[str] = []
+    prefix = option + "="
+    for position, argument in enumerate(arguments):
+        if argument == option and position + 1 < len(arguments):
+            values.append(arguments[position + 1])
+        elif argument.startswith(prefix):
+            values.append(argument[len(prefix):])
+    if len(values) > 1:
+        raise SupervisorError(f"entrypoint argument {option} is ambiguous")
+    return values[0] if values else None
+
+
+def _reject_foreign_identity_manifest(
+    entrypoint: Path, entrypoint_args: Sequence[str]
+) -> None:
+    """Apply the shared identity manifest header validator before state or lock exist.
+
+    Missing or unparsable manifests stay with the entrypoint preflight.
+    """
+
+    import full_publication_identity_artifacts as identity
+
+    manifest_value = _entrypoint_option_value(entrypoint_args, "--identity-artifacts")
+    project_root_value = _entrypoint_option_value(entrypoint_args, "--project-root")
+    project_root = (
+        Path(project_root_value)
+        if project_root_value is not None
+        else Path(entrypoint).resolve().parents[1]
+    )
+    manifest = Path(
+        manifest_value if manifest_value is not None else identity.DEFAULT_MANIFEST
+    )
+    if not manifest.is_absolute():
+        manifest = project_root / manifest
+    try:
+        raw = manifest.read_bytes().decode("utf-8")
+        if manifest.suffix.lower() in {".yaml", ".yml"}:
+            import yaml
+
+            document = yaml.safe_load(raw)
+        else:
+            document = json.loads(raw)
+    except Exception:
+        return
+    if type(document) is not dict:
+        return
+    try:
+        identity.validate_full_publication_identity_manifest_header_v1(document)
+    except identity.IdentityArtifactError as error:
+        raise SupervisorError(f"identity artifact manifest rejected: {error}") from None
+
+
 class SubprocessEntrypointInvoker:
     """Invoke a fresh entrypoint process without persisting credentials."""
 
@@ -612,6 +665,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             entrypoint_sha256=args.entrypoint_sha256,
             python_executable=args.python_executable,
         )
+        _reject_foreign_identity_manifest(args.entrypoint, entrypoint_args)
         command_identity = dict(invoker.command_identity)
         if args.supervisor_sha256 is None:
             _path, _size, supervisor_sha256 = _stable_source_descriptor(__file__)

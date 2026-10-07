@@ -10,7 +10,7 @@ consumer inventory is recorded in
 """
 from __future__ import annotations
 
-from contextlib import redirect_stderr
+from contextlib import contextmanager, redirect_stderr
 import copy
 import hashlib
 import io
@@ -141,7 +141,78 @@ def tree_delta(
     return {key: value for key, value in delta.items() if value}
 
 
+_TRIPWIRE: dict[str, object] = {"root": None, "events": None}
+
+
+def _creation_target(event: str, args: tuple[object, ...]) -> tuple[object, object] | None:
+    if event == "open":
+        flags = args[2]
+        if isinstance(flags, int) and flags & os.O_CREAT:
+            return args[0], None
+    elif event == "os.mkdir":
+        return args[0], args[2]
+    elif event == "os.symlink":
+        return args[1], args[2]
+    elif event in {"os.link", "os.rename"}:
+        return args[1], args[3]
+    return None
+
+
+def _resolve_created(path: object, dir_fd: object) -> str | None:
+    if isinstance(path, int):
+        return None
+    text = os.fsdecode(path)  # type: ignore[arg-type]
+    if os.path.isabs(text):
+        return os.path.normpath(text)
+    if isinstance(dir_fd, int) and dir_fd >= 0:
+        try:
+            base = os.readlink(f"/proc/self/fd/{dir_fd}")
+        except OSError:
+            return f"<unresolved dir_fd>/{text}"
+        return os.path.normpath(os.path.join(base, text))
+    # os.open(..., dir_fd=...) does not expose dir_fd to audit hooks.
+    return f"<relative>/{text}"
+
+
+def _creation_audit_hook(event: str, args: tuple[object, ...]) -> None:
+    events = _TRIPWIRE["events"]
+    if events is None:
+        return
+    try:
+        target = _creation_target(event, args)
+        if target is None:
+            return
+        resolved = _resolve_created(*target)
+        root = str(_TRIPWIRE["root"])
+        if resolved is not None and (
+            resolved.startswith("<")
+            or resolved == root
+            or resolved.startswith(root + os.sep)
+        ):
+            events.append(f"{event}:{resolved}")  # type: ignore[union-attr]
+    except Exception:  # an audit hook must never alter the audited call
+        return
+
+
+sys.addaudithook(_creation_audit_hook)
+
+
+@contextmanager
+def creation_tripwire(root: Path):  # type: ignore[no-untyped-def]
+    """Record every directory/file creation under ``root``, even if rolled back."""
+
+    events: list[str] = []
+    _TRIPWIRE.update(root=os.path.realpath(root), events=events)
+    try:
+        yield events
+    finally:
+        _TRIPWIRE.update(root=None, events=None)
+
+
 class ForeignKindAssertions(unittest.TestCase):
+    def assert_no_creation(self, events: list[str]) -> None:
+        self.assertEqual(events, [], f"created before rejection: {events}")
+
     def assert_tree_unchanged(
         self, root: Path, before: dict[str, tuple[object, ...]]
     ) -> None:
@@ -158,9 +229,11 @@ class ForeignKindAssertions(unittest.TestCase):
         absent: tuple[Path, ...] = (),
     ) -> BaseException:
         before = tree_snapshot(root)
-        with self.assertRaisesRegex(error, message) as caught:
-            call()
+        with creation_tripwire(root) as created:
+            with self.assertRaisesRegex(error, message) as caught:
+                call()
         self.assert_tree_unchanged(root, before)
+        self.assert_no_creation(created)
         for path in absent:
             self.assertFalse(os.path.lexists(path), path)
         return caught.exception
@@ -176,11 +249,12 @@ class ForeignKindAssertions(unittest.TestCase):
     ) -> str:
         before = tree_snapshot(root)
         stderr = io.StringIO()
-        with redirect_stderr(stderr):
+        with creation_tripwire(root) as created, redirect_stderr(stderr):
             observed = call()
         self.assertEqual(observed, exit_code, stderr.getvalue())
         self.assertRegex(stderr.getvalue(), message)
         self.assert_tree_unchanged(root, before)
+        self.assert_no_creation(created)
         for path in absent:
             self.assertFalse(os.path.lexists(path), path)
         return stderr.getvalue()
@@ -652,12 +726,18 @@ class FullPublicationEntrypointForeignKindTests(ForeignKindAssertions):
                     ]
                     output: list[str] = []
                     before = tree_snapshot(project_root)
-                    with mock.patch.object(
-                        full_publication,
-                        "_consume_cloud_links",
-                        side_effect=AssertionError("foreign identity consumed cloud links"),
+                    with (
+                        creation_tripwire(project_root) as created,
+                        mock.patch.object(
+                            full_publication,
+                            "_consume_cloud_links",
+                            side_effect=AssertionError(
+                                "foreign identity consumed cloud links"
+                            ),
+                        ),
                     ):
                         exit_code = full_publication.main(argv, output_fn=output.append)
+                    self.assert_no_creation(created)
                     self.assertEqual(exit_code, int(ExitCode.PERMANENT), output)
                     payload = json.loads(output[-1])
                     self.assertEqual(payload["error_type"], "ContractError")
@@ -667,6 +747,351 @@ class FullPublicationEntrypointForeignKindTests(ForeignKindAssertions):
                     )
                     self.assert_tree_unchanged(project_root, before)
                     self.assertFalse(os.path.lexists(runs))
+
+
+# Amendment 1 (task 3.3): consumers from consumers.v1.md sections B and C.
+
+
+def foreign_document(kind: str, **fields: object) -> dict[str, object]:
+    """A structurally plausible foreign artifact with explicit nonacceptance."""
+
+    return {
+        "schema_version": 1,
+        "artifact_kind": kind,
+        "status": "accepted",
+        "accepted": False,
+        **fields,
+    }
+
+
+def write_canonical(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(canonical(value))
+
+
+def rewrite_declared_kind(path: Path, kind: str) -> None:
+    value = json.loads(path.read_bytes())
+    value["artifact_kind"] = kind
+    path.write_bytes(canonical(value))
+
+
+PILOT_ACCEPTANCE_ARM = ("deepstream", "cpu", "h264", "independent_processes")
+
+
+class PolicyQualificationIndexBuilderForeignKindTests(ForeignKindAssertions):
+    def test_foreign_pilot_acceptance_kind_is_rejected_before_index_output(self) -> None:
+        import publication_policy_qualification_index_v2 as index_builder
+        from tests.test_publication_policy_qualification import (
+            SYSTEMS as POLICY_SYSTEMS,
+            _PolicyApi,
+            _fake_fragment_validator,
+            _fragment_bound_fixture,
+        )
+        from tests.test_publication_policy_qualification_index_v2 import _closure
+
+        for label, kind in foreign_kinds():
+            with self.subTest(kind=label), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp).resolve()
+                _index_path, source_index = _fragment_bound_fixture(root)
+                fragments = {
+                    system: root
+                    / next(
+                        row for row in source_index["bindings"] if row["system"] == system
+                    )["fragment_artifact"]["path"]
+                    for system in POLICY_SYSTEMS
+                }
+                pilots = root / "pilots"
+                write_canonical(
+                    pilots.joinpath(*PILOT_ACCEPTANCE_ARM)
+                    / index_builder.PILOT_EVIDENCE_FILENAMES["checkpoint_acceptance"],
+                    foreign_document(kind),
+                )
+                closure_path, closure_loader = _closure(root, pilots, fragments)
+                output = root / "fresh" / "qualification-v2"
+                self.assert_rejected_without_side_effects(
+                    root,
+                    lambda: index_builder.build_policy_qualification_index_v2(
+                        project_root=root,
+                        fragment_paths=fragments,
+                        pilot_root=pilots,
+                        output_dir=output,
+                        policy=_PolicyApi,
+                        fragment_validator=_fake_fragment_validator,
+                        execution_closure_receipt_path=closure_path,
+                        execution_closure_loader=closure_loader,
+                    ),
+                    error=index_builder.PolicyQualificationIndexV2Error,
+                    message="pilot acceptance .*kind",
+                    absent=(root / "fresh",),
+                )
+
+
+class ResourceQualificationIndexBuilderForeignKindTests(ForeignKindAssertions):
+    def test_foreign_pilot_acceptance_kind_is_rejected_before_index_output(self) -> None:
+        import full_resource_qualification_index_v1 as index_builder
+        from tests.test_full_resource_qualification_index_v1 import (
+            Fixture,
+            execution_closure,
+            fake_fragment_validator,
+        )
+
+        for label, kind in foreign_kinds():
+            with self.subTest(kind=label), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp).resolve()
+                fixture = Fixture(root)
+                write_canonical(
+                    fixture.pilot_root.joinpath(*PILOT_ACCEPTANCE_ARM)
+                    / index_builder.PILOT_EVIDENCE_FILENAMES["checkpoint_acceptance"],
+                    foreign_document(kind),
+                )
+                closure_path, closure_loader = execution_closure(
+                    root, fixture.pilot_root, fixture.fragments
+                )
+                output = root / "fresh" / "full-resource-qualification-index.json"
+                self.assert_rejected_without_side_effects(
+                    root,
+                    lambda: index_builder.build_full_resource_qualification_index_v1(
+                        project_root=root,
+                        fragment_paths=fixture.fragments,
+                        pilot_root=fixture.pilot_root,
+                        output_path=output,
+                        fragment_validator=fake_fragment_validator,
+                        execution_closure_receipt_path=closure_path,
+                        execution_closure_loader=closure_loader,
+                    ),
+                    error=index_builder.FullResourceQualificationIndexV1Error,
+                    message="pilot acceptance .*kind",
+                    absent=(root / "fresh",),
+                )
+
+
+@unittest.skipUnless(LINUX, "the Q4 authority fixture binds AF_UNIX sockets")
+class Q4AuthoritySourceRequestForeignKindTests(ForeignKindAssertions):
+    def test_foreign_accepted_policy_receipt_is_rejected_before_output(self) -> None:
+        import publication_q4_authority_source_request_v1 as source_request
+        from tests.test_publication_q4_authority_source_request_v1 import (
+            Fixture,
+            patched_production_seams,
+            production_inputs_for,
+        )
+
+        for label, kind in foreign_kinds():
+            with self.subTest(kind=label), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp).resolve()
+                fixture = Fixture(root)
+                try:
+                    (root / "transactions").mkdir(exist_ok=True)
+                    production_inputs, seams = production_inputs_for(fixture)
+                    rewrite_declared_kind(
+                        root
+                        / production_inputs.accepted_source_paths[
+                            "policy_qualification_receipt_path"
+                        ],
+                        kind,
+                    )
+                    with patched_production_seams(seams):
+                        self.assert_rejected_without_side_effects(
+                            root,
+                            lambda: source_request.materialize_publication_q4_authority_source_request_v1(
+                                project_root=root,
+                                output_dir="transactions/fresh/request",
+                                production_inputs=production_inputs,
+                            ),
+                            error=source_request.PublicationQ4AuthoritySourceRequestV1Error,
+                            message="policy_qualification_receipt_path.*kind",
+                            absent=(root / "transactions" / "fresh",),
+                        )
+                finally:
+                    fixture.close()
+
+
+@unittest.skipUnless(LINUX, "the Q4 authority fixture binds AF_UNIX sockets")
+class Q4AuthoritySourceMaterialForeignKindTests(ForeignKindAssertions):
+    def test_foreign_nested_accepted_source_is_rejected_before_output(self) -> None:
+        import publication_q4_authority_source_material_v1 as source_material
+        from tests.test_publication_q4_authority_source_material_v1 import (
+            Fixture,
+            PublicationQ4AuthoritySourceMaterialV1Tests as MaterialTests,
+        )
+
+        for label, kind in foreign_kinds():
+            with self.subTest(kind=label), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp).resolve()
+                fixture = Fixture(root)
+                try:
+                    rewrite_declared_kind(
+                        root / str(fixture.policy_receipt["path"]), kind
+                    )
+                    # The helper only builds the canonical request; it never uses self.
+                    request_path, request = MaterialTests.request(
+                        None, root, fixture, "F"  # type: ignore[arg-type]
+                    )
+                    self.assert_rejected_without_side_effects(
+                        root,
+                        lambda: MaterialTests.materialize(
+                            root, request_path, request, "F"
+                        ),
+                        error=source_material.PublicationQ4AuthoritySourceMaterialV1Error,
+                        message="policy_qualification_receipt_path.*kind",
+                        absent=(root / "transactions" / "F",),
+                    )
+                finally:
+                    fixture.close()
+
+
+class FullPublicationIdentityManifestV2ForeignKindTests(ForeignKindAssertions):
+    def test_foreign_policy_receipt_is_rejected_before_private_candidate(self) -> None:
+        import full_publication_identity_manifest_v2 as identity_manifest
+        from tests.test_full_publication_identity_manifest_v2 import (
+            Fixture,
+            inputs,
+            loader,
+        )
+
+        for label, kind in foreign_kinds():
+            with self.subTest(kind=label), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp).resolve()
+                fixture = Fixture(root)
+                fixture.manifest_path.unlink()
+                values = inputs(fixture)
+                rewrite_declared_kind(
+                    Path(values["policy_qualification"]["receipt"]),  # type: ignore[index]
+                    kind,
+                )
+                self.assert_rejected_without_side_effects(
+                    root,
+                    lambda: identity_manifest.build_full_publication_identity_manifest_v2(
+                        project_root=root,
+                        output_path=fixture.manifest_path,
+                        identity_loader=loader(fixture),
+                        **values,
+                    ),
+                    error=identity_manifest.FullPublicationIdentityManifestV2Error,
+                    message="policy qualification receipt .*kind",
+                    absent=(fixture.manifest_path,),
+                )
+
+
+class FullPublicationSupervisorForeignKindTests(ForeignKindAssertions):
+    def test_cli_rejects_foreign_identity_manifest_before_state_or_lock(self) -> None:
+        import full_publication_supervisor as supervisor
+
+        for label, kind in foreign_kinds():
+            with self.subTest(kind=label), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp).resolve()
+                manifest = root / "configs" / "identity.json"
+                write_canonical(
+                    manifest,
+                    {"schema_version": 2, "artifact_kind": kind, "bindings": {}},
+                )
+                state = root / "fresh" / "full_publication_supervisor_state.v1.json"
+                argv = [
+                    "--state-path", str(state),
+                    "--",
+                    "--project-root", str(root),
+                    "--identity-artifacts", str(manifest),
+                    "--expected-matrix-sha256",
+                    supervisor.FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
+                    "--expected-policy-contract-sha256",
+                    supervisor.FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256,
+                ]
+                stdout = io.StringIO()
+                before = tree_snapshot(root)
+                with (
+                    creation_tripwire(root) as created,
+                    mock.patch("sys.stdout", stdout),
+                ):
+                    exit_code = supervisor.main(argv)
+                payload = json.loads(stdout.getvalue())
+                self.assertEqual(exit_code, supervisor.EXIT_PERMANENT, payload)
+                self.assertEqual(
+                    payload["artifact_kind"], "vast_full_publication_supervisor_error"
+                )
+                self.assertRegex(payload["message"], "identity artifact manifest .*kind")
+                self.assert_tree_unchanged(root, before)
+                self.assert_no_creation(created)
+                self.assertFalse(os.path.lexists(root / "fresh"))
+
+
+class FullPublicationWslServiceForeignKindTests(ForeignKindAssertions):
+    def test_materialize_rejects_foreign_identity_manifest_before_bundle(self) -> None:
+        import full_publication_wsl_user_service_v1 as service
+        from tests.test_full_publication_wsl_user_service_v1 import Fixture
+
+        for label, kind in foreign_kinds():
+            with self.subTest(kind=label), tempfile.TemporaryDirectory() as tmp:
+                fixture = Fixture(Path(tmp))
+                write_canonical(
+                    fixture.files["identity_artifacts"],
+                    {"schema_version": 2, "artifact_kind": kind, "bindings": {}},
+                )
+                with mock.patch.object(service.subprocess, "run") as run_process:
+                    self.assert_rejected_without_side_effects(
+                        fixture.root,
+                        fixture.materialize,
+                        error=service.ServiceContractError,
+                        message="identity artifact manifest .*kind",
+                        absent=(fixture.output_dir,),
+                    )
+                run_process.assert_not_called()
+
+
+class Q4TwoPhaseExecutorPhaseReceiptForeignKindTests(ForeignKindAssertions):
+    SLOTS = (
+        ("phase1", "--phase1-receipt", q4_executor.PHASE1_PLAN_RECEIPT_KIND),
+        ("phase2", "--phase2-receipt", q4_executor.PHASE2_PLAN_RECEIPT_KIND),
+        (
+            "source-result",
+            "--source-materialization-result",
+            q4_executor.SOURCE_MATERIALIZATION_RESULT_KIND,
+        ),
+    )
+
+    def test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock(self) -> None:
+        for slot, foreign_option, _expected in self.SLOTS:
+            for label, kind in foreign_kinds():
+                with (
+                    self.subTest(slot=slot, kind=label),
+                    tempfile.TemporaryDirectory() as tmp,
+                ):
+                    root = Path(tmp).resolve()
+                    registry = q4_source_registry(root)
+                    paths: dict[str, Path] = {}
+                    for name, option, expected in self.SLOTS:
+                        path = root / "receipts" / f"{name}.json"
+                        write_canonical(
+                            path,
+                            foreign_document(
+                                kind if option == foreign_option else expected
+                            ),
+                        )
+                        paths[option] = path
+                    work = root / "fresh" / "q4-work"
+                    argv = [
+                        "--project-root", str(root),
+                        "--source-registry", str(registry),
+                        "--work-dir", str(work),
+                        "--identity-manifest-output", str(work / "identity.json"),
+                        "--phase1-receipt", str(paths["--phase1-receipt"]),
+                        "--phase1-receipt-file-sha256", file_sha(paths["--phase1-receipt"]),
+                        "--phase1-receipt-sha256", "2" * 64,
+                        "--phase2-receipt", str(paths["--phase2-receipt"]),
+                        "--phase2-receipt-file-sha256", file_sha(paths["--phase2-receipt"]),
+                        "--phase2-receipt-sha256", "4" * 64,
+                        "--source-materialization-result",
+                        str(paths["--source-materialization-result"]),
+                        "--source-materialization-result-file-sha256",
+                        file_sha(paths["--source-materialization-result"]),
+                        "--source-materialization-result-sha256", "6" * 64,
+                        "--through-phase", "phase_b",
+                    ]
+                    self.assert_exit_without_side_effects(
+                        root,
+                        lambda: q4_executor.main(argv),
+                        exit_code=q4_executor.EXIT_PERMANENT,
+                        message="production receipt .*kind",
+                        absent=(root / "fresh", root / ".publication-atomic-staging-v1"),
+                    )
 
 
 if __name__ == "__main__":
