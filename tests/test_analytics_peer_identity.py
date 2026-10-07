@@ -78,6 +78,54 @@ class AnalyticsPeerIdentityAuthorityTests(unittest.TestCase):
             with self.subTest(field=field, replacement=replacement), self.assertRaises(SidecarError):
                 authority._build_peercred_pid0_platform_observation(OSRELEASE_RAW, info)
 
+    def _docker_desktop_4_93_info(self) -> dict[str, object]:
+        info = copy.deepcopy(DOCKER_INFO)
+        info["ServerVersion"] = "29.8.1"
+        info["ContainerdCommit"]["ID"] = "1294c24a7da8e5a793ed378161673abe94118892"
+        return info
+
+    def _rehashed(self, observed: dict[str, object]) -> dict[str, object]:
+        observed["docker_info_sha256"] = authority.canonical_sha256(observed["docker_info"])
+        core = {key: value for key, value in observed.items() if key != "observation_sha256"}
+        observed["observation_sha256"] = hashlib.sha256(
+            authority.PEERCRED_PLATFORM_DOMAIN + authority.canonical_json_bytes(core) + b"\n"
+        ).hexdigest()
+        return observed
+
+    def test_docker_desktop_4_93_build_is_an_exact_observed_platform(self) -> None:
+        observed = authority._build_peercred_pid0_platform_observation(
+            OSRELEASE_RAW, self._docker_desktop_4_93_info()
+        )
+        self.assertEqual(observed["docker_info"]["server_version"], "29.8.1")
+        self.assertEqual(observed["docker_info"]["containerd_commit"], {
+            "ID": "1294c24a7da8e5a793ed378161673abe94118892",
+        })
+        self.assertEqual(authority._validate_peercred_pid0_platform_observation(observed), observed)
+
+    def test_docker_desktop_builds_reject_mixed_server_and_containerd_pairs(self) -> None:
+        for server_version, commit in (
+            ("29.8.1", "e53c7c1516c3b2bff98eb76f1f4117477e6f4e66"),
+            ("29.8.1", "aad11006b869517fcd3009450b6f82da282e1a9b"),
+            ("29.7.2", "1294c24a7da8e5a793ed378161673abe94118892"),
+            ("29.8.1", "f" * 40),
+        ):
+            info = copy.deepcopy(DOCKER_INFO)
+            info["ServerVersion"] = server_version
+            info["ContainerdCommit"]["ID"] = commit
+            with self.subTest(server_version=server_version, commit=commit), self.assertRaises(SidecarError):
+                authority._build_peercred_pid0_platform_observation(OSRELEASE_RAW, info)
+
+    def test_docker_desktop_builds_reject_rehashed_mixed_pairs(self) -> None:
+        newer = authority._build_peercred_pid0_platform_observation(
+            OSRELEASE_RAW, self._docker_desktop_4_93_info()
+        )
+        newer["docker_info"]["server_version"] = "29.7.2"
+        older = self._current_platform()
+        older["docker_info"]["server_version"] = "29.8.1"
+        for label, observed in (("newer-commit-old-server", newer), ("old-commit-newer-server", older)):
+            with self.subTest(label=label), self.assertRaises(SidecarError):
+                authority._validate_peercred_pid0_platform_observation(self._rehashed(observed))
+
     def test_observed_containerd_profile_rejects_rehashed_platform_tampering(self) -> None:
         for field, replacement in (
             ("containerd_commit", {"ID": "f" * 40}),
