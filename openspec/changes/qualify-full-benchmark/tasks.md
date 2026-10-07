@@ -31,10 +31,12 @@
 
 ## 4. Owner 37 операций (test-first)
 
+**Статус 2026-10-07.** Owner реализован в `qfb/owner` (`7705ba7a`, `a8e20c41`). Независимое source-ревью разделов 2–4: PASS_WITH_NOTES, блокеров нет; held-путь prechecks/Savant проверен настоящим `held_stock_operational_request_v1` и `_open_pin` (`f948d0b6`, мутационная проверка M1–M3). Не проверены и остаются риском Q1: финализатор held-операций и реальный старт SDK/OpenVINO. Примечание к R13/S6: «unknown kind» — объявленный чужой `artifact_kind`; документы без kind закрываются downstream-валидаторами (записать в conformance 8.1).
+
 - [x] 4.1 RED: e2e тест `publication_qualification_operational_owner_v1` с реальными process и container validators на fixtures из 2 и 37 операций. Missing, extra, duplicate и foreign операции дают fail closed; binding валиден в cold-closure. Готово, когда тест падает на отсутствующем owner.
 - [x] 4.2 GREEN: stock owner. Prechecks и Savant идут через held operation, 32 cells — через `runtime_registry` в pilot executor; stock writer `vast_original_operational_execution_binding_v1`. Готово, когда 4.1 проходит, а существующие тесты 37/32 и closure не изменены.
   - Evidence: `evidence/software-v1-owner/red.original.log` (genuine RED: модуль owner отсутствует; второй RED — held prechecks/Savant до изменения stock runner) и `green.original.log` (19/19 новых, 162 существующих без изменений). Реальны process/container validators, capture, container custody через stock `_invoke_engine`, transfer chain, coordinator, guardian и cold closure; fixture — локальный ELF вместо Docker, in-process producer, stand-in loops held runner/pilot executor, mocked stock CSV cohort (как в существующем тесте 37-binding). Физическая приёмка не заявляется.
-- [ ] 4.3 Независимое source-ревью 2–4 и conformance раздела «5C. Qualification reconciles the complete operational request domain» (`git show 0cf5f946:openspec/changes/fix-benchmark-preparations-spec/verification-plan.md`, строка 53; задачи 12.2–12.4 в архиве `2026-10-03-fix-benchmark-preparations-spec`). Готово, когда в MR есть ревью без блокеров.
+- [x] 4.3 Независимое source-ревью 2–4 и conformance раздела «5C. Qualification reconciles the complete operational request domain» (`git show 0cf5f946:openspec/changes/fix-benchmark-preparations-spec/verification-plan.md`, строка 53; задачи 12.2–12.4 в архиве `2026-10-03-fix-benchmark-preparations-spec`). Готово, когда в MR есть ревью без блокеров.
 
 ## 5. Образы, parity, пины, CI
 
