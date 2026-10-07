@@ -11,6 +11,7 @@ import os
 import re
 import shutil
 import tempfile
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
@@ -428,55 +429,66 @@ class FullPublicationRuntime:
                     "remote inflight pair does not match durable local acceptance"
                 )
 
+    @contextmanager
+    def _cloud_scope(self, context: RunContext):
+        if getattr(self.cloud_store, "backend", None) == "s3":
+            self.cloud_store.bind_run(str(context.matrix_identity["sha256"]), str(context.run_identity["sha256"]))
+            with self.cloud_store.operation():
+                yield
+        else:
+            yield
+
     def preflight(self, context: RunContext) -> CallbackDecision:
         try:
-            self._assert_context_root(context)
-            assessment = _json_copy(self.readiness_validator(copy.deepcopy(self.config)))
-            if type(assessment) is not dict or type(assessment.get("passed")) is not bool:
-                raise ContractError("full publication readiness returned an invalid assessment")
-            if not assessment["passed"]:
-                blockers = assessment.get("blockers")
-                rendered = ", ".join(str(value) for value in blockers or [])
-                return CallbackDecision.rejected(
-                    rendered or "full publication readiness is blocked",
-                    details={"readiness": assessment},
-                    retryable=False,
+            with self._cloud_scope(context):
+                self._assert_context_root(context)
+                assessment = _json_copy(self.readiness_validator(copy.deepcopy(self.config)))
+                if type(assessment) is not dict or type(assessment.get("passed")) is not bool:
+                    raise ContractError("full publication readiness returned an invalid assessment")
+                if not assessment["passed"]:
+                    blockers = assessment.get("blockers")
+                    rendered = ", ".join(str(value) for value in blockers or [])
+                    return CallbackDecision.rejected(
+                        rendered or "full publication readiness is blocked",
+                        details={"readiness": assessment},
+                        retryable=False,
+                    )
+                if self.capacity_confirmed_gib < MINIMUM_CONFIRMED_CLOUD_GIB:
+                    return CallbackDecision.rejected(
+                        "Seafile capacity lower-bound attestation must be at least 500 GiB",
+                        retryable=False,
+                    )
+                disk = (
+                    CallbackDecision.passed({"storage_admission_deferred_for_accepted_pair": True})
+                    if context.recovering_accepted_pair else self._disk_admission()
                 )
-            if self.capacity_confirmed_gib < MINIMUM_CONFIRMED_CLOUD_GIB:
-                return CallbackDecision.rejected(
-                    "Seafile capacity lower-bound attestation must be at least 500 GiB",
-                    retryable=False,
+                if not disk.accepted:
+                    return disk
+                cloud = _json_copy(self.cloud_store.preflight())
+                expected_status = "read_only_ready" if getattr(self.cloud_store, "backend", None) == "s3" else "ready"
+                if type(cloud) is not dict or cloud.get("status") != expected_status:
+                    raise ArtifactStoreError("Seafile preflight did not return ready")
+                remote_files = self.cloud_store.list_remote_files()
+                if type(remote_files) is not dict:
+                    raise ArtifactStoreError("Seafile remote listing is invalid")
+                run_key = hashlib.sha256(
+                    str(context.run_identity["sha256"]).encode("utf-8")
+                ).hexdigest()[:16]
+                allowed_prefix = f"{context.matrix_identity['sha256']}_{run_key}_"
+                self._validate_remote_run_prefix(
+                    remote_files,
+                    allowed_prefix=allowed_prefix,
+                    completed_pairs=context.next_sequence,
                 )
-            disk = (
-                CallbackDecision.passed({"storage_admission_deferred_for_accepted_pair": True})
-                if context.recovering_accepted_pair else self._disk_admission()
-            )
-            if not disk.accepted:
-                return disk
-            cloud = _json_copy(self.cloud_store.preflight())
-            if type(cloud) is not dict or cloud.get("status") != "ready":
-                raise ArtifactStoreError("Seafile preflight did not return ready")
-            remote_files = self.cloud_store.list_remote_files()
-            if type(remote_files) is not dict:
-                raise ArtifactStoreError("Seafile remote listing is invalid")
-            run_key = hashlib.sha256(
-                str(context.run_identity["sha256"]).encode("utf-8")
-            ).hexdigest()[:16]
-            allowed_prefix = f"{context.matrix_identity['sha256']}_{run_key}_"
-            self._validate_remote_run_prefix(
-                remote_files,
-                allowed_prefix=allowed_prefix,
-                completed_pairs=context.next_sequence,
-            )
-            return CallbackDecision.passed(
-                {
-                    "readiness": assessment,
-                    "cloud": cloud,
-                    **disk.details,
-                    "minimum_free_bytes": self.minimum_free_bytes,
-                    "capacity_confirmed_gib": self.capacity_confirmed_gib,
-                }
-            )
+                return CallbackDecision.passed(
+                    {
+                        "readiness": assessment,
+                        "cloud": cloud,
+                        **disk.details,
+                        "minimum_free_bytes": self.minimum_free_bytes,
+                        "capacity_confirmed_gib": self.capacity_confirmed_gib,
+                    }
+                )
         except ArtifactIntegrityError as error:
             return CallbackDecision.rejected(str(error), retryable=False)
         except ArtifactStoreError as error:
@@ -962,34 +974,35 @@ class FullPublicationRuntime:
         self, context: PairContext, decision: CallbackDecision
     ) -> CloudTransactionReceipt:
         try:
-            self._assert_context_root(context.run)
-            acceptance_path = self._acceptance_path(context, decision)
-            result = PublicationCloudTransaction(
-                store=self.cloud_store,
-                run_root=self.run_root,
-            ).commit_pair(
-                pair_dir=self.attempt_root(context),
-                acceptance_manifest=acceptance_path,
-                matrix_sha256=str(context.run.matrix_identity["sha256"]),
-                run_id=str(context.run.run_identity["sha256"]),
-                pair_sequence=context.sequence,
-                pair_id=str(context.pair["pair_id"]),
-            )
-            # The transaction API also reports statistics already bound into its
-            # ledger and the durable acceptance manifest. Keep the runner's
-            # established checkpoint receipt schema at this callback boundary.
-            for field in (
-                "article_statistics_record_identity_sha256",
-                "article_statistics_statistics_aggregate_sha256",
-            ):
-                value = result.pop(field, None)
-                if type(value) is not str or _SHA256_RE.fullmatch(value) is None:
-                    raise ContractError("cloud transaction statistics identity is invalid")
-            retained = result.pop("article_statistics_retained_relative_path", None)
-            if type(retained) is not str or not retained or Path(retained).is_absolute():
-                raise ContractError("cloud transaction retained statistics path is invalid")
-            self._inside_run(self.run_root / retained, label="retained article statistics")
-            return CloudTransactionReceipt.verified_receipt(_json_copy(result))
+            with self._cloud_scope(context.run):
+                self._assert_context_root(context.run)
+                acceptance_path = self._acceptance_path(context, decision)
+                result = PublicationCloudTransaction(
+                    store=self.cloud_store,
+                    run_root=self.run_root,
+                ).commit_pair(
+                    pair_dir=self.attempt_root(context),
+                    acceptance_manifest=acceptance_path,
+                    matrix_sha256=str(context.run.matrix_identity["sha256"]),
+                    run_id=str(context.run.run_identity["sha256"]),
+                    pair_sequence=context.sequence,
+                    pair_id=str(context.pair["pair_id"]),
+                )
+                # The transaction API also reports statistics already bound into its
+                # ledger and the durable acceptance manifest. Keep the runner's
+                # established checkpoint receipt schema at this callback boundary.
+                for field in (
+                    "article_statistics_record_identity_sha256",
+                    "article_statistics_statistics_aggregate_sha256",
+                ):
+                    value = result.pop(field, None)
+                    if type(value) is not str or _SHA256_RE.fullmatch(value) is None:
+                        raise ContractError("cloud transaction statistics identity is invalid")
+                retained = result.pop("article_statistics_retained_relative_path", None)
+                if type(retained) is not str or not retained or Path(retained).is_absolute():
+                    raise ContractError("cloud transaction retained statistics path is invalid")
+                self._inside_run(self.run_root / retained, label="retained article statistics")
+                return CloudTransactionReceipt.verified_receipt(_json_copy(result))
         except (ArtifactIntegrityError, LedgerIntegrityError, PairArchiveError, ContractError) as error:
             return CloudTransactionReceipt.unverified(str(error), retryable=False)
         except (ArtifactStoreError, CloudTransactionError, OSError) as error:
@@ -1001,18 +1014,19 @@ class FullPublicationRuntime:
         stored_receipt: CloudTransactionReceipt,
     ) -> CloudTransactionReceipt:
         try:
-            self._assert_context_root(context.run)
-            if stored_receipt.verified is not True or type(stored_receipt.details) is not dict:
-                raise ContractError("remote verification requires a stored verified receipt")
-            details = _json_copy(stored_receipt.details)
-            PublicationCloudTransaction(
-                store=self.cloud_store,
-                run_root=self.run_root,
-            ).verify_pair_remote(
-                pair_sequence=context.sequence,
-                pair_id=str(context.pair["pair_id"]),
-            )
-            return CloudTransactionReceipt.verified_receipt(details)
+            with self._cloud_scope(context.run):
+                self._assert_context_root(context.run)
+                if stored_receipt.verified is not True or type(stored_receipt.details) is not dict:
+                    raise ContractError("remote verification requires a stored verified receipt")
+                details = _json_copy(stored_receipt.details)
+                PublicationCloudTransaction(
+                    store=self.cloud_store,
+                    run_root=self.run_root,
+                ).verify_pair_remote(
+                    pair_sequence=context.sequence,
+                    pair_id=str(context.pair["pair_id"]),
+                )
+                return CloudTransactionReceipt.verified_receipt(details)
         except (ArtifactIntegrityError, LedgerIntegrityError, PairArchiveError, ContractError) as error:
             return CloudTransactionReceipt.unverified(str(error), retryable=False)
         except (ArtifactStoreError, CloudTransactionError, OSError) as error:

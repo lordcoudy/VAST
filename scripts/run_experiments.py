@@ -922,10 +922,9 @@ def checkpoint_full_resource_acceptance_transaction(
     )
 
 
-_BENCHMARK_CHILD_SECRET_ENV = {
-    "VAST_SEAFILE_UPLOAD_LINK",
-    "VAST_SEAFILE_READ_LINK",
-}
+from publication_cloud_environment import CLOUD_SECRET_ENV
+
+_BENCHMARK_CHILD_SECRET_ENV = CLOUD_SECRET_ENV
 
 
 def benchmark_child_environment(*, run_seed: int, repeat_index: int) -> dict[str, str]:

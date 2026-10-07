@@ -38,6 +38,10 @@ from publication_owned_staging_cleanup_v1 import (
     OwnedStagingCleanupV1Error,
     OwnedStagingDirectoryV1,
 )
+from publication_cloud_environment import CLOUD_SECRET_ENV
+from s3_credentials import default_credentials_path, resolve_credentials
+from s3_destination import S3Destination
+from artifact_store import ArtifactStoreError
 
 
 SCHEMA_VERSION = 1
@@ -656,12 +660,17 @@ def _entrypoint_args_from_manifest_fields(
     project_root: Path,
     run_root: Path,
     sources: Mapping[str, Mapping[str, Any]],
-    cloud_destination_id: str,
+    cloud_destination_id: str | None,
     minimum_free_gib: float,
     cloud_timeout_s: float,
     expected_matrix_sha256: str,
     expected_policy_contract_sha256: str,
+    cloud_storage: Mapping[str, Any] | None = None,
 ) -> list[str]:
+    cloud_args = (["--cloud-config-file", str(sources["cloud_config_file"]["path"]),
+                   "--s3-credentials-file", cloud_storage["credential_source"]["path"]]
+                  if cloud_storage is not None else ["--cloud-links-file", str(sources["cloud_links_file"]["path"]),
+                                                      "--cloud-destination-id", cloud_destination_id])
     return [
         "--project-root",
         str(project_root),
@@ -681,10 +690,7 @@ def _entrypoint_args_from_manifest_fields(
         str(sources["identity_artifacts"]["path"]),
         "--capacity-attestation",
         str(sources["capacity_attestation"]["path"]),
-        "--cloud-links-file",
-        str(sources["cloud_links_file"]["path"]),
-        "--cloud-destination-id",
-        cloud_destination_id,
+        *cloud_args,
         "--minimum-free-gib",
         _format_positive_float(minimum_free_gib, label="minimum_free_gib"),
         "--cloud-timeout-s",
@@ -749,6 +755,24 @@ def render_unit_v1(manifest: Mapping[str, Any], *, receipt_path: Path | str) -> 
     return text.encode("utf-8")
 
 
+def _s3_service_storage(*, root, config_path, credentials_file, user_uid):
+    try:
+        config = _exact_existing_file(config_path, label="S3 config")
+        config.relative_to(root)
+        destination = S3Destination.from_file(config)
+        credentials = Path(os.path.abspath(os.fspath(credentials_file or default_credentials_path())))
+        if os.name != "posix" or user_uid != os.getuid() or credentials.is_relative_to(root):
+            raise ServiceContractError("S3 credentials require the external service UID profile")
+        resolve_credentials(credentials, profile=destination.credential_profile)
+        return {"backend":"s3", "destination":destination.identity,
+                "credential_source":{"path":str(credentials), "profile":destination.credential_profile,
+                                     "principal":"vast", "user_uid":user_uid}}
+    except ServiceContractError:
+        raise
+    except Exception:
+        raise ServiceContractError("S3 service config or private credential locator is invalid") from None
+
+
 def materialize_bundle_v1(
     *,
     project_root: Path | str,
@@ -768,8 +792,10 @@ def materialize_bundle_v1(
     model_manifest_path: Path | str,
     identity_artifact_manifest_path: Path | str,
     capacity_attestation_path: Path | str,
-    cloud_links_file: Path | str,
-    cloud_destination_id: str,
+    cloud_links_file: Path | str | None = None,
+    cloud_destination_id: str | None = None,
+    cloud_config_file: Path | str | None = None,
+    s3_credentials_file: Path | str | None = None,
     expected_matrix_sha256: str = FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
     expected_policy_contract_sha256: str = (
         FROZEN_PUBLICATION_POLICY_CONTRACT_SHA256
@@ -819,10 +845,13 @@ def materialize_bundle_v1(
     unit_dir = _lexical_absolute(user_unit_dir)
     if unit_dir.exists() and (unit_dir.is_symlink() or not unit_dir.is_dir()):
         raise ServiceContractError("user_unit_dir has an invalid type")
-    if type(cloud_destination_id) is not str or not cloud_destination_id.strip():
-        raise ServiceContractError("cloud_destination_id is invalid")
-    if any(character in cloud_destination_id for character in "\r\n\x00"):
-        raise ServiceContractError("cloud_destination_id contains a forbidden character")
+    if cloud_links_file is not None:
+        if cloud_config_file is not None or s3_credentials_file is not None:
+            raise ServiceContractError("service cloud inputs mix storage backends")
+        if type(cloud_destination_id) is not str or not cloud_destination_id.strip():
+            raise ServiceContractError("cloud_destination_id is invalid")
+        if any(character in cloud_destination_id for character in "\r\n\x00"):
+            raise ServiceContractError("cloud_destination_id contains a forbidden character")
     if type(max_unexpected_retries) is not int or max_unexpected_retries < 0:
         raise ServiceContractError("max_unexpected_retries must be a non-negative integer")
     backoff = _validated_backoff(backoff_s)
@@ -830,13 +859,17 @@ def materialize_bundle_v1(
         expected_matrix_sha256=expected_matrix_sha256,
         expected_policy_contract_sha256=expected_policy_contract_sha256,
     )
-    exact_cloud_links = _exact_existing_file(
-        cloud_links_file, label="Seafile link file"
-    )
-    if exact_cloud_links != root / "seafile.txt":
-        raise ServiceContractError(
-            "service Seafile links must come only from project_root/seafile.txt"
-        )
+    cloud_storage = None
+    if cloud_links_file is not None:
+        exact_cloud_links = _exact_existing_file(cloud_links_file, label="Seafile link file")
+        if exact_cloud_links != root / "seafile.txt":
+            raise ServiceContractError("service Seafile links must come only from project_root/seafile.txt")
+        cloud_sources = {"cloud_links_file": _stable_file_descriptor(exact_cloud_links, label="Seafile link file")}
+    else:
+        config_file = cloud_config_file or root / "configs/artifact-storage.yaml"
+        cloud_storage = _s3_service_storage(root=root, config_path=config_file,
+            credentials_file=s3_credentials_file, user_uid=user_uid)
+        cloud_sources = {"cloud_config_file": _stable_file_descriptor(config_file, label="S3 config")}
     sources = {
         "manager": _stable_file_descriptor(manager_path, label="manager source"),
         "supervisor": _stable_file_descriptor(supervisor_path, label="supervisor source"),
@@ -858,15 +891,14 @@ def materialize_bundle_v1(
         "capacity_attestation": _stable_file_descriptor(
             capacity_attestation_path, label="capacity attestation"
         ),
-        "cloud_links_file": _stable_file_descriptor(
-            exact_cloud_links, label="Seafile link file"
-        ),
+        **cloud_sources,
     }
     entrypoint_args = _entrypoint_args_from_manifest_fields(
         project_root=root,
         run_root=run,
         sources=sources,
         cloud_destination_id=cloud_destination_id,
+        cloud_storage=cloud_storage,
         minimum_free_gib=minimum_free_gib,
         cloud_timeout_s=cloud_timeout_s,
         expected_matrix_sha256=frozen_contract["matrix_sha256"],
@@ -876,7 +908,8 @@ def materialize_bundle_v1(
     )
     manifest = _self_hashed(
         {
-            "schema_version": MANIFEST_SCHEMA_VERSION,
+            "schema_version": 3 if cloud_storage is not None else MANIFEST_SCHEMA_VERSION,
+            **({"cloud_storage": cloud_storage} if cloud_storage is not None else {}),
             "artifact_kind": "vast_full_publication_wsl_user_service_manifest",
             "attempt_id": attempt_id,
             "unit_name": unit_name,
@@ -1025,10 +1058,13 @@ def _validate_manifest_v1(manifest: dict[str, Any]) -> None:
         "preflight_timeout_s",
         "manifest_sha256",
     }
+    s3 = manifest.get("schema_version") == 3
+    if s3:
+        expected.add("cloud_storage")
     if set(manifest) != expected:
         raise ServiceContractError("service manifest fields have drifted")
     if (
-        manifest.get("schema_version") != MANIFEST_SCHEMA_VERSION
+        manifest.get("schema_version") not in {MANIFEST_SCHEMA_VERSION, 3}
         or manifest.get("artifact_kind")
         != "vast_full_publication_wsl_user_service_manifest"
     ):
@@ -1066,6 +1102,9 @@ def _validate_manifest_v1(manifest: dict[str, Any]) -> None:
         "capacity_attestation",
         "cloud_links_file",
     }
+    if s3:
+        required_sources.remove("cloud_links_file")
+        required_sources.add("cloud_config_file")
     if type(sources) is not dict or set(sources) != required_sources:
         raise ServiceContractError("service source closure has drifted")
     platform = manifest.get("platform_contract")
@@ -1105,10 +1144,22 @@ def _validate_manifest_v1(manifest: dict[str, Any]) -> None:
             and not os.access(source_path, os.X_OK)
         ):
             raise ServiceContractError(f"service source {name} is not executable")
-    if Path(sources["cloud_links_file"]["path"]) != root / "seafile.txt":
+    if not s3 and Path(sources["cloud_links_file"]["path"]) != root / "seafile.txt":
         raise ServiceContractError(
             "service Seafile links must remain project_root/seafile.txt"
         )
+    cloud_storage = None
+    if s3:
+        storage = manifest["cloud_storage"]
+        if type(storage) is not dict or set(storage) != {"backend","destination","credential_source"}:
+            raise ServiceContractError("S3 service storage fields drifted")
+        source = storage["credential_source"]
+        if type(source) is not dict or set(source) != {"path","profile","principal","user_uid"}:
+            raise ServiceContractError("S3 service credential locator fields drifted")
+        cloud_storage = _s3_service_storage(root=root, config_path=sources["cloud_config_file"]["path"],
+            credentials_file=source["path"], user_uid=manifest["user_uid"])
+        if storage != cloud_storage:
+            raise ServiceContractError("S3 service storage or principal drifted")
     supervisor_contract = manifest.get("supervisor_contract")
     if type(supervisor_contract) is not dict or set(supervisor_contract) != {
         "backoff_s",
@@ -1125,9 +1176,10 @@ def _validate_manifest_v1(manifest: dict[str, Any]) -> None:
         project_root=root,
         run_root=run,
         sources=sources,
-        cloud_destination_id=_single_option_value(
+        cloud_destination_id=None if s3 else _single_option_value(
             manifest.get("entrypoint_args"), "--cloud-destination-id"
         ),
+        cloud_storage=cloud_storage,
         minimum_free_gib=float(
             _single_option_value(manifest.get("entrypoint_args"), "--minimum-free-gib")
         ),
@@ -1843,6 +1895,8 @@ def _sanitized_environment(
     manifest: Mapping[str, Any] | None = None,
 ) -> dict[str, str]:
     result = dict(os.environ if environment is None else environment)
+    for name in CLOUD_SECRET_ENV:
+        result.pop(name, None)
     for name in (
         "VAST_SEAFILE_UPLOAD_LINK",
         "VAST_SEAFILE_READ_LINK",
@@ -1869,6 +1923,12 @@ def _sanitized_environment(
 
 
 def _secret_markers(manifest: Mapping[str, Any]) -> set[str]:
+    if manifest.get("schema_version") == 3:
+        try:
+            credentials = resolve_credentials(Path(manifest["cloud_storage"]["credential_source"]["path"]))
+            return {value for value in (credentials.secret_key, credentials.token) if value}
+        except ArtifactStoreError:
+            raise ServiceContractError("S3 service credential redaction source is invalid") from None
     path = Path(manifest["sources"]["cloud_links_file"]["path"])
     try:
         content = path.read_text(encoding="utf-8")
@@ -2252,8 +2312,10 @@ def build_parser() -> argparse.ArgumentParser:
     materialize.add_argument("--models", type=Path, default=project_root / "configs" / "checkpoint_analytics_models_openvino.yaml")
     materialize.add_argument("--identity-artifacts", type=Path, required=True)
     materialize.add_argument("--capacity-attestation", type=Path, required=True)
-    materialize.add_argument("--cloud-links-file", type=Path, required=True)
-    materialize.add_argument("--cloud-destination-id", required=True)
+    materialize.add_argument("--cloud-links-file", type=Path)
+    materialize.add_argument("--cloud-destination-id")
+    materialize.add_argument("--cloud-config-file", type=Path)
+    materialize.add_argument("--s3-credentials-file", type=Path)
     materialize.add_argument(
         "--expected-matrix-sha256",
         default=FROZEN_FULL_PUBLICATION_MATRIX_SHA256,
@@ -2314,6 +2376,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 capacity_attestation_path=args.capacity_attestation,
                 cloud_links_file=args.cloud_links_file,
                 cloud_destination_id=args.cloud_destination_id,
+                cloud_config_file=args.cloud_config_file,
+                s3_credentials_file=args.s3_credentials_file,
                 expected_matrix_sha256=args.expected_matrix_sha256,
                 expected_policy_contract_sha256=(
                     args.expected_policy_contract_sha256

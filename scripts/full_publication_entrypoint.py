@@ -104,6 +104,10 @@ from seafile_operator_capacity_attestation_v2 import (
     SeafileOperatorCapacityAttestationV2Error,
     validate_seafile_operator_capacity_attestation_v2,
 )
+from s3_destination import S3Destination, S3ConfigurationError, read_physical_bytes
+from s3_artifact_store import S3ArtifactStore
+from s3_capacity_attestation import S3CapacityError, validate_s3_capacity_attestation
+from publication_cloud_environment import CLOUD_SECRET_ENV
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -501,8 +505,8 @@ def _runtime_source_manifest(project_root: Path) -> dict[str, Any]:
 
 def _default_command_runner(command: list[str]) -> str:
     environment = os.environ.copy()
-    environment.pop("VAST_SEAFILE_UPLOAD_LINK", None)
-    environment.pop("VAST_SEAFILE_READ_LINK", None)
+    for name in CLOUD_SECRET_ENV:
+        environment.pop(name, None)
     try:
         return subprocess.check_output(
             command,
@@ -946,8 +950,9 @@ def build_identity_material(
     dataset_manifest_path: Path | str,
     model_manifest_path: Path | str,
     config: Mapping[str, Any],
-    cloud_links: SeafileShareLinks,
-    cloud_destination_id: str,
+    cloud_links: SeafileShareLinks | None = None,
+    cloud_destination_id: str | None = None,
+    cloud_destination: Mapping[str, Any] | None = None,
     dataset_loader: DatasetLoader,
     command_runner: CommandRunner = _default_command_runner,
     ram_bytes: int | None = None,
@@ -1030,7 +1035,7 @@ def build_identity_material(
             command_runner=command_runner,
             ram_bytes=ram_bytes,
         ),
-        "cloud_destination": _redacted_cloud_destination(
+        "cloud_destination": _json_copy(cloud_destination) if cloud_destination is not None else _redacted_cloud_destination(
             cloud_links, destination_id=cloud_destination_id
         ),
     }
@@ -3198,6 +3203,21 @@ def _capacity_attestation_path_from_args(args: argparse.Namespace) -> Path:
     return Path(raw)
 
 
+def _load_s3_capacity_attestation(*, project_root, path, destination):
+    resolved = _project_path(path, project_root=project_root, label="S3 capacity attestation")
+    try:
+        accepted = validate_s3_capacity_attestation(
+            json.loads(read_physical_bytes(resolved, maximum=1024*1024)),
+            destination=destination, project_root=project_root)
+        descriptor = _stable_file_record(resolved, project_root=project_root)
+    except (S3CapacityError, S3ConfigurationError, ValueError):
+        raise ContractError("S3 capacity admission lacks current verified Q4/operator evidence") from None
+    available = accepted["operator_capacity"]["available_capacity_lower_bound_bytes"]
+    return {"attestation":accepted, "descriptor":descriptor,
+            "available_capacity_bytes":available, "capacity_confirmed_gib":available/float(1024**3),
+            "destination_identity_sha256":destination.identity["destination_sha256"]}
+
+
 def _load_seafile_capacity_attestation(
     *,
     project_root: Path,
@@ -3437,17 +3457,29 @@ def create_application(
         raise ContractError(
             f"full publication backend runtime grant is blocked: {error}"
         ) from error
-    links = _consume_cloud_links(
-        project_root=project_root,
-        links_file=args.cloud_links_file,
-    )
-    destination_id = _destination_id_from_args(args)
-    capacity_binding = _load_seafile_capacity_attestation(
-        project_root=project_root,
-        path=_capacity_attestation_path_from_args(args),
-        links=links,
-        destination_id=destination_id,
-    )
+    s3_destination = None
+    s3_descriptor = None
+    links = destination_id = None
+    if args.cloud_links_file is not None:
+        if args.cloud_config_file is not None or args.s3_credentials_file is not None:
+            raise ContractError("cloud inputs mix S3 and legacy Seafile")
+        links = _consume_cloud_links(project_root=project_root, links_file=args.cloud_links_file)
+        destination_id = _destination_id_from_args(args)
+        capacity_binding = _load_seafile_capacity_attestation(project_root=project_root,
+            path=_capacity_attestation_path_from_args(args), links=links, destination_id=destination_id)
+    else:
+        config_file = _project_path(args.cloud_config_file or Path("configs/artifact-storage.yaml"),
+                                   project_root=project_root, label="S3 destination config")
+        try:
+            s3_destination = S3Destination.from_file(config_file)
+            s3_descriptor = _stable_file_record(config_file, project_root=project_root)
+        except S3ConfigurationError:
+            raise ContractError("S3 destination config is invalid") from None
+        capacity_path = args.capacity_attestation or os.environ.get("VAST_S3_CAPACITY_ATTESTATION")
+        if capacity_path is None or args.capacity_confirmed_gib is not None:
+            raise ContractError("S3 requires --capacity-attestation with a current dated operator guarantee and Q4 sizing")
+        capacity_binding = _load_s3_capacity_attestation(project_root=project_root,
+            path=Path(capacity_path), destination=s3_destination)
     from benchmark_contract import load_dataset
 
     material = build_identity_material(
@@ -3458,6 +3490,7 @@ def create_application(
         config=config,
         cloud_links=links,
         cloud_destination_id=destination_id,
+        cloud_destination=s3_destination.identity if s3_destination is not None else None,
         dataset_loader=load_dataset,
         identity_artifact_manifest_path=identity_artifact_manifest_path,
         identity_artifacts=identity_artifacts,
@@ -3470,7 +3503,7 @@ def create_application(
     )
     capacity_attestation = capacity_binding["attestation"]
     capacity_descriptor = capacity_binding["descriptor"]
-    material.identity_inputs["seafile_capacity_attestation"] = {
+    material.identity_inputs["s3_capacity_attestation" if s3_destination is not None else "seafile_capacity_attestation"] = {
         "descriptor": copy.deepcopy(capacity_descriptor),
         "attestation_sha256": capacity_attestation["sha256"],
         "destination_identity_sha256": capacity_binding[
@@ -3501,7 +3534,20 @@ def create_application(
         backend_runtime_grant=backend_runtime_grant,
         model_parity_grant=model_parity_grant,
     )
-    store = SeafileArtifactStore(links, timeout_s=float(args.cloud_timeout_s))
+    if s3_destination is not None:
+        material.identity_inputs["s3_storage"] = {"destination": s3_destination.identity,
+            "config": copy.deepcopy(s3_descriptor), "credential_profile": s3_destination.credential_profile,
+            "principal": "vast"}
+        config_file = project_root / s3_descriptor["path"]
+        execution_guards += (ImmutableFileGuard(path=config_file, size_bytes=s3_descriptor["size_bytes"],
+            mtime_ns=config_file.stat().st_mtime_ns, sha256=s3_descriptor["sha256"], always_rehash=True),)
+        store = S3ArtifactStore(s3_destination, credentials_file=args.s3_credentials_file,
+            intent_root=run_root/"cloud_state"/"s3_multipart", timeout_s=float(args.cloud_timeout_s))
+        if Path(store.credential_source["path"]).is_relative_to(project_root):
+            raise ContractError("S3 credentials must remain outside the project")
+        material.identity_inputs["s3_storage"]["credential_source"] = copy.deepcopy(store.credential_source)
+    else:
+        store = SeafileArtifactStore(links, timeout_s=float(args.cloud_timeout_s))
     arm_runner = RealArmRunner(
         config=config,
         project_root=project_root,
@@ -3586,6 +3632,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--capacity-attestation", type=Path)
     parser.add_argument("--cloud-links-file", type=Path)
+    parser.add_argument("--cloud-config-file", type=Path)
+    parser.add_argument("--s3-credentials-file", type=Path)
     parser.add_argument("--cloud-destination-id")
     parser.add_argument("--minimum-free-gib", type=float, default=20.0)
     parser.add_argument("--cloud-timeout-s", type=float, default=120.0)

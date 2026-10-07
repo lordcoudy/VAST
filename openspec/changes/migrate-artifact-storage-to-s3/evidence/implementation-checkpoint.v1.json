@@ -1,0 +1,61 @@
+{
+  "Q1_started": false,
+  "artifact_kind": "vast_s3_implementation_checkpoint_v1",
+  "capacity": "not_accepted",
+  "credential_source": {
+    "directory_mode": "0700",
+    "file_mode": "0600",
+    "uid": 1000,
+    "windows_allow_principals": [
+      "current_user",
+      "SYSTEM"
+    ],
+    "windows_directory_acl_protected": true,
+    "windows_file_inherits_only_trusted_directory_acl": true,
+    "windows_hardlink_count": 1,
+    "wsl_path": "/home/s-a-balashov/.config/vast/s3/credentials.ini"
+  },
+  "dependency_check": {
+    "botocore": "1.43.62",
+    "installed_packages": 20,
+    "status": "passed"
+  },
+  "entrypoint_runtime_service_supervisor_regression": {
+    "collection_note": "Includes 13 duplicate imported runtime fixtures; fixed in later source. Full discovery remains required.",
+    "count": 116,
+    "errors": 0,
+    "failures": 0
+  },
+  "focused_new_and_child_env_tests": {
+    "count": 43,
+    "errors": 0,
+    "failures": 0,
+    "python": "3.12.3"
+  },
+  "legacy_cloud_and_storage_recovery": {
+    "count": 48,
+    "errors": 0,
+    "failures": 0
+  },
+  "live_write": "not_performed",
+  "noninteractive_service_probe": {
+    "benchmark_started": false,
+    "containers_started": false,
+    "environment": "empty except PATH and PYTHONDONTWRITEBYTECODE",
+    "exit_code": 0,
+    "runtime_ms": 495,
+    "scope": "systemd_transient_service_with_uid_gid_1000",
+    "status": "passed",
+    "unit": "vast-s3-credential-check-20261007-uid1000.service",
+    "user_manager_transport": "blocked: WSLg mount shadows existing user-manager socket paths; user manager itself active. No daemon restart or global mount change."
+  },
+  "planning_commit": "22a2a77de3bd098f3fbd0eb0302d6b1ee83e92fe",
+  "source_allowlists": {
+    "changes": "none; cloud SDK is reachable only in the publication owner",
+    "deepstream": "passed",
+    "gstreamer_custom": "passed",
+    "openvino_gva": "passed",
+    "savant": "passed"
+  },
+  "status": "implementation_under_review_not_live_write_accepted"
+}

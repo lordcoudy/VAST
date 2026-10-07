@@ -1,17 +1,17 @@
 ## 1. Review и prerequisites
 
-- [ ] 1.1 Получить review approval planning commit в этом PR и отдельный запрос на apply; сохранить exact commit/решение в PR, не считать OpenSpec validation approval.
-- [ ] 1.2 Перед dependent edits согласовать implementation base относительно PR #7, сверить scoped исходники с рассмотренной спекой и сохранить source-before; frozen Q1 commit/config/receipts должны остаться byte-identical, а существенный drift пройти update/review.
+- [x] 1.1 Получить review approval planning commit в этом PR и отдельный запрос на apply; сохранить exact commit/решение в PR, не считать OpenSpec validation approval.
+- [x] 1.2 Перед dependent edits согласовать implementation base относительно PR #7, сверить scoped исходники с рассмотренной спекой и сохранить source-before; frozen Q1 commit/config/receipts должны остаться byte-identical, а существенный drift пройти update/review.
 
 ## 2. Configuration, credentials и dependency closure
 
-- [ ] 2.1 Реализовать exact S3 descriptor/parser и canonical destination/run namespace binding; проверить unknown fields, HTTP/userinfo/query/fragment, foreign endpoint, traversal, controls и destination drift отрицательными portable tests.
-- [ ] 2.2 Подключить pinned botocore1.43.62 с полной production/CI dependency closure и только фактически reachable source manifests; проверить Python3.12.3 import/API model IfNoneMatch для PUT/complete, pip check и existing exact-source/package tests.
+- [x] 2.1 Реализовать exact S3 descriptor/parser и canonical destination/run namespace binding; проверить unknown fields, HTTP/userinfo/query/fragment, foreign endpoint, traversal, controls и destination drift отрицательными portable tests.
+- [x] 2.2 Подключить pinned botocore1.43.62 с полной production/CI dependency closure и только фактически reachable source manifests; проверить Python3.12.3 import/API model IfNoneMatch для PUT/complete, pip check и existing exact-source/package tests.
 - [ ] 2.3 Реализовать explicit external profile resolver, безопасный service-UID bootstrap и existing child-env filter для AWS credentials/profile locators без ambient/IMDS/endpoint fallback; проверить Windows source ACL, приватный WSL ext4 owner0700/0600, noninteractive resolution, фактическое отсутствие secrets у measurement children и в argv/manifest/log/error/remote metadata через fault tests.
 
 ## 3. Store operations
 
-- [ ] 3.1 Выделить минимальный общий store/error/physical-custody contract с сохранением legacy exports/journals; existing Seafile security/materialization/transport tests должны пройти без weakening predicates.
+- [x] 3.1 Выделить минимальный общий store/error/physical-custody contract с сохранением legacy exports/journals; existing Seafile security/materialization/transport tests должны пройти без weakening predicates.
 - [ ] 3.2 Реализовать S3 run-scoped paginated listing и read-only preflight с bounds1000/page,10000objects/16MiB/deadline; tests должны отвергать repeated token, duplicate/foreign key, malformed size, truncation и overflow.
 - [ ] 3.3 Реализовать held-FD streaming PUT с atomic IfNoneMatch и full GET hash/size/stability verification; real-file tests должны проверить mutation/rebind/alias, matching reuse, collision/no overwrite, short/oversize/wrong hash и ETag-only rejection.
 - [ ] 3.4 Реализовать sequential bounded multipart64MiB parts,64MiB threshold и8MiB streaming без transfer threads; проверить seekable same-FD ranges, boundary sizes,10000parts limit, conditional completion и source-before/after custody.

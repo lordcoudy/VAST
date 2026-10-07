@@ -16,6 +16,10 @@ from pathlib import Path, PurePosixPath
 from typing import Any, Iterator
 
 import zstandard
+from s3_publication_evidence import (
+    S3EvidenceError, validate_ledger_entry as validate_s3_ledger_entry,
+    validate_object as validate_s3_object, validate_pair_receipt as validate_s3_pair_receipt,
+)
 
 from publication_archive import (
     PairArchiveError,
@@ -1930,8 +1934,10 @@ def verify_cloud_ledger(path: Path) -> list[dict[str, Any]]:
         "article_statistics_binding",
         "prune_tombstone_relative_path",
         "prune_directory_identity",
+        "storage_binding", "archive_object", "receipt_object",
     )
 
+    ledger_schema = None
     for line_number, raw_line in enumerate(body.splitlines(), start=1):
         try:
             decoded = json.loads(raw_line)
@@ -1942,8 +1948,17 @@ def verify_cloud_ledger(path: Path) -> list[dict[str, Any]]:
         if not isinstance(decoded, dict):
             raise LedgerIntegrityError(f"cloud ledger entry {line_number} is not an object")
         entry = dict(decoded)
-        if entry.get("schema_version") != _LEDGER_SCHEMA_VERSION:
+        schema = entry.get("schema_version")
+        if schema not in {_LEDGER_SCHEMA_VERSION, "vast-s3-cloud-ledger/v1"}:
             raise LedgerIntegrityError(f"cloud ledger entry {line_number} has invalid schema")
+        if ledger_schema is not None and schema != ledger_schema:
+            raise LedgerIntegrityError("cloud ledger mixes storage schemas")
+        ledger_schema = schema
+        if schema == "vast-s3-cloud-ledger/v1":
+            try:
+                validate_s3_ledger_entry(entry, _STATE_INDEX)
+            except (S3EvidenceError, KeyError, TypeError, ValueError):
+                raise LedgerIntegrityError("S3 cloud ledger schema or storage binding drifted") from None
         if entry.get("entry_seq") != line_number:
             raise LedgerIntegrityError(f"cloud ledger entry {line_number} has invalid sequence")
         if entry.get("previous_entry_sha256") != previous_hash:
@@ -2079,6 +2094,9 @@ class PublicationCloudTransaction:
             self._assert_inside_run(path, label=label, allow_root=False)
         self._entries: list[dict[str, Any]] | None = None
         self._ledger_size: int | None = None
+        self._s3 = getattr(store, "backend", None) == "s3"
+        self._ledger_schema = "vast-s3-cloud-ledger/v1" if self._s3 else _LEDGER_SCHEMA_VERSION
+        self._pending_schema = "vast-s3-cloud-ledger-pending/v1" if self._s3 else "vast-cloud-ledger-pending/v1"
 
     def _assert_inside_run(self, path: Path, *, label: str, allow_root: bool) -> Path:
         resolved = path.resolve()
@@ -2250,8 +2268,10 @@ class PublicationCloudTransaction:
             "entry",
         }:
             raise LedgerIntegrityError("cloud ledger pending journal schema drifted")
-        if pending.get("schema_version") != "vast-cloud-ledger-pending/v1":
+        if pending.get("schema_version") != self._pending_schema:
             raise LedgerIntegrityError("cloud ledger pending journal version drifted")
+        if pending.get("entry", {}).get("schema_version") != self._ledger_schema:
+            raise LedgerIntegrityError("cloud ledger pending backend drifted")
         expected_size = pending.get("expected_ledger_size")
         payload_size = pending.get("payload_size")
         expected_sha = pending.get("payload_sha256")
@@ -2311,6 +2331,11 @@ class PublicationCloudTransaction:
         if self._entries is None or force:
             self._recover_pending_ledger_append()
             self._entries = verify_cloud_ledger(self.ledger_path)
+            for entry in self._entries:
+                if entry["schema_version"] != self._ledger_schema or (
+                    self._s3 and entry.get("storage_binding") != self.store.storage_binding
+                ):
+                    raise LedgerIntegrityError("cloud ledger backend or destination changed")
             self._ledger_size = self.ledger_path.stat().st_size if self.ledger_path.exists() else 0
         return self._entries
 
@@ -2335,6 +2360,8 @@ class PublicationCloudTransaction:
         return self.state_root / f"{int(pair_sequence):04d}_{pair_id}.json"
 
     def _append_transition(self, snapshot: Mapping[str, Any], *, state: str) -> dict[str, Any]:
+        if self._s3:
+            snapshot = {**snapshot, "storage_binding": self.store.storage_binding}
         if state not in _STATE_INDEX:
             raise CloudTransactionError("unsupported transaction state")
         entries = self._load_entries()
@@ -2360,7 +2387,7 @@ class PublicationCloudTransaction:
             if key_name not in reserved_fields and value is not None
         }
         unsigned: dict[str, Any] = {
-            "schema_version": _LEDGER_SCHEMA_VERSION,
+            "schema_version": self._ledger_schema,
             "entry_seq": len(entries) + 1,
             "previous_entry_sha256": (
                 str(entries[-1]["entry_sha256"]) if entries else _GENESIS_HASH
@@ -2369,13 +2396,18 @@ class PublicationCloudTransaction:
             "state": state,
         }
         entry = {**unsigned, "entry_sha256": _entry_hash(unsigned)}
+        if self._s3:
+            try:
+                validate_s3_ledger_entry(entry, _STATE_INDEX)
+            except (S3EvidenceError, KeyError, TypeError, ValueError):
+                raise LedgerIntegrityError("S3 transition lacks exact verified storage evidence") from None
         payload = _canonical_json(entry) + b"\n"
         self.ledger_path.parent.mkdir(parents=True, exist_ok=True)
         _atomic_write_bytes(
             self.ledger_pending_path,
             _canonical_json(
                 {
-                    "schema_version": "vast-cloud-ledger-pending/v1",
+                    "schema_version": self._pending_schema,
                     "expected_ledger_size": actual_size,
                     "payload_size": len(payload),
                     "payload_sha256": _sha256_bytes(payload),
@@ -2947,6 +2979,8 @@ class PublicationCloudTransaction:
                 expected_sha256=str(current["archive_sha256"]),
                 expected_size=int(current["archive_size_bytes"]),
             )
+            if self._s3:
+                current = {**current, "archive_object": self._s3_object(remote, current, "archive")}
             current = self._append_transition(current, state="remote_archive_verified")
 
         if _STATE_INDEX[str(current["state"])] < _STATE_INDEX["remote_receipt_verified"]:
@@ -2971,6 +3005,11 @@ class PublicationCloudTransaction:
                 "remote_archive_status": "verified",
                 "article_statistics": current["article_statistics_binding"],
             }
+            if self._s3:
+                receipt_payload["schema_version"] = "vast-s3-cloud-pair-receipt/v1"
+                receipt_payload["storage_binding"] = self.store.storage_binding
+                receipt_payload["archive"]["object"] = current["archive_object"]
+                validate_s3_pair_receipt(receipt_payload, current)
             receipt_bytes = _canonical_json(receipt_payload) + b"\n"
             receipt_sha256 = _sha256_bytes(receipt_bytes)
             receipt_remote_name = f"{remote_base}_{receipt_sha256}.receipt.json"
@@ -3000,6 +3039,10 @@ class PublicationCloudTransaction:
                     "receipt_remote_name": receipt_remote_name,
                     "receipt_sha256": receipt_sha256,
                     "receipt_size_bytes": len(receipt_bytes),
+                    **({"receipt_object": self._s3_object(remote, {
+                        **current, "receipt_remote_name": receipt_remote_name,
+                        "receipt_sha256": receipt_sha256, "receipt_size_bytes": len(receipt_bytes)
+                    }, "receipt")} if self._s3 else {}),
                 },
                 state="remote_receipt_verified",
             )
@@ -3018,11 +3061,13 @@ class PublicationCloudTransaction:
                     str(current["archive_remote_name"]),
                     expected_sha256=str(current["archive_sha256"]),
                     expected_size=int(current["archive_size_bytes"]),
+                    **self._version_args(current, "archive"),
                 )
                 receipt_remote = self.store.verify_remote(
                     str(current["receipt_remote_name"]),
                     expected_sha256=str(current["receipt_sha256"]),
                     expected_size=int(current["receipt_size_bytes"]),
+                    **self._version_args(current, "receipt"),
                 )
                 self._validate_remote_result(
                     archive_remote,
@@ -3036,6 +3081,11 @@ class PublicationCloudTransaction:
                     expected_sha256=str(current["receipt_sha256"]),
                     expected_size=int(current["receipt_size_bytes"]),
                 )
+                if self._s3 and (
+                    self._s3_object(archive_remote, current, "archive") != current["archive_object"]
+                    or self._s3_object(receipt_remote, current, "receipt") != current["receipt_object"]
+                ):
+                    raise LedgerIntegrityError("S3 checkpoint object identity changed before prune")
             if current["state"] == "local_ledger_committed":
                 target_present = prune_target.exists() or _is_link_junction_or_reparse(
                     prune_target
@@ -3108,6 +3158,20 @@ class PublicationCloudTransaction:
             raise LedgerIntegrityError("pair identity is ambiguous in the cloud ledger")
         return dict(matches[-1])
 
+    def _version_args(self, current, category):
+        return {"expected_version_id": current[category + "_object"]["version_id"]} if self._s3 else {}
+
+    def _s3_object(self, result, current, category):
+        if result.get("storage_binding") != self.store.storage_binding:
+            raise LedgerIntegrityError("S3 remote result destination drifted")
+        try:
+            validate_s3_object(result.get("object"), binding=self.store.storage_binding,
+                remote_name=current[category + "_remote_name"], size=current[category + "_size_bytes"],
+                sha256=current[category + "_sha256"])
+        except (S3EvidenceError, KeyError, TypeError, ValueError):
+            raise LedgerIntegrityError("S3 remote result object drifted") from None
+        return result["object"]
+
     def verify_pair_remote(self, *, pair_sequence: int, pair_id: str) -> dict[str, Any]:
         current = self._latest_by_pair(pair_sequence=pair_sequence, pair_id=pair_id)
         if _STATE_INDEX[str(current["state"])] < _STATE_INDEX["remote_receipt_verified"]:
@@ -3116,11 +3180,13 @@ class PublicationCloudTransaction:
             str(current["archive_remote_name"]),
             expected_sha256=str(current["archive_sha256"]),
             expected_size=int(current["archive_size_bytes"]),
+            **self._version_args(current, "archive"),
         )
         receipt = self.store.verify_remote(
             str(current["receipt_remote_name"]),
             expected_sha256=str(current["receipt_sha256"]),
             expected_size=int(current["receipt_size_bytes"]),
+            **self._version_args(current, "receipt"),
         )
         self._validate_remote_result(
             archive,
@@ -3134,6 +3200,21 @@ class PublicationCloudTransaction:
             expected_sha256=str(current["receipt_sha256"]),
             expected_size=int(current["receipt_size_bytes"]),
         )
+        if self._s3:
+            if self._s3_object(archive, current, "archive") != current["archive_object"] or self._s3_object(receipt, current, "receipt") != current["receipt_object"]:
+                raise LedgerIntegrityError("S3 reverified object identity changed")
+            payload = bytearray()
+            with self.store._read_remote(str(current["receipt_remote_name"])) as response:
+                while chunk := response.read(8192):
+                    payload.extend(chunk)
+                    if len(payload) > 1024 * 1024:
+                        raise LedgerIntegrityError("S3 receipt exceeds validation bound")
+            if len(payload) != current["receipt_size_bytes"] or _sha256_bytes(payload) != current["receipt_sha256"]:
+                raise LedgerIntegrityError("S3 receipt changed across verification")
+            try:
+                validate_s3_pair_receipt(json.loads(payload), current)
+            except (S3EvidenceError, TypeError, ValueError, KeyError):
+                raise LedgerIntegrityError("S3 receipt schema or evidence drifted") from None
         return {**self._result(current), "remote_status": "verified"}
 
     def materialize_pair(
@@ -3156,6 +3237,7 @@ class PublicationCloudTransaction:
                 destination=temporary_archive,
                 expected_sha256=str(current["archive_sha256"]),
                 expected_size=int(current["archive_size_bytes"]),
+                **self._version_args(current, "archive"),
             )
             self._validate_remote_result(
                 materialized,

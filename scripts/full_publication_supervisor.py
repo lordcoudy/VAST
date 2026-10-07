@@ -19,6 +19,8 @@ from pathlib import Path
 from typing import Any, Callable, Iterator, Mapping, Sequence
 
 from seafile_artifact_store import ArtifactStoreError, SeafileShareLinks
+from publication_cloud_environment import CLOUD_SECRET_ENV
+from s3_credentials import resolve_credentials, default_credentials_path
 
 
 EXIT_COMPLETE = 0
@@ -297,7 +299,8 @@ class SubprocessEntrypointInvoker:
         self.secret_values = {
             value
             for name, value in self.environment.items()
-            if name in {"VAST_SEAFILE_UPLOAD_LINK", "VAST_SEAFILE_READ_LINK"}
+            if name in {"VAST_SEAFILE_UPLOAD_LINK", "VAST_SEAFILE_READ_LINK", "AWS_SECRET_ACCESS_KEY",
+                        "AWS_SESSION_TOKEN", "AWS_SECURITY_TOKEN", "AWS_CONTAINER_AUTHORIZATION_TOKEN"}
             and value
         }
         self.secret_values.update(
@@ -305,6 +308,15 @@ class SubprocessEntrypointInvoker:
             for value in tuple(self.secret_values)
             if len(value.rstrip("/").rsplit("/", 1)[-1]) >= 8
         )
+        for name in CLOUD_SECRET_ENV:
+            self.environment.pop(name, None)
+        if self._single_option_value("--cloud-config-file") is not None:
+            credential_path = self._single_option_value("--s3-credentials-file")
+            try:
+                credentials = resolve_credentials(Path(credential_path) if credential_path else default_credentials_path())
+            except ArtifactStoreError:
+                raise SupervisorError("S3 supervisor private credential source is invalid") from None
+            self.secret_values.update(value for value in (credentials.secret_key, credentials.token) if value)
         links_file = self._single_option_value("--cloud-links-file")
         if links_file is not None:
             project_root_value = self._single_option_value("--project-root")
