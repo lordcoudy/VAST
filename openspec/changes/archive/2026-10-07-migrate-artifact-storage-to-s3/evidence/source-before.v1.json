@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "reviewed_planning_commit": "22a2a77de3bd098f3fbd0eb0302d6b1ee83e92fe",
+  "base_commit": "a54d0d991b6279190417f839e4704aabbe54ca9d",
+  "q1_execution_commit": "1112af0b53cae995984708390cf9d04c18da3c0d",
+  "github_review_id": 5440723886,
+  "source_before": [
+    {
+      "path": "scripts/seafile_artifact_store.py",
+      "source_sha256": "00076c9b485bd3ca60c6ae95728acc043bde5f037308aecab61c2d7f71571a0c",
+      "frozen_q1_sha256": "00076c9b485bd3ca60c6ae95728acc043bde5f037308aecab61c2d7f71571a0c"
+    },
+    {
+      "path": "scripts/publication_cloud_transaction.py",
+      "source_sha256": "14babe0d147e636a1db9b54e034186a0d9d969de9a315c4878c4200ebc12fd5a",
+      "frozen_q1_sha256": "14babe0d147e636a1db9b54e034186a0d9d969de9a315c4878c4200ebc12fd5a"
+    },
+    {
+      "path": "scripts/full_publication_entrypoint.py",
+      "source_sha256": "c81536e91ed3290949eedd60c343fea69e99ed75822f5ff42fad5ca8d8c559cf",
+      "frozen_q1_sha256": "c81536e91ed3290949eedd60c343fea69e99ed75822f5ff42fad5ca8d8c559cf"
+    },
+    {
+      "path": "scripts/full_publication_runtime.py",
+      "source_sha256": "e9027470592b94b3a4435cf7ac035c2f46a22b24929e99b0209ac06ddf553285",
+      "frozen_q1_sha256": "e9027470592b94b3a4435cf7ac035c2f46a22b24929e99b0209ac06ddf553285"
+    },
+    {
+      "path": "scripts/full_publication_supervisor.py",
+      "source_sha256": "797ab416b69a8a3afc2d77ecb70aa19f2e99154faf12ccc4dc695354d15d7922",
+      "frozen_q1_sha256": "1a778ff491f27164aecf56efbc59d97fdd3252c669ab31abc8d76b5d620cd642"
+    },
+    {
+      "path": "scripts/full_publication_wsl_user_service_v1.py",
+      "source_sha256": "c48200741e2b3fc0d03efbcc4fe3316493ad15748b9953f8ab968aa073973bcc",
+      "frozen_q1_sha256": "96622102977d3e6af91912aa1313e1bcb3ec4043b6b1c430a0796f996fde698d"
+    },
+    {
+      "path": "scripts/run_experiments.py",
+      "source_sha256": "8bd2140fa7357f57033464b960c6d5be89647788de19f18f24f70c90eab4a811",
+      "frozen_q1_sha256": "8bd2140fa7357f57033464b960c6d5be89647788de19f18f24f70c90eab4a811"
+    },
+    {
+      "path": "requirements.txt",
+      "source_sha256": "072699b93fecd0d9d8d59c1353d7091a86673374896b490ab22dd92c349958ec",
+      "frozen_q1_sha256": "072699b93fecd0d9d8d59c1353d7091a86673374896b490ab22dd92c349958ec"
+    },
+    {
+      "path": ".ci/requirements.txt",
+      "source_sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+      "frozen_q1_sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef"
+    }
+  ]
+}
