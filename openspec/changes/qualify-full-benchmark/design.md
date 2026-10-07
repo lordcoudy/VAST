@@ -113,6 +113,23 @@
   - **`.ci`-фикстуры (B2)** строковой заменой не правятся. Создаются проверенные побайтовые копии новых артефактов по новому пути (`.ci/fixtures/.../artifacts/qualify_full_benchmark_20261007a/**`). Связки `fixture_path`↔`original_path` в `additional-origins.v1.json` обновляются на новые пары. Существующие тесты origin-связок должны проходить.
 - **Сеть.** BuildKit обращается к registry за метаданными закреплённых по digest base-образов даже при `--pull=false`. Сеть доступна напрямую. Proxy обходится только в окружении отдельной команды (`env -u HTTPS_PROXY -u HTTP_PROXY`), постоянные настройки системы не меняются. Base-образы проверены `docker image inspect <ref@digest>` (5.0).
 
+## Amendment 3 (2026-10-07, по результатам runbook 6.1 и ручных проверок 5.7)
+
+- **B1: Docker socket в capture plan.** `publication_operational_stock_operations_v1.py` зашивает `/var/run/docker.sock`, а проверка socket требует, чтобы путь совпадал с `resolve()`. На этом хосте `/var/run` — symlink на `/run`, поэтому шаг capture plan гарантированно падает с кодом 78. Component runbook уже передаёт `/run/docker.sock` явно.
+  - Добавляется флаг `--container-engine-socket`. По умолчанию прежнее значение, проверки socket не меняются. Test-first.
+  - Это closure-модуль, поэтому `C_Q1` переносится на новый commit, а 5.5–5.7 повторяются на нём. Входы образов не меняются, пересборка не нужна.
+- **R5/S5.** Свежая checkout с `core.autocrlf=true` превращала в CRLF четыре входа образов, добавленные после byte freeze. Добавлены точные правила `text eol=lf` и тест «каждый вход образа имеет явное EOL-правило». Blob'ы уже были LF, поэтому байты образов не изменились.
+- **Ext4 suite и сеть.** Хранилище моделей OMZ доступно только через Windows proxy `127.0.0.1:12334`, недоступный из WSL NAT. Локальный suite получает 8 эталонных файлов `.ci/model-assets.v1.json`, заранее положенных в ignored `models/`. `prepare_ci_model_assets.py` сам проверяет их по size, sha256 и sha384, а при расхождении отказывает. Hosted CI скачивает модели как обычно.
+- **Уточнения порядка Q1 (по коду, runbook `docs/full-qualification-runbook.md`):**
+  - runtime inputs строятся после старта guardian: им нужен живой socket guardian, как в цепочке g;
+  - bootstrap выполняется внутри transaction v2;
+  - host-скрипты запускаются `python -B` без `-I`: в Python 3.12 `-I` убирает `scripts/` из `sys.path`;
+  - resume по exit 75 в цепочке Q1 не поддерживается, owner отказывает при существующем checkpoint. Любой отказ означает FAILED Q1.
+- **Проверки prechecks и Savant.** Ad hoc аудиты цепочки g заменяются встроенными проверками owner: настоящие process/container validators и ledger 37 операций на шагах execute и bind.
+- **Promoted bundles.** Promotion сама валидирует свой результат. Отдельный вызов приватных `_cold_validate_promoted_*` не делается; вместо него — независимая read-only проверка результатов Q1 в 7.6.
+- **Место на дисках.** Используется существующий минимум 20 GiB на каждом нужном томе (C:, E:, ext4) перед стартом Q1.
+- **Перенос evidence Q1 (7.6)** — как в PR5: originals копируются в change, крупные файлы описываются size+SHA256 с указанием местоположения.
+
 ## Risks / Trade-offs
 
 - **[Неизвестная причина A269 memfd]** → PR2 diagnostic сохраняет первый отказ; при повторе — FAILED и amendment, без повторного запуска наугад.

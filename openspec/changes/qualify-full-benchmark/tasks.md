@@ -55,16 +55,18 @@
 
 ## 6. Runbook и готовность хоста
 
+- [ ] 6.0 (Amendment 3) RED→GREEN: `publication_operational_stock_operations_v1.py --container-engine-socket` (по умолчанию прежний путь, проверки socket без изменений). Затем новый `C_Q1`, повтор 5.5 (ext4 suite и hosted CI), 5.6 (integration-полоса) и R5/S5 на нём. Готово при genuine RED/GREEN и зелёных повторах.
+
 - [ ] 6.1 Runbook qualification. Команды каждого шага, отказ при отсутствии receipts, `bash -n` для примеров, флаги сверены с argparse. Предстартовые подтверждения оператора: сон Windows, Windows Update, запрет действий Docker Desktop UI. Готово при проверенном runbook.
 - [ ] 6.2 Предстартовая проверка хоста непосредственно перед Q1: место, GPU, отсутствие чужих контейнеров и процессов. Готово при сохранённом отчёте и подтверждении пользователем настроек питания и Windows Update.
 
 ## 7. Физическая qualification Q1 (одна попытка)
 
 - [ ] 7.1 Свежие inputs, bootstrap, preprocessing, execution code closure, capture plan (37) и runtime inputs. Готово при сохранённых receipts.
-- [ ] 7.2 Guardian 8/8, 4 native prechecks и их аудиты, Savant diagnostic и cold-проверка. Готово при SUCCESS каждого шага.
+- [ ] 7.2 Guardian 8/8, 4 native prechecks и Savant diagnostic через owner со встроенными проверками process/container validators (Amendment 3). Готово при SUCCESS каждого шага.
 - [ ] 7.3 32 cells одним owner, без автоповторов. Готово при 32 принятых cells.
 - [ ] 7.4 Authenticated stop, lifecycle, cold-closure с точной сверкой 37 операций и 8 workers. Готово при `clean_stop_nonpublication`, успешной closure и наличии container terminal events в evidence.
-- [ ] 7.5 Policy и resource promotion, cold-проверка promoted bundles. Готово при принятых promotion receipts.
+- [ ] 7.5 Policy и resource promotion; их собственная валидация результата (Amendment 3). Готово при принятых promotion receipts.
 - [ ] 7.6 Независимая проверка результатов Q1 и сохранение evidence в change (originals; raw — по size+SHA256). Готово при ревью без блокеров. Любой отказ в 7.1–7.5 означает FAILED Q1, сохранение evidence и вопрос пользователю: amendment и новая попытка в этом MR либо archive и merge кода с честным статусом failed (design, решение 6).
 
 ## 8. Завершение
