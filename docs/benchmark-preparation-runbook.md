@@ -4,6 +4,8 @@
 
 Change `migrate-artifact-storage-to-s3`, [PR #8](https://github.com/lordcoudy/VAST/pull/8), использует `configs/artifact-storage.yaml`: HTTPS `https://s3.savva-balashov.me`, bucket `vast-archive`, prefix `vast/`, region `us-east-1`, path-style/SigV4. Новый cloud run использует S3; `--cloud-links-file` разрешён только для physically verified historical Seafile manifest/checkpoint. Архивы и receipts идут в `vast/<matrix SHA>/<run identity SHA>/`; inputs/models и исторические Seafile данные автоматически не переносятся.
 
+Согласованные planning artifacts, conformance и evidence сохранены в [архиве изменения](https://github.com/lordcoudy/VAST/tree/codex/migrate-artifact-storage-to-s3/openspec/changes/archive/2026-10-07-migrate-artifact-storage-to-s3). Финальные checks и exact-head technical review следует проверять в этом же PR.
+
 Windows profile `vast-s3` находится вне Git в защищённом `.aws/credentials`. В PowerShell запустить `./scripts/setup_s3_credentials.ps1` из reviewed checkout. Helper проверяет ACL и передаёт профиль через stdin в WSL; canonical WSL source — `~/.config/vast/s3/credentials.ini`, owner UID1000, directory0700/file0600. Секреты не передавать в argv, `.env`, manifest или report. Production client использует ровно botocore1.43.62 и одну transport attempt; ambient AWS profiles/endpoint credentials и IMDS не заменяют выбранный source. Нужен проверенный Python3.12.3 с pinned dependency closure.
 
 Read-only access и write compatibility — разные состояния. Команды ниже не запускают workload. Для каждого output выбрать новый файл в существующей физической приватной директории; helper не перезаписывает evidence.

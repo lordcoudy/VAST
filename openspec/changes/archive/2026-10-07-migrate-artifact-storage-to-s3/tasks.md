@@ -34,7 +34,7 @@
 
 ## 6. Integration и conformance
 
-- [ ] 6.1 Выполнить portable/native/source checks текущего implementation commit с full inventory, exact skip identities и source-before/after; сохранить результаты и не заменить полный existing CI focused suite или историческим количеством tests.
+- [x] 6.1 Выполнить portable/native/source checks текущего implementation commit с full inventory, exact skip identities и source-before/after; сохранить результаты и не заменить полный existing CI focused suite или историческим количеством tests.
 - [x] 6.2 Выполнить один ограниченный live S3 smoke в fresh owned prefix: PUT, multipart8MiB+1byte, matching reuse, conflicting PUT/complete, full readback и restore; сохранить sanitized report/source/config/SDK/time/keys/outcomes, проверить original bytes после collision и явно перечислить leftovers при любом failure.
 - [x] 6.3 Проверить credentials из WSL user service UID1000 без interactive shell и без запуска benchmark/containers; сохранить только безопасные locator/access facts, permissions и actual result.
 - [x] 6.4 Получить и проверить dated available-capacity guarantee после actual Q4 sizing, если full-cloud admission требуется сейчас; иначе сохранить отдельный явный blocked disposition и не отмечать capacity accepted. Deliverable: validated attestation либо честный missing-evidence record без подставленного числа.
@@ -43,8 +43,8 @@
 ## 7. Документация и завершение в том же PR
 
 - [x] 7.1 Обновить current runbook, PLAN.md, progress.md и безопасный config/env example с S3 commands и раздельными configured/write/capacity/launch states; проверить реальные flags и shell syntax, сохранить frozen Q1 и исторические Seafile dispositions.
-- [ ] 7.2 Push implementation в этот же PR и получить required CI на exact latest commit плюс conformance/source review; отсутствующие/failed обязательные checks должны оставаться blocking.
-- [ ] 7.3 После фактического завершения implementation выполнить reviewed delta sync/archive навыком openspec-archive-change в этой же ветке; проверить обе capabilities, сохранность всех artifacts/.openspec.yaml и отсутствие незавершённых implementation acceptance gaps.
+- [x] 7.2 Push implementation в этот же PR и получить required CI на exact latest commit плюс conformance/source review; отсутствующие/failed обязательные checks должны оставаться blocking.
+- [x] 7.3 После фактического завершения implementation выполнить reviewed delta sync/archive навыком openspec-archive-change в этой же ветке; проверить обе capabilities, сохранность всех artifacts/.openspec.yaml и отсутствие незавершённых implementation acceptance gaps.
 
 ## Обязательные gates после физического archive
 

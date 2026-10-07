@@ -1,0 +1,28 @@
+{
+  "change": "migrate-artifact-storage-to-s3",
+  "schema": "spec-driven",
+  "specs_rule_snapshot_reused": true,
+  "sync_selection": "both exact paths returned by OpenSpec status",
+  "capabilities": [
+    {
+      "capability": "benchmark-launch-preparation",
+      "modified_requirements": 1,
+      "added_scenarios": 2,
+      "unaffected_requirements": 19,
+      "unaffected_prefix_sha256": "0564dd05ac55faeff0becff992fdce103be429514691ab4c4d55e115b2e17ee2",
+      "unaffected_suffix_sha256": "92123e9787d9824396d60e9157d00523a1e1fc5bc9cca14415abad809596c225",
+      "unaffected_bytes_preserved": true
+    },
+    {
+      "capability": "s3-artifact-export",
+      "added_requirements": 7,
+      "added_scenarios": 19,
+      "purpose_copied_verbatim": true
+    }
+  ],
+  "all_delta_requirements_verified": true,
+  "autonomous_sync_authorized": true,
+  "specs_instruction_snapshot_sha256": "c8aa611f892864b01bdce65ecbf6214c323ce5ab29c65e585d10f73aff5beb8b",
+  "main_specs_strict_validation": "4 passed,0 failed",
+  "info_warning_disposition": "Existing and approved long normative requirements retained; INFO length suggestions do not justify changing reviewed contracts."
+}
