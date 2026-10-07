@@ -24,6 +24,7 @@ COPY deploy/native_gst_probe/checkpoint_native_policy_client.hpp /workspace/proj
 COPY deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp /workspace/project/deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp
 COPY deploy/native_gst_probe/checkpoint_runtime_emitter.hpp /workspace/project/deploy/native_gst_probe/checkpoint_runtime_emitter.hpp
 COPY deploy/native_gst_probe/checkpoint_source_coordinator.cpp /workspace/project/deploy/native_gst_probe/checkpoint_source_coordinator.cpp
+COPY deploy/native_gst_probe/checkpoint_study_reference.hpp /workspace/project/deploy/native_gst_probe/checkpoint_study_reference.hpp
 COPY deploy/native_gst_probe/vast_native_gst_probe.cpp /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp
 COPY deploy/savant/publication/gstvastcheckpointbranchqueue.cpp /workspace/project/deploy/savant/publication/gstvastcheckpointbranchqueue.cpp
 COPY deploy/savant/canonical_distributed_module.yml /opt/vast/image-root/opt/vast/savant/canonical_distributed_module.yml
