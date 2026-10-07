@@ -38,7 +38,7 @@
 - [x] 6.2 Выполнить один ограниченный live S3 smoke в fresh owned prefix: PUT, multipart8MiB+1byte, matching reuse, conflicting PUT/complete, full readback и restore; сохранить sanitized report/source/config/SDK/time/keys/outcomes, проверить original bytes после collision и явно перечислить leftovers при любом failure.
 - [x] 6.3 Проверить credentials из WSL user service UID1000 без interactive shell и без запуска benchmark/containers; сохранить только безопасные locator/access facts, permissions и actual result.
 - [x] 6.4 Получить и проверить dated available-capacity guarantee после actual Q4 sizing, если full-cloud admission требуется сейчас; иначе сохранить отдельный явный blocked disposition и не отмечать capacity accepted. Deliverable: validated attestation либо честный missing-evidence record без подставленного числа.
-- [ ] 6.5 Составить conformance report для каждого requirement/scenario обеих delta specs: implementation location, exact test/manual evidence, расхождения и непроверенные факты; review должен разобрать gaps, не заменяя CI или live behavior OpenSpec format check.
+- [x] 6.5 Составить conformance report для каждого requirement/scenario обеих delta specs: implementation location, exact test/manual evidence, расхождения и непроверенные факты; review должен разобрать gaps, не заменяя CI или live behavior OpenSpec format check.
 
 ## 7. Документация и завершение в том же PR
 

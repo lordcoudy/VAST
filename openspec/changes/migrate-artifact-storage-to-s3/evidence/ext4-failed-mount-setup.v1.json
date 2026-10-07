@@ -1,0 +1,379 @@
+{
+  "commit": "9bedfb140eea46d3ce0cde9ee57bf6107a95874e",
+  "successful": false,
+  "elapsed_s": 2385.645095234,
+  "changed_tracked_paths": [],
+  "raw_checkout_bytes_match_commit": true,
+  "built_targets": [
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "job_started_monotonic_ns": 10242915041349,
+  "absolute_deadline_ns": 15642915041349,
+  "tests_run": 3165,
+  "errors": [
+    {
+      "test_id": "test_mount_publication_runtime_wsl.MountPublicationRuntimeWslTests.test_check_only_accepts_the_canonical_read_only_mounts",
+      "traceback": "Traceback (most recent call last):\n  File \"/var/tmp/vast-s3-ci-46b6cd49/tests/test_mount_publication_runtime_wsl.py\", line 48, in test_check_only_accepts_the_canonical_read_only_mounts\n    completed = subprocess.run(\n                ^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['bash', '/var/tmp/vast-s3-ci-46b6cd49/scripts/mount_publication_runtime_wsl.sh', '--check-only', '--source-runtime', '/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1', '--project-root', '/var/tmp/vast-s3-ci-46b6cd49', '--project-runtime-mount', '.publication-runtime/full-publication-cp312-v1']' returned non-zero exit status 1.\n"
+    }
+  ],
+  "failures": [],
+  "skips": [
+    {
+      "reason": "DrvFS hard-link recovery requires WSL workspace",
+      "test_id": "test_backend_pair_archive_sizing_receipts_v1.BackendPairArchiveSizingReceiptsV1ContractTests.test_pair_archive_fd_anchored_hardlink_recovers_on_drvfs"
+    },
+    {
+      "reason": "canonical WSL publication venv bind is not mounted",
+      "test_id": "test_backend_publication_output_transaction_production_v3.BackendPublicationOutputTransactionProductionV3Tests.test_canonical_wsl_venv_requires_plain_copied_python"
+    },
+    {
+      "reason": "Windows directory custody attack",
+      "test_id": "test_backend_publication_output_transaction_v3.BackendPublicationOutputTransactionV3Tests.test_windows_directory_swap_before_native_custody_is_rejected"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_native_query_failure_is_fail_closed"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_parent_handles_deny_directory_replacement"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_reparse_volume_and_duplicate_ids_are_fail_closed"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_publication_runtime_authority.RuntimeAuthorityTest.test_windows_rewalk_file_id_mismatch_is_fail_closed"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_fresh_final_reopen_rejects_hardlink_drift"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_native_query_failure_is_fail_closed_and_cleans_handle"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_outer_root_identity_mismatch_is_fail_closed"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_parent_handle_denies_directory_replacement"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_reparse_volume_and_duplicate_ids_are_fail_closed"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_rewalk_file_id_mismatch_is_fail_closed"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_backend_runtime_validator_authority.BackendRuntimeValidatorAuthorityTest.test_windows_root_handle_denies_directory_replacement"
+    },
+    {
+      "reason": "real KPP AVI files are not present",
+      "test_id": "test_benchmark_contract.BenchmarkContractTests.test_kpp_real_avi_manifest_validates_real_files_and_fps_policy"
+    },
+    {
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_calibration_and_evaluation_sample_ids_must_be_disjoint"
+    },
+    {
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_calibration_minimum_and_numeric_tolerances_are_enforced"
+    },
+    {
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_complete_common_source_contract_passes"
+    },
+    {
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_image_command_cannot_pull_or_run"
+    },
+    {
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_lineage_preprocessing_and_toolchain_drift_fail_closed"
+    },
+    {
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_non_finite_tolerance_is_rejected"
+    },
+    {
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_openvino_gpu_execution_evidence_is_not_cuda"
+    },
+    {
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_repository_state_is_honestly_blocked"
+    },
+    {
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_symlinked_model_artifact_is_not_accepted"
+    },
+    {
+      "reason": "schema-v1 fixture retained only as migration history",
+      "test_id": "test_checkpoint_model_parity.AssessmentTests.test_verified_equivalent_derivations_can_replace_a_local_source"
+    },
+    {
+      "reason": "Windows share-mode custody only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_ancestor_custody_blocks_parent_rename_aba"
+    },
+    {
+      "reason": "Windows share-mode custody only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_custody_blocks_same_size_in_place_rewrite_with_restored_mtime"
+    },
+    {
+      "reason": "Windows pre-custody drift only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_manifest_rejects_same_size_rewrite_before_native_custody"
+    },
+    {
+      "reason": "Windows ctime views only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_windows_cross_view_ignores_only_ctime_and_each_view_binds_it"
+    },
+    {
+      "reason": "Windows path-view ctime only",
+      "test_id": "test_checkpoint_model_parity.ManifestContractTests.test_windows_same_view_callsites_reject_ctime_only_drift"
+    },
+    {
+      "reason": "local physical attempt2 evidence is unavailable",
+      "test_id": "test_checkpoint_model_parity_v4.ModelParityV4Test.test_actual_attempt2_patch_allows_exact_refrozen_base_producers"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_oversized_component_is_rejected_before_ntcreatefile"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_root_parent_final_reparse_and_rewalk_drift_are_fail_closed"
+    },
+    {
+      "reason": "Windows handle semantics only",
+      "test_id": "test_checkpoint_source_runtime_closure_authority_v1.CheckpointSourceRuntimeClosureAuthorityV1Tests.test_windows_verification_handle_cleanup_failure_is_fail_closed"
+    },
+    {
+      "reason": "Windows retained failure candidate only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_authoritative_failure_retains_custodied_private_candidate"
+    },
+    {
+      "reason": "Windows reparse-point rejection only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_custody_rejects_directory_link_swap_candidate"
+    },
+    {
+      "reason": "Windows directory-handle custody only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_directory_handles_hold_custody_and_publish_no_replace"
+    },
+    {
+      "reason": "Windows rollback fail-safe only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_retains_explicitly_when_disposition_fails"
+    },
+    {
+      "reason": "Windows atomic private create only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_returns_custody_without_create_open_gap"
+    },
+    {
+      "reason": "Windows exact-handle rollback only",
+      "test_id": "test_extract_kpp_legacy_iss.ExtractKppLegacyIssTests.test_windows_private_create_rolls_back_every_post_create_validation_failure"
+    },
+    {
+      "reason": "Windows retained failure candidate only",
+      "test_id": "test_freeze_kpp_legacy_iss_v2_transcodes.FreezeKppLegacyIssV2TranscodesTests.test_authoritative_freeze_failure_retains_private_candidate"
+    },
+    {
+      "reason": "Windows custody negatives only",
+      "test_id": "test_freeze_kpp_legacy_iss_v2_transcodes.FreezeKppLegacyIssV2TranscodesTests.test_windows_freeze_custody_blocks_rename_and_preserves_collision"
+    },
+    {
+      "reason": "bounded cleanup retry targets WinError 145",
+      "test_id": "test_kpp_legacy_iss_v2_offline_image_intake.OfflineImageIntakeTests.test_windows_temporary_directory_cleanup_retries_only_directory_not_empty"
+    },
+    {
+      "reason": "workspace filesystem is already native Linux ext",
+      "test_id": "test_kpp_legacy_iss_v2_secondary_sensitivity_executor.KppLegacyIssV2SecondarySensitivityExecutorTests.test_default_watchdog_provisioner_rejects_non_native_workspace_filesystem"
+    },
+    {
+      "reason": "Windows rename custody attack",
+      "test_id": "test_kpp_legacy_iss_v2_secondary_sensitivity_pilot.KppLegacyIssV2SecondarySensitivityPilotTests.test_windows_candidate_rename_out_back_metadata_restore_is_denied"
+    },
+    {
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_each_unpublished_bootstrap_failure_leaves_no_random_orphan"
+    },
+    {
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_failure_closes_every_locally_acquired_handle"
+    },
+    {
+      "reason": "Windows NtCreateFile route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_bootstrap_never_path_creates_a_destination_component"
+    },
+    {
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_exact_rerun_holds_target_custody_without_creating"
+    },
+    {
+      "reason": "Windows ACL route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rechecks_target_acl_after_long_verification"
+    },
+    {
+      "reason": "Windows ACL route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_rerun_rejects_permissive_target_acl_untouched"
+    },
+    {
+      "reason": "Windows custody route only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2.MaterializeKppLegacyIssV2Tests.test_windows_route_bootstraps_and_holds_full_destination_custody"
+    },
+    {
+      "reason": "Windows authoritative marker only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_failure_marker_is_absent_or_exact_on_stage_faults"
+    },
+    {
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_prepublish_failure_is_quarantined_with_marker"
+    },
+    {
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_authoritative_quarantine_collision_never_overwrites"
+    },
+    {
+      "reason": "Windows authoritative sentinel only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_commit_pending_removal_is_last_exact_handle_success_operation"
+    },
+    {
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_committed_candidate_validator_rejects_record_drift_and_extra_leaf"
+    },
+    {
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_committed_resume_holds_every_validated_leaf_through_terminal_scan"
+    },
+    {
+      "reason": "Windows authoritative guards only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_duplicate_guards_quarantine_same_file_id_after_originals_close"
+    },
+    {
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_existing_candidate_size_caps_reject_before_oversized_leaf_read"
+    },
+    {
+      "reason": "Windows authoritative resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_existing_output_drift_or_collision_fails_untouched"
+    },
+    {
+      "reason": "Windows authoritative sentinel only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_failed_quarantine_leaves_canonical_namespace_commit_pending"
+    },
+    {
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_failure_immediately_after_canonical_rename_moves_exact_file_id_to_quarantine"
+    },
+    {
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_fault_immediately_after_native_true_is_postcommit_success"
+    },
+    {
+      "reason": "Windows authoritative resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_identical_public_call_resumes_existing_committed_candidate_read_only"
+    },
+    {
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_native_commit_false_keeps_canonical_child_guard"
+    },
+    {
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_native_true_then_python_gap_is_resolved_by_permanent_record"
+    },
+    {
+      "reason": "Windows native capture reopen only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_parent_drained_capture_blocks_native_same_token_reopen_and_growth"
+    },
+    {
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_persistent_postcommit_close_failure_releases_canonical_namespace"
+    },
+    {
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_postcommit_close_and_observer_faults_cannot_become_failed_publication"
+    },
+    {
+      "reason": "Windows authoritative quarantine only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_postpublish_verification_failure_releases_leaf_then_quarantines"
+    },
+    {
+      "reason": "Windows semantic commit only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_pre_native_commit_failure_keeps_canonical_child_guard"
+    },
+    {
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_resealed_materializer_and_preprocessor_role_drift_is_rejected"
+    },
+    {
+      "reason": "Windows committed resume only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_resealed_receipt_core_or_schema_drift_is_rejected"
+    },
+    {
+      "reason": "Windows authoritative guards only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_second_guard_duplicate_failure_leaves_original_custody_usable"
+    },
+    {
+      "reason": "Windows directory custody only",
+      "test_id": "test_materialize_kpp_legacy_iss_v2_model_corpus.ModelCorpusMaterializerTests.test_windows_directory_identity_custody_requires_old_write_handle_close"
+    },
+    {
+      "reason": "canonical publication evidence mount is not materialized",
+      "test_id": "test_mount_publication_evidence_wsl.MountPublicationEvidenceWslTests.test_check_only_accepts_the_canonical_writable_mount"
+    },
+    {
+      "reason": "canonical publication socket mount is not materialized",
+      "test_id": "test_mount_publication_sockets_wsl.MountPublicationSocketsWslTests.test_check_only_accepts_the_canonical_writable_mount"
+    },
+    {
+      "reason": "Windows custody route only",
+      "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_authoritative_failure_retains_custodied_private_candidate"
+    },
+    {
+      "reason": "Windows custody route only",
+      "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_authoritative_route_holds_root_staging_and_working_custody"
+    },
+    {
+      "reason": "Windows custody route only",
+      "test_id": "test_normalize_kpp_iss_metadata.NormalizeKppIssMetadataTests.test_post_publication_tamper_fails_without_deleting_output"
+    },
+    {
+      "reason": "live post-rename descriptor loss requires the WSL DrvFS workspace",
+      "test_id": "test_publication_owned_staging_cleanup_v1.OwnedStagingCleanupV1Tests.test_drvfs_post_rename_fd_loss_uses_final_inode_and_tree_anchors"
+    },
+    {
+      "reason": "DrvFS replacement visibility is WSL workspace-specific",
+      "test_id": "test_publication_physical_io_v1.PublicationPhysicalIoV1Tests.test_drvfs_atomic_replace_closes_staging_fd_before_verification"
+    },
+    {
+      "reason": "DrvFS hard-link fallback is WSL workspace-specific",
+      "test_id": "test_publication_physical_io_v1.PublicationPhysicalIoV1Tests.test_drvfs_unsupported_rename_recovers_two_link_publish"
+    },
+    {
+      "reason": "live no-replace fallback requires the WSL DrvFS workspace",
+      "test_id": "test_publication_policy_qualification_pilot_executor_v2.QualificationPilotExecutorV2ContractTests.test_drvfs_directory_commit_does_not_depend_on_ambient_cwd"
+    },
+    {
+      "reason": "live no-replace fallback requires the WSL DrvFS workspace",
+      "test_id": "test_publication_policy_qualification_pilot_executor_v2.QualificationPilotExecutorV2ContractTests.test_drvfs_directory_commit_succeeds_and_never_overwrites_collision"
+    },
+    {
+      "reason": "live no-replace race requires the WSL DrvFS workspace",
+      "test_id": "test_publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputsV2Tests.test_drvfs_runtime_directory_commit_race_has_exactly_one_winner"
+    }
+  ],
+  "original_report_sha256": "d4cb2494fd7aa73eb8312b5748d0bf00cb06c3a46f70574087458cbaf84f9b37",
+  "original_test_report_sha256": "959e0f95248f557ea4106fbe80806e740d702c9c7d69a4d50b7e595074a45937",
+  "original_report_path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-s3-ci-evidence-9bedfb14-physical-python\\report.json",
+  "disposition": "Original failed outcome retained; independently corrected private-mount check pending."
+}

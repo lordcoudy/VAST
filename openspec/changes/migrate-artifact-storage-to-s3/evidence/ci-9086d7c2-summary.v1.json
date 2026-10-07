@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "commit": "9086d7c27293e823847c5a377644220f013117ad",
+  "workflow_run_id": 37617328877,
+  "workflow_url": "https://github.com/lordcoudy/VAST/actions/runs/37617328877",
+  "artifact_id": 11481577948,
+  "artifact_zip_sha256": "405175a03d1cccd2187861ec5d6b90d8a893dc9847c8a0019134e58ca1832695",
+  "original_report_sha256": "32f2063494950dd4b2e77ac05b172107cde1ce51674633b74f54c49902bca715",
+  "original_test_report_sha256": "ee3ef44f15e78577a34ced5d1ede13b1090df51a2d5b73b4e33ea631ce71c32a",
+  "tracked_source_before_sha256": "4bc76e7e60e9dc5ae4efa5513f768313e9946fd4717b4ef81e83d1ec619a0cfb",
+  "tracked_source_after_sha256": "4bc76e7e60e9dc5ae4efa5513f768313e9946fd4717b4ef81e83d1ec619a0cfb",
+  "successful": true,
+  "raw_checkout_bytes_match_commit": true,
+  "changed_tracked_paths": [],
+  "python": "3.12.3 (main, Sep 26 2024, 18:18:55) [GCC 13.2.0]",
+  "canonical_python": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+  "built_targets": [
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "elapsed_s": 1637.9720722660002,
+  "hardware_acceptance": false,
+  "hardware_gaps": [
+    "Hosted CPU tests do not execute NVIDIA decode or the packaged SDK runtimes.",
+    "Skipped hardware/data tests do not prove model parity, native paired execution, qualification, Q4, storage or the full benchmark.",
+    "Final scientific conformance and archived completion require separately reviewed physical evidence bound to the actual source closure."
+  ],
+  "job_started_monotonic_ns": 36574265806,
+  "absolute_deadline_ns": 5436574265806,
+  "discovered_count": 3179,
+  "tests_run": 3170,
+  "successful_count": 3082,
+  "skip_count": 88,
+  "failures": [],
+  "errors": [],
+  "missing_required_successes": [],
+  "inventory_file": "ci-9086d7c2-test-inventory.v1.json",
+  "scope": "Actual complete portable/native/source lane; hardware/full campaign acceptance remains false."
+}

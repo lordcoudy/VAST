@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_s3_operator_capacity_observation_v1",
+  "recorded_at_utc": "2026-10-07T12:17:31Z",
+  "source": "user-provided mc admin info storage output",
+  "cluster_online": true,
+  "reported_free": "1.9 TiB",
+  "reported_used": "3.3 TiB",
+  "reported_total": "5.1 TiB",
+  "displayed_capacity_is_rounded": true,
+  "reported_used_percentage": "63.8%",
+  "reported_servers": [
+    "127.0.0.1:9010"
+  ],
+  "reported_drive_count": 1,
+  "reported_online_drives": 1,
+  "reported_buckets": 1,
+  "reported_objects": 5,
+  "reported_object_bytes": "16 MiB",
+  "reported_erasure_code": 0,
+  "selected_destination": {
+    "addressing_style": "path",
+    "backend": "s3",
+    "bucket": "vast-archive",
+    "destination_sha256": "da660db91922c3e85c74820330d819a3c554011293296559d3a775e5badfb324",
+    "endpoint": "https://s3.savva-balashov.me",
+    "prefix": "vast/",
+    "region": "us-east-1",
+    "schema_version": 1,
+    "signature_version": "s3v4"
+  },
+  "operator_exact_reply": "600 GiB",
+  "operator_guarantee_file": "operator-guarantee.v1.json",
+  "operator_guarantee_sha256": "34534ca3c3eb9b20b153545366ab220e9ba4d9f2c4d15b2b3d721a0cdd63846d",
+  "confirmation_reference": "operator-vast-archive-600GiB-20261007",
+  "utc_date_basis": "UTC recorded when direct operator confirmation was received",
+  "capacity_accepted": false,
+  "full_launch_ready": false,
+  "actual_q4_sizing_available": false,
+  "scope": "Operator guarantee input and cluster observation only; not a validated sizing-bound capacity attestation."
+}

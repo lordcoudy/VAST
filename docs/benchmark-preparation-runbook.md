@@ -29,6 +29,8 @@ Final source `9bedfb14` прошёл live smoke: report `live-smoke-final.v1.jso
 
 Full-cloud capacity **blocked**: нужны actual accepted280 Q4 sizing pairs и current explicit available-byte guarantee с UTC date/reference. Требование неизменно: max(500GiB, ceil(projected remote bytes×1.25)+5GiB),10repeats. S3 quota не выставлена API, list успех и local disk space не дают guarantee. Preflight и guarantee должны быть не старше24h; preflight source/SDK должны совпадать с current adapter. Это freshness limit implementation, а не новое разрешение запуска. Не подставлять историческую Seafile guarantee или произвольное число.
 
+Оператор подтвердил **600GiB = 644245094400bytes** для VAST7 октября; UTC записи подтверждения2026-10-07T12:17:31Z, reference `operator-vast-archive-600GiB-20261007`. `operator-guarantee.v1.json` содержит exact input, `operator-capacity-observation.v1.json` сохраняет исходный контекст и округлённые1.9TiB свободного места из `mc admin info storage`. Эти файлы находятся в evidence этого OpenSpec change. Остались actual accepted Q4 sizing и последующая проверка формулы/свежести; готовая capacity attestation пока не существует.
+
 После получения реальных данных можно собрать bounded attestation:
 
 ```bash
