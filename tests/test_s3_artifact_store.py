@@ -99,6 +99,29 @@ class FakeS3:
 
 
 class S3StoreTests(unittest.TestCase):
+    def test_short_oversize_and_corrupt_bodies_never_verify(self):
+        original = self.source.read_bytes()
+        digest = hashlib.sha256(original).hexdigest()
+        for payload, error in ((original[:-1], ArtifactStoreError), (original+b'x', ArtifactIntegrityError),
+                               (b'x'*len(original), ArtifactIntegrityError)):
+            with self.subTest(length=len(payload)):
+                self.client.objects[self.store.prefix+self.source.name] = original
+                def read_object(**args):
+                    return {**self.client.head_object(**args),'Body':io.BytesIO(payload)}
+                from unittest.mock import patch
+                with patch.object(self.client,'get_object',read_object), self.assertRaises(error):
+                    self.store.verify_remote(self.source.name, expected_size=len(original), expected_sha256=digest)
+
+    def test_multipart_journal_has_small_count_and_byte_bounds(self):
+        self.store._multipart_threshold = self.store._part_size = 4
+        self.store.intent_root.mkdir(mode=0o700)
+        for i in range(3):
+            (self.store.intent_root/(str(i)*64+'.json')).write_text('{}')
+        with self.assertRaises(ArtifactIntegrityError):
+            self.store.upload_and_verify(self.source)
+        self.assertFalse(any(call[0]=='create' for call in self.client.calls))
+        with self.store._intent_custody() as custody, self.assertRaises(ArtifactIntegrityError):
+            self.store._persist(custody,'a'*64+'.json',{'too_large':'x'*(2*1024**2)})
     def test_production_multipart_boundary_uses_whole_held_archive(self):
         for size, multipart in ((64*1024**2-1, False),(64*1024**2, True),(64*1024**2+1, True)):
             with self.subTest(size=size):

@@ -1,5 +1,61 @@
 # Runbook подготовки benchmark VAST
 
+## S3 для новых publication exports — 7 октября 2026
+
+Change `migrate-artifact-storage-to-s3`, [PR #8](https://github.com/lordcoudy/VAST/pull/8), использует `configs/artifact-storage.yaml`: HTTPS `https://s3.savva-balashov.me`, bucket `vast-archive`, prefix `vast/`, region `us-east-1`, path-style/SigV4. Новый cloud run использует S3; `--cloud-links-file` разрешён только для physically verified historical Seafile manifest/checkpoint. Архивы и receipts идут в `vast/<matrix SHA>/<run identity SHA>/`; inputs/models и исторические Seafile данные автоматически не переносятся.
+
+Windows profile `vast-s3` находится вне Git в защищённом `.aws/credentials`. В PowerShell запустить `./scripts/setup_s3_credentials.ps1` из reviewed checkout. Helper проверяет ACL и передаёт профиль через stdin в WSL; canonical WSL source — `~/.config/vast/s3/credentials.ini`, owner UID1000, directory0700/file0600. Секреты не передавать в argv, `.env`, manifest или report. Production client использует ровно botocore1.43.62 и одну transport attempt; ambient AWS profiles/endpoint credentials и IMDS не заменяют выбранный source. Нужен проверенный Python3.12.3 с pinned dependency closure.
+
+Read-only access и write compatibility — разные состояния. Команды ниже не запускают workload. Для каждого output выбрать новый файл в существующей физической приватной директории; helper не перезаписывает evidence.
+
+```bash
+set -euo pipefail
+: "${PROJECT_ROOT:?reviewed physical checkout}"
+: "${PYTHON:?verified Python3.12.3 with pinned dependencies}"
+: "${EVIDENCE_DIR:?existing owned physical directory}"
+cd "$PROJECT_ROOT"
+CREDENTIALS="$HOME/.config/vast/s3/credentials.ini"
+env -i PATH=/usr/bin:/bin "$PYTHON" -B scripts/s3_operator_preflight.py \
+  --cloud-config-file configs/artifact-storage.yaml --s3-credentials-file "$CREDENTIALS" \
+  preflight --output "$EVIDENCE_DIR/read-only.v1.json"
+env -i PATH=/usr/bin:/bin "$PYTHON" -B scripts/s3_operator_preflight.py \
+  --cloud-config-file configs/artifact-storage.yaml --s3-credentials-file "$CREDENTIALS" \
+  smoke --output "$EVIDENCE_DIR/live-smoke.v1.json"
+```
+
+Smoke использует fresh `vast/preflight/<uuid>/`, tiny PUT и forced multipart8MiB+1byte, matching reuse, PUT/complete collisions, full GET/SHA-256 и restore. Каждый probe ограничен120s, максимум4 completed objects,64MiB uploaded и64MiB readback,1MiB report; cleanup≤15s в remaining исходном budget. Probe objects остаются evidence; helper не имеет DeleteObject/bucket/policy/workload commands. У production архивов threshold/part size64MiB, streaming chunks≤8MiB,≤10000parts. HTTP status/ETag не заменяют full digest. Failure75 сохраняет checkpoint; integrity/auth/config/unsupported failure78 сохраняет локальные данные и не запускает неожиданную повторную попытку.
+
+Final source `9bedfb14` прошёл live smoke: report `live-smoke-final.v1.json`,4.429s,2objects,16,777,294 uploaded/50,331,804 readback bytes,7/7 checks,0leftover uploads. Первое failed EOF observation и предыдущий corrected-source probe сохранены отдельно; их не перепривязывать к final source. Внешний профиль также проверен из isolated WSL user unit UID1000 с пустым environment. Canonical user-manager bus этого хоста остаётся отдельным full-launch prerequisite; isolated credential check не принимает lifecycle production service.
+
+Full-cloud capacity **blocked**: нужны actual accepted280 Q4 sizing pairs и current explicit available-byte guarantee с UTC date/reference. Требование неизменно: max(500GiB, ceil(projected remote bytes×1.25)+5GiB),10repeats. S3 quota не выставлена API, list успех и local disk space не дают guarantee. Preflight и guarantee должны быть не старше24h; preflight source/SDK должны совпадать с current adapter. Это freshness limit implementation, а не новое разрешение запуска. Не подставлять историческую Seafile guarantee или произвольное число.
+
+После получения реальных данных можно собрать bounded attestation:
+
+```bash
+: "${SIZING_INDEX:?accepted original Q4 sizing index}"
+: "${LIVE_REPORT:?current successful smoke report}"
+: "${AVAILABLE_BYTES:?actual dated operator lower bound in bytes}"
+: "${CONFIRMED_AT_UTC:?operator date YYYY-MM-DDTHH:MM:SSZ}"
+: "${CONFIRMATION_REFERENCE:?stable operator guarantee reference}"
+"$PYTHON" -B scripts/s3_operator_preflight.py --cloud-config-file configs/artifact-storage.yaml \
+  capacity --project-root "$PROJECT_ROOT" --sizing-index "$SIZING_INDEX" \
+  --preflight-report "$LIVE_REPORT" --available-bytes "$AVAILABLE_BYTES" \
+  --confirmed-at-utc "$CONFIRMED_AT_UTC" --confirmation-reference "$CONFIRMATION_REFERENCE" \
+  --output "$EVIDENCE_DIR/operator-capacity.v1.json"
+```
+
+Новые `full_publication_entrypoint.py` и service `materialize` получают `--cloud-config-file` и `--s3-credentials-file`, а `--capacity-attestation` указывает на новый S3 record. Вместо прежних two Seafile flags использовать:
+
+```bash
+--cloud-config-file "$PROJECT_ROOT/configs/artifact-storage.yaml" \
+--s3-credentials-file "$CREDENTIALS" \
+--capacity-attestation "$CAPACITY"
+```
+
+Это фрагмент аргументов существующей команды, не самостоятельная shell-команда. Все frozen scientific/resource/host/source/lifecycle gates и `--max-unexpected-retries 0` сохраняются. Bundle validation не устанавливает и не запускает service. Q1 продолжает использовать отдельный frozen C_Q1 `1112af0b`; migration не меняет его source/config/receipts и не даёт Q1 acceptance. Ни Q1, ни Q4, ни full campaign этой настройкой не запускались.
+
+Ниже сохранены прежние dated snapshots и Seafile примеры. Fresh legacy materialization теперь отклоняется; применять старые команды можно только в их историческом backend context.
+
 ## Текущий этап — 5 октября 2026
 
 У VAST есть принятый selected GStreamer component route: CPU08/GPU02 original pairs и независимая raw reduction. [Component runbook](gstreamer-component-benchmark-runbook.md) описывает этот рабочий entry point, [offline report](latency-diagnostics-20261004/four-arm-report.md) — его отрицательный100ms результат и ограничения. Этот route не требует сначала выполнить незавершённую legacy multi-backend campaign.

@@ -1,0 +1,80 @@
+# S3 conformance — migrate-artifact-storage-to-s3
+
+Reviewed planning commit22a2a77d; implementation source9bedfb140eea46d3ce0cde9ee57bf6107a95874e. Technical self-approval was explicitly authorized by the user. PR review5440723886 approved the specification and5441528209 records implementation fixes; GitHub author self-approval is recorded as COMMENT. Two review axes found0 open source findings at9bedfb14. This report covers all8 delta requirements and23 scenarios; it does not grant Q1, Q4, capacity or workload authority.
+
+Current live proof: `evidence/live-smoke-final.v1.json`, SHA9653ecc23b87dd1492bd54e3fc89b0d3a38e36a714f02de4e6e43296c2775e70; source61b83da954593e9af54c6bcdd863eef5a9dfcdbe00a6d48be551dffc0b03c717. The selected server returned no VersionId; ETag/conditional GET/HEAD stability plus full SHA-256 were exercised. VersionId behavior has controlled-response coverage, not live versioned-bucket coverage. Historical failed/corrected probes remain distinct in `evidence/live-probe-history.v1.json`.
+
+Verification is split: focused tests passed, final live compatibility passed, service credential access passed. Hosted full CI and final archive-head validation are tracked separately in PR checks; until they pass, merge remains blocked. The local original CI attempt stopped on network asset acquisition, without test execution; eight original assets were then copied read-only from existing verified files into the isolated clone after exact size/SHA-256/SHA-384 checks. The next diagnostic built all6 CPU targets, then isolated discovery failed because the venv launcher resolved to the base interpreter without its dependencies. The temporary development interpreter was replaced with a physical copy of the same Python binary so canonical child execution retains its20 pinned packages. Resumed checks preserve the original job clock and both failed reports. No skip predicate was changed.
+
+## S3 artifact export
+
+### Новые выгрузки используют явно связанный S3 destination
+
+Implementation: `scripts/s3_destination.py` exact descriptor/canonical identity and namespace; `full_publication_entrypoint.create_application`, runtime `_cloud_scope`, service materializer; `publication_legacy_context.require_historical_seafile_context` rejects fresh legacy runs before service writes.
+
+- **Новый запуск имеет корректную конфигурацию:** `test_s3_destination.S3DestinationTests.test_selected_destination_and_run_keys_are_deterministic`; `test_s3_publication_integration.S3IntegrationTests.test_runtime_binds_run_before_s3_readonly_preflight`; live report destination and fresh owned namespace. Fresh legacy service rejection: `test_new_legacy_service_materialization_is_rejected_before_writes`.
+- **Endpoint или ключ объекта небезопасен:** destination tests `test_unknown_missing_or_wrong_type_fields_are_rejected`, `test_unsafe_or_foreign_destination_is_rejected`, `test_object_key_cannot_escape_run_namespace`, `test_descriptor_requires_one_unchanged_physical_bounded_file`, `test_duplicate_yaml_keys_are_rejected`; no normalization/fallback. SDK before-send checks same HTTPS origin.
+- **Destination изменён при восстановлении:** `test_s3_publication_transaction` tests `test_checkpoint_backend_change_is_rejected`, `test_unknown_keys_and_mixed_backend_fail_closed`; store `bind_run` forbids rebind, transaction `_load_entries` checks exact destination. No accepted measurement is invoked by these storage recovery tests.
+
+### Credentials доступны сервису и не попадают в evidence
+
+Implementation: `s3_credentials.resolve_credentials`, Windows ACL-checked stdin bootstrap, explicit `Session.set_credentials`/endpoint/SDK config; service storage binding and supervisor redaction; `publication_cloud_environment.CLOUD_SECRET_ENV` used by actual measurement/probe children. SDK/urllib3 logging is disabled before network operations. Credential locators/principal are nonsecret; published hashes never fingerprint the secret.
+
+- **Сервис стартует без интерактивного shell:** `evidence/service-credential-check.v1.json` and original isolated-user-unit read-only report demonstrate systemd user service UID1000 with empty environment. Directory0700/file0600 and Windows protected ACL checked. `test_s3_service_manifest_has_no_seafile_or_secret_descriptor` validates version3 manifest/argv and permission drift. Canonical host user-manager bus remains unavailable; production service lifecycle is not accepted by this probe.
+- **Профиль отсутствует или подменён:** `test_s3_credentials` tests `test_explicit_profile_and_repr_hide_values`, `test_private_unique_physical_source_is_mandatory`, `test_sdk_api_and_config_have_one_attempt_and_fixed_endpoint`; poisoned ambient values do not replace selected credentials. Service validator checks external physical locator/current UID; actual production SDK version must equal1.43.62.
+- **SDK вернул секрет в diagnostic:** `test_s3_artifact_store.test_error_sanitization_and_classification` injects secret-bearing SDK errors and checks sanitized classes/text; `test_run_experiments_security.test_benchmark_children_have_no_aws_secrets_or_profile_locators` inspects the actual subprocess environment. Staged scans used the actual external secret and found0 leaks. Live reports contain no credentials/signatures/request headers; TLS validation stayed enabled.
+
+### Выгрузка создаёт объект без перезаписи и подтверждает все байты
+
+Implementation: common `artifact_store.upload_and_verify` retains held FD/physical epochs; S3 `HeldFileRange`, `_upload_held_file`, `_read_remote`, `verify_remote`, durable multipart intent and exact-owned abort. PUT and complete use `IfNoneMatch='*'`; all accepted reuse requires full GET.
+
+- **Обычный и multipart upload завершаются:** `test_put_and_full_readback_with_version`, `test_multipart_same_fd_ranges_and_atomic_completion`, `test_production_multipart_boundary_uses_whole_held_archive` cover64MiB−1/64MiB/64MiB+1. `test_range_is_bounded_and_seekable`, `test_large_sparse_object_is_rejected_before_hash_or_network` cover chunk/part bounds. Final live PUT/multipart/full readback succeeded.
+- **Совпадающий или конфликтующий ключ существует:** `test_put_race_reuses_only_matching_bytes`, `test_multipart_collision_and_exact_owned_abort`; final live `matching_reuse`, `put_collision`, `multipart_collision` alltrue, followed by exact original-byte verification. No DeleteObject/unconditional replacement exists.
+- **Файл или remote stream изменён:** `test_mutation_and_alias_fail_before_upload`, `test_readback_rejects_etag_only_and_wrong_hash`, `test_short_oversize_and_corrupt_bodies_never_verify`; shared Seafile security regression suite covers named-file/ancestor changes through the same extracted physical engine. `test_completed_http_body_may_release_socket_before_eof_read` covers the actual EOF fault without removing mandatory EOF or timer checks.
+- **Multipart прерван:** `test_failed_completion_preserves_durable_intent_then_reconciles`, `test_ambiguous_completion_verifies_final_object_before_retry`, `test_crash_after_part_recovers_only_owned_upload`, `test_http_200_embedded_error_never_becomes_verified`. `test_multipart_intent_cannot_redirect_owned_key_before_abort` and `test_multipart_journal_has_small_count_and_byte_bounds` reject redirected/oversize journals before foreign abort. Intents≤2/run,2MiB,10000parts; source/destination/key/size/digest/epoch bind recovery. Real process-crash injection against the external server was not performed; controlled crash hooks use actual local files and preserve raw state.
+
+### S3 receipts и ledger сохраняют порядок долговременной записи
+
+Implementation: `s3_publication_evidence.py` exact schemas; `publication_cloud_transaction.PublicationCloudTransaction` keeps archive→full readback→receipt→full readback→durable hash-chain/WAL→owned prune. S3 descriptors carry key/size/digest/version plus destination/run binding. Public `read_verified_bytes` verifies receipt bytes within1MiB. Materialization uses the unchanged shared held-stage/fsync/no-replace engine with isolated S3 journal binding.
+
+- **Receipt или ledger commit не завершились:** `test_s3_ledger_receipt_and_restore`, `test_crash_keeps_raw_and_recovers_without_measurement`; existing full `test_publication_cloud_transaction` suite exercises receipt/ledger/WAL/fsync fault boundaries. S3 exact-schema tests reject unknown keys/mixed backends; raw pruning remains after durable verification only.
+- **Crash после ledger или во время prune:** existing `test_publication_storage_recovery` suite and S3 crash recovery reverify archive/receipt before safe owned prune. Forty-eight transaction/recovery regressions passed without weakening legacy predicates; the source review verified the provider-neutral transition path. Live scientific measurements/pruning were deliberately not performed.
+- **Архив восстанавливается из S3:** `test_materialize_is_no_replace_and_verified`, `test_materialization_crash_resumes_and_foreign_stage_is_rejected`, `test_s3_ledger_receipt_and_restore`; shared security tests cover interrupted download/fsync/rename, foreign stage, existing target, path escape and unsafe extraction. Final live `restore=true` confirms actual S3 bytes materialize into owned local storage; the tiny probe is not a publication archive acceptance.
+
+### Ошибки S3 сохраняют действующую recovery policy
+
+Implementation: allowlisted `_call`/`_BoundedBody` errors, runtime callback classification and unchanged supervisor policy. One SDK attempt; region retry handlers removed; request-body reads/seeks and blocking calls consume the same retained operation deadline. POSIX main-thread timer containment rejects occupied timer contexts before modifying them and restores the prior handler. The callback contract exposes no higher-scope deadline; its original `cloud_timeout_s` establishes one budget for the whole callback, nested operations retain it. The operator passes its original absolute120s clock explicitly.
+
+- **Endpoint недоступен или throttled:** `test_error_sanitization_and_classification`, `test_409_without_final_object_is_transient`, `test_expired_outer_deadline_is_never_reset`, `test_held_range_checks_deadline_during_reads_and_rewinds`, `test_blocking_sdk_call_is_interrupted_at_absolute_deadline`; supported network/timeout/incomplete/throttling/5xx map to transient75 and retained checkpoint. No retry threads are used.
+- **Доступ запрещён или содержимое неверно:** the same classification test plus wrong-hash/collision cases preserve permanent78. Shared supervisor tests retain zero unexpected retries; no raw cleanup/fallback follows failed verification. Real access denial/throttling/TLS failure were not induced on the user's account; controlled errors cover the classification.
+
+### Listing и preflight ограничены destination namespace
+
+Implementation: `list_remote_files` exact prefix/basenames, complete pagination,≤1000/page,≤10000objects,≤16MiB and retained deadline; repeated tokens/duplicates/foreign keys/malformed sizes/truncation fail closed. Read-only preflight explicitly has write/conditional false and quota_visibility=not_exposed.
+
+- **Namespace содержит несколько страниц:** `test_hostile_inventory` controlled multi-page/repeated-token/duplicate/foreign-size/truncation responses; final smoke inventory contains exactly the2 owned objects. The external probe namespace had2 objects, so a real multi-page bucket was not created solely for testing.
+- **Поддержка сервера проверяется на owned smoke namespace:** `test_s3_operator_preflight.test_bounded_smoke_keeps_existing_bytes_and_owned_namespace`, CLI mutation rejection test, and final live report7/7 checks with4.429s/2objects/16,777,294uploaded/50,331,804readback/0uploads. Objects are retained scoped evidence. The original failed report remains immutable; no success was fabricated for it.
+
+### Исторические Seafile данные сохраняют исходные bindings
+
+Implementation: extracted common physical helpers retain legacy exports/error aliases/journal bytes and callbacks; legacy network adapter remains available. Ledger readers keep strict legacy v2 and reject mixed S3 schemas. Fresh production legacy selection requires historical manifest/checkpoint custody and current candidate identity; no historical record is rewritten or rebound.
+
+- **Существующий Seafile run открыт для проверки:**35 unchanged legacy store/security/materialization regressions,48 existing transaction/recovery cases, and `test_publication_legacy_context.test_fresh_seafile_context_is_rejected_and_historical_hashes_are_checked`. Backend switches/unknown schemas fail; no remote migration occurred.
+- **S3 настройка представлена как Q1 acceptance:** `evidence/source-before.v1.json`/`source-after.v1.json` confirm all9 previously snapshotted frozen source hashes and3 frozen configuration blobs. C_Q1 remains1112af0b; no Q1 source writes or execution occurred. This is a scoped custody check, not a fresh rehash of every historical receipt. Status files retain independent Q1 gates; no Q1/scientific/full grant is issued.
+
+## Benchmark launch preparation
+
+### Cloud admission uses an actual dated guarantee
+
+Implementation: `s3_capacity_attestation.build_s3_capacity_attestation`/validator and `s3_operator_preflight.materialize_capacity`; original `build_sizing_projection`, physical original280-row sizing loader and unchanged projection validator. Exact S3 destination, source/SDK/current live proof,≤24h UTC guarantee/preflight and actual physical sizing are required. Entrypoint validates capacity before creating a network client; successful capacity does not bypass the existing readiness validator. The24h limit is a fail-closed interpretation of current/stale, documented without changing the scientific formula or granting capacity.
+
+- **Confirmation missing:** `test_missing_stale_foreign_and_tampered_guarantees_block`; `evidence/capacity-disposition.v1.json` explicitly records no guarantee or accepted actual Q4 sizing. Q1/qualification/Q4 remain independent. No available-byte figure was invented.
+- **Sizing or readback exceeds the guarantee:** `test_formula_and_destination_bindings`, reused unchanged original projection validation, failed/malformed preflight tests; full upload/readback must succeed. Unit fixtures are labelled tests and are never delivered as actual Q4 records.
+- **S3 quota is unknown or an old destination guarantee is supplied:** exact schema/destination/dated negative tests plus `test_readonly_preflight_does_not_grant_cloud_capacity`; prior Seafile records, list results and local space do not create capacity authority.
+- **Current S3 capacity evidence validates:** positive formula fixture checks280cells/10repeats; `test_rehashed_capacity_cannot_substitute_or_outlive_adapter_source` rejects mismatched/outdated source even after rehash. Production validation rereads actual sizing files. No actual accepted capacity attestation is available now; this delivery is configured/write-verified S3 with full-cloud admission blocked.
+
+## Dispositions and completion gates
+
+Source review found3 P1 issues (fresh legacy admission, stream deadline, stale source proof); all were fixed and rereviewed. Two nonblocking standards observations (private receipt read, misleading Seafile labels) were fixed. Live EOF failure received a real regression and correction; original outcome preserved. No substantive source mismatch remains.
+
+Operational limitations remain explicit: missing actual Q4/operator guarantee, canonical host user-manager bus unavailable, live bucket unversioned, no induced remote process-crash or real throttling/TLS failure, no benchmark/qualification execution. These do not become accepted evidence. Delivery acceptance still requires latest complete CI, source review, reviewed spec sync and committed archive. Format validation alone is not behavior conformance; no new universal CI conformance framework is claimed.

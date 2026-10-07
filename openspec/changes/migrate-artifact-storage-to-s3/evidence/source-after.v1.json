@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-10-07T11:38:35Z",
+  "implementation_source_commit": "9bedfb140eea46d3ce0cde9ee57bf6107a95874e",
+  "q1_execution_commit": "1112af0b53cae995984708390cf9d04c18da3c0d",
+  "sources": [
+    {
+      "path": "scripts/seafile_artifact_store.py",
+      "implementation_sha256": "0d92c0590021c6ebabb2e72a08ba090bfa257b0db073870c314c32fb7bb116af",
+      "frozen_q1_sha256": "00076c9b485bd3ca60c6ae95728acc043bde5f037308aecab61c2d7f71571a0c",
+      "frozen_q1_unchanged": true
+    },
+    {
+      "path": "scripts/publication_cloud_transaction.py",
+      "implementation_sha256": "9f996e8219c9dbbe872c191938c63187417e412e7339f7384d6d01172418c2b3",
+      "frozen_q1_sha256": "14babe0d147e636a1db9b54e034186a0d9d969de9a315c4878c4200ebc12fd5a",
+      "frozen_q1_unchanged": true
+    },
+    {
+      "path": "scripts/full_publication_entrypoint.py",
+      "implementation_sha256": "d861917787601c499bcd9936aba8bb36fe5d226d2c8fc9d8f99751ea48bf7e3e",
+      "frozen_q1_sha256": "c81536e91ed3290949eedd60c343fea69e99ed75822f5ff42fad5ca8d8c559cf",
+      "frozen_q1_unchanged": true
+    },
+    {
+      "path": "scripts/full_publication_runtime.py",
+      "implementation_sha256": "9a429d1a8f893daa486f5cc8b80f000720e6c64902cc351b045d2e85132dd41b",
+      "frozen_q1_sha256": "e9027470592b94b3a4435cf7ac035c2f46a22b24929e99b0209ac06ddf553285",
+      "frozen_q1_unchanged": true
+    },
+    {
+      "path": "scripts/full_publication_supervisor.py",
+      "implementation_sha256": "2def8bdd10e3af7c8028db1483cb352f33ef91661a116a801590194d577b28ef",
+      "frozen_q1_sha256": "1a778ff491f27164aecf56efbc59d97fdd3252c669ab31abc8d76b5d620cd642",
+      "frozen_q1_unchanged": true
+    },
+    {
+      "path": "scripts/full_publication_wsl_user_service_v1.py",
+      "implementation_sha256": "08eb6af0b7ac4d02ce5503bc17ae4cbd914ce9ff9bca2f12561ae254d640699c",
+      "frozen_q1_sha256": "96622102977d3e6af91912aa1313e1bcb3ec4043b6b1c430a0796f996fde698d",
+      "frozen_q1_unchanged": true
+    },
+    {
+      "path": "scripts/run_experiments.py",
+      "implementation_sha256": "8be5e22f539db0dcbbd7372fb8944ea85f0f46a36c0ec4b4c30eb2b12f9dc506",
+      "frozen_q1_sha256": "8bd2140fa7357f57033464b960c6d5be89647788de19f18f24f70c90eab4a811",
+      "frozen_q1_unchanged": true
+    },
+    {
+      "path": "requirements.txt",
+      "implementation_sha256": "55641a6ee40596b9e4c45ef3121c17fbbb98c3c5799ee3f86be432ac94d73a6a",
+      "frozen_q1_sha256": "072699b93fecd0d9d8d59c1353d7091a86673374896b490ab22dd92c349958ec",
+      "frozen_q1_unchanged": true
+    },
+    {
+      "path": ".ci/requirements.txt",
+      "implementation_sha256": "71f6330ad608065a89477b512cc0880c131db45f136f526188543a8bba7ae3ca",
+      "frozen_q1_sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef",
+      "frozen_q1_unchanged": true
+    }
+  ],
+  "frozen_config": [
+    {
+      "path": "configs/experiments.yaml",
+      "sha256": "318819a9d79e57f5c2110c7819a889a2eb078ce13283fbba1d5d11593c26e48f",
+      "matches_frozen_blob": true
+    },
+    {
+      "path": "configs/datasets.yaml",
+      "sha256": "6f16a46c6a92c6aecd51cf669e4c5731f182a58b6a0f40dac7eff9b26d9d6086",
+      "matches_frozen_blob": true
+    },
+    {
+      "path": "configs/checkpoint_analytics_models_openvino.yaml",
+      "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca",
+      "matches_frozen_blob": true
+    }
+  ],
+  "scope": "nine previously snapshotted source files plus three frozen configuration files; no Q1 writes performed",
+  "whole_historical_evidence_rehash": false
+}
