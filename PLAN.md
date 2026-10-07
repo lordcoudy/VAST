@@ -1,25 +1,25 @@
-<!-- CURRENT FULL CAMPAIGN 2026-10-06: qualify-full-benchmark -->
-## Текущая цель и roadmap (с 2026-10-06)
+<!-- CURRENT FULL CAMPAIGN 2026-10-07: qualify-full-benchmark -->
+## Актуальный план — 7 октября 2026
 
-**Цель:** полностью рабочий проверяемый продукт VAST. Входят полная qualification, Q4, датированная cloud capacity, полная матрица 5 600 arms / 2 800 пар и `verify → finalize → export`. Компонентный релиз (PR2) и finite study (PR5: attempt K, 24/24 arms, 12/12 пар) завершены. Ни одна стадия полной кампании ещё не исполнена: 0/32 cells, 0/1 120 Q4, 0/5 600 arms.
+**Текущий этап: подготовка к одной Q1, запуск ожидает отдельной команды пользователя.** [Draft PR #7](https://github.com/lordcoudy/VAST/pull/7), OpenSpec `qualify-full-benchmark`: **25/34** задач отмечено выполненными, 9 открыты. Execution commit **`1112af0b53cae995984708390cf9d04c18da3c0d`** (C_Q1), корень **`E:/STUDY/VAST/tmp/qfb-root-20261007a`**. Рабочие [planning artifacts и tasks](https://github.com/lordcoudy/VAST/blob/codex/qualify-full-benchmark/openspec/changes/qualify-full-benchmark/tasks.md) находятся в ветке `codex/qualify-full-benchmark`; master на `a54d0d99` не содержит текущую реализацию. Published head `53083fbe` добавляет только docs/evidence после C_Q1.
 
-Три последовательных этапа. Каждый оформляется отдельным OpenSpec change и MR и принимается только по своим fresh receipts:
+**Что подготовлено:** runtime clocks, full-consumer kind rejection и owner 37 операций; native3 A/B, worker2 input-hash equivalence, runtime ×4/refreeze; packaged checks 23/23; parity 480/32 с независимой сверкой A244; 99 pin sites; физическая integration-полоса 9/9; fresh checkout 164/164 при autocrlf true и false; исторические evidence g/A269 сохранены. [CI на C_Q1](https://github.com/lordcoudy/VAST/actions/runs/37584336063) SUCCESS. [CI документационного head `53083fbe`](https://github.com/lordcoudy/VAST/actions/runs/37591141619) завершён **SUCCESS**; ожидание hosted CI закрыто.
 
-1. **`qualify-full-benchmark`** — [Draft PR7](https://github.com/lordcoudy/VAST/pull/7), [change](openspec/changes/qualify-full-benchmark/). Спека одобрена независимым ревью (PASS_WITH_NOTES на `d9b7a8ed`), идёт реализация. Состав:
-   - строго возрастающие wall stamps в Python runtime (класс отказов J/CPU07);
-   - stock owner 37 операций;
-   - отказ full consumers без побочных эффектов;
-   - пересборка native3 и 4 runtime образов, parity 480/32, перепривязка пинов, ext4 suite и CI, 9 физических integration тестов;
-   - одна попытка Q1: 4 prechecks, Savant diagnostic, 32 cells, authenticated stop, closure 37/37, promotion.
-2. **Q4 и capacity** (следующий change): 560 A, boundary, 560 B, 280 sizing; датированная Seafile capacity attestation.
-3. **Полная матрица** (следующий change): persistent WSL user service, 5 600 / 2 800 при `--max-unexpected-retries 0`, `verify → finalize → export`.
+**До запуска Q1:**
+1. **Docker readiness проверена: PASS, 11:48 МСК.** Q1 CLI `/usr/bin/docker` через канонический `/run/docker.sock` использует Docker Desktop **29.8.1** (`docker-desktop`); **10/10 pinned image IDs**, контейнеров 0, чужих VAST/CI processes 0, GPU compute jobs 0. Сохранён [read-only host report](C:/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/openspec/changes/qualify-full-benchmark/evidence/physical-v1-host/pre-q1-ready-host-check.v1.json). Прежний Docker startup блокер снят; образы и пины не менялись.
+2. **Ext4 skip закрыт как блокер.** Пользователь 7 октября, **11:40 МСК**, подтвердил: «ext4 skip is within approved skips». Набор 88 skip ID разрешён; результаты — 3 200 run / 3 112 success / 0 failures/errors. Исходный **successful=false** из-за отличия текста причины canonical venv bind сохраняется в evidence. Checklist 5.5/6.0 остаётся выполненным; повтор suite ради этого skip и изменение allowlist не требуются.
+3. Предварительная host-проверка **PASS**: C: ~90 GiB, E: ~337 GiB, WSL `/` и `/var/tmp` ~707 GiB; все выше 20 GiB. C_Q1, clean source, uid1000, Python3.12.3, receipt hashes и fresh Q1 namespaces подтверждены. **6.2 остаётся открытой:** после команды пользователя повторить текущие host checks и сохранить финальный stock report непосредственно перед Q1. AC sleep Never, AC hibernate 0, Windows Update paused до **26 октября, 15:01 МСК**. Работать от сети, не перезапускать WSL/Docker и не запускать параллельные builds/CI/GPU jobs.
+4. Получить отдельную команду пользователя **«запускай Q1»**. До неё Q1 namespaces не создавать и шаги qualification не исполнять. Read-only проверка подтвердила C_Q1, source clean, Python3.12.3 и исходные hashes; весь runbook не запускался. Historical TODO о повторах 5.5–5.7 сверять с уже сохранёнными актуальными evidence.
 
-Оценка: около 6–8 недель календарного времени, из них около 5 недель непрерывной работы стенда. Полная матрица с накладными расходами — около 27–30 суток.
+**После разрешения:** выполнить [runbook](https://github.com/lordcoudy/VAST/blob/codex/qualify-full-benchmark/docs/full-qualification-runbook.md) по frozen [commands](https://github.com/lordcoudy/VAST/blob/codex/qualify-full-benchmark/docs/full-qualification-runbook-commands.sh): transaction/bootstrap → preprocessing → execution closure → capture plan → guardian8/8 → runtime inputs → owner (4 native prechecks, Savant, 32 cells) → authenticated stop → binding/cold closure37/37 и8 workers → policy/resource promotion. Одна попытка, ориентир **5–8 часов**. Любой ненулевой исход после начала Q1 — FAILED: сохранять originals, остановиться и запросить решение пользователя; автоматических повторов нет.
 
-**Предпосылки от пользователя.** Агент их не выполняет, это системные или внешние действия:
-- **До Q1:** отключить сон Windows на AC и отложить перезагрузки Windows Update на время прогона; не трогать Docker Desktop UI и extensions.
-- **До приёмки этапа 2:** датированная гарантия ёмкости Seafile.
-- **До этапа 3:** рабочий `systemctl --user` в WSL (сейчас WSLg перекрывает `/run/user/1000`) и достаточно места на C: (свободно около 118 GB, там `docker_data.vhdx` 134 GB и build cache 98 GB). Очистка cache — только по решению пользователя.
+Затем 7.6 independent acceptance и conformance8.1 по каждому requirement/scenario; sync/archive8.2 **в том же PR**, commit/push, CI на последнем архивном commit, финальное ревью и отдельно разрешённый merge. Пока Q1 не принята, archive успешной qualification и promotion не заявляются.
+
+**Следующие отдельные change/MR:**
+- Q4 + capacity: 560 A, identity/grant boundary, 560 B, 280 sizing pairs и датированная Seafile capacity attestation.
+- Full matrix: исправный persistent WSL user service (`systemctl --user` сейчас не подключается к bus), 5 600 accepted arms / 2 800 durable pairs, прежние workload/order/seed и `--max-unexpected-retries 0`, stock `verify → finalize → export`.
+
+**Обслуживание C:** pip/uv/npm download caches очищены; на проверке 11:48 МСК около **90 GiB** свободно (при очистке прирост **16.5 GiB**). Docker VHDX/images, build/Q1 roots, исходные datasets/models/evidence и runtime environments сохранены. Дополнительные 262 старых installer extractions (~38.9 GiB) в [списке](E:/STUDY/VAST/tmp/maintenance-20261007/temp-cleanup-candidates.json): пользователь одобрил удаление списка, но automatic approval review повторно блокирует операцию («blocked by policy»). Кандидаты сохранены; дополнительное подтверждение не требуется. E: ~337 GiB, WSL/ext4 ~707 GiB. Сводка текущего состояния — [progress](progress.md); прошлые документы ниже сохранены как история.
 <!-- END CURRENT FULL CAMPAIGN -->
 
 <!-- CURRENT BENCHMARK RECOVERY 2026-10-04: run-finite-component-study -->

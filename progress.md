@@ -1,25 +1,30 @@
-<!-- CURRENT FULL CAMPAIGN 2026-10-06: qualify-full-benchmark -->
-## Текущая цель и roadmap (с 2026-10-06)
+<!-- CURRENT FULL CAMPAIGN 2026-10-07: qualify-full-benchmark -->
+## Текущий прогресс — 7 октября 2026
 
-**Цель:** полностью рабочий проверяемый продукт VAST. Входят полная qualification, Q4, датированная cloud capacity, полная матрица 5 600 arms / 2 800 пар и `verify → finalize → export`. Компонентный релиз (PR2) и finite study (PR5: attempt K, 24/24 arms, 12/12 пар) завершены. Ни одна стадия полной кампании ещё не исполнена: 0/32 cells, 0/1 120 Q4, 0/5 600 arms.
+**Q1 технически подготовлена и не запущена; ожидается отдельная команда пользователя.** Активное изменение — `qualify-full-benchmark`, ветка `codex/qualify-full-benchmark`, [Draft PR #7](https://github.com/lordcoudy/VAST/pull/7). В основной checkout `E:/STUDY/VAST` это изменение ещё не слито; действующие документы находятся в `C:/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST`. Источник обновления: `last_run.txt`, сохранённые receipts и read-only проверка хоста **7 октября, 11:48 МСК**.
 
-Три последовательных этапа. Каждый оформляется отдельным OpenSpec change и MR и принимается только по своим fresh receipts:
+В [tasks](https://github.com/lordcoudy/VAST/blob/codex/qualify-full-benchmark/openspec/changes/qualify-full-benchmark/tasks.md) отмечено **25/34** задач. Разделы software и подготовки закрыты в существующем checklist; 6.2, вся Q1 (7.1–7.6), conformance и archive (8.1–8.2) остаются открыты. Published head — `53083fbe81ae83fea1c77c9cc4400578afde000b`; неизменный execution commit **C_Q1 = `1112af0b53cae995984708390cf9d04c18da3c0d`**, корень `E:/STUDY/VAST/tmp/qfb-root-20261007a`. После C_Q1 допустимы только docs/evidence; корень исполнения не переключать на master или документационный head.
 
-1. **`qualify-full-benchmark`** — [Draft PR7](https://github.com/lordcoudy/VAST/pull/7), [change](openspec/changes/qualify-full-benchmark/). Спека одобрена независимым ревью (PASS_WITH_NOTES на `d9b7a8ed`), идёт реализация. Состав:
-   - строго возрастающие wall stamps в Python runtime (класс отказов J/CPU07);
-   - stock owner 37 операций;
-   - отказ full consumers без побочных эффектов;
-   - пересборка native3 и 4 runtime образов, parity 480/32, перепривязка пинов, ext4 suite и CI, 9 физических integration тестов;
-   - одна попытка Q1: 4 prechecks, Savant diagnostic, 32 cells, authenticated stop, closure 37/37, promotion.
-2. **Q4 и capacity** (следующий change): 560 A, boundary, 560 B, 280 sizing; датированная Seafile capacity attestation.
-3. **Полная матрица** (следующий change): persistent WSL user service, 5 600 / 2 800 при `--max-unexpected-retries 0`, `verify → finalize → export`.
+**Подтверждённые результаты подготовки:**
+- Часы Python runtime, ранний отказ full consumers по чужому kind и stock owner 37 операций реализованы и проверены. Три amendment прошли зафиксированное техническое ревью; это не финальное одобрение или физическая приёмка Q1.
+- Native3 A/B побайтно равны; worker2 source/dependency/build-context hashes сохранены. Runtime ×4 пересобраны, refreeze выполнен, packaged checks **23/23**.
+- Parity **480/32**: независимый аудит сверил 3 535 descriptors / 2 478 файлов, все 480 tensor-пар совпали с A244. Перепривязаны 99 мест пинов по плану из 224 соответствий.
+- На C_Q1 физические integration checks **9/9**, две свежие checkout autocrlf true/false воспроизвели **164/164** входа образов; g/A269 evidence сохранено. [Логи интеграций](https://github.com/lordcoudy/VAST/blob/codex/qualify-full-benchmark/openspec/changes/qualify-full-benchmark/evidence/physical-v1-integration/integration_lane/results.txt).
+- [Hosted CI на C_Q1](https://github.com/lordcoudy/VAST/actions/runs/37584336063) — SUCCESS. [CI опубликованного head `53083fbe`](https://github.com/lordcoudy/VAST/actions/runs/37591141619) завершён: **completed / success**. Оба проверенных commit зелёные; CI не заменяет предстартовую проверку хоста.
+- Ext4 suite: **3 209 discovered / 3 200 run / 3 112 success / 88 skip / 0 failures/errors**. Пользователь **7 октября, 11:40 МСК** подтвердил: «ext4 skip is within approved skips». Все 88 skip ID входят в разрешённый набор; **ext4 больше не блокирует Q1**. [Исходный отчёт](https://github.com/lordcoudy/VAST/blob/codex/qualify-full-benchmark/openspec/changes/qualify-full-benchmark/evidence/physical-v1-ci/README.md) сохраняет **`successful=false`** и отличие текста причины canonical venv bind; исходные результаты, проверки и allowlist не изменялись.
 
-Оценка: около 6–8 недель календарного времени, из них около 5 недель непрерывной работы стенда. Полная матрица с накладными расходами — около 27–30 суток.
+**Проверка хоста и очистка:**
+- **Docker готов (11:48 МСК):** `/usr/bin/docker` обращается к **Docker Desktop 29.8.1**, server name `docker-desktop`; `/run/docker.sock` существует и канонический. Все **10/10 pinned image IDs** доступны, контейнеров **0**, чужих VAST/CI processes **0**, GPU compute jobs **0**. Прежние starting/timeout и 2/10 IDs в отдельном Ubuntu engine были временным состоянием до готовности Desktop и больше не блокируют Q1.
+- По явному ответу пользователя AC sleep изменён с 15 минут на **Never** (`0x00000000`), AC hibernate тоже 0. Windows Update paused до **26 октября 2026, 15:01 МСК**. Для Q1 нужна работа от сети; батарейный sleep сохранён.
+- На проверке 11:48 МСК свободно C: **около 90 GiB**, E: **337 GiB**, WSL `/` и `/var/tmp`: **707 GiB**; каждый том выше минимума 20 GiB. Ранее удалены pip/uv/npm download caches; фактический прирост места при очистке **16.5 GiB**. Docker VHDX, образы, models/data, исходные benchmark evidence, worktrees и runtime environments сохранены.
+- Ещё **262** старых installer extraction folders (~**38.9 GiB**) перечислены в [инвентаре](E:/STUDY/VAST/tmp/maintenance-20261007/temp-cleanup-candidates.json). Пользователь явно одобрил удаление списка, но автоматический approval review повторно отклонил операцию («blocked by policy»). Кандидаты сохранены; удаление заблокировано средой.
+- Полный **read-only preflight PASS в 11:48 МСК**: C_Q1, clean tracked source, uid1000, Python **3.12.3**, ext4 `/var/tmp`, hashes patch/build receipts/parity/config/bindings, Docker/pinned images и отсутствие всех будущих Q1 namespaces. Runbook `.sh` проходит `bash -n`; Q1 шаги не выполнялись. [Сохранённый отчёт](C:/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/openspec/changes/qualify-full-benchmark/evidence/physical-v1-host/pre-q1-ready-host-check.v1.json) содержит исходный вывод. Task6.2 остаётся открытой до финального stock host report непосредственно перед разрешённым запуском.
 
-**Предпосылки от пользователя.** Агент их не выполняет, это системные или внешние действия:
-- **До Q1:** отключить сон Windows на AC и отложить перезагрузки Windows Update на время прогона; не трогать Docker Desktop UI и extensions.
-- **До приёмки этапа 2:** датированная гарантия ёмкости Seafile.
-- **До этапа 3:** рабочий `systemctl --user` в WSL (сейчас WSLg перекрывает `/run/user/1000`) и достаточно места на C: (свободно около 118 GB, там `docker_data.vhdx` 134 GB и build cache 98 GB). Очистка cache — только по решению пользователя.
+**Технических блокеров готовности Q1 на 11:48 МСК не обнаружено.** Ожидается отдельная команда пользователя «запускай Q1»; после неё повторяются проверки текущего хоста и сохраняется финальный отчёт 6.2. Ext4 skip подтверждён как approved и не блокирует старт. В runbook остался исторический TODO о повторах 5.5–5.7; фактические повторы уже сохранены в evidence, исходный local suite report остаётся false. Любой отказ после начала единственной Q1 означает FAILED и остановку без автоматического повтора.
+
+Roadmap сохраняется: **Q1** (4 native prechecks + Savant + 32 cells, authenticated stop, closure 37/37 и 8 workers, promotion) → отдельный change **Q4 + capacity** (560 A, identity/grant boundary, 560 B, 280 sizing pairs; датированная Seafile capacity attestation) → отдельный change **full matrix** (5 600 accepted arms / 2 800 durable pairs, `verify → finalize → export`). Все qualification/Q4/publication/full eligibility пока false. Для full matrix также остаётся user-systemd prerequisite; текущий `systemctl --user` не подключается к bus.
+
+[Runbook Q1](https://github.com/lordcoudy/VAST/blob/codex/qualify-full-benchmark/docs/full-qualification-runbook.md), [команды](https://github.com/lordcoudy/VAST/blob/codex/qualify-full-benchmark/docs/full-qualification-runbook-commands.sh), [PLAN](PLAN.md). Ниже — неизменённая датированная история; её прежние слова «текущий», running/pending и незакрытые пункты не заменяют этот статус.
 <!-- END CURRENT FULL CAMPAIGN -->
 
 <!-- CURRENT BENCHMARK RECOVERY 2026-10-04: run-finite-component-study -->
