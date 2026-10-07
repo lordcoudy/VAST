@@ -645,7 +645,9 @@ class _BoundedBody:
     def read(self, amount):
         remaining = self.store._remaining()
         try:
-            if hasattr(self.body, 'set_socket_timeout'):
+            # A complete HTTP ContentLength can release its socket before the
+            # mandatory EOF read. That read still uses the absolute timer.
+            if self.observed < self.size and hasattr(self.body, 'set_socket_timeout'):
                 self.body.set_socket_timeout(remaining)
             with self.store._transport_deadline():
                 chunk = self.body.read(min(amount, _CHUNK, max(1, self.size-self.observed+1)))

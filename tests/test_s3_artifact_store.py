@@ -99,6 +99,22 @@ class FakeS3:
 
 
 class S3StoreTests(unittest.TestCase):
+    def test_completed_http_body_may_release_socket_before_eof_read(self):
+        class ReleasedSocket(io.BytesIO):
+            def set_socket_timeout(self, value):
+                if self.tell() == len(self.getvalue()):
+                    raise AttributeError('socket released after complete ContentLength')
+        class Server(FakeS3):
+            def get_object(self, **args):
+                return {**self.head_object(**args), 'Body':ReleasedSocket(self.objects[args['Key']])}
+        destination = S3Destination.from_file(Path(__file__).parents[1]/'configs/artifact-storage.yaml')
+        with tempfile.TemporaryDirectory() as temp:
+            server = Server()
+            store = S3ArtifactStore(destination, client=server, intent_root=Path(temp))
+            store.bind_probe('a'*32)
+            server.objects[store.prefix+'tiny.bin'] = b'abc'
+            result = store.verify_remote('tiny.bin', expected_size=3, expected_sha256=hashlib.sha256(b'abc').hexdigest())
+            self.assertEqual(result['size_bytes'],3)
     def test_held_range_checks_deadline_during_reads_and_rewinds(self):
         with tempfile.TemporaryFile() as source:
             source.write(b'abc')
