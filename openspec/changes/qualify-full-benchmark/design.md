@@ -57,7 +57,7 @@
    - Запуск — независимым Windows-процессом (`Start-Process wsl.exe`), как в PR5.
    - Любой отказ означает FAILED Q1 с сохранением evidence. Новая попытка требует reviewed amendment и явного решения человека. Частичные cells не переиспользуются.
    - Перед стартом оператор подтверждает: сон Windows отключён, Windows Update отложен, Docker Desktop UI и extensions не трогаются. Это пункт runbook, не код.
-   - Q1 исполняется на одном зафиксированном commit (записывается в receipts). «Source» для фиксации — файлы образных allowlist и execution code closure. Перепривязка пинов меняет только тесты и host-константы вне этих файлов, что доказывается сравнением closure hashes до и после.
+   - Q1 исполняется на одном зафиксированном commit (записывается в receipts). Заменено Amendment 2 (B1): входы образов фиксируются на 5.1, commit Q1 (`C_Q1`) — после перепривязки пинов 5.4, diff closure-модулей ограничен заменами по плану.
    - Container terminal events и первый snapshot маршрута (существующее поведение PR2, задача 23.2 архива `2026-10-03-fix-benchmark-preparations-spec`) проверяются в evidence Q1.
    - **Исход MR при FAILED Q1.** В MR фиксируется FAILED с evidence, пользователю задаётся вопрос. Варианты: (а) reviewed amendment и новая попытка в том же MR; (б) archive и merge уже проверенного кода с честным статусом qualification = failed — только по явному решению пользователя.
 7. **Roadmap.** Этапы 2 (Q4, sizing, capacity) и 3 (service, full matrix, `verify/finalize/export`) — отдельные будущие change. Их предпосылки фиксируются в PLAN:
@@ -91,18 +91,27 @@
 - **Worker2 пересобираются, неизменность доказывается по входам.** В `configs/publication_image_build_v1.json` оба worker-образа имеют `base.kind = "produced_image"` от native-образов (OpenVINO и DeepStream). Native-исходники изменились, поэтому native image ID сменятся.
   - `publication_image_build_v1.py` (:526) и refreeze `assemble`/`verify-patch` (`publication_qualification_image_refreeze_v1.py` :1197–1199, :1351) требуют, чтобы `base_image_id` worker был равен новому native `image_id`.
   - Поэтому worker2 пересобираются (`--group analytics_worker --producer-receipt <native-a>`), как в цепочке `20260928g`.
-  - «Неизменность worker2» означает равенство `source_set`, `dependency_set` и `build_context` hashes нового `analytics-worker.freeze.json` и freeze `20260928g`. Image ID меняется только из-за base.
-  - Parity 480/32 и так повторяется на новом patch.
-- **Корень сборки и тег.** Тег `qualify_full_benchmark_20261007a`, namespace `qfb-20261007a`. Корень — свежий exact-commit checkout `E:/STUDY/VAST/tmp/qfb-root-20261007a` (NTFS, по схеме `20260928g`). Внутри — копии `models/`, `data/` и нужных git-ignored `artifacts/` (A244, шаблоны packaged checks `20260926d`, рецепты `20260928g`), каждая с проверкой SHA256 против источника.
+  - «Неизменность входов worker2» означает равенство `source_set`, `dependency_set` и `build_context` hashes нового `analytics-worker.freeze.json` и freeze `20260928g`. Image ID меняется только из-за base.
+  - Patch получит блокер `analytics_worker:*_identity_changed_requires_parity_refresh`; его снимает parity 480/32 на новом patch (5.3).
+- **Корень сборки и тег.** Тег `qualify_full_benchmark_20261007a`, namespace `qfb-20261007a`. Корень — свежий exact-commit checkout `E:/STUDY/VAST/tmp/qfb-root-20261007a` (NTFS, по схеме `20260928g`, `core.autocrlf=false`). Внутри — копии `models/`, `data/` и нужных git-ignored `artifacts/` (A244, шаблоны packaged checks `20260926d`, рецепты `20260928g`).
+  - Копии проверяются полным манифестом с обеих сторон: относительный путь, размер, SHA256. Отказ при extra, missing, link или reparse point.
+  - Источник каждого набора (NTFS-копия или ext4 `~/vf*/`) и ожидаемые хеши записываются в манифест до копирования.
+  - Сборки, parity и Q1 идут из этого корня без relocation, как в цепочке g. Поэтому R20/S1 (relocation custody) неприменим, если корень не переносится; при переносе он обязателен до 7.1.
   - Рецепты `20260928g` копируются в `artifacts/qualify_full_benchmark_20261007a/` и меняются только в путях, теге и namespace. Diff сохраняется в evidence.
   - Ext4 используется для полного suite (5.5): свежий clone, `scripts/run_ci_checks.py --expected-commit`.
+- **Source freeze и пины (B1).** Ожидаемые идентичности образов лежат и внутри модулей execution code closure: `EXPECTED_IMAGE_ID`, `EXPECTED_BASE_IMAGE_ID` и labels в `scripts/checkpoint_gstreamer_publication_runtime_v3.py` и `scripts/checkpoint_openvino_gva_publication_runtime_v3.py`. Pin GStreamer указывает на `decision28-2a6a42c9`, а не на g. Поэтому:
+  - на 5.1 замораживаются входы сборки образов (allowlists и Dockerfile);
+  - closure и commit для Q1 (`C_Q1`) — это commit после перепривязки пинов 5.4;
+  - diff closure-модулей между commit сборки и `C_Q1` должен состоять только из рассмотренных литеральных замен по плану;
+  - инвентарь пинов строится по фактическим старым значениям идентичностей (image ID, base ID, sha, size, пути), а не по строке `20260928g`. В него входят и pinned пути/size/sha в `checkpoint_*_qualification_fragment_v3.py`, которые импортируются динамически и не видны статическому closure.
 - **Перепривязка пинов шире инструмента `20260928g`.** Кроме 7 файлов g, пины есть в:
   - `tests/test_publication_gstreamer_component_inputs_v1.py`;
   - `.ci/fixtures/additional-origins.v1.json`;
   - копиях фикстур `.ci/fixtures/gstreamer_fragment_unit_v1/artifacts/fix_benchmark_preparations_20260928g/**`.
 
   Инструмент расширяется на эти файлы. План замен сохраняется до применения, применяются только строковые замены old→new, diff проверяется. Новые `configs/*qfb-20261007a*` из parity коммитятся.
-- **Сеть.** BuildKit обращается к registry за метаданными закреплённых по digest base-образов даже при `--pull=false`. Сеть доступна напрямую, proxy для git и API обходится. Base-образы проверяются `docker image inspect <ref@digest>` до сборки.
+  - **`.ci`-фикстуры (B2)** строковой заменой не правятся. Создаются проверенные побайтовые копии новых артефактов по новому пути (`.ci/fixtures/.../artifacts/qualify_full_benchmark_20261007a/**`). Связки `fixture_path`↔`original_path` в `additional-origins.v1.json` обновляются на новые пары. Существующие тесты origin-связок должны проходить.
+- **Сеть.** BuildKit обращается к registry за метаданными закреплённых по digest base-образов даже при `--pull=false`. Сеть доступна напрямую. Proxy обходится только в окружении отдельной команды (`env -u HTTPS_PROXY -u HTTP_PROXY`), постоянные настройки системы не меняются. Base-образы проверены `docker image inspect <ref@digest>` (5.0).
 
 ## Risks / Trade-offs
 

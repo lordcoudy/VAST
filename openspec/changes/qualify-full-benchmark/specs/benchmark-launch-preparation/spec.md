@@ -74,7 +74,7 @@ The full campaign SHALL resume in three sequential reviewed stages: (1) fresh fu
 
 #### Scenario: Images changed after the last receipts
 - **WHEN** native, runtime or worker sources in an image allowlist differ from the bytes bound by the latest image and parity receipts
-- **THEN** the affected images SHALL be rebuilt through the existing deterministic build and refreeze verification, unchanged images SHALL be proven unchanged against their freeze receipts, parity SHALL be repeated against the new patch, and no qualification SHALL run on stale identities.
+- **THEN** the affected images SHALL be rebuilt through the existing deterministic build and refreeze verification; an image whose own inputs are unchanged but whose produced base was rebuilt SHALL also be rebuilt and SHALL prove its source, dependency and build-context hashes equal to its latest freeze receipt; only images with unchanged inputs and base SHALL be proven unchanged as images; parity SHALL be repeated against the new patch, and no qualification SHALL run on stale identities.
 
 #### Scenario: A stage attempt fails
 - **WHEN** any precheck, diagnostic, cell, stop, closure or promotion fails or the attempt suffers an unsupported interruption
