@@ -95,6 +95,8 @@
 
 **Попытка 1 — FAILED** на 7.1 (transaction rc 78), 7 октября 2026. Задачи 7.1–7.6 относятся к попытке 2 на `C_Q1'` после 6A/6B и 6.2 (Amendments 4–5).
 
+**Попытка 2 — FAILED** на 7.2 (8 октября 2026): шаги 0–8 PASS, guardian 8/8, 4 native prechecks выполнены; Savant diagnostic — контейнер rc 2 за ~6 с, затем owner rc 78 `empty failed original channel custody drifted` (режим 0555 на drvfs против требуемого 0444), stderr Savant не сохранён. Guardian остановлен authenticated stop с разрешения пользователя: `clean_stop_nonpublication` ([evidence](evidence/physical-v2-q1-attempt2-failed/README.md)). Следующий шаг — Amendment 6.
+
 - [ ] 7.1 Свежие inputs, bootstrap, preprocessing, execution code closure, capture plan (37) и runtime inputs. Готово при сохранённых receipts.
 - [ ] 7.2 Guardian 8/8, 4 native prechecks и Savant diagnostic через owner со встроенными проверками process/container validators (Amendment 3). Готово при SUCCESS каждого шага.
 - [ ] 7.3 32 cells одним owner, без автоповторов. Готово при 32 принятых cells.

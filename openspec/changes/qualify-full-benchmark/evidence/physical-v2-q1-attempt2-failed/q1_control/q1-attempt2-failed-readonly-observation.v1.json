@@ -1,0 +1,26 @@
+{
+ "artifact_kind": "q1_failed_readonly_observation",
+ "attempt": 2,
+ "observed_at_utc": "2026-10-08T07:45:00Z",
+ "observer": "Claude Code (read-only after failure)",
+ "q1_status": "FAILED",
+ "failed_step": "q1_09_owner_execute",
+ "rc": 78,
+ "owner_stdout": "original operational owner failed: empty failed original channel custody drifted",
+ "completed_before_failure": [
+  "steps 0-8 rc 0",
+  "guardian live 8/8 attested",
+  "4 native prechecks captured (openvino_gva cpu/gpu, gstreamer_custom cpu/gpu)"
+ ],
+ "failed_operation": "savant-original-savant-cpu-h264-independent-processes (5th of 37)",
+ "savant_engine_02": {
+  "command": "docker run ... sha256:8335a23e... arm ... --policy cpu_only --codec h264 --topology-kind independent_processes",
+  "returncode": 2,
+  "duration_s": 5.85,
+  "stdout_bytes": 0,
+  "stderr_retained": false
+ },
+ "custody_failure": "scripts/publication_operational_process_custody_v1.py:_write_failure_channel (empty channel): require fstat epoch == lstat epoch on the NTFS/drvfs root; failed while writing engine_02.failure.stdout.raw (0 bytes), so the failed run's stderr was not retained",
+ "guardian": "still running (no q1_06_guardian.rc), 8 worker containers Up; not stopped (authenticated stop requires user permission)",
+ "no_actions_taken": "no retry, nothing deleted/renamed, no docker stop/rm/prune"
+}
