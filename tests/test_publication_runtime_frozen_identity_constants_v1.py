@@ -65,7 +65,7 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
         self.assertLessEqual(len(diagnostic), 4200)
 
     def test_fix_benchmark_patch_matches_exact_runtime_constants(self) -> None:
-        patch_path = ROOT / "artifacts/qualify_full_benchmark_20261008d/qualification_image_identity_patch.json"
+        patch_path = ROOT / "artifacts/qualify_full_benchmark_20261008e/qualification_image_identity_patch.json"
         patch = json.loads(patch_path.read_bytes())
         receipts = {}
         for system, descriptor in patch["receipts"]["runtime_images"].items():
@@ -81,12 +81,12 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
         self.assertIn("runtime_images", patch["receipts"]["runtime_images"]["gstreamer_custom"]["path"])
 
     def test_current_qualification_fragments_match_physical_receipts(self) -> None:
-        base = ROOT / "artifacts/qualify_full_benchmark_20261008d"
+        base = ROOT / "artifacts/qualify_full_benchmark_20261008e"
         patch = json.loads((base / "qualification_image_identity_patch.json").read_bytes())
         parity = json.loads(
             (
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.acceptance_receipt.json"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.acceptance_receipt.json"
             ).read_bytes()
         )
         accepted = parity["accepted_manifest"]
@@ -325,14 +325,14 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
         # This is a static selected-image binding check, not a live grant.
         # The two original full-patch equality methods keep their real domain.
         receipt_path = ROOT / (
-            "artifacts/qualify_full_benchmark_20261008d/"
+            "artifacts/qualify_full_benchmark_20261008e/"
             "selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json"
         )
         payload = receipt_path.read_bytes()
         self.assertEqual(len(payload), 6976)
         self.assertEqual(
             hashlib.sha256(payload).hexdigest(),
-            "c703fafee94e25f73a6d1b10df49bdadf21cbb7766942cda24f447e1a3bd2380",
+            "87234bc73ec72eeb4a0510a4ae549d716ebca08c8ea26588e8c8c5873780646d",
         )
         receipt = json.loads(payload)
         self.assertEqual(receipt["schema_version"], 1)
@@ -407,19 +407,19 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
             root=ROOT,
             identity_patch_path=(
                 ROOT
-                / "artifacts/qualify_full_benchmark_20261008d/qualification_image_identity_patch.json"
+                / "artifacts/qualify_full_benchmark_20261008e/qualification_image_identity_patch.json"
             ),
             accepted_model_parity_manifest_path=(
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.yaml"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.yaml"
             ),
             accepted_model_parity_assessment_path=(
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.assessment.json"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.assessment.json"
             ),
             accepted_model_parity_receipt_path=(
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.acceptance_receipt.json"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.acceptance_receipt.json"
             ),
             docker="/usr/bin/docker",
             dependencies=fragment_authority.DEFAULT_DEPENDENCIES,
@@ -443,7 +443,7 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
             {system: row["physical_identity"]["image_id"]
              for system, row in inputs["patch"]["systems"].items()},
             {
-                "deepstream": "sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157",
+                "deepstream": "sha256:3a9aa20a8efb722e89865e73aaa9d29ec6ce6ae4e806f485887a9a032bebb984",
                 "savant": "sha256:045ccc3527dac40959706a678480f1145a3c7de609a9262365f5787911f667a7",
                 "openvino_gva": "sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
                 "gstreamer_custom": "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",

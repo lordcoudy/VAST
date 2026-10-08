@@ -40,41 +40,41 @@ RESOURCE_RUNTIME_FIELDS = {
 }
 
 ACCEPTED_PARITY = (
-    "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.yaml", 29892,
-    "bad2874543baf08732794f6f2dd92d3f106cbdd83a1e3b7dad8e78af62c4405d",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.yaml", 29892,
+    "c125e54be4a3ec701c8840285fc0cafbf7549de29db27fd3029f1abbd2d26dbe",
 )
 ACCEPTED_PARITY_CONTENT_SHA256 = (
-    "25eead16da6d1356a5b8f7e1cd28a31d7f757407bbc45abdd3150be39a966f54"
+    "d43a28e40d1cc2f16eba5d505710463cd616c9dd629c5a8a150fdb5fb5d20e87"
 )
 PREPROCESSING_CONTRACT_SHA256 = (
     "0307abfe6c5f652cc06f3f3df8ecf5050e5ed29b9ed5f40cb6fe728f47627090"
 )
 ANALYTICS_INDEX = (
-    "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/bindings/index.json", 1877,
-    "dafb90aa5f55198e2eea5cb40a74fad0fb4992e0be1db1c5341bd60c657031e1",
+    "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/index.json", 1877,
+    "45ce0c4a43cf7de91a9fd14902fe0047bb35fb78f5d2e2dc8d70062bc43b0d30",
 )
 ANALYTICS_INDEX_IDENTITY = (
-    "96930e96931d06b876bba066805afac96022b5b30716087e529249c0443e3ee1"
+    "3567dd7d97560f87c1598c9aeb96ab1283c535d80d02b7285128089fa5073b76"
 )
 ANALYTICS_BINDINGS_IDENTITY = (
     "d068e65aebd8831912dbdc5f949e4f765106674955be19450bcdd71c2669ea5c"
 )
 EXECUTION_CONFIG_IDENTITY = (
-    "1badaab198a7ba8da8d8db0810a6ee383748c9958dc957d3b52b3308c23407f7"
+    "f81023977102d57cd9bd29cf859880b0ed075f433a13464760d22e1e94dc5620"
 )
 MODEL_PARITY_MANIFEST_IDENTITY = (
-    "5bed05b0455256899d1ee78b6c7d83cca9b55d3df2def07a8526c3ffd797d1e8"
+    "43de6744fc4b817cf16767548663c87223d88eea015d3d3fa5fe4f3e550f8d14"
 )
 PROTOCOL_IDENTITY = (
     "3bed4ad0e5cd46b01649b054fa520c0f728a1ceeb14502fb9fe1f0f8f5941eff"
 )
 RUNTIME_PROBES = {
     "cpu": (
-        "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+        "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
         659, "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874",
     ),
     "gpu": (
-        "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+        "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
         654, "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962",
     ),
 }

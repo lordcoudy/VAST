@@ -1,0 +1,17 @@
+{
+ "artifact_kind": "vast_q1_docker_engine_identity_v1",
+ "boot_id": "76a20248-f55d-4340-9d07-d0fd7a8faa99",
+ "docker": "/usr/bin/docker",
+ "identity": {
+  "api_version": "1.56",
+  "client_version": "29.7.2",
+  "daemon_id": "aa8f3d33-e1dc-4ed2-ad06-488b46b332d0",
+  "driver": "overlayfs",
+  "driver_type": "io.containerd.snapshotter.v1",
+  "name": "docker-desktop",
+  "platform_name": "Docker Desktop 4.93.0 (240920)",
+  "server_version": "29.8.1"
+ },
+ "observed_at_utc": "2026-10-07T22:01:30.948214+00:00",
+ "socket": "/run/docker.sock (default context)"
+}

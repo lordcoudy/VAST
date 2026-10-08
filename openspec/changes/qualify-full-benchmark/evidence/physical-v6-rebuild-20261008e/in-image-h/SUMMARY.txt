@@ -1,0 +1,29 @@
+Amendment 7, task 6D.5, in-image checks H(a)-(c) -- 2026-10-08
+Root: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a at C_B''' 4de28110 (read-only mount /work/root).
+Image (artifacts/qualify_full_benchmark_20261008e/qualification_image_identity_patch.json):
+  deepstream sha256:3a9aa20a8efb722e89865e73aaa9d29ec6ce6ae4e806f485887a9a032bebb984  (Python 3.10.12)
+Scripts are the 6C D(a)/D(b)/D(c) drivers with recipe diffs (*.recipe-diff.txt): image ID, scratch
+/var/tmp/claude-inimage-diag-h, DeepStream only, attempt-3 (20261008d) runtime input bundle.
+All containers: docker run --rm --network none --user 1000:1000 (own names claude-inimage-diag-h*).
+
+H(a) PASS  (run_ha.sh, a_in_image_check.py, a_deepstream.report.json, a_deepstream.rc.txt)
+  In-image allowlist sha256 1513ee85... == root; 71 Python allowlist entries, 69 packaged in
+  /opt/vast/checkpoint, all byte-identical to the root at C_B''' (incl. checkpoint_deepstream_runtime.py),
+  69/69 compiled and imported by the image python3 3.10.12. rc=0, empty stderr.
+
+H(b) PASS  (run_hb.sh, b2_in_image_tests.py, hb_deepstream/, hb_deepstream.summary.json)
+  Image /usr/bin/python3.10, root scripts/tests mounted read-only (packaged copies are byte-identical, H(a)):
+    test_operational_identifier_domain_v1  3 tests OK  (gate G: 0 violations over all 32 cells)
+    test_checkpoint_deepstream_runtime    11 tests OK  (incl. F: worker ids under the request domain)
+  First pass (hb_deepstream.first-no-psutil*): the gate module failed to import only because psutil is a
+  host-only dependency (collect_metrics.py), not in the image -- same environment case as 6C D(b). Rerun
+  with psutil 7.2.2 (abi3, copied from the host publication venv; hb_pydeps.sha256) passed.
+
+H(c) PASS by its criterion  (c_stage_and_run.py, c_deepstream.record.json, c_deepstream.stderr.raw)
+  Inputs: copies of the attempt-3 bundle deepstream/cpu/h264/independent_processes (35 files, all equal to
+  the bundle SHA-256; no substitutions), --operational-request-context and --operational-output-dir as in Q1.
+  Endpoint socket: scratch UNIX socket file without a listener (guardian intentionally absent).
+  rc=2 after 4.9 s: "checkpoint worker exited before the common start barrier"; workers run with the new
+  ids (stream-0-branch-vehicle_type, ...), each "DeepStream callback factory failed: [Errno 111]
+  Connection refused". No request-domain failure. As designed, without a guardian the workers never send
+  policy requests, so the domain itself is covered by G and H(a)/H(b), not by H(c).
