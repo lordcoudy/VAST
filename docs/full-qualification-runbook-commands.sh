@@ -6,9 +6,9 @@
 # missing or an output already exists. Run in WSL bash as uid 1000.
 
 # ---------------------------------------------------------------- fixed values
-Q1_COMMIT=1112af0b53cae995984708390cf9d04c18da3c0d            # C_Q1 (Amendment 3)
-Q1_TAG=qualify_full_benchmark_20261007a
-Q1_NS=qfb-20261007a
+Q1_COMMIT=82c7a62ee59cf04db113d4897289b7da4a6f807d            # C_Q1' (Amendments 4-5; attempt 1 used 1112af0b)
+Q1_TAG=qualify_full_benchmark_20261008c
+Q1_NS=qfb-20261008c
 ROOT=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a
 PY=/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python
 # -I is not used: in 3.12 it implies -P and drops scripts/ from sys.path.
@@ -21,32 +21,35 @@ CTRL=$RCPT/q1_control                                       # Q1 logs, rc files,
 
 # Build receipts (inputs of Q1).
 PATCH=$RCPT/qualification_image_identity_patch.json
-PATCH_SHA=938a2cddcbe92d6b421dd689670ed985c3fa6f8ae4b5b4291f2f72db56138ef7
+PATCH_SHA=9cb9528a691fcc8e275d7bc4379d200e532d97c5f78a19ec3334ab432bf07690
 PARITY=$ROOT/configs/checkpoint_analytics_model_parity.refreshed.v4.$Q1_NS.accepted
 EXEC_CONFIG=$ROOT/configs/analytics_execution_layer.refreshed.v4.$Q1_NS.json
 BINDING_SET=$RCPT/model_parity_v4/bindings
+# Docker engine identity recorded in task 6A.2 (Amendments 4-5); preflight requires equality.
+ENGINE_IDENTITY=$RCPT/docker-engine-identity.6A2.v1.json
+ENGINE_IDENTITY_SHA=96d7c397e64ad483705caac9c66f2e254bc9230e30ac73d775dc9c161a262151
 
 # Fresh Q1 namespaces (runbook choice; none may exist before step 0).
-QUAL=$A/publication_policy_qualification_v2_qfb_20261007a
-PREP_PARENT=$A/publication_guardian_inputs_v1_qfb_20261007a
+QUAL=$A/publication_policy_qualification_v2_qfb_20261008c
+PREP_PARENT=$A/publication_guardian_inputs_v1_qfb_20261008c
 PREP=$PREP_PARENT/preprocessing-contract-v1
 CODE_CLOSURE=$CTRL/qualification_execution_code_closure.v1.receipt.json
-OPS=$A/publication_operational_capture_v1_qfb_20261007a
+OPS=$A/publication_operational_capture_v1_qfb_20261008c
 CAPTURE_PLAN=$OPS/capture-plan/capture_plan_index.v1.json
 GUARDIAN_CONTEXT=$OPS/capture-plan/guardian_capture_context.v1.json
-GUARDIAN_OPS=$A/publication_guardian_operational_v1_qfb_20261007a
-EVID=$A/publication_guardian_evidence_v1_qfb_20261007a
+GUARDIAN_OPS=$A/publication_guardian_operational_v1_qfb_20261008c
+EVID=$A/publication_guardian_evidence_v1_qfb_20261008c
 AUTHORITY=$EVID/service_authority.v1.json
 LIFECYCLE=$EVID/service_lifecycle.v1.json
-PILOTS=$A/publication_policy_qualification_pilot_v2_qfb_20261007a
-CHECKPOINT=$A/publication_policy_qualification_pilot_checkpoint_v2_qfb_20261007a.json
-BINDING=$A/publication_operational_execution_binding_v1_qfb_20261007a.json
-CLOSURE=$A/publication_policy_qualification_execution_closure_v1_qfb_20261007a
-POLICY_INDEX_DIR=$A/publication_policy_qualification_index_v2_qfb_20261007a
-RESOURCE_INDEX=$A/full_resource_qualification_index_v1_qfb_20261007a.json
-POLICY_PROMOTED=$A/publication_policy_qualification_promoted_qfb_20261007a
-RESOURCE_PROMOTED=$A/full_resource_qualification_promoted_qfb_20261007a
-HOSTTMP=/var/tmp/vqfb1007a                                  # ext4, short socket paths
+PILOTS=$A/publication_policy_qualification_pilot_v2_qfb_20261008c
+CHECKPOINT=$A/publication_policy_qualification_pilot_checkpoint_v2_qfb_20261008c.json
+BINDING=$A/publication_operational_execution_binding_v1_qfb_20261008c.json
+CLOSURE=$A/publication_policy_qualification_execution_closure_v1_qfb_20261008c
+POLICY_INDEX_DIR=$A/publication_policy_qualification_index_v2_qfb_20261008c
+RESOURCE_INDEX=$A/full_resource_qualification_index_v1_qfb_20261008c.json
+POLICY_PROMOTED=$A/publication_policy_qualification_promoted_qfb_20261008c
+RESOURCE_PROMOTED=$A/full_resource_qualification_promoted_qfb_20261008c
+HOSTTMP=/var/tmp/vqfb1008c                                  # ext4, short socket paths
 RUNTIME_DIR=$HOSTTMP/r
 FRONT_SOCKET=$RUNTIME_DIR/a.sock
 SCRATCH=$HOSTTMP/s
@@ -164,17 +167,33 @@ q1_00_preflight() (
     q1__sha "$PATCH" "$PATCH_SHA"
     sha256sum --quiet -c "$RCPT/native-a/receipt-file.sha256" "$RCPT/worker_images/receipt-file.sha256" \
         "$RCPT/image_capture/patch-file.sha256"
-    q1__sha "$EXEC_CONFIG" 87449b87d863ff8cf526ee01716827ed5b9d2400ff4ecac086b3f7835904472d
-    q1__sha "$PARITY.yaml" 134ef507ff5e2b845840d547c947070fd0af78e0039063e3930c249c3f3eebb1
-    q1__sha "$PARITY.assessment.json" 02376a0c240b1d0fcd2fb2726e2e22e4314a4e47b48a1db7f5b18e872db0f4fe
-    q1__sha "$PARITY.acceptance_receipt.json" fcf9a7dec2573a1a2f8770036b998ba95b67eedfefb76d51d3ffbc11f7abee15
-    q1__sha "$BINDING_SET/index.json" 61ba2035a2a8d953f61b1cc2e2c7f70cc10305c6396ac0bdffcd52dec497cf83
-    q1__sha "$RCPT/model_parity_v4/acceptance_binding.v4.json" 4d73e21598cd00421b29e512bf138e98236e5c8fea41c8fe1335932c791a7b57
+    q1__sha "$EXEC_CONFIG" be0cf24db5f3b964f7dd3552dc33db8230c01811f6ec8ca80e48e8076a04500d
+    q1__sha "$PARITY.yaml" f0b54f89f2fb4754ce1630f832dca313525b2c227839b5d5abe9b81b3d30baa8
+    q1__sha "$PARITY.assessment.json" 91e665b883daf2530d788c20859710b63e52b76b642018065efa97d5d2494657
+    q1__sha "$PARITY.acceptance_receipt.json" 24f8e5c7ae5c8b57c530c9552a539d533b34933af6be3ed282a0b3cdb5ae850c
+    q1__sha "$BINDING_SET/index.json" 900069e8eb009bbf6b93cf886691b82960d4208e99682055000357c91d0d9775
+    q1__sha "$RCPT/model_parity_v4/acceptance_binding.v4.json" 54f3ddb8f8e16fa8a12aa199e384b05a02ed030141eb26e104537c2a1608dbb6
     local image
     for image in $(grep -ho '"image_id": *"sha256:[0-9a-f]\{64\}"' "$RCPT"/runtime_images/*.runtime.freeze.json \
             "$RCPT/worker_images/analytics-worker.freeze.json" | grep -o 'sha256:[0-9a-f]\{64\}' | sort -u); do
         "$DOCKER" image inspect --format '{{.Id}}' "$image" > /dev/null || q1__die "image missing: $image"
     done
+    # Amendments 4-5: the engine recorded in task 6A.2, and live runtime/worker images equal to
+    # the patch exactly as the transaction checks them (full inspect, worker projection).
+    q1__sha "$ENGINE_IDENTITY" "$ENGINE_IDENTITY_SHA"
+    "${PYRUN[@]}" -c "import json, subprocess, sys
+def info(*argv):
+    return json.loads(subprocess.run([sys.argv[2], *argv, '--format', '{{json .}}'], check=True, capture_output=True, text=True).stdout)
+version, daemon = info('version'), info('info')
+observed = {'platform_name': version['Server'].get('Platform', {}).get('Name'), 'server_version': version['Server']['Version'],
+            'api_version': version['Server']['ApiVersion'], 'client_version': version['Client']['Version'],
+            'daemon_id': daemon['ID'], 'name': daemon['Name'], 'driver': daemon['Driver'],
+            'driver_type': dict(daemon.get('DriverStatus') or []).get('driver-type')}
+sys.exit(0 if observed == json.load(open(sys.argv[1]))['identity'] else 3)
+" "$ENGINE_IDENTITY" "$DOCKER" \
+        || q1__die "docker engine identity differs from task 6A.2"
+    (cd "$ROOT" && "${PYRUN[@]}" -c "import json, sys; sys.path.insert(0, 'scripts'); import publication_policy_qualification_fragments_from_authority_v2 as f; f._verify_live_images(json.load(open(sys.argv[1])), docker=sys.argv[2], inspector=f._default_inspect_image)" "$PATCH" "$DOCKER") \
+        || q1__die "live images differ from the identity patch"
     q1__absent "$CTRL" "$QUAL" "$PREP_PARENT" "$OPS" "$GUARDIAN_OPS" "$EVID" "$PILOTS" "$CHECKPOINT" \
         "$BINDING" "$CLOSURE" "$POLICY_INDEX_DIR" "$RESOURCE_INDEX" "$POLICY_PROMOTED" "$RESOURCE_PROMOTED" "$HOSTTMP"
     mkdir -m 700 "$CTRL" "$PREP_PARENT" "$HOSTTMP" "$SCRATCH"

@@ -34,6 +34,7 @@ b2cd2d4b06a3e19aeeb4d6093282b82b81ba5977a7047c02a86a758f3f671bff *./build_prep/n
 62b40872f2fea024e1be768dd98c69220f5d7ca03d5149c65560deb881b38d82 *./capture_image_patch.sh
 7f5ff115ba7d913ff986afe9d5e428acf5a13dc6647255f6c2483e0148c2ca13 *./capture_image_patch.sh.recipe-diff.txt
 96d7c397e64ad483705caac9c66f2e254bc9230e30ac73d775dc9c161a262151 *./docker-engine-identity.6A2.v1.json
+b61403f3e6dacea00991a9355fb844778bb52248fe653d44f0812540471fd3e2 *./focused-pin-tests.root-at-cq1p.log
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 *./image_capture/assemble.stderr
 9cb9528a691fcc8e275d7bc4379d200e532d97c5f78a19ec3334ab432bf07690 *./image_capture/assemble.stdout
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 *./image_capture/deepstream.stderr
@@ -138,6 +139,15 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 *./packaged_reg
 9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa *./parity.rc
 bf52c9ca75491d35b0589efaf9bb13220c923f16ad83fc93deafd650aa5d4130 *./parity.started.txt
 9cb9528a691fcc8e275d7bc4379d200e532d97c5f78a19ec3334ab432bf07690 *./qualification_image_identity_patch.json
+da16a125b4080ae46f5a132000791de7e512e3824dbc1a414d69fbf58a9cb2d3 *./root-move-cq1p/added-tracked-artifacts.txt
+8d52fceff2bedcce097478de804980149ec9c9641b1fe2ccd8009278031102c4 *./root-move-cq1p/changed-paths.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 *./root-move-cq1p/changed-receipt-bound-inputs.txt
+f046460edbd598c68b10ad4455b8b44556e6a82ec495dfb7bd90d4f44cba3a55 *./root-move-cq1p/configs-compare.txt
+525961a428001ff434e0ba65a8a60e3d6347e5af05baff1eb97b60340463a1d6 *./root-move-cq1p/fetch.log
+370c20abef8c236b88ffc73950c8f9427441ca24c1fdedda4f9d251fa420ed5b *./root-move-cq1p/root-git-status.after.txt
+fd4118d1cb35df30772c152c35a9b783c0bf9457f2b17b619f3f0a54305a08f3 *./root-move-cq1p/root-git-status.before.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 *./root-move-cq1p/tracked-drift-outside-artifacts.after.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 *./root-move-cq1p/tracked-drift-outside-artifacts.before.txt
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 *./root-move/added-tracked-artifacts.txt
 392f33a1cd804a5ce425b83258b1e5d2ef3f539272129ef8ec28b9a73b989047 *./root-move/changed-paths-outside-openspec.txt
 5727dadf25c0d0f6b38d22ae55b0447396c70de4e47d7f7c23b7098bb7fc2da9 *./root-move/changed-paths.txt
@@ -163,5 +173,11 @@ c3160588d54500d48241c55c7e63fd4896a231be7bc6736c27c28a409eb3ce6a *./runtime_imag
 f666781d0cdc00c04dee4dd23744bd72128b25edd5b20a60c983baa7d60dc999 *./runtime_images/savant.runtime_image.materialized.v3.json
 5c27a989c5267631e52f16990a8381c7708264b3eb3e5ac695b476c928c76ea3 *./runtime_images/stderr.log
 2abc2064a451bd8c07f49ae18c10db28386c112f0f4262c2f91902c13b07d0dd *./runtime_images/stdout.log
+be0cf24db5f3b964f7dd3552dc33db8230c01811f6ec8ca80e48e8076a04500d *./untracked-configs-before-cq1/analytics_execution_layer.refreshed.v4.qfb-20261008c.json
+24f8e5c7ae5c8b57c530c9552a539d533b34933af6be3ed282a0b3cdb5ae850c *./untracked-configs-before-cq1/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json
+91e665b883daf2530d788c20859710b63e52b76b642018065efa97d5d2494657 *./untracked-configs-before-cq1/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json
+f0b54f89f2fb4754ce1630f832dca313525b2c227839b5d5abe9b81b3d30baa8 *./untracked-configs-before-cq1/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml
+3ec0ec678a191fd9213889ab7b96ba081f2227da6366f6e5bc1bce1cb468bcca *./untracked-configs-before-cq1/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.yaml
+0ce2d3bc5cf66c896aa752c5c4fe4db4f8d0496133f1e00da4b042f89023e52f *./untracked-configs-before-cq1/configs.sha256
 5509b370821e8881f65f78dd1f61714fd908780eb50220a1d32c2d8936f5b554 *./worker_images/analytics-worker.freeze.json
 64419e5459ff77297d48db18487a38df274e399b999b39a15d321712b4fe53b3 *./worker_images/receipt-file.sha256
