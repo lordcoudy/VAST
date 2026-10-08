@@ -1,0 +1,18 @@
+test_cid_is_exact_original_regular_single_link_bytes (test_publication_operational_container_custody_v1.ContainerCustodyContractTests) ... ok
+test_inactive_measurement_does_not_change_original_arguments (test_publication_operational_container_custody_v1.ContainerCustodyContractTests) ... ok
+test_noncanonical_or_foreign_not_found_is_not_positive_absence (test_publication_operational_container_custody_v1.ContainerCustodyContractTests) ... ok
+test_actual_gva_three_field_image_is_preserved_without_fabricated_base (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ok
+test_actual_process_and_original_cid_receipts_compose_through_cold_readers (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ok
+test_actual_retained_terminal_and_resealed_invalid_times_are_checked (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ok
+test_malformed_original_cid_remains_failure_and_cleans_only_validated_owned_name (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ok
+test_nonzero_and_timeout_stop_only_original_surviving_cid_and_never_accept (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ok
+test_resealed_foreign_absence_cannot_grant_quiescence (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ok
+test_resealed_foreign_daemon_identity_cannot_grant_quiescence (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ok
+test_resealed_foreign_reserved_label_is_rejected_against_original_launch (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ok
+test_start_persistence_failure_recovers_owned_name_and_cleans_original_cid (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ok
+test_uncounted_container_fact_is_rejected (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 8.445s
+
+OK

@@ -1,0 +1,28 @@
+{
+ "system": "savant",
+ "returncode": 2,
+ "duration_s": 7.853,
+ "stderr_bytes": 3292,
+ "stderr_sha256": "b694da46b148ac7afdf90b91384f742a25a851d708772d9ea0fa19343a72bd40",
+ "substitutions": [
+  {
+   "role": "operational_request_context",
+   "reason": "attempt-2 Savant original op used native_context_04 (engine_02 launch); bundle names 13",
+   "from": {
+    "container_path": "/opt/vast/input/operational/native-context.json",
+    "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_13.v1.json",
+    "sha256": "0ebb6ea4fd54a9d358164af05745daa8ac42dcf2cb252382ec5029e336ba7ca8",
+    "size_bytes": 3503
+   },
+   "to": {
+    "container_path": "/opt/vast/input/operational/native-context.json",
+    "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_04.v1.json",
+    "sha256": "2d3eee03dfc8f977739846f5ba5c024789c1e8d451acbfb94478a4353dbf1acd",
+    "size_bytes": 3497
+   }
+  }
+ ]
+}
+argv_matches_attempt2_engine02: False
+savant publication runtime blocked: checkpoint worker exited before the common start barrier: savant-stream-0-branch-vehicle_type=2,savant-stream-1-branch-damage=2; stderr_tails={"savant-stream-0-branch-vehicle_type":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-1-branch-damage":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0"}; final_stderr_tails={"savant-stream-0-branch-damage":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-0-branch-foreign_object":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-0-branch-plate_number":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-0-branch-vehicle_type":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-1-branch-damage":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-1-branch-foreign_object":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-1-branch-plate_number":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-1-branch-vehicle_type":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-2-branch-damage":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-2-branch-foreign_object":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-2-branch-plate_number":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-2-branch-vehicle_type":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-3-branch-damage":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-3-branch-foreign_object":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-3-branch-plate_number":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-3-branch-vehicle_type":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-4-branch-damage":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-4-branch-foreign_object":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-4-branch-plate_number":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-4-branch-vehicle_type":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-5-branch-damage":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-5-branch-foreign_object":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-5-branch-plate_number":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0","savant-stream-5-branch-vehicle_type":"[Errno 111] Connection refused\n[savant-sdk-runtime][wall-clock] max_clamp_ns=0"}
+
