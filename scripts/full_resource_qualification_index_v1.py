@@ -552,7 +552,10 @@ def _commit_index(
                 or cold_payload != payload
                 or cold_identity != identity
                 or stat_identity != identity
-                or mode != 0o444
+                or not (
+                    mode == 0o444
+                    or (mode == 0o555 and not custody.permission_modes_enforced)
+                )
             ):
                 raise FullResourceQualificationIndexV1Error(
                     "full-resource qualification index identity drifted"
@@ -571,7 +574,10 @@ def _commit_index(
             mode, _identity = custody.stat_regular_identity(
                 destination, label="cold full-resource qualification index"
             )
-            if cold_payload != payload or mode != 0o444:
+            if cold_payload != payload or not (
+                mode == 0o444
+                or (mode == 0o555 and not custody.permission_modes_enforced)
+            ):
                 raise FullResourceQualificationIndexV1Error(
                     "cold full-resource qualification index drifted"
                 )
