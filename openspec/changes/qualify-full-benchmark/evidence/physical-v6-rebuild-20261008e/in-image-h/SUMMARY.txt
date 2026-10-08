@@ -6,6 +6,10 @@ Scripts are the 6C D(a)/D(b)/D(c) drivers with recipe diffs (*.recipe-diff.txt):
 /var/tmp/claude-inimage-diag-h, DeepStream only, attempt-3 (20261008d) runtime input bundle.
 All containers: docker run --rm --network none --user 1000:1000 (own names claude-inimage-diag-h*).
 
+Label note (review): design H(a) = gate G in the image. Here H(a) proves the packaged modules are byte-equal
+to the root and import on 3.10.12, and H(b) runs G and F with the image Python on the mounted root sources
+(byte-equal per H(a)) plus host psutil.
+
 H(a) PASS  (run_ha.sh, a_in_image_check.py, a_deepstream.report.json, a_deepstream.rc.txt)
   In-image allowlist sha256 1513ee85... == root; 71 Python allowlist entries, 69 packaged in
   /opt/vast/checkpoint, all byte-identical to the root at C_B''' (incl. checkpoint_deepstream_runtime.py),
