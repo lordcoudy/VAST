@@ -219,6 +219,7 @@
 - **Цепочка** — по образцу 6C на теге `qualify_full_benchmark_20261008e`, namespace `qfb-20261008e`: RED/GREEN в WSL → commit `C_B'''` → hosted CI → корень на `C_B'''` → сборка runtime ×4 (A==B) → refreeze, сырые inspect, live `_verify_live_images` → 23 packaged checks → in-image H → parity 480/32 и аудит → перепривязка пинов (инструмент v4: сдвиг `20261008d`→`20261008e`, recipe diff от v3, plan-vs-inventory, render, B2) → commit `C_Q1'''` → корень на `C_Q1'''` → hosted CI, ext4 suite, integration 9/9, R5/S5 → runbook попытки 4 (`20261008e`, `_qfb_20261008e`, `HOSTTMP=/var/tmp/vqfb1008e`) → 6.2 после отдельной команды запуска.
 - **Время Q1.** В попытке 3 каждая операция заняла ~20–25 мин (не 3,7 мин оценки runbook): 37 операций ≈ 14–15 ч. Runbook попытки 4 фиксирует эту оценку; Windows Update paused до 26 октября — достаточно.
 - **Остаётся без изменений:** fail-closed guardian, заморозка и идентичность engine (Amendments 4–5), preflight, правила одной попытки (решение 6), budget proof и все лимиты домена. Namespaces попыток 1–3 не переиспользуются.
+- **Ревью:** спека одобрена пользователем на `58358f4d` (8 октября); реализация — автономно с self-review по решению пользователя.
 - **Остаточный риск.** Полного arm DeepStream под guardian до Q1 по-прежнему нет: дефекты DeepStream после первого запроса policy, не связанные с доменом, проявятся только в Q1.
 
 ## Risks / Trade-offs
