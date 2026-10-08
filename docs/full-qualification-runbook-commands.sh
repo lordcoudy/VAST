@@ -6,9 +6,9 @@
 # missing or an output already exists. Run in WSL bash as uid 1000.
 
 # ---------------------------------------------------------------- fixed values
-Q1_COMMIT=4947e35a70fcfd94cf53179f05c021f8fb9dd3d1            # C_Q1'' (Amendments 4-6; attempt 1 used 1112af0b, attempt 2 82c7a62e)
-Q1_TAG=qualify_full_benchmark_20261008d
-Q1_NS=qfb-20261008d
+Q1_COMMIT=0aeb955bdf49d35ddb429c6a8e83d897608b00aa            # C_Q1''' (Amendments 4-7; attempts 1-3 used 1112af0b, 82c7a62e, 4947e35a)
+Q1_TAG=qualify_full_benchmark_20261008e
+Q1_NS=qfb-20261008e
 ROOT=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a
 PY=/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python
 # -I is not used: in 3.12 it implies -P and drops scripts/ from sys.path.
@@ -21,7 +21,7 @@ CTRL=$RCPT/q1_control                                       # Q1 logs, rc files,
 
 # Build receipts (inputs of Q1).
 PATCH=$RCPT/qualification_image_identity_patch.json
-PATCH_SHA=e39e6645dfe531e1649d0f5f630f3840469b815ba940512bc4e7010c789ae351
+PATCH_SHA=ceb0900bd33f25acadc46b5d3553143ffbeeadb503da419acf330e78862734dd
 PARITY=$ROOT/configs/checkpoint_analytics_model_parity.refreshed.v4.$Q1_NS.accepted
 EXEC_CONFIG=$ROOT/configs/analytics_execution_layer.refreshed.v4.$Q1_NS.json
 BINDING_SET=$RCPT/model_parity_v4/bindings
@@ -30,26 +30,26 @@ ENGINE_IDENTITY=$RCPT/docker-engine-identity.6A2.v1.json
 ENGINE_IDENTITY_SHA=96d7c397e64ad483705caac9c66f2e254bc9230e30ac73d775dc9c161a262151
 
 # Fresh Q1 namespaces (runbook choice; none may exist before step 0).
-QUAL=$A/publication_policy_qualification_v2_qfb_20261008d
-PREP_PARENT=$A/publication_guardian_inputs_v1_qfb_20261008d
+QUAL=$A/publication_policy_qualification_v2_qfb_20261008e
+PREP_PARENT=$A/publication_guardian_inputs_v1_qfb_20261008e
 PREP=$PREP_PARENT/preprocessing-contract-v1
 CODE_CLOSURE=$CTRL/qualification_execution_code_closure.v1.receipt.json
-OPS=$A/publication_operational_capture_v1_qfb_20261008d
+OPS=$A/publication_operational_capture_v1_qfb_20261008e
 CAPTURE_PLAN=$OPS/capture-plan/capture_plan_index.v1.json
 GUARDIAN_CONTEXT=$OPS/capture-plan/guardian_capture_context.v1.json
-GUARDIAN_OPS=$A/publication_guardian_operational_v1_qfb_20261008d
-EVID=$A/publication_guardian_evidence_v1_qfb_20261008d
+GUARDIAN_OPS=$A/publication_guardian_operational_v1_qfb_20261008e
+EVID=$A/publication_guardian_evidence_v1_qfb_20261008e
 AUTHORITY=$EVID/service_authority.v1.json
 LIFECYCLE=$EVID/service_lifecycle.v1.json
-PILOTS=$A/publication_policy_qualification_pilot_v2_qfb_20261008d
-CHECKPOINT=$A/publication_policy_qualification_pilot_checkpoint_v2_qfb_20261008d.json
-BINDING=$A/publication_operational_execution_binding_v1_qfb_20261008d.json
-CLOSURE=$A/publication_policy_qualification_execution_closure_v1_qfb_20261008d
-POLICY_INDEX_DIR=$A/publication_policy_qualification_index_v2_qfb_20261008d
-RESOURCE_INDEX=$A/full_resource_qualification_index_v1_qfb_20261008d.json
-POLICY_PROMOTED=$A/publication_policy_qualification_promoted_qfb_20261008d
-RESOURCE_PROMOTED=$A/full_resource_qualification_promoted_qfb_20261008d
-HOSTTMP=/var/tmp/vqfb1008d                                  # ext4, short socket paths
+PILOTS=$A/publication_policy_qualification_pilot_v2_qfb_20261008e
+CHECKPOINT=$A/publication_policy_qualification_pilot_checkpoint_v2_qfb_20261008e.json
+BINDING=$A/publication_operational_execution_binding_v1_qfb_20261008e.json
+CLOSURE=$A/publication_policy_qualification_execution_closure_v1_qfb_20261008e
+POLICY_INDEX_DIR=$A/publication_policy_qualification_index_v2_qfb_20261008e
+RESOURCE_INDEX=$A/full_resource_qualification_index_v1_qfb_20261008e.json
+POLICY_PROMOTED=$A/publication_policy_qualification_promoted_qfb_20261008e
+RESOURCE_PROMOTED=$A/full_resource_qualification_promoted_qfb_20261008e
+HOSTTMP=/var/tmp/vqfb1008e                                  # ext4, short socket paths
 RUNTIME_DIR=$HOSTTMP/r
 FRONT_SOCKET=$RUNTIME_DIR/a.sock
 SCRATCH=$HOSTTMP/s
@@ -167,12 +167,12 @@ q1_00_preflight() (
     q1__sha "$PATCH" "$PATCH_SHA"
     sha256sum --quiet -c "$RCPT/native-a/receipt-file.sha256" "$RCPT/worker_images/receipt-file.sha256" \
         "$RCPT/image_capture/patch-file.sha256"
-    q1__sha "$EXEC_CONFIG" 2079f480ceacc83308b4d964c0ddf75559e898e2f07997f47d01fdc717a42316
-    q1__sha "$PARITY.yaml" bad2874543baf08732794f6f2dd92d3f106cbdd83a1e3b7dad8e78af62c4405d
-    q1__sha "$PARITY.assessment.json" 939215769022d4ba391fe8d7ab017a7214f683dfc350a81d66a50eef05913232
-    q1__sha "$PARITY.acceptance_receipt.json" 0c0c786dbb39b4c92a224b12a7a1008427d2d3793a60d9675d60eec508112691
-    q1__sha "$BINDING_SET/index.json" dafb90aa5f55198e2eea5cb40a74fad0fb4992e0be1db1c5341bd60c657031e1
-    q1__sha "$RCPT/model_parity_v4/acceptance_binding.v4.json" 0a7a453465dc85176fc65eacd651efd2800c5285e6c3e2c13960d97ce45fd8c2
+    q1__sha "$EXEC_CONFIG" 788908832d73678b94c9c8e6cdf67858091e3f456e3de998cbe8d1463f5bc605
+    q1__sha "$PARITY.yaml" c125e54be4a3ec701c8840285fc0cafbf7549de29db27fd3029f1abbd2d26dbe
+    q1__sha "$PARITY.assessment.json" aea90088d3c60f35a5925004ed420ca094ad72bf68209022d02f1240fdfbefa1
+    q1__sha "$PARITY.acceptance_receipt.json" de62d6f97b966c38d3a1f6394394e087c488837ac17b2fa303a429572df3cb6a
+    q1__sha "$BINDING_SET/index.json" 45ce0c4a43cf7de91a9fd14902fe0047bb35fb78f5d2e2dc8d70062bc43b0d30
+    q1__sha "$RCPT/model_parity_v4/acceptance_binding.v4.json" 639644170f3697655f7e119e2dd9f54b4a729f13e094009bfca3e2cb11c11146
     local image
     for image in $(grep -ho '"image_id": *"sha256:[0-9a-f]\{64\}"' "$RCPT"/runtime_images/*.runtime.freeze.json \
             "$RCPT/worker_images/analytics-worker.freeze.json" | grep -o 'sha256:[0-9a-f]\{64\}' | sort -u); do
