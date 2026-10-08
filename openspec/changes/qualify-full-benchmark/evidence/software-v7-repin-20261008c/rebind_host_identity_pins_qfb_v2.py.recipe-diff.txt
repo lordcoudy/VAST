@@ -1,0 +1,72 @@
+2c2
+< """Inventory, plan or apply exact old->new identity pin substitutions (qfb-20261007a).
+---
+> """Inventory, plan or apply exact old->new identity pin substitutions (qfb-20261008c).
+4,5c4,5
+< Adapted from artifacts/fix_benchmark_preparations_20260928g/rebind_host_identity_pins.py
+< for OpenSpec change qualify-full-benchmark, task 5.4 (design Amendment 2, B1/B2).
+---
+> v2 of evidence/software-v3-pins/rebind_host_identity_pins_qfb_v1.py for task 6B.7
+> (design Amendments 4-5): runtime x4 rebuilt on C_B' ea918062 and patch-bound parity.
+7,9c7,10
+< OLD identities: receipts of chain 20260928g plus the decision28 GStreamer runtime
+< freeze (the PR pin of checkpoint_gstreamer_publication_runtime_v3.py).
+< NEW identities: receipts of qualify_full_benchmark_20261007a (build root, commit 3a7f799d).
+---
+> OLD identities: receipts of qualify_full_benchmark_20261007a plus its tracked selected-original
+> GStreamer freeze copy. NEW identities: receipts of qualify_full_benchmark_20261008c (same build
+> root, runtime x4 rebuilt, refrozen and parity-refreshed on C_B' ea918062). Pin files without any changed identity
+> are reported as unchanged instead of failing (v2 change).
+38,40c39,41
+< G_ROOT = Path("/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec")
+< OLD_DIR = "artifacts/fix_benchmark_preparations_20260928g"
+< NEW_DIR = "artifacts/qualify_full_benchmark_20261007a"
+---
+> G_ROOT = BUILD
+> OLD_DIR = "artifacts/qualify_full_benchmark_20261007a"
+> NEW_DIR = "artifacts/qualify_full_benchmark_20261008c"
+43,44c44,45
+< DECISION28_REL = ("artifacts/benchmark_recovery_20260930/"
+<                   "decision28-selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json")
+---
+> DECISION28_REL = ("artifacts/qualify_full_benchmark_20261007a/"
+>                   "selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json")
+48c49
+< GSTREAMER_TRACKED_COPY_REL = ("artifacts/qualify_full_benchmark_20261007a/"
+---
+> GSTREAMER_TRACKED_COPY_REL = ("artifacts/qualify_full_benchmark_20261008c/"
+52c53
+<     ("tests/test_publication_runtime_frozen_identity_constants_v1.py", 332, "7001", DECISION28_REL),
+---
+>     ("tests/test_publication_runtime_frozen_identity_constants_v1.py", 332, "6976", DECISION28_REL),
+54,56c55,57
+< OLD_NS = "fix-benchmark-20260928g"
+< NEW_NS = "qfb-20261007a"
+< BUILD_COMMIT = "3a7f799d"
+---
+> OLD_NS = "qfb-20261007a"
+> NEW_NS = "qfb-20261008c"
+> BUILD_COMMIT = "ea918062"
+72a74,75
+>     "configs/analytics_execution_layer.refreshed.v4.qfb-20261007a",
+>     "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a",
+154c157
+<     if ("20260928g" in old and "20261007a" in new):
+---
+>     if ("20261007a" in old and "20261008c" in new):
+338,339c341
+<     require(rows, f"no identity pin was rebound in {relative}")
+<     for forbidden in (OLD_NS, OLD_DIR, "20260928g", "decision28-2a6a42c9", "decision28-selected"):
+---
+>     for forbidden in (OLD_NS, OLD_DIR, "20261007a"):
+469c471
+<         "status": status, "tool": "rebind_host_identity_pins_qfb_v1.py", "build_commit": BUILD_COMMIT,
+---
+>         "status": status, "tool": "rebind_host_identity_pins_qfb_v2.py", "build_commit": BUILD_COMMIT,
+474c476,477
+<                    "after_sha256": sha256(row["after"]), "edits": row["edits"]} for row in plans],
+---
+>                    "after_sha256": sha256(row["after"]), "edits": row["edits"],
+>                    "unchanged": not row["edits"]} for row in plans],
+495a499
+>         plans = [row for row in plans if row["edits"]]

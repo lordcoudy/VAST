@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Inventory, plan or apply exact old->new identity pin substitutions (qfb-20261008b).
+"""Inventory, plan or apply exact old->new identity pin substitutions (qfb-20261008c).
 
-v2 of evidence/software-v3-pins/rebind_host_identity_pins_qfb_v1.py for task 6A.6
-(design Amendment 4): re-freeze without rebuild and patch-bound parity.
+v2 of evidence/software-v3-pins/rebind_host_identity_pins_qfb_v1.py for task 6B.7
+(design Amendments 4-5): runtime x4 rebuilt on C_B' ea918062 and patch-bound parity.
 
 OLD identities: receipts of qualify_full_benchmark_20261007a plus its tracked selected-original
-GStreamer freeze copy. NEW identities: receipts of qualify_full_benchmark_20261008b (same build
-root, re-frozen and parity-refreshed on C_Q1 1112af0b). Pin files without any changed identity
+GStreamer freeze copy. NEW identities: receipts of qualify_full_benchmark_20261008c (same build
+root, runtime x4 rebuilt, refrozen and parity-refreshed on C_B' ea918062). Pin files without any changed identity
 are reported as unchanged instead of failing (v2 change).
 
 The old->new mapping is derived only by walking paired JSON receipts (and by the
@@ -38,7 +38,7 @@ ROOT = Path("/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/V
 BUILD = Path("/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a")
 G_ROOT = BUILD
 OLD_DIR = "artifacts/qualify_full_benchmark_20261007a"
-NEW_DIR = "artifacts/qualify_full_benchmark_20261008b"
+NEW_DIR = "artifacts/qualify_full_benchmark_20261008c"
 OLD = G_ROOT / OLD_DIR
 NEW = BUILD / NEW_DIR
 DECISION28_REL = ("artifacts/qualify_full_benchmark_20261007a/"
@@ -46,15 +46,15 @@ DECISION28_REL = ("artifacts/qualify_full_benchmark_20261007a/"
 DECISION28 = ROOT / DECISION28_REL
 # Tracked byte copy of the NEW GStreamer freeze (replaces the tracked decision28 copy as the
 # portable static binding receipt read by test_gstreamer_current_runtime_is_exactly_refrozen).
-GSTREAMER_TRACKED_COPY_REL = ("artifacts/qualify_full_benchmark_20261008b/"
+GSTREAMER_TRACKED_COPY_REL = ("artifacts/qualify_full_benchmark_20261008c/"
                               "selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json")
 # Reviewed size literal that is not adjacent to its path literal (separate statement).
 EXPLICIT_SIZE_SITES = (
     ("tests/test_publication_runtime_frozen_identity_constants_v1.py", 332, "6976", DECISION28_REL),
 )
 OLD_NS = "qfb-20261007a"
-NEW_NS = "qfb-20261008b"
-BUILD_COMMIT = "1112af0b"
+NEW_NS = "qfb-20261008c"
+BUILD_COMMIT = "ea918062"
 
 FILES = (
     "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
@@ -154,7 +154,7 @@ def file_pairs():
 def identity_change(old: object, new: object) -> bool:
     if not isinstance(old, str) or not isinstance(new, str) or old == new:
         return False
-    if ("20261007a" in old and "20261008b" in new):
+    if ("20261007a" in old and "20261008c" in new):
         return True
     return any(pattern.fullmatch(old) and pattern.fullmatch(new)
                for pattern in (HEX64, IMAGE_ID, REPOSITORY_DIGEST, IMAGE_REFERENCE))

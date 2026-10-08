@@ -1,0 +1,16 @@
+5,6c5,6
+< 20260928g artifact dir, the corresponding NEW original (same relative path under
+< qualify_full_benchmark_20261007a in the build root) is copied byte-for-byte to the mirrored
+---
+> 20261007a artifact dir, the corresponding NEW original (same relative path under
+> qualify_full_benchmark_20261008c in the build root) is copied byte-for-byte to the mirrored
+11c11
+< Usage: materialize_ci_fixtures_qfb_v1.py plan|apply
+---
+> v2 for task 6B.7 (Amendment 5). Usage: materialize_ci_fixtures_qfb_v2.py plan|apply
+26,27c26,27
+< OLD_DIR = "artifacts/fix_benchmark_preparations_20260928g/"
+< NEW_DIR = "artifacts/qualify_full_benchmark_20261007a/"
+---
+> OLD_DIR = "artifacts/qualify_full_benchmark_20261007a/"
+> NEW_DIR = "artifacts/qualify_full_benchmark_20261008c/"

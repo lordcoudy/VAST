@@ -3,12 +3,12 @@
 
 No fixture is string-edited. For every additional-origins entry whose original lies under the
 20261007a artifact dir, the corresponding NEW original (same relative path under
-qualify_full_benchmark_20261008b in the build root) is copied byte-for-byte to the mirrored
+qualify_full_benchmark_20261008c in the build root) is copied byte-for-byte to the mirrored
 fixture path, verified by sha256, and the entry is rewritten from the NEW original's facts
 (path, project root, lstat epoch, size, sha256). Old fixture copies are reported; removal is
 done separately with `git rm` only when nothing references them.
 
-v2 for task 6A.6 (Amendment 4). Usage: materialize_ci_fixtures_qfb_v2.py plan|apply
+v2 for task 6B.7 (Amendment 5). Usage: materialize_ci_fixtures_qfb_v2.py plan|apply
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ BUILD = Path("/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a")
 ORIGINS = ROOT / ".ci/fixtures/additional-origins.v1.json"
 FIXTURE_ROOT = ".ci/fixtures/gstreamer_fragment_unit_v1"
 OLD_DIR = "artifacts/qualify_full_benchmark_20261007a/"
-NEW_DIR = "artifacts/qualify_full_benchmark_20261008b/"
+NEW_DIR = "artifacts/qualify_full_benchmark_20261008c/"
 
 
 def require(condition: bool, message: str) -> None:
