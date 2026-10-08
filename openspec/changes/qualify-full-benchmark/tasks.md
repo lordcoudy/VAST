@@ -91,6 +91,17 @@
 - [x] 6B.9 Runbook попытки 2 на `20261008c`/`C_Q1'` (константы, namespaces `_qfb_20261008c`, `HOSTTMP=/var/tmp/vqfb1008c`, SHA256, preflight `_verify_live_images` и сверка engine; `bash -n`, argparse). Готово при проверенном runbook. Итог: константы `C_Q1'`/`20261008c`/`vqfb1008c`, 13 namespaces `_qfb_20261008c`, новые SHA256 receipts, запись engine 6A.2 с SHA256; в `q1_00_preflight` — сверка engine и live `_verify_live_images` до создания namespaces (read-only прогон обеих проверок — PASS); `bash -n` OK; CLI-флаги не менялись.
 - [x] 6B.10 На `C_Q1'`: hosted CI, ext4 suite (ignored receipts `20261008c` копируются в clone; одобренный набор skips), integration 9/9, R5/S5; обновить R14/S2 и R12/S1. Готово при зелёных результатах с originals. Итог: hosted CI на `C_Q1'` и docs head — SUCCESS; ext4 suite 3203 run / 3115 ok / 88 skip, 0 failures/errors, skip-набор и причина `successful=false` идентичны одобренному 5.5 ([evidence/physical-v2-ci-20261008c](evidence/physical-v2-ci-20261008c/README.md)); integration 9/9 OK без skip ([evidence/physical-v2-integration-20261008c](evidence/physical-v2-integration-20261008c/)); R5/S5 — 164/164 входа образов воспроизведены при autocrlf true и false ([evidence/manual-v2-checks-20261008c](evidence/manual-v2-checks-20261008c/)); R14/S2 — evidence g/A269 не трогались; R12/S1 — runbook 6B.9; R20/S1 неприменим.
 
+## 6C. Amendment 6: Python 3.10 в runtime-образах и custody пустого канала
+
+- [ ] 6C.1 RED (WSL): unit-тест пустого failure-канала при непринудительном POSIX-режиме (0555 принимается; при принудительном — отклоняется) и static gate API Python 3.11+ / грамматики 3.10 по allowlists runtime-образов. Готово при genuine RED на текущем коде.
+- [ ] 6C.2 GREEN: `_mode_matches` в пути пустого канала; `sys.exception()` → `sys.exc_info()[1]`; `add_note` через `getattr` с fallback; прежние тесты без изменений; commit `C_B''`; hosted CI. Готово при зелёных тестах (WSL) и SUCCESS CI.
+- [ ] 6C.3 Корень на `C_B''` (WSL git, процедура Amendment 4); diff receipt-bound входов `C_Q1'..C_B''` — только исправленные файлы; engine равен 6A.2; место на дисках. Готово при сохранённых проверках.
+- [ ] 6C.4 Тег `qualify_full_benchmark_20261008d`: копии native/worker receipts, сборка runtime ×4 (A==B), refreeze, сырые inspect 12 ссылок, live `_verify_live_images`. Готово при SUCCESS.
+- [ ] 6C.5 23 packaged checks и in-image проверки D (Python 3.10: `run_worker_processes` в DeepStream/Savant; неквалифицирующая репродукция Savant arm без отказа `sys.exception`). Готово при 23/23 и PASS проверок D.
+- [ ] 6C.6 Parity 480/32 (`qfb-20261008d`) и независимый аудит против A244. Готово при accepted receipt и аудите без расхождений.
+- [ ] 6C.7 Перепривязка пинов `20261008c`→`20261008d` (инструмент v3, recipe diff, plan-vs-inventory, render, B2), commit `C_Q1''`; корень на `C_Q1''`. Готово при проверках как в 6B.7–6B.8.
+- [ ] 6C.8 Runbook попытки 3 и повторы на `C_Q1''`: hosted CI, ext4 suite (одобренный набор skips), integration 9/9, R5/S5. Готово при зелёных результатах с originals.
+
 ## 7. Физическая qualification Q1 (одна попытка)
 
 **Попытка 1 — FAILED** на 7.1 (transaction rc 78), 7 октября 2026. Задачи 7.1–7.6 относятся к попытке 2 на `C_Q1'` после 6A/6B и 6.2 (Amendments 4–5).
