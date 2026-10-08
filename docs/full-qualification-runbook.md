@@ -12,17 +12,17 @@ Change OpenSpec `qualify-full-benchmark`, задача 6.1. Процедура �
 
 | Что | Значение |
 |---|---|
-| Commit `C_Q1'` | `82c7a62ee59cf04db113d4897289b7da4a6f807d` (Amendments 4–5: Docker Desktop 4.93.0, runtime ×4 пересобраны, пины `20261008c`; попытка 1 шла на `1112af0b`) |
+| Commit `C_Q1''` | `4947e35a70fcfd94cf53179f05c021f8fb9dd3d1` (Amendments 4–6: Docker Desktop 4.93.0, Python 3.10 в образах DeepStream/Savant, режимы read-only на drvfs, runtime ×4 пересобраны, пины `20261008d`; попытки 1–2 шли на `1112af0b` и `82c7a62e`) |
 | Корень (WSL) | `/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a` (NTFS, `core.autocrlf=false`, без relocation) |
-| Тег / namespace | `qualify_full_benchmark_20261008c` / `qfb-20261008c` (попытка 1: `20261007a`) |
+| Тег / namespace | `qualify_full_benchmark_20261008d` / `qfb-20261008d` (попытки 1–2: `20261007a`, `20261008c`) |
 | Python | `/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python` (3.12.3), запуск `-B -E -s` |
 | Docker | `/usr/bin/docker`, socket `/run/docker.sock` (`/var/run` на хосте — symlink на `/run`) |
-| Логи Q1 | `$CTRL = <корень>/artifacts/qualify_full_benchmark_20261008c/q1_control/` |
+| Логи Q1 | `$CTRL = <корень>/artifacts/qualify_full_benchmark_20261008d/q1_control/` |
 | Docker engine | запись 6A.2 `docker-engine-identity.6A2.v1.json` (Docker Desktop 4.93.0, server 29.8.1, daemon `aa8f3d33-…`); preflight требует равенства |
 
 Флаг `-I` не используется. В Python 3.12 он включает `-P`, и каталог `scripts/` не попадает в `sys.path`: `--help` любого stock-скрипта падает с `ModuleNotFoundError`. Поэтому запуск идёт `python -B -E -s`: `-E` игнорирует переменные `PYTHON*`, `-s` — user site-packages. Окружение задаётся явно: `TMPDIR=/var/tmp`.
 
-Пути новых namespaces (`QUAL`, `PREP`, `OPS`, `GUARDIAN_OPS`, `EVID`, `PILOTS`, `CHECKPOINT`, `BINDING`, `CLOSURE`, индексы, promoted, `/var/tmp/vqfb1008c/{r,s}`) выбраны runbook. Код фиксирует только имена файлов внутри них. Полный список — в начале `.sh`. Шаг 0 проверяет, что ни один из этих путей не существует.
+Пути новых namespaces (`QUAL`, `PREP`, `OPS`, `GUARDIAN_OPS`, `EVID`, `PILOTS`, `CHECKPOINT`, `BINDING`, `CLOSURE`, индексы, promoted, `/var/tmp/vqfb1008d/{r,s}`) выбраны runbook. Код фиксирует только имена файлов внутри них. Полный список — в начале `.sh`. Шаг 0 проверяет, что ни один из этих путей не существует.
 
 ## Предусловия
 
@@ -30,13 +30,13 @@ Change OpenSpec `qualify-full-benchmark`, задача 6.1. Процедура �
 
 | Receipt | Путь (от корня) | SHA256 |
 |---|---|---|
-| Image identity patch | `artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json` | `9cb9528a…7690` (`image_capture/patch-file.sha256`) |
+| Image identity patch | `artifacts/qualify_full_benchmark_20261008d/qualification_image_identity_patch.json` | `e39e6645…e351` (`image_capture/patch-file.sha256`) |
 | Native A freeze | `…/native-a/native_probe.freeze.json` | `57f1a9f3…6ece0` (побайтовая копия) (`receipt-file.sha256`) |
 | Worker2 freeze | `…/worker_images/analytics-worker.freeze.json` | `5509b370…f5b554` (побайтовая копия) (`receipt-file.sha256`) |
 | Runtime ×4 freeze | `…/runtime_images/{deepstream,savant,openvino_gva,gstreamer_custom}.runtime.freeze.json` | image ID проверяются `docker image inspect` |
-| Parity acceptance | `configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.{yaml,assessment.json,acceptance_receipt.json}` | `f0b54f89…`, `91e665b8…`, `24f8e5c7…` |
-| Execution config | `configs/analytics_execution_layer.refreshed.v4.qfb-20261008c.json` | `be0cf24d…500d` |
-| Binding set | `…/model_parity_v4/bindings/index.json`, `…/model_parity_v4/acceptance_binding.v4.json` | `900069e8…`, `54f3ddb8…` |
+| Parity acceptance | `configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.{yaml,assessment.json,acceptance_receipt.json}` | `bad28745…`, `93921576…`, `0c0c786d…` |
+| Execution config | `configs/analytics_execution_layer.refreshed.v4.qfb-20261008d.json` | `2079f480…2316` |
+| Binding set | `…/model_parity_v4/bindings/index.json`, `…/model_parity_v4/acceptance_binding.v4.json` | `dafb90aa…`, `0a7a4534…` |
 
 Полные значения SHA256 заданы в `q1_00_preflight`. Если хоть одно не совпадает, Q1 не начинается.
 
@@ -87,7 +87,7 @@ Amendment 3 перенёс `C_Q1` на `1112af0b`, поэтому 5.5–5.7 по
 
 **При FAILED Q1:**
 1. Остановиться и больше ничего не запускать.
-2. Ничего не удалять и не переименовывать: `$CTRL`, все namespaces, `/var/tmp/vqfb1008c`, контейнеры.
+2. Ничего не удалять и не переименовывать: `$CTRL`, все namespaces, `/var/tmp/vqfb1008d`, контейнеры.
 3. Не выполнять `docker stop`, `rm` или `prune`. Не повторять шаг и не править receipts.
 4. Сохранить read-only наблюдение (`q1_watch`, `docker ps -a`, хвосты логов).
 5. Спросить пользователя. Если guardian ещё жив, предложить authenticated stop (шаг 10), чтобы зафиксировать lifecycle. Выполнять его только с разрешения.
@@ -99,7 +99,7 @@ Amendment 3 перенёс `C_Q1` на `1112af0b`, поэтому 5.5–5.7 по
 Обычные шаги выполняются в терминале WSL после `source "$CTRL/full-qualification-runbook-commands.sh"` (копия создаётся на шаге 0). Длительные шаги 6 и 9 запускаются независимым Windows-процессом, как в PR5: `q1_detach <шаг>` из WSL или эквивалент в PowerShell:
 
 ```powershell
-Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bash','/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/qualify_full_benchmark_20261008c/q1_control/full-qualification-runbook-commands.sh','q1_06_guardian_start' -WindowStyle Hidden -PassThru
+Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bash','/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/qualify_full_benchmark_20261008d/q1_control/full-qualification-runbook-commands.sh','q1_06_guardian_start' -WindowStyle Hidden -PassThru
 ```
 
 Аргументы не содержат пробелов: Start-Process склеивает их без кавычек. `-u s-a-balashov` запускает процесс от пользователя, а шаги 6 и 9 дополнительно проверяют `id -u` = 1000.
@@ -118,7 +118,7 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
 
 - **Входы.** Receipts из таблицы выше, образы Docker, uid 1000, `/var/tmp` на ext4.
 - **Проверки.** Отслеживаемые файлы вне `artifacts/` не изменены, Python 3.12.3, socket `/run/docker.sock` канонический. (Amendments 4–5) Идентичность Docker engine равна записи 6A.2, и live `_verify_live_images` нового patch проходит (полный inspect runtime ×4 и projection worker ×2) — до создания namespaces.
-- **Выходы.** Создаются `$CTRL`, `PREP_PARENT` и `/var/tmp/vqfb1008c/{,s}` (700). В `$CTRL` — read-only копия `.sh` с SHA256 и `root-git-status.before.txt`.
+- **Выходы.** Создаются `$CTRL`, `PREP_PARENT` и `/var/tmp/vqfb1008d/{,s}` (700). В `$CTRL` — read-only копия `.sh` с SHA256 и `root-git-status.before.txt`.
 - **Успех.** `Q1 preflight passed`, `$CTRL/q1_00_preflight.rc` = 0.
 - **При отказе.** Q1 ещё не начат. Устранить причину по решению пользователя; namespaces не создавались, если отказ случился до `mkdir`.
 
@@ -134,7 +134,7 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
 
 - **Цель.** `publication_policy_qualification_transaction_v2.py`: фрагменты четырёх систем, candidate index/manifest/receipt и bootstrap-калибровки, receipt пишется последним. Bootstrap выполняется внутри transaction. Отдельный CLI `publication_policy_qualification_bootstrap_v2.py` **не запускается**: его выход не связан с transaction receipt.
 - **Входы.** Patch и три файла parity acceptance.
-- **Выходы** (`QUAL=artifacts/publication_policy_qualification_v2_qfb_20261008c`):
+- **Выходы** (`QUAL=artifacts/publication_policy_qualification_v2_qfb_20261008d`):
   - `qualification_input_transaction.v2.receipt.json`;
   - `candidate/*`;
   - `bootstrap/*` (mapping, receipt, 4 calibration);
@@ -171,7 +171,7 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
   - `--config` — execution config qfb (на него ссылается parity receipt);
   - `--binding-set` — `model_parity_v4/bindings`;
   - `--policy-capability-manifest` — candidate manifest;
-  - `--runtime-dir /var/tmp/vqfb1008c/r`, `--front-socket …/r/a.sock`;
+  - `--runtime-dir /var/tmp/vqfb1008d/r`, `--front-socket …/r/a.sock`;
   - `--evidence-root EVID`;
   - `--max-connections 202560`, `--max-requests-per-connection 4320000`, `--max-total-requests 29168640000` — это минимумы `PRODUCTION_*_MINIMUM` в коде.
 - **Выходы.** `EVID/service_authority.v1.json`. После stop — `service_lifecycle.v1.json` и `GUARDIAN_OPS/operational_group.v1.json`.
@@ -191,7 +191,7 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
 
 - **Цель.** 32 runtime bundles с `--operational-capture-plan`.
 - **Почему после guardian.** Код требует живой seqpacket socket guardian (`--analytics-socket`, тип 0005). Поэтому шаг идёт после guardian (Amendment 3).
-- **Флаги.** `--container-engine-socket /run/docker.sock`, `--scratch-root /var/tmp/vqfb1008c/s`, `--deadline-ms 100`, `--duration-s 180`.
+- **Флаги.** `--container-engine-socket /run/docker.sock`, `--scratch-root /var/tmp/vqfb1008d/s`, `--deadline-ms 100`, `--duration-s 180`.
 - **Выход.** `QUAL/bootstrap/qualification-runtime-inputs-v2/qualification-runtime-inputs.materialization.v2.json`.
 - **Успех.** rc 0.
 - **При отказе.** FAILED Q1 (guardian остаётся жив, см. правило).
