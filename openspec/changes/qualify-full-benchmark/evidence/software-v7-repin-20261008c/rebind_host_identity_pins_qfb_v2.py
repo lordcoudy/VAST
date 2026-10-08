@@ -288,6 +288,8 @@ def plan_file(relative: str, mapping: dict[str, str], sizes: dict[str, tuple[int
                    item.start[0] == line and item.string == old_text]
         require(len(matches) == 1 and sizes[old_rel][0] == int(old_text),
                 f"explicit size site drifted: {relative}:{line}")
+        if sizes[old_rel][0] == sizes[old_rel][1]:
+            continue  # v2: unchanged size is not an edit
         start, end = span(matches[0])
         edits.append((start, end, str(sizes[old_rel][1])))
         rows.append({"line": line, "kind": "explicit_reviewed_size_literal", "old": old_text,

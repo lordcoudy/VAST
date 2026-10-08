@@ -28,26 +28,26 @@ import publication_policy_qualification_fragments_from_authority_v2 as fragment_
 import publication_policy_qualification_runtime_inputs_v2 as runtime_inputs  # noqa: E402
 
 
-OPENVINO_IMAGE_ID = 'sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28'
+OPENVINO_IMAGE_ID = 'sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7'
 OPENVINO_IMAGE_REFERENCE = 'vast/openvino-gva-publication-runtime-v3:materialized'
 OPENVINO_REPOSITORY_DIGEST = (
     "vast/openvino-gva-publication-runtime-v3@" + OPENVINO_IMAGE_ID
 )
-OPENVINO_PROJECTION_SHA256 = 'ff79e305405a84bea3e5b8a56ca74a1158d96d6f2d7798ef323251530e5f48df'
+OPENVINO_PROJECTION_SHA256 = '5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9'
 OPENVINO_BASE_IMAGE_ID = 'sha256:65b49dbbdb8b6e145cc07a7b28a66b406a0ccb076c41cb6e62a5dda9ee1056cf'
-OPENVINO_RUNTIME_SOURCE_SHA256 = '3a5a04044e238e387142520173aec59ac04113e7615f387c4d51bdf4f301c6b0'
+OPENVINO_RUNTIME_SOURCE_SHA256 = 'fa7f4c6cf82e5d1b5f0f28a30e40b015d6e3987205a493daead1798a93967bae'
 NATIVE_SOURCE_SHA256 = '042fa1a2bbc9c85d02a448a079992c2ee1c93a63bc7ce4de4151fc3b4c805d4b'
 DEPENDENCY_SET_SHA256 = '0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e'
 OPENVINO_ALLOWLIST_SHA256 = '7acc8f3e20cdd50bce28ba0aabf57681391f16a34fa957a8234c4381d558803c'
 OPENVINO_EMBEDDED_SET_SHA256 = '0d27762233db10e9fc556795b1de7b36a2e2447eb8ea8964250f380271fa1cc8'
 
-GSTREAMER_IMAGE_ID = 'sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757'
+GSTREAMER_IMAGE_ID = 'sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50'
 GSTREAMER_IMAGE_REFERENCE = 'vast/gstreamer-custom-publication-runtime-v3:materialized'
 GSTREAMER_REPOSITORY_DIGEST = (
     "vast/gstreamer-custom-publication-runtime-v3@" + GSTREAMER_IMAGE_ID
 )
-GSTREAMER_PROJECTION_SHA256 = 'e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66'
-GSTREAMER_RUNTIME_SOURCE_SHA256 = '8f5a3276ab5d94c34fd9c75054d378d7271c97559dcb9cdee374e0b5f1d6b87b'
+GSTREAMER_PROJECTION_SHA256 = '2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a'
+GSTREAMER_RUNTIME_SOURCE_SHA256 = 'eb09a77d9619f9173cc78b1c34568890a14890e2d13789de1c6376c88fb03675'
 GSTREAMER_ALLOWLIST_SHA256 = 'df206c7d3d9b276bf60b8107d88a3a381d03a771553e4dec3b4157c08c835cb2'
 
 
@@ -65,7 +65,7 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
         self.assertLessEqual(len(diagnostic), 4200)
 
     def test_fix_benchmark_patch_matches_exact_runtime_constants(self) -> None:
-        patch_path = ROOT / "artifacts/qualify_full_benchmark_20261007a/qualification_image_identity_patch.json"
+        patch_path = ROOT / "artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json"
         patch = json.loads(patch_path.read_bytes())
         receipts = {}
         for system, descriptor in patch["receipts"]["runtime_images"].items():
@@ -81,12 +81,12 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
         self.assertIn("runtime_images", patch["receipts"]["runtime_images"]["gstreamer_custom"]["path"])
 
     def test_current_qualification_fragments_match_physical_receipts(self) -> None:
-        base = ROOT / "artifacts/qualify_full_benchmark_20261007a"
+        base = ROOT / "artifacts/qualify_full_benchmark_20261008c"
         patch = json.loads((base / "qualification_image_identity_patch.json").read_bytes())
         parity = json.loads(
             (
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.acceptance_receipt.json"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json"
             ).read_bytes()
         )
         accepted = parity["accepted_manifest"]
@@ -325,14 +325,14 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
         # This is a static selected-image binding check, not a live grant.
         # The two original full-patch equality methods keep their real domain.
         receipt_path = ROOT / (
-            "artifacts/qualify_full_benchmark_20261007a/"
+            "artifacts/qualify_full_benchmark_20261008c/"
             "selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json"
         )
         payload = receipt_path.read_bytes()
         self.assertEqual(len(payload), 6976)
         self.assertEqual(
             hashlib.sha256(payload).hexdigest(),
-            "96a1a3d47a9e711407707a8dc20cf9c73e5b6a8daa99b427b0a86b6392e29f70",
+            "324c22d640634d22943d976b8682df0dae5d8eb506eae765cb139580fb51a9c8",
         )
         receipt = json.loads(payload)
         self.assertEqual(receipt["schema_version"], 1)
@@ -407,19 +407,19 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
             root=ROOT,
             identity_patch_path=(
                 ROOT
-                / "artifacts/qualify_full_benchmark_20261007a/qualification_image_identity_patch.json"
+                / "artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json"
             ),
             accepted_model_parity_manifest_path=(
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.yaml"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml"
             ),
             accepted_model_parity_assessment_path=(
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.assessment.json"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json"
             ),
             accepted_model_parity_receipt_path=(
                 ROOT
-                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.acceptance_receipt.json"
+                / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json"
             ),
             docker="/usr/bin/docker",
             dependencies=fragment_authority.DEFAULT_DEPENDENCIES,
@@ -443,26 +443,26 @@ class PublicationRuntimeFrozenIdentityConstantsV1Tests(unittest.TestCase):
             {system: row["physical_identity"]["image_id"]
              for system, row in inputs["patch"]["systems"].items()},
             {
-                "deepstream": "sha256:764b5e9d14201663bd4b0922a9fb52038244279a18f51a5ed09012f4328f229e",
-                "savant": "sha256:3f9c5205694b298d4144f18fb4903181962233daff7c6604c288e6f4ac1a2204",
-                "openvino_gva": "sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28",
-                "gstreamer_custom": "sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757",
+                "deepstream": "sha256:61ceef0b60142313c6c84b41872f31b8a151c33d3b2e62ee03b2ff6f580241a5",
+                "savant": "sha256:8335a23ea4024cad52b2d0f1e94171888ec54316117d167c2ed0313f7d869ef3",
+                "openvino_gva": "sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+                "gstreamer_custom": "sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
             },
         )
         self.assertEqual(
             observed["openvino_gva"]["contract"],
             {
-                "image_id": "sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28",
-                "repository_digest": "vast/openvino-gva-publication-runtime-v3@sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28",
-                "inspect_projection_sha256": "ff79e305405a84bea3e5b8a56ca74a1158d96d6f2d7798ef323251530e5f48df",
+                "image_id": "sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+                "repository_digest": "vast/openvino-gva-publication-runtime-v3@sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+                "inspect_projection_sha256": "5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9",
             },
         )
         self.assertEqual(
             observed["gstreamer_custom"]["contract"],
             {
-                "image_id": "sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757",
-                "repository_digest": "vast/gstreamer-custom-publication-runtime-v3@sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757",
-                "inspect_projection_sha256": "e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66",
+                "image_id": "sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+                "repository_digest": "vast/gstreamer-custom-publication-runtime-v3@sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+                "inspect_projection_sha256": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a",
                 "base_image_id": OPENVINO_BASE_IMAGE_ID,
             },
         )

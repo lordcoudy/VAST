@@ -54,19 +54,22 @@
 <     if ("20260928g" in old and "20261007a" in new):
 ---
 >     if ("20261007a" in old and "20261008c" in new):
-338,339c341
+287a291,292
+>         if sizes[old_rel][0] == sizes[old_rel][1]:
+>             continue  # v2: unchanged size is not an edit
+338,339c343
 <     require(rows, f"no identity pin was rebound in {relative}")
 <     for forbidden in (OLD_NS, OLD_DIR, "20260928g", "decision28-2a6a42c9", "decision28-selected"):
 ---
 >     for forbidden in (OLD_NS, OLD_DIR, "20261007a"):
-469c471
+469c473
 <         "status": status, "tool": "rebind_host_identity_pins_qfb_v1.py", "build_commit": BUILD_COMMIT,
 ---
 >         "status": status, "tool": "rebind_host_identity_pins_qfb_v2.py", "build_commit": BUILD_COMMIT,
-474c476,477
+474c478,479
 <                    "after_sha256": sha256(row["after"]), "edits": row["edits"]} for row in plans],
 ---
 >                    "after_sha256": sha256(row["after"]), "edits": row["edits"],
 >                    "unchanged": not row["edits"]} for row in plans],
-495a499
+495a501
 >         plans = [row for row in plans if row["edits"]]
