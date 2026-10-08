@@ -108,6 +108,8 @@
 
 **Попытка 2 — FAILED** на 7.2 (8 октября 2026): шаги 0–8 PASS, guardian 8/8, 4 native prechecks выполнены; Savant diagnostic — контейнер rc 2 за ~6 с, затем owner rc 78 `empty failed original channel custody drifted` (режим 0555 на drvfs против требуемого 0444), stderr Savant не сохранён. Guardian остановлен authenticated stop с разрешения пользователя: `clean_stop_nonpublication` ([evidence](evidence/physical-v2-q1-attempt2-failed/README.md)). Следующий шаг — Amendment 6.
 
+**Попытка 3 — FAILED** на 7.3 (8 октября 2026, `C_Q1''` `4947e35a`): stock 6.2 report PASS ([host-check.before](evidence/physical-v3-q1-attempt3-failed/q1_control/host-check.before.txt)), шаги 0–8 PASS, guardian 8/8, 4 native prechecks и Savant original выполнены. Первая cell `qualification-cell-deepstream-cpu-h264-independent-processes`: контейнер DeepStream rc 2 — `worker_id is outside the supported ASCII source domain` (вероятно, лимит 37 символов в `validate_native_request_source_v1` против `deepstream-stream-N-branch-<branch>` до 41 символа), owner rc 78 `original_measurement_failed`. Guardian завершился сам на `Connection reset by peer`: `failed_stop_nonpublication`, rc 78; authenticated stop неприменим ([evidence](evidence/physical-v3-q1-attempt3-failed/README.md)). Решение пользователя: вариант (а) — Amendment 7 и новая попытка в этом MR.
+
 - [ ] 7.1 Свежие inputs, bootstrap, preprocessing, execution code closure, capture plan (37) и runtime inputs. Готово при сохранённых receipts.
 - [ ] 7.2 Guardian 8/8, 4 native prechecks и Savant diagnostic через owner со встроенными проверками process/container validators (Amendment 3). Готово при SUCCESS каждого шага.
 - [ ] 7.3 32 cells одним owner, без автоповторов. Готово при 32 принятых cells.
