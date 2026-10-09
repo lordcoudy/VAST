@@ -1,0 +1,28 @@
+{
+ "policy_index": {
+  "status": "refused",
+  "chain": [
+   "PolicyQualificationIndexV2Error: qualification execution closure validation failed: qualification checkpoint physical input[0] drifted",
+   "QualificationExecutionClosureV1Error: qualification checkpoint physical input[0] drifted"
+  ],
+  "where": [
+   "diag_a8_index.py:31",
+   "diag_a8_index.py:43",
+   "publication_policy_qualification_index_v2.py:765",
+   "publication_policy_qualification_index_v2.py:451"
+  ]
+ },
+ "resource_index": {
+  "status": "refused",
+  "chain": [
+   "FullResourceQualificationIndexV1Error: deepstream/cpu binding material fields drifted"
+  ],
+  "where": [
+   "diag_a8_index.py:31",
+   "diag_a8_index.py:44",
+   "full_resource_qualification_index_v1.py:617",
+   "full_resource_qualification_index_v1.py:326",
+   "full_resource_qualification_index_v1.py:181"
+  ]
+ }
+}

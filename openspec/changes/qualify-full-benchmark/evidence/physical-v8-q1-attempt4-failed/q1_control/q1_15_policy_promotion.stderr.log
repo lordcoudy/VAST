@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification.py", line 1416, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification.py", line 1406, in main
+    result = promote_policy_qualification(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification.py", line 1321, in promote_policy_qualification
+    raise QualificationError("policy qualification is blocked: " + ", ".join(assessment["blockers"][:8]))
+QualificationError: policy qualification is blocked: qualification index must remain under project_root
