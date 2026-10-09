@@ -4,6 +4,7 @@ Change OpenSpec `qualify-full-benchmark`, задача 6.1. Процедура �
 
 Команды лежат в [full-qualification-runbook-commands.sh](full-qualification-runbook-commands.sh) в виде bash-функций `q1_NN_*`. `source` этого файла только задаёт переменные и функции и ничего не исполняет. Каждая функция:
 - выполняется в отдельном subshell с `set -euo pipefail`;
+- запускается **отдельной командой верхнего уровня**, одна команда на строку (Amendment 8). Никаких цепочек `a && b`, `a || b`, `a; b`, а также `if` и `!` вокруг шага: в таких позициях bash игнорирует `set -e` внутри функции, и отказ helper не останавливает шаг (так в попытке 4 шаги 14–15 записали `rc` 0 после отказа). Первая строка каждого шага — проба `q1__require_errexit`: при игнорируемом `-e` шаг завершается с кодом 64 (`errexit disabled`) до любой записи;
 - отказывает с кодом 64 (`Q1 REFUSED`), если нет входного receipt или выход уже существует;
 - пишет `stdout`, `stderr`, `rc` и `launch.txt` в `$CTRL`; `launch.txt` содержит UTC, `boot_id`, commit, argv, uid/gid, cwd, `python -VV`, `sys.path` и `env` (значения переменных с именами вида TOKEN/SECRET/PASS/KEY/CRED/AUTH маскируются);
 - сохраняет SHA256 входов и выходов (`*.inputs.sha256`, `*.outputs.sha256`); следующий шаг сверяет их перед стартом.
@@ -241,14 +242,15 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
 
 ### 14. Индексы (7.5) — `q1_14_indices`
 
-- **Команды.** `publication_policy_qualification_index_v2.py` и `full_resource_qualification_index_v1.py` с `--execution-closure-receipt`. Фрагменты передаются явно из `QUAL/fragments/…`: значения по умолчанию указывают на старые `artifacts/*_publication_v3/…`, а индекс требует фрагменты transaction.
+- **Команды (Amendment 8).** `publication_qualification_promotion_v2.py policy-index` и `resource-index` с `--qualification-transaction-receipt TXN`, `--pilot-root`, `--execution-closure-receipt` и явными фрагментами из `QUAL/fragments/…`. Модуль вызывает stock-билдеры индексов с валидатором фрагментов authority v2 (тем же, которым transaction строит candidate index). Stock CLI `publication_policy_qualification_index_v2.py` и `full_resource_qualification_index_v1.py` берут legacy-валидаторы и отказывают фрагментам transaction v2 (попытка 4) — напрямую не запускаются.
+- **Предусловие (до stock-функции).** Receipt — ровно transaction v2 с верным `receipt_sha256` и пройденной cold-валидацией; переданные фрагменты равны `receipt.fragments`; closure привязан к этому receipt. Шаг перепроверяет `q1_02_transaction.outputs.sha256`.
 - **Выходы.** `POLICY_INDEX_DIR/checkpoint_policy_qualification_index.v2.json`, `RESOURCE_INDEX`.
 - **Успех.** Оба rc 0.
 - **При отказе.** FAILED Q1.
 
 ### 15. Promotion (7.5) — `q1_15_promotion`
 
-- **Команды.** `publication_policy_qualification.py` и `full_resource_qualification.py` (`--index-path`, `--output-dir`). Каждый сам выполняет cold-валидацию своего bundle.
+- **Команды (Amendment 8).** `publication_qualification_promotion_v2.py policy-promote` и `resource-promote` (`--qualification-transaction-receipt`, `--index-path`, `--output-dir`, фрагменты). Перед stock-promotion модуль сверяет, что записи индекса связаны с фрагментами этого receipt (`fragment_artifact` policy; `implementation_artifact` resource = binding-файлы фрагмента), а closure индекса — с этим receipt. Stock promotion сам выполняет cold-валидацию своего bundle. Подкоманды `policy-assess` / `resource-assess` ничего не пишут и дают rc 78, если оценка не `passed`.
 - **Выходы.**
   - policy: capability manifest, calibration mapping, receipt `accepted_evidence_driven_policy_qualification`;
   - resource: capability manifest, receipt `accepted_pre_run_resource_capability_qualification`.

@@ -3,7 +3,9 @@
 # Companion of docs/full-qualification-runbook.md. Sourcing this file only defines
 # variables and functions; it executes nothing. Each step function runs in its own
 # subshell with `set -euo pipefail` and refuses to start when an input receipt is
-# missing or an output already exists. Run in WSL bash as uid 1000.
+# missing or an output already exists. Run in WSL bash as uid 1000, each step as a
+# plain top-level command on its own line: never inside `&&`, `||`, `;` chains, `if`
+# or `!` (bash then ignores `set -e`; Amendment 8, q1__require_errexit).
 
 # ---------------------------------------------------------------- fixed values
 Q1_COMMIT=0aeb955bdf49d35ddb429c6a8e83d897608b00aa            # C_Q1''' (Amendments 4-7; attempts 1-3 used 1112af0b, 82c7a62e, 4947e35a)
@@ -67,6 +69,12 @@ PREP_RECEIPT=$PREP/checkpoint_analytics_preprocessing_contract.v1.receipt.json
 RUNTIME_RECEIPT=$BOOT_DIR/qualification-runtime-inputs-v2/qualification-runtime-inputs.materialization.v2.json
 CLOSURE_RECEIPT=$CLOSURE/qualification_execution_closure.v1.receipt.json
 POLICY_INDEX=$POLICY_INDEX_DIR/checkpoint_policy_qualification_index.v2.json
+FRAGMENT_ARGS=(
+    --deepstream-fragment "$QUAL/fragments/deepstream/qualification_fragment.json"
+    --savant-fragment "$QUAL/fragments/savant/qualification_fragment.json"
+    --openvino-gva-fragment "$QUAL/fragments/openvino_gva/qualification_fragment.json"
+    --gstreamer-custom-fragment "$QUAL/fragments/gstreamer_custom/qualification_fragment.json"
+)
 
 # Guardian bounds = PRODUCTION_*_MINIMUM in checkpoint_gstreamer_analytics_sidecar.py.
 MAX_CONNECTIONS=202560
@@ -75,6 +83,19 @@ MAX_TOTAL_REQUESTS=29168640000
 
 # ---------------------------------------------------------------- helpers
 q1__die() { printf 'Q1 REFUSED: %s\n' "$*" >&2; return 64; }
+
+# First line of every step: bash ignores `set -e` inside a function called from
+# `&&`, `||`, `if` or `!`, so a refusing helper would not stop the step. The probe
+# stays a plain assignment (in those positions it would itself ignore `-e`) and the
+# refusal exits explicitly before anything is written.
+q1__require_errexit() {
+    local probe
+    probe=$( (set -e; false; echo x); true )
+    if [ -n "$probe" ]; then
+        q1__die "errexit disabled: run this step as a plain command"
+        exit 64
+    fi
+}
 
 q1__absent() {
     local path
@@ -144,6 +165,7 @@ q1__guardian_live() {
 
 # q1_detach STEP_FUNCTION : start a long step in an independent Windows process (as in PR5).
 q1_detach() (
+    q1__require_errexit
     set -euo pipefail
     case "$1" in q1_06_guardian_start|q1_09_owner_execute) ;; *) q1__die "not a detached step: $1";; esac
     q1__present "$CTRL/full-qualification-runbook-commands.sh"
@@ -155,6 +177,7 @@ q1_detach() (
 
 # ---------------------------------------------------------------- step 0
 q1_00_preflight() (
+    q1__require_errexit
     set -euo pipefail
     [ "$(id -u)" = 1000 ] || q1__die "run as uid 1000"
     [ "$(realpath -e "$ROOT")" = "$ROOT" ] || q1__die "root is not canonical"
@@ -201,12 +224,13 @@ sys.exit(0 if observed == json.load(open(sys.argv[1]))['identity'] else 3)
     chmod 0444 "$CTRL/full-qualification-runbook-commands.sh"
     sha256sum "$CTRL/full-qualification-runbook-commands.sh" > "$CTRL/runbook-commands.sha256"
     git -C "$ROOT" status --porcelain > "$CTRL/root-git-status.before.txt"
-    printf '0\n' > "$CTRL/q1_00_preflight.rc"
     echo "Q1 preflight passed"
+    printf '0\n' > "$CTRL/q1_00_preflight.rc"
 )
 
 # ---------------------------------------------------------------- step 1 (task 6.2, read-only)
 q1_01_host_check() (
+    q1__require_errexit
     set -euo pipefail
     q1__present "$CTRL/q1_00_preflight.rc"
     local out=$CTRL/host-check.before.txt
@@ -233,6 +257,7 @@ q1_01_host_check() (
 
 # ---------------------------------------------------------------- step 2: inputs + bootstrap
 q1_02_transaction() (
+    q1__require_errexit
     set -euo pipefail
     export TMPDIR=/var/tmp
     q1__present "$CTRL/host-check.before.txt"
@@ -252,6 +277,7 @@ q1_02_transaction() (
 
 # ---------------------------------------------------------------- step 3: preprocessing
 q1_03_preprocessing() (
+    q1__require_errexit
     set -euo pipefail
     export TMPDIR=/var/tmp
     q1__verify_outputs q1_02_transaction
@@ -265,6 +291,7 @@ q1_03_preprocessing() (
 
 # ---------------------------------------------------------------- step 4: execution code closure
 q1_04_code_closure() (
+    q1__require_errexit
     set -euo pipefail
     export TMPDIR=/var/tmp
     q1__verify_outputs q1_03_preprocessing
@@ -283,6 +310,7 @@ q1__code_closure_validate() {
 
 # ---------------------------------------------------------------- step 5: capture plan (37)
 q1_05_capture_plan() (
+    q1__require_errexit
     set -euo pipefail
     export TMPDIR=/var/tmp
     q1__verify_outputs q1_02_transaction
@@ -308,6 +336,7 @@ q1_05_capture_plan() (
 
 # ---------------------------------------------------------------- step 6: guardian (detached)
 q1_06_guardian_start() (
+    q1__require_errexit
     set -euo pipefail
     [ "$(id -u)" = 1000 ] || q1__die "guardian must run as uid 1000"
     export TMPDIR=/var/tmp
@@ -330,6 +359,7 @@ q1_06_guardian_start() (
 
 # ---------------------------------------------------------------- step 7: guardian 8/8 (read-only)
 q1_07_guardian_ready() (
+    q1__require_errexit
     set -euo pipefail
     q1__present "$CTRL/q1_06_guardian.launch.txt"
     [ ! -e "$CTRL/q1_06_guardian.rc" ] || q1__die "guardian already exited: rc=$(cat "$CTRL/q1_06_guardian.rc")"
@@ -345,6 +375,7 @@ q1_07_guardian_ready() (
 
 # ---------------------------------------------------------------- step 8: runtime inputs (32 bundles)
 q1_08_runtime_inputs() (
+    q1__require_errexit
     set -euo pipefail
     export TMPDIR=/var/tmp
     q1__verify_outputs q1_07_guardian_ready
@@ -366,6 +397,7 @@ q1_08_runtime_inputs() (
 
 # ---------------------------------------------------------------- step 9: 37 originals (detached)
 q1_09_owner_execute() (
+    q1__require_errexit
     set -euo pipefail
     [ "$(id -u)" = 1000 ] || q1__die "owner must run as uid 1000"
     export TMPDIR=/var/tmp
@@ -401,6 +433,7 @@ q1_watch() (
 
 # ---------------------------------------------------------------- step 10: authenticated stop
 q1_10_guardian_stop() (
+    q1__require_errexit
     set -euo pipefail
     q1__verify_outputs q1_09_owner_execute
     [ ! -e "$CTRL/q1_06_guardian.rc" ] || q1__die "guardian already exited: rc=$(cat "$CTRL/q1_06_guardian.rc")"
@@ -414,6 +447,7 @@ q1_10_guardian_stop() (
 
 # ---------------------------------------------------------------- step 11: guardian terminal (read-only)
 q1_11_guardian_terminal() (
+    q1__require_errexit
     set -euo pipefail
     q1__present "$CTRL/q1_10_guardian_stop.rc" "$CTRL/q1_06_guardian.rc" "$LIFECYCLE" "$GUARDIAN_OPS/operational_group.v1.json"
     [ "$(cat "$CTRL/q1_10_guardian_stop.rc")" = 0 ] || q1__die "stop rc != 0"
@@ -431,6 +465,7 @@ q1_11_guardian_terminal() (
 
 # ---------------------------------------------------------------- step 12: execution binding
 q1_12_owner_bind() (
+    q1__require_errexit
     set -euo pipefail
     export TMPDIR=/var/tmp
     q1__verify_outputs q1_11_guardian_terminal
@@ -443,6 +478,7 @@ q1_12_owner_bind() (
 
 # ---------------------------------------------------------------- step 13: execution closure (37/8)
 q1_13_execution_closure() (
+    q1__require_errexit
     set -euo pipefail
     export TMPDIR=/var/tmp
     q1__verify_outputs q1_12_owner_bind
@@ -459,39 +495,41 @@ q1_13_execution_closure() (
 )
 
 # ---------------------------------------------------------------- step 14: indices
+# Amendment 8: through the host-only F1 module with the authority-v2 fragment validator
+# and the exact transaction precondition (the stock CLIs use legacy validators).
 q1_14_indices() (
+    q1__require_errexit
     set -euo pipefail
     export TMPDIR=/var/tmp
     q1__verify_outputs q1_13_execution_closure
+    q1__verify_outputs q1_02_transaction
     q1__absent "$POLICY_INDEX_DIR" "$RESOURCE_INDEX"
     cd "$ROOT"
-    local fragments=(
-        --deepstream-fragment "$QUAL/fragments/deepstream/qualification_fragment.json"
-        --savant-fragment "$QUAL/fragments/savant/qualification_fragment.json"
-        --openvino-gva-fragment "$QUAL/fragments/openvino_gva/qualification_fragment.json"
-        --gstreamer-custom-fragment "$QUAL/fragments/gstreamer_custom/qualification_fragment.json"
-    )
-    q1__run q1_14_policy_index "${PYRUN[@]}" scripts/publication_policy_qualification_index_v2.py \
-        --project-root "$ROOT" --pilot-root "$PILOTS" --output-dir "$POLICY_INDEX_DIR" \
-        --execution-closure-receipt "$CLOSURE_RECEIPT" "${fragments[@]}"
-    q1__run q1_14_resource_index "${PYRUN[@]}" scripts/full_resource_qualification_index_v1.py \
-        --project-root "$ROOT" --pilot-root "$PILOTS" --output-path "$RESOURCE_INDEX" \
-        --execution-closure-receipt "$CLOSURE_RECEIPT" "${fragments[@]}"
+    q1__run q1_14_policy_index "${PYRUN[@]}" scripts/publication_qualification_promotion_v2.py policy-index \
+        --project-root "$ROOT" --qualification-transaction-receipt "$TXN" --pilot-root "$PILOTS" \
+        --output-dir "$POLICY_INDEX_DIR" --execution-closure-receipt "$CLOSURE_RECEIPT" "${FRAGMENT_ARGS[@]}"
+    q1__run q1_14_resource_index "${PYRUN[@]}" scripts/publication_qualification_promotion_v2.py resource-index \
+        --project-root "$ROOT" --qualification-transaction-receipt "$TXN" --pilot-root "$PILOTS" \
+        --output-path "$RESOURCE_INDEX" --execution-closure-receipt "$CLOSURE_RECEIPT" "${FRAGMENT_ARGS[@]}"
     q1__outputs q1_14_indices "$POLICY_INDEX" "$RESOURCE_INDEX"
     printf '0\n' > "$CTRL/q1_14_indices.rc"
 )
 
 # ---------------------------------------------------------------- step 15: promotion
 q1_15_promotion() (
+    q1__require_errexit
     set -euo pipefail
     export TMPDIR=/var/tmp
     q1__verify_outputs q1_14_indices
+    q1__verify_outputs q1_02_transaction
     q1__absent "$POLICY_PROMOTED" "$RESOURCE_PROMOTED"
     cd "$ROOT"
-    q1__run q1_15_policy_promotion "${PYRUN[@]}" scripts/publication_policy_qualification.py \
-        --project-root "$ROOT" --index-path "$POLICY_INDEX" --output-dir "$POLICY_PROMOTED"
-    q1__run q1_15_resource_promotion "${PYRUN[@]}" scripts/full_resource_qualification.py \
-        --project-root "$ROOT" --index-path "$RESOURCE_INDEX" --output-dir "$RESOURCE_PROMOTED"
+    q1__run q1_15_policy_promotion "${PYRUN[@]}" scripts/publication_qualification_promotion_v2.py policy-promote \
+        --project-root "$ROOT" --qualification-transaction-receipt "$TXN" --index-path "$POLICY_INDEX" \
+        --output-dir "$POLICY_PROMOTED" "${FRAGMENT_ARGS[@]}"
+    q1__run q1_15_resource_promotion "${PYRUN[@]}" scripts/publication_qualification_promotion_v2.py resource-promote \
+        --project-root "$ROOT" --qualification-transaction-receipt "$TXN" --index-path "$RESOURCE_INDEX" \
+        --output-dir "$RESOURCE_PROMOTED" "${FRAGMENT_ARGS[@]}"
     q1__outputs q1_15_promotion \
         "$POLICY_PROMOTED/checkpoint_policy_capability_manifest.json" \
         "$POLICY_PROMOTED/checkpoint_policy_calibration_mapping.json" \
@@ -503,6 +541,7 @@ q1_15_promotion() (
 
 # ---------------------------------------------------------------- step 16: final host observation
 q1_16_host_after() (
+    q1__require_errexit
     set -euo pipefail
     local out=$CTRL/host-check.after.txt
     q1__absent "$out"

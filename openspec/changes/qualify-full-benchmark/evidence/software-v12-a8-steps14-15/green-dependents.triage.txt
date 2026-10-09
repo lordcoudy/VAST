@@ -1,0 +1,19 @@
+Amendment 8, 6E.2 - triage of green-dependents.original.log (555 tests, errors=2, skipped=3, failures=0).
+
+Run: fresh ext4 clone of bb6436ef with the uncommitted 6E.1/6E.2 files overlaid byte-for-byte
+(green-dependents.overlay.sha256, ext4_overlay_tests.sh), OMZ models copied from the frozen root.
+Scope: the 3 new modules (20 tests incl. subtests: promotion_v2, resource authority_v2 / topology v2 /
+host-only boundary, runbook errexit), the execution code closure and CI selection gates, and the 36
+modules that import full_resource_qualification*, publication_policy_qualification*, transaction v2,
+fragments v2, topology_contract or the runbook. A first attempt on drvfs (~2-3 min per test) was
+stopped after 5 tests; hosted CI and the ext4 suite (6E.5) run the full suite.
+
+Both errors are FileNotFoundError for the ignored receipt
+artifacts/qualify_full_benchmark_20261008e/qualification_image_identity_patch.json, which exists
+only in the frozen root (test_publication_runtime_frozen_identity_constants_v1; same class as in
+6C.2 and 6D.2). Skips: 2 live drvfs no-replace tests and 1 live preflight (require live hosts).
+No failures. All new tests pass.
+
+green.original.log: the 19 new tests (before the collector-binding test was added) on the drvfs
+worktree, 317 s, OK. red.original.log: genuine RED on bb6436ef (missing F1 module, F2 branch,
+topology v1, absent errexit probe: steps overwrite originals and report rc 0 after a refusal).

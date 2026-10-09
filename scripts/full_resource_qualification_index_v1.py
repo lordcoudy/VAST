@@ -17,6 +17,7 @@ from typing import Any, Callable, Mapping
 
 import full_resource_qualification as qualification
 import publication_policy_qualification as policy_qualification
+import publication_policy_qualification_fragments_from_authority_v2 as authority_fragments
 import publication_policy_qualification_index_v2 as policy_index
 from publication_physical_io_v1 import (
     PhysicalRootCustodyV1,
@@ -74,6 +75,16 @@ _EMITTER_SOURCE_BY_ROLE = {
     "resource_intervals": "nvdec_intervals",
     "hardware_resource_samples": "hardware_resource_samples",
     "fanout_work_counters": "fanout_work_counters",
+}
+# Amendment 8: resource bindings written by qualification transaction v2.  Their
+# resource-v2 evidence is the static set of host sources, as in the legacy GVA producer.
+AUTHORITY_BINDING_V2_KIND = authority_fragments.BINDING_KIND
+HARDWARE_RESOURCE_COLLECTOR_PATH = "scripts/collect_metrics.py"
+AUTHORITY_V2_INTERVAL_EMITTERS = {
+    "deepstream": "scripts/checkpoint_deepstream_resource_runtime_v3.py",
+    "savant": "scripts/checkpoint_savant_resource_runtime_v3.py",
+    "openvino_gva": "deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp",
+    "gstreamer_custom": "deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp",
 }
 
 FragmentValidator = Callable[[str, Path, Path], dict[str, Any]]
@@ -148,6 +159,55 @@ def _build_resource_contract(root: Path) -> dict[str, Any]:
     }
 
 
+def _authority_v2_evidence(
+    *,
+    root: Path,
+    system: str,
+    resource: str,
+    row: Mapping[str, Any],
+    material: Mapping[str, Any],
+    resource_contract: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Check one exact transaction-v2 resource binding; return its static resource-v2 evidence."""
+    coordinate = f"{system}/{resource}"
+    if (
+        material.get("schema_version") != authority_fragments.SCHEMA_VERSION
+        or material.get("artifact_kind") != AUTHORITY_BINDING_V2_KIND
+        or material.get("system") != system
+        or material.get("resource") != resource
+        or material.get("branch") != "all_branches"
+        or material.get("role") != "resource"
+        or material.get("binding_sha256")
+        != authority_fragments._self_sha(material, "binding_sha256")
+        or material.get("implementation_id") != row.get("implementation_id")
+        or material.get("emitter_id") != row.get("emitter_id")
+        or material.get("runtime_identity") != row.get("runtime_identity")
+    ):
+        raise FullResourceQualificationIndexV1Error(
+            f"{coordinate} authority binding v2 identity drifted"
+        )
+    interval = policy_index._descriptor(
+        root,
+        root / AUTHORITY_V2_INTERVAL_EMITTERS[system],
+        f"{coordinate} native interval emitter",
+    )
+    return {
+        "contract_version": 2,
+        "publication_scope": qualification.PUBLICATION_SCOPE,
+        "full_resource_validator": dict(resource_contract["full_resource_validator"]),
+        "interval_validator": dict(resource_contract["interval_validator"]),
+        "native_emitters": {
+            "nvdec_intervals": interval,
+            "fanout_work_counters": dict(interval),
+            "hardware_resource_samples": policy_index._descriptor(
+                root,
+                root / HARDWARE_RESOURCE_COLLECTOR_PATH,
+                f"{coordinate} hardware resource collector",
+            ),
+        },
+    }
+
+
 def _read_binding(
     *,
     root: Path,
@@ -155,6 +215,7 @@ def _read_binding(
     resource: str,
     row: Mapping[str, Any],
     resource_contract: Mapping[str, Any],
+    observed_kinds: set[str] | None = None,
 ) -> dict[str, Any]:
     coordinate = f"{system}/{resource}"
     if row.get("role") != "resource" or row.get("branch") != "all_branches":
@@ -177,25 +238,38 @@ def _read_binding(
         )
 
     material = _load_json_object(root / str(artifact["path"]), f"{coordinate} binding")
-    if not _BINDING_REQUIRED_FIELDS <= set(material):
-        raise FullResourceQualificationIndexV1Error(
-            f"{coordinate} binding material fields drifted"
+    if material.get("artifact_kind") == AUTHORITY_BINDING_V2_KIND:
+        evidence = _authority_v2_evidence(
+            root=root,
+            system=system,
+            resource=resource,
+            row=row,
+            material=material,
+            resource_contract=resource_contract,
         )
-    expected_kind = f"vast_{system}_resource_binding_material_v1"
-    if (
-        material.get("schema_version") != 1
-        or material.get("artifact_kind") != expected_kind
-        or material.get("system") != system
-        or material.get("resource") != resource
-        or material.get("branch") != "all_branches"
-        or material.get("role") != "resource"
-        or material.get("implementation_id") != row.get("implementation_id")
-        or material.get("emitter_id") != row.get("emitter_id")
-        or material.get("runtime_identity") != row.get("runtime_identity")
-    ):
-        raise FullResourceQualificationIndexV1Error(
-            f"{coordinate} binding material identity drifted"
-        )
+    else:
+        if not _BINDING_REQUIRED_FIELDS <= set(material):
+            raise FullResourceQualificationIndexV1Error(
+                f"{coordinate} binding material fields drifted"
+            )
+        expected_kind = f"vast_{system}_resource_binding_material_v1"
+        if (
+            material.get("schema_version") != 1
+            or material.get("artifact_kind") != expected_kind
+            or material.get("system") != system
+            or material.get("resource") != resource
+            or material.get("branch") != "all_branches"
+            or material.get("role") != "resource"
+            or material.get("implementation_id") != row.get("implementation_id")
+            or material.get("emitter_id") != row.get("emitter_id")
+            or material.get("runtime_identity") != row.get("runtime_identity")
+        ):
+            raise FullResourceQualificationIndexV1Error(
+                f"{coordinate} binding material identity drifted"
+            )
+        evidence = material["resource_v2_evidence"]
+    if observed_kinds is not None:
+        observed_kinds.add(str(material["artifact_kind"]))
 
     runtime_identity = material["runtime_identity"]
     if type(runtime_identity) is not dict or set(runtime_identity) != _RUNTIME_IDENTITY_FIELDS:
@@ -214,7 +288,6 @@ def _read_binding(
             f"{coordinate} runtime identity device/image drifted"
         )
 
-    evidence = material["resource_v2_evidence"]
     if (
         type(evidence) is not dict
         or evidence.get("contract_version") != 2
@@ -277,6 +350,7 @@ def _build_bindings(
     fragment_paths: Mapping[str, Path],
     fragment_validator: FragmentValidator,
     resource_contract: Mapping[str, Any],
+    observed_kinds: set[str] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]]]:
     systems = tuple(qualification.SYSTEMS)
     resources = tuple(qualification.RESOURCES)
@@ -329,6 +403,7 @@ def _build_bindings(
                     resource=resource,
                     row=by_resource[resource],
                     resource_contract=resource_contract,
+                    observed_kinds=observed_kinds,
                 )
             )
     if len(bindings) != 8:
@@ -410,6 +485,7 @@ def _validated_execution_closure_descriptor(
     receipt_path: Path,
     loader: ExecutionClosureLoader,
     expected_fragment_descriptors: Mapping[str, Mapping[str, Any]],
+    expected_hardware_resource_collector: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     try:
         descriptor = policy_index._descriptor(
@@ -475,6 +551,12 @@ def _validated_execution_closure_descriptor(
     ):
         raise FullResourceQualificationIndexV1Error(
             "qualification execution closure identity/pilot/transaction fragment binding drifted"
+        )
+    if expected_hardware_resource_collector is not None and transaction.get(
+        "hardware_resource_collector"
+    ) != dict(expected_hardware_resource_collector):
+        raise FullResourceQualificationIndexV1Error(
+            "hardware resource collector differs from the qualification transaction"
         )
     return descriptor
 
@@ -614,11 +696,13 @@ def build_full_resource_qualification_index_v1(
     validator = fragment_validator or policy_qualification._default_fragment_validator
     try:
         resource_contract = _build_resource_contract(root)
+        observed_kinds: set[str] = set()
         bindings, fragment_descriptors = _build_bindings(
             root=root,
             fragment_paths=fragment_paths,
             fragment_validator=validator,
             resource_contract=resource_contract,
+            observed_kinds=observed_kinds,
         )
         pilots = _build_pilots(root=root, pilot_root=pilot_root)
         execution_closure = _validated_execution_closure_descriptor(
@@ -627,6 +711,16 @@ def build_full_resource_qualification_index_v1(
             receipt_path=execution_closure_receipt_path,
             loader=(execution_closure_loader or _default_execution_closure_loader),
             expected_fragment_descriptors=fragment_descriptors,
+            # The transaction records the collector its receipt-bound images run.
+            expected_hardware_resource_collector=(
+                policy_index._descriptor(
+                    root,
+                    root / HARDWARE_RESOURCE_COLLECTOR_PATH,
+                    "hardware resource collector",
+                )
+                if AUTHORITY_BINDING_V2_KIND in observed_kinds
+                else None
+            ),
         )
         dataset = policy_index._descriptor(
             root, root / "configs" / "datasets.yaml", "dataset manifest"
