@@ -12,7 +12,7 @@
 | 1 ([run1](run1-scratch-index.result.json)) | копия корня на ext4 (`/var/tmp/a8-diag-root`, 28 GB) | policy: closure receipt `not readonly` (0555 с drvfs на ext4 — артефакт копии); resource: `deepstream/cpu binding material fields drifted` |
 | 2 ([run2](run2-scratch-index-modes.result.json)) | копия, режимы 0555→0444 (как drvfs) | policy: `qualification checkpoint physical input[0] drifted` — closure привязывает физическую идентичность (inode/ctime), копия её не сохраняет; resource — без изменений |
 | 3 ([run3](run3-scratch-fragment-only.result.json), [скрипт](diag_a8_index_run3.py)) | policy index без closure; resource с ослабленным `resource_v2_evidence` | policy: `completed qualification index requires an execution closure receipt`; resource: `binding material identity drifted` (ожидается `vast_<system>_resource_binding_material_v1`, у transaction v2 — `vast_publication_policy_qualification_authority_binding_v2`) |
-| P ([diag_a8_pilots.py](diag_a8_pilots.py)) | stock `validate_checkpoint_qualification_pilot_acceptance_v1` на 32 pilot acceptance, корень read-only | выполняется (I/O-ёмкая перепроверка; результат будет добавлен в `pilots.result.json`) |
+| P ([diag_a8_pilots.py](diag_a8_pilots.py)) | stock `validate_checkpoint_qualification_pilot_acceptance_v1` на 32 pilot acceptance, корень read-only | **32/32 приняты** ([pilots.result.json](pilots.result.json); ~1,5 ч, I/O-ёмкая перепроверка источников) |
 
 ## Выводы (с независимым read-only расследованием кода)
 
