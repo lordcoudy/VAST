@@ -1,0 +1,333 @@
+head= (worktree codex/qualify-full-benchmark, uncommitted 6D.1 tests on top)
+python=3.12.3 platform=Linux 6.6.87.2-microsoft-standard-WSL2 cwd=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests PYTHONPATH=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST TMPDIR=unset
+command=python -B -m unittest -v test_operational_identifier_domain_v1 test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain
+test_matrix_covers_all_systems_and_topologies (test_operational_identifier_domain_v1.OperationalIdentifierDomainV1Tests.test_matrix_covers_all_systems_and_topologies) ... ok
+test_maximal_identifiers_are_checked_against_the_bounds (test_operational_identifier_domain_v1.OperationalIdentifierDomainV1Tests.test_maximal_identifiers_are_checked_against_the_bounds) ... ok
+test_real_qualification_identifiers_fit_the_operational_domain (test_operational_identifier_domain_v1.OperationalIdentifierDomainV1Tests.test_real_qualification_identifiers_fit_the_operational_domain) ... FAIL
+test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) ... 
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-0-branch-plate_number') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-0-branch-vehicle_type') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-0-branch-foreign_object') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-1-branch-plate_number') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-1-branch-vehicle_type') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-1-branch-foreign_object') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-2-branch-plate_number') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-2-branch-vehicle_type') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-2-branch-foreign_object') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-3-branch-plate_number') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-3-branch-vehicle_type') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-3-branch-foreign_object') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-4-branch-plate_number') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-4-branch-vehicle_type') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-4-branch-foreign_object') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-5-branch-plate_number') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-5-branch-vehicle_type') ... ERROR
+  test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-5-branch-foreign_object') ... ERROR
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-0-branch-plate_number')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-0-branch-vehicle_type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-0-branch-foreign_object')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-1-branch-plate_number')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-1-branch-vehicle_type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-1-branch-foreign_object')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-2-branch-plate_number')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-2-branch-vehicle_type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-2-branch-foreign_object')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-3-branch-plate_number')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-3-branch-vehicle_type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-3-branch-foreign_object')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-4-branch-plate_number')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-4-branch-vehicle_type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-4-branch-foreign_object')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-5-branch-plate_number')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-5-branch-vehicle_type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+ERROR: test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) (worker_id='deepstream-stream-5-branch-foreign_object')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_checkpoint_deepstream_runtime.py", line 186, in test_baseline_worker_ids_fit_the_operational_request_domain
+    validate_native_request_source_v1({
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 300, in validate_native_request_source_v1
+    _text(raw[key], key, cap)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_request_domain_v1.py", line 103, in _text
+    raise OperationalDomainError(f"{label} is outside the supported ASCII source domain")
+publication_operational_request_domain_v1.OperationalDomainError: worker_id is outside the supported ASCII source domain
+
+======================================================================
+FAIL: test_real_qualification_identifiers_fit_the_operational_domain (test_operational_identifier_domain_v1.OperationalIdentifierDomainV1Tests.test_real_qualification_identifiers_fit_the_operational_domain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_operational_identifier_domain_v1.py", line 147, in test_real_qualification_identifiers_fit_the_operational_domain
+    self.assertEqual(violations, [], "\n" + "\n".join(violations))
+AssertionError: Lists differ: ['qualification-v2-deepstream-cpu-h264-ind[11737 chars]ain'] != []
+
+First list contains 72 additional elements.
+First extra element 0:
+'qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-0-branch-foreign_object (41): worker_id is outside the supported ASCII source domain'
+
+Diff is 12869 characters long. Set self.maxDiff to None to see it. : 
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-0-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-0-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-0-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-1-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-1-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-1-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-2-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-2-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-2-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-3-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-3-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-3-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-4-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-4-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-4-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-5-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-5-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h264-independent-processes deepstream-stream-5-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-0-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-0-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-0-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-1-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-1-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-1-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-2-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-2-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-2-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-3-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-3-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-3-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-4-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-4-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-4-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-5-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-5-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-cpu-h265-independent-processes deepstream-stream-5-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-0-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-0-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-0-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-1-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-1-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-1-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-2-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-2-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-2-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-3-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-3-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-3-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-4-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-4-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-4-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-5-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-5-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h264-independent-processes deepstream-stream-5-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-0-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-0-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-0-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-1-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-1-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-1-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-2-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-2-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-2-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-3-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-3-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-3-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-4-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-4-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-4-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-5-branch-foreign_object (41): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-5-branch-plate_number (39): worker_id is outside the supported ASCII source domain
+qualification-v2-deepstream-gpu-h265-independent-processes deepstream-stream-5-branch-vehicle_type (39): worker_id is outside the supported ASCII source domain
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.274s
+
+FAILED (failures=1, errors=18)
+rc=1

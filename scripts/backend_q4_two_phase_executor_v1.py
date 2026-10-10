@@ -790,6 +790,42 @@ def _validated_production_receipt_chain_v1(
     return copy.deepcopy(value)
 
 
+def _preflight_production_receipt_kinds_v1(
+    root: Path, production_context: Mapping[str, Any]
+) -> None:
+    """Early read-only kind refusal before the work directory or lock exist.
+
+    The complete receipt chain is still loaded, unchanged, before Phase B.
+    """
+
+    if not _PRODUCTION_CONTEXT_FIELDS <= set(production_context):
+        return
+    for key, expected_kind, label in (
+        ("phase1_receipt_path", PHASE1_PLAN_RECEIPT_KIND, "Phase1"),
+        ("phase2_receipt_path", PHASE2_PLAN_RECEIPT_KIND, "Phase2"),
+        (
+            "source_materialization_result_path",
+            SOURCE_MATERIALIZATION_RESULT_KIND,
+            "source materialization result",
+        ),
+    ):
+        path = _under_root(
+            root,
+            production_context[key],
+            label=f"{label} production receipt",
+            must_exist=True,
+        )
+        value = _load_canonical_json(path, label=f"{label} production receipt")
+        if (
+            value.get("schema_version") != 1
+            or value.get("artifact_kind") != expected_kind
+        ):
+            _fail(
+                f"{label} production receipt artifact kind drifted: "
+                f"{value.get('artifact_kind')!r}"
+            )
+
+
 def _prepare_backend_q4_production_context_v1(
     *,
     project_root: Path,
@@ -6206,10 +6242,11 @@ def execute_backend_q4_two_phase_v1(
                 _fault_hook=_fault_hook,
             )
     _active_physical_custody_v1(root)
-    work = _ensure_directory(root, work_dir, label="Q4 work directory")
     source_path, source_registry, source_descriptor = _validate_source_registry(
         root, source_registry_path
     )
+    _preflight_production_receipt_kinds_v1(root, production_context)
+    work = _ensure_directory(root, work_dir, label="Q4 work directory")
     resolved_identity_inputs = (
         _default_identity_inputs_from_source_registry_v1(
             root=root,

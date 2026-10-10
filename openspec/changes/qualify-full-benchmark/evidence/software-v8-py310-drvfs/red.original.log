@@ -1,0 +1,205 @@
+head=0253856cdc37d56aebbe60a8fcc53dd3763561cd (worktree codex/qualify-full-benchmark, uncommitted 6C changes on top)
+python=3.12.3 platform=Linux 6.6.87.2-microsoft-standard-WSL2 cwd=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests PYTHONPATH=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST TMPDIR=unset
+command=python -B -m unittest -v test_runtime_image_python310_compat_v1 test_publication_operational_process_custody_v1.ProcessCustodyTests.test_empty_failure_channel_mode_follows_custody_posix_mode_enforcement test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests.test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests.test_index_modes_accept_0555_only_without_mode_enforcement test_publication_policy_qualification.PublicationPolicyQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement test_full_resource_qualification.FullResourceQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement
+test_allowlists_name_existing_python_sources (test_runtime_image_python310_compat_v1.RuntimeImagePython310CompatV1Tests.test_allowlists_name_existing_python_sources) ... ok
+test_api_detector_resolves_aliases_and_keeps_guarded_forms (test_runtime_image_python310_compat_v1.RuntimeImagePython310CompatV1Tests.test_api_detector_resolves_aliases_and_keeps_guarded_forms) ... ok
+test_runtime_sources_avoid_post_310_apis (test_runtime_image_python310_compat_v1.RuntimeImagePython310CompatV1Tests.test_runtime_sources_avoid_post_310_apis) ... FAIL
+test_runtime_sources_use_python_310_grammar (test_runtime_image_python310_compat_v1.RuntimeImagePython310CompatV1Tests.test_runtime_sources_use_python_310_grammar) ... ok
+test_syntax_detector_flags_post_310_grammar (test_runtime_image_python310_compat_v1.RuntimeImagePython310CompatV1Tests.test_syntax_detector_flags_post_310_grammar) ... ok
+test_empty_failure_channel_mode_follows_custody_posix_mode_enforcement (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_empty_failure_channel_mode_follows_custody_posix_mode_enforcement) ... 
+  test_empty_failure_channel_mode_follows_custody_posix_mode_enforcement (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_empty_failure_channel_mode_follows_custody_posix_mode_enforcement) (enforced=False) ... FAIL
+test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests.test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement) ... 
+  test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests.test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement) (label='qualification execution closure receipt', mode='0o555', enforced=False) ... ERROR
+  test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests.test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement) (label='guardian authority snapshot', mode='0o555', enforced=False) ... ERROR
+  test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests.test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement) (label='guardian lifecycle snapshot', mode='0o555', enforced=False) ... ERROR
+test_index_modes_accept_0555_only_without_mode_enforcement (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests.test_index_modes_accept_0555_only_without_mode_enforcement) ... 
+  test_index_modes_accept_0555_only_without_mode_enforcement (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests.test_index_modes_accept_0555_only_without_mode_enforcement) (label='committed full-resource qualification index mode', mode='0o555', enforced=False) ... ERROR
+  test_index_modes_accept_0555_only_without_mode_enforcement (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests.test_index_modes_accept_0555_only_without_mode_enforcement) (label='cold full-resource qualification index', mode='0o555', enforced=False) ... ERROR
+test_immutable_output_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification.PublicationPolicyQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement) ... 
+  test_immutable_output_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification.PublicationPolicyQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement) (site='writer', mode='0o555', enforced=False) ... ERROR
+  test_immutable_output_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification.PublicationPolicyQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement) (site='cold', mode='0o555', enforced=False) ... ERROR
+test_immutable_output_modes_accept_0555_only_without_mode_enforcement (test_full_resource_qualification.FullResourceQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement) ... 
+  test_immutable_output_modes_accept_0555_only_without_mode_enforcement (test_full_resource_qualification.FullResourceQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement) (site='writer', mode='0o555', enforced=False) ... ERROR
+  test_immutable_output_modes_accept_0555_only_without_mode_enforcement (test_full_resource_qualification.FullResourceQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement) (site='cold', mode='0o555', enforced=False) ... ERROR
+
+======================================================================
+ERROR: test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests.test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement) (label='qualification execution closure receipt', mode='0o555', enforced=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1493, in test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement
+    loaded = load()
+             ^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1475, in load
+    return target.load_publication_policy_qualification_execution_closure_v1(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_policy_qualification_execution_closure_v1.py", line 3222, in load_publication_policy_qualification_execution_closure_v1
+    _require(mode == 0o444, f"{label} is not readonly")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_policy_qualification_execution_closure_v1.py", line 382, in _require
+    _fail(message)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_policy_qualification_execution_closure_v1.py", line 377, in _fail
+    raise QualificationExecutionClosureV1Error(message)
+publication_policy_qualification_execution_closure_v1.QualificationExecutionClosureV1Error: qualification execution closure receipt is not readonly
+
+======================================================================
+ERROR: test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests.test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement) (label='guardian authority snapshot', mode='0o555', enforced=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1493, in test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement
+    loaded = load()
+             ^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1475, in load
+    return target.load_publication_policy_qualification_execution_closure_v1(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_policy_qualification_execution_closure_v1.py", line 3222, in load_publication_policy_qualification_execution_closure_v1
+    _require(mode == 0o444, f"{label} is not readonly")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_policy_qualification_execution_closure_v1.py", line 382, in _require
+    _fail(message)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_policy_qualification_execution_closure_v1.py", line 377, in _fail
+    raise QualificationExecutionClosureV1Error(message)
+publication_policy_qualification_execution_closure_v1.QualificationExecutionClosureV1Error: guardian authority snapshot is not readonly
+
+======================================================================
+ERROR: test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests.test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement) (label='guardian lifecycle snapshot', mode='0o555', enforced=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1493, in test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement
+    loaded = load()
+             ^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1475, in load
+    return target.load_publication_policy_qualification_execution_closure_v1(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_policy_qualification_execution_closure_v1.py", line 3222, in load_publication_policy_qualification_execution_closure_v1
+    _require(mode == 0o444, f"{label} is not readonly")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_policy_qualification_execution_closure_v1.py", line 382, in _require
+    _fail(message)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_policy_qualification_execution_closure_v1.py", line 377, in _fail
+    raise QualificationExecutionClosureV1Error(message)
+publication_policy_qualification_execution_closure_v1.QualificationExecutionClosureV1Error: guardian lifecycle snapshot is not readonly
+
+======================================================================
+ERROR: test_index_modes_accept_0555_only_without_mode_enforcement (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests.test_index_modes_accept_0555_only_without_mode_enforcement) (label='committed full-resource qualification index mode', mode='0o555', enforced=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_index_v1.py", line 524, in test_index_modes_accept_0555_only_without_mode_enforcement
+    target._commit_index(root, destination, payload)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification_index_v1.py", line 557, in _commit_index
+    raise FullResourceQualificationIndexV1Error(
+full_resource_qualification_index_v1.FullResourceQualificationIndexV1Error: full-resource qualification index identity drifted
+
+======================================================================
+ERROR: test_index_modes_accept_0555_only_without_mode_enforcement (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests.test_index_modes_accept_0555_only_without_mode_enforcement) (label='cold full-resource qualification index', mode='0o555', enforced=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_index_v1.py", line 524, in test_index_modes_accept_0555_only_without_mode_enforcement
+    target._commit_index(root, destination, payload)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification_index_v1.py", line 575, in _commit_index
+    raise FullResourceQualificationIndexV1Error(
+full_resource_qualification_index_v1.FullResourceQualificationIndexV1Error: cold full-resource qualification index drifted
+
+======================================================================
+ERROR: test_immutable_output_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification.PublicationPolicyQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement) (site='writer', mode='0o555', enforced=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_policy_qualification.py", line 911, in test_immutable_output_modes_accept_0555_only_without_mode_enforcement
+    descriptor = target._write_immutable_json(path, value)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_policy_qualification.py", line 1143, in _write_immutable_json
+    raise QualificationError(
+publication_policy_qualification.QualificationError: immutable qualification output collision: holder-0.json
+
+======================================================================
+ERROR: test_immutable_output_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification.PublicationPolicyQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement) (site='cold', mode='0o555', enforced=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_policy_qualification.py", line 934, in test_immutable_output_modes_accept_0555_only_without_mode_enforcement
+    observed, _ = target._cold_read_promoted_json(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_policy_qualification.py", line 1209, in _cold_read_promoted_json
+    raise QualificationError(f"{label} is not one readonly immutable file")
+publication_policy_qualification.QualificationError: test promoted output is not one readonly immutable file
+
+======================================================================
+ERROR: test_immutable_output_modes_accept_0555_only_without_mode_enforcement (test_full_resource_qualification.FullResourceQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement) (site='writer', mode='0o555', enforced=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification.py", line 835, in test_immutable_output_modes_accept_0555_only_without_mode_enforcement
+    descriptor = target._write_immutable_json(path, value)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification.py", line 1114, in _write_immutable_json
+    raise FullResourceQualificationError(
+full_resource_qualification.FullResourceQualificationError: immutable qualification output collision: holder-0.json
+
+======================================================================
+ERROR: test_immutable_output_modes_accept_0555_only_without_mode_enforcement (test_full_resource_qualification.FullResourceQualificationTests.test_immutable_output_modes_accept_0555_only_without_mode_enforcement) (site='cold', mode='0o555', enforced=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification.py", line 858, in test_immutable_output_modes_accept_0555_only_without_mode_enforcement
+    observed, _ = target._cold_read_promoted_json(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification.py", line 1183, in _cold_read_promoted_json
+    raise FullResourceQualificationError(
+full_resource_qualification.FullResourceQualificationError: test promoted output is not one readonly immutable file
+
+======================================================================
+FAIL: test_runtime_sources_avoid_post_310_apis (test_runtime_image_python310_compat_v1.RuntimeImagePython310CompatV1Tests.test_runtime_sources_avoid_post_310_apis)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_runtime_image_python310_compat_v1.py", line 316, in test_runtime_sources_avoid_post_310_apis
+    self.assertEqual(findings, [])
+AssertionError: Lists differ: ['scripts/checkpoint_gstreamer_analytics_b[1204 chars]ote'] != []
+
+First list contains 19 additional elements.
+First extra element 0:
+'scripts/checkpoint_gstreamer_analytics_bridge.py:776: unguarded .add_note'
+
++ []
+- ['scripts/checkpoint_gstreamer_analytics_bridge.py:776: unguarded .add_note',
+-  'scripts/checkpoint_gstreamer_runtime.py:3062: unguarded .add_note',
+-  'scripts/checkpoint_model_parity.py:794: unguarded .add_note',
+-  'scripts/checkpoint_model_parity.py:747: unguarded .add_note',
+-  'scripts/checkpoint_runtime.py:1407: unguarded .add_note',
+-  'scripts/checkpoint_runtime.py:1405: unguarded .add_note',
+-  'scripts/checkpoint_runtime.py:1564: unguarded .add_note',
+-  'scripts/checkpoint_runtime.py:1594: unguarded .add_note',
+-  'scripts/checkpoint_runtime.py:1989: unguarded .add_note',
+-  'scripts/checkpoint_runtime.py:2000: unguarded .add_note',
+-  'scripts/checkpoint_runtime.py:1472: sys.exception',
+-  'scripts/checkpoint_runtime.py:1542: sys.exception',
+-  'scripts/extract_kpp_legacy_iss.py:1213: unguarded .add_note',
+-  'scripts/extract_kpp_legacy_iss.py:1217: unguarded .add_note',
+-  'scripts/extract_kpp_legacy_iss.py:1221: unguarded .add_note',
+-  'scripts/publication_operational_container_custody_v1.py:453: unguarded '
+-  '.add_note',
+-  'scripts/publication_operational_process_custody_v1.py:549: unguarded '
+-  '.add_note',
+-  'scripts/publication_operational_runtime_context_v1.py:154: unguarded '
+-  '.add_note',
+-  'scripts/publication_operational_runtime_context_v1.py:159: unguarded '
+-  '.add_note']
+
+======================================================================
+FAIL: test_empty_failure_channel_mode_follows_custody_posix_mode_enforcement (test_publication_operational_process_custody_v1.ProcessCustodyTests.test_empty_failure_channel_mode_follows_custody_posix_mode_enforcement) (enforced=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_operational_process_custody_v1.py", line 363, in test_empty_failure_channel_mode_follows_custody_posix_mode_enforcement
+    descriptor = observer._write_failure_channel(capture, path, b"")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_process_custody_v1.py", line 433, in _write_failure_channel
+    _require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1 and info.st_size == 0
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_process_custody_v1.py", line 54, in _require
+    raise ValueError(message)
+ValueError: empty failed original channel custody drifted
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_operational_process_custody_v1.py", line 366, in test_empty_failure_channel_mode_follows_custody_posix_mode_enforcement
+    self.fail(f"unenforced 0555 empty channel was rejected: {error}")
+AssertionError: unenforced 0555 empty channel was rejected: empty failed original channel custody drifted
+Original process capture finalization failed: original engine capture failed: original_wrapper_failed
+
+----------------------------------------------------------------------
+Ran 10 tests in 14.679s
+
+FAILED (failures=2, errors=9)
+rc=1

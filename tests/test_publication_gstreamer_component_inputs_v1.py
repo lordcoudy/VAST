@@ -247,7 +247,7 @@ class ComponentPhysicalAuthorityTests(unittest.TestCase):
         from checkpoint_model_parity_acceptance_v4 import validate_refresh_authority_v4
         # Only the committed receipt's metadata is read. The actual stock
         # schema validator performs no engine query or model assessment here.
-        original = json.loads((ROOT / "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json").read_bytes())
+        original = json.loads((ROOT / "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.acceptance_receipt.json").read_bytes())
         refresh = validate_refresh_authority_v4(original["refresh_authority"])
         fields = {"path", "size_bytes", "sha256", "worker_implementation_sha256"}
         for resource in stock.RESOURCES:

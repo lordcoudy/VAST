@@ -20,6 +20,8 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
+from non_decreasing_wall_clock_v1 import wall_clock_exit_line, wall_time_ns
+
 
 _GOOGLE_API_CORE_PYTHON_310_EOL_WARNING = (
     "You are using a Python version (3.10.12) which Google will stop "
@@ -83,7 +85,7 @@ def _require(condition: bool, message: str) -> None:
 
 
 def _now_ms() -> int:
-    return time.time_ns() // 1_000_000
+    return wall_time_ns() // 1_000_000
 
 
 def _await_coordinated_stop_after_admission_eof(
@@ -404,9 +406,9 @@ class SavantSdkCallbackRuntime:
         # WSL2/Docker clock-quantization boundary.
         self.callbacks.admit_transport_frame(
             frame,
-            observed_timestamp_ms=_ceil_epoch_ns_to_ms(time.time_ns()),
+            observed_timestamp_ms=_ceil_epoch_ns_to_ms(wall_time_ns()),
         )
-        decode_submit_start_ns = time.time_ns()
+        decode_submit_start_ns = wall_time_ns()
         with self._lock:
             _require(pts not in self._admission_by_pts,
                      "Savant transport PTS was admitted twice")
@@ -428,7 +430,7 @@ class SavantSdkCallbackRuntime:
             mux_gst_buffer_pts_ns=getattr(buffer, "pts", None),
         )
         pts = int(identity["transport_pts_ns"])
-        completed_ns = time.time_ns()
+        completed_ns = wall_time_ns()
         with self._lock:
             _require(pts not in self._identity_by_pts,
                      "Savant decoded PTS was duplicated")
@@ -475,7 +477,7 @@ class SavantSdkCallbackRuntime:
                 marker = (pts, branch)
                 _require(marker not in self._fanout,
                          "Savant physical fanout was duplicated")
-                fanout_completed_ns = time.time_ns()
+                fanout_completed_ns = wall_time_ns()
                 serialized_fanout_timestamp_ms = self.callbacks.observe_fanout(
                     identity,
                     branch=branch,
@@ -534,7 +536,7 @@ class SavantSdkCallbackRuntime:
             # The first branch may spend multiple milliseconds observing that
             # parent; including that work would put fanout before its parent.
             self._observe_preprocess_once(pts=pts, identity=identity)
-            fanout_started_ns = time.time_ns()
+            fanout_started_ns = wall_time_ns()
             fanout_started_thread_ns = time.thread_time_ns()
             serialized_fanout_timestamp_ms, fanout_completed_ns = self._preprocess_and_fanout(
                 pts=pts, branch=branch, identity=identity
@@ -1118,6 +1120,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     ) as exc:
         print(str(exc), file=os.sys.stderr)
         return 2
+    finally:
+        # One bounded line on every exit this process controls; the owner
+        # retains child stderr as failure evidence.
+        print(wall_clock_exit_line("savant-sdk-runtime"), file=os.sys.stderr, flush=True)
 
 
 if __name__ == "__main__":

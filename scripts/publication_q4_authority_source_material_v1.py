@@ -154,6 +154,34 @@ _ACCEPTED_SOURCE_PATH_FIELDS = frozenset(
         "guardian_preprocessing_receipt_path",
     }
 )
+# Kinds an accepted source may declare.  The preprocessing contract is a plain
+# contract document and is bound only through its accepted receipt.
+ACCEPTED_SOURCE_KINDS_V1 = {
+    "model_parity_acceptance_receipt_path": frozenset(
+        {"vast_checkpoint_model_parity_acceptance_receipt_v4"}
+    ),
+    "policy_qualification_receipt_path": frozenset(
+        {"vast_publication_policy_qualification_receipt"}
+    ),
+    "policy_capability_manifest_path": frozenset(
+        {"vast_publication_policy_capability_manifest"}
+    ),
+    "policy_calibration_mapping_path": frozenset(
+        {"vast_publication_policy_calibration_mapping"}
+    ),
+    "resource_qualification_receipt_path": frozenset(
+        {"vast_pre_run_full_resource_capability_qualification_receipt"}
+    ),
+    "resource_capability_manifest_path": frozenset(
+        {"vast_pre_run_full_resource_capability_manifest"}
+    ),
+    "analytics_service_authority_path": frozenset(
+        {"vast_gstreamer_analytics_production_service_authority_v1"}
+    ),
+    "guardian_preprocessing_receipt_path": frozenset(
+        {"vast_guardian_accepted_policy_preprocessing_contract_materialization_v1"}
+    ),
+}
 _DATASET_DESCRIPTOR_FIELDS = frozenset(
     {"codec_variant", "front_gate", "underbody"}
 )
@@ -765,6 +793,39 @@ def _policy_outputs(inputs: Mapping[str, Any]) -> dict[str, Any]:
     return result
 
 
+def reject_foreign_accepted_source_kinds_v1(
+    custody: PhysicalRootCustodyV1,
+    source_paths: Mapping[str, Any],
+    *,
+    label: str,
+) -> None:
+    """Read-only refusal of declared foreign accepted-source kinds.
+
+    Runs before any output directory exists.  Missing, unreadable or kindless
+    sources are left to the strict validation that follows.
+    """
+
+    for key in sorted(ACCEPTED_SOURCE_KINDS_V1):
+        if key not in source_paths:
+            continue
+        try:
+            _descriptor, payload = custody.read_descriptor(
+                source_paths[key],
+                label=f"{label} {key}",
+                maximum=MAX_REQUEST_BYTES,
+                capture=True,
+            )
+            value = json.loads(payload or b"")
+        except (PublicationPhysicalIoV1Error, UnicodeError, ValueError):
+            continue
+        if type(value) is dict and "artifact_kind" in value:
+            _require(
+                value["artifact_kind"] in ACCEPTED_SOURCE_KINDS_V1[key],
+                f"{label} {key} declares a foreign artifact kind: "
+                f"{value['artifact_kind']!r}",
+            )
+
+
 def _accepted_sources(request: Mapping[str, Any]) -> dict[str, str]:
     result = {
         key: request["accepted_source_descriptors"][key]["path"]
@@ -1211,6 +1272,14 @@ def materialize_publication_q4_authority_source_material_v1(
             == _sha(expected_request_sha256, "expected request semantic"),
             "Q4 source-material request semantic pin drifted",
         )
+        reject_foreign_accepted_source_kinds_v1(
+            custody,
+            {
+                key: descriptor["path"]
+                for key, descriptor in request["accepted_source_descriptors"].items()
+            },
+            label="Q4 source-material accepted source",
+        )
         output_relative = canonical_relative_path_v1(
             output_dir, label="Q4 source-material output directory"
         )
@@ -1466,6 +1535,7 @@ if __name__ == "__main__":
 
 
 __all__ = [
+    "ACCEPTED_SOURCE_KINDS_V1",
     "EXIT_REJECTED",
     "MATERIAL_FILENAME",
     "RECEIPT_FILENAME",
@@ -1477,6 +1547,7 @@ __all__ = [
     "load_publication_q4_authority_source_material_receipt_v1",
     "main",
     "materialize_publication_q4_authority_source_material_v1",
+    "reject_foreign_accepted_source_kinds_v1",
     "run_cli",
     "validate_publication_q4_authority_source_material_receipt_v1",
     "validate_publication_q4_authority_source_material_request_v1",

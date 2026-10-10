@@ -26,16 +26,28 @@ from checkpoint_publication_launcher_adapter_v3 import NativePublicationRequestV
 
 @unittest.skipUnless(sys.platform.startswith("linux"), "actual external engine and Unix socket pins require Linux")
 class HeldStockRequestTests(unittest.TestCase):
+    MODE = target.DIAGNOSTIC_MODE
+
+    def select_operation(self, held):
+        return next(iter(held["operations_by_id"].values()))
+
+    def declared_context(self, descriptor):
+        return descriptor
+
     def setUp(self):
         self.fixture = seam.PhysicalStockOperationPlanningSeamTests(
             "test_stock_native_pair_selection_preserves_two_distinct_contexts_and_mode")
         self.fixture.setUp()
         self.addCleanup(self.fixture.doCleanups)
         self.root = self.fixture.root
-        self.plan = self.fixture.prepare(target.DIAGNOSTIC_MODE, "cpu")
+        self.plan = self.fixture.prepare(self.MODE, "cpu" if self.MODE == target.DIAGNOSTIC_MODE else None)
         with held_operational_capture_plan_v1(project_root=self.root, index_path=self.plan["descriptor"]["path"]) as held:
-            self.operation = next(iter(held["operations_by_id"].values()))
+            self.operations = list(held["operations_by_id"].values())
+            self.native_contexts = {row["operation_id"]: row["descriptor"] for row in held["index"]["native_contexts"]}
+            self.operation = self.select_operation(held)
+            # The stock bundle of this arm declares its runtime-selected context.
             self.context = held["runtime_contexts_by_arm"][self.operation["arm_id"]]["descriptor"]
+            self.own_context = self.native_contexts[self.operation["operation_id"]]
         self.cell = next(c for c in pilot.qualification_pilot_cells_v2() if c.arm_id == self.operation["arm_id"])
         self.original = json.loads(Path(self.operation["original_operation"]["path"]).read_bytes())
         self.inputs = SimpleNamespace(root=self.root)
@@ -78,11 +90,11 @@ class HeldStockRequestTests(unittest.TestCase):
             "evidence_mapping": {name: name for name in pilot.CHILD_EVIDENCE_FILES},
             "files": {"policy_capability_manifest": self.descriptor(self.inputs.candidate_manifest),
                       "policy_calibration": self.descriptor(self.inputs.calibrations[self.cell.system]),
-                      "container_engine": self.engine, CAPTURE_ROLE: self.context},
+                      "container_engine": self.engine, CAPTURE_ROLE: self.declared_context(self.context)},
             "container_image": self.original["container_image"],
             "container_engine_socket": engine_socket,
             "endpoint_sockets": {"analytics_execution": analytics_socket},
-            CAPTURE_KEY: {"mode": target.DIAGNOSTIC_MODE, "output_dir": OUTPUT_PATH_RULE}}
+            CAPTURE_KEY: {"mode": self.MODE, "output_dir": OUTPUT_PATH_RULE}}
         self.bundle_path = self.root / "runtime-bundle.json"
         self.save_bundle()
         code = self.fixture.write("fixture-code-closure.json", {"fixture_authority_only": True})
@@ -200,6 +212,125 @@ class HeldStockRequestTests(unittest.TestCase):
                 os.chmod(context, 0o600)
                 context.write_bytes(context.read_bytes() + b" ")
                 held["execution_barrier"]()
+
+    def test_qualification_activation_in_diagnostic_plan_is_rejected(self):
+        self.contract[CAPTURE_KEY] = {"mode": target.QUALIFICATION_MODE, "output_dir": OUTPUT_PATH_RULE}
+        self.save_bundle()
+        with self.assertRaisesRegex(ValueError, "exact capture context"):
+            with self.hold():
+                self.fail("qualification activation yielded a diagnostic request")
+
+
+class _HeldQualificationOriginalRequestTests(HeldStockRequestTests):
+    """Held prechecks/Savant reuse the real stock cell bundle and request spine."""
+    MODE = target.QUALIFICATION_MODE
+    PHASE = SYSTEM = None
+    # These diagnostic-plan regressions stay in HeldStockRequestTests.
+    test_physical_stock_request_constructor_validator_finalizer_and_barriers = None
+    test_missing_or_foreign_context_is_rejected_before_request_yield = None
+    test_missing_or_alias_engine_is_rejected_without_launch = None
+    test_orphan_bundle_and_occupied_original_output_are_rejected = None
+    test_actual_declared_context_drift_is_rejected_by_held_exit_barrier = None
+    test_qualification_activation_in_diagnostic_plan_is_rejected = None
+
+    def select_operation(self, held):
+        rows = [row for row in held["operations_by_id"].values()
+                if row["phase"] == self.PHASE and row["system"] == self.SYSTEM]
+        self.assertTrue(rows)
+        return rows[0]
+
+    def declared_context(self, descriptor):
+        relative = Path(descriptor["path"]).relative_to(self.root).as_posix()
+        container = ("/opt/vast/input/operational/native-context.json" if self.SYSTEM in {"deepstream", "savant"}
+                     else "/workspace/project/" + relative)
+        return {"path": relative, "size_bytes": descriptor["size_bytes"], "sha256": descriptor["sha256"],
+                "container_path": container}
+
+    def runtime_module(self):
+        import importlib
+        return importlib.import_module({"openvino_gva": "checkpoint_openvino_gva_publication_runtime_v3",
+            "gstreamer_custom": "checkpoint_gstreamer_publication_runtime_v3",
+            "savant": "checkpoint_savant_publication_runtime_v3"}[self.SYSTEM])
+
+    def test_held_original_reuses_stock_cell_bundle_with_only_its_own_context(self):
+        self.assertNotEqual(self.own_context, self.context)
+        bundle = self.bundle_path.read_bytes()
+        with self.hold() as (held, constructor, validator, barrier):
+            self.assertEqual((held["operation"]["phase"], held["cell"].system), (self.PHASE, self.SYSTEM))
+            self.assertEqual(held["native_context_descriptor"], self.own_context)
+            self.assertEqual(held["request"].output_dir, Path(self.original["outputs"]["measurement_dir"]))
+            contract = held["request"].runtime_inputs["dataset"][pilot.RUNTIME_INPUT_KEY_BY_SYSTEM[self.SYSTEM]]
+            expected = copy.deepcopy(self.contract)
+            expected["files"][CAPTURE_ROLE] = self.declared_context(self.own_context)
+            self.assertEqual(contract, expected)
+            self.assertEqual(held["finalizer_kwargs"]["runtime_input_bundle_path"], self.bundle_path)
+            self.assertEqual(held["finalizer_kwargs"]["expected_arm_id"], self.cell.arm_id)
+            self.assertEqual(held["engine_descriptor"], self.engine)
+            constructor.assert_called_once()
+            self.assertEqual(validator.call_count, 2)
+            held["execution_barrier"]()
+            # The unchanged stock runtime of this system pins the substituted
+            # context by its own size/SHA and container path rule.
+            runtime = self.runtime_module()
+            pin = runtime._open_pin(self.root, CAPTURE_ROLE, contract["files"][CAPTURE_ROLE])
+            try:
+                self.assertEqual((pin.size, pin.sha256, pin.container_path), (self.own_context["size_bytes"],
+                    self.own_context["sha256"], contract["files"][CAPTURE_ROLE]["container_path"]))
+                self.assertEqual(str(pin.path), self.own_context["path"])
+            finally:
+                os.close(pin.fd)
+            for foreign in ({**contract["files"][CAPTURE_ROLE], "sha256": self.context["sha256"]},
+                            {**contract["files"][CAPTURE_ROLE], "size_bytes": self.own_context["size_bytes"] + 1}):
+                with self.assertRaises(Exception):
+                    runtime._open_pin(self.root, CAPTURE_ROLE, foreign)
+        self.assertGreaterEqual(barrier.call_count, 3)
+        self.assertEqual(self.bundle_path.read_bytes(), bundle)
+        self.assertIsNone(pilot._ACTIVE_PHYSICAL_CUSTODY.get())
+        self.assertFalse(Path(self.original["outputs"]["measurement_dir"]).exists())
+
+    def test_cell_phase_and_unheld_system_are_refused(self):
+        self.assertFalse(any("deepstream" in systems for systems in target.HELD_OPERATIONS.values()))
+        refused = [next(row for row in self.operations if row["phase"] == "qualification_cell" and row["arm_id"] == self.cell.arm_id),
+                   next(row for row in self.operations if row["system"] == "deepstream")]
+        for row in refused:
+            with self.subTest(operation=row["operation_id"]), \
+                    self.assertRaisesRegex(ValueError, "authorized forced native pair"):
+                with self.hold(operation_id=row["operation_id"]):
+                    self.fail("unheld original yielded a request")
+
+    def test_bundle_with_foreign_cell_own_or_diagnostic_context_is_refused(self):
+        other = next(row for row in self.operations if row["phase"] == "qualification_cell" and row["arm_id"] != self.cell.arm_id)
+        original = copy.deepcopy(self.contract)
+        cases = {"another_cell": (CAPTURE_ROLE, self.declared_context(self.native_contexts[other["operation_id"]])),
+                 "own_context": (CAPTURE_ROLE, self.declared_context(self.own_context)),
+                 "diagnostic_mode": (CAPTURE_KEY, {"mode": target.DIAGNOSTIC_MODE, "output_dir": OUTPUT_PATH_RULE})}
+        for name, (key, value) in cases.items():
+            with self.subTest(case=name):
+                self.contract = copy.deepcopy(original)
+                if key == CAPTURE_ROLE:
+                    self.contract["files"][key] = value
+                else:
+                    self.contract[key] = value
+                self.save_bundle()
+                with self.assertRaisesRegex(ValueError, "exact cell capture context"):
+                    with self.hold():
+                        self.fail("detached held context yielded a request")
+
+
+class HeldOpenvinoGvaPrecheckRequestTests(_HeldQualificationOriginalRequestTests):
+    PHASE, SYSTEM = "native_precheck", "openvino_gva"
+
+
+class HeldGstreamerCustomPrecheckRequestTests(_HeldQualificationOriginalRequestTests):
+    PHASE, SYSTEM = "native_precheck", "gstreamer_custom"
+
+
+class HeldSavantOriginalRequestTests(_HeldQualificationOriginalRequestTests):
+    PHASE, SYSTEM = "savant_original", "savant"
+
+
+# The parameterized base is not itself a test case.
+del _HeldQualificationOriginalRequestTests
 
 
 if __name__ == "__main__":

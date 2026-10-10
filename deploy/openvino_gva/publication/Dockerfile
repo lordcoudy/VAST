@@ -66,6 +66,7 @@ COPY \
   scripts/kpp_iss_publication_v3_dataset.py \
   scripts/kpp_legacy_iss_v2_manifest.py \
   scripts/model_parity_grant.py \
+  scripts/non_decreasing_wall_clock_v1.py \
   scripts/publication_acceptance_evidence.py \
   scripts/publication_child_evidence_materializer_v1.py \
   scripts/publication_gstreamer_component_authority_v1.py \

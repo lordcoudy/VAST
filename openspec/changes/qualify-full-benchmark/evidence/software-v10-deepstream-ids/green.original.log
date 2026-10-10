@@ -1,0 +1,13 @@
+head= (worktree codex/qualify-full-benchmark, uncommitted 6D.1-6D.2 on top)
+python=3.12.3 platform=Linux 6.6.87.2-microsoft-standard-WSL2 cwd=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests PYTHONPATH=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST TMPDIR=unset
+command=python -B -m unittest -v test_operational_identifier_domain_v1 test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain
+test_matrix_covers_all_systems_and_topologies (test_operational_identifier_domain_v1.OperationalIdentifierDomainV1Tests.test_matrix_covers_all_systems_and_topologies) ... ok
+test_maximal_identifiers_are_checked_against_the_bounds (test_operational_identifier_domain_v1.OperationalIdentifierDomainV1Tests.test_maximal_identifiers_are_checked_against_the_bounds) ... ok
+test_real_qualification_identifiers_fit_the_operational_domain (test_operational_identifier_domain_v1.OperationalIdentifierDomainV1Tests.test_real_qualification_identifiers_fit_the_operational_domain) ... ok
+test_baseline_worker_ids_fit_the_operational_request_domain (test_checkpoint_deepstream_runtime.DeepStreamRuntimePlanTests.test_baseline_worker_ids_fit_the_operational_request_domain) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.266s
+
+OK
+rc=0

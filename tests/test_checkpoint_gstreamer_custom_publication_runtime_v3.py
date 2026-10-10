@@ -44,15 +44,15 @@ class GstreamerPublicationContainerBoundaryV3Tests(unittest.TestCase):
     def test_runtime_is_bound_to_the_materialized_image_and_not_host_native_dispatch(self) -> None:
         self.assertEqual(
             runtime.EXPECTED_IMAGE_REFERENCE,
-            "vast/gstreamer-custom-publication-runtime-v3:decision28-2a6a42c9",
+            "vast/gstreamer-custom-publication-runtime-v3:materialized",
         )
         self.assertEqual(
             runtime.EXPECTED_IMAGE_ID,
-            "sha256:222a0003661e8229a431c69a513d7352294e6a38028abeb5b133aab45b3945a1",
+            "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
         )
         self.assertEqual(
             runtime.EXPECTED_IMAGE_INSPECT_PROJECTION_SHA256,
-            "65af20e2fc8a6089cade6026a1e1ee98f66a24508a1c76ddcb4699df0a50061c",
+            "d212fdd200de4d5ba2d19d4460f05fd6ca16922a29382bb3dc66a7e97e3491dd",
         )
         self.assertTrue({
             "container_image", "embedded_artifacts", "container_engine_socket",

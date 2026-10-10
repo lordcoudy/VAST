@@ -1,0 +1,25 @@
+{
+ "ContainerdCommit": {
+  "ID": "1294c24a7da8e5a793ed378161673abe94118892"
+ },
+ "DefaultRuntime": "runc",
+ "Driver": "overlayfs",
+ "DriverStatus": [
+  [
+   "driver-type",
+   "io.containerd.snapshotter.v1"
+  ]
+ ],
+ "ID": "aa8f3d33-e1dc-4ed2-ad06-488b46b332d0",
+ "InitCommit": {
+  "ID": "de40ad0"
+ },
+ "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+ "Name": "docker-desktop",
+ "OSType": "linux",
+ "OperatingSystem": "Docker Desktop",
+ "RuncCommit": {
+  "ID": "v1.5.1-0-g8f2685a4"
+ },
+ "ServerVersion": "29.8.1"
+}

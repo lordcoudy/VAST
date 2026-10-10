@@ -1,0 +1,24 @@
+test_publication_operational_process_custody_v1 (unittest.loader._FailedTest) ... ERROR
+
+======================================================================
+ERROR: test_publication_operational_process_custody_v1 (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_publication_operational_process_custody_v1
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/unittest/loader.py", line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File "/work/root/tests/test_publication_operational_process_custody_v1.py", line 25, in <module>
+    import publication_policy_qualification_runtime_inputs_v2 as stock_runtime
+  File "/work/root/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 44, in <module>
+    from publication_policy_qualification_pilot_executor_v2 import (
+  File "/work/root/scripts/publication_policy_qualification_pilot_executor_v2.py", line 50, in <module>
+    from collect_metrics import HardwareResourceCollector
+  File "/work/root/scripts/collect_metrics.py", line 14, in <module>
+    import psutil
+ModuleNotFoundError: No module named 'psutil'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

@@ -1,0 +1,596 @@
+2026-10-06T22:12:06Z
+base_commit=36c395be (scripts unchanged; only tests/test_full_consumers_foreign_kind_v1.py added)
+test_accepted_policy_receipt_foreign_kind_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.AcceptedPolicyPreprocessingForeignKindTests.test_accepted_policy_receipt_foreign_kind_is_rejected_before_output) ... ok
+test_completed_qualification_index_foreign_kind_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.AcceptedPolicyPreprocessingForeignKindTests.test_completed_qualification_index_foreign_kind_is_rejected_before_output) ... ok
+test_every_nonplan_command_rejects_foreign_identity_manifest_before_run_root (tests.test_full_consumers_foreign_kind_v1.FullPublicationEntrypointForeignKindTests.test_every_nonplan_command_rejects_foreign_identity_manifest_before_run_root) ... ok
+test_promotion_cli_rejects_foreign_index_kind_before_output (tests.test_full_consumers_foreign_kind_v1.PolicyPromotionForeignKindTests.test_promotion_cli_rejects_foreign_index_kind_before_output) ... ok
+test_phase1_rejects_foreign_source_spec_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthorityPlanPipelineForeignKindTests.test_phase1_rejects_foreign_source_spec_before_output) ... ok
+test_phase2_rejects_foreign_phase1_receipt_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthorityPlanPipelineForeignKindTests.test_phase2_rejects_foreign_phase1_receipt_before_output) ... ok
+test_source_spec_phase_rejects_foreign_source_material_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthorityPlanPipelineForeignKindTests.test_source_spec_phase_rejects_foreign_source_material_before_output) ... ok
+test_cli_rejects_foreign_source_registry_before_work_dir (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorForeignKindTests.test_cli_rejects_foreign_source_registry_before_work_dir) ... 
+  test_cli_rejects_foreign_source_registry_before_work_dir (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorForeignKindTests.test_cli_rejects_foreign_source_registry_before_work_dir) (kind='component') ... FAIL
+  test_cli_rejects_foreign_source_registry_before_work_dir (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorForeignKindTests.test_cli_rejects_foreign_source_registry_before_work_dir) (kind='study') ... FAIL
+  test_cli_rejects_foreign_source_registry_before_work_dir (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorForeignKindTests.test_cli_rejects_foreign_source_registry_before_work_dir) (kind='unknown') ... FAIL
+test_preprocessing_receipt_foreign_kind_exits_before_output (tests.test_full_consumers_foreign_kind_v1.QualificationExecutionClosureForeignKindTests.test_preprocessing_receipt_foreign_kind_exits_before_output) ... ok
+test_transaction_receipt_foreign_kind_exits_before_output (tests.test_full_consumers_foreign_kind_v1.QualificationExecutionClosureForeignKindTests.test_transaction_receipt_foreign_kind_exits_before_output) ... ok
+test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock) ... 
+  test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='component') ... FAIL
+  test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='study') ... FAIL
+  test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='unknown') ... FAIL
+test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock) ... 
+  test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='component') ... FAIL
+  test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='study') ... FAIL
+  test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='unknown') ... FAIL
+test_candidate_index_foreign_kind_is_rejected_before_bundle_output (tests.test_full_consumers_foreign_kind_v1.QualificationRuntimeInputsForeignKindTests.test_candidate_index_foreign_kind_is_rejected_before_bundle_output) ... ok
+test_transaction_receipt_foreign_kind_is_rejected_before_bundle_output (tests.test_full_consumers_foreign_kind_v1.QualificationRuntimeInputsForeignKindTests.test_transaction_receipt_foreign_kind_is_rejected_before_bundle_output) ... ok
+test_promotion_cli_rejects_foreign_index_kind_before_output (tests.test_full_consumers_foreign_kind_v1.ResourcePromotionForeignKindTests.test_promotion_cli_rejects_foreign_index_kind_before_output) ... ok
+
+======================================================================
+FAIL: test_cli_rejects_foreign_source_registry_before_work_dir (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorForeignKindTests.test_cli_rejects_foreign_source_registry_before_work_dir) (kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 608, in test_cli_rejects_foreign_source_registry_before_work_dir
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 183, in assert_exit_without_side_effects
+    self.assert_tree_unchanged(root, before)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 149, in assert_tree_unchanged
+    self.assertEqual(delta, {}, f"side effects before rejection: {delta}")
+AssertionError: {'created': ['fresh', 'fresh/q4-work']} != {}
+- {'created': ['fresh', 'fresh/q4-work']}
++ {} : side effects before rejection: {'created': ['fresh', 'fresh/q4-work']}
+
+======================================================================
+FAIL: test_cli_rejects_foreign_source_registry_before_work_dir (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorForeignKindTests.test_cli_rejects_foreign_source_registry_before_work_dir) (kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 608, in test_cli_rejects_foreign_source_registry_before_work_dir
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 183, in assert_exit_without_side_effects
+    self.assert_tree_unchanged(root, before)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 149, in assert_tree_unchanged
+    self.assertEqual(delta, {}, f"side effects before rejection: {delta}")
+AssertionError: {'created': ['fresh', 'fresh/q4-work']} != {}
+- {'created': ['fresh', 'fresh/q4-work']}
++ {} : side effects before rejection: {'created': ['fresh', 'fresh/q4-work']}
+
+======================================================================
+FAIL: test_cli_rejects_foreign_source_registry_before_work_dir (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorForeignKindTests.test_cli_rejects_foreign_source_registry_before_work_dir) (kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 608, in test_cli_rejects_foreign_source_registry_before_work_dir
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 183, in assert_exit_without_side_effects
+    self.assert_tree_unchanged(root, before)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 149, in assert_tree_unchanged
+    self.assertEqual(delta, {}, f"side effects before rejection: {delta}")
+AssertionError: {'created': ['fresh', 'fresh/q4-work']} != {}
+- {'created': ['fresh', 'fresh/q4-work']}
++ {} : side effects before rejection: {'created': ['fresh', 'fresh/q4-work']}
+
+======================================================================
+FAIL: test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 293, in test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock
+    self.assert_rejected(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 280, in assert_rejected
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 163, in assert_rejected_without_side_effects
+    self.assert_tree_unchanged(root, before)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 149, in assert_tree_unchanged
+    self.assertEqual(delta, {}, f"side effects before rejection: {delta}")
+AssertionError: {'created': ['fresh', 'fresh/pilots', 'fre[45 chars]ck']} != {}
++ {}
+- {'created': ['fresh',
+-              'fresh/pilots',
+-              'fresh/pilots/.qualification-pilot-executor-v2.lock']} : side effects before rejection: {'created': ['fresh', 'fresh/pilots', 'fresh/pilots/.qualification-pilot-executor-v2.lock']}
+
+======================================================================
+FAIL: test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 293, in test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock
+    self.assert_rejected(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 280, in assert_rejected
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 163, in assert_rejected_without_side_effects
+    self.assert_tree_unchanged(root, before)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 149, in assert_tree_unchanged
+    self.assertEqual(delta, {}, f"side effects before rejection: {delta}")
+AssertionError: {'created': ['fresh', 'fresh/pilots', 'fre[45 chars]ck']} != {}
++ {}
+- {'created': ['fresh',
+-              'fresh/pilots',
+-              'fresh/pilots/.qualification-pilot-executor-v2.lock']} : side effects before rejection: {'created': ['fresh', 'fresh/pilots', 'fresh/pilots/.qualification-pilot-executor-v2.lock']}
+
+======================================================================
+FAIL: test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 293, in test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock
+    self.assert_rejected(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 280, in assert_rejected
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 163, in assert_rejected_without_side_effects
+    self.assert_tree_unchanged(root, before)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 149, in assert_tree_unchanged
+    self.assertEqual(delta, {}, f"side effects before rejection: {delta}")
+AssertionError: {'created': ['fresh', 'fresh/pilots', 'fre[45 chars]ck']} != {}
++ {}
+- {'created': ['fresh',
+-              'fresh/pilots',
+-              'fresh/pilots/.qualification-pilot-executor-v2.lock']} : side effects before rejection: {'created': ['fresh', 'fresh/pilots', 'fresh/pilots/.qualification-pilot-executor-v2.lock']}
+
+======================================================================
+FAIL: test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 307, in test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock
+    self.assert_rejected(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 280, in assert_rejected
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 163, in assert_rejected_without_side_effects
+    self.assert_tree_unchanged(root, before)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 149, in assert_tree_unchanged
+    self.assertEqual(delta, {}, f"side effects before rejection: {delta}")
+AssertionError: {'created': ['fresh', 'fresh-state', 'fres[60 chars]ck']} != {}
++ {}
+- {'created': ['fresh',
+-              'fresh-state',
+-              'fresh/pilots',
+-              'fresh/pilots/.qualification-pilot-executor-v2.lock']} : side effects before rejection: {'created': ['fresh', 'fresh-state', 'fresh/pilots', 'fresh/pilots/.qualification-pilot-executor-v2.lock']}
+
+======================================================================
+FAIL: test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 307, in test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock
+    self.assert_rejected(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 280, in assert_rejected
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 163, in assert_rejected_without_side_effects
+    self.assert_tree_unchanged(root, before)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 149, in assert_tree_unchanged
+    self.assertEqual(delta, {}, f"side effects before rejection: {delta}")
+AssertionError: {'created': ['fresh', 'fresh-state', 'fres[60 chars]ck']} != {}
++ {}
+- {'created': ['fresh',
+-              'fresh-state',
+-              'fresh/pilots',
+-              'fresh/pilots/.qualification-pilot-executor-v2.lock']} : side effects before rejection: {'created': ['fresh', 'fresh-state', 'fresh/pilots', 'fresh/pilots/.qualification-pilot-executor-v2.lock']}
+
+======================================================================
+FAIL: test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock) (kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 307, in test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock
+    self.assert_rejected(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 280, in assert_rejected
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 163, in assert_rejected_without_side_effects
+    self.assert_tree_unchanged(root, before)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 149, in assert_tree_unchanged
+    self.assertEqual(delta, {}, f"side effects before rejection: {delta}")
+AssertionError: {'created': ['fresh', 'fresh-state', 'fres[60 chars]ck']} != {}
++ {}
+- {'created': ['fresh',
+-              'fresh-state',
+-              'fresh/pilots',
+-              'fresh/pilots/.qualification-pilot-executor-v2.lock']} : side effects before rejection: {'created': ['fresh', 'fresh-state', 'fresh/pilots', 'fresh/pilots/.qualification-pilot-executor-v2.lock']}
+
+----------------------------------------------------------------------
+Ran 15 tests in 3.660s
+
+FAILED (failures=9)
+EXIT=1
+
+===== Amendment 1 / task 3.3 RED =====
+2026-10-06T23:07:00Z
+base_commit=fd009f0f (scripts unchanged since 3.2; tests extended with sections B/C and a creation tripwire)
+test_accepted_policy_receipt_foreign_kind_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.AcceptedPolicyPreprocessingForeignKindTests.test_accepted_policy_receipt_foreign_kind_is_rejected_before_output) ... ok
+test_completed_qualification_index_foreign_kind_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.AcceptedPolicyPreprocessingForeignKindTests.test_completed_qualification_index_foreign_kind_is_rejected_before_output) ... ok
+test_every_nonplan_command_rejects_foreign_identity_manifest_before_run_root (tests.test_full_consumers_foreign_kind_v1.FullPublicationEntrypointForeignKindTests.test_every_nonplan_command_rejects_foreign_identity_manifest_before_run_root) ... ok
+test_foreign_policy_receipt_is_rejected_before_private_candidate (tests.test_full_consumers_foreign_kind_v1.FullPublicationIdentityManifestV2ForeignKindTests.test_foreign_policy_receipt_is_rejected_before_private_candidate) ... 
+  test_foreign_policy_receipt_is_rejected_before_private_candidate (tests.test_full_consumers_foreign_kind_v1.FullPublicationIdentityManifestV2ForeignKindTests.test_foreign_policy_receipt_is_rejected_before_private_candidate) (kind='component') ... FAIL
+  test_foreign_policy_receipt_is_rejected_before_private_candidate (tests.test_full_consumers_foreign_kind_v1.FullPublicationIdentityManifestV2ForeignKindTests.test_foreign_policy_receipt_is_rejected_before_private_candidate) (kind='study') ... FAIL
+  test_foreign_policy_receipt_is_rejected_before_private_candidate (tests.test_full_consumers_foreign_kind_v1.FullPublicationIdentityManifestV2ForeignKindTests.test_foreign_policy_receipt_is_rejected_before_private_candidate) (kind='unknown') ... FAIL
+test_cli_rejects_foreign_identity_manifest_before_state_or_lock (tests.test_full_consumers_foreign_kind_v1.FullPublicationSupervisorForeignKindTests.test_cli_rejects_foreign_identity_manifest_before_state_or_lock) ... 
+  test_cli_rejects_foreign_identity_manifest_before_state_or_lock (tests.test_full_consumers_foreign_kind_v1.FullPublicationSupervisorForeignKindTests.test_cli_rejects_foreign_identity_manifest_before_state_or_lock) (kind='component') ... FAIL
+  test_cli_rejects_foreign_identity_manifest_before_state_or_lock (tests.test_full_consumers_foreign_kind_v1.FullPublicationSupervisorForeignKindTests.test_cli_rejects_foreign_identity_manifest_before_state_or_lock) (kind='study') ... FAIL
+  test_cli_rejects_foreign_identity_manifest_before_state_or_lock (tests.test_full_consumers_foreign_kind_v1.FullPublicationSupervisorForeignKindTests.test_cli_rejects_foreign_identity_manifest_before_state_or_lock) (kind='unknown') ... FAIL
+test_materialize_rejects_foreign_identity_manifest_before_bundle (tests.test_full_consumers_foreign_kind_v1.FullPublicationWslServiceForeignKindTests.test_materialize_rejects_foreign_identity_manifest_before_bundle) ... 
+  test_materialize_rejects_foreign_identity_manifest_before_bundle (tests.test_full_consumers_foreign_kind_v1.FullPublicationWslServiceForeignKindTests.test_materialize_rejects_foreign_identity_manifest_before_bundle) (kind='component') ... FAIL
+  test_materialize_rejects_foreign_identity_manifest_before_bundle (tests.test_full_consumers_foreign_kind_v1.FullPublicationWslServiceForeignKindTests.test_materialize_rejects_foreign_identity_manifest_before_bundle) (kind='study') ... FAIL
+  test_materialize_rejects_foreign_identity_manifest_before_bundle (tests.test_full_consumers_foreign_kind_v1.FullPublicationWslServiceForeignKindTests.test_materialize_rejects_foreign_identity_manifest_before_bundle) (kind='unknown') ... FAIL
+test_promotion_cli_rejects_foreign_index_kind_before_output (tests.test_full_consumers_foreign_kind_v1.PolicyPromotionForeignKindTests.test_promotion_cli_rejects_foreign_index_kind_before_output) ... ok
+test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.PolicyQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) ... 
+  test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.PolicyQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='component') ... FAIL
+  test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.PolicyQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='study') ... FAIL
+  test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.PolicyQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='unknown') ... FAIL
+test_phase1_rejects_foreign_source_spec_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthorityPlanPipelineForeignKindTests.test_phase1_rejects_foreign_source_spec_before_output) ... ok
+test_phase2_rejects_foreign_phase1_receipt_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthorityPlanPipelineForeignKindTests.test_phase2_rejects_foreign_phase1_receipt_before_output) ... ok
+test_source_spec_phase_rejects_foreign_source_material_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthorityPlanPipelineForeignKindTests.test_source_spec_phase_rejects_foreign_source_material_before_output) ... ok
+test_foreign_nested_accepted_source_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceMaterialForeignKindTests.test_foreign_nested_accepted_source_is_rejected_before_output) ... 
+  test_foreign_nested_accepted_source_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceMaterialForeignKindTests.test_foreign_nested_accepted_source_is_rejected_before_output) (kind='component') ... FAIL
+  test_foreign_nested_accepted_source_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceMaterialForeignKindTests.test_foreign_nested_accepted_source_is_rejected_before_output) (kind='study') ... FAIL
+  test_foreign_nested_accepted_source_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceMaterialForeignKindTests.test_foreign_nested_accepted_source_is_rejected_before_output) (kind='unknown') ... FAIL
+test_foreign_accepted_policy_receipt_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceRequestForeignKindTests.test_foreign_accepted_policy_receipt_is_rejected_before_output) ... 
+  test_foreign_accepted_policy_receipt_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceRequestForeignKindTests.test_foreign_accepted_policy_receipt_is_rejected_before_output) (kind='component') ... FAIL
+  test_foreign_accepted_policy_receipt_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceRequestForeignKindTests.test_foreign_accepted_policy_receipt_is_rejected_before_output) (kind='study') ... FAIL
+  test_foreign_accepted_policy_receipt_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceRequestForeignKindTests.test_foreign_accepted_policy_receipt_is_rejected_before_output) (kind='unknown') ... FAIL
+test_cli_rejects_foreign_source_registry_before_work_dir (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorForeignKindTests.test_cli_rejects_foreign_source_registry_before_work_dir) ... ok
+test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) ... 
+  test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase1', kind='component') ... FAIL
+  test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase1', kind='study') ... FAIL
+  test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase1', kind='unknown') ... FAIL
+  test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase2', kind='component') ... FAIL
+  test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase2', kind='study') ... FAIL
+  test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase2', kind='unknown') ... FAIL
+  test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='source-result', kind='component') ... FAIL
+  test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='source-result', kind='study') ... FAIL
+  test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='source-result', kind='unknown') ... FAIL
+test_preprocessing_receipt_foreign_kind_exits_before_output (tests.test_full_consumers_foreign_kind_v1.QualificationExecutionClosureForeignKindTests.test_preprocessing_receipt_foreign_kind_exits_before_output) ... ok
+test_transaction_receipt_foreign_kind_exits_before_output (tests.test_full_consumers_foreign_kind_v1.QualificationExecutionClosureForeignKindTests.test_transaction_receipt_foreign_kind_exits_before_output) ... ok
+test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_candidate_index_foreign_kind_is_rejected_before_pilot_root_or_lock) ... ok
+test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock (tests.test_full_consumers_foreign_kind_v1.QualificationPilotExecutorForeignKindTests.test_runtime_receipt_foreign_kind_is_rejected_before_pilot_root_or_lock) ... ok
+test_candidate_index_foreign_kind_is_rejected_before_bundle_output (tests.test_full_consumers_foreign_kind_v1.QualificationRuntimeInputsForeignKindTests.test_candidate_index_foreign_kind_is_rejected_before_bundle_output) ... ok
+test_transaction_receipt_foreign_kind_is_rejected_before_bundle_output (tests.test_full_consumers_foreign_kind_v1.QualificationRuntimeInputsForeignKindTests.test_transaction_receipt_foreign_kind_is_rejected_before_bundle_output) ... ok
+test_promotion_cli_rejects_foreign_index_kind_before_output (tests.test_full_consumers_foreign_kind_v1.ResourcePromotionForeignKindTests.test_promotion_cli_rejects_foreign_index_kind_before_output) ... ok
+test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.ResourceQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) ... 
+  test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.ResourceQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='component') ... FAIL
+  test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.ResourceQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='study') ... FAIL
+  test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.ResourceQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='unknown') ... FAIL
+
+======================================================================
+FAIL: test_foreign_policy_receipt_is_rejected_before_private_candidate (tests.test_full_consumers_foreign_kind_v1.FullPublicationIdentityManifestV2ForeignKindTests.test_foreign_policy_receipt_is_rejected_before_private_candidate) (kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 961, in test_foreign_policy_receipt_is_rejected_before_private_candidate
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 236, in assert_rejected_without_side_effects
+    self.assert_no_creation(created)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 214, in assert_no_creation
+    self.assertEqual(events, [], f"created before rejection: {events}")
+AssertionError: Lists differ: ['open:<relative>/.full-identity-v2.f7218a190478ad1e747f2971.json'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'open:<relative>/.full-identity-v2.f7218a190478ad1e747f2971.json'
+
+- ['open:<relative>/.full-identity-v2.f7218a190478ad1e747f2971.json']
++ [] : created before rejection: ['open:<relative>/.full-identity-v2.f7218a190478ad1e747f2971.json']
+
+======================================================================
+FAIL: test_foreign_policy_receipt_is_rejected_before_private_candidate (tests.test_full_consumers_foreign_kind_v1.FullPublicationIdentityManifestV2ForeignKindTests.test_foreign_policy_receipt_is_rejected_before_private_candidate) (kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 961, in test_foreign_policy_receipt_is_rejected_before_private_candidate
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 236, in assert_rejected_without_side_effects
+    self.assert_no_creation(created)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 214, in assert_no_creation
+    self.assertEqual(events, [], f"created before rejection: {events}")
+AssertionError: Lists differ: ['open:<relative>/.full-identity-v2.c8ae14ad28780165eacbd66c.json'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'open:<relative>/.full-identity-v2.c8ae14ad28780165eacbd66c.json'
+
+- ['open:<relative>/.full-identity-v2.c8ae14ad28780165eacbd66c.json']
++ [] : created before rejection: ['open:<relative>/.full-identity-v2.c8ae14ad28780165eacbd66c.json']
+
+======================================================================
+FAIL: test_foreign_policy_receipt_is_rejected_before_private_candidate (tests.test_full_consumers_foreign_kind_v1.FullPublicationIdentityManifestV2ForeignKindTests.test_foreign_policy_receipt_is_rejected_before_private_candidate) (kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 961, in test_foreign_policy_receipt_is_rejected_before_private_candidate
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 236, in assert_rejected_without_side_effects
+    self.assert_no_creation(created)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 214, in assert_no_creation
+    self.assertEqual(events, [], f"created before rejection: {events}")
+AssertionError: Lists differ: ['open:<relative>/.full-identity-v2.1ac4aa6d7da2deaa4e2b6cfd.json'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'open:<relative>/.full-identity-v2.1ac4aa6d7da2deaa4e2b6cfd.json'
+
+- ['open:<relative>/.full-identity-v2.1ac4aa6d7da2deaa4e2b6cfd.json']
++ [] : created before rejection: ['open:<relative>/.full-identity-v2.1ac4aa6d7da2deaa4e2b6cfd.json']
+
+======================================================================
+FAIL: test_cli_rejects_foreign_identity_manifest_before_state_or_lock (tests.test_full_consumers_foreign_kind_v1.FullPublicationSupervisorForeignKindTests.test_cli_rejects_foreign_identity_manifest_before_state_or_lock) (kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1007, in test_cli_rejects_foreign_identity_manifest_before_state_or_lock
+    self.assertEqual(
+AssertionError: 'vast_full_publication_supervisor_state' != 'vast_full_publication_supervisor_error'
+- vast_full_publication_supervisor_state
+?                                  ----
++ vast_full_publication_supervisor_error
+?                                   ++++
+
+
+======================================================================
+FAIL: test_cli_rejects_foreign_identity_manifest_before_state_or_lock (tests.test_full_consumers_foreign_kind_v1.FullPublicationSupervisorForeignKindTests.test_cli_rejects_foreign_identity_manifest_before_state_or_lock) (kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1007, in test_cli_rejects_foreign_identity_manifest_before_state_or_lock
+    self.assertEqual(
+AssertionError: 'vast_full_publication_supervisor_state' != 'vast_full_publication_supervisor_error'
+- vast_full_publication_supervisor_state
+?                                  ----
++ vast_full_publication_supervisor_error
+?                                   ++++
+
+
+======================================================================
+FAIL: test_cli_rejects_foreign_identity_manifest_before_state_or_lock (tests.test_full_consumers_foreign_kind_v1.FullPublicationSupervisorForeignKindTests.test_cli_rejects_foreign_identity_manifest_before_state_or_lock) (kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1007, in test_cli_rejects_foreign_identity_manifest_before_state_or_lock
+    self.assertEqual(
+AssertionError: 'vast_full_publication_supervisor_state' != 'vast_full_publication_supervisor_error'
+- vast_full_publication_supervisor_state
+?                                  ----
++ vast_full_publication_supervisor_error
+?                                   ++++
+
+
+======================================================================
+FAIL: test_materialize_rejects_foreign_identity_manifest_before_bundle (tests.test_full_consumers_foreign_kind_v1.FullPublicationWslServiceForeignKindTests.test_materialize_rejects_foreign_identity_manifest_before_bundle) (kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1029, in test_materialize_rejects_foreign_identity_manifest_before_bundle
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: ServiceContractError not raised
+
+======================================================================
+FAIL: test_materialize_rejects_foreign_identity_manifest_before_bundle (tests.test_full_consumers_foreign_kind_v1.FullPublicationWslServiceForeignKindTests.test_materialize_rejects_foreign_identity_manifest_before_bundle) (kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1029, in test_materialize_rejects_foreign_identity_manifest_before_bundle
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: ServiceContractError not raised
+
+======================================================================
+FAIL: test_materialize_rejects_foreign_identity_manifest_before_bundle (tests.test_full_consumers_foreign_kind_v1.FullPublicationWslServiceForeignKindTests.test_materialize_rejects_foreign_identity_manifest_before_bundle) (kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1029, in test_materialize_rejects_foreign_identity_manifest_before_bundle
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: ServiceContractError not raised
+
+======================================================================
+FAIL: test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.PolicyQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 811, in test_foreign_pilot_acceptance_kind_is_rejected_before_index_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: PolicyQualificationIndexV2Error not raised
+
+======================================================================
+FAIL: test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.PolicyQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 811, in test_foreign_pilot_acceptance_kind_is_rejected_before_index_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: PolicyQualificationIndexV2Error not raised
+
+======================================================================
+FAIL: test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.PolicyQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 811, in test_foreign_pilot_acceptance_kind_is_rejected_before_index_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: PolicyQualificationIndexV2Error not raised
+
+======================================================================
+FAIL: test_foreign_nested_accepted_source_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceMaterialForeignKindTests.test_foreign_nested_accepted_source_is_rejected_before_output) (kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 929, in test_foreign_nested_accepted_source_is_rejected_before_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: PublicationQ4AuthoritySourceMaterialV1Error not raised
+
+======================================================================
+FAIL: test_foreign_nested_accepted_source_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceMaterialForeignKindTests.test_foreign_nested_accepted_source_is_rejected_before_output) (kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 929, in test_foreign_nested_accepted_source_is_rejected_before_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: PublicationQ4AuthoritySourceMaterialV1Error not raised
+
+======================================================================
+FAIL: test_foreign_nested_accepted_source_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceMaterialForeignKindTests.test_foreign_nested_accepted_source_is_rejected_before_output) (kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 929, in test_foreign_nested_accepted_source_is_rejected_before_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: PublicationQ4AuthoritySourceMaterialV1Error not raised
+
+======================================================================
+FAIL: test_foreign_accepted_policy_receipt_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceRequestForeignKindTests.test_foreign_accepted_policy_receipt_is_rejected_before_output) (kind='component')
+----------------------------------------------------------------------
+publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Error: accepted policy qualification receipt header drifted
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 893, in test_foreign_accepted_policy_receipt_is_rejected_before_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: "policy_qualification_receipt_path.*kind" does not match "accepted policy qualification receipt header drifted"
+
+======================================================================
+FAIL: test_foreign_accepted_policy_receipt_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceRequestForeignKindTests.test_foreign_accepted_policy_receipt_is_rejected_before_output) (kind='study')
+----------------------------------------------------------------------
+publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Error: accepted policy qualification receipt header drifted
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 893, in test_foreign_accepted_policy_receipt_is_rejected_before_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: "policy_qualification_receipt_path.*kind" does not match "accepted policy qualification receipt header drifted"
+
+======================================================================
+FAIL: test_foreign_accepted_policy_receipt_is_rejected_before_output (tests.test_full_consumers_foreign_kind_v1.Q4AuthoritySourceRequestForeignKindTests.test_foreign_accepted_policy_receipt_is_rejected_before_output) (kind='unknown')
+----------------------------------------------------------------------
+publication_q4_authority_source_request_v1.PublicationQ4AuthoritySourceRequestV1Error: accepted policy qualification receipt header drifted
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 893, in test_foreign_accepted_policy_receipt_is_rejected_before_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: "policy_qualification_receipt_path.*kind" does not match "accepted policy qualification receipt header drifted"
+
+======================================================================
+FAIL: test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase1', kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1088, in test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 255, in assert_exit_without_side_effects
+    self.assertRegex(stderr.getvalue(), message)
+AssertionError: Regex didn't match: 'production receipt .*kind' not found in 'backend Q4 two-phase executor rejected: default Q4 source-registry reload rejected identity inputs: Q4 source registry socket/image coverage drifted\n'
+
+======================================================================
+FAIL: test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase1', kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1088, in test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 255, in assert_exit_without_side_effects
+    self.assertRegex(stderr.getvalue(), message)
+AssertionError: Regex didn't match: 'production receipt .*kind' not found in 'backend Q4 two-phase executor rejected: default Q4 source-registry reload rejected identity inputs: Q4 source registry socket/image coverage drifted\n'
+
+======================================================================
+FAIL: test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase1', kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1088, in test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 255, in assert_exit_without_side_effects
+    self.assertRegex(stderr.getvalue(), message)
+AssertionError: Regex didn't match: 'production receipt .*kind' not found in 'backend Q4 two-phase executor rejected: default Q4 source-registry reload rejected identity inputs: Q4 source registry socket/image coverage drifted\n'
+
+======================================================================
+FAIL: test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase2', kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1088, in test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 255, in assert_exit_without_side_effects
+    self.assertRegex(stderr.getvalue(), message)
+AssertionError: Regex didn't match: 'production receipt .*kind' not found in 'backend Q4 two-phase executor rejected: default Q4 source-registry reload rejected identity inputs: Q4 source registry socket/image coverage drifted\n'
+
+======================================================================
+FAIL: test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase2', kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1088, in test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 255, in assert_exit_without_side_effects
+    self.assertRegex(stderr.getvalue(), message)
+AssertionError: Regex didn't match: 'production receipt .*kind' not found in 'backend Q4 two-phase executor rejected: default Q4 source-registry reload rejected identity inputs: Q4 source registry socket/image coverage drifted\n'
+
+======================================================================
+FAIL: test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='phase2', kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1088, in test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 255, in assert_exit_without_side_effects
+    self.assertRegex(stderr.getvalue(), message)
+AssertionError: Regex didn't match: 'production receipt .*kind' not found in 'backend Q4 two-phase executor rejected: default Q4 source-registry reload rejected identity inputs: Q4 source registry socket/image coverage drifted\n'
+
+======================================================================
+FAIL: test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='source-result', kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1088, in test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 255, in assert_exit_without_side_effects
+    self.assertRegex(stderr.getvalue(), message)
+AssertionError: Regex didn't match: 'production receipt .*kind' not found in 'backend Q4 two-phase executor rejected: default Q4 source-registry reload rejected identity inputs: Q4 source registry socket/image coverage drifted\n'
+
+======================================================================
+FAIL: test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='source-result', kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1088, in test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 255, in assert_exit_without_side_effects
+    self.assertRegex(stderr.getvalue(), message)
+AssertionError: Regex didn't match: 'production receipt .*kind' not found in 'backend Q4 two-phase executor rejected: default Q4 source-registry reload rejected identity inputs: Q4 source registry socket/image coverage drifted\n'
+
+======================================================================
+FAIL: test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock (tests.test_full_consumers_foreign_kind_v1.Q4TwoPhaseExecutorPhaseReceiptForeignKindTests.test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock) (slot='source-result', kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 1088, in test_cli_rejects_foreign_phase_receipts_before_work_dir_or_lock
+    self.assert_exit_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 255, in assert_exit_without_side_effects
+    self.assertRegex(stderr.getvalue(), message)
+AssertionError: Regex didn't match: 'production receipt .*kind' not found in 'backend Q4 two-phase executor rejected: default Q4 source-registry reload rejected identity inputs: Q4 source registry socket/image coverage drifted\n'
+
+======================================================================
+FAIL: test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.ResourceQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 851, in test_foreign_pilot_acceptance_kind_is_rejected_before_index_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: FullResourceQualificationIndexV1Error not raised
+
+======================================================================
+FAIL: test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.ResourceQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='study')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 851, in test_foreign_pilot_acceptance_kind_is_rejected_before_index_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: FullResourceQualificationIndexV1Error not raised
+
+======================================================================
+FAIL: test_foreign_pilot_acceptance_kind_is_rejected_before_index_output (tests.test_full_consumers_foreign_kind_v1.ResourceQualificationIndexBuilderForeignKindTests.test_foreign_pilot_acceptance_kind_is_rejected_before_index_output) (kind='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 851, in test_foreign_pilot_acceptance_kind_is_rejected_before_index_output
+    self.assert_rejected_without_side_effects(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-consumers/VAST/tests/test_full_consumers_foreign_kind_v1.py", line 233, in assert_rejected_without_side_effects
+    with self.assertRaisesRegex(error, message) as caught:
+AssertionError: FullResourceQualificationIndexV1Error not raised
+
+----------------------------------------------------------------------
+Ran 23 tests in 22.389s
+
+FAILED (failures=30)
+EXIT=1

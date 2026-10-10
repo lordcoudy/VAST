@@ -1,0 +1,21 @@
+test_active_publication_dataset_ids_are_kpp_iss_v3 (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_complete_matrix_is_pure_and_derives_manifest_and_balanced_calibration (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_completed_legacy_schema_or_missing_closure_cannot_be_assessed (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_default_validator_rejects_self_declared_fake_acceptance_before_dependencies (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_default_validator_uses_exact_policy_aware_acceptance_set (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_duplicate_and_hardlink_artifact_aliases_are_rejected (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_immutable_output_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_immutable_writer_accepts_only_completed_identical_concurrent_commit (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_immutable_writer_waits_when_concurrent_leaf_is_already_visible (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_missing_cell_duplicate_sample_and_hash_drift_fail_closed (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_promotion_receipt_recovers_every_atomic_physical_window (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_promotion_rejects_same_bytes_hardlink_no_overwrite_race_and_parent_symlink (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_promotion_resumes_exact_prefix_after_pre_receipt_failure (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_promotion_writes_receipt_last_and_is_immutable (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_runtime_identity_requires_terminal_and_exact_cpu_gpu_coordinates (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+test_schema_v2_derives_bindings_only_from_revalidated_system_fragments (test_publication_policy_qualification.PublicationPolicyQualificationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 1.736s
+
+OK

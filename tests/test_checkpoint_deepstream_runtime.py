@@ -27,6 +27,7 @@ from checkpoint_deepstream_runtime import (  # noqa: E402
     parse_probe_payload,
     validate_deepstream_runtime_plan,
 )
+from publication_operational_request_domain_v1 import validate_native_request_source_v1  # noqa: E402
 from publication_policy_contract import POLICIES  # noqa: E402
 from checkpoint_native_policy_runtime import (  # noqa: E402
     POLICY_RPC_FD_ENV,
@@ -172,6 +173,32 @@ class DeepStreamRuntimePlanTests(unittest.TestCase):
             )
             self.assertEqual(decoder["execution_resource"], "nvdec")
             self.assertEqual(decoder["gpu_id"], 0)
+
+    def test_baseline_worker_ids_fit_the_operational_request_domain(self) -> None:
+        # Q1 attempt 3 (Amendment 7): operational capture checks every worker_id
+        # with validate_native_request_source_v1; the launcher uses process_id.
+        plan = build_plan("checkpoint_independent_processes_baseline", policy="cpu_only", deadline_ms=100.0)
+        run_id = "qualification-v2-deepstream-cpu-h264-independent-processes"
+        for process in plan["processes"]:
+            worker_id = process["process_id"]
+            stream_id = process["stream_id"]
+            with self.subTest(worker_id=worker_id):
+                validate_native_request_source_v1({
+                    "schema_version": 1,
+                    "message_type": "decision_request",
+                    "run_id": run_id,
+                    "worker_id": worker_id,
+                    "input_frame_key": f"{plan['dataset']}:{stream_id}:{'0' * 64}:0:0",
+                    "trace_id": f"{run_id}:{stream_id}:0:{worker_id}",
+                    "stream_id": stream_id,
+                    "frame_id": 0,
+                    "transport_pts_ns": 0,
+                    "branch": process["branch"],
+                    "arrival_ms": 1.0,
+                    "decision_time_ms": 2.0,
+                    "feature_observed_timestamp_ms": 1.0,
+                    "queue_depths": {"cpu": 0, "gpu": 0},
+                })
 
     def test_shared_has_six_decode_preprocess_prefixes_and_four_queued_routes(self) -> None:
         plan = build_plan()

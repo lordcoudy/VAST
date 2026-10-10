@@ -391,6 +391,32 @@ bool wall_clock_never_goes_backwards() {
   const auto first = vast::NonDecreasingWallClock::now_ns();
   return vast::NonDecreasingWallClock::now_ns() > first;
 }
+bool wall_clock_line_on_every_controlled_exit() {
+  // Normal scope exit and exception unwinding each emit exactly one bounded line.
+  vast::NonDecreasingWallClock wall;
+  (void)wall.observe(5'000'000ULL); (void)wall.observe(3'000'000ULL);
+  std::ostringstream normal, unwound;
+  { vast::WallClockExitLine line(normal, "unit-test", wall); }
+  try { vast::WallClockExitLine line(unwound, "unit-test", wall); throw std::runtime_error("unit"); }
+  catch (const std::runtime_error&) {}
+  const std::string expected = "[unit-test][wall-clock] max_clamp_ns=2000001\n";
+  if (normal.str() != expected || unwound.str() != expected) {
+    std::cerr << "wall-clock exit line drifted: " << normal.str() << unwound.str(); return false;
+  }
+  // The real source main reaches its fatal exception path and still reports the clamp.
+  std::vector<std::string> words = {"source", "--vast-unknown-test-argument", "x"};
+  std::vector<char*> pointers; for (auto& word : words) pointers.push_back(word.data());
+  std::ostringstream captured; auto* original = std::cerr.rdbuf(captured.rdbuf());
+  const int code = embedded_source_main(pointers.size(), pointers.data()); std::cerr.rdbuf(original);
+  const std::string text = captured.str();
+  const auto fatal = text.find("[checkpoint-source][fatal] unknown checkpoint source argument");
+  const auto clock = text.find("[checkpoint-source][wall-clock] max_clamp_ns=");
+  if (code != 2 || fatal == std::string::npos || clock == std::string::npos || clock < fatal ||
+      text.find("[wall-clock]", text.find('\n', clock)) != std::string::npos) {
+    std::cerr << "source exception exit lost its wall-clock line: " << text; return false;
+  }
+  return true;
+}
 bool canonical_consumer_fd_map_only() {
   // The Python producers must emit the compact map; the native parser stays strict.
   try {
@@ -413,5 +439,6 @@ int main(int argc,char** argv) {
   const bool finish=source_journal_finish_ownership_and_retirement();
   const bool consumers=canonical_consumer_fd_map_only();
   const bool wall=wall_clock_never_goes_backwards();
-  return bounded&&finite&&inventory&&journal&&finish&&consumers&&wall?0:1;
+  const bool wall_exit=wall_clock_line_on_every_controlled_exit();
+  return bounded&&finite&&inventory&&journal&&finish&&consumers&&wall&&wall_exit?0:1;
 }

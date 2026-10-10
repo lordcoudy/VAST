@@ -1,0 +1,22 @@
+1c1
+< """D(c): non-qualifying arm reproduction in the rebuilt runtime image.
+---
+> """H(c) (Amendment 7): non-qualifying DeepStream arm reproduction in the rebuilt runtime image.
+6c6
+< Stages copies of the attempt-2 (20261008c) materialized runtime inputs for the
+---
+> Stages copies of the attempt-3 (20261008d) materialized runtime inputs for the
+29,30c29,30
+< BUNDLES = ROOT / "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2"
+< CAPTURE = ROOT / "artifacts/publication_operational_capture_v1_qfb_20261008c"
+---
+> BUNDLES = ROOT / "artifacts/publication_policy_qualification_v2_qfb_20261008d/bootstrap/qualification-runtime-inputs-v2"
+> CAPTURE = ROOT / "artifacts/publication_operational_capture_v1_qfb_20261008d"
+32c32
+<     "deepstream": "sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157",
+---
+>     "deepstream": "sha256:3a9aa20a8efb722e89865e73aaa9d29ec6ce6ae4e806f485887a9a032bebb984",
+109c109
+< argv = ["/usr/bin/docker", "run", "--name", f"claude-inimage-diag-c-{SYSTEM}", "--label", "claude-diag=1",
+---
+> argv = ["/usr/bin/docker", "run", "--name", f"claude-inimage-diag-hc-{SYSTEM}", "--label", "claude-diag=1",

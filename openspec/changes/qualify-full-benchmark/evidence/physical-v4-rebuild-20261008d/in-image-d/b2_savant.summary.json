@@ -1,0 +1,45 @@
+{
+ "cwd": "/work/root",
+ "interpreter": "/usr/bin/python3.10",
+ "modules": {
+  "test_checkpoint_runtime": {
+   "elapsed_s": 9.82,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 48 tests in 8.899s",
+    "OK (skipped=2)"
+   ]
+  },
+  "test_publication_operational_container_custody_v1": {
+   "elapsed_s": 9.25,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 13 tests in 8.466s",
+    "OK"
+   ]
+  },
+  "test_publication_operational_process_custody_v1": {
+   "elapsed_s": 6.65,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 28 tests in 5.654s",
+    "OK"
+   ]
+  },
+  "test_publication_policy_qualification_execution_closure_v1": {
+   "elapsed_s": 2.82,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 14 tests in 2.645s",
+    "OK"
+   ]
+  }
+ },
+ "python": "3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]",
+ "pythonpath": "/work/root/scripts:/work/root/tests:/work/root:/work/pydeps:/opt/savant",
+ "system": "savant"
+}

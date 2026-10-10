@@ -1,0 +1,12 @@
+test_context_drift_or_longer_deadline_is_rejected (test_publication_operational_runtime_context_v1.OperationalRuntimeContextTests) ... ok
+test_context_preserves_original_header_and_checks_frozen_window (test_publication_operational_runtime_context_v1.OperationalRuntimeContextTests) ... ok
+test_failed_partial_capture_is_preserved_and_original_failure_is_propagated (test_publication_operational_runtime_context_v1.OperationalRuntimeContextTests) ... ok
+test_frozen_output_rule_is_resolved_from_original_request_without_mutating_inputs (test_publication_operational_runtime_context_v1.OperationalRuntimeContextTests) ... ok
+test_operational_copy_preserves_bytes_outside_legacy_exact_namespace (test_publication_operational_runtime_context_v1.OperationalRuntimeContextTests) ... ok
+test_relaxed_admission_limits_and_implicit_activation_fail (test_publication_operational_runtime_context_v1.OperationalRuntimeContextTests) ... ok
+test_runtime_reserves_exact_separate_output_and_explicit_file_role (test_publication_operational_runtime_context_v1.OperationalRuntimeContextTests) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.165s
+
+OK

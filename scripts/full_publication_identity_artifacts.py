@@ -95,6 +95,13 @@ def _exact(value: Any, fields: set[str], label: str) -> Mapping[str, Any]:
     return value
 
 
+def validate_full_publication_identity_manifest_header_v1(manifest: Any) -> Mapping[str, Any]:
+    """Validate the exact manifest header; shared by the loader and side-effect-free preflights."""
+    top = _exact(manifest, {"schema_version", "artifact_kind", "bindings"}, "identity artifact manifest")
+    _require(top["schema_version"] == SCHEMA_VERSION and top["artifact_kind"] == MANIFEST_KIND, "identity artifact manifest schema/kind drift")
+    return top
+
+
 def _is_reparse_or_link(path: Path) -> bool:
     try:
         info = path.lstat()
@@ -1831,8 +1838,7 @@ def _load_full_publication_identity_artifacts_with_custody(
         manifest_path_resolved,
         "identity artifact manifest",
     )
-    top = _exact(manifest, {"schema_version", "artifact_kind", "bindings"}, "identity artifact manifest")
-    _require(top["schema_version"] == SCHEMA_VERSION and top["artifact_kind"] == MANIFEST_KIND, "identity artifact manifest schema/kind drift")
+    top = validate_full_publication_identity_manifest_header_v1(manifest)
     bindings = _exact(top["bindings"], {
         "analytics_model_parity", "analytics_execution_layer", "policy_qualification",
         "resource_qualification", "backend_runtime_qualification",
@@ -1939,4 +1945,5 @@ __all__ = [
     "MANIFEST_KIND",
     "SCHEMA_VERSION",
     "load_full_publication_identity_artifacts",
+    "validate_full_publication_identity_manifest_header_v1",
 ]

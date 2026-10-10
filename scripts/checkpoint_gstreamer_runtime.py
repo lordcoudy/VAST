@@ -3059,7 +3059,11 @@ def run_finite_study_source_gate_v1(*, study_plan, project_root, output_root, so
                 except OSError as error:cleanup.append(error)
             if cleanup:
                 if primary is not None:
-                    for error in cleanup:primary.add_note(str(error)[:1024])
+                    note_adder=getattr(primary,"add_note",None)
+                    for error in cleanup:
+                        note=str(error)[:1024]
+                        if callable(note_adder):note_adder(note)
+                        else:primary.__notes__=[*getattr(primary,"__notes__",()),note]
                 else:raise ValueError("source gate owned cleanup failed: "+str(cleanup)[:2048])
     _require(not errors,"source gate original capture failed: "+str(errors[:1]))
     bound()

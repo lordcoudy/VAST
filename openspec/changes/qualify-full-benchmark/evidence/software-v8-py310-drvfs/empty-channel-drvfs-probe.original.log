@@ -1,0 +1,22 @@
+head=0253856cdc37d56aebbe60a8fcc53dd3763561cd temp_base_fs=v9fs mount=E:\134 /mnt/e 9p rw,noatime,aname=drvfs;path=E:\;uid=1000;gid=1000;symlinkroot=/mnt/,cache=5,access=client,msize=65536,trans=fd,rfd=6,wfd=6 0 0
+== HEAD copy (git show HEAD:scripts/publication_operational_process_custody_v1.py)
+module=/mnt/c/Users/s-a-balashov/AppData/Local/Temp/claude/E--STUDY-VAST/4546197c-396b-4ec9-b163-4c98d5bc51cd/scratchpad/process_custody_HEAD_0253856c.py
+python=3.12.3 temp_base=/mnt/e/STUDY/VAST/tmp/claude-drvfs-tests-20261008
+root=/mnt/e/STUDY/VAST/tmp/claude-drvfs-tests-20261008/empty-channel-probe-aco5oojr permission_modes_enforced=False
+result=rejected ValueError: empty failed original channel custody drifted
+leaf mode=0o555 size=0 nlink=1 uid=1000 gid=1000
+rc=0
+== working tree with fix A
+module=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_process_custody_v1.py
+python=3.12.3 temp_base=/mnt/e/STUDY/VAST/tmp/claude-drvfs-tests-20261008
+root=/mnt/e/STUDY/VAST/tmp/claude-drvfs-tests-20261008/empty-channel-probe-gwd54bd3 permission_modes_enforced=False
+result=accepted descriptor={'path': '/mnt/e/STUDY/VAST/tmp/claude-drvfs-tests-20261008/empty-channel-probe-gwd54bd3/outputs/engine_01.failure.stderr.raw', 'size_bytes': 0, 'sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}
+leaf mode=0o555 size=0 nlink=1 uid=1000 gid=1000
+rc=0
+== control: ext4 /tmp, working tree
+module=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/publication_operational_process_custody_v1.py
+python=3.12.3 temp_base=/tmp
+root=/tmp/empty-channel-probe-7ib2jwtt permission_modes_enforced=True
+result=accepted descriptor={'path': '/tmp/empty-channel-probe-7ib2jwtt/outputs/engine_01.failure.stderr.raw', 'size_bytes': 0, 'sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}
+leaf mode=0o444 size=0 nlink=1 uid=1000 gid=1000
+rc=0

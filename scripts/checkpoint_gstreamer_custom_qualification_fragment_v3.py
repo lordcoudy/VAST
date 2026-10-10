@@ -40,49 +40,49 @@ RESOURCE_RUNTIME_FIELDS = {
 }
 
 ACCEPTED_PARITY = (
-    "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.yaml", 30052,
-    "36511595d6c37685f97add9e51f9105e901aac36fa1ee1a141a623f02cfbb6b5",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.yaml", 29892,
+    "c125e54be4a3ec701c8840285fc0cafbf7549de29db27fd3029f1abbd2d26dbe",
 )
 ACCEPTED_PARITY_CONTENT_SHA256 = (
-    "0a8faf344b40a6bc11f8e4101b1cb45d2129db7b8897b697e59466368ff6dee0"
+    "d43a28e40d1cc2f16eba5d505710463cd616c9dd629c5a8a150fdb5fb5d20e87"
 )
 PREPROCESSING_CONTRACT_SHA256 = (
     "0307abfe6c5f652cc06f3f3df8ecf5050e5ed29b9ed5f40cb6fe728f47627090"
 )
 ANALYTICS_INDEX = (
-    "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/bindings/index.json", 1877,
-    "5dcaa2eaa8b8faea94b07ef259c22fe74522615628ad5a2a156b5a9d89ad6388",
+    "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/index.json", 1877,
+    "45ce0c4a43cf7de91a9fd14902fe0047bb35fb78f5d2e2dc8d70062bc43b0d30",
 )
 ANALYTICS_INDEX_IDENTITY = (
-    "cf5272b3333194394f1af287b53e4c3014c5cbc61498d005b37c1c099e665218"
+    "3567dd7d97560f87c1598c9aeb96ab1283c535d80d02b7285128089fa5073b76"
 )
 ANALYTICS_BINDINGS_IDENTITY = (
-    "31abeb749dbc345bcf4b1196a2cdfb3450fd675c01ab14c45e552747cdc50006"
+    "d068e65aebd8831912dbdc5f949e4f765106674955be19450bcdd71c2669ea5c"
 )
 EXECUTION_CONFIG_IDENTITY = (
-    "afa410c49ec95de5c73e8862fcad3cae22d163282295c91f4624cb5210bb36eb"
+    "f81023977102d57cd9bd29cf859880b0ed075f433a13464760d22e1e94dc5620"
 )
 MODEL_PARITY_MANIFEST_IDENTITY = (
-    "b2fcf907b09eb97a781f4624756d0e00184a03862c508e50572246db39d837a5"
+    "43de6744fc4b817cf16767548663c87223d88eea015d3d3fa5fe4f3e550f8d14"
 )
 PROTOCOL_IDENTITY = (
     "3bed4ad0e5cd46b01649b054fa520c0f728a1ceeb14502fb9fe1f0f8f5941eff"
 )
 RUNTIME_PROBES = {
     "cpu": (
-        "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+        "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
         659, "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874",
     ),
     "gpu": (
-        "artifacts/fix_benchmark_preparations_20260928g/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+        "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
         654, "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962",
     ),
 }
 CPU_WORKER_IMAGE_ID = (
-    "sha256:ce138982695ea6d8218a9137bb858090a782e83e687be8fc252a32dc0bd9d5f9"
+    "sha256:c9a022f5123425ddf83e7110c91e54aca5ae4930b5fccf83eb395fb9f0582886"
 )
 GPU_WORKER_IMAGE_ID = (
-    "sha256:e0af692307f5edebcfb768d6805cb2e76f32948e77144fbf5f10fcdac85b2870"
+    "sha256:1449e2074c2f5d7cf1a77ec271254f515495f1ac92ceab50abb90575003af6d3"
 )
 WORKER_IMPLEMENTATIONS = {
     "cpu": "b5782c91b6bdab9958a4f63485acae8975b4930843453a61e2fbe61b2c4da63b",
@@ -92,32 +92,32 @@ GSTREAMER_IMAGE_REFERENCE = (
     "vast/gstreamer-custom-publication-runtime-v3:materialized"
 )
 GSTREAMER_IMAGE_ID = (
-    "sha256:8d7b55fb1c4b11310dcbf7f2601681e28dc9fb0ba1e459f257b0545aad961626"
+    "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef"
 )
 GSTREAMER_REPOSITORY_DIGEST = (
     "vast/gstreamer-custom-publication-runtime-v3@"
-    "sha256:8d7b55fb1c4b11310dcbf7f2601681e28dc9fb0ba1e459f257b0545aad961626"
+    "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef"
 )
 GSTREAMER_IMAGE_PROJECTION_SHA256 = (
-    "5b3552dc1f9d0a7c0fdf256fb99cfb90aaa02a07c487556a487439d29ae7b1db"
+    "d212fdd200de4d5ba2d19d4460f05fd6ca16922a29382bb3dc66a7e97e3491dd"
 )
 GSTREAMER_BASE_IMAGE_ID = (
-    "sha256:b102aafc0f88f8cfad92349e6a55d0f9755a3f5bff109a70ebdb8936d4a8e84c"
+    "sha256:65b49dbbdb8b6e145cc07a7b28a66b406a0ccb076c41cb6e62a5dda9ee1056cf"
 )
 GSTREAMER_RUNTIME_SOURCE_SHA256 = (
-    "c8ddf1acd1abb5003556ce3260850a82f3b43ec12cc6509692a0d9eb1aa2a88b"
+    "a7962d94985aa082bc98011e05815b491b62ede3b3b768f22202c84963b4de8d"
 )
 GSTREAMER_NATIVE_SOURCE_SHA256 = (
-    "b9b350163f4d030ee4a182e06edd9b5f49ed809501d5e64de632dcff24ca8fab"
+    "042fa1a2bbc9c85d02a448a079992c2ee1c93a63bc7ce4de4151fc3b4c805d4b"
 )
 GSTREAMER_DEPENDENCY_SET_SHA256 = (
     "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
 )
 GSTREAMER_SOURCE_ALLOWLIST_SHA256 = (
-    "0aff0fd0e6551d189174e628e3f0cbd23d99bd5f1496b7023e6cc945e6e93522"
+    "df206c7d3d9b276bf60b8107d88a3a381d03a771553e4dec3b4157c08c835cb2"
 )
 NATIVE_PROBE_SHA256 = (
-    "ead77a6b055e6ebe5ecb4a5876496652c58d1e47df699e61c691d06362869de6"
+    "25c9d41025e18c25ce732f1a9c93d31d205be637333d1e0d23278e1ee77f11c9"
 )
 ANALYTICS_TERMINAL_SHA256 = (
     "04962e14523cc570ce1b24735e76334820ed730b5aee72beac0685a4704f9e45"

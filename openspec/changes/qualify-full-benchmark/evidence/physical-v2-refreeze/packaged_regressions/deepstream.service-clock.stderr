@@ -1,0 +1,10 @@
+test_backward_wall_adjustment_does_not_shorten_native_service (__main__.DeepStreamServiceClockTests) ... ok
+test_forward_wall_adjustment_does_not_inflate_native_service (__main__.DeepStreamServiceClockTests) ... ok
+test_inference_longer_than_elapsed_service_still_fails (__main__.DeepStreamServiceClockTests) ... ok
+test_postprocess_outside_elapsed_service_still_fails (__main__.DeepStreamServiceClockTests) ... ok
+test_regressing_monotonic_clock_is_rejected (__main__.DeepStreamServiceClockTests) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.004s
+
+OK

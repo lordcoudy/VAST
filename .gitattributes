@@ -266,3 +266,10 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 # Preserve finite-study original evidence bytes before and after supported archive.
 /openspec/changes/run-finite-component-study/evidence/** -text !eol
 /openspec/changes/archive/*-run-finite-component-study/evidence/** -text !eol
+
+# Image build inputs added after the byte freeze (R5/S5, qualify-full-benchmark):
+# keep exact LF bytes under core.autocrlf=true so rebuilt images reproduce.
+/deploy/deepstream/checkpoint/Dockerfile text eol=lf
+/deploy/native_gst_probe/checkpoint_study_reference.hpp text eol=lf
+/scripts/canonical_systems_study_plan_v1.py text eol=lf
+/scripts/non_decreasing_wall_clock_v1.py text eol=lf

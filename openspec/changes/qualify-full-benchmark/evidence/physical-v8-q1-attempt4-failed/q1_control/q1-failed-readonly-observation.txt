@@ -1,0 +1,119 @@
+2026-10-09T11:40:46Z
+--- rc files
+code-closure-validate.guardian.rc 0
+code-closure-validate.owner.rc 0
+code-closure-validate.runtime-inputs.rc 0
+q1_00_preflight.rc 0
+q1_02_transaction.rc 0
+q1_03_preprocessing.rc 0
+q1_04_code_closure.rc 0
+q1_05_capture_plan.rc 0
+q1_06_guardian.rc 0
+q1_07_guardian_ready.rc 0
+q1_08_runtime_inputs.rc 0
+q1_09_owner_execute.rc 0
+q1_10_guardian_stop.rc 0
+q1_11_guardian_terminal.rc 0
+q1_12_owner_bind.rc 0
+q1_13_execution_closure.rc 0
+q1_14_indices.rc 0
+q1_14_policy_index.rc 1
+q1_14_resource_index.rc 1
+q1_15_policy_promotion.rc 1
+q1_15_promotion.rc 0
+q1_15_resource_promotion.rc 1
+--- NOTE: q1_14_indices.rc and q1_15_promotion.rc = 0 are wrapper artifacts: steps 12-15 were chained with && in one shell, which disables set -e inside the step functions; the stock invocations q1_14_policy_index/q1_14_resource_index/q1_15_*_promotion all exited 1; q1_15 ran although q1__verify_outputs refused.
+--- docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+--- gpu compute
+--- processes
+170270 bash -c source /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/qualify_full_benchmark_20261008e/q1_control/full-qualification-runbook-commands.sh; O=$CTRL/q1-failed-readonly-observation.txt; [ -e $O ] && exit 3; { date -u +%FT%TZ; echo "--- rc files"; for f in $CTRL/*.rc; do echo "$(basename $f) $(cat $f)"; done; echo "--- NOTE: q1_14_indices.rc and q1_15_promotion.rc = 0 are wrapper artifacts: steps 12-15 were chained with && in one shell, which disables set -e inside the step functions; the stock invocations q1_14_policy_index/q1_14_resource_index/q1_15_*_promotion all exited 1; q1_15 ran although q1__verify_outputs refused."; echo "--- docker ps -a"; docker ps -a; echo "--- gpu compute"; nvidia-smi --query-compute-apps=pid --format=csv,noheader; echo "--- processes"; pgrep -af "checkpoint_gstreamer_analytics_sidecar|operational_owner|publication_policy_qualification" || true; echo "--- policy index stderr"; cat $CTRL/q1_14_policy_index.stderr.log; echo "--- resource index stderr (tail)"; tail -c 800 $CTRL/q1_14_resource_index.stderr.log; echo "--- promotion stderr"; cat $CTRL/q1_15_policy_promotion.stderr.log $CTRL/q1_15_resource_promotion.stderr.log; echo "--- closure stdout"; cat $CTRL/q1_13_execution_closure.stdout.log; } > $O 2>&1; chmod 0444 $O; sha256sum $O
+--- policy index stderr
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 204, in _physical_file
+    before = candidate.lstat()
+             ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 849, in lstat
+    return self.stat(follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/analytics_execution_bindings/publication_v3/index.json'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 245, in _read_fragment
+    fragment = fragment_validator(system, path, root)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification.py", line 151, in _default_fragment_validator
+    return validate_deepstream_qualification_fragment(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 803, in validate_deepstream_qualification_fragment
+    _terminals, accepted_model_material = _terminal_identities(
+                                          ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 320, in _terminal_identities
+    index_descriptor = _exact_descriptor(
+                       ^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 240, in _exact_descriptor
+    observed = _descriptor(root, exact[0], label)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 221, in _descriptor
+    path = _physical_file(root, relative, label)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 208, in _physical_file
+    raise DeepStreamQualificationFragmentV1Error(
+checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Error: analytics execution binding index physical file is missing or escapes project_root
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 842, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 825, in main
+    result = build_policy_qualification_index_v2(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 733, in build_policy_qualification_index_v2
+    bindings, fragment_descriptors = _build_bindings(
+                                     ^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 290, in _build_bindings
+    _, descriptor, fragment = _read_fragment(
+                              ^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 247, in _read_fragment
+    raise PolicyQualificationIndexV2Error(
+PolicyQualificationIndexV2Error: deepstream fragment validation failed: analytics execution binding index physical file is missing or escapes project_root
+--- resource index stderr (tail)
+qualification_index_v1.py", line 687, in main
+    output = build_full_resource_qualification_index_v1(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/full_resource_qualification_index_v1.py", line 617, in build_full_resource_qualification_index_v1
+    bindings, fragment_descriptors = _build_bindings(
+                                     ^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/full_resource_qualification_index_v1.py", line 299, in _build_bindings
+    raise FullResourceQualificationIndexV1Error(
+FullResourceQualificationIndexV1Error: deepstream fragment validation failed: deepstream fragment validation failed: analytics execution binding index physical file is missing or escapes project_root
+--- promotion stderr
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification.py", line 1416, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification.py", line 1406, in main
+    result = promote_policy_qualification(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification.py", line 1321, in promote_policy_qualification
+    raise QualificationError("policy qualification is blocked: " + ", ".join(assessment["blockers"][:8]))
+QualificationError: policy qualification is blocked: qualification index must remain under project_root
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/full_resource_qualification.py", line 1389, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/full_resource_qualification.py", line 1379, in main
+    result = promote_full_resource_qualification(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/full_resource_qualification.py", line 1284, in promote_full_resource_qualification
+    raise FullResourceQualificationError(
+FullResourceQualificationError: full-resource qualification is blocked: qualification index must remain under project_root
+--- closure stdout
+{"authority_snapshot_path":"/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_execution_closure_v1_qfb_20261008e/guardian_service_authority.v1.json","cell_count":32,"lifecycle_snapshot_path":"/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_execution_closure_v1_qfb_20261008e/guardian_service_lifecycle.v1.json","receipt_path":"/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_execution_closure_v1_qfb_20261008e/qualification_execution_closure.v1.receipt.json","receipt_sha256":"ecbd90ee7f987ba24d32b0fcf273dd4693e4f46aa97138adab6280ea47a60b06"}
