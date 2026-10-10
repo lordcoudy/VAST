@@ -208,6 +208,8 @@ class TransactionV2Outputs:
             stack.enter_context(mock.patch.object(policy_qualification, "_load_execution_closure", loader))
             stack.enter_context(mock.patch.object(resource_qualification, "_load_execution_closure", loader))
             stack.enter_context(mock.patch.object(policy_qualification, "_default_pilot_validator", policy_pilot_validator))
+            # F1 passes its own policy pilot validator (Amendment 9); the fixture pilots are not real.
+            stack.enter_context(mock.patch.object(promotion, "policy_pilot_validator", policy_pilot_validator))
             stack.enter_context(mock.patch.object(resource_qualification, "_default_pilot_validator", _fake_resource_pilot_validator))
             stack.enter_context(mock.patch.object(resource_qualification, "_load_and_verify_kpp_datasets", return_value=_datasets()))
             yield
