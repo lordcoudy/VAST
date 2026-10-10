@@ -13,17 +13,18 @@ Change OpenSpec `qualify-full-benchmark`, задача 6.1. Процедура �
 
 | Что | Значение |
 |---|---|
-| Commit `C_Q1'''` | `0aeb955bdf49d35ddb429c6a8e83d897608b00aa` (Amendments 4–7: Docker Desktop 4.93.0, Python 3.10 в образах DeepStream/Savant, режимы read-only на drvfs, короткие process id DeepStream и domain gate, runtime ×4 пересобраны (новый ID только у DeepStream), пины `20261008e`; попытки 1–3 шли на `1112af0b`, `82c7a62e`, `4947e35a`) |
+| Commit `C_Q1'''''` | `d1a78805dd41f9f946e3f6c4ca673bfeced228b5` = `C_B'''''` (Amendment 9: host-only policy pilot validator F5 для `policy-assess`/`policy-promote` — reset evidence и 6 потоков, GPU-решения кадров `drop` без transfer не samples. Amendment 8 (`ad9bda3d`): шаги 14–15 через host-only `publication_qualification_promotion_v2.py`, ветка authority-binding-v2 в resource index, topology v2 в resource-проверке pilots, проба errexit в каждом шаге. Образы, receipts и closure-файлы не менялись; Amendments 4–7 — см. `0aeb955b`; попытки 1–4 шли на `1112af0b`, `82c7a62e`, `4947e35a`, `0aeb955b`) |
 | Корень (WSL) | `/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a` (NTFS, `core.autocrlf=false`, без relocation) |
-| Тег / namespace | `qualify_full_benchmark_20261008e` / `qfb-20261008e` (попытки 1–3: `20261007a`, `20261008c`, `20261008d`) |
+| Тег / namespace receipts | `qualify_full_benchmark_20261008e` / `qfb-20261008e` (как в попытке 4; попытки 1–3: `20261007a`, `20261008c`, `20261008d`) |
+| Namespaces попытки 5 | суффикс `_qfb_20261009a`, `HOSTTMP=/var/tmp/vqfb1009a` (попытка 4: `_qfb_20261008e`, `vqfb1008e`) |
 | Python | `/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python` (3.12.3), запуск `-B -E -s` |
 | Docker | `/usr/bin/docker`, socket `/run/docker.sock` (`/var/run` на хосте — symlink на `/run`) |
-| Логи Q1 | `$CTRL = <корень>/artifacts/qualify_full_benchmark_20261008e/q1_control/` |
+| Логи Q1 | `$CTRL = <корень>/artifacts/q1_attempt5_20261009a/q1_control/` (Amendment 8: каталог попытки, не под тегом receipts; шаг 0 создаёт родителя, 700) |
 | Docker engine | запись 6A.2 `docker-engine-identity.6A2.v1.json` (Docker Desktop 4.93.0, server 29.8.1, daemon `aa8f3d33-…`); preflight требует равенства |
 
 Флаг `-I` не используется. В Python 3.12 он включает `-P`, и каталог `scripts/` не попадает в `sys.path`: `--help` любого stock-скрипта падает с `ModuleNotFoundError`. Поэтому запуск идёт `python -B -E -s`: `-E` игнорирует переменные `PYTHON*`, `-s` — user site-packages. Окружение задаётся явно: `TMPDIR=/var/tmp`.
 
-Пути новых namespaces (`QUAL`, `PREP`, `OPS`, `GUARDIAN_OPS`, `EVID`, `PILOTS`, `CHECKPOINT`, `BINDING`, `CLOSURE`, индексы, promoted, `/var/tmp/vqfb1008e/{r,s}`) выбраны runbook. Код фиксирует только имена файлов внутри них. Полный список — в начале `.sh`. Шаг 0 проверяет, что ни один из этих путей не существует.
+Пути новых namespaces (`QUAL`, `PREP`, `OPS`, `GUARDIAN_OPS`, `EVID`, `PILOTS`, `CHECKPOINT`, `BINDING`, `CLOSURE`, индексы, promoted, `/var/tmp/vqfb1009a/{r,s}`) выбраны runbook. Код фиксирует только имена файлов внутри них. Полный список — в начале `.sh`. Шаг 0 проверяет, что ни один из этих путей не существует.
 
 ## Предусловия
 
@@ -88,7 +89,7 @@ Amendment 3 перенёс `C_Q1` на `1112af0b`, поэтому 5.5–5.7 по
 
 **При FAILED Q1:**
 1. Остановиться и больше ничего не запускать.
-2. Ничего не удалять и не переименовывать: `$CTRL`, все namespaces, `/var/tmp/vqfb1008e`, контейнеры.
+2. Ничего не удалять и не переименовывать: `$CTRL`, все namespaces, `/var/tmp/vqfb1009a`, контейнеры.
 3. Не выполнять `docker stop`, `rm` или `prune`. Не повторять шаг и не править receipts.
 4. Сохранить read-only наблюдение (`q1_watch`, `docker ps -a`, хвосты логов).
 5. Спросить пользователя. Если guardian ещё жив, предложить authenticated stop (шаг 10), чтобы зафиксировать lifecycle. Выполнять его только с разрешения.
@@ -100,7 +101,7 @@ Amendment 3 перенёс `C_Q1` на `1112af0b`, поэтому 5.5–5.7 по
 Обычные шаги выполняются в терминале WSL после `source "$CTRL/full-qualification-runbook-commands.sh"` (копия создаётся на шаге 0). Длительные шаги 6 и 9 запускаются независимым Windows-процессом, как в PR5: `q1_detach <шаг>` из WSL или эквивалент в PowerShell:
 
 ```powershell
-Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bash','/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/qualify_full_benchmark_20261008e/q1_control/full-qualification-runbook-commands.sh','q1_06_guardian_start' -WindowStyle Hidden -PassThru
+Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bash','/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/q1_attempt5_20261009a/q1_control/full-qualification-runbook-commands.sh','q1_06_guardian_start' -WindowStyle Hidden -PassThru
 ```
 
 Аргументы не содержат пробелов: Start-Process склеивает их без кавычек. `-u s-a-balashov` запускает процесс от пользователя, а шаги 6 и 9 дополнительно проверяют `id -u` = 1000.
@@ -119,7 +120,7 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
 
 - **Входы.** Receipts из таблицы выше, образы Docker, uid 1000, `/var/tmp` на ext4.
 - **Проверки.** Отслеживаемые файлы вне `artifacts/` не изменены, Python 3.12.3, socket `/run/docker.sock` канонический. (Amendments 4–5) Идентичность Docker engine равна записи 6A.2, и live `_verify_live_images` нового patch проходит (полный inspect runtime ×4 и projection worker ×2) — до создания namespaces.
-- **Выходы.** Создаются `$CTRL`, `PREP_PARENT` и `/var/tmp/vqfb1008e/{,s}` (700). В `$CTRL` — read-only копия `.sh` с SHA256 и `root-git-status.before.txt`.
+- **Выходы.** Создаются `artifacts/q1_attempt5_20261009a/`, `$CTRL`, `PREP_PARENT` и `/var/tmp/vqfb1009a/{,s}` (700); до создания шаг проверяет, что ни одного из них нет. В `$CTRL` — read-only копия `.sh` с SHA256 и `root-git-status.before.txt`.
 - **Успех.** `Q1 preflight passed`, `$CTRL/q1_00_preflight.rc` = 0.
 - **При отказе.** Q1 ещё не начат. Устранить причину по решению пользователя; namespaces не создавались, если отказ случился до `mkdir`.
 
@@ -135,7 +136,7 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
 
 - **Цель.** `publication_policy_qualification_transaction_v2.py`: фрагменты четырёх систем, candidate index/manifest/receipt и bootstrap-калибровки, receipt пишется последним. Bootstrap выполняется внутри transaction. Отдельный CLI `publication_policy_qualification_bootstrap_v2.py` **не запускается**: его выход не связан с transaction receipt.
 - **Входы.** Patch и три файла parity acceptance.
-- **Выходы** (`QUAL=artifacts/publication_policy_qualification_v2_qfb_20261008e`):
+- **Выходы** (`QUAL=artifacts/publication_policy_qualification_v2_qfb_20261009a`):
   - `qualification_input_transaction.v2.receipt.json`;
   - `candidate/*`;
   - `bootstrap/*` (mapping, receipt, 4 calibration);
@@ -172,7 +173,7 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
   - `--config` — execution config qfb (на него ссылается parity receipt);
   - `--binding-set` — `model_parity_v4/bindings`;
   - `--policy-capability-manifest` — candidate manifest;
-  - `--runtime-dir /var/tmp/vqfb1008e/r`, `--front-socket …/r/a.sock`;
+  - `--runtime-dir /var/tmp/vqfb1009a/r`, `--front-socket …/r/a.sock`;
   - `--evidence-root EVID`;
   - `--max-connections 202560`, `--max-requests-per-connection 4320000`, `--max-total-requests 29168640000` — это минимумы `PRODUCTION_*_MINIMUM` в коде.
 - **Выходы.** `EVID/service_authority.v1.json`. После stop — `service_lifecycle.v1.json` и `GUARDIAN_OPS/operational_group.v1.json`.
@@ -192,7 +193,7 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
 
 - **Цель.** 32 runtime bundles с `--operational-capture-plan`.
 - **Почему после guardian.** Код требует живой seqpacket socket guardian (`--analytics-socket`, тип 0005). Поэтому шаг идёт после guardian (Amendment 3).
-- **Флаги.** `--container-engine-socket /run/docker.sock`, `--scratch-root /var/tmp/vqfb1008e/s`, `--deadline-ms 100`, `--duration-s 180`.
+- **Флаги.** `--container-engine-socket /run/docker.sock`, `--scratch-root /var/tmp/vqfb1009a/s`, `--deadline-ms 100`, `--duration-s 180`.
 - **Выход.** `QUAL/bootstrap/qualification-runtime-inputs-v2/qualification-runtime-inputs.materialization.v2.json`.
 - **Успех.** rc 0.
 - **При отказе.** FAILED Q1 (guardian остаётся жив, см. правило).
@@ -206,7 +207,7 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
   - `OPS/diagnostics/<op>/evidence` ×5;
   - 32 каталога в `PILOTS`;
   - checkpoint.
-- **Время.** Наблюдение попытки 3: ~20–25 мин на операцию (прежняя оценка 37 × 220 с не подтвердилась), т.е. ~13–15 ч на 37 операций; вся цепочка ~14–15 ч (Amendment 7). Наблюдение только через `q1_watch`.
+- **Время.** Попытка 4: шаги 0–13 ≈ 16,5 ч (шаг 9 — ~12 ч на 37 операций, шаг 13 — 4 ч 17 мин); шаг 14 ≈ 4,5 ч (G8: 2 ч 21 мин + 2 ч 13 мин), шаг 15 ≈ 8 ч (каждая promotion выполняет полную оценку; G9: policy 4 ч 03 мин, resource 4 ч 07 мин); вся цепочка ≈ 29 ч (Amendment 9). Наблюдение только через `q1_watch`.
 - **Успех.** rc 0, stdout `{"mode":"complete_qualification_operational_identity_v1",...}` с 37 `operation_ids`.
 - **При отказе.** FAILED Q1. Guardian не останавливать без разрешения пользователя.
 
@@ -250,7 +251,7 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
 
 ### 15. Promotion (7.5) — `q1_15_promotion`
 
-- **Команды (Amendment 8).** `publication_qualification_promotion_v2.py policy-promote` и `resource-promote` (`--qualification-transaction-receipt`, `--index-path`, `--output-dir`, фрагменты). Перед stock-promotion модуль сверяет, что записи индекса связаны с фрагментами этого receipt (`fragment_artifact` policy; `implementation_artifact` resource = binding-файлы фрагмента), а closure индекса — с этим receipt. Stock promotion сам выполняет cold-валидацию своего bundle. Подкоманды `policy-assess` / `resource-assess` ничего не пишут и дают rc 78, если оценка не `passed`.
+- **Команды (Amendment 8).** `publication_qualification_promotion_v2.py policy-promote` и `resource-promote` (`--qualification-transaction-receipt`, `--index-path`, `--output-dir`, фрагменты). Перед stock-promotion модуль сверяет, что записи индекса связаны с фрагментами этого receipt (`fragment_artifact` policy; `implementation_artifact` resource = binding-файлы фрагмента), а closure индекса — с этим receipt. Policy-оценка и policy-promotion идут с host-only валидатором pilots F5 (Amendment 9). Stock promotion сам выполняет cold-валидацию своего bundle. Подкоманды `policy-assess` / `resource-assess` ничего не пишут и дают rc 78, если оценка не `passed`.
 - **Выходы.**
   - policy: capability manifest, calibration mapping, receipt `accepted_evidence_driven_policy_qualification`;
   - resource: capability manifest, receipt `accepted_pre_run_resource_capability_qualification`.
@@ -261,7 +262,7 @@ Start-Process -FilePath wsl.exe -ArgumentList '-u','s-a-balashov','-e','/bin/bas
 
 ### 16. Хост после Q1 — `q1_16_host_after`
 
-- **Выходы.** `$CTRL/host-check.after.txt`, `root-git-status.after.txt`.
+- **Выходы.** `$CTRL/host-check.after.txt`, `root-git-status.after.txt`, `promotion-module.after.sha256` (SHA256 модуля F1: promotion receipt не называет валидатор pilots).
 - **Успех.** HEAD корня по-прежнему `C_Q1`. Нет контейнеров и процессов VAST. `boot_id` равен значению до Q1: иначе WSL перезапускался, и это надо отметить в ревью.
 
 После шага 16 — задача 7.6: независимая read-only проверка результатов Q1 и перенос evidence в change, как в PR5. Originals копируются в change; крупные файлы описываются по size + SHA256 с указанием местоположения.
