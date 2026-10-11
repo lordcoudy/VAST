@@ -8,12 +8,36 @@ assert_plain_file "$NATIVE"
 assert_plain_file "$BASE/native-b/native_probe.freeze.json"
 assert_plain_file "$WORKER"
 cmp "$NATIVE" "$BASE/native-b/native_probe.freeze.json"
+[[ "$(sha256sum "$NATIVE" | cut -d ' ' -f 1)" == 57f1a9f30c345c930a1ddff06dc51fdfebfa570c1651971d468d115d91d6ece0 ]]
+[[ "$(sha256sum "$WORKER" | cut -d ' ' -f 1)" == 5509b370821e8881f65f78dd1f61714fd908780eb50220a1d32c2d8936f5b554 ]]
 control="$BASE/runtime-build-control"
 runtime="$BASE/runtime_images"
 [[ ! -e "$control" && ! -e "$runtime" ]]
 mkdir -m 700 "$control" "$runtime"
 set -o noclobber
 printf '%s\n' "$expected_commit" > "$control/expected-commit.txt"
+docker ps --no-trunc > "$control/containers.before.txt"
+[[ -z "$(docker ps -q)" ]]
+gpu_query="$(command -v nvidia-smi)"
+[[ -x "$gpu_query" ]]
+"$gpu_query" --query-compute-apps=pid --format=csv,noheader > "$control/gpu-compute-pids.before.txt"
+[[ ! -s "$control/gpu-compute-pids.before.txt" ]]
+"$PY" -B - > "$control/worker-process-preflight.json" <<'PY'
+import json, re, subprocess
+output = subprocess.run(["/usr/bin/ps", "-eo", "pid=,args="], check=True,
+                        capture_output=True, text=True).stdout
+pattern = re.compile(
+    r"(?:^|/)(?:run_ci_checks|checkpoint_[A-Za-z0-9_]*(?:pilot|runtime)[A-Za-z0-9_]*|"
+    r"publication_qualification_operational_owner[A-Za-z0-9_]*|"
+    r"publication_policy_qualification_pilot_executor[A-Za-z0-9_]*|"
+    r"publication_guardian[A-Za-z0-9_]*|"
+    r"full_publication_[A-Za-z0-9_]*(?:orchestrator|guardian|verifier)[A-Za-z0-9_]*)\.py(?:\s|$)|"
+    r"(?:^|[/\s])vast_[A-Za-z0-9_]*(?:runtime|worker)(?:\s|$)"
+)
+active = [line.strip() for line in output.splitlines() if pattern.search(line)]
+print(json.dumps({"competing_worker_or_verifier_processes": active, "passed": not active}, sort_keys=True))
+assert not active, "competing worker/verifier process is active"
+PY
 "$PY" -B "$ROOT/scripts/publication_image_build_v1.py" plan \
   --project-root "$ROOT" --registry "$ROOT/configs/publication_image_build_v1.json" \
   > "$control/native-worker.plan.json"

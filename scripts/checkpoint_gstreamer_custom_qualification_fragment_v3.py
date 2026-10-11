@@ -40,41 +40,41 @@ RESOURCE_RUNTIME_FIELDS = {
 }
 
 ACCEPTED_PARITY = (
-    "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.yaml", 29892,
-    "c125e54be4a3ec701c8840285fc0cafbf7549de29db27fd3029f1abbd2d26dbe",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.accepted-policy-repair-20261011a.accepted.yaml", 29930,
+    "fed63c1b9c5d985099efb4668d6f96363f71b74c0fa200d9372ff69986a4b662",
 )
 ACCEPTED_PARITY_CONTENT_SHA256 = (
-    "d43a28e40d1cc2f16eba5d505710463cd616c9dd629c5a8a150fdb5fb5d20e87"
+    "7b05248ba5d19acabdec3ca8bd4e08e2e50e35892528fdac6d86301610a850a2"
 )
 PREPROCESSING_CONTRACT_SHA256 = (
     "0307abfe6c5f652cc06f3f3df8ecf5050e5ed29b9ed5f40cb6fe728f47627090"
 )
 ANALYTICS_INDEX = (
-    "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/index.json", 1877,
-    "45ce0c4a43cf7de91a9fd14902fe0047bb35fb78f5d2e2dc8d70062bc43b0d30",
+    "artifacts/accepted_policy_repair_20261011a/model_parity_v4/bindings/index.json", 1877,
+    "4af2498b2b4c5e7e5287ec6eb30ec501a79636e814e509e54cafffd8730591b8",
 )
 ANALYTICS_INDEX_IDENTITY = (
-    "3567dd7d97560f87c1598c9aeb96ab1283c535d80d02b7285128089fa5073b76"
+    "b2480fd9ee69de17465c3584789aae5f23f1584819afaca8a75b43861826817a"
 )
 ANALYTICS_BINDINGS_IDENTITY = (
     "d068e65aebd8831912dbdc5f949e4f765106674955be19450bcdd71c2669ea5c"
 )
 EXECUTION_CONFIG_IDENTITY = (
-    "f81023977102d57cd9bd29cf859880b0ed075f433a13464760d22e1e94dc5620"
+    "b62a34bf75dfb0ead9328f591baec983b43f00aa78b0a749aeb818af38ad35e8"
 )
 MODEL_PARITY_MANIFEST_IDENTITY = (
-    "43de6744fc4b817cf16767548663c87223d88eea015d3d3fa5fe4f3e550f8d14"
+    "3e6a258b881b5c8bcb460454a054183f9d7f35febb5f2e329893d8afc7f5efd3"
 )
 PROTOCOL_IDENTITY = (
     "3bed4ad0e5cd46b01649b054fa520c0f728a1ceeb14502fb9fe1f0f8f5941eff"
 )
 RUNTIME_PROBES = {
     "cpu": (
-        "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+        "artifacts/accepted_policy_repair_20261011a/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
         659, "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874",
     ),
     "gpu": (
-        "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+        "artifacts/accepted_policy_repair_20261011a/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
         654, "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962",
     ),
 }
@@ -89,23 +89,23 @@ WORKER_IMPLEMENTATIONS = {
     "gpu": "b8e6250e6f3871a2ffa5753a62300aeea77f132194b4309728ff74f49fbb9feb",
 }
 GSTREAMER_IMAGE_REFERENCE = (
-    "vast/gstreamer-custom-publication-runtime-v3:materialized"
+    "vast/gstreamer-custom-publication-runtime-v3:accepted-policy-repair-20261011a"
 )
 GSTREAMER_IMAGE_ID = (
-    "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef"
+    "sha256:8208fb4ee35f14cfc1d191baf5c9b35b213fdfbc955697b6d6b6cdd9b304d60e"
 )
 GSTREAMER_REPOSITORY_DIGEST = (
     "vast/gstreamer-custom-publication-runtime-v3@"
-    "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef"
+    "sha256:8208fb4ee35f14cfc1d191baf5c9b35b213fdfbc955697b6d6b6cdd9b304d60e"
 )
 GSTREAMER_IMAGE_PROJECTION_SHA256 = (
-    "d212fdd200de4d5ba2d19d4460f05fd6ca16922a29382bb3dc66a7e97e3491dd"
+    "6aa52443adb0d34c29dc04d0f0b9cd76ff5a53b1c0de8672d92cbbb847597e5c"
 )
 GSTREAMER_BASE_IMAGE_ID = (
     "sha256:65b49dbbdb8b6e145cc07a7b28a66b406a0ccb076c41cb6e62a5dda9ee1056cf"
 )
 GSTREAMER_RUNTIME_SOURCE_SHA256 = (
-    "a7962d94985aa082bc98011e05815b491b62ede3b3b768f22202c84963b4de8d"
+    "5a029b0aeef9624be8a90442c0e612cf9774327d321837a48d4e19c2037405fc"
 )
 GSTREAMER_NATIVE_SOURCE_SHA256 = (
     "042fa1a2bbc9c85d02a448a079992c2ee1c93a63bc7ce4de4151fc3b4c805d4b"
@@ -114,7 +114,7 @@ GSTREAMER_DEPENDENCY_SET_SHA256 = (
     "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
 )
 GSTREAMER_SOURCE_ALLOWLIST_SHA256 = (
-    "df206c7d3d9b276bf60b8107d88a3a381d03a771553e4dec3b4157c08c835cb2"
+    "5f62b899627d59336e87f95f0d4aefd3398c447482160fe792f1f952ae97bd57"
 )
 NATIVE_PROBE_SHA256 = (
     "25c9d41025e18c25ce732f1a9c93d31d205be637333d1e0d23278e1ee77f11c9"

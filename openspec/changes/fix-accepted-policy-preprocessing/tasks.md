@@ -19,11 +19,13 @@
 
 ## 4. Package And Identity Renewal
 
-- [ ] 4.1 Derive and retain the exact import/source/build dependency inventory for shared validator, guardian, all four runtime allowlists/COPY groups and qualification code closure; verify every imported project source is packaged, unexpected dependencies block integration, standalone leaf imports and both promotion-first/sidecar-first orders pass in fresh isolated interpreters without preloaded caches, and native/worker unchanged-or-affected decisions follow the recorded inventory.
-- [ ] 4.2 Update the four reviewed runtime COPY/allowlist groups; verify source/COPY/package checks and standalone imports/cold-validator execution under the images' actual Python versions pass with no host-only fallback.
-- [ ] 4.3 After fresh disk/container/GPU observation, run deterministic runtime x4 A/B builds in an isolated current repair root and renew refreeze/image patch; verify matching A/B receipts and exact planned source/image diffs, retaining originals and the stopped PR #7 root. Rebuild native/worker only if 4.1 finds affected inputs.
-- [ ] 4.4 Renew patch-bound parity 480/32 and independently audit physical descriptors and tensor hashes against the canonical reference; verify accepted refreshed parity, complete bindings and zero unexplained differences.
+- [x] 4.1 Derive and retain the exact import/source/build dependency inventory for shared validator, guardian, all four runtime allowlists/COPY groups and qualification code closure; verify every imported project source is packaged, unexpected dependencies block integration, standalone leaf imports and both promotion-first/sidecar-first orders pass in fresh isolated interpreters without preloaded caches, and native/worker unchanged-or-affected decisions follow the recorded inventory.
+- [x] 4.2 Update the four reviewed runtime COPY/allowlist groups; verify source/COPY/package checks and standalone imports/cold-validator execution under the images' actual Python versions pass with no host-only fallback.
+- [x] 4.3 After fresh disk/container/GPU observation, run deterministic runtime x4 A/B builds in an isolated current repair root and renew refreeze/image patch; verify matching A/B receipts and exact planned source/image diffs, retaining originals and the stopped PR #7 root. Rebuild native/worker only if 4.1 finds affected inputs.
+- [x] 4.4 Renew patch-bound parity 480/32 and independently audit physical descriptors and tensor hashes against the canonical reference; verify accepted refreshed parity, complete bindings and zero unexplained differences.
 - [ ] 4.5 Prepare and review the exact identity-pin replacement plan, apply only planned substitutions and regenerate affected source/executable/downstream authorities; verify focused pin tests and exact-commit descriptors with no historical receipt rewrite.
+
+Tasks 4.1-4.4 evidence: `evidence/physical-01/packaged-closure.aca94dd0.inventory.v1.json`, `packaged-reader-results.v1.json`, `packaged-reader-reports/` and byte-exact `physical-results/`, cataloged in `physical-results.v1.json`. These bind build commit `aca94dd0a57566d5a9ecc27d8dac1ca71ca0e795`; later host pins, final CI and semantic consumer fixture remain separate unchecked gates. F1 is host-only, so its image import-order test is explicitly unsupported, not simulated by mounting host production sources.
 
 ## 5. Required Checks And Q1 Handoff
 
