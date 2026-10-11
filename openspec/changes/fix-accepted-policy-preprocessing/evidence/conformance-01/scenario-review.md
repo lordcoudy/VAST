@@ -2,13 +2,14 @@
 
 ## Review Boundary
 
-Review snapshot: 2026-10-11 20:37 UTC, active change
+Review snapshot: 2026-10-11 21:47 UTC, active change
 `fix-accepted-policy-preprocessing`, approved planning commit
 `299c9c0eefb83fe3031096b0e96527236678a4d2`. This is independent technical
 evidence, not human approval, final CI, completed implementation or Q1 readiness.
 The runtime/parity evidence binds source build commit
-`aca94dd0a57566d5a9ecc27d8dac1ca71ca0e795`; subsequent host pins and tests are
-working-tree changes and must receive exact-final-commit checks separately.
+`aca94dd0a57566d5a9ecc27d8dac1ca71ca0e795`; host pins and additive fixtures are
+committed at `591a93e778a9a7839da6278326d215e24e91ea45`. Subsequent fixture,
+attribute and external recipe corrections must receive new exact-commit checks.
 
 All four delta requirements and fourteen scenarios are mapped below. `Proven`
 describes only the stated boundary. `Outstanding` must not be inferred from an
@@ -44,6 +45,37 @@ injected assessment, a receipt self-hash, a source inspection or a dispatched CI
   `f5-real-refusals.negative-control.log`; it is a negative control, not a newly
   discovered production defect. The first suite run had one overly specific
   test-message assertion; only that assertion was corrected, not production.
+- The coverage agent's 68.957-second combined 17-test run observed all three
+  real native building-block tests and these eight F5 tests passing, including
+  the complete 32-cell matrix at 3,840 and 3,968 decisions. The combined run
+  failed one separate new v2 fixture API-introspection test; its correction
+  and focused 6/6 pass do not retrospectively make that run green. The retained
+  execution chunks are `cc5395`, `29cebe` and `c36b26`. Complete physical
+  guardian success is still outstanding.
+- `checks-01/execution-review.md` records source-591 preparation, the corrected
+  focused 187-test pass, independent byte equality of all 128 runtime inputs,
+  a genuine renewed 93-source closure and all nine physical integrations
+  passing without skips. Those results do not erase failed earlier executions.
+- Hosted run 38173554386 failed on source 591: 3,291 tests, one LF-attribute
+  failure, no errors and 88 audited skips. The full ext4 run failed: 3,291
+  tests, two failures, one descriptor-exhaustion error and 86 exact approved
+  skips. Its external wrapper additionally failed exact mount-table equality.
+  Required corrected final-head checks remain open; no skip policy was changed.
+- Complete-consumer attempt 04 refused a concurrent guarded-parent mutation;
+  isolated attempt 06 refused a bound-but-not-listening fixture transport.
+  Larger attempts 05 and 07 were never launched. The fixture-only transport
+  setup correction passes 12 bounded related tests with zero skips, but does
+  not prove complete default-consumer semantics. Original failures are retained.
+
+The exact standalone green command was run from this Windows worktree:
+
+```powershell
+wsl.exe -d Ubuntu -u s-a-balashov --cd /mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST -- env TMPDIR=/var/tmp /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -B -m unittest tests.test_accepted_policy_f5_real_refusals -v
+```
+
+Test source SHA256:
+`f6697378c373ec1eff4e3eae012492594e71407fbfa306fadeed2e6ead79bdaa`.
+The retained logs omit only the unrelated WSL proxy startup warning.
 
 ## Requirement 1: Authority-V2 Qualification Semantics
 
@@ -112,7 +144,7 @@ Outstanding: final-commit regression rerun; prior focused results are not final 
 ### 5. Dropped GPU ingress has no transfer interval
 
 Implementation: shared F5 at
-`scripts/publication_policy_qualification_pilot_validation_v2.py:229`
+`scripts/publication_policy_qualification_pilot_validation_v2.py:235`
 excludes a GPU sample only for exact validated ingress terminal `drop` and
 nonpositive transfer, after replay/cell/native identity/uniqueness/CSV/terminal/
 actual-service checks. No interval or sample is invented.
@@ -126,11 +158,11 @@ Outstanding: genuine full F5/default-consumer success using the physical fixture
 
 ### 6. Completed GPU ingress has no transfer interval
 
-Implementation: F5 line 245 refuses non-dropped GPU decisions without a
+Implementation: F5 lines 235-238 refuse non-dropped GPU decisions without a
 positive transfer; neither `completed`, `censored` nor missing ingress can
 activate exclusion.
 
-Proven: original focused test at line 212 refuses completed/censored/unknown
+Proven: original focused test at line 209 refuses completed/censored/unknown
 ingress with missing transfer. These decision tests isolate sidecar validators.
 Outstanding: a completed/no-transfer mutation through the genuine complete
 acceptance/default-consumer fixture; do not label the isolated test full acceptance.
@@ -140,7 +172,7 @@ acceptance/default-consumer fixture; do not label the isolated test full accepta
 Implementation: all F5 native decision predicates precede the exclusion;
 accepted raw hashes and real sidecar/replay validators precede the decision loop.
 
-Proven: original focused tests at lines 220 and 236 refuse invalid replay,
+Proven: original focused tests at lines 216 and 233 refuse invalid replay,
 foreign cell, CSV/JSONL trace mismatch, branch terminal drift, invalid actual
 service and duplicate native event. New actual-validator tests at lines 119,
 127, 136 and 145 refuse changed on-disk native evidence, independent CSV and
@@ -182,7 +214,7 @@ and cold read with injected upstream assessment. The actual full-identity
 policy reader test at `tests/test_full_publication_identity_policy_coverage.py:104`
 preserves 126,016 and checks real capability/calibration/physical bindings.
 Limit: the full-identity reader has no pilot/index replay authority; that test
-is not 126,016 real pilot replays. Real native matrix test source enumerates
+is not 126,016 real pilot replays. The real native matrix test has passed at
 3,840/3,968, not 126,016 complete guardian success.
 Outstanding: complete production guardian success for minimum/larger measured
 fixture counts. Neither injected 126,016 nor native-sidecar totals substitute for it.
@@ -192,13 +224,15 @@ fixture counts. Neither injected 126,016 nor native-sidecar totals substitute fo
 Proven: guardian injected materialization/cold-read test at line 476 and actual
 identity-reader test at line 96 preserve 3,840 under unchanged receipt kinds.
 The production assessor still requires 32 cells x 4 branches x 30 samples.
+The observed native 32-cell test validates actual six-stream reset, full
+resource evidence and branch/ingress sidecars at 3,840 and 3,968 decisions.
 Outstanding: complete genuine promoted guardian materialization/cold-read at
-3,840. Source presence of the native 32-cell test is not a recorded full consumer result.
+3,840. The native 32-cell result is not a complete consumer result.
 
 ### 11. Coverage has the right total but incomplete cells
 
-Implementation: stock `_validate_sample_rows` at line 861 enforces each branch
-cell minimum, and the assessor at line 1026 retains that path. Guardian's fresh
+Implementation: stock `_validate_samples` at line 856 enforces each branch
+cell minimum, and the assessor at line 1022 retains that path. Guardian's fresh
 assessment gate cannot be replaced by its aggregate calibration sum. Identity
 validation separately requires all 32 balanced aggregate coordinates >= 120.
 
@@ -257,7 +291,8 @@ must be independently verified.
 
 No dedicated automated requirement-to-behavior conformance CI gate exists;
 this report does not create or impersonate one. Final hosted required checks,
-the ext4 suite/approved skip comparison and all nine physical integrations
-have not been established by this review snapshot. Complete genuine guardian
+and a passing ext4 suite have not been established by this review snapshot.
+The source-591 skip comparison is exact and its nine physical integrations
+pass, but corrected final-head execution is still required. Complete genuine guardian
 and downstream fixture results must be added before related tasks close.
 No Q4, capacity, full-publication or campaign authority is established here.

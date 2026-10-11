@@ -30,6 +30,7 @@ from tests.fixtures.accepted_policy_consumer_assertions_v1 import (
 from tests.fixtures.accepted_policy_guardian_journal_fixture_v1 import write_fixture_guardian_operational_journals_v1
 from tests.fixtures.accepted_policy_guardian_lifecycle_fixture_v1 import begin_fixture_guardian_lifecycle_v1, finish_fixture_guardian_lifecycle_v1
 from tests.fixtures.accepted_policy_physical_fixture_v2 import finalize_fixture_qualification_cells_v2
+from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import run_fixture_standalone_guardian_cold_reader_v2
 
 
 def _json(path: Path) -> dict[str, Any]:
@@ -46,9 +47,10 @@ def _write_fresh(path: Path, value: Mapping[str, Any]) -> None:
         stream.write(json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n")
 
 
-def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], native: Mapping[str, Any],
-                                           approved_guardian_source: bytes, approved_guardian_commit: str) -> dict[str, Any]:
-    """Use actual live finalization and real stopped closure/F1/default guardian."""
+def materialize_fixture_completed_execution_v2(
+    *, prepared: Mapping[str, Any], native: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Create real finalized evidence and a cold-validated complete closure."""
     from tests.fixtures.accepted_policy_checkpoint_fixture_v1 import write_complete_fixture_checkpoint_v1
 
     root, output = prepared["root"], prepared["output_dir"]
@@ -128,6 +130,29 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
         pilot_root=prepared["pilot_root"], output_dir=output / "completed-policy-index", fragment_validator=_fragment_validator,
         execution_closure_receipt_path=closure["receipt_path"])
     index_path = completed["index_path"]
+    return {"index_path": index_path, "execution_config_path": config_path, "binding_set_dir": binding_dir,
+            "finalized": finalized, "journals": journals, "lifecycle": lifecycle, "closure": closure,
+            "independent_closure": independent_closure}
+
+
+def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], native: Mapping[str, Any],
+                                           approved_guardian_source: bytes, approved_guardian_commit: str) -> dict[str, Any]:
+    """Use actual live finalization and real stopped closure/F1/default guardian."""
+    chain = materialize_fixture_completed_execution_v2(prepared=prepared, native=native)
+    root, output = prepared["root"], prepared["output_dir"]
+    preprocessing = prepared["preprocessing"]
+    index_path, config_path, binding_dir = chain["index_path"], chain["execution_config_path"], chain["binding_set_dir"]
+    finalized, journals, lifecycle, closure = (chain[name] for name in ("finalized", "journals", "lifecycle", "closure"))
+    from publication_guardian_accepted_policy_preprocessing_contract_v1 import (
+        load_accepted_policy_guardian_preprocessing_contract_v1,
+        materialize_accepted_policy_guardian_preprocessing_contract_v1,
+    )
+    from publication_qualification_promotion_v2 import _fragment_validator
+    from publication_policy_qualification import (
+        CALIBRATION_MAPPING_FILENAME, CAPABILITY_MANIFEST_FILENAME, QUALIFICATION_RECEIPT_FILENAME,
+        assess_policy_qualification, promote_policy_qualification,
+    )
+    from publication_policy_qualification_pilot_validation_v2 import policy_pilot_validator
     from tests.test_accepted_policy_f5_real_refusals import genuine_f5_context_v1, assert_genuine_f5_stock_samples_v1
 
     f5_context, f5_pilots = genuine_f5_context_v1(root, index_path)
@@ -165,12 +190,17 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
     )
     if cold_guardian["receipt"]["preprocessing_contract_content_sha256"] != guardian["preprocessing_contract_sha256"]:
         raise ValueError("independent accepted-policy guardian reader disagrees with materialized identity")
+    standalone = run_fixture_standalone_guardian_cold_reader_v2(
+        project_root=root, output_dir=output, guardian=guardian,
+        accepted_capability_path=accepted_dir / CAPABILITY_MANIFEST_FILENAME,
+    )
     identity_policy = validate_fixture_identity_policy_component_v1(project_root=root, accepted_dir=accepted_dir)
     refusals = check_fixture_measured_coverage_refusals_v1(accepted_dir=accepted_dir)
     return {"campaign_authority": False, "physical_inference_observed": False, "finalized_cell_count": len(finalized),
             "journals": journals["operational_group"], "lifecycle": lifecycle["lifecycle_descriptor"], "execution_closure": str(closure["receipt_path"]),
             "completed_index": str(index_path), "assessment": assessment, "promotion": promoted, "guardian": guardian,
             "standalone_guardian_cold_reader_passed": True,
+            "fresh_interpreter_guardian_cold_reader": standalone,
             "approved_old_default_red": old_red, "identity_policy_component": identity_policy,
             "measured_coverage_refusals": refusals,
             "genuine_cpu_gpu_stock_sample_equality": stock_equality,

@@ -1,7 +1,9 @@
 # Prepared Check Recipes, Not Execution Evidence
 
-These recipes were prepared without cloning, copying, running tests, or invoking
-Docker. Execution results do not exist yet. By default they use the new repair
+These recipes were initially prepared without cloning, copying, running tests,
+or invoking Docker. Subsequent originals and their boundaries are catalogued in
+`completed-check-results.v1.json` and `execution-review.md`; preparation alone
+does not establish success. By default they use the new repair
 root `/mnt/e/STUDY/VAST/tmp/accepted-policy-repair-20261011a`. Alternatively set
 `VAST_REPAIR_CHECK_ROOT` to the exact canonical ext4 source clone
 `/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-$FROZEN_COMMIT`.
@@ -99,9 +101,12 @@ export VAST_REPAIR_CHECK_ROOT=/home/s-a-balashov/work/vast-accepted-policy-repai
 E=$VAST_REPAIR_CHECK_ROOT/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01
 bash "$E/prepare_source_inputs.sh" "$FROZEN_COMMIT" "$REVIEWED_REGRESSION_CATALOG_SHA256" \
   "$REVIEWED_ASSET_INVENTORY_SHA256" "$REVIEWED_FRESH_CATALOG_SHA256"
+bash "$E/run_focused_suite.sh" "$FROZEN_COMMIT"
+bash "$E/run_final_source_inputs_v2.sh" "$FROZEN_COMMIT"
+# Supply the separately reviewed exact reconstruction corpus before this lane.
+bash "$E/run_integration_lane.sh" "$FROZEN_COMMIT"
 bash "$E/run_ext4_suite.sh" "$FROZEN_COMMIT" "$REVIEWED_REGRESSION_CATALOG_SHA256" \
   "$REVIEWED_ASSET_INVENTORY_SHA256" "$REVIEWED_FRESH_CATALOG_SHA256"
-bash "$E/run_integration_lane.sh" "$FROZEN_COMMIT"
 ```
 
 The preparation wrapper copies the 31 regressions from the unchanged old root,
@@ -113,8 +118,17 @@ For the original physical-root option, the same inputs must already be present
 and that root must be at the supplied final source commit; the suite never
 silently upgrades it.
 
+Complete the focused, source-comparison, input-copy and physical integration
+writers before starting complete consumers. Start the full ext4 suite only
+after the physical integration lane finishes: Docker Desktop may create
+global bind rows during the live held-FD test, even after its containers exit,
+and such an overlap invalidates the suite's exact global mount-table check.
+The full suite uses a distinct clone; any parallel consumer requires explicit
+review proving all remaining outer writes stay within already created deep
+output directories and cannot mutate its guarded ancestors.
+
 Do not execute the integration lane while a runtime-image build or other live
-Docker check or fixture engine child is active. The nine test identities are
+Docker check, full-suite wrapper or fixture engine child is active. The nine test identities are
 unchanged; their approved literal runtime/parity pins are the paired fresh pins
 where applicable. Both those fresh images and the one declared historical
 DeepStream fixture image must be locally available. A missing image, pin mismatch, or
@@ -144,7 +158,7 @@ To satisfy the actual canonical copied-Python bind test, the recipe uses:
 ```bash
 sudo -n unshare --mount --fork --propagation private /bin/bash \
   "$E/private_runtime_namespace.sh" "$EXT4_CLONE" "$FRESH_OUTPUT" \
-  "$FROZEN_COMMIT" "$ORIGINAL_MOUNT_NAMESPACE" "$JOB_STARTED_MONOTONIC_NS"
+  "$FROZEN_COMMIT" "$ORIGINAL_MOUNT_NAMESPACE" "$JOB_STARTED_MONOTONIC_NS" "$OBSERVED_NOFILE_SOFT"
 ```
 
 The wrapper first records `sudo -n true`. If passwordless sudo is unavailable,
@@ -155,7 +169,7 @@ arguments, still immediately entering an isolated private mount namespace:
 /mnt/c/Windows/System32/wsl.exe --distribution Ubuntu --user root --exec \
   unshare --mount --fork --propagation private /bin/bash \
   "$E/private_runtime_namespace.sh" "$EXT4_CLONE" "$FRESH_OUTPUT" \
-  "$FROZEN_COMMIT" "$ORIGINAL_MOUNT_NAMESPACE" "$JOB_STARTED_MONOTONIC_NS"
+  "$FROZEN_COMMIT" "$ORIGINAL_MOUNT_NAMESPACE" "$JOB_STARTED_MONOTONIC_NS" "$OBSERVED_NOFILE_SOFT"
 ```
 
 This fallback is not a global root mount operation and does not change any
@@ -170,6 +184,12 @@ and that root propagation is private. Only inside it, the existing supported
 read-only and binds the same runtime at the clone's exact project-relative path.
 It uses explicit source/root arguments and `--check-only` verification. It then
 drops privilege with `runuser` and correct HOME/USER/LOGNAME/TMPDIR before CI.
+The outer UID1000 caller must actually observe soft/hard NOFILE 10240/1048576.
+After `runuser`, the child records its identity, capabilities and limits,
+restores only that observed ordinary-user soft limit while preserving the hard
+limit, records the result, and refuses any mismatch before launching stock CI.
+The test temporary base is verified canonical ext4 `/tmp`; no production
+socket-length bound, test assertion, system limit or CI skip policy is changed.
 Mounts disappear with the private namespace; no global remount/unmount or old
 root mount is touched. Original mount descriptions and namespace identity are
 retained. Both privileged launchers being unavailable, mount privilege, copied single-link Python, or

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import date
 import hashlib
 import json
 import os
@@ -15,6 +16,29 @@ import traceback
 
 APPROVED_COMMIT = "299c9c0eefb83fe3031096b0e96527236678a4d2"
 GUARDIAN_SOURCE = "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py"
+
+
+def _fixture_source_root_v2(entrypoint: Path) -> Path:
+    path = Path(entrypoint)
+    if (not path.is_absolute() or not path.is_file() or path.resolve(strict=True) != path
+            or path.name not in {"build_production_fixture_v2.py", "build_per_cell_minimum_refusal_v1.py"}):
+        raise ValueError("fixture entrypoint origin is missing or noncanonical")
+    evidence = path.parent.parent
+    change = evidence.parent
+    if path.parent.name != "consumer-01" or evidence.name != "evidence":
+        raise ValueError("fixture entrypoint evidence layout is unsupported")
+    name = "fix-accepted-policy-preprocessing"
+    if change.name == name:
+        changes = change.parent
+    else:
+        match = re.fullmatch(r"(\d{4}-\d{2}-\d{2})-" + re.escape(name), change.name)
+        if match is None or change.parent.name != "archive":
+            raise ValueError("fixture entrypoint change layout is unsupported")
+        date.fromisoformat(match[1])
+        changes = change.parent.parent
+    if changes.name != "changes" or changes.parent.name != "openspec":
+        raise ValueError("fixture entrypoint repository layout is unsupported")
+    return changes.parent.parent
 
 
 def _lexical_path_argument(value: str | Path, *, root: Path | None = None) -> Path:
@@ -68,7 +92,7 @@ def main() -> None:
     parser.add_argument("--samples-per-branch", type=int, default=30)
     parser.add_argument("--stage", choices=("inputs", "original-observations", "complete"), default="complete")
     args = parser.parse_args()
-    source_root = Path(__file__).resolve(strict=True).parents[5]
+    source_root = _fixture_source_root_v2(Path(__file__))
     root = _canonical_fixture_root_v2(args.project_root, source_root=source_root)
     if re.fullmatch(r"[0-9a-f]{40}", args.expected_source_commit) is None:
         raise ValueError("expected source commit must be an exact commit SHA")

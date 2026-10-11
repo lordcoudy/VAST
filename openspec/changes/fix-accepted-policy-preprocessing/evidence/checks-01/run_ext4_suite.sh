@@ -9,6 +9,9 @@ FRESH_SHA="$4"
 assert_frozen_root "$SHA"
 assert_committed_bytes "$ROOT"
 assert_nine_ids
+ORDINARY_NOFILE_SOFT="$(ulimit -Sn)"
+ORDINARY_NOFILE_HARD="$(ulimit -Hn)"
+[[ "$ORDINARY_NOFILE_SOFT" == 10240 && "$ORDINARY_NOFILE_HARD" == 1048576 ]]
 CLONE=/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-ci-"$SHA"
 OUT="$CHECK_BASE/ext4-$SHA"
 [[ ! -e "$CLONE" && ! -e "$OUT" ]]
@@ -17,6 +20,18 @@ mkdir -p -- "$CHECK_BASE"
 mkdir -m 700 -- "$OUT"
 date -u +%FT%TZ > "$OUT/started.txt"
 printf '%s\n' "$SHA" > "$OUT/commit.txt"
+"$PY" -B - "$ORDINARY_NOFILE_SOFT" "$ORDINARY_NOFILE_HARD" > "$OUT/ordinary-user-limits.json" <<'PY'
+import json
+import os
+import resource
+import sys
+assert os.getuid() == 1000 and os.getgid() == 1000
+expected = (int(sys.argv[1]), int(sys.argv[2]))
+assert expected == (10240, 1048576)
+assert resource.getrlimit(resource.RLIMIT_NOFILE) == expected
+print(json.dumps({"uid": os.getuid(), "gid": os.getgid(), "nofile": list(expected),
+    "source": "observed ordinary UID1000 caller, not a requested increase"}, sort_keys=True))
+PY
 git -c core.autocrlf=false clone --no-hardlinks --no-checkout "$ROOT" "$CLONE" \
   > "$OUT/clone.stdout.log" 2> "$OUT/clone.stderr.log"
 git -C "$CLONE" -c core.autocrlf=false checkout --detach "$SHA" \
@@ -38,7 +53,8 @@ if sudo -n true > "$OUT/sudo-prerequisite.stdout.log" 2> "$OUT/sudo-prerequisite
   printf '%s\n' sudo-private-unshare > "$OUT/privileged-launcher.txt"
   sudo -n unshare --mount --fork --propagation private /bin/bash \
     "$CHECK_RECIPE_DIR/private_runtime_namespace.sh" "$CLONE" "$OUT" "$SHA" \
-    "$PARENT_NAMESPACE" "$START_NS" > "$OUT/parent.stdout.log" 2> "$OUT/parent.stderr.log"
+    "$PARENT_NAMESPACE" "$START_NS" "$ORDINARY_NOFILE_SOFT" \
+    > "$OUT/parent.stdout.log" 2> "$OUT/parent.stderr.log"
   RC="$?"
 else
   WSL_EXE=/mnt/c/Windows/System32/wsl.exe
@@ -46,7 +62,7 @@ else
     printf '%s\n' wsl-root-private-unshare > "$OUT/privileged-launcher.txt"
     "$WSL_EXE" --distribution Ubuntu --user root --exec unshare --mount --fork \
       --propagation private /bin/bash "$CHECK_RECIPE_DIR/private_runtime_namespace.sh" \
-      "$CLONE" "$OUT" "$SHA" "$PARENT_NAMESPACE" "$START_NS" \
+      "$CLONE" "$OUT" "$SHA" "$PARENT_NAMESPACE" "$START_NS" "$ORDINARY_NOFILE_SOFT" \
       > "$OUT/parent.stdout.log" 2> "$OUT/parent.stderr.log"
     RC="$?"
   else

@@ -273,3 +273,42 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 /deploy/native_gst_probe/checkpoint_study_reference.hpp text eol=lf
 /scripts/canonical_systems_study_plan_v1.py text eol=lf
 /scripts/non_decreasing_wall_clock_v1.py text eol=lf
+
+# New read-only validator leaves must reproduce the reviewed packaged LF bytes.
+/scripts/publication_policy_qualification_fragment_validation_v2.py text eol=lf
+/scripts/publication_policy_qualification_pilot_validation_v2.py text eol=lf
+/scripts/publication_policy_qualification_transaction_validation_v2.py text eol=lf
+
+# Preserve finite repair originals under current and supported archive paths.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/physical-01/physical-results/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/physical-01/physical-results/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/completed-check-results/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/completed-check-results/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/completed-check-retention-control/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/completed-check-retention-control/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/ext4-original-results/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/ext4-original-results/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/ext4-original-retention-control/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/ext4-original-retention-control/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/transport-readiness-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/transport-readiness-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/failed-consumer-results/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/failed-consumer-results/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/failed-consumer-retention-control/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/failed-consumer-retention-control/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/pins-01/host-pin-rebind.planned.patch -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/pins-01/host-pin-rebind.planned.patch -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/conformance-01/f5-real-refusals.green.log -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/conformance-01/f5-real-refusals.green.log -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/conformance-01/f5-real-refusals.negative-control.log -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/conformance-01/f5-real-refusals.negative-control.log -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38173554386-failure/vast-cpu-checks.original.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38173554386-failure/vast-cpu-checks.original.zip -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/owner37-fd-retention-controls-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/owner37-fd-retention-controls-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/sample-boundaries-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/sample-boundaries-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/standalone-reader-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/standalone-reader-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/archive-paths-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/archive-paths-01/** -text !eol

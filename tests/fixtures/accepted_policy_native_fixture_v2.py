@@ -71,8 +71,8 @@ def write_native_policy_fixture_cell_v2(
     worker_ids_by_branch_stream: Mapping[tuple[str, int], str] | None = None,
     limits_path: Path | None = None,
 ) -> dict[str, Any]:
-    if type(samples_per_branch) is not int or samples_per_branch < 30:
-        raise ValueError("fixture requires at least 30 completed samples per branch")
+    if type(samples_per_branch) is not int or samples_per_branch < 1:
+        raise ValueError("native fixture requires a positive integer completed sample count")
     if resource not in RESOURCES or codec not in {"h264", "h265"}:
         raise ValueError("unsupported fixture coordinate")
     if topology_kind not in {"independent_processes", "shared_video_dag"}:

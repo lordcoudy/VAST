@@ -71,6 +71,7 @@ def prepared_complete_fixture_inputs_v2(
     control = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
     try:
         front.bind(str(front_path))
+        front.listen(2)
         control.bind(str(control_path))
         inspection_aliases = dict(image_inspections)
         for image in image_inspections.values():
@@ -120,6 +121,14 @@ def prepared_complete_fixture_inputs_v2(
                     analytics_socket_path=front_path, scratch_root=output,
                     operational_capture_plan_path=capture["descriptor"]["path"],
                 )
+                # The materializer's two live transport probes do not exchange requests.
+                front.setblocking(False)
+                try:
+                    for _ in range(2):
+                        connection, _ = front.accept()
+                        connection.close()
+                finally:
+                    front.setblocking(True)
                 captured_engine_path = runtime["runtime_input_root"] / DOCKER_ASSET
                 captured_engine_fd = os.open(captured_engine_path, os.O_RDONLY | os.O_NOFOLLOW)
                 captured_engine_bytes = captured_engine_path.read_bytes()
@@ -148,10 +157,36 @@ def prepared_complete_fixture_inputs_v2(
         control.close()
 
 
-def build_original_native_fixture_observations_v2(*, prepared: Mapping[str, Any], samples_per_branch: int = 30) -> dict[str, Any]:
+def _fixture_operation_sample_counts_v2(
+    plan: Mapping[str, Any], *, samples_per_branch: int,
+    qualification_samples_by_operation_id: Mapping[str, int] | None,
+) -> dict[str, int]:
+    if type(samples_per_branch) is not int or samples_per_branch < 30:
+        raise ValueError("complete fixture default requires at least 30 samples per branch")
+    overrides = {} if qualification_samples_by_operation_id is None else qualification_samples_by_operation_id
+    if type(overrides) is not dict:
+        raise ValueError("mixed qualification sample counts must be an explicit object")
+    operations = plan["operation_manifest"]["operations"]
+    operation_ids = [row["operation_id"] for row in operations]
+    qualification_ids = {row["operation_id"] for row in operations if row["phase"] == "qualification_cell"}
+    if len(set(operation_ids)) != len(operation_ids) or not set(overrides).issubset(qualification_ids):
+        raise ValueError("mixed sample counts must name unique existing qualification operations")
+    if any(type(value) is not int or value < 1 for value in overrides.values()):
+        raise ValueError("mixed qualification sample counts must be positive integers")
+    return {operation_id: overrides.get(operation_id, samples_per_branch) for operation_id in operation_ids}
+
+
+def build_original_native_fixture_observations_v2(
+    *, prepared: Mapping[str, Any], samples_per_branch: int = 30,
+    qualification_samples_by_operation_id: Mapping[str, int] | None = None,
+) -> dict[str, Any]:
     """Create all 37 originals and cold-validate real child/container custody."""
     root, output = prepared["root"], prepared["output_dir"]
     plan = prepared["capture_plan"]
+    sample_counts = _fixture_operation_sample_counts_v2(
+        plan, samples_per_branch=samples_per_branch,
+        qualification_samples_by_operation_id=qualification_samples_by_operation_id,
+    )
     capability = json.loads(Path(prepared["transaction"]["candidate_manifest_path"]).read_bytes())
     contexts = {row["operation_id"]: row["descriptor"] for row in plan["index"]["native_contexts"]}
     operations = []
@@ -180,7 +215,7 @@ def build_original_native_fixture_observations_v2(*, prepared: Mapping[str, Any]
         metadata = write_native_policy_fixture_cell_v2(
             output_dir=directory, capability=capability, system=row["system"], resource=coordinate_resource,
             codec=row["codec"], topology_kind=source_plan["topology_kind"],
-            samples_per_branch=samples_per_branch,
+            samples_per_branch=sample_counts[row["operation_id"]],
             dropped_ingress=coordinate_resource == "gpu" and not stock_positive_gpu,
             source_sha256_by_stream=source_sha256, run_id=row["run_id"], arm_id=row["arm_id"],
             calibration=calibration,

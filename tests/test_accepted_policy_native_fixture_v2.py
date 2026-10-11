@@ -14,6 +14,7 @@ import unittest
 from tests.test_accepted_policy_production_validation import validate_native_cell, verified_fixture_manifest
 from tests.fixtures.accepted_policy_native_fixture_v1 import write_native_policy_fixture_cell_v1
 from tests.fixtures.accepted_policy_native_fixture_v2 import write_native_policy_fixture_cell_v2
+from tests.fixtures.accepted_policy_change_paths_v1 import consumer_evidence_directory_v1
 
 
 class AcceptedPolicyNativeFixtureV2Tests(unittest.TestCase):
@@ -67,7 +68,7 @@ class AcceptedPolicyNativeFixtureV2Tests(unittest.TestCase):
 
     def _entrypoint(self):
         root = Path(__file__).resolve().parents[1]
-        path = root / "openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py"
+        path = consumer_evidence_directory_v1(root) / "build_production_fixture_v2.py"
         spec = importlib.util.spec_from_file_location("fixture_entrypoint_path_checks_v2", path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -131,7 +132,7 @@ class AcceptedPolicyNativeFixtureV2Tests(unittest.TestCase):
         self.assertTrue(records)
         self.assertTrue(all(Path(row["loaded_path"]).is_relative_to(root / "scripts") for row in records))
         self.assertTrue(callable(accepted_policy_consumer_fixture_v2.complete_fixture_production_consumers_v2))
-        entrypoint = root / "openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py"
+        entrypoint = consumer_evidence_directory_v1(root) / "build_production_fixture_v2.py"
         compile(entrypoint.read_bytes(), str(entrypoint), "exec")
 
     def test_data_only_rows_preserve_real_validated_cpu_and_gpu_observations(self):

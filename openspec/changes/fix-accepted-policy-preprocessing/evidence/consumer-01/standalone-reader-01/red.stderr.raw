@@ -1,0 +1,14 @@
+test_fresh_interpreter_uses_actual_default_reader_and_preserves_real_refusal (tests.test_accepted_policy_standalone_reader_fixture_v2.AcceptedPolicyStandaloneReaderFixtureV2Tests.test_fresh_interpreter_uses_actual_default_reader_and_preserves_real_refusal) ... ERROR
+
+======================================================================
+ERROR: test_fresh_interpreter_uses_actual_default_reader_and_preserves_real_refusal (tests.test_accepted_policy_standalone_reader_fixture_v2.AcceptedPolicyStandaloneReaderFixtureV2Tests.test_fresh_interpreter_uses_actual_default_reader_and_preserves_real_refusal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_standalone_reader_fixture_v2.py", line 14, in test_fresh_interpreter_uses_actual_default_reader_and_preserves_real_refusal
+    from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import run_fixture_standalone_guardian_cold_reader_v2
+ModuleNotFoundError: No module named 'tests.fixtures.accepted_policy_standalone_reader_fixture_v2'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.008s
+
+FAILED (errors=1)
