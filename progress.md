@@ -1,4 +1,15 @@
-<!-- CURRENT FULL CAMPAIGN 2026-10-07: qualify-full-benchmark -->
+<!-- CURRENT FULL CAMPAIGN 2026-10-11: failed qualification closeout -->
+## Current Progress - 11 October 2026
+
+The user chose to close [PR #7](https://github.com/lordcoudy/VAST/pull/7) unmerged, keep the accepted-policy repair separate, then qualify under a new change. Qualification attempts 1-4 remain FAILED, attempt 5 remains UNSTARTED, and qualification/Q4/capacity/full-run eligibility is false. Code and evidence remain on `codex/qualify-full-benchmark`; master does not contain that implementation. This stopped change is not a completed successful archive or merge.
+
+Current software/input baseline: `d1a78805dd41f9f946e3f6c4ca673bfeced228b5`; prior documentation head: `c9e5a825a9603a28883fe701b49bb4a658a0503b`; runtime root: `E:/STUDY/VAST/tmp/qfb-root-20261007a`. Tasks 63/72 are historically complete; 6.2, 7.1-7.6 and 8.1-8.2 remain unchecked, including the full conformance/final acceptance gap. Attempt-4 owner 37/37 and cold closure 37/8 succeeded, then indices/promotions failed. G8 failed; G9 passed a nonqualifying assessment of those historical pilots, not a fresh qualification.
+
+Hosted CI on `c9e5a825` [38046578045](https://github.com/lordcoudy/VAST/actions/runs/38046578045) succeeded. Prior `d1a78805` checks: ext4 3,244 run, zero failures/errors, 88 approved skips; integration 9/9. Originals are retained in the change's `physical-v12-ci-c5` and `physical-v11-g9-a9diag` evidence directories. The approved software/check results do not fix stage 2's validator/count defects.
+
+Read-only host observations on 11 October: AC sleep/hibernate disabled; Windows Update paused until 26 October, 15:01 Moscow; zero containers, matching VAST workers and GPU compute jobs; required volumes above 20 GiB. These observations must be repeated before any future launch. The next planning change is `fix-accepted-policy-preprocessing`; the next Q1 will need a new reviewed qualification change and current renewed inputs. The 7 October block below is a historical snapshot.
+
+<!-- HISTORICAL FULL CAMPAIGN 2026-10-07: qualify-full-benchmark -->
 ## Текущий прогресс — 7 октября 2026
 
 **Q1 технически подготовлена и не запущена; ожидается отдельная команда пользователя.** Активное изменение — `qualify-full-benchmark`, ветка `codex/qualify-full-benchmark`, [Draft PR #7](https://github.com/lordcoudy/VAST/pull/7). В основной checkout `E:/STUDY/VAST` это изменение ещё не слито; действующие документы находятся в `C:/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST`. Источник обновления: `last_run.txt`, сохранённые receipts и read-only проверка хоста **7 октября, 11:48 МСК**.

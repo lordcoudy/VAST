@@ -1,3 +1,13 @@
+## Final Disposition (2026-10-11)
+
+The user chose a separate repair PR and closure of PR #7 with the failed-Q1 outcome, followed by qualification under a new change. PR #7 is closed unmerged. This records a stopped change rather than a successful archive, acceptance or merge; the requirements below remain its historical reviewed intent.
+
+Attempts 1-4 are FAILED. Attempt 4 reached owner 37/37 and cold closure 37/8, then failed its indices/promotions. G9 is a nonqualifying diagnostic and did not create accepted promotion receipts. Attempt 5 was never started. Tasks 7.1-7.6 and 8.1-8.2 remain incomplete. Full qualification/Q4/capacity/full-run eligibility is false.
+
+Implementation/input commit `d1a78805dd41f9f946e3f6c4ca673bfeced228b5` and documentation head `c9e5a825a9603a28883fe701b49bb4a658a0503b` remain the retained baseline. Latest hosted CI on `c9e5a825`: run `38046578045`, SUCCESS. Prior exact-source evidence: `evidence/physical-v12-ci-c5/README.md` (ext4 3,244 run, zero failures/errors, 88 approved skips; integration 9/9) and `evidence/physical-v11-g9-a9diag/README.md` (32 policy/resource diagnostic cells). These results do not establish Q1 acceptance or stage-2 compatibility.
+
+Remaining repair scope is captured separately in `fix-accepted-policy-preprocessing`: production authority-v2 consumer validation, strict measured sample totals in both consumers, leaf validation packaging and renewed image/parity/closure readiness. Future Q1 belongs to a new reviewed qualification change. No historical input/receipt is rebound, no pending worker is restarted, and no successful sync/archive is performed for this stopped change.
+
 ## Context
 
 `origin/master` `ca52381b` содержит код всех стадий полной кампании (qualification, Q4, capacity, service, full run, `verify/finalize/export`), но ни одна стадия не исполнена. Факты, на которые опирается решение:

@@ -1,3 +1,9 @@
+## Final Disposition (2026-10-11)
+
+User decision: close PR #7 unmerged with failed Q1, retain the code/evidence, repair accepted-policy risks in a separate PR, then qualify under a new change. Attempts 1-4 are FAILED; attempt 5 is UNSTARTED. Tasks 7.1-7.6 and 8.1-8.2 remain unchecked. They are not waived or reported complete. No successful qualification, conformance completion, archive, sync or merge is claimed. All full-campaign eligibility remains false.
+
+The next repair planning change is `fix-accepted-policy-preprocessing`. A new reviewed qualification change must own the next run and its fresh authorities after the repair's required builds/checks and exact-commit review. No automatic retry or continuation of this stopped change is authorized by closure.
+
 ## 1. Постановка
 
 **Статус 2026-10-06.** Спека одобрена: BLOCK на `da5b0e95` → PASS_WITH_NOTES на `d9b7a8ed`, примечания применены в `36c395be` ([комментарий](https://github.com/lordcoudy/VAST/pull/7#issuecomment-6022112930)). Roadmap внесён в PLAN.md и progress.md.

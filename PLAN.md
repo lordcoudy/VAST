@@ -1,4 +1,15 @@
-<!-- CURRENT FULL CAMPAIGN 2026-10-07: qualify-full-benchmark -->
+<!-- CURRENT FULL CAMPAIGN 2026-10-11: failed qualification closeout -->
+## Current Plan - 11 October 2026
+
+User decision: close [PR #7](https://github.com/lordcoudy/VAST/pull/7) unmerged with its honest failed-Q1 outcome, preserve its code/evidence, repair accepted-policy compatibility in a separate PR, then qualify under a new reviewed change. Attempts 1-4 are FAILED; attempt 5 is UNSTARTED. Qualification acceptance, Q4, capacity and full-run eligibility remain false. No retry or successful archive/sync/merge is claimed.
+
+Retained runtime commit: `d1a78805dd41f9f946e3f6c4ca673bfeced228b5`; original documentation head: `c9e5a825a9603a28883fe701b49bb4a658a0503b`; runtime root: `E:/STUDY/VAST/tmp/qfb-root-20261007a`. The retained branch `codex/qualify-full-benchmark` contains code absent from master. Its current tasks are 63/72 complete; host check 6.2, qualification 7.1-7.6 and completion 8.1-8.2 remain incomplete. No full scenario-by-scenario conformance or final Q1 acceptance exists.
+
+Latest pre-closeout hosted CI on `c9e5a825`: [38046578045](https://github.com/lordcoudy/VAST/actions/runs/38046578045), SUCCESS. Prior exact-source suite/integration evidence on `d1a78805`: 3,244 run, zero failures/errors, 88 approved skips, integration 9/9. G9 passed diagnostic assessment only, with 126,016 policy samples and 100,988 resource samples; no promotion receipts were created. These checks do not demonstrate real stage-2 consumer compatibility.
+
+Next planning change: `fix-accepted-policy-preprocessing`. It must address production authority-v2 validation and the incorrect exact-3,840 policy counts in both consumers, renew affected runtime/parity/closure identities, and pass required checks. A fresh qualification change will own the next Q1 and its acceptance after this repair. The dated 7 October snapshot below is historical and does not authorize its old runbook or inputs.
+
+<!-- HISTORICAL FULL CAMPAIGN 2026-10-07: qualify-full-benchmark -->
 ## Актуальный план — 7 октября 2026
 
 **Текущий этап: подготовка к одной Q1, запуск ожидает отдельной команды пользователя.** [Draft PR #7](https://github.com/lordcoudy/VAST/pull/7), OpenSpec `qualify-full-benchmark`: **25/34** задач отмечено выполненными, 9 открыты. Execution commit **`1112af0b53cae995984708390cf9d04c18da3c0d`** (C_Q1), корень **`E:/STUDY/VAST/tmp/qfb-root-20261007a`**. Рабочие [planning artifacts и tasks](https://github.com/lordcoudy/VAST/blob/codex/qualify-full-benchmark/openspec/changes/qualify-full-benchmark/tasks.md) находятся в ветке `codex/qualify-full-benchmark`; master на `a54d0d99` не содержит текущую реализацию. Published head `53083fbe` добавляет только docs/evidence после C_Q1.

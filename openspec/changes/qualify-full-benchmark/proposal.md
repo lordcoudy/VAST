@@ -1,3 +1,9 @@
+## Final Disposition (2026-10-11)
+
+User decision: keep the accepted-policy repair in a separate PR, close PR #7 with its honest failed-Q1 outcome, then qualify under a new change. PR #7 is to be closed unmerged; no merge authorization or successful qualification is inferred. Attempts 1-4 remain FAILED; attempt 5 remains UNSTARTED. Qualification, Q4, capacity and full-run eligibility remain false. The code branch and all historical evidence remain available as a reviewed source baseline.
+
+This change is stopped with incomplete acceptance tasks, not archived as a completed implementation. No delta sync or successful archive is claimed. The separate planning change is `fix-accepted-policy-preprocessing`; the next physical qualification requires its own reviewed change and fresh exact-commit inputs.
+
 ## Why
 
 Конечная цель VAST — полностью рабочий проверяемый продукт: полная qualification, Q4, датированная cloud capacity, полная матрица 5 600 arms / 2 800 пар и `verify → finalize → export`. Компонентный релиз (PR2) и finite study (PR5, attempt K: 24/24 arms) доказали работоспособность выбранного GStreamer пути, но полная кампания не исполнена ни на одной стадии: 0/32 qualification cells, 0/1 120 Q4, 0/5 600 arms. Последние попытки A269 и цепочка g остановились до приёмки, а исходники native/runtime образов изменились после последних receipts. Первый этап полной кампании — принятая полная qualification — нужен до любых Q4 и full run.
