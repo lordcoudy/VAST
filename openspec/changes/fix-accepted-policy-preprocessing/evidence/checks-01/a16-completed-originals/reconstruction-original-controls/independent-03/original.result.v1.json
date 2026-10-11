@@ -1,0 +1,29 @@
+{
+  "artifact_kind": "vast_independent_original_capture_v1",
+  "campaign_authority": false,
+  "command": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/verify_reconstruction_a16_independent_03.py",
+    "--child"
+  ],
+  "finished_utc": "2026-10-11T22:53:20.953165+00:00",
+  "original_exit_code": 0,
+  "output_directory": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent-03",
+  "source_commit": "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+  "source_writes_permitted": false,
+  "started_utc": "2026-10-11T22:52:48.621621+00:00",
+  "streams": {
+    "original.stderr.raw": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original.stdout.raw": {
+      "bytes": 13402,
+      "sha256": "eb9ae308eb91c4c6b18a2eaf77251d48e31a15a00f3d8dd09591353c2868a09a"
+    }
+  },
+  "verifier_sha256_after": "6909c8261c8720f014dcb8c471d3dc4545c2dd136c4e1cb50e373a6c6866758c",
+  "verifier_sha256_before": "6909c8261c8720f014dcb8c471d3dc4545c2dd136c4e1cb50e373a6c6866758c",
+  "verifier_unchanged": true
+}

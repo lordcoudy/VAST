@@ -12,6 +12,7 @@ from pathlib import Path
 import hashlib
 import json
 import os
+import re
 import socket
 import tempfile
 from types import SimpleNamespace
@@ -37,6 +38,54 @@ from tests.fixtures.accepted_policy_native_fixture_v2 import write_native_policy
 STOCK_EQUIVALENCE_GPU_COORDINATE_V2 = ("gstreamer_custom", "gpu", "h264", "independent_processes")
 
 
+def _fixture_command_replies_v2(
+    *, identity_patch_path: Path, image_inspections: Mapping[str, Any], device_probes: Mapping[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    if type(image_inspections) is not dict or type(device_probes) is not dict:
+        raise ValueError("fixture command reply maps must be explicit objects")
+    if not image_inspections and not device_probes:
+        return {}, {}
+    systems = {"openvino_gva", "gstreamer_custom"}
+    if set(device_probes) != systems or any(type(value) is not dict for value in device_probes.values()):
+        raise ValueError("fixture device probe map requires exactly two system objects")
+    aliases = dict(image_inspections)
+    for key, image in image_inspections.items():
+        if (type(image) is not dict or type(key) is not str
+                or re.fullmatch(r"sha256:[0-9a-f]{64}", key) is None or image.get("Id") != key):
+            raise ValueError("captured fixture image key and Id must agree exactly")
+        references = [key]
+        for name in ("RepoTags", "RepoDigests"):
+            values = image.get(name)
+            if values is None:
+                values = []
+            if type(values) is not list or any(type(value) is not str or not value.isascii() or not value for value in values):
+                raise ValueError("captured fixture image aliases are malformed")
+            references.extend(values)
+        for reference in references:
+            previous = aliases.setdefault(reference, image)
+            if previous != image:
+                raise ValueError("captured image inspection aliases disagree")
+    try:
+        patch_systems = json.loads(identity_patch_path.read_bytes())["systems"]
+        identities = {system: (
+            patch_systems[system]["physical_identity"]["image_id"],
+            patch_systems[system]["fragment_identity"]["image_id"],
+        ) for system in systems}
+    except (KeyError, TypeError, ValueError, UnicodeError) as error:
+        raise ValueError("fixture device probe identity patch is malformed") from error
+    replies = {}
+    for system, (image_id, fragment_id) in identities.items():
+        if (type(image_id) is not str or re.fullmatch(r"sha256:[0-9a-f]{64}", image_id) is None
+                or image_id != fragment_id):
+            raise ValueError("fixture device probe physical and fragment image IDs disagree")
+        if image_id not in image_inspections or image_inspections[image_id]["Id"] != image_id:
+            raise ValueError("fixture device probe image is missing from captured inspections")
+        if image_id in replies:
+            raise ValueError("fixture device probe systems share one image ID")
+        replies[image_id] = device_probes[system]
+    return aliases, replies
+
+
 @contextmanager
 def prepared_complete_fixture_inputs_v2(
     *,
@@ -57,6 +106,9 @@ def prepared_complete_fixture_inputs_v2(
         raise ValueError("explicit consumer fixture requires a fresh canonical project namespace")
     if not socket_prefix.startswith(".") or "/" in socket_prefix or len(socket_prefix) > 36:
         raise ValueError("fixture socket prefix is invalid")
+    inspection_aliases, probe_replies = _fixture_command_replies_v2(
+        identity_patch_path=identity_patch_path, image_inspections=image_inspections, device_probes=device_probes,
+    )
     output.mkdir(mode=0o700, parents=True, exist_ok=False)
     native_socket_root = Path(tempfile.mkdtemp(prefix=socket_prefix.removeprefix(".") + "-", dir="/var/tmp"))
     socket_dir = native_socket_root / "runtime"
@@ -73,15 +125,9 @@ def prepared_complete_fixture_inputs_v2(
         front.bind(str(front_path))
         front.listen(2)
         control.bind(str(control_path))
-        inspection_aliases = dict(image_inspections)
-        for image in image_inspections.values():
-            for reference in (image["Id"], *(image.get("RepoTags") or []), *(image.get("RepoDigests") or [])):
-                previous = inspection_aliases.setdefault(reference, image)
-                if previous != image:
-                    raise ValueError("captured image inspection aliases disagree")
         with prepare_original_fixture_engine_v1(
             project_root=root, output_dir=output / "command-boundary",
-            image_inspections=inspection_aliases, device_probes=device_probes,
+            image_inspections=inspection_aliases, device_probes=probe_replies,
             socket_path=engine_path,
         ) as engine:
             transaction = materialize_publication_policy_qualification_transaction_v2(

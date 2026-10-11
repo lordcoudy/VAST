@@ -1,0 +1,27 @@
+{
+  "reviewed_helper_sha256": "65fb7ef980246e1fd5b8054a4eaad6c04e6015928523532420c9f5e37bc68941",
+  "started_utc": "2026-10-11T23:05:18.8819186+00:00",
+  "campaign_authority": false,
+  "argv": [
+    "C:\\Windows\\System32\\wsl.exe",
+    "--distribution",
+    "Ubuntu",
+    "--user",
+    "s-a-balashov",
+    "--exec",
+    "/usr/bin/env",
+    "HOME=/home/s-a-balashov",
+    "TMPDIR=/var/tmp",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/retain_a16_completed_originals.py",
+    "apply",
+    "--plan",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals.retention-plan.02.v1.json",
+    "--reviewed-plan-sha256",
+    "370d6ecef04ed8ede2148bc23831af87e5f0ec525099d39ba2b6660bbd987849"
+  ],
+  "source_read_only": true,
+  "reviewed_plan_sha256": "370d6ecef04ed8ede2148bc23831af87e5f0ec525099d39ba2b6660bbd987849"
+}

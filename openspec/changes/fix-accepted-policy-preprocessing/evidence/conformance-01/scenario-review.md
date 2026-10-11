@@ -15,6 +15,218 @@ All four delta requirements and fourteen scenarios are mapped below. `Proven`
 describes only the stated boundary. `Outstanding` must not be inferred from an
 injected assessment, a receipt self-hash, a source inspection or a dispatched CI run.
 
+## Source-A16 Check Update
+
+The earlier scenario snapshot below remains historical. The next frozen
+implementation/check source is `a16f243e7e80f093342ccdddf717d59d6d46f0a8`,
+published in the same Draft PR #9 and copied into its own ordinary, no-hardlink
+ext4 checkout. All 12,115 tracked paths passed the stock raw Git-object byte
+check. No runtime, native/worker, production, CI policy or planning-artifact
+bytes changed from source 591; the additive changes repair fixture setup,
+archive path resolution, external launch controls and three exact LF attributes.
+
+The source-A16 focused recipe completed naturally with original outer exit 0:
+212 tests, zero failures/errors, 131.755 seconds and one explicitly gated live
+preflight test. That test is reserved for the separate nine-case physical lane;
+the focused skip is not physical integration success. All original recipe
+streams, test IDs, commit, start/finish and inner exit files remain in
+`artifacts/accepted_policy_repair_20261011a/checks-01/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/`
+under the frozen source root, not this managed worktree.
+
+The new source-comparison report passes all 128 byte-identical runtime inputs,
+67 guardian sources, 93 qualification sources and unchanged source/dependency/
+context identities for all five native/worker builds. Actual code-closure
+production and its independent cold CLI both completed with validated receipt
+identity `5c70c1265e3eaf0fb7742c39d391c5c756c5131495e29a3ac9da084b6727c6ac`.
+Original inner exit is 0, original streams are empty and recipe finish is
+`2026-10-11T22:26:32Z`. The completed exec-command return was not emitted when
+the orchestration attempted to store an undefined session identifier. No
+outer exit or missing capture is reconstructed, and the recipe was not rerun.
+A later independent stock source-byte gate must supply the current-state
+prerequisite without claiming an unavailable original outer result.
+
+Fresh source preparation completed with original exit 0. The separately
+recorded corrected verifier rehashed 2,540 target inputs / 4,311,488,388 bytes
+and checked unchanged epochs and actual source/build stock-byte gates. The
+first independent verifier failed shell quoting before reaching any check;
+its original capture remains preserved. A reviewed 12-file reconstruction
+copy then completed with original exit 0, but its separate verifier also
+failed command encoding before any gate. Its independent file-based proof
+and renewed physical integration are still outstanding at this update.
+
+The 26-test bounded fixture run and read-only complete-consumer preflight pass
+their stated setup/source boundaries only. Complete 3,840/3,968 consumer runs,
+the fresh genuine 29-cell refusal chain, default materializer/cold negative
+cohorts and their exact predicates remain unexecuted. The reviewed additive
+42-case runner is a pre-run feasibility review, not 42 behavioral passes.
+Hosted run 38179553996 is still running at exact source A16; full ext4 has not
+started. No task, archive, final acceptance, campaign authority or Q1 readiness
+is granted by this update.
+
+## Source-A16 Subsequent Gates
+
+Subsequent review of hosted run 38179553996 confirms success at A16, with
+3,307 tests run, 3,219 successes, zero failures/errors and 88 exact audited
+skips against the unchanged policy. The nine physical declarations were
+excluded, not executed by hosted CPU CI. Original CPU/host ZIPs and the
+independent structured read are retained in
+`checks-01/hosted-ci-38179553996-pass/`; their scope is explicitly not hardware
+or campaign acceptance.
+
+The reviewed file-based independent reconstruction verifier03 completed
+naturally with original exit 0, from `2026-10-11T22:52:48.621621Z` to
+`2026-10-11T22:53:20.953165Z`. It checked all 12 actual reconstruction inputs
+(1,393,960,908 bytes), unchanged original target epochs and 24 historical
+epochs, all 12,115 stock committed SOURCE paths before and after, focused
+212/exact-one-skip evidence, source-comparison 128/67/93/5 and the actual
+93-source closure's distinct physical and semantic identities. Independent
+verifier02 had passed the physical input gates but refused the evidence log
+parser: two successful unittest statuses were on immediate docstring lines.
+Verifier03 permits exactly those two observed header/continuation pairs;
+the original verifier02 and its failure capture remain unchanged. No input
+copy or focused suite was repeated to repair this evidence reader.
+
+The A16 nine-case physical lane then completed once with original outer
+exit 0, from `2026-10-11T22:54:50.3465727Z` to
+`2026-10-11T22:55:21.7606781Z`. Each actual outcome is one test, one exact
+successful ID and zero failures/errors/skips; its frozen manifest matches
+the unchanged CI declarations. Docker and GPU compute observations before
+and after are empty; final source HEAD and tracked status match A16, and
+the original wrapper's stock raw-source gate completed. Its byte-exact
+outer stderr contains the WSL proxy warning and GNU cp no-clobber portability
+warning, not a suppressed test failure. The sealed recipe does not create a
+`passed.txt` marker; a later review's absent-marker assumption is not a
+missing original gate. Original controls are in
+`checks-01/integration-a16-original-control-01/` and the frozen SOURCE lane.
+
+Independent scenario review keeps scenario9 open: actual identity loading
+at 126,016, injected guardian assessment at 126,016 and prospective genuine
+3,840/3,968 complete consumer runs do not alone execute its stated antecedent
+of a valid promoted 126,016 policy with matching fresh assessment accepted
+by both consumers. A distinct external fixture runner is being reviewed
+using the same frozen native APIs and a genuine 32-cell count map: 16 cells
+at 984 and 16 at 985 per branch, four branches each, total 126,016. Pairing
+one topology of each count yields 3,938 samples per aggregate calibration
+coordinate. This is planned test evidence, not an execution result, relaxed
+criterion or permission to replay failed attempt-4/G9 inputs.
+
+The full ext4 run and complete consumer lanes are still separate pending
+gates at this update. No implementation checkbox, archive, final acceptance,
+new qualification spec approval or Q1 launch follows from these results.
+
+## Source-A16 Consumer Refusal
+
+The first v3 minimum08 consumer child stopped naturally with original exit 1
+at `2026-10-11T23:07:15.352021Z`, after250.687 seconds. Larger09 was not
+started. The only successful phase was initial production import/provenance
+(67 modules); preparation did not yield and no original native observations
+or promotion/materialization acceptance were produced. Actual source HEAD,
+tracked status and all12,115 stock committed bytes remained unchanged before
+and after. The original traceback, streams and failed result are preserved
+under the frozen SOURCE's `consumer-complete-08-controls/`.
+
+Read-only source inspection identifies a fixture command-response mismatch:
+its held artificial ELF's device replies use system-name keys, whereas the
+unchanged default runtime probe sends the exact runtime image ID. The C
+dispatcher has no matching response key and its nonzero result is correctly
+refused by the stock `_run_json` boundary. This is not an observed live
+Docker device failure; the fixture explicitly passes the artificial engine.
+An isolated postmortem diagnostic completed from
+`2026-10-11T23:18:01.960354Z` to `2026-10-11T23:18:07.724045Z`. Its two exact
+stock-token invocations observed exit52 and empty streams for OpenVINO/GVA
+and GStreamer/custom. The now-closed held `/proc/self/fd` executable path was
+replaced by the retained byte-identical physical ELF: this disclosed
+diagnostic substitution is not reconstructed original custody. All seven
+source/C/ELF/map hashes, clean A16 state and stock12,115 raw bytes passed
+before and after. Original captures are in
+`consumer-01/probe-boundary-diagnosis-01/`; diagnostic success proves the
+missing image-ID response boundary, not consumer acceptance. A minimal
+fixture-only correction with a real-ELF/default-probe RED/GREEN remains
+pending. The earlier transport-failed attempt06 did not prove this later
+device-probe boundary. Preserve all earlier failures; do not infer complete
+consumer success from the bounded transport tests or initial import phase.
+
+Minimum/larger/genuine126,016/underfilled29 and default negative cohorts remain
+open. No automatic consumer retry, production relaxation, corpus relabel or
+failed attempt-4/G9 promotion is authorized by diagnosis. The independent
+full ext4 run continues; its original strict skip and exact mount-table gates
+remain mandatory.
+
+## Fixture Probe Correction
+
+The managed fixture now validates explicit reply maps before output-directory,
+socket or ELF creation. It corroborates the two systems' physical/fragment
+image IDs against captured inspection IDs, refuses conflicting aliases and
+shared IDs, and binds each unchanged device payload only to that exact ID.
+The explicit empty-map transport-only setup remains supported. No production
+runtime, original ELF boundary or validator bytes changed.
+
+The new real-ELF/default-probe regression first failed at the actual unchanged
+stock boundary: one test, error, original exit1, 0.582 seconds, with observed
+ELF exit52 and empty streams. Its original is retained in
+`consumer-01/probe-boundary-diagnosis-01/focused-red/`. After the fixture fix,
+the new fifteen cases plus two existing transport and two existing original-
+custody cases passed19/19 with zero skips in4.142 seconds, original exit0,
+from `2026-10-11T23:24:02.669484Z` to `2026-10-11T23:24:08.642119Z`.
+Original GREEN controls are in `consumer-01/device-probe-boundary-01/green/`.
+Both exact payloads and the foreign-image stock refusal were exercised;
+malformed-map cases also assert absent output parent/leaf and no socket/ELF
+constructor calls, with unchanged patch/maps.
+
+Independent read-only review found no correctness/API blocker at fixture
+SHA-256 `1b8e2fc7e468d1b54ab9571ef2eea6c4a04f77a0430207c1b292ade2fb4b4106`
+and new test-module SHA-256
+`0c3fc729a9dc8cd4ae751b1e6cf752b2b9fc5fe7af5e0f8a6fb99082cdc08ce4`.
+The expensive upstream setup providers in this bounded test are explicit
+spies; actual default probe/ELF/socket operations are not. This technical
+review and bounded GREEN do not prove complete guardian/materializer
+acceptance or physical inference. A new source freeze and exact-head checks
+including the new module are required; old A16 results do not cover new bytes.
+
+## Closed A16 Full Suite And Storage Hold
+
+The original full ext4 wrapper completed naturally with outer exit 0 from
+`2026-10-11T22:58:28.434537Z` to `2026-10-11T23:43:39.419964Z`.
+Its stock report has physical SHA-256
+`31ff129bac45518957739888945c7d748a3ed1ceccc452c796a1f91cfe41e4b3`:
+3,307 tests run, 3,221 successful, zero failures/errors/expected failures/
+unexpected successes/missing required successes, and 86 exact approved skips
+(76 platform/physical prerequisites and 10 retired-schema migration cases).
+The canonical copied-WSL Python test actually succeeded. All six native
+targets, 535 Python syntax files, 16 Bash syntax files and required factory
+checks passed. Stock elapsed time is 2,691.150726159 seconds.
+
+Both original global mount tables contain the same 261 rows and physical
+SHA-256 `eeba47ce95f1968cfeeef091ea908a5cfacce874ba4569190e86385611e209d7`.
+SOURCE and CI tracked bytes match A16 with no tracked changes. The private
+runtime namespace, ordinary UID/GID1000 and zero active capabilities passed;
+the observed caller soft descriptor limit 10,240 was restored after runuser,
+not increased beyond that caller limit, with hard limit 1,048,576 unchanged.
+Original controls are in `checks-01/full-a16-control-01/`; detailed originals
+remain under the frozen SOURCE's `checks-01/ext4-a16f243e7e80f093342ccdddf717d59d6d46f0a8/`.
+The observer completed 44 requests/responses with EOF, original return 0 and
+no forced SIGTERM/SIGKILL. Its own report explicitly does not establish
+descendant quiescence from original-child status; current process/container/
+GPU observations must be assessed separately. Hardware acceptance is false.
+
+Root structured readback confirmed the exact skip IDs, reasons, classifications
+and false acceptance flags against the unchanged policy. An earlier root
+reader compared JSON after PowerShell culture-sensitive sorting and refused
+that ordering comparison; the corrected reader uses ordinal IDs and exact
+structured fields. This was an evidence-reader refusal, not a suite failure
+or rerun. None of these A16 results cover the new fixture/test bytes.
+
+Read-only Windows observation now reports C free 41,370,685,440 bytes, below
+40 GiB. Ubuntu and Docker VHDs are both backed by C. WSL's approximately
+657 GiB virtual free space is not sufficient physical backing evidence.
+Large source copies, consumer preflights and fixture launches are held pending
+the user's storage choice and refreshed backing-volume capacity. Historical
+roots remain untouched. Reviewed unlaunched v4/126016-v2 recipes preserve
+actual child status through wait interruptions and post-guard failures;
+their static review is not consumer success. All thirteen remaining tasks,
+final-head checks, sync/archive, final approval and the new qualification
+specification remain open.
+
 ## Evidence Ledger
 
 - `software-01/README.md`, `extraction-review.md` and

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "command": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu",
+    "-u",
+    "s-a-balashov",
+    "--cd",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST",
+    "--",
+    "env",
+    "TMPDIR=/var/tmp",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/run_complete_consumers_v3.py",
+    "--expected-source-commit",
+    "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+    "--check-only"
+  ],
+  "started_utc": "2026-10-11T22:30:04.5502547Z",
+  "finished_utc": "2026-10-11T22:30:05.1586590Z",
+  "original_exit_code": 0,
+  "wrapper_sha256_before": "31eb8079444eacc03e1d7b68c059275fa2537b61a46a4814691cf4cfcdb0ee38",
+  "wrapper_sha256_after": "31eb8079444eacc03e1d7b68c059275fa2537b61a46a4814691cf4cfcdb0ee38",
+  "outside_selected_source": true,
+  "execution_scope": "ONE read-only check-only preflight; no fixture or negative worker launch",
+  "stdout_sha256": "cb1b62de0a04780d612f93801332ec097cac32b184ea47e463ce07cb220dd5d7",
+  "stderr_sha256": "0d876a7e4a3a2ddc8c388c9375065b26f7b9cd0ca28845c5bc238db1fdfa50e5"
+}

@@ -1,0 +1,19 @@
+[
+  "wsl.exe",
+  "-d",
+  "Ubuntu",
+  "-u",
+  "s-a-balashov",
+  "--cd",
+  "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST",
+  "--",
+  "env",
+  "TMPDIR=/var/tmp",
+  "PYTHONDONTWRITEBYTECODE=1",
+  "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+  "-B",
+  "openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/run_complete_consumers_v3.py",
+  "--expected-source-commit",
+  "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+  "--check-only"
+]
