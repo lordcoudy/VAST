@@ -306,7 +306,18 @@ class Fixture:
             "policy_contract_sha256": self.policy_sha,
             "aggregation_rule": "median_of_balanced_native_codec_topology_cells_v1",
             "minimum_samples_per_branch_cell": 30,
-            "calibrations": {system: {} for system in target.SYSTEMS},
+            "calibrations": {
+                system: {
+                    "costs": {
+                        branch: {
+                            resource: {"samples": 120}
+                            for resource in RESOURCES
+                        }
+                        for branch in BRANCHES
+                    }
+                }
+                for system in target.SYSTEMS
+            },
         }
         self.accepted_calibration_path = (
             self.accepted_dir / "checkpoint_policy_calibration_mapping.json"
@@ -344,6 +355,19 @@ class Fixture:
             **accepted_unsigned,
             "sha256": semantic(accepted_unsigned),
         }
+        write_json(self.accepted_receipt_path, self.accepted_receipt)
+
+    def rewrite_accepted(self) -> None:
+        write_json(self.accepted_calibration_path, self.calibration)
+        unsigned = {
+            key: value for key, value in self.accepted_receipt.items() if key != "sha256"
+        }
+        unsigned["coverage"] = self.coverage
+        unsigned["outputs"]["calibration_mapping"] = {
+            **descriptor(self.root, self.accepted_calibration_path),
+            "path": self.accepted_calibration_path.name,
+        }
+        self.accepted_receipt = {**unsigned, "sha256": semantic(unsigned)}
         write_json(self.accepted_receipt_path, self.accepted_receipt)
 
     def dependencies(self) -> target.AcceptedPolicyGuardianDependenciesV1:
@@ -449,6 +473,57 @@ class SyntheticAtomicCrash(BaseException):
 
 
 class AcceptedPolicyGuardianPreprocessingContractV1Tests(unittest.TestCase):
+    def test_measured_sample_count_survives_materialization_and_cold_load(self) -> None:
+        for count in (3840, 126016):
+            with self.subTest(count=count), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary).resolve()
+                fixture = Fixture(root)
+                fixture.coverage["accepted_sample_count"] = count
+                for calibration in fixture.calibration["calibrations"].values():
+                    for costs in calibration["costs"].values():
+                        for value in costs.values():
+                            value["samples"] = count // 32
+                fixture.rewrite_accepted()
+                result = fixture.materialize(root / "measured-output")
+                loaded = target.load_accepted_policy_guardian_preprocessing_contract_v1(
+                    project_root=root,
+                    preprocessing_contract_path=result["contract_path"],
+                    materialization_receipt_path=result["receipt_path"],
+                    accepted_policy_capability_manifest_path=fixture.accepted_capability_path,
+                    dependencies=fixture.dependencies(),
+                )
+                self.assertEqual(loaded["receipt"], json.loads(result["receipt_path"].read_bytes()))
+                self.assertEqual(fixture.accepted_receipt["coverage"]["accepted_sample_count"], count)
+
+    def test_coverage_types_coordinates_and_calibration_totals_refuse_before_writes(self) -> None:
+        cases = (
+            lambda f: f.coverage.update(accepted_sample_count=True),
+            lambda f: f.coverage.update(accepted_sample_count="3840"),
+            lambda f: f.coverage.update(accepted_sample_count=3840.0),
+            lambda f: f.coverage.update(binding_count=32.0),
+            lambda f: f.coverage.update(pilot_cell_count=True),
+            lambda f: f.coverage.update(minimum_samples_per_branch_cell=30.0),
+            lambda f: f.coverage.update(accepted_sample_count=3839),
+            lambda f: f.coverage.update(extra=1),
+            lambda f: f.calibration["calibrations"].pop("savant"),
+            lambda f: f.calibration["calibrations"].update(extra={}),
+            lambda f: f.calibration["calibrations"]["deepstream"]["costs"].pop("damage"),
+            lambda f: f.calibration["calibrations"]["deepstream"]["costs"]["damage"].update(extra={"samples": 120}),
+            lambda f: f.calibration["calibrations"]["deepstream"]["costs"]["damage"]["gpu"].update(samples=True),
+            lambda f: f.calibration["calibrations"]["deepstream"]["costs"]["damage"]["gpu"].update(samples=119),
+            lambda f: f.calibration["calibrations"]["deepstream"]["costs"]["damage"]["gpu"].update(samples=121),
+        )
+        for position, mutate in enumerate(cases):
+            with self.subTest(case=position), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary).resolve()
+                fixture = Fixture(root)
+                mutate(fixture)
+                fixture.rewrite_accepted()
+                output = root / "refused-output"
+                with self.assertRaises(target.AcceptedPolicyGuardianPreprocessingContractV1Error):
+                    fixture.materialize(output)
+                self.assertFalse(output.exists())
+
     def test_receipt_last_cold_load_proves_promotion_closure_and_consensus(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary).resolve()

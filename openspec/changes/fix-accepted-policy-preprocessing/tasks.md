@@ -1,21 +1,21 @@
 ## 1. Review And Integration Gates
 
-- [ ] 1.1 Record independent specification review and user/reviewer approval in this Draft MR with the exact planning commit; verify no production/test/CI edits precede approval and start apply only after a separate user request.
-- [ ] 1.2 Verify PR #7 remains closed/unmerged at its retained failed-Q1 closeout, record the inherited source baseline and this repair PR's exact target, and preserve its unchecked qualification tasks/evidence. Confirm the implementation handoff names a future distinct qualification change rather than resuming old attempt 5; no merge is authorized by this check.
+- [x] 1.1 Record independent specification review and user/reviewer approval in this Draft MR with the exact planning commit; verify no production/test/CI edits precede approval and start apply only after a separate user request.
+- [x] 1.2 Verify PR #7 remains closed/unmerged at its retained failed-Q1 closeout, record the inherited source baseline and this repair PR's exact target, and preserve its unchecked qualification tasks/evidence. Confirm the implementation handoff names a future distinct qualification change rather than resuming old attempt 5; no merge is authorized by this check.
 
 ## 2. Production Validator Compatibility
 
 - [ ] 2.1 Add focused RED tests for the production default guardian assessor/materializer and standalone cold reader using real authority-v2 fragments/pilots, six-stream reset evidence and valid dropped-GPU/no-transfer decisions; verify failures occur at the actual old validator boundaries and retain their original outputs.
-- [ ] 2.2 Extract reviewed F5 unchanged and the existing transaction/fragment read-only validation closure into leaf modules; have promotion/original builders import or re-export them while preserving signatures, shared exception/default dependency object identities and custody/ContextVar semantics. Verify pre/post-extraction cold outputs and refusal predicates, original cold-validation regression tests, F5 stock-copy diff/hash lock and authority-v2 promotion tests pass, legacy policy source is byte-identical and no leaf imports host orchestration or builders.
+- [x] 2.2 Extract reviewed F5 unchanged and the existing transaction/fragment read-only validation closure into leaf modules; have promotion/original builders import or re-export them while preserving signatures, shared exception/default dependency object identities and custody/ContextVar semantics. Verify pre/post-extraction cold outputs and refusal predicates, original cold-validation regression tests, F5 stock-copy diff/hash lock and authority-v2 promotion tests pass, legacy policy source is byte-identical and no leaf imports host orchestration or builders.
 - [ ] 2.3 Wire the guardian production assessment to exact cold-valid transaction/fragment/index/closure lineage with the shared pilot validator; verify 2.1 GREEN, materialization followed by independent cold load succeeds, and default legacy entrypoint behavior is unchanged.
 - [ ] 2.4 Add and pass refusal checks for foreign/mutated transaction and fragment descriptors, wrong index/closure/candidate/accepted outputs, stale runtime/config/parity, unsafe paths, unsupported kinds and incomplete operational accounting; verify each materialization refusal leaves its fresh output namespace absent.
 - [ ] 2.5 Verify completed-GPU/no-transfer, corrupt dropped-decision replay/linkage/terminal/uniqueness, missing ingress and invalid reset evidence still refuse; verify CPU and positive-transfer GPU sample sets equal reviewed stock behavior and no branch-cell minimum is weakened.
 
 ## 3. Measured Coverage
 
-- [ ] 3.1 Add RED tests for both consumers with complete valid calibration totals at 3,840 and above the minimum; include bool/string/fraction/count-key errors, under-minimum totals, missing/extra aggregate coordinates, inconsistent receipt/calibration totals and guardian assessment disagreement. Verify original rejection of a valid larger count is reproduced.
+- [x] 3.1 Add RED tests for both consumers with complete valid calibration totals at 3,840 and above the minimum; include bool/string/fraction/count-key errors, under-minimum totals, missing/extra aggregate coordinates, inconsistent receipt/calibration totals and guardian assessment disagreement. Verify original rejection of a valid larger count is reproduced.
 - [ ] 3.2 Replace both exact-3,840 coverage restrictions with exact-key/type checks and evidence-bound calibration totals; verify 3.1 GREEN, all 32 aggregate calibration coordinates meet balanced minimum 120 and guardian fresh assessment still checks all 128 pilot/branch coordinates.
-- [ ] 3.3 Verify real full-publication identity loading accepts a valid larger policy total and rejects altered totals/calibration/capability bindings; retain its existing physical registry and output/self-hash checks and document that this reader does not replay pilots.
+- [x] 3.3 Verify real full-publication identity loading accepts a valid larger policy total and rejects altered totals/calibration/capability bindings; retain its existing physical registry and output/self-hash checks and document that this reader does not replay pilots.
 
 ## 4. Package And Identity Renewal
 

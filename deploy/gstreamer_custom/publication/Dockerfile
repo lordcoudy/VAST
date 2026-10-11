@@ -27,6 +27,7 @@ RUN /usr/bin/python3 -m pip install \
 
 # BEGIN VAST_RUNTIME_SOURCE_ALLOWLIST
 COPY \
+  scripts/analytics_execution_capability.py \
   scripts/analytics_execution_endpoint.py \
   scripts/analytics_execution_protocol.py \
   scripts/analytics_execution_worker.py \
@@ -88,6 +89,9 @@ COPY \
   scripts/publication_policy_projection_v1.py \
   scripts/publication_policy_qualification.py \
   scripts/publication_policy_qualification_execution_closure_v1.py \
+  scripts/publication_policy_qualification_fragment_validation_v2.py \
+  scripts/publication_policy_qualification_pilot_validation_v2.py \
+  scripts/publication_policy_qualification_transaction_validation_v2.py \
   scripts/publication_qualification_image_refreeze_v1.py \
   scripts/resource_interval_contract.py \
   scripts/topology_contract.py \

@@ -1,4 +1,4 @@
-"""Amendment 9 (F5): host-only policy pilot validator used by F1 policy-assess/policy-promote.
+"""Reviewed F5 pilot semantics shared by promotion and packaged policy consumers.
 
 The stock and the F5 validators run on the same arm with stubbed sidecar validators, so the
 two semantic changes are compared directly: sidecars revalidated with reset evidence and six
@@ -7,12 +7,15 @@ calibration sample.
 """
 from __future__ import annotations
 
+import ast
 import contextlib
 import difflib
 import hashlib
+import importlib
 import inspect
 import io
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -147,7 +150,7 @@ class _Arm:
 
         paths = dict(self.paths)
         with contextlib.ExitStack() as stack:
-            for module in (stock, promotion):
+            for module in (stock, inspect.getmodule(promotion.policy_pilot_validator)):
                 for name, value in (
                     ("_validate_evidence_descriptors", lambda root, pilot: dict(paths)),
                     ("validate_checkpoint_qualification_pilot_acceptance_v1", lambda **_kwargs: dict(self.acceptance)),
@@ -227,6 +230,25 @@ class PolicyPilotValidatorV2Tests(unittest.TestCase):
         with self.assertRaisesRegex(stock.QualificationError, "linkage mismatch"):
             arm.run(promotion.policy_pilot_validator)
 
+    def test_dropped_decision_cannot_bypass_terminal_service_or_uniqueness_checks(self) -> None:
+        arm = self.arm("gpu", [_decision("t2", "plate_number", "gpu")],
+                       ingress={"t2": "drop"}, transfer=set())
+        arm.sidecars["branch_terminals"].loc[0, "terminal_status"] = "failed"
+        with self.assertRaisesRegex(stock.QualificationError, "terminal linkage"):
+            arm.run(promotion.policy_pilot_validator)
+        for service in (True, 0, -1, float("inf"), float("nan"), "2.5"):
+            with self.subTest(service=service):
+                decision = _decision("t2", "plate_number", "gpu")
+                decision["native_decision_evidence"]["actual_service_ms"] = service
+                arm = self.arm("gpu", [decision], ingress={"t2": "drop"}, transfer=set())
+                with self.assertRaisesRegex(stock.QualificationError, "actual_service_ms"):
+                    arm.run(promotion.policy_pilot_validator)
+        decisions = [_decision("t2", "plate_number", "gpu"), _decision("t2", "damage", "gpu")]
+        decisions[1]["native_decision_evidence"]["event_id"] = decisions[0]["native_decision_evidence"]["event_id"]
+        arm = self.arm("gpu", decisions, ingress={"t2": "drop"}, transfer=set())
+        with self.assertRaisesRegex(stock.QualificationError, "duplicate native decision/event"):
+            arm.run(promotion.policy_pilot_validator)
+
     def test_cpu_and_gpu_with_transfer_samples_equal_stock(self) -> None:
         for resource in ("cpu", "gpu"):
             with self.subTest(resource=resource):
@@ -246,7 +268,46 @@ class PolicyPilotValidatorV2Tests(unittest.TestCase):
             "stock", "f5", n=0))
         self.assertEqual(diff, EXPECTED_DIFF)
         self.assertEqual(Path(inspect.getsourcefile(promotion.policy_pilot_validator)).name,
-                         "publication_qualification_promotion_v2.py")
+                         "publication_policy_qualification_pilot_validation_v2.py")
+
+    def test_promotion_reexports_the_shared_leaf_validator(self) -> None:
+        leaf = importlib.import_module("publication_policy_qualification_pilot_validation_v2")
+        self.assertIs(promotion.policy_pilot_validator, leaf.policy_pilot_validator)
+        self.assertIs(leaf.QualificationError, stock.QualificationError)
+
+    def test_pilot_leaf_imports_without_host_orchestration(self) -> None:
+        blocked = {
+            "publication_qualification_promotion_v2", "full_resource_qualification",
+            "full_resource_qualification_index_v1", "publication_policy_qualification_index_v2",
+            "publication_policy_qualification_bootstrap_v2", "publication_policy_qualification_transaction_v2",
+            "publication_policy_qualification_fragments_from_authority_v2",
+            "publication_policy_qualification_pilot_executor_v2", "publication_qualification_operational_owner_v1",
+            "checkpoint_gstreamer_analytics_sidecar",
+        }
+        leaf_path = ROOT / "scripts/publication_policy_qualification_pilot_validation_v2.py"
+        tree = ast.parse(leaf_path.read_text(encoding="utf-8"))
+        imports = {
+            alias.name.split(".", 1)[0]
+            for node in ast.walk(tree) if isinstance(node, ast.Import)
+            for alias in node.names
+        } | {
+            node.module.split(".", 1)[0]
+            for node in ast.walk(tree) if isinstance(node, ast.ImportFrom) and node.module
+        }
+        self.assertFalse(imports & blocked)
+        code = (
+            "import importlib,json,sys; sys.path.insert(0,sys.argv[1]); "
+            "m=importlib.import_module('publication_policy_qualification_pilot_validation_v2'); "
+            "assert m.policy_pilot_validator.__module__ == m.__name__; "
+            "assert m.QualificationError is "
+            "importlib.import_module('publication_policy_qualification').QualificationError; "
+            "assert not set(json.loads(sys.argv[2])).intersection(sys.modules)"
+        )
+        result = subprocess.run(
+            [sys.executable, "-B", "-E", "-s", "-c", code, str(ROOT / "scripts"), json.dumps(sorted(blocked))],
+            capture_output=True, text=True, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
 
 
 class PolicyCommandsUseF5Tests(unittest.TestCase):

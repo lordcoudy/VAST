@@ -9,6 +9,7 @@ deploy/deepstream/checkpoint/vast_deepstream_publication_runtime_v3
 deploy/native_gst_probe/checkpoint_admission_transport.hpp
 deploy/native_gst_probe/checkpoint_source_coordinator.cpp
 deploy/native_gst_probe/checkpoint_study_reference.hpp
+scripts/analytics_execution_capability.py
 scripts/analytics_execution_endpoint.py
 scripts/analytics_execution_protocol.py
 scripts/analytics_execution_worker.py
@@ -77,6 +78,9 @@ scripts/publication_policy_frozen_replay_v1.py
 scripts/publication_policy_projection_v1.py
 scripts/publication_policy_qualification.py
 scripts/publication_policy_qualification_execution_closure_v1.py
+scripts/publication_policy_qualification_fragment_validation_v2.py
+scripts/publication_policy_qualification_pilot_validation_v2.py
+scripts/publication_policy_qualification_transaction_validation_v2.py
 scripts/publication_qualification_image_refreeze_v1.py
 scripts/resource_interval_contract.py
 scripts/topology_contract.py
