@@ -17,6 +17,7 @@ from checkpoint_gstreamer_analytics_sidecar import load_execution_config, load_m
 from publication_guardian_preprocessing_contract_v1 import load_guardian_preprocessing_contract_v1
 from publication_guardian_runtime_expectations_v1 import runtime_expectations_from_preprocessing_receipt_v1
 from publication_operational_request_domain_v1 import payload_with_sha256_v1
+from publication_qualification_operational_owner_v1 import write_operational_execution_binding_v1
 from publication_policy_qualification_execution_closure_v1 import (
     load_publication_policy_qualification_execution_closure_v1,
     materialize_publication_policy_qualification_execution_closure_v1,
@@ -42,9 +43,28 @@ def _descriptor(root: Path, path: Path) -> dict[str, Any]:
     return {"path": path.relative_to(root).as_posix(), "size_bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()}
 
 
-def _write_fresh(path: Path, value: Mapping[str, Any]) -> None:
-    with path.open("x", encoding="ascii") as stream:
-        stream.write(json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n")
+def _write_fixture_operational_binding_v2(
+    *, prepared: Mapping[str, Any], native: Mapping[str, Any], journals: Mapping[str, Any],
+) -> Path:
+    """Preserve original absolute descriptors at the stock binding boundary."""
+    root, output = prepared["root"], prepared["output_dir"]
+    outputs = []
+    for item in native["operations"]:
+        row, capture = item["operation"], item["capture"]
+        directory = Path(item["original"]["outputs"]["measurement_dir"])
+        decisions, ingress = directory / "publication_policy_decisions.jsonl", directory / "ingress_ledger.csv"
+        outputs.append({"operation_id": row["operation_id"],
+            **{name: dict(capture[name]) for name in ("native_domain", "process_receipt", "container_receipt")},
+            "measurement_decisions": {**_descriptor(root, decisions), "path": str(decisions)},
+            "accepted_ingress": {**_descriptor(root, ingress), "path": str(ingress)}})
+    accounting_path = output / "original-operational-binding.v1.json"
+    write_operational_execution_binding_v1(
+        project_root=root, binding_path=accounting_path,
+        mode="complete_qualification_operational_identity_v1",
+        capture_plan=prepared["capture_plan_descriptor"], guardian_companion=journals["operational_group"],
+        operation_outputs=outputs,
+    )
+    return accounting_path
 
 
 def materialize_fixture_completed_execution_v2(
@@ -100,20 +120,7 @@ def materialize_fixture_completed_execution_v2(
     from publication_policy_qualification_index_v2 import build_policy_qualification_index_v2
     from publication_policy_qualification_pilot_validation_v2 import policy_pilot_validator
 
-    outputs = []
-    for item in native["operations"]:
-        row, capture = item["operation"], item["capture"]
-        directory = Path(item["original"]["outputs"]["measurement_dir"])
-        outputs.append({"operation_id": row["operation_id"],
-            **{name: {**capture[name], "path": Path(capture[name]["path"]).relative_to(root).as_posix()} for name in ("native_domain", "process_receipt", "container_receipt")},
-            "measurement_decisions": _descriptor(root, directory / "publication_policy_decisions.jsonl"),
-            "accepted_ingress": _descriptor(root, directory / "ingress_ledger.csv")})
-    accounting_path = output / "original-operational-binding.v1.json"
-    _write_fresh(accounting_path, payload_with_sha256_v1({"schema_version": 1,
-        "artifact_kind": "vast_original_operational_execution_binding_v1", "mode": "complete_qualification_operational_identity_v1",
-        "capture_plan": {**prepared["capture_plan_descriptor"], "path": Path(prepared["capture_plan_descriptor"]["path"]).relative_to(root).as_posix()},
-        "guardian_companion": {**journals["operational_group"], "path": Path(journals["operational_group"]["path"]).relative_to(root).as_posix()},
-        "operation_outputs": outputs}))
+    accounting_path = _write_fixture_operational_binding_v2(prepared=prepared, native=native, journals=journals)
     closure = materialize_publication_policy_qualification_execution_closure_v1(
         project_root=root, qualification_transaction_receipt_path=transaction["transaction_receipt_path"],
         preprocessing_contract_path=preprocessing["contract_path"], preprocessing_materialization_receipt_path=preprocessing["receipt_path"],
