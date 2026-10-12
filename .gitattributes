@@ -338,3 +338,38 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 /openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/** -text !eol
 /openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-retention-control/** -text !eol
 /openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-retention-control/** -text !eol
+
+# Additional closed A16 originals and exact-head hosted archives remain byte evidence.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-originals/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-plan-control-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-plan-control-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-apply-control-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-apply-control-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-independent-control-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-independent-control-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38186180310-pass/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38186180310-pass/*.zip -text !eol
+
+# Closed SOURCE06 originals and lifecycle regression captures preserve raw bytes.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/source06-closed-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/source06-closed-originals/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/guardian-lifetime-01/originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/guardian-lifetime-01/originals/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38251020884-pass/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38251020884-pass/*.zip -text !eol
+
+# Fixture binding regression originals are immutable byte evidence.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/fixture-binding-tdd-01/originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/fixture-binding-tdd-01/originals/** -text !eol
+
+# Failed A2 consumer controls are retained without normalization or replay.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer12-failed-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/consumer12-failed-originals/** -text !eol
+
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38294921755-pass/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38294921755-pass/*.zip -text !eol
+
+# Naturally failed A3 consumer controls preserve their original bytes.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer16-failed-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/consumer16-failed-originals/** -text !eol

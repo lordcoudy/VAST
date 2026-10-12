@@ -29,11 +29,80 @@ Tasks 4.1-4.4 evidence: `evidence/physical-01/packaged-closure.aca94dd0.inventor
 
 ## 5. Required Checks And Q1 Handoff
 
-- [ ] 5.1 Run the focused/regression suites and hosted required checks on the final implementation/input commit; verify all mandatory checks pass at that exact SHA and preserve diagnostics for any refusal.
-- [ ] 5.2 Run the full ext4 suite and compare skip identities/reasons with the approved set, then run all nine physical integration tests without competing GPU/Docker work; verify zero failures/errors, only explicitly approved skip deviations, 9/9 success and no leftover owned containers/processes.
+- [x] 5.1 Run the focused/regression suites and hosted required checks on the final implementation/input commit; verify all mandatory checks pass at that exact SHA and preserve diagnostics for any refusal.
+- [x] 5.2 Run the full ext4 suite and compare skip identities/reasons with the approved set, then run all nine physical integration tests without competing GPU/Docker work; verify zero failures/errors, only explicitly approved skip deviations, 9/9 success and no leftover owned containers/processes.
 - [ ] 5.3 Run promoter/materializer/cold-reader and downstream identity compatibility tests on purpose-built complete real-validation fixtures, including packaged cold-validator checks and both supported count cases; verify default production validators actually run and pass, retain fixture bindings/limits, and never admit fixture outputs into campaign authority. Do not feed failed attempt-4/G9 raw inputs to a promoter or materializer; preserve those historical bytes read-only.
 - [ ] 5.4 Deliver scenario-by-scenario conformance evidence covering implementation location, tests, physical checks, discrepancies and automation limits; verify independent technical review has no blockers and disclose the absent dedicated CI conformance gate without changing CI infrastructure.
 - [ ] 5.5 Prepare the source/build/check handoff for a new qualification change: list exact repair/input/receipt identities, current timings, required fresh namespaces and known limitations; verify it explicitly requires completion of section 6 and the new qualification spec review/final-commit checks before Q1. Record the full-duration host protection requirement (estimate plus at least six hours) and preserve PR #7's stopped runbook/root.
+
+Task 5.2 exact input evidence: `06c828ce798d3454f1d4b8a992aed7133882b5a1`,
+recorded in `evidence/checks-01/source06-checkpoint.v1.md`. Original full outer
+RC0,3322 tests /3236 successes /86 exact audited skips, zero failures/errors;
+all9 declared physical cases succeeded with zero skips. Integration ran first
+and closed before the full suite so Docker bind-row changes could not overlap
+its whole263-row mount equality check. Fresh post-closure observation found
+empty Docker/GPU lists and no matching SOURCE/CI worker paths before the
+separate consumer pair started. This is not consumer or Q1 acceptance; any
+later implementation/input change requires renewal rather than receipt rebinding.
+
+The subsequent fixture-only guardian lifetime correction reopens task 5.2 for
+the corrected implementation/input commit. The exact06 results remain passed
+as historical evidence, not renewed checks. The original minimum10 consumer
+failed naturally before promotion; larger11 remained unstarted. Its recorded
+failure and bounded clock RED regression do not close consumer acceptance.
+
+Renewed exactA2 input `a2fc7f464cc71b89ff1453132bf254a0abeea5e8` closes tasks
+5.1/5.2, recorded in `evidence/checks-01/sourceA2-checkpoint.v1.md`:228 focused
+tests/one subsequently exercised live-preflight skip, hosted3323/3235success/
+88 exact unchanged audited skips, full3323/3237success/86 exact unchanged
+audited skips, and9/9 physical cases with zero skips. All original sequences
+closed naturally RC0; full raw/source/12,359-path before-after manifests,
+canonical limits/native/model metadata and whole265-row mount equality passed
+independent review. Physical ran before full without overlapping Docker work.
+This renewal does not close complete-consumer, archive or final-approval gates;
+any later implementation/input change again requires appropriate renewal.
+
+The freshA2 minimum12 subsequently failed at the unchanged stock absolute-path
+binding/custody boundary, after all32 pilot acceptances and before promotion;
+larger13 was never started. `sourceA2-checkpoint.v1.md` retains exact original
+failure/guard/sampler evidence. A fixture-only stock-writer correction is being
+implemented; tasks5.1/5.2 are reopened for its new input. A2 checks remain passed
+historical results, not new-input acceptance. No failed binding is rewritten.
+
+At published exactd725413ef086f3550dcafd6bc8233982f35cab14, the stock-writer
+fixture correction closes task5.1 again:292 focused tests with the exact
+live-preflight skip subsequently exercised in all9 physical cases, and hosted
+3327run/3239success/88 unchanged audited skips, zero failures/errors. Original
+workflow38294921755 attempt1 and both jobs passed; original artifact digests,
+all4 binding regressions and complete skip/audit equality were independently
+verified. See `evidence/checks-01/sourceA3-checkpoint.v1.md` and
+`evidence/checks-01/hosted-ci-38294921755-pass/review.md`.
+Task5.2 remains open while its original full ext4 sequence runs. Real16/17,
+default negatives, genuine29/126016 and other acceptance gates remain open;
+new-source/input changes require appropriate renewed checks, not rebinding.
+
+Task5.2 subsequently closes at the same d725 input:original full RC0 at
+2026-10-12T20:00:38.2740689Z,3327run/3241success/86exact unchanged audited
+skips and no failures/errors. Independent whole12362-row tracked manifests and
+267-row global mount bytes match before/after; canonical runtime/model/native/
+ordinary-user checks pass. All9 physical cases previously passed without
+competing GPU/Docker work; immediate20:05:22Z admission observations found no
+named source/CI actors, containers or GPU jobs and verified exact clean roots.
+This is observed ownership scope, not arbitrary descendant quiescence.
+The90-sample capacity observer closed0 above40GiB, with original closure seen.
+Fresh16/17 execution is now started, not accepted; all dependent gates stay open.
+
+That original pair subsequently closed naturallyRC1 at2026-10-12T22:08:23.9830872Z.
+Minimum16 failed at the stock-sample comparison after7296.586691427seconds;
+larger17 never started. Real F5 returned for the CPU arm, but legacy stock
+omits expected_streams in its sidecar call and correctly encounters the reset
+validator's missing-context refusal. Raw/source/recipe guards pass. Sampler66713
+closed0,244 observations/minC55655526400bytes; no owned check remains running.
+Originals and diagnosis are recorded in `evidence/checks-01/sourceA3-checkpoint.v1.md`.
+Tasks2.5/5.3 and all dependent consumer/negative/126016/archive/Q1 gates remain
+open. General exact-d725 checks5.1/5.2 still pass, progress11/22. No production
+stock/F5 edit or comparator workaround is made; a test-only reference design
+clarification must be confirmed/reviewed before its dependent implementation.
 
 The user chose closure of PR #7 and a new qualification change after this separate repair. Its old tasks 6.2, 7.1-7.6 and 8.1-8.2 remain incomplete. A future reviewed qualification change owns the next Q1, fresh input/runbook/launch checks, failure handling, result acceptance and its own archive. The original instruction requests launch after fixes/checks, but new-spec and exact-final-commit readiness gates remain mandatory.
 

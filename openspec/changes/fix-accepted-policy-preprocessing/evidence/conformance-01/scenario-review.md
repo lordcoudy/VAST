@@ -508,3 +508,111 @@ The source-591 skip comparison is exact and its nine physical integrations
 pass, but corrected final-head execution is still required. Complete genuine guardian
 and downstream fixture results must be added before related tasks close.
 No Q4, capacity, full-publication or campaign authority is established here.
+
+## Exact-A2 Required-Check Renewal, 2026-10-12
+
+The earlier snapshot above is preserved; the following closes its pending
+required-check observations, not its complete-consumer or launch gates.
+At `a2fc7f464cc71b89ff1453132bf254a0abeea5e8`, focused228, all nine physical
+cases, hosted workflow38251020884 and the full ext4 sequence closed naturally
+with RC0. The full suite executed3323 tests with3237 successes,86 exact audited
+skips and zero failures/errors, expected/unexpected outcomes or missing required
+successes. Independent comparison preserved every skip ID/reason and the
+complete portable audit. All12,359 tracked-source before/after rows and all265
+mount rows are unchanged. Hosted3323/3235success/88skips has its separately
+reviewed exact unchanged audit. The focused live-preflight skip was subsequently
+exercised by the actual physical sequence. Original report hashes, controls,
+recipes and limitations are in `../checks-01/sourceA2-checkpoint.v1.md` and
+`../checks-01/hosted-ci-38251020884-pass/review.md`.
+
+The fixture-only guardian lifetime correction has an actual bounded RED and
+GREEN regression, retained in `../consumer-01/guardian-lifetime-01/`. It keeps
+owner-authenticated shutdown and all stock limits, without changing production
+timeouts. This regression alone is not a complete consumer acceptance.
+The fresh minimum12/larger13 v5 sequence is still running; neither a successful
+pair nor genuine126016 validation is asserted. The failed06 minimum10 and
+unstarted larger11 remain historical evidence. Scenario-specific default
+refusal proofs, exact128-cell consumer evidence, downstream pin renewal,
+genuine126016, independent final conformance, archive/sync/final approval and
+the distinct new qualification change remain open. No dedicated behavioral
+conformance CI gate has been added, and no campaign/Q1 authority is established.
+
+## Fixture Binding Correction And Exact d725 Renewal
+
+The A2 running snapshot above later closed naturally RC1: minimum12 reached
+all32 pilot acceptances but fixture assembly had relativized all185 operation
+output descriptors contrary to the unchanged stock absolute-path contract.
+Larger13 never started. Original process custody refused correctly. Failure
+controls, original bytes and post-source guards are recorded in the additive
+`../checks-01/sourceA2-checkpoint.v1.md`; no failed receipt is repaired or rebound.
+
+At published `d725413ef086f3550dcafd6bc8233982f35cab14`, fixture assembly now
+uses the real stock operational binding writer and preserves original absolute
+capture descriptors. Bounded real-writer RED then four-test GREEN are retained
+in `../consumer-01/fixture-binding-tdd-01/`. Synthetic leaves/upstream spies
+are explicit, so this is not real complete-consumer acceptance. The independent
+downstream static review found no further concrete fixture/production mismatch.
+
+New exact-source preparation, focused292 tests and source comparison closed0.
+All128 packaged inputs,67 guardian/93 qualification sources and five native/
+worker contexts remain as reviewed; actual code closure and independent cold
+CLI passed. Root and independent review verified the exact new reconstruction
+plan051b4223...05b4c9 differs only in source_commit/destination_root, preserving
+12stock inputs/1393960908bytes/all24 recorded historical epochs. The actual
+copy and all nine physical cases subsequently closed0, zero skips. This
+exercises the focused live-preflight skip. See exact identities/timings/limits
+in `../checks-01/sourceA3-checkpoint.v1.md`.
+
+Full ext4 and exact-head hosted renewal are currently in progress, not asserted
+successful. Fresh16/17 consumers remain unadmitted; default refusal cohorts,
+genuine29/126016, downstream acceptance, final conformance/archive/approval and
+the distinct new qualification change remain gates. Progress stays9/22 until
+required current-input checks actually close. No production custody or stock
+timeout/minimum was relaxed; no dedicated conformance CI gate was added.
+
+## Closed d725 Required Checks And Running Consumers
+
+The in-progress checkpoint above subsequently closed:unchanged hosted
+workflow38294921755/attempt1/both jobsSUCCESS,3327tests/3239success/88exact
+unchanged audited skips. Original ZIPs match official digests; all4binding
+regressions ran. Local original full93863 closed naturallyRC0 at
+2026-10-12T20:00:38.2740689Z,3327run/3241success/86exact unchanged audited
+skips, zero failures/errors/expected/unexpected/missing-required outcomes.
+Root and independent reviews verify whole12362-row source manifests and
+267-row global mounts byte-identical; canonical CPython3.12.3, eight model
+assets,537Python/16Bash/six native targets and ordinary UID/GID/capability
+checks passed. Observer43responses/EOFboth/RC0 is direct-child evidence, not
+arbitrary descendant quiescence. Native sampler35481 closed0,90observations,
+minimum physicalC55783366656bytes/40GiB floor observed, not continuous/quota.
+
+All9 physical cases had passed without competing GPU/Docker work. Fresh
+20:05:22Z admission observed no containers/GPU/named source actors, clean
+exactSOURCE/CI and fresh16/17/socket namespaces; read-only preflightRC0 did
+not authorize execution. Root explicitly started the separate original pair
+64749 at20:06:46.1700418Z with sampler66713; these are currentlyRUNNING,
+not accepted or replayed. Exact check identities/timings/limits are in
+`../checks-01/sourceA3-checkpoint.v1.md` and the retained hosted review.
+
+Tasks5.1/5.2 close, progress11/22. Real complete consumers/default negatives/
+genuine29/126016, final conformance and archive/approval/new qualification gates
+remain open. Current input's general check success does not substitute for
+scenario-specific default production-consumer acceptance or permit Q1.
+
+## Minimum16 Refusal At The Stock-Comparison Oracle
+
+The running pair above subsequently closed naturally RC1 at
+2026-10-12T22:08:23.9830872Z. Minimum16 failed after7296.586691427seconds;
+larger17 never started. Source/raw/recipe post-guards passed. The244-sample
+capacity observer closed0, minimum physicalC55655526400bytes above40GiB.
+No owned producer/check/sampler remains running and no failed evidence is reused.
+
+The real F5 call completed for the CPU arm, but unchanged legacy stock then
+refused existing reset evidence because its sidecar call omits expected_streams.
+This prevents the intended stock-sample comparison; it does not prove complete
+guardian acceptance or satisfy task2.5/5.3. See exact original failure hashes
+and boundaries in `../checks-01/sourceA3-checkpoint.v1.md`.
+Preserving legacy stock/F5 bytes is still mandatory. A clearly labeled,
+diff/hash-locked test-only stock reference applying only the already-reviewed
+six-stream reset prerequisites is proposed for design confirmation, not yet
+implemented or accepted. Scenario evidence and all dependent launches remain
+incomplete; general exact-d725 checks stay passed historical/current evidence.
