@@ -138,9 +138,9 @@ class FixtureGuardianLifecycleV1:
 
 def _respond_guardian_control(session: FixtureGuardianLifecycleV1):
     try:
-        deadline = time.monotonic() + 1800.0
         requests = 0
-        while requests < 4096 and time.monotonic() < deadline:
+        # Real validation may run for hours; the owning lifecycle stops this responder.
+        while requests < 4096:
             if session.stop_event.is_set():
                 return
             try:

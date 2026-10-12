@@ -107,6 +107,69 @@ class AcceptedPolicyGuardianLifecycleFixtureTests(unittest.TestCase):
                 front.close()
                 control.close()
 
+    def test_owner_lifetime_survives_fixture_clock_advance_and_explicit_close(self):
+        import time
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        import checkpoint_gstreamer_analytics_sidecar as sidecar
+        from tests.fixtures import accepted_policy_guardian_lifecycle_fixture_v1 as fixture
+
+        def exercise(authenticated_stop):
+            offset = [0.0]
+            fixture_clock = SimpleNamespace(
+                monotonic=lambda: time.monotonic() + offset[0],
+                monotonic_ns=time.monotonic_ns,
+            )
+            with tempfile.TemporaryDirectory(prefix="agl-owner-", dir="/var/tmp") as name:
+                namespace = Path(name).resolve(strict=True)
+                root, runtime = namespace / "project", namespace / "runtime"
+                root.mkdir(mode=0o700)
+                runtime.mkdir(mode=0o700)
+                front, control = [socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET) for _ in range(2)]
+                session = None
+                # Only the artificial responder's elapsed clock advances; production clocks stay real.
+                with patch.object(fixture, "time", fixture_clock):
+                    self.assertIs(sidecar.time, time)
+                    try:
+                        front.bind(str(runtime / "analytics-execution.sock"))
+                        control.bind(str(runtime / "analytics-control.sock"))
+                        preprocessing, expectations, capabilities = self.inputs()
+                        session = fixture.begin_fixture_guardian_lifecycle_v1(project_root=root,
+                            authority_path=root / "authority.json", lifecycle_path=root / "lifecycle.json",
+                            front_socket=front, control_socket=control, preprocessing_authority=preprocessing,
+                            runtime_expectations=expectations, route_capabilities=capabilities)
+                        self.assertEqual(sidecar.query_publication_sidecar_guardian_v1(session.authority), session.authority)
+                        offset[0] = 1801.0
+                        session.thread.join(0.5)
+                        self.assertTrue(session.thread.is_alive(),
+                            f"fixture responder expired before owner stop: {session.errors!r}")
+                        self.assertFalse(session.stop_event.is_set())
+                        self.assertEqual(session.errors, [])
+                        self.assertEqual(sidecar.query_publication_sidecar_guardian_v1(session.authority), session.authority)
+                        if authenticated_stop:
+                            result = fixture.finish_fixture_guardian_lifecycle_v1(session,
+                                counters={"requests_started": 8, "requests_completed": 8, "requests_failed": 0,
+                                    "connections_accepted": 8, "requests_by_worker": {key: 1 for key in capabilities}})
+                            self.assertEqual(len(result["lifecycle"]["retired_socket_nodes"]), 10)
+                            self.assertEqual(result["independent_counters"], result["lifecycle"]["counters"])
+                            self.assertFalse(result["limits"]["physical_inference_observed"])
+                            self.assertFalse(session.thread.is_alive())
+                        else:
+                            session.close()
+                            self.assertTrue(session.stop_event.is_set())
+                            self.assertFalse(session.thread.is_alive())
+                            self.assertIsNone(session.stop_attestation)
+                    finally:
+                        if session is not None:
+                            session.close()
+                            self.assertFalse(session.thread.is_alive())
+                        front.close()
+                        control.close()
+
+        exercise(authenticated_stop=True)
+        exercise(authenticated_stop=False)
+
     def test_incomplete_capabilities_refuse_before_artifact_or_route_creation(self):
         from tests.fixtures.accepted_policy_guardian_lifecycle_fixture_v1 import begin_fixture_guardian_lifecycle_v1
         with tempfile.TemporaryDirectory(prefix="agl-", dir="/var/tmp") as name:
