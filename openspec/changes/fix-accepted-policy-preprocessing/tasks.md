@@ -29,8 +29,8 @@ Tasks 4.1-4.4 evidence: `evidence/physical-01/packaged-closure.aca94dd0.inventor
 
 ## 5. Required Checks And Q1 Handoff
 
-- [x] 5.1 Run the focused/regression suites and hosted required checks on the final implementation/input commit; verify all mandatory checks pass at that exact SHA and preserve diagnostics for any refusal.
-- [x] 5.2 Run the full ext4 suite and compare skip identities/reasons with the approved set, then run all nine physical integration tests without competing GPU/Docker work; verify zero failures/errors, only explicitly approved skip deviations, 9/9 success and no leftover owned containers/processes.
+- [ ] 5.1 Run the focused/regression suites and hosted required checks on the final implementation/input commit; verify all mandatory checks pass at that exact SHA and preserve diagnostics for any refusal.
+- [ ] 5.2 Run the full ext4 suite and compare skip identities/reasons with the approved set, then run all nine physical integration tests without competing GPU/Docker work; verify zero failures/errors, only explicitly approved skip deviations, 9/9 success and no leftover owned containers/processes.
 - [ ] 5.3 Run promoter/materializer/cold-reader and downstream identity compatibility tests on purpose-built complete real-validation fixtures, including packaged cold-validator checks and both supported count cases; verify default production validators actually run and pass, retain fixture bindings/limits, and never admit fixture outputs into campaign authority. Do not feed failed attempt-4/G9 raw inputs to a promoter or materializer; preserve those historical bytes read-only.
 - [ ] 5.4 Deliver scenario-by-scenario conformance evidence covering implementation location, tests, physical checks, discrepancies and automation limits; verify independent technical review has no blockers and disclose the absent dedicated CI conformance gate without changing CI infrastructure.
 - [ ] 5.5 Prepare the source/build/check handoff for a new qualification change: list exact repair/input/receipt identities, current timings, required fresh namespaces and known limitations; verify it explicitly requires completion of section 6 and the new qualification spec review/final-commit checks before Q1. Record the full-duration host protection requirement (estimate plus at least six hours) and preserve PR #7's stopped runbook/root.
@@ -103,6 +103,21 @@ Tasks2.5/5.3 and all dependent consumer/negative/126016/archive/Q1 gates remain
 open. General exact-d725 checks5.1/5.2 still pass, progress11/22. No production
 stock/F5 edit or comparator workaround is made; a test-only reference design
 clarification must be confirmed/reviewed before its dependent implementation.
+
+The user subsequently approved design amendment67b1362fde9463a1e983b49dbc0ee545a5095231
+and its implementation on2026-10-13; approval was recorded in PR9comment6140141307
+before code edits. The test-only reference is now implemented with only the
+stock function rename and two reviewed reset keywords; production stock/F5
+remain byte-identical. Original real-reset RED1 and fresh bounded GREEN0
+(29tests, zero skips/failures/errors) are retained under the operational
+`stock-sample-reference-tdd-02` controls. Independent code/evidence review passed.
+Portable acceptance/sample substitutions remain explicit; no genuine complete
+consumer acceptance follows. One extra EOF blank was removed after GREEN;
+original TDD bytes remain unchanged and final formatted bytes require renewal.
+Fresh v7consumer24/25 and focused-v4 recipes are sealed for the new input only.
+Tasks5.1/5.2 reopen for that input, progress9/22; exact-d725 results remain passed
+historical evidence. No failed fixture is rewritten or retried and all dependent
+negative/genuine126016/archive/final-approval/new-qualification gates stay open.
 
 The user chose closure of PR #7 and a new qualification change after this separate repair. Its old tasks 6.2, 7.1-7.6 and 8.1-8.2 remain incomplete. A future reviewed qualification change owns the next Q1, fresh input/runbook/launch checks, failure handling, result acceptance and its own archive. The original instruction requests launch after fixes/checks, but new-spec and exact-final-commit readiness gates remain mandatory.
 

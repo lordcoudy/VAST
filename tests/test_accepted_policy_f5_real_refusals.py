@@ -6,7 +6,9 @@ Native coordinator, descriptors, policy replay, sidecars and six-stream reset
 validators are real. Valid sidecars reach the absent frozen-dataset gate;
 these tests never claim complete qualification or campaign acceptance.
 
-The separately callable genuine-fixture helpers use no substitution at all.
+The separately callable genuine-fixture helpers use no substituted dependencies.
+Their test-only stock reference compares sample semantics under the reviewed
+six-stream reset prerequisites, not unchanged stock-default acceptance.
 """
 from __future__ import annotations
 
@@ -30,6 +32,7 @@ import publication_policy_qualification_pilot_validation_v2 as f5
 from benchmark_contract import ContractError
 from publication_acceptance_evidence import accepted_arm_evidence_files
 from tests.fixtures.accepted_policy_native_fixture_v1 import write_native_policy_fixture_cell_v1
+from tests.fixtures import accepted_policy_stock_sample_reference_v1 as stock_reference
 from tests.test_accepted_policy_production_validation import validate_native_cell, verified_fixture_manifest
 
 
@@ -193,16 +196,21 @@ def genuine_f5_context_v1(project_root: Path, index_path: Path) -> tuple[dict, l
 
 
 def assert_genuine_f5_stock_samples_v1(pilot: dict, context: dict) -> dict:
-    """Compare real validators on a CPU or positive-transfer-only GPU fixture arm.
+    """Compare F5 and the labeled stock sample reference on genuine fixture inputs.
 
-    A dropped GPU arm with no transfer is deliberately not a stock-equivalence
-    input: stock must refuse it, whereas reviewed F5 excludes its dropped samples.
+    This is not unchanged stock-default acceptance. The test-only reference adds
+    only the reviewed six-stream reset prerequisites. A dropped GPU arm with no
+    transfer is not an equivalence input: the reference retains stock's refusal,
+    whereas reviewed F5 excludes its fully validated dropped samples.
     """
+    stock_reference.validate_stock_sample_reference_v1()
     actual = f5.policy_pilot_validator(pilot, context)
-    reviewed_stock = stock._default_pilot_validator(pilot, context)
+    reviewed_stock = stock_reference.stock_sample_reference_v1(pilot, context)
     if actual != reviewed_stock:
-        raise AssertionError("actual F5 CPU/positive-transfer samples differ from stock")
+        raise AssertionError("actual F5 CPU/positive-transfer samples differ from stock sample reference")
     return {"resource": pilot["resource"], "sample_count": len(actual), "samples_equal_stock": True,
+            "comparison_basis": "stock_sample_semantics_with_reviewed_six_stream_reset_prerequisites",
+            "unchanged_stock_default_acceptance_claimed": False,
             "upstream_acceptance_substituted": False, "dataset_substituted": False}
 
 
