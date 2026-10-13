@@ -373,3 +373,17 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 # Naturally failed A3 consumer controls preserve their original bytes.
 /openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer16-failed-originals/** -text !eol
 /openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/consumer16-failed-originals/** -text !eol
+
+# Stock-reference regression captures preserve original byte evidence.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/stock-sample-reference-tdd-02/originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/stock-sample-reference-tdd-02/originals/** -text !eol
+
+# Exact A4 hosted artifact bytes are retained without ZIP normalization.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38364806151-pass-02/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38364806151-pass-02/*.zip -text !eol
+
+# Naturally failed A4 consumer and config-regression originals stay byte-exact.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer24-failed-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/consumer24-failed-originals/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/guardian-config-tdd-01/originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/guardian-config-tdd-01/originals/** -text !eol

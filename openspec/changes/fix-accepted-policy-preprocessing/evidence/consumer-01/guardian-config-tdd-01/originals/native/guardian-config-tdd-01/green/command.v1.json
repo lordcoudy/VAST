@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "-c",
+    "import importlib,json,sys\nfrom pathlib import Path\nsys.path[:0]=['/var/tmp/vast-guardian-config-tdd-20261013a/green/scripts', '/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a', '/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/scripts']\nimport tests\ntests.__path__=['/var/tmp/vast-guardian-config-tdd-20261013a/green/tests',*tests.__path__]\nimport publication_guardian_accepted_policy_preprocessing_contract_v1 as guardian\nassert Path(guardian.__file__).resolve() == Path('/var/tmp/vast-guardian-config-tdd-20261013a/green/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py').resolve()\nmodule=importlib.import_module('tests.test_publication_guardian_accepted_policy_preprocessing_contract_v1')\nassert Path(module.__file__).resolve() == Path('/var/tmp/vast-guardian-config-tdd-20261013a/green/tests/test_publication_guardian_accepted_policy_preprocessing_contract_v1.py').resolve()\nprint(json.dumps({'guardian_path':guardian.__file__,'test_path':module.__file__}),flush=True)\nimport unittest\nunittest.main(module=None,argv=['unittest', 'tests.test_publication_guardian_accepted_policy_preprocessing_contract_v1', '-v'])"
+  ],
+  "cwd": "/var/tmp/vast-guardian-config-tdd-20261013a/green",
+  "dependency_source_commit": "65c9fa91e2c396265183ec47cb090629ccdd174a",
+  "gid": 1000,
+  "no_complete_consumer_or_campaign": true,
+  "python_version": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "real_config_loader_with_explicit_upstream_fixture_stubs": true,
+  "started_utc": "2026-10-13T16:06:24.450193+00:00",
+  "uid": 1000
+}

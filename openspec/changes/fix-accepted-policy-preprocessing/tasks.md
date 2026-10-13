@@ -19,10 +19,10 @@
 
 ## 4. Package And Identity Renewal
 
-- [x] 4.1 Derive and retain the exact import/source/build dependency inventory for shared validator, guardian, all four runtime allowlists/COPY groups and qualification code closure; verify every imported project source is packaged, unexpected dependencies block integration, standalone leaf imports and both promotion-first/sidecar-first orders pass in fresh isolated interpreters without preloaded caches, and native/worker unchanged-or-affected decisions follow the recorded inventory.
-- [x] 4.2 Update the four reviewed runtime COPY/allowlist groups; verify source/COPY/package checks and standalone imports/cold-validator execution under the images' actual Python versions pass with no host-only fallback.
-- [x] 4.3 After fresh disk/container/GPU observation, run deterministic runtime x4 A/B builds in an isolated current repair root and renew refreeze/image patch; verify matching A/B receipts and exact planned source/image diffs, retaining originals and the stopped PR #7 root. Rebuild native/worker only if 4.1 finds affected inputs.
-- [x] 4.4 Renew patch-bound parity 480/32 and independently audit physical descriptors and tensor hashes against the canonical reference; verify accepted refreshed parity, complete bindings and zero unexplained differences.
+- [ ] 4.1 Derive and retain the exact import/source/build dependency inventory for shared validator, guardian, all four runtime allowlists/COPY groups and qualification code closure; verify every imported project source is packaged, unexpected dependencies block integration, standalone leaf imports and both promotion-first/sidecar-first orders pass in fresh isolated interpreters without preloaded caches, and native/worker unchanged-or-affected decisions follow the recorded inventory.
+- [ ] 4.2 Update the four reviewed runtime COPY/allowlist groups; verify source/COPY/package checks and standalone imports/cold-validator execution under the images' actual Python versions pass with no host-only fallback.
+- [ ] 4.3 After fresh disk/container/GPU observation, run deterministic runtime x4 A/B builds in an isolated current repair root and renew refreeze/image patch; verify matching A/B receipts and exact planned source/image diffs, retaining originals and the stopped PR #7 root. Rebuild native/worker only if 4.1 finds affected inputs.
+- [ ] 4.4 Renew patch-bound parity 480/32 and independently audit physical descriptors and tensor hashes against the canonical reference; verify accepted refreshed parity, complete bindings and zero unexplained differences.
 - [ ] 4.5 Prepare and review the exact identity-pin replacement plan, apply only planned substitutions and regenerate affected source/executable/downstream authorities; verify focused pin tests and exact-commit descriptors with no historical receipt rewrite.
 
 Tasks 4.1-4.4 evidence: `evidence/physical-01/packaged-closure.aca94dd0.inventory.v1.json`, `packaged-reader-results.v1.json`, `packaged-reader-reports/` and byte-exact `physical-results/`, cataloged in `physical-results.v1.json`. These bind build commit `aca94dd0a57566d5a9ecc27d8dac1ca71ca0e795`; later host pins, final CI and semantic consumer fixture remain separate unchecked gates. F1 is host-only, so its image import-order test is explicitly unsupported, not simulated by mounting host production sources.
@@ -122,6 +122,46 @@ negative/genuine126016/archive/final-approval/new-qualification gates stay open.
 The user chose closure of PR #7 and a new qualification change after this separate repair. Its old tasks 6.2, 7.1-7.6 and 8.1-8.2 remain incomplete. A future reviewed qualification change owns the next Q1, fresh input/runbook/launch checks, failure handling, result acceptance and its own archive. The original instruction requests launch after fixes/checks, but new-spec and exact-final-commit readiness gates remain mandatory.
 
 ## 6. Completion
+
+ExactA4 input65c9fa91e2c396265183ec47cb090629ccdd174a closes renewed tasks5.1/5.2
+after303focused tests, hosted3338/3250success/88unchanged skips, full ext4
+3338/3252success/86unchanged skips, physical9/9 without skips and independent
+actual report reviews. Whole manifests/mounts are byte-equal; fresh known-scope
+idle checks pass. See `evidence/checks-01/sourceA4-checkpoint.v1.md`. Progress
+11/22. These are current general checks, not complete-consumer acceptance.
+Consumers24/25 were admitted once after approved obsolete-cache cleanup restored
+their preserved50GiB planning budget; original pair12860/sampler46871 now run,
+without complete-consumer acceptance yet. No future qualification, archive or merge is authorized
+by check closure; later implementation/input changes require check renewal.
+
+The exact65 original pair subsequently failed naturally at2026-10-13T15:50:14.6130969Z.
+Minimum24 reached accepted-policy3840 but default guardian refused its config
+comparison; larger25 never started. All original source/raw/recipe postguards
+passed. Original512-sample and overlapping34-sample observers closed0, minC
+53757190144bytes; sampled capacity is not consumer acceptance. Immutable originals
+are retained in `evidence/consumer-01/consumer24-failed-originals/` with their
+independent boundary/stage review. Neither failed24 nor historical evidence is
+rewritten or retried.
+
+Root and independent technical scope review identify an inherited production
+loader-contract bug, not actual config/parity drift: valid raw config has seven
+fields; the default loader adds its canonical identity, making raw equality
+impossible. Correcting this strictly fits already-approved tasks2.3/2.4/design2,
+without changing thresholds, schemas, stock/F5 or the default sidecar loader.
+Original real-loader RED1 reproduced that exact guard, then bounded GREEN0 passed
+all13 guardian tests, zero skips/errors, including independent cold load and
+identity/projection/physical mutation refusals. Upstream qualification/accounting/
+probe/binding stubs remain explicit limits; no complete consumer acceptance follows.
+
+The strict correction changes PACKAGED guardian bytes: exact loaded projection
+equals raw fields plus only derived canonical SHA256 identity, parity agreement
+remains required, and a final physical descriptor check refuses mutation before
+writes. Tasks4.1-4.4 and5.1/5.2 are therefore reopened for the corrected input,
+progress5/22. Prior builds/parity and exact65 general checks remain passed
+historical evidence, not renewed acceptance. New dependency/source inventory,
+actual-image cold checks, runtime x4 A/B/refreeze/parity/pins/closure and required
+exact-commit checks precede fresh consumers/negatives/126016 and all completion
+gates. No archive, merge, new qualification or Q1 is authorized by bounded GREEN.
 
 - [ ] 6.1 After implementation, consumer diagnostics, renewal and required checks are complete, sync/archive through the supported OpenSpec workflow in this same MR; verify every delta requirement/scenario is preserved in main specs and the complete dated archive including metadata is committed and pushed.
 - [ ] 6.2 Verify final exact-commit CI and independent conformance/final review, resolve warnings and obtain final approval; merge only with user authorization and the correct stacked-PR/base dependency state. Record actual Q1 readiness separately from this repair's completion.

@@ -775,8 +775,16 @@ def _source_material(
         dependencies.load_execution_config,
         path=config_authority_path,
     )
+    expected_loaded_config = {
+        **config_physical,
+        "identity": {
+            "algorithm": "sha256",
+            "sha256": _semantic_sha(config_physical),
+        },
+    }
     _require(
-        config == config_physical
+        "identity" not in config_physical
+        and config == expected_loaded_config
         and type(config.get("identity")) is dict
         and config["identity"].get("sha256")
         == runtime_expectations["execution_config_identity_sha256"],
@@ -878,6 +886,13 @@ def _source_material(
                 }
             )
 
+    _require(
+        _descriptor(
+            root, config_authority_path, label="post-load accepted guardian execution config"
+        )
+        == config_descriptor,
+        "execution config changed while validating",
+    )
     return {
         "preprocessing_contract": copy.deepcopy(predecessor_contract),
         "predecessor_contract": predecessor_contract_descriptor,
