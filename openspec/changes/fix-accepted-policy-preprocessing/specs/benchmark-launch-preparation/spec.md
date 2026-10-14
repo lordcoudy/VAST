@@ -113,3 +113,22 @@ Recovery diagnostic reports SHALL preserve an initiating failure independently f
 #### Scenario: Diagnostic success is offered as authority for live storage or image work
 - **WHEN** a diagnostic test passes or delegated diagnostic approval is presented for backing-storage rehearsal, a real restore, artifact upload or image deletion/offload
 - **THEN** those actions SHALL remain unstarted under this diagnostics scope, all original failed roots/scratch/helpers/receipts/TARs and all227images SHALL remain protected, and each future live scope SHALL require its own applicable reviewed authority plus exact human image confirmation before deletion/offload.
+
+### Requirement: Packaged accepted policy readers close their actual production dependencies
+The supported default accepted-policy cold-reader path SHALL validate authority-v2 fragment, image-patch and producer-receipt inputs using a shared read-only receipt-validation dependency available in every runtime package. It SHALL preserve the public host receipt reader's signature, valid outputs, canonical/self-hash bytes, exact rejection and exception/cause behavior, shared default dependency identities and existing physical custody/descriptor checks without loading or executing host build orchestration. Dependency inventory SHALL cover transitive function-body/conditional/literal imports, fixed file-loader targets, finite module-name maps and supported default call paths, with explicit preserved host-only legacy/build-route dispositions. Missing reachable production dependencies or unresolved required routes SHALL block package acceptance. Tests SHALL use fresh isolated interpreters and actual renewed package versions without host production-source mounts, preloaded-module rescues or substituted production dependencies. Existing receipt kinds/schemas, sample/calibration/physical/renewal gates and original evidence SHALL remain unchanged.
+
+#### Scenario: The default packaged authority reader has no host builder available
+- **WHEN** a renewed runtime package independently cold-validates a valid authority-v2 fragment and its physical image-patch/producer-receipt chain through the supported production defaults while host builder and build materializer sources are unavailable
+- **THEN** the read-only dependency SHALL be present and the real default path SHALL retain the stock valid result, identity and custody checks without importing or executing host build orchestration, an injected validator or a host-source fallback; successful import alone SHALL NOT establish this point-of-use behavior.
+
+#### Scenario: Producer receipt or physical custody is invalid
+- **WHEN** fresh cold checks encounter malformed/foreign/self-hash-invalid producer receipts, missing/directory/symlink/hardlink inputs or descriptor/receipt mutation at existing validation boundaries
+- **THEN** the shared reader and preserved public host reader SHALL retain the original rejection predicates, exception classes/messages/causes and physical refusal behavior, and dependent materialization SHALL create no accepted output; extraction SHALL NOT relax or silently strengthen the receipt schema or reinterpret original evidence.
+
+#### Scenario: Fixed or finite runtime dependency has no valid disposition
+- **WHEN** dependency inventory finds a fixed file-loader target or finite module-name route beyond the literal graph
+- **THEN** every supported production default path SHALL have its complete actual package closure, preserved host-only legacy/build routes SHALL have explicit source/call-path dispositions without gaining packaged authority, and any missing reachable dependency or unresolved required route SHALL block acceptance rather than be waived by a historical closure count, portable CI or conservative-name-only packaging.
+
+#### Scenario: Cold reader is loaded in different supported orders
+- **WHEN** standalone leaf and supported promotion-first/sidecar-first reader paths run in fresh isolated interpreters and the default cold receipt chain runs under each renewed image's observed interpreter/package versions
+- **THEN** results, refusal behavior and shared public/default object identities SHALL agree without preloaded caches, host mounts or substituted production dependencies; unsupported host-only image orders SHALL remain explicitly unsupported, and every changed package/closure identity SHALL still require the existing complete renewal and consumer gates.

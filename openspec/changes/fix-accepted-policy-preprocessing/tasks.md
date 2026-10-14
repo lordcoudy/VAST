@@ -56,13 +56,29 @@ active/unarchived. Actual integrated whole-diff review1.7 is underway; workflow
 38644267720 attempt1 applies to0cb95 and was still in progress at this update.
 Integration and planning checks confer no renewal/consumer/qualification acceptance.
 
+Package refinement,2026-10-15: static inventory at exact4666/unchanged0cb95
+proved the supported default authority-v2 receipt path reaches the missing
+host image-builder sibling in all4 runtime packages. Independent reviewer
+`/root/audit_s3_delivery` corroborated P1; PR9comment6179777830 supersedes earlier
+static CLEAR with BLOCK. The original leaf extraction evidence remains retained,
+but task2.2's broad closure claim is reopened; tasks1.7/4.1 remain incomplete.
+Portable CI and literal guardian67/qualification93 counts do not close it.
+Decision8 and new unchecked2.6-2.8 govern the bounded faithful shared-reader
+amendment and its independent approval before dependent code/tests. The static
+inventory/report hashes in design8 remain read-only diagnostic evidence; all
+original consumer/package/general-check receipts keep their original scope.
+
 ## 2. Production Validator Compatibility
 
 - [ ] 2.1 Add focused RED tests for the production default guardian assessor/materializer and standalone cold reader using real authority-v2 fragments/pilots, six-stream reset evidence and valid dropped-GPU/no-transfer decisions; verify failures occur at the actual old validator boundaries and retain their original outputs.
-- [x] 2.2 Extract reviewed F5 unchanged and the existing transaction/fragment read-only validation closure into leaf modules; have promotion/original builders import or re-export them while preserving signatures, shared exception/default dependency object identities and custody/ContextVar semantics. Verify pre/post-extraction cold outputs and refusal predicates, original cold-validation regression tests, F5 stock-copy diff/hash lock and authority-v2 promotion tests pass, legacy policy source is byte-identical and no leaf imports host orchestration or builders.
+- [ ] 2.2 Extract reviewed F5 unchanged and the existing transaction/fragment read-only validation closure into leaf modules; have promotion/original builders import or re-export them while preserving signatures, shared exception/default dependency object identities and custody/ContextVar semantics. Verify pre/post-extraction cold outputs and refusal predicates, original cold-validation regression tests, F5 stock-copy diff/hash lock and authority-v2 promotion tests pass, legacy policy source is byte-identical and no leaf imports host orchestration or builders.
 - [ ] 2.3 Wire the guardian production assessment to exact cold-valid transaction/fragment/index/closure lineage with the shared pilot validator; verify 2.1 GREEN, materialization followed by independent cold load succeeds, and default legacy entrypoint behavior is unchanged.
 - [ ] 2.4 Add and pass refusal checks for foreign/mutated transaction and fragment descriptors, wrong index/closure/candidate/accepted outputs, stale runtime/config/parity, unsafe paths, unsupported kinds and incomplete operational accounting; verify each materialization refusal leaves its fresh output namespace absent.
 - [ ] 2.5 Verify completed-GPU/no-transfer, corrupt dropped-decision replay/linkage/terminal/uniqueness, missing ingress and invalid reset evidence still refuse; verify CPU and positive-transfer GPU sample sets equal reviewed stock behavior and no branch-cell minimum is weakened.
+
+- [ ] 2.6 Independently review the bounded package-reader proposal/design/delta/tasks amendment in this same PR; verify exact-commit mandatory planning checks, P1 finding disposition and delegated agent approval recorded before dependent production/test/COPY/pin edits. Preserve all existing31task identities/statuses except the explicitly reopened2.2 and all24existing scenarios; task1.7 and renewal/capacity/consumer/final gates remain open.
+- [ ] 2.7 After2.6, retain a bounded default-path fixed-loader RED case without host builder availability, extract the exact stock image-freeze receipt reader and necessary pure closure into one read-only stdlib leaf, preserve the host public signature/re-export and refreeze default reader without host builder execution; verify shared callable/default/custody identities, valid outputs/canonical/self-hash bytes and malformed/physical/mutation refusal exception/cause equivalence against stock fixtures, retaining original receipts/RED bytes. Independently review the exact implemented correction before dependent renewal; no schema, threshold, reader hardening or host orchestration enters the leaf.
+- [ ] 2.8 Verify the faithful shared-reader behavior and supported default fragment -> identity-patch -> producer-receipt point-of-use path in fresh isolated source interpreters, with host builder/materializer unavailable and production defaults unchanged; retain valid and all existing refusal/physical/no-output behavior. Verify standalone and supported promotion-first/sidecar-first cold orders with no preloaded caches; actual-image checks remain required by4.2 and complete genuine consumer cohorts by5.3, not supplied by these bounded checks.
 
 ## 3. Measured Coverage
 
@@ -72,8 +88,8 @@ Integration and planning checks confer no renewal/consumer/qualification accepta
 
 ## 4. Package And Identity Renewal
 
-- [ ] 4.1 Derive and retain the exact import/source/build dependency inventory for shared validator, guardian, all four runtime allowlists/COPY groups and qualification code closure; verify every imported project source is packaged, unexpected dependencies block integration, standalone leaf imports and both promotion-first/sidecar-first orders pass in fresh isolated interpreters without preloaded caches, and native/worker unchanged-or-affected decisions follow the recorded inventory.
-- [ ] 4.2 Update the four reviewed runtime COPY/allowlist groups; verify source/COPY/package checks and standalone imports/cold-validator execution under the images' actual Python versions pass with no host-only fallback.
+- [ ] 4.1 Derive and retain the exact import/source/build dependency inventory for shared validator, guardian, all four runtime allowlists/COPY groups and qualification code closure; verify every imported project source is packaged, unexpected dependencies block integration, standalone leaf imports and both promotion-first/sidecar-first orders pass in fresh isolated interpreters without preloaded caches, and native/worker unchanged-or-affected decisions follow the recorded inventory. Include fixed file-loader targets, finite module-name maps and supported default call paths with explicit host-only legacy/build dispositions; retain the sealed static BLOCK and verify the new receipt leaf is covered while no reachable host-builder fallback remains.
+- [ ] 4.2 Update the four reviewed runtime COPY/allowlist groups; verify source/COPY/package checks and standalone imports/cold-validator execution under the images' actual Python versions pass with no host-only fallback. Include the shared receipt leaf and execute the real default fragment/image-patch/producer-receipt chain with host builder/materializer unavailable, unchanged default objects and exact valid/refusal/custody behavior; observed actual interpreter/package versions and supported fresh cold import orders are required.
 - [ ] 4.3 After1.5/1.7 and fresh disk/container/GPU observation, run deterministic runtime x4 A/B builds in an isolated actual integrated-input repair root and renew refreeze/image patch; verify matching A/B receipts and exact planned source/image diffs, retaining originals and the stopped PR #7 root. Rebuild native/worker only if 4.1 finds affected inputs; historical ACA/65/f549 drafts or receipts cannot supply new-input acceptance.
 - [ ] 4.4 Renew patch-bound parity 480/32 and independently audit physical descriptors and tensor hashes against the canonical reference; verify accepted refreshed parity, complete bindings and zero unexplained differences.
 - [ ] 4.5 Prepare and review the exact identity-pin replacement plan, apply only planned substitutions and regenerate affected source/executable/downstream authorities; verify focused pin tests and exact-commit descriptors with no historical receipt rewrite.
