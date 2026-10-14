@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "final_source_commit": "9bedfb140eea46d3ce0cde9ee57bf6107a95874e",
+  "final_report_sha256": "9653ecc23b87dd1492bd54e3fc89b0d3a38e36a714f02de4e6e43296c2775e70",
+  "final_adapter_source_sha256": "61b83da954593e9af54c6bcdd863eef5a9dfcdbe00a6d48be551dffc0b03c717",
+  "probe_reports": [
+    "live-smoke-failed.v1.json",
+    "live-smoke-corrected.v1.json",
+    "live-smoke-final.v1.json"
+  ],
+  "failed_probe_disposition": {
+    "prefix": "vast/preflight/bab27ec9c2754c84b8c00a40aff61109/",
+    "actual_retained_objects": [
+      {
+        "basename": "tiny.bin",
+        "size_bytes": 25,
+        "sha256": "92126bed1d5320543644c90ec9a9df83489e24fc9ea852f773804ebb6d951197"
+      }
+    ],
+    "multipart_object_created": false,
+    "known_upload_leftovers": [],
+    "failure": "released HTTP socket on mandatory EOF read; preserved original failure report",
+    "corrected_source_read_only_full_verification": "passed; failure record not rewritten"
+  },
+  "repeat_reason": "initial real EOF fault fixed; final ownership/SDK hardening changed source identity and required a fresh final-source observation",
+  "each_probe_limits": {
+    "objects": 4,
+    "upload_bytes": 67108864,
+    "readback_bytes": 67108864,
+    "deadline_s": 120
+  },
+  "remote_probe_objects_retained": true,
+  "global_deletion_performed": false,
+  "capacity_or_workload_grant": false
+}

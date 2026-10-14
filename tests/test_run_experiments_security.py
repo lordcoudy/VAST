@@ -18,6 +18,14 @@ from run_experiments import (  # noqa: E402
 
 
 class RunExperimentsSecurityTests(unittest.TestCase):
+    def test_benchmark_children_have_no_aws_secrets_or_profile_locators(self):
+        names = ['AWS_ACCESS_KEY_ID','AWS_SECRET_ACCESS_KEY','AWS_SESSION_TOKEN',
+                 'AWS_SECURITY_TOKEN','AWS_PROFILE','AWS_DEFAULT_PROFILE',
+                 'AWS_SHARED_CREDENTIALS_FILE','AWS_CONFIG_FILE','VAST_S3_CREDENTIALS_FILE']
+        with mock.patch.dict(os.environ, {name:'private' for name in names}, clear=True):
+            child = benchmark_child_environment(run_seed=1, repeat_index=0)
+        self.assertTrue(set(names).isdisjoint(child))
+
     def test_checkpoint_codec_is_explicitly_bound_to_dataset(self) -> None:
         scenario = {"name": "checkpoint_video_dag_shared"}
         self.assertEqual(

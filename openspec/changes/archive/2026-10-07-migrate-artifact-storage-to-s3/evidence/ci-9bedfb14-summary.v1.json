@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "commit": "9bedfb140eea46d3ce0cde9ee57bf6107a95874e",
+  "workflow_run_id": 37614433006,
+  "workflow_url": "https://github.com/lordcoudy/VAST/actions/runs/37614433006",
+  "artifact_id": 11480566177,
+  "artifact_zip_sha256": "b73aba5bcba004156910f48dd7f8850e109e53ebc83e8b0d63030b81cb176bcb",
+  "original_report_sha256": "c02f8e2f17c479ccf0801c1f147a023c2269380e1ea598dbbbcaac9c52e58ef0",
+  "original_test_report_sha256": "46cc2aca273394ead3b01941bffda424b3df4d4bc4b34886a195d99a8b01791e",
+  "tracked_source_before_sha256": "0b936f932d9451ffeb3ee5e5cf62de8b31310a8e1fe31211235c72911cfecb4f",
+  "tracked_source_after_sha256": "0b936f932d9451ffeb3ee5e5cf62de8b31310a8e1fe31211235c72911cfecb4f",
+  "successful": true,
+  "raw_checkout_bytes_match_commit": true,
+  "changed_tracked_paths": [],
+  "python": "3.12.3 (main, Sep 26 2024, 18:18:55) [GCC 13.2.0]",
+  "canonical_python": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+  "built_targets": [
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "elapsed_s": 1253.599648374,
+  "hardware_acceptance": false,
+  "hardware_gaps": [
+    "Hosted CPU tests do not execute NVIDIA decode or the packaged SDK runtimes.",
+    "Skipped hardware/data tests do not prove model parity, native paired execution, qualification, Q4, storage or the full benchmark.",
+    "Final scientific conformance and archived completion require separately reviewed physical evidence bound to the actual source closure."
+  ],
+  "job_started_monotonic_ns": 148672065999,
+  "absolute_deadline_ns": 5548672065999,
+  "discovered_count": 3174,
+  "tests_run": 3165,
+  "successful_count": 3077,
+  "skip_count": 88,
+  "failures": [],
+  "errors": [],
+  "missing_required_successes": [],
+  "inventory_file": "ci-9bedfb14-test-inventory.v1.json",
+  "scope": "Actual complete portable/native/source lane; hardware/full campaign acceptance remains false."
+}
