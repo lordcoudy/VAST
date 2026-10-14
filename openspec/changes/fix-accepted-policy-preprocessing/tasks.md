@@ -2,8 +2,8 @@
 
 - [x] 1.1 Record independent specification review and user/reviewer approval in this Draft MR with the exact planning commit; verify no production/test/CI edits precede the original approval and retain the recorded original apply request. This historical completion does not approve later amendments.
 - [x] 1.2 Verify PR #7 remains closed/unmerged at its retained failed-Q1 closeout, record the inherited source baseline and this repair PR's exact target, and preserve its unchecked qualification tasks/evidence. Confirm the implementation handoff names a future distinct qualification change rather than resuming old attempt 5; no merge is authorized by this check.
-- [ ] 1.3 Publish this integration amendment in the same Draft PR and independently review its full inherited/repair scope, scenario criteria and prospective accepted-master/S3 integration; verify mandatory planning checks pass and record the exact reviewed commit, verdict/evidence, finding dispositions and explicit delegated agent approval before dependent production/test/CI changes. Re-review material changes; author checks alone do not approve the amendment.
-- [ ] 1.4 Inventory the original index and worktree separately, including staged-and-modified and untracked forensic evidence; independently review exact original-byte preservation and scoped attribute/whitespace dispositions before deliberately committing retained evidence in this same PR. Verify neither retained version, historical roots/runtimes/data/models nor any of the227 images is lost; image deletion/offload requires explicit human confirmation of exact images/action and is not authorized by retention review.
+- [x] 1.3 Publish this integration amendment in the same Draft PR and independently review its full inherited/repair scope, scenario criteria and prospective accepted-master/S3 integration; verify mandatory planning checks pass and record the exact reviewed commit, verdict/evidence, finding dispositions and explicit delegated agent approval before dependent production/test/CI changes. Re-review material changes; author checks alone do not approve the amendment.
+- [x] 1.4 Inventory the original index and worktree separately, including staged-and-modified and untracked forensic evidence; independently review exact original-byte preservation and scoped attribute/whitespace dispositions before deliberately committing retained evidence in this same PR. Verify neither retained version, historical roots/runtimes/data/models nor any of the227 images is lost; image deletion/offload requires explicit human confirmation of exact images/action and is not authorized by retention review.
 - [ ] 1.5 Reconcile actual ownership/roots/mounts/containers/GPU and qualify the whole renewal/check/consumer peak, including retained build/source/CI roots, inputs, images/layers/cache, parity, outputs, originals/ZIPs and backups; verify fresh physical backing capacity preserves C:40GiB and applicable filesystem thresholds at peak before allocations. Record/hold any shortfall with a concrete remedy; first-stage allowances, old/virtual capacity or lowered floors do not pass.
 - [ ] 1.6 Independently verify PR #8's complete S3 archive/main-spec preservation and final-head checks/review/approval, then merge the accepted delivery and integrate resulting current master into this existing branch/PR after1.3/1.4. Retarget PR #9 to master and verify exact base/head identities, preserved history and PR #7 closed/unmerged with all nine unchecked tasks and incomplete change unarchived; no historical qualification acceptance is inferred.
 - [ ] 1.7 Independently review the refreshed entire master-to-integrated diff, including inherited clock/owner/custody/accounting/native/package/identifier/full-consumer changes and combined S3 supervisor/service behavior; verify findings resolved and exact-commit evidence/delegated approval recorded before dependent renewal. Preserve accepted export/readback/ledger/prune/recovery/stop behavior and historical Seafile readers; materially changed parts require re-review.
@@ -12,6 +12,29 @@ The2026-10-15 amendment adds unchecked integration/preservation/capacity gates;
 the original five completed task IDs retain their historical evidence only.
 Current observed source is f549050a28514299fcf1d2fdca586a31944081f2, not an
 accepted integrated input. Do not restart old workers or execute stale drafts.
+
+Tasks1.3/1.4 completed on2026-10-15. Independent planning reviewer
+`/root/audit_s3_delivery` returned CLEAR for exact
+`7dde1c752fae80e3a97aeacae25a166ba82cf25d`; workflow38638596703 attempt1
+and both jobs passed at that SHA. Its original ZIP audit verified
+3353discovered/3344executed/3256success/88unchanged audited skips and9declared
+integration deferrals, zero failures/errors, all12572source paths equal to the
+exact Git tree and before/after captures, eight model assets and six CPU targets.
+Delegated agent specification approval is PR9comment6179328823; it is not human
+review or integrated-input/physical/genuine-consumer acceptance. All four
+planning blobs survived unchanged through the retention-only2fac head.
+
+Original107-path index was preserved at
+`82fbd1e2f8f27f2d3887b173bc781ce54ca6d16a`, including original5291-byte
+checkpoint blob`960fda9a599ac55ae058046bc29fd9381f814ad1`. Remaining351raw
+subjects plus four metadata/attribute paths were independently cleared and
+preserved at`2fac6d1b6d9caecb0d0e3d0e36443dd078800e30`; full355-row canonical
+manifest SHA256`d2ce0ded45ffc585cc2a78bbc27f835d52a8e64961c7a671db959fa9425787c7`.
+Reviewers`/root/audit_capacity` and`/root/audit_integration` verified exact
+original bytes and retained both checkpoint versions; evidence-only approvals
+are PR9comments6178741052/6179149730. All227images remain local and protected;
+the historical34candidate manifest is not an executable deletion allowlist.
+Task1.5 remains held until whole-chain physical capacity is qualified.
 
 ## 2. Production Validator Compatibility
 
