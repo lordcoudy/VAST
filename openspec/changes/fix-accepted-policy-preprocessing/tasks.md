@@ -5,8 +5,12 @@
 - [x] 1.3 Publish this integration amendment in the same Draft PR and independently review its full inherited/repair scope, scenario criteria and prospective accepted-master/S3 integration; verify mandatory planning checks pass and record the exact reviewed commit, verdict/evidence, finding dispositions and explicit delegated agent approval before dependent production/test/CI changes. Re-review material changes; author checks alone do not approve the amendment.
 - [x] 1.4 Inventory the original index and worktree separately, including staged-and-modified and untracked forensic evidence; independently review exact original-byte preservation and scoped attribute/whitespace dispositions before deliberately committing retained evidence in this same PR. Verify neither retained version, historical roots/runtimes/data/models nor any of the227 images is lost; image deletion/offload requires explicit human confirmation of exact images/action and is not authorized by retention review.
 - [ ] 1.5 Reconcile actual ownership/roots/mounts/containers/GPU and qualify the whole renewal/check/consumer peak, including retained build/source/CI roots, inputs, images/layers/cache, parity, outputs, originals/ZIPs and backups; verify fresh physical backing capacity preserves C:40GiB and applicable filesystem thresholds at peak before allocations. Record/hold any shortfall with a concrete remedy; first-stage allowances, old/virtual capacity or lowered floors do not pass.
-- [ ] 1.6 Independently verify PR #8's complete S3 archive/main-spec preservation and final-head checks/review/approval, then merge the accepted delivery and integrate resulting current master into this existing branch/PR after1.3/1.4. Retarget PR #9 to master and verify exact base/head identities, preserved history and PR #7 closed/unmerged with all nine unchecked tasks and incomplete change unarchived; no historical qualification acceptance is inferred.
+- [x] 1.6 Independently verify PR #8's complete S3 archive/main-spec preservation and final-head checks/review/approval, then merge the accepted delivery and integrate resulting current master into this existing branch/PR after1.3/1.4. Retarget PR #9 to master and verify exact base/head identities, preserved history and PR #7 closed/unmerged with all nine unchecked tasks and incomplete change unarchived; no historical qualification acceptance is inferred.
 - [ ] 1.7 Independently review the refreshed entire master-to-integrated diff, including inherited clock/owner/custody/accounting/native/package/identifier/full-consumer changes and combined S3 supervisor/service behavior; verify findings resolved and exact-commit evidence/delegated approval recorded before dependent renewal. Preserve accepted export/readback/ledger/prune/recovery/stop behavior and historical Seafile readers; materially changed parts require re-review.
+- [ ] 1.8 Independently review the diagnostics-only proposal/design/delta/tasks amendment and pinned host artifact b200d14419b0d5ddf04cc256963e0d9f55a236f89738edcfd9533a3b03b8c77d in this same PR; verify mandatory planning checks pass and record exact reviewed commit/artifact hash, verdict/evidence, finding disposition and explicit delegated approval before new diagnostic helpers/tests. Preserve all existing27task records/check states and18scenarios; no backing rehearsal/restore/offload authority is granted.
+- [ ] 1.9 After1.8, prepare separately named/pinned v6 derivatives of the existing recorder/launcher/guest/native publisher with preserved initiating and distinct termination/receipt/cleanup causes, including signal-mask/timer restoration, stream closure and every command-result/enclosing-receipt write, tracked owned-child identity, explicit unknown/forced closure and bounded sanitized native diagnostics; verify independent exact-helper review preserves all original numerical/authentication/custody/Size predicates, source/protected v5 bytes and failed roots/scratch/TARs/images. Seal a fixture-only entrypoint unable to reach production main/real commands while using the same actual v6 reporting/closure logic; no live recovery or production qualification-validator/CI change is included.
+- [ ] 1.10 Run only new bounded offline/synthetic recorder -> launcher -> guest cases through the SAME actual v6 reporting/closure logic, controlling external effects rather than replacing it with three unrelated mocks/ASTfooters. Cover publication failure, operator stop, first/both wait timeouts, forced/unknown closure, result/enclosing-receipt failure, signal-mask/timer restoration, stream-close/cleanup failure and graceful synthetic closure; verify all primary/secondary/per-layer exit states, attempted fixture-mode/command crossover refusal and sanitization/output caps, retaining failed/red originals. Enforce1MiBpercase/16MiBwholecontrol limits, fixture-labelled clocks/providers and recovery_acceptance=false; no real mkfs/unshare/mount/daemon/archive/load/upload/delete or backing-storage rehearsal is permitted.
+- [ ] 1.11 Deliver independently reviewed diagnostic scenario conformance with exact source/helper/control/report identities and original failure/unknown dispositions; verify all six new scenarios and unchanged gates while marking genuine backing rehearsal, full restore, whole-chain capacity, exact-image confirmation and existing real repair/qualification acceptance incomplete. Commit/push this bounded diagnostic evidence in the same PR after actual checks/review; green fixtures cannot close task1.5 or any genuine consumer/renewal/final gate.
 
 The2026-10-15 amendment adds unchecked integration/preservation/capacity gates;
 the original five completed task IDs retain their historical evidence only.
@@ -35,6 +39,22 @@ original bytes and retained both checkpoint versions; evidence-only approvals
 are PR9comments6178741052/6179149730. All227images remain local and protected;
 the historical34candidate manifest is not an executable deletion allowlist.
 Task1.5 remains held until whole-chain physical capacity is qualified.
+
+Task1.6 completed on2026-10-15. PR8 independent whole-diff review returned
+CLEAR at`78d3a18b6811fbcb62d5b7225bcdee80269be79a`; exact-head workflow37628213939
+and both jobs passed, preserved S3 main/delta/archive evidence was verified,
+and delegated final agent approval is PR8comment6178521680. GitHub merged PR8
+as`ead12cec4a2460f27e836583f1f712b31e14b36f`. After1.3/1.4 closure at
+`c8f6f3c775cb5cb002e86ef0ecb273ccc5f40415`, that accepted master was merged
+as second parent of`0cb95b94caefe62dd3405c82fb8af13068a20a30` without rewriting
+repair/inherited history. PR9 remained Draft/open/unmerged and was retargeted
+to master; fresh REST metadata at2026-10-14T22:00:31Z confirms baseead12cec/head0cb95.
+Main specs and the accepted S3 archive are byte-identical to that master.
+Fresh PR7 metadata confirms closed/unmerged head4219f3e5; its tasks remain
+byte-identical with all nine unchecked items and its incomplete change remains
+active/unarchived. Actual integrated whole-diff review1.7 is underway; workflow
+38644267720 attempt1 applies to0cb95 and was still in progress at this update.
+Integration and planning checks confer no renewal/consumer/qualification acceptance.
 
 ## 2. Production Validator Compatibility
 

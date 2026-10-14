@@ -86,3 +86,30 @@ The accepted repaired baseline SHALL preserve the accepted S3 export/recovery co
 #### Scenario: Repair finalization would discard retained contracts or evidence
 - **WHEN** repair sync/archive, integration or retention would remove an unaffected main requirement/scenario, the accepted S3 archive, an original failed receipt/raw input, either retained version of staged-and-modified evidence, or an image without exact human confirmation
 - **THEN** finalization SHALL refuse until preservation or the applicable exact image authorization is established; successful backup, recovery, format checks, author checks or delegated agent approval SHALL NOT substitute for those gates.
+
+### Requirement: Recovery diagnostics preserve failure causes and unresolved child closure
+Recovery diagnostic reports SHALL preserve an initiating failure independently from termination, receipt and cleanup failures, including signal-mask/timer restoration, stream closure and every result/enclosing-receipt write, with bounded typed operation/phase reasons, child identity and the observed original return code or explicit unknown state at every owned recorder/launcher/guest layer. Every started command SHALL receive an attempted bounded result record; a failed write SHALL be reported distinctly by enclosing capture rather than fabricated as success. All owned children SHALL remain tracked through cleanup, and forced or unproved closure SHALL prevent recovery acceptance regardless of other successful cleanup. Native publication diagnostics SHALL retain bounded sanitized cause/phase and available monotonic timing without weakening sticky-stop, original numerical, authentication, custody or restore-equality gates. Synthetic/offline reporting evidence SHALL execute the same v6 reporting/closure logic through a sealed fixture-only entrypoint unable to reach production main or real commands, and SHALL confer no real storage/recovery, image deletion/offload or qualification authority.
+
+#### Scenario: An initiating failure is followed by finalization failures
+- **WHEN** a controlled reporting-chain case has an initiating failure followed by termination, signal-mask/timer restoration, stream closure, result/enclosing-receipt or cleanup failures
+- **THEN** the reports SHALL preserve that initiating cause and each distinct secondary cause with its original operation/phase and observed per-layer exit or unknown state; no later exception or cleanup success SHALL replace or clear the first failure.
+
+#### Scenario: Child termination is forced or remains unresolved
+- **WHEN** the first termination wait times out and the second wait either closes a killed child or also times out
+- **THEN** both bounded signal/wait attempts and final observed return code or explicit unknown closure SHALL be retained, forced/unresolved closure SHALL reach the enclosing failure report and recovery acceptance SHALL remain false; an unforced outer launcher alone SHALL NOT prove graceful child closure.
+
+#### Scenario: A command result or enclosing receipt cannot be written
+- **WHEN** result persistence fails after an actual child was created or finalization remains incomplete
+- **THEN** the available enclosing capture SHALL preserve separate receipt failure and primary/termination/cleanup causes with result availability explicit; absent durable evidence or a zero exit elsewhere SHALL NOT establish command closure or recovery acceptance.
+
+#### Scenario: Native sampling or heartbeat publication fails
+- **WHEN** a controlled native sample/write/flush/move/post-check failure or publication-budget violation occurs
+- **THEN** bounded sanitized cause/phase and available monotonic facts SHALL survive generic wrapping, unavailable facts SHALL be explicit and sticky stop/unchanged floors and budgets SHALL still refuse; credentials or unrelated process contents SHALL NOT enter diagnostics.
+
+#### Scenario: A synthetic child closes gracefully
+- **WHEN** the isolated offline/synthetic recorder-to-launcher-to-guest case observes its own child close gracefully without finalization errors
+- **THEN** the same v6 reporting/closure logic used by actual helpers SHALL record its observed diagnostic exit and graceful closure as synthetic evidence with recovery acceptance false through a sealed fixture-only entrypoint; unrelated mocks or AST/footer claims SHALL NOT substitute, and mode/command crossover SHALL refuse before production main or real commands become reachable.
+
+#### Scenario: Diagnostic success is offered as authority for live storage or image work
+- **WHEN** a diagnostic test passes or delegated diagnostic approval is presented for backing-storage rehearsal, a real restore, artifact upload or image deletion/offload
+- **THEN** those actions SHALL remain unstarted under this diagnostics scope, all original failed roots/scratch/helpers/receipts/TARs and all227images SHALL remain protected, and each future live scope SHALL require its own applicable reviewed authority plus exact human image confirmation before deletion/offload.

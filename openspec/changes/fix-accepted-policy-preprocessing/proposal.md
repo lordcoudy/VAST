@@ -12,7 +12,11 @@ The accepted-policy guardian consumer cannot read the qualification bundle produ
 - Integrate the entire inherited qualification implementation and repair into master in this same PR after PR #8's S3 delivery is independently accepted and merged. Review the complete inherited/repair diff and combined supervisor/service behavior; preserve accepted S3 export/recovery and historical Seafile readers.
 - Admit the whole renewal/check/consumer chain only with a conservative peak-capacity calculation and fresh physical backing observations preserving the C: 40 GiB floor and applicable filesystem thresholds. Preserve all original evidence and all 227 images; image deletion or offload requires separate explicit human confirmation of the exact images/action.
 
+- Prepare separately named v6 host recovery diagnostics and bounded offline/synthetic recorder-to-launcher-to-guest tests. Preserve initiating, termination, receipt and cleanup causes independently, all owned-child closure states and bounded native publication diagnostics; unknown or forced closure cannot pass recovery acceptance.
+
 User decision on 2026-10-11: close PR #7 unmerged with its failed-Q1 outcome, keep this repair separate, then qualify under a new change. PR #7's closeout remains preserved at `4219f3e5`; its inherited code was absent from master at the 2026-10-15 amendment inspection. This amendment expands integration review to the entire master-to-repair diff, not qualification execution. The user delegates stage/final approval after successful independent exact-commit review and mandatory checks; record that delegated agent approval in this same PR before dependent work. The next qualification is `qualify-repaired-full-benchmark`, with a distinct branch/PR and fresh inputs. Preserve historical `qualify-full-benchmark`, its nine unchecked tasks and failed attempts unarchived; do not resume attempt 5 or report its incomplete scope as accepted.
+
+Diagnostics scope refinement, 2026-10-15: the selected historical-image capacity route first needs trustworthy failure reporting. The planning-only host amendment `E:/STUDY/VAST/tmp/completion-implementation-20261015/cold-recovery-diagnostics-amendment.v1.md`, SHA256 `b200d14419b0d5ddf04cc256963e0d9f55a236f89738edcfd9533a3b03b8c77d`, is the input to this same-change amendment, not execution approval. Independent review and recorded delegated approval of the exact revised OpenSpec commit precede new diagnostic helpers/tests. This stage permits only diagnostic preparation and isolated synthetic/offline reporting-chain tests; it grants no backing-storage rehearsal, restore attempt, archive upload, image deletion/offload or qualification launch. All original failed roots, helpers, scratch, TARs, data/models/runtimes and all227images remain protected; numerical gates and restore Size equality remain unchanged.
 
 ## Capabilities
 
@@ -22,7 +26,7 @@ None.
 
 ### Modified Capabilities
 
-- `benchmark-launch-preparation`: add explicit accepted-policy consumer compatibility, measured coverage, renewal, integration/storage preservation and evidence-bound capacity requirements for authority-v2 qualification outputs.
+- `benchmark-launch-preparation`: add explicit accepted-policy consumer compatibility, measured coverage, renewal, integration/storage preservation and evidence-bound capacity requirements for authority-v2 qualification outputs, including bounded recovery-diagnostic failure reporting.
 
 ## Impact
 
@@ -30,4 +34,5 @@ None.
 - The four runtime Dockerfiles/source allowlists and all affected image, parity, source and execution identities. Native/worker build inputs must be inventoried and proved unchanged or renewed if affected.
 - The inherited clock, operational owner/custody/accounting, native lifecycle/transport, Python/package/identifier and full-consumer changes; `scripts/full_publication_supervisor.py` and `scripts/full_publication_wsl_user_service_v1.py` overlap PR #8. Preserve its archived S3 delivery and all unaffected main-spec requirements when syncing this repair.
 - The next qualification change will own its new runbook, exact final source commit, receipt hashes, launch-duration checklist and fresh namespaces. The old PR #7 runbook remains historical.
+- Host prerequisite only: future v6 derivatives of the existing cold recorder/launcher/guest/native publisher and their synthetic reporting tests under new ignored temporary controls. Reuse the existing protocols and components; no new orchestration framework, dependency, CI change or production qualification-validator change is included in this diagnostics scope.
 - No new dependencies, receipt-kind/schema change, relaxed scientific criteria, Q4/capacity/full-matrix execution, CI infrastructure change or rewrite of historical attempts is proposed.
