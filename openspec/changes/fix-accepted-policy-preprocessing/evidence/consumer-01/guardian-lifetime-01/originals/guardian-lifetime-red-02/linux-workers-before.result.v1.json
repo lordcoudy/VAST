@@ -1,0 +1,21 @@
+{
+  "executable": "wsl.exe",
+  "arguments": [
+    "-d",
+    "Ubuntu",
+    "-u",
+    "s-a-balashov",
+    "--exec",
+    "ps",
+    "-eo",
+    "pid,ppid,args"
+  ],
+  "started_utc": "2026-10-12T11:36:33.9969813Z",
+  "finished_utc": "2026-10-12T11:36:34.0980502Z",
+  "elapsed_seconds": 0.0993208,
+  "original_exit_code": 0,
+  "stdout_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-lifetime-red-02\\linux-workers-before.stdout.raw",
+  "stderr_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-lifetime-red-02\\linux-workers-before.stderr.raw",
+  "stdout_sha256": "b8f3b31afeae4354a48f4b9097c130f6111ee2e776feb1e6a4e114a07ad11838",
+  "stderr_sha256": "4f8441f27100dcf976adc3683a4bc9d39f03c4e46fedec728eb5fe88e998fce6"
+}

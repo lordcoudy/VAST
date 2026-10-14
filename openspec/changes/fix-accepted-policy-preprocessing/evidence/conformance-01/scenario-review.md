@@ -616,3 +616,214 @@ diff/hash-locked test-only stock reference applying only the already-reviewed
 six-stream reset prerequisites is proposed for design confirmation, not yet
 implemented or accepted. Scenario evidence and all dependent launches remain
 incomplete; general exact-d725 checks stay passed historical/current evidence.
+
+## Exact-A4 Scenario Checkpoint, 2026-10-13
+
+Snapshot boundary: 11:51 UTC, same `fix-accepted-policy-preprocessing` change,
+branch and Draft PR #9. Human design-amendment approval binds exact commit
+`67b1362fde9463a1e983b49dbc0ee545a5095231`, recorded before implementation in
+[PR #9 comment 6140141307](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6140141307).
+Current implementation/check input is
+`65c9fa91e2c396265183ec47cb090629ccdd174a`. Earlier statements above remain
+historical snapshots, including the failed minimum16 and unstarted larger17;
+they are not rewritten as successful evidence.
+
+The final test-only reference is 12613 bytes, SHA256
+`eeabb3b44e83f4dff767d3a4ded2235e1694a923517ed231c433d37b6bed7297`;
+the genuine comparison helper is 11561 bytes, SHA256
+`c8577f673f04dc6fe54ef533ef0ff5d67f058c28a46a2e191a19f511b736d13c`.
+The reference's complete function diff permits only its rename and
+`require_reset_evidence=True` / `expected_streams=6`. Original legacy stock
+and shared F5 production bytes remain pinned, respectively, to
+`f4478804491922c3e25ab414ba8f000c1964b46633f9dfb3a5bc87212748dbde`
+and `48fbc62494cdc40bd5f925cee6ff16dad02269feacf1803d263a9d165523f246`.
+Neither the reference nor a portable test is a production assessor or an
+unchanged stock-default acceptance result. The retained original real-reset
+RED RC1 and 29-test GREEN RC0 remain unchanged; renewed exact65 checks cover the one
+subsequent EOF-only formatting correction.
+The eleven new regressions are in
+`tests/test_accepted_policy_stock_sample_reference_v1.py`, SHA256
+`f1f4a311c16e2613ac94f185872cbf9f5e043fe837e46c493108109733c5836d`.
+
+### Closed General Checks And Limits
+
+Root and independent technical reviews, including the Q1 risk-review agent
+and this conformance reviewer, corroborate the stated check boundaries. See
+`../checks-01/sourceA4-checkpoint.v1.md`,
+`../checks-01/hosted-ci-38364806151-pass-02/review.md` and
+`../consumer-01/stock-sample-reference-tdd-02/` for originals and limits.
+
+- Exact65 focused/source/plan original 43544 closed RC0:303 tests, zero failures
+  or errors and one exact live-preflight skip, subsequently exercised by the
+  physical lane. Source comparison preserves 128 packaged inputs,67 guardian/
+  93 qualification sources and five native/worker contexts; only the same
+  two reviewed host pins differ. Real source closure and independent cold CLI
+  pass with semantic identity
+  `337af0ea931b21500795752964ec5bf01913940e4f13a602c478e3400a68ebc1`.
+- Exact65 physical original 45361 closed RC0:9/9 actual successes, zero skips,
+  failures or errors. Exact65 full original 76596 closed naturally RC0:
+  3338 tests/3252 successes/86 skips, zero failures/errors/expected failures/
+  unexpected successes/missing required successes; elapsed 2672.10533340805s.
+  Full report 2040296 bytes has SHA256
+  `c0bbeb5a1b63ed851a56ee7d41502a9fefa3d58feb505bd89bd441d027147dfb`.
+- Full skip ID/reason records and the complete portable audit exactly equal
+  A3, not merely its counts. Every one of 86 unique audit records matches the
+  current allowed manifest, including classification and false acceptance
+  flag. All eleven new reference regressions are discovered/successful;
+  no prior discovered or successful IDs disappeared. Parent and original
+  child unittest results agree.
+- Both whole 12403-record/2949491-byte tracked-source manifests have SHA256
+  `7dd99797081dc994baba74e428e16a1e611b0005e605f318197c5e5d6343fa8a`.
+  Both whole 269-row/76662-byte global mount snapshots have SHA256
+  `cfb352bc4d042404487e937de6e7833e81044705ca2000db26356063ecb2912d`.
+  Canonical copied CPython3.12.3, ordinary UID/GID 1000, zero active
+  capabilities, verified private read-only runtime, model preparation, six
+  native targets and 539 Python/16 Bash syntax checks pass. The inherited 1024
+  soft nofile limit is restored to the observed ordinary 10240; hard 1048576
+  is unchanged. This is not equality of before/after soft limits.
+- Full observer 44 requests/responses, original RC0 and both trace/control EOF
+  are recorded with no forced SIGTERM/SIGKILL. Its report does not establish
+  arbitrary descendant quiescence. Native capacity sampler 68237 closed RC0:
+  91 observations, minimum physical C 53672132608 bytes, observed 40GiB floor;
+  this is not continuous peak, attribution or quota evidence.
+- GitHub-verified hosted 38364806151/attempt 1/both jobsSUCCESS binds exact65.
+  Retained original CPU/host archives and independent content review confirm
+  3338 tests/3250 successes/88 exact unchanged audited skips, zero unexpected
+  outcomes and all eleven new regressions successful. CPU report SHA256 is
+  `59adce67dd625a0bd5ac60fab15c7b13fc6fce76641d4b381edf3b77a58dad03`.
+  These CPU/host checks assert no hardware or campaign acceptance.
+
+### Requirement 1: Authority-V2 Qualification Semantics
+
+1. **Authority-v2 promotion reaches the guardian consumer.** Guardian
+   `scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py:248`
+   selects real authority-v2 validators; source validation at 457 and fresh
+   assessment agreement at 730 feed materializer 1060 and reader 1155. Current
+   lineage/custody/routing and promotion regressions pass at65; the routing
+   assessment spy does not establish qualification success. Still unverified:
+   running minimum24/larger25 completing genuine promotion, default guardian
+   materialization and fresh-interpreter cold load with all 32 pilots/all 128
+   branch coordinates, without substituted upstream validation.
+2. **Promotion lineage or physical evidence is foreign.** The same source
+   path and transaction leaf preserve descriptor/custody/lineage checks and
+   validation before writes. `tests/test_accepted_policy_guardian_transaction_lineage.py:130`
+   and guardian tests 570/604/772 prove their stated foreign/mutation/no-overwrite
+   boundaries. Still unverified: complete-fixture 20/42 default-consumer cohorts
+   across transaction/fragment/index/closure/candidate/parity/config/accounting
+   mutations, including the exact refused parent/leaf absence predicates.
+3. **Component, study or historical evidence is presented as full qualification.**
+   Guardian at 272 retains exact kind/status/scope and strict predecessor authority
+   checks; lineage tests reject misleading study/acceptance flags. Matching
+   totals or self-hashes are not authority. Still unverified: applicable genuine
+   component/unsupported-kind cases through the 20/42 consumer cohorts. Failed
+   attempt-4/G9 bytes remain read-only history, never promoter/materializer input.
+4. **A legacy qualification is read independently.** Original legacy stock
+   bytes and public behavior remain unchanged; exact65 stock/hash/diff and
+   shared-object/cold regression tests pass. The test reference does not change
+   legacy entrypoints or provide a fallback. This proves preservation at65,
+   not an additional accepted legacy run or approval of a later input commit.
+
+### Requirement 2: Complete Decision Validation
+
+5. **Dropped GPU ingress has no transfer interval.** Shared F5
+   `scripts/publication_policy_qualification_pilot_validation_v2.py:192`
+   derives validated ingress status;235 excludes only exact `drop` after all
+   earlier decision checks. Existing F5 test 197 proves the isolated sample
+   set; portable native/sidecar/reset tests exercise real downstream predicates.
+   Still unverified: the genuine positive pair/default-consumer chain carrying
+   dropped-GPU evidence through complete fresh assessment and both readers.
+6. **Completed GPU ingress has no transfer interval.** F5 at 235 still refuses
+   completed/censored/unknown ingress without transfer. Existing test 209 and
+   new reference test 166 retain these isolated refusal semantics; the reference
+   also retains stock refusal for dropped GPU/no-transfer. Their sample unit
+   inputs are stubbed. Still unverified: genuine corresponding 20/42 mutations
+   through default materializer/cold reader with the intended semantic predicate.
+7. **A dropped decision has corrupt linkage or replay.** F5 decision checks
+   precede exclusion. Existing tests 216/233 and real-refusal tests 122/130/139/148
+   cover replay, cell/linkage, terminal/service/uniqueness, changed physical
+   evidence and missing ingress. Portable real-refusal tests substitute only
+   unavailable upstream pilot acceptance; native/sidecar/reset checks are real.
+   Still unverified: the complete genuine cohort's precise refusal boundaries,
+   not a stale descriptor standing in for a semantic mutation.
+8. **Existing valid samples and reset failures are checked.** Test-only
+   `tests/fixtures/accepted_policy_stock_sample_reference_v1.py:33` plus guard 244,
+   comparator `tests/test_accepted_policy_f5_real_refusals.py:198` and the eleven
+   new regressions prove the exact allowed copy, original stock reset refusal,
+   real missing/malformed/incomplete reset refusals and comparator/report wiring.
+   Sample equality test 156 has explicit upstream/downstream stubs. Reports label
+   stock sample semantics with reviewed six-stream reset prerequisites and set
+   `unchanged_stock_default_acceptance_claimed=false`. Still unverified: genuine
+   CPU/positive-transfer GPU equality and complete default consumers in 24/25;
+   neither portable GREEN nor successful general CI supplies those results.
+
+### Requirement 3: Measured Coverage
+
+9. **Coverage exceeds the minimum.** Guardian at 368 and
+   `scripts/full_publication_identity_artifacts.py:660` retain exact integer
+   keys, measured totals and complete calibration coordinates; guardian at 730
+   requires fresh assessment/output equality. Guardian test 476 uses injected
+   upstream assessment, while actual identity-reader test 104 preserves 126016
+   without pilot replay authority. Still unverified: a genuine promoted 126016
+   fixture accepted by both consumers with matching fresh assessment. Even a
+   successful 3840/3968 pair cannot close this explicit scenario antecedent.
+10. **Coverage is at the supported minimum.** Existing guardian test 476 and
+    actual identity-reader test 96 preserve 3840 under existing receipt kinds;
+    stock `_validate_samples` at 856 preserves the per-branch minimum. Native
+    matrix evidence has its stated sidecar boundary, not complete qualification.
+    Still unverified: running minimum24 completing all 32 cells/all 128 branches,
+    exact 3840 F1 coverage and accepted totals, actual default materialization
+    and independent fresh cold reader; larger25 must separately preserve 3968.
+11. **Coverage has the right total but incomplete cells.** Stock at 856 rejects
+    branch underfill/duplicates; guardian fresh assessment and balanced aggregate
+    checks remain active. Stock test 487, guardian test 498 and actual identity test 165
+    exercise their stated missing/duplicate/underbalanced boundaries. Still
+    unverified: fresh genuine29 fixture 26 and absent/duplicate complete-consumer
+    mutations with otherwise matching larger totals and no materialized output.
+12. **Count type or calibration total differs.** Guardian test 498 and actual
+    identity tests 113/134/155/174/181 pass exact-key/type/coordinate/total and
+    physical binding refusals at65. Guardian aggregate assessment is injected;
+    identity loading does not replay pilots. Still unverified: genuine default
+    assessment-disagreement and count/calibration mutations in 20/42, including
+    independent cold-reader refusal and exact output-absence predicates.
+
+### Requirement 4: Renewed Readiness
+
+13. **Packaged validator bytes change before Q1.** Existing physical/package
+    inventory, deterministic runtime x4 A/B, refreshed parity 480/32 and reviewed
+    host pin plan remain their recorded boundaries. Exact65 comparison proves
+    packaged inputs/native-worker contexts unchanged; source/executable closure,
+    focused, hosted, full and physical checks are renewed at65. The new reference
+    is host test evidence, not packaged production validation. Still unverified:
+    accepted downstream authority renewal through complete consumers, remaining
+    required scenarios, final conformance and any final archive/input commit.
+    No historical image/parity/closure receipt is silently rebound.
+14. **A launch prerequisite is stale or unobserved.** Current exact65 general
+    checks close only their scopes. Running pair 12860/sampler 46871 are original
+    fixture work, not Q1; this appendix reads no active fixture outputs and
+    asserts no positive consumer result. Still required: complete repair gates,
+    archive/sync and exact final-commit checks/review, an accepted repaired
+    baseline and distinct reviewed qualification change/runbook, then immediate
+    idle/container/GPU/worker/volume/power/Update observations covering the
+    refreshed full execution estimate plus at least six hours. Existing
+    fixture-admission observations expire and cannot authorize future Q1.
+
+This appendix leaves tasks 2.1/2.3/2.4/2.5/3.2/4.5/5.3/5.4 and subsequent
+finalization/handoff gates at their actual partial/unverified boundaries; it
+does not mark any task complete. Pair24/25 is running, and genuine29/20/42/126016
+execution evidence remains pending. External A4 negative/126016 recipes are
+prepared/static-reviewed only. No dedicated behavioral conformance CI gate has
+been added.
+No consumer, hardware, campaign, Q1, completed archive/sync or merge authority
+is granted by this checkpoint.
+
+## Current disposition — 2026-10-15
+
+The preceding chronological appendices retain their original observations, including the former running-pair and exact65-current wording. They are historical statements; the authoritative later closure below supersedes them without altering failed raw evidence.
+
+Original pair12860 closed naturally RC1 on2026-10-13T15:50:14.6130969Z. Minimum24 reached accepted-policy3840 and failed the stock guardian's raw-versus-derived config comparison; larger25 never started. Source/raw/recipe guards passed. This is failed complete-consumer evidence, not qualification or repair acceptance. The strict correction at f549 changed PACKAGED guardian bytes and reopened runtime/package/refreeze/parity/pin/source/execution and local check renewal. Exact65 general checks and prior ACA/A2/A3/A4 physical/build reports remain historical.
+
+Hosted f549 run38430468779 passed3344tests/3256success/88unchanged approved skips, with hardware acceptance false. General hosted success and the bounded real-loader RED/GREEN do not replace actual-image checks or genuine production consumers. Current pushed7dde1c752fae80e3a97aeacae25a166ba82cf25d adds retained-index evidence and a four-file planning amendment; production bytes remain f549. It is not an accepted integrated input. Its run38638596703 was still in progress at this appendix's author observation; OpenSpec structure and host diagnostics passed, CPU source/build/test job116108054543 remained running. Observe that same handle; do not restart it from this statement.
+
+Current repair checklist is5/27complete. The amended contract has five requirements/18scenarios. Earlier fourteen-scenario mappings supply historical evidence only. All current integrated-input conformance remains incomplete: authority-v2 consumer scenarios need genuine promoter/materializer/independent cold reading; calibration scenarios need real equivalence/reset/linkage/terminal checks; coverage scenarios need3840/3968 and separately promoted126016 plus genuine29/20/42 refusal cohorts; readiness scenarios need current package/identity/check and whole-chain capacity admission; storage/preservation scenarios need actual combined S3 operational review, preserved failed qualification and both retained evidence versions. This appendix closes none of those gates.
+
+S3 PR8 merged as ead12cec4a2460f27e836583f1f712b31e14b36f after fresh independent exact-head review. PR9 remains Draft, not yet integrated into that master. PR7 remains closed/unmerged and failed, with nine unchecked tasks and its incomplete change unarchived. No new consumers,126016/29/20/42, repair archive, PR9merge or freshQ1 were executed here. Source06's original staged checkpoint survives in evidence commit82fbd1e2f8f27f2d3887b173bc781ce54ca6d16a; later working metadata/raw originals remain preserved. Existing cold03 restore failed; all227images remain local. Exact historical-image offload and recovery/physical capacity gates remain separate from repair conformance.

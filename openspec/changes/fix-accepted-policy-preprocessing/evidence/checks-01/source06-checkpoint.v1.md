@@ -91,3 +91,121 @@ not an enforced whole-fixture bound. Genuine126016 still requires successful
 pair timings, current physical/temporary-volume capacity and finite-limit
 review. Archive, final review, accepted baseline and new qualification spec
 gates remain. No Q1, hardware or campaign eligibility is established.
+
+## Subsequent Full Closure And Pair Admission
+
+The preceding running-state paragraph is retained as its earlier checkpoint.
+Original full session5997 closed naturally with outer RC0, UTC
+2026-10-12T09:50:08.3051519Z through 2026-10-12T10:33:00.6171459Z.
+The unchanged stock harness reports3322 tests /3236 successes, zero failures
+or errors,86 exact audited skips (76 platform/explicit prerequisites and10
+retired-schema migrations), elapsed2553.5950493550044 seconds. Four required
+canonical copied-Python/native-client/topology/reset cases actually succeeded.
+Configure/build/model preparation returned zero;536 Python and16 Bash syntax
+files passed. Exact source/raw checkout guards passed with no tracked mutation.
+
+Full report physical SHA256:
+`32a17907f6c0adb5c4fe83965c9fb69d67ac1450aea95ad6e1eab2d9e217471e`.
+Whole global mountinfo was byte-identical before/after:263 rows, SHA256
+`ea2972462a727b528181a21448f253f42105191e3fa8b5e2ae3ec48c6709fb6f`.
+The original observer completed42 responses to42 requests with control/trace
+EOF and returncode0; original-child status alone does not establish descendant
+quiescence. Independent post-run report/skip/native/mount assertions passed.
+
+Capacity sampler48221 closed naturally with RC0 after observing the outer
+result. Its81 samples,30-second interval, observed minimum C free76940431360
+bytes. This is sampled whole-volume capacity, not the true continuous peak
+or an attribution of bytes to owned writers. C free in the outer result was
+76950888448 bytes. Current capacity can change with other applications.
+
+Read-only consumer admission passed with original RC0 at
+2026-10-12T10:37:35.8065527Z, after natural full/sampler closure. Fresh SOURCE/CI
+HEAD/clean, Docker identity/empty container list, empty GPU compute list,
+no matching SOURCE/CI worker paths, native-ext4 mapping and fresh fixed10/11
+output/control/AF_UNIX namespaces were observed. The v4 check-only report
+passed stock raw source/helper guards but explicitly did not authorize execution;
+it does not independently validate every upstream asset or grant storage safety.
+
+Root then authorized one fixed sequential10/11 pair, with a refreshed whole-pair
+10 GiB allowance and at least40 GiB backing capacity after that projected use.
+Wrapper identity remains
+`f4f146e29f3f040909e2889af0d57db284e1d6907c5f5df9c6eb69bb1b079b76`.
+Original session11836 is running, not complete acceptance. No SOURCE ancestor
+writer runs concurrently; Windows evidence edits are in the separate managed
+worktree. A refusal stops the sequence without retry; earlier failures remain.
+No126016 scheduling or Q1 clearance follows from this pair's admission.
+
+## Natural Consumer Failure Closure
+
+The preceding running-state snapshot is superseded by the original closure.
+Session11836 closed naturally with outer RC1 at
+2026-10-12T11:16:36.2398872Z. Minimum10 child RC1 after
+2182.756661992 seconds; larger11 was never started, and both its output and
+control directories remain absent. HEAD/raw-source/recipe post-guards passed;
+runner error is null and wait interruptions are empty. No positive consumer
+report is asserted and no automatic retry was attempted.
+
+The original failure occurred in the real pilot finalizer's second live
+guardian-service validation: the unchanged production control query timed out
+receiving its response. It precedes F1, policy promotion and accepted-policy
+default materialization. Read-only diagnosis found the artificial responder's
+independent1800-second deadline. It can exit with an error recorded only in
+session.errors while the owning consumer still holds the listening socket.
+The authority/failure file-time delta is1824.3745431 seconds. This is strong
+correlation, not a persisted original responder-exit reason. Twenty-four
+nonpublication pilot acceptances exist; no completed guardian lifecycle exists.
+
+Physical SHA256 of preserved originals beneath this SOURCE artifact base:
+
+- `consumer-complete-10-controls/run-result.v4.json`:
+  `19d3d04e05f8ed708a176fc3f546da88bd9eca214c4fa589297707b4d99c430e`.
+- `consumer-complete-10-controls/consumer-fixture-10-minimum30/finished.v4.json`:
+  `5c30970ec5ec6a76c315522473016108d5f773dff7f7440e87cb9eda4ab4b1d6`.
+- Its original `stderr.raw`:
+  `1fd8371aabbf36e16e1f381b2c24d2b5a362229d5f383c5f03552347c5f250dc`.
+- `consumer-fixture-10-minimum30/producer-failure.v2.json`:
+  `3cd36fda9d6e24c73ba6b40ab91706f84a12b44ec0baf06e30595f30810ccaea`.
+- Its `guardian-authority.v1.json`:
+  `faef73072d82500324016984a2483a2f725c87a7bb20e46cf8539809b43a1d80`.
+
+Sampler95111 also closed naturally with RC0 at
+2026-10-12T11:16:42.0110703Z:51 samples at30-second intervals, minimum observed
+C free80317607936 bytes, and an observed40 GiB floor. It began after the pair
+started, so this is neither a full-run continuous peak nor attributed usage.
+Read-only process-path observation at11:25:58Z found zero matching SOURCE/CI
+rows. This observation alone does not establish arbitrary descendant quiescence.
+
+Independent diagnosis recommends a fixture-only owned-lifecycle correction,
+retaining4096 requests, per-connection timeouts, authenticated stop/explicit
+close and all production predicates/timeouts. A focused real-socket clock
+regression must first reproduce the defect. No negative/126016/archive/Q1
+clearance follows from that proposal or the earlier passing suites.
+
+## Later Fixture Correction And Byte Retention
+
+The bounded real-socket regression subsequently reproduced the fixture-clock
+expiry (actual RED RC1); the minimal owned-lifecycle fix passed all3 lifecycle
+tests in a fresh GREEN overlay, zero failures/errors/skips. These originals
+are separately retained under `consumer-01/guardian-lifetime-01/originals/`.
+Correction commitA2 and exact check renewal are recorded in
+`sourceA2-checkpoint.v1.md`. SOURCE06 and its failed10/unstarted11 stayed unchanged.
+
+The finite closed-original plan selected225files/14520710bytes. Apply01 refused
+before copy on an ordinary-UID proc metadata permission error. Apply02 also
+refused before copy: its native observer decoded unrelated -e arguments as
+PowerShell Base64. Both failed controls remain under the external operation
+root; no original or output namespace was overwritten. Fresh v3 adds only
+the narrow identity-pinned readonly-root proc fallback and an executable-name/
+complete-token PowerShell decoder. It changes no production acceptance rules.
+
+V3 original copy33242 closed RC0,2026-10-12T12:59:57.1937907Z through
+13:00:19.4076200Z. Independent verification63177 closed RC0,13:00:31.4321745Z
+through13:00:42.0422249Z. Exact source/target bytes and all operation-time source
+file/protected-directory epochs matched. Originals are in
+`source06-closed-originals/`; derived receipts remain in external
+`source06-closed-retention-apply-03/`. Receipt/independent proof SHA256:
+`eb14785aec1dbf7fa11e0aa7dd377615c4c93747438ad60afd02303afa986c22`,
+`1e060185a11e3e295e0e2a4ae5a209493a60c1cb60b8022db208f45bb8be18bc`.
+This is mechanical retention, not a passing complete consumer or Q1 gate.
+Legitimate later sibling creation does not retroactively alter that closed
+operation-time proof; do not rerun its parent-epoch check as permanent authority.
