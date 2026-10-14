@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_s3_capacity_missing_evidence_v1",
+  "observed_at_utc": "2026-10-07T11:38:35Z",
+  "destination": {
+    "addressing_style": "path",
+    "backend": "s3",
+    "bucket": "vast-archive",
+    "destination_sha256": "da660db91922c3e85c74820330d819a3c554011293296559d3a775e5badfb324",
+    "endpoint": "https://s3.savva-balashov.me",
+    "prefix": "vast/",
+    "region": "us-east-1",
+    "schema_version": 1,
+    "signature_version": "s3v4"
+  },
+  "status": "blocked_missing_operator_guarantee_and_actual_q4_sizing",
+  "actual_accepted_q4_sizing_pairs_available": false,
+  "dated_available_capacity_guarantee_available": false,
+  "capacity_accepted": false,
+  "full_launch_ready": false,
+  "reason": "No accepted actual 280-pair Q4 sizing and current dated S3 available-byte guarantee supplied; no number fabricated.",
+  "minimum_required_bytes": 536870912000,
+  "projection_formula": "max(500GiB, ceil(projected_remote_bytes*1.25)+5GiB)",
+  "measurement_repeats": 10,
+  "live_smoke_sha256": "9653ecc23b87dd1492bd54e3fc89b0d3a38e36a714f02de4e6e43296c2775e70",
+  "quota_visibility": "not_exposed",
+  "q1_scope": "independent frozen qualification; not launched"
+}

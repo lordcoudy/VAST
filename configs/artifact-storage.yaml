@@ -1,0 +1,8 @@
+artifact_kind: vast_s3_destination_v1
+backend: s3
+endpoint: https://s3.savva-balashov.me
+bucket: vast-archive
+prefix: vast/
+region: us-east-1
+addressing_style: path
+credential_profile: vast-s3

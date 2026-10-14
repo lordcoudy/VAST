@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "commit": "2f954a24eb4ac22b61a1b4844105f7ebe17d7574",
+  "workflow_run_id": 37623640386,
+  "workflow_url": "https://github.com/lordcoudy/VAST/actions/runs/37623640386",
+  "artifact_id": 11483499368,
+  "artifact_zip_sha256": "28de040c6a2813651a3599a6c6c47f1647656686f42b1780a4c31e96da6f49ff",
+  "original_report_sha256": "9b012bff3be4c0c43e75669e05069794113d6fbbad5154e2d08afcb02cd8c70b",
+  "original_test_report_sha256": "666e078e9a8ef485a4de09e78d09748487d49f48a05fc5505217fe1abecb52be",
+  "tracked_source_before_sha256": "3d0bc33826967732bc4289c915a76d0d2c863f9d4854f9422e879be01f874c13",
+  "tracked_source_after_sha256": "3d0bc33826967732bc4289c915a76d0d2c863f9d4854f9422e879be01f874c13",
+  "successful": true,
+  "raw_checkout_bytes_match_commit": true,
+  "changed_tracked_paths": [],
+  "python": "3.12.3 (main, Sep 26 2024, 18:18:55) [GCC 13.2.0]",
+  "canonical_python": "/opt/hostedtoolcache/Python/3.12.3/x64/bin/python3.12",
+  "built_targets": [
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "elapsed_s": 1261.219844573,
+  "hardware_acceptance": false,
+  "hardware_gaps": [
+    "Hosted CPU tests do not execute NVIDIA decode or the packaged SDK runtimes.",
+    "Skipped hardware/data tests do not prove model parity, native paired execution, qualification, Q4, storage or the full benchmark.",
+    "Final scientific conformance and archived completion require separately reviewed physical evidence bound to the actual source closure."
+  ],
+  "job_started_monotonic_ns": 28570909609,
+  "absolute_deadline_ns": 5428570909609,
+  "discovered_count": 3179,
+  "tests_run": 3170,
+  "successful_count": 3082,
+  "skip_count": 88,
+  "failures": [],
+  "errors": [],
+  "missing_required_successes": [],
+  "inventory_file": "ci-9086d7c2-test-inventory.v1.json",
+  "scope": "Actual complete portable/native/source lane; hardware/full campaign acceptance remains false.",
+  "inventory_reuse": {
+    "all_inventory_fields_equal_to_current_original": true,
+    "compared_fields": [
+      "discovered_ids",
+      "successful_test_ids",
+      "tests_run",
+      "selection",
+      "skips",
+      "portable_skip_audit"
+    ],
+    "reference_file_sha256": "41c3abdfe7c6502096d647ec56f3e2888615b87c8f9e0245dbe315a3bce77271",
+    "reason": "Avoid duplicating the identical complete current inventory; current original report and artifact digests remain distinct."
+  }
+}
