@@ -58,7 +58,7 @@ The accepted-policy guardian consumer and full-publication identity reader SHALL
 - **THEN** the corresponding consumer SHALL refuse before creating any materialized output.
 
 ### Requirement: Validator repairs renew affected qualification readiness
-A packaged accepted-policy repair SHALL invalidate affected image/source/parity/pin and execution-closure readiness. Before the next Q1 launch, all affected deterministic builds, packaged checks, physical parity, required CI, ext4 and integration checks SHALL pass on the exact renewed input commit, with independently reviewed changes to the qualification runbook. Launch observation SHALL establish zero unrelated containers, VAST workers and GPU compute jobs, sufficient space on every required volume, disabled AC sleep/hibernation and a Windows Update pause covering the entire current execution estimate plus an explicit margin. Historical receipts SHALL remain immutable.
+A packaged accepted-policy repair SHALL invalidate affected image/source/parity/pin and execution-closure readiness. Before the next Q1 launch, all affected deterministic builds, packaged checks, physical parity, required CI, ext4 and integration checks SHALL pass on the exact renewed input commit, with independently reviewed changes to the qualification runbook. Renewal allocations SHALL require fresh physical backing capacity sufficient for the conservative peak of the whole build/check/consumer chain, including retained inputs, images, outputs, evidence and backups, while preserving at least 40 GiB free on C: and every involved filesystem's applicable threshold. Launch observation SHALL establish zero unrelated containers, VAST workers and GPU compute jobs, sufficient space on every required volume, disabled AC sleep/hibernation and a Windows Update pause covering the entire current execution estimate plus an explicit margin. Historical receipts SHALL remain immutable.
 
 #### Scenario: Packaged validator bytes change before Q1
 - **WHEN** the repair changes a source copied into the runtime images or reachable from the qualification code closure
@@ -67,3 +67,22 @@ A packaged accepted-policy repair SHALL invalidate affected image/source/parity/
 #### Scenario: A launch prerequisite is stale or unobserved
 - **WHEN** a required check is missing, fails, applies to another commit, or the observed host protection does not cover the complete run duration
 - **THEN** Q1 SHALL remain unstarted until the prerequisite is renewed and accepted.
+
+#### Scenario: The whole renewal chain lacks backing capacity
+- **WHEN** fresh physical capacity cannot cover the conservative whole-chain peak while preserving the C: 40 GiB floor and applicable filesystem thresholds, or the peak is unqualified
+- **THEN** dependent copying/building/check/consumer allocations SHALL remain held with a recorded shortfall and concrete remedy; a first-stage allowance, virtual capacity, historical sample, blind retry or lowered floor SHALL NOT admit the chain.
+
+### Requirement: Integrated repair preserves accepted storage behavior and evidence boundaries
+The accepted repaired baseline SHALL preserve the accepted S3 export/recovery contract and supported historical Seafile reading while retaining the complete inherited implementation and repair's reviewed behavior. Integration acceptance SHALL require independent review of the entire inherited/repair diff at its exact integrated commit, required current checks and genuine scenario conformance. Repair sync/archive SHALL preserve the accepted S3 main requirements/archive and every unaffected main requirement/scenario. Historical failed qualification documents, unchecked tasks, raw evidence and identities SHALL retain their original disposition; code integration SHALL NOT establish qualification, Q4, capacity or full-publication eligibility. All 227 retained images SHALL remain protected unless explicit human confirmation covers the exact images and deletion/offload action.
+
+#### Scenario: Accepted storage delivery and operational execution are combined
+- **WHEN** the repaired baseline combines the accepted S3 delivery with the inherited operational supervisor/service behavior
+- **THEN** downstream export and supported recovery SHALL retain verified upload/readback/receipt/durable-ledger-before-owned-prune and existing stop/recovery outcomes, historical Seafile readers SHALL remain usable, and independent integrated-input checks SHALL establish the combined behavior before baseline acceptance.
+
+#### Scenario: Failed qualification is inherited with working code
+- **WHEN** integration includes the stopped `qualify-full-benchmark` change and its implementation
+- **THEN** its PR SHALL remain closed/unmerged, attempts 1-4 SHALL remain failed, attempt 5 SHALL remain unstarted, tasks 6.2/7.1-7.6/8.1-8.2 SHALL remain unchecked and the incomplete change SHALL remain unarchived; only a distinct fresh qualification SHALL establish future acceptance.
+
+#### Scenario: Repair finalization would discard retained contracts or evidence
+- **WHEN** repair sync/archive, integration or retention would remove an unaffected main requirement/scenario, the accepted S3 archive, an original failed receipt/raw input, either retained version of staged-and-modified evidence, or an image without exact human confirmation
+- **THEN** finalization SHALL refuse until preservation or the applicable exact image authorization is established; successful backup, recovery, format checks, author checks or delegated agent approval SHALL NOT substitute for those gates.
