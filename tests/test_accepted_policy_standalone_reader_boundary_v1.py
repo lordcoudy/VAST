@@ -121,8 +121,9 @@ class ResultBoundTests(unittest.TestCase):
         self.assertTrue(raw.endswith(b"\n"))
 
 
-@unittest.skipUnless(LINUX, "owned subreaper/pidfd closure exists only on Linux")
-class OwnedCaptureTests(unittest.TestCase):
+class _OwnedChildBase(unittest.TestCase):
+    """Shared controlled-child setup; it defines no tests itself."""
+
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
@@ -143,6 +144,9 @@ class OwnedCaptureTests(unittest.TestCase):
         return reader._capture_owned_reader_v2(command=[sys.executable, "-B", "-c", program],
             cwd=self.base, outputs=self.outputs, deadline=deadline(**limits))
 
+
+@unittest.skipUnless(LINUX, "owned subreaper/pidfd closure exists only on Linux")
+class OwnedCaptureTests(_OwnedChildBase):
     def test_normal_child_closes_with_exact_bytes_status_and_eof(self):
         facts, out, err = self.capture("import sys; sys.stdout.write('{\"ok\":true}'); sys.stderr.write('note')")
         self.assertEqual(facts["causes"], [])
@@ -278,6 +282,114 @@ class OwnedCaptureTests(unittest.TestCase):
         row = facts["stdout"]["file"]
         self.assertEqual((row["written_bytes"], row["sha256"]), (2, hashlib.sha256(b"ab").hexdigest()))
         self.assertEqual(self.outputs["stdout"].read_bytes(), b"ab")
+
+
+@unittest.skipUnless(LINUX, "owned subreaper/pidfd closure exists only on Linux")
+class ClosureHazardTests(_OwnedChildBase):
+    """Independent-review hazards: races, internal errors, identity loss, drains."""
+
+    def subreaper(self):
+        import ctypes
+        value = ctypes.c_int()
+        ctypes.CDLL(None).prctl(37, ctypes.byref(value), 0, 0, 0)
+        return value.value
+
+    def fds(self):
+        return set(os.listdir("/proc/self/fd"))
+
+    def test_fork_chain_never_claims_closure_with_a_live_descendant(self):
+        marker = self.base / "last.pid"
+        program = ("import os, time\nfd = os.open('/dev/null', os.O_RDWR)\nif os.fork() == 0:\n"
+                   "    os.dup2(fd, 1); os.dup2(fd, 2)\n    for _ in range(300):\n"
+                   "        if os.fork() != 0:\n            os._exit(0)\n"
+                   "    open(%r, 'w').write(str(os.getpid()))\n    time.sleep(30)\n    os._exit(0)\n" % str(marker))
+        for attempt in range(5):
+            with self.subTest(attempt=attempt):
+                if marker.exists():
+                    marker.unlink()
+                self.outputs = {k: self.base / f"{attempt}-{v.name}" for k, v in self.outputs.items()}
+                facts, _, _ = self.capture(program, observe=3.0)
+                time.sleep(0.2)
+                last = int(marker.read_text()) if marker.exists() else None
+                if last is not None:
+                    self.leaked.append(last)
+                self.assertNotEqual(facts["causes"], [])
+                if facts["closure"]["closed"]:
+                    self.assertFalse(last is not None and alive(last))
+
+    def test_internal_error_after_spawn_kills_reader_and_releases_everything(self):
+        before = self.fds()
+        original = reader._children_v2
+        calls = []
+        def failing(pid):
+            calls.append(pid)
+            if len(calls) > 3:
+                raise RuntimeError("synthetic inventory failure")
+            return original(pid)
+        with mock.patch.object(reader, "_children_v2", failing):
+            facts, _, _ = self.capture("import time; time.sleep(60)")
+        self.assertIn("reader_internal_RuntimeError", facts["causes"])
+        self.assertFalse(alive(facts["pid"]))
+        self.assertFalse(facts["closure"]["closed"])
+        self.assertEqual(self.fds(), before)
+        self.assertEqual(self.subreaper(), 0)
+
+    def test_interrupt_after_spawn_is_contained_then_reraised(self):
+        spawned = []
+        original = reader._start_ticks_v2
+        def interrupted(pid):
+            spawned.append(pid)
+            raise KeyboardInterrupt
+        with mock.patch.object(reader, "_start_ticks_v2", interrupted):
+            with self.assertRaises(KeyboardInterrupt):
+                self.capture("import time; time.sleep(60)")
+        self.assertTrue(spawned)
+        self.assertFalse(alive(spawned[0]))
+        self.assertEqual(self.subreaper(), 0)
+
+    def test_identity_failure_still_signals_the_retained_reader(self):
+        original = os.pidfd_open
+        def no_reader_pidfd(pid, *args):
+            if not getattr(no_reader_pidfd, "used", False):
+                no_reader_pidfd.used = True
+                raise OSError("synthetic pidfd failure")
+            return original(pid, *args)
+        with mock.patch.object(reader.os, "pidfd_open", no_reader_pidfd):
+            facts, _, _ = self.capture("import time; time.sleep(60)", observe=0.5, term=1.0, kill=1.0, final=1.0)
+        self.assertEqual(facts["causes"][:2], ["reader_identity", "reader_deadline"])
+        self.assertGreaterEqual(facts["term_delivered"], 1)
+        self.assertFalse(alive(facts["pid"]))
+        self.assertEqual(facts["signal"], signal.SIGTERM)
+
+    def test_flood_after_reader_exit_ends_observation_without_draining_window(self):
+        program = ("import os, sys\nif os.fork() == 0:\n    block = b'z' * 65536\n    while True:\n"
+                   "        os.write(1, block)\nos._exit(0)\n")
+        started = time.monotonic()
+        facts, out, _ = self.capture(program, observe=30.0, term=1.0, kill=1.0, final=1.0)
+        self.assertLess(time.monotonic() - started, 10.0)
+        self.assertIn("reader_stdout_overflow", facts["causes"])
+        self.assertEqual(len(out), MIB)
+        self.assertTrue(facts["closure"]["closed"])
+
+    def test_raw_failure_still_reports_retained_prefix_hash(self):
+        original = reader._os_write
+        def failing(fd, data):
+            if os.readlink(f"/proc/self/fd/{fd}").endswith("out.raw"):
+                raise OSError("synthetic raw write failure")
+            return original(fd, data)
+        with mock.patch.object(reader, "_os_write", failing):
+            facts, out, _ = self.capture("print('data')")
+        self.assertEqual(facts["stdout"]["retained_sha256"], hashlib.sha256(out).hexdigest())
+
+
+class ResultPersistenceDeadlineTests(unittest.TestCase):
+    def test_result_completed_after_the_absolute_deadline_is_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            clock = iter([10, 10_000])
+            with mock.patch.object(reader, "_monotonic_ns", lambda: next(clock)):
+                persistence = reader._write_result_v2(Path(tmp) / "result.json", b"{}\n", 1_000)
+            self.assertTrue(persistence["close_completed"])
+            self.assertIn("result_deadline_exceeded", persistence["causes"])
 
 
 @unittest.skipUnless(LINUX, "owned subreaper/pidfd closure exists only on Linux")

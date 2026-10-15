@@ -55,6 +55,8 @@ _OWNED_LIMIT = 256
 _POLL_NS = 20_000_000
 _PR_SET_CHILD_SUBREAPER, _PR_GET_CHILD_SUBREAPER = 36, 37
 _DEADLINE_KEYS = frozenset(("absolute_monotonic_ns", "term_grace_ns", "kill_grace_ns", "final_ns"))
+_EXCLUSIVE_FLAGS = (os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+                    | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_BINARY", 0))
 # Indirections let controlled tests fault external effects, never validators.
 _os_write = os.write
 _monotonic_ns = time.monotonic_ns
@@ -108,7 +110,12 @@ def _children_v2(pid: int) -> set[int]:
 
 
 class _OwnedScopeV2:
-    """Subreaper scope that starts with no children, so every new child is owned."""
+    """Subreaper scope from a caller without live children: every new child is owned.
+
+    Reparenting only moves an orphan toward this subreaper, so once the reader
+    is reaped, a direct-children list that stays empty after reaping proves no
+    owned descendant is alive. Pre-existing zombies are foreign and untouched.
+    """
 
     def __init__(self) -> None:
         if not sys.platform.startswith("linux") or not hasattr(os, "pidfd_open") \
@@ -131,10 +138,12 @@ class _OwnedScopeV2:
         if self.libc.prctl(_PR_SET_CHILD_SUBREAPER, 1, 0, 0, 0) != 0:
             raise ValueError("standalone reader owned closure subreaper setup failed")
 
-    def descendants(self, reader_pid: int | None) -> set[int]:
-        """Every live process below this caller other than an unreaped reader root."""
-        pending = _children_v2(self.pid) - self.foreign
-        seen: set[int] = set()
+    def direct(self) -> set[int]:
+        return _children_v2(self.pid) - self.foreign
+
+    def subtree(self) -> set[int]:
+        """Current owned processes below this caller, reader included."""
+        pending, seen = self.direct(), set()
         while pending:
             pid = pending.pop()
             if pid in seen:
@@ -143,15 +152,26 @@ class _OwnedScopeV2:
             if len(seen) > _OWNED_LIMIT:
                 raise OSError("owned descendant inventory overflowed")
             pending.update(_children_v2(pid))
-        seen.discard(reader_pid) if reader_pid is not None else None
         return seen
 
-    def reap_direct(self, reader_pid: int | None) -> None:
-        for pid in _children_v2(self.pid) - self.foreign - {reader_pid}:
+    def reap(self, reader_pid: int) -> None:
+        """Reap owned non-reader zombies; Popen alone reaps the reader."""
+        for pid in self.direct() - {reader_pid}:
             try:
                 os.waitpid(pid, os.WNOHANG)
             except ChildProcessError:
                 pass
+
+    def empty(self, reader_pid: int) -> bool:
+        """True only when reaping leaves no owned direct child at all."""
+        for _ in range(_OWNED_LIMIT):
+            self.reap(reader_pid)
+            remaining = self.direct()
+            if not remaining:
+                return True
+            if any((fields := _stat_fields_v2(pid)) is not None and fields[0] != b"Z" for pid in remaining):
+                return False
+        return False
 
     def restore(self) -> bool:
         if self.libc.prctl(_PR_SET_CHILD_SUBREAPER, self.previous, 0, 0, 0) != 0:
@@ -165,7 +185,7 @@ class _RawFileV2:
     """Fresh exclusive raw file; counts only bytes a write call confirmed."""
 
     def __init__(self, path: Path) -> None:
-        self.fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC, 0o600)
+        self.fd = os.open(path, _EXCLUSIVE_FLAGS, 0o600)
         self.digest = hashlib.sha256()
         self.failed = False
         self.facts = {"path": str(path), "written_bytes": 0, "write_extent_unknown": False,
@@ -192,19 +212,23 @@ class _RawFileV2:
             return "raw_short_write"
         return None
 
-    def close(self, *, sync: bool) -> list[str]:
+    def close(self, absolute_ns: int) -> list[str]:
         causes = []
-        if sync:
+        if _monotonic_ns() < absolute_ns:
             try:
                 os.fsync(self.fd)
                 self.facts["fsync_completed"] = True
             except OSError:
                 causes.append("raw_fsync")
+        else:
+            causes.append("raw_deadline")
         try:
             os.close(self.fd)
             self.facts["close_completed"] = True
         except OSError:
             causes.append("raw_close")
+        if _monotonic_ns() >= absolute_ns and "raw_deadline" not in causes:
+            causes.append("raw_deadline")
         return causes
 
 
@@ -213,15 +237,19 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
     """Run one owned child under fixed byte ceilings and one absolute deadline.
 
     Refusals before spawn raise ValueError and allocate nothing. After spawn,
-    failures never raise: they return original statuses, confirmed prefixes,
+    child/capture failures return original statuses, confirmed prefixes,
     explicitly unknown remainders and the first plus distinct secondary causes.
+    An unexpected internal error or interrupt is recorded, the owned reader and
+    descendants are killed and reaped, and only an interrupt is re-raised.
     """
     sealed = _sealed_deadline_v2(deadline)
+    absolute = sealed["absolute_monotonic_ns"]
     scope = _OwnedScopeV2()
     causes: list[str] = []
     retained = {"stdout": bytearray(), "stderr": bytearray()}
     facts: dict[str, Any] = {"causes": causes, "deadline": dict(sealed), "pid": None, "start_ticks": None,
-        "returncode": None, "signal": None, "term_sent": False, "kill_sent": False, "forced": False,
+        "returncode": None, "signal": None, "forced": False,
+        "term_sent": False, "kill_sent": False, "term_delivered": 0, "kill_delivered": 0,
         "closure": {"closed": False, "owned_descendants": [], "descendants_unknown": False,
                     "subreaper_restored": None},
         "stdout": None, "stderr": None}
@@ -232,14 +260,17 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
 
     files: dict[str, _RawFileV2] = {}
     process = None
-    pipes: dict[int, str] = {}
+    pidfd = None
+    selector = None
+    signalled: dict[int, set[tuple[int, int | None]]] = {signal.SIGTERM: set(), signal.SIGKILL: set()}
+    interrupt: BaseException | None = None
     try:
         try:
             for channel in ("stdout", "stderr"):
                 files[channel] = _RawFileV2(outputs[channel])
                 facts[channel] = {"observed_bytes": 0, "retained_bytes": 0, "discarded_bytes": None,
                                   "remainder_unknown": True, "eof": False, "overflow": False,
-                                  "file": files[channel].facts}
+                                  "retained_sha256": None, "file": files[channel].facts}
         except OSError:
             fail("reader_raw_open")
             return facts, b"", b""
@@ -252,46 +283,43 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
             return facts, b"", b""
         pipes = {process.stdout.fileno(): "stdout", process.stderr.fileno(): "stderr"}
         facts["pid"] = process.pid
-        pidfd = None
         try:
             pidfd = os.pidfd_open(process.pid)
             facts["start_ticks"] = _start_ticks_v2(process.pid)
         except OSError:
             fail("reader_identity")
-        owned: dict[int, int | None] = {}
 
-        def observe_owned() -> None:
+        def note(pid: int, ticks: int | None) -> None:
+            rows = facts["closure"]["owned_descendants"]
+            if len(rows) < 64 and {"pid": pid, "start_ticks": ticks} not in rows:
+                rows.append({"pid": pid, "start_ticks": ticks})
+
+        def deliver(descriptor: int | None, signo: int) -> bool:
             try:
-                for pid in scope.descendants(None if process.returncode is not None else process.pid):
-                    if pid not in owned:
-                        owned[pid] = _start_ticks_v2(pid)
-                        if len(facts["closure"]["owned_descendants"]) < 64:
-                            facts["closure"]["owned_descendants"].append({"pid": pid, "start_ticks": owned[pid]})
+                if descriptor is None:
+                    process.send_signal(signo)
+                else:
+                    signal.pidfd_send_signal(descriptor, signo)
+                return True
+            except ProcessLookupError:
+                return False
+
+        def send(signo: int) -> None:
+            """Signal each positively owned subject at most once per signal."""
+            key = "term_delivered" if signo == signal.SIGTERM else "kill_delivered"
+            if process.returncode is None and (process.pid, facts["start_ticks"]) not in signalled[signo]:
+                signalled[signo].add((process.pid, facts["start_ticks"]))
+                try:
+                    facts[key] += deliver(pidfd, signo)
+                except OSError:
+                    fail("reader_signal")
+            try:
+                subjects = scope.subtree() - {process.pid}
             except (OSError, ValueError):
                 facts["closure"]["descendants_unknown"] = True
                 fail("reader_descendants_unknown")
-
-        def live_owned() -> set[int]:
-            scope.reap_direct(process.pid)
-            observe_owned()
-            live = set()
-            for pid, ticks in owned.items():
-                current = _start_ticks_v2(pid)
-                if current is not None and current == ticks:
-                    fields = _stat_fields_v2(pid)
-                    if fields is not None and fields[0] != b"Z":
-                        live.add(pid)
-            return live
-
-        def send(signo: int) -> None:
-            if process.returncode is None and pidfd is not None:
-                try:
-                    signal.pidfd_send_signal(pidfd, signo)
-                except ProcessLookupError:
-                    pass
-                except OSError:
-                    fail("reader_signal")
-            for pid in live_owned():
+                return
+            for pid in subjects:
                 try:
                     descriptor = os.pidfd_open(pid)
                 except ProcessLookupError:
@@ -300,11 +328,17 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
                     fail("reader_descendant_signal")
                     continue
                 try:
-                    if _start_ticks_v2(pid) == owned[pid]:
-                        signal.pidfd_send_signal(descriptor, signo)
-                except ProcessLookupError:
-                    pass
-                except OSError:
+                    # The pidfd pins identity; ownership is rechecked on it.
+                    ticks = _start_ticks_v2(pid)
+                    fields = _stat_fields_v2(pid)
+                    if ticks is None or fields is None or fields[0] == b"Z" or (pid, ticks) in signalled[signo]:
+                        continue
+                    if int(fields[1]) != scope.pid and int(fields[1]) not in subjects | {process.pid}:
+                        continue
+                    signalled[signo].add((pid, ticks))
+                    note(pid, ticks)
+                    facts[key] += deliver(descriptor, signo)
+                except (OSError, ValueError):
                     fail("reader_descendant_signal")
                 finally:
                     os.close(descriptor)
@@ -315,8 +349,14 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
         for fd in pipes:
             selector.register(fd, selectors.EVENT_READ)
 
-        def pump(until: int, stop_on_overflow: bool) -> None:
-            """Read until both EOFs or `until`; bytes are retained before any clock check."""
+        def overflowed() -> bool:
+            return facts["stdout"]["overflow"] or facts["stderr"]["overflow"]
+
+        def pump(until: int, observing: bool) -> None:
+            """Read until both EOFs or `until`; bytes are retained before any clock check.
+
+            Overflow ends observation at once; later phases only discard to reach EOF.
+            """
             while selector.get_map():
                 remaining = until - _monotonic_ns()
                 if remaining <= 0:
@@ -326,7 +366,7 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
                     row = facts[channel]
                     capacity = CHANNEL_LIMIT - row["retained_bytes"]
                     try:
-                        data = os.read(key.fd, min(_CHUNK, capacity + 1) if not row["overflow"] else _CHUNK)
+                        data = os.read(key.fd, _CHUNK if row["overflow"] else min(_CHUNK, capacity + 1))
                     except BlockingIOError:
                         continue
                     except OSError:
@@ -349,78 +389,131 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
                     if len(data) > capacity:
                         row["overflow"] = True
                         fail("reader_" + channel + "_overflow")
-                if stop_on_overflow and overflowed() and process.poll() is None:
+                if observing and overflowed():
                     return
 
-        def overflowed() -> bool:
-            return facts["stdout"]["overflow"] or facts["stderr"]["overflow"]
+        def closed_now() -> bool:
+            if process.poll() is None or selector.get_map():
+                return False
+            try:
+                return scope.empty(process.pid)
+            except (OSError, ValueError):
+                facts["closure"]["descendants_unknown"] = True
+                fail("reader_descendants_unknown")
+                return False
 
-        def settle(until: int, stop_on_overflow: bool = False) -> bool:
-            """Observe until the reader, both channels and owned descendants are closed."""
+        def settle(until: int, observing: bool = False, signo: int | None = None) -> bool:
+            """Observe until the reader, both channels and every owned descendant are closed."""
             while True:
-                pump(until, stop_on_overflow)
-                process.poll()
-                if process.returncode is not None and not selector.get_map():
-                    if not live_owned():
-                        return True
-                    if not facts["term_sent"]:
-                        fail("reader_descendant_live")
-                        return False
-                if stop_on_overflow and overflowed() and process.returncode is None:
+                pump(until, observing)
+                if closed_now():
+                    return True
+                if observing and overflowed():
                     return False
-                if _monotonic_ns() >= until:
+                if observing and process.returncode is not None and not selector.get_map():
+                    fail("reader_descendant_live")
                     return False
+                if facts["closure"]["descendants_unknown"] or _monotonic_ns() >= until:
+                    return False
+                if signo is not None:
+                    send(signo)  # newly observed owned subjects only
                 if process.returncode is not None and selector.get_map():
                     continue
                 time.sleep(min(_POLL_NS, max(0, until - _monotonic_ns())) / 1e9)
 
-        closed = settle(sealed["observe_end_ns"], stop_on_overflow=True)
+        closed = settle(sealed["observe_end_ns"], observing=True)
         if not closed and _monotonic_ns() >= sealed["observe_end_ns"]:
             fail("reader_deadline")
         if not closed:
-            # At most one TERM and one KILL, each bounded inside the same clock.
+            # At most one TERM and one KILL per owned subject, inside the same clock.
             facts["forced"] = facts["term_sent"] = True
             send(signal.SIGTERM)
-            closed = settle(min(_monotonic_ns() + sealed["term_grace_ns"], sealed["absolute_monotonic_ns"]
-                                - sealed["kill_grace_ns"] - sealed["final_ns"]))
+            closed = settle(min(_monotonic_ns() + sealed["term_grace_ns"],
+                                absolute - sealed["kill_grace_ns"] - sealed["final_ns"]), signo=signal.SIGTERM)
         if not closed:
             facts["kill_sent"] = True
             send(signal.SIGKILL)
-            closed = settle(min(_monotonic_ns() + sealed["kill_grace_ns"],
-                                sealed["absolute_monotonic_ns"] - sealed["final_ns"]))
+            closed = settle(min(_monotonic_ns() + sealed["kill_grace_ns"], absolute - sealed["final_ns"]),
+                            signo=signal.SIGKILL)
         if not closed:
             fail("reader_closure_unknown")
-        process.poll()
-        facts["returncode"] = process.returncode
-        if process.returncode is not None and process.returncode < 0:
-            facts["signal"] = -process.returncode
-        facts["closure"]["closed"] = bool(closed) and process.returncode is not None and not selector.get_map() \
-            and not facts["closure"]["descendants_unknown"]
-        for channel in ("stdout", "stderr"):
-            row = facts[channel]
+        facts["closure"]["closed"] = closed and not facts["closure"]["descendants_unknown"]
+    except BaseException as error:  # noqa: B036 - record, contain, then re-raise interrupts
+        fail("reader_internal_" + type(error).__name__)
+        facts["closure"]["closed"] = False
+        if not isinstance(error, Exception):
+            interrupt = error
+    finally:
+        def guard(name: str, step: Any) -> None:
+            """Each cleanup step runs even if an earlier one fails or is interrupted."""
+            nonlocal interrupt
+            try:
+                step()
+            except BaseException as error:  # noqa: B036 - cleanup must reach restore
+                fail("reader_cleanup_" + name + "_" + type(error).__name__)
+                facts["closure"]["closed"] = False
+                if not isinstance(error, Exception) and interrupt is None:
+                    interrupt = error
+
+        emergency = any(code.startswith("reader_internal_") for code in causes)
+
+        def kill_reader() -> None:
+            if process.poll() is None and emergency                     and (process.pid, facts["start_ticks"]) not in signalled[signal.SIGKILL]:
+                # An unreaped direct child is positively owned; kill it once.
+                facts["forced"] = facts["kill_sent"] = True
+                process.kill()
+                try:
+                    process.wait(timeout=max(0.0, (absolute - _monotonic_ns()) / 1e9))
+                except subprocess.TimeoutExpired:
+                    fail("reader_kill_unconfirmed")
+
+        def kill_direct() -> None:
+            facts["closure"]["closed"] = False
+            for pid in scope.direct() - {process.pid}:
+                if (pid, _start_ticks_v2(pid)) not in signalled[signal.SIGKILL]:
+                    try:
+                        os.kill(pid, signal.SIGKILL)  # unreaped direct child: identity is stable
+                    except ProcessLookupError:
+                        pass
+            scope.reap(process.pid)
+
+        def status() -> None:
+            process.poll()
+            facts["returncode"] = process.returncode
+            if process.returncode is not None and process.returncode < 0:
+                facts["signal"] = -process.returncode
+
+        def close_file(channel: str) -> None:
+            row, file = facts[channel], files[channel]
             row["remainder_unknown"] = not row["eof"]
             row["discarded_bytes"] = row["observed_bytes"] - row["retained_bytes"] if row["eof"] or row["overflow"] else None
-        if pidfd is not None:
-            os.close(pidfd)
-    finally:
-        for fd in list(pipes):
-            try:
-                os.close(fd)
-            except OSError:
-                pass
-        if process is not None:
-            process.stdout = process.stderr = None
-        within = _monotonic_ns() < sealed["absolute_monotonic_ns"]
-        for channel, file in files.items():
-            for code in file.close(sync=within):
+            row["retained_sha256"] = hashlib.sha256(retained[channel]).hexdigest()
+            for code in file.close(absolute):
                 fail("reader_" + channel + "_" + code)
-        if files and not within:
-            fail("reader_final_deadline")
-        restored = scope.restore()
-        facts["closure"]["subreaper_restored"] = restored
-        if not restored:
-            fail("reader_subreaper_restore")
-            facts["closure"]["closed"] = False
+
+        try:
+            if selector is not None:
+                guard("selector", selector.close)
+            if process is not None:
+                guard("kill", kill_reader)
+                if emergency:
+                    guard("descendants", kill_direct)
+                guard("status", status)
+                for stream in (process.stdout, process.stderr):
+                    if stream is not None:
+                        guard("pipe", stream.close)
+            if pidfd is not None:
+                guard("pidfd", lambda: os.close(pidfd))
+            for channel in files:
+                guard("raw", lambda channel=channel: close_file(channel))
+        finally:
+            restored = scope.restore()
+            facts["closure"]["subreaper_restored"] = restored
+            if not restored:
+                fail("reader_subreaper_restore")
+                facts["closure"]["closed"] = False
+    if interrupt is not None:
+        raise interrupt
     return facts, bytes(retained["stdout"]), bytes(retained["stderr"])
 
 
@@ -488,7 +581,7 @@ def _write_result_v2(path: Path, raw: bytes, absolute_ns: int) -> dict[str, Any]
         return persistence
     persistence["attempted"] = True
     try:
-        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC, 0o600)
+        fd = os.open(path, _EXCLUSIVE_FLAGS, 0o600)
     except OSError:
         persistence["causes"].append("result_open")
         return persistence
@@ -514,6 +607,8 @@ def _write_result_v2(path: Path, raw: bytes, absolute_ns: int) -> dict[str, Any]
             persistence["close_completed"] = True
         except OSError:
             persistence["causes"].append("result_close")
+    if _monotonic_ns() >= absolute_ns:
+        persistence["causes"].append("result_deadline_exceeded")
     return persistence
 
 
@@ -532,6 +627,8 @@ def run_fixture_standalone_guardian_cold_reader_v2(
     """Keep engine custody alive in the caller; do not supply reader dependencies.
 
     `deadline` is the recipe's sealed absolute clock; without it nothing runs.
+    The result file records the reader outcome only; acceptance is the returned
+    evidence, whose `result_persistence` is never self-attested in that file.
     """
     sealed = _sealed_deadline_v2(deadline)
     root = project_root.resolve(strict=True)

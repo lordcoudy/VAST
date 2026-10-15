@@ -2,6 +2,7 @@
 from pathlib import Path
 import hashlib
 import json
+import sys
 import tempfile
 import time
 import unittest
@@ -10,6 +11,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@unittest.skipUnless(sys.platform.startswith("linux"), "owned subreaper/pidfd closure exists only on Linux")
 class AcceptedPolicyStandaloneReaderFixtureV2Tests(unittest.TestCase):
     def test_fresh_interpreter_uses_actual_default_reader_and_preserves_real_refusal(self):
         from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import run_fixture_standalone_guardian_cold_reader_v2
