@@ -39,6 +39,8 @@ def augment(plan, arm, raw):
         request = record["decision_request"]
         latency = LATENCIES[index]
         record["path"]["timestamp_ms"] = 1005
+        record["accepted_record"] = {"native_decision_evidence": {
+            "path_entry_timestamp_ms": 1005, "terminal_timestamp_ms": record["terminal"]["terminal_timestamp_ms"]}}
         request_id = f"{arm['arm_id']}-{request['branch']}"
         attempt = 10_000 * MS + index * 1000 * MS
         acquired = attempt + MS // 2                  # native_wait 0.5 ms
@@ -230,6 +232,26 @@ class ServiceProfileModelTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "component sum"):
                 self.profile(self.raw())
 
+    def test_endpoint_order_negative_prefix_and_evidence_refuse(self):
+        raw = self.raw()
+        native = next(r for r in raw["waits"] if r["kind"] == "native_client")
+        native["acquired_ns"] = native["attempt_ns"] - 1
+        with self.assertRaisesRegex(ValueError, "native client endpoint order"):
+            self.profile(raw)
+        raw = self.raw()
+        raw["native_terminals"][0]["path"]["timestamp_ms"] = 999
+        raw["native_terminals"][0]["accepted_record"]["native_decision_evidence"]["path_entry_timestamp_ms"] = 999
+        with self.assertRaisesRegex(ValueError, "negative component: prefix"):
+            self.profile(raw)
+        raw = self.raw()
+        raw["native_terminals"][0]["accepted_record"]["native_decision_evidence"]["terminal_timestamp_ms"] = 1
+        with self.assertRaisesRegex(ValueError, "terminal evidence mismatch"):
+            self.profile(raw)
+        raw = self.raw()
+        del raw["native_terminals"][0]["accepted_record"]
+        with self.assertRaisesRegex(ValueError, "path entry evidence mismatch"):
+            self.profile(raw)
+
     def test_foreign_clock_domain_leaves_cross_process_components_unknown(self):
         for change in ({"boot_id": "other-boot"}, {"time_namespace": "timens-offsets:monotonic=5,0;boottime=0,0"}):
             raw = self.raw()
@@ -257,6 +279,8 @@ class ServiceProfileModelTests(unittest.TestCase):
             record["decision_request"]["input_frame_key"] = key
             record["path"]["timestamp_ms"] = entry
             record["terminal"]["terminal_timestamp_ms"] = end
+            record["accepted_record"]["native_decision_evidence"].update(
+                path_entry_timestamp_ms=entry, terminal_timestamp_ms=end)
             raw["native_terminals"].append(record)
         # The warmup terminal ends at 990 ms; measured path entry 1005 ms gives a 15 ms gap (unqueued).
         profile, pools, _ = self.profile(raw)
@@ -264,6 +288,7 @@ class ServiceProfileModelTests(unittest.TestCase):
         self.assertEqual(profile["per_branch"][branch]["prefix_gap_bins"]["10_100ms"], 1)
         for end, bucket, pooled in ((1003, "le_10ms", 0), (855, "gt_100ms", 1)):
             raw["native_terminals"][-1]["terminal"]["terminal_timestamp_ms"] = end
+            raw["native_terminals"][-1]["accepted_record"]["native_decision_evidence"]["terminal_timestamp_ms"] = end
             profile, pools, _ = self.profile(raw)
             self.assertEqual(profile["per_branch"][branch]["prefix_gap_bins"][bucket], 1)
             self.assertEqual(profile["per_branch"][branch]["prefix_unqueued_pool_n"], pooled)
@@ -308,6 +333,54 @@ class ServiceProfileModelTests(unittest.TestCase):
                 dropped = round(fraction * 4 * predicted["planned_frames"])
                 self.assertEqual(dropped % 4, 0)
 
+    def test_shared_draws_one_prefix_per_frame_and_baseline_one_per_branch(self):
+        for topology, per_frame in (("shared", 1), ("baseline", 4)):
+            arm = next(a for a in self.plan["arms"] if a["topology"] == topology and a["rate"] == "1")
+            prefix = [1.0, 3.0]
+            pools = {"prefix": {"shared": prefix} if topology == "shared" else {b: prefix for b in self.plan["branches"]},
+                     "tuples": {b: [(0.5, 0.0, 0.5, 1.0, 0.5)] for b in self.plan["branches"]}}
+            rng = random.Random(1)
+            calls = []
+            real = rng.choice
+            rng.choice = lambda seq: (calls.append(seq is prefix), real(seq))[1]
+            self.m.simulate_replica(self.plan, "1", topology, pools, rng)
+            planned = sum(r["planned"] for s in range(6) for r in stream_schedule(self.plan, s, "1"))
+            self.assertEqual(sum(calls), per_frame * planned)
+
+    def test_baseline_prefix_overload_drops_only_that_branch(self):
+        interval = next(r for r in stream_schedule(self.plan, 0, "2") if r["measurement"])["duration_ns"] / 1e6
+        arm = next(a for a in self.plan["arms"] if a["topology"] == "baseline" and a["rate"] == "2")
+        slow = self.plan["branches"][2]
+        pools = {"prefix": {b: [2.4 * interval if b == slow else 0.001] for b in self.plan["branches"]},
+                 "tuples": {b: [(0.0, 0.0, 0.0, 0.001, 0.0)] for b in self.plan["branches"]}}
+        predicted, _ = self.m.predict(self.plan, "slow", arm, pools, 1)
+        # Only one of four branches loses about 1 - 1/2.4 of its frames.
+        self.assertAlmostEqual(predicted["drop_fraction"]["mean"], (1 - 1 / 2.4) / 4, delta=0.01)
+
+    def test_tuple_is_sampled_jointly(self):
+        arm = next(a for a in self.plan["arms"] if a["topology"] == "shared" and a["rate"] == "0.25")
+        pools = {"prefix": {"shared": [0.0]},
+                 "tuples": {b: [(100.0, 0.0, 0.0, 0.001, 0.0), (0.0, 0.0, 0.0, 0.001, 100.0)]
+                            for b in self.plan["branches"]}}
+        predicted, _ = self.m.predict(self.plan, "joint", arm, pools, 5)
+        # Independent draws would sometimes give about 0 or 200 ms; joint draws always total about 100 ms.
+        self.assertGreater(predicted["p50_ms"]["interval_2_5"], 99.9)
+        self.assertLess(predicted["p95_ms"]["interval_97_5"], 100.1)
+
+    def test_censoring_after_last_planned_slot_plus_drain(self):
+        plan = copy.deepcopy(self.plan)
+        pools = {"prefix": {"shared": [1.0]}, "tuples": {b: [(0.0, 0.0, 0.0, 1.0, 0.0)] for b in plan["branches"]}}
+        last_measured = sum(1 for s in range(6) if [r for r in stream_schedule(plan, s, "1") if r["planned"]][-1]["measurement"])
+        full = self.m.simulate_replica(plan, "1", "shared", pools, random.Random(0))
+        self.assertEqual(full["completed_frames"], full["planned_frames"])
+        plan["phases"]["drain_ns"] = 0
+        cut = self.m.simulate_replica(plan, "1", "shared", pools, random.Random(0))
+        self.assertEqual(cut["completed_frames"], full["planned_frames"] - last_measured)
+
+    def test_seed_rule(self):
+        expected = int.from_bytes(hashlib.sha256(b"20260323:a:x->y:7").digest()[:8], "big")
+        self.assertEqual(self.m.replica_seed("a:x->y", 7), expected)
+
     def test_empty_pool_is_null_and_seeded_runs_are_identical(self):
         arm = self.plan["arms"][0]
         pools = {"prefix": {b: [1.0] for b in self.plan["branches"]},
@@ -315,6 +388,10 @@ class ServiceProfileModelTests(unittest.TestCase):
         predicted, reason = self.m.predict(self.plan, "x", arm, pools, 2)
         self.assertIsNone(predicted)
         self.assertIn("tuples:damage", reason)
+        empty_prefix = {"prefix": {"shared": []}, "tuples": {b: [(1.0, 0.0, 1.0, 2.0, 0.5)] for b in self.plan["branches"]}}
+        shared = next(a for a in self.plan["arms"] if a["topology"] == "shared")
+        self.assertEqual(self.m.predict(self.plan, "x", shared, empty_prefix, 2),
+                         (None, "empty calibration pool: prefix:shared"))
         pools["tuples"]["damage"] = [(3.0, 0.0, 1.0, 2.0, 0.5), (1.0, 0.0, 1.0, 9.0, 0.5)]
         first = self.m.canonical(self.m.predict(self.plan, "x", arm, pools, 3))
         second = self.m.canonical(self.m.predict(self.plan, "x", arm, pools, 3))
@@ -323,20 +400,28 @@ class ServiceProfileModelTests(unittest.TestCase):
         self.assertNotEqual(self.m.replica_seed("x", 0), self.m.replica_seed("x", 1))
 
     def test_buffer_capacities_match_k_source_commit(self):
-        commit = self.m.K_SOURCE_COMMIT
-        probe = subprocess.run(["git", "-C", str(ROOT), "cat-file", "-e", commit + "^{commit}"],
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if probe.returncode != 0:
-            self.skipTest("K source commit is not present in this checkout (shallow clone)")
-        config = subprocess.run(["git", "-C", str(ROOT), "show", commit + ":configs/experiments.yaml"],
-                                check=True, stdout=subprocess.PIPE).stdout.decode()
-        native = subprocess.run(["git", "-C", str(ROOT), "show",
-                                 commit + ":deploy/native_gst_probe/vast_native_gst_probe.cpp"],
-                                check=True, stdout=subprocess.PIPE).stdout.decode()
-        lines = config.splitlines()
+        """Read the two K-commit sources by their pinned K evidence hashes; never needs git history."""
+        evidence = json.loads((ROOT / "openspec/changes/archive/2026-10-06-run-finite-component-study/evidence/"
+                               "physical-K-completed-v1/b/source-transfer.original.json").read_bytes())
+        self.assertEqual(evidence["source_commit"], self.m.K_SOURCE_COMMIT)
+        pinned = {row["path"]: row for row in evidence["files"]
+                  if row["path"] in ("configs/experiments.yaml", "deploy/native_gst_probe/vast_native_gst_probe.cpp")}
+        self.assertEqual(len(pinned), 2)
+
+        def k_bytes(path):
+            current = (ROOT / path).read_bytes()
+            if hashlib.sha256(current).hexdigest() == pinned[path]["sha256"]:
+                return current
+            blob = subprocess.run(["git", "-C", str(ROOT), "cat-file", "-p", pinned[path]["git_blob_id"]],
+                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self.assertEqual(blob.returncode, 0, f"{path} changed since K and its K blob is not in this checkout")
+            self.assertEqual(hashlib.sha256(blob.stdout).hexdigest(), pinned[path]["sha256"])
+            return blob.stdout
+        lines = k_bytes("configs/experiments.yaml").decode().splitlines()
         values = {lines[i + 3].strip() for i, line in enumerate(lines) if line.strip() == "analytics_queue:"}
         self.assertEqual(values, {f"max_buffers: {self.m.ANALYTICS_QUEUE_CAPACITY}"})
-        prefix = [native.splitlines()[i + 2].strip() for i, line in enumerate(native.splitlines())
+        native = k_bytes("deploy/native_gst_probe/vast_native_gst_probe.cpp").decode().splitlines()
+        prefix = [native[i + 2].strip() for i, line in enumerate(native)
                   if "vastcheckpointprefixqueue name=checkpoint_prefix_queue" in line]
         self.assertTrue(prefix)
         self.assertEqual(set(prefix), {f'<< " max-buffers={self.m.PREFIX_QUEUE_CAPACITY}"'})
@@ -419,12 +504,16 @@ class ServiceProfileModelTests(unittest.TestCase):
                     self.assertEqual(self.m.main(argv + ["--output", str(link)]), 1)
                 self.assertFalse((root / "absent.json").exists())
             self.assertEqual((root / "first.json").read_bytes(), outputs[0])
+            with mock.patch.object(self.m.os, "fsync", side_effect=OSError("disk full")):
+                with self.assertRaises(OSError):
+                    self.m.write_report_exclusive(root / "failed.json", b"{}\n")
+            self.assertEqual(sorted(p.name for p in root.iterdir() if "failed" in p.name), [])
             report = json.loads(outputs[0])
             self.assertEqual(report["kind"], self.m.KIND)
             self.assertNotIn("artifact_kind", report)
             contract = importlib.import_module("publication_policy_contract")
             with mock.patch.object(contract, "_require_capabilities", return_value=None):
-                with self.assertRaises(contract.PolicyContractError):
+                with self.assertRaisesRegex(contract.PolicyContractError, "schema_version"):
                     contract.select_static_hybrid_map("gstreamer_custom", report, {})
             with self.assertRaisesRegex(ValueError, "binding fields/kind"):
                 self.reducer.reduce_closed_study(report)

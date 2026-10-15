@@ -25,7 +25,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from canonical_systems_study_plan_v1 import CLOCK_DOMAIN_LABEL, stream_schedule, validate_study_plan
 from reduce_canonical_systems_study_v1 import (
     MAX_CAMPAIGN_BYTES, MAX_DOCUMENT_BYTES, MAX_FILE_BYTES, MAX_INPUT_FILES, ReductionError,
-    _epoch, _pairs, _recheck_named, _write_exclusive_report, distribution, read_closed_rows, reduce_arm)
+    _epoch, _pairs, _recheck_named, distribution, read_closed_rows, reduce_arm)
 
 KIND = "vast-service-profile-latency-model-v1"
 MODEL_SCHEMA_VERSION = 1
@@ -64,7 +64,13 @@ UNMODELLED_FACTORS = (
     "policy decide RPC runs in the probe after the analytics queue but is counted in the prefix server",
     "prefix duration is sampled independently of the post-queue component tuple",
     "probe work after native client release is assumed to be zero",
+    "within a frame each branch draws its own tuple (and in baseline its own prefix); the frame latency is the "
+    "maximum over these independent draws",
 )
+ARRIVAL_ROWS = "frozen schedule rows with planned = true (rows beyond the offer end are never offered)"
+CENSOR_AT = "last planned slot schedule_offset_ns + plan drain_ns"
+SEED_RULE = ("random.Random(int.from_bytes(sha256('20260323:<comparison_id>:<replica>')[:8], 'big')); "
+             "comparison_id = '<group>:<calibration_arm_id>-><target_arm_id>'")
 ELIGIBILITY = ("qualification_eligible", "q4_eligible", "publication_eligible", "full_run_eligible",
                "canonical_study_complete", "policy_calibration_eligible")
 CPU_GATE_NOTE = ("CPU rate 2 arms have only 34-103 completed frames and baseline CPU prefix pools per branch "
@@ -244,10 +250,9 @@ def arm_profile(plan, arm, raw):
         _require(pair not in processed, "duplicate native terminal")
         evidence = (record.get("accepted_record") or {}).get("native_decision_evidence") or {}
         entry, end = path.get("timestamp_ms"), terminal.get("terminal_timestamp_ms")
-        if "path_entry_timestamp_ms" in evidence:
-            _require(evidence["path_entry_timestamp_ms"] == entry, "path entry evidence mismatch")
-        if "terminal_timestamp_ms" in evidence:
-            _require(evidence["terminal_timestamp_ms"] == end, "terminal evidence mismatch")
+        _require(type(entry) in (int, float) and type(end) in (int, float), "native path/terminal timestamps")
+        _require(evidence.get("path_entry_timestamp_ms") == entry, "path entry evidence mismatch")
+        _require(evidence.get("terminal_timestamp_ms") == end, "terminal evidence mismatch")
         processed[pair] = (request, entry, end, terminal.get("terminal_status"))
     # Terminal of the previous processed request of the same stream x branch, ordered by path entry.
     by_pair = {}
@@ -384,7 +389,6 @@ def simulate_replica(plan, rate, topology, pools, rng):
     end_ms = last + plan["phases"]["drain_ns"] / 1e6
     prefix_servers = {}   # process -> {"busy": bool, "waiting": [keys]}
     probes = {}           # (stream, branch) -> {"busy": bool, "waiting": [keys]}
-    route_free = {b: 0.0 for b in branches}
     route_queue = {b: [] for b in branches}
     route_busy = {b: False for b in branches}
 
@@ -414,9 +418,13 @@ def simulate_replica(plan, rate, topology, pools, rng):
         else:
             frames[key]["outcome"][branch] = ("dropped", ANALYTICS_DROP)
 
+    route_waits = {b: [] for b in branches}
+
     def start_route(branch, now):
-        stream, _, key, route_hold, bridge_post = route_queue[branch].pop(0)
+        stream, _, key, route_hold, bridge_post, arrived = route_queue[branch].pop(0)
         route_busy[branch] = True
+        if frames[key]["measured"]:
+            route_waits[branch].append(now - arrived)
         push(now + route_hold, "route_done", (stream, branch, key, bridge_post))
 
     while events:
@@ -443,7 +451,7 @@ def simulate_replica(plan, rate, topology, pools, rng):
                 start_prefix(process, server["waiting"].pop(0), now)
         elif kind == "route_arrival":
             stream, branch, key, route_hold, bridge_post = payload
-            route_queue[branch].append(payload)
+            route_queue[branch].append(payload + (now,))
             if not route_busy[branch]:
                 start_route(branch, now)
         elif kind == "route_done":
@@ -480,13 +488,14 @@ def simulate_replica(plan, rate, topology, pools, rng):
             "drop_fraction": sum(dropped.values()) / branch_planned if branch_planned else None,
             "drop_fraction_by_reason": {r: dropped[r] / branch_planned for r in DROP_REASONS} if branch_planned else None,
             "completed_frames": len(latencies),
-            "p50": _quantile(latencies, .50), "p95": _quantile(latencies, .95)}
+            "p50": _quantile(latencies, .50), "p95": _quantile(latencies, .95),
+            "route_wait_p50": {b: _quantile(route_waits[b], .50) for b in branches}}
 
 
 def predict(plan, comparison_id, target_arm, pools, replicas=None):
     replicas = REPLICAS if replicas is None else replicas
     topology = target_arm["topology"]
-    empty = [name for name, pool in pools["prefix"].items() if not pool]
+    empty = [f"prefix:{name}" for name, pool in pools["prefix"].items() if not pool]
     empty += [f"tuples:{b}" for b, pool in pools["tuples"].items() if not pool]
     if empty:
         return None, "empty calibration pool: " + ", ".join(sorted(empty))
@@ -509,6 +518,8 @@ def predict(plan, comparison_id, target_arm, pools, replicas=None):
         "completed_frames": summary([r["completed_frames"] for r in runs]),
         "p50_ms": summary(p50s), "p95_ms": summary([r["p95"] for r in runs if r["p95"] is not None]),
         "p50_defined_replicas": len(p50s),
+        "route_wait_p50_ms": {b: summary([r["route_wait_p50"][b] for r in runs if r["route_wait_p50"][b] is not None])
+                              for b in plan["branches"]},
     }, None
 
 
@@ -565,7 +576,7 @@ def comparison_plan(plan):
     return result
 
 
-def gates(comparisons):
+def gates(comparisons, arms=()):
     def failures(resource):
         return sorted(c["comparison_id"] for c in comparisons
                       if c["group"] in ("a", "b") and c["resource"] == resource and not c["pass"])
@@ -578,9 +589,11 @@ def gates(comparisons):
     queue_ok = gpu_ok and not cpu
     permitted = []
     if gpu_ok:
-        permitted.append("GPU component distributions (rate <= 2) from rate 1 and 2 arms")
+        permitted += [{"use": "GPU component distributions", "arm": a["arm_id"]} for a in arms
+                      if a["resource"] == "gpu" and a["rate"] in ("1", "2")]
     if queue_ok:
-        permitted.append("predicted waits and drops under load")
+        permitted += [{"use": "predicted waits and drops", "arm": a["arm_id"]} for a in arms
+                      if a["rate"] in ("1", "2")]
     return {"gpu_latency_profile_use_permitted": gpu_ok, "queueing_extrapolation_use_permitted": queue_ok,
             "gpu_failed_comparisons": gpu, "cpu_failed_comparisons": cpu, "permitted_uses": permitted,
             "expected_cpu_gate_brittleness": CPU_GATE_NOTE}
@@ -655,9 +668,10 @@ def run_model(binding_descriptor, archive_path, pins, *, deadline, analysis_dead
                   "prefix_queue_capacity": PREFIX_QUEUE_CAPACITY, "capacity_source_commit": K_SOURCE_COMMIT,
                   "prefix_unqueued_gap_ms": UNQUEUED_GAP_MS, "sum_tolerance_ms": SUM_TOLERANCE_MS,
                   "components": list(COMPONENTS), "tuple_components": list(TUPLE_COMPONENTS),
+                  "arrival_rows": ARRIVAL_ROWS, "censor_at": CENSOR_AT, "seed_rule": SEED_RULE,
                   "unmodelled_factors": list(UNMODELLED_FACTORS)},
         "profiles": profiles, "observed": observed, "comparisons": comparisons,
-        "route_hold_rate_0_25_vs_1": hold_025, "gates": gates(comparisons),
+        "route_hold_rate_0_25_vs_1": hold_025, "gates": gates(comparisons, plan["arms"]),
     }
     _require("artifact_kind" not in report, "report must not carry artifact_kind")
     return report
@@ -665,6 +679,36 @@ def run_model(binding_descriptor, archive_path, pins, *, deadline, analysis_dead
 
 def report_bytes(report):
     return (canonical(report) + "\n").encode("ascii")
+
+
+def write_report_exclusive(path, body):
+    """Write a sibling temporary file, then hard-link it to the new name; a failure leaves no report."""
+    path = Path(path)
+    _require(path.is_absolute() and ".." not in path.parts, "report path must be absolute")
+    directory = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    temporary = f".{path.name}.{os.getpid()}.partial"
+    try:
+        fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=directory)
+        try:
+            offset = 0
+            while offset < len(body):
+                written = os.write(fd, body[offset:offset + 1024 * 1024])
+                _require(written > 0, "report write made no progress")
+                offset += written
+            os.fsync(fd)
+        finally:
+            os.close(fd)
+        try:
+            os.link(temporary, path.name, src_dir_fd=directory, dst_dir_fd=directory, follow_symlinks=False)
+        except FileExistsError as exc:
+            raise ModelError("report path already exists") from exc
+        os.fsync(directory)
+    finally:
+        try:
+            os.unlink(temporary, dir_fd=directory)
+        except FileNotFoundError:
+            pass
+        os.close(directory)
 
 
 def main(argv=None):
@@ -686,7 +730,8 @@ def main(argv=None):
                             "sha256": binding["sha256"]}, Path(args.archive), pins, deadline=deadline,
                            analysis_deadline_seconds=args.analysis_deadline_seconds, source_commit=args.source_commit)
         body = report_bytes(report)
-        _write_exclusive_report(Path(args.output), body, deadline)
+        _deadline(deadline)
+        write_report_exclusive(Path(args.output), body)
         print(json.dumps({"report": {"path": args.output, "size_bytes": len(body),
                                      "sha256": hashlib.sha256(body).hexdigest()},
                           "elapsed_s": time.monotonic() - started,
