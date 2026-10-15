@@ -36,7 +36,7 @@ dev-smoke не записал файл, хотя спека требует от�
 | r1-gpu-1-shared → r1-gpu-2-shared | 0.407 | 0.161 | 0.000 | 0.000 | 107.6 | 139.3 | no | Y100_frame, p50_ms |
 | r1-gpu-2-shared → r1-gpu-1-shared | 0.350 | 0.271 | 0.000 | 0.000 | 115.6 | 113.7 | no | Y100_frame |
 | r2-cpu-1-baseline → r2-cpu-2-baseline | 0.000 | 0.000 | 0.517 | 0.482 | 4250.0 | 5387.6 | no | p50_ms |
-| r2-cpu-2-baseline → r2-cpu-1-baseline | 0.000 | — | 0.130 | — | 3589.5 | — | no | prediction null: empty calibration pool: foreign_object |
+| r2-cpu-2-baseline → r2-cpu-1-baseline | 0.000 | — | 0.130 | — | 3589.5 | — | no | prediction null: empty calibration pool: prefix:foreign_object |
 | r2-cpu-1-shared → r2-cpu-2-shared | 0.000 | 0.000 | 0.518 | 0.476 | 4170.6 | 3669.1 | no | p50_ms |
 | r2-cpu-2-shared → r2-cpu-1-shared | 0.000 | 0.000 | 0.123 | 0.194 | 3484.3 | 4601.8 | no | drop_fraction, p50_ms |
 | r2-gpu-1-baseline → r2-gpu-2-baseline | 0.202 | 0.039 | 0.000 | 0.000 | 120.5 | 153.8 | no | Y100_frame, p50_ms |
@@ -65,7 +65,7 @@ dev-smoke не записал файл, хотя спека требует от�
 | r2-cpu-1-shared | 0.000 | 0.000 | 0.123 | 0.122 | 3484.3 | 3410.8 | yes | — |
 | r2-cpu-1-baseline | 0.000 | 0.000 | 0.130 | 0.129 | 3589.5 | 5106.9 | no | p50_ms |
 | r2-cpu-2-shared | 0.000 | 0.000 | 0.518 | 0.545 | 4170.6 | 5139.4 | no | p50_ms |
-| r2-cpu-2-baseline | 0.000 | — | 0.517 | — | 4250.0 | — | no | prediction null: empty calibration pool: foreign_object |
+| r2-cpu-2-baseline | 0.000 | — | 0.517 | — | 4250.0 | — | no | prediction null: empty calibration pool: prefix:foreign_object |
 | r2-gpu-1-shared | 0.332 | 0.150 | 0.000 | 0.000 | 118.0 | 139.6 | no | Y100_frame, p50_ms |
 | r2-gpu-1-baseline | 0.162 | 0.039 | 0.000 | 0.000 | 142.1 | 153.7 | no | Y100_frame |
 | r2-gpu-2-shared | 0.389 | 0.268 | 0.000 | 0.000 | 108.5 | 114.4 | no | Y100_frame |
@@ -82,7 +82,7 @@ dev-smoke не записал файл, хотя спека требует от�
 | r1-cpu-1-baseline → r2-cpu-1-baseline | 0.000 | 0.000 | 0.130 | 0.123 | 3589.5 | 6160.9 | no | p50_ms |
 | r2-cpu-1-baseline → r1-cpu-1-baseline | 0.000 | 0.000 | 0.125 | 0.129 | 3543.8 | 5104.5 | no | p50_ms |
 | r1-cpu-2-baseline → r2-cpu-2-baseline | 0.000 | 0.000 | 0.517 | 0.517 | 4250.0 | 7180.0 | no | p50_ms |
-| r2-cpu-2-baseline → r1-cpu-2-baseline | 0.000 | — | 0.518 | — | 4224.8 | — | no | prediction null: empty calibration pool: foreign_object |
+| r2-cpu-2-baseline → r1-cpu-2-baseline | 0.000 | — | 0.518 | — | 4224.8 | — | no | prediction null: empty calibration pool: prefix:foreign_object |
 | r1-cpu-0.25-shared → r2-cpu-0.25-shared | 0.000 | 0.000 | 0.000 | 0.000 | 1042.0 | 900.3 | no | p50_ms |
 | r2-cpu-0.25-shared → r1-cpu-0.25-shared | 0.000 | 0.000 | 0.000 | 0.000 | 1044.0 | 906.3 | no | p50_ms |
 | r1-cpu-1-shared → r2-cpu-1-shared | 0.000 | 0.000 | 0.123 | 0.122 | 3484.3 | 3417.3 | yes | — |
@@ -113,6 +113,7 @@ dev-smoke не записал файл, хотя спека требует от�
 ## route_wait p50: наблюдение и модель (группа a, GPU, rate 1–2, run-3; CPU — в отчёте)
 
 | arm | branch | observed route_wait p50 ms | predicted route_wait p50 ms |
+|---|---|---|---|
 | r1-gpu-2-baseline | damage | 7.0 | 8.2 |
 | r1-gpu-2-baseline | foreign_object | 14.4 | 13.8 |
 | r1-gpu-2-baseline | plate_number | 1.0 | 2.7 |
