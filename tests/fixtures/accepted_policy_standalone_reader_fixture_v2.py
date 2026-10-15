@@ -318,7 +318,11 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
             except (OSError, ValueError):
                 facts["closure"]["descendants_unknown"] = True
                 fail("reader_descendants_unknown")
-                return
+                try:
+                    # Unreaped direct children are still positively owned.
+                    subjects = scope.direct() - {process.pid}
+                except (OSError, ValueError):
+                    return
             for pid in subjects:
                 try:
                     descriptor = os.pidfd_open(pid)
@@ -389,7 +393,7 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
                     if len(data) > capacity:
                         row["overflow"] = True
                         fail("reader_" + channel + "_overflow")
-                if observing and overflowed():
+                if not observing or overflowed():
                     return
 
         def closed_now() -> bool:
@@ -469,13 +473,22 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
 
         def kill_direct() -> None:
             facts["closure"]["closed"] = False
-            for pid in scope.direct() - {process.pid}:
-                if (pid, _start_ticks_v2(pid)) not in signalled[signal.SIGKILL]:
-                    try:
-                        os.kill(pid, signal.SIGKILL)  # unreaped direct child: identity is stable
-                    except ProcessLookupError:
-                        pass
-            scope.reap(process.pid)
+            while True:
+                scope.reap(process.pid)
+                remaining = scope.direct() - {process.pid}
+                if not remaining or _monotonic_ns() >= absolute:
+                    if remaining:
+                        fail("reader_descendants_survived")
+                    return
+                for pid in remaining:
+                    key = (pid, _start_ticks_v2(pid))
+                    if key not in signalled[signal.SIGKILL]:
+                        signalled[signal.SIGKILL].add(key)
+                        try:
+                            os.kill(pid, signal.SIGKILL)  # unreaped direct child: identity is stable
+                        except ProcessLookupError:
+                            pass
+                time.sleep(min(_POLL_NS, max(0, absolute - _monotonic_ns())) / 1e9)
 
         def status() -> None:
             process.poll()

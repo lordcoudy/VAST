@@ -334,6 +334,24 @@ class ClosureHazardTests(_OwnedChildBase):
         self.assertEqual(self.fds(), before)
         self.assertEqual(self.subreaper(), 0)
 
+    def test_internal_error_during_term_kills_the_whole_owned_chain(self):
+        marker = self.base / "chain.pids"
+        program = ("import os, time\nif os.fork() == 0:\n    b = os.fork()\n    if b == 0:\n        time.sleep(60)\n"
+                   "        os._exit(0)\n    open(%r, 'w').write('%%d %%d' %% (os.getpid(), b))\n    time.sleep(60)\n"
+                   "    os._exit(0)\ntime.sleep(60)\n" % str(marker))
+        def broken(*args):
+            raise RuntimeError("synthetic signal failure")
+        with mock.patch.object(reader.signal, "pidfd_send_signal", broken):
+            facts, _, _ = self.capture(program, observe=1.0, term=1.0, kill=1.0, final=2.0)
+        chain = [int(pid) for pid in marker.read_text().split()]
+        self.leaked.extend(chain)
+        self.assertIn("reader_internal_RuntimeError", facts["causes"])
+        self.assertFalse(facts["closure"]["closed"])
+        self.assertFalse(alive(facts["pid"]))
+        for pid in chain:
+            self.assertFalse(alive(pid), pid)
+        self.assertEqual(self.subreaper(), 0)
+
     def test_interrupt_after_spawn_is_contained_then_reraised(self):
         spawned = []
         original = reader._start_ticks_v2
