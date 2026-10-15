@@ -328,7 +328,7 @@ class _DockerClientV1:
     LIMIT = 262144
     ORDINARY_LIMIT = 196608
     HEADER_LIMIT = 8192
-    RPC_LIMIT = 20
+    RPC_LIMIT = 21
     API_VERSION = "1.55"
 
     def __init__(self, output_dir, absolute_deadline_ns, *, socket_factory=None, clock=None):
@@ -1763,7 +1763,8 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
         facts["rpc"] = client.facts
         for code in client.causes:
             fail(code)
-        require(client.facts["metadata_bytes"] + control_bytes <= 262144, "owner_metadata_total")
+        if client.facts["metadata_bytes"] + control_bytes > 262144:
+            fail("owner_metadata_total")
     facts["causes"], facts["control_bytes_before_receipt"] = causes, control_bytes
     if output is not None:
         # The inner record never claims its own completed persistence or future

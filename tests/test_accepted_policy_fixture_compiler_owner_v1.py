@@ -41,6 +41,7 @@ class OwnerTests(unittest.TestCase):
         self.now = [1_000_000_000]
         self.mode, self.calls, self.clients = "normal", [], []
         self.restored, self.attach_closed_at_wait = [], []
+        self.rpc_limit, self.metadata_bytes = compiler._DockerClientV1.RPC_LIMIT, 0
         self.image = {"Id": compiler.PROVIDER_ID, "Os": "linux", "Architecture": "amd64", "Size": 123,
             "RepoDigests": [compiler.PROVIDER], "RootFS": {"Type": "layers", "Layers": ["sha256:" + "b" * 64]},
             "Config": {"Volumes": None, "Env": ["PATH=/vendor"], "Labels": {}}}
@@ -127,7 +128,7 @@ class OwnerTests(unittest.TestCase):
 
         class Client:
             def __init__(self, output, deadline):
-                self.facts = {"metadata_bytes": 0, "rpc": [], "attempts": 0}
+                self.facts = {"metadata_bytes": case.metadata_bytes, "rpc": [], "attempts": 0}
                 self.causes = []
                 self.config, self.name = None, None
                 self.inspect_count = 0
@@ -166,7 +167,8 @@ class OwnerTests(unittest.TestCase):
                     return None
                 if path.endswith("/json"):
                     self.inspect_count += 1
-                    active = self.inspect_count == 1 and case.mode not in ("lost_create", "ambiguous_create")
+                    active = ((self.inspect_count == 1 or case.mode == "late_running")
+                              and case.mode not in ("lost_create", "ambiguous_create"))
                     return {"Id": "a" * 64, "Name": "/" + self.name, "Image": compiler.PROVIDER_ID,
                         "Config": self.config, "HostConfig": self.config["HostConfig"], "RestartCount": 0,
                         "State": {"Running": active, "Restarting": False, "Paused": False, "Dead": False,
@@ -174,6 +176,8 @@ class OwnerTests(unittest.TestCase):
                             "OOMKilled": case.mode == "oom", "Error": ""}}
                 if "/wait?" in path:
                     case.attach_closed_at_wait.append(self.duplex.facts["closed"])
+                    if case.mode == "late_running" and len(case.attach_closed_at_wait) > 1:
+                        return {}
                     if case.mode == "source_post_drift":
                         case.source.write_bytes(b"changed after compiler start")
                     return {"StatusCode": 0, "Error": None}
@@ -376,6 +380,28 @@ class OwnerTests(unittest.TestCase):
         with self.assertRaises(compiler.FixtureCompilerError):
             self.run_owner()
         self.assertFalse(self.executable.exists())
+
+    def test_worst_case_containment_fits_sealed_rpc_inventory(self):
+        self.mode = "late_running"
+        self.effects()
+        with self.assertRaises(compiler.FixtureCompilerError) as found:
+            self.run_owner()
+        kills = [path for _, path, *_ in self.calls if "/kill?" in path]
+        self.assertEqual(len(kills), 2)
+        self.assertTrue(self.calls[-1][1].endswith("/" + "a" * 64 + "/json"))
+        self.assertLessEqual(len(self.calls), self.rpc_limit)
+        self.assertIn("containment_state", found.exception.facts)
+
+    def test_metadata_total_overflow_keeps_prior_causes_and_facts(self):
+        self.mode = "compiler_failure"
+        self.effects()
+        self.metadata_bytes = 262144
+        with self.assertRaises(compiler.FixtureCompilerError) as found:
+            self.run_owner()
+        self.assertIn("owner_metadata_total", found.exception.causes)
+        self.assertIn("owner_publisher_status", found.exception.causes)
+        self.assertTrue(hasattr(found.exception, "facts"))
+        self.assertEqual(self.restored, [True])
 
     def test_attach_closes_before_normal_close_rpcs(self):
         self.effects()

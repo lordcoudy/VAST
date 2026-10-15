@@ -407,10 +407,12 @@ def run_publisher_v1(stdin, stdout, *, stderr=None, clock=time.monotonic,
                 part = read_chunk(stdin, min(65536, header["source_size"] - source["size_bytes"]))
                 if not part:
                     raise _Refusal("request_truncated")
+                # The account covers only confirmed bytes; a failed write keeps
+                # the confirmed prefix and its fixed source_io_error cause.
+                write_exact(source_file, part, timed=False)
                 source_hash.update(part)
                 source["size_bytes"] += len(part)
                 source["sha256"] = source_hash.hexdigest()
-                write_exact(source_file, part, timed=False)
             if read_chunk(stdin, 1) or source["sha256"] != header["source_sha256"]:
                 raise _Refusal("source_binding_invalid")
             source_file.flush()

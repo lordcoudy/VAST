@@ -294,6 +294,15 @@ class AcceptedPolicyFixtureCompilerPublisherTests(unittest.TestCase):
                 self.assertFalse(world.calls)
                 self.assertIn("source_io_error", meta["causes"])
 
+    def test_failed_source_write_never_counts_unconfirmed_bytes(self):
+        world = World()
+        world.fail_source_write = True
+        code, raw, world = self.run_case(world=world)
+        meta, _ = self.frame(raw)
+        self.assertEqual(code, 1)
+        self.assertEqual(meta["source"], {"size_bytes": 0, "sha256": digest(b"")})
+        self.assertIn("source_io_error", meta["causes"])
+
     def test_existing_source_is_not_overwritten_or_reused(self):
         world = World()
         world.files["/work/engine.c"] = b"old"

@@ -207,12 +207,12 @@ class TransportTests(unittest.TestCase):
         client.facts["metadata_bytes"] = 256 * 1024
         self.refused(client, "GET", "/info", cleanup=True, cause="docker_metadata_cap")
 
-    def test_maximum_twenty_calls(self):
-        client = self.client(*(FakeSocket(reply()) for _ in range(20)))
-        for _ in range(20):
+    def test_maximum_sealed_twenty_one_calls(self):
+        client = self.client(*(FakeSocket(reply()) for _ in range(21)))
+        for _ in range(21):
             self.assertEqual(client.request("GET", "/info"), {})
         self.refused(client, "GET", "/info", cause="docker_rpc_cap")
-        self.assertEqual(client.facts["attempts"], 20)
+        self.assertEqual(client.facts["attempts"], 21)
 
     def test_cleanup_does_not_convert_its_own_failure_to_success(self):
         client = self.client(FakeSocket(reply(b'{"x":1,"x":2}')))
