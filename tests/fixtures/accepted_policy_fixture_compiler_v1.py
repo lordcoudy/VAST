@@ -1375,7 +1375,8 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                             qualification, admission, absolute_deadline_ns, usable):
     causes, facts = [], {"accepted": False, "normal_closed": False, "own_completion": None,
                          "cid": None, "creation_unknown": False, "forced": False,
-                         "receipt_persisted": False, "promotion": None, "rpc": None}
+                         "receipt_persisted": False, "promotion": None, "rpc": None,
+                         "start_attempted": False, "start_unknown": False}
     def fail(code):
         if code not in causes:
             causes.append(code)
@@ -1614,7 +1615,10 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
         summary(prestart_end)
         duplex = rpc("POST", "/containers/" + cid + "/attach?stream=1&stdin=1&stdout=1&stderr=1", phase=prestart_end, upgrade=True)
         attach = _CompilerAttachV1(duplex, output)
+        # A lost start reply leaves the container possibly running: contain it.
+        facts["start_attempted"] = facts["start_unknown"] = True
         rpc("POST", "/containers/" + cid + "/start", phase=prestart_end)
+        facts["start_unknown"] = False
         started = True
         started_at = now()
         require(started_at < prestart_end, "owner_late_start")
@@ -1637,6 +1641,8 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
         attach.shutdown_write()
         captured = capture_export_v1(attach.read, output)
         facts["export"] = captured
+        closing, attach = attach, None
+        closing.close()
         now()
         normal_end = min(deadline - 70_000_000_000, started_at + 70_000_000_000, now() + 10_000_000_000)
         normal_deadline = normal_end
@@ -1655,7 +1661,9 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                 closed.get("init_absent") is True, "owner_native_closure_unknown")
         facts["closed"] = closed
         header = captured["header"]
-        child, runtime = header.get("compiler", {}), header.get("runtime", {})
+        require(type(header) is dict, "owner_publisher_status")
+        child, runtime = header.get("compiler"), header.get("runtime")
+        require(type(child) is dict and type(runtime) is dict, "owner_publisher_status")
         require(header.get("source") == {"size_bytes": len(source_raw), "sha256": admitted["source"]["sha256"]} and
                 header.get("causes") == [] and header.get("descendants_reaped") is True and
                 child.get("started") is True and child.get("reaped") is True and type(child.get("returncode")) is int and
@@ -1664,22 +1672,26 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                 type(runtime.get("fsize")) is list and all(type(number) is int for number in runtime["fsize"]) and runtime["fsize"] == [16777216, 16777216] and runtime.get("interpreter_elf64_amd64") is True and
                 runtime.get("compiler_elf64_amd64") is True, "owner_publisher_status")
         for channel in ("stdout", "stderr"):
-            row = child.get(channel, {})
+            row = child.get(channel)
+            require(type(row) is dict, "owner_compiler_channel")
             require(row.get("eof") is True and type(row.get("observed_bytes")) is int and
                     row.get("observed_bytes") == row.get("size_bytes") and type(row.get("discarded_bytes")) is int and row["discarded_bytes"] == 0, "owner_compiler_channel")
         elf = _compiler_read_v1(output / "engine.unaccepted", 16777216)
         require(len(elf) >= 64 and elf[:7] == b"\x7fELF\x02\x01\x01" and int.from_bytes(elf[18:20], "little") == 62 and
                 int.from_bytes(elf[16:18], "little") in (2, 3) and int.from_bytes(elf[20:24], "little") == 1, "owner_elf_abi")
+        exported = captured["members"].get("elf")
+        require(type(exported) is dict and exported.get("complete") is True and exported.get("size_bytes") == len(elf) and
+                exported.get("sha256") == hashlib.sha256(elf).hexdigest(), "owner_elf_export_binding")
         now()
         facts["normal_closed"] = True
-    except (FixtureCompilerError, OSError, ValueError, TypeError, KeyError, IndexError, RecursionError, KeyboardInterrupt, SystemExit) as error:
+    except (Exception, KeyboardInterrupt, SystemExit) as error:
         for code in error.causes if isinstance(error, FixtureCompilerError) else ["owner_" + type(error).__name__]:
             fail(code)
         if isinstance(error, FixtureCompilerError) and hasattr(error, "facts"):
             facts["failed_operation"] = error.facts
         already_stopped = (type(final) is dict and type(final.get("State")) is dict and
                            final["State"].get("Running") is False and final["State"].get("Pid") == 0)
-        if client is not None and cid is not None and started and not facts["normal_closed"] and not already_stopped:
+        if client is not None and cid is not None and facts["start_attempted"] and not facts["normal_closed"] and not already_stopped:
             for signal_name in ("SIGTERM", "SIGKILL"):
                 try:
                     end = min(deadline - 10_000_000_000, now(allow_failure=True) + 30_000_000_000)
@@ -1690,7 +1702,7 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                     reply = rpc("POST", "/containers/" + cid + "/wait?condition=not-running", phase=end, cleanup=True)
                     if type(reply) is dict and type(reply.get("StatusCode")) is int:
                         break
-                except (FixtureCompilerError, OSError, ValueError, TypeError) as secondary:
+                except Exception as secondary:
                     for code in secondary.causes if isinstance(secondary, FixtureCompilerError) else ["owner_containment_" + type(secondary).__name__]:
                         fail(code)
             try:
@@ -1700,7 +1712,7 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                 facts["containment_state"] = final["State"]
                 if live is not None:
                     facts["containment_native"] = _compiler_closed_facts_v1(live, cid)
-            except (FixtureCompilerError, OSError, ValueError, TypeError) as secondary:
+            except Exception as secondary:
                 for code in secondary.causes if isinstance(secondary, FixtureCompilerError) else ["owner_final_" + type(secondary).__name__]:
                     fail(code)
     finally:
@@ -1744,6 +1756,9 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
             source_file.close()
         except (OSError, ValueError, TypeError) as error:
             fail("owner_source_close_" + type(error).__name__)
+        for code in _compiler_restore_handlers_v1(previous_handlers):
+            fail(code)
+        facts["signal_handlers_restored"] = not any(code.startswith("owner_signal_restore_") for code in causes)
     if client is not None:
         facts["rpc"] = client.facts
         for code in client.causes:
@@ -1802,21 +1817,26 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                 require(_compiler_read_v1(pending, 16777216) == elf, "owner_promotion_readback")
                 pending.chmod(0o700)
                 require(not os.path.lexists(executable), "owner_promotion_destination_exists")
-                # The admitted private parent has no other owned writer;
-                # external same-UID/root mutation remains the trusted boundary.
-                os.rename(pending, executable)
+                now()
+                # link() never replaces a destination; external same-UID/root
+                # mutation remains the trusted boundary.
+                os.link(pending, executable)
                 promotion["published"] = True
+                os.unlink(pending)
                 _compiler_directory_sync_v1(executable.parent)
                 promotion["directory_persisted"] = True
                 now()
                 facts["accepted"] = True
-            except (FixtureCompilerError, OSError, ValueError, TypeError) as error:
+            except Exception as error:
                 for code in error.causes if isinstance(error, FixtureCompilerError) else ["owner_publication_" + type(error).__name__]:
                     fail(code)
-    for code in _compiler_restore_handlers_v1(previous_handlers):
-        fail(code)
-        facts["accepted"] = False
-    facts["signal_handlers_restored"] = not any(code.startswith("owner_signal_restore_") for code in causes)
+                if promotion.get("published"):
+                    try:
+                        os.unlink(executable)
+                        promotion["published"] = False
+                        promotion["withdrawn"] = True
+                    except OSError as withdraw:
+                        fail("owner_publication_withdraw_" + type(withdraw).__name__)
     if causes or not facts["normal_closed"] or not facts["receipt_persisted"]:
         error = FixtureCompilerError(*(causes or ["owner_incomplete"]))
         error.facts = facts

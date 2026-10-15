@@ -40,6 +40,7 @@ class OwnerTests(unittest.TestCase):
         self.profile.write_bytes((ROOT / "tests/fixtures/accepted_policy_fixture_compiler_seccomp_v1.json").read_bytes())
         self.now = [1_000_000_000]
         self.mode, self.calls, self.clients = "normal", [], []
+        self.restored, self.attach_closed_at_wait = [], []
         self.image = {"Id": compiler.PROVIDER_ID, "Os": "linux", "Architecture": "amd64", "Size": 123,
             "RepoDigests": [compiler.PROVIDER], "RootFS": {"Type": "layers", "Layers": ["sha256:" + "b" * 64]},
             "Config": {"Volumes": None, "Env": ["PATH=/vendor"], "Labels": {}}}
@@ -111,6 +112,10 @@ class OwnerTests(unittest.TestCase):
                         "started": True, "reaped": True, "stdout": member(b""), "stderr": member(b"original compiler raw")},
                     "elf": {"size_bytes": len(elf), "sha256": digest(elf), "available": True},
                     "causes": [], "descendants_reaped": True}
+                if case.mode == "runtime_list":
+                    header["runtime"] = []
+                if case.mode == "elf_mismatch":
+                    header["elf"]["sha256"] = "0" * 64
                 raw = canonical(header)
                 self.stream = io.BytesIO(b"VASTCE1\n" + struct.pack(">I", len(raw)) + raw + b"original compiler raw" + elf)
             def read(self, count):
@@ -156,6 +161,8 @@ class OwnerTests(unittest.TestCase):
                 if "/attach?" in path:
                     return self.duplex
                 if path.endswith("/start"):
+                    if case.mode == "lost_start":
+                        raise compiler.FixtureCompilerError("docker_io_TimeoutError")
                     return None
                 if path.endswith("/json"):
                     self.inspect_count += 1
@@ -166,6 +173,7 @@ class OwnerTests(unittest.TestCase):
                             "Pid": 42 if active else 0, "ExitCode": 1 if case.mode == "container_failure" else 0,
                             "OOMKilled": case.mode == "oom", "Error": ""}}
                 if "/wait?" in path:
+                    case.attach_closed_at_wait.append(self.duplex.facts["closed"])
                     if case.mode == "source_post_drift":
                         case.source.write_bytes(b"changed after compiler start")
                     return {"StatusCode": 0, "Error": None}
@@ -184,7 +192,7 @@ class OwnerTests(unittest.TestCase):
                             ("_compiler_source_mount_v1", lambda path: "/qualified/compiler.py"),
                             ("_compiler_directory_sync_v1", lambda path: None),
                             ("_compiler_install_handlers_v1", lambda received, previous: setattr(self, "signal_state", received)),
-                            ("_compiler_restore_handlers_v1", lambda previous: []),
+                            ("_compiler_restore_handlers_v1", lambda previous: self.restored.append(True) or []),
                             ("_compiler_floor_facts_v1", lambda project: {"c_free": 1_000_000_000_000, "project_free": 1_000_000_000_000})):
             effect = patch.object(compiler, name, value, create=True)
             effect.start()
@@ -284,6 +292,82 @@ class OwnerTests(unittest.TestCase):
         with self.assertRaises(compiler.FixtureCompilerError):
             self.run_owner()
         self.assertFalse(self.executable.exists())
+
+    def test_lost_start_reply_still_contains_and_inspects_owned_container(self):
+        self.mode = "lost_start"
+        self.effects()
+        with self.assertRaises(compiler.FixtureCompilerError) as found:
+            self.run_owner()
+        facts = found.exception.facts
+        paths = [path for _, path, *_ in self.calls]
+        after = paths[next(index for index, path in enumerate(paths) if path.endswith("/start")) + 1:]
+        self.assertTrue(facts["start_attempted"])
+        self.assertTrue(any("/kill?signal=SIGTERM" in path for path in after))
+        self.assertTrue(any(path.endswith("/" + "a" * 64 + "/json") for path in after))
+        self.assertIn("containment_state", facts)
+        self.assertFalse(self.executable.exists())
+
+    def test_untyped_export_header_keeps_receipt_and_restores_handlers(self):
+        self.mode = "runtime_list"
+        self.effects()
+        with self.assertRaises(compiler.FixtureCompilerError) as found:
+            self.run_owner()
+        self.assertIn("owner_publisher_status", found.exception.causes)
+        self.assertTrue((self.root / "engine.compiler-originals" / "owner.result.original.json").is_file())
+        self.assertEqual(self.restored, [True])
+        self.assertFalse(self.executable.exists())
+
+    def test_unexpected_exception_type_keeps_receipt_and_restores_handlers(self):
+        self.effects()
+        with patch.object(compiler, "_compiler_closed_facts_v1", side_effect=ZeroDivisionError("untrusted")):
+            with self.assertRaises(compiler.FixtureCompilerError) as found:
+                self.run_owner()
+        self.assertIn("owner_ZeroDivisionError", found.exception.causes)
+        self.assertTrue((self.root / "engine.compiler-originals" / "owner.result.original.json").is_file())
+        self.assertEqual(self.restored, [True])
+        self.assertFalse(self.executable.exists())
+
+    def test_failure_after_publication_link_never_leaves_executable(self):
+        self.effects()
+        with patch.object(compiler, "_compiler_directory_sync_v1", side_effect=OSError("dirsync")):
+            with self.assertRaises(compiler.FixtureCompilerError) as found:
+                self.run_owner()
+        self.assertFalse(found.exception.facts["accepted"])
+        self.assertFalse(self.executable.exists())
+
+    def test_handler_restore_failure_never_publishes(self):
+        self.effects()
+        with patch.object(compiler, "_compiler_restore_handlers_v1", lambda previous: ["owner_signal_restore_SIGTERM"]):
+            with self.assertRaises(compiler.FixtureCompilerError) as found:
+                self.run_owner()
+        self.assertIn("owner_signal_restore_SIGTERM", found.exception.causes)
+        self.assertFalse(found.exception.facts["accepted"])
+        self.assertFalse(self.executable.exists())
+
+    def test_publication_never_replaces_a_late_destination(self):
+        self.effects()
+        original = compiler.os.path.lexists
+        def late(path):
+            exists = original(path)
+            if Path(path) == self.executable and not exists:
+                self.executable.write_bytes(b"foreign late writer")
+            return exists
+        with patch.object(compiler.os.path, "lexists", late):
+            with self.assertRaises(compiler.FixtureCompilerError):
+                self.run_owner()
+        self.assertEqual(self.executable.read_bytes(), b"foreign late writer")
+
+    def test_promoted_elf_must_match_export_hash(self):
+        self.mode = "elf_mismatch"
+        self.effects()
+        with self.assertRaises(compiler.FixtureCompilerError):
+            self.run_owner()
+        self.assertFalse(self.executable.exists())
+
+    def test_attach_closes_before_normal_close_rpcs(self):
+        self.effects()
+        self.run_owner()
+        self.assertEqual(self.attach_closed_at_wait, [True])
 
     def test_deadline_without_full_containment_room_refuses_before_api(self):
         self.effects()
