@@ -10,7 +10,7 @@
 ## 3. Предиктор
 
 - [x] 3.1 Реализовать discrete-event симуляцию строго по требованию спеки (все слоты schedule, prefix server на pipeline process с буфером 1, analytics buffer 1, совместный кортеж, FIFO route на branch, censoring после `drain_ns`, оценка только measurement, 200 реплик, seed из SHA256, метрики и nearest-rank интервалы); проверить тестами: детерминированный сервис ниже ёмкости → 0 drops и точная латентность; route hold выше интервала → ожидаемая доля `native_pre_detector_queue_full_drop_newest`; prefix выше интервала → shared отбрасывает 4 branches, baseline один; пустой пул → `null`; два запуска → байт-идентичное тело.
-- [x] 3.2 Проверить тестом, что ёмкости 1 совпадают с `analytics_queue.max_buffers` и `vastcheckpointprefixqueue max-buffers` на commit `fefab7a93ab5e850ddcb90ac4c9d8eb351811fa0` (`git show`), с явным skip-причиной при недоступном commit.
+- [x] 3.2 Проверить тестом, что ёмкости 1 совпадают с `analytics_queue.max_buffers` и `vastcheckpointprefixqueue max-buffers` на commit `fefab7a93ab5e850ddcb90ac4c9d8eb351811fa0` (`git show`), с явным skip-причиной при недоступном commit. Реализовано без skip: файлы проверяются по SHA256 из закоммиченной evidence K `b/source-transfer.original.json` (fallback — K git blob, иначе явный отказ), потому что CI запрещает незадекларированные skips, а инвентарь skips зафиксирован тестом.
 
 ## 4. Валидация, gates, отчёт
 

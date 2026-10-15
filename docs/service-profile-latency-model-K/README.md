@@ -7,8 +7,9 @@
 **`gpu_latency_profile_use_permitted = false`, `queueing_extrapolation_use_permitted = false`.** Не прошли все 20 GPU сравнений групп (a)+(b) и 16 из 20 CPU. По спеке это допустимый результат: последующие study changes (GPU colocation, cross-stream batching) **не выводят параметры из этой модели** и задают их заранее фиксированными значениями.
 
 Описательно (без вывода о причине):
-- GPU при rate 1–2: модель систематически **недооценивает Y100_frame** (in-sample на 0.10–0.19, load extrapolation на 0.06–0.25); in-sample p50 выше наблюдаемого на 1–24 ms. При 0.25 fps Y100 слегка переоценён (на 0.006–0.06), p50 выше наблюдаемого на 34–126 ms. Controlled drops в GPU arms нет ни в наблюдении, ни в модели.
-- CPU: доля drops in-sample при rate 1 совпадает в пределах 0.002 (0.122–0.129 против 0.123–0.130), при rate 2 — в пределах 0.07; p50 completed latency расходится на сотни–тысячи ms; при rate 2 baseline prefix пулы содержат 1–5 `prefix_unqueued` requests, у r2-cpu-2-baseline пул `foreign_object` пуст (`prediction: null`), как заранее указано в спеке.
+- GPU при rate 1–2: модель систематически **недооценивает Y100_frame** (in-sample на 0.10–0.19, load extrapolation на 0.06–0.25); in-sample p50 выше наблюдаемого на 1–24 ms. При 0.25 fps Y100 слегка переоценён (на 0.006–0.040), p50 выше наблюдаемого на 34–126 ms. Controlled drops в GPU arms нет ни в наблюдении, ни в модели.
+- CPU: доля drops in-sample при rate 1 совпадает в пределах 0.002 (0.122–0.129 против 0.123–0.130), при rate 2 — в пределах 0.07; |Δp50| completed latency — от 69–85 ms (4 CPU сравнения проходят все пороги) до ≈3400 ms; при rate 2 baseline prefix пулы содержат 0–5 `prefix_unqueued` requests, у r2-cpu-2-baseline пул `foreign_object` пуст (`prediction: null`), как заранее указано в спеке.
+- Предсказанный `route_wait` p50 (in-sample, GPU rate 1–2) выше наблюдаемого в 28 из 32 строк branch×arm, максимум на 8.6 ms; таблица ниже.
 - `route_hold` GPU при 0.25 fps ниже, чем при rate 1 (например plate_number 6.3–6.6 против 8.9–9.2 ms), хотя completed latency при 0.25 fps выше (p50 ≈284–386 против ≈116–142 ms).
 
 ## Запуски на данных K
@@ -17,8 +18,9 @@
 |---|---|---|
 | dev-smoke | Во время реализации, до первого CLI-запуска: функции модуля на 3 arms (`r1-gpu-1-shared`, `r1-cpu-1-baseline`, `r1-gpu-2-shared`), 5 реплик, без отчёта. Модель после него не менялась. | in-sample GPU Y100 0.153/0.271 против 0.350/0.407 |
 | run-1 | CLI, commit `ff41ffb11664bc470e7efcdfe62969af373112fc`, module SHA256 `8b8d7071…6548`, analysis deadline 14400 s, Python 3.12.3 (WSL, runtime K) | rc 0, 252.5 s; отчёт 331828 B, SHA256 `403b8544c6ae601de32b86cfd0eed44d67383eb7a751c1351d0c1b234c85ab8d` ([gzip](run-1.report.json.gz), 69996 B, SHA256 `50a8d79b…025d`) |
+| run-2 (итоговый) | CLI после замечаний ревью реализации, commit `97dc4b59267f7be2f944242f7bc84bfa89717959`, module SHA256 `d133b130…841b`; модель и порядок случайных выборок не менялись | rc 0, 263.6 s; отчёт 360086 B, SHA256 `13b591a5c6947bd9c151e139763ab05d10853d049673489eb84137b1ab82d741` ([gzip](run-2.report.json.gz), 79444 B, SHA256 `ccb81112…4dc1`). Профили, observed, все предсказания, разности, pass/fail и флаги **идентичны run-1**; изменились только метки причины `null` (`prefix:foreign_object`), добавлены `route_wait_p50_ms`, `model.arrival_rows/censor_at/seed_rule` и восьмой немоделируемый фактор |
 
-Две предшествующие попытки запуска CLI не исполнили модуль (ошибки quoting/path conversion в обёртке, отчёт и stdout не созданы). SHA256 binding (`8f92bb40…5ba90`) и двух raw файлов совпали до и после run-1; модуль сам проверил size+SHA256 и epochs всех 145 входов binding и архива и совпадение всех 24 arm reductions с архивом.
+dev-smoke не записал файл, хотя спека требует отдельный файл на каждый запуск на данных K; это отклонение зафиксировано в PR. Две предшествующие run-1 попытки запуска CLI не исполнили модуль (ошибки quoting/path conversion в обёртке, отчёт и stdout не созданы). SHA256 binding (`8f92bb40…5ba90`) и двух raw файлов совпали до и после run-1 и run-2; модуль сам проверил size+SHA256 и epochs всех 145 входов binding и архива и совпадение всех 24 arm reductions с архивом.
 
 ## Группа (b) — load extrapolation (gate)
 
@@ -101,9 +103,47 @@
 
 Порог сравнения: |ΔY100_frame| ≤ 0.05, |Δdrop_fraction| ≤ 0.05, observed completed frames > 0, p50 определён во всех 200 репликах, |Δp50| ≤ max(10 ms, 10 % observed). Предсказание — среднее по 200 репликам; интервалы 2.5/97.5 % — в отчёте.
 
-## Немоделируемые факторы
+## Немоделируемые факторы и прочтения спеки
 
-Порядок захвата route `threading.Lock` не гарантированно FIFO; общий Python bridge process (GIL) с pre-route preprocessing; конкуренция routes на одном GPU и CPU; decode как часть prefix server; policy decide RPC учтён в prefix server, хотя исполняется после analytics queue; prefix выбирается независимо от кортежа; работа probe после release принята нулевой. Полные распределения компонентов, размеры пулов и разрывы `prefix_unqueued` по arm/branch — в отчёте (`profiles`).
+Порядок захвата route `threading.Lock` не гарантированно FIFO; общий Python bridge process (GIL) с pre-route preprocessing; конкуренция routes на одном GPU и CPU; decode как часть prefix server; policy decide RPC учтён в prefix server, хотя исполняется после analytics queue; prefix выбирается независимо от кортежа; работа probe после release принята нулевой; внутри кадра каждый branch выбирает свой кортеж (и в baseline свой prefix), а latency кадра — максимум по этим независимым выборкам. Причиной расхождений ни один фактор не объявляется.
+
+Прочтения, записанные в `report.model`: приходы — строки schedule с `planned = true` (строки после конца offer окна никогда не предлагались); censoring — после `schedule_offset_ns` последнего planned слота плюс `drain_ns`; seed — `random.Random(int.from_bytes(sha256('20260323:<comparison_id>:<replica>')[:8], 'big'))`. Полные распределения компонентов, размеры пулов и разрывы `prefix_unqueued` по arm/branch — в отчёте (`profiles`).
+
+## route_wait p50: наблюдение и модель (группа a, GPU, rate 1–2, run-2; CPU — в отчёте)
+
+| arm | branch | observed route_wait p50 ms | predicted route_wait p50 ms |
+| r1-gpu-2-baseline | damage | 7.0 | 8.2 |
+| r1-gpu-2-baseline | foreign_object | 14.4 | 13.8 |
+| r1-gpu-2-baseline | plate_number | 1.0 | 2.7 |
+| r1-gpu-2-baseline | vehicle_type | 5.2 | 7.0 |
+| r1-gpu-2-shared | damage | 10.6 | 14.7 |
+| r1-gpu-2-shared | foreign_object | 21.1 | 21.9 |
+| r1-gpu-2-shared | plate_number | 2.5 | 6.0 |
+| r1-gpu-2-shared | vehicle_type | 8.3 | 12.1 |
+| r1-gpu-1-baseline | damage | 9.5 | 11.9 |
+| r1-gpu-1-baseline | foreign_object | 19.8 | 17.8 |
+| r1-gpu-1-baseline | plate_number | 2.2 | 3.3 |
+| r1-gpu-1-baseline | vehicle_type | 7.0 | 9.6 |
+| r1-gpu-1-shared | damage | 10.5 | 19.1 |
+| r1-gpu-1-shared | foreign_object | 23.2 | 27.9 |
+| r1-gpu-1-shared | plate_number | 3.9 | 8.4 |
+| r1-gpu-1-shared | vehicle_type | 9.3 | 16.5 |
+| r2-gpu-1-shared | damage | 12.8 | 20.6 |
+| r2-gpu-1-shared | foreign_object | 25.9 | 29.2 |
+| r2-gpu-1-shared | plate_number | 4.9 | 8.7 |
+| r2-gpu-1-shared | vehicle_type | 10.2 | 17.6 |
+| r2-gpu-1-baseline | damage | 9.1 | 13.8 |
+| r2-gpu-1-baseline | foreign_object | 22.6 | 19.4 |
+| r2-gpu-1-baseline | plate_number | 1.9 | 4.1 |
+| r2-gpu-1-baseline | vehicle_type | 7.3 | 11.2 |
+| r2-gpu-2-shared | damage | 11.1 | 15.0 |
+| r2-gpu-2-shared | foreign_object | 21.6 | 22.4 |
+| r2-gpu-2-shared | plate_number | 3.0 | 6.2 |
+| r2-gpu-2-shared | vehicle_type | 8.8 | 12.6 |
+| r2-gpu-2-baseline | damage | 7.2 | 8.4 |
+| r2-gpu-2-baseline | foreign_object | 15.8 | 13.6 |
+| r2-gpu-2-baseline | plate_number | 1.3 | 2.6 |
+| r2-gpu-2-baseline | vehicle_type | 5.4 | 7.3 |
 
 ## Воспроизведение
 
