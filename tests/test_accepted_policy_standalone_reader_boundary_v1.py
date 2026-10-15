@@ -5,6 +5,7 @@ fixed default program and proof predicates. Linux owned-closure cases run in
 hosted CI; other platforms have no owned-closure method to exercise.
 """
 import ast
+import gc
 import hashlib
 import json
 import os
@@ -16,6 +17,7 @@ import tempfile
 import time
 import unittest
 from unittest import mock
+import warnings
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -388,6 +390,37 @@ class ClosureHazardTests(_OwnedChildBase):
         self.assertIn("reader_stdout_overflow", facts["causes"])
         self.assertEqual(len(out), MIB)
         self.assertTrue(facts["closure"]["closed"])
+
+    def test_pipe_read_error_is_never_treated_as_eof_closure(self):
+        original = reader._os_read
+        def failing(fd, count):
+            if not getattr(failing, "done", False):
+                failing.done = True
+                raise OSError("synthetic pipe read failure")
+            return original(fd, count)
+        with mock.patch.object(reader, "_os_read", failing):
+            facts, _, _ = self.capture("print('x')", observe=1.0, term=0.5, kill=0.5, final=1.0)
+        self.assertTrue(any(code.endswith("_read") for code in facts["causes"]))
+        self.assertFalse(facts["closure"]["closed"])
+        self.assertTrue(facts["stdout"]["remainder_unknown"] or facts["stderr"]["remainder_unknown"])
+
+    def test_popen_failure_after_fork_still_kills_the_owned_child(self):
+        original = subprocess.Popen._execute_child
+        spawned = []
+        def forked_then_failed(this, *args, **kwargs):
+            original(this, *args, **kwargs)
+            spawned.append(this.pid)
+            raise OSError("synthetic post-fork failure")
+        # The failed Popen never learns the subreaper reaped its child.
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", ResourceWarning)
+            with mock.patch.object(subprocess.Popen, "_execute_child", forked_then_failed):
+                facts, _, _ = self.capture("import time; time.sleep(60)")
+            gc.collect()
+        self.assertIn("reader_spawn", facts["causes"])
+        self.assertTrue(spawned)
+        self.assertFalse(alive(spawned[0]))
+        self.assertEqual(self.subreaper(), 0)
 
     def test_raw_failure_still_reports_retained_prefix_hash(self):
         original = reader._os_write

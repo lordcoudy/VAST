@@ -59,6 +59,7 @@ _EXCLUSIVE_FLAGS = (os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLL
                     | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_BINARY", 0))
 # Indirections let controlled tests fault external effects, never validators.
 _os_write = os.write
+_os_read = os.read
 _monotonic_ns = time.monotonic_ns
 
 
@@ -279,13 +280,17 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
             process = subprocess.Popen(command, cwd=cwd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE, start_new_session=True, close_fds=True)
         except OSError:
+            # Popen can fail after fork; any live child here is still owned.
             fail("reader_spawn")
             return facts, b"", b""
         pipes = {process.stdout.fileno(): "stdout", process.stderr.fileno(): "stderr"}
         facts["pid"] = process.pid
         try:
-            pidfd = os.pidfd_open(process.pid)
             facts["start_ticks"] = _start_ticks_v2(process.pid)
+        except (OSError, ValueError):
+            fail("reader_identity")
+        try:
+            pidfd = os.pidfd_open(process.pid)
         except OSError:
             fail("reader_identity")
 
@@ -370,7 +375,7 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
                     row = facts[channel]
                     capacity = CHANNEL_LIMIT - row["retained_bytes"]
                     try:
-                        data = os.read(key.fd, _CHUNK if row["overflow"] else min(_CHUNK, capacity + 1))
+                        data = _os_read(key.fd, _CHUNK if row["overflow"] else min(_CHUNK, capacity + 1))
                     except BlockingIOError:
                         continue
                     except OSError:
@@ -397,7 +402,8 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
                     return
 
         def closed_now() -> bool:
-            if process.poll() is None or selector.get_map():
+            # A read error unregisters a pipe without EOF; only real EOFs close.
+            if process.poll() is None or selector.get_map()                     or not (facts["stdout"]["eof"] and facts["stderr"]["eof"]):
                 return False
             try:
                 return scope.empty(process.pid)
@@ -459,7 +465,7 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
                 if not isinstance(error, Exception) and interrupt is None:
                     interrupt = error
 
-        emergency = any(code.startswith("reader_internal_") for code in causes)
+        emergency = any(code.startswith(("reader_internal_", "reader_spawn")) for code in causes)
 
         def kill_reader() -> None:
             if process.poll() is None and emergency                     and (process.pid, facts["start_ticks"]) not in signalled[signal.SIGKILL]:
@@ -473,9 +479,10 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
 
         def kill_direct() -> None:
             facts["closure"]["closed"] = False
+            reader_pid = process.pid if process is not None else -1
             while True:
-                scope.reap(process.pid)
-                remaining = scope.direct() - {process.pid}
+                scope.reap(reader_pid)
+                remaining = scope.direct() - {reader_pid}
                 if not remaining or _monotonic_ns() >= absolute:
                     if remaining:
                         fail("reader_descendants_survived")
@@ -509,8 +516,9 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
                 guard("selector", selector.close)
             if process is not None:
                 guard("kill", kill_reader)
-                if emergency:
-                    guard("descendants", kill_direct)
+            if emergency:
+                guard("descendants", kill_direct)
+            if process is not None:
                 guard("status", status)
                 for stream in (process.stdout, process.stderr):
                     if stream is not None:
