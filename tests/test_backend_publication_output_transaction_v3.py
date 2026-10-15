@@ -5,6 +5,7 @@ import copy
 import hashlib
 import json
 import os
+import select
 import signal
 import stat
 import sys
@@ -885,31 +886,99 @@ class BackendPublicationOutputTransactionV3Tests(unittest.TestCase):
             ".backend-publication-process-journal-v1-"
             + str(self.arm["contract_sha256"])
         )
-        terminal = journal / "terminal-intent.json"
         response = journal / "terminal-response.frame"
-        coordinator = os.fork()
-        if coordinator == 0:
-            try:
-                self._run()
-            except BaseException:
-                os._exit(92)
-            os._exit(0)
-        deadline = time.monotonic() + 10.0
-        while time.monotonic() < deadline:
-            if terminal.is_file() and not response.exists():
-                break
-            time.sleep(0.01)
-        else:
-            os.kill(coordinator, signal.SIGKILL)
-            os.waitpid(coordinator, 0)
-            self.fail("terminal/pre-frame durable crash window was not observed")
-        os.kill(coordinator, signal.SIGKILL)
-        os.waitpid(coordinator, 0)
-        while time.monotonic() < deadline and not response.is_file():
-            time.sleep(0.01)
-        self.assertTrue(response.is_file())
-
         real_read = supervisor._load_durable_journal_leaf
+        coordinator: int | None = None
+        deadline = time.monotonic() + 10.0
+        ready_read, ready_write = os.pipe()
+        try:
+            os.set_inheritable(ready_read, False)
+            os.set_inheritable(ready_write, False)
+            coordinator = os.fork()
+            if coordinator == 0:
+                exit_status = 92
+                try:
+                    os.close(ready_read)
+                    ready_read = -1
+
+                    def hold_committed_response(
+                        *args: object, **kwargs: object
+                    ) -> object:
+                        nonlocal ready_write
+                        loaded = real_read(*args, **kwargs)
+                        if (
+                            args[1] == supervisor._DURABLE_JOURNAL_RESPONSE_FILENAME
+                            and loaded is not None
+                        ):
+                            # Hold the first real response before transaction adoption.
+                            if os.write(ready_write, b"R") != 1:
+                                os._exit(93)
+                            os.close(ready_write)
+                            ready_write = -1
+                            while time.monotonic() < deadline:
+                                time.sleep(max(0.0, deadline - time.monotonic()))
+                            os._exit(93)
+                        return loaded
+
+                    with mock.patch.object(
+                        supervisor,
+                        "_load_durable_journal_leaf",
+                        side_effect=hold_committed_response,
+                    ):
+                        self._run()
+                except BaseException:
+                    pass
+                else:
+                    exit_status = 0
+                finally:
+                    for descriptor in (ready_read, ready_write):
+                        if descriptor >= 0:
+                            try:
+                                os.close(descriptor)
+                            except OSError:
+                                exit_status = 92
+                os._exit(exit_status)
+            self.assertGreater(coordinator, 0)
+            os.close(ready_write)
+            ready_write = -1
+            readable, _, _ = select.select(
+                [ready_read], [], [], max(0.0, deadline - time.monotonic())
+            )
+            self.assertEqual(readable, [ready_read], "durable response readiness absent")
+            self.assertEqual(os.read(ready_read, 1), b"R")
+            self.assertLess(time.monotonic(), deadline)
+            self.assertTrue(response.is_file())
+        finally:
+            pending_error = sys.exception()
+            cleanup_errors: list[BaseException] = []
+            if coordinator is not None and coordinator > 0:
+                try:
+                    os.kill(coordinator, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+                except BaseException as exc:
+                    cleanup_errors.append(exc)
+                try:
+                    waited_pid, _ = os.waitpid(coordinator, 0)
+                    if waited_pid != coordinator:
+                        raise RuntimeError("coordinator reap identity differs")
+                except BaseException as exc:
+                    cleanup_errors.append(exc)
+            for descriptor in (ready_read, ready_write):
+                if descriptor >= 0:
+                    try:
+                        os.close(descriptor)
+                    except BaseException as exc:
+                        cleanup_errors.append(exc)
+            if cleanup_errors:
+                if pending_error is None:
+                    pending_error = cleanup_errors.pop(0)
+                    for error in cleanup_errors:
+                        pending_error.add_note(f"fixture cleanup: {type(error).__name__}")
+                    raise pending_error
+                for error in cleanup_errors:
+                    pending_error.add_note(f"fixture cleanup: {type(error).__name__}")
+
         real_starttime = supervisor._linux_process_starttime
         owner_pid = json.loads(
             (journal / "broker-owner.json").read_text(encoding="ascii")
