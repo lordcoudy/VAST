@@ -319,16 +319,16 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
                 except OSError:
                     fail("reader_signal")
             try:
+                direct = scope.direct() - {process.pid}
+            except (OSError, ValueError):
+                direct = set()
+            try:
                 subjects = scope.subtree() - {process.pid}
             except (OSError, ValueError):
                 facts["closure"]["descendants_unknown"] = True
                 fail("reader_descendants_unknown")
-                try:
-                    # Unreaped direct children are still positively owned.
-                    subjects = scope.direct() - {process.pid}
-                except (OSError, ValueError):
-                    return
-            for pid in subjects:
+                subjects = set()
+            for pid in subjects | direct:
                 try:
                     descriptor = os.pidfd_open(pid)
                 except ProcessLookupError:
@@ -337,13 +337,23 @@ def _capture_owned_reader_v2(*, command: list[str], cwd: Path, outputs: Mapping[
                     fail("reader_descendant_signal")
                     continue
                 try:
-                    # The pidfd pins identity; ownership is rechecked on it.
-                    ticks = _start_ticks_v2(pid)
-                    fields = _stat_fields_v2(pid)
-                    if ticks is None or fields is None or fields[0] == b"Z" or (pid, ticks) in signalled[signo]:
-                        continue
-                    if int(fields[1]) != scope.pid and int(fields[1]) not in subjects | {process.pid}:
-                        continue
+                    try:
+                        ticks, fields = _start_ticks_v2(pid), _stat_fields_v2(pid)
+                    except (OSError, ValueError):
+                        ticks = fields = None
+                    if pid in direct:
+                        # An unreaped direct child keeps its pid: signal it once without /proc.
+                        if any(seen == pid for seen, _ in signalled[signo])                                 or (fields is not None and fields[0] == b"Z"):
+                            continue
+                    else:
+                        # The pidfd pins identity; ownership is rechecked on it.
+                        if ticks is None or fields is None:
+                            fail("reader_descendant_signal")
+                            continue
+                        if fields[0] == b"Z" or (pid, ticks) in signalled[signo]:
+                            continue
+                        if int(fields[1]) != scope.pid and int(fields[1]) not in subjects | {process.pid}:
+                            continue
                     signalled[signo].add((pid, ticks))
                     note(pid, ticks)
                     facts[key] += deliver(descriptor, signo)

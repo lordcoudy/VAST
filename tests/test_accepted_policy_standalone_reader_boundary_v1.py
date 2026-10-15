@@ -422,6 +422,26 @@ class ClosureHazardTests(_OwnedChildBase):
         self.assertFalse(alive(spawned[0]))
         self.assertEqual(self.subreaper(), 0)
 
+    def test_unreadable_process_stats_still_signal_owned_direct_children(self):
+        marker = self.base / "child.pid"
+        program = ("import os, time\nif os.fork() == 0:\n    time.sleep(60)\n    os._exit(0)\n"
+                   "open(%r, 'w').write(str(os.getpid()))\n" % str(marker))
+        original = reader._stat_fields_v2
+        def unreadable(pid):
+            if marker.exists():
+                raise OSError("synthetic stat failure")
+            return original(pid)
+        with mock.patch.object(reader, "_stat_fields_v2", unreadable):
+            facts, _, _ = self.capture(program, observe=1.0, term=1.0, kill=1.0, final=1.0)
+        children = [pid for pid in reader._children_v2(os.getpid())]
+        for pid in children:
+            self.leaked.append(pid)
+        # The pipe-holding orphan is a direct child: signalled without /proc,
+        # and closure is proven by the empty direct-children list alone.
+        self.assertEqual(facts["causes"][0], "reader_deadline")
+        self.assertGreaterEqual(facts["term_delivered"], 1)
+        self.assertEqual([pid for pid in children if alive(pid)], [])
+
     def test_raw_failure_still_reports_retained_prefix_hash(self):
         original = reader._os_write
         def failing(fd, data):
