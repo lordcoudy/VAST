@@ -155,3 +155,26 @@ Fresh artificial fixture engine preparation SHALL use one qualified pinned compi
 #### Scenario: Component preparation is offered as complete repair evidence
 - **WHEN** a compiler profile/probe or tiny fixture succeeds before whole-chain capacity, renewed packages and genuine consumer cohorts are independently accepted
 - **THEN** task 1.5, renewal, complete 3840/3968/126016 and 29/20/42, current checks, conformance and archive/final approval gates SHALL remain required; old ELF, substituted defaults, synthetic enforcement or component success SHALL NOT close them.
+
+### Requirement: Standalone fixture cold readers bound original capture and owned closure
+The fixed complete-fixture standalone cold reader SHALL preserve its existing default validation program, genuine guardian/fragment/stock predicates, full provenance proof and identity checks while bounding original stdout and stderr to1,048,576B each and the complete result JSON to2,097,152B before encoding/retention/writes. It SHALL use one recipe-supplied absolute deadline within the unchanged enclosing budget, with predeclared finite observation/TERM/KILL/final phases and positively established actual owned-child/descendant closure, EOF and persistence. Overflow, nonzero, late, forced, unavailable or unresolved outcomes SHALL refuse reader acceptance without substituted defaults, cached proofs, retries or erased originals. Original prefixes/counts, explicitly unknown remainder and first/distinct secondary causes SHALL remain independently attributable; an inner receipt SHALL NOT attest its own completed write. Logical per-reader bounds SHALL NOT establish physical peak, whole-chain capacity or complete genuine acceptance.
+
+#### Scenario: The unchanged default reader closes normally
+- **WHEN** the actual current default reader returns its complete original proof within the reviewed byte/deadline limits and every owned child/descendant, channel and persistence boundary closes normally
+- **THEN** its full proof, default/module/semantic identity checks and original raw bytes SHALL remain exact, with actual status and EOF retained; no production validator or scientific acceptance predicate SHALL be replaced.
+
+#### Scenario: A raw channel or result exceeds its fixed ceiling
+- **WHEN** stdout, stderr or complete encoded result metadata would exceed its selected ceiling
+- **THEN** retention/encoding/writes SHALL refuse before crossing that bound, preserve the exact available raw prefixes with observed/discarded counts or explicitly unknown remainder, and record a bounded incomplete failure without accepted reader output or a larger allowance.
+
+#### Scenario: A deadline or owned closure cannot be established
+- **WHEN** the inherited deadline is missed, a child exits nonzero or by signal, termination is forced, a descendant/EOF remains live or unknown, or ownership is unavailable
+- **THEN** the invocation SHALL remain failed with original statuses and separate closure facts; parent exit, incomplete empty-scope observations, later cleanup or a success-shaped proof SHALL NOT confer acceptance, reset time or authorize guessed cleanup.
+
+#### Scenario: Capture and receipt failures follow an initiating failure
+- **WHEN** an initiating failure is followed by read/wait/signal/identity/stream-close/flush/raw/result-write/result-close or cleanup failures
+- **THEN** the first and every distinct secondary cause SHALL survive with available original bytes/statuses and explicit persistence uncertainty, including unknown unreturned write extent and enclosing capture when an inner result is unavailable; no receipt SHALL claim its own completed persistence.
+
+#### Scenario: A bounded reader boundary is offered as complete repair evidence
+- **WHEN** portable/controlled boundary tests or actual bounded reader qualification pass while parent/enclosing logs, proof copies, physical peak, renewal or genuine cohorts remain incomplete
+- **THEN** whole1.5 and existing2.8/4.2-4.5/5.2/5.3/conformance/archive/final gates SHALL remain required, all preserved failures/history SHALL retain their original disposition, and neither the4MiB per-reader/16MiB four-fixture logical quote nor compiler approval SHALL grant additional execution or Q1/storage/image authority.
