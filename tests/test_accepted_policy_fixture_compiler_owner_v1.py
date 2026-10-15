@@ -352,6 +352,18 @@ class OwnerTests(unittest.TestCase):
         self.assertFalse(self.executable.exists())
         self.assertEqual(len(syncs), 2, "the withdrawal must be made durable")
 
+    def test_interrupt_during_containment_still_writes_receipt(self):
+        self.mode = "late_running"
+        self.effects()
+        def interrupt(*args, **kwargs):
+            raise KeyboardInterrupt
+        with patch.object(compiler, "_compiler_closed_facts_v1", interrupt):
+            with self.assertRaises(compiler.FixtureCompilerError) as found:
+                self.run_owner()
+        self.assertIn("owner_final_KeyboardInterrupt", found.exception.causes)
+        self.assertTrue((self.root / "engine.compiler-originals" / "owner.result.original.json").is_file())
+        self.assertEqual(self.restored, [True])
+
     def test_handler_restore_failure_never_publishes(self):
         self.effects()
         with patch.object(compiler, "_compiler_restore_handlers_v1", lambda previous: ["owner_signal_restore_SIGTERM"]):

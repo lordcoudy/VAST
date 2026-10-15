@@ -395,7 +395,7 @@ class _DockerClientV1:
 
         A failed ordinary call permanently blocks more ordinary work. Only
         explicitly marked owner-approved containment/inspection can use the
-        reserved 64KiB, still within the same 256KiB/20-call/absolute bounds.
+        reserved 64KiB, still within the same 256KiB/21-call/absolute bounds.
         Every returned Duplex must be closed by its owning caller.
         """
         if (method not in ("GET", "POST") or type(method) is not str or
@@ -1702,7 +1702,7 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                     reply = rpc("POST", "/containers/" + cid + "/wait?condition=not-running", phase=end, cleanup=True)
                     if type(reply) is dict and type(reply.get("StatusCode")) is int:
                         break
-                except Exception as secondary:
+                except BaseException as secondary:
                     for code in secondary.causes if isinstance(secondary, FixtureCompilerError) else ["owner_containment_" + type(secondary).__name__]:
                         fail(code)
             try:
@@ -1712,7 +1712,7 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                 facts["containment_state"] = final["State"]
                 if live is not None:
                     facts["containment_native"] = _compiler_closed_facts_v1(live, cid)
-            except Exception as secondary:
+            except BaseException as secondary:
                 for code in secondary.causes if isinstance(secondary, FixtureCompilerError) else ["owner_final_" + type(secondary).__name__]:
                     fail(code)
     finally:
@@ -1823,9 +1823,10 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                 # mutation remains the trusted boundary.
                 os.link(pending, executable)
                 promotion["published"] = True
-                os.unlink(pending)
                 _compiler_directory_sync_v1(executable.parent)
                 promotion["directory_persisted"] = True
+                os.unlink(pending)
+                _compiler_directory_sync_v1(executable.parent)
                 now()
                 facts["accepted"] = True
             except BaseException as error:
@@ -1840,7 +1841,7 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                         promotion["withdrawn"] = True
                         _compiler_directory_sync_v1(executable.parent)
                         promotion["withdrawal_persisted"] = True
-                    except OSError as withdraw:
+                    except BaseException as withdraw:
                         fail("owner_publication_withdraw_" + type(withdraw).__name__)
                 if not isinstance(error, Exception):
                     raise
