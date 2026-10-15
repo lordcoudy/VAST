@@ -133,14 +133,31 @@ class _OwnedChildBase(unittest.TestCase):
         self.outputs = {"stdout": self.base / "out.raw", "stderr": self.base / "err.raw",
                         "result": self.base / "result.json"}
         self.leaked = []
+        self.children_before = reader._children_v2(os.getpid())
         self.addCleanup(self.reap_leaked)
 
     def reap_leaked(self):
+        """Leave the shared test process exactly as child-free as it was found.
+
+        Other suites own subreaper scopes that refuse a caller with children,
+        so even a zombie left here would break them.
+        """
         for pid in self.leaked:
             try:
                 os.kill(pid, signal.SIGKILL)
             except ProcessLookupError:
                 pass
+        for pid in reader._children_v2(os.getpid()) - self.children_before:
+            try:
+                os.kill(pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            try:
+                os.waitpid(pid, 0)
+            except ChildProcessError:
+                pass
+        self.assertEqual(reader._children_v2(os.getpid()) - self.children_before, set(),
+                         "a boundary test left a child in the shared test process")
 
     def capture(self, program, **limits):
         return reader._capture_owned_reader_v2(command=[sys.executable, "-B", "-c", program],
