@@ -390,3 +390,16 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 
 /openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38430468779-pass-01/*.zip -text !eol
 /openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38430468779-pass-01/*.zip -text !eol
+
+# Shared receipt reader and bounded diagnostic evidence retain exact bytes.
+/scripts/publication_image_freeze_receipt_validation_v1.py -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/package-receipt-reader-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/package-receipt-reader-01/** -text !eol
+
+# These original Windows receipts retain CRLF; other whitespace checks stay active.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/retention-final-scope.original.v1.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/retention-final-scope.original.v2.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/retention-final-scope.original.v1.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/retention-final-scope.original.v2.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

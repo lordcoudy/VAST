@@ -1,0 +1,55 @@
+{
+  "kind": "D7_final_retention_scope_v1",
+  "source_frozen_bytes": 13931754,
+  "retention_files": [
+    {
+      "name": "diagnostic-cohort.original.v1.tar.gz",
+      "bytes": 1005529,
+      "sha256": "1f030c72abb90c4d9f693682885e0642d0b93e7d8f2d083cf2a0b3f34eb27520"
+    },
+    {
+      "name": "diagnostic-cohort.original.v1.tar.gz.sha256",
+      "bytes": 103,
+      "sha256": "be1e49dc87c16be893bae71390fde40ab2f22f3e728633b5dbe06309da24e2db"
+    },
+    {
+      "name": "independent-retention-review.original.v1.json",
+      "bytes": 685,
+      "sha256": "c94ff85893ed59b15573ebc49be47f52f100c844725c56fac3bc3f184b6d872a"
+    },
+    {
+      "name": "members.original.v1.json",
+      "bytes": 572989,
+      "sha256": "b58b0768b6519442a8aad72ffc5179c655078c5565f494cf81ec232d12e6b0b6"
+    },
+    {
+      "name": "README.md",
+      "bytes": 2258,
+      "sha256": "5ba42d1ae8a2d4fb342b5dcc8a2d4b36ea7326cdbed806af24de760f27b2d7fd"
+    },
+    {
+      "name": "retain_frozen_d7.v1.py",
+      "bytes": 13401,
+      "sha256": "d962cfb72a1d779acca45464bb5521ec06bb726aaa8ea419bd6d3f04c09c4d51"
+    },
+    {
+      "name": "verification.original.v1.json",
+      "bytes": 3015,
+      "sha256": "928990d5db34fdc4062ad12e0fca272a273f548979105032f57cb97b6be8a555"
+    },
+    {
+      "name": "verify_retention_independent.v1.py",
+      "bytes": 3570,
+      "sha256": "9d5fd5b19e5694851f441f2ec613aef91fdacfb468ef9d0bd7102739843623f0"
+    }
+  ],
+  "control_bytes": 16971.0,
+  "before_this_report_bytes": 13948725.0,
+  "report_bytes": 1818,
+  "aggregate_bytes": 13950543.0,
+  "limit_bytes": 16777216,
+  "originals_preserved": true,
+  "archive_full_readback_independently_clear": true,
+  "historical_failed_witnesses_retained": true,
+  "live_recovery_or_image_acceptance": false
+}
