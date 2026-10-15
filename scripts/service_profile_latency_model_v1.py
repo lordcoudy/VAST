@@ -684,11 +684,26 @@ def report_bytes(report):
 def write_report_exclusive(path, body):
     """Write a sibling temporary file, then hard-link it to the new name; a failure leaves no report."""
     path = Path(path)
-    _require(path.is_absolute() and ".." not in path.parts, "report path must be absolute")
-    directory = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-    temporary = f".{path.name}.{os.getpid()}.partial"
+    _require(path.is_absolute() and ".." not in path.parts and len(path.parts) <= 128, "report path must be absolute")
+    held = []
     try:
-        fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=directory)
+        # Every ancestor is opened without following symlinks, like the reducer's report writer.
+        held.append(os.open(path.anchor, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW))
+        for component in path.parts[1:-1]:
+            held.append(os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=held[-1]))
+    except OSError as exc:
+        for fd in reversed(held):
+            os.close(fd)
+        raise ModelError("report directory unavailable or symlinked: " + str(exc)) from exc
+    directory = held[-1]
+    temporary = f".{path.name}.{os.getpid()}.partial"
+    created = linked = False
+    try:
+        try:
+            fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=directory)
+        except FileExistsError as exc:
+            raise ModelError("report temporary name already exists") from exc
+        created = True
         try:
             offset = 0
             while offset < len(body):
@@ -702,13 +717,19 @@ def write_report_exclusive(path, body):
             os.link(temporary, path.name, src_dir_fd=directory, dst_dir_fd=directory, follow_symlinks=False)
         except FileExistsError as exc:
             raise ModelError("report path already exists") from exc
+        linked = True
         os.fsync(directory)
+        linked = False   # Durable: keep the report.
     finally:
-        try:
-            os.unlink(temporary, dir_fd=directory)
-        except FileNotFoundError:
-            pass
-        os.close(directory)
+        if linked:
+            os.unlink(path.name, dir_fd=directory)
+        if created:
+            try:
+                os.unlink(temporary, dir_fd=directory)
+            except FileNotFoundError:
+                pass
+        for fd in reversed(held):
+            os.close(fd)
 
 
 def main(argv=None):

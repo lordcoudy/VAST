@@ -508,6 +508,33 @@ class ServiceProfileModelTests(unittest.TestCase):
                 with self.assertRaises(OSError):
                     self.m.write_report_exclusive(root / "failed.json", b"{}\n")
             self.assertEqual(sorted(p.name for p in root.iterdir() if "failed" in p.name), [])
+            # A foreign temporary name is refused and left untouched.
+            foreign = root / f".foreign.json.{os.getpid()}.partial"
+            foreign.write_bytes(b"foreign")
+            with self.assertRaisesRegex(ValueError, "temporary name already exists"):
+                self.m.write_report_exclusive(root / "foreign.json", b"{}\n")
+            self.assertEqual(foreign.read_bytes(), b"foreign")
+            self.assertFalse((root / "foreign.json").exists())
+            # A symlinked ancestor directory is refused.
+            (root / "real").mkdir()
+            (root / "linkdir").symlink_to(root / "real")
+            (root / "real" / "sub").mkdir()
+            with self.assertRaisesRegex(ValueError, "symlinked"):
+                self.m.write_report_exclusive(root / "linkdir" / "sub" / "y.json", b"{}\n")
+            self.assertEqual(list((root / "real" / "sub").iterdir()), [])
+            # A directory fsync failure after the link removes the report again.
+            real_fsync = os.fsync
+            calls = []
+
+            def fail_second(fd):
+                calls.append(fd)
+                if len(calls) == 2:
+                    raise OSError("directory fsync failed")
+                return real_fsync(fd)
+            with mock.patch.object(self.m.os, "fsync", side_effect=fail_second):
+                with self.assertRaisesRegex(OSError, "directory fsync"):
+                    self.m.write_report_exclusive(root / "dirsync.json", b"{}\n")
+            self.assertEqual(sorted(p.name for p in root.iterdir() if "dirsync" in p.name), [])
             report = json.loads(outputs[0])
             self.assertEqual(report["kind"], self.m.KIND)
             self.assertNotIn("artifact_kind", report)
