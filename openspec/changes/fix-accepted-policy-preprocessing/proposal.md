@@ -19,6 +19,9 @@ The accepted-policy guardian consumer cannot read the qualification bundle produ
 
 - Withdraw the unused E-backed filesystem recovery prerequisite before its unimplemented stages. Preserve original planning, sources, failed evidence and unresolved custody; independently complete actual whole-chain capacity, validator, renewal and consumer gates.
 
+
+- Bound the fresh artificial fixture compiler through one qualified existing provider, fixed native-only crash/resource policy and bounded original export/closure, preserving actual fresh bindings and every genuine consumer predicate; separately admit component qualification before execution.
+
 User decision on 2026-10-11: close PR #7 unmerged with its failed-Q1 outcome, keep this repair separate, then qualify under a new change. PR #7's closeout remains preserved at `4219f3e5`; its inherited code was absent from master at the 2026-10-15 amendment inspection. This amendment expands integration review to the entire master-to-repair diff, not qualification execution. The user delegates stage/final approval after successful independent exact-commit review and mandatory checks; record that delegated agent approval in this same PR before dependent work. The next qualification is `qualify-repaired-full-benchmark`, with a distinct branch/PR and fresh inputs. Preserve historical `qualify-full-benchmark`, its nine unchecked tasks and failed attempts unarchived; do not resume attempt 5 or report its incomplete scope as accepted.
 
 Diagnostics scope refinement, 2026-10-15: the selected historical-image capacity route first needs trustworthy failure reporting. The planning-only host amendment `E:/STUDY/VAST/tmp/completion-implementation-20261015/cold-recovery-diagnostics-amendment.v1.md`, SHA256 `b200d14419b0d5ddf04cc256963e0d9f55a236f89738edcfd9533a3b03b8c77d`, is the input to this same-change amendment, not execution approval. Independent review and recorded delegated approval of the exact revised OpenSpec commit precede new diagnostic helpers/tests. This stage permits only diagnostic preparation and isolated synthetic/offline reporting-chain tests; it grants no backing-storage rehearsal, restore attempt, archive upload, image deletion/offload or qualification launch. All original failed roots, helpers, scratch, TARs, data/models/runtimes and all227images remain protected; numerical gates and restore Size equality remain unchanged.
@@ -36,7 +39,7 @@ None.
 
 ### Modified Capabilities
 
-- `benchmark-launch-preparation`: add explicit accepted-policy consumer compatibility, measured coverage, renewal, integration/storage preservation and evidence-bound capacity requirements for authority-v2 qualification outputs, including bounded recovery-diagnostic failure reporting, complete default packaged receipt-reader dependencies and explicit withdrawal of an unused filesystem-recovery remedy.
+- `benchmark-launch-preparation`: add explicit accepted-policy consumer compatibility, measured coverage, renewal, integration/storage preservation and evidence-bound capacity requirements for authority-v2 qualification outputs, including bounded recovery-diagnostic failure reporting, complete default packaged receipt-reader dependencies and explicit withdrawal of an unused filesystem-recovery remedy and bounded fresh fixture compilation.
 
 ## Impact
 

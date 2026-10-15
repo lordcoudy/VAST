@@ -132,3 +132,26 @@ The supported default accepted-policy cold-reader path SHALL validate authority-
 #### Scenario: Cold reader is loaded in different supported orders
 - **WHEN** standalone leaf and supported promotion-first/sidecar-first reader paths run in fresh isolated interpreters and the default cold receipt chain runs under each renewed image's observed interpreter/package versions
 - **THEN** results, refusal behavior and shared public/default object identities SHALL agree without preloaded caches, host mounts or substituted production dependencies; unsupported host-only image orders SHALL remain explicitly unsupported, and every changed package/closure identity SHALL still require the existing complete renewal and consumer gates.
+
+### Requirement: Fresh fixture compilation has a fixed bounded boundary
+Fresh artificial fixture engine preparation SHALL use one qualified pinned compiler provider with fixed pre-exec isolation, resource and crash policies, bounded original source/channel/ELF export and positively established owned closure. It SHALL compile the actual fresh namespace/reply bindings without changing genuine coordinator, custody, production default validator, sample or refusal semantics. Unsupported provider/configuration, unqualified physical allocation, overflow, compiler failure, unavailable evidence or forced/unknown closure SHALL refuse acceptance without fallback, retry, old ELF reuse or erased originals. Component qualification SHALL require its own reviewed finite admission and SHALL NOT substitute for whole-chain capacity or genuine consumer acceptance.
+
+#### Scenario: A fresh artificial engine is prepared successfully
+- **WHEN** the single qualified provider compiles the actual current source/replies and namespace under the reviewed effective policy
+- **THEN** bounded framed export SHALL retain the authenticated ELF, complete original channels and distinct original statuses, and positively verified unforced compiler/client/container closure SHALL precede use through the unchanged genuine custody/default-consumer path.
+
+#### Scenario: The compiler or publication fails
+- **WHEN** compilation, export, capture or persistence fails, overflows or loses a channel
+- **THEN** preparation SHALL retain its first and distinct secondary causes, actual compiler/client/container statuses and bounded original prefixes with exact known counts or explicitly unknown remainder, SHALL create no accepted ELF/result, and SHALL preserve failed originals without automatic retry or provider fallback.
+
+#### Scenario: Startup or a descendant attempts to enable core dumps
+- **WHEN** the qualified runtime starts the first payload or a payload attempts CORE writes through either setter, upper-bit aliases or compatibility syscalls
+- **THEN** pre-first-exec soft/hard CORE=1 and the immutable native-only seccomp policy SHALL prevent the piped crash helper from being enabled, preserve applicable stronger daemon restrictions, allow reviewed native read-only queries and harmless other-resource operations, and refuse unsupported policy/runtime drift.
+
+#### Scenario: A resource bound or owned deadline is exhausted
+- **WHEN** source, work bytes/inodes, memory/pids, channel/ELF/frame/metadata limits or the one enclosing deadline is reached, or cleanup is forced or unresolved
+- **THEN** all retained/written forms SHALL stay within the reviewed pre-write bounds, the result SHALL remain failed with explicit original/closure availability, and client exit, later cleanup success or an extended/reset phase clock SHALL NOT confer acceptance.
+
+#### Scenario: Component preparation is offered as complete repair evidence
+- **WHEN** a compiler profile/probe or tiny fixture succeeds before whole-chain capacity, renewed packages and genuine consumer cohorts are independently accepted
+- **THEN** task 1.5, renewal, complete 3840/3968/126016 and 29/20/42, current checks, conformance and archive/final approval gates SHALL remain required; old ELF, substituted defaults, synthetic enforcement or component success SHALL NOT close them.
