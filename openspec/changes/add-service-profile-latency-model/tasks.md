@@ -5,7 +5,7 @@
 
 ## 2. Профиль обслуживания
 
-- [ ] 2.1 Реализовать отбор measured completed requests, join (terminal по `input_frame_key`+branch, wait rows по `request_id`), 7 компонентов в порядке кода с проверкой `clock_domain` для cross-PID компонентов, тождество суммы (0.001 ms), worker backend/residence, `prefix_unqueued` (порог 1 ms) и статистики через `distribution`; проверить тестами: полный join и replay суммы; отсутствующий join (unknown++); дубликат `request_id`; отрицательный компонент; расхождение суммы; чужой boot_id/ненулевые offsets → `unknown`; warmup/drain только в counts; подсчёт исключённых prefix.
+- [ ] 2.1 Реализовать отбор measured completed requests, join (terminal по `input_frame_key`+branch, wait rows по `request_id`), 7 компонентов в порядке кода с проверкой `clock_domain` для cross-PID компонентов, тождество суммы (0.001 ms), worker backend/residence, `prefix_unqueued` (порог 10 ms, корзины ≤10/10–100/>100 ms), совпадение identity полей native client row и terminal и статистики через `distribution`; проверить тестами: полный join и replay суммы; отсутствующий join (unknown++); дубликат `request_id`; отрицательный компонент; расхождение суммы; чужой boot_id/ненулевые offsets → `unknown`; warmup/drain только в counts; разрыв 2 ms считается queued, 150 ms — unqueued; несовпадение identity поля → ошибка.
 
 ## 3. Предиктор
 

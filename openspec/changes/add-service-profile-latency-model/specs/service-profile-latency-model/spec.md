@@ -10,7 +10,7 @@ Model SHALL читать только finite-study binding kind `finite-componen
 
 #### Scenario: Binding and raw match their identities
 - **WHEN** binding, архив и все файлы binding совпадают по size+SHA256, epochs стабильны и план валиден
-- **THEN** model SHALL построить профиль и предсказания, а отчёт SHALL содержать все прочитанные descriptors в порядке чтения, identities binding и архива, analysis deadline и `new_descriptive_read_not_rereduction: true`.
+- **THEN** model SHALL построить профиль и предсказания, а отчёт SHALL содержать все прочитанные через binding descriptors в порядке чтения (без самого binding и архива), identities binding и архива, analysis deadline и `new_descriptive_read_not_rereduction: true`.
 
 #### Scenario: A file differs, drifts or the deadline expires
 - **WHEN** любой файл отличается по size/SHA256, является symlink, меняет epoch до повторной проверки, binding содержит не 24 effect arms или analysis deadline истёк
@@ -42,7 +42,9 @@ Model SHALL читать только finite-study binding kind `finite-componen
 
 Компоненты 4 и 7 вычитают отметки разных процессов и SHALL допускаться только когда `clock_domain` обеих записей имеет `CLOCK_MONOTONIC`, одинаковый `boot_id` и `time_namespace` с monotonic и boottime offsets `0,0`, как доказано finite-study driver gate; иначе компонент SHALL быть `unknown`. Сумма компонентов 1–7 SHALL совпадать с наблюдаемой branch latency reducer с допуском 0.001 ms. Worker backend и residence SHALL публиковаться отдельно с меткой «не чистое GPU kernel time». Для каждого компонента и arm/branch SHALL публиковаться count, unknown, p50/p95/p99 (nearest-rank `distribution` reducer), mean и CV. Отсутствующее соединение SHALL увеличивать `unknown` без заполнения; повторный `request_id` в одной роли, нарушенный порядок отметок, отрицательный компонент или нарушение суммы SHALL быть ошибкой.
 
-`prefix` включает ожидание в analytics queue, когда предыдущий request той же пары stream×branch ещё обрабатывался. Request SHALL считаться `prefix_unqueued`, когда у той же пары stream×branch нет предыдущего request в arm или `path_entry_timestamp_ms` больше предыдущего `terminal_timestamp_ms` более чем на 1 ms; только такие requests SHALL входить в prefix-выборку предиктора, число исключённых SHALL публиковаться.
+`prefix` включает ожидание в analytics queue, когда предыдущий request той же пары stream×branch ещё обрабатывался. Request SHALL считаться `prefix_unqueued`, когда у той же пары stream×branch нет предыдущего request в arm или `path_entry_timestamp_ms` больше предыдущего `terminal_timestamp_ms` той же пары более чем на 10 ms; только такие requests SHALL входить в prefix-выборку предиктора. Порог 10 ms SHALL обосновываться механизмом: request, ожидавший в analytics queue, входит в probe после завершения предыдущего за время terminal RPC, probe entry и policy decide (на K 1.7–5 ms), а незанятый — не раньше следующего прихода (≥100 ms при rate ≤ 2 и 6 streams). Отчёт SHALL публиковать по каждой arm/branch число requests с разрывом ≤ 10 ms, 10–100 ms и > 100 ms.
+
+Native client row SHALL совпадать с native terminal по `run_id`, `input_frame_key`, branch, `stream_id` и `frame_id`; несовпадение SHALL быть ошибкой. Тождество суммы выполняется по построению для средних компонентов и SHALL NOT считаться проверкой соединений; вложенность bridge внутри native client SHALL проверяться неотрицательностью компонентов 4 и 7.
 
 #### Scenario: Every completed request is joined and sums exactly
 - **WHEN** каждая completed measured request имеет native terminal и по одной `native_client`, `bridge_route`, `worker` записи, а clock domains допускают компоненты 4 и 7
@@ -53,7 +55,7 @@ Model SHALL читать только finite-study binding kind `finite-componen
 - **THEN** профиль SHALL увеличить `unknown` соответствующих компонентов, исключить request только из их распределений и сохранить его в observed знаменателях.
 
 #### Scenario: Duplicate, disordered or inconsistent rows
-- **WHEN** `request_id` повторяется в одной роли, порядок отметок внутри записи нарушен, компонент отрицателен или сумма расходится с latency больше чем на 0.001 ms
+- **WHEN** `request_id` повторяется в одной роли, порядок отметок внутри записи нарушен, компонент отрицателен, native client row не совпадает с terminal по identity полям или сумма расходится с latency больше чем на 0.001 ms
 - **THEN** model SHALL завершиться ошибкой без отчёта.
 
 ### Requirement: The predictor is fully specified before its first run
@@ -61,7 +63,7 @@ Model SHALL читать только finite-study binding kind `finite-componen
 Предиктор SHALL моделировать target arm по профилю calibration arm так:
 
 - приходы — все слоты frozen schedule плана для rate target arm (warmup, measurement, drain), а не наблюдаемые admissions;
-- prefix stage — один сервер на pipeline process (shared: один на stream; baseline: один на stream×branch) с буфером ёмкости 1 drop-newest; drop в shared отбрасывает все 4 branches кадра, в baseline — только свой branch; длительность — выборка из `prefix_unqueued` calibration arm (shared: общий пул по branches, baseline: пул своего branch);
+- prefix stage — один сервер на pipeline process (shared: один на stream; baseline: один на stream×branch) с буфером ёмкости 1 drop-newest; drop в shared отбрасывает все 4 branches кадра, в baseline — только свой branch; длительность — одна выборка на кадр и process из `prefix_unqueued` calibration arm (shared: одна выборка из общего пула по branches задаёт момент выхода кадра для всех 4 branches; baseline: пул своего branch);
 - analytics queue — на stream×branch буфер ёмкости 1 drop-newest перед probe, который обрабатывает один request за раз;
 - после выхода из analytics queue request проходит `probe_pre`, `native_wait`, `bridge_pre` как чистые задержки, затем FIFO route по branch, общий для всех 6 streams, с длительностью `route_hold`, затем `bridge_post`; кортеж (`probe_pre`, `native_wait`, `bridge_pre`, `route_hold`, `bridge_post`) SHALL выбираться совместно из одного completed measured request calibration arm того же branch;
 - ёмкости буферов SHALL равняться значениям frozen source commit K `fefab7a93ab5e850ddcb90ac4c9d8eb351811fa0` (`analytics_queue.max_buffers` в `configs/experiments.yaml` и `max-buffers` `vastcheckpointprefixqueue` в native probe), обе равны 1;
@@ -70,7 +72,7 @@ Model SHALL читать только finite-study binding kind `finite-componen
 - 200 реплик; генератор каждой реплики инициализируется первыми 8 байтами SHA256 строки `20260323:<comparison_id>:<replica>`;
 - метрики реплики: `drop_fraction` = branches `N_controlled_dropped` / branches `N_planned` (с разбивкой по `native_postdecode_preprocess_queue_full_drop_newest` и `native_pre_detector_queue_full_drop_newest`), `Y100_frame` = on-time frames / planned frames, p50 и p95 completed frame latency (nearest-rank); предсказание = среднее по репликам, интервал = nearest-rank 2.5/97.5 перцентили; p50 реплики без completed frames не определён.
 
-Отчёт SHALL перечислять немоделируемые факторы: порядок захвата `threading.Lock` не гарантированно FIFO, общий Python bridge process (GIL), конкуренция routes на одном GPU и CPU, decode как часть prefix без отдельной очереди, независимость prefix от остального кортежа. Пустой пул выборки SHALL давать `prediction: null` с причиной. Отчёт SHALL содержать SHA256 модуля и source commit реализации. Каждый запуск на данных K SHALL писать новый файл, и все такие запуски SHALL перечисляться в сводке; изменение любого пункта этого требования после первого запуска на K SHALL требовать нового ревью спеки.
+Отчёт SHALL перечислять немоделируемые факторы: порядок захвата `threading.Lock` не гарантированно FIFO, общий Python bridge process (GIL), конкуренция routes на одном GPU и CPU, decode как часть prefix без отдельной очереди, policy decide RPC (исполняется в probe после analytics queue, но учитывается в prefix server), независимость prefix от остального кортежа. Пустой пул выборки SHALL давать `prediction: null` с причиной. Отчёт SHALL содержать SHA256 модуля и source commit реализации. Каждый запуск на данных K SHALL писать новый файл, и все такие запуски SHALL перечисляться в сводке; изменение любого пункта этого требования или требования «Service profile follows the code-order stage sequence» (компоненты, популяция, порог `prefix_unqueued`) после первого запуска на K SHALL требовать нового ревью спеки.
 
 #### Scenario: Calibration profile has complete pools
 - **WHEN** у calibration arm непусты пулы prefix и кортежей для всех 4 branches
@@ -95,7 +97,7 @@ Model SHALL читать только finite-study binding kind `finite-componen
 - `gpu_latency_profile_use_permitted` SHALL быть `true` тогда и только тогда, когда проходят все 12 GPU сравнений группы (a) и все 8 GPU сравнений группы (b).
 - `queueing_extrapolation_use_permitted` SHALL быть `true` тогда и только тогда, когда `gpu_latency_profile_use_permitted` = `true` и проходят все 12 CPU сравнений группы (a) и все 8 CPU сравнений группы (b).
 
-Когда `true` только `gpu_latency_profile_use_permitted`, последующие study changes SHALL ограничиваться распределениями GPU компонентов для параметров при rate ≤ 2 и SHALL NOT использовать предсказания waits и drops; использование предсказаний waits и drops под нагрузкой SHALL требовать `queueing_extrapolation_use_permitted` = `true`. При обоих `false` параметры из модели SHALL NOT выводиться. Пороги, состав групп и правила флагов SHALL NOT меняться после первого запуска на K без нового ревью спеки.
+Когда `true` только `gpu_latency_profile_use_permitted`, последующие study changes SHALL ограничиваться распределениями GPU компонентов для параметров при rate ≤ 2 и SHALL NOT использовать предсказания waits и drops; использование предсказаний waits и drops под нагрузкой SHALL требовать `queueing_extrapolation_use_permitted` = `true`. При обоих `false` параметры из модели SHALL NOT выводиться. Отчёт SHALL заранее указывать, что CPU rate 2 arms имеют лишь 34–103 completed frames, поэтому требование определённого p50 во всех репликах делает `queueing_extrapolation_use_permitted` = `false` вероятным исходом; такой исход SHALL считаться допустимым результатом, а не основанием менять пороги. Пороги, состав групп и правила флагов SHALL NOT меняться после первого запуска на K без нового ревью спеки.
 
 #### Scenario: All gated comparisons pass
 - **WHEN** все GPU и CPU сравнения групп (a) и (b) проходят пороги
