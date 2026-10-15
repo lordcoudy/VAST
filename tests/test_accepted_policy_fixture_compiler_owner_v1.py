@@ -335,6 +335,19 @@ class OwnerTests(unittest.TestCase):
         self.assertFalse(found.exception.facts["accepted"])
         self.assertFalse(self.executable.exists())
 
+    def test_interrupt_after_publication_link_withdraws_executable(self):
+        self.effects()
+        syncs = []
+        def interrupted(path):
+            syncs.append(path)
+            if len(syncs) == 1:
+                raise KeyboardInterrupt
+        with patch.object(compiler, "_compiler_directory_sync_v1", interrupted):
+            with self.assertRaises(KeyboardInterrupt):
+                self.run_owner()
+        self.assertFalse(self.executable.exists())
+        self.assertEqual(len(syncs), 2, "the withdrawal must be made durable")
+
     def test_handler_restore_failure_never_publishes(self):
         self.effects()
         with patch.object(compiler, "_compiler_restore_handlers_v1", lambda previous: ["owner_signal_restore_SIGTERM"]):

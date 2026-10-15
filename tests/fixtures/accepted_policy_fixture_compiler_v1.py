@@ -1827,16 +1827,22 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                 promotion["directory_persisted"] = True
                 now()
                 facts["accepted"] = True
-            except Exception as error:
+            except BaseException as error:
+                # Handlers are already restored: an interrupt here still withdraws.
                 for code in error.causes if isinstance(error, FixtureCompilerError) else ["owner_publication_" + type(error).__name__]:
                     fail(code)
+                facts["accepted"] = False
                 if promotion.get("published"):
                     try:
                         os.unlink(executable)
                         promotion["published"] = False
                         promotion["withdrawn"] = True
+                        _compiler_directory_sync_v1(executable.parent)
+                        promotion["withdrawal_persisted"] = True
                     except OSError as withdraw:
                         fail("owner_publication_withdraw_" + type(withdraw).__name__)
+                if not isinstance(error, Exception):
+                    raise
     if causes or not facts["normal_closed"] or not facts["receipt_persisted"]:
         error = FixtureCompilerError(*(causes or ["owner_incomplete"]))
         error.facts = facts
