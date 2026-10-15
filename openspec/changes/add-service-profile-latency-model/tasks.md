@@ -1,23 +1,24 @@
 ## 1. Loader и наблюдение
 
-- [ ] 1.1 Создать `scripts/service_profile_latency_model_v1.py` с загрузкой binding через `read_closed_rows` (размер+SHA256 binding из CLI, все descriptors, общие caps reducer, `_recheck_named` после расчёта) и собственным analysis deadline; проверить тестами на синтетическом binding: успех, несовпадение SHA, symlink, не 24 arms → ошибка без отчёта.
-- [ ] 1.2 Вычислять observed через `reduce_study` над теми же decoded rows и сверять arm reductions с архивной `reduction` (JSON equality); проверить тестом, что изменение одного поля архива даёт ошибку.
+- [ ] 1.1 Создать `scripts/service_profile_latency_model_v1.py` с загрузкой binding через `read_closed_rows` в порядке `reduce_closed_study`, общими caps reducer, собственным analysis deadline ≤ 14400 s и `_recheck_named` после расчёта; проверить тестами на синтетическом binding: успех и полный список descriptors; несовпадение SHA; symlink; не 24 arms; epoch drift до повторной проверки; истёкший deadline — каждый случай даёт ошибку без отчёта.
+- [ ] 1.2 Проверять pins K (binding 31496 B/`8f92bb40…5ba90`, архив 590982 B/`c483d64f…8d8b`) и сверять каждую `reduce_arm` (canonical JSON) с `reduction.arms[arm_id]`, top-level `binding` и `closed_input_descriptors` архива; проверить тестами, что изменение одного поля arm, binding или descriptor даёт ошибку.
 
 ## 2. Профиль обслуживания
 
-- [ ] 2.1 Реализовать join `native_client`/`bridge_route`/`worker` по `request_id` и native terminal по `(input_frame_key, branch)`; компоненты prefix, route_wait, route_hold, client_overhead, post_route, worker backend/residence с `distribution` + mean/CV; проверить тестами: полный join (unknown=0), отсутствующий join (unknown++), дубликат `request_id`, отрицательный компонент → ошибка.
+- [ ] 2.1 Реализовать отбор measured completed requests, join (terminal по `input_frame_key`+branch, wait rows по `request_id`), 7 компонентов в порядке кода с проверкой `clock_domain` для cross-PID компонентов, тождество суммы (0.001 ms), worker backend/residence, `prefix_unqueued` (порог 1 ms) и статистики через `distribution`; проверить тестами: полный join и replay суммы; отсутствующий join (unknown++); дубликат `request_id`; отрицательный компонент; расхождение суммы; чужой boot_id/ненулевые offsets → `unknown`; warmup/drain только в counts; подсчёт исключённых prefix.
 
 ## 3. Предиктор
 
-- [ ] 3.1 Реализовать discrete-event симуляцию по `stream_schedule` (6 streams, 4 FIFO routes, буфер 1 drop-newest на stream×branch, 200 реплик, seed 20260323) с выходом drop-доли, p50/p95 completed frame latency, Y100_frame над planned measurement frames; проверить тестами: детерминированный сервис ниже ёмкости → 0 drops и точная латентность; сервис выше интервала прихода → ожидаемая drop-доля; пустое распределение → `prediction: null`; одинаковый seed → байт-идентичный результат.
+- [ ] 3.1 Реализовать discrete-event симуляцию строго по требованию спеки (все слоты schedule, prefix server на pipeline process с буфером 1, analytics buffer 1, совместный кортеж, FIFO route на branch, censoring после `drain_ns`, оценка только measurement, 200 реплик, seed из SHA256, метрики и nearest-rank интервалы); проверить тестами: детерминированный сервис ниже ёмкости → 0 drops и точная латентность; route hold выше интервала → ожидаемая доля `native_pre_detector_queue_full_drop_newest`; prefix выше интервала → shared отбрасывает 4 branches, baseline один; пустой пул → `null`; два запуска → байт-идентичное тело.
+- [ ] 3.2 Проверить тестом, что ёмкости 1 совпадают с `analytics_queue.max_buffers` и `vastcheckpointprefixqueue max-buffers` на commit `fefab7a93ab5e850ddcb90ac4c9d8eb351811fa0` (`git show`), с явным skip-причиной при недоступном commit.
 
-## 4. Валидация, gate, отчёт
+## 4. Валидация, gates, отчёт
 
-- [ ] 4.1 Собрать группы (a) in-sample 24 arms, (b) rate 1↔2 внутри repeat/resource/topology, (c) r1↔r2; rate 0.25 только в (a)/(c) со сравнением route hold против rate 1; вычислить `ex_ante_parameter_use_permitted` по 8 GPU сравнениям (b) и порогам спеки; проверить тестами на синтетических результатах граничные значения порогов и `null`.
-- [ ] 4.2 Писать отчёт kind `vast-service-profile-latency-model-v1` через exclusive create с выводом size+SHA256, всеми eligibility флагами `false`, descriptors, допущениями и меткой `new_descriptive_read_not_rereduction`; проверить тестами существующий путь/symlink → ошибка и отказ `scripts/publication_policy_contract.py` calibration loader принять отчёт по kind.
-- [ ] 4.3 Проверить, что модуль отсутствует в `deploy/gstreamer_custom/publication/runtime-source-allowlist.txt` и Dockerfile `COPY`, зарегистрировать тест в CI selection при необходимости и пройти локальный CI (`scripts/run_ci_checks.py` или эквивалент) и hosted CI.
+- [ ] 4.1 Собрать группы (a), (b), (c), сравнение `route_hold` rate 0.25 против rate 1, пороги сравнения и флаги `gpu_latency_profile_use_permitted`/`queueing_extrapolation_use_permitted`; проверить тестами граничные значения каждого порога, `null`, observed completed = 0, неопределённый p50 и все три сценария флагов.
+- [ ] 4.2 Писать отчёт `kind` `vast-service-profile-latency-model-v1` без `artifact_kind`, с eligibility = false, SHA256 модуля, source commit, descriptors, немоделируемыми факторами и `new_descriptive_read_not_rereduction`, через exclusive create; elapsed только в stdout receipt; проверить тестами существующий путь/symlink → ошибка и отказ policy calibration validator (`scripts/publication_policy_contract.py`) и finite-study binding loader (`reduce_closed_study`) принять отчёт.
+- [ ] 4.3 Проверить, что модуль отсутствует в `deploy/gstreamer_custom/publication/runtime-source-allowlist.txt`, Dockerfile `COPY` и execution closures, зарегистрировать тест в CI selection при необходимости и пройти локальный CI и hosted CI на последнем коммите.
 
 ## 5. Запуск на attempt K
 
-- [ ] 5.1 В WSL Python 3.12 среде K выполнить CLI над `/home/s-a-balashov/vffefab7aK/s/run/closed-inputs.original.json` (31496 B, SHA256 из retention) в новый файл; зафиксировать rc, время, size+SHA256 отчёта; raw не изменён (повторная проверка SHA выбранных файлов).
-- [ ] 5.2 Закоммитить отчёт (или gzip) и краткую сводку `docs/service-profile-latency-model-K/README.md` с таблицами (b)/(c), gate и ограничениями; независимое ревью модели и отчёта агентом-ревьюером, вердикт и commit записать в PR.
+- [ ] 5.1 В WSL Python 3.12 среде K выполнить CLI над `/home/s-a-balashov/vffefab7aK/s/run/closed-inputs.original.json` в новый файл; зафиксировать rc, elapsed, size+SHA256 отчёта и что raw не изменён (SHA выбранных файлов до и после); каждый запуск сохранить отдельным файлом.
+- [ ] 5.2 Закоммитить отчёт (gzip) и сводку `docs/service-profile-latency-model-K/README.md` со списком всех запусков, таблицами групп (a)–(c), флагами и немоделируемыми факторами; получить независимое ревью реализации и отчёта, записать commit, вердикт и решение по замечаниям в PR.

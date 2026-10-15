@@ -5,10 +5,10 @@ VAST не имеет модели, которая объясняет или пр
 ## What Changes
 
 - Новый host-only аналитический инструмент `service-profile-latency-model-v1`: читает закрытые входы attempt K только через существующую проверку `size+SHA256` и held no-follow epochs, без изменения исходных файлов.
-- Профиль обслуживания по `system × topology × resource × rate × repeat × branch`: распределения prefix delay, route wait, route hold (service), client overhead и post-route residual; worker backend/residence как отдельный диагностический слой.
-- Trace-driven discrete-event предиктор одной arm по профилю другой arm: frozen schedule плана, 6 streams, 4 branch routes с FIFO-сериализацией, однослотовые очереди drop-newest; выход — branch drops, completed latency quantiles, Y100_frame над полным planned знаменателем.
-- Отчёт валидации: in-sample consistency (каждая arm по своему профилю) и out-of-sample предсказания (rate 1 ↔ rate 2 внутри repeat/resource/topology; cross-repeat r1 ↔ r2). Наблюдаемые значения берутся из существующего reducer и обязаны совпасть с архивной редукцией K.
-- Заранее зафиксированный gate `ex_ante_parameter_use_permitted` для GPU (пороги в спеке). Только при `true` профиль разрешено использовать для ex-ante параметров последующих study changes.
+- Профиль обслуживания по measurement-окну каждой arm и branch: семь компонентов в порядке исполнения кода (prefix, probe_pre, native_wait, bridge_pre, route_wait, route_hold, bridge_post), сумма которых точно равна латентности reducer; worker backend/residence как отдельный диагностический слой.
+- Полностью зафиксированный до первого запуска trace-driven discrete-event предиктор: frozen schedule плана, prefix server и analytics queue с буферами 1 drop-newest, FIFO route на branch для 6 streams; выход — drops по причинам, completed latency quantiles, Y100_frame над полным planned знаменателем.
+- Отчёт валидации: in-sample (24 arms), load extrapolation rate 1 ↔ 2 и cross-repeat r1 ↔ r2. Наблюдаемые значения берутся из существующего per-arm reducer и обязаны совпасть с архивной редукцией K.
+- Два заранее зафиксированных флага: `gpu_latency_profile_use_permitted` (GPU сравнения) и `queueing_extrapolation_use_permitted` (дополнительно CPU сравнения, где есть реальные drops). Они ограничивают, что последующие study changes могут брать из модели.
 - Ничего не меняется в runtime, образах, allowlists, policy formulas, calibration, legacy validators и результатах K.
 
 ## Capabilities
