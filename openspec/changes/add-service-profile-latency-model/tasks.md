@@ -20,5 +20,5 @@
 
 ## 5. Запуск на attempt K
 
-- [ ] 5.1 В WSL Python 3.12 среде K выполнить CLI над `/home/s-a-balashov/vffefab7aK/s/run/closed-inputs.original.json` в новый файл; зафиксировать rc, elapsed, size+SHA256 отчёта и что raw не изменён (SHA выбранных файлов до и после); каждый запуск сохранить отдельным файлом.
+- [x] 5.1 В WSL Python 3.12 среде K выполнить CLI над `/home/s-a-balashov/vffefab7aK/s/run/closed-inputs.original.json` в новый файл; зафиксировать rc, elapsed, size+SHA256 отчёта и что raw не изменён (SHA выбранных файлов до и после); каждый запуск сохранить отдельным файлом.
 - [ ] 5.2 Закоммитить отчёт (gzip) и сводку `docs/service-profile-latency-model-K/README.md` со списком всех запусков, таблицами групп (a)–(c), флагами и немоделируемыми факторами; получить независимое ревью реализации и отчёта, записать commit, вердикт и решение по замечаниям в PR.
