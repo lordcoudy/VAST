@@ -1,8 +1,10 @@
+Порядок работы агента, окружение host, gates и self-approval — в [agent-guide.md](agent-guide.md).
+
 ## 0. Спека и предусловия
 
-- [ ] 0.1 Документы изменения проходят `openspec validate study-gpu-colocation --strict`; Draft PR открыт; независимое ревью спеки с вердиктом и рассмотренным коммитом записано в PR
+- [x] 0.1 Документы изменения проходят `openspec validate study-gpu-colocation --strict`; Draft PR открыт; независимое ревью спеки с вердиктом и рассмотренным коммитом записано в PR
 - [ ] 0.2 Перед началом реализации: PR #9 (`fix-accepted-policy-preprocessing`) слит в master, и PR repaired Q1 (`qualify-repaired-full-benchmark`) слит с accepted Q1 — проверка `gh pr view` обоих PR, ссылки и результат Q1 записаны в PR; если repaired Q1 закрыт failed или без merge, реализация не начинается без явного решения человека, записанного в PR
-- [ ] 0.3 Ветка синхронизирована с master; Context/Decisions design сверены с фактическим кодом после merge (номера строк, seams, pins); решение человека о порядке merge этого изменения относительно Q4/full записано в PR; при расхождении в требованиях выполнено `/opsx:update study-gpu-colocation` и повторное ревью — результат сверки записан в PR
+- [ ] 0.3 Ветка синхронизирована с master; Context/Decisions design сверены с фактическим кодом после merge (номера строк, seams, pins); решение о порядке merge относительно Q4/full уже записано в PR (пользователь 2026-10-15: merge до Q4/full) и перепроверено как действующее; при расхождении в требованиях выполнено `/opsx:update study-gpu-colocation` и повторное ревью — результат сверки записан в PR
 
 ## 1. Plan и kind
 
