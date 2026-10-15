@@ -3,6 +3,7 @@ from pathlib import Path
 import hashlib
 import json
 import tempfile
+import time
 import unittest
 
 
@@ -21,7 +22,10 @@ class AcceptedPolicyStandaloneReaderFixtureV2Tests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "fresh standalone default guardian reader refused"):
                 run_fixture_standalone_guardian_cold_reader_v2(
                     project_root=ROOT, output_dir=output, guardian=guardian,
-                    accepted_capability_path=ROOT / "artifacts" / output.name / "missing-capability.json")
+                    accepted_capability_path=ROOT / "artifacts" / output.name / "missing-capability.json",
+                    deadline={"absolute_monotonic_ns": time.monotonic_ns() + 64_000_000_000,
+                              "term_grace_ns": 1_000_000_000, "kill_grace_ns": 1_000_000_000,
+                              "final_ns": 2_000_000_000})
             result = json.loads((output / "standalone-guardian-cold-reader.result.v2.json").read_bytes())
             self.assertNotEqual(result["original_exit_code"], 0)
             self.assertFalse(result["standalone_guardian_cold_reader_passed"])

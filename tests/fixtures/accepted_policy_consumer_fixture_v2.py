@@ -143,8 +143,12 @@ def materialize_fixture_completed_execution_v2(
 
 
 def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], native: Mapping[str, Any],
-                                           approved_guardian_source: bytes, approved_guardian_commit: str) -> dict[str, Any]:
-    """Use actual live finalization and real stopped closure/F1/default guardian."""
+                                           approved_guardian_source: bytes, approved_guardian_commit: str,
+                                           standalone_reader_deadline: Mapping[str, int] | None = None) -> dict[str, Any]:
+    """Use actual live finalization and real stopped closure/F1/default guardian.
+
+    The standalone reader runs only under the recipe's sealed deadline (Decision16).
+    """
     chain = materialize_fixture_completed_execution_v2(prepared=prepared, native=native)
     root, output = prepared["root"], prepared["output_dir"]
     preprocessing = prepared["preprocessing"]
@@ -200,6 +204,7 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
     standalone = run_fixture_standalone_guardian_cold_reader_v2(
         project_root=root, output_dir=output, guardian=guardian,
         accepted_capability_path=accepted_dir / CAPABILITY_MANIFEST_FILENAME,
+        deadline=standalone_reader_deadline,
     )
     identity_policy = validate_fixture_identity_policy_component_v1(project_root=root, accepted_dir=accepted_dir)
     refusals = check_fixture_measured_coverage_refusals_v1(accepted_dir=accepted_dir)
