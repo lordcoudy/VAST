@@ -1,13 +1,13 @@
 # Инструкция для агентов: `study-gpu-colocation`
 
-Этот документ описывает, как агент (Claude Code, Codex, Grok) ведёт изменение `study-gpu-colocation` от одобренной спеки до merge. Он ничего не добавляет к требованиям. Приоритет источников: `specs/gpu-colocation-study/spec.md` > `design.md` > `tasks.md` > этот документ > `AGENTS.md`/`CLAUDE.md` для общего процесса. Если документы противоречат друг другу или коду, остановитесь и выполните раздел 4.3.
+Этот документ описывает, как агент (Claude Code, Codex, Grok) ведёт изменение `study-gpu-colocation` от одобренной спеки до merge. Он ничего не добавляет к требованиям. Приоритет по содержанию изменения: `specs/gpu-colocation-study/spec.md` > `design.md` > `tasks.md` > этот документ. По процессу репозитория (спека до кода, archive в той же ветке, чек-лист merge) главный `AGENTS.md`; решение пользователя от 2026-10-15 меняет только того, кто одобряет. Если документы противоречат друг другу или коду, остановитесь и выполните раздел 4.3.
 
 В новом чате назовите изменение: `study-gpu-colocation`. Документы в `openspec/changes/study-gpu-colocation/` дают полный контекст; история переписки не нужна.
 
 ## 1. Статус и полномочия
 
 - Ветка `claude/study-gpu-colocation`, Draft PR [#11](https://github.com/lordcoudy/VAST/pull/11). Имя изменения, ветку и PR менять нельзя; второй ветки или PR на эту задачу быть не должно.
-- Спека одобрена делегированным self-approval агента 2026-10-15 после трёх раундов независимого ревью. Одобренный коммит записан в комментарии PR «Spec approval».
+- Спека одобрена делегированным self-approval агента 2026-10-15 после нескольких раундов независимого ревью. Одобренный SHA записан в комментарии PR #11, который начинается со строки «Spec approval»; там же записаны решения пользователя ниже.
 - Решения пользователя от 2026-10-15:
   1. «Work autonomously. Review and approve by yourself»: агент сам проходит gates, но каждое одобрение выдаёт только после независимого ревью субагентом на точном коммите (раздел 7).
   2. «Merge before Q4/full»: это изменение сливается до Q4/full. Change, который подготовит Q4/full, обязан включить renewal legacy поверх нового source (design §10).
@@ -80,7 +80,7 @@
 ### Группа 1: plan и kind
 
 - Task 1.3 сначала: зафиксируйте finite golden fixture и ожидаемый prepare-manifest и arm reduction **до** рефакторинга, в отдельном коммите. Затем выносите ядра. Golden-тест должен давать байт-идентичный finite результат.
-- Существующие finite и legacy ветки не переписывайте. Новый kind добавляется отдельным условием по exact kind. Study-path helpers принимают новый kind только при validated runtime plan нового kind.
+- Существующие finite и legacy ветки не переписывайте, кроме выноса ядер `prepare`/`reduce_arm` по task 1.3 под защитой golden-теста. Новый kind добавляется отдельным условием по exact kind. Study-path helpers принимают новый kind только при validated runtime plan нового kind.
 - Provenance параметров — только `inherited_finite_study`, `first_principles`, `k_raw_archive`. Архив K проверяйте по size 590982 B и SHA256 `c483d64f…8d8b`. Ничего не читайте из отчётов `service-profile-latency-model`.
 
 ### Группа 2: backend и worker
@@ -142,7 +142,8 @@ Gates, на которых обязательно независимое рев�
 
 ### 8.1 Preparation attempt (одна)
 
-- Перед стартом проверьте: G3 одобрен; Docker Desktop и драйвер не менялись; место есть; root на WSL ext4 новый и пустой; ни одного несвязанного процесса на GPU.
+- Команды preparation и кампании берутся только из `docs/gpu-colocation-study-runbook.md` (task 6.2) и запускаются на коммите, одобренном на G3 (preparation) и G4 (кампания).
+- Перед стартом проверьте: G3 одобрен; Docker Desktop и драйвер не менялись; место есть; root на WSL ext4 новый и пустой; GPU свободен, насколько это можно проверить: `docker ps` не показывает других GPU containers, в WSL нет других CUDA processes (`ps`), а GPU engines в Windows Task Manager почти простаивают. Записывайте это как best-effort наблюдение, а не доказательство.
 - Сохраните `time.monotonic_ns()`, `boot_id` и `readlink /proc/self/ns/time` до первого hash/transfer/build (как в `docs/finite-component-study-runbook.md`). Clock — 14,400 s.
 - Preparation собирает и проверяет всё, измеряет старт и retirement трёх видов pool без media и записывает readiness record (platform identity, priority range, бюджет). Performance наблюдать нельзя.
 - Если preparation провалилась: сохраните original failure, запишите FAILED в PR и остановитесь. Вторая attempt — только по решению человека.
@@ -164,7 +165,7 @@ Gates, на которых обязательно независимое рев�
 
 1. `/opsx:archive study-gpu-colocation` (Codex: `$openspec-archive-change`) в этой же ветке. Подтвердите sync delta в `openspec/specs/gpu-colocation-study/spec.md`.
 2. Проверьте: каталог перенесён в `openspec/changes/archive/YYYY-MM-DD-study-gpu-colocation/`, основная спека создана, документы сохранены. Закоммитьте и запушьте в PR #11.
-3. Дождитесь зелёного CI на последнем коммите. Пройдите G6. Снимите Draft (`gh pr ready 11`) и выполните merge в master (`gh pr merge 11 --merge`), как решил пользователь: до Q4/full.
+3. Дождитесь зелёного CI на последнем коммите. Снимите Draft (`gh pr ready 11`) перед финальным ревью, пройдите G6 и после его одобрения выполните merge в master (`gh pr merge 11 --merge`), как решил пользователь: до Q4/full.
 4. После merge оставьте hand-over для change Q4/full в PR #11 и в shared notes. Перечислите обязательную renewal legacy поверх нового source: model evidence и freeze legacy TensorRT worker, пересборка и refreeze всех 4 runtime images, native images, execution code closure. Receipts, выпущенные до merge, для Q4/full недействительны.
 
 Чек-лист перед merge — из `AGENTS.md` (спека до кода, согласованные правки, задачи и тесты, CI соответствия, разобранные предупреждения, закоммиченный archive, зелёный последний коммит, финальное одобрение).
