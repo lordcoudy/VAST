@@ -10,6 +10,12 @@ from tests.fixtures import accepted_policy_fixture_compiler_v1 as fixture
 
 
 class FixtureSourceBoundsTests(unittest.TestCase):
+    def test_del_escape_expansion_is_charged_before_canonicalization(self):
+        with patch.object(fixture, "canonical_json_v1", side_effect=AssertionError("encoded too early")) as encode:
+            with self.assertRaisesRegex(ValueError, "bound"):
+                fixture._reply_table("image_replies", {"image": {"value": "\x7f" * (1024 * 1024)}}, inspection=True)
+            encode.assert_not_called()
+
     def test_oversized_string_is_refused_before_canonicalization(self):
         with patch.object(fixture, "canonical_json_v1", side_effect=AssertionError("encoded too early")) as encode:
             with self.assertRaisesRegex(ValueError, "bound"):
