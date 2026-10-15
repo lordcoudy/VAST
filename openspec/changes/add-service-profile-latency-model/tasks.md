@@ -16,7 +16,7 @@
 
 - [x] 4.1 Собрать группы (a), (b), (c), сравнение `route_hold` rate 0.25 против rate 1, пороги сравнения и флаги `gpu_latency_profile_use_permitted`/`queueing_extrapolation_use_permitted`; проверить тестами граничные значения каждого порога, `null`, observed completed = 0, неопределённый p50 и все три сценария флагов.
 - [x] 4.2 Писать отчёт `kind` `vast-service-profile-latency-model-v1` без `artifact_kind`, с eligibility = false, SHA256 модуля, source commit, descriptors, немоделируемыми факторами и `new_descriptive_read_not_rereduction`, через exclusive create; elapsed только в stdout receipt; проверить тестами существующий путь/symlink → ошибка и отказ policy calibration validator (`scripts/publication_policy_contract.py`) и finite-study binding loader (`reduce_closed_study`) принять отчёт.
-- [ ] 4.3 Проверить, что модуль отсутствует в `deploy/gstreamer_custom/publication/runtime-source-allowlist.txt`, Dockerfile `COPY` и execution closures, зарегистрировать тест в CI selection при необходимости и пройти локальный CI и hosted CI на последнем коммите.
+- [x] 4.3 Проверить, что модуль отсутствует в `deploy/gstreamer_custom/publication/runtime-source-allowlist.txt`, Dockerfile `COPY` и execution closures, зарегистрировать тест в CI selection при необходимости и пройти локальный CI и hosted CI на последнем коммите. Hosted CI run 38730743830 на `f3dc3004`: success, 3192 tests, 0 failures/errors, 22 тестов модели без skips.
 
 ## 5. Запуск на attempt K
 
