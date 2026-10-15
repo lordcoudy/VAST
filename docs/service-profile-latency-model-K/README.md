@@ -1,6 +1,6 @@
 # Профиль обслуживания и предиктор латентности — attempt K
 
-Изменение OpenSpec `add-service-profile-latency-model`, [спека](../../openspec/changes/add-service-profile-latency-model/specs/service-profile-latency-model/spec.md). Описательный анализ, не формула политики; все флаги eligibility (`qualification`, `q4`, `publication`, `full_run`, `canonical_study_complete`, `policy_calibration`) = `false`. Это новое descriptive чтение закрытых входов K, а не независимая повторная редукция (5.4).
+Изменение OpenSpec `add-service-profile-latency-model`, [спека](../../openspec/specs/service-profile-latency-model/spec.md) ([архив изменения](../../openspec/changes/archive/2026-10-15-add-service-profile-latency-model/)). Описательный анализ, не формула политики; все флаги eligibility (`qualification`, `q4`, `publication`, `full_run`, `canonical_study_complete`, `policy_calibration`) = `false`. Это новое descriptive чтение закрытых входов K, а не независимая повторная редукция (5.4).
 
 ## Итог
 
