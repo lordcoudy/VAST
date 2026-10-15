@@ -18,9 +18,10 @@
 |---|---|---|
 | dev-smoke | Во время реализации, до первого CLI-запуска: функции модуля на 3 arms (`r1-gpu-1-shared`, `r1-cpu-1-baseline`, `r1-gpu-2-shared`), 5 реплик, без отчёта. Модель после него не менялась. | in-sample GPU Y100 0.153/0.271 против 0.350/0.407 |
 | run-1 | CLI, commit `ff41ffb11664bc470e7efcdfe62969af373112fc`, module SHA256 `8b8d7071…6548`, analysis deadline 14400 s, Python 3.12.3 (WSL, runtime K) | rc 0, 252.5 s; отчёт 331828 B, SHA256 `403b8544c6ae601de32b86cfd0eed44d67383eb7a751c1351d0c1b234c85ab8d` ([gzip](run-1.report.json.gz), 69996 B, SHA256 `50a8d79b…025d`) |
-| run-2 (итоговый) | CLI после замечаний ревью реализации, commit `97dc4b59267f7be2f944242f7bc84bfa89717959`, module SHA256 `d133b130…841b`; модель и порядок случайных выборок не менялись | rc 0, 263.6 s; отчёт 360086 B, SHA256 `13b591a5c6947bd9c151e139763ab05d10853d049673489eb84137b1ab82d741` ([gzip](run-2.report.json.gz), 79444 B, SHA256 `ccb81112…4dc1`). Профили, observed, все предсказания, разности, pass/fail и флаги **идентичны run-1**; изменились только метки причины `null` (`prefix:foreign_object`), добавлены `route_wait_p50_ms`, `model.arrival_rows/censor_at/seed_rule` и восьмой немоделируемый фактор |
+| run-2 | CLI после замечаний ревью реализации, commit `97dc4b59267f7be2f944242f7bc84bfa89717959`, module SHA256 `d133b130…841b`; модель и порядок случайных выборок не менялись | rc 0, 263.6 s; отчёт 360086 B, SHA256 `13b591a5c6947bd9c151e139763ab05d10853d049673489eb84137b1ab82d741` ([gzip](run-2.report.json.gz), 79444 B, SHA256 `ccb81112…4dc1`). Профили, observed, все предсказания, разности, pass/fail и флаги **идентичны run-1**; изменились только метки причины `null` (`prefix:foreign_object`), добавлены `route_wait_p50_ms`, `model.arrival_rows/censor_at/seed_rule` и восьмой немоделируемый фактор |
+| run-3 (итоговый) | CLI после второго ревью (только writer отчёта), commit `1e82638a1c83821ea24beb75c65a3a8d8b41f873`, module SHA256 `8919b299…ed97` | rc 0, 262.3 s; отчёт 360086 B, SHA256 `2e978ddd2d2fbfa3228353bbb2ba74a7bd4a5f2d568b2231dba9d0228a1201de` ([gzip](run-3.report.json.gz), 79445 B, SHA256 `734846b5…b915`). Отличается от run-2 только полем `implementation` |
 
-dev-smoke не записал файл, хотя спека требует отдельный файл на каждый запуск на данных K; это отклонение зафиксировано в PR. Две предшествующие run-1 попытки запуска CLI не исполнили модуль (ошибки quoting/path conversion в обёртке, отчёт и stdout не созданы). SHA256 binding (`8f92bb40…5ba90`) и двух raw файлов совпали до и после run-1 и run-2; модуль сам проверил size+SHA256 и epochs всех 145 входов binding и архива и совпадение всех 24 arm reductions с архивом.
+dev-smoke не записал файл, хотя спека требует отдельный файл на каждый запуск на данных K; это отклонение зафиксировано в PR. Две предшествующие run-1 попытки запуска CLI не исполнили модуль (ошибки quoting/path conversion в обёртке, отчёт и stdout не созданы). SHA256 binding (`8f92bb40…5ba90`) и двух raw файлов совпали до и после run-1, run-2 и run-3; модуль сам проверил size+SHA256 и epochs всех 145 входов binding и архива и совпадение всех 24 arm reductions с архивом.
 
 ## Группа (b) — load extrapolation (gate)
 
@@ -109,7 +110,7 @@ dev-smoke не записал файл, хотя спека требует от�
 
 Прочтения, записанные в `report.model`: приходы — строки schedule с `planned = true` (строки после конца offer окна никогда не предлагались); censoring — после `schedule_offset_ns` последнего planned слота плюс `drain_ns`; seed — `random.Random(int.from_bytes(sha256('20260323:<comparison_id>:<replica>')[:8], 'big'))`. Полные распределения компонентов, размеры пулов и разрывы `prefix_unqueued` по arm/branch — в отчёте (`profiles`).
 
-## route_wait p50: наблюдение и модель (группа a, GPU, rate 1–2, run-2; CPU — в отчёте)
+## route_wait p50: наблюдение и модель (группа a, GPU, rate 1–2, run-3; CPU — в отчёте)
 
 | arm | branch | observed route_wait p50 ms | predicted route_wait p50 ms |
 | r1-gpu-2-baseline | damage | 7.0 | 8.2 |
