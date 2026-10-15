@@ -132,3 +132,46 @@ The supported default accepted-policy cold-reader path SHALL validate authority-
 #### Scenario: Cold reader is loaded in different supported orders
 - **WHEN** standalone leaf and supported promotion-first/sidecar-first reader paths run in fresh isolated interpreters and the default cold receipt chain runs under each renewed image's observed interpreter/package versions
 - **THEN** results, refusal behavior and shared public/default object identities SHALL agree without preloaded caches, host mounts or substituted production dependencies; unsupported host-only image orders SHALL remain explicitly unsupported, and every changed package/closure identity SHALL still require the existing complete renewal and consumer gates.
+
+### Requirement: Filesystem prerequisite rehearsal has bounded independent authority
+A filesystem-only prerequisite rehearsal SHALL require independent exact-commit specification approval, mandatory checks, separately named authenticated helpers, exact-helper/primitive conformance and fresh bounded physical admission before one live attempt. It SHALL preserve continuous custody of one fresh8GiB E-backed object, one exclusive bounded-device configuration before formatting, private ext4 payload/readback and positive Linux host/descendant closure with original diagnostic causes and numerical gates. Its separately admitted prerequisite budget SHALL NOT admit the whole renewal/check/consumer chain. Original D7 fixture entrypoints, existing receipt contracts, failed roots/helpers/scratch/TARs/data/models/runtimes and all227images SHALL remain unchanged. A new strict host-only authority/result kind SHALL confer only the observed filesystem scope; full recovery, exact-image equality, physical C reclamation, whole-chain capacity and qualification eligibility SHALL remain false.
+
+#### Scenario: A rehearsal is requested with stale authority or unreviewed helpers
+- **WHEN** the exact planning approval/checks, helper/copy/runtime/tool pins, source/nonce, SID/ACL/ancestry, lease/stop, host protection or independent primitive conformance is missing, foreign or stale
+- **THEN** the stage SHALL refuse before backing growth, loop attachment or formatting; a D7 synthetic success, old recovery receipt or portable CI alone SHALL NOT authorize live filesystem work.
+
+#### Scenario: The bounded prerequisite lacks physical capacity
+- **WHEN** fresh observed physical backing cannot cover the full8GiB extent plus1GiB E margin and every new retained control/copy/output within C>=40GiB, E>=112GiB admission/E>=12GiB continuation and<=256MiB new C growth
+- **THEN** the prerequisite SHALL remain unstarted, original source/control/output limits SHALL remain enforced without deletion or enlargement, and dependent renewal/consumer allocations SHALL remain held until separate whole-chain admission.
+
+#### Scenario: Mutable backing custody or writer compatibility fails
+- **WHEN** exclusive creation or the continuously held Windows/Linux object, exact path/kind/volume/file identity/length/link/descriptor checks or guarded writer compatibility fails or becomes unavailable
+- **THEN** the rehearsal SHALL refuse without releasing and reopening custody to continue, pathname rebinding, mutable-content trust or a guessed cross-platform identity; the original and newly failed objects SHALL remain retained.
+
+#### Scenario: An eligible loop races or configuration is ambiguous
+- **WHEN** the one selected already-present unbound device is busy, foreign, unsupported or has an interrupted/unknown configuration or contradictory held-descriptor readback
+- **THEN** the attempt SHALL fail without retry, another device, implicit utility fallback, device creation or blind detach; loop0/loop1 and every pre-existing/protected association SHALL remain untouched.
+
+#### Scenario: A fresh owned bounded filesystem is exercised
+- **WHEN** actual ownership/readback establishes the sole8GiB device and the reviewed fixed-size-loop-before-format route succeeds within the unchanged format/mount budgets
+- **THEN** only the fresh private ext4 mount SHALL receive the deterministic<=1MiB exclusive payload/fsync/readback with actual root/file custody and>=5GiB usable inner free throughout; backing/device/source/lease/floor checks SHALL remain active, and neither consumer workspace readiness nor Desktop bind propagation SHALL be inferred.
+
+#### Scenario: Linux identity is missing or different before allocation
+- **WHEN** the actual host-visible credential/PID/start/boot/parent/private-namespace READY/GO joins or stable process references are absent, foreign, reused or unavailable
+- **THEN** allocation SHALL refuse before the inner formatter or loop operation starts; supplied PID strings, inherited socket peer metadata or Windows process identity alone SHALL NOT substitute for independent Linux host observations. Truncated/extra/late/replayed frames and foreign ancillary data SHALL refuse with every delivered unexpected FD closed or explicitly failed; independent absolute phase deadlines SHALL prevent a blocked primitive from silently exceeding its original bound or triggering another call.
+
+#### Scenario: Windows exits while Linux closure is incomplete
+- **WHEN** a Windows launcher exits, a child is forced/still alive, an adopted descendant remains, or the one bounded independent host verifier cannot prove original owned exits and empty matching scope
+- **THEN** graceful filesystem success SHALL remain false, actual-parent waits/status propagation SHALL remain distinct from nonchild exit observation, original status and distinct first/termination/result/cleanup/unknown causes SHALL survive, and no PID-reuse signal, broad cleanup or acceptance from mere process absence SHALL occur. The final verifier SHALL additionally have a finite authoritative after-exit bridge bound to its exact exec/no-fork process; receipt-before-exit, Windows0, API/UID/startup/capture/timeout failure or missing proof SHALL NOT supply its own Linux closure, and no recursive observer SHALL be added.
+
+#### Scenario: Owned cleanup or persistence fails
+- **WHEN** original bounded termination, stream/timer/mask/result handling, ordinary unmount, exact owned-loop detach/readback, namespace-FD closure or enclosing persistence fails
+- **THEN** the available enclosing reports SHALL preserve each failure and unresolved resource separately; successful cleanup elsewhere SHALL NOT clear the failure, force/lazy cleanup or automatic retry SHALL NOT occur, and the backing/failed root SHALL stay retained.
+
+#### Scenario: Filesystem success is offered as full recovery or image authority
+- **WHEN** the single rehearsal succeeds or its independent review/delegated approval is presented as proof of full100GiB restore, full227equality, archive freshness, reclaimed C capacity, whole-chain readiness or image removal permission
+- **THEN** those claims SHALL remain false/unverified and every dependent gate SHALL remain open; exact human confirmation of the specific images/action SHALL still precede deletion/offload, and all original failed outcomes SHALL retain their original disposition.
+
+#### Scenario: The single rehearsal finishes successfully or fails
+- **WHEN** the admitted attempt reaches its original terminal result or any refusal/failure
+- **THEN** original raw/source/authority/command/closure evidence and the new8GiB backing SHALL be retained with actual-versus-unavailable scenario conformance; no automatic release, alternate attempt or historical-cause inference SHALL follow, and final repair/archive/merge gates SHALL remain independent.

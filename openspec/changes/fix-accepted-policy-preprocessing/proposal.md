@@ -17,6 +17,8 @@ The accepted-policy guardian consumer cannot read the qualification bundle produ
 
 - Prepare separately named v6 host recovery diagnostics and bounded offline/synthetic recorder-to-launcher-to-guest tests. Preserve initiating, termination, receipt and cleanup causes independently, all owned-child closure states and bounded native publication diagnostics; unknown or forced closure cannot pass recovery acceptance.
 
+- Prepare one separately authorized E-backed filesystem rehearsal with a fresh protected8GiB backing, continuous mutable-file custody, one atomic bounded-loop attachment, private ext4 formatting/mount/readback and positive Linux child/namespace closure. Review its command-order and authority changes before new helpers; retain its backing on either success or failure. This prerequisite has its own conservative bounded admission and leaves whole-chain renewal capacity incomplete.
+
 User decision on 2026-10-11: close PR #7 unmerged with its failed-Q1 outcome, keep this repair separate, then qualify under a new change. PR #7's closeout remains preserved at `4219f3e5`; its inherited code was absent from master at the 2026-10-15 amendment inspection. This amendment expands integration review to the entire master-to-repair diff, not qualification execution. The user delegates stage/final approval after successful independent exact-commit review and mandatory checks; record that delegated agent approval in this same PR before dependent work. The next qualification is `qualify-repaired-full-benchmark`, with a distinct branch/PR and fresh inputs. Preserve historical `qualify-full-benchmark`, its nine unchecked tasks and failed attempts unarchived; do not resume attempt 5 or report its incomplete scope as accepted.
 
 Diagnostics scope refinement, 2026-10-15: the selected historical-image capacity route first needs trustworthy failure reporting. The planning-only host amendment `E:/STUDY/VAST/tmp/completion-implementation-20261015/cold-recovery-diagnostics-amendment.v1.md`, SHA256 `b200d14419b0d5ddf04cc256963e0d9f55a236f89738edcfd9533a3b03b8c77d`, is the input to this same-change amendment, not execution approval. Independent review and recorded delegated approval of the exact revised OpenSpec commit precede new diagnostic helpers/tests. This stage permits only diagnostic preparation and isolated synthetic/offline reporting-chain tests; it grants no backing-storage rehearsal, restore attempt, archive upload, image deletion/offload or qualification launch. All original failed roots, helpers, scratch, TARs, data/models/runtimes and all227images remain protected; numerical gates and restore Size equality remain unchanged.
@@ -25,13 +27,15 @@ Package dependency refinement, 2026-10-15: exact integrated implementation `0cb9
 
 ## Capabilities
 
+Filesystem rehearsal refinement, 2026-10-15: bounded diagnostics establish reporting behavior, while genuine storage remains untested. Decision9 adds one filesystem-only prerequisite in this same change/branch/PR. Its new host-only authority/result kinds and fixed-size-loop-before-format order are explicit additions; existing qualification, producer and recovery receipts remain unchanged. Independent exact-commit planning review, required checks and recorded delegated agent approval precede new derivatives or tests. Separate exact-helper/primitive conformance and fresh physical admission precede its single live attempt. The stage performs no Docker/image/archive operation, admits no renewal/consumer chain, and grants no image deletion/offload authority.
+
 ### New Capabilities
 
 None.
 
 ### Modified Capabilities
 
-- `benchmark-launch-preparation`: add explicit accepted-policy consumer compatibility, measured coverage, renewal, integration/storage preservation and evidence-bound capacity requirements for authority-v2 qualification outputs, including bounded recovery-diagnostic failure reporting and complete default packaged receipt-reader dependencies.
+- `benchmark-launch-preparation`: add explicit accepted-policy consumer compatibility, measured coverage, renewal, integration/storage preservation and evidence-bound capacity requirements for authority-v2 qualification outputs, including bounded recovery-diagnostic failure reporting, complete default packaged receipt-reader dependencies and a separately admitted filesystem-only prerequisite rehearsal.
 
 ## Impact
 
@@ -41,4 +45,5 @@ None.
 - The inherited clock, operational owner/custody/accounting, native lifecycle/transport, Python/package/identifier and full-consumer changes; `scripts/full_publication_supervisor.py` and `scripts/full_publication_wsl_user_service_v1.py` overlap PR #8. Preserve its archived S3 delivery and all unaffected main-spec requirements when syncing this repair.
 - The next qualification change will own its new runbook, exact final source commit, receipt hashes, launch-duration checklist and fresh namespaces. The old PR #7 runbook remains historical.
 - Host prerequisite only: future v6 derivatives of the existing cold recorder/launcher/guest/native publisher and their synthetic reporting tests under new ignored temporary controls. Reuse the existing protocols and components; no new orchestration framework, dependency, CI change or production qualification-validator change is included in this diagnostics scope.
-- No new dependencies, receipt-kind/schema change, relaxed scientific criteria, Q4/capacity/full-matrix execution, CI infrastructure change or rewrite of historical attempts is proposed.
+- New separately named host rehearsal derivatives and strict filesystem-only authority/result kinds, continuous Windows/Linux held-object binding, one direct loop configuration, finite phase/credential/pidfd witness and a bounded documented WSL-API exit bridge for the sole read-only final verifier; original D7 entrypoints/helpers remain unchanged and sealed. The default-UID/headless/exec/no-fork API contract must be qualified before live admission, with no privilege/config or observer fallback.
+- No new dependency, qualification/producer receipt-kind or schema change, relaxed scientific criterion, Q4/capacity/full-matrix execution, CI infrastructure change or rewrite of historical attempts is proposed. The host-only rehearsal kinds are confined to Decision9.
