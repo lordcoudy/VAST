@@ -1,0 +1,48 @@
+**BLOCK** for `e16273e4a3f450fd16c6d2079b22c05de389eb10`. This commit is not ready for required CI plus delegated AGENT implementation approval, and it is not ready for the bounded physical F2/P0/C/D gates.
+
+HEAD was `e16273e4a3f450fd16c6d2079b22c05de389eb10` at the start of this continuation and again immediately before this verdict. Parent is `93bb04b647a9015f47ad3743551cb416b1695376`. The tracked tree is clean. The historical untracked rehearsal and staging files were left untouched. No tests were rerun. This is source review only: no physical acceptance and no human review.
+
+## Blocker
+
+`tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py:393-397` charges the open interval from F2 `accounting["last"]` to the caller-supplied `initial_measurement`.
+
+```395:397:tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py
+    gap = interval_charge_v1(accounting["last"], initial_measurement, retained_bytes=0)
+    minimum = 11890688 + 2 * 1048576 + accounting["physical_charge_bytes"] + f2_tail + max(0, gap - f2_tail - 1048576)
+    _require(initial_charged_bytes >= minimum, "initial_charge_omitted_forms")
+```
+
+`interval_charge_v1` (`:269-275`) is the largest of C: free decrease, ext4 growth, and retained bytes. Here retained bytes are 0, so any C: free drop after F2’s footer sample becomes a ledger add once it exceeds `f2_tail + 1,048,576`. Line 389 also requires `11,890,688 <= initial_charged_bytes < 536,870,912`.
+
+That violates the corrected boundary in `gate2-readiness-01.v1.json:36` and V8 §5 (`component-admission-plan.v8.md:264-268`): carry the fixed B `11,890,688` plus closed operation charges and outstanding liabilities; charge host noise only inside a fresh finite interval; check fresh floors outside that interval. V7 §5 charges C: free decrease over each run. The readiness file keeps the old `3,402,481,664` HOLD (`:42-48`) and marks it superseded. This formula puts that class of gap back into the packet ledger.
+
+`validate_packet_v1` (`:429-433`) rebuilds through `build_packet_v1`, so the same rule binds later C and D admission.
+
+Real path:
+
+- F2 measures at its own entry (`accepted_policy_fixture_compiler_recovery_v1.py:587-651`) and closes its interval. `accounting["last"]` is that closed sample.
+- An honest packet measurement is taken later, before the packet’s own allocation. C: free can fall with no component write. The historical drop was `3,402,481,664` B. Any drop larger than the roughly 2 MiB credit is enough.
+- The credit for the controlled packet fixture is `524,288 + 8,192 + 8,192 + 1,048,576 = 1,589,248`. A `3,402,481,664` drop makes `minimum` about `3,419,615,232`, which is above the seal. Every integer then fails: below the minimum raises `initial_charge_omitted_forms`, and at or above the seal raises `packet_physical`.
+- A smaller excess inflates `initial_charged_bytes` and consumes the `692,224` B unallocated margin and then C/D seal room.
+- Copying F2’s last sample forward yields gap 0 and hides any real write in between. `test_packet_refuses_self_authority_and_changed_code_or_seed` does exactly that: both samples are `c_free_bytes: 100_000_000_000` (`tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py:250-258`). The suite therefore does not catch this.
+
+C and D already follow the correction. Each C run measures at its own entry, sets `idle_gap_charged_bytes` to 0 (`gate2_c_v1.py:1236`), and the six-stage test drops 1 GiB between runs and expects that field to stay 0 (`test_accepted_policy_fixture_compiler_gate2_c_v1.py:503-512`). D sets `gap_charge_bytes` to 0 and measures before its first directory (`gate2_d_v1.py:636-661`).
+
+Minimal correction: carry `11,890,688 + 2*1,048,576 + physical_charge_bytes + outstanding F2 tail` and use the fresh measurement only as a floor and identity check. If the packet or code-export write needs a charge, measure immediately before and after that write. Add a test with a multi-gigabyte and a just-over-credit C: drop between F2 `last` and `initial_measurement`, and assert the carried charge does not grow while floors still hold.
+
+## What matches the approved behavior
+
+N3 is the exact 23 image labels plus the 3 requested labels, with collision refusal. Only a present `Config.Volumes` may be `{}` or `null`. `CapAdd` stays `[]`. The old strict JSON path still accepts HTTP 200 `null` and HTTP 204 empty. F2 is 19 GETs, 13 members, 90 s with 5 s per request, and the 8 MiB physical cap, charged from its own entry. P0 is the three fixed argv lists, no shell, 30 s and 10 s caps, and a 384 KiB all-forms ceiling. The completion validator recomputes that ceiling and leaves `physical_acceptance` false. C outcomes, ordered causes, external completion authorities, and `external_approval: false` match the V8 table. C3 does not equate host CPU PID with namespace core PID; an audit `type=1701` pid must match the CPU PID (`gate2_c_v1.py:698-731`). `cc1_direct_version.available` stays false. D sets CORE `1/1` and FSIZE `1,048,576` before exec, UID 1000, ELF copy capped at 512 KiB, controls at 512 KiB, aggregate at 2 MiB, and combined stdio at 4 KiB. Epoch facts are lists, not raw tuples. Late native returns after a deadline refuse and do not start a new deadline.
+
+## Dispositionable limitations
+
+These do not under-accept a run and are separate from the blocker.
+
+- C accounting (`gate2_c_v1.py:1227-1230` and the prior-stage check at `:1048-1051`) adds a prospective copy plus the 512 KiB tail on top of `interval_charge_v1`, which already includes retained bytes and `SizeRw`. That can false-stop a run inside the 64 MiB quote. It does not drop a real charge.
+- P0 `command_phase_deadlines` (`gate2_p0_v1.py:92-107`) keeps capture about 2.5 s inside the 10 s command cap. A late spawn return (`:983-991`) leaves the owned `wsl.exe` parent running and returns before appending `linux_child_closure_unknown`. `deadline_late` or `clock_regression` is already set, and `accepted` requires empty causes. The closure field is `unknown`.
+- D’s 10 s budget includes identity, snapshots, and the ELF copy before the child work window. A slow pre-exec guard can refuse a correct child.
+- The C5 elapsed check is the whole owner call. The unchanged publisher still cuts off at publisher entry plus 45 s, and `compiler_kill_attempted` is not an accepted C5 cause list. Physical evidence still has to show that publisher timestamp.
+- Git blob checks recompute `sha1("blob {len}\\0" + bytes)` against a caller-supplied id (`:355-363`). The docstring assigns provenance to the later packet-approval gate. That gate is still required.
+- F2 accepts archive members by basename and size, and hash-pins the linker scripts. A physical Docker archive that uses full header paths can fail closed at the basename check. That belongs to the physical evidence gate.
+
+The author’s 363-pass claim and the gate2 conformance write-up are not this verdict. Task 2.10 stays open. After the packet formula is corrected, the same commit range needs a new source review, then exact CI and delegated AGENT approval, and only then the separate physical evidence and packet-approval gates.

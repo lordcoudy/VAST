@@ -388,7 +388,7 @@ def _write_json(path, value, *, deadline_check=None):
         check()
         if len(raw) > RECORD_LIMIT:
             _fail("record_bound")
-        file = Path(path).open("xb")
+        file = Path(path).open("xb", buffering=0)
         facts["open_completed"] = True
         check()
         try:

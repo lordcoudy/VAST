@@ -1,0 +1,14 @@
+E
+======================================================================
+ERROR: test_authority_builder_binds_actual_helper_descriptors_and_inherited_context (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.FailureFactsTests.test_authority_builder_binds_actual_helper_descriptors_and_inherited_context)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 228, in test_authority_builder_binds_actual_helper_descriptors_and_inherited_context
+    value=setup.authority_record_v1(code_commit=COMMIT,approval_reference="approved",operator_sha256="a"*64,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_setup_v1' has no attribute 'authority_record_v1'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (errors=1)

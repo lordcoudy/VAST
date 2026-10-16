@@ -159,3 +159,118 @@ There is no dedicated CI behavioral-conformance gate. The configured CPU/host
 checks and this report do not replace physical observations or independent
 evidence review. No successful physical qualification or whole-change archive
 is claimed by controlled tests or document validation.
+
+## Subsequent operator implementation gate
+
+Core implementation commit `e16273e4a3f450fd16c6d2079b22c05de389eb10`
+received two independent source CLEAR_WITH_NOTES verdicts, recorded in
+PR9comment6217523594. Grok's initial BLOCK on a closed-F2/idle/packet interval
+remains preserved; its re-review accepts only one finite contiguous setup
+operation, with actual measurement before first allocation through completed
+packet and capture persistence. This is an operational boundary, not a source
+fix or authority from caller-supplied measurements. Core363-test evidence above
+precedes the operator integration and is not its final verification.
+
+The setup/capture command candidates grew into substantive implementation:
+deadline admission, native process capture, source custody, ledger and acceptance
+decisions. Independent review requires these helpers in this same PR with
+meaningful controlled tests and exact-commit review/CI. A Temp path and a
+reviewed SHA alone cannot replace those gates. No candidate was executed.
+
+Tracked operator helpers and controlled tests are being integrated. They must
+share one original150s setup window; retain the original F2/P0 windows; enforce
+fresh floors and post-observation deadline admission; authenticate both helper
+sources and the ten exported runtime files against the externally approved
+commit; preserve native status/EOF/completed writes; and carry every source,
+candidate, capture, metadata and copy form within existing allocations. Runtime
+CODE_PATHS, actors, literal root commands, caps and C/D predicates remain fixed.
+The external packet review must bind actual before/end observations and the
+funded closing tail. Pending operator tests/review/CI prohibit physical use.
+
+Independent accounting review distinguishes actual runtime forms from retained
+development history. The initial conservative operator quote unnecessarily made
+superseded Temp candidates runtime proof inputs. Four actual draft files are
+retired, never executed or rewritten, and inventoried separately for whole1.5;
+no fifth duplicate is needed. Runtime authority comes from the new reviewed Git
+bytes and external approval. Removing draft reads corrects that interpretation
+without removing history or granting an allocation credit.
+
+Both deployed operator working sources and their new Git forms require a finite
+component quote; equal content does not remove a distinct retained allocation.
+Neither the old B-code reservation nor the fresh export/P0 reservation is spare
+operator space. F2 originals, derived records and their retained/report/Git copies
+remain within the unchanged8MiB aggregate and512MiB seal. Its512KiB outside
+subreserve is an implementation choice, not permission to omit forms or expand
+the aggregate.
+
+Historical controlled-test/CI logs and source-test/development Git forms are
+retained inputs to whole1.5 and fresh physical floors. They are not retroactively
+charged to F2 simply because they belong to this change. Their retention and
+whole-chain capacity remain incomplete; this distinction grants no cleanup or
+whole1.5 acceptance. Before physical use, actual bounded operator/F2 forms and
+all outstanding copy/control liabilities must fit the implemented reservation.
+
+## Operator integration verification
+
+The tracked setup and capture helpers are frozen for exact-commit review.
+They retain the ten-file runtime export and use an externally supplied reviewed
+commit and PR approval. Both helpers authenticate their actual source bytes
+against that commit's Git blobs before allocation or native work. Canonical
+WSL controlled discovery passes433 tests with zero failures/errors/skips
+(`operator-integrated-01.original.txt`). Python3.10 grammar checks pass for
+all30 compiler fixture/test files and11 embedded operator code strings
+(`operator-syntax-01.original.txt`). Strict OpenSpec validation passes all6items;
+existing long-requirement INFO messages remain. The original validation log is
+intact; its enclosing Windows display command encountered a cp1251 Unicode
+encoding error after the validator had already returned0. No validation rerun
+is used to overwrite that original or invent a successful wrapper exit. The
+subsequent validation after report updates passes with the UTF8 wrapper too
+(`setup-openspec-02.original.txt`, validator/enclosing status0).
+
+- **Deadline and native admission:** controlled late boot/statvfs/source reads,
+  imports and persistence prevent later dispatch. The same original150s Windows
+  and conservative Linux deadlines cover export, F2, native P0, packet and final
+  capture. F2/P0 retain their90s/30s limits and fixed commands. Full setup and
+  capture orchestration tests exercise actual phase bodies with only external
+  effects controlled; no native component runs in these tests.
+- **Authority:** the packet binds the actual operator authority record's hash.
+  The capture meter independently reads and authenticates that record and its
+  helper/context/commit/approval bindings. Cross-helper tests mutate these
+  bindings rather than substituting an independently invented success schema.
+- **Accounting:** actual source working/Git forms, bounded auxiliary originals,
+  derived F2 copies and a prospective64KiB enclosing capture reserve fit the
+  existing512KiB outside allowance or refuse before dependent work. The actual
+  normal status and one permitted copy remain within32KiB. A failed driver can
+  retain12KiB stdout and32KiB stderr, plus Windows metadata, within the funded
+  failure reserve; it creates no status/copy or later meter. Tests exercise
+  full combined prefixes, larger physical allocation, copy overflow and floors.
+- **Failure evidence:** bounded diagnostics preserve ordered causes and actual
+  status/EOF/write/closure facts. Larger facts retain byte counts, hashes and
+  exact finite prefixes with explicit incompleteness. Native Git failure facts
+  survive refusal. Raw F2/P0 originals and their limits are unchanged.
+- **Core record writers:** actual BufferedWriter/RawIO partial-write faults
+  reproduced false known-extent reporting in C/F2 JSON and shared request/reply
+  originals. Four opens now use unbuffered I/O, so an unreturned partial write
+  sets the existing unknown-extent flag. Four new regression tests and109tests
+  across the affected writer/transport/C/F2 slice pass. RED originals, including
+  the initial missing-import harness error, remain preserved.
+
+Independent advisory review of frozen affected bytes finds no remaining
+confirmed P1. This does not replace the upcoming exact-commit reviews or CI.
+The earlier e162 reviews remain historical; the new writer defect was discovered
+after them and prohibits using that old verdict for physical execution.
+
+Hosted run38911635009 for e162 ended with CPU failure. GitHub's retained
+annotation says "The hosted runner lost communication with the server."
+The underlying cause is unverified; no CPU test/build result or successful check
+is inferred. CPU logs were unavailable through the API, and no CPU artifact was
+published. The successful host job's original ZIP and API receipts are retained
+in `hosted-ci-e162-38911635009-01/`; the ZIP matches GitHub's advertised digest.
+No job was restarted. Required checks on the new implemented commit remain
+mandatory before delegated AGENT approval and any physical operation.
+
+`gate2-operator-verification.v1.json` records current source/log identities and
+the verification boundary without overwriting the historical363-test manifest.
+All physical evidence review, external native-return authority and task2.10
+acceptance remain pending. Whole1.5 and the change's22 remaining tasks are not
+closed by these controlled checks.

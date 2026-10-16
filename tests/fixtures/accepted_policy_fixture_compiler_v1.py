@@ -556,11 +556,11 @@ class _DockerClientV1:
                        (b"Content-Type: application/json\r\n" if body is not None else b"") +
                        b"\r\n" + encoded)
             charge(request)
-            request_file = (self.output / ("RPC%02d.request.original" % number)).open("xb")
+            request_file = (self.output / ("RPC%02d.request.original" % number)).open("xb", buffering=0)
             row["request_bytes"] = len(request)
             write(request_file, request, "request")
             sync(request_file, "request_persisted")
-            reply_file = (self.output / ("RPC%02d.reply.original" % number)).open("xb")
+            reply_file = (self.output / ("RPC%02d.reply.original" % number)).open("xb", buffering=0)
             epoch = self._observe_endpoint()
             row["epoch_before"] = epoch
             sock = self.factory()

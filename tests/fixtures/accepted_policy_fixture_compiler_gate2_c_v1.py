@@ -203,7 +203,7 @@ def write_record_v1(path, value, *, cap=RECORD_LIMIT, absolute_deadline_ns=None,
         _require(len(raw) <= cap, "record_bound")
         check()
         phase = "open"
-        file = path.open("xb")
+        file = path.open("xb", buffering=0)
         facts["open_completed"] = True
         check()
         phase = "write"

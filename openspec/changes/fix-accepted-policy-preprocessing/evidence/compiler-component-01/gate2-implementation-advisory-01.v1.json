@@ -87,5 +87,56 @@
     "F2": "deadline/reservation/filesystem/native-clock corrections complete150controlledPASS; independent advisory CLEAR; formal exact-commit review pending",
     "C": "native transport schema, ledger and completion authority corrections implemented; independent focused recheck resolved both P1 findings at4d0323c4; final combined regression and formal exact-commit review pending",
     "P0": "Grok CLI second slice20controlledPASS; final pure validator/strict JSON/pre-write cap/entry-time integration34controlledPASS; formal exact-commit review pending"
+  },
+  "subsequent_operator_gate": {
+    "core_commit": "e16273e4a3f450fd16c6d2079b22c05de389eb10",
+    "core_review_record": "https://github.com/lordcoudy/VAST/pull/9#issuecomment-6217523594",
+    "core_verdicts": "Two independent CLEAR_WITH_NOTES after Grok's preserved original BLOCK and targeted operational-boundary re-review; no source change or physical success invented.",
+    "operator_candidates_executed": false,
+    "candidate_reviews": [
+      {"sha256": "ceee019495734d66e0a41b76c489ef1ec7524d4e9acce27e11c0fc6ee09dc0dd", "verdict": "BLOCK", "findings": "Late export/F2/P0 dispatch windows; bytecode suppression absent; project floor absent."},
+      {"sha256": "bef73a5b32740f7ca76f986cdcf94a85de56a7840a283f297eced27cf64cf569", "verdict": "BLOCK", "findings": "Deadline admission must be rechecked after boot/statvfs observations; substantive operator/capture code requires same-PR Git, controlled tests, exact review and CI."}
+    ],
+    "workflow_correction": "Root initially treated wrappers as operator command text. Independent review identified substantive implementation, so finalized helpers/tests must be committed in this same PR and obtain exact-commit review/CI before use; Temp location or PR SHA cannot bypass this.",
+    "requirements_amendment": false,
+    "unchanged_requirements": "Original actors/root argv/F2-P0 clocks, caps, runtime10CODE_PATHS, C/D outcomes,512MiB seal and floors remain mandatory.",
+    "status": "Tracked setup/capture helpers frozen;433 integrated controlled tests pass. Exact-commit reviews/required CI/approval pending; no physical approval.",
+    "accounting_interpretation": {
+      "reviewer": "/root/gate2_v8_review",
+      "decision": "Actual deployed helper working/Git/runtime forms and F2/capture/report copies require finite component quotes. Historical controlled-test/CI/source-test/development forms remain retained for whole1.5, not retroactively charged to F2.",
+      "retired_candidates": "Four actual Temp drafts remain byte-exact retained and nonexecuted. Removing unnecessary runtime reads/proof dependencies is faithful to V8 sections2/3/6. No fifth duplicate was created; no history, occupied-space floor or actual runtime charge is removed.",
+      "inventory": "gate2-retired-operator-drafts.v1.json; all four sizes/SHA256 independently rechecked by root before commit.",
+      "reservation_boundary": "Old B-code1MiB and fresh export/P0-code1MiB remain earmarked; neither is spare operator capacity. F2's512KiB outside reserve is an implementation subreserve within unchanged8MiB/512MiB aggregates, not a cap waiver.",
+      "approval_boundary": "Read-only accounting interpretation only. Final implemented exact-commit review, required CI and explicit delegated AGENT approval remain pending."
+    },
+    "final_advisory_recheck": {
+      "reviewer": "/root/gate2_v8_review",
+      "verdict": "ADVISORY CLEAR; no formal commit or physical approval",
+      "setup_sha256": "fe7e2ffc8a854456e4ed7d1cc032558ccefe6cefb18b7eb3b765bbe2d5753077",
+      "capture_sha256": "0aa45af74336821943dc198c7a218de1b3be3a8c866b22d412d597c31a0c4d4b",
+      "resolved_findings": [
+        "Recheck original deadline and floors after observations/imports before fresh work.",
+        "Authenticate both actual helper Git blobs; bind packet to actual authority record and independently verify helper/context/commit/approval fields.",
+        "Preserve failed native Git and returned P0 status/EOF/ordered causes/write/closure facts, including oversized actual-schema fields and explicit unknown remainder.",
+        "Preserve initiating and distinct secondary writer failures with unbuffered writes and truthful unknown extent.",
+        "Fund prospective64KiB outer capture before F2; cap combined failed raw prefixes and newline-inclusive32KiB diagnostic encoding rather than relying on normal-only32KiB output."
+      ],
+      "core_writer_correction": "Actual BufferedWriter/RawIO fault tests reproduced unknown-extent misreporting in C/F2 JSON and shared HTTP originals. Four buffering=0 open corrections, four new tests,109 affected-slice PASS; the old e162 formal verdict is historical and cannot authorize use across the newly found defect.",
+      "historical_scope_correction": "The failed-Git12KiB serializer advisory applied to earlier capture184e5c33. Capture7eb0b167 already used393216 at its later read; the final implementation instead uses the independently reviewed funded bounded protocol."
+    },
+    "hosted_core_ci": {
+      "run_id": 38911635009,
+      "commit": "e16273e4a3f450fd16c6d2079b22c05de389eb10",
+      "cpu_job_id": 117008653813,
+      "cpu_conclusion": "failure",
+      "annotation": "The hosted runner lost communication with the server.",
+      "underlying_cause": "Unverified; no CPU build/test success inferred.",
+      "host_job_id": 117008652872,
+      "host_conclusion": "success",
+      "originals": "hosted-ci-e162-38911635009-01/",
+      "cpu_log_availability": "API BlobNotFound; no CPU artifact published.",
+      "restarted": false,
+      "next_gate": "Required checks must pass on the new implemented commit; this historical failure cannot be approved away."
+    }
   }
 }
