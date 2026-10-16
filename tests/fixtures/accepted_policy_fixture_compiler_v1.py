@@ -25,6 +25,11 @@ class FixtureCompilerError(RuntimeError):
         super().__init__(", ".join(self.causes))
 
 
+def _export_member_open(path):
+    """Fresh exclusive member file; the 2.10 C6 runner alone may replace this."""
+    return path.open("xb")
+
+
 def capture_export_v1(read, output_dir):
     """Keep originals in fresh files. Passing capture never accepts an ELF."""
     output = Path(output_dir)
@@ -115,7 +120,7 @@ def capture_export_v1(read, output_dir):
                    "observed_bytes": 0, "observed_sha256": None, "close_completed": False}
             members[name] = row
             digest, observed, remaining = hashlib.sha256(), hashlib.sha256(), value["size_bytes"]
-            file = (output / filename).open("xb")
+            file = _export_member_open(output / filename)
             interrupted, extent_known = False, True
             try:
                 with file:

@@ -118,7 +118,11 @@ class OwnerTests(unittest.TestCase):
                 if case.mode == "elf_mismatch":
                     header["elf"]["sha256"] = "0" * 64
                 raw = canonical(header)
-                self.stream = io.BytesIO(b"VASTCE1\n" + struct.pack(">I", len(raw)) + raw + b"original compiler raw" + elf)
+                payload = b"VASTCE1\n" + struct.pack(">I", len(raw)) + raw + b"original compiler raw" + bytes(elf)
+                if case.mode == "framed":
+                    # Docker stdcopy framing, as the real attach reader receives it.
+                    payload = b"\x01\x00\x00\x00" + struct.pack(">I", len(payload)) + payload
+                self.stream = io.BytesIO(payload)
             def read(self, count):
                 raw = self.stream.read(count)
                 self.facts["read_eof"] = not raw
@@ -195,7 +199,8 @@ class OwnerTests(unittest.TestCase):
                 "mounts_sha256": "e" * 64, "populated": 1, "procs": [42]}
         closed = {"closed": self.mode != "closure_unknown", "populated": 0, "procs": [], "init_absent": True}
         stack = []
-        for name, value in (("_DockerClientV1", Client), ("_CompilerAttachV1", lambda duplex, output: duplex),
+        attach = compiler._CompilerAttachV1 if self.mode == "framed" else (lambda duplex, output: duplex)
+        for name, value in (("_DockerClientV1", Client), ("_CompilerAttachV1", attach),
                             ("_compiler_self_identity_v1", lambda: self.host),
                             ("_compiler_process_facts_v1", lambda pid, cid: live),
                             ("_compiler_closed_facts_v1", lambda row, cid: closed),
@@ -476,6 +481,38 @@ class OwnerTests(unittest.TestCase):
         self.assertFalse(any("/wait?" in path for path in paths[:first_kill]))
         self.assertIn("kill?signal=SIGTERM", paths[first_kill])
         self.assertTrue(found.exception.facts["forced"])
+
+    def test_c6_first_write_export_fault_replays_its_exact_outcome(self):
+        """2.10 C6 seam replay: real attach and export capture, fake engine."""
+        self.mode = "framed"
+        self.effects()
+        original = compiler._export_member_open
+        class FirstWriteFault:
+            def __init__(self, file):
+                self.file = file
+            def write(self, data):
+                raise OSError("labelled synthetic C6 export write fault")
+            def __getattr__(self, name):
+                return getattr(self.file, name)
+            def __enter__(self):
+                return self
+            def __exit__(self, *details):
+                return self.file.__exit__(*details)
+        def opener(path):
+            file = original(path)
+            return FirstWriteFault(file) if path.name == "engine.unaccepted" else file
+        with patch.object(compiler, "_export_member_open", opener):
+            with self.assertRaises(compiler.FixtureCompilerError) as found:
+                self.run_owner()
+        self.assertEqual(found.exception.causes, ["export_OSError", "attach_incomplete"])
+        facts = found.exception.facts
+        elf = facts["failed_operation"]["members"]["elf"]
+        self.assertEqual((elf["size_bytes"], elf["sha256"], elf["persisted"]), (None, None, False))
+        for member in ("stdout", "stderr"):
+            self.assertTrue(facts["failed_operation"]["members"][member]["complete"])
+        self.assertFalse(facts["forced"])
+        self.assertFalse(any("/kill?" in path for _, path, *_ in self.calls))
+        self.assertFalse(self.executable.exists())
 
     def test_sealed_rpc_inventory_is_twenty_three(self):
         self.assertEqual(self.rpc_limit, 23)
