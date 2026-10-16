@@ -330,8 +330,10 @@ lost nested facts, unbounded import exceptions and fresh writes after budget
 denial are retained and corrected before formal re-review.
 
 The D summary and post-stdout refusal together measure926B in the controlled
-producer test; with the818B quoted WSL command and bounded metadata, the selected
-capture frame is2604B. Independent grammar bounds keep that frame below3200B.
+producer original, which records an816B command and2602B selected frame. Quoting
+the WSL executable adds two bytes, giving818B/2604B; this is a calculation from
+that original, not a second producer measurement. Independent grammar bounds
+keep the selected frame below3200B.
 Before opening its retained form, UTF8 JSON plus newline must be<=4096B; each
 form funds4096B data and4096B Windows metadata, including one equally bounded
 copy in16384B. This is a bound on the selected frame, not arbitrary raw tool
@@ -356,3 +358,48 @@ unchanged historical snapshots. Exact final-commit independent reviews, required
 CI and explicit delegated AGENT approval in PR9 still precede physical setup;
 actual packet approval and per-stage native evidence reviews remain separate.
 No F2/P0/C/D, prewarm, keepalive, image action, retry, Q1, archive or merge has run.
+
+## Hosted runner identity in controlled D tests
+
+Required c67 run38922339662 completed with an actual CPU test failure.
+Its original artifact reports3874 tests,15 errors and88 existing skips. All15
+errors are in controlled D OuterTests: the hosted suite runs as UID/GID1001,
+while the fixture left the four OS identity getters unmocked. D correctly
+refused `d_host_identity` before allocating facts; secondary NoneType errors
+followed. All six CPU targets built, and the observer recorded actual rc1,
+completed trace/control EOF and no forced TERM/KILL. This differs from e162's
+earlier lost-communication failure. Neither failed run supplies CI acceptance.
+
+The original3040372B CPU ZIP matches GitHub's SHA256
+`5287934f939350cac17e06fc2cdca7a745c57522bc7ce48fd3f4105469bd820d`.
+It and original run/job/annotation/artifact API responses are retained in
+`hosted-ci-c67b-38922339662-01/`. Original job logs, including the first gh
+escape-sequence refusal and later successful raw fetch, remain retained in the
+recorded Temp directory; extracted test traces are preserved with that ZIP.
+No check was cancelled or restarted. The already running4e1 check continues
+naturally; only a successful check on the forthcoming test-fix commit can
+satisfy its required gate.
+
+The correction changes the controlled test helper only: it patches all four
+identity getters to1000 inside the fake-observer/child/clock invocation. A new
+ambient1001 case verifies both correct controlled behavior and restoration of
+the enclosing identities. Four direct-entry negative cases still require each
+wrong native identity to refuse before binding, measurement, D allocation,
+copy or child work. Production C/D source, native UID/GID1000, original clocks,
+commands, packet/export inventory and every limit remain unchanged.
+
+The D/child suite passes84 tests normally and84 with all four ambient IDs1001;
+the original hosted-actor RED22 and GREEN23 are retained. Final focused
+discovery passes470 tests with zero failures/errors/skips;31-file/11-embedded
+Python3.10 grammar checks pass. Separate advisory review is CLEAR for the
+test-only diff. `gate2-hosted-actor-verification.v1.json` binds the new evidence
+and current sources without rewriting earlier historical manifests. Formal
+exact-commit reviews, latest required CI and explicit delegated AGENT approval
+remain mandatory before physical work; task2.10 remains unchecked.
+
+Both independent source reviewers returned CLEAR_WITH_NOTES for exact4e1.
+Grok's exported final-response section is retained separately; its full original
+session export remains in Temp. The UID fixture note is addressed by this
+test-only correction. Its two-byte frame-reporting note is clarified above;
+the original2602B measurement remains unchanged. These historical source
+verdicts do not approve the later test/evidence commit or its pending CI.

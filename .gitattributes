@@ -419,3 +419,8 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 # Preserve the original hosted diagnostic ZIP from the interrupted CPU run.
 /openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-e162-38911635009-01/*.zip -text !eol
 /openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-e162-38911635009-01/*.zip -text !eol
+# Preserve the original c67 hosted failure artifact and API response bytes.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/*.zip -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/*.original.json -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/*.original.json -text !eol

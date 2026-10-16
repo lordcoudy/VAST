@@ -356,7 +356,9 @@ class OuterTests(unittest.TestCase):
         return result
 
     def run_d(self, **kwargs):
-        with patch.object(self.c, 'validated_c1_binding_v1', side_effect=kwargs.get('binding'),
+        with patch.multiple(stage.os, getuid=lambda:1000, geteuid=lambda:1000,
+                            getgid=lambda:1000, getegid=lambda:1000), \
+             patch.object(self.c, 'validated_c1_binding_v1', side_effect=kwargs.get('binding'),
                           return_value=self.binding):
             return stage.run_d_v1(project_root=self.root,
                                   packet_descriptor={'controlled': True},
@@ -378,6 +380,35 @@ class OuterTests(unittest.TestCase):
         self.assertEqual(result['ledger_after_receipt']['remaining_before'], 400 * 1024 ** 2)
         self.assertEqual(self.calls[0]['absolute_deadline_ns'], 11000000000)
         self.assertEqual(self.calls[0]['started_ns'], 1000000000)
+
+    def test_controlled_outer_helper_is_independent_of_hosted_runner_actor(self):
+        with patch.multiple(stage.os,getuid=lambda:1001,geteuid=lambda:1001,
+                            getgid=lambda:1001,getegid=lambda:1001):
+            result=self.run_d()
+            self.assertEqual((stage.os.getuid(),stage.os.geteuid(),stage.os.getgid(),stage.os.getegid()),
+                             (1001,1001,1001,1001))
+        self.assertTrue(result['evaluation']['passed'])
+        self.assertTrue(result['controlled'])
+        self.assertFalse(result['evaluation']['physical_acceptance'])
+
+    def test_native_host_identity_rejects_each_wrong_actor_before_binding_or_allocation(self):
+        for wrong in ('getuid','geteuid','getgid','getegid'):
+            actors={name:(lambda:1000) for name in ('getuid','geteuid','getgid','getegid')}
+            actors[wrong]=lambda:1001
+            observer=FakeObserver()
+            with self.subTest(actor=wrong),patch.multiple(stage.os,**actors), \
+                 patch.object(self.c,'validated_c1_binding_v1') as binding, \
+                 patch.object(observer,'measure') as measure, \
+                 patch.object(stage,'_copy_c1_elf_v1') as copied,patch.object(self,'child') as child:
+                with self.assertRaises(stage.StageDRefusal) as caught:
+                    stage.run_d_v1(project_root=self.root,packet_descriptor={'controlled':True},
+                        expected_packet_sha256='c'*64,expected_code_commit='e'*40,
+                        completion_authorities={},_observer=observer,_child_runner=child,
+                        _clock=lambda:1000000000)
+                self.assertEqual(caught.exception.cause,'d_host_identity')
+                binding.assert_not_called();measure.assert_not_called()
+                copied.assert_not_called();child.assert_not_called()
+                self.assertFalse((self.root/'outputs/D').exists())
 
     def test_external_c_completion_authorities_are_frozen_for_both_binding_checks(self):
         authorities = {name: {'path': str(self.root / 'outputs' / name / 'outer.invocation.original.json'),

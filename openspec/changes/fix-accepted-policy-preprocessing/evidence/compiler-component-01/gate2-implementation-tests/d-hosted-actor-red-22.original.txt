@@ -1,0 +1,19 @@
+E.
+======================================================================
+ERROR: test_controlled_outer_helper_is_independent_of_hosted_runner_actor (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_controlled_outer_helper_is_independent_of_hosted_runner_actor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 385, in test_controlled_outer_helper_is_independent_of_hosted_runner_actor
+    result=self.run_d()
+           ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 361, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py", line 672, in run_d_v1
+    raise StageDRefusal('d_host_identity')
+tests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_host_identity
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.028s
+
+FAILED (errors=1)
