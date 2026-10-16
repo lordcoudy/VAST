@@ -1002,7 +1002,7 @@ async def _run_command(effects, name, phases, stderr_budget, output_dir, clock, 
                 _add(causes, "deadline_late")
                 break
             if now >= phases["capture_deadline"] and not (
-                (stdout.eof or stdout.overflow) and (stderr.eof or stderr.overflow)
+                (stdout.eof or stdout.overflow) and (stderr.eof or stderr.overflow) and status is not None
             ):
                 command["timed_out"] = True
                 _mark_remainder(stdout, stderr)
@@ -1047,7 +1047,9 @@ async def _run_command(effects, name, phases, stderr_budget, output_dir, clock, 
             if (stdout.eof or stdout.overflow) and (stderr.eof or stderr.overflow) and status is not None:
                 break
             after = _signature(stdout, stderr, status)
-            if after == before and now <= before_t:
+            # Async process-exit callbacks can remain queued after both pipe
+            # EOFs. An advancing clock is not progress and must not starve them.
+            if after == before:
                 if idle is not None:
                     await _maybe(idle())
                     now = await observe()

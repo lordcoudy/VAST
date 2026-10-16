@@ -309,3 +309,27 @@ appended implementation-conformance section for source/test/capacity bindings
 and limitations. New exact implemented-source reviews/CI/AGENT approval and
 actual packet/per-C/D evidence gates remain pending; no successor has run.
 All46 task identities and24 completion states remain unchanged;2.10 is open.
+
+## Task2.10 actual successor failure and P0 correctness follow-up
+
+Exact465ab7986939c67ae3594344ee3b6266cd2abd7a received two independent
+CLEAR_WITH_NOTES source reviews, successful required CI38954795991 and explicit
+delegated AGENT approval PR9comment6223768900. Its sole actual successor completed
+all19 F2 GETs/13 member checks, then failed P0's first root id command with unknown
+exit status, late deadline and incomplete raw-stream persistence. Actual capture
+returned1; no packet/C/D exists. Independent retention review is CLEAR_WITH_NOTES
+only; failure facts and the consumed admission are recorded in PR9comment6223871586
+and gate2-successor-465a.outer-tool.original.json. The whole-setup closing meter
+and peak remain UNAVAILABLE; F2's prefix envelope is not a final setup charge.
+
+A correctness-only P0 fix preserves the existing approved numerical/ownership/
+argv/persistence/refusal contract: unchanged polling yields to queued callbacks,
+and unknown status remains incomplete at the existing capture cutoff. Four new
+controlled regressions reproduce3 RED failures; canonical WSL integrated545PASS.
+The complete Windows38-test run's2errors/1failure remain preserved, with its
+explicit35-case subset separate. No old-source Windows baseline was run.
+See gate2-p0-cooperative-verification.v1.json and appended conformance mapping.
+Changed P0 adds147456B in full working/Git forms:614400B exceeds the unchanged
+524288B reserve by90112B. The physical admission is CONSUMED; no retry/third setup
+or cap change is authorized. New exact-source reviews/CI are still required.
+All46 task identities and24 completion states remain unchanged;2.10 stays open.

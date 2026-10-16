@@ -611,3 +611,55 @@ Microsoft defines the queried
 and [GetFileInformationByHandleEx](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getfileinformationbyhandleex).
 No monitor, new context payload, deadline extension, source-root allowance,
 F2/outside cap or physical approval is introduced by this external prerequisite.
+
+## Actual465 successor failure and cooperative P0 correction
+
+The465 source stage passed two independent exact-commit reviews, required
+CI38954795991 (3982 tests,541 compiler successes,88 unchanged skips), fresh
+Windows Git13/same-FD allocation audit and delegated AGENT approval
+[PR9comment6223768900](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6223768900).
+The subsequent sole successor FAILED; its independent retention review and
+actual failure facts are recorded at
+[PR9comment6223871586](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6223871586).
+No historical source verification or controlled log is rewritten.
+
+- Actual F2:19 HTTP200 GETs,38 raw originals totaling4205032B,13 verified TAR
+  members totaling4112896B, and index/supplement/footer5194/26717/739B. All
+  transport persistence/EOF/socket-close facts and before/after identity agree.
+  Recorded charge5050368+reserved tail294912=5345280B is an F2 PREFIX envelope;
+  whole-setup closing charge and peak remain UNAVAILABLE.
+- Actual P0:only root id was attempted; observed2stdout bytes and bothEOFs do
+  not provide a known exit status or persisted original. Returncode remainsnull,
+  deadline late, Linux-child closure unknown; raw stream files are absent.
+  Complete2538B control and1081B completion failure records do not establish
+  successful P0. Neither ctr command, packet, C nor D ran.
+- Actual outer capture:exit1, driver stdout0/stderr6392B, bothEOFs and captured
+  known extents/fsync/close verified. The3609B selected actual tool frame is
+  retained once with SHA7fc5ef24fb7d226b33a88cab6a57643ef8c86eb774f99cb6e655bb3c69663079;
+  post_meter isnull. The native outer PID/per-stream EOF is not separately
+  exposed by the enclosing tool; completed tool communication is its trusted
+  completion interpretation. No additional raw receipt/stream copy is created.
+- Source correctness:gate2_p0_v1._run_command now yields via its existing idle
+  seam on unchanged observable state even with an advancing clock; its existing
+  capture cutoff also requires known status alongside EOF. This prevents queued
+  asyncio exit callbacks being starved and preserves the existing termination/
+  persistence reserves. No deadline, argv/env, ownership, allocation, unknown or
+  forced-closure predicate is relaxed. It cannot repair historical missing facts.
+- Tests:CooperativeStatusTests exercises actual call_soon callback scheduling,
+  advancing controlled time, absent status, nonzero status and late publication
+  without real commands. RED4/3fail; new cases GREEN; canonical WSL3.12.3 UID/GID1000
+  integrated545PASS15.480s. Full Windows38 retained2errors/1failure when native
+  block facts are unavailable; the explicitly declared35-case subset passes.
+  No old-source Windows baseline is claimed and no allocation guard is mocked
+  merely to turn those failures green. Python3.10 source/test grammar passes.
+- Admission:the sole successor is CONSUMED. P0's changed full working+Git forms
+  add147456B to466944B, producing614400B against the unchanged524288B reserve
+  (90112B excess). This source correction grants no further physical recipe,
+  retry, third setup, C/D, cleanup, image action, archive or final approval.
+  Task2.10, whole1.5, genuine/package/reader and final gates remain open.
+
+gate2-p0-cooperative-verification.v1.json binds the exact source/test and original
+RED/failed-Windows/subset/canonical logs, selected failed tool frame and retained
+native descriptors. Independent source review is advisory until the new exact
+commit and required CI are recorded. Dedicated CI conformance coverage remains
+absent; this local scenario report does not substitute for native acceptance.

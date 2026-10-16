@@ -1392,5 +1392,106 @@ class AdditionalNativeBoundaryTests(unittest.TestCase):
                 self.assertFalse(any(event[0] == "mkdir" for event in effects.events))
 
 
+class CooperativeStatusEffects(ControlledEffects):
+    """Advancing clock; status arrives through a real event-loop callback only."""
+
+    def __init__(self, published_status=0, *, late_publication=False):
+        super().__init__(success_scripts())
+        self.published_status = published_status
+        self.late_publication = late_publication
+        self.status = None
+        self.eof_seen = set()
+        self.callback_scheduled = False
+        self.idle_calls = 0
+        self.termination_times = []
+
+    def monotonic(self):
+        self.t += 0.01
+        return self.t
+
+    def _read(self, handle, max_bytes, stream):
+        raw = super()._read(handle, max_bytes, stream)
+        if raw == b"":
+            self.eof_seen.add((handle.index, stream))
+        return raw
+
+    def poll_exit(self, handle):
+        if handle.index != 0:
+            return super().poll_exit(handle)
+        if handle.terminated:
+            return None
+        if all((0, stream) in self.eof_seen for stream in ("stdout", "stderr")):
+            if not self.callback_scheduled and self.published_status is not None:
+                self.callback_scheduled = True
+                def publish():
+                    self.status = self.published_status
+                    if self.late_publication:
+                        self.t += 11.0
+                asyncio.get_running_loop().call_soon(publish)
+        return self.status
+
+    async def idle(self):
+        self.idle_calls += 1
+        await asyncio.sleep(0)
+
+    def terminate_owned_parent(self, handle):
+        self.termination_times.append(self.t)
+        return super().terminate_owned_parent(handle)
+
+
+class CooperativeStatusTests(unittest.TestCase):
+    def test_both_eof_status_callback_runs_while_monotonic_clock_advances(self):
+        effects = CooperativeStatusEffects()
+        result = collect(OUT, binding(), effects)
+        first = result["commands"][0]
+        self.assertTrue(first["eof_stdout"] and first["eof_stderr"])
+        self.assertTrue(effects.callback_scheduled)
+        self.assertTrue(result["accepted"])
+        self.assertGreater(effects.idle_calls, 0)
+        self.assertEqual(first["returncode"], 0)
+        self.assertEqual(effects.terminations, [])
+        self.assertLess(first["timestamps"]["persist_finished"], first["deadline"]["capture_deadline"])
+
+    def test_both_eof_never_status_preserves_existing_capture_and_persistence_reserves(self):
+        effects = CooperativeStatusEffects(None)
+        result = collect(OUT, binding(), effects)
+        first = result["commands"][0]
+        self.assertFalse(result["accepted"])
+        self.assertEqual(effects.spawn_calls, 1)
+        self.assertEqual(len(effects.termination_times), 1)
+        self.assertGreaterEqual(effects.termination_times[0], first["deadline"]["capture_deadline"])
+        self.assertLess(effects.termination_times[0], first["deadline"]["termination_deadline"])
+        self.assertFalse(first["late"])
+        self.assertTrue(first["forced_parent_termination"])
+        self.assertIsNone(first["returncode"])
+        self.assertEqual(first["linux_child_closure"], "unknown")
+        self.assertTrue(first["stdout"]["persistence"]["completed"])
+        self.assertTrue(first["stderr"]["persistence"]["completed"])
+
+    def test_delayed_nonzero_callback_never_becomes_acceptance(self):
+        effects = CooperativeStatusEffects(7)
+        result = collect(OUT, binding(), effects)
+        first = result["commands"][0]
+        self.assertFalse(result["accepted"])
+        self.assertEqual(effects.spawn_calls, 1)
+        self.assertEqual(first["returncode"], 7)
+        self.assertIn("wsl_status_nonzero", first["causes"])
+        self.assertFalse(first["forced_parent_termination"])
+        self.assertTrue(first["stdout"]["persistence"]["completed"])
+
+    def test_callback_after_original_command_deadline_keeps_late_unknown_refusal(self):
+        effects = CooperativeStatusEffects(0, late_publication=True)
+        result = collect(OUT, binding(), effects)
+        first = result["commands"][0]
+        self.assertFalse(result["accepted"])
+        self.assertEqual(effects.spawn_calls, 1)
+        self.assertTrue(first["late"])
+        self.assertEqual(first["linux_child_closure"], "unknown")
+        self.assertFalse(first["normal_exit"])
+        self.assertEqual(effects.terminations, [])
+        self.assertFalse(first["stdout"]["persistence"]["completed"])
+        self.assertFalse(any(path.endswith(p0.STREAM_FILES["id"][0]) for path in effects.opened))
+
+
 if __name__ == "__main__":
     unittest.main()
