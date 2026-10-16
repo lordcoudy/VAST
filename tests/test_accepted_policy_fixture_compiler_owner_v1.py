@@ -178,6 +178,12 @@ class OwnerTests(unittest.TestCase):
                     case.attach_closed_at_wait.append(self.duplex.facts["closed"])
                     if case.mode == "late_running" and len(case.attach_closed_at_wait) > 1:
                         return {}
+                    if case.mode == "lost_start":
+                        return {}  # still running after the bounded normal-close wait
+                    if case.mode == "wait_nonzero":
+                        return {"StatusCode": 1, "Error": None}
+                    if case.mode == "wait_error" and len(case.attach_closed_at_wait) == 1:
+                        raise compiler.FixtureCompilerError("docker_io_TimeoutError")
                     if case.mode == "source_post_drift":
                         case.source.write_bytes(b"changed after compiler start")
                     return {"StatusCode": 0, "Error": None}
@@ -306,7 +312,9 @@ class OwnerTests(unittest.TestCase):
         paths = [path for _, path, *_ in self.calls]
         after = paths[next(index for index, path in enumerate(paths) if path.endswith("/start")) + 1:]
         self.assertTrue(facts["start_attempted"])
-        self.assertTrue(any("/kill?signal=SIGTERM" in path for path in after))
+        self.assertTrue(facts["containment_close_wait"])
+        self.assertLess(next(i for i, p in enumerate(after) if "/wait?" in p),
+                        next(i for i, p in enumerate(after) if "/kill?signal=SIGTERM" in p))
         self.assertTrue(any(path.endswith("/" + "a" * 64 + "/json") for path in after))
         self.assertIn("containment_state", facts)
         self.assertFalse(self.executable.exists())
@@ -414,6 +422,63 @@ class OwnerTests(unittest.TestCase):
         self.assertIn("owner_publisher_status", found.exception.causes)
         self.assertTrue(hasattr(found.exception, "facts"))
         self.assertEqual(self.restored, [True])
+
+    def paths_after(self, marker):
+        paths = [path for _, path, *_ in self.calls]
+        return paths[max(index for index, path in enumerate(paths) if marker in path) + 1:] if any(marker in p for p in paths) else []
+
+    def test_nonzero_wait_is_observed_stopped_without_term_or_kill(self):
+        self.mode = "wait_nonzero"
+        self.effects()
+        with self.assertRaises(compiler.FixtureCompilerError) as found:
+            self.run_owner()
+        self.assertIn("owner_wait_status", found.exception.causes)
+        self.assertFalse(any("/kill?" in path for _, path, *_ in self.calls))
+        self.assertFalse(found.exception.facts["forced"])
+        self.assertTrue(self.calls[-1][1].endswith("/" + "a" * 64 + "/json"))
+        self.assertIn("containment_state", found.exception.facts)
+
+    def test_failure_before_wait_spends_normal_close_wait_before_any_signal(self):
+        self.effects()
+        def faulted(read, output):
+            raise compiler.FixtureCompilerError("export_OSError")
+        with patch.object(compiler, "capture_export_v1", faulted):
+            with self.assertRaises(compiler.FixtureCompilerError) as found:
+                self.run_owner()
+        self.assertEqual(found.exception.causes[0], "export_OSError")
+        paths = [path for _, path, *_ in self.calls]
+        self.assertTrue(any("/wait?" in path for path in paths))
+        self.assertFalse(any("/kill?" in path for path in paths))
+        self.assertFalse(found.exception.facts["forced"])
+        self.assertLessEqual(len(self.calls), self.rpc_limit)
+
+    def test_failure_during_normal_close_keeps_its_bound_without_reset(self):
+        self.mode = "wait_error"
+        self.effects()
+        with self.assertRaises(compiler.FixtureCompilerError):
+            self.run_owner()
+        waits = [kwargs for _, path, _, kwargs in self.calls if "/wait?" in path]
+        self.assertGreaterEqual(len(waits), 2)
+        # The containment wait stays inside the normal-close bound of the first.
+        self.assertLessEqual(waits[1]["deadline_ns"], waits[0]["deadline_ns"])
+
+    def test_no_normal_close_time_left_goes_straight_to_term(self):
+        self.effects()
+        start = self.now[0]
+        def late(read, output):
+            self.now[0] = start + 81_000_000_000
+            raise compiler.FixtureCompilerError("export_OSError")
+        with patch.object(compiler, "capture_export_v1", late):
+            with self.assertRaises(compiler.FixtureCompilerError) as found:
+                self.run_owner()
+        paths = [path for _, path, *_ in self.calls]
+        first_kill = next(index for index, path in enumerate(paths) if "/kill?" in path)
+        self.assertFalse(any("/wait?" in path for path in paths[:first_kill]))
+        self.assertIn("kill?signal=SIGTERM", paths[first_kill])
+        self.assertTrue(found.exception.facts["forced"])
+
+    def test_sealed_rpc_inventory_is_twenty_three(self):
+        self.assertEqual(self.rpc_limit, 23)
 
     def test_attach_closes_before_normal_close_rpcs(self):
         self.effects()

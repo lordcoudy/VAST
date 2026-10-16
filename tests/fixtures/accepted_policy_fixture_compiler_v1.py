@@ -328,7 +328,7 @@ class _DockerClientV1:
     LIMIT = 262144
     ORDINARY_LIMIT = 196608
     HEADER_LIMIT = 8192
-    RPC_LIMIT = 21
+    RPC_LIMIT = 23
     API_VERSION = "1.55"
 
     def __init__(self, output_dir, absolute_deadline_ns, *, socket_factory=None, clock=None):
@@ -395,7 +395,7 @@ class _DockerClientV1:
 
         A failed ordinary call permanently blocks more ordinary work. Only
         explicitly marked owner-approved containment/inspection can use the
-        reserved 64KiB, still within the same 256KiB/21-call/absolute bounds.
+        reserved 64KiB, still within the same 256KiB/23-call/absolute bounds.
         Every returned Duplex must be closed by its owning caller.
         """
         if (method not in ("GET", "POST") or type(method) is not str or
@@ -1464,6 +1464,7 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
     guards = []
     previous_handlers, received_signal = [], [None]
     normal_deadline = None
+    wait_reply = None
     live, final, captured, config, name, cid = None, None, None, None, None, None
     started = False
     control_bytes = admission_bytes + recipe_bytes
@@ -1647,7 +1648,7 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
         normal_end = min(deadline - 70_000_000_000, started_at + 70_000_000_000, now() + 10_000_000_000)
         normal_deadline = normal_end
         summary(normal_end, cleanup=True)
-        waited = rpc("POST", "/containers/" + cid + "/wait?condition=not-running", phase=normal_end, cleanup=True)
+        waited = wait_reply = rpc("POST", "/containers/" + cid + "/wait?condition=not-running", phase=normal_end, cleanup=True)
         require(type(waited) is dict and type(waited.get("StatusCode")) is int and waited["StatusCode"] == 0
                 and waited.get("Error") in (None, {}), "owner_wait_status")
         final = inspect_owned(normal_end, cleanup=True)
@@ -1689,10 +1690,33 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
             fail(code)
         if isinstance(error, FixtureCompilerError) and hasattr(error, "facts"):
             facts["failed_operation"] = error.facts
-        already_stopped = (type(final) is dict and type(final.get("State")) is dict and
-                           final["State"].get("Running") is False and final["State"].get("Pid") == 0)
-        if client is not None and cid is not None and facts["start_attempted"] and not facts["normal_closed"] and not already_stopped:
-            for signal_name in ("SIGTERM", "SIGKILL"):
+        # Containment starts from the latest observed state, never from an
+        # unset `final`: an inspect wins, else an integer wait status means
+        # not-running. Signalling an exited container only adds 409 noise.
+        if type(final) is dict and type(final.get("State")) is dict:
+            observed_stopped = final["State"].get("Running") is False and final["State"].get("Pid") == 0
+            already_stopped = observed_stopped
+        else:
+            observed_stopped = type(wait_reply) is dict and type(wait_reply.get("StatusCode")) is int
+            already_stopped = False
+        contain = (client is not None and cid is not None and facts["start_attempted"]
+                   and not facts["normal_closed"] and not already_stopped)
+        if contain and not observed_stopped:
+            # Spend only what remains of the normal-close phase; no phase reset.
+            try:
+                current = now(allow_failure=True)
+                bound = normal_deadline if normal_deadline is not None else min(
+                    current + 10_000_000_000, deadline - 70_000_000_000)
+                if bound > current:
+                    facts["containment_close_wait"] = True
+                    summary(bound, cleanup=True)
+                    reply = rpc("POST", "/containers/" + cid + "/wait?condition=not-running", phase=bound, cleanup=True)
+                    observed_stopped = type(reply) is dict and type(reply.get("StatusCode")) is int
+            except BaseException as secondary:
+                for code in secondary.causes if isinstance(secondary, FixtureCompilerError) else ["owner_containment_" + type(secondary).__name__]:
+                    fail(code)
+        if contain:
+            for signal_name in ("SIGTERM", "SIGKILL") if not observed_stopped else ():
                 try:
                     end = min(deadline - 10_000_000_000, now(allow_failure=True) + 30_000_000_000)
                     summary(end, cleanup=True)
