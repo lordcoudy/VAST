@@ -456,10 +456,16 @@ def bad_abi_probe():
             entry["image"] = {"size_bytes": len(image), "sha256": hashlib.sha256(image).hexdigest(),
                               "elf64_amd64": image[:4] == b"\x7fELF" and image[4] == 2
                               and int.from_bytes(image[18:20], "little") == 62}
-            memfd = os.memfd_create("vast-probe-" + name, 0)
-            view = memoryview(image)
-            while view:
-                view = view[os.write(memfd, view):]
+            try:
+                # MFD_EXEC (0x10) states the executable intent explicitly.
+                memfd = os.memfd_create("vast-probe-" + name, 0x10)
+                view = memoryview(image)
+                while view:
+                    view = view[os.write(memfd, view):]
+            except OSError as error:
+                entry["memfd_error"] = errno.errorcode.get(error.errno, error.errno)
+                result[name] = entry
+                continue
             pid = os.fork()
             if pid == 0:
                 try:

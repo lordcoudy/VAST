@@ -272,8 +272,8 @@ Expected outcomes:
 
   Any other outcome stops the plan and requires a specification amendment.
   That includes an x32 child that sees `-EPERM` (fixed exit 3), `-ENOSYS`
-  (fixed exit 5), or its pid back (exit 4; `CONFIG_X86_X32_ABI=y`), and any
-  memfd or exec failure (exit 127).
+  (fixed exit 5), or its pid back (exit 4; `CONFIG_X86_X32_ABI=y`), an exec
+  failure (exit 127), and a recorded `memfd_error`.
 - **dmesg** (`dmesg_restrict` = 0): for each SIGSYS death the expected delta
   is one `has RLIMIT_CORE set to 1` line and one `Aborting core` line (pipe
   `core_pattern`, recorded), with no pipe-helper execution and an unchanged
@@ -498,3 +498,9 @@ remain required.
 - **P0 output:** the runner validates the `ctr ... info` JSON for the
   committed chain. The user-run `snapshots ls` output is retained alongside
   it by the operator.
+- **Operator notes:**
+  - With the owner's handlers installed, a SIGINT or SIGTERM to the runner
+    is recorded, and the run continues to its bounded deadline (at most
+    150 s) with full containment.
+  - `cc1 --version` writes to stderr, so gate 2 reads that field.
+  - `memfd_create` passes `MFD_EXEC` explicitly.

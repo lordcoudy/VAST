@@ -337,8 +337,11 @@ def run_probe_container_v1(*, project_root: Path, probe: str, output_dir: Path, 
             if type(facts.get("live")) is dict and "cgroup_path" in facts["live"]:
                 try:
                     facts["closure"] = compiler._compiler_closed_facts_v1(facts["live"], cid)
-                except Exception as error:
+                except BaseException as error:  # noqa: B036 - recorded; interrupts deferred
                     facts["closure"] = {"unavailable": type(error).__name__}
+                    if not isinstance(error, Exception):
+                        fail("probe_" + type(error).__name__)
+                        interrupt = interrupt or error
     finally:
         for code in compiler._compiler_restore_handlers_v1(previous):
             fail(code)
