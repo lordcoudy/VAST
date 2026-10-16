@@ -52,6 +52,10 @@ None.
 - Historical retention only for Decision9-13 rehearsal sources, authority/result proposals, custody and observer/bootstrap studies. They confer no active implementation, fixture or live-storage authority after Decision14; future storage work needs a separately reviewed scope and fresh admission.
 - No new dependency, qualification/producer receipt-kind or schema change, relaxed scientific criterion, Q4/capacity/full-matrix execution, CI infrastructure change or rewrite of historical attempts is proposed. Decision9's host-only rehearsal kinds remain unimplemented historical planning.
 
+## Compiler gate-2 continuation (Decision15)
+
+The observed B1-B3 component stages leave six C containers and gate 2 pending. The V8 component admission amendment records the bounded stopped-B1 toolchain supplement, narrow effective-config normalization, externally bound runner/proof packet, exact negative-outcome checks and complete physical accounting before further execution. It preserves all original source/profile/scientific limits and the 512 MiB seal, with no new qualification, image/storage action or merge authority. Independent exact-commit review, required checks and delegated approval precede dependent implementation and the implemented packet's physical use; existing component/whole-chain acceptance boundaries and task states remain unchanged.
+
 ## Standalone cold-reader refinement (Decision16)
 
 The complete-consumer fixture's standalone default guardian reader still uses unbounded subprocess capture and writes both raw streams and the result JSON without byte limits (tests/fixtures/accepted_policy_standalone_reader_fixture_v2.py:57,60-61,88). Add only a fixed capture/result boundary for that reader in the existing benchmark-launch-preparation capability. Preserve its existing _PROGRAM, interpreter/argv provenance, default guardian/fragment/stock validators and full source-provenance proof; no scientific predicate, production default, provider or receipt-kind substitution is proposed.
