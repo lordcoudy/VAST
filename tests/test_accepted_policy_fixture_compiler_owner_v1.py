@@ -187,6 +187,7 @@ class OwnerTests(unittest.TestCase):
                     if case.mode == "wait_nonzero":
                         return {"StatusCode": 1, "Error": None}
                     if case.mode == "wait_error" and len(case.attach_closed_at_wait) == 1:
+                        case.now[0] += 2_000_000_000  # time passes inside the failing wait
                         raise compiler.FixtureCompilerError("docker_io_TimeoutError")
                     if case.mode == "source_post_drift":
                         case.source.write_bytes(b"changed after compiler start")
@@ -437,7 +438,8 @@ class OwnerTests(unittest.TestCase):
         self.effects()
         with self.assertRaises(compiler.FixtureCompilerError) as found:
             self.run_owner()
-        self.assertIn("owner_wait_status", found.exception.causes)
+        self.assertEqual(found.exception.causes, ["owner_wait_status"])
+        self.assertEqual(sum("/wait?" in path for _, path, *_ in self.calls), 1)
         self.assertFalse(any("/kill?" in path for _, path, *_ in self.calls))
         self.assertFalse(found.exception.facts["forced"])
         self.assertTrue(self.calls[-1][1].endswith("/" + "a" * 64 + "/json"))
@@ -464,8 +466,8 @@ class OwnerTests(unittest.TestCase):
             self.run_owner()
         waits = [kwargs for _, path, _, kwargs in self.calls if "/wait?" in path]
         self.assertGreaterEqual(len(waits), 2)
-        # The containment wait stays inside the normal-close bound of the first.
-        self.assertLessEqual(waits[1]["deadline_ns"], waits[0]["deadline_ns"])
+        # Time advanced inside the failed wait; a reset would move the bound later.
+        self.assertEqual(waits[1]["deadline_ns"], waits[0]["deadline_ns"])
 
     def test_no_normal_close_time_left_goes_straight_to_term(self):
         self.effects()
@@ -481,6 +483,8 @@ class OwnerTests(unittest.TestCase):
         self.assertFalse(any("/wait?" in path for path in paths[:first_kill]))
         self.assertIn("kill?signal=SIGTERM", paths[first_kill])
         self.assertTrue(found.exception.facts["forced"])
+        self.assertNotIn("containment_close_wait", found.exception.facts)
+        self.assertNotIn("owner_phase_deadline", found.exception.causes)
 
     def test_c6_first_write_export_fault_replays_its_exact_outcome(self):
         """2.10 C6 seam replay: real attach and export capture, fake engine."""

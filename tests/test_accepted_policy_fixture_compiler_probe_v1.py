@@ -63,6 +63,8 @@ class ProbeProgramTests(unittest.TestCase):
             self.assertFalse(facts["header"]["elf"]["available"])
 
     def test_assembly_probes_have_fixed_exit_codes(self):
+        self.assertIn("cmpq $-38, %rax", program.X32_ASM)
+        self.assertIn("movl $5, %edi", program.X32_ASM)
         self.assertIn("$0x40000027", program.X32_ASM)
         self.assertIn("int $0x80", program.I386_ASM)
         self.assertIn("movl $3, %edi", program.X32_ASM)
@@ -141,10 +143,14 @@ class RunnerTests(unittest.TestCase):
                     return case.info
                 if path.startswith("/images/"):
                     return case.image
+                if path.startswith("/containers/json?") and "filters=" in path:
+                    return [{"Id": "a" * 64, "Names": ["/x"]}]
                 if path.startswith("/containers/json?"):
                     return case.containers
                 if path.startswith("/containers/create?"):
                     case.config = body
+                    if case.mode == "lost_create":
+                        raise compiler.FixtureCompilerError("docker_io_TimeoutError")
                     return {"Id": "a" * 64, "Warnings": []}
                 if "/attach?" in path:
                     return Duplex()
@@ -154,8 +160,8 @@ class RunnerTests(unittest.TestCase):
                     if case.mode == "stall" and not any("SIGKILL" in p for _, p, *_ in case.calls):
                         raise compiler.FixtureCompilerError("docker_deadline")
                     return {"StatusCode": 137 if case.mode == "stall" else 0, "Error": None}
-                if path.endswith("/json"):
-                    return {"Config": {**case.config, "Labels": {**case.config["Labels"], "img": "x"}},
+                if path.startswith("/containers/" + "a" * 64 + "/json"):
+                    return {"SizeRw": 4096, "SizeRootFs": 1, "Config": {**case.config, "Labels": {**case.config["Labels"], "img": "x"}},
                             "HostConfig": case.config["HostConfig"], "State": {"Running": False, "Pid": 0,
                             "ExitCode": 137 if case.mode == "stall" else 0, "OOMKilled": False}}
                 raise AssertionError("unselected endpoint " + path)
@@ -168,7 +174,8 @@ class RunnerTests(unittest.TestCase):
             patcher = mock.patch.object(compiler, name, value)
             patcher.start()
             self.addCleanup(patcher.stop)
-        for name, value in (("_c_free_bytes", lambda: self.c_free), ("_gpu_processes", lambda: self.gpu)):
+        for name, value in (("_c_free_bytes", lambda: self.c_free), ("_gpu_processes", lambda: self.gpu),
+                            ("_measure", lambda: {"controlled": True})):
             patcher = mock.patch.object(runner, name, value)
             patcher.start()
             self.addCleanup(patcher.stop)
@@ -194,6 +201,8 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(self.config["HostConfig"]["Mounts"][0]["Source"],
                          str(self.root / runner.PROGRAM_RELATIVE))
         self.assertTrue((self.root / "out-B1" / "probe.result.original.json").is_file())
+        self.assertEqual(facts["container_size"], {"SizeRw": 4096, "SizeRootFs": 1})
+        self.assertEqual(facts["measure_before"], {"controlled": True})
 
     def test_b3_stall_gets_one_term_then_one_kill_and_records_137(self):
         self.mode = "stall"
@@ -224,6 +233,45 @@ class RunnerTests(unittest.TestCase):
                     self.run_probe("B2")
                 self.assertEqual(self.creates(), [])
                 self.assertTrue((self.root / "out-B2" / "probe.refusal.original.json").is_file())
+
+    def test_unexpected_exception_after_start_is_contained_and_recorded(self):
+        self.effects()
+        with mock.patch.object(compiler, "capture_export_v1", side_effect=RuntimeError("untrusted")):
+            facts = self.run_probe("B2")
+        self.assertIn("probe_RuntimeError", facts["causes"])
+        self.assertTrue(any(label == "normal_close_wait" for label, *_ in facts["containment"]))
+        self.assertTrue((self.root / "out-B2" / "probe.result.original.json").is_file())
+
+    def test_interrupt_after_start_is_contained_recorded_then_reraised(self):
+        self.mode = "stall"
+        self.effects()
+        with mock.patch.object(compiler, "capture_export_v1", side_effect=KeyboardInterrupt):
+            with self.assertRaises(KeyboardInterrupt):
+                self.run_probe("B3")
+        result = json.loads((self.root / "out-B3" / "probe.result.original.json").read_bytes())
+        self.assertIn("probe_KeyboardInterrupt", result["causes"])
+        self.assertEqual([row[0] for row in result["containment"] if row[0].startswith("kill_")],
+                         ["kill_SIGTERM", "kill_SIGKILL"])
+
+    def test_lost_create_reply_is_reconciled_by_name_without_start(self):
+        self.mode = "lost_create"
+        self.effects()
+        facts = self.run_probe("B2")
+        self.assertEqual(facts["create_reconciled"], ["a" * 64])
+        self.assertFalse(facts["start_attempted"])
+        self.assertEqual(sum("/create?" in path for _, path, *_ in self.calls), 1)
+        self.assertFalse(any(path.endswith("/start") for _, path, *_ in self.calls))
+
+    def test_identity_guard_checks_id_and_repo_digest(self):
+        for field, value in (("Id", "sha256:" + "f" * 64), ("RepoDigests", ["other@sha256:" + "0" * 64])):
+            with self.subTest(field=field):
+                self.setUp()
+                self.image[field] = value
+                self.effects()
+                with self.assertRaises(runner.ProbeRefusal) as found:
+                    self.run_probe("B2")
+                self.assertEqual(found.exception.cause, "probe_identity_drift")
+                self.assertEqual(self.creates(), [])
 
     def test_own_prior_stopped_containers_are_allowed(self):
         self.containers.append({"Id": "b" * 64, "State": "exited"})

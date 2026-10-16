@@ -15,6 +15,7 @@ import json
 import os
 import re
 import select
+import shutil
 import signal
 import struct
 import subprocess
@@ -39,9 +40,13 @@ _start:
 \tsyscall
 \tcmpq $-1, %rax
 \tje 1f
+\tcmpq $-38, %rax
+\tje 3f
 \tmovl $4, %edi
 \tjmp 2f
 1:\tmovl $3, %edi
+\tjmp 2f
+3:\tmovl $5, %edi
 2:\tmovl $60, %eax
 \tsyscall
 """
@@ -166,7 +171,7 @@ def raw_syscall(number, *args):
     return {"result": int(result), "errno": errno.errorcode.get(ctypes.get_errno(), ctypes.get_errno()) if result < 0 else None}
 
 
-def in_disposable_child(function):
+def in_disposable_child(function, timeout=10):
     """Run one probe in a forked child; never in PID1 or an inheritance parent."""
     read_fd, write_fd = os.pipe()
     pid = os.fork()
@@ -179,14 +184,24 @@ def in_disposable_child(function):
         os.write(write_fd, payload[:65536])
         os._exit(0)
     os.close(write_fd)
-    chunks = []
+    chunks, deadline, killed = [], time.monotonic() + timeout, False
     while True:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            killed = True
+            os.kill(pid, signal.SIGKILL)
+            break
+        ready, _, _ = select.select([read_fd], [], [], min(remaining, 0.25))
+        if not ready:
+            continue
         block = os.read(read_fd, 65536)
         if not block:
             break
         chunks.append(block)
     os.close(read_fd)
     _, status = os.waitpid(pid, 0)
+    if killed:
+        return {"wait_status": status, "report": None, "killed_at_deadline": True}
     try:
         value = json.loads(b"".join(chunks) or b"null")
     except ValueError:
@@ -217,8 +232,9 @@ def core_probes():
 
     def nofile_control():
         current = Rlimit()
-        raw_syscall(NR_PRLIMIT64, ctypes.c_long(0), ctypes.c_long(RLIMIT_NOFILE), None, ctypes.byref(current))
-        return setrlimit_raw(current.cur, current.max, RLIMIT_NOFILE)()
+        query = raw_syscall(NR_PRLIMIT64, ctypes.c_long(0), ctypes.c_long(RLIMIT_NOFILE), None, ctypes.byref(current))
+        return {"query": query | {"cur": current.cur, "max": current.max},
+                "set_unchanged": setrlimit_raw(current.cur, current.max, RLIMIT_NOFILE)()}
 
     alias = 4 | (1 << 32)
     return {"query_null_new": in_disposable_child(query),
@@ -253,7 +269,11 @@ def tmpfs_probes():
                             break
                         written += count
                         if count != len(block):
-                            outcome = "short"
+                            try:
+                                os.write(fd, block)
+                                outcome = "short_then_write_succeeded"
+                            except OSError as error:
+                                outcome = "short_then_" + str(errno.errorcode.get(error.errno, error.errno))
                             break
                 finally:
                     os.close(fd)
@@ -266,6 +286,8 @@ def tmpfs_probes():
         return {"starting_entries": start, "files": files, "total_bytes": sum(row["bytes"] for row in files)}
 
     def fill_inodes():
+        signal.signal(signal.SIGXFSZ, signal.SIG_IGN)
+        start = sorted(os.listdir(WORK))
         created, outcome = 0, None
         try:
             for index in range(8192):
@@ -278,7 +300,7 @@ def tmpfs_probes():
         finally:
             for index in range(created):
                 os.unlink("%s/vast-inode-%05d" % (WORK, index))
-        return {"created": created, "outcome": outcome}
+        return {"starting_entries": start, "created": created, "outcome": outcome}
 
     return {"bytes": in_disposable_child(fill_bytes), "inodes": in_disposable_child(fill_inodes)}
 
@@ -312,6 +334,8 @@ def environment_probe():
             "cgroup": {name: read_bounded("/sys/fs/cgroup/" + name, 256) for name in
                        ("memory.max", "memory.swap.max", "pids.max", "cpu.max")},
             "mountinfo": bounded_text(mountinfo), "rw_mounts": mounts, "rw_mounts_sha256": digest,
+            "memfd_noexec": read_bounded("/proc/sys/vm/memfd_noexec", 64),
+            "work_mount_flags": [row for row in rows if row[0] == WORK],
             "network_interfaces": sorted(os.listdir("/sys/class/net")),
             "dev_entries": sorted(os.listdir("/dev")),
             "environment": dict(sorted(os.environ.items()))}
@@ -329,8 +353,11 @@ def toolchain_probe(sources):
     helpers = {}
     for prog in ("cc1", "as", "ld", "collect2"):
         found = run_bounded([CC, "-print-prog-name=" + prog], timeout=5)
-        path = found.get("stdout", {}).get("text", "").strip()
-        helpers[prog] = file_identity(path) if path.startswith("/") else {"print_prog_name": path}
+        named = found.get("stdout", {}).get("text", "").strip()
+        path = named if named.startswith("/") else shutil.which(named or prog, path=CC_ENV["PATH"])
+        helpers[prog] = {"print_prog_name": named, "resolved": file_identity(path) if path else None}
+        if prog != "collect2" and path:
+            helpers[prog]["version"] = run_bounded([path, "--version"], timeout=5, stdout_limit=4096, stderr_limit=4096)
     files = {}
     for name in ("crt1.o", "crti.o", "crtn.o", "crtbegin.o", "crtend.o", "libc.so", "libc_nonshared.a",
                  "libgcc.a", "libgcc_s.so", "ld-linux-x86-64.so.2"):
@@ -424,12 +451,22 @@ def bad_abi_probe():
         build = run_bounded([CC, "-nostdlib", "-static", source, "-o", binary], timeout=10)
         entry = {"build": build}
         if build.get("returncode") == 0:
+            with open(binary, "rb") as file:
+                image = file.read(1 << 20)
+            entry["image"] = {"size_bytes": len(image), "sha256": hashlib.sha256(image).hexdigest(),
+                              "elf64_amd64": image[:4] == b"\x7fELF" and image[4] == 2
+                              and int.from_bytes(image[18:20], "little") == 62}
+            memfd = os.memfd_create("vast-probe-" + name, 0)
+            view = memoryview(image)
+            while view:
+                view = view[os.write(memfd, view):]
             pid = os.fork()
             if pid == 0:
                 try:
-                    os.execv(binary, [binary])
+                    os.execve(memfd, ["vast-probe-" + name], {})
                 finally:
                     os._exit(127)
+            os.close(memfd)
             deadline, status = time.monotonic() + 2, None
             while time.monotonic() < deadline:
                 done, raw = os.waitpid(pid, os.WNOHANG)
@@ -521,7 +558,7 @@ def main():
     stdin = getattr(sys.stdin.buffer, "raw", sys.stdin.buffer)
     try:
         probe, sources, request_raw = read_request(stdin)
-    except (ValueError, UnicodeError, OSError) as error:
+    except (ValueError, UnicodeError, OSError, TypeError, KeyError, RecursionError, struct.error) as error:
         causes.append("probe_request_" + type(error).__name__)
         probe, sources = None, {}
     if probe == "B3":
