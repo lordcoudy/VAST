@@ -333,3 +333,95 @@ Changed P0 adds147456B in full working/Git forms:614400B exceeds the unchanged
 524288B reserve by90112B. The physical admission is CONSUMED; no retry/third setup
 or cap change is authorized. New exact-source reviews/CI are still required.
 All46 task identities and24 completion states remain unchanged;2.10 stays open.
+
+## Task2.10 proposed single P0/packet exception after465
+
+This draft refines Decision15 in the same change/PR. It does not reopen the
+consumed465 setup admission or authorize any present physical action. The
+existing46 task IDs/24 checked states and all prior failure/checkpoint records
+remain unchanged; the following work belongs to the existing unchecked2.10.
+
+- Independently review the exact pushed four-artifact amendment and V8 section8,
+  pass required planning CI and record delegated AGENT approval before dependent
+  code/tests. Preserve the source-only P0 correctness approval separately from
+  physical authority; no third setup/export/F2 recovery or implicit continuation
+  is approved. Retain the actual465 failure and unknown old P0 Linux closure,
+  whole closing meter and peak without reconstruction.
+- After that gate, implement only current canonical C/component role/root and
+  accounting changes plus the fixed tracked
+  `tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py` operator
+  and affected controlled tests. Keep compiler owner, publisher/profile,
+  recovery, repaired P0, D and D-child interfaces/bytes unchanged. Prove current
+  authenticated bytes execute under canonical module identities without a
+  read/reopen race, stale465 package priority, private alias or C-main-only
+  state. D dispatch returns exactly its five existing kwargs. Test the fixed
+  historical465 producer/current consumer/owner root/fresh `/r1` workspace
+  bindings and owner-relative admission/replay paths, including every role/hash/
+  old-P0 substitution and existing-namespace refusal.
+- Prepare one readable fixed
+  `evidence/compiler-component-01/gate2-p0-465-retention.v1.json` index with
+  encoded<=12 KiB and working+Git<=32,768 B, referencing the pinned actual
+  diagnostic/manifest and immutable historical465/F2/code/old-AUX forms. Include
+  historical465/bf2 descriptors and closed role/form assignments only, not
+  current component/operator/plan hashes, its own hash or a future current
+  commit; externally bind current runtime/operator/plan and actual index
+  descriptors separately. Verify complete source/Git version assignments,
+  historical unknowns and the retained
+  c75 checks without copying the86 rows/raws, old receipts or native stdout.
+  Bind the index/historical plan and current authority/plan independently,
+  avoiding self/future-hash cycles or a retained Temp third form.
+  Bind the omitted old465 physical-plan descriptor explicitly and obtain actual
+  fixed bf2 tree/blob provenance for P0 rather than infer a missing Git blob
+  from a manifest; count all bootstrap/program bytes in their declared source.
+  Prove that diagnostic Windows C/component/plan working slots are treated as
+  superseded current variants with old465 Git forms retained, not incorrectly
+  required to retain their old working SHA; native465 originals remain immutable.
+- Retain meaningful controlled RED/GREEN for source946,176<=983,040, native
+  code/P0/packet/parent-growth1,019,136<=1,048,576, outside508,160<=524,288 and
+  global536,784,896<=536,870,912; prove exact/one-byte overflow, actual allocation,
+  all superseded Git variants and partial/unknown backing refusal. Authenticate
+  the observed old AUX39,424/capture32,768 assignments before explicitly retiring
+  only their unused prospective liabilities. Preserve old F2 prefix/tail5,345,280,
+  add new bounded interval N<=2,650,112 without idle/old-tail credit, and test
+  host growth above retained forms with final control/copy tails additive AFTER
+  the maximum. Old6 MiB carry/combined8 MiB F2/floors stay exact. Prove the complete
+  actual-shaped32 KiB packet,8 KiB events and authentic98-character/three-endpoint
+  unchanged D receipt/control/aggregate geometry before physical admission.
+- Test one fresh ordinary Info request stored directly in new AUX: the existing
+  32 KiB2x metadata ceiling bounds request+reply WHOLE WIRE to16 KiB before
+  receive/persistence, including oversized failures. Check fixed engine fields
+  and strict3/0/0/3 total/running/paused/stopped counts without claiming a fresh
+  CID list or adding an API call; existing C full guards remain mandatory.
+  Preserve the unchanged P0 argv/environment/30 s and subphase rules, actual
+  returned completion-write proof and nonzero/never-status/late/forced/unknown
+  refusal. No controlled test launches actual P0, Docker/API or a native scope.
+- Prove the new direct operator's one150 s deadline,140 s work cutoff and10 s
+  return/retention reserve, exactly PRE<=15 s/PACKET<=15 s/FINAL<=5 s native
+  phases, pre-read/encode/open bounds,
+  sole canonical ASCII stdout<=2,048 B and no owned stderr/progress/traceback.
+  Preserve primary and ordered distinct secondary/close/write causes, known-null
+  statuses, prefixes/counts/SHA and explicit omissions, including short/late
+  output with no second emit. Exercise at most six actual-tool-shaped frames
+  (exec plus five same-session polls), unexpected additional output, partial
+  success then failure and complete escaped8 KiB geometry. Write only the direct
+  repository original
+  `evidence/compiler-component-01/gate2-p0-exception.outer-tool.original.json`,
+  working+Git<=24,576 B; no Temp/raw-stream/phase/program/receipt duplicates.
+  Prove FINAL runs AFTER packet/AUX/events persistence and only its actual
+  returned meter/PID/status/EOF/counts/SHA enter the terminal document, without
+  rewriting events or creating another raw file. The selected transcript's
+  outstanding working/Git/control tail remains additive after that endpoint;
+  no whole closing/peak is inferred.
+  Verify actual terminal metadata, flush/fsync/close/readback and original-deadline
+  proof, no new failure write after budget/floor/deadline denial, and explicit
+  incomplete/unretained outcome if the full form cannot fit or close in time.
+- Obtain two independent exact implemented-source reviews, new required CI,
+  final actual-form audit and recorded delegated AGENT approval before at most
+  ONE explicit fresh P0/packet operation under465 `/r1` and its distinct AUX.
+  Old files remain immutable, parent metadata changes only within the funded
+  additive allowance, and any failure/collision consumes this exception. Review
+  actual setup-independent return/persistence/closing accounting and approve the
+  exact new packet separately before C1; retain every existing C1-C6 external
+  completion and D gate. This adds no B or repeated/additional C, fallback,
+  cleanup, image action, keeper renewal, whole1.5/genuine/Q1/archive/merge
+  acceptance or completed2.10 checkbox.
