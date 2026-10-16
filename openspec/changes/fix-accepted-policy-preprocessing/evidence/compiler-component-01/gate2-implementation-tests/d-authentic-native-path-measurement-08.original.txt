@@ -1,0 +1,7 @@
+test_native_path_maximum_controls_with_actual_empty_gpu_fit_private_20k_receipt (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_native_path_maximum_controls_with_actual_empty_gpu_fit_private_20k_receipt) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.106s
+
+OK
+{"controlled_measurements":[{"aggregate_accounted_bytes":1570560,"control_actual":{"crashes":32768,"dmesg":393216,"files":20,"other":66560,"total":492544},"control_all_forms_bytes":513280,"controlled":true,"encoded_receipt_bytes":16444,"future_capture_bytes":16384,"future_index_bytes":4352,"ledger":{"charge_bytes":526080,"remaining_after":418904320,"remaining_before":419430400},"other_all_forms":87296,"precopy_preexec_quote":{"aggregate_bytes":1578752,"child_file_bytes":1048832,"controls":{"crashes":32768,"dmesg":393216,"other":95488},"elf_bytes":4352,"parent_directory_bytes":4096},"receipt_json_bound":19833,"receipt_limit":20480,"root_length":95}]}

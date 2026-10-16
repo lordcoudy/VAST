@@ -100,7 +100,8 @@ tests. Implemented-source review/CI and actual evidence approval are distinct.
 9. **Inclusive controls and ledger.** C controls stay inside each64MiB C
    allocation. D reserves prospective rounded controls before each operation:
    both192KiB kernel captures, bounded crash listings,96KiB remaining controls,
-   raw native/RPC/child files, its private24KiB receipt and a small later index.
+   raw native/RPC/child files, its private20KiB receipt,16KiB enclosing
+   capture/copy liability and a separate4352B later ext4 index.
    The later index allowance includes its inode; it never authorizes a duplicate
    full receipt. D controls remain<=512KiB and its aggregate<=2MiB. Tests use
    native-shaped maximum metadata, short/unknown writes, post-receipt metrics,
@@ -269,8 +270,89 @@ in `hosted-ci-e162-38911635009-01/`; the ZIP matches GitHub's advertised digest.
 No job was restarted. Required checks on the new implemented commit remain
 mandatory before delegated AGENT approval and any physical operation.
 
-`gate2-operator-verification.v1.json` records current source/log identities and
+`gate2-operator-verification.v1.json` records the historical c67 source/log identities and
 the verification boundary without overwriting the historical363-test manifest.
 All physical evidence review, external native-return authority and task2.10
 acceptance remain pending. Whole1.5 and the change's22 remaining tasks are not
 closed by these controlled checks.
+
+## Subsequent C/D invocation and allocation correction
+
+Commit `c67b25cd4e87499dc9575ed4e58c5159ac9abf18` received independent
+CLEAR_WITH_NOTES source reviews from the separate Codex reviewer and Grok CLI
+reviewer session `01a144ff-9c02-7803-b3ee-2b6862245be7`. Their verdicts are
+historical: subsequent preparation found that D's4352B ext4 index reservation
+did not fund an additional enclosing Windows capture and its permitted copy.
+No physical work preceded this discovery. The existing required CI run for c67
+continues without cancellation/restart; its result cannot approve later bytes.
+
+The correction reserves16384B for one bounded external capture and one copy,
+separately from the4352B ext4 index. Both liabilities are added after the maximum
+of retained allocation, C-free decrease and ext4-used growth; host noise or a
+previous tail cannot swallow a future form. D reserves each observation before
+its allocation, and the full remaining child/after-guard/receipt/index/capture
+suffix before both ELF copy and child execution. Budget/floor denial prohibits
+fresh receipt writes; retained originals and bounded returned facts survive.
+The unchanged96KiB other-control,512KiB control,2MiB aggregate and512MiB global
+limits remain binding. Flat `before.`/`after.` filenames save two directories;
+the private receipt bound decreases from24KiB to20KiB without discarding facts.
+Independent requirements review classifies this as faithful implementation,
+with no requirements amendment or cap increase.
+
+The controlled fixture uses the actual C guard producer with only external
+process/pipe/time effects replaced, the actual three-row transport epoch shape
+and the95-character native root. Its receipt is16444B with a pre-encoding JSON
+bound19833B<=20480B. The previous whitespace-filled GPU boundary now refuses
+before copy/exec when the full suffix cannot fit; its earlier successful test
+remains historical. No arbitrary future whitespace or native outcome is added
+to the acceptance predicates.
+
+Fixed C/D command-line entrypoints accept only an externally reviewed40hex
+commit, positive bounded packet size, approved64hex packet hash and ordered
+prior completion size/hash pairs. They derive the sole fixed export and prior
+record paths internally. Isolated Python `-I -S -B` validates the exact script
+path before project imports. Bootstrap/import errors use bounded refusal output;
+no user argument selects a program or arbitrary path. Pure startup/import and
+argument validation precede the existing physical API clock: C's150s starts
+before its first measurement/allocation, D's10s starts before chain validation
+and its first measurement/allocation. These clocks never reset for completion
+or output. Actual enclosing process status/EOF remains external evidence.
+
+C immediately calls its existing completion helper after a successful run,
+under that original deadline. A failed run never creates a completion. D emits
+only its final receipt identity, post-receipt measurements/ledger and evaluation;
+it never duplicates the raw receipt. The single unbuffered stdout write records
+known partial versus unknown unreturned extent; flush and original-deadline
+checks remain mandatory. A bounded refusal projects actual nested wrapper
+causes and known write/closure observations, plus full bounded-facts SHA/count,
+a finite prefix and explicit unknown remainder. Independent advisory BLOCKs on
+lost nested facts, unbounded import exceptions and fresh writes after budget
+denial are retained and corrected before formal re-review.
+
+The D summary and post-stdout refusal together measure926B in the controlled
+producer test; with the818B quoted WSL command and bounded metadata, the selected
+capture frame is2604B. Independent grammar bounds keep that frame below3200B.
+Before opening its retained form, UTF8 JSON plus newline must be<=4096B; each
+form funds4096B data and4096B Windows metadata, including one equally bounded
+copy in16384B. This is a bound on the selected frame, not arbitrary raw tool
+JSON. The4334B generic quote-filled counterexample remains a negative test.
+Only actually observed metadata may be recorded; no PID, separate stream EOF
+or persistence flag may be invented from an absent tool field. Early launcher
+errors require bounded observed prefixes/counts/hashes and explicit unknown
+facts; truncation, unknown closure or incomplete persistence cannot pass.
+
+Final controlled discovery passes468 tests with zero failures/errors/skips
+under canonical WSL Python3.12.3 (`invocation-integrated-03.original.txt`). All31
+fixture/test files and11 statically resolved embedded operator strings pass
+Python3.10 grammar checks (`invocation-syntax-03.original.txt`). The separate
+reviewer gives advisory CLEAR for C source79b55f9d and D source31c3a7c9 after
+resolving the recorded BLOCKs; no reviewer ran a native action. Specific floor,
+backing-stat and allocation/walk read errors are now sticky unknown-budget
+refusals, including post-child failures; complete child facts remain retained.
+
+Final controlled evidence and source identities are bound in
+`gate2-invocation-verification.v1.json`. The earlier363/433-test manifests remain
+unchanged historical snapshots. Exact final-commit independent reviews, required
+CI and explicit delegated AGENT approval in PR9 still precede physical setup;
+actual packet approval and per-stage native evidence reviews remain separate.
+No F2/P0/C/D, prewarm, keepalive, image action, retry, Q1, archive or merge has run.

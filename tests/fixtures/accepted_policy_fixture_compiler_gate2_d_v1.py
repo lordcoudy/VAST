@@ -2,8 +2,9 @@
 
 This component never grants campaign authority. Its test seams do not supply
 physical qualification. All outputs and failed prefixes remain retained.
-The raw receipt remains in its single ext4 location. The later 4KiB allowance
-is only for one small summary/hash-index form, never a duplicate full receipt.
+The raw receipt remains in its single ext4 location. One 16KiB external
+capture/copy liability and one separate 4KiB ext4 summary/hash index are funded;
+neither permits a duplicate full receipt.
 """
 from __future__ import annotations
 
@@ -17,18 +18,48 @@ import signal
 import stat
 import struct
 import subprocess
+import sys
 import time
 from typing import Any
 
-from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as recipe
-from tests.fixtures import accepted_policy_fixture_compiler_v1 as compiler
+if __name__ == '__main__':
+    # Isolated Python excludes cwd. Admit only this fixed reviewed export,
+    # before importing any project module; arguments never select a program.
+    try:
+        _native_args = sys.argv[1:]
+        _native_commit = _native_args[0] if len(_native_args) == 4 else ''
+        if re.fullmatch('[0-9a-f]{40}', _native_commit) is None:
+            raise ValueError('native commit')
+        _native_root = Path('/home/s-a-balashov/work/vast-fixture-compiler-gate2-' + _native_commit + '-01')
+        if Path(__file__).resolve(strict=True) != _native_root / 'tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py':
+            raise ValueError('native path')
+        sys.path[:0] = [str(_native_root), str(_native_root / 'scripts')]
+    except BaseException:
+        try:
+            os.write(2, b'{"cause":"d_native_bootstrap","unknown":true}\n')
+        except OSError:
+            pass
+        raise SystemExit(1)
+
+try:
+    from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as recipe
+    from tests.fixtures import accepted_policy_fixture_compiler_v1 as compiler
+except BaseException:
+    if __name__ != '__main__':
+        raise
+    try:
+        os.write(2, b'{"cause":"d_native_import","unknown":true}\n')
+    except OSError:
+        pass
+    raise SystemExit(1)
 
 ELF_LIMIT = 524288
 CONTROL_LIMIT = 524288
 OTHER_CONTROL_LIMIT = 98304
-RECEIPT_LIMIT = 24576
+RECEIPT_LIMIT = 20480
 LATER_INDEX_LIMIT = 4096
 LATER_INDEX_ALLOCATION = LATER_INDEX_LIMIT + 256
+EXTERNAL_CAPTURE_ALLOCATION = 16384
 AGGREGATE_LIMIT = 2097152
 CHILD_FILE_LIMIT = 1048576
 PROOF_LIMIT = 1024
@@ -147,6 +178,20 @@ def evaluate_d_v1(value: Any) -> dict[str, Any]:
     require(type(value.get('control_bytes')) is int and 0 <= value['control_bytes'] <= CONTROL_LIMIT and
             type(value.get('aggregate_reserved_bytes')) is int and value['aggregate_reserved_bytes'] == AGGREGATE_LIMIT,
             'd_allocation')
+    require(type(value.get('external_capture_allocation_bytes')) is int and
+            value['external_capture_allocation_bytes'] == EXTERNAL_CAPTURE_ALLOCATION and
+            type(value.get('later_index_allocation_bytes')) is int and
+            value['later_index_allocation_bytes'] == LATER_INDEX_ALLOCATION, 'd_future_forms')
+    usage = value.get('control_allocation_after_receipt')
+    usage_valid = (type(usage) is dict and set(usage) == {'dmesg', 'crashes', 'other', 'total', 'files'} and
+        all(type(usage[key]) is int and usage[key] >= 0 for key in usage) and usage['files'] <= 128 and
+        usage['dmesg'] <= 2 * DMESG_LIMIT and usage['crashes'] <= 2 * CRASH_LIMIT and
+        usage['total'] == usage['dmesg'] + usage['crashes'] + usage['other'] and
+        usage['other'] + EXTERNAL_CAPTURE_ALLOCATION + LATER_INDEX_ALLOCATION <= OTHER_CONTROL_LIMIT and
+        usage['total'] + EXTERNAL_CAPTURE_ALLOCATION + LATER_INDEX_ALLOCATION <= CONTROL_LIMIT and
+        value.get('control_bytes') == usage['total'] + EXTERNAL_CAPTURE_ALLOCATION + LATER_INDEX_ALLOCATION)
+    if type(usage) is dict:
+        require(usage_valid, 'd_control_all_forms')
     require(value.get('causes') == [], 'd_causes')
     require(type(value.get('controlled')) is bool, 'd_controlled_marker')
     require(value.get('handlers_restored') is True, 'd_handlers_restored')
@@ -155,7 +200,7 @@ def evaluate_d_v1(value: Any) -> dict[str, Any]:
             value['started_ns'] <= value['finished_ns'] < value['absolute_deadline_ns'], 'd_actual_deadline')
     descriptor = value.get('receipt_descriptor') if type(value.get('receipt_descriptor')) is dict else {}
     ledger = value.get('ledger_after_receipt') if type(value.get('ledger_after_receipt')) is dict else {}
-    finalization = (value.get('receipt_persisted') is True and
+    finalization = (usage_valid and value.get('receipt_persisted') is True and
         descriptor.get('persisted') is True and descriptor.get('closed') is True and
         descriptor.get('extent_unknown') is False and _is_sha(descriptor.get('sha256')) and
         type(descriptor.get('size_bytes')) is int and 0 < descriptor['size_bytes'] <= RECEIPT_LIMIT and
@@ -329,28 +374,35 @@ def _controls_usage_v1(directory):
     """Inclusive allocation, counting directory/inode reserve and every file."""
     categories = {'dmesg': 0, 'crashes': 0, 'other': 0}
     files = 0
-    for parent, dirs, names in os.walk(directory, followlinks=False):
-        if len(dirs) + len(names) > 256:
-            raise StageDRefusal('d_control_inventory')
-        categories['other'] += 4096
-        for name in dirs:
-            if Path(parent, name).is_symlink():
-                raise StageDRefusal('d_control_symlink')
-        for name in names:
-            files += 1
-            if files > 128:
+    def walk_error(error):
+        raise error
+    try:
+        # os.walk otherwise silently omits an unreadable allocation subtree.
+        for parent, dirs, names in os.walk(directory, followlinks=False, onerror=walk_error):
+            if len(dirs) + len(names) > 256:
                 raise StageDRefusal('d_control_inventory')
-            path = Path(parent, name)
-            row = path.lstat()
-            if not stat.S_ISREG(row.st_mode) or row.st_nlink != 1:
-                raise StageDRefusal('d_control_alias')
-            allocated = max(((row.st_size + 4095) // 4096) * 4096, getattr(row, 'st_blocks', 0) * 512)
-            relative = path.relative_to(directory).as_posix()
-            category = ('dmesg' if relative in ('before/dmesg.stdout.original', 'after/dmesg.stdout.original')
-                        else 'crashes' if relative in ('before/crashes.original.json', 'after/crashes.original.json')
-                        else 'other')
-            categories[category] += allocated
-            categories['other'] += 256  # conservative inode/allocation metadata reserve
+            categories['other'] += 4096
+            for name in dirs:
+                if Path(parent, name).is_symlink():
+                    raise StageDRefusal('d_control_symlink')
+            for name in names:
+                files += 1
+                if files > 128:
+                    raise StageDRefusal('d_control_inventory')
+                path = Path(parent, name)
+                row = path.lstat()
+                if not stat.S_ISREG(row.st_mode) or row.st_nlink != 1:
+                    raise StageDRefusal('d_control_alias')
+                allocated = max(((row.st_size + 4095) // 4096) * 4096, getattr(row, 'st_blocks', 0) * 512)
+                relative = path.relative_to(directory).as_posix()
+                category = ('dmesg' if relative in ('before.dmesg.stdout.original', 'after.dmesg.stdout.original')
+                            else 'crashes' if relative in ('before.crashes.original.json', 'after.crashes.original.json')
+                            else 'other')
+                categories[category] += allocated
+                categories['other'] += 256  # conservative inode/allocation metadata reserve
+    except OSError as error:
+        raise StageDRefusal('d_control_allocation_unknown',
+                            {'allocation_known': False, 'exception_type': type(error).__name__}) from error
     if categories['dmesg'] > 2 * DMESG_LIMIT or categories['crashes'] > 2 * CRASH_LIMIT or categories['other'] > OTHER_CONTROL_LIMIT:
         raise StageDRefusal('d_control_allocation', categories)
     total = sum(categories.values())
@@ -412,13 +464,17 @@ def _floor_metrics_v1(root):
     def free(path):
         row = os.statvfs(path)
         return row.f_bavail * row.f_frsize
-    row = os.statvfs('/')
-    if type(row.f_frsize) is not int or row.f_frsize != 4096:
-        raise StageDRefusal('d_ext4_rounding')
-    if root.stat().st_dev != Path('/').stat().st_dev:
-        raise StageDRefusal('d_project_not_ext4_root')
-    return {'c_free_bytes': free('/mnt/c'), 'project_free_bytes': free(root),
-            'ext4_used_bytes': (row.f_blocks - row.f_bfree) * row.f_frsize}
+    try:
+        row = os.statvfs('/')
+        if type(row.f_frsize) is not int or row.f_frsize != 4096:
+            raise StageDRefusal('d_ext4_rounding')
+        if root.stat().st_dev != Path('/').stat().st_dev:
+            raise StageDRefusal('d_project_not_ext4_root')
+        return {'c_free_bytes': free('/mnt/c'), 'project_free_bytes': free(root),
+                'ext4_used_bytes': (row.f_blocks - row.f_bfree) * row.f_frsize}
+    except OSError as error:
+        raise StageDRefusal('d_floor_measurement_unknown',
+                            {'floor_known': False, 'exception_type': type(error).__name__}) from error
 
 
 def _floors_v1(metrics, reserve):
@@ -445,9 +501,10 @@ class _DInfoClientV1(compiler._DockerClientV1):
 
 
 # Fixed outstanding physical liabilities, including4KiB allocation rounding,
-# inode reserve and one later4KiB Git/index form. Native guard metadata is
+# inode reserve and one later4KiB ext4 index. Native guard metadata is
 # enclosed once in d.result; only its bounded raw streams are separate files.
 _D_TASKS = (
+    ('identity', 20992, 0, 0),
     ('before-dmesg', 512, DMESG_LIMIT, 0),
     ('before-journal', 4608, 0, 0),
     ('before-gpu', 4608, 0, 0),
@@ -461,13 +518,16 @@ _D_TASKS = (
 )
 
 
-def _reserve_controls_v1(controls, task, *, identity=False):
+def _reserve_controls_v1(controls, task, *, all_remaining=False):
+    # Before observations reserve their next bounded write. The full suffix is
+    # mandatory before ELF copy/exec and for every subsequent after-observation.
+    # The external capture/copy liability is permanent through every phase.
     usage = _controls_usage_v1(controls)
     names = [row[0] for row in _D_TASKS]
     if task not in names:
         raise StageDRefusal('d_control_task')
-    pending = _D_TASKS[names.index(task):]
-    proposed = {'other': usage['other'] + sum(row[1] for row in pending) + (20992 if identity else 0),
+    pending = _D_TASKS[names.index(task):] if all_remaining else (_D_TASKS[names.index(task)],)
+    proposed = {'other': usage['other'] + sum(row[1] for row in pending) + EXTERNAL_CAPTURE_ALLOCATION,
                 'dmesg': usage['dmesg'] + sum(row[2] for row in pending),
                 'crashes': usage['crashes'] + sum(row[3] for row in pending)}
     if (proposed['other'] > OTHER_CONTROL_LIMIT or proposed['dmesg'] > 2 * DMESG_LIMIT or
@@ -480,7 +540,7 @@ def _reserve_aggregate_v1(controls, elf_size):
     """Reserve every rounded D liability before copying or executing the ELF."""
     if type(elf_size) is not int or not 0 < elf_size <= ELF_LIMIT:
         raise StageDRefusal('d_c1_binding')
-    control_quote = _reserve_controls_v1(controls, 'child')
+    control_quote = _reserve_controls_v1(controls, 'child', all_remaining=True)
     quote = {'controls': control_quote, 'parent_directory_bytes': 4096,
              'elf_bytes': ((elf_size + 4095) // 4096) * 4096 + 256,
              'child_file_bytes': CHILD_FILE_LIMIT + 256}
@@ -519,7 +579,7 @@ class _NativeObserverV1:
         # D creates no container. The exact retained CID set/provider evidence
         # comes from the revalidated C6 chain; fresh /info confirms same engine
         # and zero running/paused containers without duplicating the large list.
-        _reserve_controls_v1(directory.parent, 'before-dmesg', identity=True)
+        _reserve_controls_v1(directory, 'identity')
         client = _DInfoClientV1(directory, deadline)
         info = client.request('GET', '/info', deadline_ns=min(deadline, self.clock() + 1000000000))
         result = _info_identity_v1(info, cids)
@@ -529,8 +589,10 @@ class _NativeObserverV1:
     def measure(self):
         return _floor_metrics_v1(self.root)
 
-    def snapshot(self, directory, deadline):
+    def snapshot(self, directory, deadline, *, phase):
         from tests.fixtures import accepted_policy_fixture_compiler_gate2_c_v1 as c
+        if phase not in ('before', 'after'):
+            raise StageDRefusal('d_snapshot_phase')
         _check_time(self.clock, deadline)
         metrics = _floor_metrics_v1(self.root)
         boot = compiler._compiler_proc_read_v1('/proc/sys/kernel/random/boot_id', 64).decode('ascii').strip()
@@ -538,9 +600,9 @@ class _NativeObserverV1:
             raise StageDRefusal('d_boot_id')
         captures = {}
         for kind, limit in (('dmesg', DMESG_LIMIT), ('journal', 512), ('gpu', 4096)):
-            _reserve_controls_v1(directory.parent, directory.name + '-' + kind)
+            _reserve_controls_v1(directory, phase + '-' + kind, all_remaining=phase == 'after')
             row = c.capture_guard_v1(kind, output_dir=directory, absolute_deadline_ns=deadline,
-                                     stdout_limit=limit, stderr_limit=0, record_original=False)
+                                     stdout_limit=limit, stderr_limit=0, record_original=False, _phase_prefix=phase)
             if (type(row.get('returncode')) is not int or row['returncode'] != 0 or row.get('stdout_eof') is not True or
                     row.get('stderr_eof') is not True or row.get('persisted') is not True or
                     row.get('closed') is not True or row.get('forced') is not False or row.get('causes') != []):
@@ -554,7 +616,7 @@ class _NativeObserverV1:
             for channel, cap in (('stdout', limit), ('stderr', 0)):
                 descriptor, writer = capture.get(channel), capture['files'].get(channel)
                 if (type(descriptor) is not dict or type(writer) is not dict or
-                        descriptor.get('path') != str(directory / (kind + '.' + channel + '.original'))):
+                        descriptor.get('path') != str(directory / (phase + '.' + kind + '.' + channel + '.original'))):
                     raise StageDRefusal('d_guard_original_path')
                 value = _read_bound_v1(Path(descriptor['path']), cap)
                 digest = _sha(value)
@@ -574,8 +636,8 @@ class _NativeObserverV1:
         if raw['gpu'].strip():
             raise StageDRefusal('d_gpu_busy')
         crashes = _crash_listing_v1()
-        _reserve_controls_v1(directory.parent, directory.name + '-crashes')
-        crash_descriptor = _write_original_v1(directory / 'crashes.original.json', crashes, CRASH_LIMIT,
+        _reserve_controls_v1(directory, phase + '-crashes', all_remaining=phase == 'after')
+        crash_descriptor = _write_original_v1(directory / (phase + '.crashes.original.json'), crashes, CRASH_LIMIT,
                                                clock=self.clock, deadline=deadline)
         _check_time(self.clock, deadline)
         return {'metrics': metrics, 'boot_id': boot, 'captures': captures,
@@ -647,9 +709,6 @@ def run_d_v1(*, project_root, packet_descriptor, expected_packet_sha256,
     directory.mkdir(mode=0o700)
     controls = directory / 'controls'
     controls.mkdir(mode=0o700)
-    before_dir, after_dir = controls / 'before', controls / 'after'
-    before_dir.mkdir(mode=0o700)
-    after_dir.mkdir(mode=0o700)
     runner = _child_runner if _child_runner is not None else child_module.run_child_v1
     facts = {'schema_version': 1, 'stage': 'D', 'controlled': any(x is not None for x in (_observer, _child_runner, _clock)),
              'source_sha256': recipe.SOURCE_SHA256['c1'], 'command_sha256': recipe.D_COMMAND_SHA256,
@@ -658,15 +717,18 @@ def run_d_v1(*, project_root, packet_descriptor, expected_packet_sha256,
              'packet_sha256': expected_packet_sha256, 'code_commit': expected_code_commit,
              'c_completion_authorities_sha256': _sha(authority_raw),
              'aggregate_reserved_bytes': AGGREGATE_LIMIT, 'receipt_persisted': False,
+             'external_capture_allocation_bytes': EXTERNAL_CAPTURE_ALLOCATION,
+             'later_index_allocation_bytes': LATER_INDEX_ALLOCATION,
              'interval_start_measurement': interval_start, 'gap_charge_bytes': 0,
              'causes': [], 'child': None, 'copy': None, 'state': None}
     previous, received = [], [None]
     before = after = None
+    budget_denied, stopped_cause = False, None
     try:
         compiler._compiler_install_handlers_v1(received, previous)
-        facts['identity'] = observer.identity(before_dir, binding.get('all_cids'), deadline)
+        facts['identity'] = observer.identity(controls, binding.get('all_cids'), deadline)
         facts['identity_verified'] = True
-        before = observer.snapshot(before_dir, deadline)
+        before = observer.snapshot(controls, deadline, phase='before')
         facts['before'] = before
         if not _floors_v1(before['metrics'], AGGREGATE_LIMIT):
             raise StageDRefusal('d_capacity_floor')
@@ -687,7 +749,7 @@ def run_d_v1(*, project_root, packet_descriptor, expected_packet_sha256,
         _check_time(clock, deadline)
         if received[0] is not None:
             raise StageDRefusal('d_operator_signal')
-        after = observer.snapshot(after_dir, deadline)
+        after = observer.snapshot(controls, deadline, phase='after')
         facts['after'] = after
         post_binding = c.validated_c1_binding_v1(project_root=root, packet_descriptor=packet_descriptor,
                                                 expected_packet_sha256=expected_packet_sha256,
@@ -706,18 +768,30 @@ def run_d_v1(*, project_root, packet_descriptor, expected_packet_sha256,
         facts['dmesg_unchanged'] = before['dmesg_sha256'] == after['dmesg_sha256']
         facts['crashes_unchanged'] = before['crashes_sha256'] == after['crashes_sha256']
         facts['floors_preserved'] = _floors_v1(after['metrics'], 0)
+        if not facts['floors_preserved']:
+            raise StageDRefusal('d_capacity_floor')
         facts['within_deadline'] = clock() < deadline
     except BaseException as error:
-        _preserve_failure_v1(facts, error)
+        stopped_cause = _preserve_failure_v1(facts, error)
+        budget_denied = (any(marker in stopped_cause for marker in
+            ('reserve', 'allocation', 'capacity', 'floor', 'ledger', 'rounding', 'backing')) or
+            stopped_cause in ('d_control_inventory', 'd_control_alias', 'd_control_symlink', 'd_project_not_ext4_root'))
         if facts['child'] is None and type(getattr(error, 'facts', None)) is dict and 'pid' in error.facts:
             facts['child'] = error.facts
     finally:
         restore = compiler._compiler_restore_handlers_v1(previous)
         facts['causes'].extend(restore)
         facts['handlers_restored'] = not restore
+    if budget_denied:
+        # A smaller receipt-only quote cannot revoke an earlier full-operation
+        # reserve/floor denial. Existing originals and complete in-memory facts
+        # survive; no later persistence or other fresh physical work starts.
+        facts['receipt_skipped_after_budget_denial'] = True
+        facts['evaluation'] = evaluate_d_v1(facts)
+        raise StageDRefusal(stopped_cause, facts)
     try:
         usage = _controls_usage_v1(controls)
-        facts['control_bytes'] = usage['total']
+        facts['control_bytes'] = usage['total'] + EXTERNAL_CAPTURE_ALLOCATION + LATER_INDEX_ALLOCATION
         facts['control_allocation_before_receipt'] = usage
         facts['finished_ns'] = clock()
         facts['within_deadline'] = facts.get('within_deadline') is True and facts['finished_ns'] < deadline
@@ -733,24 +807,28 @@ def run_d_v1(*, project_root, packet_descriptor, expected_packet_sha256,
         facts['receipt_persisted'] = True
         actual = _controls_usage_v1(controls)
         facts['control_allocation_after_receipt'] = actual
-        facts['control_bytes'] = actual['total']
-        retained = actual['total'] + 4096 + LATER_INDEX_ALLOCATION
+        facts['control_bytes'] = actual['total'] + EXTERNAL_CAPTURE_ALLOCATION + LATER_INDEX_ALLOCATION
+        if (actual['other'] + EXTERNAL_CAPTURE_ALLOCATION + LATER_INDEX_ALLOCATION > OTHER_CONTROL_LIMIT or
+                facts['control_bytes'] > CONTROL_LIMIT):
+            raise StageDRefusal('d_control_all_forms')
+        retained_actual = actual['total'] + 4096
         state_allocation = 0
         for path in (directory / 'engine', directory / recipe.D_STATE_FILE):
             if os.path.lexists(path):
                 allocated = _allocated_v1(path)
-                retained += allocated
+                retained_actual += allocated
                 if path.name == recipe.D_STATE_FILE:
                     state_allocation = allocated
-        facts['aggregate_accounted_bytes'] = retained + max(0, CHILD_FILE_LIMIT + 256 - state_allocation)
+        future_forms = LATER_INDEX_ALLOCATION + EXTERNAL_CAPTURE_ALLOCATION
+        facts['aggregate_accounted_bytes'] = retained_actual + future_forms + max(0, CHILD_FILE_LIMIT + 256 - state_allocation)
         if facts['aggregate_accounted_bytes'] > AGGREGATE_LIMIT:
             raise StageDRefusal('d_aggregate_allocation')
         if before is not None and after is not None:
             final_measurement = observer.measure()
             facts['final_measurement_after_receipt'] = final_measurement
             facts['floors_preserved'] = facts.get('floors_preserved') is True and _floors_v1(final_measurement, 0)
-            charge = max(retained, interval_start['c_free_bytes'] - final_measurement['c_free_bytes'],
-                         final_measurement['ext4_used_bytes'] - interval_start['ext4_used_bytes'], 0)
+            charge = max(retained_actual, interval_start['c_free_bytes'] - final_measurement['c_free_bytes'],
+                         final_measurement['ext4_used_bytes'] - interval_start['ext4_used_bytes'], 0) + future_forms
             facts['ledger_after_receipt'] = {'remaining_before': remaining, 'charge_bytes': charge,
                                              'remaining_after': remaining - charge}
             if charge > remaining:
@@ -764,3 +842,47 @@ def run_d_v1(*, project_root, packet_descriptor, expected_packet_sha256,
     except BaseException as error:
         code = _preserve_failure_v1(facts, error)
         raise StageDRefusal(code, facts) from error
+
+
+def native_main_v1(argv):
+    """One fixed native D call; external actual return/EOF remains mandatory."""
+    c = None
+    try:
+        from tests.fixtures import accepted_policy_fixture_compiler_gate2_c_v1 as c
+        kwargs = c.parse_native_invocation_v1(argv, stage='D')
+        value = run_d_v1(**kwargs)
+        descriptor, evaluation = value['receipt_descriptor'], value['evaluation']
+        if (value['controlled'] is not False or evaluation.get('passed') is not True or
+                evaluation.get('finalization_complete') is not True or
+                descriptor.get('path') != str(Path(kwargs['project_root']) / 'outputs/D/controls/d.result.original.json') or
+                not _is_sha(descriptor.get('sha256')) or type(descriptor.get('size_bytes')) is not int or
+                not 0 < descriptor['size_bytes'] <= RECEIPT_LIMIT):
+            raise StageDRefusal('d_native_finalization', value)
+        summary = {'stage': 'D', 'receipt_sha256': descriptor['sha256'], 'receipt_size_bytes': descriptor['size_bytes'],
+            'final_measurement': value['final_measurement_after_receipt'], 'ledger': value['ledger_after_receipt'],
+            'deadline_ns': value['absolute_deadline_ns'], 'finished_ns': value['finished_ns'],
+            'control_bytes': value['control_bytes'], 'aggregate_bytes': value['aggregate_accounted_bytes'],
+            'passed': True, 'finalization_complete': True, 'controlled': False, 'external_return_required': True}
+        raw = recipe.canonical_json_v1(summary) + b'\n'
+        if len(raw) > 768:
+            raise StageDRefusal('d_native_summary_bound', value)
+        c.emit_native_bytes_v1(raw, value['absolute_deadline_ns'])
+        return 0
+    except BaseException as error:
+        raw = b'{"cause":"d_native_dependency","unknown":true,"external_status_eof_required":true}\n'
+        if c is not None:
+            try:
+                produced = c.native_failure_bytes_v1(error)
+                if type(produced) is bytes and 0 < len(produced) <= 768:
+                    raw = produced
+            except BaseException:
+                pass
+        try:
+            os.write(2, raw)
+        except OSError:
+            pass
+        return 1
+
+
+if __name__ == '__main__':
+    raise SystemExit(native_main_v1(sys.argv[1:]))

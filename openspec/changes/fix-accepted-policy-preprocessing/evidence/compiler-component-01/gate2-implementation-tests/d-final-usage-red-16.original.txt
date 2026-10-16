@@ -1,0 +1,94 @@
+FFFFFFFFFF
+======================================================================
+FAIL: test_execution_comparison_alone_never_qualifies_physical_finalization (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.EvaluationTests.test_execution_comparison_alone_never_qualifies_physical_finalization) (usage=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 187, in test_execution_comparison_alone_never_qualifies_physical_finalization
+    self.assertFalse(evaluated['finalization_complete']);self.assertFalse(evaluated['physical_acceptance'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_execution_comparison_alone_never_qualifies_physical_finalization (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.EvaluationTests.test_execution_comparison_alone_never_qualifies_physical_finalization) (usage=[])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 187, in test_execution_comparison_alone_never_qualifies_physical_finalization
+    self.assertFalse(evaluated['finalization_complete']);self.assertFalse(evaluated['physical_acceptance'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_execution_comparison_alone_never_qualifies_physical_finalization (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.EvaluationTests.test_execution_comparison_alone_never_qualifies_physical_finalization) (usage={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 187, in test_execution_comparison_alone_never_qualifies_physical_finalization
+    self.assertFalse(evaluated['finalization_complete']);self.assertFalse(evaluated['physical_acceptance'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_execution_comparison_alone_never_qualifies_physical_finalization (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.EvaluationTests.test_execution_comparison_alone_never_qualifies_physical_finalization) (usage={'dmesg': 0, 'crashes': 0, 'other': -1, 'total': 16384, 'files': 16})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 187, in test_execution_comparison_alone_never_qualifies_physical_finalization
+    self.assertFalse(evaluated['finalization_complete']);self.assertFalse(evaluated['physical_acceptance'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_execution_comparison_alone_never_qualifies_physical_finalization (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.EvaluationTests.test_execution_comparison_alone_never_qualifies_physical_finalization) (usage={'dmesg': 0, 'crashes': 0, 'other': 16384, 'total': 16385, 'files': 16})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 187, in test_execution_comparison_alone_never_qualifies_physical_finalization
+    self.assertFalse(evaluated['finalization_complete']);self.assertFalse(evaluated['physical_acceptance'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_execution_comparison_alone_never_qualifies_physical_finalization (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.EvaluationTests.test_execution_comparison_alone_never_qualifies_physical_finalization) (usage={'dmesg': 0, 'crashes': 0, 'other': 98304, 'total': 98304, 'files': 16})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 187, in test_execution_comparison_alone_never_qualifies_physical_finalization
+    self.assertFalse(evaluated['finalization_complete']);self.assertFalse(evaluated['physical_acceptance'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_execution_comparison_alone_never_qualifies_physical_finalization (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.EvaluationTests.test_execution_comparison_alone_never_qualifies_physical_finalization) (usage={'dmesg': 393217, 'crashes': 0, 'other': 0, 'total': 393217, 'files': 16})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 187, in test_execution_comparison_alone_never_qualifies_physical_finalization
+    self.assertFalse(evaluated['finalization_complete']);self.assertFalse(evaluated['physical_acceptance'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_execution_comparison_alone_never_qualifies_physical_finalization (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.EvaluationTests.test_execution_comparison_alone_never_qualifies_physical_finalization) (usage={'dmesg': 0, 'crashes': 32769, 'other': 0, 'total': 32769, 'files': 16})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 187, in test_execution_comparison_alone_never_qualifies_physical_finalization
+    self.assertFalse(evaluated['finalization_complete']);self.assertFalse(evaluated['physical_acceptance'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_execution_comparison_alone_never_qualifies_physical_finalization (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.EvaluationTests.test_execution_comparison_alone_never_qualifies_physical_finalization) (usage={'dmesg': 0, 'crashes': 0, 'other': 16384, 'total': 16384, 'files': True})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 187, in test_execution_comparison_alone_never_qualifies_physical_finalization
+    self.assertFalse(evaluated['finalization_complete']);self.assertFalse(evaluated['physical_acceptance'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_execution_comparison_alone_never_qualifies_physical_finalization (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.EvaluationTests.test_execution_comparison_alone_never_qualifies_physical_finalization)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 189, in test_execution_comparison_alone_never_qualifies_physical_finalization
+    self.assertFalse(stage.evaluate_d_v1(absent)['finalization_complete'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 0.009s
+
+FAILED (failures=10)

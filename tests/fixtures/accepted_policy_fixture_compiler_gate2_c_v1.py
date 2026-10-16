@@ -7,6 +7,7 @@ is exposed here. Stage D is a separate fixed consumer of validated C1 evidence.
 """
 from __future__ import annotations
 
+import base64
 import hashlib
 from contextlib import contextmanager, nullcontext
 import json
@@ -18,10 +19,29 @@ import signal
 import stat
 import struct
 import subprocess
+import sys
 import time
 
-from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
-from tests.fixtures import accepted_policy_fixture_compiler_v1 as compiler
+try:
+    if __name__ == "__main__":
+        _native_args = sys.argv[1:]
+        _native_commit = _native_args[1] if len(_native_args) == 5 else ""
+        if re.fullmatch("[0-9a-f]{40}", _native_commit) is None or _native_args[0] not in ("C1", "C2", "C3", "C4", "C5", "C6"):
+            raise ValueError("fixed native arguments")
+        _native_root = Path("/home/s-a-balashov/work/vast-fixture-compiler-gate2-" + _native_commit + "-01")
+        if Path(__file__).resolve(strict=True) != _native_root / "tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py":
+            raise ValueError("fixed native export")
+        sys.path[:0] = [str(_native_root), str(_native_root / "scripts")]
+    from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
+    from tests.fixtures import accepted_policy_fixture_compiler_v1 as compiler
+except BaseException:
+    if __name__ == "__main__":
+        try:
+            os.write(2, b'{"cause":"c_native_bootstrap","unknown":true}\n')
+        except OSError:
+            pass
+        raise SystemExit(1)
+    raise
 
 STAGES = ("C1", "C2", "C3", "C4", "C5", "C6")
 SEAL_BYTES = 536870912
@@ -102,6 +122,126 @@ def _sha(raw):
 
 def _sha_shape(value):
     return type(value) is str and re.fullmatch("[0-9a-f]{64}", value) is not None
+
+
+def parse_native_invocation_v1(args, *, stage):
+    """Only the fixed export and ordered, externally approved descriptors."""
+    _require(stage in STAGES + ("D",) and type(args) is list and len(args) == 4 and
+             all(type(value) is str and len(value) <= 512 for value in args), "native_arguments")
+    commit, size, digest, prior = args
+    _require(re.fullmatch("[0-9a-f]{40}", commit) and _sha_shape(digest) and
+             re.fullmatch("[1-9][0-9]{0,5}", size) and int(size) <= PACKET_LIMIT, "native_authority")
+    root = "/home/s-a-balashov/work/vast-fixture-compiler-gate2-" + commit + "-01"
+    count = 6 if stage == "D" else STAGES.index(stage)
+    rows = [] if prior == "-" else prior.split(",")
+    _require(len(rows) == count and (count != 0 or prior == "-"), "native_prior_count")
+    authorities = {}
+    for name, row in zip(STAGES, rows):
+        match = re.fullmatch("([1-9][0-9]{0,3}):([0-9a-f]{64})", row)
+        _require(match is not None and int(match[1]) <= 8192, "native_prior_descriptor")
+        authorities[name] = {"path": root + "/outputs/" + name + "/outer.invocation.original.json",
+                             "size_bytes": int(match[1]), "sha256": match[2]}
+    return {"project_root": root, "packet_descriptor": {"path": root + "/gate2.packet.original.json",
+            "size_bytes": int(size), "sha256": digest}, "expected_packet_sha256": digest,
+            "expected_code_commit": commit, "completion_authorities": authorities}
+
+
+def native_failure_bytes_v1(error):
+    """A refusal summary, never a duplicate receipt or native completion proof."""
+    cause = getattr(error, "cause", type(error).__name__)
+    def label(value):
+        return re.sub("[^a-zA-Z0-9_.:/-]", "?", value[:32]) if type(value) is str else "unknown"
+    facts = getattr(error, "facts", None)
+    value = {"cause": label(cause), "causes": [], "physical_acceptance": False,
+             "external_status_eof_required": True, "facts_unknown": True, "facts_remainder_unknown": True}
+    if type(cause) is not str or label(cause) != cause:
+        value["cause_remainder_unknown"] = True
+    pending, seen, observations = [("", facts, 0)], set(), []
+    # Only fixed wrapper fields; bound work even for cyclic/malformed facts.
+    for _ in range(24):
+        if not pending:
+            break
+        path, row, depth = pending.pop(0)
+        if type(row) is not dict or id(row) in seen:
+            continue
+        seen.add(id(row))
+        causes = row.get("causes", row.get("failure_causes", []))
+        candidates = ([row["cause"]] if type(row.get("cause")) is str else [])
+        if type(causes) is list:
+            candidates += causes[:4]
+        for item in candidates:
+            item = label(item)
+            if item not in value["causes"] and len(value["causes"]) < 4:
+                value["causes"].append(item)
+        for key in ("write_extent_unknown", "unknown_closure", "closed", "stdout_eof", "stderr_eof", "returncode", "written_bytes"):
+            item = row.get(key)
+            if len(observations) < 2 and (type(item) is bool or type(item) is int and -(2**63) <= item < 2**63):
+                observations.append([path, key, item])
+        if depth < 3:
+            for key in ("failure_facts", "owner_facts", "refusal_write_failure", "write_facts", "child", "files", "stdout", "stderr"):
+                if type(row.get(key)) is dict:
+                    pending.append(((path + "." + key).lstrip("."), row[key], depth + 1))
+    if observations:
+        value["observations"] = observations
+    try:
+        _require(compiler._json_bound(facts) <= CONTROL_LIMIT, "native_failure_facts_bound")
+        raw = component.canonical_json_v1(facts)
+        value.update(facts_unknown=False, facts_bytes=len(raw), facts_sha256=_sha(raw),
+                     facts_prefix_base64=base64.b64encode(raw[:16]).decode("ascii"))
+    except (Gate2Refusal, ValueError, TypeError, RecursionError, OverflowError):
+        pass
+    raw = component.canonical_json_v1(value) + b"\n"
+    if len(raw) > 768:
+        value.pop("facts_prefix_base64", None)
+        raw = component.canonical_json_v1(value) + b"\n"
+    while len(raw) > 768 and value.get("observations"):
+        value["observations"].pop()
+        raw = component.canonical_json_v1(value) + b"\n"
+    return raw
+
+
+def emit_native_bytes_v1(raw, deadline):
+    """One unbuffered pipe write; never retry an unknown/partial extent."""
+    facts = {"written_bytes": 0, "write_extent_unknown": False, "flush_completed": False}
+    _require(type(raw) is bytes and 0 < len(raw) <= 2048 and raw.endswith(b"\n") and
+             raw.isascii() and type(deadline) is int, "native_stdout_shape")
+    try:
+        _require(time.monotonic_ns() < deadline, "native_stdout_deadline")
+        try:
+            written = os.write(sys.stdout.fileno(), raw)
+        except (OSError, ValueError):
+            facts["write_extent_unknown"] = True
+            raise
+        if type(written) is not int or not 0 <= written <= len(raw):
+            facts["write_extent_unknown"] = True
+            raise Gate2Refusal("native_stdout_contract")
+        facts["written_bytes"] = written
+        _require(written == len(raw), "native_stdout_short_write")
+        _require(time.monotonic_ns() < deadline, "native_stdout_deadline")
+        sys.stdout.flush()
+        facts["flush_completed"] = True
+        _require(time.monotonic_ns() < deadline, "native_stdout_deadline")
+    except (Gate2Refusal, OSError, ValueError) as error:
+        raise Gate2Refusal(getattr(error, "cause", "native_stdout_" + type(error).__name__), facts) from error
+
+
+def native_main_v1(argv=None):
+    """Fixed C call and completion under its original deadline."""
+    try:
+        args = sys.argv[1:] if argv is None else argv
+        _require(type(args) is list and len(args) == 5 and args[0] in STAGES, "native_stage")
+        stage, kwargs = args[0], parse_native_invocation_v1(args[1:], stage=args[0])
+        returned = run_c_v1(stage, **kwargs)
+        completed = complete_c_invocation_v1(stage, project_root=kwargs["project_root"], returned_result=returned,
+            expected_packet_sha256=kwargs["expected_packet_sha256"], expected_code_commit=kwargs["expected_code_commit"])
+        emit_native_bytes_v1(component.canonical_json_v1(completed) + b"\n", completed["completion_deadline_ns"])
+        return 0
+    except BaseException as error:
+        try:
+            os.write(2, native_failure_bytes_v1(error))
+        except OSError:
+            pass
+        return 1
 
 
 def _json(raw, cap=RECORD_LIMIT, *, canonical=True):
@@ -435,7 +575,7 @@ def validate_packet_v1(*, project_root, packet_descriptor, expected_packet_sha25
     return packet
 
 
-def capture_guard_v1(kind, *, output_dir, absolute_deadline_ns, stdout_limit=None, stderr_limit=4096, record_original=True):
+def capture_guard_v1(kind, *, output_dir, absolute_deadline_ns, stdout_limit=None, stderr_limit=4096, record_original=True, _phase_prefix=None):
     """Capture one of three fixed read-only commands, with one absolute budget.
 
     The final 200 ms are reserved for at most one TERM and one KILL. Any forced
@@ -446,7 +586,9 @@ def capture_guard_v1(kind, *, output_dir, absolute_deadline_ns, stdout_limit=Non
         "journal": (["/usr/bin/journalctl", "--disk-usage"], 512),
         "gpu": (["/usr/lib/wsl/lib/nvidia-smi", "--query-compute-apps=pid", "--format=csv,noheader"], 4096),
     }
-    _require(kind in recipes, "guard_kind")
+    _require(kind in recipes and (type(_phase_prefix) is str and _phase_prefix in ("before", "after") or
+             _phase_prefix is None), "guard_kind_phase")
+    file_prefix = "" if _phase_prefix is None else _phase_prefix + "."
     argv, maximum = recipes[kind]
     stdout_limit = maximum if stdout_limit is None else stdout_limit
     _require(type(stdout_limit) is int and 0 < stdout_limit <= maximum and
@@ -471,7 +613,7 @@ def capture_guard_v1(kind, *, output_dir, absolute_deadline_ns, stdout_limit=Non
     try:
         for name in ("stdout", "stderr"):
             _require(within_deadline(), "guard_deadline")
-            files[name] = (output / (kind + "." + name + ".original")).open("xb", buffering=0)
+            files[name] = (output / (file_prefix + kind + "." + name + ".original")).open("xb", buffering=0)
             kept[name], observed[name], digests[name] = 0, 0, hashlib.sha256()
             facts["files"][name] = {"open_completed": True, "write_failed": False, "write_extent_unknown": False,
                 "written_bytes": 0, "persisted_bytes": 0, "flush_completed": False, "fsync_completed": False, "close_completed": False}
@@ -593,7 +735,7 @@ def capture_guard_v1(kind, *, output_dir, absolute_deadline_ns, stdout_limit=Non
             unknown = facts.get(name + "_write_extent_unknown", False)
             facts[name + "_observed_bytes"] = observed[name]
             facts[name + "_confirmed_prefix_sha256"] = digests[name].hexdigest()
-            facts[name] = {"path": str(output / (kind + "." + name + ".original")),
+            facts[name] = {"path": str(output / (file_prefix + kind + "." + name + ".original")),
                            "size_bytes": None if unknown else kept[name], "sha256": None if unknown else digests[name].hexdigest()}
             file_persisted = not row["write_failed"] and row["flush_completed"] and row["fsync_completed"] and not unknown
             if file_persisted:
@@ -614,7 +756,7 @@ def capture_guard_v1(kind, *, output_dir, absolute_deadline_ns, stdout_limit=Non
         fail("guard_deadline")
     if record_original:
         try:
-            write_record_v1(output / (kind + ".capture.original.json"), facts, cap=8192, absolute_deadline_ns=absolute_deadline_ns)
+            write_record_v1(output / (file_prefix + kind + ".capture.original.json"), facts, cap=8192, absolute_deadline_ns=absolute_deadline_ns)
         except (Gate2Refusal, OSError, ValueError) as error:
             fail("guard_record_incomplete")
             facts["record_failure"] = getattr(error, "facts", {})
@@ -1415,3 +1557,7 @@ def evaluate_c_v1(stage, owner, observations):
         check(False, error.cause if isinstance(error, Gate2Refusal) else "comparison_malformed")
     return {"schema_version": 1, "artifact_kind": "vast_fixture_compiler_gate2_c_comparison_v1",
             "stage": stage, "passed": not errors, "causes": errors, "whole_chain_authority": False}
+
+
+if __name__ == "__main__":
+    raise SystemExit(native_main_v1())
