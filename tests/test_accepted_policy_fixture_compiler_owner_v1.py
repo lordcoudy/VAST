@@ -514,6 +514,26 @@ class OwnerTests(unittest.TestCase):
         self.assertFalse(any("/kill?" in path for _, path, *_ in self.calls))
         self.assertFalse(self.executable.exists())
 
+    def test_component_writer_seed_and_admission_pass_the_owner_component_gate(self):
+        from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
+        self.effects()
+        review = {"commit": "c" * 40, "approval_reference": "controlled-only", "evidence_sha256": "d" * 64}
+        seed = component.component_seed_v1(review=review, bindings=self.bindings(),
+            engine=self.recipe["engine"], provider=self.recipe["provider"],
+            environment_keys=self.recipe["environment_keys"], mounts_sha256=self.recipe["mounts_sha256"],
+            proofs=dict.fromkeys(("baseline", "toolchain", "abi", "limits", "closure")))
+        sealed_seed = component.seal_json_v1(self.root / "component-seed.json", seed)
+        admission = component.component_admission_v1(project_root=self.root, review=review,
+            seed_sha256=sealed_seed["sha256"], bindings=self.bindings(), source_relative="engine.c",
+            source=self.source.read_bytes(), executable_relative="engine",
+            physical_plan_sha256="1" * 64, boot_id=self.host["boot_id"])
+        sealed_admission = component.seal_json_v1(self.root / "component-admission.json", admission)
+        result = compiler._compile_fixture_component_v1(project_root=self.root, source_path=self.source,
+            executable_path=self.executable, admission=sealed_admission, qualification=sealed_seed)
+        self.assertTrue(result["normal_closed"])
+        self.assertFalse(result["accepted"])
+        self.assertFalse(self.executable.exists())
+
     def test_sealed_rpc_inventory_is_twenty_three(self):
         self.assertEqual(self.rpc_limit, 23)
 
