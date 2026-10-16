@@ -558,6 +558,83 @@ class AcceptedPolicyFixtureCompilerPublisherTests(unittest.TestCase):
         self.assertEqual(world.kills, [(123, "TERM")])
         self.assertLess(world.now, 15)
 
+    def component_term_case(self, name, adopted):
+        from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
+        source = component.component_source_v1(name)
+        payload = b"e" * (1048576 + 19) if name == "c4" else b""
+        world = World(code=None, stdout=b"", stderr=payload)
+        world.child.poll = lambda: world.child.returncode
+        terminated, pending, events = [], [], []
+        original_ready = world.wait_ready
+
+        def wait_child():
+            if not terminated:
+                return 0, None
+            if pending:
+                result = pending.pop(0)
+                events.append(("reap", *result))
+                return result
+            raise ChildProcessError
+
+        def kill_group(pid, kind):
+            world.kills.append((pid, kind))
+            events.append((kind, world.now))
+            terminated.append(True)
+            pending.append((123, -15))
+            if adopted:
+                pending.append((456, -15))
+
+        def wait_ready(readers, writers, errors, timeout):
+            if name == "c5" and world.calls and not terminated:
+                world.now = 45.0
+                return [], [], []
+            return original_ready(readers, writers, errors, timeout)
+
+        world.wait_child, world.wait_ready = wait_child, wait_ready
+        effects = world.kwargs()
+        effects["kill_group"] = kill_group
+        output = MemoryStream()
+        code = publisher.run_publisher_v1(MemoryStream(request(source)), output, **effects)
+        raw = output.saved if output.closed else output.getvalue()
+        meta, parts = self.frame(raw)
+        trigger = "stderr_overflow" if name == "c4" else "compiler_deadline"
+        expected = [trigger, "compiler_term_attempted"]
+        if adopted:
+            expected.append("descendant_exit_nonzero")
+        expected.append("compiler_exit_nonzero")
+        self.assertEqual(code, 1)
+        self.assertEqual(meta["causes"], expected)
+        self.assertEqual(meta["compiler"]["returncode"], -15)
+        self.assertTrue(meta["compiler"]["started"] and meta["compiler"]["reaped"])
+        self.assertTrue(meta["descendants_reaped"])
+        self.assertEqual(meta["source"], {"size_bytes": len(source), "sha256": component.SOURCE_SHA256[name]})
+        self.assertEqual(parts, [b"", payload[:1048576], b""])
+        self.assertFalse(meta["elf"]["available"])
+        for channel, observed in (("stdout", 0), ("stderr", len(payload))):
+            record = meta["compiler"][channel]
+            self.assertTrue(record["eof"])
+            self.assertEqual(record["observed_bytes"], observed)
+            self.assertEqual(record["discarded_bytes"], max(0, observed - 1048576))
+        self.assertEqual(world.kills, [(123, "TERM")])
+        self.assertEqual(len(world.calls), 1)
+        self.assertEqual(events[1:], [("reap", 123, -15)] + ([("reap", 456, -15)] if adopted else []))
+        self.assertEqual(events[0][0], "TERM")
+        if name == "c5":
+            self.assertEqual(events[0][1], 45.0)
+            self.assertLess(world.now, 46)
+        else:
+            self.assertLess(events[0][1], 45)
+
+    def test_c4_full_stderr_overflow_term_reap_and_both_ordered_cause_variants(self):
+        for adopted in (False, True):
+            with self.subTest(adopted=adopted):
+                self.component_term_case("c4", adopted)
+
+    def test_c5_absolute_cutoff_term_reap_and_both_ordered_cause_variants(self):
+        for adopted in (False, True):
+            with self.subTest(adopted=adopted):
+                self.component_term_case("c5", adopted)
+
     def test_read_crossing_cutoff_keeps_bytes_before_deadline_classification(self):
         world = World()
         original = world.child.stdout.read

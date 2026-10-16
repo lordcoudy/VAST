@@ -17,6 +17,7 @@ class CompilerConfigTests(unittest.TestCase):
     def setUp(self):
         self.image = {"Id": "sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
             "Os": "linux", "Architecture": "amd64", "Config": {"Volumes": None,
+                "Labels": {"controlled.provider.%02d" % index: "value-%02d" % index for index in range(23)},
                 "Env": ["PATH=/unknown", "LD_PRELOAD=untrusted", "PYTHONPATH=/unknown"]}}
         self.options = {"environment_keys": ["LD_PRELOAD", "PATH", "PYTHONPATH"],
             "publisher_path": "/physical/project/publisher.py", "nonce": "a" * 32,

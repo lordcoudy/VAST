@@ -1,0 +1,21 @@
+test_duplicate_snapshot_name_cannot_be_accepted (__main__.StrictSnapshotJSON.test_duplicate_snapshot_name_cannot_be_accepted) ... FAIL
+test_nonfinite_snapshot_json_cannot_be_accepted (__main__.StrictSnapshotJSON.test_nonfinite_snapshot_json_cannot_be_accepted) ... FAIL
+
+======================================================================
+FAIL: test_duplicate_snapshot_name_cannot_be_accepted (__main__.StrictSnapshotJSON.test_duplicate_snapshot_name_cannot_be_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 6, in test_duplicate_snapshot_name_cannot_be_accepted
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_nonfinite_snapshot_json_cannot_be_accepted (__main__.StrictSnapshotJSON.test_nonfinite_snapshot_json_cannot_be_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 9, in test_nonfinite_snapshot_json_cannot_be_accepted
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+FAILED (failures=2)

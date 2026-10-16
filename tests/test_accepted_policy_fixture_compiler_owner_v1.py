@@ -2,6 +2,7 @@
 import hashlib
 import io
 import json
+from copy import deepcopy
 from pathlib import Path
 import struct
 import sys
@@ -42,9 +43,11 @@ class OwnerTests(unittest.TestCase):
         self.mode, self.calls, self.clients = "normal", [], []
         self.restored, self.attach_closed_at_wait = [], []
         self.rpc_limit, self.metadata_bytes = compiler._DockerClientV1.RPC_LIMIT, 0
+        self.inspect_config_transform = self.inspect_host_transform = None
         self.image = {"Id": compiler.PROVIDER_ID, "Os": "linux", "Architecture": "amd64", "Size": 123,
             "RepoDigests": [compiler.PROVIDER], "RootFS": {"Type": "layers", "Layers": ["sha256:" + "b" * 64]},
-            "Config": {"Volumes": None, "Env": ["PATH=/vendor"], "Labels": {}}}
+            "Config": {"Volumes": None, "Env": ["PATH=/vendor"],
+                       "Labels": {"controlled.provider.%02d" % index: "value-%02d" % index for index in range(23)}}}
         self.security = ["name=seccomp,profile=builtin", "name=cgroupns"]
         self.host = {"pid": 9, "start_ticks": 99, "boot_id": "00000000-0000-0000-0000-000000000001",
                      "kernel": "6.6.87.2-microsoft-standard-WSL2", "machine": "x86_64"}
@@ -173,8 +176,16 @@ class OwnerTests(unittest.TestCase):
                     self.inspect_count += 1
                     active = ((self.inspect_count == 1 or case.mode == "late_running")
                               and case.mode not in ("lost_create", "ambiguous_create"))
+                    effective = deepcopy(self.config)
+                    host = effective.pop("HostConfig")
+                    effective["Labels"] = {**case.image["Config"]["Labels"], **effective["Labels"]}
+                    effective["Volumes"] = None
+                    if case.inspect_config_transform:
+                        case.inspect_config_transform(effective)
+                    if case.inspect_host_transform:
+                        case.inspect_host_transform(host)
                     return {"Id": "a" * 64, "Name": "/" + self.name, "Image": compiler.PROVIDER_ID,
-                        "Config": self.config, "HostConfig": self.config["HostConfig"], "RestartCount": 0,
+                        "Config": effective, "HostConfig": host, "RestartCount": 0,
                         "State": {"Running": active, "Restarting": False, "Paused": False, "Dead": False,
                             "Pid": 42 if active else 0, "ExitCode": 1 if case.mode == "container_failure" else 0,
                             "OOMKilled": case.mode == "oom", "Error": ""}}
@@ -275,6 +286,98 @@ class OwnerTests(unittest.TestCase):
         with self.assertRaises(compiler.FixtureCompilerError):
             self.run_owner()
         self.assertFalse(any("/create?" in path for _, path, *_ in self.calls))
+
+    def test_effective_provider_label_union_and_present_null_volumes_are_accepted(self):
+        self.effects()
+        result = self.run_owner()
+        self.assertTrue(result["accepted"])
+        requested = self.clients[0].config
+        self.assertEqual(len(requested["Labels"]), 3)
+        self.assertEqual(len(self.image["Config"]["Labels"]), 23)
+        self.assertEqual(requested["Volumes"], {})
+
+    def test_effective_empty_volume_mapping_is_also_accepted(self):
+        self.inspect_config_transform = lambda config: config.update(Volumes={})
+        self.effects()
+        self.assertTrue(self.run_owner()["accepted"])
+
+    def assert_effective_refused(self, *, config=None, host=None):
+        case = type(self)()
+        case.setUp()
+        try:
+            case.inspect_config_transform, case.inspect_host_transform = config, host
+            case.effects()
+            with self.assertRaises(compiler.FixtureCompilerError) as found:
+                case.run_owner()
+            self.assertIn("owner_effective_config", found.exception.causes)
+            self.assertFalse(case.executable.exists())
+        finally:
+            case.doCleanups()
+
+    def test_effective_label_missing_extra_and_value_drift_refuse(self):
+        mutations = (
+            lambda config: config["Labels"].pop("controlled.provider.00"),
+            lambda config: config["Labels"].update(extra="unrequested"),
+            lambda config: config["Labels"].update({"controlled.provider.00": "changed"}),
+            lambda config: config["Labels"].pop("org.vast.fixture-compiler.nonce"),
+            lambda config: config.update(Labels=None),
+        )
+        for number, mutate in enumerate(mutations):
+            with self.subTest(number=number):
+                self.assert_effective_refused(config=mutate)
+
+    def test_only_present_empty_volumes_normalize(self):
+        for value in ({"/unexpected": {}}, [], "", False):
+            with self.subTest(value=value):
+                self.assert_effective_refused(config=lambda config, value=value: config.update(Volumes=value))
+        self.assert_effective_refused(config=lambda config: config.pop("Volumes"))
+
+    def test_every_requested_hostconfig_field_stays_exact(self):
+        config = compiler.compiler_container_config_v1(self.image,
+            environment_keys=["PATH"], publisher_path="/qualified/compiler.py",
+            profile_raw=self.profile.read_bytes(), nonce="a" * 32, source_sha256="b" * 64)
+        for key in config["HostConfig"]:
+            with self.subTest(key=key):
+                self.assert_effective_refused(host=lambda host, key=key: host.update({key: None}))
+
+    def test_other_requested_config_fields_stay_exact(self):
+        self.assert_effective_refused(config=lambda config: config.update(User="0:0"))
+
+    def test_provider_labels_require_exactly_twenty_three_string_entries_before_create(self):
+        normal = self.image["Config"]["Labels"]
+        invalid = (None, {}, dict(list(normal.items())[:22]), {**normal, "extra": "value"},
+                   {**normal, "controlled.provider.00": None},
+                   {**dict(list(normal.items())[1:]), 0: "value"})
+        for labels in invalid:
+            with self.subTest(labels=labels):
+                case = type(self)()
+                case.setUp()
+                try:
+                    case.image["Config"]["Labels"] = labels
+                    case.effects()
+                    with self.assertRaises(compiler.FixtureCompilerError) as found:
+                        case.run_owner()
+                    self.assertIn("compiler_image_labels", found.exception.causes)
+                    self.assertFalse(any("/create?" in path for _, path, *_ in case.calls))
+                finally:
+                    case.doCleanups()
+
+    def test_every_provider_ownership_label_collision_refuses_before_create(self):
+        for key in ("nonce", "purpose", "source-sha256"):
+            with self.subTest(key=key):
+                case = type(self)()
+                case.setUp()
+                try:
+                    labels = case.image["Config"]["Labels"]
+                    labels.pop("controlled.provider.00")
+                    labels["org.vast.fixture-compiler." + key] = "collision"
+                    case.effects()
+                    with self.assertRaises(compiler.FixtureCompilerError) as found:
+                        case.run_owner()
+                    self.assertIn("compiler_image_label_collision", found.exception.causes)
+                    self.assertFalse(any("/create?" in path for _, path, *_ in case.calls))
+                finally:
+                    case.doCleanups()
 
     def test_lost_create_reconciles_without_start_or_duplicate(self):
         self.mode = "lost_create"

@@ -98,8 +98,8 @@ class TransportTests(unittest.TestCase):
         self.now = [1_000_000_000]
         self.epoch = ((1, 2, 0, 0, 0o140660, 17),)
 
-    def client(self, *sockets, deadline=20_000_000_000):
-        cls = getattr(compiler, "_DockerClientV1", None)
+    def client(self, *sockets, deadline=20_000_000_000, cls=None):
+        cls = getattr(compiler, "_DockerClientV1", None) if cls is None else cls
         self.assertTrue(callable(cls), "bounded Docker transport is absent")
         items = iter(sockets)
         client = cls(self.output, deadline, socket_factory=lambda: next(items),
@@ -148,6 +148,82 @@ class TransportTests(unittest.TestCase):
         client = self.client(FakeSocket(raw))
         self.assertEqual(client.request("GET", "/info"), {"x": 1})
         self.assertEqual((self.output / "RPC01.reply.original").read_bytes(), raw)
+
+    def test_private_decoder_preserves_the_existing_json_and_null_contract(self):
+        client = self.client()
+        self.assertIsNone(client._reply_body_limit("GET", "/info", 200, {}))
+        for status, raw, expected in ((200, b'{}', {}), (200, b'[]', []),
+                                      (200, b'null', None), (204, b'', None)):
+            with self.subTest(status=status, raw=raw):
+                self.assertEqual(client._decode_reply(status, raw, method="GET", path="/info", fields={}), expected)
+        for raw in (b'1', b'true', b'"text"', b'{"x":1,"x":2}', b'{"x":NaN}', b'\xff'):
+            with self.subTest(raw=raw):
+                with self.assertRaises(compiler.FixtureCompilerError) as found:
+                    client._decode_reply(200, raw, method="GET", path="/info", fields={})
+                self.assertIn("docker_http_json", found.exception.causes)
+
+    def test_private_archive_decoder_keeps_raw_originals_and_default_metadata_json(self):
+        archive_path = "/containers/" + "a" * 64 + "/archive?path=%2Ffixed"
+        archive = b"\x00\xfffixed archive bytes"
+        class ArchiveClient(compiler._DockerClientV1):
+            def _reply_body_limit(self, method, selected_path, status, fields):
+                return len(archive) if method == "GET" and selected_path == archive_path else None
+            def _decode_reply(self, status, data, *, method, path, fields):
+                if method == "GET" and path == archive_path:
+                    return data
+                return super()._decode_reply(status, data, method=method, path=path, fields=fields)
+        raw = reply(archive)
+        sock = FakeSocket(raw)
+        client = self.client(sock, FakeSocket(reply(b'{"ID":"held"}')), cls=ArchiveClient)
+        self.assertEqual(client.request("GET", archive_path), archive)
+        self.assertEqual((self.output / "RPC01.reply.original").read_bytes(), raw)
+        self.assertEqual(client.facts["metadata_bytes"], 2 * (len(sock.sent) + len(raw)))
+        self.assertTrue(client.facts["rpc"][0]["complete"])
+        self.assertTrue(client.facts["rpc"][0]["reply_eof"])
+        self.assertEqual(client.request("GET", "/info"), {"ID": "held"})
+
+    def test_private_body_limit_refuses_length_and_cumulative_chunk_before_body_read(self):
+        class LimitedClient(compiler._DockerClientV1):
+            def _reply_body_limit(self, method, path, status, fields):
+                return 5
+            def _decode_reply(self, status, data, *, method, path, fields):
+                raise AssertionError("oversized response reached decoder")
+        bodies = (
+            (reply(b"123456"), b"123456"),
+            (b"HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n3\r\n123\r\n3\r\n456\r\n0\r\n\r\n",
+             b"456\r\n0\r\n\r\n"),
+        )
+        for raw, unread in bodies:
+            with self.subTest(raw=raw), tempfile.TemporaryDirectory() as tmp:
+                self.output = Path(tmp).resolve()
+                sock = FakeSocket(raw)
+                client = self.client(sock, cls=LimitedClient)
+                self.refused(client, "GET", "/info", cause="docker_http_body_cap")
+                self.assertEqual(bytes(sock.data), unread)
+                self.assertEqual((self.output / "RPC01.reply.original").read_bytes(), raw[:-len(unread)])
+                self.assertTrue(sock.closed)
+
+    def test_private_raw_decoder_cannot_bypass_http_status_eof_or_persistence(self):
+        decoded = []
+        class RawClient(compiler._DockerClientV1):
+            def _decode_reply(self, status, data, *, method, path, fields):
+                decoded.append(data)
+                return data
+        for raw, cause in ((reply(b"raw", status=b"500 Error"), "docker_http_status"),
+                            (reply(b"raw") + b"extra", "docker_http_extra")):
+            with self.subTest(cause=cause), tempfile.TemporaryDirectory() as tmp:
+                self.output = Path(tmp).resolve()
+                self.refused(self.client(FakeSocket(raw), cls=RawClient), "GET", "/info", cause=cause)
+                self.assertEqual(decoded, [])
+        self.output = Path(self.tmp.name).resolve()
+        client = self.client(FakeSocket(reply(b"raw")), cls=RawClient)
+        original = Path.open
+        def opener(path, *args, **kwargs):
+            file = original(path, *args, **kwargs)
+            return FaultFile(file, flush_fail=True) if path.name.endswith("reply.original") else file
+        with patch.object(Path, "open", opener):
+            self.refused(client, "GET", "/info", cause="docker_reply_flush_OSError")
+        self.assertEqual(decoded, [])
 
     def test_bad_headers_protocol_and_framing_refuse(self):
         cases = (

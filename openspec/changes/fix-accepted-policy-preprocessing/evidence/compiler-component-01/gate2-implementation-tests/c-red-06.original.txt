@@ -1,0 +1,17 @@
+command: python3 -B -m unittest tests.test_accepted_policy_fixture_compiler_gate2_c_v1
+exit_code: 1
+.............F....
+======================================================================
+FAIL: test_failed_native_read_still_contains_owned_child_within_same_deadline (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_failed_native_read_still_contains_owned_child_within_same_deadline)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 441, in test_failed_native_read_still_contains_owned_child_within_same_deadline
+    kill.assert_called_once_with(88, gate.signal.SIGTERM)
+  File "/usr/lib/python3.12/unittest/mock.py", line 955, in assert_called_once_with
+    raise AssertionError(msg)
+AssertionError: Expected 'killpg' to be called once. Called 0 times.
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 18 tests in 0.309s
+System.Management.Automation.RemoteException
+FAILED (failures=1)

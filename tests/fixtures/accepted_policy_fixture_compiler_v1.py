@@ -395,6 +395,29 @@ class _DockerClientV1:
             sock.settimeout(remaining)
         return remaining
 
+    def _reply_body_limit(self, method, path, status, fields):
+        """Private fixed archive-client hook; ordinary JSON has no added limit."""
+        return None
+
+    def _decode_reply(self, status, data, *, method, path, fields):
+        """Keep the ordinary strict JSON contract after transport qualification."""
+        def unique(pairs):
+            value = {}
+            for key, item in pairs:
+                if key in value:
+                    raise ValueError("duplicate JSON field")
+                value[key] = item
+            return value
+        try:
+            result = None if status == 204 and not data else json.loads(
+                data.decode("utf-8"), object_pairs_hook=unique,
+                parse_constant=lambda value: (_ for _ in ()).throw(ValueError("nonfinite")))
+            if result is not None and type(result) not in (dict, list):
+                raise ValueError("Docker object/list required")
+        except (ValueError, UnicodeError, RecursionError) as error:
+            raise self._error("docker_http_json") from error
+        return result
+
     def request(self, method, path, body=None, deadline_ns=None, upgrade=False, *, cleanup=False):
         """Return strict JSON, None for 204, or an owned attach Duplex.
 
@@ -598,10 +621,13 @@ class _DockerClientV1:
                 row["upgraded"] = True
                 result = duplex
             else:
+                body_limit = self._reply_body_limit(method, path, status, fields)
+                if body_limit is not None and (type(body_limit) is not int or body_limit < 0):
+                    raise self._error("docker_http_body_cap")
                 if "transfer-encoding" in fields:
                     if fields["transfer-encoding"].lower() != "chunked":
                         raise self._error("docker_http_headers")
-                    chunks = []
+                    chunks, body_bytes = [], 0
                     while True:
                         raw_size = line(128)
                         if not re.fullmatch(rb"[0-9A-Fa-f]{1,16}\r\n", raw_size):
@@ -611,7 +637,10 @@ class _DockerClientV1:
                             if line(2) != b"\r\n":
                                 raise self._error("docker_http_chunk")
                             break
+                        if body_limit is not None and size > body_limit - body_bytes:
+                            raise self._error("docker_http_body_cap")
                         chunks.append(exact(size))
+                        body_bytes += size
                         if exact(2) != b"\r\n":
                             raise self._error("docker_http_chunk")
                     data = b"".join(chunks)
@@ -619,6 +648,8 @@ class _DockerClientV1:
                     length = fields["content-length"]
                     if not re.fullmatch("[0-9]{1,10}", length):
                         raise self._error("docker_http_headers")
+                    if body_limit is not None and int(length) > body_limit:
+                        raise self._error("docker_http_body_cap")
                     data = exact(int(length))
                 elif status == 204:
                     data = b""
@@ -634,21 +665,7 @@ class _DockerClientV1:
                     raise self._error("docker_http_upgrade")
                 if not 200 <= status <= 299:
                     raise self._error("docker_http_status")
-                def unique(pairs):
-                    value = {}
-                    for key, item in pairs:
-                        if key in value:
-                            raise ValueError("duplicate JSON field")
-                        value[key] = item
-                    return value
-                try:
-                    result = None if status == 204 and not data else json.loads(
-                        data.decode("utf-8"), object_pairs_hook=unique,
-                        parse_constant=lambda value: (_ for _ in ()).throw(ValueError("nonfinite")))
-                    if result is not None and type(result) not in (dict, list):
-                        raise ValueError("Docker object/list required")
-                except (ValueError, UnicodeError, RecursionError) as error:
-                    raise self._error("docker_http_json") from error
+                result = self._decode_reply(status, data, method=method, path=path, fields=fields)
                 self._remaining(deadline)
         except FixtureCompilerError as error:
             failed = True
@@ -1091,6 +1108,10 @@ def compiler_container_config_v1(image, *, environment_keys, publisher_path,
     config = image["Config"]
     if config.get("Volumes") is not None and config.get("Volumes") != {}:
         raise FixtureCompilerError("compiler_implicit_image_volumes")
+    labels = config.get("Labels")
+    if (type(labels) is not dict or len(labels) != 23 or
+            any(type(key) is not str or type(value) is not str for key, value in labels.items())):
+        raise FixtureCompilerError("compiler_image_labels")
     env = config.get("Env")
     if type(env) is not list or len(env) > 256:
         raise FixtureCompilerError("compiler_image_environment")
@@ -1114,6 +1135,11 @@ def compiler_container_config_v1(image, *, environment_keys, publisher_path,
             or re.fullmatch("[0-9a-f]{32}", nonce) is None
             or type(source_sha256) is not str or re.fullmatch("[0-9a-f]{64}", source_sha256) is None):
         raise FixtureCompilerError("compiler_fixed_binding")
+    requested_labels = {"org.vast.fixture-compiler.nonce": nonce,
+        "org.vast.fixture-compiler.purpose": "fresh-artificial-engine-v1",
+        "org.vast.fixture-compiler.source-sha256": source_sha256}
+    if set(labels).intersection(requested_labels):
+        raise FixtureCompilerError("compiler_image_label_collision")
     initial_env = dict.fromkeys(keys, "")
     initial_env.update(PATH="/usr/bin:/bin", HOME="/work", LANG="C", LC_ALL="C",
         TMPDIR="/work", TMP="/work", TEMP="/work", PYTHONDONTWRITEBYTECODE="1",
@@ -1125,9 +1151,7 @@ def compiler_container_config_v1(image, *, environment_keys, publisher_path,
         "AttachStdin": True, "AttachStdout": True, "AttachStderr": True,
         "OpenStdin": True, "StdinOnce": True, "Tty": False, "StopSignal": "SIGTERM",
         "Healthcheck": {"Test": ["NONE"]}, "Volumes": {},
-        "Labels": {"org.vast.fixture-compiler.nonce": nonce,
-            "org.vast.fixture-compiler.purpose": "fresh-artificial-engine-v1",
-            "org.vast.fixture-compiler.source-sha256": source_sha256},
+        "Labels": requested_labels,
         "HostConfig": {"Runtime": "runc", "Init": False, "ReadonlyRootfs": True,
             "Memory": 536870912, "MemorySwap": 536870912, "PidsLimit": 32,
             "NanoCpus": 1000000000, "NetworkMode": "none", "IpcMode": "none",
@@ -1535,7 +1559,12 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
                 and type(row.get("HostConfig")) is dict and type(row.get("State")) is dict, "owner_inspect_identity")
         for key, value in config.items():
             if key not in ("Image", "HostConfig"):
-                require(row["Config"].get(key) == value, "owner_effective_config")
+                if key == "Labels":
+                    value = {**image["Config"]["Labels"], **value}
+                if key == "Volumes":
+                    require(key in row["Config"] and row["Config"][key] in (None, {}), "owner_effective_config")
+                else:
+                    require(row["Config"].get(key) == value, "owner_effective_config")
         for key, value in config["HostConfig"].items():
             require(row["HostConfig"].get(key) == value, "owner_effective_config")
         return row
