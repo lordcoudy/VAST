@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Api-Version: 1.55
+Content-Type: application/json
+Docker-Experimental: false
+Ostype: linux
+Server: Docker/29.7.2 (linux)
+Date: Fri, 16 Oct 2026 10:02:41 GMT
+Content-Length: 921
+Connection: close
+
+{"Platform":{"Name":"Docker Engine - Community"},"Version":"29.7.2","ApiVersion":"1.55","MinAPIVersion":"1.40","Os":"linux","Arch":"amd64","Components":[{"Name":"Engine","Version":"29.7.2","Details":{"ApiVersion":"1.55","Arch":"amd64","BuildTime":"2026-08-05T18:28:53.000000000+00:00","Experimental":"false","GitCommit":"6a43e3d","GoVersion":"go1.26.5","KernelVersion":"6.6.87.2-microsoft-standard-WSL2","MinAPIVersion":"1.40","Module":"github.com/moby/moby/v2","ModuleVersion":"v2.0.0+unknown","Os":"linux"}},{"Name":"containerd","Version":"v2.3.3","Details":{"GitCommit":"aad11006b869517fcd3009450b6f82da282e1a9b"}},{"Name":"runc","Version":"1.4.3","Details":{"GitCommit":"v1.4.3-0-gbb14dabe"}},{"Name":"docker-init","Version":"0.19.0","Details":{"GitCommit":"de40ad0"}}],"GitCommit":"6a43e3d","GoVersion":"go1.26.5","KernelVersion":"6.6.87.2-microsoft-standard-WSL2","BuildTime":"2026-08-05T18:28:53.000000000+00:00"}
