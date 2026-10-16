@@ -504,3 +504,13 @@ remain required.
     150 s) with full containment.
   - `cc1 --version` writes to stderr, so gate 2 reads that field.
   - `memfd_create` passes `MFD_EXEC` explicitly.
+- **C5 projection:** a sampled output rate of 0 B/s means "never
+  completes", which satisfies the 90 s projection. The slope child is capped
+  at min(20 s, the probe's remaining in-container budget − 3 s), and a short
+  window is recorded as not a full window. The publisher's cc driver passes
+  its stdout pipe to cc1 as fd 1, as in the host `cc -c` check, so C5 blocks
+  the same way there.
+- **P0 format:** `ctr ... snapshots info` prints JSON; the runner requires
+  `Name` equal to the chain ID and `Kind` "Committed".
+- **GPU guard:** an unavailable `nvidia-smi` query refuses as unprovable
+  (`probe_gpu_query_unavailable`), separately from a busy GPU.

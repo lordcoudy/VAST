@@ -177,8 +177,10 @@ def run_probe_container_v1(*, project_root: Path, probe: str, output_dir: Path, 
         refuse("probe_capacity_floor")
     gpu = _gpu_processes()
     facts["guards"]["gpu_processes"] = gpu
-    if gpu is None or gpu:
-        refuse("probe_gpu_unavailable_or_busy")
+    if gpu is None:
+        refuse("probe_gpu_query_unavailable")  # idleness cannot be proven
+    if gpu:
+        refuse("probe_gpu_busy")
     facts["measure_before"] = _measure()
 
     start = clock()

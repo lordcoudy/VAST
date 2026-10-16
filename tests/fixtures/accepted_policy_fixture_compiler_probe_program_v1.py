@@ -33,6 +33,9 @@ CC = "/usr/bin/cc"
 SOURCE_NAMES = ("c1", "c2", "c3", "c4", "c5")
 CC_ENV = {"PATH": "/usr/bin:/bin", "LC_ALL": "C", "HOME": WORK, "TMPDIR": WORK, "TMP": WORK, "TEMP": WORK}
 NR_SETRLIMIT, NR_PRLIMIT64 = 160, 302
+# The host work window is 60 s from container start; keep 5 s for export.
+WORK_BUDGET_S = 55.0
+STARTED = time.monotonic()
 RLIMIT_CORE, RLIMIT_NOFILE = 4, 7
 X32_ASM = """\t.globl _start
 _start:
@@ -385,7 +388,13 @@ def toolchain_probe(sources):
 
 
 def c5_slope_probe():
-    """C5 runs only here, bounded: output counted, RSS/CPU sampled, killed at 20 s."""
+    """C5 runs only here, bounded: output counted, RSS/CPU sampled, killed at 20 s.
+
+    It never runs past the in-container work budget; a short window is recorded.
+    """
+    window = min(20.0, WORK_BUDGET_S - (time.monotonic() - STARTED) - 3.0)
+    if window <= 0:
+        return {"skipped": "work_budget_exhausted"}
     child = subprocess.Popen([CC, "-E", "-O0", "-std=c11", WORK + "/c5.c"], stdin=subprocess.DEVNULL,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=dict(CC_ENV), cwd=WORK,
                              start_new_session=True, close_fds=True)
@@ -394,7 +403,7 @@ def c5_slope_probe():
     for fd in fds:
         os.set_blocking(fd, False)
     next_sample = started
-    while time.monotonic() - started < 20:
+    while time.monotonic() - started < window:
         ready, _, _ = select.select(list(fds), [], [], 0.2)
         for fd in ready:
             try:
@@ -417,7 +426,8 @@ def c5_slope_probe():
     except ProcessLookupError:
         pass
     status = child.wait()
-    return {"finished_before_kill": finished, "returncode": status, "samples": samples, "output": output}
+    return {"finished_before_kill": finished, "returncode": status, "samples": samples, "output": output,
+            "window_s": round(window, 3), "full_window": window >= 20.0}
 
 
 def session_usage(session):

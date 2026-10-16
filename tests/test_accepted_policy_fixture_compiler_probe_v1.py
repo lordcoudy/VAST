@@ -62,6 +62,10 @@ class ProbeProgramTests(unittest.TestCase):
             self.assertEqual((output / "engine.unaccepted").read_bytes(), b"")
             self.assertFalse(facts["header"]["elf"]["available"])
 
+    def test_c5_slope_never_exceeds_the_in_container_budget(self):
+        with mock.patch.object(program, "STARTED", program.time.monotonic() - program.WORK_BUDGET_S):
+            self.assertEqual(program.c5_slope_probe(), {"skipped": "work_budget_exhausted"})
+
     def test_assembly_probes_have_fixed_exit_codes(self):
         self.assertIn("cmpq $-38, %rax", program.X32_ASM)
         self.assertIn("movl $5, %edi", program.X32_ASM)
@@ -223,6 +227,7 @@ class RunnerTests(unittest.TestCase):
             "containers": lambda: self.containers.append({"Id": "b" * 64, "State": "exited"}),
             "capacity": lambda: setattr(self, "c_free", component.C_BYTES),
             "gpu": lambda: setattr(self, "gpu", ["123"]),
+            "gpu_query": lambda: setattr(self, "gpu", None),
         }
         for label, mutate in cases.items():
             with self.subTest(label=label):
