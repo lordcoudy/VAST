@@ -12,4 +12,3 @@ to retain the CLI startup diagnostics or a complete session transcript.
 This review did not inspect the V8 amendment and does not approve gate 2.
 V8 section 1 retains the author's dispositions; independent full-source
 exact-commit review is still required. No physical result is accepted here.
-

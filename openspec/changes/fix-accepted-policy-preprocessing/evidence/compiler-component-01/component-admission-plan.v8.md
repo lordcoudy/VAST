@@ -138,15 +138,36 @@ and after every run. A syntactically valid review field or seed hash alone
 cannot authorize an unreviewed runner or changed module.
 
 Retain the old B root. Export only code/packet files to the fresh gate-2
-root's <=1 MiB code allocation. Generate C1-C5 source exclusively under each
+root's <=1 MiB code/P0 allocation (code and packet <=640 KiB; P0 originals
+<=384 KiB). Generate C1-C5 source exclusively under each
 fresh C output directory and charge source bytes to that C's 64 MiB
 allocation. In particular, C4's 1,360,072 B is source, below the unchanged
 8 MiB source ceiling; it is not charged to the 1 MiB stderr or code-export cap.
 C6 uses C1's pinned source bytes under a fresh path.
 
 Fresh P0 committed-snapshot info AND snapshots-ls evidence is required again
-before C1. Historical B1 P0 or Unpacked metadata alone cannot pass. Before
-every create verify exact engine/provider/platform/security/runtime/mount
+before C1. Historical B1 P0 or Unpacked metadata alone cannot pass. V8 permits
+the delegated agent, as operator, to obtain the same proof without a human
+typing a sudo password: fixed C:/Windows/System32/wsl.exe invocations with
+-d Ubuntu -u root --cd / --exec and only these literal Linux commands:
+
+- /usr/bin/id -u (must return 0);
+- /usr/bin/ctr -n moby snapshots --snapshotter overlayfs info
+  sha256:583abc9004877e79fd0f5d47e4c7cff085b8538fdcbff0c070e044bdb0b43c1a;
+- /usr/bin/ctr -n moby snapshots --snapshotter overlayfs ls.
+
+No shell, project helper, alternate executable, arbitrary command or default
+user/configuration change is admitted. Record this as agent-observed root
+proof, never human review. The ordinary C/D runner remains UID/GID1000.
+Use one absolute 30 s P0 deadline, at most 10 s per command; stdout caps are
+16 B /64 KiB /256 KiB respectively, combined stderr <=16 KiB, and all P0
+original/control forms <=384 KiB inside the fresh 1 MiB code/P0 allocation.
+Retain exact argv, PID/status/EOF/persistence and bounded originals; require
+the exact committed chain JSON, its listing row and matching engine identity.
+A timeout, overflow, nonzero, unknown closure or incomplete capture stops
+continuation without guessed cleanup. Source/approval/hash bindings cover
+the fixed P0 capture; this supersedes only V7's human-typed actor choice.
+Before every create verify exact engine/provider/platform/security/runtime/mount
 pins, zero running containers, exactly prior retained CIDs, idle GPU and all
 original physical floors. Use one same-session pre-warm/boot-ID observation.
 No C/D begins until this packet's implemented bytes have both independent
@@ -199,15 +220,24 @@ Stage D authenticates C1's retained
 <executable>.compiler-originals/engine.unaccepted, never a nonexistent
 published executable. Copy exclusively into a fresh 0700 directory with an
 independently hashed 0700 ELF copy. Refuse before copy if ELF exceeds
-983,040 B (1 MiB minus 64 KiB control reserve). Set CORE exactly1/1 and
-FSIZE1MiB in the child before exec; establish those limits through the
-reviewed pre-exec seam, an owned fresh session and one 10 s deadline.
-Close stdin after the fixed command. Combined stdout/stderr capture <=4 KiB.
-Require exact D_REPLY, rc0, engine.state bytes "ok\n", no WCOREDUMP and
-unchanged dmesg/crash-directory listings. All D control/capture/records fit
-64 KiB; reserve a full 1 MiB child-file liability plus the ELF copy inside
-a 2 MiB D aggregate. This explicit physical allocation replaces V7's
-1 MiB D quote without changing FSIZE or the 512 MiB seal.
+524,288 B (512 KiB). This is a component pre-copy guard, not a change to
+the compiler's 16 MiB ELF ceiling. Set CORE exactly1/1 and FSIZE1MiB in the
+child before exec. A <=1 KiB pre-exec proof pipe records actual PID/UID and
+getrlimit results after setting them; actual status, EOF and persistence
+remain separately mandatory. The child has an owned fresh session and a
+fixed minimal environment (PATH=/usr/bin:/bin, LANG=C, LC_ALL=C and HOME,
+TMPDIR, TMP, TEMP equal to the D directory), without inherited loader hooks.
+One 10 s absolute deadline includes 7 s work, at most one TERM/1 s, at most
+one KILL/1 s and 1 s final observation; no reset or extra cleanup time.
+Forced, late or unknown closure never passes. Close stdin after the fixed
+command. Combined stdout/stderr capture <=4 KiB. Require exact D_REPLY,
+rc0, engine.state bytes "ok\n", no WCOREDUMP and unchanged dmesg/crash
+listings. Retain two dmesg originals <=192 KiB each, two crash listings
+<=16 KiB each and all remaining control/capture/records <=96 KiB: 512 KiB
+controls total. Refuse oversized pre-capture before exec. Reserve the full
+1 MiB child-file liability, <=512 KiB ELF copy and <=512 KiB controls in
+the 2 MiB D aggregate. This physical allocation replaces V7's 1 MiB D
+quote without changing CORE/FSIZE or the 512 MiB seal.
 
 ## 5. Charge ledger and stop rule
 
@@ -249,8 +279,10 @@ drift, Volumes normalization only, independent mutations of every requested
 HostConfig field, both ordered C4/C5 cause variants, rejection of KILL/unknown
 EOF/forged headers/changed hashes/closure, changed packet/helper/source bytes,
 null/foreign B proofs, bounded archive framing/tar/path/size/status/deadline/
-persistence failures, and exclusive C1-to-D copy/source/command/reply/state
-binding. Check probe/publisher payload syntax under Python3.10 grammar;
+persistence failures, fixed root-P0 argv/deadline/capture/provenance refusal,
+D pre-exec limit proof and all four D phases, and exclusive C1-to-D
+copy/source/command/reply/state binding. Check probe/publisher payload syntax
+under Python3.10 grammar;
 run host tests under canonical WSL Python3.12.3 and configured hosted CI.
 
 After each physical run persist actual original values and their comparison.
@@ -261,4 +293,3 @@ forms before checking 2.10 complete. Carry every remnant, unavailable
 observation and synthetic-only enforcement limit into whole1.5. Reader2.12,
 whole1.5, genuine2.8/5.3, package renewal, conformance, archive and final
 approval remain required. No component result grants Q1 or merge.
-
