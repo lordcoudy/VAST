@@ -16,7 +16,7 @@ seven blob-verified files, 244,183 B, mode 0700.
 - Closure: init absent, cgroup empty and unpopulated.
 - The container is retained, stopped. Nothing was removed or pruned.
 
-## Results against plan V7 (`runs/B1.evaluation.json`)
+## Results against plan V7 (`run-records/B1.evaluation.json`)
 
 **Matched exactly:**
 
@@ -80,3 +80,8 @@ a CORE write that succeeded. Plan V7 nonetheless says the B1→B2 gate needs
 every expected value observed exactly. B2 is therefore held until this
 disposition is independently reviewed and approved. Re-running B1 would be a
 tenth container, outside the nine-container seal, and is not proposed.
+
+`originals.sha256` lists the component-root source paths (`outputs/B1/`,
+`runs/`). In this repository they are `outputs/` and `run-records/`, because
+the repository's `.gitignore` excludes any `runs/` directory. The two host
+dmesg dumps listed there stay only in the component root.
