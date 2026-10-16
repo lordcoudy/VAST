@@ -295,3 +295,17 @@ Decision14 retires the following original c9d6bfef4e854a9b701d0957898ec1e9877a6b
 - Withdrawn, unimplemented: 1.14 After1.18 for D11-dependent cases,1.19 for ownership/copy cases and1.20 for D13 bootstrap/source-loader cases, exercise the SAME actual new reporting/decision/primitive-order logic with bounded controlled-effects and tiny fresh owned file/process cases for custody/share/size/source drift, one-shot busy/unsupported/unknown loop states and blocking-call deadlines, FD inheritance/truncation/unexpected-rights closure, credential/PID/boot/namespace joins, actual-parent/nonchild/adopted statuses, Windows0/Linux-alive, foreground receipt-before-exit/nonzero/client/no-fork/UID/environment/loader/headless/capture failures, omitted/duplicate/foreign root user or role, root lookup/current credential/group/capability/userns drift, denied/incomplete root scope and attempted primary/arbitrary dispatch, forced/unknown closure and result/cleanup failures. Retain RED/failed originals, verify cumulative8MiB source/1MiB case/operational-channel/16MiB whole-control limits and independent exact-helper conformance; no real loop/mount/formatter or image action is allowed in these tests.
 - Withdrawn, unimplemented: 1.15 After1.13/1.14 and independent approval of exact helper manifest/failure dispositions/fresh physical capacity-host-source readiness, admit at most one Decision9 live filesystem attempt; verify continuous cross-platform custody and actual handshake before growth, one atomic8GiB loop/readback, unchanged300s formatting/60s mounting, actual private ext4<=1MiB payload/fsync/readback with>=5GiB inner free, exact original lease/floors/deadlines and positive owned/independent host closure. Preserve originals and new backing on success/failure; any failure stays failed, with no retry/fallback or dependent image/renewal action.
 - Withdrawn, unimplemented: 1.16 Deliver independently reviewed fourteen-scenario rehearsal conformance binding exact source/helper/authority/raw/command/namespace/closure and configured-default-versus-selected-root credential identities, actual retained/control/physical bytes and all unresolved facts. Verify same-PR committed/pushed evidence preserves all originals and explicitly leaves full restore/full227equality/old cold03 cause/physical C gain/whole-chain1.5/renewal/genuine consumers/final gates unaccepted; no automatic backing release or image deletion/offload is authorized.
+
+
+## Task2.10 successor implementation checkpoint
+
+Planning commit8332ed4ef720bb76881ef4055a57c11f9b58a1d4 was independently reviewed
+by Codex and Grok CLI, passed required CI38943143205 and received delegated AGENT
+implementation approval in PR9 comment6222272081. The successor DNS/footer,
+fixed prior-retention authority and once-additive6MiB carry are implemented
+with controlled RED/GREEN evidence. See
+evidence/compiler-component-01/gate2-f2-successor-verification.v1.json and the
+appended implementation-conformance section for source/test/capacity bindings
+and limitations. New exact implemented-source reviews/CI/AGENT approval and
+actual packet/per-C/D evidence gates remain pending; no successor has run.
+All46 task identities and24 completion states remain unchanged;2.10 is open.

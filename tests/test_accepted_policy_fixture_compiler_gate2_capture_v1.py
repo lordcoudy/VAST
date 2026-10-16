@@ -15,6 +15,8 @@ from unittest.mock import patch
 
 from tests.fixtures import accepted_policy_fixture_compiler_gate2_capture_v1 as capture
 from tests.fixtures import accepted_policy_fixture_compiler_gate2_setup_v1 as setup
+from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
+from tests import test_accepted_policy_fixture_compiler_gate2_retention_v1 as retention_tests
 
 COMMIT = "a" * 40
 APPROVAL = "https://github.com/lordcoudy/VAST/pull/9#issuecomment-123456789"
@@ -170,6 +172,79 @@ class ControlledCaptureTests(unittest.TestCase):
 
 
 class ReviewedSourceTests(unittest.TestCase):
+    def test_windows_bootstrap_executes_authenticated_bytes_without_reopening_changed_path(self):
+        fixture=retention_tests.NativeRetentionTests(); fixture.setUp(); self.addCleanup(fixture.doCleanups)
+        bindings=component.retained_source_bindings_v1(fixture.repo)
+        raw=("def retained_source_bindings_v1(repo):\n return "+repr(bindings)+"\n").encode()
+        fixture.component_path.write_bytes(raw)
+        current={name:(fixture.repo/name).read_bytes() for name in capture.RETENTION_PATHS}
+        blobs={name:hashlib.sha1(b"blob "+str(len(value)).encode()+b"\0"+value).hexdigest() for name,value in current.items()}
+        old={row["git_blob"]:fixture.raws[n] for n,row in enumerate(bindings["sources"])}
+        def git(args,cap):
+            if args[:2]==["ls-tree","-z"]:
+                return b"".join(("100644 blob "+blobs[n]+"\t"+n).encode()+b"\0" for n in capture.RETENTION_PATHS)
+            for name,blob in blobs.items():
+                if args==["cat-file","blob",blob]: return current[name]
+            return old[args[2]]
+        read=capture.read_fixed
+        def changed(path,cap):
+            result=read(path,cap)
+            if path==fixture.component_path:
+                path.write_bytes(b"raise RuntimeError('unreviewed source reopened')\n")
+            return result
+        with patch.object(capture,"REPO",fixture.repo),patch.object(capture,"git_v1",side_effect=git),\
+                patch.object(capture,"read_fixed",side_effect=changed),patch.object(capture,"check",return_value=None):
+            module,observation=capture.authenticate_retention_v1(COMMIT)
+        self.assertEqual(module.retained_source_bindings_v1(fixture.repo),bindings)
+        self.assertEqual(observation["component"]["sha256"],capture.sha(raw))
+
+    def test_actual_thirteen_small_old_blobs_authenticate_and_one_changed_blob_refuses(self):
+        fixture=retention_tests.NativeRetentionTests(); fixture.setUp(); self.addCleanup(fixture.doCleanups)
+        paths=capture.RETENTION_PATHS
+        current={name:(fixture.repo/name).read_bytes() for name in paths}
+        blobs={name:hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest() for name,raw in current.items()}
+        bindings=component.retained_source_bindings_v1(fixture.repo)
+        old={row["git_blob"]:fixture.raws[n] for n,row in enumerate(bindings["sources"])}
+        seen=[]
+        def git(args,cap):
+            if args[:2]==["ls-tree","-z"]:
+                return b"".join(("100644 blob "+blobs[n]+"\t"+n).encode()+b"\0" for n in paths)
+            for name,blob in blobs.items():
+                if args==["cat-file","blob",blob]: return current[name]
+            seen.append(args[2]); return old[args[2]]
+        with patch.object(capture,"REPO",fixture.repo),patch.object(capture,"git_v1",side_effect=git),\
+                patch.object(capture,"_load_authenticated_component_v1",return_value=component),\
+                patch.object(capture,"check",return_value=None):
+            module,observation=capture.authenticate_retention_v1(COMMIT)
+            self.assertIs(module,component); self.assertEqual(observation,fixture.observation)
+            self.assertEqual(seen,[row["git_blob"] for row in bindings["sources"]])
+            old[bindings["sources"][-1]["git_blob"]]+=b"changed"
+            with self.assertRaisesRegex(capture.CaptureRefusal,"retention_old_git_blob_drift"):
+                capture.authenticate_retention_v1(COMMIT)
+
+    def test_retention_bootstrap_authenticates_current_two_blobs_and_all_thirteen_old_blobs(self):
+        from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
+        repo=Path(__file__).resolve().parents[1]
+        paths=("tests/fixtures/accepted_policy_fixture_compiler_component_v1.py",component.RETENTION_INDEX_REL_V1)
+        current={name:(repo/name).read_bytes() for name in paths}
+        blobs={name:hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest() for name,raw in current.items()}
+        calls=[]
+        bindings=component.retained_source_bindings_v1(repo)
+        # The complete old source payloads are deliberately unavailable here.
+        # A missing old Git object must refuse; no shallow-checkout fallback.
+        def git(args,cap):
+            calls.append(args)
+            if args[:2]==["ls-tree","-z"]:
+                return b"".join(("100644 blob "+blobs[n]+"\t"+n).encode()+b"\0" for n in paths)
+            for name,blob in blobs.items():
+                if args==["cat-file","blob",blob]: return current[name]
+            raise RuntimeError("controlled missing old Git object")
+        with patch.object(capture,"REPO",repo),patch.object(capture,"git_v1",side_effect=git),\
+                patch.object(capture,"check",return_value=None):
+            with self.assertRaisesRegex(RuntimeError,"missing old Git"):
+                capture.authenticate_retention_v1(COMMIT)
+        self.assertEqual(calls[-1],["cat-file","blob",bindings["sources"][0]["git_blob"]])
+
     def test_failed_git_native_preserves_pid_status_eof_and_exact_prefixes_in_exception(self):
         streams={101:io.BytesIO(b"known git stdout\x00"),102:io.BytesIO(b"known git stderr")}
         with patch.object(capture,"DEADLINE",10**30),patch.object(capture,"CAPTURE_END",None), \
@@ -257,11 +332,15 @@ class OrchestrationTests(unittest.TestCase):
             self.helpers[name]={"path":str(path),"size_bytes":len(raw),"sha256":capture.sha(raw),
                 "git_blob":hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()}
         self.now=[100]
+        self.retained=retention_tests.NativeRetentionTests()
+        self.retained.setUp(); self.addCleanup(self.retained.doCleanups)
+        self.observation=self.retained.observation
         self.pre={"baseline":{"c_free_bytes":100_000_000_000,"ext4_used_bytes":300_000_000_000},
             "boot_id":"12345678-1234-1234-1234-123456789abc","linux_monotonic_ns":1_000_000_000,
             "project_free_bytes":10_000_000_000,"capture_source_quote_bytes":16384,"operator_source_quote_bytes":16384,
             "helper_git_forms_quote_bytes":16384,
             "c_fragment_bytes":4096,"root_fragment_bytes":4096}
+        self.pre["retention"]={"git_observation":self.observation,"native":self.retained.verify()}
         self.post={"measurement":{"c_free_bytes":99_999_000_000,"ext4_used_bytes":300_001_000_000},
             "boot_id":self.pre["boot_id"],"linux_monotonic_ns":2_000_000_000,"project_free_bytes":9_000_000_000,
             "required_charge_bytes":30_000_000,"funded_initial_charge_bytes":40_000_000,"remaining_funded_bytes":10_000_000,
@@ -275,6 +354,7 @@ class OrchestrationTests(unittest.TestCase):
             patch.object(capture.sys,"platform","win32"),patch.object(capture.sys,"stdout",self.text_stdout),
             patch.object(capture.time,"monotonic_ns",side_effect=lambda:self.now[0]),
             patch.object(capture,"authenticate_helpers_v1",return_value=self.helpers),
+            patch.object(capture,"authenticate_retention_v1",return_value=(component,self.observation)),
             patch.object(capture,"meter",side_effect=self.meter),
             patch.object(capture.subprocess,"Popen",side_effect=self.spawn),
             patch.object(capture.os,"read",side_effect=lambda fd,n:self.pipe_data[fd].read(n))]
@@ -289,6 +369,7 @@ class OrchestrationTests(unittest.TestCase):
             "stderr":{"kept_bytes":0,"sha256":capture.sha(b"")}}
 
     def meter(self,*,after,payload):
+        self.assertLessEqual(len(capture.canonical(payload)),4096)
         self.phases.append("post-meter" if after else "pre-meter")
         if after:
             for name in ("stdout","stderr"):
@@ -296,7 +377,7 @@ class OrchestrationTests(unittest.TestCase):
                 self.assertTrue(capture.FACTS["driver"][name]["close_completed"])
         else:
             self.assertEqual(list(self.output.iterdir()),[])
-            self.assertEqual(payload,{"helper_code":self.helpers})
+            self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
         value=copy.deepcopy(self.post if after else self.pre); native=self.native(value)
         capture.FACTS["post_meter" if after else "pre_meter"]=native
         return value,native
@@ -339,7 +420,9 @@ class OrchestrationTests(unittest.TestCase):
         self.assertFalse(returned["physical_acceptance"])
         self.assertTrue(returned["external_wrapper_status_and_eof_required"])
         self.assertEqual(status["post_meter"],self.post)
-        self.assertEqual(status["pre_meter"],self.pre)
+        self.assertEqual(status["pre_meter"],{k:v for k,v in self.pre.items() if k!="retention"})
+        self.assertEqual(self.context["retention"],self.pre["retention"])
+        self.assertEqual(status["prior_retention_sha256"],capture.sha(capture.canonical(self.pre["retention"])))
         self.assertTrue(status["driver"]["stdout"]["close_completed"])
 
     def test_pre_meter_payload_must_match_actual_native_stdout_hash(self):
@@ -359,11 +442,61 @@ class OrchestrationTests(unittest.TestCase):
         capture.run_capture_v1(COMMIT,APPROVAL)
         self.assertLessEqual(capture.STATUS.stat().st_size,4096)
 
+    def test_actual_windows_helper_paths_large_quotes_and_clock_fit_context_meter_and_status(self):
+        actual="C:/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/"
+        for name in capture.HELPER_PATHS:
+            self.helpers[name]["path"]=actual+name
+        self.now[0]=10**16; self.pre["linux_monotonic_ns"]=10**16
+        self.post["linux_monotonic_ns"]=10**16+10**9
+        self.pre["capture_source_quote_bytes"]=self.pre["operator_source_quote_bytes"]=131072
+        self.post["outside_upper_bytes"]=400000
+        capture.run_capture_v1(COMMIT,APPROVAL)
+        self.assertLessEqual(len(capture.canonical(self.context)),4096)
+        self.assertLessEqual(capture.STATUS.stat().st_size,4096)
+
     def test_source_denial_prevents_meter_allocation_and_driver(self):
         with patch.object(capture,"authenticate_helpers_v1",side_effect=capture.CaptureRefusal("source_drift")):
             with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
         self.assertEqual(self.phases,[])
         self.assertEqual(list(self.output.iterdir()),[])
+
+    def test_retention_git_denial_is_before_meter_or_capture_allocation(self):
+        with patch.object(capture,"authenticate_retention_v1",side_effect=capture.CaptureRefusal("old_git_drift")):
+            with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+        self.assertEqual(self.phases,[])
+        self.assertEqual(list(self.output.iterdir()),[])
+
+    def test_late_retention_authentication_cannot_start_pre_meter_or_capture(self):
+        def late(commit):
+            self.now[0]=capture.DEADLINE
+            return component,self.observation
+        with patch.object(capture,"authenticate_retention_v1",side_effect=late):
+            with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+        self.assertEqual(self.phases,[])
+        self.assertEqual(list(self.output.iterdir()),[])
+
+    def test_retention_receipt_or_observation_drift_is_preallocation(self):
+        for group,key,value in (("native","physical_acceptance",True),("native","owned_upper_bytes",2162689),
+                ("git_observation","old_git_sha256","f"*64)):
+            pre=copy.deepcopy(self.pre); pre["retention"][group][key]=value
+            with self.subTest(key=key),patch.object(self,"pre",pre):
+                with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+            self.assertEqual(list(self.output.iterdir()),[])
+
+    def test_pre_native_git_observation_float_sizes_refuse_before_capture(self):
+        for key in ("component","index"):
+            pre=copy.deepcopy(self.pre)
+            pre["retention"]["git_observation"][key]["size_bytes"]=float(self.observation[key]["size_bytes"])
+            with self.subTest(key=key),patch.object(self,"pre",pre):
+                with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+            self.assertEqual(list(self.output.iterdir()),[])
+
+    def test_changed_unknown_or_unfunded_current_code_reserve_refuses_before_capture(self):
+        for reserve in (None,True,524288.0,524289,1048576):
+            with self.subTest(reserve=reserve),patch.object(component,"CURRENT_CODE_FORMS_V1",reserve,create=True):
+                with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+            self.assertNotIn("driver",self.phases)
+            self.assertEqual(list(self.output.iterdir()),[])
 
     def test_pre_meter_floor_fragment_and_native_denials_are_preallocation(self):
         for group,key,bad in ((None,"project_free_bytes",1),(None,"c_fragment_bytes",8192),("baseline","c_free_bytes",1)):
@@ -519,10 +652,15 @@ class LiteralMeterTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.fs=Path(self.temp.name).resolve()
+        self.retained=retention_tests.NativeRetentionTests()
+        self.retained.setUp(); self.addCleanup(self.retained.doCleanups)
+        self.observation=self.retained.observation
+        self.retention={"git_observation":self.observation,"native":self.retained.verify()}
         self.uid=1000; self.fragment=4096; self.c_free=100_000_000_000; self.project_free=10_000_000_000
         self.ext4_used=300_000_000_000; self.now=1_000_000_000
         self.boot="12345678-1234-1234-1234-123456789abc"
         self.overrides={}
+        self.scandir=os.scandir
         self.root=self.path("/home/s-a-balashov/work/vast-fixture-compiler-gate2-"+COMMIT+"-01")
         self.f2=Path(str(self.root)+".f2"); self.aux=Path(str(self.root)+".operator-originals")
         for directory in (self.root,self.f2,self.aux,self.path("/mnt/c/Users/s-a-balashov/AppData/Local/Temp")):
@@ -537,6 +675,9 @@ class LiteralMeterTests(unittest.TestCase):
 
     def path(self,value):
         value=str(value)
+        repo="/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST"
+        if value==repo or value.startswith(repo+"/"):
+            return self.retained.repo/value[len(repo):].lstrip("/")
         if value.startswith(str(self.fs)): return Path(value)
         return self.fs/value.lstrip("/") if value.startswith("/") else Path(value)
 
@@ -557,35 +698,45 @@ class LiteralMeterTests(unittest.TestCase):
             return types.SimpleNamespace(f_frsize=4096,f_bavail=self.project_free//4096,
                 f_blocks=blocks,f_bfree=blocks-self.ext4_used//4096)
         fake_os=types.SimpleNamespace(getuid=lambda:self.uid,geteuid=lambda:self.uid,getgid=lambda:self.uid,getegid=lambda:self.uid,
-            fstat=fstat,statvfs=statvfs,walk=os.walk,path=os.path)
+            fstat=fstat,statvfs=statvfs,walk=os.walk,scandir=self.scandir,path=os.path,open=os.open,fdopen=os.fdopen,close=os.close,
+            O_RDONLY=os.O_RDONLY,O_NONBLOCK=os.O_NONBLOCK,O_NOFOLLOW=os.O_NOFOLLOW,
+            O_CLOEXEC=os.O_CLOEXEC)
         fake_sys=types.SimpleNamespace(version_info=(3,12,3),stdin=types.SimpleNamespace(buffer=io.BytesIO(capture.canonical(payload))),
             stdout=types.SimpleNamespace(buffer=output))
+        def controlled_module(name):
+            # Only the loader effect is controlled. The compiled fixture bytes
+            # are a comment; all verifier functions retain their real globals.
+            module=types.ModuleType(name); module.__dict__.update(component.__dict__)
+            return module
         modules={"os":fake_os,"sys":fake_sys,"time":types.SimpleNamespace(monotonic_ns=lambda:self.now),
-            "pathlib":types.SimpleNamespace(Path=self.path)}
+            "pathlib":types.SimpleNamespace(Path=self.path),
+            "types":types.SimpleNamespace(ModuleType=controlled_module)}
         with patch.dict(sys.modules,modules):
             exec(compile(source.replace("__REVIEWED_COMMIT__",COMMIT),"<fixed-controlled-meter>","exec"),{})
         return json.loads(output.getvalue())
 
     def post_payload(self):
-        footer={"accounting":{"reserved_control_bytes":524288,"reserved_rounding_bytes":8192,"reserved_metadata_bytes":8192}}
+        footer={"accounting":{"physical_charge_bytes":2_000_000,"reserved_control_bytes":278528,"reserved_rounding_bytes":8192,"reserved_metadata_bytes":8192}}
         footer_raw=capture.canonical(footer); (self.f2/"f2.final-accounting.v1.json").write_bytes(footer_raw)
         for name in ("f2.originals.v1.json","f2.supplement.v1.json"):
             (self.f2/name).write_bytes(b"{}")
         context={"schema_version":1,"code_commit":COMMIT,"helper_code":self.helpers,
-            "capture_source_sha256":self.helpers[capture.HELPER_PATHS[0]]["sha256"]}
+            "capture_source_sha256":self.helpers[capture.HELPER_PATHS[0]]["sha256"],"retention":self.retention}
         operator_sha=self.helpers[capture.HELPER_PATHS[1]]["sha256"]
         authority=setup.authority_record_v1(code_commit=COMMIT,approval_reference=APPROVAL,operator_sha256=operator_sha,
             helper_code=self.helpers,context_sha256=capture.sha(capture.canonical(context)),context=context)
         authority_raw=capture.canonical(authority)
         (self.aux/"operator.authority.original.json").write_bytes(authority_raw)
+        authority_desc={"path":str(self.aux/"operator.authority.original.json"),"size_bytes":len(authority_raw),"sha256":capture.sha(authority_raw)}
         packet={"code_commit":COMMIT,"project_root":str(self.root),"initial_charged_bytes":40_000_000,
+            "prior_retention":self.retention,"operator_authority":authority_desc,
             "code_review":{"evidence_sha256":capture.sha(authority_raw),"approval_reference":APPROVAL},"evidence":{"f2_accounting":{
                 "path":str(self.f2/"f2.final-accounting.v1.json"),"size_bytes":len(footer_raw),"sha256":capture.sha(footer_raw)}}}
         packet_raw=capture.canonical(packet); (self.root/"gate2.packet.original.json").write_bytes(packet_raw)
         payload={"baseline":{"c_free_bytes":self.c_free,"ext4_used_bytes":self.ext4_used},"boot_id":self.boot,
             "linux_deadline_ns":150_000_000_000,"packet":{"path":str(self.root/"gate2.packet.original.json"),
                 "size_bytes":len(packet_raw),"sha256":capture.sha(packet_raw)},"operator_sha256":operator_sha,
-            "operator_authority":{"path":str(self.aux/"operator.authority.original.json"),"size_bytes":len(authority_raw),"sha256":capture.sha(authority_raw)},
+            "operator_authority":authority_desc,
             "context":context,
             "approval_reference":APPROVAL,"outside_preexisting_quote":327680,"funded_initial_charge_bytes":40_000_000}
         for name,raw in (("stdout",b"{}\n"),("stderr",b"")):
@@ -594,20 +745,128 @@ class LiteralMeterTests(unittest.TestCase):
         return payload
 
     def test_fixed_pre_meter_authenticates_two_source_forms_without_retired_draft_inputs(self):
-        result=self.execute(capture.PRE_METER,{"helper_code":self.helpers})
+        result=self.execute(capture.PRE_METER,self.pre_payload())
         self.assertNotIn("preserved_temp_source_quote_bytes",result)
         self.assertEqual(result["helper_git_forms_quote_bytes"],16384)
         self.assertEqual(result["baseline"]["c_free_bytes"],(self.c_free//4096)*4096)
+        self.assertEqual(result["retention"],self.retention)
+
+    def pre_payload(self):
+        return {"helper_code":self.helpers,"retention_git_observation":self.observation}
+
+    def test_pre_meter_retained_raw_drift_or_unknown_allocation_refuses(self):
+        target=Path(str(self.retained.old)+".f2")/"RPC03.reply.original"
+        raw=target.read_bytes(); target.write_bytes(raw+b"x")
+        with self.assertRaises(component.ComponentRecipeError): self.execute(capture.PRE_METER,self.pre_payload())
+        target.write_bytes(raw)
+        with patch.object(component,"_retention_blocks_v1",return_value=None):
+            with self.assertRaises(component.ComponentRecipeError): self.execute(capture.PRE_METER,self.pre_payload())
+
+    def test_native_bootstrap_drift_refuses_before_loading_component(self):
+        raw=self.retained.component_path.read_bytes()
+        self.retained.component_path.write_bytes(raw+b"changed")
+        with self.assertRaises(AssertionError): self.execute(capture.PRE_METER,self.pre_payload())
+
+    def test_native_bootstrap_fifo_refuses_before_any_potentially_blocking_open(self):
+        target=self.retained.component_path; target.unlink(); os.mkfifo(target)
+        actual_open=Path.open; attempted=[]
+        def opened(path,*args,**kwargs):
+            if path==target:
+                attempted.append(path)
+                raise RuntimeError("blocking bootstrap open must not start")
+            return actual_open(path,*args,**kwargs)
+        with patch.object(Path,"open",opened):
+            with self.assertRaises(AssertionError): self.execute(capture.PRE_METER,self.pre_payload())
+        self.assertEqual(attempted,[])
+
+    def test_native_open_identity_epoch_and_nonblocking_flags_are_checked(self):
+        target=self.retained.component_path
+        alternate=target.with_name("alternate.py"); alternate.write_bytes(target.read_bytes())
+        original=os.open; flags=[]
+        def opened(path,mode,*args,**kwargs):
+            if path==target:
+                flags.append(mode)
+                return original(alternate,mode,*args,**kwargs)
+            return original(path,mode,*args,**kwargs)
+        with patch.object(os,"open",side_effect=opened):
+            with self.assertRaises(AssertionError): self.execute(capture.PRE_METER,self.pre_payload())
+        self.assertTrue(flags and flags[0]&os.O_NONBLOCK)
+        self.assertTrue(flags[0]&os.O_NOFOLLOW)
+
+    def test_native_loader_cannot_reopen_source_changed_after_authenticated_read(self):
+        target=self.retained.component_path; inode=target.stat().st_ino
+        original=os.fstat; observations=[0]
+        def changed(fd):
+            result=original(fd)
+            if result.st_ino==inode:
+                observations[0]+=1
+                if observations[0]==2:
+                    target.write_bytes(b"raise RuntimeError('unreviewed source reopened')\n")
+            return result
+        with patch.object(os,"fstat",side_effect=changed):
+            with self.assertRaises(component.ComponentRecipeError): self.execute(capture.PRE_METER,self.pre_payload())
+        self.assertGreaterEqual(observations[0],2)
 
     def test_pre_meter_source_drift_fragment_and_uid_refuse(self):
         self.fragment=8192
-        with self.assertRaises(AssertionError): self.execute(capture.PRE_METER,{"helper_code":self.helpers})
+        with self.assertRaises(AssertionError): self.execute(capture.PRE_METER,self.pre_payload())
         self.fragment=4096; self.uid=0
-        with self.assertRaises(AssertionError): self.execute(capture.PRE_METER,{"helper_code":self.helpers})
+        with self.assertRaises(AssertionError): self.execute(capture.PRE_METER,self.pre_payload())
         self.uid=1000
         name=capture.HELPER_PATHS[1]
         self.write("/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/"+name,b"source drift")
-        with self.assertRaises(AssertionError): self.execute(capture.PRE_METER,{"helper_code":self.helpers})
+        with self.assertRaises(AssertionError): self.execute(capture.PRE_METER,self.pre_payload())
+
+    def test_post_meter_adds_prior_carry_after_new_operation_max_exactly_once(self):
+        payload=self.post_payload(); self.ext4_used+=15_000_000
+        result=self.execute(capture.POST_METER,payload)
+        growth=(self.ext4_used//4096)*4096-payload["baseline"]["ext4_used_bytes"]
+        expected=11890688+1048576+6291456+524288+growth+max(0,1048576-result["root_allocated_bytes"])+max(0,524288-result["outside_upper_bytes"])+294912
+        self.assertEqual(result["required_charge_bytes"],expected)
+
+    def test_current_code_forms_are_additive_once_and_exact_funding_boundary_is_strict(self):
+        payload=self.post_payload(); self.ext4_used+=15_000_000
+        measured=self.execute(capture.POST_METER,payload)
+        growth=measured["measurement"]["ext4_used_bytes"]-payload["baseline"]["ext4_used_bytes"]
+        required=11890688+1048576+6291456+524288+growth+1048576-measured["root_allocated_bytes"]+524288-measured["outside_upper_bytes"]+294912
+        self.rewrite_packet(payload,lambda packet:packet.update(initial_charged_bytes=required))
+        payload["funded_initial_charge_bytes"]=required
+        result=self.execute(capture.POST_METER,payload)
+        self.assertEqual(result["required_charge_bytes"],required)
+        self.assertEqual(result["remaining_funded_bytes"],0)
+        self.rewrite_packet(payload,lambda packet:packet.update(initial_charged_bytes=required-1))
+        payload["funded_initial_charge_bytes"]=required-1
+        with self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
+
+    def test_twenty_mib_growth_exceeds_old_forty_mib_fixture_funding_with_carry(self):
+        payload=self.post_payload(); self.ext4_used+=20_000_000
+        with self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
+
+    def rewrite_packet(self,payload,mutate):
+        path=self.root/"gate2.packet.original.json"; packet=json.loads(path.read_bytes()); mutate(packet)
+        raw=capture.canonical(packet); path.write_bytes(raw)
+        payload["packet"].update(size_bytes=len(raw),sha256=capture.sha(raw))
+
+    def test_packet_retention_or_actual_authority_descriptor_drift_refuses(self):
+        for field in ("prior_retention","operator_authority"):
+            payload=self.post_payload()
+            self.rewrite_packet(payload,lambda packet:packet.update({field:{}}))
+            with self.subTest(field=field),self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
+
+    def test_packet_retention_numeric_type_drift_is_not_dictionary_equality(self):
+        payload=self.post_payload()
+        self.rewrite_packet(payload,lambda packet:packet["prior_retention"]["native"].update(node_count=28.0))
+        with self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
+
+    def test_post_meter_private_footer_and_active_f2_cap_are_enforced(self):
+        payload=self.post_payload()
+        path=self.f2/"f2.final-accounting.v1.json"
+        raw=path.read_bytes(); path.write_bytes(b" "*16385)
+        with self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
+        footer=json.loads(raw); footer["accounting"]["physical_charge_bytes"]=7995392-294912+1
+        changed=capture.canonical(footer); path.write_bytes(changed)
+        self.rewrite_packet(payload,lambda packet:packet["evidence"]["f2_accounting"].update(size_bytes=len(changed),sha256=capture.sha(changed)))
+        with self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
 
     def test_fixed_post_meter_measures_actual_blocks_and_reserves_capture_copy_forms(self):
         payload=self.post_payload(); result=self.execute(capture.POST_METER,payload)
@@ -621,6 +880,26 @@ class LiteralMeterTests(unittest.TestCase):
         raw=self.path("/mnt/c/Users/s-a-balashov/AppData/Local/Temp/vast-gate2-setup-"+COMMIT+".driver.stdout.original")
         self.overrides[raw.stat().st_ino]={"st_blocks":64}
         with self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
+
+    def test_allocation_scandir_stops_incrementally_at_existing_1024_node_bound(self):
+        payload=self.post_payload(); observed=[0]; actual=self.scandir
+        class Entries:
+            def __enter__(self): return self
+            def __exit__(self,*args): pass
+            def __iter__(self): return self
+            def __next__(self):
+                observed[0]+=1
+                if observed[0]>1025: raise RuntimeError("unbounded directory consumption")
+                return types.SimpleNamespace(name="gate2.packet.original.json")
+        self.scandir=lambda path:Entries() if path==self.root else actual(path)
+        with self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
+        self.assertEqual(observed[0],1024)
+
+    def test_allocation_scandir_error_refuses_without_emitting_success(self):
+        payload=self.post_payload()
+        def failed(path): raise OSError("controlled directory scan failure")
+        self.scandir=failed
+        with self.assertRaises(OSError): self.execute(capture.POST_METER,payload)
 
     def test_post_meter_rejects_unfunded_copied_forms_before_emitting(self):
         payload=self.post_payload(); payload["outside_preexisting_quote"]=460000

@@ -403,3 +403,211 @@ session export remains in Temp. The UID fixture note is addressed by this
 test-only correction. Its two-byte frame-reporting note is clarified above;
 the original2602B measurement remains unchanged. These historical source
 verdicts do not approve the later test/evidence commit or its pending CI.
+
+
+## One-successor implementation after planning commit8332
+
+Planning commit8332ed4ef720bb76881ef4055a57c11f9b58a1d4 received separate
+Codex and Grok CLI CLEAR_WITH_NOTES reviews, required successful run38943143205,
+and explicit delegated AGENT approval in PR9 comment6222272081 before these
+production/test edits. That approval permits implementation only. New exact
+implemented-commit reviews, new required CI and explicit delegated AGENT
+approval must precede the sole fresh successor. Its actual packet and each
+later C completion require their separate evidence reviews/authorities.
+
+The c75 setup remains FAILED after three identity GETs, before archives/P0/C/D.
+Its original roots, streams, selected outer-tool frame and held tool transcript
+remain retained. The original closing measurement/peak is UNAVAILABLE;618496B
+is a partial charge. The absent6213B native stdout is not reconstructed. The
+6651B held transcript retains its distinct tool-return provenance. The frozen
+9637B plain JSON retention index and all previous verification manifests remain
+unchanged. No additional old-failure copies are introduced.
+
+For "Historical stopped-source empty DNS defaults have a different
+representation", recovery permits only the three present sealed-null DNS
+fields to remain null or become typed empty lists, under exact network mode
+none. Tests replay the actual B1 raw inspect with the narrowly derived fresh
+c75 HTTP framing/hash and complete all19 fixed GETs/13 members; the read-only
+validator rereads actual originals. No normalized hash substitutes for a fresh
+raw/selected hash. Package associations remain metadata, and B1's empty direct
+cc1 version remains UNAVAILABLE.
+
+For "DNS policy or fresh operation identity differs beyond the narrow
+exception", missing/wrong-type/nonempty DNS, a different network mode, bool/int/
+float changes to other selected values, malformed State and changed fresh
+before/after identity refuse. Fresh identity hashes remain unnormalized.
+Recovery/transport/package parsing and the existing owner/N3 policy retain
+their original scopes; there is no general empty-value normalization.
+
+For "A failed setup is offered for reuse or an unapproved successor", the
+capture/setup fixed commit, exact Git/current helper bindings, original
+deadline and fresh commit-derived root remain mandatory. Syntax is not
+approval. The external operator must independently establish the exact PR
+review/CI/AGENT approval before invocation, then independently approve the
+actual packet before C1. Tests cover missing/changed bootstrap/context,
+unreviewed helper bytes, late authentication and source denial before
+allocation/dispatch. No test receipt establishes external approval or consumes
+the one physical admission. A failed successor would consume it and prohibit
+another attempt; this work grants no third setup, repeated B/C or fallback.
+
+For "Successor admission must carry prior forms with an unavailable closing
+meter", component_v1 owns the fixed combined8MiB/old384KiB/active7995392B,
+private failed-owned2162688B and additive6291456B prior limits. Before capture
+allocation, Windows authenticates the new component/index Git blobs and all13
+old c75 Git variants. The ordinary native PRE meter runs the actual fixed
+28-node retained verifier, known blocks, three Windows original forms and the
+held transcript. The index supplies bindings, not paths for command dispatch
+or historical checked flags as current proof. Descriptor-only observations
+fit the unchanged context/meter/authority bounds; the index body is not copied
+into those channels or exported as an eleventh source.
+
+Setup binds the completed PRE observation into the actual enclosing authority.
+C authenticates that authority, canonical typed context and prior observation,
+actual helper bytes and the pinned index/mutable retained forms before packet
+acceptance. Its helper descriptors match the actual setup authority's FOUR
+fields, including exact fixed Windows paths; reads use fixed Linux paths.
+Tests use setup.authority_record_v1 rather than a synthetic three-key authority,
+and reject foreign/missing paths, float sizes and changed helper bytes. Linux C
+inherits reviewed Windows Git provenance through the independently approved
+packet; it does not claim a fresh Git-store query or continuous object presence.
+
+Setup, POST and initial C packet checks add the6MiB carry AFTER the maximum of
+new-operation physical growth/retained liabilities, once. Subsequent C/D inherit
+that ledger. Old F2 proof is carried within the prior reserve, not charged again
+as active F2. Controlled20MiB host growth with the old40MiB fixture funding now
+refuses; positive tests retain growth larger than retained data. Exact boundary
+and category tests prevent borrowing unused code allowance for old F2 proof.
+The global inclusive512MiB seal, floors, six C allowances, D2MiB, raw6MiB,
+13 member/TAR bounds and12MiB wire limit remain unchanged. The reviewed bridge
+includes idle/unattributed fall and conservative future copy accounting; it
+does not restore the missing old peak or guarantee background metadata growth.
+
+The shared final-accounting footer cap is16384B. Its root, supplement descriptor,
+13 accounting fields and baseline/last measurements have closed schemas and
+strict integer bounds. Duplicate/noncanonical/extra/wrong-type fields refuse;
+other controls retain262144B. The actual producer/reader/copy quotes preserve
+the full failure liability following a partial footer, all rounding/metadata,
+sticky unknown-budget refusal and the unchanged original deadlines. Tests
+separate the934B maximal canonical footer shape from its conservative
+pre-encoding bound, and retain partial-write/fsync/close/floor/deadline failures.
+
+Bootstrap reads check kind/link/cap before nonblocking/no-follow open and bind
+the opened FD and post-read epoch, including block extent. Both capture loaders
+compile the already authenticated bounded component bytes, avoiding a second
+source-path read. Controlled path-change/FIFO, byte-loader and typed PRE
+observation regressions preserve their actual RED/GREEN originals. Selected
+setup/capture allocation scans now enumerate incrementally with the existing
+1024-node bound; oversized iterators and scan errors refuse. Trusted synchronous
+OS calls remain non-preemptible, with original before/after deadline checks.
+
+The complete controlled F2 producer exposed an outside-form capacity failure
+before any physical attempt:19 RPCs/13 members/38 raw originals produced
+29344B supplement,5194B index and741B footer, giving114688B for two permitted
+control-copy forms. The then-current helper quote made the total531968B,
+7680B above524288B. This failed observation is retained. Source-only removal
+of redundant documentation/comments/blank lines reduces helper allocation
+steps; executable AST equivalence and affected tests verify that compaction.
+No form, metadata quote, guard or cap is removed to obtain admission.
+The final verification manifest binds the actual final source geometry and
+complete producer specimens. Controlled/native-projected metadata specimens
+are capacity calculations, not native evidence or a universal sufficiency
+guarantee; every actual outside copy/active F2/global/floor guard still binds.
+
+The five earlier fixture-boundary scenarios retain their controlled coverage:
+successful preparation uses the actual setup orchestration and authority
+builder with only external effects controlled; compiler/publication failures
+retain exact C mappings and original-write faults; startup/core enforcement
+retains D/child and required native compiler checks; resource exhaustion retains
+deadline/overflow/budget tests; component-only proof cannot acquire whole-chain
+authority. Native gate2 qualification is still pending. These tests do not
+substitute for actual F2/P0/C1-C6/D, whole1.5, genuine consumers or packaged-image
+checks. No other repair requirement/scenario is closed by this increment.
+
+gate2-f2-successor-verification.v1.json records final source/test/log bindings,
+controlled regression/grammar/OpenSpec checks and capacity evidence. Earlier
+RED/GREEN/failed CI/source reviews remain historical. Existing long-requirement
+OpenSpec INFO diagnostics are retained without weakening requirements.
+OpenSpec format checks are separate from behavior and independent review;
+the repository still lacks a dedicated CI conformance gate. Task2.10 remains
+unchecked, progress24/46. Archive, merge and Q1 remain unavailable until their
+existing full repair gates succeed.
+
+
+Independent review also found that the planned subtotal did not explicitly
+assign the distinct NEW runtime10/plan Git variants and changed current working
+forms. The correction spends524288B of the existing1085440B unallocated seal
+headroom on a separate current-code-proof reserve. It charges FULL current
+working plus FULL new Git forms for every changed fixed variant, even if an old
+working form remains; no replacement/inode or early dedup credit is assumed.
+Unchanged variants reuse only explicitly matching old size/SHA/Git identities.
+The planned535785472B subtotal remains historical; the corrected prospective
+subtotal is536309760B, leaving561152B under the SAME536870912B seal. The prior
+6MiB and all named F2/outside/code-root/C/D/floor limits remain unchanged.
+
+The shared fixed-eleven current_code_forms_quote_v1 API authenticates all ten
+working code files plus the amended plan against exact three-field descriptors,
+fresh hashes/Git-blob identities and known native allocation. Changed variants
+receive both complete forms, with rounding and4096B metadata per form; unknown
+native allocation or quote>524288 refuses. Setup observes all eleven actual
+Windows Git blobs inside the original150s clock BEFORE export and enforces this
+quote. C freshly authenticates working counterparts/allocation and inherits
+Git provenance only through the independently approved actual packet. Its
+packet binds the actual current-form quote as a strict integer. All three
+setup/POST/C ledger paths add the FULL524288 once AFTER the new-operation
+maximum, separately from the prior6MiB; a smaller actual quote gives no credit.
+An exact implemented-commit Windows Git/working audit must also be recorded in
+the PR before ANY prewarm/capture. Capture validates the prospective full
+reserve before its first file write. No extra context payload or reset clock
+is introduced. Independent review classified this as faithful completion of
+the already-required all-forms accounting within unallocated headroom, with
+no new requirements amendment or physical approval.
+
+A real safe Windows Python3.14 source/index read exposed lstat/fstat ctime
+incompatibility, which the Linux-only controls had missed. The original
+observations showed equal device/inode/mode/link/size/mtime/birth identities,
+but path ctime represented birth while FD ctime represented modification.
+The [CPython issue](https://github.com/python/cpython/issues/157671) and
+[Python os documentation](https://docs.python.org/3/library/os.html#os.stat_result.st_ctime_ns)
+support the platform distinction. Windows cross-API identity uses portable
+fields plus birthtime; full FD ctime before/after AND full path ctime before/
+after remain checked. Linux ctime/block checks are preserved. Controlled
+cross-API/drift negatives and actual Windows source/index/fixed-eleven reads
+pass; these are file-reader checks, not a gate2 physical attempt.
+
+The accepted-metadata adversarial Unicode specimen is explicitly NEGATIVE:
+four512-character astral package Version values, escaped64-character mtime
+and269-character banner produce55566B supplement/5194B index/742B footer and
+163840B two-form copies. Even after helper compaction, its outside quote564736B
+exceeds524288B by40448B. Actual runtime copy guards refuse such a result; no
+universal metadata-fit or native package observation is claimed. The ordinary
+and maximum ASCII specimens are narrower capacity calculations. Native package
+metadata remains unobserved before the separately approved sole invocation,
+and any actual overrun/unknown stops without a further attempt.
+
+
+Final frozen-source verification passes541 compiler tests (zero failures,
+errors or skips),32 fixture/test files and11 embedded Python3.10 grammar
+checks, strict OpenSpec all6 and archived5 validation, and git diff --check.
+These are controlled/source checks; required new implemented-commit CI and
+both exact-commit reviews remain pending.
+
+The safe actual Windows FileStandardInfo working-only audit completed in
+tool chunk79ec24 with actual enclosing exit0, before any capture/prewarm.
+GetFileInformationByHandleEx(FileStandardInfo=1) queried AllocationSize and
+EndOfFile on each authenticated open FD before and after its bounded read,
+with stable FD/path identity, known regular/single-link/non-delete facts and
+all allocated bytes <= each selected rounded working quote. The fixed-eleven
+source-rows digest is c5fb280a96b951e3c611d4e156f9594e69a09f18d756bb89695cdd8327b70181;
+changed two-form code quote466944B leaves57344B in524288B. This working-only
+observation makes NO new Git-commit observation. Before any physical allocation,
+repeat the exact-commit Git/working/allocation audit and record actual status/
+completed communication in the PR. The Windows component API fallback is only
+a selected logical quote whose backing is established by this separate audit;
+it cannot independently observe native allocation. Native C still checks
+fresh blocks. This is point-in-time backing, not continuous custody.
+
+Microsoft defines the queried
+[FILE_STANDARD_INFO allocation field](https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_standard_info)
+and [GetFileInformationByHandleEx](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getfileinformationbyhandleex).
+No monitor, new context payload, deadline extension, source-root allowance,
+F2/outside cap or physical approval is introduced by this external prerequisite.

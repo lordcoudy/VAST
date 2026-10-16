@@ -2,7 +2,7 @@
 
 No file from a tar is extracted. Controlled sockets, clocks and measurements
 are test seams and never physical qualification. The caller authenticates the
-review/packet and reserves this helper's entire 8 MiB liability before entry.
+review/packet and reserves this successor's fixed liability before entry.
 """
 import base64
 import hashlib
@@ -15,12 +15,16 @@ import time
 from urllib.parse import quote
 
 from tests.fixtures import accepted_policy_fixture_compiler_v1 as compiler
+from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
 
 
 CID = "4df593e12ca362e69f0594b2035197335f335d3ceae3c71894b31db9f197a09f"
 ENGINE_ID = "1e493309-3767-45fb-9078-05b838bdfd80"
 PROVIDER_ID = compiler.PROVIDER_ID
-TOTAL_LIMIT = 8 * 1024 * 1024
+TOTAL_LIMIT = component.TOTAL_F2_LIMIT_V1
+ACTIVE_F2_LIMIT = component.ACTIVE_F2_LIMIT_V1
+FOOTER_LIMIT = component.F2_FOOTER_LIMIT_V1
+CONTROL_CAPS = component.F2_CONTROL_CAPS_V1
 RAW_LIMIT = 6 * 1024 * 1024
 RECORD_LIMIT = 256 * 1024
 TAR_LIMIT = 4_226_048
@@ -331,7 +335,7 @@ def _read_bounded(path, limit=RAW_LIMIT, *, deadline_check=None):
 
 def _descriptor(path, root=None, *, deadline_check=None):
     path = Path(path)
-    raw = _read_bounded(path, deadline_check=deadline_check)
+    raw = _read_bounded(path, CONTROL_CAPS.get(path.name, RAW_LIMIT), deadline_check=deadline_check)
     key = "relative_path" if root is not None else "path"
     return {key: path.relative_to(root).as_posix() if root is not None else str(path),
             "size_bytes": len(raw), "sha256": _sha(raw)}
@@ -366,7 +370,35 @@ def _record_bound(value, depth=0, ancestors=None, nodes=None):
         ancestors.remove(id(value))
 
 
+def _footer_shape(value):
+    """Closed finite footer structure; physical relationships are checked below."""
+    if (type(value) is not dict or set(value) != {"schema_version", "supplement", "accounting"}
+            or type(value["schema_version"]) is not int or value["schema_version"] != 1):
+        _fail("footer_schema")
+    descriptor, account = value["supplement"], value["accounting"]
+    if (type(descriptor) is not dict or set(descriptor) != {"relative_path", "size_bytes", "sha256"}
+            or descriptor["relative_path"] != "f2.supplement.v1.json"
+            or type(descriptor["size_bytes"]) is not int or not 0 < descriptor["size_bytes"] <= RECORD_LIMIT
+            or type(descriptor["sha256"]) is not str or re.fullmatch("[0-9a-f]{64}", descriptor["sha256"]) is None):
+        _fail("footer_schema")
+    counters = {"retained_elsewhere_upper_bytes", "raw_originals_bytes", "retained_allocated_bytes",
+                "physical_charge_bytes", "retained_data_allocated_bytes", "retained_metadata_upper_bytes",
+                "reserved_control_bytes", "reserved_raw_bytes", "reserved_rounding_bytes",
+                "reserved_metadata_bytes", "retained_elsewhere_lower_bytes"}
+    if (type(account) is not dict or set(account) != counters | {"baseline", "last"}
+            or any(type(account[key]) is not int or not 0 <= account[key] < 2**64 for key in counters)):
+        _fail("footer_schema")
+    for phase in ("baseline", "last"):
+        measure = account[phase]
+        if (type(measure) is not dict or set(measure) != {"ext4_used_bytes", "c_free_bytes", "fragment_bytes"}
+                or type(measure["fragment_bytes"]) is not int or measure["fragment_bytes"] != 4096
+                or any(type(measure[key]) is not int or not 0 <= measure[key] < 2**64
+                       for key in ("ext4_used_bytes", "c_free_bytes"))):
+            _fail("footer_schema")
+
+
 def _write_json(path, value, *, deadline_check=None):
+    cap = CONTROL_CAPS.get(Path(path).name, RECORD_LIMIT)
     file, causes = None, []
     facts = {"path": str(path), "complete": False, "open_completed": False,
              "written_bytes": 0, "persisted_bytes": 0, "write_extent_unknown": False,
@@ -381,12 +413,14 @@ def _write_json(path, value, *, deadline_check=None):
                 raise
     try:
         check()
-        if _record_bound(value) > RECORD_LIMIT:
+        if Path(path).name == "f2.final-accounting.v1.json":
+            _footer_shape(value)
+        if _record_bound(value) > cap:
             _fail("record_bound")
         check()
         raw = json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("ascii")
         check()
-        if len(raw) > RECORD_LIMIT:
+        if len(raw) > cap:
             _fail("record_bound")
         file = Path(path).open("xb", buffering=0)
         facts["open_completed"] = True
@@ -516,7 +550,7 @@ def _outside_copy_lower_bound(output):
         path = output/name
         if path.exists():
             size = path.stat().st_size
-            if not 0 <= size <= RECORD_LIMIT:
+            if not 0 <= size <= CONTROL_CAPS[name]:
                 _fail("record_copy_bound")
             total += 2*(((size+4095)//4096)*4096+ENTRY_METADATA_UPPER_BYTES)
     return total
@@ -532,18 +566,35 @@ def _identity(version, info, inspected, sealed):
             != "b480bc9619d585079ca9926e520ee190fc971f2e7c2c6c01b5256ac058c4a5d1"):
         _fail("engine_identity")
     if (type(inspected) is not dict or inspected.get("Id") != CID or inspected.get("Image") != PROVIDER_ID
-            or (inspected.get("Config") or {}).get("Image") != PROVIDER_ID
-            or (inspected.get("HostConfig") or {}).get("ReadonlyRootfs") is not True):
+            or type(inspected.get("Config")) is not dict or inspected["Config"].get("Image") != PROVIDER_ID
+            or type(inspected.get("HostConfig")) is not dict or inspected["HostConfig"].get("ReadonlyRootfs") is not True
+            or type(sealed) is not dict or type(sealed.get("HostConfig")) is not dict):
         _fail("source_identity")
-    state = inspected.get("State") or {}
-    if (state.get("Status") != "exited" or state.get("Pid") != 0 or state.get("ExitCode") != 0
+    state = inspected.get("State")
+    if (type(state) is not dict or state.get("Status") != "exited" or state.get("Pid") != 0 or state.get("ExitCode") != 0
             or state.get("Error") != "" or inspected.get("RestartCount") != 0
             or any(state.get(key) is not False for key in ("Running", "Paused", "Restarting", "OOMKilled", "Dead"))):
         _fail("source_state")
     keys = ("Id", "Image", "Path", "Args", "Config", "HostConfig", "Mounts", "State", "RestartCount",
             "Driver", "Platform", "ImageManifestDescriptor", "SizeRw", "SizeRootFs")
     selected = {key: inspected.get(key) for key in keys}
-    if selected != {key: sealed.get(key) for key in keys}:
+    host, old_host = inspected["HostConfig"], sealed["HostConfig"]
+    dns = ("Dns", "DnsOptions", "DnsSearch")
+    if (host.get("NetworkMode") != "none" or old_host.get("NetworkMode") != "none"
+            or any(key not in old_host or old_host[key] is not None or key not in host
+                   or not (host[key] is None or type(host[key]) is list and not host[key]) for key in dns)):
+        _fail("source_drift")
+    comparison = dict(selected)
+    comparison["HostConfig"] = dict(host)
+    for key in dns:
+        comparison["HostConfig"][key] = None
+    expected = {key: sealed.get(key) for key in keys}
+    # First reject ordinary drift without encoding foreign large values. JSON
+    # equality also preserves types: Python's False==0 and1.0==1 are not an
+    # additional historical compatibility exception.
+    if (comparison != expected or
+            json.dumps(comparison, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False) !=
+            json.dumps(expected, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False)):
         _fail("source_drift")
     return {"engine_id": ENGINE_ID, "version": "29.7.2", "source_sha256": _sha(
             json.dumps(selected, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode())}
@@ -578,7 +629,7 @@ def recover_stopped_b1_v1(*, output_dir, review, b1_originals, remaining_seal_by
             or not re.fullmatch("[0-9a-f]{40}", review.get("commit", ""))
             or not re.fullmatch("[0-9a-f]{64}", review.get("physical_plan_sha256", ""))
             or type(review.get("approval_reference")) is not str or not 1 <= len(review["approval_reference"]) <= 512
-            or type(remaining_seal_bytes) is not int or remaining_seal_bytes < TOTAL_LIMIT
+            or type(remaining_seal_bytes) is not int or remaining_seal_bytes < ACTIVE_F2_LIMIT
             or type(retained_elsewhere_upper_bytes) is not int or not MINIMUM_OUTSIDE_COPY_RESERVE <= retained_elsewhere_upper_bytes <= 512*1024
             or type(b1_originals) is not dict or set(b1_originals) != set(B1_ORIGINAL_SHA256)):
         _fail("binding_or_reserve")
@@ -587,7 +638,7 @@ def recover_stopped_b1_v1(*, output_dir, review, b1_originals, remaining_seal_by
     baseline = measure_fn()
     timer.check()
     if (type(baseline) is not dict or any(type(baseline.get(key)) is not int or baseline[key] < 0
-            for key in ("ext4_used_bytes", "c_free_bytes")) or baseline["c_free_bytes"] < FLOOR_BYTES+TOTAL_LIMIT
+            for key in ("ext4_used_bytes", "c_free_bytes")) or baseline["c_free_bytes"] < FLOOR_BYTES+ACTIVE_F2_LIMIT
             or baseline.get("fragment_bytes", 4096 if measure is not None else None) != 4096):
         _fail("measurement_or_floor")
     original_descriptors, originals = {}, {}
@@ -632,7 +683,7 @@ def recover_stopped_b1_v1(*, output_dir, review, b1_originals, remaining_seal_by
                 for key in ("ext4_used_bytes", "c_free_bytes")) or observed.get("fragment_bytes", 4096 if measure is not None else None) != 4096:
             _fail("measurement_unknown")
         raw_names = {"RPC%02d.%s.original" % (number, role) for number in range(1, 20) for role in ("request", "reply")}
-        control_names = {"f2.originals.v1.json", "f2.supplement.v1.json", "f2.final-accounting.v1.json", "f2.failure.v1.json"}
+        control_names = set(CONTROL_CAPS)
         entries = [output]
         for path in output.iterdir():
             if len(entries) >= 43 or path.name not in raw_names | control_names or not stat.S_ISREG(path.lstat().st_mode):
@@ -650,7 +701,7 @@ def recover_stopped_b1_v1(*, output_dir, review, b1_originals, remaining_seal_by
         charge = max(allocated, observed["ext4_used_bytes"]-baseline["ext4_used_bytes"],
                      baseline["c_free_bytes"]-observed["c_free_bytes"], 0)+retained_elsewhere_upper_bytes
         present = {path.name for path in entries[1:]}
-        remaining_controls = len(control_names-present)*RECORD_LIMIT
+        remaining_controls = sum(CONTROL_CAPS[name] for name in control_names-present)
         remaining_raw = max(0, RAW_LIMIT-raw_bytes) if client.facts["attempts"] < 19 else 0
         rounding = (len(raw_names-present) + len(control_names-present))*4096
         metadata_reserve = (len(raw_names-present)+len(control_names-present))*ENTRY_METADATA_UPPER_BYTES
@@ -664,7 +715,7 @@ def recover_stopped_b1_v1(*, output_dir, review, b1_originals, remaining_seal_by
                                    "reserved_metadata_bytes": metadata_reserve,
                                    "retained_elsewhere_lower_bytes": copy_lower})
         if (observed["c_free_bytes"] < FLOOR_BYTES+liability or raw_bytes > RAW_LIMIT
-                or charge+liability > TOTAL_LIMIT or retained_elsewhere_upper_bytes < copy_lower):
+                or charge+liability > ACTIVE_F2_LIMIT or retained_elsewhere_upper_bytes < copy_lower):
             budget_failed = True
             _fail("physical_or_logical_bound")
         timer.check()
@@ -855,23 +906,29 @@ def validate_supplement_v1(*, output_dir, supplement):
             _fail("validation_identity")
         if supplement.get("package_facts") != _package_facts(raws, report):
             _fail("validation_package")
-        footer = _json(_read_bounded(output/"f2.final-accounting.v1.json", RECORD_LIMIT))
+        footer_raw = _read_bounded(output/"f2.final-accounting.v1.json", FOOTER_LIMIT)
+        footer = _json(footer_raw)
+        _footer_shape(footer)
+        if (_record_bound(footer) > FOOTER_LIMIT
+                or json.dumps(footer, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False).encode("ascii") != footer_raw):
+            _fail("validation_footer_canonical")
         account = footer.get("accounting") if type(footer) is dict else None
+        tail_controls = FOOTER_LIMIT+RECORD_LIMIT
         if (type(footer) is not dict or footer.get("schema_version") != 1
                 or footer.get("supplement") != _descriptor(output/"f2.supplement.v1.json", output)
                 or type(account) is not dict or any(type(account.get(key)) is not int or account[key] < 0 for key in
                     ("physical_charge_bytes", "retained_allocated_bytes", "retained_elsewhere_upper_bytes", "reserved_control_bytes",
                      "retained_data_allocated_bytes", "retained_metadata_upper_bytes", "retained_elsewhere_lower_bytes"))
-                or account["reserved_control_bytes"] != 2*RECORD_LIMIT
+                or account["reserved_control_bytes"] != tail_controls
                 or account.get("reserved_raw_bytes") != 0 or account.get("reserved_rounding_bytes") != 2*4096
                 or account.get("reserved_metadata_bytes") != 2*ENTRY_METADATA_UPPER_BYTES
                 or account["retained_metadata_upper_bytes"] != 41*ENTRY_METADATA_UPPER_BYTES
                 or account["retained_allocated_bytes"] != account["retained_data_allocated_bytes"]+account["retained_metadata_upper_bytes"]
-                or account["physical_charge_bytes"]+account["reserved_control_bytes"]+4*4096 > TOTAL_LIMIT
+                or account["physical_charge_bytes"]+account["reserved_control_bytes"]+4*4096 > ACTIVE_F2_LIMIT
                 or account.get("raw_originals_bytes") != sum(item["size_bytes"] for item in actual_index["originals"])
-                or (account.get("last") or {}).get("c_free_bytes", -1) < FLOOR_BYTES+2*RECORD_LIMIT+4*4096
+                or (account.get("last") or {}).get("c_free_bytes", -1) < FLOOR_BYTES+tail_controls+4*4096
                 or sum(path.lstat().st_blocks*512+ENTRY_METADATA_UPPER_BYTES for path in [output]+list(output.iterdir()))
-                    + account["retained_elsewhere_upper_bytes"] > account["physical_charge_bytes"]+2*RECORD_LIMIT+4*4096
+                    + account["retained_elsewhere_upper_bytes"] > account["physical_charge_bytes"]+tail_controls+4*4096
                 or not account["retained_elsewhere_lower_bytes"] <= _outside_copy_lower_bound(output) <= account["retained_elsewhere_upper_bytes"]):
             _fail("validation_accounting")
         for phase in ("baseline", "last"):

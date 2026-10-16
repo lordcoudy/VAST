@@ -1,11 +1,5 @@
-"""Fixed setup capture; nothing executes on import.
-
-The arguments are the externally reviewed commit and approved PR9 comment URL. The caller
-must verify that approval and later this wrapper's actual status and stdout/
-stderr EOF. No file, boolean, or this wrapper's future return authenticates
-itself. This file exposes no C/D, retry, signal, cleanup, or command dispatcher.
-Synchronous native calls are not kernel-preemptible; late/unknown always stops.
-Only one small status/report copy is permitted. Never copy large failed prefixes.
+"""Fixed capture: external approval and actual status/EOF required.
+No C/D, retries or cleanup. Late/unknown stops; never copy large prefixes.
 """
 import base64
 import hashlib
@@ -18,9 +12,11 @@ import subprocess
 import sys
 import threading
 import time
-
+from types import ModuleType
 HELPER_PATHS = ("tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py",
                 "tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py")
+RETENTION_PATHS = ("tests/fixtures/accepted_policy_fixture_compiler_component_v1.py",
+    "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-f2-c75a-retention.v1.json")
 REPO = Path(__file__).parent.parent.parent
 TEMP = Path(r"C:\Users\s-a-balashov\AppData\Local\Temp")
 GIT = r"C:\Program Files\Git\cmd\git.exe"
@@ -33,39 +29,25 @@ ENV = {"SystemRoot": r"C:\Windows", "WINDIR": r"C:\Windows", "PATH": r"C:\Window
 START = DEADLINE = None
 CAPTURE_END = None
 FACTS = {"driver": None, "pre_meter": None, "post_meter": None, "files": {}}
-
-
 def canonical(value):
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False).encode("ascii")
-
-
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
-
-
 class CaptureRefusal(RuntimeError):
     def __init__(self,cause,facts=None):
         super().__init__(cause)
         self.cause,self.facts=cause,{} if facts is None else facts
-
-
 def require(ok, cause):
     if not ok:
         raise CaptureRefusal(cause)
-
-
 def validate_arguments_v1(reviewed_commit,approval):
     require(type(reviewed_commit) is str and re.fullmatch("[0-9a-f]{40}",reviewed_commit) is not None and
         type(approval) is str and re.fullmatch(r"https://github\.com/lordcoudy/VAST/pull/9#issuecomment-[0-9]+",approval) is not None,
         "reviewed_commit_and_approval_required")
     # Syntax is not approval. The trusted operator supplies this commit only
     # after independent exact-commit review, required CI and recorded approval.
-
-
 def check():
     require(DEADLINE is not None and time.monotonic_ns() < min(DEADLINE,CAPTURE_END or DEADLINE), "original_capture_150s_deadline")
-
-
 def strict_json(raw, cap):
     require(type(raw) is bytes and 0 < len(raw) <= cap, "json_bound")
     def unique(pairs):
@@ -78,8 +60,6 @@ def strict_json(raw, cap):
                        parse_constant=lambda _: (_ for _ in ()).throw(ValueError("nonfinite")))
     require(type(value) is dict and raw in (canonical(value), canonical(value) + b"\n"), "canonical_json")
     return value
-
-
 def read_fixed(path, cap):
     require(path.resolve(strict=True)==path,"fixed_physical_file")
     with path.open("rb") as file:
@@ -90,11 +70,10 @@ def read_fixed(path, cap):
                 (after.st_dev,after.st_ino,after.st_size,after.st_mtime_ns,after.st_ctime_ns),"fixed_file_drift")
     check()
     return raw
-
-
 METER_PRELUDE = r'''
 import hashlib,json,os,stat,sys,time
 from pathlib import Path
+from types import ModuleType
 COMMIT="__REVIEWED_COMMIT__"
 ROOT=Path("/home/s-a-balashov/work/vast-fixture-compiler-gate2-"+COMMIT+"-01")
 F2=Path(str(ROOT)+".f2"); AUX=Path(str(ROOT)+".operator-originals")
@@ -106,13 +85,22 @@ def canon(v): return json.dumps(v,sort_keys=True,separators=(",",":"),ensure_asc
 def sha(v): return hashlib.sha256(v).hexdigest()
 def integer(v): return type(v) is int and v>=0
 def rounded(n): return ((n+4095)//4096)*4096
+def epoch(s):
+    return (s.st_dev,s.st_ino,s.st_mode,s.st_nlink,s.st_size,s.st_mtime_ns,s.st_ctime_ns,s.st_blocks)
 def read(path,cap):
     assert path.is_absolute() and path.resolve(strict=True)==path
-    with path.open("rb") as f:
-        a=os.fstat(f.fileno()); assert stat.S_ISREG(a.st_mode) and a.st_nlink==1 and 0<=a.st_size<=cap
+    a=path.lstat()
+    assert stat.S_ISREG(a.st_mode) and a.st_nlink==1 and 0<=a.st_size<=cap and integer(a.st_blocks)
+    fd=os.open(path,os.O_RDONLY|os.O_NONBLOCK|os.O_NOFOLLOW|os.O_CLOEXEC)
+    try:
+        f=os.fdopen(fd,"rb",buffering=0)
+    except BaseException:
+        os.close(fd)
+        raise
+    with f:
+        opened=os.fstat(f.fileno()); assert epoch(opened)==epoch(a)
         raw=f.read(cap+1); b=os.fstat(f.fileno())
-        assert len(raw)==a.st_size and (a.st_dev,a.st_ino,a.st_size,a.st_mtime_ns,a.st_ctime_ns)==(b.st_dev,b.st_ino,b.st_size,b.st_mtime_ns,b.st_ctime_ns)
-        assert integer(a.st_blocks)
+        assert len(raw)==a.st_size and epoch(a)==epoch(b)
     return raw,max(a.st_blocks*512,rounded(len(raw)))
 def unique(pairs):
     d={}
@@ -134,25 +122,43 @@ def metric():
     return m,boot,time.monotonic_ns(),e.f_bavail*e.f_frsize
 def allocated(root):
     assert root.resolve(strict=True)==root
-    paths=[root]
-    for d,dirs,files in os.walk(root,followlinks=False):
-        assert len(paths)+len(dirs)+len(files)<=1024
-        paths.extend(Path(d)/n for n in dirs+files)
-    total=0
+    paths=[root]; total=0
     for p in paths:
         s=p.lstat(); assert integer(s.st_blocks) and not stat.S_ISLNK(s.st_mode)
         assert stat.S_ISDIR(s.st_mode) or stat.S_ISREG(s.st_mode) and s.st_nlink==1
         total+=max(4096 if stat.S_ISDIR(s.st_mode) else 0,s.st_blocks*512)+256
+        if stat.S_ISDIR(s.st_mode):
+            with os.scandir(p) as entries:
+                for entry in entries:
+                    assert len(paths)<1024
+                    child=p/entry.name; assert child.resolve(strict=True)==child
+                    paths.append(child)
     return total
+def retention_component(observation):
+    assert type(observation) is dict and set(observation)=={"component","index","old_git_sha256"}
+    repo=Path("/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST")
+    for key,name,cap in (("component","tests/fixtures/accepted_policy_fixture_compiler_component_v1.py",262144),
+        ("index","openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-f2-c75a-retention.v1.json",12288)):
+        desc=observation[key]; assert type(desc) is dict and set(desc)=={"size_bytes","sha256","git_blob"}
+        raw,_=read(repo/name,cap)
+        assert type(desc["size_bytes"]) is int and len(raw)==desc["size_bytes"] and sha(raw)==desc["sha256"]
+        assert hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()==desc["git_blob"]
+        if key=="component": component_source=raw
+    sys.dont_write_bytecode=True
+    module=ModuleType("vast_gate2_reviewed_retention")
+    module.__file__=str(repo/"tests/fixtures/accepted_policy_fixture_compiler_component_v1.py")
+    exec(compile(component_source,module.__file__,"exec"),module.__dict__)
+    bindings=module.retained_source_bindings_v1(repo)
+    assert observation["old_git_sha256"]==bindings["source_rows_sha256"]
+    return module,repo
 data=sys.stdin.buffer.read(4097); assert len(data)<=4096
 x=load(data)
 def emit(v):
     raw=canon(v); assert len(raw)+1<=2048
     sys.stdout.buffer.write(raw+b"\n"); sys.stdout.buffer.flush()
 '''
-
 PRE_METER = METER_PRELUDE + r'''
-assert set(x)=={"helper_code"}
+assert set(x)=={"helper_code","retention_git_observation"}
 repo=Path("/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST")
 names=("tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py","tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py")
 assert set(x["helper_code"])==set(names)
@@ -163,23 +169,30 @@ for name in names:
     assert len(raw)==desc["size_bytes"] and sha(raw)==desc["sha256"]
     assert hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()==desc["git_blob"]
     quotes.append(n+4096)
+component,repo=retention_component(x["retention_git_observation"])
+retention={"git_observation":x["retention_git_observation"],"native":component.verify_prior_retention_v1(
+    repo,git_observation=x["retention_git_observation"])}
 m,b,t,p=metric()
 emit({"baseline":m,"boot_id":b,"linux_monotonic_ns":t,"project_free_bytes":p,
       "capture_source_quote_bytes":quotes[0],"operator_source_quote_bytes":quotes[1],
       "helper_git_forms_quote_bytes":sum(rounded(x["helper_code"][name]["size_bytes"])+4096 for name in names),
-      "c_fragment_bytes":4096,"root_fragment_bytes":4096})
+      "c_fragment_bytes":4096,"root_fragment_bytes":4096,"retention":retention})
 '''
-
 POST_METER = METER_PRELUDE + r'''
 assert set(x)=={"baseline","boot_id","linux_deadline_ns","packet","operator_sha256","operator_authority","context","approval_reference",
                "outside_preexisting_quote","funded_initial_charge_bytes","stdout","stderr"}
 assert time.monotonic_ns()<x["linux_deadline_ns"]
+retention=x["context"]["retention"]
+assert type(retention) is dict and set(retention)=={"git_observation","native"}
+component,repo=retention_component(retention["git_observation"])
+component.validate_prior_retention_receipt_v1(retention["native"],source_rows_sha256=retention["git_observation"]["old_git_sha256"])
 packet_path=ROOT/"gate2.packet.original.json"
 assert set(x["packet"])=={"path","size_bytes","sha256"} and x["packet"]["path"]==str(packet_path)
 packet_raw,_=read(packet_path,131072)
 assert len(packet_raw)==x["packet"]["size_bytes"] and sha(packet_raw)==x["packet"]["sha256"]
 packet=load(packet_raw)
 assert packet["code_commit"]==COMMIT and packet["project_root"]==str(ROOT)
+assert canon(packet["prior_retention"])==canon(retention) and canon(packet["operator_authority"])==canon(x["operator_authority"])
 authority_desc=x["operator_authority"]
 assert set(authority_desc)=={"path","size_bytes","sha256"} and authority_desc["path"]==str(AUX/"operator.authority.original.json")
 authority_raw,_=read(AUX/"operator.authority.original.json",8192)
@@ -188,8 +201,8 @@ authority=load(authority_raw)
 assert set(authority)=={"schema_version","code_commit","approval_reference","operator_sha256","helper_code","context_sha256","context","external_approval_required"}
 assert type(authority["schema_version"]) is int and authority["schema_version"]==1 and authority["code_commit"]==COMMIT
 assert authority["approval_reference"]==x["approval_reference"] and authority["operator_sha256"]==x["operator_sha256"]
-assert authority["context"]==x["context"] and authority["context_sha256"]==sha(canon(x["context"]))
-assert authority["helper_code"]==x["context"]["helper_code"] and authority["external_approval_required"] is True
+assert canon(authority["context"])==canon(x["context"]) and authority["context_sha256"]==sha(canon(x["context"]))
+assert canon(authority["helper_code"])==canon(x["context"]["helper_code"]) and authority["external_approval_required"] is True
 helpers=authority["helper_code"]
 assert set(helpers)=={"tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py","tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py"}
 assert helpers["tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py"]["sha256"]==x["operator_sha256"]
@@ -206,11 +219,12 @@ capture_forms=capture+2*(4096+4096)
 assert capture_forms<=32768
 footer_desc=packet["evidence"]["f2_accounting"]
 assert footer_desc["path"]==str(F2/"f2.final-accounting.v1.json")
-footer_raw,_=read(F2/"f2.final-accounting.v1.json",262144)
+footer_raw,_=read(F2/"f2.final-accounting.v1.json",component.F2_FOOTER_LIMIT_V1)
 assert len(footer_raw)==footer_desc["size_bytes"] and sha(footer_raw)==footer_desc["sha256"]
 account=load(footer_raw)["accounting"]
 tail=sum(account[k] for k in ("reserved_control_bytes","reserved_rounding_bytes","reserved_metadata_bytes"))
 assert all(integer(account[k]) for k in ("reserved_control_bytes","reserved_rounding_bytes","reserved_metadata_bytes"))
+assert integer(account["physical_charge_bytes"]) and account["physical_charge_bytes"]+tail<=component.ACTIVE_F2_LIMIT_V1
 root_used,f2_used,aux_used=allocated(ROOT),allocated(F2),allocated(AUX)
 outside=aux_used+x["outside_preexisting_quote"]+capture_forms
 assert integer(x["outside_preexisting_quote"]) and x["outside_preexisting_quote"]>=32768
@@ -218,23 +232,22 @@ assert root_used<=1048576 and outside<=524288
 assert not os.path.lexists(F2/"f2.failure.v1.json")
 copy_upper=0
 for name in ("f2.originals.v1.json","f2.supplement.v1.json","f2.final-accounting.v1.json"):
-    raw,_=read(F2/name,262144); copy_upper+=2*(rounded(len(raw))+4096)
+    raw,_=read(F2/name,component.F2_CONTROL_CAPS_V1[name]); copy_upper+=2*(rounded(len(raw))+4096)
 assert outside+copy_upper<=524288
+assert f2_used+outside+copy_upper+tail<=component.ACTIVE_F2_LIMIT_V1
 now,boot,t,project_free=metric()
 assert boot==x["boot_id"] and t<x["linux_deadline_ns"]
 base=x["baseline"]; assert set(base)=={"c_free_bytes","ext4_used_bytes"} and all(integer(v) for v in base.values())
 growth=max(0,base["c_free_bytes"]-now["c_free_bytes"],now["ext4_used_bytes"]-base["ext4_used_bytes"])
 actual=max(growth,root_used+f2_used+outside)
 future=max(0,1048576-root_used)+max(0,524288-outside)+tail
-required=11890688+1048576+actual+future
+required=11890688+1048576+actual+future+component.PRIOR_CARRY_BYTES_V1+component.CURRENT_CODE_FORMS_V1
 assert required<=charged and time.monotonic_ns()<x["linux_deadline_ns"]
 emit({"measurement":now,"boot_id":boot,"linux_monotonic_ns":t,"project_free_bytes":project_free,
       "required_charge_bytes":required,"funded_initial_charge_bytes":charged,"remaining_funded_bytes":charged-required,
       "capture_all_forms_upper_bytes":capture_forms,"root_allocated_bytes":root_used,"f2_allocated_bytes":f2_used,
       "outside_upper_bytes":outside,"status_and_one_copy_reserved_bytes":16384})
 '''
-
-
 def drain(process, *, limits, files=None, payload=None, until=None):
     """Only pipe I/O for the two literal meter calls and fixed driver below."""
     until = min(DEADLINE,CAPTURE_END or DEADLINE,DEADLINE if until is None else until)
@@ -313,8 +326,6 @@ def drain(process, *, limits, files=None, payload=None, until=None):
             if state[name]["write_extent_unknown"]:
                 state[name]["sha256"]=None
     return state, {k: bytes(v) for k, v in buffers.items()}
-
-
 def compact_native(state):
     result={k:state[k] for k in ("pid","returncode","stdout_eof","stderr_eof","stdin_closed","late","unknown_closure","argv_sha256")}
     if "stdin_sha256" in state:
@@ -323,14 +334,13 @@ def compact_native(state):
         result[name+"_bytes"]=state[name]["kept_bytes"]
         result[name+"_sha256"]=state[name]["sha256"]
     return result
-
-
 def git_v1(args,cap):
     """Only the three read-only Git forms used for the fixed two helpers."""
     allowed=(args==["rev-parse","--verify","HEAD"] or
-        len(args)==6 and args[:2]==["ls-tree","-z"] and re.fullmatch("[0-9a-f]{40}",args[2]) and args[3:]==["--"]+list(HELPER_PATHS) or
+        len(args)==6 and args[:2]==["ls-tree","-z"] and re.fullmatch("[0-9a-f]{40}",args[2]) and
+            args[3:] in (["--"]+list(HELPER_PATHS),["--"]+list(RETENTION_PATHS)) or
         len(args)==3 and args[:2]==["cat-file","blob"] and re.fullmatch("[0-9a-f]{40}",args[2]))
-    require(allowed and type(cap) is int and 0<cap<=65536,"fixed_git_request")
+    require(allowed and type(cap) is int and 0<cap<=262144,"fixed_git_request")
     check()
     argv=[GIT,"--no-pager","--no-replace-objects","--no-optional-locks","-C",str(REPO),"-c","core.fsmonitor=false"]+args
     started=time.monotonic_ns()
@@ -377,6 +387,50 @@ def authenticate_helpers_v1(reviewed_commit):
     return result
 
 
+def _load_authenticated_component_v1(source):
+    require(type(source) is bytes and 0<len(source)<=262144,"retention_bootstrap_source_bound")
+    check()
+    sys.dont_write_bytecode=True
+    module=ModuleType("vast_gate2_reviewed_retention")
+    module.__file__=str(REPO/RETENTION_PATHS[0])
+    exec(compile(source,module.__file__,"exec"),module.__dict__)
+    check()
+    return module
+
+
+def authenticate_retention_v1(reviewed_commit):
+    """Before allocation: current reviewed bootstrap and thirteen actual old blobs."""
+    raw=git_v1(["ls-tree","-z",reviewed_commit,"--"]+list(RETENTION_PATHS),4096)
+    rows={}
+    for entry in raw.rstrip(b"\0").split(b"\0"):
+        header,path=entry.split(b"\t",1); mode,kind,blob=header.decode("ascii").split()
+        name=path.decode("ascii")
+        require(mode=="100644" and kind=="blob" and name in RETENTION_PATHS and name not in rows and
+                re.fullmatch("[0-9a-f]{40}",blob),"retention_git_tree")
+        rows[name]=blob
+    require(set(rows)==set(RETENTION_PATHS),"retention_git_inventory")
+    observation={}
+    for key,name,cap in (("component",RETENTION_PATHS[0],262144),("index",RETENTION_PATHS[1],12288)):
+        expected=git_v1(["cat-file","blob",rows[name]],cap)
+        actual=read_fixed(REPO/name,cap)
+        require(actual==expected and hashlib.sha1(b"blob "+str(len(actual)).encode()+b"\0"+actual).hexdigest()==rows[name],
+                "retention_bootstrap_git_drift")
+        observation[key]={"size_bytes":len(actual),"sha256":sha(actual),"git_blob":rows[name]}
+        if key=="component": component_source=actual
+    module=_load_authenticated_component_v1(component_source)
+    bindings=module.retained_source_bindings_v1(REPO)
+    require(observation["index"]["size_bytes"]==bindings["index"]["size_bytes"] and
+            observation["index"]["sha256"]==bindings["index"]["sha256"],"retention_index_binding")
+    for row in bindings["sources"]:
+        original=git_v1(["cat-file","blob",row["git_blob"]],262144)
+        require(len(original)==row["size_bytes"] and sha(original)==row["sha256"] and
+            hashlib.sha1(b"blob "+str(len(original)).encode()+b"\0"+original).hexdigest()==row["git_blob"],
+            "retention_old_git_blob_drift")
+    observation["old_git_sha256"]=bindings["source_rows_sha256"]
+    check()
+    return module,observation
+
+
 def persist_raw_v1(files,state):
     persistence_ok=True
     for name,file in files.items():
@@ -404,10 +458,19 @@ def persist_raw_v1(files,state):
     return state
 
 
-def validate_pre_meter_v1(pre,native,helper_code):
+def validate_pre_meter_v1(pre,native,helper_code,retention_module,git_observation):
+    reserve=retention_module.CURRENT_CODE_FORMS_V1
+    require(type(reserve) is int and reserve==524288 and 535785472+reserve<=536870912,"pre_meter_current_code_reservation")
     require(type(pre) is dict and set(pre)=={"baseline","boot_id","linux_monotonic_ns","project_free_bytes",
         "capture_source_quote_bytes","operator_source_quote_bytes","helper_git_forms_quote_bytes",
-        "c_fragment_bytes","root_fragment_bytes"},"pre_meter_shape")
+        "c_fragment_bytes","root_fragment_bytes","retention"},"pre_meter_shape")
+    require(type(pre["retention"]) is dict and set(pre["retention"])=={"git_observation","native"} and
+        canonical(pre["retention"]["git_observation"])==canonical(git_observation),"pre_meter_retention_binding")
+    try:
+        retention_module.validate_prior_retention_receipt_v1(pre["retention"]["native"],
+            source_rows_sha256=git_observation["old_git_sha256"])
+    except (ValueError,TypeError,KeyError) as error:
+        raise CaptureRefusal("pre_meter_retention_receipt") from error
     require(all(type(pre[k]) is int and pre[k]>0 for k in ("linux_monotonic_ns","project_free_bytes",
         "capture_source_quote_bytes","operator_source_quote_bytes","helper_git_forms_quote_bytes",
         "c_fragment_bytes","root_fragment_bytes")) and pre["c_fragment_bytes"]==pre["root_fragment_bytes"]==4096 and
@@ -503,15 +566,17 @@ def run_capture_v1(reviewed_commit,approval):
     driver=read_fixed(DRIVER,65536); source=read_fixed(SELF,65536)
     require(0<len(driver)<=65536 and 0<len(source)<=65536 and sha(driver)==DRIVER_SHA256 and
         sha(source)==helper_code[HELPER_PATHS[0]]["sha256"],"reviewed_helper_hash")
-    pre, native = meter(after=False,payload={"helper_code":helper_code})
-    validate_pre_meter_v1(pre,native,helper_code)
+    retention_module,git_observation=authenticate_retention_v1(reviewed_commit)
+    check()
+    pre, native = meter(after=False,payload={"helper_code":helper_code,"retention_git_observation":git_observation})
+    validate_pre_meter_v1(pre,native,helper_code,retention_module,git_observation)
     check()
     header={"schema_version":1,"code_commit":COMMIT,"windows_start_ns":START,"windows_deadline_ns":DEADLINE,
         "linux_start_ns":pre["linux_monotonic_ns"],"linux_deadline_ns":pre["linux_monotonic_ns"]+DEADLINE-time.monotonic_ns(),
         "baseline":pre["baseline"],"boot_id":pre["boot_id"],"capture_source_sha256":sha(source),
         "capture_source_quote_bytes":pre["capture_source_quote_bytes"],"capture_all_forms_reserved_bytes":65536,
         "operator_source_quote_bytes":pre["operator_source_quote_bytes"],
-        "helper_code":helper_code,
+        "helper_code":helper_code,"retention":pre["retention"],
         "helper_git_forms_quote_bytes":pre["helper_git_forms_quote_bytes"],
         "pre_meter_native":{k:native[k] for k in ("pid","returncode","stdout_eof","stderr_eof")}}
     header["pre_meter_native"].update(stdout_sha256=native["stdout"]["sha256"],stderr_sha256=native["stderr"]["sha256"])
@@ -573,7 +638,8 @@ def run_capture_v1(reviewed_commit,approval):
         "stderr":{"size_bytes":state["stderr"]["kept_bytes"],"sha256":state["stderr"]["sha256"]}})
     validate_post_meter_v1(post,post_native,header,summary["packet"]["initial_charged_bytes"])
     status={"schema_version":1,"code_commit":COMMIT,"operator_sha256":DRIVER_SHA256,"capture_sha256":sha(source),
-        "context_sha256":sha(context),"packet":packet,"operator_authority":authority,"driver":state,"pre_meter":pre,"post_meter":post,
+        "context_sha256":sha(context),"packet":packet,"operator_authority":authority,"driver":state,
+        "pre_meter":{k:v for k,v in pre.items() if k!="retention"},"prior_retention_sha256":sha(canonical(header["retention"])),"post_meter":post,
         "pre_meter_native":header["pre_meter_native"],"post_meter_native":compact_native(FACTS["post_meter"]),
         "capture_paths":{"stdout":str(STDOUT),"stderr":str(STDERR)},
         "original_windows_deadline_ns":DEADLINE,"original_linux_deadline_ns":header["linux_deadline_ns"],

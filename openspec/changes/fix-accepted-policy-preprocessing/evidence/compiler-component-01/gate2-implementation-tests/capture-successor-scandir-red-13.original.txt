@@ -1,0 +1,21 @@
+FF
+======================================================================
+FAIL: test_allocation_scandir_stops_incrementally_at_existing_1024_node_bound (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_allocation_scandir_stops_incrementally_at_existing_1024_node_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 874, in test_allocation_scandir_stops_incrementally_at_existing_1024_node_bound
+    with self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
+AssertionError: AssertionError not raised
+
+======================================================================
+FAIL: test_allocation_scandir_error_refuses_without_emitting_success (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_allocation_scandir_error_refuses_without_emitting_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 881, in test_allocation_scandir_error_refuses_without_emitting_success
+    with self.assertRaises(OSError): self.execute(capture.POST_METER,payload)
+AssertionError: OSError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.031s
+
+FAILED (failures=2)

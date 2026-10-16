@@ -12,7 +12,9 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import time
+from types import MappingProxyType
 from typing import Any, Mapping
 
 
@@ -29,6 +31,284 @@ RETAINED_UPPER_BYTES = 67_108_864     # owner quote 61,079,552
 METADATA_UPPER_BYTES = 262_144
 PROJECT_BYTES = 1_073_741_824         # virtual ext4 statvfs; documented non-binding
 ADMISSION_LIFETIME_NS = 55_000_000_000  # owner requires expiry within 60 s
+
+# One pure authority is importable by both Windows operators and Linux helpers.
+TOTAL_F2_LIMIT_V1 = 8_388_608
+OLD_F2_PROOF_UPPER_V1 = 393_216
+ACTIVE_F2_LIMIT_V1 = TOTAL_F2_LIMIT_V1 - OLD_F2_PROOF_UPPER_V1
+F2_FOOTER_LIMIT_V1 = 16_384
+F2_CONTROL_CAPS_V1 = MappingProxyType({
+    "f2.originals.v1.json": 262_144, "f2.supplement.v1.json": 262_144,
+    "f2.failure.v1.json": 262_144, "f2.final-accounting.v1.json": F2_FOOTER_LIMIT_V1})
+PRIOR_CARRY_BYTES_V1 = 6_291_456
+CURRENT_CODE_FORMS_V1 = 524_288
+PRIOR_OWNED_CAP_V1 = 2_162_688
+RETENTION_INDEX_REL_V1 = ("openspec/changes/fix-accepted-policy-preprocessing/evidence/"
+                          "compiler-component-01/gate2-f2-c75a-retention.v1.json")
+RETENTION_INDEX_SHA256_V1 = "8925428192e339d52d2bcc7a2f99587303765796dc0769f47dcf192ce40ce006"
+RETENTION_INDEX_SIZE_V1 = 9637
+OLD_CODE_COMMIT_V1 = "c75ad950ee542621a365725db627fdd03d2363e8"
+_FIXTURE_PREFIX_V1 = "tests/fixtures/accepted_policy_fixture_compiler"
+_OLD_SOURCE_NAMES_V1 = ("_gate2_c_v1.py", "_component_v1.py", "_v1.py", "_publisher_v1.py",
+    "_seccomp_v1.json", "@script", "_recovery_v1.py", "_gate2_p0_v1.py", "_gate2_d_v1.py",
+    "_gate2_d_child_v1.py", "@v8", "_gate2_setup_v1.py", "_gate2_capture_v1.py")
+REVIEW_REPO_ROOT_LINUX_V1 = Path("/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST")
+_OLD_ROOT_V1 = Path("/home/s-a-balashov/work/vast-fixture-compiler-gate2-" + OLD_CODE_COMMIT_V1 + "-01")
+_F2_OLD_FILES_V1 = ("RPC01.reply.original", "RPC01.request.original", "RPC02.reply.original",
+    "RPC02.request.original", "RPC03.reply.original", "RPC03.request.original", "f2.failure.v1.json")
+_AUX_OLD_FILES_V1 = ("export.stderr.original", "export.stdout.original", "operator.authority.original.json",
+                     "operator.command.original.json")
+
+
+def _retention_read_v1(path, cap):
+    path = Path(path)
+    if not path.is_absolute() or path.resolve(strict=True) != path:
+        raise ComponentRecipeError("retention physical path")
+    expected = path.lstat()
+    if not stat.S_ISREG(expected.st_mode) or expected.st_nlink != 1 or not 0 <= expected.st_size <= cap:
+        raise ComponentRecipeError("retention preopen kind/link/bound")
+    epoch = lambda s, crossing=False: (s.st_dev, s.st_ino, s.st_mode, s.st_nlink, s.st_size, s.st_mtime_ns,
+        getattr(s, "st_birthtime_ns", None), None if crossing and os.name == "nt" else s.st_ctime_ns,
+        getattr(s, "st_blocks", None))
+    flags = (os.O_RDONLY | getattr(os, "O_NONBLOCK", 0) | getattr(os, "O_NOFOLLOW", 0) |
+             getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_BINARY", 0))
+    fd = os.open(path, flags)
+    try:
+        stream = os.fdopen(fd, "rb", buffering=0)
+    except BaseException:
+        os.close(fd)
+        raise
+    with stream:
+        before = os.fstat(stream.fileno())
+        if epoch(before, True) != epoch(expected, True):
+            raise ComponentRecipeError("retention open identity")
+        raw = stream.read(cap + 1)
+        after = os.fstat(stream.fileno())
+        if len(raw) != before.st_size or epoch(before) != epoch(after) or epoch(path.lstat()) != epoch(expected):
+            raise ComponentRecipeError("retention file drift")
+    return raw, before
+
+
+def _retention_index_v1(repo_root):
+    raw, _ = _retention_read_v1(Path(repo_root) / RETENTION_INDEX_REL_V1, 12288)
+    if len(raw) != RETENTION_INDEX_SIZE_V1 or hashlib.sha256(raw).hexdigest() != RETENTION_INDEX_SHA256_V1:
+        raise ComponentRecipeError("retention index identity")
+    def unique(pairs):
+        value = {}
+        for key, item in pairs:
+            if key in value:
+                raise ComponentRecipeError("retention duplicate key")
+            value[key] = item
+        return value
+    value = json.loads(raw.decode("ascii"), object_pairs_hook=unique,
+        parse_constant=lambda _: (_ for _ in ()).throw(ComponentRecipeError("retention nonfinite")))
+    if (type(value) is not dict or canonical_json_v1(value) + b"\n" != raw or
+            value.get("schema") != "vast_gate2_f2_c75_retention_v1" or value.get("commit") != OLD_CODE_COMMIT_V1 or
+            value.get("physical_acceptance") is not False or
+            [row[0] for row in value.get("src", [])] != list(_OLD_SOURCE_NAMES_V1)):
+        raise ComponentRecipeError("retention index schema")
+    return value
+
+
+def retained_source_bindings_v1(repo_root):
+    """Pinned historical bindings only; this function makes no Git observation."""
+    value = _retention_index_v1(repo_root)
+    sources = []
+    for name, blob, size, digest in value["src"]:
+        path = ("scripts/publication_operational_request_domain_v1.py" if name == "@script" else
+                RETENTION_INDEX_REL_V1.rsplit("/", 1)[0] + "/component-admission-plan.v8.md" if name == "@v8" else
+                _FIXTURE_PREFIX_V1 + name)
+        if (type(size) is not int or not 0 < size <= 262144 or not _sha(digest) or
+                type(blob) is not str or re.fullmatch("[0-9a-f]{40}", blob) is None):
+            raise ComponentRecipeError("retention source binding")
+        sources.append({"path": path, "size_bytes": size, "sha256": digest, "git_blob": blob})
+    return {"index": {"size_bytes": RETENTION_INDEX_SIZE_V1, "sha256": RETENTION_INDEX_SHA256_V1},
+            "sources": sources, "source_rows_sha256": hashlib.sha256(canonical_json_v1(sources)).hexdigest()}
+
+
+def current_code_forms_quote_v1(repo_root, *, code, plan):
+    """Fresh fixed working bytes plus full Git forms for changed historical variants."""
+    old = retained_source_bindings_v1(repo_root)["sources"][:11]
+    if type(code) is not dict or set(code) != {row["path"] for row in old[:10]}:
+        raise ComponentRecipeError("current code paths")
+    total = 0
+    for number, row in enumerate(old):
+        descriptor = code[row["path"]] if number < 10 else plan
+        if (type(descriptor) is not dict or set(descriptor) != {"size_bytes", "sha256", "git_blob"} or
+                type(descriptor["size_bytes"]) is not int or not 0 < descriptor["size_bytes"] <= 262144 or
+                not _sha(descriptor["sha256"]) or type(descriptor["git_blob"]) is not str or
+                re.fullmatch("[0-9a-f]{40}", descriptor["git_blob"]) is None):
+            raise ComponentRecipeError("current code descriptor")
+        raw, observed = _retention_read_v1(Path(repo_root) / row["path"], 262144)
+        actual = {"size_bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest(),
+            "git_blob": hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()}
+        if actual != descriptor:
+            raise ComponentRecipeError("current code working identity")
+        rounded = ((len(raw) + 4095) // 4096) * 4096
+        blocks = _retention_blocks_v1(observed)
+        if blocks is None and os.name == "nt":
+            working = rounded + 4096
+        elif type(blocks) is int and 0 <= blocks < 2 ** 63:
+            working = max(blocks * 512, rounded) + 4096
+        else:
+            raise ComponentRecipeError("current code unknown allocation")
+        if actual != {key: row[key] for key in actual}:
+            total += working + rounded + 4096
+        elif working > ((row["size_bytes"] + 4095) // 4096) * 4096 + 4096:
+            raise ComponentRecipeError("current unchanged working allocation")
+        if total > CURRENT_CODE_FORMS_V1:
+            raise ComponentRecipeError("current code forms bound")
+    return total
+
+
+def _old_windows_paths_v1(repo_root):
+    temp = Path("/mnt/c/Users/s-a-balashov/AppData/Local/Temp")
+    prefix = "vast-gate2-setup-" + OLD_CODE_COMMIT_V1
+    return (temp / (prefix + ".driver.stdout.original"), temp / (prefix + ".driver.stderr.original"),
+            Path(repo_root) / RETENTION_INDEX_REL_V1.rsplit("/", 1)[0] / "gate2-setup-c75a.outer-tool.original.json")
+
+
+def _old_transcript_path_v1():
+    return Path("/mnt/c/Users/s-a-balashov/AppData/Local/Temp/"
+                "vast-gate2-c75a-postfailure-cb39fb.held-tool-return.transcript.json")
+
+
+def _retention_blocks_v1(observation):
+    return getattr(observation, "st_blocks", None)
+
+
+def _retention_allocation_v1(observation, metadata=256):
+    blocks = _retention_blocks_v1(observation)
+    if type(blocks) is not int or not 0 <= blocks < 2 ** 63:
+        raise ComponentRecipeError("retention unknown allocation")
+    rounded = ((observation.st_size + 4095) // 4096) * 4096
+    return max(blocks * 512, 4096 if stat.S_ISDIR(observation.st_mode) else rounded) + metadata
+
+
+def validate_prior_retention_receipt_v1(receipt, *, source_rows_sha256):
+    """Validate a bounded observation, without claiming it is a current meter."""
+    bounds = {"node_count": 28, "native_quote_bytes": 633856, "windows_quote_bytes": 32768,
+              "transcript_quote_bytes": 12288, "owned_upper_bytes": 2102272, "old_f2_upper_bytes": 333056}
+    if (type(receipt) is not dict or set(receipt) != set(bounds) | {
+            "index_sha256", "source_rows_sha256", "physical_acceptance"} or
+            receipt["index_sha256"] != RETENTION_INDEX_SHA256_V1 or
+            not _sha(source_rows_sha256) or receipt["source_rows_sha256"] != source_rows_sha256 or
+            receipt["physical_acceptance"] is not False):
+        raise ComponentRecipeError("retention native receipt")
+    for name, limit in bounds.items():
+        value = receipt[name]
+        if type(value) is not int or not 0 <= value <= limit:
+            raise ComponentRecipeError("retention native receipt bound")
+    if (receipt["node_count"] != 28 or receipt["owned_upper_bytes"] != 2102272 or
+            receipt["old_f2_upper_bytes"] != 333056 or receipt["owned_upper_bytes"] > PRIOR_OWNED_CAP_V1 or
+            receipt["old_f2_upper_bytes"] > OLD_F2_PROOF_UPPER_V1):
+        raise ComponentRecipeError("retention carried bounds")
+    return dict(receipt)
+
+
+def verify_prior_retention_v1(repo_root, *, git_observation):
+    """Fresh fixed-file/native-block check; Git provenance comes from external review.
+
+    The Windows caller must actually read all 13 old Git blobs before allocation.
+    Later C authenticates that observation through the externally reviewed packet
+    and enclosing operator authority. No Linux Git/interop fallback is exposed.
+    Caller checks the original deadline before and after these trusted reads.
+    """
+    bindings = retained_source_bindings_v1(repo_root)
+    index = _retention_index_v1(repo_root)
+    if (type(git_observation) is not dict or set(git_observation) != {"component", "index", "old_git_sha256"} or
+            git_observation["old_git_sha256"] != bindings["source_rows_sha256"]):
+        raise ComponentRecipeError("retention Git observation")
+    for name, relative, cap in (("component", _FIXTURE_PREFIX_V1 + "_component_v1.py", 262144),
+                                ("index", RETENTION_INDEX_REL_V1, 12288)):
+        descriptor = git_observation[name]
+        if type(descriptor) is not dict or set(descriptor) != {"size_bytes", "sha256", "git_blob"}:
+            raise ComponentRecipeError("retention bootstrap descriptor")
+        raw, observed = _retention_read_v1(Path(repo_root) / relative, cap)
+        if (type(descriptor["size_bytes"]) is not int or len(raw) != descriptor["size_bytes"] or
+                hashlib.sha256(raw).hexdigest() != descriptor["sha256"] or
+                hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest() != descriptor["git_blob"]):
+            raise ComponentRecipeError("retention bootstrap identity")
+        if name == "index" and 2 * _retention_allocation_v1(observed, 4096) > 32768:
+            raise ComponentRecipeError("retention index forms")
+    expected = {}
+    categories = {}
+    for relative in ("", "scripts", "tests", "tests/fixtures"):
+        expected[_OLD_ROOT_V1 / relative] = None
+    for number, source in enumerate(bindings["sources"][:11]):
+        relative = "physical-plan.v8.md" if number == 10 else source["path"]
+        expected[_OLD_ROOT_V1 / relative] = (source["size_bytes"], source["sha256"])
+    roots = [_OLD_ROOT_V1]
+    for category, suffix, names in (("F2", ".f2", _F2_OLD_FILES_V1), ("AUX", ".operator-originals", _AUX_OLD_FILES_V1)):
+        folder = Path(str(_OLD_ROOT_V1) + suffix)
+        roots.append(folder)
+        expected[folder] = None
+        categories[folder] = category
+        rows = index["retained"][category]["files"]
+        if [row[0] for row in rows] != list(names):
+            raise ComponentRecipeError("retention fixed inventory")
+        for name, row in zip(names, rows):
+            expected[folder / name] = (row[1], row[3])
+            categories[folder / name] = category
+    observed_paths = set()
+    for root in roots:
+        if root.resolve(strict=True) != root:
+            raise ComponentRecipeError("retention root alias")
+        observed_paths.add(root)
+    # Scan only the six fixed directories. Reject the first unknown entry;
+    # os.walk would allocate an unbounded per-directory list before our check.
+    for directory, binding in expected.items():
+        if binding is not None:
+            continue
+        if directory.resolve(strict=True) != directory or not stat.S_ISDIR(directory.lstat().st_mode):
+            raise ComponentRecipeError("retention scan directory kind/alias")
+        children = {path for path in expected if path.parent == directory}
+        seen = set()
+        with os.scandir(directory) as entries:
+            for entry in entries:
+                path = directory / entry.name
+                if path not in children or path in seen:
+                    raise ComponentRecipeError("retention extra inventory")
+                seen.add(path)
+                observed_paths.add(path)
+        if seen != children:
+            raise ComponentRecipeError("retention missing inventory")
+    if observed_paths != set(expected) or len(expected) != 28:
+        raise ComponentRecipeError("retention missing/extra inventory")
+    native_quote = 0
+    category_quote = {"code": 0, "F2": 0, "AUX": 0}
+    for path, binding in expected.items():
+        if path.resolve(strict=True) != path:
+            raise ComponentRecipeError("retention native alias")
+        observed = path.lstat()
+        if binding is None:
+            if not stat.S_ISDIR(observed.st_mode):
+                raise ComponentRecipeError("retention directory kind")
+        else:
+            raw, observed = _retention_read_v1(path, binding[0])
+            if len(raw) != binding[0] or hashlib.sha256(raw).hexdigest() != binding[1]:
+                raise ComponentRecipeError("retention original identity")
+        quote = _retention_allocation_v1(observed)
+        native_quote += quote
+        category_quote[categories.get(path, "code")] += quote
+    for name, cap in (("code", 540416), ("F2", 75776), ("AUX", 17664)):
+        if category_quote[name] > cap:
+            raise ComponentRecipeError("retention category allocation")
+    windows_quote = 0
+    for path, row in zip(_old_windows_paths_v1(repo_root), index["retained"]["win"]):
+        raw, observed = _retention_read_v1(path, row[1])
+        if len(raw) != row[1] or hashlib.sha256(raw).hexdigest() != row[3]:
+            raise ComponentRecipeError("retention Windows original identity")
+        windows_quote += _retention_allocation_v1(observed, 4096)
+    row = index["retained"]["transcript"]
+    raw, observed = _retention_read_v1(_old_transcript_path_v1(), row[1])
+    if len(raw) != row[1] or hashlib.sha256(raw).hexdigest() != row[2]:
+        raise ComponentRecipeError("retention held transcript identity")
+    receipt = {"index_sha256": RETENTION_INDEX_SHA256_V1, "source_rows_sha256": bindings["source_rows_sha256"],
+        "node_count": len(expected), "native_quote_bytes": native_quote, "windows_quote_bytes": windows_quote,
+        "transcript_quote_bytes": _retention_allocation_v1(observed, 4096), "owned_upper_bytes": 2102272,
+        "old_f2_upper_bytes": 333056, "physical_acceptance": False}
+    return validate_prior_retention_receipt_v1(receipt, source_rows_sha256=bindings["source_rows_sha256"])
 
 
 def _header(name: str) -> str:

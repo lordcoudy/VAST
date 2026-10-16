@@ -51,6 +51,33 @@ def stat_header(name, size, **changed):
     return "X-Docker-Container-Path-Stat: " + base64.b64encode(json.dumps(value).encode()).decode() + "\r\n"
 
 
+def c75_inspect_reply():
+    """Exact observed reply, derived in memory; no second raw fixture/copy."""
+    path = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/b1-01/outputs/RPC10.reply.original"
+    raw = path.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == recovery.B1_ORIGINAL_SHA256["inspect"]
+    for old, new in ((b'"Dns":null', b'"Dns":[]'), (b'"DnsOptions":null', b'"DnsOptions":[]'),
+                     (b'"DnsSearch":null', b'"DnsSearch":[]'),
+                     (b'Date: Fri, 16 Oct 2026 08:38:03 GMT', b'Date: Fri, 16 Oct 2026 17:08:35 GMT'),
+                     (b'\r\n\r\n6619\r\n', b'\r\n\r\n6613\r\n')):
+        assert raw.count(old) == 1
+        raw = raw.replace(old, new)
+    assert hashlib.sha256(raw).hexdigest() == "58b2b00a2efb0331e734eb5af5146115f64c6f1a788f0ed48175dd3aab9ef086"
+    return raw
+
+
+def maximal_footer():
+    counters = ("retained_elsewhere_upper_bytes", "raw_originals_bytes", "retained_allocated_bytes",
+                "physical_charge_bytes", "retained_data_allocated_bytes", "retained_metadata_upper_bytes",
+                "reserved_control_bytes", "reserved_raw_bytes", "reserved_rounding_bytes",
+                "reserved_metadata_bytes", "retained_elsewhere_lower_bytes")
+    account = {key: 2**64-1 for key in counters}
+    for phase in ("baseline", "last"):
+        account[phase] = {"c_free_bytes": 2**64-1, "ext4_used_bytes": 2**64-1, "fragment_bytes": 4096}
+    return {"schema_version": 1, "supplement": {"relative_path": "f2.supplement.v1.json",
+            "size_bytes": 262144, "sha256": "f"*64}, "accounting": account}
+
+
 class RecoveryTests(unittest.TestCase):
     def setUp(self):
         self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
@@ -78,6 +105,12 @@ class RecoveryTests(unittest.TestCase):
         self.assertEqual(sum(row[2] for row in recovery.MEMBERS), 4_226_048)
         self.assertEqual(recovery._ArchiveClientV1.RPC_LIMIT, 19)
         self.assertEqual(compiler._DockerClientV1.LIMIT, 262144)
+        self.assertEqual((recovery.TOTAL_LIMIT, recovery.ACTIVE_F2_LIMIT, recovery.RAW_LIMIT,
+                          recovery.TAR_LIMIT, recovery._ArchiveClientV1.LIMIT),
+                         (8388608, 7995392, 6291456, 4226048, 12582912))
+        self.assertEqual(dict(recovery.CONTROL_CAPS), {"f2.originals.v1.json": 262144,
+                         "f2.supplement.v1.json": 262144, "f2.failure.v1.json": 262144,
+                         "f2.final-accounting.v1.json": 16384})
 
     def test_tar_single_regular_member_and_bounded_pax(self):
         raw = b"\x7fELF\x02\x01" + b"\0" * 12 + b"\x3e\0" + b"x" * 20
@@ -201,7 +234,7 @@ class RecoveryTests(unittest.TestCase):
             recovery._write_json(path, {"held": False})
         self.assertEqual(path.read_bytes(), old)
 
-    def full_fixture(self):
+    def full_fixture(self, *, initial_inspect=None, final_inspect=None):
         old = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/b1-01/outputs"
         identities = [(old/name).read_bytes() for name in ("RPC01.reply.original", "RPC02.reply.original", "RPC10.reply.original")]
         archives = []
@@ -230,12 +263,17 @@ class RecoveryTests(unittest.TestCase):
             body = tar_bytes(Path(path).name, data)[:512+((size+511)//512)*512+1024]
             self.assertLessEqual(len(body), cap)
             archives.append(reply(body, headers=stat_header(Path(path).name, size).encode()))
-        sockets = [FakeSocket(raw) for raw in identities+archives+identities]
+        first, last = list(identities), list(identities)
+        if initial_inspect is not None:
+            first[2] = initial_inspect
+        if final_inspect is not None:
+            last[2] = final_inspect
+        sockets = [FakeSocket(raw) for raw in first+archives+last]
         originals = {"report": old/"compiler.stdout.original", "inspect": old/"RPC10.reply.original",
                      "provider": old/"RPC03.reply.original"}
         arguments = {"output_dir": self.root/"f2", "review": {"commit": "a"*40,
                      "approval_reference": "controlled-test-only", "physical_plan_sha256": "b"*64},
-                     "b1_originals": originals, "remaining_seal_bytes": recovery.TOTAL_LIMIT,
+                     "b1_originals": originals, "remaining_seal_bytes": recovery.ACTIVE_F2_LIMIT,
                      "clock": lambda: self.now[0], "measure": lambda: dict(self.baseline),
                      "socket_factory": iter(sockets).__next__}
         return sockets, arguments
@@ -274,7 +312,7 @@ class RecoveryTests(unittest.TestCase):
         self.assertTrue(all(not sock.sent for sock in sockets[4:]))
 
     def test_no_remaining_seal_or_foreign_original_stops_before_fresh_output(self):
-        for changed in ({"remaining_seal_bytes": recovery.TOTAL_LIMIT-1},
+        for changed in ({"remaining_seal_bytes": recovery.ACTIVE_F2_LIMIT-1},
                         {"b1_originals": {"report": __file__, "inspect": __file__, "provider": __file__}},
                         {"measure": lambda: {"ext4_used_bytes": 1000, "c_free_bytes": recovery.FLOOR_BYTES}}):
             sockets, arguments = self.full_fixture()
@@ -369,9 +407,9 @@ class RecoveryTests(unittest.TestCase):
             recovery.recover_stopped_b1_v1(**arguments)
         self.assertTrue(all(not sock.sent for sock in sockets))
 
-    def validator_fixture(self):
+    def validator_fixture(self, **kwargs):
         """Construct a physical-shaped record for parser tests, never qualification."""
-        sockets, arguments = self.full_fixture()
+        sockets, arguments = self.full_fixture(**kwargs)
         with patch.object(recovery._ArchiveClientV1, "_observe_endpoint", return_value=self.epoch):
             result = recovery.recover_stopped_b1_v1(**arguments)
         value = result["supplement"]
@@ -518,6 +556,275 @@ class RecoveryTests(unittest.TestCase):
             recovery.recover_stopped_b1_v1(**arguments)
         self.assertFalse(arguments["output_dir"].exists())
         self.assertTrue(all(not sock.sent for sock in sockets))
+
+    def test_exact_c75_chunked_dns_reply_and_actual_digest_complete_the_sequence(self):
+        raw = c75_inspect_reply()
+        sockets, arguments = self.full_fixture(initial_inspect=raw, final_inspect=raw)
+        with patch.object(recovery._ArchiveClientV1, "_observe_endpoint", return_value=self.epoch):
+            result = recovery.recover_stopped_b1_v1(**arguments)
+        identity = result["supplement"]["identity"]
+        self.assertEqual(identity["before"], identity["after"])
+        self.assertEqual(identity["before"]["source_sha256"], "32c7886c0c8afd213b4e858d1da035cc22d532782bb23019886f71416395fc13")
+        self.assertEqual((arguments["output_dir"]/"RPC03.reply.original").read_bytes(), raw)
+        self.assertEqual(result["supplement"]["transport"]["attempts"], 19)
+        self.assertTrue(all(sock.closed for sock in sockets))
+
+    def test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network(self):
+        sockets, _ = self.full_fixture()
+        values = [recovery._http_json(bytes(sock.data)) for sock in sockets[:3]]
+        sealed = values[2]
+        for key in ("Dns", "DnsOptions", "DnsSearch"):
+            for bad in (False, 0, "", {}, ["foreign"], [None]):
+                inspected = json.loads(json.dumps(sealed)); inspected["HostConfig"][key] = bad
+                with self.subTest(key=key, bad=bad), self.assertRaises(compiler.FixtureCompilerError):
+                    recovery._identity(values[0], values[1], inspected, sealed)
+            for mode in ("missing_both", "missing_fresh", "missing_sealed", "sealed_list", "network"):
+                old = json.loads(json.dumps(sealed)); inspected = json.loads(json.dumps(sealed))
+                if mode.startswith("missing"):
+                    if mode in ("missing_both", "missing_sealed"): del old["HostConfig"][key]
+                    if mode in ("missing_both", "missing_fresh"): del inspected["HostConfig"][key]
+                elif mode == "sealed_list":
+                    old["HostConfig"][key] = []; inspected["HostConfig"][key] = []
+                else:
+                    old["HostConfig"]["NetworkMode"] = "bridge"; inspected["HostConfig"]["NetworkMode"] = "bridge"
+                with self.subTest(key=key, mode=mode), self.assertRaises(compiler.FixtureCompilerError):
+                    recovery._identity(values[0], values[1], inspected, old)
+        for group, key, bad in (("HostConfig", "CapAdd", None), ("HostConfig", "ReadonlyPaths", []),
+                                ("Config", "User", "0:0"), ("State", "ExitCode", 1)):
+            inspected = recovery._http_json(c75_inspect_reply()); inspected[group][key] = bad
+            with self.subTest(group=group, key=key), self.assertRaises(compiler.FixtureCompilerError):
+                recovery._identity(values[0], values[1], inspected, sealed)
+
+    def test_fresh_dns_representation_drift_refuses_after_nineteen_requests(self):
+        sockets, arguments = self.full_fixture(initial_inspect=c75_inspect_reply())
+        with patch.object(recovery._ArchiveClientV1, "_observe_endpoint", return_value=self.epoch), \
+                self.assertRaises(compiler.FixtureCompilerError) as caught:
+            recovery.recover_stopped_b1_v1(**arguments)
+        self.assertIn("f2_final_identity", caught.exception.causes)
+        self.assertEqual(caught.exception.facts["transport"]["attempts"], 19)
+        self.assertNotEqual(caught.exception.facts["identity"]["before"], caught.exception.facts["identity"]["after"])
+        self.assertFalse((arguments["output_dir"]/"f2.supplement.v1.json").exists())
+
+    def test_c75_dns_validator_rereads_actual_raw_digest_without_socket_or_mutation(self):
+        raw = c75_inspect_reply()
+        root, value = self.validator_fixture(initial_inspect=raw, final_inspect=raw)
+        before = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in root.iterdir()}
+        with patch.object(compiler.socket, "socket", side_effect=AssertionError("validator contacted engine")):
+            self.assertTrue(recovery.validate_supplement_v1(output_dir=root, supplement=value)["complete"])
+        self.assertEqual(before, {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in root.iterdir()})
+
+    def test_maximal_closed_footer_canonical_934_is_separate_from_conservative_bound(self):
+        value = maximal_footer()
+        raw = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("ascii")
+        self.assertEqual(len(raw), 934)
+        self.assertLessEqual(recovery._record_bound(value), 16384)
+        path = self.root/"f2.final-accounting.v1.json"
+        descriptor = recovery._write_json(path, value)
+        self.assertEqual(path.read_bytes(), raw)
+        self.assertEqual(descriptor["size_bytes"], 934)
+
+    def test_malformed_footer_refuses_before_encoding_and_open(self):
+        base = maximal_footer()
+        cases = []
+        for key, bad in (("schema_version", True), ("schema_version", 1.0), ("extra", "x"*16385)):
+            value = json.loads(json.dumps(base)); value[key] = bad; cases.append(value)
+        for phase in ("baseline", "last"):
+            for key, bad in (("fragment_bytes", 4096.0), ("fragment_bytes", True),
+                             ("c_free_bytes", -1), ("ext4_used_bytes", 2**64), ("extra", 0)):
+                value = json.loads(json.dumps(base)); value["accounting"][phase][key] = bad; cases.append(value)
+        for key, bad in (("relative_path", "../f2.supplement.v1.json"), ("size_bytes", True),
+                         ("size_bytes", 262145), ("sha256", "A"*64), ("extra", 0)):
+            value = json.loads(json.dumps(base)); value["supplement"][key] = bad; cases.append(value)
+        for key, bad in (("extra", 0), ("reserved_control_bytes", True), ("raw_originals_bytes", 2**64)):
+            value = json.loads(json.dumps(base)); value["accounting"][key] = bad; cases.append(value)
+        for location, key in (((), "accounting"), (("supplement",), "sha256"),
+                              (("accounting",), "reserved_raw_bytes"), (("accounting", "last"), "fragment_bytes")):
+            value = json.loads(json.dumps(base)); parent = value
+            for item in location: parent = parent[item]
+            del parent[key]; cases.append(value)
+        for number, value in enumerate(cases):
+            path = self.root/"f2.final-accounting.v1.json"
+            with self.subTest(number=number), patch.object(recovery.json, "dumps") as encoded, \
+                    patch.object(Path, "open") as opened:
+                with self.assertRaises(compiler.FixtureCompilerError):
+                    recovery._write_json(path, value)
+                encoded.assert_not_called(); opened.assert_not_called()
+
+    def test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys(self):
+        root, value = self.validator_fixture()
+        path = root/"f2.final-accounting.v1.json"; original = path.read_bytes(); footer = json.loads(original)
+        changed = []
+        for key, bad in (("schema_version", True), ("schema_version", 1.0), ("extra", 0)):
+            row = json.loads(original); row[key] = bad; changed.append(json.dumps(row, sort_keys=True, separators=(",", ":")).encode())
+        for group, key, bad in (("last", "fragment_bytes", 4096.0), ("baseline", "extra", 0),
+                                 ("last", "c_free_bytes", 2**64)):
+            row = json.loads(original); row["accounting"][group][key] = bad
+            changed.append(json.dumps(row, sort_keys=True, separators=(",", ":")).encode())
+        changed += [json.dumps(footer, indent=1).encode(), original.replace(b'"schema_version":1', b'"schema_version":1,"schema_version":1'),
+                    b" "*16385]
+        for number, raw in enumerate(changed):
+            path.write_bytes(raw)
+            with self.subTest(number=number), self.assertRaises(compiler.FixtureCompilerError):
+                recovery.validate_supplement_v1(output_dir=root, supplement=value)
+            self.assertEqual(path.read_bytes(), raw)
+
+    def test_per_file_entry_geometry_and_full_partial_footer_failure_liability(self):
+        sockets, arguments = self.full_fixture()
+        arguments["remaining_seal_bytes"] = 7995392
+        with patch.object(recovery._ArchiveClientV1, "request", side_effect=compiler.FixtureCompilerError("controlled_stop")), \
+                self.assertRaises(compiler.FixtureCompilerError) as stopped:
+            recovery.recover_stopped_b1_v1(**arguments)
+        account = stopped.exception.facts["accounting"]
+        self.assertEqual(account["reserved_control_bytes"], 3*262144+16384)
+        self.assertEqual(account["physical_charge_bytes"]+sum(account[key] for key in
+            ("reserved_control_bytes", "reserved_raw_bytes", "reserved_rounding_bytes", "reserved_metadata_bytes")), 7970816)
+
+    def test_partial_footer_keeps_prefix_full_failure_reserve_and_distinct_close_cause(self):
+        sockets, arguments = self.full_fixture(); real = Path.open
+        def opened(path, *args, **kwargs):
+            file = real(path, *args, **kwargs)
+            return FaultFile(file, short=True, close_fail=True) if path.name == "f2.final-accounting.v1.json" and args and args[0] == "xb" else file
+        with patch.object(recovery._ArchiveClientV1, "_observe_endpoint", return_value=self.epoch), patch.object(Path, "open", opened), \
+                self.assertRaises(compiler.FixtureCompilerError) as caught:
+            recovery.recover_stopped_b1_v1(**arguments)
+        root = arguments["output_dir"]
+        self.assertEqual((root/"f2.final-accounting.v1.json").read_bytes(), b'{"')
+        self.assertTrue((root/"f2.failure.v1.json").exists())
+        self.assertEqual(caught.exception.facts["accounting"]["reserved_control_bytes"], 262144)
+        self.assertIn("f2_record_short_write", caught.exception.causes)
+        self.assertIn("f2_record_close_OSError", caught.exception.causes)
+
+    def test_nonfooter_controls_keep_their_existing_record_cap(self):
+        for name in ("f2.originals.v1.json", "f2.supplement.v1.json", "f2.failure.v1.json"):
+            value = {"retained": "x"*20000}; path = self.root/name
+            recovery._write_json(path, value)
+            self.assertGreater(path.stat().st_size, 16384)
+            self.assertEqual(json.loads(path.read_bytes()), value)
+
+    def test_other_inspect_json_types_and_selected_fields_remain_exact(self):
+        sockets, _ = self.full_fixture()
+        version, info, sealed = [recovery._http_json(bytes(sock.data)) for sock in sockets[:3]]
+        for group, key, bad in (("State", "ExitCode", False), ("HostConfig", "Memory", 536870912.0),
+                                 ("Config", "NetworkDisabled", 1), (None, "RestartCount", False),
+                                 (None, "Image", "sha256:"+"0"*64), (None, "Id", "0"*64),
+                                 (None, "Mounts", []), (None, "SizeRootFs", sealed["SizeRootFs"]+1)):
+            inspected = recovery._http_json(c75_inspect_reply())
+            (inspected[group] if group else inspected)[key] = bad
+            with self.subTest(group=group, key=key), self.assertRaises(compiler.FixtureCompilerError):
+                recovery._identity(version, info, inspected, sealed)
+
+    def test_malformed_state_object_is_a_bounded_source_refusal(self):
+        sockets, _ = self.full_fixture()
+        version, info, sealed = [recovery._http_json(bytes(sock.data)) for sock in sockets[:3]]
+        inspected = recovery._http_json(c75_inspect_reply()); inspected["State"] = ["foreign"]
+        with self.assertRaises(compiler.FixtureCompilerError) as caught:
+            recovery._identity(version, info, inspected, sealed)
+        self.assertIn("f2_source_state", caught.exception.causes)
+
+    def test_each_empty_dns_representation_hashes_actual_values_without_input_mutation(self):
+        sockets, _ = self.full_fixture()
+        version, info, sealed = [recovery._http_json(bytes(sock.data)) for sock in sockets[:3]]
+        original = json.dumps(sealed, sort_keys=True); hashes = set()
+        for mask in range(8):
+            inspected = json.loads(original)
+            for bit, key in enumerate(("Dns", "DnsOptions", "DnsSearch")):
+                inspected["HostConfig"][key] = [] if mask & (1 << bit) else None
+            before = json.dumps(inspected, sort_keys=True)
+            hashes.add(recovery._identity(version, info, inspected, sealed)["source_sha256"])
+            self.assertEqual(json.dumps(inspected, sort_keys=True), before)
+        self.assertEqual(len(hashes), 8); self.assertEqual(json.dumps(sealed, sort_keys=True), original)
+        self.assertIn("32c7886c0c8afd213b4e858d1da035cc22d532782bb23019886f71416395fc13", hashes)
+
+    def test_footer_descriptor_and_copy_quotes_reject_oversized_retained_prefix(self):
+        path = self.root/"f2.final-accounting.v1.json"; path.write_bytes(b"x"*16385)
+        with self.assertRaises(compiler.FixtureCompilerError): recovery._descriptor(path, self.root)
+        with self.assertRaises(compiler.FixtureCompilerError): recovery._outside_copy_lower_bound(self.root)
+        self.assertEqual(path.stat().st_size, 16385)
+
+    def test_successor_active_limit_refuses_one_byte_excess_before_rpc_or_failure_write(self):
+        sockets, arguments = self.full_fixture(); count = [0]
+        def measured():
+            count[0] += 1; value = dict(self.baseline)
+            # At entry future liability is7438336 and outside524288. A32768
+            # byte delta exactly consumes7995392; one byte more must refuse.
+            if count[0] >= 2: value["ext4_used_bytes"] += 32769
+            return value
+        arguments["measure"] = measured
+        with patch.object(recovery._ArchiveClientV1, "request") as rpc, self.assertRaises(compiler.FixtureCompilerError) as found:
+            recovery.recover_stopped_b1_v1(**arguments)
+        rpc.assert_not_called()
+        self.assertIn("f2_physical_or_logical_bound", found.exception.causes)
+        self.assertFalse((arguments["output_dir"]/"f2.failure.v1.json").exists())
+
+    def test_post_footer_unknown_measurement_does_not_start_failure_persistence(self):
+        sockets, arguments = self.full_fixture(); path = arguments["output_dir"]/"f2.final-accounting.v1.json"
+        def measured():
+            if path.exists(): raise OSError("controlled unavailable final measurement")
+            return dict(self.baseline)
+        arguments["measure"] = measured
+        with patch.object(recovery._ArchiveClientV1, "_observe_endpoint", return_value=self.epoch), \
+                self.assertRaises(compiler.FixtureCompilerError) as found:
+            recovery.recover_stopped_b1_v1(**arguments)
+        self.assertFalse(found.exception.facts["complete"])
+        self.assertEqual(found.exception.facts["failure_record_not_started"], "reservation_unavailable")
+        self.assertTrue(path.exists()); self.assertFalse((path.parent/"f2.failure.v1.json").exists())
+
+    def test_partial_unknown_footer_then_floor_denial_keeps_prefix_without_fresh_failure_write(self):
+        sockets, arguments = self.full_fixture(); real = Path.open
+        path = arguments["output_dir"]/"f2.final-accounting.v1.json"
+        def measured():
+            value = dict(self.baseline)
+            if path.exists(): value["c_free_bytes"] = 0
+            return value
+        def opened(target, *args, **kwargs):
+            file = real(target, *args, **kwargs)
+            return FaultFile(file, unreturned=True) if target == path and args and args[0] == "xb" else file
+        arguments["measure"] = measured
+        with patch.object(recovery._ArchiveClientV1, "_observe_endpoint", return_value=self.epoch), \
+                patch.object(Path, "open", opened), self.assertRaises(compiler.FixtureCompilerError) as caught:
+            recovery.recover_stopped_b1_v1(**arguments)
+        self.assertTrue(caught.exception.facts["failed_record"]["write_extent_unknown"])
+        self.assertEqual(path.read_bytes(), b'{"')
+        self.assertIn("f2_physical_or_logical_bound", caught.exception.causes)
+        self.assertEqual(caught.exception.facts["failure_record_not_started"], "reservation_unavailable")
+        self.assertFalse((path.parent/"f2.failure.v1.json").exists())
+
+    def test_validator_enforces_active_cap_below_unchanged_combined_total(self):
+        root, value = self.validator_fixture(); path = root/"f2.final-accounting.v1.json"
+        footer = json.loads(path.read_bytes()); account = footer["accounting"]
+        tail = 16384+262144+8192+8192
+        self.assertEqual(account["reserved_control_bytes"], 16384+262144)
+        charge = 7995392-tail+1
+        self.assertLessEqual(charge+tail, 8388608)
+        account["physical_charge_bytes"] = charge
+        account["last"]["ext4_used_bytes"] = account["baseline"]["ext4_used_bytes"]+charge-account["retained_elsewhere_upper_bytes"]
+        path.write_bytes(json.dumps(footer, sort_keys=True, separators=(",", ":")).encode())
+        with self.assertRaises(compiler.FixtureCompilerError) as caught:
+            recovery.validate_supplement_v1(output_dir=root, supplement=value)
+        self.assertIn("f2_validation_accounting", caught.exception.causes)
+
+    def test_footer_fsync_and_close_faults_preserve_original_and_full_failure_path(self):
+        sockets, arguments = self.full_fixture(); real_open, real_sync = Path.open, recovery.os.fsync
+        path = arguments["output_dir"]/"f2.final-accounting.v1.json"; descriptor = [None]
+        def opened(target, *args, **kwargs):
+            file = real_open(target, *args, **kwargs)
+            if target == path and args and args[0] == "xb":
+                descriptor[0] = file.fileno(); return FaultFile(file, close_fail=True)
+            return file
+        def synced(fd):
+            if fd == descriptor[0]:
+                descriptor[0] = None; raise OSError("controlled footer fsync")
+            return real_sync(fd)
+        with patch.object(recovery._ArchiveClientV1, "_observe_endpoint", return_value=self.epoch), \
+                patch.object(Path, "open", opened), patch.object(recovery.os, "fsync", synced), \
+                self.assertRaises(compiler.FixtureCompilerError) as caught:
+            recovery.recover_stopped_b1_v1(**arguments)
+        facts = caught.exception.facts
+        self.assertTrue(path.read_bytes()); self.assertFalse(facts["failed_record"]["write_extent_unknown"])
+        self.assertFalse(facts["failed_record"]["fsync_completed"]); self.assertFalse(facts["failed_record"]["close_completed"])
+        self.assertIn("f2_record_OSError", caught.exception.causes); self.assertIn("f2_record_close_OSError", caught.exception.causes)
+        self.assertEqual(facts["accounting"]["reserved_control_bytes"], 262144)
+        self.assertTrue((path.parent/"f2.failure.v1.json").exists())
 
 
 if __name__ == "__main__":

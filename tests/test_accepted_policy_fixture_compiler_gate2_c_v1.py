@@ -2,7 +2,7 @@
 import copy
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import struct
 import sys
 import tempfile
@@ -14,6 +14,9 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
 from tests.fixtures import accepted_policy_fixture_compiler_gate2_c_v1 as gate
+from tests.fixtures import accepted_policy_fixture_compiler_gate2_setup_v1 as setup
+
+WINDOWS_REPO = PureWindowsPath(r"C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST")
 
 
 def sha(raw):
@@ -210,6 +213,36 @@ class ComparisonTests(unittest.TestCase):
 
 
 class BoundTests(unittest.TestCase):
+    def prior_authority(self, root, code, review):
+        helpers = {}
+        for relative in ("tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py",
+                         "tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py"):
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            data = b"# controlled authenticated setup helper\n"
+            path.write_bytes(data)
+            helpers[relative] = {"path": str(WINDOWS_REPO / relative), "size_bytes": len(data), "sha256": sha(data),
+                "git_blob": hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()}
+        native = {"index_sha256": component.RETENTION_INDEX_SHA256_V1, "source_rows_sha256": "c" * 64,
+            "node_count": 28, "native_quote_bytes": 633856, "windows_quote_bytes": 32768,
+            "transcript_quote_bytes": 12288, "owned_upper_bytes": 2102272, "old_f2_upper_bytes": 333056,
+            "physical_acceptance": False}
+        prior = {"git_observation": {"component": code[gate.CODE_PATHS[1]],
+            "index": {"size_bytes": 9637, "sha256": component.RETENTION_INDEX_SHA256_V1, "git_blob": "d" * 40},
+            "old_git_sha256": "c" * 64}, "native": native}
+        context = {"code_commit": review["commit"], "boot_id": "controlled-boot", "retention": prior,
+            "helper_code": helpers, "capture_source_sha256": helpers[
+                "tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py"]["sha256"]}
+        authority = setup.authority_record_v1(code_commit=review["commit"],
+            approval_reference=review["approval_reference"], operator_sha256=helpers[
+                setup.SETUP_REL]["sha256"], helper_code=helpers,
+            context=context, context_sha256=sha(canonical(context)))
+        aux = Path(str(root) + ".operator-originals")
+        aux.mkdir()
+        descriptor = gate.write_record_v1(aux / "operator.authority.original.json", authority, cap=8192)
+        review["evidence_sha256"] = descriptor["sha256"]
+        return descriptor, prior, native
+
     def test_ledger_charges_largest_measure_and_refuses_floors_or_reserve(self):
         before = {"c_free_bytes": 100_000_000_000, "ext4_used_bytes": 300_000_000_000}
         after = {"c_free_bytes": before["c_free_bytes"] - 9000,
@@ -219,6 +252,38 @@ class BoundTests(unittest.TestCase):
             gate.reserve_v1(charged=gate.SEAL_BYTES - 100, liability=101, c_free_bytes=100_000_000_000)
         with self.assertRaises(gate.Gate2Refusal):
             gate.reserve_v1(charged=0, liability=1, c_free_bytes=43_620_761_599)
+
+    def test_record_reads_reject_nonregular_links_before_open_and_close_kind_change_races(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve()
+            fifo = root / "fifo"
+            gate.os.mkfifo(fifo)
+            directory = root / "directory"
+            directory.mkdir()
+            regular = root / "regular"
+            regular.write_bytes(b"original")
+            linked = root / "hardlink"
+            gate.os.link(regular, linked)
+            for path in (fifo, directory, linked):
+                with self.subTest(path=path.name), \
+                        patch.object(Path, "open", side_effect=AssertionError("opened nonregular/link input")):
+                    with self.assertRaises(gate.Gate2Refusal):
+                        gate._read(path, 32)
+            linked.unlink()
+            real_open, opened = gate.os.open, []
+            def changed_kind(path, flags, *args, **kwargs):
+                self.assertTrue(flags & gate.os.O_NONBLOCK)
+                self.assertTrue(flags & gate.os.O_NOFOLLOW)
+                fd = real_open(fifo, flags)
+                opened.append(fd)
+                return fd
+            with patch.object(gate.os, "open", changed_kind):
+                with self.assertRaises(gate.Gate2Refusal):
+                    gate._read(regular, 32)
+            self.assertEqual(len(opened), 1)
+            with self.assertRaises(OSError):
+                gate.os.fstat(opened[0])
+            self.assertEqual(regular.read_bytes(), b"original")
 
     def test_record_preencoding_bound_and_exclusive_persistence(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -233,7 +298,8 @@ class BoundTests(unittest.TestCase):
 
     def test_packet_refuses_self_authority_and_changed_code_or_seed(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp).resolve()
+            root = Path(tmp).resolve() / "project"
+            root.mkdir()
             files = {}
             for name in gate.CODE_PATHS:
                 path = root / name
@@ -244,17 +310,36 @@ class BoundTests(unittest.TestCase):
                                "git_blob": hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()}
             plan = root / "physical-plan.md"
             plan.write_bytes(b"fixed controlled physical plan\n")
+            historical = component.retained_source_bindings_v1(ROOT)
+            working_plan = root / historical["sources"][10]["path"]
+            working_plan.parent.mkdir(parents=True, exist_ok=True)
+            working_plan.write_bytes(plan.read_bytes())
             review = {"commit": "a" * 40, "approval_reference": "PR9 code approval", "evidence_sha256": "b" * 64}
             evidence = {name: {"path": str(root / name), "size_bytes": 0, "sha256": sha(b"")}
                         for name in gate.EVIDENCE_NAMES}
             f2 = {"environment_keys": ["PATH"], "accounting": {"physical_charge_bytes": 4194304,
                 "reserved_control_bytes": 524288, "reserved_rounding_bytes": 8192, "reserved_metadata_bytes": 8192,
                 "last": {"c_free_bytes": 100_000_000_000, "ext4_used_bytes": 300_000_000_000}}}
-            with patch.object(gate, "_authenticate_evidence", return_value=f2), patch.object(gate, "_validate_p0"):
+            authority, prior, native = self.prior_authority(root, files, review)
+            with patch.object(gate, "_authenticate_evidence", return_value=f2), patch.object(gate, "_validate_p0"), \
+                    patch.object(component, "REVIEW_REPO_ROOT_LINUX_V1", root), \
+                    patch.object(component, "retained_source_bindings_v1", return_value=historical), \
+                    patch.object(component, "verify_prior_retention_v1", return_value=native) as fresh:
+                # The failed attempt is additive even when the new F2 charge
+                # already dominates every measured new-operation delta.
+                with self.assertRaisesRegex(gate.Gate2Refusal, "initial_charge_omitted_forms"):
+                    gate.build_packet_v1(project_root=root, review=review,
+                        physical_plan_descriptor={"path": str(plan), "size_bytes": plan.stat().st_size,
+                                                  "sha256": sha(plan.read_bytes())},
+                        code=files, evidence=evidence, p0_descriptor={}, boot_id="controlled-boot",
+                        operator_authority_descriptor=authority, prior_retention=prior,
+                        initial_charged_bytes=20 * 1048576,
+                        initial_measurement={"c_free_bytes": 100_000_000_000, "ext4_used_bytes": 300_000_000_000})
                 packet = gate.build_packet_v1(project_root=root, review=review,
                     physical_plan_descriptor={"path": str(plan), "size_bytes": plan.stat().st_size,
                                               "sha256": sha(plan.read_bytes())},
-                    code=files, evidence=evidence, p0_descriptor={}, boot_id="controlled-boot", initial_charged_bytes=20 * 1048576,
+                    code=files, evidence=evidence, p0_descriptor={}, boot_id="controlled-boot", initial_charged_bytes=26 * 1048576,
+                    operator_authority_descriptor=authority, prior_retention=prior,
                     initial_measurement={"c_free_bytes": 100_000_000_000, "ext4_used_bytes": 300_000_000_000})
                 packet_path = root / "gate2.packet.v1.json"
                 descriptor = gate.write_record_v1(packet_path, packet, cap=gate.PACKET_LIMIT)
@@ -266,11 +351,54 @@ class BoundTests(unittest.TestCase):
                 self.assertEqual(set(checked["seed"]["proofs"]), set(gate.PROOF_SOURCES))
                 self.assertTrue(all(checked["seed"]["proofs"].values()))
                 self.assertIsNone(checked["seed"].get("component_seed"))
+                self.assertEqual(checked["operator_authority"], authority)
+                self.assertEqual(checked["prior_retention"], prior)
+                self.assertEqual(checked["current_code_forms_quote_bytes"], 180224)
+                # A changed working counterpart must refuse even while the
+                # exported plan, packet and its external SHA remain intact.
+                working_plan.write_bytes(b"changed current working plan\n")
+                with self.assertRaisesRegex(gate.Gate2Refusal, "current_code_forms_unavailable"):
+                    gate.validate_packet_v1(project_root=root, packet_descriptor=descriptor,
+                        expected_packet_sha256=descriptor["sha256"], expected_code_commit="a" * 40)
+                working_plan.write_bytes(plan.read_bytes())
+                self.assertGreaterEqual(fresh.call_count, 3)
+                with patch.object(component, "verify_prior_retention_v1",
+                                  side_effect=component.ComponentRecipeError("changed retained original")):
+                    with self.assertRaisesRegex(gate.Gate2Refusal, "prior_retention_unavailable"):
+                        gate.validate_packet_v1(project_root=root, packet_descriptor=descriptor,
+                            expected_packet_sha256=descriptor["sha256"], expected_code_commit="a" * 40)
+                self.assertFalse((root / "outputs").exists())
+                # Independent concrete boundaries: carry is never inside the
+                # maximum, including when the new interval has 12 MiB noise.
+                for gap, charge, accepted in ((0, 25014272, False), (0, 25538559, False),
+                        (0, 25538560, True), (12582912, 29716480, False),
+                        (12582912, 36007936, False), (12582912, 36532223, False),
+                        (12582912, 36532224, True)):
+                    args = dict(project_root=root, review=review, physical_plan_descriptor=packet["physical_plan"],
+                        code=files, evidence=evidence, p0_descriptor={}, boot_id="controlled-boot",
+                        operator_authority_descriptor=authority, prior_retention=prior, initial_charged_bytes=charge,
+                        initial_measurement={"c_free_bytes": 100_000_000_000-gap, "ext4_used_bytes": 300_000_000_000})
+                    with self.subTest(gap=gap, charge=charge):
+                        if accepted:
+                            self.assertEqual(gate.build_packet_v1(**args)["initial_charged_bytes"], charge)
+                        else:
+                            with self.assertRaisesRegex(gate.Gate2Refusal, "initial_charge_omitted_forms"):
+                                gate.build_packet_v1(**args)
+                old_charge = f2["accounting"]["physical_charge_bytes"]
+                f2["accounting"]["physical_charge_bytes"] = component.ACTIVE_F2_LIMIT_V1 - 540672 + 1
+                with self.assertRaisesRegex(gate.Gate2Refusal, "active_f2_bound"):
+                    gate.build_packet_v1(**dict(args, initial_charged_bytes=40*1048576))
+                f2["accounting"]["physical_charge_bytes"] = old_charge
                 for index, mutate in enumerate((
                     lambda p: p["seed"]["proofs"].update(toolchain=None),
                     lambda p: p["proofs"]["abi"].update(kind="toolchain"),
                     lambda p: p["source_sha256"].update(c1="0" * 64),
                     lambda p: p["seed"].update(artifact_kind="vast_fixture_compiler_qualification_v1"),
+                    lambda p: p["operator_authority"].update(sha256="0" * 64),
+                    lambda p: p["prior_retention"]["native"].update(physical_acceptance=True),
+                    lambda p: p["prior_retention"]["git_observation"].update(old_git_sha256="0" * 64),
+                    lambda p: p.update(current_code_forms_quote_bytes=p["current_code_forms_quote_bytes"] + 1),
+                    lambda p: p.update(current_code_forms_quote_bytes=float(p["current_code_forms_quote_bytes"])),
                 )):
                     changed = copy.deepcopy(packet)
                     mutate(changed)
@@ -282,6 +410,103 @@ class BoundTests(unittest.TestCase):
                 with self.assertRaises(gate.Gate2Refusal):
                     gate.validate_packet_v1(project_root=root, packet_descriptor=descriptor,
                         expected_packet_sha256=descriptor["sha256"], expected_code_commit="a" * 40)
+
+    def test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / "project"
+            root.mkdir()
+            data = b"# controlled bootstrap\n"
+            code = {gate.CODE_PATHS[1]: {"size_bytes": len(data), "sha256": sha(data),
+                "git_blob": hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()}}
+            review = {"commit": "a"*40, "approval_reference": "controlled review", "evidence_sha256": "b"*64}
+            descriptor, prior, native = self.prior_authority(root, code, review)
+            authority_path = Path(descriptor["path"])
+            original = authority_path.read_bytes()
+            with patch.object(component, "REVIEW_REPO_ROOT_LINUX_V1", root), \
+                    patch.object(component, "verify_prior_retention_v1", return_value=native) as fresh:
+                returned = gate._authenticate_prior_retention_v1(root, review, code, "controlled-boot", descriptor, prior)
+                self.assertEqual(returned, native)
+                fresh.assert_called_once_with(root, git_observation=prior["git_observation"])
+                for field in ("retention", "helper_code"):
+                    candidate = json.loads(original)
+                    if field == "retention":
+                        candidate["context"]["retention"]["native"]["owned_upper_bytes"] = 2102272.0
+                    else:
+                        item = next(iter(candidate["context"]["helper_code"].values()))
+                        item["size_bytes"] = float(item["size_bytes"])
+                    candidate["context_sha256"] = sha(canonical(candidate["context"]))
+                    body = canonical(candidate)
+                    authority_path.write_bytes(body)
+                    desc = {"path": str(authority_path), "size_bytes": len(body), "sha256": sha(body)}
+                    with self.subTest(typed_binding=field), self.assertRaises(gate.Gate2Refusal):
+                        gate._authenticate_prior_retention_v1(root, dict(review, evidence_sha256=sha(body)),
+                            code, "controlled-boot", desc, prior)
+                mutations = (
+                    lambda a: a.update(schema_version=True),
+                    lambda a: a.update(unreviewed=True),
+                    lambda a: a.update(code_commit="f"*40),
+                    lambda a: a.update(approval_reference="another review"),
+                    lambda a: a.update(external_approval_required=False),
+                    lambda a: a["context"].update(boot_id="another boot"),
+                    lambda a: a["context"].update(capture_source_sha256="0"*64),
+                    lambda a: a["context"]["retention"]["native"].update(physical_acceptance=True),
+                    lambda a: a["context"]["retention"]["native"].update(owned_upper_bytes=True),
+                    lambda a: a["context"]["retention"]["native"].update(old_f2_upper_bytes=393217),
+                    lambda a: a["context"]["retention"]["native"].update(unreviewed=0),
+                    lambda a: a["context"]["retention"]["native"].update(source_rows_sha256="0"*64),
+                    lambda a: a["context"]["retention"]["git_observation"]["component"].update(sha256="0"*64),
+                    lambda a: a["helper_code"][setup.SETUP_REL].update(path=str(WINDOWS_REPO / "foreign.py")),
+                    lambda a: a["helper_code"][setup.CAPTURE_REL].pop("path"),
+                    lambda a: a["helper_code"][setup.SETUP_REL].update(size_bytes=38.0),
+                )
+                for number, mutate in enumerate(mutations):
+                    candidate = json.loads(original)
+                    mutate(candidate)
+                    candidate["context_sha256"] = sha(canonical(candidate["context"]))
+                    body = canonical(candidate)
+                    authority_path.write_bytes(body)
+                    desc = {"path": str(authority_path), "size_bytes": len(body), "sha256": sha(body)}
+                    changed_review = dict(review, evidence_sha256=desc["sha256"])
+                    with self.subTest(number=number), self.assertRaises(gate.Gate2Refusal):
+                        gate._authenticate_prior_retention_v1(root, changed_review, code, "controlled-boot",
+                            desc, candidate["context"]["retention"])
+                for body in (json.dumps(json.loads(original)).encode(),
+                             b'{"schema_version":1,' + original[1:]):
+                    authority_path.write_bytes(body)
+                    desc = {"path": str(authority_path), "size_bytes": len(body), "sha256": sha(body)}
+                    with self.assertRaises(gate.Gate2Refusal):
+                        gate._authenticate_prior_retention_v1(root, dict(review, evidence_sha256=sha(body)),
+                            code, "controlled-boot", desc, prior)
+                authority_path.write_bytes(original)
+                foreign = dict(descriptor, path=str(root / "foreign-authority.json"))
+                with self.assertRaisesRegex(gate.Gate2Refusal, "operator_authority_path"):
+                    gate._authenticate_prior_retention_v1(root, review, code, "controlled-boot", foreign, prior)
+                helper = root / "tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py"
+                helper.write_bytes(b"# changed after packet approval\n")
+                with self.assertRaises(gate.Gate2Refusal):
+                    gate._authenticate_prior_retention_v1(root, review, code, "controlled-boot", descriptor, prior)
+                self.assertFalse((root / "outputs").exists())
+
+    def test_prior_retention_is_bounded_before_encoding_or_authority_reads(self):
+        with patch.object(component, "canonical_json_v1", side_effect=AssertionError("encoded oversized prior")), \
+                patch.object(gate, "_bound_descriptor", side_effect=AssertionError("read authority before bound")):
+            with self.assertRaisesRegex(gate.Gate2Refusal, "prior_retention_bound"):
+                gate._authenticate_prior_retention_v1(Path("/unused"), {}, {}, "unused", {}, {"x": "x"*4096})
+
+    def test_evidence_footer_private_bound_refuses_before_reading_the_oversized_file(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve()
+            evidence = {}
+            for name in gate.EVIDENCE_NAMES:
+                data = b"x"*16385 if name == "f2_accounting" else b""
+                path = root / name
+                path.write_bytes(data)
+                evidence[name] = {"path": str(path), "size_bytes": len(data), "sha256": sha(data)}
+            with patch.object(gate, "_read", wraps=gate._read) as read:
+                with self.assertRaisesRegex(gate.Gate2Refusal, "^descriptor$"):
+                    gate._authenticate_evidence(evidence, {}, "a"*64)
+                self.assertNotIn(root / "f2_accounting", [Path(call.args[0]) for call in read.call_args_list])
+            self.assertEqual((root / "f2_accounting").read_bytes(), b"x"*16385)
 
     def test_corrected_b2_index_never_trusts_stale_self_entry(self):
         with tempfile.TemporaryDirectory() as tmp:

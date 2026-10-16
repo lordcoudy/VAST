@@ -12,7 +12,7 @@ import hashlib
 from contextlib import contextmanager, nullcontext
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import re
 import select
 import signal
@@ -53,6 +53,7 @@ COMPLETION_RESERVE_NS = 1_000_000_000
 PACKET_LIMIT = 131072
 RECORD_LIMIT = 524288
 CRASH_DIRECTORY = Path("/mnt/c/Users/s-a-balashov/AppData/Local/Temp/wsl-crashes")
+REVIEW_REPO_ROOT_WINDOWS_V1 = PureWindowsPath(r"C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST")
 B_CIDS = (
     "4df593e12ca362e69f0594b2035197335f335d3ceae3c71894b31db9f197a09f",
     "9b5c396109909a8a091a0fc6bb6529f887233df77ab314435ce85ab05e22fbc5",
@@ -264,17 +265,13 @@ def _json(raw, cap=RECORD_LIMIT, *, canonical=True):
 
 
 def _read(path, cap):
-    path = Path(path)
-    _require(path.is_absolute() and path.resolve(strict=True) == path, "physical_file")
-    with path.open("rb") as file:
-        before = os.fstat(file.fileno())
-        _require(stat.S_ISREG(before.st_mode) and before.st_nlink == 1 and 0 <= before.st_size <= cap, "file_bound")
-        raw = file.read(cap + 1)
-        after = os.fstat(file.fileno())
-        _require(len(raw) == before.st_size and (before.st_dev, before.st_ino, before.st_size,
-            before.st_mtime_ns, before.st_ctime_ns) == (after.st_dev, after.st_ino, after.st_size,
-            after.st_mtime_ns, after.st_ctime_ns), "file_drift")
-    return raw
+    # Shared pre-open kind/link checks and a nonblocking/no-follow FD protect
+    # all retained originals, including the new authority and helper bindings.
+    try:
+        raw, _ = component._retention_read_v1(path, cap)
+        return raw
+    except component.ComponentRecipeError as error:
+        raise Gate2Refusal("physical_file") from error
 
 
 def _descriptor(path, raw):
@@ -453,7 +450,8 @@ def _relative_original(root, descriptor, cap):
 
 def _authenticate_evidence(evidence, review, plan_sha):
     _require(type(evidence) is dict and set(evidence) == set(EVIDENCE_NAMES), "proof_sources")
-    actual = {name: _bound_descriptor(desc, cap=1048576) for name, desc in evidence.items()}
+    actual = {name: _bound_descriptor(desc, cap=component.F2_FOOTER_LIMIT_V1 if name == "f2_accounting" else 1048576)
+              for name, desc in evidence.items()}
     for name, expected in B_ORIGINAL_SHA256.items():
         _require(_sha(actual[name]) == expected, "b_original_authentication_" + name)
     for name, cid in zip(("b1_result", "b2_result", "b3_result"), B_CIDS):
@@ -478,11 +476,11 @@ def _authenticate_evidence(evidence, review, plan_sha):
     _require(hasattr(recovery, "validate_supplement_v1"), "f2_verifier_missing")
     recovery.validate_supplement_v1(output_dir=f2_root, supplement=supplement)
     _require(Path(evidence["f2_accounting"]["path"]) == f2_root / "f2.final-accounting.v1.json" and
-             actual["f2_accounting"] == _read(f2_root / "f2.final-accounting.v1.json", 262144), "f2_accounting_binding")
+             actual["f2_accounting"] == _read(f2_root / "f2.final-accounting.v1.json", component.F2_FOOTER_LIMIT_V1), "f2_accounting_binding")
     b1 = _json(actual["b1_report"], 1048576)
     environment = ((b1.get("report") or {}).get("environment") or {}).get("environment")
     _require(type(environment) is dict and _sha(component.canonical_json_v1(sorted(environment))) == EXPECTED["env_keys_sha256"], "b_environment")
-    return {"environment_keys": sorted(environment), "accounting": _json(actual["f2_accounting"], 262144)["accounting"]}
+    return {"environment_keys": sorted(environment), "accounting": _json(actual["f2_accounting"], component.F2_FOOTER_LIMIT_V1)["accounting"]}
 
 
 def _proof_envelopes(evidence):
@@ -512,8 +510,68 @@ def _validate_p0(descriptor, root, commit, boot_id):
                               expected_engine_id=EXPECTED["engine_id"], expected_boot_id=boot_id)
 
 
+def _authenticate_prior_retention_v1(root, review, code, boot_id, authority_descriptor, prior):
+    """Inherit approved Windows Git provenance; freshly check mutable forms.
+
+    The external packet review authenticates the original Windows observation.
+    This does not reopen the Git object store or claim its continuous presence.
+    """
+    _require(compiler._json_bound(prior) <= 4096, "prior_retention_bound")
+    expected = Path(str(root) + ".operator-originals") / "operator.authority.original.json"
+    _require(type(authority_descriptor) is dict and authority_descriptor.get("path") == str(expected),
+             "operator_authority_path")
+    raw = _bound_descriptor(authority_descriptor, cap=8192)
+    _require(_sha(raw) == review["evidence_sha256"], "operator_authority_binding")
+    authority = _json(raw, 8192)
+    names = {"schema_version", "code_commit", "approval_reference", "operator_sha256",
+             "helper_code", "context_sha256", "context", "external_approval_required"}
+    _require(type(authority) is dict and set(authority) == names and
+             type(authority["schema_version"]) is int and authority["schema_version"] == 1 and
+             authority["code_commit"] == review["commit"] and
+             authority["approval_reference"] == review["approval_reference"] and
+             authority["external_approval_required"] is True, "operator_authority_shape")
+    context, helpers = authority["context"], authority["helper_code"]
+    helper_paths = ("tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py",
+                    "tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py")
+    _require(type(context) is dict and authority["context_sha256"] == _sha(component.canonical_json_v1(context))
+             and context.get("code_commit") == review["commit"] and context.get("boot_id") == boot_id
+             and component.canonical_json_v1(context.get("retention")) == component.canonical_json_v1(prior)
+             and component.canonical_json_v1(context.get("helper_code")) == component.canonical_json_v1(helpers) and
+             type(helpers) is dict and set(helpers) == set(helper_paths), "operator_context_binding")
+    for relative in helper_paths:
+        desc = helpers[relative]
+        _require(type(desc) is dict and set(desc) == {"path", "size_bytes", "sha256", "git_blob"} and
+                 desc["path"] == str(REVIEW_REPO_ROOT_WINDOWS_V1 / relative) and
+                 type(desc["size_bytes"]) is int and 0 < desc["size_bytes"] <= 65536 and
+                 _sha_shape(desc["sha256"]) and type(desc["git_blob"]) is str and
+                 re.fullmatch("[0-9a-f]{40}", desc["git_blob"]), "operator_helper_descriptor")
+        source = _bound_descriptor({"path": str(component.REVIEW_REPO_ROOT_LINUX_V1 / relative),
+            "size_bytes": desc["size_bytes"], "sha256": desc["sha256"]}, cap=65536)
+        _require(hashlib.sha1(b"blob " + str(len(source)).encode("ascii") + b"\0" + source).hexdigest()
+                 == desc["git_blob"], "operator_helper_binding")
+    _require(authority["operator_sha256"] == helpers[helper_paths[0]]["sha256"] and
+             context.get("capture_source_sha256") == helpers[helper_paths[1]]["sha256"],
+             "operator_source_binding")
+    _require(type(prior) is dict and set(prior) == {"git_observation", "native"} and
+             type(prior["git_observation"]) is dict and
+             component.canonical_json_v1(prior["git_observation"].get("component")) ==
+             component.canonical_json_v1(code[CODE_PATHS[1]]), "prior_retention_shape")
+    observation = prior["git_observation"]
+    try:
+        component.validate_prior_retention_receipt_v1(prior["native"],
+            source_rows_sha256=observation["old_git_sha256"])
+        fresh = component.verify_prior_retention_v1(component.REVIEW_REPO_ROOT_LINUX_V1,
+            git_observation=observation)
+        _require(all(fresh[name] == prior["native"][name] for name in
+                     ("index_sha256", "source_rows_sha256", "node_count")), "prior_retention_identity")
+    except (OSError, ValueError, TypeError, KeyError, RecursionError, OverflowError) as error:
+        raise Gate2Refusal("prior_retention_unavailable") from error
+    return fresh
+
+
 def build_packet_v1(*, project_root, review, physical_plan_descriptor, code, evidence, p0_descriptor,
-                    boot_id, initial_charged_bytes, initial_measurement):
+                    boot_id, initial_charged_bytes, initial_measurement,
+                    operator_authority_descriptor, prior_retention):
     """Materialize after F2. Independent approval of its SHA is a later step.
 
     `code` contains descriptors obtained independently from the reviewed commit's
@@ -528,12 +586,26 @@ def build_packet_v1(*, project_root, review, physical_plan_descriptor, code, evi
     _require(type(boot_id) is str and 1 <= len(boot_id) <= 64 and
              type(initial_charged_bytes) is int and 11890688 <= initial_charged_bytes < SEAL_BYTES, "packet_physical")
     interval_charge_v1(initial_measurement, initial_measurement, retained_bytes=0)
+    _authenticate_prior_retention_v1(root, review, code, boot_id, operator_authority_descriptor, prior_retention)
+    # The actual packet review supplies Windows Git provenance. Recheck the
+    # fixed current working counterparts and both forms of changed variants.
+    try:
+        current_quote = component.current_code_forms_quote_v1(component.REVIEW_REPO_ROOT_LINUX_V1,
+            code=code, plan={"size_bytes": len(plan_raw), "sha256": _sha(plan_raw),
+                "git_blob": hashlib.sha1(b"blob " + str(len(plan_raw)).encode("ascii") + b"\0" + plan_raw).hexdigest()})
+    except (OSError, ValueError, TypeError, KeyError, RecursionError, OverflowError) as error:
+        raise Gate2Refusal("current_code_forms_unavailable") from error
+    _require(type(current_quote) is int and 0 <= current_quote <= component.CURRENT_CODE_FORMS_V1,
+             "current_code_forms_bound")
     admitted = _authenticate_evidence(evidence, review, _sha(plan_raw))
     accounting = admitted["accounting"]
     f2_tail = accounting["reserved_control_bytes"] + accounting["reserved_rounding_bytes"] + accounting["reserved_metadata_bytes"]
     _require(all(type(value) is int and value >= 0 for value in (accounting["physical_charge_bytes"], f2_tail)), "initial_f2_charge")
     gap = interval_charge_v1(accounting["last"], initial_measurement, retained_bytes=0)
-    minimum = 11890688 + 2 * 1048576 + accounting["physical_charge_bytes"] + f2_tail + max(0, gap - f2_tail - 1048576)
+    _require(accounting["physical_charge_bytes"] + f2_tail <= component.ACTIVE_F2_LIMIT_V1, "active_f2_bound")
+    minimum = (11890688 + 2 * 1048576 + accounting["physical_charge_bytes"] + f2_tail
+               + max(0, gap - f2_tail - 1048576) + component.PRIOR_CARRY_BYTES_V1
+               + component.CURRENT_CODE_FORMS_V1)
     _require(initial_charged_bytes >= minimum, "initial_charge_omitted_forms")
     _validate_p0(p0_descriptor, root, review["commit"], boot_id)
     proofs = _proof_envelopes(evidence)
@@ -551,7 +623,9 @@ def build_packet_v1(*, project_root, review, physical_plan_descriptor, code, evi
             "project_root": str(root), "code_commit": review["commit"], "code_review": review,
             "physical_plan": physical_plan_descriptor, "code": code, "source_sha256": component.SOURCE_SHA256,
             "evidence": evidence, "proofs": proofs, "seed": seed, "seed_sha256": _sha(seed_raw), "p0": p0_descriptor,
-            "boot_id": boot_id, "initial_charged_bytes": initial_charged_bytes, "initial_measurement": initial_measurement}
+            "boot_id": boot_id, "initial_charged_bytes": initial_charged_bytes, "initial_measurement": initial_measurement,
+            "operator_authority": operator_authority_descriptor, "prior_retention": prior_retention,
+            "current_code_forms_quote_bytes": current_quote}
     _require(compiler._json_bound(packet) <= PACKET_LIMIT, "packet_bound")
     _require(sum(desc["size_bytes"] for desc in code.values()) + len(component.canonical_json_v1(packet)) +
              len(plan_raw) + len(seed_raw) <= 640 * 1024, "code_packet_allocation")
@@ -570,8 +644,10 @@ def validate_packet_v1(*, project_root, packet_descriptor, expected_packet_sha25
         physical_plan_descriptor=packet.get("physical_plan"), code=packet.get("code"), evidence=packet.get("evidence"),
         p0_descriptor=packet.get("p0"),
         boot_id=packet.get("boot_id"), initial_charged_bytes=packet.get("initial_charged_bytes"),
-        initial_measurement=packet.get("initial_measurement"))
-    _require(packet == rebuilt, "packet_content_drift")
+        initial_measurement=packet.get("initial_measurement"),
+        operator_authority_descriptor=packet.get("operator_authority"), prior_retention=packet.get("prior_retention"))
+    _require(type(packet.get("current_code_forms_quote_bytes")) is int and
+             packet == rebuilt, "packet_content_drift")
     return packet
 
 

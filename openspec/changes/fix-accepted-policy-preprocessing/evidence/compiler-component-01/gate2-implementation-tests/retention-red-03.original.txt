@@ -1,0 +1,69 @@
+...EEEE
+======================================================================
+ERROR: test_fresh_exact_inventory_returns_bounded_receipt (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.NativeRetentionTests.test_fresh_exact_inventory_returns_bounded_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 114, in setUp
+    effect.start()
+  File "/usr/lib/python3.12/unittest/mock.py", line 1606, in start
+    result = self.__enter__()
+             ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_OLD_ROOT_V1'
+
+======================================================================
+ERROR: test_missing_extra_and_tampered_originals_refuse (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.NativeRetentionTests.test_missing_extra_and_tampered_originals_refuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 114, in setUp
+    effect.start()
+  File "/usr/lib/python3.12/unittest/mock.py", line 1606, in start
+    result = self.__enter__()
+             ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_OLD_ROOT_V1'
+
+======================================================================
+ERROR: test_unknown_or_excess_native_blocks_and_receipt_types_refuse (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.NativeRetentionTests.test_unknown_or_excess_native_blocks_and_receipt_types_refuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 114, in setUp
+    effect.start()
+  File "/usr/lib/python3.12/unittest/mock.py", line 1606, in start
+    result = self.__enter__()
+             ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_OLD_ROOT_V1'
+
+======================================================================
+ERROR: test_windows_transcript_source_and_git_observation_drift_refuse (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.NativeRetentionTests.test_windows_transcript_source_and_git_observation_drift_refuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 114, in setUp
+    effect.start()
+  File "/usr/lib/python3.12/unittest/mock.py", line 1606, in start
+    result = self.__enter__()
+             ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_OLD_ROOT_V1'
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.053s
+
+FAILED (errors=4)
