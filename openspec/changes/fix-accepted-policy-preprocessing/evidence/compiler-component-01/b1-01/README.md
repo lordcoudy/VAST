@@ -49,6 +49,11 @@ seven blob-verified files, 244,183 B, mode 0700.
     `/usr/bin/x86_64-linux-gnu-as`, and ld at
     `/usr/bin/x86_64-linux-gnu-ld.bfd`. All are ELF64/x86-64 and hashed.
   - 25 reached headers are hashed.
+  - **Gap (F2 in `gate-b1-b2-disposition.v1.md`):** the probe hashed
+    `crt1.o`, `crtbegin.o` and `crtend.o`, but cc uses the PIE `Scrt1.o`,
+    `crtbeginS.o` and `crtendS.o`. The real `libc.so.6` and the glibc
+    version are not recorded, and `cc1 --version` is empty. The toolchain
+    record is therefore not complete; gate 2 closes or records the gap.
   - C4's `cc -E` was killed at its 10 s bound, as V7 expected.
 - **C5 slope:** the full 20 s window. Still running at kill, 0 output bytes,
   RSS flat at 11,200 KiB throughout.
@@ -63,7 +68,7 @@ seven blob-verified files, 244,183 B, mode 0700.
   unchanged) and `Volumes` `{}` read back as `null`. Every HostConfig field
   equals the request.
 
-**One deviation:**
+**One deviation** (see `gate-b1-b2-disposition.v1.md`):
 
 - `glibc_setrlimit` (Python `resource.setrlimit(RLIMIT_CORE, (1, 1))`)
   recorded `{"exception": "ValueError"}`, not `errno: EPERM`.
