@@ -1243,7 +1243,8 @@ cdCore.cd={
 CD_EXTENSION = CD_FACTORY_SOURCE
 
 CD_HARNESS = r"""const vm=require('node:vm'),{EventEmitter}=require('node:events'),crypto=require('node:crypto'),zlib=require('node:zlib');
-const test=JSON.parse(require('node:fs').readFileSync(0,'utf8'));let clock=200000,clockReads=0,spawned=[],attempts=[],timers=[],writes=[],reads=[],sent=[],killed=0,imports=[],activeStep=null,stepReads=0,verifySamples=[];
+const test=JSON.parse(require('node:fs').readFileSync(0,'utf8'));if(test.inert_control_only===true){void gate2InertHarness(test);}else{
+let clock=200000,clockReads=0,spawned=[],attempts=[],timers=[],writes=[],reads=[],sent=[],killed=0,imports=[],activeStep=null,stepReads=0,verifySamples=[];
 class Pipe extends EventEmitter{
  constructor(){super();this.raw=Buffer.alloc(0);}
  read(n){reads.push(n);if(!this.raw.length)return null;let b=this.raw.subarray(0,n);this.raw=this.raw.subarray(b.length);return b;}
@@ -1288,7 +1289,7 @@ async function evaluate(code,action){let last=spawned.length,settled=false,error
  await evaluate(test.code,test.action||'normal');
  for(let step of test.steps||[]){activeStep=step;stepReads=0;if(step.clock!==undefined)clock=step.clock;if(step.output!==undefined)test.output=step.output;if(step.stderr!==undefined)test.stderr=step.stderr;let code=step.code.replaceAll('__DELIVERED__',JSON.stringify(writes.at(-1)));await evaluate(code,step.action||'none');activeStep=null;}
  }catch(e){error=String(e.message);error_name=String(e.name);}
- console.log(JSON.stringify({error,error_name,writes,clock,killed,reads,sent,attempts,imports,verifySamples,inertInstall:context.inertInstall,spawned:spawned.map(({file,args,options})=>({file,args,options}))}));})().catch(e=>{console.error(e);process.exitCode=1;});"""
+ console.log(JSON.stringify({error,error_name,writes,clock,killed,reads,sent,attempts,imports,verifySamples,inertInstall:context.inertInstall,spawned:spawned.map(({file,args,options})=>({file,args,options}))}));})().catch(e=>{console.error(e);process.exitCode=1;});}"""
 
 
 class LaterStageCallerTests(unittest.TestCase):
@@ -1297,6 +1298,12 @@ class LaterStageCallerTests(unittest.TestCase):
     def node(self, *, action='normal', steps=(), code=None, **extra):
         import shutil, subprocess
         module = resume_node_tests()
+        if extra.get('inert_control_only') is True:
+            self.assertIs(extra.get('code_generation_disabled'),True,'inert_control_only requires code_generation_disabled=True')
+            values=dict(extra,code=module.INERT_CONTROL_SOURCE if code is None else code)
+            result=subprocess.run([shutil.which('node') or shutil.which('node.exe'),'--experimental-vm-modules','--no-warnings','-e',module.INERT_HARNESS+'\n'+CD_HARNESS],input=canonical(values),capture_output=True)
+            self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+            return json.loads(result.stdout)
         fixture = module.ResumeNodeCaller('runTest')
         core = fixture.code().split('var g2options=', 1)[0]
         core += "\nvar {brotliDecompressSync:g2d}=await import('node:zlib');\n" + module.NODE_WRITER_VALIDATORS
@@ -1315,6 +1322,36 @@ class LaterStageCallerTests(unittest.TestCase):
             input=canonical(values), capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr.decode(errors='replace'))
         return json.loads(result.stdout)
+
+    def test_inert_control_same_source_skips_core_factory_sources_and_stages(self):
+        module=resume_node_tests()
+        with mock.patch.object(module,'subject',side_effect=AssertionError('operational preparation forbidden')),mock.patch.object(self,'native_outputs',side_effect=AssertionError('native preparation forbidden')):
+            value=self.node(code=module.INERT_CONTROL_SOURCE,inert_control_only=True,code_generation_disabled=True,steps=({'code':'throw Error("operational stage forbidden");'},))
+        self.assertIsNone(value['error'])
+        self.assertEqual(value['writes'],[module.INERT_CONTROL_EXPECTED])
+        self.assertEqual(value['inert']['imports'],['node:crypto','node:zlib'])
+        self.assertEqual(value['inert']['clock_reads'],2)
+        self.assertEqual(value['inert']['effects'],dict(state_reads=0,state_writes=0,files=0,sources=0,children=0,timers=0))
+        self.assertTrue(value['inert']['state_descriptor_unchanged'])
+
+    def test_inert_control_requires_explicit_disabled_generation_before_preparation(self):
+        module=resume_node_tests()
+        with mock.patch.object(module,'subject',side_effect=AssertionError('operational preparation forbidden')):
+            for flag in (None,False,1):
+                with self.subTest(flag=flag),self.assertRaisesRegex(AssertionError,'code_generation_disabled'):
+                    self.node(code=module.INERT_CONTROL_SOURCE,inert_control_only=True,code_generation_disabled=flag)
+
+    def test_inert_control_shared_faults_and_own_to_string_use_restricted_context(self):
+        module=resume_node_tests()
+        for name,code,options,error in module.inert_control_cases():
+            with self.subTest(name=name):
+                value=self.node(code=code,inert_control_only=True,code_generation_disabled=True,**options)
+                self.assertEqual(value['error'],error)
+                self.assertFalse(value['writes'])
+                self.assertEqual(value['inert']['effects'],dict(state_reads=0,state_writes=0,files=0,sources=0,children=0,timers=0))
+        source=module.INERT_CONTROL_SOURCE.replace('const intrinsic=Function.prototype.toString;',"Object.defineProperty(wrapper,'toString',{value:()=>{throw Error('own_toString_forbidden');}});const intrinsic=Function.prototype.toString;")
+        value=self.node(code=source,inert_control_only=True,code_generation_disabled=True)
+        self.assertEqual(value['writes'],[module.INERT_CONTROL_EXPECTED])
 
     def initial_code(self, args=None):
         args = args or ['c' * 40, '32768', 'd' * 64, '-']

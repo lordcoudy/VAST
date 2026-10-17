@@ -209,8 +209,145 @@ g2.finish=async selected=>{
 };
 """
 
+def _inert_control_source():
+    """Build only the fixed D18 control; no operational input or source is read."""
+    import base64,zlib
+    data=b'{"probe":1}'
+    packed=zlib.compress(data,9)
+    body='return gate2Resume.value===1&&nodeRepl.write(gate2Resume)===2;'
+    prefix='function(gate2Resume,nodeRepl){'
+    wrapper=prefix+body+'}'
+    source=r"""{
+const clock=performance;
+if(!clock||typeof clock.now!=='function')throw Error('clock_unavailable');
+const first=clock.now();
+if(!Number.isFinite(first)||first<0)throw Error('clock_sample');
+const publisher=nodeRepl;
+const {createHash}=await import('node:crypto');
+const {inflateSync}=await import('node:zlib');
+const sha=raw=>createHash('sha256').update(raw).digest('hex');
+const encoded=__ENCODED__;
+if(encoded.length!==__ENCODED_SIZE__||!/^[A-Za-z0-9+/]+={0,2}$/.test(encoded))throw Error('data_input');
+const packed=Buffer.from(encoded,'base64');
+if(packed.length!==__PACKED_SIZE__||packed.toString('base64')!==encoded||sha(packed)!==__PACKED_SHA__)throw Error('data_compressed');
+const raw=inflateSync(packed,{maxOutputLength:11});
+if(raw.length!==11||sha(raw)!==__RAW_SHA__||raw.some(b=>b>127))throw Error('data_decoded');
+const data=JSON.parse(raw.toString('latin1'));
+if(!data||Object.getPrototypeOf(data)!==Object.prototype||Object.keys(data).join(',')!=='probe'||typeof data.probe!=='number'||data.probe!==1)throw Error('data_shape');
+const state=Object.freeze({value:1});
+const stubWrite=Object.freeze(function(value){return value===state?2:0;});
+const stubPublisher=Object.freeze({write:stubWrite});
+const wrapper=__WRAPPER__;
+const expectedWrapper=wrapper,expectedState=state,expectedPublisher=stubPublisher;
+const intrinsic=Function.prototype.toString;
+if(typeof intrinsic!=='function')throw Error('intrinsic_unavailable');
+if(wrapper!==expectedWrapper||state!==expectedState||stubPublisher!==expectedPublisher||stubPublisher.write!==stubWrite||!Object.isFrozen(state)||!Object.isFrozen(stubPublisher))throw Error('closure_identity');
+const text=intrinsic.call(wrapper);
+if(typeof text!=='string'||text.length!==__WRAPPER_SIZE__||/[^\x20-\x7e]/.test(text)||!text.startsWith('function(gate2Resume,nodeRepl){')||!text.endsWith('}'))throw Error('intrinsic_shape');
+const body=text.slice(__PREFIX_SIZE__,-1);
+if(body.length!==__BODY_SIZE__||sha(Buffer.from(body,'ascii'))!==__BODY_SHA__)throw Error('intrinsic_binding');
+if(wrapper(state,stubPublisher)!==true)throw Error('closure_call');
+if(typeof JSON.rawJSON!=='function'||JSON.stringify(JSON.rawJSON('1'))!=='1')throw Error('raw_json_feature');
+let lexeme=null;
+const integer=JSON.parse('1',(key,value,context)=>{if(key==='')lexeme=context&&context.source;return value;});
+if(integer!==1||lexeme!=='1')throw Error('parse_source_feature');
+const last=clock.now();
+if(!Number.isFinite(last)||last<0||last<first)throw Error('clock_sample');
+publisher.write(__OUTPUT__);
+}"""
+    values={'ENCODED':json.dumps(base64.b64encode(packed).decode('ascii')),
+            'ENCODED_SIZE':str(len(base64.b64encode(packed))),'PACKED_SIZE':str(len(packed)),
+            'PACKED_SHA':json.dumps(hashlib.sha256(packed).hexdigest()),
+            'RAW_SHA':json.dumps(hashlib.sha256(data).hexdigest()),'WRAPPER':wrapper,
+            'WRAPPER_SIZE':str(len(wrapper)),'PREFIX_SIZE':str(len(prefix)),'BODY_SIZE':str(len(body)),
+            'BODY_SHA':json.dumps(hashlib.sha256(body.encode('ascii')).hexdigest()),
+            'OUTPUT':json.dumps(INERT_CONTROL_EXPECTED)}
+    for key,value in values.items():source=source.replace('__'+key+'__',value)
+    assert source.isascii() and '__' not in source and len(source)<=8192
+    return source
+
+
+INERT_CONTROL_EXPECTED = json.dumps(dict(control='vast.gate2.inert-static.v1',data_authenticated=True,
+    intrinsic_source=True,json_parse_source=True,json_raw_integer=True,lexical_closure=True,
+    operational_authority=False,packet_qualified=False,performance_clock=True,physical_acceptance=False,
+    production_bindings_qualified=False,retention_qualified=False,setup_qualified=False),
+    sort_keys=True,separators=(',',':'))+'\n'
+INERT_CONTROL_SOURCE = _inert_control_source()
+
+
+def inert_control_cases():
+    """Fixed fault derivatives for both controlled contexts, never submitted controls."""
+    import base64,zlib
+    def change(old,new):
+        assert INERT_CONTROL_SOURCE.count(old)==1,old
+        return INERT_CONTROL_SOURCE.replace(old,new)
+    result=[('intrinsic_missing',INERT_CONTROL_SOURCE,{'inert_fault':'intrinsic_missing'},'intrinsic_unavailable'),
+            ('intrinsic_tampered',INERT_CONTROL_SOURCE,{'inert_fault':'intrinsic_tampered'},'intrinsic_shape'),
+            ('intrinsic_transformed',INERT_CONTROL_SOURCE,{'inert_fault':'intrinsic_transformed'},'intrinsic_shape'),
+            ('raw_json_missing',INERT_CONTROL_SOURCE,{'inert_fault':'raw_json_missing'},'raw_json_feature'),
+            ('raw_json_wrong',INERT_CONTROL_SOURCE,{'inert_fault':'raw_json_wrong'},'raw_json_feature'),
+            ('parse_source_missing',INERT_CONTROL_SOURCE,{'inert_fault':'parse_source_missing'},'parse_source_feature'),
+            ('performance_missing',INERT_CONTROL_SOURCE,{'inert_fault':'performance_missing'},'clock_unavailable'),
+            ('clock_negative',INERT_CONTROL_SOURCE,{'inert_samples':[-1,10]},'clock_sample'),
+            ('clock_nonfinite',INERT_CONTROL_SOURCE,{'inert_samples':['nan',10]},'clock_sample'),
+            ('clock_infinity',INERT_CONTROL_SOURCE,{'inert_samples':[10,'infinity']},'clock_sample'),
+            ('clock_regression',INERT_CONTROL_SOURCE,{'inert_samples':[10,9]},'clock_sample'),
+            ('wrapper_identity',change('expectedWrapper=wrapper','expectedWrapper=Object.freeze(function(){})'),{},'closure_identity'),
+            ('state_identity',change('expectedState=state','expectedState=Object.freeze({value:1})'),{},'closure_identity'),
+            ('publisher_identity',change('expectedPublisher=stubPublisher','expectedPublisher=Object.freeze({write:stubWrite})'),{},'closure_identity'),
+            ('wrapper_body',change('return gate2Resume.value===1','return gate2Resume.value===2'),{},'intrinsic_binding'),
+            ('direct_call_identity',change('wrapper(state,stubPublisher)','wrapper(Object.freeze({value:1}),stubPublisher)'),{},'closure_call'),
+            ('compressed_hash',change('sha(packed)!==','sha(packed)==='),{},'data_compressed'),
+            ('data_hash',change('sha(raw)!==','sha(raw)==='),{},'data_decoded')]
+    for label,raw,error in [('data_type',b'{"probe":true}','data_shape'),('data_extra',b'{"extra":0,"probe":1}','data_shape'),
+                            ('data_one_byte_over',b'{"probe":1} ','Cannot create a Buffer larger than 11 bytes')]:
+        original=zlib.compress(b'{"probe":1}',9);packed=zlib.compress(raw,9)
+        code=INERT_CONTROL_SOURCE.replace(base64.b64encode(original).decode(),base64.b64encode(packed).decode()).replace(
+            'encoded.length!=='+str(len(base64.b64encode(original))),'encoded.length!=='+str(len(base64.b64encode(packed)))).replace(
+            'packed.length!=='+str(len(original)),'packed.length!=='+str(len(packed))).replace(
+            hashlib.sha256(original).hexdigest(),hashlib.sha256(packed).hexdigest())
+        if label!='data_one_byte_over':
+            code=code.replace(hashlib.sha256(b'{"probe":1}').hexdigest(),hashlib.sha256(raw).hexdigest()).replace(
+                'maxOutputLength:11','maxOutputLength:'+str(len(raw))).replace('raw.length!==11','raw.length!=='+str(len(raw)))
+        result.append((label,code,{},error))
+    return result
+
+
+INERT_HARNESS = r"""async function gate2InertHarness(test){
+const vm=require('node:vm'),crypto=require('node:crypto'),zlib=require('node:zlib');
+const writes=[],imports=[],effects={state_reads:0,state_writes:0,files:0,sources:0,children:0,timers:0};
+let error=null,error_name=null,clock_reads=0,context,before,sandbox;
+try{
+ if(test.code_generation_disabled!==true)throw Error('code_generation_disabled');
+ const samples=test.inert_samples||[10,11],performance={now:function(){if(this!==performance)throw Error('clock_receiver');let sample=samples[clock_reads++];return sample==='nan'?NaN:sample==='infinity'?Infinity:sample;}};
+ sandbox={Buffer,performance:test.inert_fault==='performance_missing'?undefined:performance,nodeRepl:{write:value=>writes.push(String(value))},
+  setTimeout:()=>{effects.timers++;throw Error('inert_timer');},clearTimeout:()=>{effects.timers++;throw Error('inert_timer');}};
+ Object.defineProperty(sandbox,'gate2Resume',{get:()=>{effects.state_reads++;throw Error('inert_state_read');},set:()=>{effects.state_writes++;throw Error('inert_state_write');},enumerable:true,configurable:false});
+ before=Object.getOwnPropertyDescriptor(sandbox,'gate2Resume');
+ context=vm.createContext(sandbox,{codeGeneration:{strings:false,wasm:false}});
+ const faults={intrinsic_missing:'Function.prototype.toString=undefined;',intrinsic_tampered:"Function.prototype.toString=function(){return 'tampered';};",
+  intrinsic_transformed:"const originalSource=Function.prototype.toString;Function.prototype.toString=function(){return originalSource.call(this).replace('return ','return  ');};",
+  raw_json_missing:'JSON.rawJSON=undefined;',raw_json_wrong:"JSON.rawJSON=function(){return {rawJSON:'2'};};",
+  parse_source_missing:'const originalParse=JSON.parse;JSON.parse=(text,reviver)=>originalParse(text,(key,value)=>reviver?reviver(key,value):value);'};
+ if(faults[test.inert_fault])vm.runInContext(faults[test.inert_fault],context);
+ const importModuleDynamically=async name=>{imports.push(name);let values;
+  if(name==='node:crypto')values=crypto;else if(name==='node:zlib')values=zlib;
+  else{if(name.startsWith('node:fs'))effects.files++;else if(name==='node:child_process')effects.children++;else effects.sources++;throw Error('inert_import');}
+  const mod=new vm.SyntheticModule(Object.keys(values),function(){for(const key of Object.keys(values))this.setExport(key,values[key]);},{context});
+  await mod.link(()=>{throw Error('inert_static_import');});await mod.evaluate();return mod;};
+ await vm.runInContext('(async()=>{'+test.code+'})()',context,{importModuleDynamically});
+ if(Object.values(effects).some(value=>value!==0))throw Error('inert_effect');
+}catch(e){error=String(e.message);error_name=String(e.name);}
+const after=sandbox&&Object.getOwnPropertyDescriptor(sandbox,'gate2Resume');
+console.log(JSON.stringify({writes,error,error_name,inert:{imports,clock_reads,effects,
+ state_descriptor_unchanged:!!before&&!!after&&before.get===after.get&&before.set===after.set&&before.enumerable===after.enumerable&&before.configurable===after.configurable,
+ existence_nonaccess_proof:'exact_control_source_only'}}));
+}"""
+
+
 NODE_HARNESS = r"""const vm=require('node:vm'),{EventEmitter}=require('node:events'),crypto=require('node:crypto');
-const test=JSON.parse(require('node:fs').readFileSync(0,'utf8'));let clock=10,spawned=0,killed=0,timers=[],writes=[],reads=[[],[],[]],stdinEnds=[0,0],inputErrorEvents=0,ready_sent=false,setup_ack=null,verifying=false,verify_reads=0;
+const test=JSON.parse(require('node:fs').readFileSync(0,'utf8'));if(test.inert_control_only===true){void gate2InertHarness(test);}else{
+let clock=10,spawned=0,killed=0,timers=[],writes=[],reads=[[],[],[]],stdinEnds=[0,0],inputErrorEvents=0,ready_sent=false,setup_ack=null,verifying=false,verify_reads=0;
 class Pipe extends EventEmitter{
  constructor(i){super();this.i=i;this.raw=Buffer.alloc(0);this.finished=false;this.closed=false;}
  read(n){reads[this.i].push(n);if(!this.raw.length)return null;let b=this.raw.subarray(0,n);this.raw=this.raw.subarray(b.length);return b;}
@@ -271,7 +408,7 @@ async function call(code,action){if(action==='afterend')clock=150010;let value=v
  }};
  const run=eval('(async(tools,first,finalizer,profile,expected)=>{'+test.root_source+';const record=await gate2Complete(tools,first,finalizer,profile,expected);let output=null,error=null;try{output=gate2Export(record,profile);}catch(e){error=String(e.message);}return {record,output,error};})');let result=await run(tools,test.code,test.finalizer,test.output_profile,test.expected);root=result.record;root_export=result.output;root_export_error=result.error;
  }else{await call(test.code,test.action);for(let action of test.polls||[])await call(test.poll.replaceAll('__DELIVERED_WRITER_TEXT__',JSON.stringify(writes.at(-1))),action);}
-}catch(e){error=String(e.message);error_name=String(e.name);}console.log(JSON.stringify({writes,spawned,killed,reads,stdinEnds,inputErrorEvents,calls,error,error_name,clock,writer_ack,setup_ack,sourceCalls,sourceClose,sourceRead,root,root_export,root_export_error,providerCalls,providerResults}));})().catch(e=>{console.error(e);process.exitCode=1;});
+}catch(e){error=String(e.message);error_name=String(e.name);}console.log(JSON.stringify({writes,spawned,killed,reads,stdinEnds,inputErrorEvents,calls,error,error_name,clock,writer_ack,setup_ack,sourceCalls,sourceClose,sourceRead,root,root_export,root_export_error,providerCalls,providerResults}));})().catch(e=>{console.error(e);process.exitCode=1;});}
 """
 
 NODE_DECODE = r"""const {brotliDecompressSync}=require('node:zlib'),{createHash}=require('node:crypto');
@@ -797,6 +934,233 @@ console.log(JSON.stringify({state,args,r}));"""
         self.assertEqual(selected['frames'],value['r'])
         self.assertEqual(selected['call'],{'tool':'mcp__node_repl__js','timeout_ms':32000,'codes':['FIRST','POLL']})
 
+# Explicit traversal is bounded for host-decoded JSON. Engine enumeration internals
+# and huge unsupported hidden/exotic objects remain an ambient allocation boundary;
+# this is not a universal heap guarantee. The unchanged encoder rejects hidden keys.
+INERT_CONTROL_CAPTURE = r"""const gate2InertCodeSHA=__CODE_SHA__,gate2InertExpected=__EXPECTED__;
+function gate2InertBound(value,cap){
+ let todo=[{value,depth:0}],active=new Set(),nodes=0,keys=0,work=0,units=0;
+ function push(task){if(todo.length>=cap)throw Error('inert_frontier');todo.push(task);}
+ while(todo.length){if(++work>cap*4)throw Error('inert_work');let task=todo.pop();if(task.exit){active.delete(task.exit);continue;}
+  if(++nodes>cap||task.depth>64)throw Error('inert_structure');let v=task.value;
+  if(typeof v==='string'){if((units+=v.length)>cap)throw Error('inert_string');continue;}
+  if(v===null||typeof v==='boolean'||typeof v==='number')continue;
+  if(typeof v!=='object'||active.has(v))throw Error('inert_kind_cycle');
+  let array=Array.isArray(v),proto=Object.getPrototypeOf(v);if(proto!==(array?Array.prototype:Object.prototype)&&proto!==null)throw Error('inert_prototype');
+  let length=0;if(array){let d=Object.getOwnPropertyDescriptor(v,'length');if(!d||!('value'in d)||!Number.isSafeInteger(d.value)||d.value<0||d.value>cap)throw Error('inert_array');length=d.value;}
+  active.add(v);push({exit:v});let count=0;
+  for(let key in v){if(++work>cap*4)throw Error('inert_work');if(!Object.prototype.hasOwnProperty.call(v,key))continue;
+   if(++keys>cap||(units+=key.length)>cap)throw Error('inert_keys');let d=Object.getOwnPropertyDescriptor(v,key);if(!d||!d.enumerable||!('value'in d))throw Error('inert_descriptor');
+   if(array&&(!/^(0|[1-9][0-9]*)$/.test(key)||Number(key)>=length))throw Error('inert_array');count++;push({value:d.value,depth:task.depth+1});
+  }
+  if(array&&count!==length)throw Error('inert_array');
+ }
+ return gate2Canonical(value,cap);
+}
+function gate2InertArgs(args){
+ gate2InertBound(args,16384);
+ if(!args||Array.isArray(args)||Object.keys(args).sort().join()!=='code,timeout_ms'||typeof args.code!=='string'||args.code.length<1||args.code.length>8192||/[^\x00-\x7f]/.test(args.code)||args.timeout_ms!==10000||gate2SHA256(args.code)!==gate2InertCodeSHA)throw Error('arguments');
+}
+function gate2InertProvider(r){
+ if(!r||typeof r!=='object'||Array.isArray(r)||('isError'in r&&r.isError!==false))throw Error('provider_unavailable');
+ if(Object.keys(r).some(k=>!['content','isError','_meta'].includes(k)))throw Error('provider_fields');
+ if(!Array.isArray(r.content)||r.content.length!==1||!r.content[0]||r.content[0].type!=='text'||typeof r.content[0].text!=='string')throw Error('provider_shape');
+ if(Object.keys(r.content[0]).some(k=>!['type','text','annotations','_meta'].includes(k)))throw Error('provider_fields');
+ if(r.content[0].text!==gate2InertExpected)throw Error('provider_result');
+}
+async function gate2InertCapture(tools,args){
+ let record={version:1,scope:'vast.gate2.inert-control.transport.v1',observation:'failed',arguments:null,code_sha256:null,provider:null,cause:'arguments',unknown_original:true},r;
+ try{gate2InertBound(args,16384);record.arguments=args;gate2InertArgs(args);record.code_sha256=gate2InertCodeSHA;Object.freeze(args);}catch{return gate2InertBound(record,32767)+'\n';}
+ try{r=await tools.mcp__node_repl__js(args);}catch{record.cause='provider_throw';return gate2InertBound(record,32767)+'\n';}
+ try{gate2InertBound(r,16384);}catch{record.cause='provider_bound';return gate2InertBound(record,32767)+'\n';}
+ record.provider=r;record.unknown_original=false;
+ try{gate2InertProvider(r);record.observation='matched';record.cause=null;}catch(e){record.cause=e.message;}
+ try{return gate2InertBound(record,32767)+'\n';}catch{record.provider=null;record.observation='failed';record.cause='transport_bound';record.unknown_original=true;return gate2InertBound(record,32767)+'\n';}
+}""".replace('__CODE_SHA__',json.dumps(hashlib.sha256(INERT_CONTROL_SOURCE.encode('ascii')).hexdigest())).replace('__EXPECTED__',json.dumps(INERT_CONTROL_EXPECTED))
+
+INERT_CONTROL_RECEIVER = r"""function gate2InertReceive(chain,expectedSourceSHA,toolReference){
+ let need=(v,c)=>{if(!v)throw Error(c);};
+ need(Array.isArray(chain)&&chain.length>=1&&chain.length<=3,'inert_pairs');gate2InertBound(chain,131072);
+ let first=chain[0]&&chain[0].call&&chain[0].call.input;
+ need(typeof first==='string'&&first.length>=1&&first.length<=16384&&!/[^\x00-\x7f]/.test(first)&&first.endsWith('\n')&&!first.endsWith('\n\n'),'inert_source_bound');
+ need(first.startsWith('// @exec: {"yield_time_ms":10000,"max_output_tokens":100000}\n'),'inert_exec_profile');let payloadBytes=0;
+ for(let [i,row] of chain.entries()){
+  if(i){let raw=row&&row.call&&row.call.arguments;need(typeof raw==='string'&&raw.length<=256,'inert_wait_profile');let args=JSON.parse(raw);need(gate2InertBound(args,256)===raw&&Object.keys(args).sort().join()==='cell_id,max_tokens,yield_time_ms'&&args.max_tokens===100000&&args.yield_time_ms===60000,'inert_wait_profile');}
+  let output=row&&row.result&&row.result.output;if(Array.isArray(output)){need(output.length>=1&&output.length<=64,'inert_output_shape');for(let n=1;n<output.length;n++){let text=output[n]&&output[n].text;need(typeof text==='string'&&!/[^\x00-\x7f]/.test(text)&&text.length<=32768-payloadBytes,'inert_document_bound');payloadBytes+=text.length;}}
+ }
+ let executor=gate2ExecutorDocument(chain,expectedSourceSHA,toolReference),text=executor.text;
+ need(text.length>=2&&text.length<=32768&&text.endsWith('\n')&&!text.endsWith('\n\n')&&!/[^\x00-\x7f]/.test(text),'inert_document_bound');
+ let record=JSON.parse(text);need(gate2InertBound(record,32767)+'\n'===text,'inert_document_canonical');
+ need(record&&Object.keys(record).sort().join()==='arguments,cause,code_sha256,observation,provider,scope,unknown_original,version'&&record.version===1&&record.scope==='vast.gate2.inert-control.transport.v1','inert_record');
+ need(record.observation==='matched'&&record.cause===null&&record.unknown_original===false,'inert_observation');
+ gate2InertArgs(record.arguments);need(record.code_sha256===gate2InertCodeSHA,'inert_code_binding');gate2InertBound(record.provider,16384);gate2InertProvider(record.provider);
+ return {version:1,scope:'vast.gate2.inert-control.capture.v1',record_size_bytes:text.length,record_sha256:gate2SHA256(text),executor_chain_sha256:executor.sha256,node_code_sha256:gate2InertCodeSHA,tool_reference:toolReference};
+}"""
+
+
+def inert_control_executor():
+    """The sole fixed call is rendered in RAM; this builder never invokes a tool."""
+    args=json.dumps(dict(code=INERT_CONTROL_SOURCE,timeout_ms=10000),sort_keys=True,separators=(',',':'),ensure_ascii=True)
+    source='// @exec: {"yield_time_ms":10000,"max_output_tokens":100000}\n'+ROOT_ENCODER+'\n'+ROOT_SHA256+'\n'+INERT_CONTROL_CAPTURE+'\nconst args='+args+';\nconst observation=await gate2InertCapture(tools,args);\nstore("gate2-d18-inert-control-observation",observation);text(observation);\n'
+    assert source.isascii() and len(source)<=16384 and source.endswith('\n') and not source.endswith('\n\n')
+    return source
+
+
+class InertControlTransportTests(unittest.TestCase):
+    def js(self,body,values=None):
+        return ResumeRootCaller('runTest').js(INERT_CONTROL_CAPTURE+'\n'+INERT_CONTROL_RECEIVER+'\n'+body,values)
+
+    def args(self):
+        return dict(code=INERT_CONTROL_SOURCE,timeout_ms=10000)
+
+    def provider(self):
+        return {'content':[{'type':'text','text':INERT_CONTROL_EXPECTED,'annotations':{'audience':['user']},'_meta':{'item':1}}],
+                'isError':False,'_meta':{'trace':'controlled','resource':{'uri':'controlled:metadata'}}}
+
+    def chain(self,record,source,pairs=1):
+        canonical=lambda value:json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=True)
+        text=canonical(record)+'\n';rows=[]
+        for i in range(pairs):
+            call={'call_id':'call_'+str(i),'id':'id_'+str(i),'type':'custom_tool_call' if not i else 'function_call','name':'exec' if not i else 'wait','_meta':{'kept':i}}
+            if i:call['arguments']=canonical({'cell_id':'controlled_cell','max_tokens':100000,'yield_time_ms':60000})
+            else:call.update(status='completed',input=source)
+            wrapper='Script '+('completed' if i==pairs-1 else 'running with cell ID controlled_cell')+'\nWall time 0.0 seconds\nOutput:\n'
+            output=[{'type':'input_text','text':wrapper,'_meta':{'header':True}}]
+            if i==pairs-1:output.append({'type':'input_text','text':text,'_meta':{'payload':True}})
+            rows.append({'call':call,'result':{'call_id':call['call_id'],'id':'result_'+str(i),'type':'custom_tool_call_output' if not i else 'function_call_output','output':output,'_meta':{'kept':True}}})
+        return rows
+
+    def test_capture_changed_args_refuse_before_the_single_tool_call(self):
+        args=self.args();args['timeout_ms']=10001
+        result=self.js("(async()=>{let calls=0;try{let text=await gate2InertCapture({mcp__node_repl__js:async()=>{calls++;return input.provider;}},input.args);console.log(JSON.stringify({calls,record:JSON.parse(text)}));}catch(e){console.log(JSON.stringify({calls,error:e.message}));}})();",{'args':args,'provider':self.provider()})
+        self.assertEqual(result['calls'],0)
+        self.assertEqual(result['record']['observation'],'failed')
+        self.assertEqual(result['record']['cause'],'arguments')
+
+    def test_control_profile_rejects_historical_generic_first_yield(self):
+        source='// @exec: {"yield_time_ms":1,"max_output_tokens":100000}\ntext("historical functions-only fixture");\n'
+        chain=self.chain({},source)
+        result=self.js("let generic=gate2ExecutorDocument(input.chain,input.sha,'functions.exec');let cause=null;try{gate2InertReceive(input.chain,input.sha,'functions.exec');}catch(e){cause=e.message;}console.log(JSON.stringify({generic:generic.text,cause}));",{'chain':chain,'sha':hashlib.sha256(source.encode('ascii')).hexdigest()})
+        self.assertEqual(result['generic'],'{}\n')
+        self.assertEqual(result['cause'],'inert_exec_profile')
+
+    def capture(self):
+        return self.js("(async()=>{let calls=0;let text=await gate2InertCapture({mcp__node_repl__js:async()=>{calls++;return input.provider;}},input.args);console.log(JSON.stringify({calls,text,record:JSON.parse(text)}));})();",{'args':self.args(),'provider':self.provider()})
+
+    def test_exact_rendered_executor_calls_once_and_stores_only_guarded_full_observation(self):
+        source=inert_control_executor()
+        result=self.js("(async()=>{let calls=0,passed=null,frozen=false,outputs=[],stored=[];const tools={mcp__node_repl__js:async args=>{calls++;passed=args;frozen=Object.isFrozen(args);return input.provider;}},store=(key,value)=>stored.push([key,value]),text=value=>outputs.push(value);await eval('(async()=>{'+input.source+'})()');console.log(JSON.stringify({calls,passed,frozen,outputs,stored}));})();",{'source':source,'provider':self.provider()})
+        self.assertEqual(result['calls'],1);self.assertTrue(result['frozen'])
+        self.assertEqual(result['passed'],self.args())
+        self.assertEqual(len(result['outputs']),1);self.assertEqual(len(result['stored']),1)
+        self.assertEqual(result['outputs'][0],result['stored'][0][1])
+        record=json.loads(result['outputs'][0]);self.assertEqual(record['provider'],self.provider())
+        self.assertEqual(record['arguments'],self.args());self.assertEqual(record['observation'],'matched')
+        self.assertFalse(record['unknown_original']);self.assertIsNone(record['cause'])
+        self.assertLessEqual(len(source.encode('ascii')),16384)
+        self.assertTrue(source.endswith('\n'));self.assertFalse(source.endswith('\n\n'))
+        self.assertEqual(source.count('await tools.mcp__node_repl__js(args)'),1)
+        self.assertNotIn('physical_acceptance',record)
+
+    def test_bounded_error_and_unsupported_provider_observations_never_retry(self):
+        result=self.js("""(async()=>{let rows=[];for(let kind of ['throw','isError','extra_text','wrong_text','missing_text','structured','resource','unknown_top','unknown_block','accessor','cycle','unsafe','negative_zero','bigint','function','symbol','hidden','prototype','sparse']){
+ let r=JSON.parse(JSON.stringify(input.provider)),calls=0,getters=0;
+ if(kind==='isError')r.isError=true;if(kind==='extra_text')r.content.push({type:'text',text:'extra'});if(kind==='wrong_text')r.content[0].text+='x';if(kind==='missing_text')r.content=[];
+ if(kind==='structured')r.structuredContent={extra:true};if(kind==='resource')r.resource={uri:'controlled:extra-output'};if(kind==='unknown_top')r.extra='unsupported';if(kind==='unknown_block')r.content[0].extra='unsupported';
+ if(kind==='accessor')Object.defineProperty(r,'bad',{enumerable:true,get(){getters++;return 1;}});if(kind==='cycle')r.self=r;
+ if(kind==='unsafe')r.bad=9007199254740992;if(kind==='negative_zero')r.bad=-0;if(kind==='bigint')r.bad=1n;if(kind==='function')r.bad=()=>1;
+ if(kind==='symbol')r[Symbol('bad')]=1;if(kind==='hidden')Object.defineProperty(r,'bad',{value:1});if(kind==='prototype')Object.setPrototypeOf(r,{bad:1});if(kind==='sparse')r.bad=Array(2);
+ let text=await gate2InertCapture({mcp__node_repl__js:async()=>{calls++;if(kind==='throw')throw Error('controlled provider');return r;}},input.args);
+ rows.push({kind,calls,getters,size:text.length,record:JSON.parse(text)});
+ }console.log(JSON.stringify(rows));})();""",{'args':self.args(),'provider':self.provider()})
+        for row in result:
+            with self.subTest(kind=row['kind']):
+                self.assertEqual(row['calls'],1);self.assertEqual(row['getters'],0)
+                self.assertLessEqual(row['size'],32768);self.assertEqual(row['record']['observation'],'failed')
+                retained=row['kind'] in ('isError','extra_text','wrong_text','missing_text','structured','resource','unknown_top','unknown_block')
+                self.assertEqual(row['record']['provider'] is not None,retained)
+                self.assertEqual(row['record']['unknown_original'],not retained)
+
+    def test_args_structural_and_code_binding_refusals_have_zero_tool_effects(self):
+        result=self.js("""(async()=>{let rows=[];for(let kind of ['title','timeout','code','nonascii','overflow','accessor','array','cycle']){
+ let args={...input.args},calls=0,getters=0;
+ if(kind==='title')args.title='extra';if(kind==='timeout')args.timeout_ms=1;if(kind==='code')args.code+=' ';if(kind==='nonascii')args.code='é';if(kind==='overflow')args.code='x'.repeat(8193);
+ if(kind==='accessor')Object.defineProperty(args,'code',{enumerable:true,get(){getters++;return input.args.code;}});if(kind==='array')args=Object.assign([],args);if(kind==='cycle')args.self=args;
+ let record=JSON.parse(await gate2InertCapture({mcp__node_repl__js:async()=>{calls++;return input.provider;}},args));rows.push({kind,calls,getters,record});
+ }console.log(JSON.stringify(rows));})();""",{'args':self.args(),'provider':self.provider()})
+        for row in result:
+            with self.subTest(kind=row['kind']):
+                self.assertEqual(row['calls'],0);self.assertEqual(row['getters'],0)
+                self.assertEqual(row['record']['observation'],'failed');self.assertEqual(row['record']['cause'],'arguments')
+
+    def test_provider_frame_exact_cap_and_one_byte_over_preserve_unicode_metadata(self):
+        result=self.js("""(async()=>{let r=input.provider;r._meta.unicode=['é',String.fromCharCode(0),'😀'].join('');r._meta.pad='';let n=16384-gate2InertBound(r,16384).length;r._meta.pad='x'.repeat(n);let width=gate2InertBound(r,16384).length;
+ let calls=0,tools={mcp__node_repl__js:async()=>{calls++;return r;}};let exact=JSON.parse(await gate2InertCapture(tools,input.args));r._meta.pad+='x';let over=JSON.parse(await gate2InertCapture(tools,input.args));console.log(JSON.stringify({width,calls,exact,over}));})();""",{'args':self.args(),'provider':self.provider()})
+        self.assertEqual(result['width'],16384);self.assertEqual(result['calls'],2)
+        self.assertEqual(result['exact']['observation'],'matched')
+        self.assertEqual(result['exact']['provider']['_meta']['unicode'],'é'+chr(0)+'😀')
+        self.assertEqual(result['over']['cause'],'provider_bound');self.assertIsNone(result['over']['provider'])
+        self.assertTrue(result['over']['unknown_original'])
+
+    def test_large_enumerable_deep_and_escaped_inputs_refuse_before_encoding_copy(self):
+        result=self.js("""(async()=>{let rows=[];for(let kind of ['enumerable','aggregate_keys','depth','escaped']){
+ let r=JSON.parse(JSON.stringify(input.provider)),calls=0,reflections=0,escapes=0,long='\\\\'.repeat(16384);
+ if(kind==='enumerable')for(let i=0;i<16385;i++)r['k'+i]=0;
+ if(kind==='aggregate_keys')for(let i=0;i<100;i++)r['k'+i+'x'.repeat(200)]=0;
+ if(kind==='depth'){let p=r;for(let i=0;i<70;i++)p=p.next={};}if(kind==='escaped')r.bad=long;
+ const own=Reflect.ownKeys,stringify=JSON.stringify;Reflect.ownKeys=v=>{if(v===r)reflections++;return own(v);};JSON.stringify=(v,...rest)=>{if(v===long)escapes++;return stringify(v,...rest);};
+ let text=await gate2InertCapture({mcp__node_repl__js:async()=>{calls++;return r;}},input.args);Reflect.ownKeys=own;JSON.stringify=stringify;
+ rows.push({kind,calls,reflections,escapes,record:JSON.parse(text)});
+ }console.log(JSON.stringify(rows));})();""",{'args':self.args(),'provider':self.provider()})
+        for row in result:
+            with self.subTest(kind=row['kind']):
+                self.assertEqual(row['calls'],1);self.assertEqual(row['record']['cause'],'provider_bound')
+                self.assertIsNone(row['record']['provider']);self.assertEqual(row['escapes'],0)
+                if row['kind']!='escaped':self.assertEqual(row['reflections'],0)
+
+    def test_exact_control_record_and_all_public_payload_fields_survive_one_to_three_pairs(self):
+        capture=self.capture();source=inert_control_executor();sha=hashlib.sha256(source.encode('ascii')).hexdigest()
+        for pairs in (1,2,3):
+            with self.subTest(pairs=pairs):
+                chain=self.chain(capture['record'],source,pairs)
+                reference='functions.exec' if pairs==1 else 'functions.exec/controlled_cell'
+                receipt=self.js("console.log(JSON.stringify(gate2InertReceive(input.chain,input.sha,input.reference)));",dict(chain=chain,sha=sha,reference=reference))
+                self.assertEqual(receipt['record_size_bytes'],len(capture['text']))
+                self.assertEqual(receipt['record_sha256'],hashlib.sha256(capture['text'].encode('ascii')).hexdigest())
+                canonical=json.dumps(chain,sort_keys=True,separators=(',',':'),ensure_ascii=True)
+                self.assertEqual(receipt['executor_chain_sha256'],hashlib.sha256(canonical.encode('ascii')).hexdigest())
+                self.assertNotIn('retention_complete',receipt)
+
+    def test_control_profile_source_wait_tail_and_inner_mutations_refuse(self):
+        import copy
+        capture=self.capture();source=inert_control_executor();sha=hashlib.sha256(source.encode('ascii')).hexdigest();base=self.chain(capture['record'],source,3);cases=[]
+        def add(name,change,chain=None):
+            value=copy.deepcopy(base if chain is None else chain);change(value);cases.append(dict(name=name,chain=value,sha=sha))
+        add('four_pairs',lambda x:None,self.chain(capture['record'],source,4))
+        add('wait_profile',lambda x:x[1]['call'].update(arguments=json.dumps(dict(cell_id='controlled_cell',max_tokens=100000,yield_time_ms=1),sort_keys=True,separators=(',',':'))))
+        add('wait_object',lambda x:x[1]['call'].update(arguments={}))
+        add('wait_over',lambda x:x[1]['call'].update(arguments=' '*257))
+        add('wrong_cell',lambda x:x[1]['call'].update(arguments=x[1]['call']['arguments'].replace('controlled_cell','other')))
+        add('source_lf',lambda x:x[0]['call'].update(input=source[:-1]))
+        add('missing_tail',lambda x:x.pop())
+        add('wrong_id',lambda x:x[1]['result'].update(call_id='wrong'))
+        add('embedded_string_body',lambda x:x[-1]['result'].update(output='Script completed\nWall time 0.0 seconds\nOutput:\n'+capture['text']))
+        for name,change in [('failed_provider',lambda r:r['provider'].update(isError=True)),('changed_args',lambda r:r['arguments'].update(timeout_ms=1)),('extra_claim',lambda r:r.update(physical_acceptance=False)),('different_result',lambda r:r['provider']['content'][0].update(text='different'))]:
+            r=copy.deepcopy(capture['record']);change(r);add(name,lambda x:None,self.chain(r,source,3))
+        cases.append(dict(name='wrong_source_sha',chain=base,sha='0'*64))
+        causes=self.js("let rows=input.map(x=>{let cause=null;try{gate2InertReceive(x.chain,x.sha,'functions.exec/controlled_cell');}catch(e){cause=e.message;}return {name:x.name,cause};});console.log(JSON.stringify(rows));",cases)
+        self.assertTrue(all(row['cause'] for row in causes),causes)
+
+    def test_client_chain_and_document_prebounds_are_stricter_than_generic_receiver(self):
+        capture=self.capture();source=inert_control_executor();chain=self.chain(capture['record'],source,3)
+        result=self.js("""let chain=input.chain;for(let row of chain){row.call._meta.pad='';row.result._meta.pad='';}let room=131072-gate2InertBound(chain,131072).length;let slots=chain.flatMap(row=>[row.call._meta,row.result._meta]);for(let [i,slot] of slots.entries()){let n=Math.floor(room/(slots.length-i));slot.pad='x'.repeat(n);room-=n;}
+let exact=gate2InertReceive(chain,input.sha,'functions.exec/controlled_cell'),width=gate2InertBound(chain,131072).length;slots[0].pad+='x';let over=null;try{gate2InertReceive(chain,input.sha,'functions.exec/controlled_cell');}catch(e){over=e.message;}
+let max=gate2InertBound({pad:'x'.repeat(32757)},32767)+String.fromCharCode(10),docOver=null;let docChain=input.docChain;docChain.at(-1).result.output[1].text='x'.repeat(32769);try{gate2InertReceive(docChain,input.sha,'functions.exec/controlled_cell');}catch(e){docOver=e.message;}
+console.log(JSON.stringify({width,exact,over,maxWidth:max.length,docOver}));""",dict(chain=chain,docChain=self.chain(capture['record'],source,3),sha=hashlib.sha256(source.encode('ascii')).hexdigest()))
+        self.assertEqual(result['width'],131072);self.assertIsNotNone(result['over'])
+        self.assertEqual(result['maxWidth'],32768);self.assertEqual(result['docOver'],'inert_document_bound')
+
+
 class ResumeNodeCaller(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -810,6 +1174,12 @@ class ResumeNodeCaller(unittest.TestCase):
         import shutil,subprocess
         executable=shutil.which('node') or shutil.which('node.exe')
         self.assertIsNotNone(executable,'The CI-pinned Node runtime is required for controlled JS tests')
+        if extra.get('inert_control_only') is True:
+            self.assertIs(extra.get('code_generation_disabled'),True,'inert_control_only requires code_generation_disabled=True')
+            value=dict(extra,code=code)
+            result=subprocess.run([executable,'--experimental-vm-modules','--no-warnings','-e',INERT_HARNESS+'\n'+NODE_HARNESS],input=json.dumps(value).encode(),capture_output=True,check=False)
+            self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+            return json.loads(result.stdout)
         import base64
         m=subject();sources=[(m.CODE[1],Path(m.REPO_WIN/m.CODE[1]).read_bytes()),(m.OPERATOR,Path(m.__file__).read_bytes())] if os.name=='nt' else [(m.CODE[1],Path(__file__).parents[1].joinpath(m.CODE[1]).read_bytes()),(m.OPERATOR,Path(m.__file__).read_bytes())]
         if extra.get('root_flow'):
@@ -824,6 +1194,47 @@ class ResumeNodeCaller(unittest.TestCase):
         result=subprocess.run([executable,'--experimental-vm-modules','--no-warnings','-e',NODE_HARNESS],input=json.dumps(value).encode(),capture_output=True,check=False)
         self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
         return json.loads(result.stdout)
+
+    def test_inert_control_same_source_isolated_before_operational_preparation(self):
+        with patch(__name__+'.subject',side_effect=AssertionError('operational preparation forbidden')):
+            value=self.node(INERT_CONTROL_SOURCE,inert_control_only=True,code_generation_disabled=True,root_flow=True,polls=('normal',))
+        self.assertIsNone(value['error'])
+        self.assertEqual(value['writes'],[INERT_CONTROL_EXPECTED])
+        self.assertEqual(value['inert']['imports'],['node:crypto','node:zlib'])
+        self.assertEqual(value['inert']['clock_reads'],2)
+        self.assertEqual(value['inert']['effects'],dict(state_reads=0,state_writes=0,files=0,sources=0,children=0,timers=0))
+        self.assertTrue(value['inert']['state_descriptor_unchanged'])
+        wrapper='function(gate2Resume,nodeRepl){return gate2Resume.value===1&&nodeRepl.write(gate2Resume)===2;}'
+        self.assertEqual(INERT_CONTROL_SOURCE.count('gate2Resume'),4)
+        self.assertNotIn('gate2Resume',INERT_CONTROL_SOURCE.replace(wrapper,'').replace("'function(gate2Resume,nodeRepl){'",''))
+        self.assertNotIn('globalThis',INERT_CONTROL_SOURCE)
+        self.assertNotIn('hasOwn',INERT_CONTROL_SOURCE)
+        self.assertNotIn('Reflect',INERT_CONTROL_SOURCE)
+
+    def test_inert_control_requires_explicit_disabled_generation_before_preparation(self):
+        with patch(__name__+'.subject',side_effect=AssertionError('operational preparation forbidden')):
+            for flag in (None,False,1):
+                with self.subTest(flag=flag),self.assertRaisesRegex(AssertionError,'code_generation_disabled'):
+                    self.node(INERT_CONTROL_SOURCE,inert_control_only=True,code_generation_disabled=flag)
+
+    def test_inert_control_fixed_faults_refuse_without_emission_or_operational_effects(self):
+        for name,code,options,error in inert_control_cases():
+            with self.subTest(name=name):
+                value=self.node(code,inert_control_only=True,code_generation_disabled=True,**options)
+                self.assertEqual(value['error'],error)
+                self.assertFalse(value['writes'])
+                self.assertEqual(value['inert']['effects'],dict(state_reads=0,state_writes=0,files=0,sources=0,children=0,timers=0))
+        source=INERT_CONTROL_SOURCE.replace('const intrinsic=Function.prototype.toString;',"Object.defineProperty(wrapper,'toString',{value:()=>{throw Error('own_toString_forbidden');}});const intrinsic=Function.prototype.toString;")
+        value=self.node(source,inert_control_only=True,code_generation_disabled=True)
+        self.assertEqual(value['writes'],[INERT_CONTROL_EXPECTED])
+
+    def test_inert_control_harness_state_and_effect_canaries_are_observable(self):
+        for code,key in [("void globalThis.gate2Resume;",'state_reads'),("globalThis.gate2Resume=1;",'state_writes'),("setTimeout(()=>{},1);",'timers'),("await import('node:fs');",'files'),("await import('node:child_process');",'children'),("await import('controlled:source');",'sources')]:
+            with self.subTest(key=key):
+                value=self.node(code,inert_control_only=True,code_generation_disabled=True)
+                self.assertIsNotNone(value['error'])
+                self.assertEqual(value['inert']['effects'][key],1)
+                self.assertFalse(value['writes'])
 
     def source_rows(self):
         m=subject();root=Path(__file__).parents[1]
