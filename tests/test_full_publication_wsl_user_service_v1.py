@@ -106,6 +106,41 @@ class FullPublicationWslUserServiceTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temp.cleanup()
 
+    def assert_wsl_unit_contract(self, unit, manifest, receipt_path) -> None:
+        # Policy words in paths and hashes are data; inspect directives and argv.
+        directives = []
+        section = ""
+        for line in unit.splitlines():
+            line = line.strip()
+            if line.startswith("[") and line.endswith("]"):
+                section = line[1:-1]
+            elif "=" in line:
+                key, _, value = line.partition("=")
+                directives.append((section, key.strip(), value))
+        keys = {key for _, key, _ in directives}
+        self.assertNotIn("MemoryMax", keys)
+        self.assertNotIn("MemoryHigh", keys)
+        manager = manifest["sources"]["manager"]
+        bootstrap = service._PINNED_PYTHON_SOURCE_BOOTSTRAP_V1
+        self.assertNotIn("bcd", bootstrap.lower())
+        self.assertNotIn("windows", bootstrap.lower())
+        expected_argv = [
+            manifest["sources"]["python_executable"]["path"],
+            "-I", "-B", "-c", bootstrap,
+            manager["path"], str(manager["size_bytes"]), manager["sha256"],
+            "launch", "--receipt", str(receipt_path),
+        ]
+        self.assertEqual(
+            [row for row in directives if row[1].startswith("Exec")],
+            [("Service", "ExecStart", " ".join(
+                service._systemd_quote(value) for value in expected_argv
+            ))],
+        )
+        self.assertEqual(manifest["platform_contract"]["windows_boot_integration"],
+                         "forbidden")
+        self.assertEqual(manifest["platform_contract"]["wsl_memory_configuration"],
+                         "external_unchanged")
+
     def test_materialization_is_canonical_self_hashed_and_does_not_start(self) -> None:
         with mock.patch.object(service.subprocess, "run") as run_process:
             result = self.fixture.materialize()
@@ -134,10 +169,48 @@ class FullPublicationWslUserServiceTests(unittest.TestCase):
         self.assertIn(str(manager["path"]), unit)
         self.assertIn(str(manager["size_bytes"]), unit)
         self.assertIn(str(manager["sha256"]), unit)
-        self.assertNotIn("MemoryMax", unit)
-        self.assertNotIn("MemoryHigh", unit)
-        self.assertNotIn("bcd", unit.lower())
-        self.assertNotIn("windows", unit.lower())
+        self.assert_wsl_unit_contract(unit, validated.manifest, receipt_path)
+
+    def test_unit_contract_allows_policy_words_in_fixture_paths(self) -> None:
+        for component in ("tmpzbcd2_0r", "windows", "MemoryMax", "MemoryHigh"):
+            with self.subTest(component=component):
+                fixture = Fixture(Path(self.temp.name) / component)
+                with mock.patch.object(service.subprocess, "run") as run_process:
+                    result = fixture.materialize()
+                run_process.assert_not_called()
+                receipt_path = Path(str(result["receipt_path"]))
+                validated = service.validate_bundle_v1(receipt_path)
+                unit = validated.unit_bytes.decode("utf-8")
+                self.assertIn(component, unit)
+                self.assert_wsl_unit_contract(unit, validated.manifest, receipt_path)
+
+    def test_unit_contract_rejects_resource_directives_and_changed_commands(self) -> None:
+        result = self.fixture.materialize()
+        receipt_path = Path(str(result["receipt_path"]))
+        validated = service.validate_bundle_v1(receipt_path)
+        unit = validated.unit_bytes.decode("utf-8")
+        exec_start = next(line for line in unit.splitlines()
+                          if line.startswith("ExecStart="))
+        for label, changed in {
+            "memory_max": unit.replace("[Service]", "[Service]\nMemoryMax=1G"),
+            "memory_high": unit.replace("[Service]", "[Service]\nMemoryHigh=1G"),
+            "indented_limit": unit.replace("[Service]", "[Service]\n MemoryMax =1G"),
+            "boot_hook": unit.replace("[Service]", "[Service]\nExecStartPre=bcdedit"),
+            "extra_start": unit.replace(exec_start, exec_start + "\nExecStart=bcdedit"),
+            "replaced_start": unit.replace(exec_start, "ExecStart=bcdedit"),
+            "extra_argument": unit.replace(exec_start, exec_start + ' "windows"'),
+        }.items():
+            with self.subTest(mutation=label):
+                with self.assertRaises(AssertionError):
+                    self.assert_wsl_unit_contract(changed, validated.manifest, receipt_path)
+        for key, value in (("windows_boot_integration", "enabled"),
+                           ("wsl_memory_configuration", "changed")):
+            with self.subTest(platform_contract=key):
+                manifest = {**validated.manifest, "platform_contract": {
+                    **validated.manifest["platform_contract"], key: value,
+                }}
+                with self.assertRaises(AssertionError):
+                    self.assert_wsl_unit_contract(unit, manifest, receipt_path)
 
     def test_materialize_api_default_disables_unexpected_retries(self) -> None:
         result = self.fixture.materialize()
