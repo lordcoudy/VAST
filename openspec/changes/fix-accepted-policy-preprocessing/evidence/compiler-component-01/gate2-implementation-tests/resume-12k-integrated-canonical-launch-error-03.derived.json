@@ -1,0 +1,12 @@
+{
+  "actual_test_modules_loaded": 0,
+  "cause": "Producer invoked the out-of-repository runner by filename without adding repository cwd to Python sys.path. All 23 imports failed. This does not qualify implementation behavior.",
+  "correction": "New invocation04 uses runpy from -c and explicitly inserts repository cwd; runner/source bytes unchanged.",
+  "loader_errors": 23,
+  "physical_acceptance": false,
+  "raw_bytes": 26101,
+  "raw_sha256": "9c724ef6e7df3aed7ee46f1c529d4d6772a77ec0dd02992b0ec85b27690f0b9a",
+  "source_unchanged": true,
+  "status": "FAILED_LAUNCH_IMPORT_PATH",
+  "testsRun": 23
+}

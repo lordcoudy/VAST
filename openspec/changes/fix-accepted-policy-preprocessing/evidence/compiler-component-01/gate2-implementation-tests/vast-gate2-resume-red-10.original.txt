@@ -1,0 +1,14 @@
+.E.......
+======================================================================
+ERROR: test_canonical_operator_executes_authenticated_bytes_not_existing_own_globals (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_canonical_operator_executes_authenticated_bytes_not_existing_own_globals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 64, in test_canonical_operator_executes_authenticated_bytes_not_existing_own_globals
+    self.assertEqual(canonical_operator.VALUE,'fresh reviewed bytes')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1' has no attribute 'VALUE'
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.024s
+
+FAILED (errors=1)

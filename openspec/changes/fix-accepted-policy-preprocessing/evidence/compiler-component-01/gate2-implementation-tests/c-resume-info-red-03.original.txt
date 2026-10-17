@@ -1,0 +1,278 @@
+command: canonical WSL Python3.12.3 controlled resume Info RED
+test_resume_info_binds_actual_transport_raws_and_exact_identity (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_binds_actual_transport_raws_and_exact_identity) ... ERROR
+test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) ... 
+  test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) (field='Containers') ... ERROR
+  test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) (field='ContainersStopped') ... ERROR
+  test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) (field='ContainersRunning') ... ERROR
+  test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) (field='ID') ... ERROR
+  test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) (field='DockerRootDir') ... ERROR
+test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) ... ERROR
+test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) ... 
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbce0>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbba0>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbc40>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbf60>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbe20>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbec0>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbd80>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0040>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a00e0>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0180>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0220>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a02c0>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0360>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a04a0>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0540>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a05e0>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0680>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0720>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a07c0>) ... ERROR
+  test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0860>) ... ERROR
+
+======================================================================
+ERROR: test_resume_info_binds_actual_transport_raws_and_exact_identity (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_binds_actual_transport_raws_and_exact_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 241, in test_resume_info_binds_actual_transport_raws_and_exact_identity
+    value = gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+            ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) (field='Containers')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 279, in test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance
+    gate.resume_info_v1(info=changed, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) (field='ContainersStopped')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 279, in test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance
+    gate.resume_info_v1(info=changed, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) (field='ContainersRunning')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 279, in test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance
+    gate.resume_info_v1(info=changed, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) (field='ID')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 279, in test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance
+    gate.resume_info_v1(info=changed, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance) (field='DockerRootDir')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 279, in test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance
+    gate.resume_info_v1(info=changed, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 281, in test_resume_info_refuses_wire_identity_and_raw_drift_before_acceptance
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw + b'x')
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbce0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbba0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbc40>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbf60>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbe20>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbec0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55dbd80>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0040>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a00e0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0180>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0220>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a02c0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0360>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a04a0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0540>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a05e0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0680>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0720>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a07c0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+======================================================================
+ERROR: test_resume_info_rejects_controlled_unknown_or_typed_transport_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts) (mutation=<function ResumeInfoTests.test_resume_info_rejects_controlled_unknown_or_typed_transport_facts.<locals>.<lambda> at 0x79a8f55a0860>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 270, in test_resume_info_rejects_controlled_unknown_or_typed_transport_facts
+    gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request_raw, reply_raw=reply_raw)
+    ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'resume_info_v1'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.094s
+
+FAILED (errors=27)

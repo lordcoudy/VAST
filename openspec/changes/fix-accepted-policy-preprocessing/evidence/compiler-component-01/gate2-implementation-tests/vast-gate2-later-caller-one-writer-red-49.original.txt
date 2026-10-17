@@ -1,0 +1,36 @@
+test_synchronous_writer_spawn_failure_is_one_attempt_and_never_retried (caller.LaterStageCallerTests.test_synchronous_writer_spawn_failure_is_one_attempt_and_never_retried) ... FAIL
+test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts (caller.LaterStageCallerTests.test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts) ... 
+  test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts (caller.LaterStageCallerTests.test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts) (close_fault=False) ... FAIL
+  test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts (caller.LaterStageCallerTests.test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts) (close_fault=True) ... FAIL
+
+======================================================================
+FAIL: test_synchronous_writer_spawn_failure_is_one_attempt_and_never_retried (caller.LaterStageCallerTests.test_synchronous_writer_spawn_failure_is_one_attempt_and_never_retried)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1436, in test_synchronous_writer_spawn_failure_is_one_attempt_and_never_retried
+    self.assertEqual(len(value['attempts']),2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 3 != 2
+
+======================================================================
+FAIL: test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts (caller.LaterStageCallerTests.test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts) (close_fault=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1450, in test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts
+    self.assertEqual(len(value['attempts']),2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 3 != 2
+
+======================================================================
+FAIL: test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts (caller.LaterStageCallerTests.test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts) (close_fault=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1450, in test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts
+    self.assertEqual(len(value['attempts']),2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 3 != 2
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.332s
+
+FAILED (failures=3)

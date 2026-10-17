@@ -342,10 +342,14 @@ class OuterTests(unittest.TestCase):
 
     def child(self, **kwargs):
         from tests.fixtures import accepted_policy_fixture_compiler_gate2_d_child_v1 as child_module
-        from tests.test_accepted_policy_fixture_compiler_gate2_d_child_v1 import World
+        from tests.test_accepted_policy_fixture_compiler_gate2_d_child_v1 import World, proof as child_proof
         self.calls.append(kwargs)
         (kwargs['directory'] / 'engine.state').write_bytes(b'ok\n')
         world = World()
+        if getattr(self, '_wide_native_geometry', False):
+            world.pid = 4194304
+            world.identity_value.update(pid=world.pid,pgid=world.pid,sid=world.pid,start_ticks=2**64-1)
+            world.proof=bytearray(child_proof(pid=world.pid,pgid=world.pid,sid=world.pid))
         world.now = kwargs['started_ns']
         result = child_module.run_child_v1(**kwargs, _effects=world.effects())
         for name in ('stdout', 'stderr', 'preexec'):
@@ -713,22 +717,27 @@ class OuterTests(unittest.TestCase):
         self.assertEqual(caught.exception.facts['child']['returncode'],0)
         self.assertFalse((self.root/'outputs/D/controls/d.result.original.json').exists())
 
-    def native_shaped_controls(self, *, gpu_empty, refusal):
+    def native_shaped_controls(self, *, gpu_empty, refusal, wide=False):
         from tests.test_accepted_policy_fixture_compiler_transport_v1 import FakeSocket, reply
         info = json.loads((ROOT / 'openspec/changes/fix-accepted-policy-preprocessing/evidence/'
                            'compiler-component-01/observations-01/engine-info.v1_55.original.json').read_bytes())
-        info.update(Containers=9, ContainersRunning=0, ContainersPaused=0)
+        info.update(Containers=9, ContainersRunning=0, ContainersPaused=0,ContainersStopped=9)
+        native_now=1746145610106100 if wide else 1000000000
+        self._wide_native_geometry=wide
+        class WideSocket(FakeSocket):
+            def getsockopt(self, level, option, size):
+                return struct.pack('3i',2**31-1,0,2**31-1)
         transport = stage._DInfoClientV1
         class ControlledInfoClient(transport):
             def __init__(self, output, deadline):
                 super().__init__(output, deadline,
-                    socket_factory=lambda: FakeSocket(reply(recipe.canonical_json_v1(info))),
-                    clock=lambda: 1000000000)
+                    socket_factory=lambda: (WideSocket if wide else FakeSocket)(reply(recipe.canonical_json_v1(info))),
+                    clock=lambda: native_now)
         captures = []
         class Pipe(io.BytesIO):
             def fileno(self): return 123
         class Process:
-            pid=777
+            pid=4194304 if wide else 777
             def __init__(self,raw): self.stdout,self.stderr=Pipe(raw),Pipe()
             def poll(self): return 0
             def wait(self,timeout=None): return 0
@@ -741,26 +750,32 @@ class OuterTests(unittest.TestCase):
             return Process(raw)
         crashes = recipe.canonical_json_v1([['wsl-crash-%02d-' % n + 'x' * 490, 3, 1] for n in range(31)])
         self.assertLessEqual(len(crashes), stage.CRASH_LIMIT)
-        observer = stage._NativeObserverV1(self.root, lambda: 1000000000)
+        observer = stage._NativeObserverV1(self.root, lambda: native_now)
+        # Conservative typed endpoint widths, with the real three-row shape:
+        # parent ctime is null; socket ctime is signed-64 nanoseconds. The
+        # peer uses SO_PEERCRED's signed-32 PID/GID, UID remains exactly root.
+        epochs=((2**64-1,2**64-2,0,2**32-1,0o40755,None),
+                (2**64-1,2**64-3,0,2**32-1,0o40755,None),
+                (2**64-1,2**64-4,0,2**32-1,0o140660,2**63-1)) if wide else tuple((1,n,0,0,0o140660,17) for n in (2,3,4))
         with patch.object(stage, '_DInfoClientV1', ControlledInfoClient), \
-             patch.object(stage.compiler._DockerClientV1, '_observe_endpoint', return_value=tuple((1,n,0,0,0o140660,17) for n in (2,3,4))), \
+             patch.object(stage.compiler._DockerClientV1, '_observe_endpoint', return_value=epochs), \
              patch.object(stage, '_floor_metrics_v1', side_effect=lambda root: FakeObserver().measure()), \
              patch.object(stage.compiler, '_compiler_proc_read_v1', return_value=b'00000000-0000-0000-0000-000000000001\n'), \
              patch.object(self.c.subprocess,'Popen',side_effect=native), \
              patch.object(self.c.os,'set_blocking'), \
              patch.object(self.c.select,'select',side_effect=lambda reads,*args:(reads,[],[])), \
-             patch.object(self.c.time,'monotonic_ns',return_value=1000000000), \
+             patch.object(self.c.time,'monotonic_ns',return_value=native_now), \
              patch.object(stage, '_crash_listing_v1', return_value=crashes):
             if refusal:
                 with self.assertRaises(stage.StageDRefusal) as caught:
-                    self.run_d(observer=observer)
+                    self.run_d(observer=observer,clock=lambda:native_now)
                 self.assertIn('d_control_reserve',caught.exception.facts['causes'])
                 self.assertEqual(self.calls,[])
                 self.assertFalse((self.root/'outputs/D/engine').exists())
                 self.assertTrue((self.root/'outputs/D/controls/before.gpu.stdout.original').exists())
                 self.assertFalse((self.root/'outputs/D/controls/d.result.original.json').exists())
                 return caught.exception.facts
-            result = self.run_d(observer=observer)
+            result = self.run_d(observer=observer,clock=lambda:native_now)
         self.assertTrue(result['evaluation']['passed'])
         usage = result['control_allocation_after_receipt']
         self.assertLessEqual(usage['total'], stage.CONTROL_LIMIT)
@@ -797,6 +812,29 @@ class OuterTests(unittest.TestCase):
         self.assertLessEqual(len(raw),20480)
         self.assertLessEqual(stage.compiler._json_bound(json.loads(raw)),20480)
         self.assertEqual(list((self.root/'outputs/D/controls').glob('*/')),[])
+
+    def test_resume_98_character_root_wide_native_facts_fit_all_unchanged_d_caps(self):
+        previous=self.root
+        root=previous/('r'*(98-len(str(previous))-1))
+        root.mkdir()
+        self.root=root
+        self.assertEqual(len(str(root)),98)
+        source=root/'outputs/C1/engine.compiler-originals/engine.unaccepted'
+        source.parent.mkdir(parents=True)
+        source.write_bytes(elf())
+        self.binding['elf_path']=str(source)
+        result=self.native_shaped_controls(gpu_empty=True,refusal=False,wide=True)
+        raw=Path(result['receipt_descriptor']['path']).read_bytes()
+        encoded_bound=stage.compiler._json_bound(json.loads(raw))
+        usage=result['control_allocation_after_receipt']
+        self.assertLessEqual(len(raw),20480)
+        self.assertLessEqual(encoded_bound,20480)
+        self.assertLessEqual(usage['other']+stage.LATER_INDEX_ALLOCATION+stage.EXTERNAL_CAPTURE_ALLOCATION,98304)
+        self.assertLessEqual(usage['total']+stage.LATER_INDEX_ALLOCATION+stage.EXTERNAL_CAPTURE_ALLOCATION,524288)
+        self.assertLessEqual(result['aggregate_accounted_bytes'],2097152)
+        print(json.dumps({'resume_D_geometry':{'root_chars':98,'encoded_receipt_bytes':len(raw),
+            'preencode_bound':encoded_bound,'control_usage':usage,'aggregate_bytes':result['aggregate_accounted_bytes'],
+            'elf_bytes':len(elf()),'monotonic_start_ns':1746145610106100}}))
 
 
 class ReservationTests(unittest.TestCase):
@@ -912,6 +950,10 @@ class NativeEntryTests(unittest.TestCase):
     def setUp(self):
         from tests.fixtures import accepted_policy_fixture_compiler_gate2_c_v1 as c
         self.c=c
+        self.temporary=tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        effect=patch.object(c,'RESUME_ROOT_V1',Path(self.temporary.name).resolve()/'absent-owned-r1')
+        effect.start();self.addCleanup(effect.stop)
         self.commit='a'*40;self.root='/home/s-a-balashov/work/vast-fixture-compiler-gate2-'+self.commit+'-01'
         self.args=[self.commit,'131072','b'*64,','.join('8192:'+('%064x'%n) for n in range(1,7))]
         self.kw={'project_root':self.root,'packet_descriptor':{},'expected_code_commit':self.commit,
@@ -1003,6 +1045,73 @@ class NativeEntryTests(unittest.TestCase):
         self.assertNotIn('output',frame['result'])
         # One captured Windows form and one copy: no third raw tool JSON form.
         self.assertEqual(2*(4096+4096),stage.EXTERNAL_CAPTURE_ALLOCATION)
+
+    def test_resume_verified_bootstrap_complete_actual_call_and_poststdout_failure_frame(self):
+        operator='tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py'
+        source=(ROOT/operator).read_bytes()
+        tree=ast.parse(source)
+        bootstrap=ast.literal_eval(next(node.value for node in tree.body
+            if isinstance(node,ast.Assign) and any(isinstance(target,ast.Name) and
+                target.id=='NATIVE_BOOTSTRAP' for target in node.targets)))
+        descriptor={'size_bytes':len(source),'sha256':hashlib.sha256(source).hexdigest(),
+            'git_blob':hashlib.sha1(b'blob '+str(len(source)).encode()+b'\0'+source).hexdigest()}
+        header=recipe.canonical_json_v1({'current':{operator:descriptor}}).decode('ascii')
+        args=[self.commit,'32768','b'*64,','.join('8192:'+('%064x'%n) for n in range(1,7))]
+        command="$h='"+header+"'\n$h | & C:/Windows/System32/wsl.exe -d Ubuntu -u s-a-balashov --cd / --exec /usr/bin/python3 -I -S -B -c '"+bootstrap.replace("'","''")+"' 'D' '"+"' '".join(args)+"'\nexit $LASTEXITCODE"
+        arguments={'cmd':command,'workdir':r'C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST',
+            'login':False,'yield_time_ms':30000,'max_output_tokens':4096}
+        code="const r=await tools.exec_command("+recipe.canonical_json_v1(arguments).decode('ascii')+");store('gate2-d-actual-first-frame',r);text(r);"
+        call={'tool':'functions.exec','code':code}
+        root=str(self.c.RESUME_OWNER_ROOT_V1/'r1')
+        self.assertEqual(len(root),98)
+        kwargs=dict(self.kw,project_root=root)
+        value=copy.deepcopy(self.value)
+        value['receipt_descriptor']['path']=root+'/outputs/D/controls/d.result.original.json'
+        value['final_measurement_after_receipt']={key:2**64-1 for key in value['final_measurement_after_receipt']}
+        value['absolute_deadline_ns']=2**64-1
+        value['finished_ns']=2**64-2
+        outputs={1:b'',2:b''}
+        deadline=value['absolute_deadline_ns']
+        def write(fd,raw):
+            self.assertIn(fd,(1,2));outputs[fd]+=raw;return len(raw)
+        with patch.object(self.c,'parse_native_invocation_v1',return_value=kwargs), \
+             patch.object(stage,'run_d_v1',return_value=value),patch.object(stage.os,'write',side_effect=write), \
+             patch.object(self.c.time,'monotonic_ns',side_effect=[deadline-1,deadline]):
+            self.assertEqual(stage.native_main_v1(args),1)
+        self.assertTrue(outputs[1]);self.assertTrue(outputs[2])
+        self.assertLessEqual(len(outputs[1]),768);self.assertLessEqual(len(outputs[2]),768)
+        self.assertEqual(json.loads(outputs[2])['cause'],'native_stdout_deadline')
+        # The tool exposes combined output and terminal metadata. It provides
+        # neither an outer PID nor separate-channel EOF observations.
+        frame={'call':call,'result':{'chunk_id':'a'*64,'wall_time_seconds':99999.999999,
+            'exit_code':1,'original_token_count':2147483647,'session_id':None,
+            'output':(outputs[1]+outputs[2]).decode('ascii')}}
+        raw=recipe.canonical_json_v1(frame)
+        print(json.dumps({'resume_d_complete_frame_geometry':{'command_bytes':len(command.encode()),
+            'call_bytes':len(recipe.canonical_json_v1(call)),'stdout_bytes':len(outputs[1]),
+            'stderr_bytes':len(outputs[2]),'frame_bytes':len(raw),'bootstrap_bytes':len(bootstrap.encode())}}))
+        self.assertLessEqual(len(raw),4096)
+        self.assertNotIn('native',frame)
+        self.assertEqual(stage.EXTERNAL_CAPTURE_ALLOCATION,2*(4096+4096))
+        import base64,zlib
+        packed=base64.b85encode(zlib.compress(bootstrap.encode('ascii'),9)).decode('ascii')
+        carrier="import base64,zlib;exec(zlib.decompress(base64.b85decode('"+packed+"')))"
+        self.assertEqual(zlib.decompress(base64.b85decode(packed)),bootstrap.encode('ascii'))
+        command="$h='"+header+"'\n$h | & C:/Windows/System32/wsl.exe -d Ubuntu -u s-a-balashov --cd / --exec /usr/bin/python3 -I -S -B -c '"+carrier.replace("'","''")+"' 'D' '"+"' '".join(args)+"'\nexit $LASTEXITCODE"
+        arguments={'cmd':command,'workdir':'C:/','login':False,'yield_time_ms':30000}
+        codes=['text(await tools.exec_command('+recipe.canonical_json_v1(arguments).decode('ascii')+'));',
+            'text(await tools.write_stdin('+recipe.canonical_json_v1({'session_id':2147483647,
+                'yield_time_ms':120000}).decode('ascii')+'));']
+        frames=[{'chunk_id':'a'*64,'wall_time_seconds':99999.999999,'session_id':2147483647,
+            'original_token_count':2147483647,'exit_code':None,'output':''},frame['result']]
+        collection={'call':{'tool':'functions.exec','codes':codes},'frames':frames}
+        expanded={'calls':[{'tool':collection['call']['tool'],'code':code} for code in codes],'frames':frames}
+        self.assertEqual(recipe.canonical_json_v1(expanded),recipe.canonical_json_v1({
+            'calls':[{'tool':'functions.exec','code':code} for code in codes],'frames':frames}))
+        encoded=recipe.canonical_json_v1(collection)
+        self.assertLessEqual(len(encoded),4096)
+        print(json.dumps({'resume_d_compact_frame_geometry':{'full_bytes':len(encoded),'frame_count':len(frames),
+            'physical_clock_admission_pending':True}}))
 
     def test_bootstrap_missing_source_is_bounded_refusal_without_project_import(self):
         source=ast.parse(Path(stage.__file__).read_bytes())

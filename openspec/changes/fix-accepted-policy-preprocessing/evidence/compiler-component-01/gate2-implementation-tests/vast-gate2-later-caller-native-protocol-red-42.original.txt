@@ -1,0 +1,57 @@
+test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances (caller.LaterStageCallerTests.test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances) ... 
+  test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances (caller.LaterStageCallerTests.test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances) (output='{}\n') ... FAIL
+  test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances (caller.LaterStageCallerTests.test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances) (output='{"completion_deadline_ns":18446744073709551615,"descriptor":{"path":"/home/s-a-b') ... FAIL
+  test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances (caller.LaterStageCallerTests.test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances) (output='{"completion_deadline_ns":18446744073709551615,"descriptor":{"path":"/home/s-a-b') ... FAIL
+
+======================================================================
+FAIL: test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances (caller.LaterStageCallerTests.test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances) (output='{}\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1440, in test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances
+    self.assertEqual(json.loads(value['writes'][-1])[4:6],[False,True])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [False, True]
+
+Second list contains 2 additional elements.
+First extra element 0:
+False
+
+- []
++ [False, True]
+
+======================================================================
+FAIL: test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances (caller.LaterStageCallerTests.test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances) (output='{"completion_deadline_ns":18446744073709551615,"descriptor":{"path":"/home/s-a-b')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1440, in test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances
+    self.assertEqual(json.loads(value['writes'][-1])[4:6],[False,True])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [False, True]
+
+Second list contains 2 additional elements.
+First extra element 0:
+False
+
+- []
++ [False, True]
+
+======================================================================
+FAIL: test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances (caller.LaterStageCallerTests.test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances) (output='{"completion_deadline_ns":18446744073709551615,"descriptor":{"path":"/home/s-a-b')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1440, in test_malformed_or_extra_native_stdout_can_be_retained_but_never_advances
+    self.assertEqual(json.loads(value['writes'][-1])[4:6],[False,True])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [False, True]
+
+Second list contains 2 additional elements.
+First extra element 0:
+False
+
+- []
++ [False, True]
+
+----------------------------------------------------------------------
+Ran 1 test in 0.306s
+
+FAILED (failures=3)

@@ -1,0 +1,61 @@
+test_actual_outer_journal_blocks_raw_arguments_and_metadata_are_retained (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRootCaller.test_actual_outer_journal_blocks_raw_arguments_and_metadata_are_retained) ... FAIL
+test_external_receiver_hashes_complete_actual_record_and_executor_chain (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRootCaller.test_external_receiver_hashes_complete_actual_record_and_executor_chain) ... FAIL
+
+======================================================================
+FAIL: test_actual_outer_journal_blocks_raw_arguments_and_metadata_are_retained (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRootCaller.test_actual_outer_journal_blocks_raw_arguments_and_metadata_are_retained)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 495, in test_actual_outer_journal_blocks_raw_arguments_and_metadata_are_retained
+    value=self.js("console.log(JSON.stringify(gate2ExecutorDocument(input.chain,input.expectedSourceSHA,input.reference)));",{'chain':chain,'expectedSourceSHA':hashlib.sha256(chain[0]['call']['input'].encode('ascii')).hexdigest(),'reference':'functions.exec/1368'})
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 503, in js
+    self.assertEqual(r.returncode,0,r.stderr.decode(errors='replace'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : [eval]:108
+console.log(JSON.stringify(gate2ExecutorDocument(input.chain,input.expectedSourceSHA,input.reference)));
+                 ^
+
+ReferenceError: gate2ExecutorDocument is not defined
+    at [eval]:108:18
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [eval]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_string:71:3
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_external_receiver_hashes_complete_actual_record_and_executor_chain (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRootCaller.test_external_receiver_hashes_complete_actual_record_and_executor_chain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 531, in test_external_receiver_hashes_complete_actual_record_and_executor_chain
+    result=self.js("console.log(JSON.stringify(gate2Receive(input.record,input.chain,input.context,input.reference,input.expectedExecutorSourceSHA)));",sample)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 503, in js
+    self.assertEqual(r.returncode,0,r.stderr.decode(errors='replace'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : [eval]:69
+ let contextSHA=gate2Context(context),need=(v,c)=>{if(!v)throw Error(c);},keys=(v,s)=>v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort().join()===s.split(',').sort().join(),same=(a,b)=>gate2Canonical(a,65535)===gate2Canonical(b,65535);
+                                                         ^
+
+Error: executor_source_binding
+    at need ([eval]:69:64)
+    at gate2Receive ([eval]:72:125)
+    at [eval]:108:28
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [eval]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_string:71:3
+
+Node.js v25.2.1
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.302s
+
+FAILED (failures=2)

@@ -1,0 +1,135 @@
+{
+  "actual_provider_extra_fields_must_be_retained": true,
+  "call_arguments_exact_keys": [
+    "code",
+    "timeout_ms"
+  ],
+  "controlled_only": true,
+  "future_physical_commit_not_bound": true,
+  "pieces": {
+    "common_raw": {
+      "sha256": "4d83f8dd409820f13fbc13aac4751252d36130a3459681de1594bdcec0a6bb9f",
+      "size_bytes": 3614
+    },
+    "common_shared": {
+      "sha256": "e86bedaa21a0f1513a53ab0f9ef774ef11dfc5304099318a040591d21224ab3c",
+      "size_bytes": 3668
+    },
+    "decoder": {
+      "sha256": "b0a7c93d68f1178721f84ca7541b7e1b7f24974eb49b9dde67e837dfd6736abe",
+      "size_bytes": 1771
+    },
+    "node_actual_source": {
+      "sha256": "2f010ab8cf2e3f484bdf76dc544336ef63cc660813dc1facac510ac9e72da904",
+      "size_bytes": 16883
+    },
+    "node_carrier": {
+      "sha256": "9da98368ae3a14125499f1b93406d4a02d672b1622455931e51802baef35b479",
+      "size_bytes": 7553
+    },
+    "node_template": {
+      "sha256": "7173e149a474e9561cd6fd8c84732917499b239054258e7106d454e4f4e3e6ee",
+      "size_bytes": 8737
+    },
+    "operator": {
+      "sha256": "f11eece481d2b0c2d8ce2c9ad7f2ce8887fc7f586ce9dcafc9ec100ca5b11531",
+      "size_bytes": 32738
+    },
+    "python_setup": {
+      "sha256": "81cc78cca156bc835887bd46340e08942e460f7ce6312ccce527cffa4a284f0d",
+      "size_bytes": 5195
+    },
+    "python_writer": {
+      "sha256": "a928078dc150141c2e2a5baf1033d4a5200eaa88fdacb2ac02c81fc8ae6f87bc",
+      "size_bytes": 5508
+    },
+    "test_file": {
+      "sha256": "d4edea697f019dee934c7ac90aeecd64e7fd0a5739cab92f89402086be92b8f4",
+      "size_bytes": 101745
+    }
+  },
+  "quotes": [
+    {
+      "approved_8k_refused": true,
+      "case": "final",
+      "minimum_form_data_rounded": 12288,
+      "physical_acceptance": false,
+      "producer": {
+        "sha256": "1fd447f47b1ba4808b56a8326f83498653460cfde70eb1caaf4014ed8d31a4b1",
+        "size_bytes": 1635
+      },
+      "whole_collection": {
+        "sha256": "e448c69b898e7add930181affbe3844b65070c18274ba84c4024f4e0a05ab29e",
+        "size_bytes": 9629
+      },
+      "working_plus_git_metadata_inclusive": 32768
+    },
+    {
+      "approved_8k_refused": true,
+      "case": "failure",
+      "minimum_form_data_rounded": 12288,
+      "physical_acceptance": false,
+      "producer": {
+        "sha256": "ac75db26e6aed46fc033eb7a53c887ca6daf06115346e99632deafd602b20bd5",
+        "size_bytes": 1338
+      },
+      "whole_collection": {
+        "sha256": "5204cd274a40ebaf000e27a01d40e07994ef87f880b770df0f8e1d2a4a54b0a7",
+        "size_bytes": 9449
+      },
+      "working_plus_git_metadata_inclusive": 32768
+    },
+    {
+      "approved_8k_refused": true,
+      "case": "unicode",
+      "minimum_form_data_rounded": 12288,
+      "physical_acceptance": false,
+      "producer": {
+        "sha256": "fce3ec001ab20ceccc7076e456b150442a2139bae6f1552a53a0946eedc1ced9",
+        "size_bytes": 1469
+      },
+      "whole_collection": {
+        "sha256": "e6dde6992a03c9f163d29014a37de725986c21e5317b00a88c0c5a8422a6cdec",
+        "size_bytes": 9457
+      },
+      "working_plus_git_metadata_inclusive": 32768
+    },
+    {
+      "approved_8k_refused": true,
+      "case": "late-known",
+      "minimum_form_data_rounded": 12288,
+      "physical_acceptance": false,
+      "producer": {
+        "sha256": "019c0f7fdcb7768557476c6649959767e800237c5fec0746596666059c69eb22",
+        "size_bytes": 1336
+      },
+      "whole_collection": {
+        "sha256": "9b2a28b7e547135b2c3b0f33878e533020d1a210b0fd48f6a27682b883300104",
+        "size_bytes": 9445
+      },
+      "working_plus_git_metadata_inclusive": 32768
+    }
+  ],
+  "schema": "frozen_caller_geometry_bookkeeping_v1",
+  "separate_writer_terminal_and_after_return_clock_required": true,
+  "shared_call_expansion_verified": true,
+  "source_rows": [
+    [
+      "C:/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py",
+      {
+        "git_blob": "d1978b44ed6afd4371abd5b63e4b16e30c0a6e20",
+        "sha256": "da997d0a2a79e72778bcfd374871a1fdf9fc5173d41419ed68713dddc5650436",
+        "size_bytes": 32730
+      }
+    ],
+    [
+      "C:/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py",
+      {
+        "git_blob": "46e660d80c6d47a3a466888e2f25ac339712686a",
+        "sha256": "f11eece481d2b0c2d8ce2c9ad7f2ce8887fc7f586ce9dcafc9ec100ca5b11531",
+        "size_bytes": 32738
+      }
+    ]
+  ]
+}
+NO_PHYSICAL_ACTIONS

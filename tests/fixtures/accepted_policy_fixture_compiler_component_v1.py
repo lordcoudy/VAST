@@ -1,9 +1,5 @@
-"""Task 2.10 component recipe: fixed C sources, stage-D bytes, sealed descriptors.
-
-Approved by the 2.10 component admission plan (V5, efa59e92; C5 per V6). This
-module performs no Docker, compiler or process action. It only builds the fixed
-inputs whose bytes are pinned here and the sealed JSON descriptors the 2.9
-owner's component path validates. Component success never admits task 1.5.
+"""Task 2.10 fixed component inputs and owner 2.9 sealed descriptors (V5
+efa59e92; C5 V6). No Docker/compiler/process action or task 1.5 admission.
 """
 from __future__ import annotations
 
@@ -42,6 +38,9 @@ F2_CONTROL_CAPS_V1 = MappingProxyType({
     "f2.failure.v1.json": 262_144, "f2.final-accounting.v1.json": F2_FOOTER_LIMIT_V1})
 PRIOR_CARRY_BYTES_V1 = 6_291_456
 CURRENT_CODE_FORMS_V1 = 524_288
+RESUME_CODE_FORMS_V1 = 1_032_192
+RESUME_INDEX_REL_V1 = ("openspec/changes/fix-accepted-policy-preprocessing/evidence/"
+                       "compiler-component-01/gate2-p0-465-retention.v1.json")
 PRIOR_OWNED_CAP_V1 = 2_162_688
 RETENTION_INDEX_REL_V1 = ("openspec/changes/fix-accepted-policy-preprocessing/evidence/"
                           "compiler-component-01/gate2-f2-c75a-retention.v1.json")
@@ -60,7 +59,7 @@ _AUX_OLD_FILES_V1 = ("export.stderr.original", "export.stdout.original", "operat
                      "operator.command.original.json")
 
 
-def _retention_read_v1(path, cap):
+def _retention_read_v1(path, cap, *, _allocation=False):
     path = Path(path)
     if not path.is_absolute() or path.resolve(strict=True) != path:
         raise ComponentRecipeError("retention physical path")
@@ -73,20 +72,158 @@ def _retention_read_v1(path, cap):
     flags = (os.O_RDONLY | getattr(os, "O_NONBLOCK", 0) | getattr(os, "O_NOFOLLOW", 0) |
              getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_BINARY", 0))
     fd = os.open(path, flags)
+    stream, failure, secondary, closed, raw, phase = None, None, [], False, b"", "fdopen"
     try:
         stream = os.fdopen(fd, "rb", buffering=0)
-    except BaseException:
-        os.close(fd)
-        raise
-    with stream:
+        phase = "read"
         before = os.fstat(stream.fileno())
         if epoch(before, True) != epoch(expected, True):
             raise ComponentRecipeError("retention open identity")
+        allocated = _resume_fd_allocation_v1(stream.fileno(), before) if _allocation else None
+        if _allocation and (type(allocated) is not int or not 0 <= allocated < 2 ** 63):
+            raise ComponentRecipeError("resume unknown allocation")
         raw = stream.read(cap + 1)
+        while 0 < len(raw) < before.st_size:
+            part = stream.read(before.st_size - len(raw))
+            if not part:
+                break
+            raw += part
         after = os.fstat(stream.fileno())
+        if _allocation:
+            actual_allocation = _resume_fd_allocation_v1(stream.fileno(), after)
+            if type(actual_allocation) is not int or actual_allocation != allocated:
+                raise ComponentRecipeError("resume allocation drift")
         if len(raw) != before.st_size or epoch(before) != epoch(after) or epoch(path.lstat()) != epoch(expected):
             raise ComponentRecipeError("retention file drift")
-    return raw, before
+    except BaseException as error:
+        failure = error
+    finally:
+        try:
+            os.close(fd) if stream is None else stream.close()
+            closed = True
+        except BaseException as error:
+            if failure is None:
+                failure, phase = error, "close"
+            else:
+                secondary.append("retention_close_" + type(error).__name__)
+    if failure is not None:
+        error = ComponentRecipeError(str(failure) if isinstance(failure, ComponentRecipeError) else
+            "retention_" + phase + "_" + type(failure).__name__)
+        error.cause, error.causes = str(error), [str(error)] + secondary
+        error.facts = {"path": str(path), "cause": error.cause, "causes": error.causes, "close_completed": closed,
+            "unknown_closure": not closed, "read_bytes": len(raw), "read_sha256": hashlib.sha256(raw).hexdigest(),
+            "omitted_or_unknown": True}
+        raise error from failure
+    return (raw, before, allocated) if _allocation else (raw, before)
+
+
+def _resume_fd_allocation_v1(fd, observed):
+    if os.name != "nt":
+        blocks = _retention_blocks_v1(observed)
+        return blocks * 512 if type(blocks) is int and 0 <= blocks < 2 ** 54 else None
+    import ctypes
+    import msvcrt
+    from ctypes import wintypes
+    class Standard(ctypes.Structure):
+        _fields_ = [("allocation", ctypes.c_longlong), ("size", ctypes.c_longlong),
+                    ("links", wintypes.DWORD), ("pending", ctypes.c_ubyte), ("directory", ctypes.c_ubyte)]
+    call = ctypes.WinDLL("kernel32", use_last_error=True).GetFileInformationByHandleEx
+    call.argtypes = [wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD]
+    call.restype = wintypes.BOOL
+    value = Standard()
+    if (not call(msvcrt.get_osfhandle(fd), 1, ctypes.byref(value), ctypes.sizeof(value)) or
+            value.size != observed.st_size or value.links != 1 or value.pending or value.directory):
+        raise ComponentRecipeError("resume FileStandardInfo")
+    return value.allocation
+
+
+def _resume_read_v1(path, cap):
+    return _retention_read_v1(path, cap, _allocation=True)
+
+
+def _resume_descriptor_v1(raw, descriptor):
+    actual = {"size_bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest(),
+              "git_blob": hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()}
+    if (type(descriptor) is not dict or set(descriptor) != set(actual) or
+            type(descriptor["size_bytes"]) is not int or not raw or descriptor != actual):
+        raise ComponentRecipeError("resume descriptor identity")
+
+
+def _resume_index_v1(repo_root, descriptor):
+    raw, _, allocation = _resume_read_v1(Path(repo_root) / RESUME_INDEX_REL_V1, 12288)
+    _resume_descriptor_v1(raw, descriptor)
+    if max(allocation, (len(raw) + 4095) // 4096 * 4096) + (len(raw) + 4095) // 4096 * 4096 + 8192 > 32768:
+        raise ComponentRecipeError("resume index forms bound")
+    try:
+        value = json.loads(raw.decode("ascii"))
+        if canonical_json_v1(value) + b"\n" != raw:
+            raise ValueError("canonical")
+    except (ValueError, UnicodeError, TypeError, RecursionError) as error:
+        raise ComponentRecipeError("resume index encoding") from error
+    from tests.fixtures import accepted_policy_fixture_compiler_gate2_resume_v1 as resume
+    from tests.fixtures import accepted_policy_fixture_compiler_gate2_c_v1 as stage
+    try:
+        stage.validate_resume_retention_index_v1(value, retained_source_bindings_v1(repo_root)["sources"])
+    except (resume.ResumeRefusal, ValueError, TypeError, KeyError, IndexError) as error:
+        raise ComponentRecipeError("resume index schema") from error
+    return value
+
+
+def resume_code_forms_quote_v1(repo_root, *, code, plan, operator, index_descriptor):
+    index = _resume_index_v1(repo_root, index_descriptor)
+    slots, rows = index["source_slots"], index["source_versions"]
+    if type(code) is not dict or set(code) != set(slots[:10]):
+        raise ComponentRecipeError("resume code paths")
+    baseline = {rows[n][0]: rows[n][1:] for n in index["historical_bindings"][0][1]}
+    source_slots, git, working, helpers = set(index["source_form_slots"]), {}, 0, 0
+    for slot, blob, size, digest in rows:
+        if slot in source_slots and [blob, size, digest] != baseline.get(slot):
+            git[(blob, size, digest)] = size
+    for slot, relative in enumerate(slots):
+        cap = {0: 131072, 1: 32768, 10: 40960, 13: 32768}.get(slot, 262144)
+        raw, _, allocation = _resume_read_v1(Path(repo_root) / relative, cap)
+        binding = index["current_bindings"][slot]
+        desc = (code[relative] if slot < 10 else plan if slot == 10 else operator if slot == 13 else
+                dict(zip(("git_blob", "size_bytes", "sha256"), rows[binding][1:])))
+        _resume_descriptor_v1(raw, desc)
+        identity = [desc["git_blob"], len(raw), desc["sha256"]]
+        if binding is not None and identity != rows[binding][1:]:
+            raise ComponentRecipeError("resume fixed source drift")
+        rounded = (len(raw) + 4095) // 4096 * 4096
+        quote = max(allocation, rounded) + 4096
+        if slot in source_slots and identity != baseline.get(slot):
+            working += quote
+            git[tuple(identity)] = len(raw)
+        elif slot in index["outside_helper_slots"]:
+            helpers += quote + rounded + 4096
+        elif quote > rounded + 4096:
+            raise ComponentRecipeError("resume unchanged source allocation")
+    total = working + sum((size + 4095) // 4096 * 4096 + 4096 for size in git.values())
+    if total > RESUME_CODE_FORMS_V1 or helpers > 204800:
+        raise ComponentRecipeError("resume forms bound")
+    return total
+
+
+def verify_resume_retention_v1(repo_root, *, git_observation, index_descriptor):
+    index = _resume_index_v1(repo_root, index_descriptor)
+    prior = verify_prior_retention_v1(repo_root, git_observation=git_observation)
+    from tests.fixtures import accepted_policy_fixture_compiler_gate2_resume_v1 as resume
+    try:
+        native = resume.verify_retained_v1(repo_root, index=index)
+    except resume.ResumeRefusal as error:
+        raise ComponentRecipeError("resume retained forms") from error
+    caps = {"node_count": 70, "native_code_quote_bytes": 586240, "parent_growth_bytes": 8192,
+            "f2_quote_bytes": 4372992, "aux_quote_bytes": 39424,
+            "windows_capture_quote_bytes": 32768, "diagnostic_quote_bytes": 16384}
+    hashes = {"diagnostic_sha256": index["refs"][3][3], "manifest_sha256": index["refs"][4][3]}
+    if (type(native) is not dict or set(native) != set(caps) | set(hashes) | {"physical_acceptance"} or
+            native["physical_acceptance"] is not False or any(native[k] != v for k, v in hashes.items()) or
+            any(type(native[k]) is not int or not 0 <= native[k] <= v for k, v in caps.items()) or
+            native["node_count"] != 70):
+        raise ComponentRecipeError("resume native receipt")
+    return {"schema": "vast_gate2_resume_retention_receipt_v1", "index_sha256": index_descriptor["sha256"],
+            "source_versions_sha256": hashlib.sha256(canonical_json_v1(index["source_versions"])).hexdigest(),
+            "prior": prior, "native": native, "physical_acceptance": False}
 
 
 def _retention_index_v1(repo_root):
@@ -111,7 +248,6 @@ def _retention_index_v1(repo_root):
 
 
 def retained_source_bindings_v1(repo_root):
-    """Pinned historical bindings only; this function makes no Git observation."""
     value = _retention_index_v1(repo_root)
     sources = []
     for name, blob, size, digest in value["src"]:
@@ -127,7 +263,6 @@ def retained_source_bindings_v1(repo_root):
 
 
 def current_code_forms_quote_v1(repo_root, *, code, plan):
-    """Fresh fixed working bytes plus full Git forms for changed historical variants."""
     old = retained_source_bindings_v1(repo_root)["sources"][:11]
     if type(code) is not dict or set(code) != {row["path"] for row in old[:10]}:
         raise ComponentRecipeError("current code paths")
@@ -186,7 +321,6 @@ def _retention_allocation_v1(observation, metadata=256):
 
 
 def validate_prior_retention_receipt_v1(receipt, *, source_rows_sha256):
-    """Validate a bounded observation, without claiming it is a current meter."""
     bounds = {"node_count": 28, "native_quote_bytes": 633856, "windows_quote_bytes": 32768,
               "transcript_quote_bytes": 12288, "owned_upper_bytes": 2102272, "old_f2_upper_bytes": 333056}
     if (type(receipt) is not dict or set(receipt) != set(bounds) | {
@@ -377,7 +511,6 @@ class ComponentRecipeError(ValueError):
 
 
 def component_source_v1(name: str) -> bytes:
-    """Return the pinned source bytes, refusing any drift from the reviewed recipe."""
     if name not in _BUILDERS:
         raise ComponentRecipeError("unknown component source")
     raw = _BUILDERS[name]().encode("ascii")
@@ -399,7 +532,6 @@ def _sha(value: Any) -> bool:
 
 
 def seal_json_v1(path: Path, value: Mapping[str, Any]) -> dict[str, Any]:
-    """Write one fresh canonical sealed descriptor no larger than the owner's 4 KiB cap."""
     raw = canonical_json_v1(dict(value))
     if not 1 <= len(raw) <= SEALED_LIMIT:
         raise ComponentRecipeError("sealed descriptor bound")
@@ -430,7 +562,6 @@ def _review(review: Mapping[str, Any]) -> dict[str, Any]:
 def component_seed_v1(*, review: Mapping[str, Any], bindings: Mapping[str, str], engine: Mapping[str, Any],
                       provider: Mapping[str, Any], environment_keys: list[str], mounts_sha256: str,
                       proofs: Mapping[str, str | None]) -> dict[str, Any]:
-    """Gate-2 component seed with the owner's exact recipe schema (component kind)."""
     if set(bindings) != {"host_sha256", "publisher_sha256", "profile_sha256"} or not all(map(_sha, bindings.values())):
         raise ComponentRecipeError("seed bindings")
     if set(engine) != {"driver", "cgroup_driver", "security_options", "runtimes_sha256"} or not _sha(engine["runtimes_sha256"]):
@@ -456,7 +587,6 @@ def component_admission_v1(*, project_root: Path, review: Mapping[str, Any], see
                            bindings: Mapping[str, str], source_relative: str, source: bytes,
                            executable_relative: str, physical_plan_sha256: str, boot_id: str,
                            now_unix_ns: int | None = None) -> dict[str, Any]:
-    """Component-only admission with the plan's fixed values; sealed just before use."""
     if not _sha(seed_sha256) or not _sha(physical_plan_sha256):
         raise ComponentRecipeError("admission bindings")
     if type(source) is not bytes or not 0 < len(source) <= SOURCE_LIMIT:

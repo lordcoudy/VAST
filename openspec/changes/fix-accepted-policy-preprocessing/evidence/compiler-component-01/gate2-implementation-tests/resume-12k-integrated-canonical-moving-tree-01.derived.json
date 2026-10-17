@@ -1,0 +1,33 @@
+{
+  "changed": [
+    {
+      "after": {
+        "sha256": "d511201f6e6f0d4938c9bcc48d425f7305f8eef3c64a479a3133469f51de3dff",
+        "size_bytes": 152997
+      },
+      "before": {
+        "sha256": "ac19ad7349997a31d9247cc0cba748d8c308a7959e1a930a0e57cc9c55061df6",
+        "size_bytes": 150519
+      },
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py"
+    }
+  ],
+  "counts": {
+    "errors": 0,
+    "expectedFailures": 0,
+    "failures": 0,
+    "skipped": 0,
+    "source_unchanged": false,
+    "successful": true,
+    "testsRun": 751,
+    "unexpectedSuccesses": 0
+  },
+  "original": {
+    "name": "vast-gate2-resume-12k-integrated-canonical-01.original.log",
+    "sha256": "719b9c736fbb898ce37dc143e02703d91ac0824e9dfedd57330447a9cd215638",
+    "size_bytes": 178316
+  },
+  "physical_acceptance": false,
+  "scope": "First complete controlled compiler run; all tests successful but sources changed during run. NOT a frozen candidate qualification. Exit1 intentionally records source_unchanged=false. Preserve full original; final source needs one new combined run.",
+  "utc": "2026-10-17T02:36:48.012436+00:00"
+}

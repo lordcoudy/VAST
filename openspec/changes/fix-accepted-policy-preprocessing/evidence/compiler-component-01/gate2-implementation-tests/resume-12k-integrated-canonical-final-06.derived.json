@@ -1,0 +1,41 @@
+{
+  "argv": [
+    "C:\\Windows\\System32\\wsl.exe",
+    "-d",
+    "Ubuntu",
+    "-u",
+    "s-a-balashov",
+    "--cd",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST",
+    "--exec",
+    "/usr/bin/python3",
+    "-B",
+    "-c",
+    "import sys,runpy;sys.path.insert(0,'.');runpy.run_path(sys.argv[1],run_name='__main__')",
+    "/mnt/c/Users/s-a-balashov/AppData/Local/Temp/vast-gate2-resume-12k-integrated-regression-runner-01.py"
+  ],
+  "errors": 0,
+  "exit_code": 0,
+  "expectedFailures": 0,
+  "failures": 0,
+  "physical_acceptance": false,
+  "pinned_final_sources": {
+    "tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py": "5fd7d2d6ee62ff584d2a4662757ca804a3d3300d30bb966319901870c4c85670",
+    "tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py": "a546ce6628b5c98f3cd2fa220afa28987a068604c788cb914d87e820650f55b3",
+    "tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py": "1c7f801bc7bafea1bfb47ac7667b22b3555b6757927158730e4128afea91288c",
+    "tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py": "d679c84cd5f0e35688cf818fcc6519f7419129e5d197643ea2a40f269569c01c"
+  },
+  "raw": {
+    "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-gate2-resume-12k-integrated-canonical-06.original.log",
+    "sha256": "9395a0578bf4182e63899ea581c3e3c2746001c6f8be2e94d47428477715c224",
+    "size_bytes": 182713
+  },
+  "scope": "Frozen exact hostpayload union/explicitLF source pin plusstrictrecords controlled regression; no physical acceptance",
+  "skipped": 0,
+  "source_count": 36,
+  "source_unchanged": true,
+  "successful": true,
+  "testsRun": 777,
+  "unexpectedSuccesses": 0,
+  "utc": "2026-10-17T04:05:48.443644+00:00"
+}

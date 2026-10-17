@@ -1,4 +1,6 @@
 """Fixed invocation/prefix tests with controlled external effects only."""
+import ast
+import base64
 import hashlib
 import io
 import json
@@ -7,6 +9,7 @@ import sys
 import subprocess
 import tempfile
 import unittest
+import zlib
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
@@ -18,6 +21,77 @@ ROOT = "/home/s-a-balashov/work/vast-fixture-compiler-gate2-" + COMMIT + "-01"
 
 
 class InvocationTests(unittest.TestCase):
+    def setUp(self):
+        owned = tempfile.TemporaryDirectory()
+        self.addCleanup(owned.cleanup)
+        probe = patch.object(c, "RESUME_ROOT_V1", Path(owned.name).resolve() / "absent-r1", create=True)
+        probe.start()
+        self.addCleanup(probe.stop)
+
+    def resume_packet(self, root):
+        producer = "465ab7986939c67ae3594344ee3b6266cd2abd7a"
+        return {"schema_version": 1, "artifact_kind": "vast_fixture_compiler_gate2_packet_v1",
+                "project_root": str(root), "code_commit": COMMIT,
+                "resume_context": {"schema_version": 1, "producer_commit": producer,
+                    "owner_project_root": str(root.parent), "project_root": str(root),
+                    "consumer_commit": COMMIT}}
+
+    def test_resume_candidate_derives_only_child_completion_paths_and_existing_five_kwargs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / "retained465" / "r1"
+            root.mkdir(parents=True)
+            raw = json.dumps(self.resume_packet(root), sort_keys=True, separators=(",", ":")).encode()
+            (root / "gate2.packet.original.json").write_bytes(raw)
+            with patch.object(c, "RESUME_ROOT_V1", root, create=True), \
+                    patch.object(c, "RESUME_OWNER_ROOT_V1", root.parent, create=True):
+                kw = c.parse_native_invocation_v1([COMMIT, str(len(raw)), hashlib.sha256(raw).hexdigest(),
+                                                   ",".join(["456:" + SHA] * 6)], stage="D")
+            self.assertEqual(set(kw), {"project_root", "packet_descriptor", "expected_packet_sha256",
+                                     "expected_code_commit", "completion_authorities"})
+            self.assertEqual(kw["project_root"], str(root))
+            self.assertEqual(kw["completion_authorities"]["C6"]["path"],
+                             str(root / "outputs/C6/outer.invocation.original.json"))
+
+    def test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / "retained465" / "r1"
+            root.mkdir(parents=True)
+            for mutation in (lambda p: p.update(code_commit="f" * 40),
+                             lambda p: p.update(project_root=str(root.parent)),
+                             lambda p: p.pop("resume_context"),
+                             lambda p: p["resume_context"].update(producer_commit="e" * 40),
+                             lambda p: p["resume_context"].update(consumer_commit="e" * 40),
+                             lambda p: p["resume_context"].update(owner_project_root=str(root)),
+                             lambda p: p["resume_context"].update(schema_version=True)):
+                packet = self.resume_packet(root)
+                mutation(packet)
+                raw = json.dumps(packet, sort_keys=True, separators=(",", ":")).encode()
+                (root / "gate2.packet.original.json").write_bytes(raw)
+                with self.subTest(mutation=mutation), \
+                        patch.object(c, "RESUME_ROOT_V1", root, create=True), \
+                        patch.object(c, "RESUME_OWNER_ROOT_V1", root.parent, create=True), \
+                        self.assertRaises(c.Gate2Refusal):
+                    c.parse_native_invocation_v1([COMMIT, str(len(raw)), hashlib.sha256(raw).hexdigest(), "-"], stage="C1")
+            raw = json.dumps(self.resume_packet(root), sort_keys=True, separators=(",", ":")).encode()
+            (root / "gate2.packet.original.json").write_bytes(raw)
+            for size, digest in ((len(raw) + 1, hashlib.sha256(raw).hexdigest()), (len(raw), "0" * 64)):
+                with self.subTest(size=size, digest=digest), \
+                        patch.object(c, "RESUME_ROOT_V1", root, create=True), \
+                        patch.object(c, "RESUME_OWNER_ROOT_V1", root.parent, create=True), \
+                        self.assertRaises(c.Gate2Refusal):
+                    c.parse_native_invocation_v1([COMMIT, str(size), digest, "-"], stage="C1")
+
+    def test_c_native_d_branch_uses_canonical_unchanged_d_and_never_c_run_or_completion(self):
+        from tests.fixtures import accepted_policy_fixture_compiler_gate2_d_v1 as d
+        args = [COMMIT, "1234", SHA, ",".join(["456:" + SHA] * 6)]
+        with patch.object(d, "native_main_v1", return_value=7) as run_d, \
+                patch.object(c, "run_c_v1") as run_c, patch.object(c, "complete_c_invocation_v1") as complete, \
+                patch.object(c.os, "write"):
+            self.assertEqual(c.native_main_v1(["D"] + args), 7)
+        run_d.assert_called_once_with(args)
+        run_c.assert_not_called()
+        complete.assert_not_called()
+
     def test_fixed_external_args_derive_only_approved_prior_paths(self):
         kw = c.parse_native_invocation_v1([COMMIT, "1234", SHA, "-"], stage="C1")
         self.assertEqual(kw["project_root"], ROOT)
@@ -155,6 +229,147 @@ class InvocationTests(unittest.TestCase):
         complete.assert_not_called()
         self.assertEqual(write.call_args.args[0], 2)
         self.assertLessEqual(len(write.call_args.args[1]), 768)
+
+    def test_resume_actual_completion_and_all_observed_tool_frames_fit_four_kib(self):
+        repo=Path(c.__file__).resolve().parents[2]
+        operator='tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py'
+        source=(repo/operator).read_bytes()
+        bootstrap=ast.literal_eval(next(node.value for node in ast.parse(source).body
+            if isinstance(node,ast.Assign) and any(isinstance(target,ast.Name) and
+                target.id=='NATIVE_BOOTSTRAP' for target in node.targets)))
+        packed=base64.b85encode(zlib.compress(bootstrap.encode('ascii'),9))
+        carrier="import base64,zlib;exec(zlib.decompress(base64.b85decode('"+packed.decode('ascii')+"')))"
+        self.assertLessEqual(len(packed),2048);self.assertLessEqual(len(bootstrap.encode('ascii')),2048)
+        decoded=zlib.decompress(base64.b85decode(packed))
+        self.assertEqual(decoded,bootstrap.encode('ascii'))
+        self.assertEqual(hashlib.sha256(decoded).hexdigest(),hashlib.sha256(bootstrap.encode('ascii')).hexdigest())
+        ast.parse(carrier,feature_version=(3,10))
+        descriptor={'size_bytes':len(source),'sha256':hashlib.sha256(source).hexdigest(),
+            'git_blob':hashlib.sha1(b'blob '+str(len(source)).encode()+b'\0'+source).hexdigest()}
+        header=c.component.canonical_json_v1({'current':{operator:descriptor}}).decode('ascii')
+        measurements=[]
+        with tempfile.TemporaryDirectory() as tmp:
+            base=Path(tmp).resolve()
+            root=base/('n'*(98-len(str(base))-1))
+            root.mkdir();self.assertEqual(len(str(root)),98)
+            for name,count in (('C6',5),('C5',4)):
+                output=root/'outputs'/name;output.mkdir(parents=True)
+                record=c._invocation_record_v1(name,COMMIT,SHA,'c'*64,'d'*64,'e'*64)
+                deadline=2**64-1
+                completion=dict(c.write_record_v1(output/'outer.invocation.original.json',record,
+                    cap=8192,absolute_deadline_ns=deadline,return_facts=True),
+                    completion_deadline_ns=deadline,external_approval=False)
+                args=[COMMIT,'32768',SHA,','.join('8192:'+('%064x'%n) for n in range(1,count+1))]
+                outputs={1:b'',2:b''}
+                def write(fd,raw):outputs[fd]+=raw;return len(raw)
+                with patch.object(c,'parse_native_invocation_v1',return_value={'project_root':str(root),
+                        'expected_packet_sha256':SHA,'expected_code_commit':COMMIT}), \
+                     patch.object(c,'run_c_v1',return_value={}), \
+                     patch.object(c,'complete_c_invocation_v1',return_value=completion), \
+                     patch.object(c.os,'write',side_effect=write), \
+                     patch.object(c.time,'monotonic_ns',side_effect=[deadline-1,deadline]):
+                    self.assertEqual(c.native_main_v1([name]+args),1)
+                self.assertTrue(outputs[1]);self.assertTrue(outputs[2])
+                self.assertEqual(json.loads(outputs[1]),completion)
+                self.assertEqual(json.loads(outputs[2])['cause'],'native_stdout_deadline')
+                success={1:b'',2:b''}
+                def write_success(fd,raw):success[fd]+=raw;return len(raw)
+                with patch.object(c,'parse_native_invocation_v1',return_value={'project_root':str(root),
+                        'expected_packet_sha256':SHA,'expected_code_commit':COMMIT}), \
+                     patch.object(c,'run_c_v1',return_value={}), \
+                     patch.object(c,'complete_c_invocation_v1',return_value=completion), \
+                     patch.object(c.os,'write',side_effect=write_success), \
+                     patch.object(c.time,'monotonic_ns',return_value=deadline-1):
+                    self.assertEqual(c.native_main_v1([name]+args),0)
+                self.assertEqual(success[1],outputs[1]);self.assertEqual(success[2],b'')
+                command="$h='"+header+"'\n$h | & C:/Windows/System32/wsl.exe -d Ubuntu -u s-a-balashov --cd / --exec /usr/bin/python3 -I -S -B -c '"+carrier.replace("'","''")+"' '"+name+"' '"+"' '".join(args)+"'\nexit $LASTEXITCODE"
+                arguments={'cmd':command,'workdir':'C:/','login':False,'yield_time_ms':30000}
+                code="text(await tools.exec_command("+c.component.canonical_json_v1(arguments).decode('ascii')+"));"
+                calls=[{'tool':'functions.exec','code':code}]
+                frames=[]
+                # This qualifies exactly two actual tool calls. Trustworthy
+                # original-remaining-time admission is a separate physical gate.
+                for elapsed in (30000,):
+                    frames.append({'chunk_id':'a'*64,'wall_time_seconds':99999.999999,
+                        'session_id':2147483647,'original_token_count':2147483647,'exit_code':None,'output':''})
+                    remaining=150000-elapsed
+                    self.assertGreaterEqual(remaining,5000)
+                    poll={'session_id':2147483647,'yield_time_ms':min(120000,remaining)}
+                    code="text(await tools.write_stdin("+c.component.canonical_json_v1(poll).decode('ascii')+"));"
+                    calls.append({'tool':'functions.exec','code':code})
+                frames.append({'chunk_id':'a'*64,'wall_time_seconds':99999.999999,'exit_code':1,
+                    'original_token_count':2147483647,'session_id':None,
+                    'output':(outputs[1]+outputs[2]).decode('ascii')})
+                collection={'call':{'tool':'functions.exec','codes':[row['code'] for row in calls]},'frames':frames}
+                expanded={'calls':[{'tool':collection['call']['tool'],'code':code}
+                    for code in collection['call']['codes']],'frames':collection['frames']}
+                self.assertEqual(c.component.canonical_json_v1(expanded),c.component.canonical_json_v1({'calls':calls,'frames':frames}))
+                self.assertEqual(len(calls),2);self.assertEqual(len(frames),2)
+                self.assertLess(len(outputs[1])+len(outputs[2]),10000) # tool defaults exceed both bounded producer channels
+                raw=c.component.canonical_json_v1(collection)
+                print(json.dumps({'resume_c_complete_frame_geometry':{'stage':name,
+                    'call_bytes':sum(len(c.component.canonical_json_v1(row)) for row in calls),
+                    'stdout_bytes':len(outputs[1]),'stderr_bytes':len(outputs[2]),
+                    'frame_bytes':len(raw),'frame_count':len(frames),'physical_clock_admission_pending':True}}))
+                measurements.append((name,len(raw)))
+                for kind in ('success','failure','split','unicode_quotes','unknown','overbound'):
+                    candidate=json.loads(c.component.canonical_json_v1(collection))
+                    if kind=='success':candidate['frames'][-1].update(output=success[1].decode('ascii'),exit_code=0)
+                    elif kind=='failure':candidate['frames'][-1]['output']=outputs[2].decode('ascii')
+                    elif kind=='split':
+                        candidate['frames'][0]['output']=outputs[1][:17].decode('ascii')
+                        candidate['frames'][-1]['output']=(outputs[1][17:]+outputs[2]).decode('ascii')
+                    elif kind=='unicode_quotes':candidate['frames'][-1]['output']+='"'+chr(0x1f4a5)
+                    elif kind=='unknown':candidate['frames'][-1].update(exit_code=None,session_id=2147483647)
+                    elif kind=='overbound':candidate['frames'][-1]['output']+='x'*4097
+                    selected=c.component.canonical_json_v1(candidate)
+                    combined=''.join(frame['output'] for frame in candidate['frames'])
+                    status_success=(candidate['frames'][-1].get('exit_code')==0 and
+                        candidate['frames'][-1].get('session_id') is None and combined==success[1].decode('ascii'))
+                    self.assertEqual(status_success,kind=='success')
+                    def preopen(value):
+                        encoded=c.component.canonical_json_v1(value)
+                        c._require(len(encoded)<=4096,'outer_complete_bound')
+                        return (root/'selected.original.json').open('xb')
+                    if len(selected)>4096:
+                        with self.subTest(stage=name,kind=kind),patch.object(Path,'open') as opened:
+                            with self.assertRaisesRegex(c.Gate2Refusal,'outer_complete_bound'):preopen(candidate)
+                            opened.assert_not_called()
+                    else:
+                        self.assertEqual(json.loads(selected),candidate)
+                        self.assertEqual(combined,
+                            (outputs[1]+outputs[2]).decode('ascii') if kind=='split' else candidate['frames'][-1]['output'])
+                for elapsed in (145001,149999,150000,150001):
+                    with self.assertRaisesRegex(c.Gate2Refusal,'outer_deadline'):
+                        c._require(150000-elapsed>=5000,'outer_deadline')
+        self.assertTrue(all(size<=4096 for _,size in measurements),measurements)
+
+    def test_resume_compressed_carrier_executes_the_same_verified_expired_bootstrap(self):
+        from types import SimpleNamespace
+        from tests.test_accepted_policy_fixture_compiler_gate2_resume_v1 import ResumeBoundaries,subject
+        results=[]
+        for compressed in (False,True):
+            m=subject();repo=Path(__file__).resolve().parents[1]
+            current={name:m.source_descriptor_v1((repo/name).read_bytes()) for name in m.SOURCE_PATHS}
+            payload={'current':current,'global_deadline_ns':0,'phase_deadline_ns':0,'context':{'boot_id':'unused'}}
+            packed=base64.b85encode(zlib.compress(m.NATIVE_BOOTSTRAP.encode('ascii'),9))
+            program="import base64,zlib;exec(zlib.decompress(base64.b85decode('"+packed.decode('ascii')+"')))" if compressed else m.NATIVE_BOOTSTRAP
+            saved=dict(sys.modules);writes=[]
+            try:
+                for module in ('tests','tests.fixtures')+tuple(name for name,_ in m.MODULES):sys.modules.pop(module,None)
+                with ResumeBoundaries().native_files(m),patch.object(sys,'argv',['python','FINAL']), \
+                     patch.object(sys,'stdin',SimpleNamespace(buffer=io.BytesIO(m.canonical(payload)+b'\n'))), \
+                     patch.object(m.os,'write',side_effect=lambda fd,raw:writes.append((fd,raw)) or len(raw)), \
+                     patch.object(m.subprocess,'Popen',side_effect=AssertionError('native process effect')):
+                    with self.assertRaises(SystemExit) as stopped:exec(program,{'__name__':'controlled_carrier'})
+                self.assertEqual(stopped.exception.code,1)
+                self.assertEqual([fd for fd,raw in writes],[2])
+                self.assertEqual(json.loads(writes[0][1])['cause'],'native_late_boot')
+                results.append(writes)
+            finally:
+                for module in set(sys.modules)-set(saved):sys.modules.pop(module,None)
+                sys.modules.update(saved)
+        self.assertEqual(results[0],results[1])
 
 
 class GuardPrefixTests(unittest.TestCase):

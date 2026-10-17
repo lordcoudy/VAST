@@ -1,0 +1,20 @@
+CONTROLLED_NODE_RUNTIME /mnt/c/Program Files/nodejs/node.exe v25.2.1
+CONTROLLED_NODE_QUOTE 16883 7553 5508 1635 9629
+......E............
+======================================================================
+ERROR: test_node_complete_six_call_collection_geometry (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_node_complete_six_call_collection_geometry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 459, in test_node_complete_six_call_collection_geometry
+    full=m.outer_collection_v1(call,frames)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 66, in outer_collection_v1
+    need(len(raw)<=8192,'outer_complete_bound')
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 37, in need
+    raise ResumeRefusal(cause,facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: outer_complete_bound
+
+----------------------------------------------------------------------
+Ran 19 tests in 8.035s
+
+FAILED (errors=1)
