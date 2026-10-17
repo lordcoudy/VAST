@@ -1,0 +1,13 @@
+{
+  "held_first_actual_tool_result": {
+    "content": [
+      {
+        "text": "{\n  scope: 'builtins-only-no-child-no-project-read',\n  perfNow: 'function',\n  brotli: 'function',\n  inflate: 'function',\n  spawn: 'function',\n  hash: 'function',\n  persistentPriorFD3: false\n}",
+        "type": "text"
+      }
+    ],
+    "isError": false
+  },
+  "physical_acceptance": false,
+  "scope": "Actual persistent mcp node_repl builtin availability only; no new child or project read. A second actual call reused builtin bindings. The guessed gate2AbiChild binding check was not the original prefix child variable and does not establish a reset. No actual setup gate2Resume state was created."
+}

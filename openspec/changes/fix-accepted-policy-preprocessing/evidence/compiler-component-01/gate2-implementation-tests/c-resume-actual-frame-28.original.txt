@@ -1,0 +1,17 @@
+controlled exact current C bootstrap caller + actual owned 98char C completion writer facts; C6 terminal/C5 poll geometry; no native commands
+test_resume_actual_completion_and_all_observed_tool_frames_fit_four_kib (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_resume_actual_completion_and_all_observed_tool_frames_fit_four_kib) ... FAIL
+
+======================================================================
+FAIL: test_resume_actual_completion_and_all_observed_tool_frames_fit_four_kib (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_resume_actual_completion_and_all_observed_tool_frames_fit_four_kib)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 287, in test_resume_actual_completion_and_all_observed_tool_frames_fit_four_kib
+    self.assertTrue(all(size<=4096 for _,size in measurements),measurements)
+AssertionError: False is not true : [('C6', 3790), ('C5', 4111)]
+
+----------------------------------------------------------------------
+Ran 1 test in 0.020s
+
+FAILED (failures=1)
+{"resume_c_complete_frame_geometry": {"stage": "C6", "call_bytes": 2387, "stdout_bytes": 725, "stderr_bytes": 388, "frame_bytes": 3790, "frame_count": 1}}
+{"resume_c_complete_frame_geometry": {"stage": "C5", "call_bytes": 2527, "stdout_bytes": 725, "stderr_bytes": 388, "frame_bytes": 4111, "frame_count": 2}}

@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 165, in <module>
+    main()
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 122, in main
+    with prepared_complete_fixture_inputs_v2(
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/tests/fixtures/accepted_policy_physical_fixture_v2.py", line 105, in prepared_complete_fixture_inputs_v2
+    capture = prepare_stock_operational_capture_plan_v1(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_operational_stock_operations_v1.py", line 177, in prepare_stock_operational_capture_plan_v1
+    source_ref = _json_write(custody, source_dir / (identity + ".source-plan.json"), plan)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_operational_stock_operations_v1.py", line 90, in _json_write
+    descriptor = custody.write_exclusive(path, raw, label="original stock operational source", mode=0o444)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_physical_io_v1.py", line 2621, in write_exclusive
+    descriptor, _identity = self.write_exclusive_identity(
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_physical_io_v1.py", line 2644, in write_exclusive_identity
+    descriptor, identity = self._write_exclusive_posix(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_physical_io_v1.py", line 2739, in _write_exclusive_posix
+    self._require_epochs(
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_physical_io_v1.py", line 403, in _require_epochs
+    _require(
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_physical_io_v1.py", line 92, in _require
+    raise PublicationPhysicalIoV1Error(message)
+publication_physical_io_v1.PublicationPhysicalIoV1Error: original stock operational source parent directory mutated during custody

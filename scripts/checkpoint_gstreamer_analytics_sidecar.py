@@ -156,13 +156,14 @@ _WSL2_OSRELEASE_MARKER = "-microsoft-standard-WSL2"
 _WSL2_OSRELEASE_RE = re.compile(
     r"[1-9][0-9]{0,2}(?:\.[0-9]{1,3}){2,3}-microsoft-standard-WSL2\Z"
 )
-_DOCKER_DESKTOP_SERVER_VERSION = "29.7.2"
-# Explicit observed builds for the exact server/platform checks below. Keep the
-# actual commit in evidence so historical observations retain their identities.
-_DOCKER_DESKTOP_CONTAINERD_COMMIT_IDS = (
-    "e53c7c1516c3b2bff98eb76f1f4117477e6f4e66",
-    "aad11006b869517fcd3009450b6f82da282e1a9b",
-)
+# Explicit observed Docker Desktop builds: containerd commit -> ServerVersion.
+# Each accepted pair is exact; keep the actual pair in evidence so historical
+# observations retain their identities.
+_DOCKER_DESKTOP_SERVER_VERSION_BY_CONTAINERD_COMMIT = {
+    "e53c7c1516c3b2bff98eb76f1f4117477e6f4e66": "29.7.2",
+    "aad11006b869517fcd3009450b6f82da282e1a9b": "29.7.2",
+    "1294c24a7da8e5a793ed378161673abe94118892": "29.8.1",
+}
 _DOCKER_DESKTOP_REQUIRED_RUNTIMES = (
     "io.containerd.runc.v2",
     "nvidia",
@@ -1183,7 +1184,7 @@ def _docker_desktop_platform_projection(
         isinstance(containerd_commit, Mapping)
         and type(containerd_commit.get("ID")) is str
         and containerd_commit.get("ID")
-        in _DOCKER_DESKTOP_CONTAINERD_COMMIT_IDS,
+        in _DOCKER_DESKTOP_SERVER_VERSION_BY_CONTAINERD_COMMIT,
         "Docker Desktop containerd commit drifted",
     )
     projection = {
@@ -1206,7 +1207,9 @@ def _docker_desktop_platform_projection(
             "name": "docker-desktop",
             "operating_system": "Docker Desktop",
             "kernel_version": osrelease,
-            "server_version": _DOCKER_DESKTOP_SERVER_VERSION,
+            "server_version": _DOCKER_DESKTOP_SERVER_VERSION_BY_CONTAINERD_COMMIT[
+                containerd_commit["ID"]
+            ],
             "os_type": "linux",
             "driver": "overlayfs",
             "driver_status": [["driver-type", "io.containerd.snapshotter.v1"]],
@@ -1352,7 +1355,7 @@ def _validate_peercred_pid0_platform_observation(
     )
     _require(
         type(containerd_commit.get("ID")) is str
-        and containerd_commit["ID"] in _DOCKER_DESKTOP_CONTAINERD_COMMIT_IDS,
+        and containerd_commit["ID"] in _DOCKER_DESKTOP_SERVER_VERSION_BY_CONTAINERD_COMMIT,
         "Docker Desktop containerd commit drifted",
     )
     _require(
@@ -1361,7 +1364,9 @@ def _validate_peercred_pid0_platform_observation(
             "name": "docker-desktop",
             "operating_system": "Docker Desktop",
             "kernel_version": osrelease,
-            "server_version": _DOCKER_DESKTOP_SERVER_VERSION,
+            "server_version": _DOCKER_DESKTOP_SERVER_VERSION_BY_CONTAINERD_COMMIT[
+                containerd_commit["ID"]
+            ],
             "os_type": "linux",
             "driver": "overlayfs",
             "driver_status": [["driver-type", "io.containerd.snapshotter.v1"]],

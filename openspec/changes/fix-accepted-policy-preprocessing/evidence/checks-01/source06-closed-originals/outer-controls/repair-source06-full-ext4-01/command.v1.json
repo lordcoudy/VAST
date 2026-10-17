@@ -1,0 +1,8 @@
+{
+  "no_concurrent_consumer_or_live_lane": true,
+  "program": "set -euo pipefail\nSHA=06c828ce798d3454f1d4b8a992aed7133882b5a1\nROOT=/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-$SHA\nE=$ROOT/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01\nexport VAST_REPAIR_CHECK_ROOT=\"$ROOT\"\n[[ -z \"$(docker ps --all -q)\" ]]\n[[ -z \"$(nvidia-smi --query-compute-apps=pid --format=csv,noheader)\" ]]\n[[ \"$(docker info --format '{{.ID}}')\" == aa8f3d33-e1dc-4ed2-ad06-488b46b332d0 ]]\n[[ \"$(sha256sum \"$E/run_ext4_suite.sh\" | cut -d ' ' -f1)\" == 045cdded701dfb59100ce600344079f615a7be5991778befa4123eb209cb106d ]]\ndate -u +%FT%TZ\nbash \"$E/run_ext4_suite.sh\" \"$SHA\" \\\n  8b9111ab5855bf73b0bac2532599b1a77d36235e05a544d0a08c47cdbcaac0e7 \\\n  b0a38ba5e6a26194eb69f147a369f4851b408e541fa7eb46c703e88fdf55b28d \\\n  9b38ca696ee662bcd26f78a293f899fb6333b581670f486a5c9cfae4f9e48d45\ndate -u +%FT%TZ\nprintf 'FULL_EXT4_SUITE_COMPLETE\\n'",
+  "ci_planning_allowance_bytes": 9663676416,
+  "planning_allowance_is_not_peak_measurement_or_quota": true,
+  "started_utc": "2026-10-12T09:50:08.3051519Z",
+  "c_free_before": 83459121152
+}

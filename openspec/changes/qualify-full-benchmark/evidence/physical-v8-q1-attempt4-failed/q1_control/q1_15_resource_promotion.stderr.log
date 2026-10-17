@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/full_resource_qualification.py", line 1389, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/full_resource_qualification.py", line 1379, in main
+    result = promote_full_resource_qualification(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/full_resource_qualification.py", line 1284, in promote_full_resource_qualification
+    raise FullResourceQualificationError(
+FullResourceQualificationError: full-resource qualification is blocked: qualification index must remain under project_root

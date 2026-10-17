@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "cmake",
+    "-S",
+    "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-ci-06c828ce798d3454f1d4b8a992aed7133882b5a1",
+    "-B",
+    "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/artifacts/accepted_policy_repair_20261011a/checks-01/ext4-06c828ce798d3454f1d4b8a992aed7133882b5a1/original/build",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DVAST_BUILD_CUSTOM_CUDA_QT=OFF",
+    "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/artifacts/accepted_policy_repair_20261011a/checks-01/ext4-06c828ce798d3454f1d4b8a992aed7133882b5a1/original/build/bin",
+    "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/artifacts/accepted_policy_repair_20261011a/checks-01/ext4-06c828ce798d3454f1d4b8a992aed7133882b5a1/original/build/lib"
+  ],
+  "cleanup_error": null,
+  "elapsed_s": 2.7199932009680197,
+  "returncode": 0,
+  "timed_out": false
+}

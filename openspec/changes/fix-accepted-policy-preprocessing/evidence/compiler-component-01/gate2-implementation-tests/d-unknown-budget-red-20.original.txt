@@ -1,0 +1,39 @@
+FFF
+======================================================================
+FAIL: test_post_child_native_floor_read_error_preserves_closure_without_fresh_receipt (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_post_child_native_floor_read_error_preserves_closure_without_fresh_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 634, in test_post_child_native_floor_read_error_preserves_closure_without_fresh_receipt
+    self.assertEqual(caught.exception.cause,'d_floor_measurement_unknown')
+AssertionError: 'd_component_failed' != 'd_floor_measurement_unknown'
+- d_component_failed
++ d_floor_measurement_unknown
+
+
+======================================================================
+FAIL: test_transient_allocation_stat_error_cannot_start_fresh_receipt (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_transient_allocation_stat_error_cannot_start_fresh_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 656, in test_transient_allocation_stat_error_cannot_start_fresh_receipt
+    self.assertEqual(caught.exception.cause,'d_control_allocation_unknown')
+AssertionError: 'd_component_failed' != 'd_control_allocation_unknown'
+- d_component_failed
++ d_control_allocation_unknown
+
+
+======================================================================
+FAIL: test_transient_allocation_walk_error_cannot_be_silently_omitted (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_transient_allocation_walk_error_cannot_be_silently_omitted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 671, in test_transient_allocation_walk_error_cannot_be_silently_omitted
+    copied.assert_not_called();self.assertEqual(self.calls,[])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected '_copy_c1_elf_v1' to not have been called. Called 1 times.
+Calls: [call(PosixPath('/tmp/tmpjn1juk9y'), {'elf_path': '/tmp/tmpjn1juk9y/outputs/C1/engine.compiler-originals/engine.unaccepted', 'elf_size_bytes': 4096, 'elf_sha256': 'c8d91504acf1eac901380031bb7ddb401e71337df1b88d131126fece5bcb01d3', 'source_sha256': '482f7cd36b3be914a9655ef772e73f0b988e2b3aea843ac121a941ce09cd2e4b', 'receipt_sha256': 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 'all_cids': ['0000000000000000000000000000000000000000000000000000000000000001', '0000000000000000000000000000000000000000000000000000000000000002', '0000000000000000000000000000000000000000000000000000000000000003', '0000000000000000000000000000000000000000000000000000000000000004', '0000000000000000000000000000000000000000000000000000000000000005', '0000000000000000000000000000000000000000000000000000000000000006', '0000000000000000000000000000000000000000000000000000000000000007', '0000000000000000000000000000000000000000000000000000000000000008', '0000000000000000000000000000000000000000000000000000000000000009'], 'remaining_seal_bytes': 419430400, 'last_after_measurement': {'c_free_bytes': 75161927680, 'project_free_bytes': 107374182400, 'ext4_used_bytes': 322122547200}, 'last_tail_credit_bytes': 0}, PosixPath('/tmp/tmpjn1juk9y/outputs/D/engine'), clock=<function run_d_v1.<locals>.clock at 0x74a5aaab22a0>, deadline=11000000000)].
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.050s
+
+FAILED (failures=3)

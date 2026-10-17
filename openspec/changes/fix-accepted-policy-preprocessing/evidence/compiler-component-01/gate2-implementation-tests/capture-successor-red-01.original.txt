@@ -1,0 +1,711 @@
+............FFFF.F..F..FFFFF.FFFFFFFFFFFFFFFFF.FFFF.......
+======================================================================
+FAIL: test_fixed_pre_meter_authenticates_two_source_forms_without_retired_draft_inputs (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_fixed_pre_meter_authenticates_two_source_forms_without_retired_draft_inputs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 654, in test_fixed_pre_meter_authenticates_two_source_forms_without_retired_draft_inputs
+    result=self.execute(capture.PRE_METER,self.pre_payload())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 621, in execute
+    exec(compile(source.replace("__REVIEWED_COMMIT__",COMMIT),"<fixed-controlled-meter>","exec"),{})
+  File "<fixed-controlled-meter>", line 59, in <module>
+AssertionError
+
+======================================================================
+FAIL: test_packet_retention_or_actual_authority_descriptor_drift_refuses (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_packet_retention_or_actual_authority_descriptor_drift_refuses) (field='prior_retention')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 697, in test_packet_retention_or_actual_authority_descriptor_drift_refuses
+    with self.subTest(field=field),self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
+AssertionError: AssertionError not raised
+
+======================================================================
+FAIL: test_packet_retention_or_actual_authority_descriptor_drift_refuses (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_packet_retention_or_actual_authority_descriptor_drift_refuses) (field='operator_authority')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 697, in test_packet_retention_or_actual_authority_descriptor_drift_refuses
+    with self.subTest(field=field),self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
+AssertionError: AssertionError not raised
+
+======================================================================
+FAIL: test_post_meter_adds_prior_carry_after_new_operation_max_exactly_once (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_post_meter_adds_prior_carry_after_new_operation_max_exactly_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 686, in test_post_meter_adds_prior_carry_after_new_operation_max_exactly_once
+    self.assertEqual(result["required_charge_bytes"],expected)
+AssertionError: 34432000 != 40723456
+
+======================================================================
+FAIL: test_post_meter_private_footer_and_active_f2_cap_are_enforced (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_post_meter_private_footer_and_active_f2_cap_are_enforced)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 707, in test_post_meter_private_footer_and_active_f2_cap_are_enforced
+    with self.assertRaises(AssertionError): self.execute(capture.POST_METER,payload)
+AssertionError: AssertionError not raised
+
+======================================================================
+FAIL: test_pre_meter_retained_raw_drift_or_unknown_allocation_refuses (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_pre_meter_retained_raw_drift_or_unknown_allocation_refuses)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 666, in test_pre_meter_retained_raw_drift_or_unknown_allocation_refuses
+    with self.assertRaises(component.ComponentRecipeError): self.execute(capture.PRE_METER,self.pre_payload())
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 621, in execute
+    exec(compile(source.replace("__REVIEWED_COMMIT__",COMMIT),"<fixed-controlled-meter>","exec"),{})
+  File "<fixed-controlled-meter>", line 59, in <module>
+AssertionError
+
+======================================================================
+FAIL: test_combined_large_failure_prefixes_fit_admitted_all_forms_and_start_no_status_or_meter (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_combined_large_failure_prefixes_fit_admitted_all_forms_and_start_no_status_or_meter)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 438, in test_combined_large_failure_prefixes_fit_admitted_all_forms_and_start_no_status_or_meter
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_complete_real_orchestration_preserves_exact_prefix_and_nonaccepting_status (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_complete_real_orchestration_preserves_exact_prefix_and_nonaccepting_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 360, in test_complete_real_orchestration_preserves_exact_prefix_and_nonaccepting_status
+    returned=capture.run_capture_v1(COMMIT,APPROVAL)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_forged_summary_stops_before_post_meter (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_forged_summary_stops_before_post_meter)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 426, in test_forged_summary_stops_before_post_meter
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_incomplete_eof_and_unknown_return_prevent_post_meter (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_incomplete_eof_and_unknown_return_prevent_post_meter)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 497, in test_incomplete_eof_and_unknown_return_prevent_post_meter
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_late_post_metric_prevents_status_open (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_late_post_metric_prevents_status_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 484, in test_late_post_metric_prevents_status_open
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 480, in late
+    result=original(after=after,payload=payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_nonzero_os_status_stops_before_post_meter_even_if_summary_claims_success (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_nonzero_os_status_stops_before_post_meter_even_if_summary_claims_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 432, in test_nonzero_os_status_stops_before_post_meter_even_if_summary_claims_success
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_post_meter_floor_and_actual_form_bounds_prevent_status_write (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_post_meter_floor_and_actual_form_bounds_prevent_status_write) (field='project_free_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 459, in test_post_meter_floor_and_actual_form_bounds_prevent_status_write
+    self.run_denied_after_post(value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 464, in run_denied_after_post
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_post_meter_floor_and_actual_form_bounds_prevent_status_write (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_post_meter_floor_and_actual_form_bounds_prevent_status_write) (field='capture_all_forms_upper_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 459, in test_post_meter_floor_and_actual_form_bounds_prevent_status_write
+    self.run_denied_after_post(value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 464, in run_denied_after_post
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_post_meter_floor_and_actual_form_bounds_prevent_status_write (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_post_meter_floor_and_actual_form_bounds_prevent_status_write) (field='outside_upper_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 459, in test_post_meter_floor_and_actual_form_bounds_prevent_status_write
+    self.run_denied_after_post(value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 464, in run_denied_after_post
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_post_meter_floor_and_actual_form_bounds_prevent_status_write (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_post_meter_floor_and_actual_form_bounds_prevent_status_write) (field='root_allocated_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 459, in test_post_meter_floor_and_actual_form_bounds_prevent_status_write
+    self.run_denied_after_post(value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 464, in run_denied_after_post
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_post_meter_floor_and_actual_form_bounds_prevent_status_write (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_post_meter_floor_and_actual_form_bounds_prevent_status_write) (field='remaining_funded_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 459, in test_post_meter_floor_and_actual_form_bounds_prevent_status_write
+    self.run_denied_after_post(value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 464, in run_denied_after_post
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_post_meter_floor_and_actual_form_bounds_prevent_status_write (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_post_meter_floor_and_actual_form_bounds_prevent_status_write) (field='status_and_one_copy_reserved_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 459, in test_post_meter_floor_and_actual_form_bounds_prevent_status_write
+    self.run_denied_after_post(value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 464, in run_denied_after_post
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_post_meter_funded_capacity_and_capture_forms_are_independently_checked (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_post_meter_funded_capacity_and_capture_forms_are_independently_checked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 450, in test_post_meter_funded_capacity_and_capture_forms_are_independently_checked
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_pre_meter_floor_fragment_and_native_denials_are_preallocation (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_pre_meter_floor_fragment_and_native_denials_are_preallocation) (field='project_free_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 420, in test_pre_meter_floor_fragment_and_native_denials_are_preallocation
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_pre_meter_floor_fragment_and_native_denials_are_preallocation (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_pre_meter_floor_fragment_and_native_denials_are_preallocation) (field='c_fragment_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 420, in test_pre_meter_floor_fragment_and_native_denials_are_preallocation
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_pre_meter_floor_fragment_and_native_denials_are_preallocation (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_pre_meter_floor_fragment_and_native_denials_are_preallocation) (field='c_free_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 420, in test_pre_meter_floor_fragment_and_native_denials_are_preallocation
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_pre_meter_payload_must_match_actual_native_stdout_hash (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_pre_meter_payload_must_match_actual_native_stdout_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 383, in test_pre_meter_payload_must_match_actual_native_stdout_hash
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_realistic_large_monotonic_clock_values_still_fit_fixed_status_form (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_realistic_large_monotonic_clock_values_still_fit_fixed_status_form)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 391, in test_realistic_large_monotonic_clock_values_still_fit_fixed_status_form
+    capture.run_capture_v1(COMMIT,APPROVAL)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_retention_git_denial_is_before_meter_or_capture_allocation (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_retention_git_denial_is_before_meter_or_capture_allocation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 402, in test_retention_git_denial_is_before_meter_or_capture_allocation
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_retention_receipt_or_observation_drift_is_preallocation (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_retention_receipt_or_observation_drift_is_preallocation) (key='physical_acceptance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 411, in test_retention_receipt_or_observation_drift_is_preallocation
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_retention_receipt_or_observation_drift_is_preallocation (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_retention_receipt_or_observation_drift_is_preallocation) (key='owned_upper_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 411, in test_retention_receipt_or_observation_drift_is_preallocation
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_retention_receipt_or_observation_drift_is_preallocation (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_retention_receipt_or_observation_drift_is_preallocation) (key='old_git_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 411, in test_retention_receipt_or_observation_drift_is_preallocation
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_status_close_after_original_deadline_cannot_return_success (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_status_close_after_original_deadline_cannot_return_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 553, in test_status_close_after_original_deadline_cannot_return_success
+    facts=self.status_fault("late-close")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 529, in status_fault
+    with self.assertRaises((capture.CaptureRefusal,OSError)): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_status_close_failure_keeps_fsync_and_no_success (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_status_close_failure_keeps_fsync_and_no_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 548, in test_status_close_failure_keeps_fsync_and_no_success
+    facts=self.status_fault("close")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 529, in status_fault
+    with self.assertRaises((capture.CaptureRefusal,OSError)): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_status_fsync_failure_keeps_close_and_no_success (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_status_fsync_failure_keeps_close_and_no_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 543, in test_status_fsync_failure_keeps_close_and_no_success
+    facts=self.status_fault("fsync")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 529, in status_fault
+    with self.assertRaises((capture.CaptureRefusal,OSError)): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_status_short_write_keeps_confirmed_prefix_and_no_success (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_status_short_write_keeps_confirmed_prefix_and_no_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 536, in test_status_short_write_keeps_confirmed_prefix_and_no_success
+    facts=self.status_fault("short")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 529, in status_fault
+    with self.assertRaises((capture.CaptureRefusal,OSError)): capture.run_capture_v1(COMMIT,APPROVAL)
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 551, in run_capture_v1
+    pre, native = meter(after=False,payload={"helper_code":helper_code})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 329, in meter
+    self.assertEqual(payload,{"helper_code":self.helpers,"retention_git_observation":self.observation})
+AssertionError: {'hel[654 chars]04'}}} != {'hel[654 chars]04'}}, 'retention_git_observation': {'componen[404 chars]dc'}}
+Diff is 2254 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 48 tests in 0.432s
+
+FAILED (failures=32)

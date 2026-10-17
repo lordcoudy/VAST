@@ -1,0 +1,45 @@
+...E.....E............................................
+======================================================================
+ERROR: test_require_files_rehashes_the_complete_exact_corpus (test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/s-a-balashov/qfb-pin-test-20261007/scripts/kpp_iss_publication_v3_dataset.py", line 580, in validate_kpp_iss_publication_v3_manifest_entry
+    _validate_exact_tree(corpus)
+  File "/home/s-a-balashov/qfb-pin-test-20261007/scripts/freeze_kpp_iss_publication_v3.py", line 770, in _validate_exact_tree
+    raise PublicationCorpusFreezeError(
+freeze_kpp_iss_publication_v3.PublicationCorpusFreezeError: publication corpus root must be a plain directory
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/qfb-pin-test-20261007/tests/test_kpp_iss_publication_v3_dataset_integration.py", line 142, in test_require_files_rehashes_the_complete_exact_corpus
+    self.assertTrue(gate.validate_kpp_iss_publication_v3_manifest_entry(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/qfb-pin-test-20261007/scripts/kpp_iss_publication_v3_dataset.py", line 622, in validate_kpp_iss_publication_v3_manifest_entry
+    raise KppIssPublicationV3DatasetError(str(exc)) from exc
+kpp_iss_publication_v3_dataset.KppIssPublicationV3DatasetError: publication corpus root must be a plain directory
+
+======================================================================
+ERROR: test_full_on_disk_corpus_and_receipt_graph_validate (test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/s-a-balashov/qfb-pin-test-20261007/scripts/kpp_frozen_reconstruction_v1_dataset.py", line 363, in validate_kpp_frozen_reconstruction_v1_manifest_entry
+    _validate_tree(corpus, SOURCE_RECEIPTS)
+  File "/home/s-a-balashov/qfb-pin-test-20261007/scripts/freeze_kpp_frozen_reconstruction_v1.py", line 419, in _validate_tree
+    raise ReconstructionFreezeError("reconstruction root is not plain")
+freeze_kpp_frozen_reconstruction_v1.ReconstructionFreezeError: reconstruction root is not plain
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/qfb-pin-test-20261007/tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py", line 70, in test_full_on_disk_corpus_and_receipt_graph_validate
+    gate.validate_kpp_frozen_reconstruction_v1_manifest_entry(
+  File "/home/s-a-balashov/qfb-pin-test-20261007/scripts/kpp_frozen_reconstruction_v1_dataset.py", line 365, in validate_kpp_frozen_reconstruction_v1_manifest_entry
+    raise KppFrozenReconstructionV1DatasetError(str(exc)) from exc
+kpp_frozen_reconstruction_v1_dataset.KppFrozenReconstructionV1DatasetError: reconstruction root is not plain
+
+----------------------------------------------------------------------
+Ran 54 tests in 3.269s
+
+FAILED (errors=2)
+{"status": "downloaded", "index": 0}

@@ -1,0 +1,33 @@
+{
+ "artifact_kind": "q1_failed_readonly_observation",
+ "attempt": 3,
+ "observed_at_utc": "2026-10-08T15:10:00Z",
+ "observer": "Claude Code (read-only after failure)",
+ "q1_status": "FAILED",
+ "failed_step": "q1_09_owner_execute",
+ "rc": 78,
+ "owner_stderr": "original operational owner failed: original container custody failed: original_measurement_failed",
+ "completed_before_failure": [
+  "steps 0-8 rc 0",
+  "guardian live 8/8 attested",
+  "4 native prechecks captured (openvino_gva cpu/gpu, gstreamer_custom cpu/gpu)",
+  "savant-original-savant-cpu-h264-independent-processes captured"
+ ],
+ "failed_operation": "qualification-cell-deepstream-cpu-h264-independent-processes (6th of 37)",
+ "deepstream_engine_02": {
+  "command": "docker run ... sha256:b236e0f4... --topology-kind independent_processes --codec h264 --policy cpu_only --duration 180",
+  "returncode": 2,
+  "stdout_bytes": 0,
+  "stderr": "deepstream publication runtime blocked: worker_id is outside the supported ASCII source domain"
+ },
+ "probable_cause": "operational-capture-only check validate_native_request_source_v1 (publication_operational_request_domain_v1.py:299) caps worker_id at 37 chars; DeepStream independent-process worker ids deepstream-stream-N-branch-<branch> are 41/39/39/33 chars (foreign_object/vehicle_type/plate_number/damage); exact observed worker_id not retained",
+ "guardian": {
+  "rc": 78,
+  "lifecycle_status": "failed_stop_nonpublication",
+  "stderr": "analytics production guardian failed: analytics production service failed: failed to receive analytics execution datagram: [Errno 104] Connection reset by peer",
+  "observed_at_utc": "2026-10-08T15:02:06Z",
+  "authenticated_stop": "not applicable: guardian already terminal"
+ },
+ "post_failure_host": "0 containers, 0 GPU compute apps, 0 VAST processes",
+ "no_actions_taken": "no retry, nothing deleted/renamed, no docker stop/rm/prune"
+}

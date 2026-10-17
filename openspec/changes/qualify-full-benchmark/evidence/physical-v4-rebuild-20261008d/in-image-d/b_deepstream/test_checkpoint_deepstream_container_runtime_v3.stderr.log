@@ -1,0 +1,12 @@
+test_coordinator_source_uses_real_sdk_graph_and_common_finalizer (test_checkpoint_deepstream_container_runtime_v3.DeepStreamContainerRuntimeV3Tests) ... ok
+test_frozen_model_paths_are_exactly_translated_to_materialized_bindings (test_checkpoint_deepstream_container_runtime_v3.DeepStreamContainerRuntimeV3Tests) ... ok
+test_gpu_registry_seed_is_hashed_and_copied_to_every_process (test_checkpoint_deepstream_container_runtime_v3.DeepStreamContainerRuntimeV3Tests) ... ok
+test_materialized_sha_path_bindings_are_rehashed_and_closed (test_checkpoint_deepstream_container_runtime_v3.DeepStreamContainerRuntimeV3Tests) ... ok
+test_native_stdio_is_bounded_exact_and_stderr_closed (test_checkpoint_deepstream_container_runtime_v3.DeepStreamContainerRuntimeV3Tests) ... ok
+test_runtime_image_recipe_is_pinned_to_abi3_coordinator (test_checkpoint_deepstream_container_runtime_v3.DeepStreamContainerRuntimeV3Tests) ... ok
+test_terminal_status_is_exact_success_only_abi_v3 (test_checkpoint_deepstream_container_runtime_v3.DeepStreamContainerRuntimeV3Tests) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.007s
+
+OK

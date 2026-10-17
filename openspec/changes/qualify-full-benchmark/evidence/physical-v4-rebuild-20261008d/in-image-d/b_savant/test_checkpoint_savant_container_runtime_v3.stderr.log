@@ -1,0 +1,11 @@
+test_frozen_gpu_model_paths_are_sha_bound_after_namespace_translation (test_checkpoint_savant_container_runtime_v3.SavantContainerRuntimeV3Tests) ... ok
+test_materialized_bindings_are_rehashed_and_native_stdio_is_exact (test_checkpoint_savant_container_runtime_v3.SavantContainerRuntimeV3Tests) ... ok
+test_registry_seed_is_hashed_and_copied_to_every_internal_process (test_checkpoint_savant_container_runtime_v3.SavantContainerRuntimeV3Tests) ... ok
+test_runtime_image_manifest_is_derived_from_exact_inspect_projection (test_checkpoint_savant_container_runtime_v3.SavantContainerRuntimeV3Tests) ... ok
+test_source_is_one_arm_with_exact_24_or_6_workers_and_six_sources (test_checkpoint_savant_container_runtime_v3.SavantContainerRuntimeV3Tests) ... ok
+test_terminal_status_is_exact_savant_abi_v3 (test_checkpoint_savant_container_runtime_v3.SavantContainerRuntimeV3Tests) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.008s
+
+OK

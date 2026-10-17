@@ -1,0 +1,28 @@
+2c2
+< # Amendment 7, 6D.8: local ext4 suite on C_Q1''' (fresh clone; same procedure as 6C.8 on 4947e35a).
+---
+> # Amendment 7, 6D.8: second full ext4 suite on C_Q1''' after one timing error in run 1 (same procedure, new clone).
+8c8
+< C=/home/s-a-balashov/work/vast-qfb-ci-20261008-${sha:0:8}
+---
+> C=/home/s-a-balashov/work/vast-qfb-ci-20261008-${sha:0:8}-rerun2
+16c16
+< (cd "$C/$tag" && sha256sum $(sed 's#^#./#' "$E/receipts.list")) > "$E/ext4-clone.copied-ignored-receipts.sha256"
+---
+> (cd "$C/$tag" && sha256sum $(sed 's#^#./#' "$E/receipts.list")) > "$E/ext4-clone-rerun2.copied-ignored-receipts.sha256"
+18,19c18,19
+< (cd "$C" && sha256sum $(cat "$E/models.list")) > "$E/ext4-clone.copied-models.sha256"
+< date -u +%FT%TZ > "$E/ext4-suite.started.txt"
+---
+> (cd "$C" && sha256sum $(cat "$E/models.list")) > "$E/ext4-clone-rerun2.copied-models.sha256"
+> date -u +%FT%TZ > "$E/ext4-suite-rerun2.started.txt"
+23c23
+<    > "$E/ext4-suite.run.stdout.log" 2> "$E/ext4-suite.run.stderr.log"
+---
+>    > "$E/ext4-suite-rerun2.run.stdout.log" 2> "$E/ext4-suite-rerun2.run.stderr.log"
+26,27c26,27
+< echo "$rc" > "$E/ext4-suite.rc"; date -u +%FT%TZ > "$E/ext4-suite.finished.txt"
+< cp "$OUT/report.json" "$E/ext4-suite.report.json" || true
+---
+> echo "$rc" > "$E/ext4-suite-rerun2.rc"; date -u +%FT%TZ > "$E/ext4-suite-rerun2.finished.txt"
+> cp "$OUT/report.json" "$E/ext4-suite-rerun2.report.json" || true

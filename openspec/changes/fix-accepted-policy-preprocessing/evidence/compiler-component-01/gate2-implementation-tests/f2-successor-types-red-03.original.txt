@@ -1,0 +1,37 @@
+FFFF
+======================================================================
+FAIL: test_other_inspect_json_types_and_selected_fields_remain_exact (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_other_inspect_json_types_and_selected_fields_remain_exact) (group='State', key='ExitCode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 706, in test_other_inspect_json_types_and_selected_fields_remain_exact
+    with self.subTest(group=group, key=key), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_other_inspect_json_types_and_selected_fields_remain_exact (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_other_inspect_json_types_and_selected_fields_remain_exact) (group='HostConfig', key='Memory')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 706, in test_other_inspect_json_types_and_selected_fields_remain_exact
+    with self.subTest(group=group, key=key), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_other_inspect_json_types_and_selected_fields_remain_exact (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_other_inspect_json_types_and_selected_fields_remain_exact) (group='Config', key='NetworkDisabled')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 706, in test_other_inspect_json_types_and_selected_fields_remain_exact
+    with self.subTest(group=group, key=key), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_other_inspect_json_types_and_selected_fields_remain_exact (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_other_inspect_json_types_and_selected_fields_remain_exact) (group=None, key='RestartCount')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 706, in test_other_inspect_json_types_and_selected_fields_remain_exact
+    with self.subTest(group=group, key=key), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.028s
+
+FAILED (failures=4)

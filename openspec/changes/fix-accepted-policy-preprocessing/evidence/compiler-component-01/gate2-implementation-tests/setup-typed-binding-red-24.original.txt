@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_float_component_size_cannot_equal_integer_bootstrap_binding (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.PipelineTests.test_float_component_size_cannot_equal_integer_bootstrap_binding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 642, in test_float_component_size_cannot_equal_integer_bootstrap_binding
+    with self.assertRaisesRegex(RuntimeError,"retention_component_code_binding"): setup.main()
+AssertionError: RuntimeError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.124s
+
+FAILED (failures=1)

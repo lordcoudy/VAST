@@ -1,0 +1,23 @@
+command: python3 -B -m unittest tests.test_accepted_policy_fixture_compiler_gate2_c_v1
+exit_code: 1
+.................EE...
+======================================================================
+ERROR: test_guard_failed_write_cannot_be_repaired_by_later_fsync_or_optional_record (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_guard_failed_write_cannot_be_repaired_by_later_fsync_or_optional_record) (unknown=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 517, in test_guard_failed_write_cannot_be_repaired_by_later_fsync_or_optional_record
+    gate.capture_guard_v1("gpu", output_dir=root, absolute_deadline_ns=10_000_000_000,
+TypeError: capture_guard_v1() got an unexpected keyword argument 'record_original'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_guard_failed_write_cannot_be_repaired_by_later_fsync_or_optional_record (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_guard_failed_write_cannot_be_repaired_by_later_fsync_or_optional_record) (unknown=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 517, in test_guard_failed_write_cannot_be_repaired_by_later_fsync_or_optional_record
+    gate.capture_guard_v1("gpu", output_dir=root, absolute_deadline_ns=10_000_000_000,
+TypeError: capture_guard_v1() got an unexpected keyword argument 'record_original'
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 21 tests in 0.546s
+System.Management.Automation.RemoteException
+FAILED (errors=2)

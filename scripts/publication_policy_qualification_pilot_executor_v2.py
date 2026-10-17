@@ -4635,6 +4635,77 @@ def _cold_validate_pilot_checkpoint(
             watch.close()
 
 
+def _preflight_qualification_authority_v2(
+    *,
+    root: Path,
+    candidate_index_path: Path | str,
+    candidate_manifest_path: Path | str,
+    candidate_receipt_path: Path | str,
+    bootstrap_mapping_path: Path | str,
+    bootstrap_receipt_path: Path | str,
+    bootstrap_dir: Path | str,
+    transaction_receipt_path: Path | str,
+    runtime_input_materialization_receipt_path: Path | str,
+    guardian_service_authority_path: Path | str,
+    preprocessing_contract_path: Path | str,
+    preprocessing_contract_receipt_path: Path | str,
+    execution_code_closure_receipt_path: Path | str,
+    deadline_ms: int | float,
+    duration_s: int,
+    service_authority_validator: ServiceAuthorityValidator | None,
+    preprocessing_contract_loader: PreprocessingContractLoader | None,
+    runtime_expectations_loader: RuntimeExpectationsLoader | None,
+) -> None:
+    """Read-only authority checks before pilot_root or its lock may exist.
+
+    The locked executor repeats the same checks under the lock; this preflight
+    only guarantees that component, study or unknown kinds create nothing.
+    """
+
+    cells = qualification_pilot_cells_v2(
+        deadline_ms=deadline_ms, duration_s=duration_s
+    )
+    inputs = _load_qualification_inputs(
+        project_root=root,
+        candidate_index_path=candidate_index_path,
+        candidate_manifest_path=candidate_manifest_path,
+        candidate_receipt_path=candidate_receipt_path,
+        bootstrap_mapping_path=bootstrap_mapping_path,
+        bootstrap_receipt_path=bootstrap_receipt_path,
+        bootstrap_dir=bootstrap_dir,
+        transaction_receipt_path=transaction_receipt_path,
+    )
+    bootstrap_root = _physical_directory(
+        inputs.root, bootstrap_dir, label="bootstrap_dir"
+    )
+    _load_execution_code_closure(
+        root=inputs.root,
+        receipt_path=execution_code_closure_receipt_path,
+    )
+    _load_operational_inputs(
+        inputs=inputs,
+        bootstrap_dir=bootstrap_root,
+        cells=cells,
+        runtime_input_materialization_receipt_path=(
+            runtime_input_materialization_receipt_path
+        ),
+        guardian_service_authority_path=guardian_service_authority_path,
+        preprocessing_contract_path=preprocessing_contract_path,
+        preprocessing_contract_receipt_path=(
+            preprocessing_contract_receipt_path
+        ),
+        service_authority_validator=(
+            service_authority_validator or _default_service_authority_validator
+        ),
+        preprocessing_contract_loader=(
+            preprocessing_contract_loader or _default_preprocessing_contract_loader
+        ),
+        runtime_expectations_loader=(
+            runtime_expectations_loader or _default_runtime_expectations_loader
+        ),
+    )
+
+
 def _execute_qualification_pilots_v2_entry_held(
     *,
     project_root: Path | str,
@@ -4665,6 +4736,28 @@ def _execute_qualification_pilots_v2_entry_held(
     """Exclusively run/resume the exact nonauthorizing physical pilot matrix."""
 
     root = _physical_root(project_root)
+    _preflight_qualification_authority_v2(
+        root=root,
+        candidate_index_path=candidate_index_path,
+        candidate_manifest_path=candidate_manifest_path,
+        candidate_receipt_path=candidate_receipt_path,
+        bootstrap_mapping_path=bootstrap_mapping_path,
+        bootstrap_receipt_path=bootstrap_receipt_path,
+        bootstrap_dir=bootstrap_dir,
+        transaction_receipt_path=transaction_receipt_path,
+        runtime_input_materialization_receipt_path=(
+            runtime_input_materialization_receipt_path
+        ),
+        guardian_service_authority_path=guardian_service_authority_path,
+        preprocessing_contract_path=preprocessing_contract_path,
+        preprocessing_contract_receipt_path=preprocessing_contract_receipt_path,
+        execution_code_closure_receipt_path=execution_code_closure_receipt_path,
+        deadline_ms=deadline_ms,
+        duration_s=duration_s,
+        service_authority_validator=service_authority_validator,
+        preprocessing_contract_loader=preprocessing_contract_loader,
+        runtime_expectations_loader=runtime_expectations_loader,
+    )
     pilots = _ensure_output_root(root, pilot_root, label="pilot_root")
     lock_path = pilots / ".qualification-pilot-executor-v2.lock"
     with _exclusive_execution_lock(lock_path):

@@ -1,0 +1,30 @@
+FF
+======================================================================
+FAIL: test_node_owns_one_exact_python_child_and_closes_each_channel (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_node_owns_one_exact_python_child_and_closes_each_channel)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 111, in test_node_owns_one_exact_python_child_and_closes_each_channel
+    self.assertEqual(observed['spawned'],1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_final_process_status_uses_one_snapshot_for_unknown_closure (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_final_process_status_uses_one_snapshot_for_unknown_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 134, in test_final_process_status_uses_one_snapshot_for_unknown_closure
+    self.assertEqual(polls,[None])
+AssertionError: Lists differ: [None, 0] != [None]
+
+First list contains 1 additional elements.
+First extra element 1:
+0
+
+- [None, 0]
+?      ---
+
++ [None]
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.210s
+
+FAILED (failures=2)

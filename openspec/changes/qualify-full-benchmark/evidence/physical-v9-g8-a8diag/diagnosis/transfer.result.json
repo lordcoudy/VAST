@@ -1,0 +1,285 @@
+{
+ "deepstream/gpu/h264/independent_processes": {
+  "decisions": 4273,
+  "gpu_decisions": 4273,
+  "gpu_without_transfer": 1,
+  "missing_by_branch": {
+   "plate_number": 1
+  },
+  "interval_components": {
+   "nvdec_submit_complete": 4272,
+   "transfer": 8544
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": [
+   {
+    "decision_id": "qualification-v2-deepstream-gpu-h264-independent-processes:native-policy:5012:stream-1-branch-plate_number:213999999600:plate_number",
+    "trace_id": "qualification-v2-deepstream-gpu-h264-independent-processes:1:209",
+    "branch": "plate_number"
+   }
+  ]
+ },
+ "deepstream/gpu/h264/shared_video_dag": {
+  "decisions": 4272,
+  "gpu_decisions": 4272,
+  "gpu_without_transfer": 0,
+  "missing_by_branch": {},
+  "interval_components": {
+   "nvdec_submit_complete": 1068,
+   "fanout": 4272,
+   "transfer": 8544
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": []
+ },
+ "deepstream/gpu/h265/independent_processes": {
+  "decisions": 4273,
+  "gpu_decisions": 4273,
+  "gpu_without_transfer": 1,
+  "missing_by_branch": {
+   "damage": 1
+  },
+  "interval_components": {
+   "nvdec_submit_complete": 4272,
+   "transfer": 8544
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": [
+   {
+    "decision_id": "qualification-v2-deepstream-gpu-h265-independent-processes:native-policy:5016:stream-4-branch-damage:213999999600:damage",
+    "trace_id": "qualification-v2-deepstream-gpu-h265-independent-processes:4:209",
+    "branch": "damage"
+   }
+  ]
+ },
+ "deepstream/gpu/h265/shared_video_dag": {
+  "decisions": 4272,
+  "gpu_decisions": 4272,
+  "gpu_without_transfer": 0,
+  "missing_by_branch": {},
+  "interval_components": {
+   "nvdec_submit_complete": 1068,
+   "fanout": 4272,
+   "transfer": 8544
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": []
+ },
+ "gstreamer_custom/gpu/h264/independent_processes": {
+  "decisions": 4300,
+  "gpu_decisions": 4300,
+  "gpu_without_transfer": 0,
+  "missing_by_branch": {},
+  "interval_components": {
+   "nvdec_submit_complete": 4300,
+   "transfer": 8600
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": []
+ },
+ "gstreamer_custom/gpu/h264/shared_video_dag": {
+  "decisions": 4300,
+  "gpu_decisions": 4300,
+  "gpu_without_transfer": 0,
+  "missing_by_branch": {},
+  "interval_components": {
+   "nvdec_submit_complete": 1075,
+   "fanout": 4300,
+   "transfer": 8600
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": []
+ },
+ "gstreamer_custom/gpu/h265/independent_processes": {
+  "decisions": 4296,
+  "gpu_decisions": 4296,
+  "gpu_without_transfer": 0,
+  "missing_by_branch": {},
+  "interval_components": {
+   "nvdec_submit_complete": 4296,
+   "transfer": 8592
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": []
+ },
+ "gstreamer_custom/gpu/h265/shared_video_dag": {
+  "decisions": 4297,
+  "gpu_decisions": 4297,
+  "gpu_without_transfer": 1,
+  "missing_by_branch": {
+   "plate_number": 1
+  },
+  "interval_components": {
+   "nvdec_submit_complete": 1074,
+   "fanout": 4296,
+   "transfer": 8592
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": [
+   {
+    "decision_id": "qualification-v2-gstreamer_custom-gpu-h265-shared-video-dag:native-policy:5034:stream-2-shared-video-dag:213999999600:plate_number",
+    "trace_id": "qualification-v2-gstreamer_custom-gpu-h265-shared-video-dag:2:209",
+    "branch": "plate_number"
+   }
+  ]
+ },
+ "openvino_gva/gpu/h264/independent_processes": {
+  "decisions": 4296,
+  "gpu_decisions": 4296,
+  "gpu_without_transfer": 12,
+  "missing_by_branch": {
+   "plate_number": 3,
+   "vehicle_type": 2,
+   "damage": 4,
+   "foreign_object": 3
+  },
+  "interval_components": {
+   "nvdec_submit_complete": 4284,
+   "transfer": 8568
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": [
+   {
+    "decision_id": "qualification-v2-openvino_gva-gpu-h264-independent-processes:native-policy:721:stream-5-branch-plate_number:31999999800:plate_number",
+    "trace_id": "qualification-v2-openvino_gva-gpu-h264-independent-processes:5:30",
+    "branch": "plate_number"
+   },
+   {
+    "decision_id": "qualification-v2-openvino_gva-gpu-h264-independent-processes:native-policy:722:stream-5-branch-vehicle_type:31999999800:vehicle_type",
+    "trace_id": "qualification-v2-openvino_gva-gpu-h264-independent-processes:5:30",
+    "branch": "vehicle_type"
+   },
+   {
+    "decision_id": "qualification-v2-openvino_gva-gpu-h264-independent-processes:native-policy:723:stream-5-branch-damage:31999999800:damage",
+    "trace_id": "qualification-v2-openvino_gva-gpu-h264-independent-processes:5:30",
+    "branch": "damage"
+   }
+  ]
+ },
+ "openvino_gva/gpu/h264/shared_video_dag": {
+  "decisions": 4300,
+  "gpu_decisions": 4300,
+  "gpu_without_transfer": 0,
+  "missing_by_branch": {},
+  "interval_components": {
+   "nvdec_submit_complete": 1075,
+   "fanout": 4300,
+   "transfer": 8600
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": []
+ },
+ "openvino_gva/gpu/h265/independent_processes": {
+  "decisions": 4297,
+  "gpu_decisions": 4297,
+  "gpu_without_transfer": 1,
+  "missing_by_branch": {
+   "vehicle_type": 1
+  },
+  "interval_components": {
+   "nvdec_submit_complete": 4296,
+   "transfer": 8592
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": [
+   {
+    "decision_id": "qualification-v2-openvino_gva-gpu-h265-independent-processes:native-policy:5018:stream-5-branch-vehicle_type:211999999800:vehicle_type",
+    "trace_id": "qualification-v2-openvino_gva-gpu-h265-independent-processes:5:207",
+    "branch": "vehicle_type"
+   }
+  ]
+ },
+ "openvino_gva/gpu/h265/shared_video_dag": {
+  "decisions": 4298,
+  "gpu_decisions": 4298,
+  "gpu_without_transfer": 2,
+  "missing_by_branch": {
+   "vehicle_type": 1,
+   "plate_number": 1
+  },
+  "interval_components": {
+   "nvdec_submit_complete": 1074,
+   "fanout": 4296,
+   "transfer": 8592
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": [
+   {
+    "decision_id": "qualification-v2-openvino_gva-gpu-h265-shared-video-dag:native-policy:5039:stream-4-shared-video-dag:213999999600:vehicle_type",
+    "trace_id": "qualification-v2-openvino_gva-gpu-h265-shared-video-dag:4:209",
+    "branch": "vehicle_type"
+   },
+   {
+    "decision_id": "qualification-v2-openvino_gva-gpu-h265-shared-video-dag:native-policy:5042:stream-2-shared-video-dag:213999999600:plate_number",
+    "trace_id": "qualification-v2-openvino_gva-gpu-h265-shared-video-dag:2:209",
+    "branch": "plate_number"
+   }
+  ]
+ },
+ "savant/gpu/h264/independent_processes": {
+  "decisions": 4272,
+  "gpu_decisions": 4272,
+  "gpu_without_transfer": 0,
+  "missing_by_branch": {},
+  "interval_components": {
+   "nvdec_submit_complete": 4272,
+   "transfer": 8544
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": []
+ },
+ "savant/gpu/h264/shared_video_dag": {
+  "decisions": 4272,
+  "gpu_decisions": 4272,
+  "gpu_without_transfer": 0,
+  "missing_by_branch": {},
+  "interval_components": {
+   "nvdec_submit_complete": 1068,
+   "fanout": 4272,
+   "transfer": 8544
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": []
+ },
+ "savant/gpu/h265/independent_processes": {
+  "decisions": 4273,
+  "gpu_decisions": 4273,
+  "gpu_without_transfer": 1,
+  "missing_by_branch": {
+   "vehicle_type": 1
+  },
+  "interval_components": {
+   "nvdec_submit_complete": 4272,
+   "transfer": 8544
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": [
+   {
+    "decision_id": "qualification-v2-savant-gpu-h265-independent-processes:native-policy:5011:savant-stream-0-branch-vehicle_type:213999999600:vehicle_type",
+    "trace_id": "qualification-v2-savant-gpu-h265-independent-processes:0:209",
+    "branch": "vehicle_type"
+   }
+  ]
+ },
+ "savant/gpu/h265/shared_video_dag": {
+  "decisions": 4273,
+  "gpu_decisions": 4273,
+  "gpu_without_transfer": 1,
+  "missing_by_branch": {
+   "damage": 1
+  },
+  "interval_components": {
+   "nvdec_submit_complete": 1068,
+   "fanout": 4272,
+   "transfer": 8544
+  },
+  "transfer_rows_nonpositive": 0,
+  "missing_examples": [
+   {
+    "decision_id": "qualification-v2-savant-gpu-h265-shared-video-dag:native-policy:5010:savant-stream-0-shared-video-dag:213999999600:damage",
+    "trace_id": "qualification-v2-savant-gpu-h265-shared-video-dag:0:209",
+    "branch": "damage"
+   }
+  ]
+ }
+}

@@ -1,0 +1,626 @@
+{
+ "build_commit": "ea918062",
+ "copied_configs": [
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json",
+   "sha256": "24f8e5c7ae5c8b57c530c9552a539d533b34933af6be3ed282a0b3cdb5ae850c",
+   "size_bytes": 20462
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json",
+   "sha256": "91e665b883daf2530d788c20859710b63e52b76b642018065efa97d5d2494657",
+   "size_bytes": 1684
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.qfb-20261008c.json",
+   "sha256": "be0cf24db5f3b964f7dd3552dc33db8230c01811f6ec8ca80e48e8076a04500d",
+   "size_bytes": 1498
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml",
+   "sha256": "f0b54f89f2fb4754ce1630f832dca313525b2c227839b5d5abe9b81b3d30baa8",
+   "size_bytes": 29892
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.yaml",
+   "sha256": "3ec0ec678a191fd9213889ab7b96ba081f2227da6366f6e5bc1bce1cb468bcca",
+   "size_bytes": 26052
+  }
+ ],
+ "decision28_freeze": "artifacts/qualify_full_benchmark_20261007a/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json",
+ "files": [
+  {
+   "after_sha256": "ee89d58c7e8c44a1df90cfc476b2fca322b436229dbd780ac5424e2e248809f3",
+   "before_sha256": "26220648991e6e2a20a3d3b8b2dfbf86254ea72f7a69c785414f34e4c9b34e71",
+   "edits": [
+    {
+     "keys": [
+      "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.yaml"
+     ],
+     "kind": "string_literal",
+     "line": 43,
+     "new": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml\"",
+     "old": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.yaml\""
+    },
+    {
+     "keys": [
+      "134ef507ff5e2b845840d547c947070fd0af78e0039063e3930c249c3f3eebb1"
+     ],
+     "kind": "string_literal",
+     "line": 44,
+     "new": "\"f0b54f89f2fb4754ce1630f832dca313525b2c227839b5d5abe9b81b3d30baa8\"",
+     "old": "\"134ef507ff5e2b845840d547c947070fd0af78e0039063e3930c249c3f3eebb1\""
+    },
+    {
+     "keys": [
+      "976aed87c6e72c51ce2565ab53780247e509d63217bf050f0e69b322c0cca9e3"
+     ],
+     "kind": "string_literal",
+     "line": 47,
+     "new": "\"33d7bfffe9a9b9897f9fa99fdf7ff589537b5e80bc322995669952700c372429\"",
+     "old": "\"976aed87c6e72c51ce2565ab53780247e509d63217bf050f0e69b322c0cca9e3\""
+    },
+    {
+     "keys": [
+      "artifacts/qualify_full_benchmark_20261007a/model_parity_v4/bindings/index.json"
+     ],
+     "kind": "string_literal",
+     "line": 53,
+     "new": "\"artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/index.json\"",
+     "old": "\"artifacts/qualify_full_benchmark_20261007a/model_parity_v4/bindings/index.json\""
+    },
+    {
+     "keys": [
+      "61ba2035a2a8d953f61b1cc2e2c7f70cc10305c6396ac0bdffcd52dec497cf83"
+     ],
+     "kind": "string_literal",
+     "line": 54,
+     "new": "\"900069e8eb009bbf6b93cf886691b82960d4208e99682055000357c91d0d9775\"",
+     "old": "\"61ba2035a2a8d953f61b1cc2e2c7f70cc10305c6396ac0bdffcd52dec497cf83\""
+    },
+    {
+     "keys": [
+      "ee5e091969f6bc20bf63c1d8f0f4639a1f4e2f0c8658dc87e33c66c14f2e4113"
+     ],
+     "kind": "string_literal",
+     "line": 57,
+     "new": "\"cc4d326c3a7c678e0bf878b70912ff1214d06146505f5e7aa774c429a47011ff\"",
+     "old": "\"ee5e091969f6bc20bf63c1d8f0f4639a1f4e2f0c8658dc87e33c66c14f2e4113\""
+    },
+    {
+     "keys": [
+      "54ed3280c2be4984840db0dc413d83079d7cd691b56841e07409d14f9c4df9a0"
+     ],
+     "kind": "string_literal",
+     "line": 63,
+     "new": "\"6052d390c71953e12baf5ddac0c3483b6730808d0b7bd2b9c0441feca20fc25f\"",
+     "old": "\"54ed3280c2be4984840db0dc413d83079d7cd691b56841e07409d14f9c4df9a0\""
+    },
+    {
+     "keys": [
+      "70c170892c317a64652e7abe6a74b198b5b4ce6c38596f54faccc9c7d3d6ce53"
+     ],
+     "kind": "string_literal",
+     "line": 66,
+     "new": "\"c0224ef22c464ae81289a2778a7bc8ab9ccbd9bc1d0dcd980cb23af549563d70\"",
+     "old": "\"70c170892c317a64652e7abe6a74b198b5b4ce6c38596f54faccc9c7d3d6ce53\""
+    },
+    {
+     "keys": [
+      "artifacts/qualify_full_benchmark_20261007a/model_parity_v4/runtime_probes/cpu_runtime_probe.json"
+     ],
+     "kind": "string_literal",
+     "line": 73,
+     "new": "\"artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/cpu_runtime_probe.json\"",
+     "old": "\"artifacts/qualify_full_benchmark_20261007a/model_parity_v4/runtime_probes/cpu_runtime_probe.json\""
+    },
+    {
+     "keys": [
+      "artifacts/qualify_full_benchmark_20261007a/model_parity_v4/runtime_probes/gpu_runtime_probe.json"
+     ],
+     "kind": "string_literal",
+     "line": 77,
+     "new": "\"artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/gpu_runtime_probe.json\"",
+     "old": "\"artifacts/qualify_full_benchmark_20261007a/model_parity_v4/runtime_probes/gpu_runtime_probe.json\""
+    },
+    {
+     "keys": [
+      "sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757"
+     ],
+     "kind": "string_literal",
+     "line": 95,
+     "new": "\"sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50\"",
+     "old": "\"sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757\""
+    },
+    {
+     "keys": [
+      "sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757"
+     ],
+     "kind": "string_literal",
+     "line": 99,
+     "new": "\"sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50\"",
+     "old": "\"sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757\""
+    },
+    {
+     "keys": [
+      "e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66"
+     ],
+     "kind": "string_literal",
+     "line": 102,
+     "new": "\"2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a\"",
+     "old": "\"e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66\""
+    },
+    {
+     "keys": [
+      "8f5a3276ab5d94c34fd9c75054d378d7271c97559dcb9cdee374e0b5f1d6b87b"
+     ],
+     "kind": "string_literal",
+     "line": 108,
+     "new": "\"eb09a77d9619f9173cc78b1c34568890a14890e2d13789de1c6376c88fb03675\"",
+     "old": "\"8f5a3276ab5d94c34fd9c75054d378d7271c97559dcb9cdee374e0b5f1d6b87b\""
+    }
+   ],
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "unchanged": false
+  },
+  {
+   "after_sha256": "827d6a01ca5b9ffac72f59c034772487b5b3f83eb082d8c0aae63701cfdf668e",
+   "before_sha256": "b05e47e6dc48b808e3ded4d55e1e3fdf5bf39f6337b9b738ebc91a9621ca080e",
+   "edits": [
+    {
+     "keys": [
+      "sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757"
+     ],
+     "kind": "string_literal",
+     "line": 54,
+     "new": "'sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50'",
+     "old": "'sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757'"
+    },
+    {
+     "keys": [
+      "vast/gstreamer-custom-publication-runtime-v3@sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757"
+     ],
+     "kind": "string_literal",
+     "line": 55,
+     "new": "'vast/gstreamer-custom-publication-runtime-v3@sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50'",
+     "old": "'vast/gstreamer-custom-publication-runtime-v3@sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757'"
+    },
+    {
+     "keys": [
+      "e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66"
+     ],
+     "kind": "string_literal",
+     "line": 56,
+     "new": "'2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a'",
+     "old": "'e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66'"
+    },
+    {
+     "keys": [
+      "8f5a3276ab5d94c34fd9c75054d378d7271c97559dcb9cdee374e0b5f1d6b87b"
+     ],
+     "kind": "string_literal",
+     "line": 70,
+     "new": "'eb09a77d9619f9173cc78b1c34568890a14890e2d13789de1c6376c88fb03675'",
+     "old": "'8f5a3276ab5d94c34fd9c75054d378d7271c97559dcb9cdee374e0b5f1d6b87b'"
+    }
+   ],
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "unchanged": false
+  },
+  {
+   "after_sha256": "5a6a2e288a49a75872294b5fdb42ea4fe8dfe21b4a6fe7c8862715e0e8392efe",
+   "before_sha256": "2fe83946c5e138df0867bd874d9bc6da7ced5d0abf9a8d2793387958a6099471",
+   "edits": [
+    {
+     "keys": [
+      "sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28"
+     ],
+     "kind": "string_literal",
+     "line": 57,
+     "new": "'sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7'",
+     "old": "'sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28'"
+    },
+    {
+     "keys": [
+      "vast/openvino-gva-publication-runtime-v3@sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28"
+     ],
+     "kind": "string_literal",
+     "line": 58,
+     "new": "'vast/openvino-gva-publication-runtime-v3@sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7'",
+     "old": "'vast/openvino-gva-publication-runtime-v3@sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28'"
+    },
+    {
+     "keys": [
+      "ff79e305405a84bea3e5b8a56ca74a1158d96d6f2d7798ef323251530e5f48df"
+     ],
+     "kind": "string_literal",
+     "line": 59,
+     "new": "'5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9'",
+     "old": "'ff79e305405a84bea3e5b8a56ca74a1158d96d6f2d7798ef323251530e5f48df'"
+    },
+    {
+     "keys": [
+      "3a5a04044e238e387142520173aec59ac04113e7615f387c4d51bdf4f301c6b0"
+     ],
+     "kind": "string_literal",
+     "line": 69,
+     "new": "'fa7f4c6cf82e5d1b5f0f28a30e40b015d6e3987205a493daead1798a93967bae'",
+     "old": "'3a5a04044e238e387142520173aec59ac04113e7615f387c4d51bdf4f301c6b0'"
+    }
+   ],
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "unchanged": false
+  },
+  {
+   "after_sha256": "c3e45dfdbd026d14b83657ff21ead8cbcbedde5fbbc54cf068296e9854bf2666",
+   "before_sha256": "16824140247614a9e19a9b798239fef20664dc28f8ade392e374404d197b42c6",
+   "edits": [
+    {
+     "keys": [
+      "sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28"
+     ],
+     "kind": "string_literal",
+     "line": 75,
+     "new": "\"sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7\"",
+     "old": "\"sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28\""
+    },
+    {
+     "keys": [
+      "sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28"
+     ],
+     "kind": "string_literal",
+     "line": 79,
+     "new": "\"sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7\"",
+     "old": "\"sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28\""
+    },
+    {
+     "keys": [
+      "ff79e305405a84bea3e5b8a56ca74a1158d96d6f2d7798ef323251530e5f48df"
+     ],
+     "kind": "string_literal",
+     "line": 82,
+     "new": "\"5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9\"",
+     "old": "\"ff79e305405a84bea3e5b8a56ca74a1158d96d6f2d7798ef323251530e5f48df\""
+    },
+    {
+     "keys": [
+      "3a5a04044e238e387142520173aec59ac04113e7615f387c4d51bdf4f301c6b0"
+     ],
+     "kind": "string_literal",
+     "line": 88,
+     "new": "\"fa7f4c6cf82e5d1b5f0f28a30e40b015d6e3987205a493daead1798a93967bae\"",
+     "old": "\"3a5a04044e238e387142520173aec59ac04113e7615f387c4d51bdf4f301c6b0\""
+    }
+   ],
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "unchanged": false
+  },
+  {
+   "after_sha256": "a4462c17fdf9c1956269bb321387b4671fc4b59e51efc4eb132121b19917cc68",
+   "before_sha256": "4d122e527a5350690e84cf977538256289474746bbcac816e473e2bca906ea0a",
+   "edits": [
+    {
+     "keys": [
+      "artifacts/qualify_full_benchmark_20261007a/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json"
+     ],
+     "kind": "explicit_reviewed_size_literal",
+     "line": 332,
+     "new": "6976",
+     "old": "6976"
+    },
+    {
+     "keys": [
+      "sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28"
+     ],
+     "kind": "string_literal",
+     "line": 31,
+     "new": "'sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7'",
+     "old": "'sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28'"
+    },
+    {
+     "keys": [
+      "ff79e305405a84bea3e5b8a56ca74a1158d96d6f2d7798ef323251530e5f48df"
+     ],
+     "kind": "string_literal",
+     "line": 36,
+     "new": "'5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9'",
+     "old": "'ff79e305405a84bea3e5b8a56ca74a1158d96d6f2d7798ef323251530e5f48df'"
+    },
+    {
+     "keys": [
+      "3a5a04044e238e387142520173aec59ac04113e7615f387c4d51bdf4f301c6b0"
+     ],
+     "kind": "string_literal",
+     "line": 38,
+     "new": "'fa7f4c6cf82e5d1b5f0f28a30e40b015d6e3987205a493daead1798a93967bae'",
+     "old": "'3a5a04044e238e387142520173aec59ac04113e7615f387c4d51bdf4f301c6b0'"
+    },
+    {
+     "keys": [
+      "sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757"
+     ],
+     "kind": "string_literal",
+     "line": 44,
+     "new": "'sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50'",
+     "old": "'sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757'"
+    },
+    {
+     "keys": [
+      "e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66"
+     ],
+     "kind": "string_literal",
+     "line": 49,
+     "new": "'2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a'",
+     "old": "'e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66'"
+    },
+    {
+     "keys": [
+      "8f5a3276ab5d94c34fd9c75054d378d7271c97559dcb9cdee374e0b5f1d6b87b"
+     ],
+     "kind": "string_literal",
+     "line": 50,
+     "new": "'eb09a77d9619f9173cc78b1c34568890a14890e2d13789de1c6376c88fb03675'",
+     "old": "'8f5a3276ab5d94c34fd9c75054d378d7271c97559dcb9cdee374e0b5f1d6b87b'"
+    },
+    {
+     "keys": [
+      "artifacts/qualify_full_benchmark_20261007a/qualification_image_identity_patch.json"
+     ],
+     "kind": "string_literal",
+     "line": 68,
+     "new": "\"artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json\"",
+     "old": "\"artifacts/qualify_full_benchmark_20261007a/qualification_image_identity_patch.json\""
+    },
+    {
+     "keys": [
+      "artifacts/qualify_full_benchmark_20261007a"
+     ],
+     "kind": "string_literal",
+     "line": 84,
+     "new": "\"artifacts/qualify_full_benchmark_20261008c\"",
+     "old": "\"artifacts/qualify_full_benchmark_20261007a\""
+    },
+    {
+     "keys": [
+      "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.acceptance_receipt.json"
+     ],
+     "kind": "string_literal",
+     "line": 89,
+     "new": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json\"",
+     "old": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.acceptance_receipt.json\""
+    },
+    {
+     "keys": [
+      "artifacts/qualify_full_benchmark_20261007a"
+     ],
+     "kind": "string_literal",
+     "line": 328,
+     "new": "\"artifacts/qualify_full_benchmark_20261008c/\"",
+     "old": "\"artifacts/qualify_full_benchmark_20261007a/\""
+    },
+    {
+     "keys": [
+      "96a1a3d47a9e711407707a8dc20cf9c73e5b6a8daa99b427b0a86b6392e29f70"
+     ],
+     "kind": "string_literal",
+     "line": 335,
+     "new": "\"324c22d640634d22943d976b8682df0dae5d8eb506eae765cb139580fb51a9c8\"",
+     "old": "\"96a1a3d47a9e711407707a8dc20cf9c73e5b6a8daa99b427b0a86b6392e29f70\""
+    },
+    {
+     "keys": [
+      "artifacts/qualify_full_benchmark_20261007a/qualification_image_identity_patch.json"
+     ],
+     "kind": "string_literal",
+     "line": 410,
+     "new": "\"artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json\"",
+     "old": "\"artifacts/qualify_full_benchmark_20261007a/qualification_image_identity_patch.json\""
+    },
+    {
+     "keys": [
+      "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.yaml"
+     ],
+     "kind": "string_literal",
+     "line": 414,
+     "new": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml\"",
+     "old": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.yaml\""
+    },
+    {
+     "keys": [
+      "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.assessment.json"
+     ],
+     "kind": "string_literal",
+     "line": 418,
+     "new": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json\"",
+     "old": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.assessment.json\""
+    },
+    {
+     "keys": [
+      "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.acceptance_receipt.json"
+     ],
+     "kind": "string_literal",
+     "line": 422,
+     "new": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json\"",
+     "old": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.acceptance_receipt.json\""
+    },
+    {
+     "keys": [
+      "sha256:764b5e9d14201663bd4b0922a9fb52038244279a18f51a5ed09012f4328f229e"
+     ],
+     "kind": "string_literal",
+     "line": 446,
+     "new": "\"sha256:61ceef0b60142313c6c84b41872f31b8a151c33d3b2e62ee03b2ff6f580241a5\"",
+     "old": "\"sha256:764b5e9d14201663bd4b0922a9fb52038244279a18f51a5ed09012f4328f229e\""
+    },
+    {
+     "keys": [
+      "sha256:3f9c5205694b298d4144f18fb4903181962233daff7c6604c288e6f4ac1a2204"
+     ],
+     "kind": "string_literal",
+     "line": 447,
+     "new": "\"sha256:8335a23ea4024cad52b2d0f1e94171888ec54316117d167c2ed0313f7d869ef3\"",
+     "old": "\"sha256:3f9c5205694b298d4144f18fb4903181962233daff7c6604c288e6f4ac1a2204\""
+    },
+    {
+     "keys": [
+      "sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28"
+     ],
+     "kind": "string_literal",
+     "line": 448,
+     "new": "\"sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7\"",
+     "old": "\"sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28\""
+    },
+    {
+     "keys": [
+      "sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757"
+     ],
+     "kind": "string_literal",
+     "line": 449,
+     "new": "\"sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50\"",
+     "old": "\"sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757\""
+    },
+    {
+     "keys": [
+      "sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28"
+     ],
+     "kind": "string_literal",
+     "line": 455,
+     "new": "\"sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7\"",
+     "old": "\"sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28\""
+    },
+    {
+     "keys": [
+      "vast/openvino-gva-publication-runtime-v3@sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28"
+     ],
+     "kind": "string_literal",
+     "line": 456,
+     "new": "\"vast/openvino-gva-publication-runtime-v3@sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7\"",
+     "old": "\"vast/openvino-gva-publication-runtime-v3@sha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28\""
+    },
+    {
+     "keys": [
+      "ff79e305405a84bea3e5b8a56ca74a1158d96d6f2d7798ef323251530e5f48df"
+     ],
+     "kind": "string_literal",
+     "line": 457,
+     "new": "\"5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9\"",
+     "old": "\"ff79e305405a84bea3e5b8a56ca74a1158d96d6f2d7798ef323251530e5f48df\""
+    },
+    {
+     "keys": [
+      "sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757"
+     ],
+     "kind": "string_literal",
+     "line": 463,
+     "new": "\"sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50\"",
+     "old": "\"sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757\""
+    },
+    {
+     "keys": [
+      "vast/gstreamer-custom-publication-runtime-v3@sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757"
+     ],
+     "kind": "string_literal",
+     "line": 464,
+     "new": "\"vast/gstreamer-custom-publication-runtime-v3@sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50\"",
+     "old": "\"vast/gstreamer-custom-publication-runtime-v3@sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757\""
+    },
+    {
+     "keys": [
+      "e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66"
+     ],
+     "kind": "string_literal",
+     "line": 465,
+     "new": "\"2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a\"",
+     "old": "\"e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66\""
+    }
+   ],
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "unchanged": false
+  },
+  {
+   "after_sha256": "495cd01a19ffe3463e5b4f748a44f6bc013723bea1a3cb092dc73d980e8019e2",
+   "before_sha256": "fee81a5db54479134e48848aefa0d1b69bae7f70307ef199e93ab4e334d0fda1",
+   "edits": [
+    {
+     "keys": [
+      "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.yaml"
+     ],
+     "kind": "string_literal",
+     "line": 233,
+     "new": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml\"",
+     "old": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.yaml\""
+    },
+    {
+     "keys": [
+      "134ef507ff5e2b845840d547c947070fd0af78e0039063e3930c249c3f3eebb1"
+     ],
+     "kind": "string_literal",
+     "line": 235,
+     "new": "\"f0b54f89f2fb4754ce1630f832dca313525b2c227839b5d5abe9b81b3d30baa8\"",
+     "old": "\"134ef507ff5e2b845840d547c947070fd0af78e0039063e3930c249c3f3eebb1\""
+    },
+    {
+     "keys": [
+      "976aed87c6e72c51ce2565ab53780247e509d63217bf050f0e69b322c0cca9e3"
+     ],
+     "kind": "string_literal",
+     "line": 236,
+     "new": "\"33d7bfffe9a9b9897f9fa99fdf7ff589537b5e80bc322995669952700c372429\"",
+     "old": "\"976aed87c6e72c51ce2565ab53780247e509d63217bf050f0e69b322c0cca9e3\""
+    }
+   ],
+   "file": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "unchanged": false
+  },
+  {
+   "after_sha256": "867da02315fde39317c48cb3aaa7794b038772b1ef25a96e4df0e8875930fcb4",
+   "before_sha256": "9c3f62ce5e6eb35ef2ad2e75ae1b157bf60ba01338472b41b0309baf90bdb99a",
+   "edits": [
+    {
+     "keys": [
+      "sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757"
+     ],
+     "kind": "string_literal",
+     "line": 51,
+     "new": "\"sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50\"",
+     "old": "\"sha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757\""
+    },
+    {
+     "keys": [
+      "e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66"
+     ],
+     "kind": "string_literal",
+     "line": 55,
+     "new": "\"2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a\"",
+     "old": "\"e1f6abd8215647e7998d6aad18366811ee3cd0292762dbfac49f90d6460b5b66\""
+    }
+   ],
+   "file": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+   "unchanged": false
+  },
+  {
+   "after_sha256": "6a1b0ae6782565a753ded5937a2f209cc9c74d35506fe27df53e93633ee55c37",
+   "before_sha256": "3f5b033ad4184697bb56a78d3319737e58c9c4821c56fe78870920abdfc68edf",
+   "edits": [
+    {
+     "keys": [
+      "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.acceptance_receipt.json"
+     ],
+     "kind": "string_literal",
+     "line": 250,
+     "new": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json\"",
+     "old": "\"configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.acceptance_receipt.json\""
+    }
+   ],
+   "file": "tests/test_publication_gstreamer_component_inputs_v1.py",
+   "unchanged": false
+  }
+ ],
+ "mapping_size": 143,
+ "new_dir": "artifacts/qualify_full_benchmark_20261008c",
+ "new_ns": "qfb-20261008c",
+ "old_dir": "artifacts/qualify_full_benchmark_20261007a",
+ "old_ns": "qfb-20261007a",
+ "status": "planned",
+ "tool": "rebind_host_identity_pins_qfb_v2.py"
+}

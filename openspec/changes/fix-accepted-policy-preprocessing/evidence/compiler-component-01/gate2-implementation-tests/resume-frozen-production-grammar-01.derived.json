@@ -1,0 +1,83 @@
+{
+  "git_diff_check_rc": 0,
+  "native_bootstrap": {
+    "sha256": "7c28da7371dea8407c77fd0edc8f39218819a580eb195086c7a44a7b69c3b65a",
+    "size_bytes": 1415
+  },
+  "physical_acceptance": false,
+  "production": [
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "1b981e75756598b3b10c7917927feb5295c69f76afcbc96b2af7147b5c14d196",
+      "size_bytes": 130781
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_component_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "da997d0a2a79e72778bcfd374871a1fdf9fc5173d41419ed68713dddc5650436",
+      "size_bytes": 32730
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "1e40d4786fd03543ac43df7fe0e42a4349d55bad9288ead28f5d2a6ad87bcb03",
+      "size_bytes": 103925
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_publisher_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "438c5d1a16a0712d5483ac2af0841e329daf875c301e9595a51d0004be350c07",
+      "size_bytes": 23351
+    },
+    {
+      "path": "scripts/publication_operational_request_domain_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "dab192de70bb82e56871b73b87f0337acf66a219b8460359634582a8bb5f8da6",
+      "size_bytes": 30328
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "1f84f927ad2098e5ef5a317bdf1c2da4b5eb358b4615266d904bf3c69508d1c3",
+      "size_bytes": 50190
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_p0_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "3cb7ebf819ac8db49458ea909a08b306602fa4f45984482c020572132ce9a903",
+      "size_bytes": 69194
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "31c3a7c92ad96cc2357ebb091b666c52faa1f3a214109419f2489d89e10d1bbb",
+      "size_bytes": 48660
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_child_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "f230fd6fd88d0b99309d3ec5b12a942a05c6ac131062ace734033a1fe2e8c013",
+      "size_bytes": 19404
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "807263a7e499a5a4ccbd6d275acf9effa08a2ded35273e5bfbe816f28b527323",
+      "size_bytes": 48892
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "58f33fb1993b83ae40d9f2d9ea39fe21867e5861486a80cbe07fa8b7d0174648",
+      "size_bytes": 45056
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py",
+      "python_3_10_grammar": true,
+      "sha256": "826c89fa9458792b210bf1155ab33be92780bf35c47b5a1f208d0ae77801f4bb",
+      "size_bytes": 32768
+    }
+  ],
+  "scope": "Frozen production sources/unchanged D and D-child; AST compile only, no program execution. New actively edited caller/test programs excluded until their final freeze. Grammar 3.10 does not claim runtime compatibility; actual CI/native3.12.3, Windows3.14."
+}

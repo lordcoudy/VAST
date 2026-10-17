@@ -1,0 +1,34 @@
+test_bound_only_front_is_refused_by_actual_production_transport_reader (tests.test_accepted_policy_fixture_transport_v2.AcceptedPolicyFixtureTransportV2Tests.test_bound_only_front_is_refused_by_actual_production_transport_reader) ... ok
+test_prepared_fixture_is_listening_before_two_actual_probes_and_drains_them (tests.test_accepted_policy_fixture_transport_v2.AcceptedPolicyFixtureTransportV2Tests.test_prepared_fixture_is_listening_before_two_actual_probes_and_drains_them) ... ERROR
+
+======================================================================
+ERROR: test_prepared_fixture_is_listening_before_two_actual_probes_and_drains_them (tests.test_accepted_policy_fixture_transport_v2.AcceptedPolicyFixtureTransportV2Tests.test_prepared_fixture_is_listening_before_two_actual_probes_and_drains_them)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 2548, in _require_socket_transport
+    endpoint.connect(record["path"])
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_transport_v2.py", line 94, in test_prepared_fixture_is_listening_before_two_actual_probes_and_drains_them
+    with fixture.prepared_complete_fixture_inputs_v2(
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_physical_fixture_v2.py", line 117, in prepared_complete_fixture_inputs_v2
+    runtime = materialize_publication_policy_qualification_runtime_inputs_v2(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_transport_v2.py", line 72, in runtime_setup_spy
+    runtime_inputs._require_socket_transport(before, expected_type="0005", label="fixture front")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 2575, in _require_socket_transport
+    _fail(f"{label} is not a reachable live SOCK_SEQPACKET transport: {error}")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 184, in _fail
+    raise QualificationRuntimeInputMaterializationV2Error(message)
+publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputMaterializationV2Error: fixture front is not a reachable live SOCK_SEQPACKET transport: [Errno 111] Connection refused
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.014s
+
+FAILED (errors=1)

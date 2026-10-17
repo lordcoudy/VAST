@@ -179,9 +179,25 @@ bool actual_exception_retirement() {
   return true;
 }
 }
+static bool native_exception_exit_keeps_wall_clock_line() {
+  // The real probe main reaches its fatal exception path and still reports the clamp.
+  std::vector<std::string> words={"vast_native_gst_probe","--vast-unknown-test-argument","x"};
+  std::vector<char*> pointers;for(auto& word:words)pointers.push_back(word.data());
+  std::ostringstream captured;auto* original=std::cerr.rdbuf(captured.rdbuf());
+  const int code=embedded_native_main(static_cast<int>(pointers.size()),pointers.data());std::cerr.rdbuf(original);
+  const std::string text=captured.str();
+  const auto fatal=text.find("[native-probe][fatal] ");
+  const auto clock=text.find("[native-probe][wall-clock] max_clamp_ns=");
+  if(code!=2||fatal==std::string::npos||clock==std::string::npos||clock<fatal||
+     text.find("[wall-clock]",text.find('\n',clock))!=std::string::npos) {
+    std::cerr<<"native exception exit lost its wall-clock line: "<<text;return false;
+  }
+  return true;
+}
 int main(int argc,char** argv) {gst_init(&argc,&argv); const bool bounded=native_null_retires_blocked_callback();
   const bool typed=native_typed_study_flags();const bool retirement=actual_exception_retirement();
   const auto path=fs::temp_directory_path()/("vast-native-journal-close-"+std::to_string(::getpid()));fs::create_directory(path);
   const bool journals=NativeProbeRuntimeTestAccess::journal_finalization(path);fs::remove_all(path);
   if(!journals)std::cerr<<"actual journal final-close/path-rebind/lost-FD failure was not checked before success\n";
-  return bounded&&typed&&retirement&&journals?0:1;}
+  const bool wall_exit=native_exception_exit_keeps_wall_clock_line();
+  return bounded&&typed&&retirement&&journals&&wall_exit?0:1;}

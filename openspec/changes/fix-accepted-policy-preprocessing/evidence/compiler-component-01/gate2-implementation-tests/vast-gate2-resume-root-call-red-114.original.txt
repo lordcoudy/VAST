@@ -1,0 +1,15 @@
+CONTROLLED_NODE_RUNTIME /mnt/c/Program Files/nodejs/node.exe v25.2.1
+E
+======================================================================
+ERROR: test_root_retains_the_exact_writer_call_even_when_transport_throws (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_root_retains_the_exact_writer_call_even_when_transport_throws)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 861, in test_root_retains_the_exact_writer_call_even_when_transport_throws
+    self.assertEqual(value['root']['writer_call'],value['providerCalls'][1])
+                     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+KeyError: 'writer_call'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.566s
+
+FAILED (errors=1)

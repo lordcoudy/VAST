@@ -1,0 +1,224 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.runtime
+#1 transferring dockerfile:
+#1 transferring dockerfile: 7.92kB done
+#1 DONE 0.6s
+
+#2 [auth] nvidia/deepstream:pull token for nvcr.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#3 ...
+
+#4 [auth] nvidia/deepstream:pull token for nvcr.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#3 DONE 0.9s
+
+#5 [internal] load .dockerignore
+#5 transferring context:
+#5 transferring context: 2B done
+#5 DONE 3.0s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [auth] nvidia/deepstream:pull token for nvcr.io
+#7 DONE 0.0s
+
+#8 [ 1/12] FROM nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#8 resolve nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#8 ...
+
+#9 [auth] nvidia/deepstream:pull token for nvcr.io
+#9 DONE 0.0s
+
+#8 [ 1/12] FROM nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#8 resolve nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759 0.4s done
+#8 DONE 0.4s
+
+#6 [internal] load build context
+#6 ...
+
+#8 [ 1/12] FROM nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#8 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 36.79MB 0.1s done
+#6 DONE 0.1s
+
+#10 [ 2/12] COPY deploy/deepstream/checkpoint/requirements.lock /opt/vast/requirements.lock
+#10 DONE 3.7s
+
+#11 [ 3/12] COPY   deploy/deepstream/checkpoint/wheels/PyYAML-6.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl   deploy/deepstream/checkpoint/wheels/numpy-1.26.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl   deploy/deepstream/checkpoint/wheels/pandas-2.2.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl   deploy/deepstream/checkpoint/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl   deploy/deepstream/checkpoint/wheels/pytz-2026.3.post1-py2.py3-none-any.whl   deploy/deepstream/checkpoint/wheels/six-1.17.0-py2.py3-none-any.whl   deploy/deepstream/checkpoint/wheels/tzdata-2026.3-py2.py3-none-any.whl   /opt/vast/wheels/
+#11 DONE 0.2s
+
+#12 [ 4/12] RUN python3 -m pip install       --no-index --no-deps --no-compile --require-hashes       --disable-pip-version-check       --find-links=/opt/vast/wheels       --requirement=/opt/vast/requirements.lock   && rm -rf /opt/vast/wheels /opt/vast/requirements.lock
+#12 0.372 Looking in links: /opt/vast/wheels
+#12 0.380 Processing /opt/vast/wheels/numpy-1.26.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (from -r /opt/vast/requirements.lock (line 2))
+#12 0.406 Processing /opt/vast/wheels/pandas-2.2.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (from -r /opt/vast/requirements.lock (line 3))
+#12 0.427 Processing /opt/vast/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl (from -r /opt/vast/requirements.lock (line 4))
+#12 0.430 Processing /opt/vast/wheels/pytz-2026.3.post1-py2.py3-none-any.whl (from -r /opt/vast/requirements.lock (line 5))
+#12 0.435 Processing /opt/vast/wheels/tzdata-2026.3-py2.py3-none-any.whl (from -r /opt/vast/requirements.lock (line 6))
+#12 0.440 Processing /opt/vast/wheels/PyYAML-6.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (from -r /opt/vast/requirements.lock (line 7))
+#12 0.444 Processing /opt/vast/wheels/six-1.17.0-py2.py3-none-any.whl (from -r /opt/vast/requirements.lock (line 8))
+#12 0.449 Installing collected packages: pytz, tzdata, six, PyYAML, python-dateutil, pandas, numpy
+#12 0.539   Attempting uninstall: six
+#12 0.539     Found existing installation: six 1.16.0
+#12 0.541     Uninstalling six-1.16.0:
+#12 0.609       Successfully uninstalled six-1.16.0
+#12 0.884   Attempting uninstall: numpy
+#12 0.885     Found existing installation: numpy 1.26.1
+#12 0.914     Uninstalling numpy-1.26.1:
+#12 1.310       Successfully uninstalled numpy-1.26.1
+#12 1.602 Successfully installed PyYAML-6.0.2 numpy-1.26.4 pandas-2.2.3 python-dateutil-2.9.0.post0 pytz-2026.3.post1 six-1.17.0 tzdata-2026.3
+#12 1.603 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#12 DONE 1.7s
+
+#13 [ 5/12] COPY   scripts/analytics_execution_endpoint.py   scripts/analytics_execution_protocol.py   scripts/analytics_execution_worker.py   scripts/analytics_model_contract.py   scripts/backend_publication_dispatch.py   scripts/backend_publication_launcher_invocation_v3.py   scripts/backend_publication_output_receipt.py   scripts/backend_publication_runtime_authority.py   scripts/backend_runtime_grant.py   scripts/backend_runtime_qualification_v3.py   scripts/benchmark_contract.py   scripts/canonical_systems_study_plan_v1.py   scripts/checkpoint_acceptance_metadata_binding.py   scripts/checkpoint_admission.py   scripts/checkpoint_deepstream_container_runtime_v3.py   scripts/checkpoint_deepstream_launcher.py   scripts/checkpoint_deepstream_protocol_adapter.py   scripts/checkpoint_deepstream_protocol_bridge.py   scripts/checkpoint_deepstream_qualification_fragment_v1.py   scripts/checkpoint_deepstream_resource_runtime_v3.py   scripts/checkpoint_deepstream_runtime.py   scripts/checkpoint_deepstream_sdk_runtime.py   scripts/checkpoint_gstreamer_analytics_bridge.py   scripts/checkpoint_gstreamer_analytics_sidecar.py   scripts/checkpoint_gstreamer_runtime.py   scripts/checkpoint_model_parity.py   scripts/checkpoint_model_parity_acceptance.py   scripts/checkpoint_model_parity_acceptance_v4.py   scripts/checkpoint_model_parity_v4.py   scripts/checkpoint_native_policy_runtime.py   scripts/checkpoint_publication_runtime.py   scripts/checkpoint_qualification_pilot_acceptance_v1.py   scripts/checkpoint_runtime.py   scripts/checkpoint_runtime_plan.py   scripts/extract_kpp_legacy_iss.py   scripts/formal_aw_heft_reference.py   scripts/freeze_kpp_frozen_reconstruction_v1.py   scripts/freeze_kpp_iss_publication_v3.py   scripts/freeze_kpp_legacy_iss_v2_transcodes.py   scripts/full_resource_contract.py   scripts/kpp_frozen_reconstruction_v1_dataset.py   scripts/kpp_iss_publication_v3_dataset.py   scripts/kpp_legacy_iss_v2_manifest.py   scripts/model_parity_grant.py   scripts/non_decreasing_wall_clock_v1.py   scripts/publication_acceptance_evidence.py   scripts/publication_child_evidence_materializer_v1.py   scripts/publication_gstreamer_component_authority_v1.py   scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py   scripts/publication_guardian_component_preprocessing_contract_v1.py   scripts/publication_guardian_operational_recorder_v1.py   scripts/publication_guardian_preprocessing_contract_v1.py   scripts/publication_guardian_runtime_expectations_v1.py   scripts/publication_operational_capture_plan_v1.py   scripts/publication_operational_container_custody_v1.py   scripts/publication_operational_process_custody_v1.py   scripts/publication_operational_request_domain_v1.py   scripts/publication_operational_request_reconciliation_v1.py   scripts/publication_operational_runtime_context_v1.py   scripts/publication_owned_staging_cleanup_v1.py   scripts/publication_physical_io_v1.py   scripts/publication_policy_contract.py   scripts/publication_policy_frozen_replay_v1.py   scripts/publication_policy_projection_v1.py   scripts/publication_policy_qualification.py   scripts/publication_policy_qualification_execution_closure_v1.py   scripts/publication_qualification_image_refreeze_v1.py   scripts/resource_interval_contract.py   scripts/topology_contract.py   /opt/vast/checkpoint/
+#13 DONE 0.5s
+
+#14 [ 6/12] COPY   deploy/native_gst_probe/checkpoint_admission_transport.hpp   deploy/native_gst_probe/checkpoint_source_coordinator.cpp   deploy/native_gst_probe/checkpoint_study_reference.hpp   /tmp/vast-source-build/deploy/native_gst_probe/
+#14 DONE 0.1s
+
+#15 [ 7/12] COPY   deploy/deepstream/checkpoint/vast_deepstream_meta_bridge.cpp   deploy/deepstream/checkpoint/vast_deepstream_meta_bridge.h   /tmp/vast-deepstream-meta/
+#15 DONE 0.0s
+
+#16 [ 8/12] COPY deploy/deepstream/checkpoint/vast_deepstream_checkpoint_runtime   /usr/local/bin/vast_deepstream_checkpoint_runtime
+#16 DONE 0.0s
+
+#17 [ 9/12] COPY deploy/deepstream/checkpoint/vast_deepstream_publication_runtime_v3   /usr/local/bin/vast_deepstream_publication_runtime_v3
+#17 DONE 0.0s
+
+#18 [10/12] COPY deploy/deepstream/checkpoint/runtime-source-allowlist.txt   /opt/vast/runtime-source-allowlist.txt
+#18 DONE 0.0s
+
+#19 [11/12] COPY deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt   /opt/vast/runtime-dependency-allowlist.txt
+#19 DONE 0.0s
+
+#20 [12/12] RUN g++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread       $(pkg-config --cflags         gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)       /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_source_coordinator.cpp       -o /usr/local/bin/vast_checkpoint_source       $(pkg-config --libs         gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)   && g++ -std=c++17 -shared -fPIC -Wall -Wextra -Werror       $(pkg-config --cflags gstreamer-1.0)       -I/opt/nvidia/deepstream/deepstream/sources/includes       /tmp/vast-deepstream-meta/vast_deepstream_meta_bridge.cpp       -o /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so       $(pkg-config --libs gstreamer-1.0)       -L/opt/nvidia/deepstream/deepstream/lib -lnvdsgst_meta -lnvds_meta       -Wl,-rpath,/opt/nvidia/deepstream/deepstream/lib   && chmod 0555       /usr/local/bin/vast_deepstream_checkpoint_runtime       /usr/local/bin/vast_deepstream_publication_runtime_v3   && chmod 0444 /opt/vast/checkpoint/*.py       /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so       /opt/vast/runtime-source-allowlist.txt       /opt/vast/runtime-dependency-allowlist.txt   && rm -rf /tmp/vast-source-build /tmp/vast-deepstream-meta   && /usr/local/bin/vast_deepstream_checkpoint_runtime --help >/dev/null   && /usr/local/bin/vast_deepstream_publication_runtime_v3 --help >/dev/null
+#20 0.421 In file included from /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_source_coordinator.cpp:5:
+#20 0.421 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp: In constructor 'vast::study::detail::HeldFile::HeldFile(const string&, const vast::CheckpointIoDeadline&)':
+#20 0.421 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:275:7: error: this 'if' clause does not guard... [-Werror=misleading-indentation]
+#20 0.421   275 |       if (fd >= 0) ::close(fd); ::close(parent); fd = parent = -1;
+#20 0.421       |       ^~
+#20 0.421 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:275:33: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+#20 0.421   275 |       if (fd >= 0) ::close(fd); ::close(parent); fd = parent = -1;
+#20 0.421       |                                 ^~
+#20 0.422 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp: In constructor 'vast::study::detail::Jsonl::Jsonl(const string&, const vast::CheckpointIoDeadline&)':
+#20 0.422 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:313:7: error: this 'if' clause does not guard... [-Werror=misleading-indentation]
+#20 0.422   313 |       if (fd >= 0) ::close(fd); ::close(parent); fd = parent = -1;
+#20 0.422       |       ^~
+#20 0.422 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:313:33: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+#20 0.422   313 |       if (fd >= 0) ::close(fd); ::close(parent); fd = parent = -1;
+#20 0.422       |                                 ^~
+#20 0.424 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp: In function 'std::string vast::study::detail::prefix_description(int, int)':
+#20 0.424 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:366:5: error: this 'if' clause does not guard... [-Werror=misleading-indentation]
+#20 0.424   366 |     if (error) g_error_free(error); if (bin) gst_object_unref(bin);
+#20 0.424       |     ^~
+#20 0.424 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:366:37: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+#20 0.424   366 |     if (error) g_error_free(error); if (bin) gst_object_unref(bin);
+#20 0.424       |                                     ^~
+#20 0.424 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp: In function 'void vast::study::detail::bus_error(GstBus*, bool&)':
+#20 0.424 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:384:5: error: this 'if' clause does not guard... [-Werror=misleading-indentation]
+#20 0.424   384 |     if (error) g_error_free(error); g_free(debug); gst_message_unref(message);
+#20 0.424       |     ^~
+#20 0.424 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:384:37: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+#20 0.424   384 |     if (error) g_error_free(error); g_free(debug); gst_message_unref(message);
+#20 0.424       |                                     ^~~~~~
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp: In constructor 'vast::study::detail::Pipeline::Pipeline(const string&)':
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:395:7: error: this 'if' clause does not guard... [-Werror=misleading-indentation]
+#20 0.425   395 |       if (error) g_error_free(error); if (value) gst_object_unref(value); value = nullptr;
+#20 0.425       |       ^~
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:395:39: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+#20 0.425   395 |       if (error) g_error_free(error); if (value) gst_object_unref(value); value = nullptr;
+#20 0.425       |                                       ^~
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp: In destructor 'vast::study::detail::Pipeline::~Pipeline()':
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:403:5: error: this 'if' clause does not guard... [-Werror=misleading-indentation]
+#20 0.425   403 |     if (sink) gst_object_unref(sink); if (source) gst_object_unref(source); if (bus) gst_object_unref(bus);
+#20 0.425       |     ^~
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:403:39: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+#20 0.425   403 |     if (sink) gst_object_unref(sink); if (source) gst_object_unref(source); if (bus) gst_object_unref(bus);
+#20 0.425       |                                       ^~
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp: In member function 'void vast::study::detail::Pipeline::finish()':
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:412:5: error: this 'if' clause does not guard... [-Werror=misleading-indentation]
+#20 0.425   412 |     if (source) gst_object_unref(source); source = nullptr;
+#20 0.425       |     ^~
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:412:43: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+#20 0.425   412 |     if (source) gst_object_unref(source); source = nullptr;
+#20 0.425       |                                           ^~~~~~
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:413:5: error: this 'if' clause does not guard... [-Werror=misleading-indentation]
+#20 0.425   413 |     if (bus) gst_object_unref(bus); bus = nullptr;
+#20 0.425       |     ^~
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:413:37: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+#20 0.425   413 |     if (bus) gst_object_unref(bus); bus = nullptr;
+#20 0.425       |                                     ^~~
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:414:5: error: this 'if' clause does not guard... [-Werror=misleading-indentation]
+#20 0.425   414 |     if (value) gst_object_unref(value); value = nullptr;
+#20 0.425       |     ^~
+#20 0.425 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:414:41: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+#20 0.425   414 |     if (value) gst_object_unref(value); value = nullptr;
+#20 0.425       |                                         ^~~~~
+#20 0.428 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp: In function 'GstPadProbeReturn vast::study::detail::nv12_probe(GstPad*, GstPadProbeInfo*, gpointer)':
+#20 0.428 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:434:5: error: this 'if' clause does not guard... [-Werror=misleading-indentation]
+#20 0.428   434 |     if (caps) gst_caps_unref(caps); return GST_PAD_PROBE_OK;
+#20 0.428       |     ^~
+#20 0.428 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:434:37: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+#20 0.428   434 |     if (caps) gst_caps_unref(caps); return GST_PAD_PROBE_OK;
+#20 0.428       |                                     ^~~~~~
+#20 0.435 In file included from /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_source_coordinator.cpp:5:
+#20 0.435 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp: In function 'int vast::study::detail::reference(const string&, const string&, const string&, int, int, uint64_t, std::size_t)':
+#20 0.435 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:471:44: error: missing initializer for member 'vast::study::detail::Observation::mutex' [-Werror=missing-field-initializers]
+#20 0.435   471 |   Observation observation{io, width, height};
+#20 0.435       |                                            ^
+#20 0.435 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:471:44: error: missing initializer for member 'vast::study::detail::Observation::queue' [-Werror=missing-field-initializers]
+#20 0.435 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:471:44: error: missing initializer for member 'vast::study::detail::Observation::failure' [-Werror=missing-field-initializers]
+#20 1.618 cc1plus: all warnings being treated as errors
+#20 ERROR: process "/bin/sh -c g++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread       $(pkg-config --cflags         gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)       /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_source_coordinator.cpp       -o /usr/local/bin/vast_checkpoint_source       $(pkg-config --libs         gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)   && g++ -std=c++17 -shared -fPIC -Wall -Wextra -Werror       $(pkg-config --cflags gstreamer-1.0)       -I/opt/nvidia/deepstream/deepstream/sources/includes       /tmp/vast-deepstream-meta/vast_deepstream_meta_bridge.cpp       -o /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so       $(pkg-config --libs gstreamer-1.0)       -L/opt/nvidia/deepstream/deepstream/lib -lnvdsgst_meta -lnvds_meta       -Wl,-rpath,/opt/nvidia/deepstream/deepstream/lib   && chmod 0555       /usr/local/bin/vast_deepstream_checkpoint_runtime       /usr/local/bin/vast_deepstream_publication_runtime_v3   && chmod 0444 /opt/vast/checkpoint/*.py       /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so       /opt/vast/runtime-source-allowlist.txt       /opt/vast/runtime-dependency-allowlist.txt   && rm -rf /tmp/vast-source-build /tmp/vast-deepstream-meta   && /usr/local/bin/vast_deepstream_checkpoint_runtime --help >/dev/null   && /usr/local/bin/vast_deepstream_publication_runtime_v3 --help >/dev/null" did not complete successfully: exit code: 1
+------
+ > [12/12] RUN g++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread       $(pkg-config --cflags         gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)       /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_source_coordinator.cpp       -o /usr/local/bin/vast_checkpoint_source       $(pkg-config --libs         gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)   && g++ -std=c++17 -shared -fPIC -Wall -Wextra -Werror       $(pkg-config --cflags gstreamer-1.0)       -I/opt/nvidia/deepstream/deepstream/sources/includes       /tmp/vast-deepstream-meta/vast_deepstream_meta_bridge.cpp       -o /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so       $(pkg-config --libs gstreamer-1.0)       -L/opt/nvidia/deepstream/deepstream/lib -lnvdsgst_meta -lnvds_meta       -Wl,-rpath,/opt/nvidia/deepstream/deepstream/lib   && chmod 0555       /usr/local/bin/vast_deepstream_checkpoint_runtime       /usr/local/bin/vast_deepstream_publication_runtime_v3   && chmod 0444 /opt/vast/checkpoint/*.py       /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so       /opt/vast/runtime-source-allowlist.txt       /opt/vast/runtime-dependency-allowlist.txt   && rm -rf /tmp/vast-source-build /tmp/vast-deepstream-meta   && /usr/local/bin/vast_deepstream_checkpoint_runtime --help >/dev/null   && /usr/local/bin/vast_deepstream_publication_runtime_v3 --help >/dev/null:
+0.428   434 |     if (caps) gst_caps_unref(caps); return GST_PAD_PROBE_OK;
+0.428       |                                     ^~~~~~
+0.435 In file included from /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_source_coordinator.cpp:5:
+0.435 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp: In function 'int vast::study::detail::reference(const string&, const string&, const string&, int, int, uint64_t, std::size_t)':
+0.435 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:471:44: error: missing initializer for member 'vast::study::detail::Observation::mutex' [-Werror=missing-field-initializers]
+0.435   471 |   Observation observation{io, width, height};
+0.435       |                                            ^
+0.435 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:471:44: error: missing initializer for member 'vast::study::detail::Observation::queue' [-Werror=missing-field-initializers]
+0.435 /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_study_reference.hpp:471:44: error: missing initializer for member 'vast::study::detail::Observation::failure' [-Werror=missing-field-initializers]
+1.618 cc1plus: all warnings being treated as errors
+------
+Dockerfile.runtime:130
+--------------------
+ 129 |     
+ 130 | >>> RUN g++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+ 131 | >>>       $(pkg-config --cflags \
+ 132 | >>>         gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0) \
+ 133 | >>>       /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_source_coordinator.cpp \
+ 134 | >>>       -o /usr/local/bin/vast_checkpoint_source \
+ 135 | >>>       $(pkg-config --libs \
+ 136 | >>>         gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0) \
+ 137 | >>>   && g++ -std=c++17 -shared -fPIC -Wall -Wextra -Werror \
+ 138 | >>>       $(pkg-config --cflags gstreamer-1.0) \
+ 139 | >>>       -I/opt/nvidia/deepstream/deepstream/sources/includes \
+ 140 | >>>       /tmp/vast-deepstream-meta/vast_deepstream_meta_bridge.cpp \
+ 141 | >>>       -o /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so \
+ 142 | >>>       $(pkg-config --libs gstreamer-1.0) \
+ 143 | >>>       -L/opt/nvidia/deepstream/deepstream/lib -lnvdsgst_meta -lnvds_meta \
+ 144 | >>>       -Wl,-rpath,/opt/nvidia/deepstream/deepstream/lib \
+ 145 | >>>   && chmod 0555 \
+ 146 | >>>       /usr/local/bin/vast_deepstream_checkpoint_runtime \
+ 147 | >>>       /usr/local/bin/vast_deepstream_publication_runtime_v3 \
+ 148 | >>>   && chmod 0444 /opt/vast/checkpoint/*.py \
+ 149 | >>>       /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so \
+ 150 | >>>       /opt/vast/runtime-source-allowlist.txt \
+ 151 | >>>       /opt/vast/runtime-dependency-allowlist.txt \
+ 152 | >>>   && rm -rf /tmp/vast-source-build /tmp/vast-deepstream-meta \
+ 153 | >>>   && /usr/local/bin/vast_deepstream_checkpoint_runtime --help >/dev/null \
+ 154 | >>>   && /usr/local/bin/vast_deepstream_publication_runtime_v3 --help >/dev/null
+ 155 |     
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c g++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread       $(pkg-config --cflags         gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)       /tmp/vast-source-build/deploy/native_gst_probe/checkpoint_source_coordinator.cpp       -o /usr/local/bin/vast_checkpoint_source       $(pkg-config --libs         gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)   && g++ -std=c++17 -shared -fPIC -Wall -Wextra -Werror       $(pkg-config --cflags gstreamer-1.0)       -I/opt/nvidia/deepstream/deepstream/sources/includes       /tmp/vast-deepstream-meta/vast_deepstream_meta_bridge.cpp       -o /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so       $(pkg-config --libs gstreamer-1.0)       -L/opt/nvidia/deepstream/deepstream/lib -lnvdsgst_meta -lnvds_meta       -Wl,-rpath,/opt/nvidia/deepstream/deepstream/lib   && chmod 0555       /usr/local/bin/vast_deepstream_checkpoint_runtime       /usr/local/bin/vast_deepstream_publication_runtime_v3   && chmod 0444 /opt/vast/checkpoint/*.py       /opt/vast/checkpoint/libvast_deepstream_meta_bridge.so       /opt/vast/runtime-source-allowlist.txt       /opt/vast/runtime-dependency-allowlist.txt   && rm -rf /tmp/vast-source-build /tmp/vast-deepstream-meta   && /usr/local/bin/vast_deepstream_checkpoint_runtime --help >/dev/null   && /usr/local/bin/vast_deepstream_publication_runtime_v3 --help >/dev/null" did not complete successfully: exit code: 1
+runtime builder failed: deepstream

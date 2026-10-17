@@ -1,0 +1,28 @@
+test_reference_passes_real_six_stream_reset_to_dataset_gate (tests.test_accepted_policy_stock_sample_reference_v1.AcceptedPolicyStockSampleReferenceV1Tests.test_reference_passes_real_six_stream_reset_to_dataset_gate) ... FAIL
+
+======================================================================
+FAIL: test_reference_passes_real_six_stream_reset_to_dataset_gate (tests.test_accepted_policy_stock_sample_reference_v1.AcceptedPolicyStockSampleReferenceV1Tests.test_reference_passes_real_six_stream_reset_to_dataset_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/var/tmp/vast-stock-sample-reference-tdd-20261013b/red/tests/fixtures/accepted_policy_stock_sample_reference_v1.py", line 145, in stock_sample_reference_v1
+    sidecars = validate_required_sidecars(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14/scripts/benchmark_contract.py", line 6665, in validate_required_sidecars
+    raise ContractError(
+benchmark_contract.ContractError: /var/tmp/stock-sample-reference-bjurhm18/pilots/gstreamer_custom/gpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set
+
+The above exception was the direct cause of the following exception:
+
+publication_policy_qualification.QualificationError: pilot sidecar revalidation failed: /var/tmp/stock-sample-reference-bjurhm18/pilots/gstreamer_custom/gpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/tmp/vast-stock-sample-reference-tdd-20261013b/red/tests/test_accepted_policy_stock_sample_reference_v1.py", line 65, in test_reference_passes_real_six_stream_reset_to_dataset_gate
+    with self.assertRaisesRegex(stock.QualificationError,
+AssertionError: "unknown dataset 'kpp_iss_publication_v3_h264'" does not match "pilot sidecar revalidation failed: /var/tmp/stock-sample-reference-bjurhm18/pilots/gstreamer_custom/gpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+
+----------------------------------------------------------------------
+Ran 1 test in 0.841s
+
+FAILED (failures=1)

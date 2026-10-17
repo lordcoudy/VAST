@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 189, in <module>
+    main()
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 167, in main
+    consumers = complete_fixture_production_consumers_v2(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/tests/fixtures/accepted_policy_consumer_fixture_v2.py", line 190, in complete_fixture_production_consumers_v2
+    guardian = materialize_accepted_policy_guardian_preprocessing_contract_v1(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py", line 1083, in materialize_accepted_policy_guardian_preprocessing_contract_v1
+    material = _source_material(
+               ^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py", line 778, in _source_material
+    _require(
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py", line 146, in _require
+    _fail(message)
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py", line 141, in _fail
+    raise AcceptedPolicyGuardianPreprocessingContractV1Error(message)
+publication_guardian_accepted_policy_preprocessing_contract_v1.AcceptedPolicyGuardianPreprocessingContractV1Error: execution config content identity drifted from v4 parity authority

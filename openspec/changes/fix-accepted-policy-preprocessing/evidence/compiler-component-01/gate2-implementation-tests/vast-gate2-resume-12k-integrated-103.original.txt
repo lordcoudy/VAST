@@ -1,0 +1,24 @@
+CONTROLLED_MAIN_FORMS [('operator.authority.original.json', 4825), ('operator.command.original.json', 499), ('p0.return.original.json', 742), ('resume.events.original.json', 2579)]
+CONTROLLED_GEOMETRY 2144 3168 454 4372
+CONTROLLED_GEOMETRY 2144 3168 653 4621
+CONTROLLED_GEOMETRY 2144 3168 2047 7986
+CONTROLLED_NODE_RUNTIME /mnt/c/Program Files/nodejs/node.exe v25.2.1
+CONTROLLED_NODE_QUOTE 27158 11377 5532 1635 13453
+...........................................E..................
+======================================================================
+ERROR: test_node_complete_six_call_collection_geometry (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_node_complete_six_call_collection_geometry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 628, in test_node_complete_six_call_collection_geometry
+    full=m.outer_collection_v1(call,frames)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 66, in outer_collection_v1
+    need(len(raw)<=12288,'outer_complete_bound')
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 37, in need
+    raise ResumeRefusal(cause,facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: outer_complete_bound
+
+----------------------------------------------------------------------
+Ran 62 tests in 11.195s
+
+FAILED (errors=1)

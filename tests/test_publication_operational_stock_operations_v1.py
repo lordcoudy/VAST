@@ -190,5 +190,29 @@ class PhysicalStockOperationPlanningSeamTests(unittest.TestCase):
         self.assertFalse((self.root / "capture/capture-plan/index.v1.json").exists())
 
 
+class StockOperationPlanningCliTests(unittest.TestCase):
+    """Amendment 3: the CLI passes an explicit engine socket (``/var/run`` may be a symlink)."""
+
+    ARGV = [item for name in ("project-root", "output-dir", "candidate-index-path", "candidate-manifest-path",
+                              "candidate-receipt-path", "bootstrap-mapping-path", "bootstrap-receipt-path",
+                              "bootstrap-dir", "transaction-receipt-path", "preprocessing-contract-path",
+                              "preprocessing-receipt-path", "execution-code-closure-path", "pilot-root",
+                              "guardian-output-dir") for item in ("--" + name, "/tmp/" + name)] + [
+        "--mode", target.QUALIFICATION_MODE]
+
+    def _call(self, extra):
+        with mock.patch.object(target, "prepare_stock_operational_capture_plan_v1",
+                               return_value={"descriptor": {}}) as prepare, mock.patch("builtins.print"):
+            self.assertEqual(target.main(self.ARGV + extra), 0)
+        return prepare.call_args.kwargs
+
+    def test_explicit_engine_socket_reaches_planning(self):
+        kwargs = self._call(["--container-engine-socket", "/run/docker.sock"])
+        self.assertEqual(kwargs["container_engine_socket_path"], Path("/run/docker.sock"))
+
+    def test_default_engine_socket_is_unchanged(self):
+        self.assertEqual(self._call([])["container_engine_socket_path"], Path("/var/run/docker.sock"))
+
+
 if __name__ == "__main__":
     unittest.main()

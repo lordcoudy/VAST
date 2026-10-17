@@ -1,0 +1,21 @@
+{
+  "source_read_only": true,
+  "verifier_sha256": "0f9a5ddc541cf572cbe4417a59834dbad73121bdc3711b7003e069c41b731908",
+  "started_utc": "2026-10-11T23:07:06.3713057+00:00",
+  "argv": [
+    "C:\\Windows\\System32\\wsl.exe",
+    "--distribution",
+    "Ubuntu",
+    "--user",
+    "s-a-balashov",
+    "--exec",
+    "/usr/bin/env",
+    "HOME=/home/s-a-balashov",
+    "TMPDIR=/var/tmp",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/verify_a16_retained_originals.py"
+  ],
+  "campaign_authority": false
+}

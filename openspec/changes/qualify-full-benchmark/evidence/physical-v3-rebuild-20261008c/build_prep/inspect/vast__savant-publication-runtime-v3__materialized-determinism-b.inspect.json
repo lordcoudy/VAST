@@ -1,0 +1,183 @@
+[
+    {
+        "Id": "sha256:8335a23ea4024cad52b2d0f1e94171888ec54316117d167c2ed0313f7d869ef3",
+        "RepoTags": [
+            "vast/savant-publication-runtime-v3:materialized",
+            "vast/savant-publication-runtime-v3:materialized-determinism-a",
+            "vast/savant-publication-runtime-v3:materialized-determinism-b"
+        ],
+        "RepoDigests": [
+            "vast/savant-publication-runtime-v3@sha256:8335a23ea4024cad52b2d0f1e94171888ec54316117d167c2ed0313f7d869ef3"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2024-08-01T00:00:00Z",
+        "Config": {
+            "Env": [
+                "TAG=gmc1",
+                "PLATFORM=x86_64",
+                "DS_REL_PKG=deepstream_sdk_v7.0.0_x86_64.tbz2",
+                "DS_REL_PKG_DIR=deepstream_sdk_v7.0.0_x86_64",
+                "DS_VERSION=7.0.0",
+                "PATH=/opt/savant/scripts:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/.local/bin",
+                "NVARCH=x86_64",
+                "NVIDIA_REQUIRE_CUDA=cuda>=12.2 brand=tesla,driver>=470,driver<471 brand=unknown,driver>=470,driver<471 brand=nvidia,driver>=470,driver<471 brand=nvidiartx,driver>=470,driver<471 brand=geforce,driver>=470,driver<471 brand=geforcertx,driver>=470,driver<471 brand=quadro,driver>=470,driver<471 brand=quadrortx,driver>=470,driver<471 brand=titan,driver>=470,driver<471 brand=titanrtx,driver>=470,driver<471 brand=tesla,driver>=525,driver<526 brand=unknown,driver>=525,driver<526 brand=nvidia,driver>=525,driver<526 brand=nvidiartx,driver>=525,driver<526 brand=geforce,driver>=525,driver<526 brand=geforcertx,driver>=525,driver<526 brand=quadro,driver>=525,driver<526 brand=quadrortx,driver>=525,driver<526 brand=titan,driver>=525,driver<526 brand=titanrtx,driver>=525,driver<526",
+                "NV_CUDA_CUDART_VERSION=12.2.140-1",
+                "NV_CUDA_COMPAT_PACKAGE=cuda-compat-12-2",
+                "CUDA_VERSION=12.2.2",
+                "LD_LIBRARY_PATH=/opt/nvidia/deepstream/deepstream/lib:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/.local/lib",
+                "NVIDIA_VISIBLE_DEVICES=all",
+                "NVIDIA_DRIVER_CAPABILITIES=compute,utility,video,compute,graphics,utility",
+                "NV_CUDA_LIB_VERSION=12.2.2-1",
+                "NV_NVTX_VERSION=12.2.140-1",
+                "NV_LIBNPP_VERSION=12.2.1.4-1",
+                "NV_LIBNPP_PACKAGE=libnpp-12-2=12.2.1.4-1",
+                "NV_LIBCUSPARSE_VERSION=12.1.2.141-1",
+                "NV_LIBCUBLAS_PACKAGE_NAME=libcublas-12-2",
+                "NV_LIBCUBLAS_VERSION=12.2.5.6-1",
+                "NV_LIBCUBLAS_PACKAGE=libcublas-12-2=12.2.5.6-1",
+                "NV_LIBNCCL_PACKAGE_NAME=libnccl2",
+                "NV_LIBNCCL_PACKAGE_VERSION=2.19.3-1",
+                "NCCL_VERSION=2.19.3-1",
+                "NV_LIBNCCL_PACKAGE=libnccl2=2.19.3-1+cuda12.2",
+                "NVIDIA_PRODUCT_NAME=CUDA",
+                "PKG_CONFIG_PATH=:/.local/lib/pkgconfig",
+                "PYTHONUNBUFFERED=1",
+                "PROJECT_PATH=/opt/savant",
+                "PYTHONPATH=/opt/vast/checkpoint:/opt/savant",
+                "NUMBA_CACHE_DIR=/cache/numba",
+                "CUPY_CACHE_DIR=/cache/cupy",
+                "GST_PLUGIN_PATH=/usr/local/lib/gstreamer-1.0:/opt/savant/gst_plugins:/opt/savant/adapters/gst/gst_plugins",
+                "LOGLEVEL=info",
+                "SAVANT_STATUS_FILEPATH=/tmp/vast-savant-status.txt",
+                "USE_NEW_NVSTREAMMUX=yes",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONNOUSERSITE=1",
+                "VAST_NATIVE_PYTHONPATH=/opt/vast/checkpoint:/opt/savant"
+            ],
+            "Entrypoint": [
+                "/usr/local/bin/vast_savant_checkpoint_runtime"
+            ],
+            "WorkingDir": "/opt/savant",
+            "Labels": {
+                "maintainer": "NVIDIA CORPORATION <cudatools@nvidia.com>",
+                "org.opencontainers.image.ref.name": "ubuntu",
+                "org.opencontainers.image.version": "22.04",
+                "org.vast.base-image-id": "sha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6",
+                "org.vast.claim-status": "native-sdk-runtime-awaiting-endpoint-bound-full-arm",
+                "org.vast.component": "savant-checkpoint-publication-runtime",
+                "org.vast.deepstream.version": "7.0",
+                "org.vast.native-builder-image-id": "sha256:955712fba0b1c992decc78dcbeee3fb2e530eef2f6fcd43f267a378caa1f9a6c",
+                "org.vast.native-builder-source-sha256": "669e5cd73df607e2b6ae9ebf2e83d684b13bb06de9a5f174f1647112e61f08cd",
+                "org.vast.publication-ready": "false",
+                "org.vast.publication-runtime-abi": "3",
+                "org.vast.savant.publication-runtime": "v3",
+                "org.vast.savant.runtime-bundle-sha256": "90757e66da682415d78f3c78e21ea2a2c6f76db6611fef2587b7606ccb4bca80",
+                "org.vast.savant.runtime-source-sha256": "9c32aa63262ac34ddbabe856502d23d397ac1ba4ede0441a5b77a3d3ab36953f",
+                "org.vast.savant.version": "0.5.17"
+            },
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "sh",
+                    "/opt/savant/healthcheck.sh"
+                ],
+                "Interval": 5000000000,
+                "Timeout": 5000000000,
+                "StartPeriod": 1800000000000,
+                "Retries": 3
+            }
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 22847569048,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:256d88da41857db513b95b50ba9a9b28491b58c954e25477d5dad8abb465430b",
+                "sha256:c735aeb4de509baf67a6c318ae0ef434e36ed80edca7dce29a653e67499fd63a",
+                "sha256:77b174470c9445f8ac446787f14d1c676d294d6323c6fb1b0c21ba328325aeb6",
+                "sha256:adf2c0a553e917db1a0cfdcda1a7d85bfba431fc150c626b45e471c0bc3a5041",
+                "sha256:d3e5eae7a62576ed2689992c2a5e51ca8e8bb8636375268a9821a50c11fa4fcc",
+                "sha256:bd4791c0dfbebfd8bfab1921cbf1edf2d00800dd7d0e82e48008fb31efcf2ade",
+                "sha256:4deb6be006993233d5c03853bb374ad78dcacc6b22dbb66a487e375c7ca9144c",
+                "sha256:97da79745aa177b0efed59ee23f31bfcc07e67c1e4d14205ae244f00180da7da",
+                "sha256:598c4c0e7d71b8bfb29b91c39f8c33bbe2f244de9eeecbc3cbd41a44d0799b70",
+                "sha256:8f27dcae15d3dbbedb7c97a0c39847b84182959bb1b67be226de563e41e14d00",
+                "sha256:fabe991f0b705af0f500f13f9379e6e247b9a36da9cda6457fe0239bc7c6f444",
+                "sha256:de7e6800318eaabe38b62a53957f547a15fb75dcd7108e2edfd7adaedc52a60c",
+                "sha256:cc7a9a01cc4409006c1f67a179cf7f1733fe02cfa257fd3b91ea7eb5e67573d5",
+                "sha256:debe975fa56a39da60ee51f5607c4204c0479693cb2db0af22ddcd9fa28ca371",
+                "sha256:95498026da738b427166c022c7497d031ac3208f9c4756c5ffd02782f507b9f7",
+                "sha256:e5c3e7732338e2bde45874cff3f2c3a09c8b1a6550c4db594ab32609e134b042",
+                "sha256:93496d3401b46e306112865c788dc6d609acc535b1ebfddbc6ca2ba6ef356849",
+                "sha256:69da5df5467375e86c01863d6b66a5364c2b4062ed94ecf872459ccd28626fa9",
+                "sha256:906b6371017ed69fd76e0ef0bde3b4af5bf2e80f1c92887d08a5cb9c8c6f6448",
+                "sha256:7b6b030f78710a4b8a0d99b82971e31b80ec0fe8ffbee21858c9b7246ef510db",
+                "sha256:b5edbbcb449c1a291f688ed9417197a987e9bae8d49eddb532c32b22d0becb1c",
+                "sha256:70e57559c8c4fed20c56191482950be2f9a3b49168ce125eceb4e7f0362f06bb",
+                "sha256:62924f2b95e2b0f6c35a38a3c85dcca048621a40db46b283ff05a75fdb3b40b9",
+                "sha256:6ed701608a47527e261af81f1518a8be7d4c7700e7551be71f00b5df3529fe46",
+                "sha256:00579c138b8fa9cc7e1967bd8f6f94a1792d4797a970aba1d0154a0a7db55663",
+                "sha256:8c315b0a41eab3088705acb337522a3e340a50addf474d4d62a1138b15cfd0f9",
+                "sha256:00c0823f45203251b6fac3f9f582271f451893afad7ef48223e38cd58ad0206f",
+                "sha256:18da11a08e36f5e07634be572612f9f9a17d9d778661d213670d6bcd0107637d",
+                "sha256:963b0a48cfbdd0295259e122473549a3d42fe513f13b45e39bc943668742a72d",
+                "sha256:453365dee2f7a65d7024f332a6ac57f75abd940c0153771f27871c8c30899179",
+                "sha256:d9b30508656d1d294402e8eb5caf8778eac90a43a2d09801e3fae0dfff303bc5",
+                "sha256:06d884d941d268c1d2217990386a202d4bb31ba904c298f6ef4ef291ad5646e5",
+                "sha256:5d926411cab49e0f10034d3a2f0675de7fd9874e4041a0201de52130b9f78667",
+                "sha256:13e1bb817001bfb23dbe730c3009a02b51dbb548b684991ae40ae8c052776f76",
+                "sha256:734c2b372d0d7cd49d8421efc4bcbaf054bab542bb8b78707f7a47932fcb1035",
+                "sha256:4c7f3e7e0fe6b2c40c8bb795d3c5d7727fd1edba1cfcdcd4ae79ceabf80954dd",
+                "sha256:7e4a024f547c7e28c36b90f33d97777af1537dfe9bed24ed60ac366d1390d384",
+                "sha256:42d0f3358b150883f8279a8d39434d44fd78e6f173b2ed2c6531c1f937703f7e",
+                "sha256:75618dbc444d4907413db17a1489728da2784243665e855d8c0b4e1269d3417d",
+                "sha256:837f22bb71471ac8a623a182b41a1f70c394ffdab88183d5dce401351a499dc8",
+                "sha256:fac256f701ad2be2775fcade4372493acea6e59f06e26bab8f57159a307747f1",
+                "sha256:843197f9e61d1df5d7d034d372dbb3017ae2e66456e4397a06a6bdd986409b98",
+                "sha256:b0c54d71197d79719b3c794fd7953de7b5640e5face6f8b954aead7329ce3e3b",
+                "sha256:6650087f73359e08a308e992d0d89cb25dfefa0721e2d7291f7c97eb4d4e1204",
+                "sha256:2bf97b7a005af6988cdebd05670888c6f86107201131c6de0d3dc4f3d0369928",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:faa9d941e9f885630740151e24a8fb320dd97ed6b78b73e634c6df44daa5a5e7",
+                "sha256:13c4a9424442bde1172970c17987e8fc213595c42a79c066067c9e1afcb53e2c",
+                "sha256:b2821f4c9ae33f1256593aa56fe5611d10b22390fb9923a99c1adf5e45998409",
+                "sha256:605ec36862d7432edf629cfffd33df863b0baf32c81d03bfc1296bc4315eb9b5",
+                "sha256:6a53c933477d39d7c4eb68c414738107a850eedb0300b7cfd697d4bc997f0cf9",
+                "sha256:13d60152186d57d8a4ec06fd2d6e399fa6aa5125d7efa5b5e77cb7b5e0f6d6e5",
+                "sha256:8193b4e5681cf8a49100111e7ce8ad207b851c4215c0c7c96e1ff681955fb350",
+                "sha256:7d2cea987687487df25323054652cd7e75246378c8aa60aed2ce300968fd7289",
+                "sha256:b62abe039589cf067c0e7e1528896565937ef5ea0035e840444928c3d5aea107",
+                "sha256:fe4266cfef2332402db8b6a7e28d44a33d4667b92946e8d6535f3f9c0ffaefa1",
+                "sha256:7f6ae6ee316126563298876b3fb4f036b1e55fc63d61a1cf16d1585c83ba066d",
+                "sha256:fd7b21848b7e2a74eea009fad475fe5810ec33a0147084772932b358645d56fa",
+                "sha256:99086d527f51850d0b70db26282d6d895655257ecc95709057d2fac904ed0d3d",
+                "sha256:6600749469ae45c531a944eff07b5823d8b55195713e46365de4da2b2739d492",
+                "sha256:97a15629db3c85d3f0558cb312a627de2e774eef3e08eb61876a28b083659250"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-08T00:01:38.359817766Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:8335a23ea4024cad52b2d0f1e94171888ec54316117d167c2ed0313f7d869ef3",
+            "size": 12825,
+            "annotations": {
+                "config.digest": "sha256:615bb8f3f37d9673c3e347deaa32eeb2803e122b352c48203812f75ff075fd58"
+            }
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "i15qb3ghwi7dpxxmxa4ho1wjp",
+                    "CreatedAt": "2026-10-08T00:01:35.295230598Z"
+                },
+                {
+                    "Ref": "ih27medpuzhkpxjc0ev4xf5uo",
+                    "CreatedAt": "2026-10-08T00:01:27.692653073Z"
+                }
+            ]
+        }
+    }
+]

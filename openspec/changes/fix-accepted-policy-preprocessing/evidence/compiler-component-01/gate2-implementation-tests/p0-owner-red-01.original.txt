@@ -1,0 +1,1615 @@
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEFFFFFFFFFF
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (field='open_completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1205, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (field='written_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1205, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (field='fsync_completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1205, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (field='close_completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1205, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (field='late')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1205, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (field='extent_unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1205, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (field='completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1205, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (field='prefix_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1205, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (raw='p0-id.stdout.original')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1211, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (raw='p0-id.stderr.original')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1211, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (raw='p0-snapshot-info.stdout.original')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1211, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (raw='p0-snapshot-info.stderr.original')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1211, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (raw='p0-snapshot-ls.stdout.original')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1211, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (raw='p0-snapshot-ls.stderr.original')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1211, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_control_write_proof_and_all_raw_hashes_are_independently_bound (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_control_write_proof_and_all_raw_hashes_are_independently_bound) (raw='p0-control.v1.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1211, in test_control_write_proof_and_all_raw_hashes_are_independently_bound
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_descriptor_hash_size_root_alias_and_file_type_refusals (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_descriptor_hash_size_root_alias_and_file_type_refusals) (field='size_bytes', value=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1111, in test_descriptor_hash_size_root_alias_and_file_type_refusals
+    self.validate(descriptor)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_descriptor_hash_size_root_alias_and_file_type_refusals (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_descriptor_hash_size_root_alias_and_file_type_refusals) (field='size_bytes', value=4097)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1111, in test_descriptor_hash_size_root_alias_and_file_type_refusals
+    self.validate(descriptor)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_descriptor_hash_size_root_alias_and_file_type_refusals (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_descriptor_hash_size_root_alias_and_file_type_refusals) (field='sha256', value='0000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1111, in test_descriptor_hash_size_root_alias_and_file_type_refusals
+    self.validate(descriptor)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_descriptor_hash_size_root_alias_and_file_type_refusals (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_descriptor_hash_size_root_alias_and_file_type_refusals) (field='path', value='/tmp/tmphoyot3r8/absent')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1111, in test_descriptor_hash_size_root_alias_and_file_type_refusals
+    self.validate(descriptor)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_descriptor_hash_size_root_alias_and_file_type_refusals (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_descriptor_hash_size_root_alias_and_file_type_refusals) (field='extra', value=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1111, in test_descriptor_hash_size_root_alias_and_file_type_refusals
+    self.validate(descriptor)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_descriptor_hash_size_root_alias_and_file_type_refusals (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_descriptor_hash_size_root_alias_and_file_type_refusals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1113, in test_descriptor_hash_size_root_alias_and_file_type_refusals
+    self.validate(project_root=self.root / "p0" / "absent")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse) (raw=b'{"actor":"agent_observed_root_proof","al')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1246, in test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse) (raw=b'{"extra":NaN}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1246, in test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse) (raw=b'{"extra":1e999}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1246, in test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse) (raw=b' {"actor":"agent_observed_root_proof","a')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1246, in test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse) (raw=b'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1246, in test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1254, in test_duplicate_nonfinite_noncanonical_and_oversize_metadata_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='argv')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='env')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='pid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='returncode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='returncode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='normal_exit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='forced_parent_termination')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='parent_termination_proves_linux_child_closure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='linux_child_closure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='eof_stdout')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='eof_stderr')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='late')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='timed_out')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=0, field='causes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='argv')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='env')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='pid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='returncode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='returncode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='normal_exit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='forced_parent_termination')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='parent_termination_proves_linux_child_closure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='linux_child_closure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='eof_stdout')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='eof_stderr')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='late')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='timed_out')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=1, field='causes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='argv')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='env')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='pid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='returncode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='returncode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='normal_exit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='forced_parent_termination')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='parent_termination_proves_linux_child_closure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='linux_child_closure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='eof_stdout')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='eof_stderr')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='late')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='timed_out')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (index=2, field='causes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1175, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', field='eof')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', field='overflow')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', field='remainder_unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', field='observed_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', field='retained_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', field='cap_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', field='relative_path')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', field='prefix_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', persistence='open_completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', persistence='written_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', persistence='fsync_completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', persistence='close_completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', persistence='late')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', persistence='extent_unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', persistence='completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stdout', persistence='prefix_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', field='eof')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', field='overflow')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', field='remainder_unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', field='observed_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', field='retained_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', field='cap_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', field='relative_path')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', field='prefix_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1185, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', persistence='open_completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', persistence='written_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', persistence='fsync_completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', persistence='close_completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', persistence='late')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', persistence='extent_unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', persistence='completed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_each_status_argv_environment_closure_and_persistence_predicate_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_each_status_argv_environment_closure_and_persistence_predicate_refuses) (stream='stderr', persistence='prefix_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1194, in test_each_status_argv_environment_closure_and_persistence_predicate_refuses
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='completion', field='controlled')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='control', field='controlled')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='completion', field='physical_acceptance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='control', field='physical_acceptance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='completion', field='reviewed_code_commit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='control', field='reviewed_code_commit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='completion', field='bound_engine_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='control', field='bound_engine_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='completion', field='boot_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='control', field='boot_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='completion', field='human_review')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='control', field='engine_observed_by_collector')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='completion', field='actor')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='completion', field='write_proof')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='control', field='claims_self_persistence')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='completion', field='predicates_satisfied')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='completion', field='causes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='control', field='changes_distro_default_uid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='control', field='provenance_observer')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (document='control', field='ordinary_cd_uid_gid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1153, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (options={'expected_engine_id': 'ffffffff-ffff-ffff-ffff-ffffffffffff'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1158, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate(**options)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (options={'expected_boot_id': 'other-boot'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1158, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate(**options)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_native_identity_controlled_and_self_persistence_claims_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_native_identity_controlled_and_self_persistence_claims_refuse) (options={'expected_code_commit': 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1158, in test_native_identity_controlled_and_self_persistence_claims_refuse
+    self.validate(**options)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_rereads_fixed_originals_and_keeps_external_completion_proof_separate (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_rereads_fixed_originals_and_keeps_external_completion_proof_separate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1092, in test_rereads_fixed_originals_and_keeps_external_completion_proof_separate
+    result = self.validate()
+             ^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='timing', field='start')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1226, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='timing', field='deadline')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1226, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='timing', field='finish')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1226, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='timing', field='finish')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1226, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='allocation', field='ceiling_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1226, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='allocation', field='metadata_copy_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1226, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='allocation', field='charged_bytes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1226, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='allocation', field='within_ceiling')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1226, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='deadline', field='cmd_deadline')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1235, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='deadline', field='capture_deadline')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1235, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='deadline', field='cmd_start')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1235, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='timestamps', field='spawn_returned')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1235, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='timestamps', field='drain_finished')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1235, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='timestamps', field='persist_finished')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1235, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'validate_p0_originals_v1'
+
+======================================================================
+FAIL: test_completion_cap_refuses_before_exclusive_open (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.AdditionalNativeBoundaryTests.test_completion_cap_refuses_before_exclusive_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1279, in test_completion_cap_refuses_before_exclusive_open
+    self.assertFalse(any(path.endswith(p0.COMPLETION_NAME) for path in effects.opened))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_duplicate_and_nonfinite_snapshot_json_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.AdditionalNativeBoundaryTests.test_duplicate_and_nonfinite_snapshot_json_refuses) (raw=b'{"Kind": "Committed", "Name": "sha256:583abc9004877e79fd0f5d47e4c7cff085b8538fdcbff0c070e044bdb0b43c1a","Name":"sha256:583abc9004877e79fd0f5d47e4c7cff085b8538fdcbff0c070e044bdb0b43c1a"}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1266, in test_duplicate_and_nonfinite_snapshot_json_refuses
+    self.assertFalse(p0.validate_snapshot_info(raw)["ok"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_duplicate_and_nonfinite_snapshot_json_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.AdditionalNativeBoundaryTests.test_duplicate_and_nonfinite_snapshot_json_refuses) (raw=b'{"Kind": "Committed", "Name": "sha256:583abc9004877e79fd0f5d47e4c7cff085b8538fdcbff0c070e044bdb0b43c1a","unused":NaN}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1266, in test_duplicate_and_nonfinite_snapshot_json_refuses
+    self.assertFalse(p0.validate_snapshot_info(raw)["ok"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_duplicate_and_nonfinite_snapshot_json_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.AdditionalNativeBoundaryTests.test_duplicate_and_nonfinite_snapshot_json_refuses) (raw=b'{"Kind": "Committed", "Name": "sha256:583abc9004877e79fd0f5d47e4c7cff085b8538fdcbff0c070e044bdb0b43c1a","unused":Infinity}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1266, in test_duplicate_and_nonfinite_snapshot_json_refuses
+    self.assertFalse(p0.validate_snapshot_info(raw)["ok"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_duplicate_and_nonfinite_snapshot_json_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.AdditionalNativeBoundaryTests.test_duplicate_and_nonfinite_snapshot_json_refuses) (raw=b'{"Kind": "Committed", "Name": "sha256:583abc9004877e79fd0f5d47e4c7cff085b8538fdcbff0c070e044bdb0b43c1a","unused":-Infinity}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1266, in test_duplicate_and_nonfinite_snapshot_json_refuses
+    self.assertFalse(p0.validate_snapshot_info(raw)["ok"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_duplicate_and_nonfinite_snapshot_json_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.AdditionalNativeBoundaryTests.test_duplicate_and_nonfinite_snapshot_json_refuses) (raw=b'{"Kind": "Committed", "Name": "sha256:583abc9004877e79fd0f5d47e4c7cff085b8538fdcbff0c070e044bdb0b43c1a","unused":1e999}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1266, in test_duplicate_and_nonfinite_snapshot_json_refuses
+    self.assertFalse(p0.validate_snapshot_info(raw)["ok"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_duplicate_and_nonfinite_snapshot_json_refuses (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.AdditionalNativeBoundaryTests.test_duplicate_and_nonfinite_snapshot_json_refuses) (raw=b'{"Kind": "Committed", "Name": "sha256:583abc9004877e79fd0f5d47e4c7cff085b8538fdcbff0c070e044bdb0b43c1a","unused":{"k":1,"k":2}}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1266, in test_duplicate_and_nonfinite_snapshot_json_refuses
+    self.assertFalse(p0.validate_snapshot_info(raw)["ok"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_native_deadline_starts_before_factory_and_sync_event_loop_startup (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.AdditionalNativeBoundaryTests.test_native_deadline_starts_before_factory_and_sync_event_loop_startup) (stage='factory')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1303, in test_native_deadline_starts_before_factory_and_sync_event_loop_startup
+    self.assertFalse(result["accepted"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_native_deadline_starts_before_factory_and_sync_event_loop_startup (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.AdditionalNativeBoundaryTests.test_native_deadline_starts_before_factory_and_sync_event_loop_startup) (stage='event_loop')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1303, in test_native_deadline_starts_before_factory_and_sync_event_loop_startup
+    self.assertFalse(result["accepted"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_native_deadline_starts_before_factory_and_sync_event_loop_startup (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.AdditionalNativeBoundaryTests.test_native_deadline_starts_before_factory_and_sync_event_loop_startup) (stage='async_factory')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1303, in test_native_deadline_starts_before_factory_and_sync_event_loop_startup
+    self.assertFalse(result["accepted"])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.396s
+
+FAILED (failures=10, errors=139)

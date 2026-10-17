@@ -1,0 +1,12 @@
+BLOCK
+
+1. **C6 can be signaled before the sealed exit 0.** `engine.unaccepted`'s first write raises inside `capture_export_v1`, before `normal_deadline`, `wait_reply`, and `final` are set. The handler then treats the container as still running (`already_stopped` stays false) and can `SIGTERM`/`SIGKILL`, setting `forced` and appending containment causes. The sealed result is container exit 0, `forced` false, and exactly `[export_OSError, attach_incomplete]`. The unit test only shows that the fake call list had no `/kill?`. Socket close and publisher progress before containment are unverified.
+
+2. **The 1,360,072 B C4 object has no reader that can retain it.** It is above the sealed 1,048,576 B stderr cap. The owner reads the admitted source with `source_file.read(SOURCE_LIMIT + 1)` and binds the header to `len(source_raw)` plus the admitted sha256; exports shown are only channels and `engine.unaccepted` (16,777,216 B reader). `SOURCE_LIMIT` is unverified. Charging this object only to "C4 retained-output" and rejecting the ≤1 MiB code-export ceiling does not raise the source ceiling or name a member, a path, or a 512 MiB ledger line.
+
+3. **N3 leaves authority keys unchecked.** Shown `inspect_owned` compares `Image` to `PROVIDER_ID` and then only requested `Config`/`HostConfig` values, so absent request keys are ignored. The amendment pins label extras, `CapAdd: []`, and empty `Volumes` `{}`/`null`. It does not exact-match effective `Privileged`, `Binds`, `Devices`, `PidMode`, `NetworkMode`, or `SecurityOpt`. The rw `/dev/mqueue` mount is only called "bounded"; size and mount flags are absent.
+
+4. **The sealed C4/C5 cause lists skip a live publisher path.** After `compiler_term_attempted`, `observe_compiler` calls `terminate("KILL")` once `term_until` is reached and records `compiler_kill_attempted` before `compiler_exit_nonzero`. Grace values are unverified. The `kill_until` branch is truncated at `if not compiler_reaped:`, so "empty complete channels" is unverified if that branch returns with `eof` still false. `descendant_exit_nonzero` can also be recorded on an earlier `reap()` than the one slot in the sealed order.
+
+5. **Trust root and transfer ceilings are still open.** The B2 manifest is kept with its stale self-entry, and the plan does not say later authentication must ignore it and use only the new index. F2's per-response, member, copy, and peak totals, and D's 1 MiB `FSIZE` write charge, are not numbered in this amendment, so the 512 MiB seal (11,890,688 B already charged) is not reviewable before the archive read.
+

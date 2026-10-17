@@ -1,0 +1,32 @@
+FF.F
+======================================================================
+FAIL: test_both_eof_never_status_preserves_existing_capture_and_persistence_reserves (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.CooperativeStatusTests.test_both_eof_never_status_preserves_existing_capture_and_persistence_reserves)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1461, in test_both_eof_never_status_preserves_existing_capture_and_persistence_reserves
+    self.assertEqual(len(effects.termination_times), 1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_both_eof_status_callback_runs_while_monotonic_clock_advances (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.CooperativeStatusTests.test_both_eof_status_callback_runs_while_monotonic_clock_advances)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1449, in test_both_eof_status_callback_runs_while_monotonic_clock_advances
+    self.assertTrue(result["accepted"])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_delayed_nonzero_callback_never_becomes_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.CooperativeStatusTests.test_delayed_nonzero_callback_never_becomes_acceptance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1477, in test_delayed_nonzero_callback_never_becomes_acceptance
+    self.assertEqual(first["returncode"], 7)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 7
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.008s
+
+FAILED (failures=3)

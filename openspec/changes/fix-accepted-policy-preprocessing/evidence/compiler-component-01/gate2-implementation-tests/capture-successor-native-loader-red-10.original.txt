@@ -1,0 +1,22 @@
+E
+======================================================================
+ERROR: test_native_loader_cannot_reopen_source_changed_after_authenticated_read (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_native_loader_cannot_reopen_source_changed_after_authenticated_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 796, in test_native_loader_cannot_reopen_source_changed_after_authenticated_read
+    with self.assertRaises(component.ComponentRecipeError): self.execute(capture.PRE_METER,self.pre_payload(),real_loader=True)
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 704, in execute
+    exec(compile(source.replace("__REVIEWED_COMMIT__",COMMIT),"<fixed-controlled-meter>","exec"),{})
+  File "<fixed-controlled-meter>", line 95, in <module>
+  File "<fixed-controlled-meter>", line 74, in retention_component
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/tmp/tmpy9pftbje/repo/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 1, in <module>
+    raise RuntimeError('unreviewed source reopened')
+RuntimeError: unreviewed source reopened
+
+----------------------------------------------------------------------
+Ran 1 test in 0.014s
+
+FAILED (errors=1)

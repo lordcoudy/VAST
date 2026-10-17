@@ -1,0 +1,16 @@
+12c12
+< BASE = ROOT / 'artifacts/qualify_full_benchmark_20261008d'
+---
+> BASE = ROOT / 'artifacts/qualify_full_benchmark_20261008e'
+15c15
+< RECEIPT_PATH = ROOT / 'configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.acceptance_receipt.json'
+---
+> RECEIPT_PATH = ROOT / 'configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.acceptance_receipt.json'
+17c17
+< COMMIT = '8990a091590498ff32fc1491c2c16d6dd3adb76e'
+---
+> COMMIT = '4de28110539ce4def2e9fb5415002fd092a5deb8'
+181c181
+<               'producer_original_exit_observation': {'session_id': 'bkmiw9r2h', 'exit_code': 0, 'observed_at_utc': '2026-10-08T09:21:46Z', 'source': 'Parent agent observed original process terminal; not an invented physical subprocess log.'},
+---
+>               'producer_original_exit_observation': {'session_id': 'baj2ljkqg', 'exit_code': 0, 'observed_at_utc': '2026-10-08T17:13:16Z', 'source': 'Parent agent observed original process terminal; not an invented physical subprocess log.'},

@@ -1,0 +1,262 @@
+{
+  "artifact_kind": "vast_accepted_policy_repair_packaged_reader_evidence_summary_v1",
+  "schema_version": 1,
+  "source_commit": "aca94dd0a57566d5a9ecc27d8dac1ca71ca0e795",
+  "evidence_scope": "packaged_import_and_cold_physical_descriptor_mechanics_not_semantic_qualification_acceptance",
+  "execution_owner": "parent_integration_agent",
+  "author_executed_docker": false,
+  "observed_wrapper_session": "21704",
+  "observed_wrapper_exit_code": 0,
+  "started_at_utc": "2026-10-11T19:56:14Z",
+  "finished_at_utc": "2026-10-11T19:56:33Z",
+  "original_log_root": "/mnt/e/STUDY/VAST/tmp/accepted-policy-repair-20261011a/artifacts/accepted_policy_repair_20261011a/packaged-reader-control",
+  "helper_sha256": "64b9872ad75dcf8bfafab42333d349f5d0f2d89ecad4c900f9c221909a9c3974",
+  "source_inventory_sha256": "f395d0dd84be03232939f8aeb5c927d51b2e5a3aedaaea8836b05f0b83bd9bcc",
+  "fixture_inventory_sha256": "065c45da24c2390da58af2db4f0d727793198e1a414f4b9341e942481fa694ba",
+  "helper_hashes_unchanged_before_after": true,
+  "fresh_interpreter_count": 28,
+  "cold_positive_loads": 16,
+  "explicit_physical_descriptor_comparisons": 144,
+  "exact_negative_predicate_refusals": 32,
+  "held_posix_custody_modes": 4,
+  "reports": [
+    {
+      "system": "deepstream",
+      "source_commit": "aca94dd0a57566d5a9ecc27d8dac1ca71ca0e795",
+      "image_reference": "vast/deepstream-publication-runtime-v3:accepted-policy-repair-20261011a",
+      "image_id": "sha256:c41fa1c967cf43e1d10f95a64205cf6ec3de79ec7a3802aa9e6a395718425046",
+      "runtime_receipt_sha256": "2d891874bf4c2728615d9663e0b3dda623a498e1f74194d7f7dc2d7815510634",
+      "report_path": "packaged-reader-reports/deepstream.stdout.json",
+      "report_sha256": "1399a44504775e6fa96e68b5bdb4aece7f57f23faf6e2ee9ce6b79b449e97758",
+      "wrapper_exit_code": 0,
+      "passed": true,
+      "fresh_interpreter_count": 7,
+      "modes": [
+        "standalone:publication_policy_qualification_transaction_validation_v2",
+        "standalone:publication_policy_qualification_fragment_validation_v2",
+        "standalone:publication_policy_qualification_pilot_validation_v2",
+        "leaves-first",
+        "sidecar-first",
+        "cold-descriptors",
+        "cold-descriptors-held"
+      ],
+      "shared_project_source_count": 67,
+      "all_packaged_project_source_count": 73,
+      "all_project_source_hashes_verified": true,
+      "default_pythonpath": "/opt/vast/checkpoint",
+      "python_executable": "/usr/bin/python3",
+      "python_version": "3.10.12",
+      "cold_descriptor_modes": [
+        {
+          "mode": "cold-descriptors",
+          "exact_negative_predicates_checked": {
+            "bad-coverage.receipt.json": "transaction receipt fragment coverage drifted",
+            "bad-descriptor.receipt.json": "transaction receipt descriptor drifted: hardware_resource_collector",
+            "bad-kind.receipt.json": "cold transaction receipt identity drifted",
+            "noncanonical.receipt.json": "cold transaction receipt is not canonical JSON"
+          },
+          "held_posix_custody": false,
+          "physical_descriptors_checked": 18,
+          "positive_cold_loads": 2,
+          "semantic_qualification_acceptance_claimed": false
+        },
+        {
+          "mode": "cold-descriptors-held",
+          "exact_negative_predicates_checked": {
+            "bad-coverage.receipt.json": "transaction receipt fragment coverage drifted",
+            "bad-descriptor.receipt.json": "transaction receipt descriptor drifted: hardware_resource_collector",
+            "bad-kind.receipt.json": "cold transaction receipt identity drifted",
+            "noncanonical.receipt.json": "cold transaction receipt is not canonical JSON"
+          },
+          "held_posix_custody": true,
+          "physical_descriptors_checked": 18,
+          "positive_cold_loads": 2,
+          "semantic_qualification_acceptance_claimed": false
+        }
+      ],
+      "host_production_scripts_mounted": false,
+      "historical_campaign_bytes_used": false,
+      "promotion_first_actual_image_check": "unsupported_by_approved_host_only_F1_scope"
+    },
+    {
+      "system": "savant",
+      "source_commit": "aca94dd0a57566d5a9ecc27d8dac1ca71ca0e795",
+      "image_reference": "vast/savant-publication-runtime-v3:accepted-policy-repair-20261011a",
+      "image_id": "sha256:4f073ad30b6e0588cbb0675ed3b53fb7f17a182759d5f8ade94361bf01c790cb",
+      "runtime_receipt_sha256": "15ee4363ff6feae6dc4446eb8f4ea5d5a3930cb938434ee58f6e47425d52f989",
+      "report_path": "packaged-reader-reports/savant.stdout.json",
+      "report_sha256": "044d40416349ee22654fa7c7a81311140c9a77128f5d28cd641052de3257cd28",
+      "wrapper_exit_code": 0,
+      "passed": true,
+      "fresh_interpreter_count": 7,
+      "modes": [
+        "standalone:publication_policy_qualification_transaction_validation_v2",
+        "standalone:publication_policy_qualification_fragment_validation_v2",
+        "standalone:publication_policy_qualification_pilot_validation_v2",
+        "leaves-first",
+        "sidecar-first",
+        "cold-descriptors",
+        "cold-descriptors-held"
+      ],
+      "shared_project_source_count": 67,
+      "all_packaged_project_source_count": 81,
+      "all_project_source_hashes_verified": true,
+      "default_pythonpath": "/opt/vast/checkpoint:/opt/savant",
+      "python_executable": "/usr/bin/python3",
+      "python_version": "3.10.12",
+      "cold_descriptor_modes": [
+        {
+          "mode": "cold-descriptors",
+          "exact_negative_predicates_checked": {
+            "bad-coverage.receipt.json": "transaction receipt fragment coverage drifted",
+            "bad-descriptor.receipt.json": "transaction receipt descriptor drifted: hardware_resource_collector",
+            "bad-kind.receipt.json": "cold transaction receipt identity drifted",
+            "noncanonical.receipt.json": "cold transaction receipt is not canonical JSON"
+          },
+          "held_posix_custody": false,
+          "physical_descriptors_checked": 18,
+          "positive_cold_loads": 2,
+          "semantic_qualification_acceptance_claimed": false
+        },
+        {
+          "mode": "cold-descriptors-held",
+          "exact_negative_predicates_checked": {
+            "bad-coverage.receipt.json": "transaction receipt fragment coverage drifted",
+            "bad-descriptor.receipt.json": "transaction receipt descriptor drifted: hardware_resource_collector",
+            "bad-kind.receipt.json": "cold transaction receipt identity drifted",
+            "noncanonical.receipt.json": "cold transaction receipt is not canonical JSON"
+          },
+          "held_posix_custody": true,
+          "physical_descriptors_checked": 18,
+          "positive_cold_loads": 2,
+          "semantic_qualification_acceptance_claimed": false
+        }
+      ],
+      "host_production_scripts_mounted": false,
+      "historical_campaign_bytes_used": false,
+      "promotion_first_actual_image_check": "unsupported_by_approved_host_only_F1_scope"
+    },
+    {
+      "system": "openvino_gva",
+      "source_commit": "aca94dd0a57566d5a9ecc27d8dac1ca71ca0e795",
+      "image_reference": "vast/openvino-gva-publication-runtime-v3:accepted-policy-repair-20261011a",
+      "image_id": "sha256:61bfedeb4f6e74dfde3650375fb3f048c5ded32b5b252497394c44f098afd2ce",
+      "runtime_receipt_sha256": "ef2841a40b77abd6c0585586fbfca3d658e974dc573d9c5a6009a483c0237960",
+      "report_path": "packaged-reader-reports/openvino_gva.stdout.json",
+      "report_sha256": "c7143389053dbd4001636253a1bc50704e6604267e9b3cc3802509a8482a96ff",
+      "wrapper_exit_code": 0,
+      "passed": true,
+      "fresh_interpreter_count": 7,
+      "modes": [
+        "standalone:publication_policy_qualification_transaction_validation_v2",
+        "standalone:publication_policy_qualification_fragment_validation_v2",
+        "standalone:publication_policy_qualification_pilot_validation_v2",
+        "leaves-first",
+        "sidecar-first",
+        "cold-descriptors",
+        "cold-descriptors-held"
+      ],
+      "shared_project_source_count": 67,
+      "all_packaged_project_source_count": 68,
+      "all_project_source_hashes_verified": true,
+      "default_pythonpath": "/opt/vast/checkpoint:/opt/vast/python",
+      "python_executable": "/usr/bin/python3",
+      "python_version": "3.12.3",
+      "cold_descriptor_modes": [
+        {
+          "mode": "cold-descriptors",
+          "exact_negative_predicates_checked": {
+            "bad-coverage.receipt.json": "transaction receipt fragment coverage drifted",
+            "bad-descriptor.receipt.json": "transaction receipt descriptor drifted: hardware_resource_collector",
+            "bad-kind.receipt.json": "cold transaction receipt identity drifted",
+            "noncanonical.receipt.json": "cold transaction receipt is not canonical JSON"
+          },
+          "held_posix_custody": false,
+          "physical_descriptors_checked": 18,
+          "positive_cold_loads": 2,
+          "semantic_qualification_acceptance_claimed": false
+        },
+        {
+          "mode": "cold-descriptors-held",
+          "exact_negative_predicates_checked": {
+            "bad-coverage.receipt.json": "transaction receipt fragment coverage drifted",
+            "bad-descriptor.receipt.json": "transaction receipt descriptor drifted: hardware_resource_collector",
+            "bad-kind.receipt.json": "cold transaction receipt identity drifted",
+            "noncanonical.receipt.json": "cold transaction receipt is not canonical JSON"
+          },
+          "held_posix_custody": true,
+          "physical_descriptors_checked": 18,
+          "positive_cold_loads": 2,
+          "semantic_qualification_acceptance_claimed": false
+        }
+      ],
+      "host_production_scripts_mounted": false,
+      "historical_campaign_bytes_used": false,
+      "promotion_first_actual_image_check": "unsupported_by_approved_host_only_F1_scope"
+    },
+    {
+      "system": "gstreamer_custom",
+      "source_commit": "aca94dd0a57566d5a9ecc27d8dac1ca71ca0e795",
+      "image_reference": "vast/gstreamer-custom-publication-runtime-v3:accepted-policy-repair-20261011a",
+      "image_id": "sha256:8208fb4ee35f14cfc1d191baf5c9b35b213fdfbc955697b6d6b6cdd9b304d60e",
+      "runtime_receipt_sha256": "da55fec84566b77528b770a6c20c60a30b6868c2efc2d0a8ae2b439bdec52a89",
+      "report_path": "packaged-reader-reports/gstreamer_custom.stdout.json",
+      "report_sha256": "bff38ccc025f26e2d91c92f9549bb5ef6bbfabdbc790c8bda2405a2b704c1709",
+      "wrapper_exit_code": 0,
+      "passed": true,
+      "fresh_interpreter_count": 7,
+      "modes": [
+        "standalone:publication_policy_qualification_transaction_validation_v2",
+        "standalone:publication_policy_qualification_fragment_validation_v2",
+        "standalone:publication_policy_qualification_pilot_validation_v2",
+        "leaves-first",
+        "sidecar-first",
+        "cold-descriptors",
+        "cold-descriptors-held"
+      ],
+      "shared_project_source_count": 67,
+      "all_packaged_project_source_count": 68,
+      "all_project_source_hashes_verified": true,
+      "default_pythonpath": "/opt/vast/checkpoint:/opt/vast/python",
+      "python_executable": "/usr/bin/python3",
+      "python_version": "3.12.3",
+      "cold_descriptor_modes": [
+        {
+          "mode": "cold-descriptors",
+          "exact_negative_predicates_checked": {
+            "bad-coverage.receipt.json": "transaction receipt fragment coverage drifted",
+            "bad-descriptor.receipt.json": "transaction receipt descriptor drifted: hardware_resource_collector",
+            "bad-kind.receipt.json": "cold transaction receipt identity drifted",
+            "noncanonical.receipt.json": "cold transaction receipt is not canonical JSON"
+          },
+          "held_posix_custody": false,
+          "physical_descriptors_checked": 18,
+          "positive_cold_loads": 2,
+          "semantic_qualification_acceptance_claimed": false
+        },
+        {
+          "mode": "cold-descriptors-held",
+          "exact_negative_predicates_checked": {
+            "bad-coverage.receipt.json": "transaction receipt fragment coverage drifted",
+            "bad-descriptor.receipt.json": "transaction receipt descriptor drifted: hardware_resource_collector",
+            "bad-kind.receipt.json": "cold transaction receipt identity drifted",
+            "noncanonical.receipt.json": "cold transaction receipt is not canonical JSON"
+          },
+          "held_posix_custody": true,
+          "physical_descriptors_checked": 18,
+          "positive_cold_loads": 2,
+          "semantic_qualification_acceptance_claimed": false
+        }
+      ],
+      "host_production_scripts_mounted": false,
+      "historical_campaign_bytes_used": false,
+      "promotion_first_actual_image_check": "unsupported_by_approved_host_only_F1_scope"
+    }
+  ],
+  "limitations": [
+    "F1 promotion and original builders are intentionally host-only and were not mounted into images. Their import orders were checked separately on the host.",
+    "Purpose-built fixture payloads prove descriptor/canonical/custody reader mechanics only, not full fragment/pilot/transaction semantic eligibility or accepted calibration.",
+    "No Q1 pilot, promoter, materializer, campaign guardian or full publication workload was launched by these reader checks.",
+    "These checks are bound to initial frozen ACA source and captured runtime identities, not a later final pinned input commit, final CI, archive, final review or launch authorization."
+  ]
+}

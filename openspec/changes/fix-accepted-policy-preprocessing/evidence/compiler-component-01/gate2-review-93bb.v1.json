@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "reviewed_commit": "93bb04b647a9015f47ad3743551cb416b1695376",
+  "parent_reviewed_commit": "f83de10a4ea72ba59ee899130bb9f26bf6bcb70c",
+  "scope": "changed planning parts plus prior unchanged planning verdict",
+  "reviewers": [
+    {
+      "reviewer": "separate Codex reviewer /root/gate2_v8_review",
+      "verdict": "CLEAR",
+      "head_before_after": "93bb04b647a9015f47ad3743551cb416b1695376",
+      "evidence": "independent task final response",
+      "findings": "No blockers; fixed root P0 actor/capture and D limits/deadline/budget preserve scope."
+    },
+    {
+      "reviewer": "Grok CLI 1.0.60 default configured model",
+      "session_id": "01a1446f-ef6a-70d1-b5a3-edc2a08d69a3",
+      "verdict": "CLEAR_WITH_NOTES",
+      "command_exit_code": 0,
+      "evidence": "gate2-review-93bb.grok.final-output.original.txt",
+      "evidence_sha256": "3cc624b25f7ff294766198f7d548dfcdf4713b7c48499f8ddb9d040b44df5ab9"
+    }
+  ],
+  "dispositions": [
+    "D must use resource.setrlimit byte units and require actual child CORE=[1,1],FSIZE=[1048576,1048576],UID/GID1000 before accepting proof; tests pin equality.",
+    "P0 uses tokenized fixed argv only. Spawn, capture, persistence and closure remain inside absolute/per-command deadlines. Unknown closure stops and is never represented as successful cleanup.",
+    "All P0 originals/control/allocation forms fit384KiB inclusively; no extra stream copies outside that allocation.",
+    "D proof/capture fit within96KiB remaining controls and512KiB aggregate controls, not additional allowances.",
+    "D environment is replaced by the fixed map; inherited loader hooks are absent.",
+    "Prior F2 allowlist, actual member size/content refusal and unavailable direct cc1 version dispositions remain binding."
+  ],
+  "required_ci": {
+    "run_id": 38895458000,
+    "observed_status": "in_progress as of2026-10-16T11:52:38Z"
+  },
+  "delegated_approval": false,
+  "code_or_physical_approval": false,
+  "subsequent_completion": {
+    "required_ci": {
+      "run_id": 38895458000,
+      "head_sha": "93bb04b647a9015f47ad3743551cb416b1695376",
+      "conclusion": "success",
+      "cpu_checks_job_id": 116954740630,
+      "host_diagnostics_job_id": 116954740190,
+      "url": "https://github.com/lordcoudy/VAST/actions/runs/38895458000"
+    },
+    "approval_kind": "delegated AGENT approval, not human review",
+    "approval_url": "https://github.com/lordcoudy/VAST/pull/9#issuecomment-6215421351",
+    "authorized_scope": "Implementation and controlled tests only; implemented-code review, exact-head CI and separate recorded approval precede physical P0/F2/C/D.",
+    "historical_snapshot_preserved": true
+  }
+}
