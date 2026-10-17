@@ -88,7 +88,7 @@ Select 1 MiB stdout, 1 MiB stderr and 2 MiB complete result JSON ceilings before
 
 Independent review of the exact pushed four-artifact amendment, mandatory planning checks and recorded delegated AGENT approval in this same PR precede reader code/tests. Decision15's separately approved compiler work continues under its own scope. New unchecked1.23/2.11/2.12 govern this boundary; task1.5 still needs every parent/enclosing raw log, result serialization, proof copy and retained failure to have finite accounted bounds. Existing renewal, complete genuine consumers/refusals, conformance, archive/final and image-protection gates remain unchanged. This amendment grants no compiler/component execution, storage/image action, Q1 authority, retry or erasure of originals.
 
-## Node backend compatibility amendment (Decision15, 2026-10-17)
+## Node backend compatibility amendment (Decision17, 2026-10-17)
 
 The one P0/packet admission in PR9 comment6230407759 was submitted once at source24cc8e9d5dd543aec2971e7dc25564e2ca9c4b63. Functions cell1640 returned a complete nonaccepting ROOT export: the initial Node provider reported `Code generation from strings disallowed for this context`. Admission is consumed; there is no accepted packet, writer/verification result or C/D authority. Source approval and portable CI remain historical evidence within their recorded scope; neither established backend compatibility. The provider error does not prove native-process closure, zero activity or namespace absence.
 
