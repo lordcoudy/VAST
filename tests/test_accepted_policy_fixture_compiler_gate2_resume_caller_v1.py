@@ -1251,7 +1251,7 @@ class Pipe extends EventEmitter{
  end(){this.emit('end');this.emit('close');}
 }
 function child(file,args,options){attempts.push({file,args,options});if(file==='C:/Python314/python.exe'&&test.writer_spawn_throw)throw Error('controlled_writer_spawn');let p=new EventEmitter();p.pid=4294967295-spawned.length;p.stdout=new Pipe();p.stderr=new Pipe();p.stdin=new EventEmitter();let fallback=file==='C:/Python314/python.exe'&&test.writer_track_throw||file.endsWith('wsl.exe')&&test.native_track_throw;p.stdin.end=b=>{sent.push(Buffer.from(b||'').toString('base64'));if(test.fallback_stdin_fault&&fallback)queueMicrotask(()=>p.stdin.emit('error',Error('controlled_unhandled_EPIPE')));if(test.fallback_emit_errors&&fallback)queueMicrotask(()=>{for(let [label,emitter] of [['child',p],['stdin',p.stdin],['stdout',p.stdout],['stderr',p.stderr]])for(let i=0;i<2;i++)emitter.emit('error',Error('controlled_'+label));});if(file==='C:/Python314/python.exe'&&test.writer_close_throw||file.endsWith('wsl.exe')&&test.native_close_throw)throw Error('controlled_stdin_close');if(test.stdin_error)p.stdin.emit('error',Error('controlled'));p.stdin.emit('finish');p.stdin.emit('close');};if(fallback&&test.fallback_stdin_fault==='missing')p.stdin=undefined;else if(fallback&&test.fallback_stdin_fault==='missing_on')p.stdin.on=undefined;else if(fallback&&test.fallback_stdin_fault==='throwing_on')p.stdin.on=()=>{throw Error('controlled_stdin_listener');};if(file==='C:/Python314/python.exe'&&test.writer_track_throw)p.once=()=>{throw Error('controlled_writer_track');};if(file.endsWith('wsl.exe')&&test.native_track_throw)p.once=()=>{throw Error('controlled_native_track');};p.kill=()=>{killed++;throw Error('kill_forbidden');};spawned.push({file,args,options,p});return p;}
-const context=vm.createContext({Buffer,console,performance:{now:()=>{clockReads++;if(activeStep?.capture_clock){stepReads++;if(stepReads>=activeStep.clock_after_reads)clock=activeStep.clock_value;verifySamples.push(clock);}return clock;}},nodeRepl:{write:x=>writes.push(String(x))},setTimeout:(f,n)=>{let t={f,n};timers.push(t);return t;},clearTimeout:t=>t.off=true});
+const context=vm.createContext({Buffer,console,performance:{now:()=>{clockReads++;if(activeStep?.capture_clock){stepReads++;if(stepReads>=activeStep.clock_after_reads)clock=activeStep.clock_value;verifySamples.push(clock);}return clock;}},nodeRepl:{write:x=>writes.push(String(x))},setTimeout:(f,n)=>{let t={f,n};timers.push(t);return t;},clearTimeout:t=>t.off=true},test.code_generation_disabled===true?{codeGeneration:{strings:false,wasm:false}}:{});
 const importModuleDynamically=async name=>{imports.push(name);let values=name==='node:crypto'?crypto:name==='node:perf_hooks'?{performance:{now:()=>clock}}:name==='node:zlib'?{...zlib,brotliDecompressSync:b=>{clock+=test.decode_delay||0;return zlib.brotliDecompressSync(b);}}:name==='node:fs/promises'?{}:name==='node:child_process'?(clock+=test.import_delay||0,{spawn:child}):null;if(!values)throw Error('unknown_import');let m=new vm.SyntheticModule(Object.keys(values),function(){for(let k of Object.keys(values))this.setExport(k,values[k]);},{context});await m.link(()=>{});await m.evaluate();return m;};
 async function evaluate(code,action){let last=spawned.length,settled=false,error=null,promise=vm.runInContext('(async()=>{var g2=globalThis.gate2Resume;'+code+'})()',context,{importModuleDynamically});promise.then(()=>settled=true,e=>{settled=true;error=String(e.message);});
  for(let i=0;i<5000&&!settled&&spawned.length===last;i++)await Promise.resolve();for(let i=0;i<100;i++)await Promise.resolve();let p=spawned.at(-1)?.p;
@@ -1274,7 +1274,7 @@ async function evaluate(code,action){let last=spawned.length,settled=false,error
  for(let i=0;i<100;i++)await Promise.resolve();for(let t of timers.splice(0))if(!t.off){clock+=t.n;t.f();}
  await promise;return error;
 }
-(async()=>{let error=null;try{
+(async()=>{let error=null,error_name=null;try{
  await evaluate(test.core,'none');
  let before=[clockReads,imports.length,spawned.length,sent.length];
  context.fixtureSetup=test.setup_output;
@@ -1287,8 +1287,8 @@ async function evaluate(code,action){let last=spawned.length,settled=false,error
  if(test.source_tamper)await evaluate('g2.held[1][0]^=1;','none');
  await evaluate(test.code,test.action||'normal');
  for(let step of test.steps||[]){activeStep=step;stepReads=0;if(step.clock!==undefined)clock=step.clock;if(step.output!==undefined)test.output=step.output;if(step.stderr!==undefined)test.stderr=step.stderr;let code=step.code.replaceAll('__DELIVERED__',JSON.stringify(writes.at(-1)));await evaluate(code,step.action||'none');activeStep=null;}
- }catch(e){error=String(e.message);}
- console.log(JSON.stringify({error,writes,clock,killed,reads,sent,attempts,imports,verifySamples,inertInstall:context.inertInstall,spawned:spawned.map(({file,args,options})=>({file,args,options}))}));})().catch(e=>{console.error(e);process.exitCode=1;});"""
+ }catch(e){error=String(e.message);error_name=String(e.name);}
+ console.log(JSON.stringify({error,error_name,writes,clock,killed,reads,sent,attempts,imports,verifySamples,inertInstall:context.inertInstall,spawned:spawned.map(({file,args,options})=>({file,args,options}))}));})().catch(e=>{console.error(e);process.exitCode=1;});"""
 
 
 class LaterStageCallerTests(unittest.TestCase):
@@ -1363,6 +1363,30 @@ class LaterStageCallerTests(unittest.TestCase):
         value = dict(zip(module.NODE_FIELDS, row[1:]))
         value['pipes'] = [dict(zip(module.NODE_PIPE_FIELDS, item)) for item in value['pipes']]
         return value
+
+    def test_restricted_harness_denies_unchanged_extension_carrier(self):
+        value=self.node(code=self.carrier_code(),action='none',code_generation_disabled=True)
+        self.assertEqual(value['error'],'Code generation from strings disallowed for this context')
+        self.assertEqual(value['error_name'],'EvalError')
+        self.assertFalse(value['spawned'])
+        self.assertFalse(value['sent'])
+        self.assertFalse(value['writes'])
+
+    def test_restricted_harness_static_factory_is_inert_and_keeps_stage_predicates(self):
+        inert=self.node(code='void 0;',action='none',prior_missing=True,code_generation_disabled=True)
+        self.assertIsNone(inert['error'])
+        self.assertEqual(inert['inertInstall'][0],inert['inertInstall'][1])
+        self.assertFalse(inert['spawned'])
+        self.assertFalse(inert['writes'])
+        value=self.node(code_generation_disabled=True)
+        self.assertIsNone(value['error'])
+        self.assertEqual(len(value['spawned']),1)
+        self.assertEqual(value['killed'],0)
+        facts=self.facts(value['writes'][-1])
+        self.assertEqual(facts['clock'],[200000,350000])
+        self.assertTrue(facts['completed'])
+        self.assertFalse(facts['unknown_closure'])
+        self.assertEqual(value['spawned'][0]['args'][-5:],['C1','c'*40,'32768','d'*64,'-'])
 
     def test_extension_installs_only_after_retention_and_binds_the_exact_core(self):
         code = self.initial_code().replace('b'*64, 'e'*64, 1)

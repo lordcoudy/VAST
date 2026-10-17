@@ -234,7 +234,7 @@ writer.stdin.end=raw=>{stdinEnds[1]++;writer_ack=Buffer.from(raw||'').toString('
  let document=test.writer_result??canonical(value)+'\n';if(test.writer_deadline_lexeme)document=document.replace(/"deadline_ns":[0-9]+/,'"deadline_ns":'+test.writer_deadline_lexeme);let output=Buffer.from(document);if(test.writer_highbit)output[0]|=128;
  if(test.writer_input_error)writer.stdin.emit('error',Error('controlled writer input'));writer.stdin.emit('finish');writer.stdin.emit('close');writer.stdout.feed(output);writer.stdout.end();writer.stderr.end();writer.emit('exit',0,null);writer.emit('close',0,null);});};
 let samples=0;const calls=[],context=vm.createContext({Buffer,console,performance:test.no_performance?undefined:{now:()=>{if(++samples===1&&test.bad_initial_clock)return test.bad_initial_clock==='nan'?NaN:test.bad_initial_clock==='infinity'?Infinity:Number.MAX_SAFE_INTEGER;if(verifying&&++verify_reads===2)clock+=test.verify_delay||0;return clock;}},setTimeout:(f,n)=>{let t={f,n};timers.push(t);return t;},clearTimeout:t=>{t.off=true;},
- nodeRepl:{write:value=>writes.push(String(value))}});
+ nodeRepl:{write:value=>writes.push(String(value))}},test.code_generation_disabled===true?{codeGeneration:{strings:false,wasm:false}}:{});
 const sourceCalls=[];let sourceClose=0,sourceRead=0;
 function sourceStat(i,changed=false){return {dev:1n,ino:BigInt(i+1),mode:33188n,nlink:1n,size:BigInt(Buffer.from(test.sources[i][1],'base64').length),mtimeNs:changed?2n:1n,ctimeNs:1n,birthtimeNs:1n,blocks:64n,isFile:()=>!test.source_special};}
 const fakeFS={constants:{O_RDONLY:0,O_NOFOLLOW:0x20000,O_NONBLOCK:0x800},realpath:async p=>p,lstat:async p=>sourceStat(test.sources.findIndex(r=>r[0]===p)),open:async(p,flags)=>{const i=test.sources.findIndex(r=>r[0]===p);sourceCalls.push([p,flags]);let offset=0,stats=0;return {stat:async()=>sourceStat(i,test.source_race&&++stats>1),read:async(b,o,n)=>{sourceRead++;if(test.source_readfail&&sourceRead>1)throw Error('source_read_failed');let raw=Buffer.from(test.sources[i][1],'base64');if(test.source_tamper)raw[0]^=1;let k=Math.min(n,raw.length-offset,test.source_short?7:Infinity);if(k>0)raw.copy(b,o,offset,offset+k);offset+=k;return {bytesRead:k};},close:async()=>{sourceClose++;if(test.source_close)throw Error('controlled_close');}};}};
@@ -260,7 +260,7 @@ async function call(code,action){if(action==='afterend')clock=150010;let value=v
  if(action==='regress')clock=1;
  return await value;
 }
-(async()=>{let error=null,root=null,root_export=null,root_export_error=null,providerCalls=[],providerResults=[];try{
+(async()=>{let error=null,error_name=null,root=null,root_export=null,root_export_error=null,providerCalls=[],providerResults=[];try{
  if(test.root_flow){let setups=0;const tools={mcp__node_repl__js:async args=>{
   providerCalls.push(args);if(providerCalls.length===test.provider_throw_at)throw Error('controlled_provider_throw');let setup=args.code===test.code||args.code==='await gate2Resume.poll();',writer=args.code.includes('await gate2Resume.finish('),action=setup?(++setups<=test.root_pending?'pending':test.root_terminal_action||'normal'):writer?'writernormal':'pending',before=writes.length;
   verifying=!setup&&!writer;verify_reads=0;await call(args.code,action);verifying=false;
@@ -271,7 +271,7 @@ async function call(code,action){if(action==='afterend')clock=150010;let value=v
  }};
  const run=eval('(async(tools,first,finalizer,profile,expected)=>{'+test.root_source+';const record=await gate2Complete(tools,first,finalizer,profile,expected);let output=null,error=null;try{output=gate2Export(record,profile);}catch(e){error=String(e.message);}return {record,output,error};})');let result=await run(tools,test.code,test.finalizer,test.output_profile,test.expected);root=result.record;root_export=result.output;root_export_error=result.error;
  }else{await call(test.code,test.action);for(let action of test.polls||[])await call(test.poll.replaceAll('__DELIVERED_WRITER_TEXT__',JSON.stringify(writes.at(-1))),action);}
-}catch(e){error=String(e.message);}console.log(JSON.stringify({writes,spawned,killed,reads,stdinEnds,inputErrorEvents,calls,error,clock,writer_ack,setup_ack,sourceCalls,sourceClose,sourceRead,root,root_export,root_export_error,providerCalls,providerResults}));})().catch(e=>{console.error(e);process.exitCode=1;});
+}catch(e){error=String(e.message);error_name=String(e.name);}console.log(JSON.stringify({writes,spawned,killed,reads,stdinEnds,inputErrorEvents,calls,error,error_name,clock,writer_ack,setup_ack,sourceCalls,sourceClose,sourceRead,root,root_export,root_export_error,providerCalls,providerResults}));})().catch(e=>{console.error(e);process.exitCode=1;});
 """
 
 NODE_DECODE = r"""const {brotliDecompressSync}=require('node:zlib'),{createHash}=require('node:crypto');
@@ -914,6 +914,37 @@ class ResumeNodeCaller(unittest.TestCase):
         result=subprocess.run([executable,'-e',script],input=expanded.encode('ascii'),capture_output=True,check=True)
         compressed=result.stdout.decode('ascii').strip()
         return prefix+clock+"var {brotliDecompressSync:g2z}=await import('node:zlib');await eval(g2z(Buffer.from("+json.dumps(compressed)+",'base64')).toString('utf8'));"
+
+    def test_restricted_harness_denies_unchanged_initial_carrier_before_source_or_child(self):
+        value=self.node(self.carrier(self.code()),action='pending',code_generation_disabled=True)
+        self.assertEqual(value['error'],'Code generation from strings disallowed for this context')
+        self.assertEqual(value['error_name'],'EvalError')
+        self.assertEqual(value['spawned'],0)
+        self.assertFalse(value['sourceCalls'])
+        self.assertFalse(value['writes'])
+
+    def test_restricted_harness_denies_unchanged_deferred_writer_after_static_setup(self):
+        value=self.node(self.code(),output=self.success_output(),polls=['pending'],
+                        poll=self.writer_code(),code_generation_disabled=True)
+        self.assertEqual(value['error'],'Code generation from strings disallowed for this context')
+        self.assertEqual(value['error_name'],'EvalError')
+        self.assertEqual(value['spawned'],1)
+        self.assertEqual(len(value['writes']),1)
+        self.assertTrue(self.facts(value['writes'][0])['completed'])
+        self.assertEqual(value['sourceClose'],2)
+
+    def test_restricted_harness_static_initial_keeps_clock_and_owned_closure(self):
+        value=self.node(self.code(),output=self.success_output(),code_generation_disabled=True)
+        self.assertIsNone(value['error'])
+        self.assertEqual(value['spawned'],1)
+        self.assertEqual(value['sourceClose'],2)
+        self.assertEqual(value['killed'],0)
+        facts=self.facts(value['writes'][0])
+        self.assertEqual(facts['clock'],[10,140010,150010])
+        self.assertTrue(facts['completed'])
+        self.assertFalse(facts['unknown_closure'])
+        self.assertTrue(facts['stdin_finished'])
+        self.assertTrue(facts['stdin_closed'])
 
     def test_source_read_then_close_preserves_first_secondary_and_confirmed_prefix(self):
         import base64
