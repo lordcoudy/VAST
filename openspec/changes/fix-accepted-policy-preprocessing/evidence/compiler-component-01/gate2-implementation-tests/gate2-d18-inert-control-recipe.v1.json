@@ -47,14 +47,14 @@
       "size_bytes": 1984
     },
     {
-      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-intake-launch-03.proposal.py",
-      "sha256": "e9b86b63dd9f2fcaa90560c856eb020729b26ccc1a8bb90a5aed08bcb7eb0719",
-      "size_bytes": 5384
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-intake-launch-04.proposal.py",
+      "sha256": "9fe313ebf2d07ce8e18d4bf717ae5fe95b5d736f0680a370f3aabfd855a51495",
+      "size_bytes": 5467
     },
     {
-      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-intake-launch-03.metadata.derived.json",
-      "sha256": "bbc9035da227c72647f1758ee39bbd971cd6e5834c95a4abef0c9ef8edfe90f2",
-      "size_bytes": 4527
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-intake-launch-04.metadata.derived.json",
+      "sha256": "84d310b90a80cb15e1cca1ffe470aaea8322060bcfa640a8dece6f2eae529534",
+      "size_bytes": 4610
     },
     {
       "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-postcapture-recipe-01.py",
@@ -65,6 +65,16 @@
       "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-postcapture-recipe-01.metadata.derived.json",
       "sha256": "1fe6cfbef51e7be25bbb3e0e644abfc17355c6f617059eff7bf56ee133a11024",
       "size_bytes": 1294
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-intake-launch-04.epoch-tests.py",
+      "sha256": "c2f76fef2fd2d80c95ed183b2561379bdb19c54526918e9c45fc7ef66f8f3e58",
+      "size_bytes": 4568
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-intake-launch-04.epoch-tests.derived.json",
+      "sha256": "ee642272cc4a629b359536959aa80d95b8dbd03cbbc4a00a81ee4b038473598f",
+      "size_bytes": 2218
     }
   ],
   "failure_and_authority": {
@@ -120,6 +130,8 @@
     "collector_v3_synthetic_tests": 45,
     "first_slice_affected_classes": 87,
     "first_slice_new_tests": 7,
+    "launcher04_controlled_epoch_tests": 23,
+    "launcher04_scope": "Pure extracted helper and AST callsite/diff fixtures only; old mismatch reproduced under controlled epochs, no actual stat/journal/bootstrap launch.",
     "outer_slice_new_tests": 10,
     "postcapture_synthetic_tests": 5,
     "preservation": "Root verified all190 HEAD932 test-method ASTs and only intentional old harness-constant changes; independent inverse deletion restored exact first-slice main snapshot.",
@@ -186,8 +198,8 @@
   },
   "postterminal_intake": {
     "bootstrap": {
-      "sha256": "14fd9836cf0cd00ea4c1d1c9c913516dd5970ede827b9480de4e1b992634f770",
-      "size_bytes": 2648
+      "sha256": "178eef81fc767bdb48206cfdc8a869ea958b7a980ecd3b0275900534bed7abd7",
+      "size_bytes": 2731
     },
     "bootstrap_failure_max": 1024,
     "candidate": {
@@ -197,20 +209,21 @@
     },
     "canonical_scope": "collector Python decoded-JSON export and its hash are not JS ROOT_ENCODER or raw journal/wire hashes",
     "command": {
-      "sha256": "1f3a0a1f3252cc21df906331b2d065b7fd4dafba446e95b5c037fc19b0c30039",
-      "size_bytes": 2726
+      "sha256": "30f80380cfea170ee3724bba181bbf78feac2cf25833244a47f3d9eefc73ec37",
+      "size_bytes": 2809
     },
     "complete_export_max": 131072,
     "delivery": "Require actual exit0 and complete untruncated one-LF bounded JSON before storing full intake in RAM; token request alone proves neither. If not complete after bounded same-session delivery, retain bounded original/prefix/count/hash/unknown-remainder facts, hold, and do not relaunch/recollect to obtain acceptance.",
     "exec_args_descriptor": {
-      "sha256": "cc298b6d6e136ab8c4200cea5ac438ea847bb478adebb15bbc1bd105f5a665e1",
-      "size_bytes": 2958
+      "sha256": "41b8435aa9ffff1c191bd1d85f3e6ba86f1e082c794d7f11788bdc949dca350e",
+      "size_bytes": 3041
     },
     "failure_max": 8192,
     "identity_scope": "regular nlink1 held-file identity and bounded prefix; append allowed. Original row length/SHA/ordinal/line evidence is distinct from decoded payload equality. No byte-identical wire/flush/quiescence/immutable epoch/custody/native closure guarantee.",
     "journal_max_prefix": 536870912,
     "journal_scan_row_max": 4194304,
     "max_output_tokens": 100000,
+    "portable_identity": "Only Windows cross-API FD/path comparison excludes ctime; full same-API before/after FD and path epochs retain ctime. Non-Windows cross comparison retains ctime. All dev/ino/mode/nlink/size/mtime/birth facts remain bound; compile/exec uses exact authenticated read bytes.",
     "same_session_polling": {
       "chars": "",
       "max_output_tokens": 100000,
@@ -290,6 +303,18 @@
   },
   "source_commit_binding": "external exact-pushed review and later explicit delegated AGENT control approval; no self/future commit hash",
   "stage": "prepared_for_exact_pushed_source_review",
+  "superseded_launch_recipe": {
+    "builder03": {
+      "sha256": "e9b86b63dd9f2fcaa90560c856eb020729b26ccc1a8bb90a5aed08bcb7eb0719",
+      "size_bytes": 5384
+    },
+    "commit": "560e9f7c5dd18cc7806fbdb92326207db902ea1d",
+    "finding": "Independent exact560 review found Windows Python cross-API lstat/fstat ctime mismatch; actual control never submitted. Original source/review/CI remain separately retained, not cancelled or retroactively approved.",
+    "metadata03": {
+      "sha256": "bbc9035da227c72647f1758ee39bbd971cd6e5834c95a4abef0c9ef8edfe90f2",
+      "size_bytes": 4527
+    }
+  },
   "synthetic_geometry_only": {
     "chain_exact_cap_test": 131072,
     "chains": {
