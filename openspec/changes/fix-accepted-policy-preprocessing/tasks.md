@@ -505,3 +505,49 @@ The retained v3 postterminal collector closes the independent v2 finding by refu
 Independent exact560e9f7c review found that launcher03 compared ctime across Windows lstat/fstat, repeating a known Python3.14 portability mismatch. No control/bootstrap/actual journal capture had occurred. The immutable launcher04 excludes ctime only for that Windows cross-API comparison; complete same-API FD/path before/after epochs and non-Windows ctime checks remain unchanged.23 pure controlled cases cover the old mismatch, portable acceptance, unchanged strict same-API and identity/mtime/birth drift refusals, plus actual callsite/two-line-diff assertions. No stat probe or unchanged45 collector/5 postcapture test restart was performed. The prior560 source, launcher03, review and required CI are retained separately; no worker was cancelled/restarted to erase the finding.
 
 Only recipe launcher pins and this factual checkpoint change. Main/caller, initial11889B/control3113B/result361B/postcapture17394B sources remain exact. The current metadata recipe is 15640B/SHA25636a99aa78f52a1eba7bbe3781453dc8db8f9a5ef8c9cfd9ba274ae8e8da73de7; the preceding14054B descriptor denotes its historical560 version. Independent final exact-pushed review, Grok CLI review, NEW required final-source CI and explicit delegated AGENT CONTROL approval still precede ONE actual submission. No actual control, journal collection, physical/image action, authority or checkbox completion follows;46 task rows/24 checks and2.10 OPEN remain unchanged.
+
+
+### Decision18 actual one-control checkpoint,2026-10-18
+
+Exact source f6bc87ba6148894984161e44f55a58c599f4043a passed required CI39020266134:
+4242 tests/4154 successes/88 unchanged approved skips/799 compiler successes,
+zero failures/errors,all17 new compiler IDs successful. Root rehashed62 indexed
+files10,280,785B; independent Grok CI review CLEAR_WITH_NOTES is retained under
+`evidence/compiler-component-01/gate2-implementation-tests/d18-actual-inert-control-20261018-01/`.
+Delegated AGENT CONTROL approval6241364452 was recorded before the one invocation.
+Historical560 CI also passed but its blocked launcher03 remains historical.
+
+Actual callcall_051b30902ac94fbda4a9938ecfe5f590 completed with the exact reviewed
+361B result; no functions cell/waits/retry/reset. One postterminal launcher04
+captured the complete bounded original public chain,exit0/full19317B one-LF
+stdout/no polls. Source/result identities matched the approved source/direct
+observation. Pure pinned postcheck strict_control_result_matches=true.
+Independent Grok bounded observation review CLEAR_WITH_NOTES/public6241494611
+found no required correction, explicitly relying on root capture/equality facts
+without full-chain inspection/hash recomputation. Full program/record/chain
+retained RAM plus original journal only; committed files are bounded metadata,
+results and public reviews. Original review_pending metadata remains sealed.
+
+The SAME single control is now CONSUMED. Narrow static/stub/DATA/source/clock/JSON
+features were observed; actual VM strings:false and the historical denial's
+location are not inferred. Every qualification/setup/retention/production/
+physical flag remains false. Original295/150000/140000/10000 clocks,12288B complete
+operational capture limit and every static-route/equivalence/geometry/source/CI/
+separate physical-admission gate survive. Older operational candidates remain
+unfit; the tiny131072B capture cap is not a waiver. Closed6230407759/cell1640,
+native activity/closure/namespace UNKNOWN,227 protected images and24/46 task
+states are unchanged;2.10/whole1.5/genuine/renewal/Q1/archive/merge stay OPEN.
+
+### Task4.1 bounded source-inventory checkpoint,2026-10-18
+
+`evidence/source-inventory-20261018-01/` preserves169 current f6 source/context
+identities,68guardian/94qualification literal overapproximations and separate
+finite legacy71-source/262-edge closure. Independent review found no required
+source defect in that bounded subset; two initial fixed loaders resolve on
+host-only legacy routes. Four runtime subsets are affected; five listed native/
+worker source/context subsets show no source-triggered rebuild indicated.
+README and original review distinguish author retained-metadata comparisons
+from reviewer exact-Git baseline comparisons, with all four full baseline IDs.
+This is source inventory only: general computed loaders/other runtime closures,
+wheel/binary/model/current-image/default-cold/genuine evidence remain unverified.
+No packaging/production/test change or checkbox completion follows;4.1 stays OPEN.
