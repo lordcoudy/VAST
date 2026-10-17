@@ -362,10 +362,13 @@ remain unchanged; the following work belongs to the existing unchecked2.10.
   `evidence/compiler-component-01/gate2-p0-465-retention.v1.json` index with
   encoded<=12 KiB and working+Git<=32,768 B, referencing the pinned actual
   diagnostic/manifest and immutable historical465/F2/code/old-AUX forms. Include
-  historical465/bf2 descriptors and closed role/form assignments only, not
-  current component/operator/plan hashes, its own hash or a future current
-  commit; externally bind current runtime/operator/plan and actual index
-  descriptors separately. Verify complete source/Git version assignments,
+  a source-version inventory limited to frozen pre-implementation versions
+  (c75,465,bf2 and reviewed planning snapshots), with closed role/form
+  assignments. Unchanged current runtime
+  or plan bytes may alias historical descriptor values without granting current
+  approval. Exclude the index's own hash, future implemented-consumer commit and
+  mutually dependent current authority; externally authenticate current
+  runtime/operator/plan, actual index descriptors and approval separately. Verify complete source/Git version assignments,
   historical unknowns and the retained
   c75 checks without copying the86 rows/raws, old receipts or native stdout.
   Bind the index/historical plan and current authority/plan independently,
@@ -376,9 +379,9 @@ remain unchanged; the following work belongs to the existing unchecked2.10.
   Prove that diagnostic Windows C/component/plan working slots are treated as
   superseded current variants with old465 Git forms retained, not incorrectly
   required to retain their old working SHA; native465 originals remain immutable.
-- Retain meaningful controlled RED/GREEN for source946,176<=983,040, native
-  code/P0/packet/parent-growth1,019,136<=1,048,576, outside508,160<=524,288 and
-  global536,784,896<=536,870,912; prove exact/one-byte overflow, actual allocation,
+- Retain meaningful controlled RED/GREEN for source991,232<=1,032,192, native
+  code/P0/packet/parent-growth1,019,136<=1,048,576, outside516,352<=524,288 and
+  global536,834,048<=536,870,912; prove exact/one-byte overflow, actual allocation,
   all superseded Git variants and partial/unknown backing refusal. Authenticate
   the observed old AUX39,424/capture32,768 assignments before explicitly retiring
   only their unused prospective liabilities. Preserve old F2 prefix/tail5,345,280,
@@ -403,10 +406,10 @@ remain unchanged; the following work belongs to the existing unchecked2.10.
   statuses, prefixes/counts/SHA and explicit omissions, including short/late
   output with no second emit. Exercise at most six actual-tool-shaped frames
   (exec plus five same-session polls), unexpected additional output, partial
-  success then failure and complete escaped8 KiB geometry. Write only the direct
+  success then failure and complete escaped12 KiB geometry. Write only the direct
   repository original
   `evidence/compiler-component-01/gate2-p0-exception.outer-tool.original.json`,
-  working+Git<=24,576 B; no Temp/raw-stream/phase/program/receipt duplicates.
+  working+Git<=32,768 B; no Temp/raw-stream/phase/program/receipt duplicates.
   Prove FINAL runs AFTER packet/AUX/events persistence and only its actual
   returned meter/PID/status/EOF/counts/SHA enter the terminal document, without
   rewriting events or creating another raw file. The selected transcript's
@@ -415,6 +418,17 @@ remain unchanged; the following work belongs to the existing unchecked2.10.
   Verify actual terminal metadata, flush/fsync/close/readback and original-deadline
   proof, no new failure write after budget/floor/deadline denial, and explicit
   incomplete/unretained outcome if the full form cannot fit or close in time.
+  Re-review this measured9,629 B caller amendment at the exact planning commit
+  before dependent cap/index/test changes; retain meaningful8 KiB overflow RED.
+  Require fixed24,576 B ACK input for the16,524 B maximum12 KiB selection.
+  Preserve four index history roles/69 row16, append the one approved new plan
+  Git blob as the22nd version and use null/external current-plan binding. Keep V8<=40 KiB
+  and all intermediate Git forms; another distinct45,056 B plan version refuses
+  the1,032,192 B source cap. Verify initial29,323,264/future507,510,784 and final
+  additive tail45,312 without adding already-funded outside usage globally.
+  Actual writer return must precede a same-Node external clock check; unavailable
+  result fields stop before writer admission. No new source/physical approval is
+  inferred from the amended planning review.
 - Obtain two independent exact implemented-source reviews, new required CI,
   final actual-form audit and recorded delegated AGENT approval before at most
   ONE explicit fresh P0/packet operation under465 `/r1` and its distinct AUX.
