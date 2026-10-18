@@ -2089,6 +2089,7 @@ def d22_compress_data_v1(raw, deadline):
     carrying the same bounded metadata schema. The absolute caller deadline is
     never reset; eight seconds remain for cleanup and the caller's final return.
     """
+    import copy
     import math
     import shutil
     import subprocess
@@ -2103,41 +2104,50 @@ def d22_compress_data_v1(raw, deadline):
     facts = {'schema_version': 1, 'data_only': True, 'spawned': False, 'pid': None,
              'returncode': None, 'timed_out': False, 'kill_requested': False,
              'stdin_bytes': 0, 'stdin_closed': False, 'stdin_complete': False,
-             'stdin_extent_unknown': False, 'threads_started': 0, 'reaped': False,
+             'stdin_extent_unknown': False, 'stdin_write_attempted': False,
+             'stdin_write_in_flight': False, 'threads_started': 0, 'reaped': False,
              'threads_joined': False, 'causes': [], 'node_version': None,
              'quality': 11, 'roundtrip': False, 'parent_observed_completion': False,
              'descendant_quiescence': 'UNKNOWN', 'input_bytes': None,
              'input_sha256': None, 'packed_bytes': None, 'packed_sha256': None,
              'environment_keys': [], 'program_sha256': hashlib.sha256(_D22_BROTLI_DATA_PROGRAM.encode('ascii')).hexdigest()}
-    lock = threading.Lock()
+    lock = threading.RLock()
     def cause(value):
         with lock:
             if value not in facts['causes']:
                 facts['causes'].append(value)
+    def has_causes():
+        with lock:
+            return bool(facts['causes'])
     def finish(packed=None):
-        snapshot = dict(facts)
-        for name, channel in channels.items():
-            prefix = bytes(buffers[name])
+        # Capture related facts, channels, causes and byte prefixes at one shared
+        # lock boundary. Later worker changes cannot mix these captured values.
+        with lock:
+            snapshot = copy.deepcopy(facts)
+            captured_channels = {name: dict(channel) for name, channel in channels.items()}
+            prefixes = {name: bytes(buffer) for name, buffer in buffers.items()}
+        for name, channel in captured_channels.items():
+            prefix = prefixes[name]
             snapshot[name] = {**channel, 'retained_bytes': len(prefix),
                               'prefix_sha256': hashlib.sha256(prefix).hexdigest(),
                               'unknown_remainder': not channel['eof'] or channel['overflow'] or channel['io_error'] is not None}
-        snapshot['stderr_prefix_b64'] = base64.b64encode(buffers['stderr']).decode('ascii')
+        snapshot['stderr_prefix_b64'] = base64.b64encode(prefixes['stderr']).decode('ascii')
         observed = time.monotonic()
         snapshot['elapsed_seconds'] = observed - started
         snapshot['finished_before_deadline'] = observed < end if end is not None else False
         snapshot['child_completion_observed_before_deadline'] = (
-            facts['spawned'] and child_total_end is not None and observed < child_total_end)
-        if facts['spawned'] and not snapshot['child_completion_observed_before_deadline']:
-            cause('child_completion_late')
-        if not snapshot['finished_before_deadline']:
-            cause('parent_deadline')
-        snapshot['causes'] = list(facts['causes'])
+            snapshot['spawned'] and child_total_end is not None and observed < child_total_end)
+        if snapshot['spawned'] and not snapshot['child_completion_observed_before_deadline']:
+            if 'child_completion_late' not in snapshot['causes']:
+                snapshot['causes'].append('child_completion_late')
+        if not snapshot['finished_before_deadline'] and 'parent_deadline' not in snapshot['causes']:
+            snapshot['causes'].append('parent_deadline')
         snapshot['parent_observed_completion'] = packed is not None and not snapshot['causes']
         encoded = canonical(snapshot)
         if len(encoded) > 32768:
             raise RuntimeError('D22 compression metadata bound')
-        # Copy every container before publishing; this is not an atomic custody
-        # claim about workers that could not be joined before their deadline.
+        # Publication is immutable; the shared capture does not establish
+        # continuous custody or quiescence of unjoined workers/descendants.
         frozen = json.loads(encoded)
         if frozen['causes']:
             raise D22CompressionError(frozen)
@@ -2158,13 +2168,15 @@ def d22_compress_data_v1(raw, deadline):
         cause('input_limit');return finish()
     if not raw.isascii():
         cause('input_ascii');return finish()
-    facts.update(input_bytes=len(raw), input_sha256=hashlib.sha256(raw).hexdigest())
+    with lock:
+        facts.update(input_bytes=len(raw), input_sha256=hashlib.sha256(raw).hexdigest())
     work_end = min(started + 27, end - 8)
     child_total_end = min(started + 30, end - 5)
     cleanup_end = min(child_total_end, work_end + 3)
-    facts.update(started_monotonic=started, caller_deadline=end, work_deadline=work_end,
-                 child_total_deadline=child_total_end, cleanup_deadline=cleanup_end, child_total_limit_seconds=30,
-                 child_work_limit_seconds=27, cleanup_limit_seconds=3, final_reserve_seconds=5)
+    with lock:
+        facts.update(started_monotonic=started, caller_deadline=end, work_deadline=work_end,
+                     child_total_deadline=child_total_end, cleanup_deadline=cleanup_end, child_total_limit_seconds=30,
+                     child_work_limit_seconds=27, cleanup_limit_seconds=3, final_reserve_seconds=5)
     if time.monotonic() >= work_end:
         cause('deadline_no_window');return finish()
     node = shutil.which('node') or shutil.which('node.exe')
@@ -2176,7 +2188,8 @@ def d22_compress_data_v1(raw, deadline):
         if os.name == 'nt':
             environment['SystemRoot'] = os.environ['SystemRoot']
         argv = [node, '--max-old-space-size=256', '--input-type=commonjs', '-e', _D22_BROTLI_DATA_PROGRAM]
-        facts.update(node_executable=node, command_options=argv[1:4], environment_keys=sorted(environment))
+        with lock:
+            facts.update(node_executable=node, command_options=argv[1:4], environment_keys=sorted(environment))
         if time.monotonic() >= work_end:
             cause('deadline_before_spawn');return finish()
         process = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -2185,46 +2198,69 @@ def d22_compress_data_v1(raw, deadline):
                                    creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
     except (OSError, KeyError, ValueError) as error:
         cause('spawn_' + type(error).__name__);return finish()
-    facts.update(spawned=True, pid=process.pid)
+    with lock:
+        facts.update(spawned=True, pid=process.pid)
     if time.monotonic() >= work_end:
-        facts['timed_out'] = True;cause('deadline_after_spawn')
+        with lock:
+            facts['timed_out'] = True;cause('deadline_after_spawn')
     def read_channel(name, pipe, limit):
         channel = channels[name]
         try:
             while True:
-                part = pipe.read(min(4096, limit + 1 - len(buffers[name])))
-                if not part:
-                    channel['eof'] = True;break
-                channel['observed_bytes'] += len(part)
-                room = limit - len(buffers[name])
-                buffers[name].extend(part[:room])
-                if len(part) > room:
-                    channel['overflow'] = True;cause(name + '_overflow');break
+                with lock:
+                    read_size = min(4096, limit + 1 - len(buffers[name]))
+                part = pipe.read(read_size)
+                with lock:
+                    if not part:
+                        channel['eof'] = True;break
+                    channel['observed_bytes'] += len(part)
+                    room = limit - len(buffers[name])
+                    buffers[name].extend(part[:room])
+                    if len(part) > room:
+                        channel['overflow'] = True;cause(name + '_overflow');break
         except (OSError, ValueError) as error:
-            channel['io_error'] = type(error).__name__;cause(name + '_read_error')
+            with lock:
+                channel['io_error'] = type(error).__name__;cause(name + '_read_error')
         finally:
             try:
-                pipe.close();channel['closed'] = True
+                pipe.close()
+                with lock:
+                    channel['closed'] = True
             except (OSError, ValueError):
                 cause(name + '_close_error')
     def write_input():
         try:
-            while facts['stdin_bytes'] < len(raw):
+            while True:
+                with lock:
+                    offset = facts['stdin_bytes']
+                    if offset >= len(raw):
+                        break
+                    if time.monotonic() >= work_end:
+                        cause('stdin_deadline');break
+                    remaining = len(raw) - offset
+                    facts.update(stdin_write_attempted=True, stdin_write_in_flight=True,
+                                 stdin_extent_unknown=True)
+                count = process.stdin.write(raw[offset:])
+                with lock:
+                    facts['stdin_write_in_flight'] = False
+                    if type(count) is not int or not 0 < count <= remaining:
+                        cause('stdin_short_write');break
+                    facts['stdin_bytes'] += count
+                    facts['stdin_extent_unknown'] = False
                 if time.monotonic() >= work_end:
                     cause('stdin_deadline');break
-                remaining = len(raw) - facts['stdin_bytes']
-                count = process.stdin.write(raw[facts['stdin_bytes']:])
-                if type(count) is not int or not 0 < count <= remaining:
-                    facts['stdin_extent_unknown'] = True;cause('stdin_short_write');break
-                facts['stdin_bytes'] += count
-                if time.monotonic() >= work_end:
-                    cause('stdin_deadline');break
-            facts['stdin_complete'] = facts['stdin_bytes'] == len(raw)
+            with lock:
+                facts['stdin_complete'] = (facts['stdin_bytes'] == len(raw)
+                                           and not facts['stdin_extent_unknown'])
         except (OSError, ValueError):
-            facts['stdin_extent_unknown'] = True;cause('stdin_write_error')
+            with lock:
+                facts.update(stdin_write_in_flight=False, stdin_extent_unknown=True)
+                cause('stdin_write_error')
         finally:
             try:
-                process.stdin.close();facts['stdin_closed'] = True
+                process.stdin.close()
+                with lock:
+                    facts['stdin_closed'] = True
             except (OSError, ValueError):
                 cause('stdin_close_error')
     threads = [threading.Thread(target=read_channel, args=('stdout', process.stdout, 1048576), daemon=True),
@@ -2232,20 +2268,25 @@ def d22_compress_data_v1(raw, deadline):
                threading.Thread(target=write_input, daemon=True)]
     started_threads = []
     for thread in threads:
-        if facts['causes']:
+        if has_causes():
             break
         if time.monotonic() >= work_end:
-            facts['timed_out'] = True;cause('worker_start_deadline');break
+            with lock:
+                facts['timed_out'] = True;cause('worker_start_deadline')
+            break
         try:
             thread.start()
             started_threads.append(thread)
             if time.monotonic() >= work_end:
-                facts['timed_out'] = True;cause('worker_start_late');break
+                with lock:
+                    facts['timed_out'] = True;cause('worker_start_late')
+                break
         except RuntimeError:
             if thread.ident is not None:
                 started_threads.append(thread)
             cause('thread_start_error');break
-    facts['threads_started'] = len(started_threads)
+    with lock:
+        facts['threads_started'] = len(started_threads)
     def status():
         try:
             return process.poll()
@@ -2253,14 +2294,18 @@ def d22_compress_data_v1(raw, deadline):
             cause('child_status_error');return None
     while True:
         if time.monotonic() >= work_end:
-            facts['timed_out'] = True;cause('child_timeout');break
-        if facts['causes'] or (status() is not None and all(not thread.is_alive() for thread in started_threads)):
+            with lock:
+                facts['timed_out'] = True;cause('child_timeout')
+            break
+        if has_causes() or (status() is not None and all(not thread.is_alive() for thread in started_threads)):
             break
         time.sleep(min(.005, max(0, work_end - time.monotonic())))
     cleanup_end = min(cleanup_end, time.monotonic() + 3)
-    facts['cleanup_deadline'] = cleanup_end
+    with lock:
+        facts['cleanup_deadline'] = cleanup_end
     if status() is None:
-        facts['kill_requested'] = True
+        with lock:
+            facts['kill_requested'] = True
         try:
             process.kill()
         except OSError:
@@ -2269,17 +2314,19 @@ def d22_compress_data_v1(raw, deadline):
         if thread not in started_threads:
             try:
                 pipe.close()
-                if name == 'stdin':
-                    facts['stdin_closed'] = True
-                else:
-                    channels[name]['closed'] = True
+                with lock:
+                    if name == 'stdin':
+                        facts['stdin_closed'] = True
+                    else:
+                        channels[name]['closed'] = True
             except (OSError, ValueError):
                 cause(name + '_unstarted_close_error')
     try:
         returned = process.wait(timeout=max(0, cleanup_end - time.monotonic()))
-        facts['reaped'] = type(returned) is int
-        if not facts['reaped']:
-            cause('child_reap_unknown')
+        with lock:
+            facts['reaped'] = type(returned) is int
+            if not facts['reaped']:
+                cause('child_reap_unknown')
     except (OSError, ValueError, subprocess.TimeoutExpired):
         cause('child_reap_unknown')
     for thread in started_threads:
@@ -2287,17 +2334,20 @@ def d22_compress_data_v1(raw, deadline):
             thread.join(max(0, cleanup_end - time.monotonic()))
         except RuntimeError:
             cause('thread_join_error')
-    facts.update(returncode=status(), threads_joined=len(started_threads) == len(threads)
-                 and all(not thread.is_alive() for thread in started_threads))
-    if not facts['threads_joined']:
-        cause('pipe_completion_unknown')
-    if facts['returncode'] != 0:
-        cause('child_status')
-    if not facts['stdin_complete'] or not facts['stdin_closed'] or not all(c['eof'] for c in channels.values()):
-        cause('io_completion_unknown')
-    if facts['causes']:
+    returned_status = status()
+    joined = len(started_threads) == len(threads) and all(not thread.is_alive() for thread in started_threads)
+    with lock:
+        facts.update(returncode=returned_status, threads_joined=joined)
+        if not facts['threads_joined']:
+            cause('pipe_completion_unknown')
+        if facts['returncode'] != 0:
+            cause('child_status')
+        if not facts['stdin_complete'] or not facts['stdin_closed'] or not all(c['eof'] for c in channels.values()):
+            cause('io_completion_unknown')
+        stdout_data, stderr_data = bytes(buffers['stdout']), bytes(buffers['stderr'])
+    if has_causes():
         return finish()
-    if buffers['stderr']:
+    if stderr_data:
         cause('unexpected_stderr');return finish()
     try:
         def unique_pairs(rows):
@@ -2305,11 +2355,11 @@ def d22_compress_data_v1(raw, deadline):
             if len(result) != len(rows):
                 raise ValueError('duplicate DATA result field')
             return result
-        result = json.loads(buffers['stdout'], object_pairs_hook=unique_pairs)
+        result = json.loads(stdout_data, object_pairs_hook=unique_pairs)
         if (type(result) is not dict or set(result) != {'node_version', 'packed_b64', 'quality', 'roundtrip'}
                 or result['node_version'] != '25.2.1' or type(result['quality']) is not int
                 or result['quality'] != 11 or result['roundtrip'] is not True
-                or type(result['packed_b64']) is not str or bytes(buffers['stdout']) != canonical(result) + b'\n'):
+                or type(result['packed_b64']) is not str or stdout_data != canonical(result) + b'\n'):
             raise ValueError('invalid DATA result')
         if len(result['packed_b64']) > 4 * ((32768 + 2) // 3):
             raise ValueError('DATA encoding bound')
@@ -2318,8 +2368,9 @@ def d22_compress_data_v1(raw, deadline):
             raise ValueError('invalid DATA encoding')
     except (ValueError, TypeError, RecursionError, OverflowError):
         cause('child_protocol');return finish()
-    facts.update(node_version=result['node_version'], roundtrip=True,
-                 packed_bytes=len(packed), packed_sha256=hashlib.sha256(packed).hexdigest())
+    with lock:
+        facts.update(node_version=result['node_version'], roundtrip=True,
+                     packed_bytes=len(packed), packed_sha256=hashlib.sha256(packed).hexdigest())
     return finish(packed)
 
 
@@ -2379,6 +2430,8 @@ class D22DataCompressionTests(unittest.TestCase):
                 self.assertIsNone(packed)
                 self.assertFalse(facts['parent_observed_completion'])
                 self.assertFalse(facts['spawned'])
+                self.assertFalse(facts['stdin_write_attempted'] or facts['stdin_write_in_flight']
+                                 or facts['stdin_extent_unknown'])
                 spawn.assert_not_called()
 
     def test_stdout_overflow_preserves_prefix_and_unknown_remainder(self):
@@ -2584,6 +2637,111 @@ class D22DataCompressionTests(unittest.TestCase):
         self.assertTrue(canonical(facts) == before, 'published refusal snapshot must stay fixed')
         self.assertFalse(facts['stdout']['eof'])
         self.assertTrue(facts['stdout']['unknown_remainder'])
+
+    def test_unjoined_reader_capture_binds_prefix_counters_eof_and_causes(self):
+        import threading
+        import time
+        for terminal in ('eof', 'error'):
+            with self.subTest(reader_terminal=terminal):
+                released, closed = threading.Event(), threading.Event()
+                process = self._fake_process()
+                process.poll = lambda: -9
+                process.wait = lambda timeout=None: -9
+                class LateReader(io.BytesIO):
+                    def read(self, size=-1):
+                        if not released.wait(2):
+                            raise OSError('controlled release deadline')
+                        part = super().read(size)
+                        if not part and terminal == 'error':
+                            raise OSError('controlled late read refusal')
+                        return part
+                    def close(self):
+                        super().close()
+                        closed.set()
+                process.stdout = LateReader(b'bounded DATA')
+                original_start, original_join = threading.Thread.start, threading.Thread.join
+                original_sha256 = hashlib.sha256
+                workers, triggered, settled = [], [], []
+                def start(thread):
+                    if len(workers) == 2:
+                        raise RuntimeError('controlled third startup')
+                    workers.append(thread)
+                    original_start(thread)
+                def hash_after_capture(value=b'', *args, **kwargs):
+                    if value == b'' and not triggered:
+                        triggered.append(True)
+                        released.set()
+                        settled.append(closed.wait(2))
+                    return original_sha256(value, *args, **kwargs)
+                try:
+                    with mock.patch('subprocess.Popen', return_value=process), \
+                            mock.patch('threading.Thread.start', start), \
+                            mock.patch('threading.Thread.join', return_value=None), \
+                            mock.patch('hashlib.sha256', hash_after_capture):
+                        packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', time.monotonic() + 40))
+                    before = canonical(facts)
+                finally:
+                    released.set()
+                    for worker in workers:
+                        original_join(worker, 3)
+                self.assertIsNone(packed)
+                self.assertTrue(bool(triggered) and settled == [True], 'controlled reader must finish during prefix hashing')
+                self.assertEqual((facts['stdout']['observed_bytes'], facts['stdout']['retained_bytes']), (0, 0))
+                self.assertEqual(facts['stdout']['prefix_sha256'], original_sha256(b'').hexdigest())
+                self.assertFalse(facts['stdout']['eof'] or facts['stdout']['closed'])
+                self.assertIsNone(facts['stdout']['io_error'])
+                self.assertTrue(facts['stdout']['unknown_remainder'])
+                self.assertEqual(set(facts['causes']), {'thread_start_error', 'pipe_completion_unknown',
+                                                       'child_status', 'io_completion_unknown'})
+                self.assertTrue(canonical(facts) == before, 'captured refusal must stay fixed after late reader completion')
+
+    def test_blocked_second_write_keeps_known_count_and_pending_unknown_extent(self):
+        import threading
+        import time
+        blocked, released = threading.Event(), threading.Event()
+        process = self._fake_process()
+        process.poll = lambda: -9
+        process.wait = lambda timeout=None: -9
+        writes = []
+        class PendingInput(io.BytesIO):
+            def write(self, value):
+                writes.append(len(value))
+                if len(writes) == 1:
+                    return 1
+                blocked.set()
+                if not released.wait(2):
+                    raise OSError('controlled write release deadline')
+                return len(value)
+        class RefusalAfterWrite(io.BytesIO):
+            def read(self, size=-1):
+                if not blocked.wait(2):
+                    raise OSError('controlled write entry deadline')
+                raise OSError('controlled capture refusal')
+        process.stdin, process.stdout = PendingInput(), RefusalAfterWrite()
+        original_start, original_join = threading.Thread.start, threading.Thread.join
+        workers = []
+        def start(thread):
+            workers.append(thread)
+            original_start(thread)
+        try:
+            with mock.patch('subprocess.Popen', return_value=process), \
+                    mock.patch('threading.Thread.start', start), \
+                    mock.patch('threading.Thread.join', return_value=None):
+                packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', time.monotonic() + 40))
+            before = canonical(facts)
+        finally:
+            released.set()
+            for worker in workers:
+                original_join(worker, 3)
+        self.assertIsNone(packed)
+        self.assertEqual(writes, [2, 1])
+        self.assertEqual(facts['stdin_bytes'], 1)
+        self.assertTrue(facts['stdin_write_attempted'] and facts['stdin_write_in_flight']
+                        and facts['stdin_extent_unknown'])
+        self.assertFalse(facts['stdin_complete'] or facts['stdin_closed'] or facts['parent_observed_completion'])
+        self.assertIn('stdout_read_error', facts['causes'])
+        self.assertIn('pipe_completion_unknown', facts['causes'])
+        self.assertTrue(canonical(facts) == before, 'pending-write snapshot must stay fixed after a valid late count')
 
     def test_decoder_recursion_and_packed_bound_refuse_as_metadata(self):
         import time
