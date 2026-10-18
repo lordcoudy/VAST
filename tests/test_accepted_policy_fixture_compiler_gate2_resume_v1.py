@@ -2969,5 +2969,2573 @@ class D22StaticPhaseConstructionTests(unittest.TestCase):
         print('D22_INITIAL_SOURCE_ONLY', report)
 
 
+D23_WIRE_CODEC = r"""function gate2WireBudget(now,cause,end=Infinity){
+ let origin=null,last=null,limit=null,units=0,failed=false;
+ function stop(){failed=true;throw Error(cause);}
+ function guard(){
+  if(failed)throw Error(cause);
+  let n;try{n=now();}catch{stop();}
+  if(typeof n!=='number'||!Number.isFinite(n)||last!==null&&n<last)stop();
+  if(origin===null){
+   if(typeof end!=='number'||!Number.isFinite(end)&&end!==Infinity)stop();
+   origin=n;limit=Math.min(n+5000,end);
+  }
+  last=n;if(n>=limit)stop();units=0;return n;
+ }
+ guard.work=()=>{if(failed)throw Error(cause);if(origin===null||units===256)guard();units++;};
+ guard.phase=fn=>{
+  guard();let value,error,threw=false;
+  try{value=fn();}catch(e){error=e;threw=true;}
+  guard();if(threw)throw error;return value;
+ };
+ return guard;
+}
+function gate2WireInput(wire){
+ if(typeof wire!=='string'||wire.length<1||wire.length>12288||/[^\x20-\x7e]/.test(wire))throw Error('selected_wire_input');
+ return wire;
+}
+function gate2WireDecode(wire,tag,sha,canon,guard){
+ gate2WireInput(wire);
+ const x=guard.phase(()=>{try{return JSON.parse(wire);}catch{throw Error('selected_wire_shape');}});
+ guard.phase(()=>{
+  if(!x||typeof x!=='object'||Array.isArray(x)||Object.keys(x).sort().join(',')!=='encoding,expanded_sha256,expanded_size_bytes,payload'||
+   tag!=='gate2-selected-lz77-v1'&&tag!=='gate2-observed-lz77-v1'||x.encoding!==tag||
+   typeof x.payload!=='string'||x.payload.length>12288||/[^\x20-\x7e]/.test(x.payload)||
+   typeof x.expanded_sha256!=='string'||!/^[0-9a-f]{64}$/.test(x.expanded_sha256)||!Number.isSafeInteger(x.expanded_size_bytes))throw Error('selected_wire_shape');
+ });
+ const spelling=guard.phase(()=>{try{return canon(x,12288);}catch{throw Error('selected_wire_shape');}});
+ if(spelling!==wire)throw Error('selected_wire_shape');
+ if(x.expanded_size_bytes<1||x.expanded_size_bytes>32768)throw Error('selected_wire_bound');
+ const text=guard.phase(()=>{
+  const output=[],payload=x.payload;let at=0;
+  function index(c){let n=c.charCodeAt(0);return n>=65&&n<=90?n-65:n>=97&&n<=122?n-71:n>=48&&n<=57?n+4:n===43?62:n===47?63:-1;}
+  function append(c){guard.work();if(output.length>=x.expanded_size_bytes||output.length>=32768)throw Error('selected_wire_expansion');output.push(c);}
+  while(at<payload.length){
+   guard.work();const c=payload[at++];
+   if(c!=='~'){append(c);continue;}
+   if(at>=payload.length)throw Error('selected_wire_token');
+   if(payload[at]==='~'){at++;append('~');continue;}
+   if(at+3>payload.length)throw Error('selected_wire_token');
+   const a=index(payload[at]),b=index(payload[at+1]),z=index(payload[at+2]);at+=3;
+   if(a<0||b<0||z<0)throw Error('selected_wire_token');
+   const distance=1+64*a+b,length=5+z;
+   if(distance>4096||distance>output.length)throw Error('selected_wire_token');
+   for(let n=0;n<length;n++)append(output[output.length-distance]);
+  }
+  return output.join('');
+ });
+ if(text.length!==x.expanded_size_bytes)throw Error('selected_wire_binding');
+ const digest=guard.phase(()=>sha(text));
+ if(digest!==x.expanded_sha256)throw Error('selected_wire_binding');
+ const value=guard.phase(()=>{try{return JSON.parse(text);}catch{throw Error('selected_wire_binding');}});
+ const recovered=guard.phase(()=>{try{return canon(value,32768);}catch{throw Error('selected_wire_binding');}});
+ if(recovered!==text)throw Error('selected_wire_binding');
+ return {text,value};
+}
+function gate2WireEncode(text,tag,sha,canon,guard){
+ // ROOT canonicalizes each independently captured original before this primitive.
+ if(typeof text!=='string'||text.length<1||text.length>32768||/[^\x20-\x7e]/.test(text))throw Error('selected_wire_input');
+ const digest=guard.phase(()=>{
+  if(tag!=='gate2-selected-lz77-v1'&&tag!=='gate2-observed-lz77-v1')throw Error('selected_wire_shape');
+  const value=sha(text);if(typeof value!=='string'||!/^[0-9a-f]{64}$/.test(value))throw Error('selected_wire_shape');return value;
+ });
+ const payload=guard.phase(()=>{
+  const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',dictionary=new Map(),overhead=158+String(text.length).length;
+  let result='',escaped=0,at=0;
+  function emit(part){
+   for(let n=0;n<part.length;n++){
+    guard.work();const c=part[n],cost=c==='"'||c==='\\'?2:1;
+    if(overhead+escaped+cost>12288)throw Error('selected_wire_bound');
+    result+=c;escaped+=cost;
+   }
+  }
+  function insert(position){
+   if(position+5>text.length)return;
+   guard.work();const key=text.slice(position,position+5);let row=dictionary.get(key);
+   if(!row){guard.work();row=[];dictionary.set(key,row);}
+   if(row.length===8){guard.work();row.shift();}
+   guard.work();row.push(position);
+  }
+  // Every full-prefix position is inserted once, so keys and live entries are
+  // each <=text.length-4<=32764; every individual row retains at most eight.
+  while(at<text.length){
+   guard.work();let best=0,distance=0;
+   if(at+5<=text.length){
+    guard.work();const row=dictionary.get(text.slice(at,at+5));
+    if(row){
+     while(row.length&&at-row[0]>4096){guard.work();row.shift();}
+     for(const position of row){
+      guard.work();let length=0;
+      while(length<68&&at+length<text.length){guard.work();if(text[position+length]!==text[at+length])break;length++;}
+      const d=at-position;
+      if(length>=5&&(length>best||length===best&&d<distance)){best=length;distance=d;}
+     }
+    }
+   }
+   const consumed=best>=5?best:1;
+   if(best>=5){const d=distance-1;emit('~'+alphabet[d>>6]+alphabet[d&63]+alphabet[best-5]);}
+   else emit(text[at]==='~'?'~~':text[at]);
+   for(let position=at;position<at+consumed;position++)insert(position);
+   at+=consumed;
+  }
+  return result;
+ });
+ return guard.phase(()=>{
+  try{return canon({encoding:tag,expanded_sha256:digest,expanded_size_bytes:text.length,payload},12288);}
+  catch(e){if(e&&e.message==='canonical_bound')throw Error('selected_wire_bound');throw e;}
+ });
+}
+"""
+
+
+# D23 is additive: the raw D22 source/HOLD and every legacy method stay intact.
+# The fixed local driver emits metadata only; recovered strings never execute.
+D23_DATA_DRIVER = r"""'use strict';
+let chunks=[],inputBytes=0,failed=false;
+const cases=new Set(['codec_vectors','codec_malformed','codec_overflow','geometry']);
+const report={schema_version:1,case:'codec_vectors',node_version:process.versions.node,completed:false,cause:null,checks:[],measurements:[]};
+function check(id,ok){report.checks.push({id,ok:!!ok});if(!ok)throw Error('d23_driver_assertion');}
+function measure(id,text){report.measurements.push({id,size_bytes:text.length,sha256:gate2SHA256(text)});}
+function expected(id,fn,cause){let seen=null;try{fn();}catch(e){seen=e.message;}check(id,seen===cause);}
+function wire(payload,original,tag='gate2-selected-lz77-v1',size=original.length,hash=gate2SHA256(original)){
+ return gate2Canonical({encoding:tag,expanded_sha256:hash,expanded_size_bytes:size,payload},32768);
+}
+function budget(cause='selected_wire_deadline',now=()=>performance.now(),end=Infinity){return gate2WireBudget(now,cause,end);}
+function decoded(text,tag='gate2-selected-lz77-v1',guard=budget()){return gate2WireDecode(text,tag,gate2SHA256,gate2Canonical,guard);}
+function encoded(text,tag='gate2-selected-lz77-v1',guard=budget('selected_wire_root_deadline')){return gate2WireEncode(text,tag,gate2SHA256,gate2Canonical,guard);}
+function referencePayload(text){
+ const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';let result='',at=0;
+ while(at<text.length){let candidates=[];
+  for(let p=Math.max(0,at-4096);p<at;p++)if(text.slice(p,p+5)===text.slice(at,at+5)&&at+5<=text.length)candidates.push(p);
+  let best=0,distance=0;
+  for(let p of candidates.slice(-8)){let n=0;while(n<68&&at+n<text.length&&text[p+n]===text[at+n])n++;let d=at-p;if(n>best||n===best&&d<distance){best=n;distance=d;}}
+  if(best>=5){let d=distance-1;result+='~'+alphabet[d>>6]+alphabet[d&63]+alphabet[best-5];at+=best;}
+  else{result+=text[at]==='~'?'~~':text[at];at++;}
+ }
+ return result;
+}
+function vectors(){
+ const manual=[['minimum','"aaaaaa"','"a~AAA"'],['maximum','"'+'a'.repeat(69)+'"','"a~AA/"'],
+ ['tilde','"'+'~'.repeat(6)+'"','"~~~AAA"'],['quotes',JSON.stringify('"'.repeat(4)),'"\\"~ABB"'],
+ ['backslashes',JSON.stringify('\\'.repeat(3)),'"\\~AAA"']];
+ for(let [id,original,payload] of manual){let w=wire(payload,original);check(id+'_decode',decoded(w).text===original);check(id+'_deterministic',encoded(original)===encoded(original));measure(id+'_wire',w);}
+ for(let [id,original] of [['repeats',JSON.stringify('abcde'.repeat(200))],['bucket',JSON.stringify(Array.from({length:12},(_,i)=>'abcde'+String(i)+'abcde'+String(i)+'Z').join(''))],['skipped',JSON.stringify('abcdefgh'.repeat(110)+'abcdeXYZabcdeUVWabcdeXYZ')]]){
+  let w=encoded(original),x=JSON.parse(w);check(id+'_oracle',x.payload===referencePayload(original));check(id+'_roundtrip',decoded(w).text===original);
+ }
+ const edge=JSON.stringify('ABCDE'+'Z'.repeat(4091)+'ABCDE'),outside=JSON.stringify('ABCDE'+'Z'.repeat(4092)+'ABCDE');
+ check('window_4096',JSON.parse(encoded(edge)).payload.endsWith('~//A"'));
+ check('window_4097_excluded',JSON.parse(encoded(outside)).payload.endsWith('ABCDE"'));
+ const selected=encoded(edge),observed=encoded(edge,'gate2-observed-lz77-v1');
+ check('separate_tags',selected!==observed&&JSON.parse(selected).payload===JSON.parse(observed).payload);
+ check('observed_roundtrip',decoded(observed,'gate2-observed-lz77-v1').text===edge);
+ expected('swapped_tag',()=>decoded(observed),'selected_wire_shape');
+ let clock=0,g=budget('selected_wire_receive_deadline',()=>clock);decoded(selected,'gate2-selected-lz77-v1',g);clock=5000;
+ expected('one_receive_budget',()=>decoded(observed,'gate2-observed-lz77-v1',g),'selected_wire_receive_deadline');
+}
+function malformed(){
+ for(let [id,value] of [['null',null],['number',1],['empty',''],['nonprint','\n'],['too_long','x'.repeat(12289)]])expected('input_'+id,()=>decoded(value),'selected_wire_input');
+ const good=wire('"a"','"a"'),base=JSON.parse(good);
+ for(let [id,value] of [['parse','{'],['array','[]'],['extra',gate2Canonical({...base,extra:1},32768)],['tag',gate2Canonical({...base,encoding:'wrong'},32768)],['hash',gate2Canonical({...base,expanded_sha256:'A'.repeat(64)},32768)],['bool',gate2Canonical({...base,expanded_size_bytes:true},32768)],['fraction',gate2Canonical({...base,expanded_size_bytes:1.5},32768)],['exponent',good.replace('"expanded_size_bytes":3','"expanded_size_bytes":3e0')],['negative_zero',good.replace('"expanded_size_bytes":3','"expanded_size_bytes":-0')],['space',good+' ']])expected('shape_'+id,()=>decoded(value),'selected_wire_shape');
+ for(let n of [-1,0,32769])expected('range_'+String(n).replace('-','minus'),()=>decoded(wire('"a"','"a"',undefined,n)),'selected_wire_bound');
+ for(let [id,payload] of [['dangling','~'],['truncated','~AA'],['alphabet','~A?A'],['distance','~AAA'],['window','"a~//A']])expected('token_'+id,()=>decoded(wire(payload,'"a"')),'selected_wire_token');
+ expected('token_before_expansion',()=>decoded(wire('~AAA','"a"',undefined,1)),'selected_wire_token');
+ expected('bad_hash',()=>decoded(wire('"a"','"a"',undefined,3,'0'.repeat(64))),'selected_wire_binding');
+ expected('short_output',()=>decoded(wire('"a"','"a"',undefined,4)),'selected_wire_binding');
+ for(let [id,text] of [['invalid_json','abc'],['noncanonical','{ "a":1}']])expected('recovered_'+id,()=>decoded(wire(text,text)),'selected_wire_binding');
+ const nested=encoded('"a"');check('no_recursive_decode',decoded(encoded(nested)).text===nested);
+}
+function overflow(){
+ const maximum=JSON.stringify('a'.repeat(32766)),w=encoded(maximum);check('expanded_exact',maximum.length===32768&&decoded(w).text===maximum);measure('expanded_max_wire',w);
+ expected('encoder_expanded_plus_one',()=>encoded(maximum+' '),'selected_wire_input');
+ const changed=JSON.parse(w);changed.payload+='a';expected('decoder_expansion_plus_one',()=>decoded(gate2Canonical(changed,32768)),'selected_wire_expansion');
+ const exact=JSON.stringify('a'.repeat(12121)),edge=wire(exact,exact);check('wire_exact',edge.length===12288&&decoded(edge).text===exact);measure('wire_exact',edge);
+ const over=JSON.stringify('a'.repeat(12122));expected('wire_plus_one',()=>decoded(wire(over,over)),'selected_wire_input');
+ expected('declared_over',()=>decoded(wire('"a"','"a"',undefined,32769)),'selected_wire_bound');
+ let state=0x12345678,text='';const a='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+ for(let i=0;i<32766;i++){state^=state<<13;state^=state>>>17;state^=state<<5;text+=a[(state>>>0)%a.length];}
+ expected('escaped_encoder_bound',()=>encoded(JSON.stringify(text)),'selected_wire_bound');
+ expected('valid_literal_overflow',()=>decoded(wire('"a"','"a"',undefined,2)),'selected_wire_expansion');
+}
+function finish(cause){if(failed)return;failed=true;report.cause=cause;process.stdout.write(gate2Canonical(report,32767)+'\n');}
+process.stdin.on('error',()=>finish('d23_driver_input'));
+process.stdin.on('data',b=>{if(failed)return;inputBytes+=b.length;if(inputBytes>262144){finish('d23_driver_input');process.stdin.destroy();return;}chunks.push(b);});
+process.stdin.on('end',()=>{if(failed)return;try{
+ const bytes=Buffer.concat(chunks);chunks=[];if(bytes.some(x=>x>127))throw Error('d23_driver_input');
+ const text=bytes.toString('ascii'),request=JSON.parse(text);
+ if(!request||typeof request!=='object'||Array.isArray(request)||Object.keys(request).sort().join()!=='case,data'||!cases.has(request.case)||gate2Canonical(request,262144)!==text)throw Error('d23_driver_input');report.case=request.case;
+ if(process.versions.node!=='25.2.1')throw Error('d23_node_version');
+ if(typeof gate2WireEncode!=='function'||typeof gate2WireDecode!=='function'||typeof gate2WireBudget!=='function')throw Error('d23_codec_absent');
+ if(request.case==='codec_vectors')vectors();else if(request.case==='codec_malformed')malformed();else if(request.case==='codec_overflow')overflow();else d23Geometry(request.data,report);
+ report.completed=true;finish(null);
+ }catch(e){finish(new Set(['d23_codec_absent','d23_driver_assertion','d23_driver_input','d23_node_version']).has(e.message)?e.message:'d23_driver_error');}});
+"""
+
+
+def d23_node_driver_v1():
+    # One fixed DATA driver; the original codec-absence RED remains preserved.
+    return ROOT_ENCODER+'\n'+ROOT_SHA256+'\n'+globals().get('D23_WIRE_CODEC','')+'\n'+D23_DATA_DRIVER
+
+
+class D23WireCodecTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import time
+        cls.deadline=globals().get('D23_TEST_DEADLINE',time.monotonic()+295)
+
+    def run_case(self,case):
+        from tests.test_accepted_policy_fixture_compiler_gate2_resume_caller_v1 import d23_run_case_v1
+        value,capture=d23_run_case_v1(case,b'{}',self.deadline)
+        metadata=json.dumps({'case':case,'report':value,'capture':capture},sort_keys=True,separators=(',',':'))
+        self.assertLessEqual(len(metadata.encode('ascii')),32768,'combined case metadata bound')
+        print('D23_CASE_METADATA',metadata)
+        self.assertTrue(capture['parent_observed_completion'],'bounded original child/protocol incomplete')
+        self.assertTrue(value['completed'],'D23 controlled case failed: '+str(value['cause']))
+        self.assertIsNone(value['cause'])
+        self.assertTrue(value['checks'] and all(row['ok'] for row in value['checks']))
+        self.assertEqual(capture['descendant_quiescence'],'UNKNOWN')
+
+    def test_independent_vectors_and_deterministic_history(self):
+        self.run_case('codec_vectors')
+
+    def test_malformed_wire_keeps_ordered_causes(self):
+        self.run_case('codec_malformed')
+
+    def test_exact_and_one_byte_overflow_boundaries(self):
+        self.run_case('codec_overflow')
+
+
+def d23_finalizer_source_v1(initial, deferred, codec, main, caller):
+    import hashlib
+    import json
+
+    def digest(text):
+        return hashlib.sha256(text.encode('ascii')).hexdigest()
+
+    def once(text, before, after):
+        if text.count(before) != 1:
+            raise RuntimeError('d23_finalizer_source_site')
+        return text.replace(before, after)
+
+    factory = caller.CD_FACTORY_SOURCE
+    if (len(factory), digest(factory)) != (
+            13073, '997579f8ffcc50d6e05ae859dd9164b1dc08ce5a71e82a1d8070633c3cdf3677'):
+        raise RuntimeError('d23_factory_source_binding')
+    wrapper_prefix = 'function(gate2Resume,nodeRepl){\n'
+    wrapper_suffix = '\n}'
+    header = """const g2=globalThis.gate2Resume,g2publisher=globalThis.nodeRepl;
+if(!g2||g2.writer_installed||g2.now()>=g2.end_ms)throw Error('writer_install');
+g2.writer_installed=true;
+const g2intrinsic=Function.prototype.toString;
+const g2hd=Object.getOwnPropertyDescriptor(g2,'_gate2CreateHash');
+if(!g2hd||typeof g2hd.value!=='function'||g2hd.writable!==false||g2hd.configurable!==false||g2hd.enumerable!==false)throw Error('writer_install');
+const g2h=g2hd.value;
+const {spawn:g2s}=await import('node:child_process');
+if(g2.now()>=g2.end_ms)throw Error('writer_install');
+const {brotliDecompressSync:g2d}=await import('node:zlib');
+if(g2.now()>=g2.end_ms)throw Error('writer_install');
+"""
+    validators = once(main.NODE_WRITER_VALIDATORS,
+                      'g2.selectedView=text=>{', 'g2.expandedSelectedView=text=>{')
+    validators = once(validators, 'text.length<=12288', 'text.length<=32768')
+    selected = """g2.selectedView=(text,guard)=>{
+ const expanded=gate2WireDecode(text,'gate2-selected-lz77-v1',g2.hash,gate2Canonical,guard);
+ return guard.phase(()=>g2.expandedSelectedView(expanded.text));
+};
+"""
+    finish = once(main.NODE_FINISH_BODY,
+                  'g2.selectedView(selected);let b=Buffer.from(selected,\'ascii\'),x=g2.selected={selected_base64:b.toString(\'base64\'),size_bytes:b.length,sha256:g2.hash(b)};',
+                  "const guard=gate2WireBudget(()=>g2.now(),'selected_wire_deadline',g2.end_ms);"
+                  "g2.selectedView(selected,guard);"
+                  "const x=guard.phase(()=>{const b=Buffer.from(selected,'ascii');return g2.selected={selected_base64:b.toString('base64'),size_bytes:b.length,sha256:g2.hash(b)};});")
+    finish = once(finish, ' let sent=false,s=g2.adopt(',
+                  " if(g2.now()>=g2.end_ms)throw Error('writer_state');\n let sent=false,s=g2.adopt(")
+    python = (json.dumps(main.NODE_WRITER_HEAD, ensure_ascii=True, separators=(',', ':'))
+              + '+g2.python_common+'
+              + json.dumps(main.NODE_WRITER_TAIL, ensure_ascii=True, separators=(',', ':')))
+    body = (header + main.ROOT_ENCODER + '\n' + codec + '\n' + deferred + '\n'
+            + validators + '\n' + selected + '\n' + 'g2.writer=' + python + ';\n'
+            + 'g2.expected_initial_sha256=' + json.dumps(digest(initial)) + ';\n'
+            + finish)
+    wrapper = 'const g2factory=' + wrapper_prefix + factory + wrapper_suffix + ';\n'
+    authenticate = (
+        "if(g2.now()>=g2.end_ms)throw Error('cd_factory_late');\n"
+        "if(globalThis.gate2Resume!==g2||globalThis.nodeRepl!==g2publisher)throw Error('cd_factory_objects');\n"
+        "const g2source=g2intrinsic.call(g2factory);\n"
+        "if(typeof g2source!=='string'||g2source.length!==" + str(len(wrapper_prefix) + len(factory) + len(wrapper_suffix))
+        + "||!g2source.startsWith(" + json.dumps(wrapper_prefix)
+        + ")||!g2source.endsWith(" + json.dumps(wrapper_suffix)
+        + ")||g2.hash(g2source.slice(" + str(len(wrapper_prefix)) + ','
+        + str(len(wrapper_prefix) + len(factory)) + '))!==' + json.dumps(digest(factory))
+        + ")throw Error('cd_factory_binding');\n"
+        + 'g2.cd_factory_sha256=' + json.dumps(digest(factory)) + ';\n'
+        + 'g2factory(g2,g2publisher);\n'
+        + "if(g2.now()>=g2.end_ms)throw Error('cd_factory_late');\n")
+    finalizer = body + wrapper + authenticate
+    facts = {'initial_size_bytes': len(initial), 'initial_sha256': digest(initial),
+             'finalizer_size_bytes': len(finalizer), 'finalizer_sha256': digest(finalizer),
+             'factory_size_bytes': len(factory), 'factory_sha256': digest(factory),
+             'wrapper_prefix_size_bytes': len(wrapper_prefix), 'wrapper_suffix_size_bytes': len(wrapper_suffix),
+             'python_head_size_bytes': len(main.NODE_WRITER_HEAD),
+             'python_head_sha256': digest(main.NODE_WRITER_HEAD),
+             'python_tail_size_bytes': len(main.NODE_WRITER_TAIL),
+             'python_tail_sha256': digest(main.NODE_WRITER_TAIL),
+             'python_common_size_bytes': len(main.NODE_SHARED_PYTHON),
+             'python_common_sha256': digest(main.NODE_SHARED_PYTHON),
+             'generated_operational_program_execution': False,
+             'generated_full_subject_files_written': False}
+    return finalizer, facts
+
+
+def d23_root_wire_sources_v1(codec):
+    """Return only new direct-static ROOT variants; retain both legacy constants."""
+    assert type(codec) is str and codec and codec.isascii(), 'fixed codec source required'
+    sources = {'orchestrator': ROOT_ORCHESTRATOR, 'receiver': ROOT_RECEIVER}
+    expected = {
+        'orchestrator': (3945, '498aa3c7e6f4a441deb5f8cf08cfff8845a08c6f898967189c941500afd97baf'),
+        'receiver': (11208, 'e2a04079a1ef36a2bad984b1c979201cb07f38c78ac3a4411a1f6e3612e8cd88'),
+    }
+    for role, source in sources.items():
+        assert type(source) is str and source.isascii(), 'legacy ROOT source kind'
+        raw = source.encode('ascii')
+        assert (len(raw), hashlib.sha256(raw).hexdigest()) == expected[role], 'legacy ROOT source binding'
+
+    def replace_once(source, before, after):
+        assert source.count(before) == 1, 'fixed ROOT replacement cardinality'
+        return source.replace(before, after, 1)
+
+    old_run = r"""async function gate2Run(tools,first,poll,timeout){
+ if(typeof first!=='string'||typeof poll!=='string'||!Number.isSafeInteger(timeout)||timeout<1||timeout>32000)throw Error('root_arguments');
+ let frames=[],codes=[],text,observed={calls:[],frames};
+ try{for(let n=0;n<6;n++){
+  let code=n?poll:first,args={code,timeout_ms:timeout};observed.calls.push(args);codes.push(code);let r=await tools.mcp__node_repl__js(args);frames.push(r);
+  gate2Canonical(r,12288);
+  if(r.isError!==false||!Array.isArray(r.content)||r.content.length!==1||r.content[0].type!=='text'||typeof r.content[0].text!=='string')throw Error('provider_unavailable');
+  text=r.content[0].text;
+  if(text.startsWith('[1,'))return {observed,selected:gate2Canonical({call:{tool:'mcp__node_repl__js',timeout_ms:timeout,codes},frames},12288)};
+  if(!text.startsWith('[0,')&&text!=='[0]')throw Error('provider_terminal');
+ }
+ throw Error('setup_frame_limit');}catch(e){return {observed,cause:String(e.message).slice(0,80)};}
+}"""
+    new_run = r"""function gate2RootClock(){
+ let p=globalThis.performance,read,start,last,denied=false;
+ try{if(!p||typeof p.now!=='function')throw Error();read=p.now;start=read.call(p);if(!Number.isFinite(start)||start<0||start>Number.MAX_SAFE_INTEGER-150000)throw Error();last=start;}catch{throw Error('selected_wire_root_deadline');}
+ function now(total=false){
+  if(denied)throw Error('selected_wire_root_deadline');
+  try{let n=read.call(p);if(!Number.isFinite(n)||n<last||n>=start+(total?150000:140000))throw Error();last=n;return n;}catch{denied=true;throw Error('selected_wire_root_deadline');}
+ }
+ now.work_end=start+140000;
+ now.phase=(fn,total=false)=>{now(total);let value,error,failed=false;try{value=fn();}catch(e){error=e;failed=true;}now(total);if(failed)throw error;return value;};
+ return now;
+}
+async function gate2Run(tools,first,poll,timeout,root){
+ if(typeof first!=='string'||typeof poll!=='string'||!Number.isSafeInteger(timeout)||timeout<1||timeout>32000)throw Error('root_arguments');
+ let frames=[],codes=[],text,observed={calls:[],frames};
+ try{for(let n=0;n<6;n++){
+  let code=n?poll:first,args={code,timeout_ms:timeout};observed.calls.push(args);codes.push(code);root();let r=await tools.mcp__node_repl__js(args);frames.push(r);root();
+  root.phase(()=>gate2Canonical(r,12288));
+  if(r.isError!==false||!Array.isArray(r.content)||r.content.length!==1||r.content[0].type!=='text'||typeof r.content[0].text!=='string')throw Error('provider_unavailable');
+  text=r.content[0].text;
+  if(text.startsWith('[1,')){
+   let guard=gate2WireBudget(root,'selected_wire_root_deadline',root.work_end);
+   function original(value){try{return guard.phase(()=>gate2Canonical(value,32768));}catch(e){if(e&&e.message==='canonical_bound')throw Error('selected_wire_input');throw e;}}
+   let selectedText=original({call:{tool:'mcp__node_repl__js',timeout_ms:timeout,codes},frames});
+   let selected=gate2WireEncode(selectedText,'gate2-selected-lz77-v1',gate2SHA256,gate2Canonical,guard);
+   let observedText=original(observed);
+   let observedWire=gate2WireEncode(observedText,'gate2-observed-lz77-v1',gate2SHA256,gate2Canonical,guard);
+   return {observed:observedWire,selected};
+  }
+  if(!text.startsWith('[0,')&&text!=='[0]')throw Error('provider_terminal');
+ }
+ throw Error('setup_frame_limit');}catch(e){return {observed,cause:String(e.message).slice(0,80)};}
+}"""
+    orchestrator = replace_once(sources['orchestrator'], old_run, new_run)
+    orchestrator = replace_once(
+        orchestrator,
+        "  result.setup=await gate2Run(tools,first,'await gate2Resume.poll();',32000);",
+        "  let poll='await gate2Resume.poll();',timeout=32000;if(typeof first!=='string'||typeof poll!=='string'||!Number.isSafeInteger(timeout)||timeout<1||timeout>32000)throw Error('root_arguments');let root=gate2RootClock();result.setup=await gate2Run(tools,first,poll,timeout,root);",
+    )
+    orchestrator = replace_once(
+        orchestrator,
+        "  result.writer_call={code:finalizer+'\\nawait gate2Resume.finish('+JSON.stringify(result.setup.selected)+');',timeout_ms:11000};r=await tools.mcp__node_repl__js(result.writer_call);result.writer=r;let text=delivered(r);",
+        "  root.phase(()=>{result.writer_call={code:finalizer+'\\nawait gate2Resume.finish('+JSON.stringify(result.setup.selected)+');',timeout_ms:11000};});root();r=await tools.mcp__node_repl__js(result.writer_call);result.writer=r;root(true);let text=root.phase(()=>delivered(r),true);",
+    )
+    orchestrator = replace_once(
+        orchestrator,
+        "  result.verification_call={code:'gate2Resume.verifyReturn('+JSON.stringify(text)+');',timeout_ms:1000};r=await tools.mcp__node_repl__js(result.verification_call);result.verification=r;let proof=JSON.parse(delivered(r));",
+        "  root.phase(()=>{result.verification_call={code:'gate2Resume.verifyReturn('+JSON.stringify(text)+');',timeout_ms:1000};},true);root(true);r=await tools.mcp__node_repl__js(result.verification_call);result.verification=r;root(true);let proof=root.phase(()=>JSON.parse(delivered(r)),true);\n  let c=root.phase(()=>{",
+    )
+    orchestrator = replace_once(
+        orchestrator,
+        "c!==null)throw Error('return_context');result.context=c;",
+        "c!==null)throw Error('return_context');return c;},true);root(true);result.context=c;",
+    )
+
+    old_receive = r""" let setup=record.setup;need(keys(setup,'observed,selected')&&keys(setup.observed,'calls,frames')&&typeof setup.selected==='string'&&setup.selected.length<=12288&&gate2SHA256(setup.selected)===context.selected_sha256&&record.selected_sha256===context.selected_sha256,'delivery_selected');
+ let selected=JSON.parse(setup.selected);need(gate2Canonical(selected,12288)===setup.selected&&keys(selected,'call,frames')&&keys(selected.call,'tool,timeout_ms,codes')&&selected.call.tool==='mcp__node_repl__js'&&selected.call.timeout_ms===32000&&Array.isArray(selected.frames)&&selected.frames.length>=1&&selected.frames.length<=6&&Array.isArray(selected.call.codes)&&selected.call.codes.length===selected.frames.length&&selected.call.codes.every(c=>typeof c==='string')&&gate2SHA256(selected.call.codes[0])===context.core_sha256,'delivery_core');
+ need(same(selected.frames,setup.observed.frames)&&same(selected.call.codes.map(code=>({code,timeout_ms:32000})),setup.observed.calls),'delivery_actual_setup_calls');"""
+    new_receive = r""" let setup=record.setup;need(keys(setup,'observed,selected'),'delivery_selected');
+ gate2WireInput(setup.selected);
+ let guard=gate2WireBudget(()=>globalThis.performance.now(),'selected_wire_receive_deadline');
+ let selectedWireSHA=guard.phase(()=>gate2SHA256(setup.selected));
+ need(selectedWireSHA===context.selected_sha256&&record.selected_sha256===context.selected_sha256,'delivery_selected');
+ let recovered=gate2WireDecode(setup.selected,'gate2-selected-lz77-v1',gate2SHA256,gate2Canonical,guard),selected=recovered.value;
+ guard.phase(()=>need(gate2Canonical(selected,32768)===recovered.text&&keys(selected,'call,frames')&&keys(selected.call,'tool,timeout_ms,codes')&&selected.call.tool==='mcp__node_repl__js'&&selected.call.timeout_ms===32000&&Array.isArray(selected.frames)&&selected.frames.length>=1&&selected.frames.length<=6&&Array.isArray(selected.call.codes)&&selected.call.codes.length===selected.frames.length&&selected.call.codes.every(c=>typeof c==='string')&&gate2SHA256(selected.call.codes[0])===context.core_sha256,'delivery_core'));
+ let observed=gate2WireDecode(setup.observed,'gate2-observed-lz77-v1',gate2SHA256,gate2Canonical,guard).value;
+ guard.phase(()=>need(keys(observed,'calls,frames')&&Array.isArray(observed.calls)&&Array.isArray(observed.frames)&&observed.calls.length>=1&&observed.calls.length<=6&&observed.frames.length===observed.calls.length&&observed.calls.every(call=>keys(call,'code,timeout_ms')&&typeof call.code==='string'&&call.code.length>0&&call.timeout_ms===32000),'delivery_observed'));
+ guard.phase(()=>need(same(selected.frames,observed.frames)&&same(selected.call.codes.map(code=>({code,timeout_ms:32000})),observed.calls),'delivery_actual_setup_calls'));
+ return guard.phase(()=>{"""
+    receiver = replace_once(sources['receiver'], old_receive, new_receive)
+    receiver = replace_once(
+        receiver,
+        " return {version:1,context_sha256:contextSHA,record_size_bytes:recordText.length,record_sha256:gate2SHA256(recordText),executor_call_sha256:executor.sha256,max_output_tokens:100000,terminal:'complete_untruncated',tool_reference:toolReference};\n}\nfunction gate2Approve",
+        " return {version:1,context_sha256:contextSHA,record_size_bytes:recordText.length,record_sha256:gate2SHA256(recordText),executor_call_sha256:executor.sha256,max_output_tokens:100000,terminal:'complete_untruncated',tool_reference:toolReference};\n });\n}\nfunction gate2Approve",
+    )
+    return {'orchestrator': orchestrator, 'receiver': receiver}
+
+
+def d23_inert_bundle_v1(deadline):
+    import base64
+    import sys
+    import time
+    from tests import test_accepted_policy_fixture_compiler_gate2_resume_caller_v1 as caller
+
+    def gate():
+        if time.monotonic() >= deadline - 5:
+            raise RuntimeError('d23_construction_deadline')
+
+    def canonical(value):
+        return json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=True,
+                          allow_nan=False).encode('ascii')
+
+    def digest(value):
+        return hashlib.sha256(value).hexdigest()
+
+    gate()
+    initial, historical, parts, source_facts = d22_phase_initial_v1(deadline)
+    compressed = source_facts['compression']
+    if (compressed['parent_observed_completion'] is not True or compressed['causes']
+            or compressed['returncode'] != 0 or compressed['timed_out']
+            or compressed['kill_requested'] or not compressed['reaped']
+            or not compressed['threads_joined']
+            or compressed['started_monotonic'] + compressed['elapsed_seconds']
+               >= compressed['cleanup_deadline']
+            or any(not compressed[name]['eof'] or compressed[name]['overflow']
+                   or compressed[name]['io_error'] is not None
+                   or compressed[name]['unknown_remainder'] for name in ('stdout', 'stderr'))):
+        refusal = RuntimeError('d23_compression_capture_incomplete')
+        refusal.metadata = compressed
+        raise refusal
+    if (len(initial), digest(initial.encode('ascii'))) != (
+            13841, '242f28752079f1d2b50a410d0f2606a3097899b8ca95e2add43068483609cff5'):
+        raise RuntimeError('d23_initial_binding')
+    gate()
+    finalizer, finalizer_facts = d23_finalizer_source_v1(
+        initial, parts['deferred'], D23_WIRE_CODEC, sys.modules[__name__], caller)
+    root_sources = d23_root_wire_sources_v1(D23_WIRE_CODEC)
+    commit = hashlib.sha1(b'controlled-current-review').hexdigest()
+    packet_sha = digest(b'packet')
+    factory_sha = digest(caller.CD_FACTORY_SOURCE.encode('ascii'))
+    profile = {'max_output_tokens': 100000, 'max_record_bytes': 65536}
+    expected = {'code_commit': commit, 'core_sha256': digest(initial.encode('ascii')),
+                'factory_sha256': factory_sha}
+    prefix = ('// @exec: {"yield_time_ms":1,"max_output_tokens":100000}\n'
+              + ROOT_ENCODER + '\n' + ROOT_SHA256 + '\n' + D23_WIRE_CODEC + '\n'
+              + root_sources['orchestrator'] + '\n' + root_sources['receiver']
+              + '\nconst profile=' + canonical(profile).decode('ascii')
+              + ';const record=await gate2Complete(tools,')
+    suffix = (',profile,' + canonical(expected).decode('ascii')
+              + ');text(gate2Export(record,profile));\n')
+    # Factor only the fixed TEST transport. The complete executor below is
+    # independently pinned, and the fixed driver reconstructs exactly these
+    # bytes in RAM for full-chain measurement. Operational wires stay complete.
+    executor = (prefix + json.dumps(initial, ensure_ascii=True, separators=(',', ':'))
+                + ',' + json.dumps(finalizer, ensure_ascii=True, separators=(',', ':')) + suffix)
+    executor_pin = {'size_bytes': len(executor), 'sha256': digest(executor.encode('ascii'))}
+    root = Path(__file__).resolve().parents[1]
+    descriptors = (
+        ('tests/fixtures/accepted_policy_fixture_compiler_component_v1.py', 32732,
+         '329fb13f2c6dcee0872e5a29ec1fd769dc6e57ce92ee1076fef6737f1da86d88',
+         '5a342c2c2efa44aa5add3f91ae94518c143acece'),
+        ('tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py', 32739,
+         '5fd7d2d6ee62ff584d2a4662757ca804a3d3300d30bb966319901870c4c85670',
+         'cc9b6a1b7e6e6ff2f9b750ea67b20cf7213d09b0'))
+    held = []
+    source_rows = []
+    for rel, size, sha, blob in descriptors:
+        gate()
+        with (root / rel).open('rb') as handle:
+            raw = handle.read(32769)
+        gate()
+        if (len(raw), digest(raw), hashlib.sha1(b'blob ' + str(len(raw)).encode()
+                + b'\0' + raw).hexdigest()) != (size, sha, blob):
+            raise RuntimeError('d23_fixture_binding')
+        held.append(base64.b64encode(raw).decode('ascii'))
+        source_rows.append({'size_bytes': size, 'sha256': sha, 'git_blob': blob})
+    fixture = ResumeNodeCaller('runTest')
+    success = fixture.success_output()
+    structured = fixture.failure_output()
+    unicode_failure = fixture.failure_output(unicode=True)
+    forms = [
+        {'id': 'success', 'stdout': success, 'stderr': '', 'success': True},
+        {'id': 'structured_failure', 'stdout': '', 'stderr': structured,
+         'success': False, 'failure': True},
+        {'id': 'unicode_failure', 'stdout': '', 'stderr': unicode_failure,
+         'success': False, 'failure': True},
+        {'id': 'partial_emission', 'stdout': success[:1024], 'stderr': '',
+         'success': False, 'partial': True},
+        {'id': 'unknown_closure', 'stdout': success, 'stderr': '',
+         'success': False, 'unknown': True},
+        {'id': 'setup_refusal', 'stdout': '{}\n', 'stderr': '', 'success': False}]
+    gate()
+    # This is a DECLARED FUTURE CONTROLLED chain model with every field present.
+    # No historical output is filtered or claimed to be a new acquired original.
+    chain = [
+        {'call': {'type': 'custom_tool_call', 'id': 'd23_exec', 'status': 'completed',
+                  'call_id': 'd23_exec_call', 'name': 'exec', 'input': '',
+                  'internal_chat_message_metadata_passthrough': {'turn_id': 'd23_controlled_geometry',
+                                                              'create_time': 1792314000.25}},
+         'result': {'type': 'custom_tool_call_output', 'id': 'd23_exec_output',
+                    'call_id': 'd23_exec_call',
+                    'output': 'Script running with cell ID d23geometry\nWall time 0.0 seconds\nOutput:\n',
+                    'internal_chat_message_metadata_passthrough': {'turn_id': 'd23_controlled_geometry',
+                                                                'create_time': 1792314000.5}}},
+        {'call': {'type': 'function_call', 'id': 'd23_wait', 'name': 'wait',
+                  'arguments': canonical({'cell_id': 'd23geometry', 'max_tokens': 100000,
+                                          'yield_time_ms': 1000}).decode('ascii'),
+                  'call_id': 'd23_wait_call',
+                  'internal_chat_message_metadata_passthrough': {'turn_id': 'd23_controlled_geometry',
+                                                              'create_time': 1792314001.25}},
+         'result': {'type': 'function_call_output', 'id': 'd23_wait_output',
+                    'call_id': 'd23_wait_call',
+                    'output': [{'type': 'input_text',
+                                'text': 'Script completed\nWall time 0.0 seconds\nOutput:\n'},
+                               {'type': 'input_text', 'text': ''}],
+                    'internal_chat_message_metadata_passthrough': {'turn_id': 'd23_controlled_geometry',
+                                                                'create_time': 1792314001.5}}}]
+    # Pure canonical native-format DATA, including the genuine C failure
+    # formatter. No native_main, writer, temporary directory or stage is called.
+    c = importlib.import_module('tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1')
+    native_root = c.RESUME_OWNER_ROOT_V1.as_posix() + '/r1'
+    if len(native_root) != 98:
+        raise RuntimeError('d23_native_model_root')
+    maximum = 2**64 - 1
+    completions = []
+    later = []
+    native_input = canonical({'current': {descriptors[1][0]: source_rows[1]}}).decode('ascii') + '\n'
+    for stage in ('C1', 'C2', 'C3', 'C4', 'C5', 'C6'):
+        gate()
+        previous = None if stage == 'C1' else completions[-1]['descriptor']['sha256']
+        record = c._invocation_record_v1(stage, commit, packet_sha, digest(stage.encode()),
+                                         digest(('accounting-' + stage).encode()), previous)
+        raw = canonical(record)
+        path = native_root + '/outputs/' + stage + '/outer.invocation.original.json'
+        complete = {'descriptor': {'path': path, 'size_bytes': len(raw), 'sha256': digest(raw)},
+                    'write_facts': {'path': path, 'open_completed': True, 'written_bytes': len(raw),
+                                    'write_extent_unknown': False, 'flush_completed': True,
+                                    'fsync_completed': True, 'close_completed': True,
+                                    'directory_persisted': True, 'complete': True,
+                                    'deadline_failed': False, 'failure_causes': []},
+                    'completion_deadline_ns': maximum, 'external_approval': False}
+        args = [commit, '32768', packet_sha,
+                '-' if not completions else ','.join(
+                    str(row['descriptor']['size_bytes']) + ':' + row['descriptor']['sha256']
+                    for row in completions)]
+        completions.append(complete)
+        if stage in ('C1', 'C6'):
+            stdout = c.component.canonical_json_v1(complete).decode('ascii') + '\n'
+            failure = c.native_failure_bytes_v1(c.Gate2Refusal('native_stdout_deadline',
+                {'written_bytes': len(stdout), 'write_extent_unknown': False,
+                 'flush_completed': False})).decode('ascii')
+            if len(stdout.encode('ascii')) > 2048 or len(failure.encode('ascii')) > 768:
+                raise RuntimeError('d23_c_model_pipe_bound')
+            for failed in (False, True):
+                later.append({'id': stage + ('_failure' if failed else '_success'),
+                              'stage': stage, 'args': args, 'stdout': stdout,
+                              'stderr': failure if failed else '', 'failure': failed,
+                              'duration_ms': 150000, 'native_input': native_input})
+    summary = {'stage': 'D', 'receipt_sha256': digest(b'controlled-D-receipt'),
+               'receipt_size_bytes': 20480,
+               'final_measurement': {key: maximum for key in
+                                     ('c_free_bytes', 'ext4_used_bytes', 'project_free_bytes')},
+               'ledger': {'remaining_before': 536870912, 'charge_bytes': 2097152,
+                          'remaining_after': 534773760},
+               'deadline_ns': maximum, 'finished_ns': maximum - 1,
+               'control_bytes': 524288, 'aggregate_bytes': 2097152, 'passed': True,
+               'finalization_complete': True, 'controlled': False, 'external_return_required': True}
+    d_stdout = c.component.canonical_json_v1(summary).decode('ascii') + '\n'
+    d_failure = c.native_failure_bytes_v1(c.Gate2Refusal('native_stdout_deadline',
+        {'written_bytes': len(d_stdout), 'write_extent_unknown': False,
+         'flush_completed': False})).decode('ascii')
+    if len(d_stdout.encode('ascii')) > 768 or len(d_failure.encode('ascii')) > 768:
+        raise RuntimeError('d23_d_model_pipe_bound')
+    d_args = [commit, '32768', packet_sha, ','.join(
+        str(row['descriptor']['size_bytes']) + ':' + row['descriptor']['sha256']
+        for row in completions)]
+    for failed in (False, True):
+        later.append({'id': 'D_failure' if failed else 'D_success', 'stage': 'D',
+                      'args': d_args, 'stdout': d_stdout, 'stderr': d_failure if failed else '',
+                      'failure': failed, 'duration_ms': 10000, 'native_input': native_input})
+    approval_template = {
+        'version': 1, 'kind': 'vast_gate2_external_delivery_approval_v1',
+        'receipt_sha256': None, 'context_sha256': None, 'code_commit': commit,
+        'packet_size_bytes': 32768, 'packet_sha256': packet_sha, 'selected_sha256': None,
+        'core_sha256': expected['core_sha256'], 'factory_sha256': factory_sha,
+        'decision': 'approved_for_C1', 'approval_type': 'delegated_agent_self_approval',
+        'independent_review_reference': 'https://github.com/lordcoudy/VAST/pull/9#issuecomment-6248000252'}
+    approval_reference = 'https://github.com/lordcoudy/VAST/pull/9#issuecomment-' + '9' * 20
+    data = {'initial': initial, 'finalizer': finalizer,
+            'executor_prefix': prefix, 'executor_suffix': suffix, 'executor_pin': executor_pin,
+            'fields': list(NODE_FIELDS), 'pipe_fields': list(NODE_PIPE_FIELDS), 'held': held,
+            'commit': commit, 'packet_sha256': packet_sha, 'factory_sha256': factory_sha,
+            'forms': forms, 'chain': chain, 'later': later,
+            'approval_template': approval_template, 'approval_reference': approval_reference}
+    gate()
+    encoded = canonical(data)
+    facts = {'kind': 'd23_inert_source_construction_metadata_v1',
+             'initial': source_facts, 'finalizer': finalizer_facts, 'executor': executor_pin,
+             'input_data_size_bytes': len(encoded), 'input_data_sha256': digest(encoded),
+             'modeled_setup_form_count': len(forms), 'modeled_later_form_count': len(later),
+             'controlled_synthetic_geometry_only': True,
+             'independent_actual_acquisition_proven': False,
+             'generated_operational_program_execution': False,
+             'generated_full_subject_files_written': False,
+             'behavior_conformance_complete': False, 'physical_acceptance': False}
+    if len(canonical(facts)) > 32768:
+        raise RuntimeError('d23_source_metadata_bound')
+    return encoded, facts
+
+
+D23_GEOMETRY_DRIVER = r"""function d23Geometry(d,report){
+ const z=require('node:zlib'),hash=b=>require('node:crypto').createHash('sha256').update(b).digest('hex'),canon=v=>gate2Canonical(v,262144),ascii=s=>typeof s==='string'&&!/[^\x00-\x7f]/.test(s);
+ const held=d.held.map(s=>Buffer.from(s,'base64'));
+ function bound(id,ok){report.checks.push({id,ok});}
+ function keep(id,text,cap){measure(id,text);bound(id+'_bound',text.length<=cap);}
+ function provider(text,n){return {content:[{type:'text',text}],isError:false,_meta:{actual_ordinal:n,resource:{uri:'controlled:retained'}},resource:{mimeType:'application/json'}};}
+ const start=Number.MAX_SAFE_INTEGER-1500000,work=start+140000,end=start+150000,clock=[start,work,end],poll='await gate2Resume.poll();',ready='1755772592209100\n',ack_ms=149000;
+ const setupInput=Buffer.concat([Buffer.from(canon({remaining_ms:ack_ms,selected_base64:'',sha256:hash(''),size_bytes:0})+'\n'),...held]);
+ function snapshot(id,kind,raw,input,changes={},n=start+130000,ownClock=null,ack=ack_ms,pid=4294967295){
+  let pieces=[],pipes=raw.map((b,i)=>{
+   let encoding=b.every(x=>x<128)?'ascii':'base64',v=b.toString(encoding),compressed=z.brotliCompressSync(b,{maxOutputLength:4096}).toString('base64');
+   check(id+'_pipe'+i+'_inverse',z.brotliDecompressSync(Buffer.from(compressed,'base64'),{maxOutputLength:2113}).equals(b));
+   if(JSON.stringify(['br64',compressed.length,compressed]).length<JSON.stringify([encoding,v.length,v]).length){encoding='br64';v=compressed;}
+   pieces.push(v);let p={bytes:b.length,sha256:hash(b),eof:true,closed:true,error:false,encoding,chars:v.length,remainder_unknown:false};
+   if(changes.partial&&i===0)Object.assign(p,{eof:false,closed:false,error:true,remainder_unknown:true});
+   return d.pipe_fields.map(k=>p[k]);
+  });
+  let f={pid,returncode:0,signal:null,exited:true,closed:true,pipes,causes:[],unknown_closure:false,completed:true,terminal_observed_ms:n,physical_acceptance:false,clock:ownClock,ack_ms:ack,stdin_finished:true,stdin_closed:true,stdin_bytes:input.length,stdin_sha256:hash(input),stdin_extent_unknown:false,source_facts:null};
+  if(changes.failure)Object.assign(f,{returncode:1,completed:false});
+  if(changes.partial)Object.assign(f,{closed:false,causes:['pipe_error'],unknown_closure:true,completed:false});
+  if(changes.unknown)Object.assign(f,{returncode:null,exited:false,unknown_closure:true,completed:false});
+  if(raw[1].length)f.completed=false;
+  return JSON.stringify([kind,...d.fields.map(k=>f[k])])+'\n'+pieces.join('');
+ }
+ function writer(id,selected,remaining,cap,formsCap,ownClock,n){
+  const selectedSHA=hash(selected),header=canon({remaining_ms:remaining,selected_base64:Buffer.from(selected).toString('base64'),sha256:selectedSHA,size_bytes:selected.length})+'\n',input=Buffer.concat([Buffer.from(header),...held]),q=Math.ceil(selected.length/4096)*4096,forms=Math.max(cap,q)+q+8192;
+  const facts={stdin_eof:true,stdin_extent_unknown:false,source_bytes:held.map(b=>b.length),source_sha256:held.map(hash),open_completed:true,written_bytes:selected.length,extent_unknown:false,fsync_completed:true,close_completed:true,allocated_bytes:cap,completed:true,sha256:selectedSHA,unknown_closure:false};
+  let receipt=canon({completed:true,external_terminal_required:true,size_bytes:selected.length,sha256:selectedSHA,write_facts:facts,deadline_ns:0,all_forms_quote_bytes:forms})+'\n';
+  check(id+'_uint64',receipt.split('"deadline_ns":0').length===2);receipt=receipt.replace('"deadline_ns":0','"deadline_ns":18446744073709551615');
+  const raw=Buffer.from('{"ready":true,"schema_version":1}\n'+receipt);
+  return {header,input,raw,text:snapshot(id+'_writer',2,[raw,Buffer.alloc(0)],input,{},n,ownClock,remaining,4294967294),forms,formsOK:forms<=formsCap,selectedSHA};
+ }
+ const executor=d.executor_prefix+JSON.stringify(d.initial)+','+JSON.stringify(d.finalizer)+d.executor_suffix;
+ const marker='const g2factory=function(gate2Resume,nodeRepl){\n',at=d.finalizer.indexOf(marker),factorySize=13073;
+ check('source_bindings',held.length===2&&ascii(executor)&&executor.length===d.executor_pin.size_bytes&&hash(executor)===d.executor_pin.sha256&&at>=0&&d.finalizer.indexOf(marker,at+1)<0&&hash(d.finalizer.slice(at+marker.length,at+marker.length+factorySize))===d.factory_sha256&&d.finalizer.startsWith('\n};',at+marker.length+factorySize));
+ keep('initial_source',d.initial,262144);keep('finalizer_source',d.finalizer,262144);keep('executor_source',executor,262144);
+ function fullChain(id,root){
+  let c=JSON.parse(canon(d.chain)),a=c[0].call,b=c[0].result,w=c[1].call,t=c[1].result;
+  let valid=c.length===2&&a.input===''&&t.output.length===2&&t.output[1].text===''&&a.call_id!==w.call_id&&b.call_id===a.call_id&&t.call_id===w.call_id;
+  const wrapper=/^Script (completed|running with cell ID ([A-Za-z0-9_-]{1,64}))\nWall time [0-9]{1,12}(?:\.[0-9]{1,9})? seconds\nOutput:\n$/,first=wrapper.exec(b.output),last=wrapper.exec(t.output[0].text);
+  valid=valid&&first&&first[2]&&last&&last[1]==='completed'&&b.output.length<=256&&t.output[0].text.length<=256;
+  const wa=JSON.parse(w.arguments);
+  valid=valid&&canon(wa)===w.arguments&&wa.cell_id===first[2]&&wa.max_tokens===100000&&wa.yield_time_ms>=1&&wa.yield_time_ms<=60000;
+  a.input=executor;t.output[1].text=root;
+  check(id+'_chain_join',valid&&t.output.slice(1).map(r=>r.text).join('')===root&&typeof b.output==='string');
+  return {text:canon(c),reference:'functions.exec/'+first[2]};
+ }
+ check('six_setup_forms',d.forms.length===6&&d.forms.filter(x=>x.success===true).length===1);
+ let upstream=null;
+ for(const form of d.forms){
+  const id=form.id;check(id+'_setup',ascii(form.stdout)&&ascii(form.stderr)&&(!form.success||!form.failure&&!form.partial&&!form.unknown&&!form.stderr));
+  const raw=[Buffer.from(form.stdout),Buffer.from(form.stderr),Buffer.from(ready)];
+  check(id+'_provider_pipes',raw[0].length<=2048&&raw[1].length<=2048&&raw[2].length<=32);
+  const terminal=snapshot(id,1,raw,setupInput,form),codes=[d.initial,...Array(5).fill(poll)],frames=codes.map((code,i)=>provider(i===5?terminal:JSON.stringify(i===0?[0,...clock,4294967295,null]:[0,4294967295,null]),i+1));
+  let selected,observed;
+  try{
+   const guard=budget('selected_wire_root_deadline');
+   function original(value){try{return guard.phase(()=>gate2Canonical(value,32768));}catch(e){if(e&&e.message==='canonical_bound')throw Error('selected_wire_input');throw e;}}
+   const selectedOriginal=original({call:{tool:'mcp__node_repl__js',timeout_ms:32000,codes},frames});
+   keep(id+'_selected_original',selectedOriginal,32768);selected=encoded(selectedOriginal,'gate2-selected-lz77-v1',guard);
+   const observedOriginal=original({calls:codes.map(code=>({code,timeout_ms:32000})),frames});
+   keep(id+'_observed_original',observedOriginal,32768);observed=encoded(observedOriginal,'gate2-observed-lz77-v1',guard);
+   keep(id+'_selected_wire',selected,12288);keep(id+'_observed_wire',observed,12288);
+   const receive=budget('selected_wire_receive_deadline');check(id+'_full_roundtrip',decoded(selected,'gate2-selected-lz77-v1',receive).text===selectedOriginal&&decoded(observed,'gate2-observed-lz77-v1',receive).text===observedOriginal);
+  }catch(e){bound(id+'_wire_geometry',false);measure(id+'_wire_refusal',String(e.message));continue;}
+  const w=writer(id,selected,19000,12288,32768,clock,start+131000);
+  keep(id+'_ack',w.header,24576);keep(id+'_writer_stdout',w.raw.toString('ascii'),2112);
+  bound(id+'_writer_input_bound',w.input.length<=90112);bound(id+'_forms_bound',w.formsOK);
+  const context=form.success?['vast.gate2.external-delivery.v1',d.commit,32768,d.packet_sha256,w.selectedSHA,hash(d.initial),d.factory_sha256]:null,verification=JSON.stringify([3,start+132000,end,form.success,true,w.selectedSHA,context]);
+  const record={completed:form.success,setup_success:form.success,retention_complete:true,physical_acceptance:false,output_profile:{max_output_tokens:100000,max_record_bytes:65536},setup:{observed,selected},writer_call:{code:d.finalizer+'\nawait gate2Resume.finish('+JSON.stringify(selected)+');',timeout_ms:11000},writer:provider(w.text,7),verification_call:{code:'gate2Resume.verifyReturn('+JSON.stringify(w.text)+');',timeout_ms:1000},verification:provider(verification,8),context,selected_sha256:w.selectedSHA};
+  const root=canon(record)+'\n',chain=fullChain(id,root);keep(id+'_root',root,65536);keep(id+'_chain',chain.text,262144);
+  if(form.success&&root.length<=65536&&chain.text.length<=262144&&w.raw.length<=2112&&w.input.length<=90112&&w.formsOK){
+   const receipt={version:1,context_sha256:hash(canon(context)),record_size_bytes:root.length,record_sha256:hash(root),executor_call_sha256:hash(chain.text),max_output_tokens:100000,terminal:'complete_untruncated',tool_reference:chain.reference},receiptSHA=hash(canon(receipt));
+   const body=JSON.parse(canon(d.approval_template));check('approval_slots',Object.values(body).filter(v=>v===null).length===3&&['receipt_sha256','context_sha256','selected_sha256'].every(k=>body[k]===null));Object.assign(body,{receipt_sha256:receiptSHA,context_sha256:receipt.context_sha256,selected_sha256:w.selectedSHA});
+   const external={receipt,approval:{reference:d.approval_reference,body_sha256:hash(canon(body)+'\n'),receipt_sha256:receiptSHA}};
+   upstream={pins:[w.selectedSHA,hash(d.initial),d.factory_sha256],external,externalSHA:hash(canon(external))};
+  }
+ }
+ check('six_later_forms',d.later.length===6&&new Set(d.later.map(x=>x.stage+':'+x.failure)).size===6);
+ bound('later_measured_upstream',!!upstream);if(!upstream)return;
+ for(const form of d.later){
+  let stage=form.stage,id=form.id,args=form.args,duration=stage==='D'?10000:150000;
+  check(id+'_later',['C1','C6','D'].includes(stage)&&form.duration_ms===duration&&args.length===4&&args[0]===d.commit&&args[1]==='32768'&&args[2]===d.packet_sha256&&ascii(form.native_input));
+  const native=[Buffer.from(form.stdout),Buffer.from(form.stderr)],input=Buffer.from(form.native_input),stageStart=start+(stage==='D'?1200000:Number(stage.slice(1))*160000),stageEnd=stageStart+duration;
+  check(id+'_pipe_limits',native[0].length<=2048&&native[1].length<=768&&native[0].length+native[1].length<=4096);
+  const external=stage==='C1'?upstream.external:upstream.externalSHA,begin='await gate2Resume.cd.begin('+[stage,args,...upstream.pins,external].map(canon).join(',')+');',next='await gate2Resume.cd.poll(1);';
+  const text=snapshot(id,2,native,input,{failure:form.failure},stageEnd-3000,[stageStart,stageEnd],null),codes=[begin,...Array(5).fill(next)],frames=codes.map((code,i)=>provider(i===5?text:JSON.stringify([0,stage,4294967295,null]),i+1));
+  const selected=canon({call:{tool:'mcp__node_repl__js',timeout_ms:32000,codes},frames});keep(id+'_selected',selected,4096);keep(id+'_native_input',form.native_input,32768);
+  if(selected.length>4096)continue;
+  const w=writer(id,selected,2000,4096,16384,[stageStart,stageEnd],stageEnd-2000);keep(id+'_ack',w.header,16384);keep(id+'_writer_stdout',w.raw.toString('ascii'),2112);
+  bound(id+'_writer_forms_bound',w.formsOK);bound(id+'_writer_input_bound',w.input.length<=81920);
+ }
+}
+"""
+
+
+D23_GEOMETRY_STDIO = r"""'use strict';
+let chunks=[],inputBytes=0,failed=false;
+const report={schema_version:1,case:'geometry',node_version:process.versions.node,completed:false,cause:null,checks:[],measurements:[]};
+function check(id,ok){report.checks.push({id,ok:!!ok});if(!ok)throw Error('d23_driver_assertion');}
+function measure(id,text){if(typeof text!=='string'||/[^\x00-\x7f]/.test(text)||text.length>262144)throw Error('d23_driver_assertion');report.measurements.push({id,size_bytes:text.length,sha256:gate2SHA256(text)});}
+function budget(cause='selected_wire_deadline',now=()=>performance.now(),end=Infinity){return gate2WireBudget(now,cause,end);}
+function decoded(text,tag='gate2-selected-lz77-v1',guard=budget()){return gate2WireDecode(text,tag,gate2SHA256,gate2Canonical,guard);}
+function encoded(text,tag='gate2-selected-lz77-v1',guard=budget('selected_wire_root_deadline')){return gate2WireEncode(text,tag,gate2SHA256,gate2Canonical,guard);}
+function finish(cause){if(failed)return;failed=true;report.cause=cause;process.stdout.write(gate2Canonical(report,32767)+'\n');}
+process.stdin.on('error',()=>finish('d23_driver_input'));
+process.stdin.on('data',b=>{if(failed)return;inputBytes+=b.length;if(inputBytes>262144){finish('d23_driver_input');process.stdin.destroy();return;}chunks.push(b);});
+process.stdin.on('end',()=>{if(failed)return;try{
+ const bytes=Buffer.concat(chunks);chunks=[];if(bytes.some(x=>x>127))throw Error('d23_driver_input');
+ const text=bytes.toString('ascii'),request=JSON.parse(text);
+ if(!request||typeof request!=='object'||Array.isArray(request)||Object.keys(request).sort().join()!=='case,data'||request.case!=='geometry'||gate2Canonical(request,262144)!==text)throw Error('d23_driver_input');
+ if(process.versions.node!=='25.2.1')throw Error('d23_node_version');
+ if(typeof gate2WireEncode!=='function'||typeof gate2WireDecode!=='function'||typeof gate2WireBudget!=='function')throw Error('d23_codec_absent');
+ d23Geometry(request.data,report);
+ if(report.checks.every(row=>row.ok)){report.completed=true;finish(null);}else finish('d23_geometry_hold');
+ }catch(e){finish(new Set(['d23_codec_absent','d23_driver_assertion','d23_driver_input','d23_node_version']).has(e.message)?e.message:'d23_driver_error');}});
+"""
+
+
+def d23_geometry_driver_v1():
+    return (ROOT_ENCODER + '\n' + ROOT_SHA256 + '\n' + D23_WIRE_CODEC
+            + '\n' + D23_GEOMETRY_DRIVER + '\n' + D23_GEOMETRY_STDIO)
+
+
+class D23CompleteGeometryTests(unittest.TestCase):
+    def test_complete_form_bounds_preserve_hold(self):
+        # Historical DATA-only observation, not another construction/run or fit proof.
+        # The two original descriptors identify retained external evidence; this
+        # portable test authenticates the embedded metadata, without Temp reads.
+        originals = {
+            'stdout': ('vast-d23-geometry-complete-01-20261018-01.stdout.original.txt',
+                       16587, 'e057f904a2ff342de53066c8755f191629db289ca780b42424099b6e69645560'),
+            'derived': ('vast-d23-geometry-complete-01-20261018-01.derived.json',
+                        3034, 'd5818a23c90fa634355b4b8a358c5f7401509be2c326b644f4d881234038b431')}
+        report_text = r'''{"case":"geometry","cause":"d23_geometry_hold","checks":[{"id":"source_bindings","ok":true},{"id":"initial_source_bound","ok":true},{"id":"finalizer_source_bound","ok":true},{"id":"executor_source_bound","ok":true},{"id":"six_setup_forms","ok":true},{"id":"success_setup","ok":true},{"id":"success_provider_pipes","ok":true},{"id":"success_pipe0_inverse","ok":true},{"id":"success_pipe1_inverse","ok":true},{"id":"success_pipe2_inverse","ok":true},{"id":"success_selected_original_bound","ok":true},{"id":"success_wire_geometry","ok":false},{"id":"structured_failure_setup","ok":true},{"id":"structured_failure_provider_pipes","ok":true},{"id":"structured_failure_pipe0_inverse","ok":true},{"id":"structured_failure_pipe1_inverse","ok":true},{"id":"structured_failure_pipe2_inverse","ok":true},{"id":"structured_failure_selected_original_bound","ok":true},{"id":"structured_failure_wire_geometry","ok":false},{"id":"unicode_failure_setup","ok":true},{"id":"unicode_failure_provider_pipes","ok":true},{"id":"unicode_failure_pipe0_inverse","ok":true},{"id":"unicode_failure_pipe1_inverse","ok":true},{"id":"unicode_failure_pipe2_inverse","ok":true},{"id":"unicode_failure_selected_original_bound","ok":true},{"id":"unicode_failure_wire_geometry","ok":false},{"id":"partial_emission_setup","ok":true},{"id":"partial_emission_provider_pipes","ok":true},{"id":"partial_emission_pipe0_inverse","ok":true},{"id":"partial_emission_pipe1_inverse","ok":true},{"id":"partial_emission_pipe2_inverse","ok":true},{"id":"partial_emission_selected_original_bound","ok":true},{"id":"partial_emission_observed_original_bound","ok":true},{"id":"partial_emission_selected_wire_bound","ok":true},{"id":"partial_emission_observed_wire_bound","ok":true},{"id":"partial_emission_full_roundtrip","ok":true},{"id":"partial_emission_uint64","ok":true},{"id":"partial_emission_writer_pipe0_inverse","ok":true},{"id":"partial_emission_writer_pipe1_inverse","ok":true},{"id":"partial_emission_ack_bound","ok":true},{"id":"partial_emission_writer_stdout_bound","ok":true},{"id":"partial_emission_writer_input_bound","ok":true},{"id":"partial_emission_forms_bound","ok":true},{"id":"partial_emission_chain_join","ok":true},{"id":"partial_emission_root_bound","ok":false},{"id":"partial_emission_chain_bound","ok":true},{"id":"unknown_closure_setup","ok":true},{"id":"unknown_closure_provider_pipes","ok":true},{"id":"unknown_closure_pipe0_inverse","ok":true},{"id":"unknown_closure_pipe1_inverse","ok":true},{"id":"unknown_closure_pipe2_inverse","ok":true},{"id":"unknown_closure_selected_original_bound","ok":true},{"id":"unknown_closure_wire_geometry","ok":false},{"id":"setup_refusal_setup","ok":true},{"id":"setup_refusal_provider_pipes","ok":true},{"id":"setup_refusal_pipe0_inverse","ok":true},{"id":"setup_refusal_pipe1_inverse","ok":true},{"id":"setup_refusal_pipe2_inverse","ok":true},{"id":"setup_refusal_selected_original_bound","ok":true},{"id":"setup_refusal_observed_original_bound","ok":true},{"id":"setup_refusal_selected_wire_bound","ok":true},{"id":"setup_refusal_observed_wire_bound","ok":true},{"id":"setup_refusal_full_roundtrip","ok":true},{"id":"setup_refusal_uint64","ok":true},{"id":"setup_refusal_writer_pipe0_inverse","ok":true},{"id":"setup_refusal_writer_pipe1_inverse","ok":true},{"id":"setup_refusal_ack_bound","ok":true},{"id":"setup_refusal_writer_stdout_bound","ok":true},{"id":"setup_refusal_writer_input_bound","ok":true},{"id":"setup_refusal_forms_bound","ok":true},{"id":"setup_refusal_chain_join","ok":true},{"id":"setup_refusal_root_bound","ok":false},{"id":"setup_refusal_chain_bound","ok":true},{"id":"six_later_forms","ok":true},{"id":"later_measured_upstream","ok":false}],"completed":false,"measurements":[{"id":"initial_source","sha256":"242f28752079f1d2b50a410d0f2606a3097899b8ca95e2add43068483609cff5","size_bytes":13841},{"id":"finalizer_source","sha256":"d189b35ea0689b04f512420efe4a4d0aabd13fc3c5a5d4c3ffff94f5350e05ba","size_bytes":36323},{"id":"executor_source","sha256":"1f83e0fb4755a802dee800e907f89272ff7f37b63c79d167e76427babb96b26d","size_bytes":79021},{"id":"success_selected_original","sha256":"220b19487bd779e29af883f07594aa6a2f3ce445817e7c9cb6e8b5b3fdbcedfe","size_bytes":16747},{"id":"success_wire_refusal","sha256":"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6","size_bytes":19},{"id":"structured_failure_selected_original","sha256":"146339a54bbff1088e7686b32c28d8e0a9d6486b7c0a3896113fe337846d9f6d","size_bytes":16973},{"id":"structured_failure_wire_refusal","sha256":"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6","size_bytes":19},{"id":"unicode_failure_selected_original","sha256":"96bc0da40e2487ca04873f90551579fcd428bbbf0b8f283e795e15d93b7f4fca","size_bytes":16873},{"id":"unicode_failure_wire_refusal","sha256":"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6","size_bytes":19},{"id":"partial_emission_selected_original","sha256":"aa26d15d63d3183995a6527a4119256f2afe336cb62db392f0f37cef15326f61","size_bytes":16466},{"id":"partial_emission_observed_original","sha256":"1fdd77c65ddd76a1d42e6757aa8db67ca21538d3b0b23029e398fcc5098be461","size_bytes":16578},{"id":"partial_emission_selected_wire","sha256":"6313c06656667d6b0217d530939cf5f440bf0b8243f32e969c7340e79a167e9f","size_bytes":12199},{"id":"partial_emission_observed_wire","sha256":"07caed1f4fe194eee19049ea7e372bca8086f9a0004785c009969ebcb574a134","size_bytes":12185},{"id":"partial_emission_ack","sha256":"da51ed393ef69aa92e936e818e05fbe59a83cd3c05adb96025bb46e16779e0df","size_bytes":16407},{"id":"partial_emission_writer_stdout","sha256":"c64a544cafeb10e147177aeba9c21b7eaddaaaf41bb4dff032b9d497be099c96","size_bytes":744},{"id":"partial_emission_root","sha256":"3af449b2f86b83f55847c89dbf7aae83f8d6e33b43620203a1408214a779acf2","size_bytes":77125},{"id":"partial_emission_chain","sha256":"71d787f842bf5e7973860de77ca546c9ee6165720d8975a8b3eaeb15fbef10f7","size_bytes":160722},{"id":"unknown_closure_selected_original","sha256":"aea82127424e8b49efe6a0eda442f871b80f56d86886182322718d7f50f95d50","size_bytes":16751},{"id":"unknown_closure_wire_refusal","sha256":"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6","size_bytes":19},{"id":"setup_refusal_selected_original","sha256":"f1061cb0c6fdbc6d14a9911c7a6701d9e209018e9670e67276fed1d409901d3e","size_bytes":15827},{"id":"setup_refusal_observed_original","sha256":"76244359a759d33ec8bdd32801ad6111eab84a1f9468930deb965d90fbd0c3ec","size_bytes":15939},{"id":"setup_refusal_selected_wire","sha256":"5a2ceecac71f7f425c658f8cbfca21a7047862fd768129719729e8ed23092d99","size_bytes":11535},{"id":"setup_refusal_observed_wire","sha256":"9514e01d9ae965abacdd5fb621972d18a351c776d47c145426569f91be96a934","size_bytes":11521},{"id":"setup_refusal_ack","sha256":"87119479c1ae8beddd57870c2086bdf29ec4e14be698ff4898f2d9f7f3ef4067","size_bytes":15519},{"id":"setup_refusal_writer_stdout","sha256":"101fcaa5c6cacc9209345cada97971fadf114cbfe54a4da2124ae5812b2b0a52","size_bytes":744},{"id":"setup_refusal_root","sha256":"61aa7626e09187dcee77a98ac33e3c836851f06e67f8f5239dce33ec1748b201","size_bytes":75063},{"id":"setup_refusal_chain","sha256":"14c38adfe2b7a09055fa1a956f334ae77ebf4e71d1e85d7153fc7007407e7f70","size_bytes":158548}],"node_version":"25.2.1","schema_version":1}
+'''
+        derived_text = r'''{"channels":{"stderr":{"close_attempted":true,"closed":true,"closure_unknown":false,"eof":true,"error":null,"observed_bytes":0,"overflow":false,"remainder_unknown":false,"secondary":[],"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","size_bytes":0},"stdout":{"close_attempted":true,"closed":true,"closure_unknown":false,"eof":true,"error":null,"observed_bytes":16587,"overflow":false,"remainder_unknown":false,"secondary":[],"sha256":"e057f904a2ff342de53066c8755f191629db289ca780b42424099b6e69645560","size_bytes":16587}},"child_completion_before_cleanup_end":true,"child_completion_before_total_end":true,"child_completion_observed_at":1882888.7578236,"child_total_deadline":1882918.1639225,"child_total_seconds":30,"child_work_seconds":27,"cleanup_deadline":1882891.7578086,"deadline_seconds":300,"descendant_quiescence":"UNKNOWN","elapsed_before_report_write_s":0.6135428000707179,"forced_test_child":false,"generated_operational_program_execution":false,"geometry_fully_measured":false,"geometry_risk_passed":false,"geometry_source_kind":"d23_inert_source_construction_metadata_v1","held_driver_loader_binding_validated":true,"io_failure":false,"kind":"d23_local_inert_geometry_test_parent_observation_v1","ordered_causes":[],"parent_observed_test_transport_complete":true,"protocol_error_type":null,"python":"3.14.7","returncode":1,"selected_class":"D23CompleteGeometryTests","self_report_persistence_or_whole_process_attested":false,"source_binding_policy":"both_held_test_buffers_before_either_compile","source_binding_record_validated":true,"source_execution_reopens_paths":false,"source_pins":[{"path":"tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py","sha256":"29aa4615838ac5fc32fa73db05cbde6d39a028ec9791860325e2d276019a69a6","size_bytes":325957},{"path":"tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py","sha256":"769c0ee4887e44f4cda1e3dbbfc9c908e3ff8d450f5b86ea98b8c018bb2abc09","size_bytes":223289}],"suite_mode":"geometry","test_summary":{"descendant_quiescence":"UNKNOWN","errors":0,"event":"test_summary","expected_failures":0,"expected_metadata_records":2,"failures":1,"generated_operational_program_execution":false,"geometry_case_records":1,"geometry_source_records":1,"issue_events":1,"parent_outcomes":{"failure":1},"selected_class":"D23CompleteGeometryTests","skips":0,"subtest_callbacks":0,"successes":0,"successful":false,"test_streams":{"stderr":{"geometry_case_records":0,"geometry_source_records":0,"metadata_records":0,"observed_bytes":0,"raw_values_retained":false,"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","unexpected_or_unterminated":false},"stdout":{"geometry_case_records":1,"geometry_source_records":1,"metadata_records":2,"observed_bytes":13738,"raw_values_retained":false,"sha256":"0df85d8310461fe84bc89af03c53e2dcc77ed1cf040e415223a1ff3de10b9f72","unexpected_or_unterminated":false}},"tests_run":1,"unexpected_successes":0},"threads_joined":true,"timed_out":false,"work_deadline":1882915.1639225}
+'''
+        for text, size, digest in (
+                (report_text, 7282, '102efcf2b9254c2e17a65aae31d2a92a39ae0d7a2f2aaecb7bb41907729dc0e3'),
+                (derived_text, originals['derived'][1], originals['derived'][2])):
+            raw = text.encode('ascii')
+            self.assertLessEqual(len(raw), 32768)
+            self.assertEqual((len(raw), hashlib.sha256(raw).hexdigest()), (size, digest))
+        report = json.loads(report_text)
+        observation = json.loads(derived_text)
+        expected_measurements = ('initial_source', 'finalizer_source', 'executor_source', 'success_selected_original', 'success_wire_refusal', 'structured_failure_selected_original', 'structured_failure_wire_refusal', 'unicode_failure_selected_original', 'unicode_failure_wire_refusal', 'partial_emission_selected_original', 'partial_emission_observed_original', 'partial_emission_selected_wire', 'partial_emission_observed_wire', 'partial_emission_ack', 'partial_emission_writer_stdout', 'partial_emission_root', 'partial_emission_chain', 'unknown_closure_selected_original', 'unknown_closure_wire_refusal', 'setup_refusal_selected_original', 'setup_refusal_observed_original', 'setup_refusal_selected_wire', 'setup_refusal_observed_wire', 'setup_refusal_ack', 'setup_refusal_writer_stdout', 'setup_refusal_root', 'setup_refusal_chain')
+        expected_checks = ('source_bindings', 'initial_source_bound', 'finalizer_source_bound', 'executor_source_bound', 'six_setup_forms', 'success_setup', 'success_provider_pipes', 'success_pipe0_inverse', 'success_pipe1_inverse', 'success_pipe2_inverse', 'success_selected_original_bound', 'success_wire_geometry', 'structured_failure_setup', 'structured_failure_provider_pipes', 'structured_failure_pipe0_inverse', 'structured_failure_pipe1_inverse', 'structured_failure_pipe2_inverse', 'structured_failure_selected_original_bound', 'structured_failure_wire_geometry', 'unicode_failure_setup', 'unicode_failure_provider_pipes', 'unicode_failure_pipe0_inverse', 'unicode_failure_pipe1_inverse', 'unicode_failure_pipe2_inverse', 'unicode_failure_selected_original_bound', 'unicode_failure_wire_geometry', 'partial_emission_setup', 'partial_emission_provider_pipes', 'partial_emission_pipe0_inverse', 'partial_emission_pipe1_inverse', 'partial_emission_pipe2_inverse', 'partial_emission_selected_original_bound', 'partial_emission_observed_original_bound', 'partial_emission_selected_wire_bound', 'partial_emission_observed_wire_bound', 'partial_emission_full_roundtrip', 'partial_emission_uint64', 'partial_emission_writer_pipe0_inverse', 'partial_emission_writer_pipe1_inverse', 'partial_emission_ack_bound', 'partial_emission_writer_stdout_bound', 'partial_emission_writer_input_bound', 'partial_emission_forms_bound', 'partial_emission_chain_join', 'partial_emission_root_bound', 'partial_emission_chain_bound', 'unknown_closure_setup', 'unknown_closure_provider_pipes', 'unknown_closure_pipe0_inverse', 'unknown_closure_pipe1_inverse', 'unknown_closure_pipe2_inverse', 'unknown_closure_selected_original_bound', 'unknown_closure_wire_geometry', 'setup_refusal_setup', 'setup_refusal_provider_pipes', 'setup_refusal_pipe0_inverse', 'setup_refusal_pipe1_inverse', 'setup_refusal_pipe2_inverse', 'setup_refusal_selected_original_bound', 'setup_refusal_observed_original_bound', 'setup_refusal_selected_wire_bound', 'setup_refusal_observed_wire_bound', 'setup_refusal_full_roundtrip', 'setup_refusal_uint64', 'setup_refusal_writer_pipe0_inverse', 'setup_refusal_writer_pipe1_inverse', 'setup_refusal_ack_bound', 'setup_refusal_writer_stdout_bound', 'setup_refusal_writer_input_bound', 'setup_refusal_forms_bound', 'setup_refusal_chain_join', 'setup_refusal_root_bound', 'setup_refusal_chain_bound', 'six_later_forms', 'later_measured_upstream')
+
+        def dimensions(document):
+            # Missing/duplicate/changed metadata is refusal, never a smaller
+            # apparently passing collection after unavailable dimensions vanish.
+            if set(document) != {'schema_version', 'case', 'node_version', 'completed',
+                                 'cause', 'checks', 'measurements'}:
+                raise ValueError('report_shape')
+            measures = document['measurements']
+            tests = document['checks']
+            if not isinstance(measures, list) or not isinstance(tests, list):
+                raise ValueError('row_shape')
+            for row in measures:
+                if (not isinstance(row, dict) or set(row) != {'id', 'size_bytes', 'sha256'}
+                        or not isinstance(row['id'], str)
+                        or type(row['size_bytes']) is not int or row['size_bytes'] <= 0
+                        or not isinstance(row['sha256'], str)
+                        or len(row['sha256']) != 64
+                        or any(c not in '0123456789abcdef' for c in row['sha256'])):
+                    raise ValueError('measurement_shape')
+            for row in tests:
+                if (not isinstance(row, dict) or set(row) != {'id', 'ok'}
+                        or not isinstance(row['id'], str) or type(row['ok']) is not bool):
+                    raise ValueError('check_shape')
+            if tuple(row['id'] for row in measures) != expected_measurements:
+                raise ValueError('measurement_dimension')
+            if tuple(row['id'] for row in tests) != expected_checks:
+                raise ValueError('check_dimension')
+            return ({row['id']: row for row in measures},
+                    {row['id']: row['ok'] for row in tests})
+
+        measurements, checks = dimensions(report)
+        self.assertEqual((len(measurements), len(checks)), (27, 75))
+        self.assertEqual((report['schema_version'], report['case'], report['node_version']),
+                         (1, 'geometry', '25.2.1'))
+        self.assertIs(report['completed'], False)
+        self.assertEqual(report['cause'], 'd23_geometry_hold')
+        self.assertIs(observation['geometry_fully_measured'], False)
+        self.assertIs(observation['geometry_risk_passed'], False)
+        self.assertTrue(observation['parent_observed_test_transport_complete'])
+        self.assertEqual(observation['returncode'], 1)
+        self.assertFalse(observation['forced_test_child'])
+        self.assertFalse(observation['timed_out'])
+        self.assertTrue(observation['threads_joined'])
+        self.assertEqual(observation['descendant_quiescence'], 'UNKNOWN')
+        self.assertFalse(observation['generated_operational_program_execution'])
+        self.assertFalse(observation['self_report_persistence_or_whole_process_attested'])
+        self.assertEqual((observation['test_summary']['tests_run'],
+                          observation['test_summary']['failures'],
+                          observation['test_summary']['errors']), (1, 1, 0))
+        self.assertEqual((observation['channels']['stdout']['size_bytes'],
+                          observation['channels']['stdout']['sha256']), originals['stdout'][1:])
+        for channel in observation['channels'].values():
+            self.assertTrue(channel['eof'])
+            self.assertTrue(channel['closed'])
+            self.assertFalse(channel['overflow'])
+            self.assertFalse(channel['closure_unknown'])
+            self.assertFalse(channel['remainder_unknown'])
+
+        # A refusal fingerprint is an observed cause, not a measured wire extent.
+        refused = ('success', 'structured_failure', 'unicode_failure', 'unknown_closure')
+        refusal_sha = '17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6'
+        self.assertEqual(hashlib.sha256(b'selected_wire_bound').hexdigest(), refusal_sha)
+        for form in refused:
+            self.assertEqual(measurements[form + '_wire_refusal'],
+                             {'id': form + '_wire_refusal', 'size_bytes': 19,
+                              'sha256': refusal_sha})
+            self.assertFalse(checks[form + '_wire_geometry'])
+            for suffix in ('selected_wire', 'observed_wire', 'observed_original',
+                           'ack', 'writer_stdout', 'root', 'chain'):
+                self.assertNotIn(form + '_' + suffix, measurements)
+            self.assertLessEqual(measurements[form + '_selected_original']['size_bytes'], 32768)
+
+        # These are the only measured wire/ROOT paths. Their ROOT overruns remain
+        # failures even though both wire forms and the full public chains fit.
+        for form, wire_sizes, root_size, overrun, chain_size in (
+                ('partial_emission', (12199, 12185), 77125, 11589, 160722),
+                ('setup_refusal', (11535, 11521), 75063, 9527, 158548)):
+            self.assertEqual(tuple(measurements[form + '_' + suffix]['size_bytes']
+                                   for suffix in ('selected_wire', 'observed_wire')), wire_sizes)
+            self.assertTrue(all(size <= 12288 for size in wire_sizes))
+            self.assertEqual(measurements[form + '_root']['size_bytes'], root_size)
+            self.assertEqual(root_size - 65536, overrun)
+            self.assertFalse(checks[form + '_root_bound'])
+            self.assertEqual(measurements[form + '_chain']['size_bytes'], chain_size)
+            self.assertLessEqual(chain_size, 262144)
+            self.assertTrue(checks[form + '_chain_bound'])
+            self.assertTrue(checks[form + '_chain_join'])
+        self.assertFalse(checks['later_measured_upstream'])
+        later = ('C1_success', 'C1_failure', 'C6_success', 'C6_failure', 'D_success', 'D_failure')
+        self.assertTrue(checks['six_later_forms'])  # declaration count only
+        for form in later:
+            self.assertFalse(any(name.startswith(form + '_') for name in measurements))
+
+        # Complete geometry requires all original/wire/ROOT/chain dimensions for
+        # six setup forms plus actual selected/native-input dimensions for all
+        # six later alternatives. Deleting negatives cannot manufacture that.
+        required = {'initial_source', 'finalizer_source', 'executor_source'}
+        for form in refused + ('partial_emission', 'setup_refusal'):
+            required.update(form + '_' + suffix for suffix in (
+                'selected_original', 'observed_original', 'selected_wire', 'observed_wire',
+                'ack', 'writer_stdout', 'root', 'chain'))
+        for form in later:
+            required.update(form + '_' + suffix for suffix in ('selected', 'native_input'))
+        fully_measured = required <= set(measurements) and all(
+            ok or name.endswith('_bound') for name, ok in checks.items())
+        risk_passed = fully_measured and all(checks.values()) and report['completed']
+        self.assertFalse(fully_measured)
+        self.assertFalse(risk_passed)
+        self.assertEqual(fully_measured, observation['geometry_fully_measured'])
+        self.assertEqual(risk_passed, observation['geometry_risk_passed'])
+
+        # Meaningful metadata-corruption controls, with no source construction,
+        # subprocess, codec or operational program execution.
+        for dimension in ('partial_emission_root', 'setup_refusal_chain', 'initial_source'):
+            changed = json.loads(report_text)
+            changed['measurements'] = [row for row in changed['measurements']
+                                       if row['id'] != dimension]
+            with self.assertRaisesRegex(ValueError, '^measurement_dimension$'):
+                dimensions(changed)
+        for dimension in ('success_wire_geometry', 'later_measured_upstream'):
+            changed = json.loads(report_text)
+            changed['checks'] = [row for row in changed['checks'] if row['id'] != dimension]
+            with self.assertRaisesRegex(ValueError, '^check_dimension$'):
+                dimensions(changed)
+        trimmed = json.loads(report_text)
+        trimmed['checks'] = [row for row in trimmed['checks'] if row['ok']]
+        self.assertTrue(all(row['ok'] for row in trimmed['checks']))
+        with self.assertRaisesRegex(ValueError, '^check_dimension$'):
+            dimensions(trimmed)
+
+
 if __name__ == '__main__':
     unittest.main()
+
+
+def d24_phase_initial_v1(deadline):
+    """Build one unpooled phase source in RAM; no geometry or behavior acceptance."""
+    import base64
+    import math
+    import time
+    import zlib
+
+    compression = None
+
+    def refuse(cause):
+        error = RuntimeError(cause)
+        error.metadata = compression
+        error.capture = compression
+        raise error
+
+    if type(deadline) not in (int, float):
+        refuse('d24_construction_deadline')
+    try:
+        end = float(deadline)
+    except (OverflowError, ValueError):
+        refuse('d24_construction_deadline')
+    if not math.isfinite(end) or end - time.monotonic() > 300:
+        refuse('d24_construction_deadline')
+
+    def gate():
+        if time.monotonic() >= end - 5:
+            refuse('d24_construction_deadline')
+
+    def replace_once(text, before, after, cause):
+        if text.count(before) != 1:
+            refuse(cause)
+        changed = text.replace(before, after, 1)
+        if changed.count(after) != 1:
+            refuse(cause)
+        return changed
+
+    gate()
+    if (type(D22_PREFIX) is not str or len(D22_PREFIX) != 295 or not D22_PREFIX.isascii()
+            or d22_sha(D22_PREFIX.encode('ascii')) !=
+            'ea63175835e2149d61c71d52696c62033d17b908f76ca0a20cf25e32b18f142b'):
+        refuse('d24_prefix_binding')
+    root = Path(__file__).resolve().parents[1]
+    rows = []
+    fixtures = (
+        ('tests/fixtures/accepted_policy_fixture_compiler_component_v1.py', 32732,
+         '329fb13f2c6dcee0872e5a29ec1fd769dc6e57ce92ee1076fef6737f1da86d88',
+         '5a342c2c2efa44aa5add3f91ae94518c143acece'),
+        ('tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py', 32739,
+         '5fd7d2d6ee62ff584d2a4662757ca804a3d3300d30bb966319901870c4c85670',
+         'cc9b6a1b7e6e6ff2f9b750ea67b20cf7213d09b0'))
+    for name, size, digest, blob in fixtures:
+        gate()
+        with (root / name).open('rb') as handle:
+            held = handle.read(32769)
+        gate()
+        actual_blob = hashlib.sha1(b'blob ' + str(len(held)).encode() + b'\0' + held).hexdigest()
+        if (len(held), d22_sha(held), actual_blob) != (size, digest, blob):
+            refuse('d24_fixture_binding')
+        rows.append(['C:/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/' + name,
+                     {'size_bytes': len(held), 'sha256': d22_sha(held), 'git_blob': actual_blob}])
+    data = {
+        'approval': 'https://github.com/lordcoudy/VAST/pull/9#issuecomment-1234567890',
+        'commit': hashlib.sha1(b'controlled-current-review').hexdigest(),
+        'common': NODE_SHARED_PYTHON, 'fields': list(NODE_FIELDS),
+        'pipe_fields': list(NODE_PIPE_FIELDS),
+        'root': '/home/s-a-balashov/work/vast-fixture-compiler-gate2-465ab7986939c67ae3594344ee3b6266cd2abd7a-01/r1',
+        'setup_head': NODE_SETUP_HEAD, 'setup_tail': NODE_SETUP_TAIL, 'sources': rows}
+    expected_keys = ('approval', 'commit', 'common', 'fields', 'pipe_fields', 'root',
+                     'setup_head', 'setup_tail', 'sources')
+    raw = d22_canonical(data)
+    if (tuple(sorted(data)) != expected_keys or not raw.isascii()
+            or not 0 < len(raw) <= 16384
+            or json.dumps(json.loads(raw), sort_keys=True, separators=(',', ':'),
+                          ensure_ascii=True, allow_nan=False).encode('ascii') != raw):
+        refuse('d24_original_data_binding')
+    raw_digest = d22_sha(raw)
+    gate()
+    plain, _ = d22_build_plain(data)
+    gate()
+    marker = "var {spawn:g2s}=await import('node:child_process');"
+    if (type(plain) is not str or not plain.isascii() or len(D22_PREFIX) != 295
+            or not plain.startswith(D22_PREFIX) or plain.count(marker) != 1):
+        refuse('d24_original_builder_binding')
+    at = plain.index(marker)
+    original_decoder = plain[len(D22_PREFIX):at]
+    baseline_body = plain[at:]
+    try:
+        from tests.test_accepted_policy_fixture_compiler_gate2_resume_caller_v1 import d22_compress_data_v1
+        packed, compression = d22_compress_data_v1(raw, end)
+    except Exception as error:
+        compression = getattr(error, 'metadata', getattr(error, 'capture', None))
+        refuse('d24_compression_refusal')
+    gate()
+    if type(packed) is not bytes or not 0 < len(packed) <= 32768:
+        refuse('d24_compressed_data_binding')
+    try:
+        observed = compression['started_monotonic'] + compression['elapsed_seconds']
+        complete = (
+            type(compression) is dict and compression['parent_observed_completion'] is True
+            and compression['causes'] == [] and type(compression['returncode']) is int
+            and compression['returncode'] == 0 and compression['timed_out'] is False
+            and compression['kill_requested'] is False and compression['reaped'] is True
+            and compression['threads_joined'] is True
+            and compression['stdin_complete'] is True and compression['stdin_closed'] is True
+            and compression['stdin_extent_unknown'] is False
+            and compression['stdin_write_in_flight'] is False
+            and compression['stdin_bytes'] == len(raw)
+            and compression['input_bytes'] == len(raw) and compression['input_sha256'] == raw_digest
+            and compression['packed_bytes'] == len(packed)
+            and compression['packed_sha256'] == d22_sha(packed)
+            and compression['node_version'] == '25.2.1'
+            and type(compression['quality']) is int and compression['quality'] == 11
+            and compression['roundtrip'] is True and compression['data_only'] is True
+            and compression['finished_before_deadline'] is True
+            and compression['child_completion_observed_before_deadline'] is True
+            and compression['caller_deadline'] == end
+            and math.isfinite(observed) and compression['elapsed_seconds'] >= 0
+            and observed < compression['cleanup_deadline']
+            and observed < compression['child_total_deadline'] and observed < end
+            and compression['descendant_quiescence'] == 'UNKNOWN'
+            and all(compression[name]['eof'] is True and compression[name]['closed'] is True
+                    and compression[name]['overflow'] is False
+                    and compression[name]['io_error'] is None
+                    and compression[name]['unknown_remainder'] is False
+                    for name in ('stdout', 'stderr'))
+            and compression['stderr']['retained_bytes'] == 0
+            and compression['stderr_prefix_b64'] == '')
+    except (KeyError, TypeError, ValueError, OverflowError):
+        complete = False
+    if not complete:
+        refuse('d24_compression_capture_incomplete')
+    encoded = base64.b64encode(packed).decode('ascii')
+    zpacked = zlib.compress(raw, 9)
+    previous = base64.b64encode(zpacked).decode('ascii')
+    substitutions = (
+        (json.dumps(previous), json.dumps(encoded)),
+        ('if(g2packed.length!==' + str(len(previous)) + '||',
+         'if(g2packed.length!==' + str(len(encoded)) + '||'),
+        ('if(g2compressed.length!==' + str(len(zpacked)) + ')',
+         'if(g2compressed.length!==' + str(len(packed)) + ')'),
+        ('inflateSync:g2inflate', 'brotliDecompressSync:g2inflate'))
+    decoder = original_decoder
+    for before, after in substitutions:
+        decoder = replace_once(decoder, before, after, 'd24_decoder_source_site')
+    inverse_decoder = decoder
+    for before, after in reversed(substitutions):
+        inverse_decoder = replace_once(inverse_decoder, after, before, 'd24_decoder_inverse_site')
+    if inverse_decoder != original_decoder:
+        refuse('d24_decoder_inverse')
+    if NODE_VALIDATORS.count('__COMMIT__') != 1 or NODE_VALIDATORS.count('__ROOT__') != 1:
+        refuse('d24_validator_placeholder_sites')
+    validators = NODE_VALIDATORS.replace('__COMMIT__', 'g2data.commit', 1).replace('__ROOT__', 'g2data.root', 1)
+    if validators.replace('g2data.commit', '__COMMIT__', 1).replace('g2data.root', '__ROOT__', 1) != NODE_VALIDATORS:
+        refuse('d24_validator_placeholder_inverse')
+    early = "g2.commit=g2data.commit;g2.root=g2data.root;\ng2.need=(v,c)=>{if(!v)throw Error(c);};\n"
+    feature = "g2.need(typeof JSON.rawJSON==='function'&&JSON.parse('1',(k,v,c)=>c?.source)==='1','parse_source_feature');\n"
+    capture = "Object.defineProperty(g2,'_gate2CreateHash',{value:g2h,enumerable:false,writable:false,configurable:false});\n"
+    old_output = 'g2.last_setup=snapshot;g2.setup_success=false;try{g2.setupView(snapshot);g2.setup_success=true;}catch(e){g2.setup_refusal=String(e.message);}'
+    new_output = 'g2.last_setup=snapshot;g2.setup_success=null;'
+    if validators.count(early) != 1 or validators.count(feature) != 1:
+        refuse('d24_phase_definition_sites')
+    deferred = validators.replace(early, '', 1).replace(feature, '', 1)
+    phase_body = replace_once(baseline_body, validators, early + feature + capture,
+                              'd24_phase_source_site')
+    phase_body = replace_once(phase_body, old_output, new_output, 'd24_phase_output_site')
+    inverse_body = replace_once(phase_body, new_output, old_output, 'd24_phase_output_inverse_site')
+    inverse_body = replace_once(inverse_body, early + feature + capture, validators,
+                                'd24_phase_inverse_site')
+    if inverse_body != baseline_body:
+        refuse('d24_phase_inverse')
+    # No separator, pooling, lexical rewriting, shortening or source loader.
+    baseline = D22_PREFIX + decoder + baseline_body
+    initial = D22_PREFIX + decoder + phase_body
+    restored = D22_PREFIX + decoder + inverse_body
+    if restored != baseline or D22_PREFIX + inverse_decoder + inverse_body != plain:
+        refuse('d24_full_inverse_source')
+    gate()
+    escaped = len(d22_canonical(initial))
+    fit = escaped <= 12288
+    facts = {
+        'kind': 'd24_initial_source_only_v1',
+        'source_bytes': len(initial), 'source_sha256': d22_sha(initial.encode('ascii')),
+        'escaped_source_bytes': escaped,
+        'baseline_bytes': len(baseline), 'baseline_sha256': d22_sha(baseline.encode('ascii')),
+        'original_builder_bytes': len(plain), 'original_builder_sha256': d22_sha(plain.encode('ascii')),
+        'baseline_body_bytes': len(baseline_body),
+        'baseline_body_sha256': d22_sha(baseline_body.encode('ascii')),
+        'prefix_bytes': len(D22_PREFIX), 'prefix_sha256': d22_sha(D22_PREFIX.encode('ascii')),
+        'decoder_bytes': len(decoder), 'decoder_sha256': d22_sha(decoder.encode('ascii')),
+        'canonical_data_bytes': len(raw), 'canonical_data_sha256': raw_digest,
+        'compressed_data_bytes': len(packed), 'compressed_data_sha256': d22_sha(packed),
+        'base64_data_bytes': len(encoded), 'base64_data_sha256': d22_sha(encoded.encode('ascii')),
+        'data_fields': len(data), 'strings_field_absent': 'strings' not in data,
+        'deferred_definition_bytes': len(deferred),
+        'deferred_definition_sha256': d22_sha(deferred.encode('ascii')),
+        'exact_decoder_inverse': inverse_decoder == original_decoder,
+        'exact_phase_inverse': inverse_body == baseline_body, 'exact_inverse_source': restored == baseline,
+        'source_contribution_fits': fit, 'source_only_over_cap_by': max(0, escaped - 12288),
+        'complete_geometry_qualified': False, 'behavior_conformance_complete': False,
+        'finalizer_implemented': False, 'generated_operational_program_executed': False,
+        'generated_full_subject_files_written': False,
+        'status': 'UNQUALIFIED_SOURCE_ONLY' if fit else 'HOLD_SOURCE_CONTRIBUTION_OVER_CAP',
+        'task_2_10_complete': False, 'compression': compression}
+    if len(d22_canonical(facts)) > 32768:
+        refuse('d24_metadata_bound')
+    gate()
+    return initial, baseline, {'phase_body': phase_body, 'restored': restored, 'deferred': deferred}, facts
+
+
+def d24_node_codec_v1(codec):
+    """Return the exact reviewed decoder role; ROOT must retain the full codec."""
+    if type(codec) is not str or len(codec) != 5865 or not codec.isascii():
+        raise RuntimeError('d24_codec_source_kind')
+    raw = codec.encode('ascii')
+    if (len(raw), d22_sha(raw)) != (
+            5865, '56708c18c942acfb6e8153971a0013ca79c955e4182efff590ad7ae3a2ba2432'):
+        raise RuntimeError('d24_codec_source_binding')
+    marker = 'function gate2WireEncode(text,tag,sha,canon,guard){'
+    count = codec.count(marker)
+    if count != 1:
+        raise RuntimeError('d24_codec_marker')
+    at = codec.index(marker)
+    prefix, excluded = codec[:at], codec[at:]
+    if ((len(prefix), d22_sha(prefix.encode('ascii'))) != (
+            3370, 'b993f35b4901e9dea83d2cef52434da60d289b6ea32185a0cf7303ec9a4b11d2')
+            or (len(excluded), d22_sha(excluded.encode('ascii'))) != (
+            2495, '9334f515e2fec133093cac0c409031eaae43630e83ffd723e51e0e6911ea4cdd')
+            or prefix + excluded != codec):
+        raise RuntimeError('d24_codec_role_binding')
+    facts = {
+        'kind': 'd24_node_codec_role_v1',
+        'full_codec_bytes': len(raw), 'full_codec_sha256': d22_sha(raw),
+        'node_codec_bytes': len(prefix), 'node_codec_sha256': d22_sha(prefix.encode('ascii')),
+        'excluded_encoder_bytes': len(excluded),
+        'excluded_encoder_sha256': d22_sha(excluded.encode('ascii')),
+        'marker_occurrences': count, 'role_is_exact_prefix': True, 'encoder_excluded': True}
+    return prefix, facts
+
+
+def d24_inert_bundle_v1(deadline):
+    import base64
+    import math
+    import sys
+    import time
+    from tests import test_accepted_policy_fixture_compiler_gate2_resume_caller_v1 as caller
+
+    last = None
+    def gate():
+        nonlocal last
+        now = time.monotonic()
+        if (type(deadline) not in (int, float) or not math.isfinite(deadline)
+                or not math.isfinite(now) or deadline - now > 300
+                or (last is not None and now < last)
+                or now >= deadline - 5):
+            raise RuntimeError('d24_construction_deadline')
+        last = now
+
+    def canonical(value):
+        return json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=True,
+                          allow_nan=False).encode('ascii')
+
+    def digest(value):
+        return hashlib.sha256(value).hexdigest()
+
+    gate()
+    node_codec, role_facts = d24_node_codec_v1(D23_WIRE_CODEC)
+    root = Path(__file__).resolve().parents[1]
+    descriptors = (
+        ('tests/fixtures/accepted_policy_fixture_compiler_component_v1.py', 32732,
+         '329fb13f2c6dcee0872e5a29ec1fd769dc6e57ce92ee1076fef6737f1da86d88',
+         '5a342c2c2efa44aa5add3f91ae94518c143acece'),
+        ('tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py', 32739,
+         '5fd7d2d6ee62ff584d2a4662757ca804a3d3300d30bb966319901870c4c85670',
+         'cc9b6a1b7e6e6ff2f9b750ea67b20cf7213d09b0'))
+    held = []
+    source_rows = []
+    for rel, size, sha, blob in descriptors:
+        gate()
+        with (root / rel).open('rb') as handle:
+            raw = handle.read(32769)
+        gate()
+        if (len(raw), digest(raw), hashlib.sha1(b'blob ' + str(len(raw)).encode()
+                + b'\0' + raw).hexdigest()) != (size, sha, blob):
+            raise RuntimeError('d24_fixture_binding')
+        held.append(base64.b64encode(raw).decode('ascii'))
+        source_rows.append({'size_bytes': size, 'sha256': sha, 'git_blob': blob})
+    gate()
+    initial, baseline, parts, source_facts = d24_phase_initial_v1(deadline)
+    compressed = source_facts['compression']
+    if (compressed['parent_observed_completion'] is not True or compressed['causes']
+            or compressed['returncode'] != 0 or compressed['timed_out']
+            or compressed['kill_requested'] or not compressed['reaped']
+            or not compressed['threads_joined']
+            or compressed['started_monotonic'] + compressed['elapsed_seconds']
+               >= compressed['cleanup_deadline']
+            or any(not compressed[name]['eof'] or compressed[name]['overflow']
+                   or compressed[name]['io_error'] is not None
+                   or compressed[name]['unknown_remainder'] for name in ('stdout', 'stderr'))):
+        refusal = RuntimeError('d24_compression_capture_incomplete')
+        refusal.metadata = compressed
+        raise refusal
+    if (set(source_facts) != set('kind source_bytes source_sha256 escaped_source_bytes baseline_bytes baseline_sha256 original_builder_bytes original_builder_sha256 baseline_body_bytes baseline_body_sha256 prefix_bytes prefix_sha256 decoder_bytes decoder_sha256 canonical_data_bytes canonical_data_sha256 compressed_data_bytes compressed_data_sha256 base64_data_bytes base64_data_sha256 data_fields strings_field_absent deferred_definition_bytes deferred_definition_sha256 exact_decoder_inverse exact_phase_inverse exact_inverse_source source_contribution_fits source_only_over_cap_by complete_geometry_qualified behavior_conformance_complete finalizer_implemented generated_operational_program_executed generated_full_subject_files_written status task_2_10_complete compression'.split())
+            or source_facts['kind'] != 'd24_initial_source_only_v1'
+            or set(role_facts) != set('kind full_codec_bytes full_codec_sha256 node_codec_bytes node_codec_sha256 excluded_encoder_bytes excluded_encoder_sha256 marker_occurrences role_is_exact_prefix encoder_excluded'.split())
+            or set(parts) != {'phase_body', 'restored', 'deferred'}
+            or parts['restored'] != baseline
+            or (len(initial), digest(initial.encode('ascii'))) !=
+               (source_facts['source_bytes'], source_facts['source_sha256'])
+            or (len(baseline), digest(baseline.encode('ascii'))) !=
+               (source_facts['baseline_bytes'], source_facts['baseline_sha256'])
+            or (len(parts['deferred']), digest(parts['deferred'].encode('ascii'))) !=
+               (source_facts['deferred_definition_bytes'], source_facts['deferred_definition_sha256'])
+            or not initial.startswith(D22_PREFIX) or source_facts['data_fields'] != 9
+            or source_facts['strings_field_absent'] is not True
+            or any(source_facts[name] is not True for name in
+                   ('exact_decoder_inverse', 'exact_phase_inverse', 'exact_inverse_source'))):
+        raise RuntimeError('d24_initial_binding')
+    gate()
+    finalizer, finalizer_facts = d23_finalizer_source_v1(
+        initial, parts['deferred'], node_codec, sys.modules[__name__], caller)
+    if (finalizer.count(node_codec) != 1 or D23_WIRE_CODEC in finalizer
+            or 'function gate2WireEncode(text,tag,sha,canon,guard){' in finalizer
+            or finalizer.count(ROOT_ENCODER) != 1):
+        raise RuntimeError('d24_finalizer_codec_role')
+    root_sources = d23_root_wire_sources_v1(D23_WIRE_CODEC)
+    commit = hashlib.sha1(b'controlled-current-review').hexdigest()
+    packet_sha = digest(b'packet')
+    factory_sha = digest(caller.CD_FACTORY_SOURCE.encode('ascii'))
+    profile = {'max_output_tokens': 100000, 'max_record_bytes': 65536}
+    expected = {'code_commit': commit, 'core_sha256': digest(initial.encode('ascii')),
+                'factory_sha256': factory_sha}
+    prefix = ('// @exec: {"yield_time_ms":1,"max_output_tokens":100000}\n'
+              + ROOT_ENCODER + '\n' + ROOT_SHA256 + '\n' + D23_WIRE_CODEC + '\n'
+              + root_sources['orchestrator'] + '\n' + root_sources['receiver']
+              + '\nconst profile=' + canonical(profile).decode('ascii')
+              + ';const record=await gate2Complete(tools,')
+    suffix = (',profile,' + canonical(expected).decode('ascii')
+              + ');text(gate2Export(record,profile));\n')
+    # Factor only the fixed TEST transport. The complete executor below is
+    # independently pinned, and the fixed driver reconstructs exactly these
+    # bytes in RAM for full-chain measurement. Operational wires stay complete.
+    executor = (prefix + json.dumps(initial, ensure_ascii=True, separators=(',', ':'))
+                + ',' + json.dumps(finalizer, ensure_ascii=True, separators=(',', ':')) + suffix)
+    executor_pin = {'size_bytes': len(executor), 'sha256': digest(executor.encode('ascii'))}
+    fixture = ResumeNodeCaller('runTest')
+    success = fixture.success_output()
+    structured = fixture.failure_output()
+    unicode_failure = fixture.failure_output(unicode=True)
+    forms = [
+        {'id': 'success', 'stdout': success, 'stderr': '', 'success': True},
+        {'id': 'structured_failure', 'stdout': '', 'stderr': structured,
+         'success': False, 'failure': True},
+        {'id': 'unicode_failure', 'stdout': '', 'stderr': unicode_failure,
+         'success': False, 'failure': True},
+        {'id': 'partial_emission', 'stdout': success[:1024], 'stderr': '',
+         'success': False, 'partial': True},
+        {'id': 'unknown_closure', 'stdout': success, 'stderr': '',
+         'success': False, 'unknown': True},
+        {'id': 'setup_refusal', 'stdout': '{}\n', 'stderr': '', 'success': False}]
+    gate()
+    # This is a DECLARED FUTURE CONTROLLED chain model with every field present.
+    # No historical output is filtered or claimed to be a new acquired original.
+    chain = [
+        {'call': {'type': 'custom_tool_call', 'id': 'd24_exec', 'status': 'completed',
+                  'call_id': 'd24_exec_call', 'name': 'exec', 'input': '',
+                  'internal_chat_message_metadata_passthrough': {'turn_id': 'd24_controlled_geometry',
+                                                              'create_time': 1792314000.25}},
+         'result': {'type': 'custom_tool_call_output', 'id': 'd24_exec_output',
+                    'call_id': 'd24_exec_call',
+                    'output': 'Script running with cell ID d24geometry\nWall time 0.0 seconds\nOutput:\n',
+                    'internal_chat_message_metadata_passthrough': {'turn_id': 'd24_controlled_geometry',
+                                                                'create_time': 1792314000.5}}},
+        {'call': {'type': 'function_call', 'id': 'd24_wait', 'name': 'wait',
+                  'arguments': canonical({'cell_id': 'd24geometry', 'max_tokens': 100000,
+                                          'yield_time_ms': 1000}).decode('ascii'),
+                  'call_id': 'd24_wait_call',
+                  'internal_chat_message_metadata_passthrough': {'turn_id': 'd24_controlled_geometry',
+                                                              'create_time': 1792314001.25}},
+         'result': {'type': 'function_call_output', 'id': 'd24_wait_output',
+                    'call_id': 'd24_wait_call',
+                    'output': [{'type': 'input_text',
+                                'text': 'Script completed\nWall time 0.0 seconds\nOutput:\n'},
+                               {'type': 'input_text', 'text': ''}],
+                    'internal_chat_message_metadata_passthrough': {'turn_id': 'd24_controlled_geometry',
+                                                                'create_time': 1792314001.5}}}]
+    # Pure canonical native-format DATA, including the genuine C failure
+    # formatter. No native_main, writer, temporary directory or stage is called.
+    c = importlib.import_module('tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1')
+    native_root = c.RESUME_OWNER_ROOT_V1.as_posix() + '/r1'
+    if len(native_root) != 98:
+        raise RuntimeError('d24_native_model_root')
+    maximum = 2**64 - 1
+    completions = []
+    later = []
+    native_input = canonical({'current': {descriptors[1][0]: source_rows[1]}}).decode('ascii') + '\n'
+    for stage in ('C1', 'C2', 'C3', 'C4', 'C5', 'C6'):
+        gate()
+        previous = None if stage == 'C1' else completions[-1]['descriptor']['sha256']
+        record = c._invocation_record_v1(stage, commit, packet_sha, digest(stage.encode()),
+                                         digest(('accounting-' + stage).encode()), previous)
+        raw = canonical(record)
+        path = native_root + '/outputs/' + stage + '/outer.invocation.original.json'
+        complete = {'descriptor': {'path': path, 'size_bytes': len(raw), 'sha256': digest(raw)},
+                    'write_facts': {'path': path, 'open_completed': True, 'written_bytes': len(raw),
+                                    'write_extent_unknown': False, 'flush_completed': True,
+                                    'fsync_completed': True, 'close_completed': True,
+                                    'directory_persisted': True, 'complete': True,
+                                    'deadline_failed': False, 'failure_causes': []},
+                    'completion_deadline_ns': maximum, 'external_approval': False}
+        args = [commit, '32768', packet_sha,
+                '-' if not completions else ','.join(
+                    str(row['descriptor']['size_bytes']) + ':' + row['descriptor']['sha256']
+                    for row in completions)]
+        completions.append(complete)
+        if stage in ('C1', 'C6'):
+            stdout = c.component.canonical_json_v1(complete).decode('ascii') + '\n'
+            failure = c.native_failure_bytes_v1(c.Gate2Refusal('native_stdout_deadline',
+                {'written_bytes': len(stdout), 'write_extent_unknown': False,
+                 'flush_completed': False})).decode('ascii')
+            if len(stdout.encode('ascii')) > 2048 or len(failure.encode('ascii')) > 768:
+                raise RuntimeError('d24_c_model_pipe_bound')
+            for failed in (False, True):
+                later.append({'id': stage + ('_failure' if failed else '_success'),
+                              'stage': stage, 'args': args, 'stdout': stdout,
+                              'stderr': failure if failed else '', 'failure': failed,
+                              'duration_ms': 150000, 'native_input': native_input})
+    summary = {'stage': 'D', 'receipt_sha256': digest(b'controlled-D-receipt'),
+               'receipt_size_bytes': 20480,
+               'final_measurement': {key: maximum for key in
+                                     ('c_free_bytes', 'ext4_used_bytes', 'project_free_bytes')},
+               'ledger': {'remaining_before': 536870912, 'charge_bytes': 2097152,
+                          'remaining_after': 534773760},
+               'deadline_ns': maximum, 'finished_ns': maximum - 1,
+               'control_bytes': 524288, 'aggregate_bytes': 2097152, 'passed': True,
+               'finalization_complete': True, 'controlled': False, 'external_return_required': True}
+    d_stdout = c.component.canonical_json_v1(summary).decode('ascii') + '\n'
+    d_failure = c.native_failure_bytes_v1(c.Gate2Refusal('native_stdout_deadline',
+        {'written_bytes': len(d_stdout), 'write_extent_unknown': False,
+         'flush_completed': False})).decode('ascii')
+    if len(d_stdout.encode('ascii')) > 768 or len(d_failure.encode('ascii')) > 768:
+        raise RuntimeError('d24_d_model_pipe_bound')
+    d_args = [commit, '32768', packet_sha, ','.join(
+        str(row['descriptor']['size_bytes']) + ':' + row['descriptor']['sha256']
+        for row in completions)]
+    for failed in (False, True):
+        later.append({'id': 'D_failure' if failed else 'D_success', 'stage': 'D',
+                      'args': d_args, 'stdout': d_stdout, 'stderr': d_failure if failed else '',
+                      'failure': failed, 'duration_ms': 10000, 'native_input': native_input})
+    approval_template = {
+        'version': 1, 'kind': 'vast_gate2_external_delivery_approval_v1',
+        'receipt_sha256': None, 'context_sha256': None, 'code_commit': commit,
+        'packet_size_bytes': 32768, 'packet_sha256': packet_sha, 'selected_sha256': None,
+        'core_sha256': expected['core_sha256'], 'factory_sha256': factory_sha,
+        'decision': 'approved_for_C1', 'approval_type': 'delegated_agent_self_approval',
+        'independent_review_reference': 'https://github.com/lordcoudy/VAST/pull/9#issuecomment-6249762191'}
+    approval_reference = 'https://github.com/lordcoudy/VAST/pull/9#issuecomment-' + '9' * 20
+    data = {'initial': initial, 'finalizer': finalizer,
+            'executor_prefix': prefix, 'executor_suffix': suffix, 'executor_pin': executor_pin,
+            'fields': list(NODE_FIELDS), 'pipe_fields': list(NODE_PIPE_FIELDS), 'held': held,
+            'commit': commit, 'packet_sha256': packet_sha, 'factory_sha256': factory_sha,
+            'forms': forms, 'chain': chain, 'later': later,
+            'approval_template': approval_template, 'approval_reference': approval_reference}
+    gate()
+    encoded = canonical(data)
+    facts = {'kind': 'd24_inert_source_construction_metadata_v1',
+             'initial': source_facts, 'node_codec': role_facts,
+             'finalizer': finalizer_facts, 'executor': executor_pin,
+             'input_data_size_bytes': len(encoded), 'input_data_sha256': digest(encoded),
+             'modeled_setup_form_count': len(forms), 'modeled_later_form_count': len(later),
+             'controlled_synthetic_geometry_only': True,
+             'independent_actual_acquisition_proven': False,
+             'generated_operational_program_execution': False,
+             'generated_full_subject_files_written': False,
+             'behavior_conformance_complete': False, 'physical_acceptance': False}
+    if len(canonical(facts)) > 32768:
+        raise RuntimeError('d24_source_metadata_bound')
+    return encoded, facts
+
+class D24CompleteGeometryTests(unittest.TestCase):
+    def test_complete_form_bounds_preserve_hold(self):
+        # Fixed metadata from the ONE consumed D24 risk; no source construction.
+        import copy
+        import hashlib
+        import json
+
+        stdout = b'{"both_buffers_verified_before_either_compile":true,"event":"source_bindings","execution_reopens_test_paths":false,"held_driver_loader_bound":true,"held_driver_module":"tests.test_accepted_policy_fixture_compiler_gate2_resume_v1","sources":[{"path":"tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py","sha256":"191ffc23e1b62b2fd8ef0a2ccce8444c59f7fc78f54b269841c9ea8551abf4a6","size_bytes":380856},{"path":"tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py","sha256":"a855e2b749fe891ed23be93b8bd9cbb850bf03dab0be30e2899a3ac3fe578a3b","size_bytes":223288}]}\n{"event":"test_started","test_id":"tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.D24CompleteGeometryTests.test_complete_form_bounds_preserve_hold"}\nD24_GEOMETRY_SOURCE_METADATA {"behavior_conformance_complete":false,"controlled_synthetic_geometry_only":true,"executor":{"sha256":"573c863b02c12eae26293a3b481da6520df3c7ddd31af564c52f0976e59a907e","size_bytes":76788},"finalizer":{"factory_sha256":"997579f8ffcc50d6e05ae859dd9164b1dc08ce5a71e82a1d8070633c3cdf3677","factory_size_bytes":13073,"finalizer_sha256":"6f23bd21e1b955872b3c6a068444775eb967016072b0091b1df2586fb3fbb8fe","finalizer_size_bytes":33828,"generated_full_subject_files_written":false,"generated_operational_program_execution":false,"initial_sha256":"4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d","initial_size_bytes":14162,"python_common_sha256":"f56a723316fd5e1d21b7425320959977703cedf4b82dae3511cb28d6f1c1d0a8","python_common_size_bytes":3674,"python_head_sha256":"3ced26dc51155909cd4cd8fbd441db7145dd0241cd0b2bd4de29a10a6cc3efc7","python_head_size_bytes":314,"python_tail_sha256":"fe7e134bb04da2e1c994c9cd2e788ace8b9003f4f567b65a46b6382fa3d655e3","python_tail_size_bytes":1544,"wrapper_prefix_size_bytes":32,"wrapper_suffix_size_bytes":2},"generated_full_subject_files_written":false,"generated_operational_program_execution":false,"independent_actual_acquisition_proven":false,"initial":{"base64_data_bytes":3156,"base64_data_sha256":"1703bd103a438c34c66fe18d82c5cd035d18262632055ab7428a73e13fd7125e","baseline_body_bytes":12732,"baseline_body_sha256":"c40686a051a53f5b6443c414e45833fd5765b904bac971c8ba6f1eb9d365e613","baseline_bytes":18321,"baseline_sha256":"8e045e64625562cded6903492fbdcf440ddbb9a7f30f20d3774faed53dcd8019","behavior_conformance_complete":false,"canonical_data_bytes":6566,"canonical_data_sha256":"8ca48e37f97d03af660960f75afab79db162e8f8997f39f6c1c5c55dd896c97e","complete_geometry_qualified":false,"compressed_data_bytes":2365,"compressed_data_sha256":"a7caf17aa8d2d5d6beb60880d415e7328947d188623bf5fa0d1ad566e1fd2f2f","compression":{"caller_deadline":1887145.833925,"causes":[],"child_completion_observed_before_deadline":true,"child_total_deadline":1887140.833925,"child_total_limit_seconds":30,"child_work_limit_seconds":27,"cleanup_deadline":1887122.0968221,"cleanup_limit_seconds":3,"command_options":["--max-old-space-size=256","--input-type=commonjs","-e"],"data_only":true,"descendant_quiescence":"UNKNOWN","elapsed_seconds":0.08711199997924268,"environment_keys":["PATH","SystemRoot"],"final_reserve_seconds":5,"finished_before_deadline":true,"input_bytes":6566,"input_sha256":"8ca48e37f97d03af660960f75afab79db162e8f8997f39f6c1c5c55dd896c97e","kill_requested":false,"node_executable":"C:\\\\Program Files\\\\nodejs\\\\node.exe","node_version":"25.2.1","packed_bytes":2365,"packed_sha256":"a7caf17aa8d2d5d6beb60880d415e7328947d188623bf5fa0d1ad566e1fd2f2f","parent_observed_completion":true,"pid":23216,"program_sha256":"1b247b18c586bad5fe381de140410ee63fbe66e770cdbd2a52fe4540d1208c11","quality":11,"reaped":true,"returncode":0,"roundtrip":true,"schema_version":1,"spawned":true,"started_monotonic":1887119.0098538,"stderr":{"closed":true,"eof":true,"io_error":null,"observed_bytes":0,"overflow":false,"prefix_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","retained_bytes":0,"unknown_remainder":false},"stderr_prefix_b64":"","stdin_bytes":6566,"stdin_closed":true,"stdin_complete":true,"stdin_extent_unknown":false,"stdin_write_attempted":true,"stdin_write_in_flight":false,"stdout":{"closed":true,"eof":true,"io_error":null,"observed_bytes":3228,"overflow":false,"prefix_sha256":"2f8a5164f43d19033a72018652e92813d3105fd1cb70fbac569f16b9b1824e8f","retained_bytes":3228,"unknown_remainder":false},"threads_joined":true,"threads_started":3,"timed_out":false,"work_deadline":1887137.833925},"data_fields":9,"decoder_bytes":5294,"decoder_sha256":"4b2260bb177b12668b0a4407711258aa3c1eb1c8d1702b6bd5e089502a399823","deferred_definition_bytes":4172,"deferred_definition_sha256":"dbf54523ecfa1299d7f3dd6392aa1a8f90468112cdd619adcc5466eb8e60e966","escaped_source_bytes":14243,"exact_decoder_inverse":true,"exact_inverse_source":true,"exact_phase_inverse":true,"finalizer_implemented":false,"generated_full_subject_files_written":false,"generated_operational_program_executed":false,"kind":"d24_initial_source_only_v1","original_builder_bytes":18676,"original_builder_sha256":"bcfc55d551057f85aa3cd74f0d15d94e1e0aba932d7f079c18c7c9cbc8ac0dd3","prefix_bytes":295,"prefix_sha256":"ea63175835e2149d61c71d52696c62033d17b908f76ca0a20cf25e32b18f142b","source_bytes":14162,"source_contribution_fits":false,"source_only_over_cap_by":1955,"source_sha256":"4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d","status":"HOLD_SOURCE_CONTRIBUTION_OVER_CAP","strings_field_absent":true,"task_2_10_complete":false},"input_data_sha256":"4e0db3ad33c8149e96f58638a27fffac0569ac609d9c82ce26924c485acb53a2","input_data_size_bytes":186552,"kind":"d24_inert_source_construction_metadata_v1","modeled_later_form_count":6,"modeled_setup_form_count":6,"node_codec":{"encoder_excluded":true,"excluded_encoder_bytes":2495,"excluded_encoder_sha256":"9334f515e2fec133093cac0c409031eaae43630e83ffd723e51e0e6911ea4cdd","full_codec_bytes":5865,"full_codec_sha256":"56708c18c942acfb6e8153971a0013ca79c955e4182efff590ad7ae3a2ba2432","kind":"d24_node_codec_role_v1","marker_occurrences":1,"node_codec_bytes":3370,"node_codec_sha256":"b993f35b4901e9dea83d2cef52434da60d289b6ea32185a0cf7303ec9a4b11d2","role_is_exact_prefix":true},"physical_acceptance":false}\nD24_CASE_METADATA {"capture":{"caller_deadline":1887145.833925,"case":"geometry","case_cause":"d23_geometry_hold","case_completed":false,"causes":[],"checks_count":127,"child_completion_observed_before_deadline":true,"child_total_deadline":1887140.833925,"child_total_limit_seconds":30,"child_work_limit_seconds":27,"cleanup_deadline":1887122.3890891,"cleanup_limit_seconds":3,"command_options":["--max-old-space-size=256","--input-type=commonjs","-e"],"data_bytes":186552,"data_only":true,"data_sha256":"4e0db3ad33c8149e96f58638a27fffac0569ac609d9c82ce26924c485acb53a2","descendant_quiescence":"UNKNOWN","elapsed_seconds":0.1970675999764353,"environment_keys":["PATH","SystemRoot"],"final_reserve_seconds":5,"finished_before_deadline":true,"input_bytes":186579,"input_sha256":"f569970eccf26ba5fb501e580564a57ba97e3a3e933a9d91b0857e35934860ab","kill_requested":false,"measurements_count":51,"node_executable":"C:\\\\Program Files\\\\nodejs\\\\node.exe","node_version":"25.2.1","parent_observed_completion":true,"pid":56716,"program_sha256":"18b005bdbab33dea7787f6f3bb5014e28f925a6905b26ce9372b565d7d5beed6","reaped":true,"report_bytes":12979,"report_sha256":"87220e59ce897335c67142d16d7ea0f640af3f880f212779d866909cfda08ebe","returncode":0,"schema_version":1,"spawned":true,"started_monotonic":1887119.1924061,"stderr":{"closed":true,"eof":true,"io_error":null,"observed_bytes":0,"overflow":false,"prefix_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","retained_bytes":0,"unknown_remainder":false},"stdin_bytes":186579,"stdin_closed":true,"stdin_complete":true,"stdin_extent_unknown":false,"stdin_write_attempted":true,"stdin_write_in_flight":false,"stdout":{"closed":true,"eof":true,"io_error":null,"observed_bytes":12979,"overflow":false,"prefix_sha256":"87220e59ce897335c67142d16d7ea0f640af3f880f212779d866909cfda08ebe","retained_bytes":12979,"unknown_remainder":false},"threads_joined":true,"threads_started":3,"timed_out":false,"work_deadline":1887137.833925},"case":"geometry","report":{"case":"geometry","cause":"d23_geometry_hold","checks":[{"id":"source_bindings","ok":true},{"id":"initial_source_bound","ok":true},{"id":"finalizer_source_bound","ok":true},{"id":"executor_source_bound","ok":true},{"id":"six_setup_forms","ok":true},{"id":"success_setup","ok":true},{"id":"success_provider_pipes","ok":true},{"id":"success_pipe0_inverse","ok":true},{"id":"success_pipe1_inverse","ok":true},{"id":"success_pipe2_inverse","ok":true},{"id":"success_selected_original_bound","ok":true},{"id":"success_observed_original_bound","ok":true},{"id":"success_selected_wire_bound","ok":true},{"id":"success_observed_wire_bound","ok":true},{"id":"success_full_roundtrip","ok":true},{"id":"success_uint64","ok":true},{"id":"success_writer_pipe0_inverse","ok":true},{"id":"success_writer_pipe1_inverse","ok":true},{"id":"success_ack_bound","ok":true},{"id":"success_writer_stdout_bound","ok":true},{"id":"success_writer_input_bound","ok":true},{"id":"success_forms_bound","ok":true},{"id":"success_chain_join","ok":true},{"id":"success_root_bound","ok":false},{"id":"success_chain_bound","ok":true},{"id":"structured_failure_setup","ok":true},{"id":"structured_failure_provider_pipes","ok":true},{"id":"structured_failure_pipe0_inverse","ok":true},{"id":"structured_failure_pipe1_inverse","ok":true},{"id":"structured_failure_pipe2_inverse","ok":true},{"id":"structured_failure_selected_original_bound","ok":true},{"id":"structured_failure_observed_original_bound","ok":true},{"id":"structured_failure_selected_wire_bound","ok":true},{"id":"structured_failure_observed_wire_bound","ok":true},{"id":"structured_failure_full_roundtrip","ok":true},{"id":"structured_failure_uint64","ok":true},{"id":"structured_failure_writer_pipe0_inverse","ok":true},{"id":"structured_failure_writer_pipe1_inverse","ok":true},{"id":"structured_failure_ack_bound","ok":true},{"id":"structured_failure_writer_stdout_bound","ok":true},{"id":"structured_failure_writer_input_bound","ok":true},{"id":"structured_failure_forms_bound","ok":true},{"id":"structured_failure_chain_join","ok":true},{"id":"structured_failure_root_bound","ok":false},{"id":"structured_failure_chain_bound","ok":true},{"id":"unicode_failure_setup","ok":true},{"id":"unicode_failure_provider_pipes","ok":true},{"id":"unicode_failure_pipe0_inverse","ok":true},{"id":"unicode_failure_pipe1_inverse","ok":true},{"id":"unicode_failure_pipe2_inverse","ok":true},{"id":"unicode_failure_selected_original_bound","ok":true},{"id":"unicode_failure_observed_original_bound","ok":true},{"id":"unicode_failure_selected_wire_bound","ok":true},{"id":"unicode_failure_observed_wire_bound","ok":true},{"id":"unicode_failure_full_roundtrip","ok":true},{"id":"unicode_failure_uint64","ok":true},{"id":"unicode_failure_writer_pipe0_inverse","ok":true},{"id":"unicode_failure_writer_pipe1_inverse","ok":true},{"id":"unicode_failure_ack_bound","ok":true},{"id":"unicode_failure_writer_stdout_bound","ok":true},{"id":"unicode_failure_writer_input_bound","ok":true},{"id":"unicode_failure_forms_bound","ok":true},{"id":"unicode_failure_chain_join","ok":true},{"id":"unicode_failure_root_bound","ok":false},{"id":"unicode_failure_chain_bound","ok":true},{"id":"partial_emission_setup","ok":true},{"id":"partial_emission_provider_pipes","ok":true},{"id":"partial_emission_pipe0_inverse","ok":true},{"id":"partial_emission_pipe1_inverse","ok":true},{"id":"partial_emission_pipe2_inverse","ok":true},{"id":"partial_emission_selected_original_bound","ok":true},{"id":"partial_emission_observed_original_bound","ok":true},{"id":"partial_emission_selected_wire_bound","ok":true},{"id":"partial_emission_observed_wire_bound","ok":true},{"id":"partial_emission_full_roundtrip","ok":true},{"id":"partial_emission_uint64","ok":true},{"id":"partial_emission_writer_pipe0_inverse","ok":true},{"id":"partial_emission_writer_pipe1_inverse","ok":true},{"id":"partial_emission_ack_bound","ok":true},{"id":"partial_emission_writer_stdout_bound","ok":true},{"id":"partial_emission_writer_input_bound","ok":true},{"id":"partial_emission_forms_bound","ok":true},{"id":"partial_emission_chain_join","ok":true},{"id":"partial_emission_root_bound","ok":false},{"id":"partial_emission_chain_bound","ok":true},{"id":"unknown_closure_setup","ok":true},{"id":"unknown_closure_provider_pipes","ok":true},{"id":"unknown_closure_pipe0_inverse","ok":true},{"id":"unknown_closure_pipe1_inverse","ok":true},{"id":"unknown_closure_pipe2_inverse","ok":true},{"id":"unknown_closure_selected_original_bound","ok":true},{"id":"unknown_closure_observed_original_bound","ok":true},{"id":"unknown_closure_selected_wire_bound","ok":true},{"id":"unknown_closure_observed_wire_bound","ok":true},{"id":"unknown_closure_full_roundtrip","ok":true},{"id":"unknown_closure_uint64","ok":true},{"id":"unknown_closure_writer_pipe0_inverse","ok":true},{"id":"unknown_closure_writer_pipe1_inverse","ok":true},{"id":"unknown_closure_ack_bound","ok":true},{"id":"unknown_closure_writer_stdout_bound","ok":true},{"id":"unknown_closure_writer_input_bound","ok":true},{"id":"unknown_closure_forms_bound","ok":true},{"id":"unknown_closure_chain_join","ok":true},{"id":"unknown_closure_root_bound","ok":false},{"id":"unknown_closure_chain_bound","ok":true},{"id":"setup_refusal_setup","ok":true},{"id":"setup_refusal_provider_pipes","ok":true},{"id":"setup_refusal_pipe0_inverse","ok":true},{"id":"setup_refusal_pipe1_inverse","ok":true},{"id":"setup_refusal_pipe2_inverse","ok":true},{"id":"setup_refusal_selected_original_bound","ok":true},{"id":"setup_refusal_observed_original_bound","ok":true},{"id":"setup_refusal_selected_wire_bound","ok":true},{"id":"setup_refusal_observed_wire_bound","ok":true},{"id":"setup_refusal_full_roundtrip","ok":true},{"id":"setup_refusal_uint64","ok":true},{"id":"setup_refusal_writer_pipe0_inverse","ok":true},{"id":"setup_refusal_writer_pipe1_inverse","ok":true},{"id":"setup_refusal_ack_bound","ok":true},{"id":"setup_refusal_writer_stdout_bound","ok":true},{"id":"setup_refusal_writer_input_bound","ok":true},{"id":"setup_refusal_forms_bound","ok":true},{"id":"setup_refusal_chain_join","ok":true},{"id":"setup_refusal_root_bound","ok":false},{"id":"setup_refusal_chain_bound","ok":true},{"id":"six_later_forms","ok":true},{"id":"later_measured_upstream","ok":false}],"completed":false,"measurements":[{"id":"initial_source","sha256":"4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d","size_bytes":14162},{"id":"finalizer_source","sha256":"6f23bd21e1b955872b3c6a068444775eb967016072b0091b1df2586fb3fbb8fe","size_bytes":33828},{"id":"executor_source","sha256":"573c863b02c12eae26293a3b481da6520df3c7ddd31af564c52f0976e59a907e","size_bytes":76788},{"id":"success_selected_original","sha256":"46fdb4a08fc1898e57d6c2b942a28aebdebe49b1f4b5bbe11c44177f2cce628e","size_bytes":17067},{"id":"success_observed_original","sha256":"3470343a39d00b427d76423a2a27c700e37bc53e2a5473413ac374bdc2f2090c","size_bytes":17179},{"id":"success_selected_wire","sha256":"c49a4871367dcf9e81097f14d15f167997853b3b75d7ff783f4dd45637dbc9b2","size_bytes":11870},{"id":"success_observed_wire","sha256":"e12be9d1addac230ab0595bf296a6ea908ebf7fa8043040f989f52e56511a6f8","size_bytes":11856},{"id":"success_ack","sha256":"1cb453af91a5a274e601b535d45c611b9c36734ddde7997b8619456d652ea2a4","size_bytes":15967},{"id":"success_writer_stdout","sha256":"dc1bdca335af53a7f268ed9d4c00e4336f1191d098ca275651eab1a104fbdd6a","size_bytes":744},{"id":"success_root","sha256":"11a72490cd284f74b1aacb5c1c73b36110da3ef0656adb869f16f5eda489740b","size_bytes":74200},{"id":"success_chain","sha256":"df1b188ec47b0166e55ce0d003f205fb8d50f7a3da12d9e75a69d5411ac0ee01","size_bytes":155329},{"id":"structured_failure_selected_original","sha256":"e8cf9b26009ff462152eff45d59343793f7ee5216f1e6f00197b6256ec0d310c","size_bytes":17293},{"id":"structured_failure_observed_original","sha256":"f49efc94394c0e3bbd13a717ec6ef594515cda7730434629fd437b9d2de8d220","size_bytes":17405},{"id":"structured_failure_selected_wire","sha256":"6cdcf1f541186faea2360435a90ba233d8871f774f1152b2cb68d979d682edaa","size_bytes":12092},{"id":"structured_failure_observed_wire","sha256":"453c54230f53236bcf39711f34204a3dce706998d07b534f092e0520c3c64345","size_bytes":12078},{"id":"structured_failure_ack","sha256":"7ae3f3cab51190c7d0e227ba6b8e440bcb942e9970526f655ca69f9ba95872ac","size_bytes":16263},{"id":"structured_failure_writer_stdout","sha256":"90f24572d90931a265eea205cd59b089c21c747dbe87488acc2bd04555491c12","size_bytes":744},{"id":"structured_failure_root","sha256":"0af8ad84f4d682aed1f7d98051c0e869ac13ce72cd6713f42d25840c44babb2b","size_bytes":74169},{"id":"structured_failure_chain","sha256":"78d9bf651ec2ae38212f51231633f39fe506e0bd880c6f5bd7b5519e95146123","size_bytes":155262},{"id":"unicode_failure_selected_original","sha256":"84e2bf9ea93cf982623ef86d9eeb398f4e468eb80656efdf57f206541b55d563","size_bytes":17193},{"id":"unicode_failure_observed_original","sha256":"db156b1b0e543fba376793091e583fceec9ba6a84f76d20a11f3feb5fa07e0ae","size_bytes":17305},{"id":"unicode_failure_selected_wire","sha256":"de67812611488cc609b04fba66f030e0184a09dac2c5c16039e400cae784d4b1","size_bytes":11995},{"id":"unicode_failure_observed_wire","sha256":"5bc9ada9ba8167a3be9ae60bab4f04ff8cd1ee9c2663de72bc4e647214dea443","size_bytes":11981},{"id":"unicode_failure_ack","sha256":"cc89912ce97aca8e5a7cb6210c243af9c73e83468f19ee225928660994822374","size_bytes":16135},{"id":"unicode_failure_writer_stdout","sha256":"40d25b7d2c1823b7710e4f1db1d0f94ca41886e705de4f5be3eb83eb3a6030e9","size_bytes":744},{"id":"unicode_failure_root","sha256":"a6c85cfceb75df6f9dfe4eae89e9e6211035626a8ef1097d7cf1eedb7e759d06","size_bytes":73870},{"id":"unicode_failure_chain","sha256":"86f566b5be0bc87cc660e8714160db6fb7617c611f8dc5842983dbbb764f982c","size_bytes":154963},{"id":"partial_emission_selected_original","sha256":"79ea8cf1b2d66bc2431f4175baabd65338946aff50e3b104d64ce986f8087297","size_bytes":16786},{"id":"partial_emission_observed_original","sha256":"dfe2389e27df0708f2c34794efe813f36cc09b926fbbd137db999d930d585982","size_bytes":16898},{"id":"partial_emission_selected_wire","sha256":"7de0157a0c6ed76122db714de018912626358d45b738400864ddcb4f4dc74d91","size_bytes":11606},{"id":"partial_emission_observed_wire","sha256":"e7f228f1a5e76f52ab8f4249eb7e44959419e82af455e907101a666f80cfeb39","size_bytes":11592},{"id":"partial_emission_ack","sha256":"db07518469eb054f4c4623f5ecbd93c222ee16e62408c961974c231790817983","size_bytes":15615},{"id":"partial_emission_writer_stdout","sha256":"2ab4bb41b7c82474b814b252bcef9d238e38982abad243c67a3275218ae15d72","size_bytes":744},{"id":"partial_emission_root","sha256":"13ce100290d08b5af27668f4867aece89c0fcc86e3b0581773f899150339e381","size_bytes":72763},{"id":"partial_emission_chain","sha256":"ff3ca11a527c61d3ee5037b6346191fee694d88c93e6dc678592a3cf19b9691c","size_bytes":153952},{"id":"unknown_closure_selected_original","sha256":"628eaa305921b541a5502e476b5c6d3ad4dbf5d452625a8ca547de7b1e1afff4","size_bytes":17071},{"id":"unknown_closure_observed_original","sha256":"047f56c910c64269216bc489bfcd1cfa04f513fa1d7eaa0551afc1569e26e282","size_bytes":17183},{"id":"unknown_closure_selected_wire","sha256":"b7e3685bdcd4c4bc35571fc14796b9eef9eb94650bee1bd0ed51c9da8b8d70ca","size_bytes":11870},{"id":"unknown_closure_observed_wire","sha256":"a844b12e9335bd43976b7fc409edd3da95e5134fb47b3502f5c677d1f461ec1d","size_bytes":11856},{"id":"unknown_closure_ack","sha256":"9b1afe4026cc4ae3311c09afc56ef7a6a0fa728c6836a7839d9bcb85b2df511e","size_bytes":15967},{"id":"unknown_closure_writer_stdout","sha256":"e6f25fce6536f24bb2a7e8c76242b6ff1a8884cd3247e475f7575a564f4f0dd9","size_bytes":744},{"id":"unknown_closure_root","sha256":"46c7f797a62db4da17ebf2f3a7814a4db2f7fdc2834a6cf93493570a409c3217","size_bytes":73511},{"id":"unknown_closure_chain","sha256":"fe752d7156c0b1d62a4110dd879884625d4ed5d733e407ed0ab4629a72f778b5","size_bytes":154604},{"id":"setup_refusal_selected_original","sha256":"6beffafc4f5629b627f40ace16448fea4ca0e16e57cea746c602759262e53429","size_bytes":16147},{"id":"setup_refusal_observed_original","sha256":"1bd0876ec6ae223539bdb9043a101618d86cc147b3447812d39837787ffc7332","size_bytes":16259},{"id":"setup_refusal_selected_wire","sha256":"932f0c5116ab5391842630c9a87348e459d98493354a7d8599dff828281fd546","size_bytes":10942},{"id":"setup_refusal_observed_wire","sha256":"3c92e549455b60a64306de47abb5d0026f1e7c31f23e7fcf613947c73b91e5b1","size_bytes":10928},{"id":"setup_refusal_ack","sha256":"de5be563d25c1d71ecfdd1f6f8f90812c99c24adf0d71fda292ef51e75ab495b","size_bytes":14731},{"id":"setup_refusal_writer_stdout","sha256":"a7b587987c2aa1d58d447d2e010d8308ad96b394cf2f29edacd57750fb0b93a3","size_bytes":744},{"id":"setup_refusal_root","sha256":"29f36669b77780eee33c4a2b1f3eb4be473f65cf37d0306c91ab7257590707e3","size_bytes":70717},{"id":"setup_refusal_chain","sha256":"d73ceaf67682c38d277355d32af115adbd75f8929f69f7b9ba2b0d9f99c39b86","size_bytes":151794}],"node_version":"25.2.1","schema_version":1}}\n{"error_type":"AssertionError","event":"parent_issue","exception_capture":{"capture":null,"capture_metadata_sha256":"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","capture_metadata_size_bytes":4,"capture_metadata_unavailable":true},"issue_index":1,"message_sha256":"6eb054b641c8926702a6da74e88b8bc8758395cacf8fc96e25d107d6a66015e0","message_size_bytes":8444,"outcome":"failure","subtest_ordinal":null,"test_id":"tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.D24CompleteGeometryTests.test_complete_form_bounds_preserve_hold"}\n{"error_type":"AssertionError","event":"test_terminal","exception_capture":{"capture":null,"capture_metadata_sha256":"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","capture_metadata_size_bytes":4,"capture_metadata_unavailable":true},"issue_counts":{"parent_issue":1,"subtest_issue":0},"message_sha256":"6eb054b641c8926702a6da74e88b8bc8758395cacf8fc96e25d107d6a66015e0","message_size_bytes":8444,"outcome":"failure","subtest_callbacks":0,"test_id":"tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.D24CompleteGeometryTests.test_complete_form_bounds_preserve_hold"}\n{"descendant_quiescence":"UNKNOWN","errors":0,"event":"test_summary","expected_failures":0,"expected_metadata_records":2,"failures":1,"generated_operational_program_execution":false,"geometry_case_records":1,"geometry_source_records":1,"issue_events":1,"parent_outcomes":{"failure":1},"selected_class":"D24CompleteGeometryTests","skips":0,"subtest_callbacks":0,"successes":0,"successful":false,"test_streams":{"stderr":{"geometry_case_records":0,"geometry_source_records":0,"metadata_records":0,"observed_bytes":0,"raw_values_retained":false,"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","unexpected_or_unterminated":false},"stdout":{"geometry_case_records":1,"geometry_source_records":1,"metadata_records":2,"observed_bytes":20417,"raw_values_retained":false,"sha256":"13c811a503a53a6abc201158d882411902f4f0c88e39a5ca56d6ed487a70bd04","unexpected_or_unterminated":false}},"tests_run":1,"unexpected_successes":0}\n'
+        parent_raw = b'{"channels":{"stderr":{"close_attempted":true,"closed":true,"closure_unknown":false,"eof":true,"error":null,"observed_bytes":0,"overflow":false,"remainder_unknown":false,"secondary":[],"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","size_bytes":0},"stdout":{"close_attempted":true,"closed":true,"closure_unknown":false,"eof":true,"error":null,"observed_bytes":23266,"overflow":false,"remainder_unknown":false,"secondary":[],"sha256":"801b55f2bcf8eebb2c394315e978f12dc79fbf30eb04f052c52698fd123854ad","size_bytes":23266}},"child_completion_before_cleanup_end":true,"child_completion_before_total_end":true,"child_completion_observed_at":1887119.4068788,"child_total_deadline":1887148.833925,"child_total_seconds":30,"child_work_seconds":27,"cleanup_deadline":1887122.4068628,"deadline_seconds":300,"descendant_quiescence":"UNKNOWN","elapsed_before_report_write_s":0.5940271001309156,"forced_test_child":false,"generated_operational_program_execution":false,"geometry_fully_measured":false,"geometry_risk_passed":false,"geometry_source_kind":"d24_inert_source_construction_metadata_v1","held_driver_loader_binding_validated":true,"io_failure":false,"kind":"d24_local_inert_geometry_test_parent_observation_v1","ordered_causes":[],"parent_observed_test_transport_complete":true,"protocol_error_type":null,"python":"3.14.7","returncode":1,"selected_class":"D24CompleteGeometryTests","self_report_persistence_or_whole_process_attested":false,"source_binding_policy":"both_held_test_buffers_before_either_compile","source_binding_record_validated":true,"source_execution_reopens_paths":false,"source_pins":[{"path":"tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py","sha256":"191ffc23e1b62b2fd8ef0a2ccce8444c59f7fc78f54b269841c9ea8551abf4a6","size_bytes":380856},{"path":"tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py","sha256":"a855e2b749fe891ed23be93b8bd9cbb850bf03dab0be30e2899a3ac3fe578a3b","size_bytes":223288}],"suite_mode":"geometry","test_summary":{"descendant_quiescence":"UNKNOWN","errors":0,"event":"test_summary","expected_failures":0,"expected_metadata_records":2,"failures":1,"generated_operational_program_execution":false,"geometry_case_records":1,"geometry_source_records":1,"issue_events":1,"parent_outcomes":{"failure":1},"selected_class":"D24CompleteGeometryTests","skips":0,"subtest_callbacks":0,"successes":0,"successful":false,"test_streams":{"stderr":{"geometry_case_records":0,"geometry_source_records":0,"metadata_records":0,"observed_bytes":0,"raw_values_retained":false,"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","unexpected_or_unterminated":false},"stdout":{"geometry_case_records":1,"geometry_source_records":1,"metadata_records":2,"observed_bytes":20417,"raw_values_retained":false,"sha256":"13c811a503a53a6abc201158d882411902f4f0c88e39a5ca56d6ed487a70bd04","unexpected_or_unterminated":false}},"tests_run":1,"unexpected_successes":0},"threads_joined":true,"timed_out":false,"work_deadline":1887145.833925}\n'
+        self.assertEqual((len(stdout), hashlib.sha256(stdout).hexdigest()),
+                         (23266, '801b55f2bcf8eebb2c394315e978f12dc79fbf30eb04f052c52698fd123854ad'))
+        self.assertEqual((len(parent_raw), hashlib.sha256(parent_raw).hexdigest()),
+                         (3032, '4d0c0d73a7dd4a1b7bee0306e0c08dbf84ae1076cee0e5d61a7361bf0fa9c61f'))
+        self.assertTrue(stdout.endswith(b'\n'))
+        self.assertTrue(parent_raw.endswith(b'\n'))
+        lines = stdout.splitlines()
+        cases = [json.loads(line[len(b'D24_CASE_METADATA '):]) for line in lines
+                 if line.startswith(b'D24_CASE_METADATA ')]
+        sources = [json.loads(line[len(b'D24_GEOMETRY_SOURCE_METADATA '):]) for line in lines
+                   if line.startswith(b'D24_GEOMETRY_SOURCE_METADATA ')]
+        self.assertEqual((len(cases), len(sources)), (1, 1))
+        case, source, parent = cases[0], sources[0], json.loads(parent_raw)
+        report, capture = case['report'], case['capture']
+        report_raw = (json.dumps(report, sort_keys=True, separators=(',', ':')) + '\n').encode('ascii')
+        self.assertEqual((len(report_raw), hashlib.sha256(report_raw).hexdigest()),
+                         (12979, '87220e59ce897335c67142d16d7ea0f640af3f880f212779d866909cfda08ebe'))
+        self.assertEqual(set(report), {'schema_version', 'case', 'node_version',
+                                      'completed', 'cause', 'checks', 'measurements'})
+        self.assertEqual((report['schema_version'], report['case'], report['node_version']),
+                         (1, 'geometry', '25.2.1'))
+        self.assertIs(report['completed'], False)
+        self.assertEqual(report['cause'], 'd23_geometry_hold')
+        self.assertEqual(source['kind'], 'd24_inert_source_construction_metadata_v1')
+        self.assertEqual(source['modeled_setup_form_count'], 6)
+        self.assertEqual(source['modeled_later_form_count'], 6)
+        for name in ('generated_operational_program_execution',
+                     'generated_full_subject_files_written', 'behavior_conformance_complete',
+                     'independent_actual_acquisition_proven', 'physical_acceptance'):
+            self.assertIs(source[name], False)
+        setup_forms = ('success', 'structured_failure', 'unicode_failure', 'partial_emission',
+                       'unknown_closure', 'setup_refusal')
+        later_forms = ('C1_success', 'C1_failure', 'C6_success', 'C6_failure', 'D_success', 'D_failure')
+        roots = dict(zip(setup_forms, (74200, 74169, 73870, 72763, 73511, 70717)))
+        expected_checks = {'source_bindings', 'initial_source_bound', 'finalizer_source_bound',
+                           'executor_source_bound', 'six_setup_forms', 'six_later_forms',
+                           'later_measured_upstream'}
+        caps = {name: 262144 for name in ('initial_source', 'finalizer_source', 'executor_source')}
+        for form in setup_forms:
+            expected_checks.update(form + suffix for suffix in (
+                '_setup', '_provider_pipes', '_pipe0_inverse', '_pipe1_inverse', '_pipe2_inverse',
+                '_selected_original_bound', '_observed_original_bound', '_selected_wire_bound',
+                '_observed_wire_bound', '_full_roundtrip', '_uint64',
+                '_writer_pipe0_inverse', '_writer_pipe1_inverse', '_ack_bound',
+                '_writer_stdout_bound', '_writer_input_bound', '_forms_bound', '_chain_join',
+                '_root_bound', '_chain_bound'))
+            for suffix, cap in (('selected_original', 32768), ('observed_original', 32768),
+                                ('selected_wire', 12288), ('observed_wire', 12288),
+                                ('ack', 24576), ('writer_stdout', 2112),
+                                ('root', 65536), ('chain', 262144)):
+                caps[form + '_' + suffix] = cap
+        false_ids = {form + '_root_bound' for form in setup_forms} | {'later_measured_upstream'}
+
+        def retained_dimensions(value):
+            checks = {row['id']: row['ok'] for row in value['checks']}
+            measures = {row['id']: row for row in value['measurements']}
+            self.assertEqual((len(value['checks']), len(checks)), (127, 127))
+            self.assertEqual((len(value['measurements']), len(measures)), (51, 51))
+            self.assertEqual(set(checks), expected_checks)
+            self.assertEqual(set(measures), set(caps))
+            self.assertEqual({name for name, ok in checks.items() if not ok}, false_ids)
+            for row in value['checks']:
+                self.assertEqual(set(row), {'id', 'ok'})
+                self.assertIs(type(row['ok']), bool)
+            for name, row in measures.items():
+                self.assertEqual(set(row), {'id', 'size_bytes', 'sha256'})
+                self.assertIs(type(row['size_bytes']), int)
+                self.assertGreater(row['size_bytes'], 0)
+                self.assertRegex(row['sha256'], r'^[0-9a-f]{64}$')
+                self.assertIs(checks[name + '_bound'], row['size_bytes'] <= caps[name])
+            for form in setup_forms:
+                self.assertEqual(measures[form + '_root']['size_bytes'], roots[form])
+                self.assertGreater(measures[form + '_root']['size_bytes'] - 65536, 0)
+                self.assertLessEqual(measures[form + '_selected_wire']['size_bytes'], 12288)
+                self.assertLessEqual(measures[form + '_observed_wire']['size_bytes'], 12288)
+                rounded = ((measures[form + '_selected_wire']['size_bytes'] + 4095) // 4096) * 4096
+                self.assertIs(checks[form + '_forms_bound'], max(12288, rounded) + rounded + 8192 <= 32768)
+                self.assertIs(checks[form + '_writer_input_bound'], measures[form + '_ack']['size_bytes'] + 65471 <= 90112)
+            # These unavailable dimensions cannot be counted as zero or projected success.
+            self.assertNotIn('approval_slots', checks)
+            for form in later_forms:
+                self.assertFalse(any(name.startswith(form + '_') for name in measures))
+                self.assertFalse(any(name.startswith(form + '_') for name in checks))
+            return checks, measures
+
+        checks, measures = retained_dimensions(report)
+        for dimension in ('success_selected_wire', 'setup_refusal_chain'):
+            missing = copy.deepcopy(report)
+            missing['measurements'] = [row for row in missing['measurements'] if row['id'] != dimension]
+            with self.subTest(missing_dimension=dimension), self.assertRaises(AssertionError):
+                retained_dimensions(missing)
+        missing = copy.deepcopy(report)
+        missing['checks'] = [row for row in missing['checks'] if row['id'] != 'later_measured_upstream']
+        with self.assertRaises(AssertionError):
+            retained_dimensions(missing)
+        for name, size, sha in (
+            ('initial_source', 14162, '4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d'),
+            ('finalizer_source', 33828, '6f23bd21e1b955872b3c6a068444775eb967016072b0091b1df2586fb3fbb8fe'),
+            ('executor_source', 76788, '573c863b02c12eae26293a3b481da6520df3c7ddd31af564c52f0976e59a907e')):
+            self.assertEqual((measures[name]['size_bytes'], measures[name]['sha256']), (size, sha))
+        self.assertEqual((capture['report_bytes'], capture['report_sha256']),
+                         (12979, '87220e59ce897335c67142d16d7ea0f640af3f880f212779d866909cfda08ebe'))
+        self.assertEqual(capture['returncode'], 0)
+        self.assertIs(capture['parent_observed_completion'], True)
+        self.assertIs(capture['case_completed'], False)
+        self.assertEqual(capture['case_cause'], 'd23_geometry_hold')
+        self.assertIs(capture['reaped'], True)
+        self.assertIs(capture['threads_joined'], True)
+        self.assertIs(capture['kill_requested'], False)
+        self.assertIs(capture['timed_out'], False)
+        self.assertEqual(capture['descendant_quiescence'], 'UNKNOWN')
+        self.assertEqual(parent['returncode'], 1)
+        self.assertEqual((parent['test_summary']['tests_run'], parent['test_summary']['failures'],
+                          parent['test_summary']['errors']), (1, 1, 0))
+        self.assertIs(parent['parent_observed_test_transport_complete'], True)
+        self.assertIs(parent['geometry_fully_measured'], False)
+        self.assertIs(parent['geometry_risk_passed'], False)
+        self.assertIs(parent['forced_test_child'], False)
+        self.assertIs(parent['self_report_persistence_or_whole_process_attested'], False)
+        self.assertEqual(parent['descendant_quiescence'], 'UNKNOWN')
+        self.assertIs(parent['threads_joined'], True)
+        self.assertIs(parent['timed_out'], False)
+        self.assertEqual(parent['ordered_causes'], [])
+        self.assertIs(parent['generated_operational_program_execution'], False)
+        for channel, n, sha in (('stdout', 23266, '801b55f2bcf8eebb2c394315e978f12dc79fbf30eb04f052c52698fd123854ad'),
+                                ('stderr', 0, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')):
+            facts = parent['channels'][channel]
+            self.assertEqual((facts['size_bytes'], facts['observed_bytes'], facts['sha256']), (n, n, sha))
+            for name in ('eof', 'closed', 'close_attempted'):
+                self.assertIs(facts[name], True)
+            for name in ('overflow', 'closure_unknown', 'remainder_unknown'):
+                self.assertIs(facts[name], False)
+            self.assertIsNone(facts['error'])
+        self.assertFalse(all(checks.values()))
+        # This metadata regression passing never opens a new fit/phase/admission gate.
+
+
+# Decision25 fixed DATA-only test driver. Codec intentionally absent for RED.
+D25_DATA_DRIVER = r""""use strict";
+let chunks=[],inputBytes=0,finished=false;
+const A='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',S='gate2-selected-lzss-v2',O='gate2-observed-lzss-v2';
+const cases=new Set(['codec_vectors','codec_malformed','codec_overflow']);
+const C={input:'selected_wire_input',shape:'selected_wire_shape',bound:'selected_wire_bound',token:'selected_wire_token',expansion:'selected_wire_expansion',binding:'selected_wire_binding'};
+const report={schema_version:1,case:'codec_vectors',node_version:process.versions.node,completed:false,cause:null,checks:[],measurements:[]};
+function ok(id,ok){if(report.checks.length>=512)throw Error('d25_driver_assertion');report.checks.push({id,ok:!!ok});if(!ok)throw Error('d25_driver_assertion');}
+function measure(id,text){if(report.measurements.length>=128||typeof text!=='string'||text.length>262144||/[^\x00-\x7f]/.test(text))throw Error('d25_driver_assertion');report.measurements.push({id,size_bytes:text.length,sha256:gate2SHA256(text)});}
+function expect(id,fn,cause){let seen=null;try{fn();}catch(e){seen=e.message;}ok(id,seen===cause);}
+function budget(cause='selected_wire_deadline',now=()=>performance.now(),end=Infinity){return gate2WireBudget(now,cause,end);}
+function dec(wire,tag=S,guard=budget()){return gate2WireDecode(wire,tag,gate2SHA256,gate2Canonical,guard);}
+function enc(text,tag=S,guard=budget('selected_wire_root_deadline')){return gate2WireEncode(text,tag,gate2SHA256,gate2Canonical,guard);}
+function wire(payload,text,tag=S,size=text.length,sha=gate2SHA256(text)){return gate2Canonical({encoding:tag,expanded_sha256:sha,expanded_size_bytes:size,payload},262144);}
+function lit(c){let n=A.indexOf(c);return n<0?[1,c.charCodeAt(0)]:[0,n];}
+function lits(text){return Array.from(text,lit);}
+function packetBits(bits){if(bits.length>294912)throw Error('d25_driver_assertion');let b=Buffer.alloc(3+Math.ceil(bits.length/8));b[0]=Math.floor(bits.length/65536);b[1]=Math.floor(bits.length/256)%256;b[2]=bits.length%256;for(let i=0;i<bits.length;i++)b[3+Math.floor(i/8)]+=bits[i]*2**(7-i%8);return b.toString('base64');}
+function tokenBits(tokens){let bits=[];for(let t of tokens){let n=t[0]===0?7:t[0]===1?9:25,v=t[0]===0?t[1]:t[0]===1?256+t[1]:3*2**23+(t[1]-1)*256+t[2]-3;for(let k=n-1;k>=0;k--)bits.push(Math.floor(v/2**k)%2);}return bits;}
+function pack(tokens){return packetBits(tokenBits(tokens));}
+function oracle(text){let tokens=[],at=0;while(at<text.length){let positions=[];if(at+3<=text.length)for(let p=Math.max(0,at-32768);p<at;p++)if(text.slice(p,p+3)===text.slice(at,at+3))positions.push(p);let best=0,d=0;for(let p of positions.slice(-8)){let n=0;while(n<258&&at+n<text.length&&text[p+n]===text[at+n])n++;if(n>=3&&(n>best||n===best&&at-p<d)){best=n;d=at-p;}}if(best>=3){tokens.push([2,d,best]);at+=best;}else tokens.push(lit(text[at++]));}return tokens;}
+function repeated(tokens,n){while(n){let m=Math.min(258,n);if(m<3){for(let i=0;i<m;i++)tokens.push(lit('a'));}else tokens.push([2,1,m]);n-=m;}return tokens;}
+function vectors(){
+for(let i=0;i<64;i++){let text=JSON.stringify(A[i]),p=pack(lits(text));ok('common_'+i,dec(wire(p,text)).text===text&&JSON.parse(enc(text)).payload===p);}
+let others=[];for(let n=32;n<=126;n++)if(!A.includes(String.fromCharCode(n)))others.push(n);ok('other_class_count',others.length===31);
+for(let n of others){let text=JSON.stringify(String.fromCharCode(n)),p=pack(lits(text));ok('other_'+n,dec(wire(p,text)).text===text&&JSON.parse(enc(text)).payload===p);}
+const samples=[['minimum','aaaa'],['maximum','a'.repeat(259)],['overlap','ab'.repeat(130)],['longest','abcXabcYZabcYQabcYZ'],['nearest','abcXabcYabcZ'],['last8','abcLONGer'+Array.from({length:10},(_,i)=>'abc'+i).join('')+'abcLONGer'],['consumed','abcdefgh'.repeat(110)+'abcXYZabcUVWabcXYZ'],['distance4096','ABC'+'Z'.repeat(4093)+'ABC'],['distance4097','ABC'+'Z'.repeat(4094)+'ABC']];
+for(let [id,value] of samples){let text=JSON.stringify(value),w=enc(text),p=pack(oracle(text));ok(id+'_oracle',JSON.parse(w).payload===p);ok(id+'_inverse',dec(w).text===text);ok(id+'_deterministic',w===enc(text));measure(id+'_wire',w);}
+ok('min3_even_at_25_vs_21',JSON.parse(enc('"aaaa"')).payload===pack([lit('"'),lit('a'),[2,1,3],lit('"')]));
+ok('maximum258_overlap',JSON.parse(enc(JSON.stringify('a'.repeat(259)))).payload===pack([lit('"'),lit('a'),[2,1,258],lit('"')]));
+for(let off=0;off<8;off++){let n=(1-off+8)%8+8,t=[lit('"'),...Array.from({length:n},()=>lit('a')),[2,1,3],lit('"')],text=JSON.stringify('a'.repeat(n+3));ok('bit_offset_'+off,(9+7*n)%8===off&&dec(wire(pack(t),text)).text===text);if(off===7)ok('match25_plus7_is32',(9+7*n)%8+25===32);}
+let text=JSON.stringify('abc'.repeat(90)),selected=enc(text),observed=enc(text,O);ok('distinct_tags',selected!==observed&&JSON.parse(selected).payload===JSON.parse(observed).payload);ok('observed_inverse',dec(observed,O).text===text);expect('tag_swap',()=>dec(observed),C.shape);
+let maxTokens=repeated([lit('"'),lit('a')],32763);maxTokens.push([2,32765,3]);let raw='"'+'a'.repeat(32764)+'"aa';ok('distance32765_encode_oracle',JSON.parse(enc(raw)).payload===pack(maxTokens));expect('distance32765_reaches_binding',()=>dec(wire(pack(maxTokens),raw)),C.binding);
+ok('literal_roundtrip_nested',dec(enc(enc('"a"'))).text===enc('"a"'));
+}
+function malformed(){
+for(let [id,value] of [['null',null],['number',1],['empty',''],['nonprint','\n'],['long','x'.repeat(12289)]])expect('input_'+id,()=>dec(value),C.input);
+const plain='"a"',payload=pack(lits(plain)),good=wire(payload,plain),base=JSON.parse(good);
+for(let [id,value] of [['parse','{'],['array','[]'],['extra',gate2Canonical({...base,extra:1},32768)],['tag',gate2Canonical({...base,encoding:'wrong'},32768)],['hash',gate2Canonical({...base,expanded_sha256:'A'.repeat(64)},32768)],['bool',gate2Canonical({...base,expanded_size_bytes:true},32768)],['fraction',gate2Canonical({...base,expanded_size_bytes:1.5},32768)],['exponent',good.replace('"expanded_size_bytes":3','"expanded_size_bytes":3e0')],['negative_zero',good.replace('"expanded_size_bytes":3','"expanded_size_bytes":-0')],['space',good+' ']])expect('shape_'+id,()=>dec(value),C.shape);
+for(let n of [-1,0,32769])expect('range_'+String(n).replace('-','minus'),()=>dec(wire(payload,plain,S,n)),C.bound);
+let canonicalTail=payload.replace(/([A-Za-z0-9+/])==$/,(_,c)=>A[A.indexOf(c)+1]+'==');ok('tail_fixture_changed',canonicalTail!==payload);
+for(let [id,p] of [['empty',''],['length',payload.slice(1)],['alphabet','?'+payload.slice(1)],['whitespace',' '+payload.slice(1)],['urlsafe','_'+payload.slice(1)],['middle_padding','='+payload.slice(1)],['three_padding',payload.slice(0,-3)+'==='],['base64_tail',canonicalTail],...[9,10,127,233].map(n=>[n,String.fromCharCode(n)+payload.slice(1)]),['missing_header',Buffer.from([1,2]).toString('base64')],['zero_header','AAAA'],['no_body',Buffer.from([0,0,1]).toString('base64')]])expect('syntax_'+id,()=>dec(wire(p,plain)),C.token);
+let bytes=Buffer.from(payload,'base64');for(let [id,mutate] of [['extra_byte',b=>Buffer.concat([b,Buffer.from([0])])],['header_more',b=>{b[2]++;return b;}],['header_less',b=>{b[2]--;return b;}],['body_tail',b=>{b[b.length-1]|=1;return b;}]])expect(id,()=>dec(wire(mutate(Buffer.from(bytes)).toString('base64'),plain)),C.token);
+for(let [id,bits] of [['prefix1',[1]],['common_short',[0]],['other_short',[1,0,1]],['distance_short',[1,1,0]],['length_short',[1,1,...Array(15).fill(0),0]]])expect(id,()=>dec(wire(packetBits(bits),plain)),C.token);
+for(let n=0;n<128;n++)if(n<32||n===127||A.includes(String.fromCharCode(n)))expect('forbidden_other_'+n,()=>dec(wire(pack([[1,n]]),plain,S,1)),C.token);
+expect('distance_without_prefix',()=>dec(wire(pack([[2,1,3]]),plain,S,1)),C.token);
+expect('distance_before_expansion',()=>dec(wire(pack([lit('a'),[2,2,3]]),'a',S,1)),C.token);
+expect('forbidden_other_before_expansion',()=>dec(wire(pack([lit('a'),[1,65]]),'a',S,1)),C.token);
+expect('malformed_next_before_expansion',()=>dec(wire(packetBits([...tokenBits([lit('a')]),1]),'a',S,1)),C.token);
+expect('valid_next_expansion',()=>dec(wire(pack([lit('a'),lit('b')]),'a',S,1)),C.expansion);
+expect('clean_short_binding',()=>dec(wire(payload,plain,S,4)),C.binding);
+expect('hash_binding',()=>dec(wire(payload,plain,S,3,'0'.repeat(64))),C.binding);
+for(let [id,text] of [['json','abc'],['canonical','{ "a":1}']])expect('recovered_'+id,()=>dec(wire(pack(lits(text)),text)),C.binding);
+expect('declared_size_not_header_bound',()=>dec(wire(pack(lits('ab')),'a',S,1)),C.expansion);
+let seen=0,semantic=w=>{dec(w);seen++;throw Error('fixture_semantic_refusal');};expect('wire_before_semantic',()=>semantic(wire('????',plain)),C.token);ok('semantic_not_reached',seen===0);expect('semantic_after_recovery',()=>semantic(good),'fixture_semantic_refusal');ok('semantic_reached_once',seen===1);
+}
+function overflow(){
+const maximum=JSON.stringify('a'.repeat(32766)),w=enc(maximum);ok('expanded_exact',maximum.length===32768&&dec(w).text===maximum);measure('expanded_max_wire',w);expect('expanded_plus_one',()=>enc(maximum+' '),C.input);
+let full=repeated([lit('"'),lit('a')],32765);full.push(lit('"'),[2,32768,3]);expect('distance32768_at_full_expands',()=>dec(wire(pack(full),maximum)),C.expansion);
+expect('distance32768_unavailable',()=>dec(wire(pack([lit('a'),[2,32768,3]]),'a')),C.token);
+const exact=wire(packetBits(Array(72744).fill(0)),'A'.repeat(99));ok('wire_exact_extent',exact.length===12288);expect('wire_exact_reaches_append',()=>dec(exact),C.expansion);expect('wire_one_byte_over',()=>dec(exact+' '),C.input);measure('wire_exact',exact);
+let seq='',a=Array(4).fill(0);function db(t,p){if(t>3){if(3%p===0)for(let i=1;i<=p;i++)seq+=A[a[i]];}else{a[t]=a[t-p];db(t+1,p);for(let j=a[t-p]+1;j<32;j++){a[t]=j;db(t+1,t);}}}db(1,1);let text=JSON.stringify(seq.slice(0,32766));ok('count_fixture_extent',seq.length===32768&&text.length===32768);
+let edgeText=JSON.stringify(seq.slice(0,10386)),edgeBits=tokenBits(lits(edgeText)),edgeWire=wire(packetBits(edgeBits),edgeText);ok('one_bit_wire_edge',edgeBits.length===72720&&edgeWire.length===12287&&enc(edgeText)===edgeWire&&dec(edgeWire).text===edgeText);expect('one_bit_wire_over',()=>dec(wire(packetBits([...edgeBits,0]),edgeText)),C.input);
+const U=globalThis.Uint8Array;let allocations=[];globalThis.Uint8Array=new Proxy(U,{construct(T,args){allocations.push(args[0]);return Reflect.construct(T,args);}});try{expect('count_refuses_before_packet_allocation',()=>enc(text),C.bound);ok('zero_packet_allocation_on_count_refusal',allocations.length===0);}finally{globalThis.Uint8Array=U;}
+let maps=0,M=globalThis.Map;globalThis.Map=new Proxy(M,{construct(T,args){maps++;return Reflect.construct(T,args);}});try{let t='"abcabcabcabc"',v=enc(t);ok('fresh_two_pass_indexes',maps===2);ok('count_write_oracle_agreement',JSON.parse(v).payload===pack(oracle(t)));}finally{globalThis.Map=M;}
+for(let cause of ['selected_wire_deadline','selected_wire_root_deadline','selected_wire_receive_deadline']){let clock=0,g=budget(cause,()=>clock);g.phase(()=>true);clock=5000;expect(cause,()=>dec(w,S,g),cause);let c=0,h=budget(cause,()=>c);expect(cause+'_post_throw',()=>h.phase(()=>{c=5000;throw Error(C.token);}),cause);}
+let clock=0,g=budget('selected_wire_receive_deadline',()=>clock);dec(w,S,g);clock=5000;expect('shared_receive_budget',()=>dec(enc('"a"',O),O,g),'selected_wire_receive_deadline');
+clock=0;g=budget('selected_wire_root_deadline',()=>clock);enc('"a"',S,g);clock=5000;expect('shared_encode_budget',()=>enc('"a"',O,g),'selected_wire_root_deadline');
+let calls=0;expect('clock_regression',()=>enc('"a"',S,budget('selected_wire_root_deadline',()=>calls++? -1:0)),'selected_wire_root_deadline');expect('clock_nonfinite',()=>dec(w,S,budget('selected_wire_receive_deadline',()=>Infinity)),'selected_wire_receive_deadline');
+expect('deadline_before_bad_base64',()=>dec(wire('????','a'),S,budget('selected_wire_receive_deadline',()=>5000,5000)),'selected_wire_receive_deadline');
+}
+function finish(cause){if(finished)return;finished=true;report.cause=cause;process.stdout.write(gate2Canonical(report,32767)+'\n');}
+process.stdin.on('error',()=>finish('d25_driver_input'));
+process.stdin.on('data',b=>{if(finished)return;inputBytes+=b.length;if(inputBytes>262144){finish('d25_driver_input');process.stdin.destroy();return;}chunks.push(b);});
+process.stdin.on('end',()=>{if(finished)return;try{const bytes=Buffer.concat(chunks);chunks=[];if(bytes.some(x=>x>127))throw Error('d25_driver_input');const text=bytes.toString('ascii'),request=JSON.parse(text);if(!request||typeof request!=='object'||Array.isArray(request)||Object.keys(request).sort().join()!=='case,data'||!cases.has(request.case)||gate2Canonical(request,262144)!==text)throw Error('d25_driver_input');report.case=request.case;if(process.versions.node!=='25.2.1')throw Error('d25_node_version');if(typeof gate2WireEncode!=='function'||typeof gate2WireDecode!=='function'||typeof gate2WireBudget!=='function'||typeof gate2WireInput!=='function')throw Error('d25_codec_absent');if(request.case==='codec_vectors')vectors();else if(request.case==='codec_malformed')malformed();else overflow();report.completed=true;finish(null);}catch(e){finish(new Set(['d25_codec_absent','d25_driver_assertion','d25_driver_input','d25_node_version']).has(e.message)?e.message:'d25_driver_error');}});
+"""
+
+
+def d25_node_driver_v1():
+    return (ROOT_ENCODER + '\n' + ROOT_SHA256 + '\n'
+            + globals().get('D25_WIRE_CODEC', '') + '\n' + D25_DATA_DRIVER)
+
+
+class D25WireCodecTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import time
+        cls.deadline = globals().get('D25_TEST_DEADLINE', time.monotonic() + 295)
+
+    def run_case(self, case):
+        from tests.test_accepted_policy_fixture_compiler_gate2_resume_caller_v1 import d25_run_case_v1
+        value, capture = d25_run_case_v1(case, b'{}', self.deadline)
+        metadata = json.dumps({'case': case, 'report': value, 'capture': capture},
+                              sort_keys=True, separators=(',', ':'), ensure_ascii=True)
+        tagged = 'D25_CASE_METADATA ' + metadata
+        self.assertLessEqual(len((tagged + '\n').encode('ascii')), 32768, 'tagged D25 metadata bound')
+        print(tagged)
+        self.assertTrue(capture['parent_observed_completion'], 'bounded D25 child/protocol incomplete')
+        self.assertTrue(value['completed'], 'D25 controlled case failed: ' + str(value['cause']))
+        self.assertIsNone(value['cause'])
+        self.assertTrue(value['checks'] and all(row['ok'] for row in value['checks']))
+        self.assertEqual(capture['descendant_quiescence'], 'UNKNOWN')
+
+    def test_literal_dictionary_vectors_and_deterministic_parser(self):
+        self.run_case('codec_vectors')
+
+    def test_bitpacket_malformed_cause_order(self):
+        self.run_case('codec_malformed')
+
+    def test_binary_exact_caps_and_original_deadline(self):
+        self.run_case('codec_overflow')
+
+
+D25_WIRE_CODEC = r"""function gate2WireBudget(now,cause,end=Infinity){
+ let origin=null,last=null,limit=null,units=0,failed=false;
+ function stop(){failed=true;throw Error(cause);}
+ function guard(){
+  if(failed)throw Error(cause);
+  let n;try{n=now();}catch{stop();}
+  if(typeof n!=='number'||!Number.isFinite(n)||last!==null&&n<last)stop();
+  if(origin===null){
+   if(typeof end!=='number'||!Number.isFinite(end)&&end!==Infinity)stop();
+   origin=n;limit=Math.min(n+5000,end);
+  }
+  last=n;if(n>=limit)stop();units=0;return n;
+ }
+ guard.work=()=>{if(failed)throw Error(cause);if(origin===null||units===256)guard();units++;};
+ guard.phase=fn=>{
+  guard();let value,error,threw=false;
+  try{value=fn();}catch(e){error=e;threw=true;}
+  guard();if(threw)throw error;return value;
+ };
+ return guard;
+}
+function gate2WireInput(wire){
+ if(typeof wire!=='string'||wire.length<1||wire.length>12288||/[^\x20-\x7e]/.test(wire))throw Error('selected_wire_input');
+ return wire;
+}
+function gate2Fail(c){throw Error('selected_wire_'+c);}
+function gate2ABC(){return 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';}
+function gate2Index(n){return n>=65&&n<=90?n-65:n>=97&&n<=122?n-71:n>=48&&n<=57?n+4:n===43?62:n===47?63:-1;}
+function gate2WireDecode(wire,tag,sha,canon,guard){
+gate2WireInput(wire);
+const x=guard.phase(()=>{try{return JSON.parse(wire);}catch{gate2Fail('shape');}});
+guard.phase(()=>{
+if(!x||typeof x!=='object'||Array.isArray(x)||Object.keys(x).sort().join(',')!=='encoding,expanded_sha256,expanded_size_bytes,payload'||
+tag!=='gate2-selected-lzss-v2'&&tag!=='gate2-observed-lzss-v2'||x.encoding!==tag||
+typeof x.payload!=='string'||x.payload.length>12288||
+typeof x.expanded_sha256!=='string'||!/^[0-9a-f]{64}$/.test(x.expanded_sha256)||!Number.isSafeInteger(x.expanded_size_bytes))gate2Fail('shape');
+});
+const spelling=guard.phase(()=>{try{return canon(x,12288);}catch{gate2Fail('shape');}});
+if(spelling!==wire)gate2Fail('shape');
+if(x.expanded_size_bytes<1||x.expanded_size_bytes>32768)gate2Fail('bound');
+const text=guard.phase(()=>{
+const p=x.payload,a=gate2ABC();let pad=p.endsWith('==')?2:p.endsWith('=')?1:0;
+if(!p.length||p.length%4)gate2Fail('token');
+for(let i=0;i<p.length;i++){guard.work();if(i>=p.length-pad?p[i]!=='=':gate2Index(p.charCodeAt(i))<0)gate2Fail('token');}
+if(pad&&(guard.work(),gate2Index(p.charCodeAt(p.length-pad-1))%(pad===2?16:4)))gate2Fail('token');
+const size=3*(p.length/4)-pad;if(size<3||size>9216)gate2Fail('token');
+guard();const b=new Uint8Array(size);guard();let out=0;
+for(let i=0;i<p.length;i+=4){let v=0;for(let j=0;j<4;j++){guard.work();v=v*64+(p[i+j]==='='?0:gate2Index(p.charCodeAt(i+j)));}for(let j=0;j<3&&out<size;j++){guard.work();b[out++]=Math.floor(v/2**(16-8*j))%256;}}
+let bits=0;for(let i=0;i<3;i++){guard.work();bits=bits*256+b[i];}
+if(!bits||3+Math.ceil(bits/8)!==size||bits%8&&(guard.work(),b[size-1]%2**(8-bits%8)))gate2Fail('token');
+let at=0;const output=[];
+function read(n){if(at+n>bits)gate2Fail('token');let v=0;for(let i=0;i<n;i++){guard.work();v=v*2+Math.floor(b[3+Math.floor(at/8)]/2**(7-at%8))%2;at++;}return v;}
+function append(c){guard.work();if(output.length>=x.expanded_size_bytes||output.length>=32768)gate2Fail('expansion');output.push(c);}
+while(at<bits){if(!read(1))append(a[read(6)]);else if(!read(1)){let v=read(7);if(v<32||v>126||gate2Index(v)>=0)gate2Fail('token');append(String.fromCharCode(v));}else{let d=read(15)+1,n=read(8)+3;if(d>output.length)gate2Fail('token');for(let i=0;i<n;i++)append(output[output.length-d]);}}
+return output.join('');
+});
+if(text.length!==x.expanded_size_bytes)gate2Fail('binding');
+const digest=guard.phase(()=>sha(text));if(digest!==x.expanded_sha256)gate2Fail('binding');
+const value=guard.phase(()=>{try{return JSON.parse(text);}catch{gate2Fail('binding');}});
+const recovered=guard.phase(()=>{try{return canon(value,32768);}catch{gate2Fail('binding');}});
+if(recovered!==text)gate2Fail('binding');return {text,value};
+}
+function gate2WireEncode(text,tag,sha,canon,guard){
+if(typeof text!=='string'||text.length<1||text.length>32768||/[^\x20-\x7e]/.test(text))throw Error('selected_wire_input');
+const digest=guard.phase(()=>{if(tag!=='gate2-selected-lzss-v2'&&tag!=='gate2-observed-lzss-v2')gate2Fail('shape');const v=sha(text);if(typeof v!=='string'||!/^[0-9a-f]{64}$/.test(v))gate2Fail('shape');return v;});
+const overhead=guard.phase(()=>{try{return canon({encoding:tag,expanded_sha256:digest,expanded_size_bytes:text.length,payload:''},12288).length;}catch(e){if(e&&e.message==='canonical_bound')gate2Fail('bound');throw e;}});
+function bound(bits){guard.work();if(overhead+4*Math.ceil((3+Math.ceil(bits/8))/3)>12288)gate2Fail('bound');}
+function walk(emit){
+const index=new Map();let at=0;
+function insert(p){guard.work();if(p+3>text.length)return;const k=text.slice(p,p+3);let row=index.get(k);if(!row){guard.work();row=[];index.set(k,row);}if(row.length===8){guard.work();row.shift();}guard.work();row.push(p);}
+while(at<text.length){guard.work();let best=0,distance=0;
+if(at+3<=text.length){guard.work();const row=index.get(text.slice(at,at+3));if(row){while(row.length&&at-row[0]>32768){guard.work();row.shift();}for(const p of row){guard.work();let n=0;while(n<258&&at+n<text.length){guard.work();if(text[p+n]!==text[at+n])break;n++;}let d=at-p;if(n>=3&&(n>best||n===best&&d<distance)){best=n;distance=d;}}}}
+const n=best>=3?best:1;if(best>=3)emit(2,distance,best);else{guard.work();const c=text.charCodeAt(at),v=gate2Index(c);emit(v<0?1:0,v<0?c:v,0);}for(let p=at;p<at+n;p++)insert(p);at+=n;
+}
+}
+let bits=0;const counted=[0,0,0];
+guard.phase(()=>{bound(0);walk((k,v,n)=>{let width=k===0?7:k===1?9:25,next=bits+width;bound(next);for(let i=0;i<width;i++)guard.work();bits=next;counted[k]++;});});
+const size=3+Math.ceil(bits/8);const b=guard.phase(()=>{bound(bits);return new Uint8Array(size);});
+let at=0;const written=[0,0,0];
+guard.phase(()=>{
+for(let i=0;i<3;i++){guard.work();b[i]=Math.floor(bits/2**(16-8*i))%256;}
+function write(v,n){if(at+n>bits)gate2Fail('token');for(let i=n-1;i>=0;i--){guard.work();b[3+Math.floor(at/8)]+=Math.floor(v/2**i)%2*2**(7-at%8);at++;}}
+walk((k,v,n)=>{written[k]++;write(k===0?v:k===1?256+v:3*2**23+(v-1)*256+n-3,k===0?7:k===1?9:25);});
+if(at!==bits||written.some((n,i)=>n!==counted[i])||bits%8&&(guard.work(),b[size-1]%2**(8-bits%8)))gate2Fail('token');
+});
+const payload=guard.phase(()=>{
+bound(bits);const n=4*Math.ceil(size/3),a=gate2ABC();guard();const chars=new Array(n);guard();let at=0;
+for(let i=0;i<size;i+=3){let v=0;for(let j=0;j<3;j++){guard.work();v=v*256+(i+j<size?b[i+j]:0);}for(let j=0;j<4;j++){guard.work();chars[at++]=j>1&&i+j-1>=size?'=':a[Math.floor(v/2**(18-6*j))%64];}}
+return chars.join('');
+});
+return guard.phase(()=>{bound(bits);try{return canon({encoding:tag,expanded_sha256:digest,expanded_size_bytes:text.length,payload},12288);}catch(e){if(e&&e.message==='canonical_bound')gate2Fail('bound');throw e;}});
+}
+"""
+
+
+# D25 fixed source roles and complete geometry TEST route.
+D25_CODEC_SOURCE_PINS = (
+    (6903, 'c65b73fe0e7d274040dda413b7871ee83c4c952f9bb2c1e74962b0e3e5f34767'),
+    (3939, 'd7f478ee3e5ff65d7146c58e2a9fa078e66219cc1e35ea8547701e576295c32d'),
+    (2964, '6123f11ab75ed5a4021dc038ff878cd6873d71492058e8b887d3b3c28b4fc295'),
+)
+
+def d25_node_codec_v1(codec):
+    import re
+    expected = globals().get('D25_CODEC_SOURCE_PINS')
+    if (type(expected) is not tuple or len(expected) != 3
+            or any(type(row) is not tuple or len(row) != 2
+                   or type(row[0]) is not int or not 1 <= row[0] <= 6907
+                   or type(row[1]) is not str or re.fullmatch(r'[0-9a-f]{64}', row[1]) is None
+                   for row in expected)):
+        raise RuntimeError('d25_codec_pins_absent')
+    if type(codec) is not str or not 1 <= len(codec) <= 6907 or not codec.isascii():
+        raise RuntimeError('d25_codec_source_kind')
+    raw = codec.encode('ascii')
+    if (len(raw), d22_sha(raw)) != expected[0]:
+        raise RuntimeError('d25_codec_source_binding')
+    old = D23_WIRE_CODEC
+    if (type(old) is not str or not old.isascii() or
+            (len(old), d22_sha(old.encode('ascii'))) !=
+            (5865, '56708c18c942acfb6e8153971a0013ca79c955e4182efff590ad7ae3a2ba2432')):
+        raise RuntimeError('d25_legacy_codec_binding')
+    old_boundary = 'function gate2WireDecode(wire,tag,sha,canon,guard){'
+    if old.count(old_boundary) != 1 or not codec.startswith(old[:old.index(old_boundary)]):
+        raise RuntimeError('d25_budget_input_inverse')
+    marker = 'function gate2WireEncode(text,tag,sha,canon,guard){'
+    count = codec.count(marker)
+    if count != 1:
+        raise RuntimeError('d25_codec_marker')
+    at = codec.index(marker)
+    prefix, excluded = codec[:at], codec[at:]
+    if ((len(prefix), d22_sha(prefix.encode('ascii'))) != expected[1]
+            or (len(excluded), d22_sha(excluded.encode('ascii'))) != expected[2]
+            or len(prefix) + len(excluded) != len(raw) or prefix + excluded != codec):
+        raise RuntimeError('d25_codec_role_binding')
+    facts = {
+        'kind': 'd25_node_codec_role_v1',
+        'full_codec_bytes': len(raw), 'full_codec_sha256': d22_sha(raw),
+        'node_codec_bytes': len(prefix), 'node_codec_sha256': d22_sha(prefix.encode('ascii')),
+        'excluded_encoder_bytes': len(excluded),
+        'excluded_encoder_sha256': d22_sha(excluded.encode('ascii')),
+        'marker_occurrences': count, 'role_is_exact_prefix': True, 'encoder_excluded': True}
+    return prefix, facts
+
+
+def d25_finalizer_source_v1(initial, deferred, codec, main, caller):
+    # Existing construction preserves every effect/custody/clock site. The one
+    # selected-view call changes version only; the supplied role is already v2.
+    finalizer, old_facts = d23_finalizer_source_v1(initial, deferred, codec, main, caller)
+    before = "gate2WireDecode(text,'gate2-selected-lz77-v1',g2.hash,gate2Canonical,guard)"
+    after = "gate2WireDecode(text,'gate2-selected-lzss-v2',g2.hash,gate2Canonical,guard)"
+    if finalizer.count(before) != 1:
+        raise RuntimeError('d25_finalizer_tag_site')
+    updated = finalizer.replace(before, after, 1)
+    if updated.replace(after, before, 1) != finalizer or before in updated:
+        raise RuntimeError('d25_finalizer_tag_inverse')
+    facts = dict(old_facts)
+    facts.update(finalizer_size_bytes=len(updated),
+                 finalizer_sha256=hashlib.sha256(updated.encode('ascii')).hexdigest())
+    return updated, facts
+
+
+def d25_root_wire_sources_v1(codec):
+    # The legacy builder remains unchanged. Both returned variants have exactly
+    # one selected and one observed call site; no version autodetection exists.
+    sources = d23_root_wire_sources_v1(codec)
+    result = {}
+    for role in ('orchestrator', 'receiver'):
+        old = sources[role]
+        new = old
+        for before, after in (('gate2-selected-lz77-v1', 'gate2-selected-lzss-v2'),
+                              ('gate2-observed-lz77-v1', 'gate2-observed-lzss-v2')):
+            if new.count(before) != 1:
+                raise RuntimeError('d25_root_tag_site')
+            new = new.replace(before, after, 1)
+        restored = new.replace('gate2-selected-lzss-v2', 'gate2-selected-lz77-v1').replace(
+            'gate2-observed-lzss-v2', 'gate2-observed-lz77-v1')
+        if restored != old or 'gate2-selected-lz77-v1' in new or 'gate2-observed-lz77-v1' in new:
+            raise RuntimeError('d25_root_tag_inverse')
+        result[role] = new
+    return result
+
+
+def d25_inert_bundle_v1(deadline):
+    import base64
+    import math
+    import sys
+    import time
+    from tests import test_accepted_policy_fixture_compiler_gate2_resume_caller_v1 as caller
+
+    last = None
+    def gate():
+        nonlocal last
+        now = time.monotonic()
+        if (type(deadline) not in (int, float) or not math.isfinite(deadline)
+                or not math.isfinite(now) or deadline - now > 300
+                or (last is not None and now < last)
+                or now >= deadline - 5):
+            raise RuntimeError('d25_construction_deadline')
+        last = now
+
+    def canonical(value):
+        return json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=True,
+                          allow_nan=False).encode('ascii')
+
+    def digest(value):
+        return hashlib.sha256(value).hexdigest()
+
+    gate()
+    node_codec, role_facts = d25_node_codec_v1(D25_WIRE_CODEC)
+    root = Path(__file__).resolve().parents[1]
+    descriptors = (
+        ('tests/fixtures/accepted_policy_fixture_compiler_component_v1.py', 32732,
+         '329fb13f2c6dcee0872e5a29ec1fd769dc6e57ce92ee1076fef6737f1da86d88',
+         '5a342c2c2efa44aa5add3f91ae94518c143acece'),
+        ('tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py', 32739,
+         '5fd7d2d6ee62ff584d2a4662757ca804a3d3300d30bb966319901870c4c85670',
+         'cc9b6a1b7e6e6ff2f9b750ea67b20cf7213d09b0'))
+    held = []
+    source_rows = []
+    for rel, size, sha, blob in descriptors:
+        gate()
+        with (root / rel).open('rb') as handle:
+            raw = handle.read(32769)
+        gate()
+        if (len(raw), digest(raw), hashlib.sha1(b'blob ' + str(len(raw)).encode()
+                + b'\0' + raw).hexdigest()) != (size, sha, blob):
+            raise RuntimeError('d25_fixture_binding')
+        held.append(base64.b64encode(raw).decode('ascii'))
+        source_rows.append({'size_bytes': size, 'sha256': sha, 'git_blob': blob})
+    gate()
+    initial, baseline, parts, source_facts = d24_phase_initial_v1(deadline)
+    compressed = source_facts['compression']
+    if (compressed['parent_observed_completion'] is not True or compressed['causes']
+            or compressed['returncode'] != 0 or compressed['timed_out']
+            or compressed['kill_requested'] or not compressed['reaped']
+            or not compressed['threads_joined']
+            or compressed['started_monotonic'] + compressed['elapsed_seconds']
+               >= compressed['cleanup_deadline']
+            or any(not compressed[name]['eof'] or compressed[name]['overflow']
+                   or compressed[name]['io_error'] is not None
+                   or compressed[name]['unknown_remainder'] for name in ('stdout', 'stderr'))):
+        refusal = RuntimeError('d25_compression_capture_incomplete')
+        refusal.metadata = compressed
+        raise refusal
+    if (set(source_facts) != set('kind source_bytes source_sha256 escaped_source_bytes baseline_bytes baseline_sha256 original_builder_bytes original_builder_sha256 baseline_body_bytes baseline_body_sha256 prefix_bytes prefix_sha256 decoder_bytes decoder_sha256 canonical_data_bytes canonical_data_sha256 compressed_data_bytes compressed_data_sha256 base64_data_bytes base64_data_sha256 data_fields strings_field_absent deferred_definition_bytes deferred_definition_sha256 exact_decoder_inverse exact_phase_inverse exact_inverse_source source_contribution_fits source_only_over_cap_by complete_geometry_qualified behavior_conformance_complete finalizer_implemented generated_operational_program_executed generated_full_subject_files_written status task_2_10_complete compression'.split())
+            or source_facts['kind'] != 'd24_initial_source_only_v1'
+            or set(role_facts) != set('kind full_codec_bytes full_codec_sha256 node_codec_bytes node_codec_sha256 excluded_encoder_bytes excluded_encoder_sha256 marker_occurrences role_is_exact_prefix encoder_excluded'.split())
+            or set(parts) != {'phase_body', 'restored', 'deferred'}
+            or parts['restored'] != baseline
+            or (len(initial), digest(initial.encode('ascii'))) !=
+               (source_facts['source_bytes'], source_facts['source_sha256'])
+            or (len(baseline), digest(baseline.encode('ascii'))) !=
+               (source_facts['baseline_bytes'], source_facts['baseline_sha256'])
+            or (len(parts['deferred']), digest(parts['deferred'].encode('ascii'))) !=
+               (source_facts['deferred_definition_bytes'], source_facts['deferred_definition_sha256'])
+            or not initial.startswith(D22_PREFIX) or source_facts['data_fields'] != 9
+            or source_facts['strings_field_absent'] is not True
+            or any(source_facts[name] is not True for name in
+                   ('exact_decoder_inverse', 'exact_phase_inverse', 'exact_inverse_source'))):
+        raise RuntimeError('d25_initial_binding')
+    expected_initial = (
+        (source_facts['source_bytes'], source_facts['source_sha256'],
+         14162, '4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d'),
+        (source_facts['canonical_data_bytes'], source_facts['canonical_data_sha256'],
+         6566, '8ca48e37f97d03af660960f75afab79db162e8f8997f39f6c1c5c55dd896c97e'),
+        (source_facts['compressed_data_bytes'], source_facts['compressed_data_sha256'],
+         2365, 'a7caf17aa8d2d5d6beb60880d415e7328947d188623bf5fa0d1ad566e1fd2f2f'))
+    if any((size, sha) != (expected_size, expected_sha)
+           for size, sha, expected_size, expected_sha in expected_initial):
+        raise RuntimeError('d25_unchanged_initial_binding')
+    gate()
+    program = d25_geometry_driver_v1()
+    if type(program) is not str or not program.isascii() or not 0 < len(program) <= 24576:
+        raise RuntimeError('d25_geometry_driver_binding')
+    driver_facts = {'source_kind': 'd25_fixed_test_driver_v1', 'driver_role': 'geometry',
+                    'driver_getter': 'd25_geometry_driver_v1', 'program_bytes': len(program),
+                    'program_sha256': digest(program.encode('ascii'))}
+    gate()
+    finalizer, finalizer_facts = d25_finalizer_source_v1(
+        initial, parts['deferred'], node_codec, sys.modules[__name__], caller)
+    if (finalizer.count(node_codec) != 1 or D25_WIRE_CODEC in finalizer
+            or 'function gate2WireEncode(text,tag,sha,canon,guard){' in finalizer
+            or finalizer.count(ROOT_ENCODER) != 1):
+        raise RuntimeError('d25_finalizer_codec_role')
+    root_sources = d25_root_wire_sources_v1(D25_WIRE_CODEC)
+    commit = hashlib.sha1(b'controlled-current-review').hexdigest()
+    packet_sha = digest(b'packet')
+    factory_sha = digest(caller.CD_FACTORY_SOURCE.encode('ascii'))
+    profile = {'max_output_tokens': 100000, 'max_record_bytes': 65536}
+    expected = {'code_commit': commit, 'core_sha256': digest(initial.encode('ascii')),
+                'factory_sha256': factory_sha}
+    prefix = ('// @exec: {"yield_time_ms":1,"max_output_tokens":100000}\n'
+              + ROOT_ENCODER + '\n' + ROOT_SHA256 + '\n' + D25_WIRE_CODEC + '\n'
+              + root_sources['orchestrator'] + '\n' + root_sources['receiver']
+              + '\nconst profile=' + canonical(profile).decode('ascii')
+              + ';const record=await gate2Complete(tools,')
+    suffix = (',profile,' + canonical(expected).decode('ascii')
+              + ');text(gate2Export(record,profile));\n')
+    # Factor only the fixed TEST transport. The complete executor below is
+    # independently pinned, and the fixed driver reconstructs exactly these
+    # bytes in RAM for full-chain measurement. Operational wires stay complete.
+    executor = (prefix + json.dumps(initial, ensure_ascii=True, separators=(',', ':'))
+                + ',' + json.dumps(finalizer, ensure_ascii=True, separators=(',', ':')) + suffix)
+    executor_pin = {'size_bytes': len(executor), 'sha256': digest(executor.encode('ascii'))}
+    fixture = ResumeNodeCaller('runTest')
+    success = fixture.success_output()
+    structured = fixture.failure_output()
+    unicode_failure = fixture.failure_output(unicode=True)
+    forms = [
+        {'id': 'success', 'stdout': success, 'stderr': '', 'success': True},
+        {'id': 'structured_failure', 'stdout': '', 'stderr': structured,
+         'success': False, 'failure': True},
+        {'id': 'unicode_failure', 'stdout': '', 'stderr': unicode_failure,
+         'success': False, 'failure': True},
+        {'id': 'partial_emission', 'stdout': success[:1024], 'stderr': '',
+         'success': False, 'partial': True},
+        {'id': 'unknown_closure', 'stdout': success, 'stderr': '',
+         'success': False, 'unknown': True},
+        {'id': 'setup_refusal', 'stdout': '{}\n', 'stderr': '', 'success': False}]
+    gate()
+    # This is a DECLARED FUTURE CONTROLLED chain model with every field present.
+    # No historical output is filtered or claimed to be a new acquired original.
+    chain = [
+        {'call': {'type': 'custom_tool_call', 'id': 'd25_exec', 'status': 'completed',
+                  'call_id': 'd25_exec_call', 'name': 'exec', 'input': '',
+                  'internal_chat_message_metadata_passthrough': {'turn_id': 'd25_controlled_geometry',
+                                                              'create_time': 1792314000.25}},
+         'result': {'type': 'custom_tool_call_output', 'id': 'd25_exec_output',
+                    'call_id': 'd25_exec_call',
+                    'output': 'Script running with cell ID d25geometry\nWall time 0.0 seconds\nOutput:\n',
+                    'internal_chat_message_metadata_passthrough': {'turn_id': 'd25_controlled_geometry',
+                                                                'create_time': 1792314000.5}}},
+        {'call': {'type': 'function_call', 'id': 'd25_wait', 'name': 'wait',
+                  'arguments': canonical({'cell_id': 'd25geometry', 'max_tokens': 100000,
+                                          'yield_time_ms': 1000}).decode('ascii'),
+                  'call_id': 'd25_wait_call',
+                  'internal_chat_message_metadata_passthrough': {'turn_id': 'd25_controlled_geometry',
+                                                              'create_time': 1792314001.25}},
+         'result': {'type': 'function_call_output', 'id': 'd25_wait_output',
+                    'call_id': 'd25_wait_call',
+                    'output': [{'type': 'input_text',
+                                'text': 'Script completed\nWall time 0.0 seconds\nOutput:\n'},
+                               {'type': 'input_text', 'text': ''}],
+                    'internal_chat_message_metadata_passthrough': {'turn_id': 'd25_controlled_geometry',
+                                                                'create_time': 1792314001.5}}}]
+    # Pure canonical native-format DATA, including the genuine C failure
+    # formatter. No native_main, writer, temporary directory or stage is called.
+    c = importlib.import_module('tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1')
+    native_root = c.RESUME_OWNER_ROOT_V1.as_posix() + '/r1'
+    if len(native_root) != 98:
+        raise RuntimeError('d25_native_model_root')
+    maximum = 2**64 - 1
+    completions = []
+    later = []
+    native_input = canonical({'current': {descriptors[1][0]: source_rows[1]}}).decode('ascii') + '\n'
+    for stage in ('C1', 'C2', 'C3', 'C4', 'C5', 'C6'):
+        gate()
+        previous = None if stage == 'C1' else completions[-1]['descriptor']['sha256']
+        record = c._invocation_record_v1(stage, commit, packet_sha, digest(stage.encode()),
+                                         digest(('accounting-' + stage).encode()), previous)
+        raw = canonical(record)
+        path = native_root + '/outputs/' + stage + '/outer.invocation.original.json'
+        complete = {'descriptor': {'path': path, 'size_bytes': len(raw), 'sha256': digest(raw)},
+                    'write_facts': {'path': path, 'open_completed': True, 'written_bytes': len(raw),
+                                    'write_extent_unknown': False, 'flush_completed': True,
+                                    'fsync_completed': True, 'close_completed': True,
+                                    'directory_persisted': True, 'complete': True,
+                                    'deadline_failed': False, 'failure_causes': []},
+                    'completion_deadline_ns': maximum, 'external_approval': False}
+        args = [commit, '32768', packet_sha,
+                '-' if not completions else ','.join(
+                    str(row['descriptor']['size_bytes']) + ':' + row['descriptor']['sha256']
+                    for row in completions)]
+        completions.append(complete)
+        if stage in ('C1', 'C6'):
+            stdout = c.component.canonical_json_v1(complete).decode('ascii') + '\n'
+            failure = c.native_failure_bytes_v1(c.Gate2Refusal('native_stdout_deadline',
+                {'written_bytes': len(stdout), 'write_extent_unknown': False,
+                 'flush_completed': False})).decode('ascii')
+            if len(stdout.encode('ascii')) > 2048 or len(failure.encode('ascii')) > 768:
+                raise RuntimeError('d25_c_model_pipe_bound')
+            for failed in (False, True):
+                later.append({'id': stage + ('_failure' if failed else '_success'),
+                              'stage': stage, 'args': args, 'stdout': stdout,
+                              'stderr': failure if failed else '', 'failure': failed,
+                              'duration_ms': 150000, 'native_input': native_input})
+    summary = {'stage': 'D', 'receipt_sha256': digest(b'controlled-D-receipt'),
+               'receipt_size_bytes': 20480,
+               'final_measurement': {key: maximum for key in
+                                     ('c_free_bytes', 'ext4_used_bytes', 'project_free_bytes')},
+               'ledger': {'remaining_before': 536870912, 'charge_bytes': 2097152,
+                          'remaining_after': 534773760},
+               'deadline_ns': maximum, 'finished_ns': maximum - 1,
+               'control_bytes': 524288, 'aggregate_bytes': 2097152, 'passed': True,
+               'finalization_complete': True, 'controlled': False, 'external_return_required': True}
+    d_stdout = c.component.canonical_json_v1(summary).decode('ascii') + '\n'
+    d_failure = c.native_failure_bytes_v1(c.Gate2Refusal('native_stdout_deadline',
+        {'written_bytes': len(d_stdout), 'write_extent_unknown': False,
+         'flush_completed': False})).decode('ascii')
+    if len(d_stdout.encode('ascii')) > 768 or len(d_failure.encode('ascii')) > 768:
+        raise RuntimeError('d25_d_model_pipe_bound')
+    d_args = [commit, '32768', packet_sha, ','.join(
+        str(row['descriptor']['size_bytes']) + ':' + row['descriptor']['sha256']
+        for row in completions)]
+    for failed in (False, True):
+        later.append({'id': 'D_failure' if failed else 'D_success', 'stage': 'D',
+                      'args': d_args, 'stdout': d_stdout, 'stderr': d_failure if failed else '',
+                      'failure': failed, 'duration_ms': 10000, 'native_input': native_input})
+    approval_template = {
+        'version': 1, 'kind': 'vast_gate2_external_delivery_approval_v1',
+        'receipt_sha256': None, 'context_sha256': None, 'code_commit': commit,
+        'packet_size_bytes': 32768, 'packet_sha256': packet_sha, 'selected_sha256': None,
+        'core_sha256': expected['core_sha256'], 'factory_sha256': factory_sha,
+        'decision': 'approved_for_C1', 'approval_type': 'delegated_agent_self_approval',
+        'independent_review_reference': 'https://github.com/lordcoudy/VAST/pull/9#issuecomment-6250553343'}
+    approval_reference = 'https://github.com/lordcoudy/VAST/pull/9#issuecomment-' + '9' * 20
+    data = {'initial': initial, 'finalizer': finalizer,
+            'executor_prefix': prefix, 'executor_suffix': suffix, 'executor_pin': executor_pin,
+            'fields': list(NODE_FIELDS), 'pipe_fields': list(NODE_PIPE_FIELDS), 'held': held,
+            'commit': commit, 'packet_sha256': packet_sha, 'factory_sha256': factory_sha,
+            'forms': forms, 'chain': chain, 'later': later,
+            'approval_template': approval_template, 'approval_reference': approval_reference}
+    gate()
+    encoded = canonical(data)
+    facts = {'kind': 'd25_inert_source_construction_metadata_v1',
+             'initial': source_facts, 'node_codec': role_facts, 'driver': driver_facts,
+             'finalizer': finalizer_facts, 'executor': executor_pin,
+             'input_data_size_bytes': len(encoded), 'input_data_sha256': digest(encoded),
+             'modeled_setup_form_count': len(forms), 'modeled_later_form_count': len(later),
+             'controlled_synthetic_geometry_only': True,
+             'independent_actual_acquisition_proven': False,
+             'generated_operational_program_execution': False,
+             'generated_full_subject_files_written': False,
+             'behavior_conformance_complete': False, 'physical_acceptance': False}
+    if len(canonical(facts)) > 32768:
+        raise RuntimeError('d25_source_metadata_bound')
+    return encoded, facts
+
+
+D25_GEOMETRY_DRIVER = 'function d23Geometry(d,report){\n const z=require(\'node:zlib\'),hash=b=>require(\'node:crypto\').createHash(\'sha256\').update(b).digest(\'hex\'),canon=v=>gate2Canonical(v,262144),ascii=s=>typeof s===\'string\'&&!/[^\\x00-\\x7f]/.test(s);\n const held=d.held.map(s=>Buffer.from(s,\'base64\'));\n function bound(id,ok){report.checks.push({id,ok});}\n function keep(id,text,cap){measure(id,text);bound(id+\'_bound\',text.length<=cap);}\n function provider(text,n){return {content:[{type:\'text\',text}],isError:false,_meta:{actual_ordinal:n,resource:{uri:\'controlled:retained\'}},resource:{mimeType:\'application/json\'}};}\n const start=Number.MAX_SAFE_INTEGER-1500000,work=start+140000,end=start+150000,clock=[start,work,end],poll=\'await gate2Resume.poll();\',ready=\'1755772592209100\\n\',ack_ms=149000;\n const setupInput=Buffer.concat([Buffer.from(canon({remaining_ms:ack_ms,selected_base64:\'\',sha256:hash(\'\'),size_bytes:0})+\'\\n\'),...held]);\n function snapshot(id,kind,raw,input,changes={},n=start+130000,ownClock=null,ack=ack_ms,pid=4294967295){\n  let pieces=[],pipes=raw.map((b,i)=>{\n   let encoding=b.every(x=>x<128)?\'ascii\':\'base64\',v=b.toString(encoding),compressed=z.brotliCompressSync(b,{maxOutputLength:4096}).toString(\'base64\');\n   check(id+\'_pipe\'+i+\'_inverse\',z.brotliDecompressSync(Buffer.from(compressed,\'base64\'),{maxOutputLength:2113}).equals(b));\n   if(JSON.stringify([\'br64\',compressed.length,compressed]).length<JSON.stringify([encoding,v.length,v]).length){encoding=\'br64\';v=compressed;}\n   pieces.push(v);let p={bytes:b.length,sha256:hash(b),eof:true,closed:true,error:false,encoding,chars:v.length,remainder_unknown:false};\n   if(changes.partial&&i===0)Object.assign(p,{eof:false,closed:false,error:true,remainder_unknown:true});\n   return d.pipe_fields.map(k=>p[k]);\n  });\n  let f={pid,returncode:0,signal:null,exited:true,closed:true,pipes,causes:[],unknown_closure:false,completed:true,terminal_observed_ms:n,physical_acceptance:false,clock:ownClock,ack_ms:ack,stdin_finished:true,stdin_closed:true,stdin_bytes:input.length,stdin_sha256:hash(input),stdin_extent_unknown:false,source_facts:null};\n  if(changes.failure)Object.assign(f,{returncode:1,completed:false});\n  if(changes.partial)Object.assign(f,{closed:false,causes:[\'pipe_error\'],unknown_closure:true,completed:false});\n  if(changes.unknown)Object.assign(f,{returncode:null,exited:false,unknown_closure:true,completed:false});\n  if(raw[1].length)f.completed=false;\n  return JSON.stringify([kind,...d.fields.map(k=>f[k])])+\'\\n\'+pieces.join(\'\');\n }\n function writer(id,selected,remaining,cap,formsCap,ownClock,n){\n  const selectedSHA=hash(selected),header=canon({remaining_ms:remaining,selected_base64:Buffer.from(selected).toString(\'base64\'),sha256:selectedSHA,size_bytes:selected.length})+\'\\n\',input=Buffer.concat([Buffer.from(header),...held]),q=Math.ceil(selected.length/4096)*4096,forms=Math.max(cap,q)+q+8192;\n  const facts={stdin_eof:true,stdin_extent_unknown:false,source_bytes:held.map(b=>b.length),source_sha256:held.map(hash),open_completed:true,written_bytes:selected.length,extent_unknown:false,fsync_completed:true,close_completed:true,allocated_bytes:cap,completed:true,sha256:selectedSHA,unknown_closure:false};\n  let receipt=canon({completed:true,external_terminal_required:true,size_bytes:selected.length,sha256:selectedSHA,write_facts:facts,deadline_ns:0,all_forms_quote_bytes:forms})+\'\\n\';\n  check(id+\'_uint64\',receipt.split(\'"deadline_ns":0\').length===2);receipt=receipt.replace(\'"deadline_ns":0\',\'"deadline_ns":18446744073709551615\');\n  const raw=Buffer.from(\'{"ready":true,"schema_version":1}\\n\'+receipt);\n  return {header,input,raw,text:snapshot(id+\'_writer\',2,[raw,Buffer.alloc(0)],input,{},n,ownClock,remaining,4294967294),forms,formsOK:forms<=formsCap,selectedSHA};\n }\n const executor=d.executor_prefix+JSON.stringify(d.initial)+\',\'+JSON.stringify(d.finalizer)+d.executor_suffix;\n const marker=\'const g2factory=function(gate2Resume,nodeRepl){\\n\',at=d.finalizer.indexOf(marker),factorySize=13073;\n check(\'source_bindings\',held.length===2&&ascii(executor)&&executor.length===d.executor_pin.size_bytes&&hash(executor)===d.executor_pin.sha256&&at>=0&&d.finalizer.indexOf(marker,at+1)<0&&hash(d.finalizer.slice(at+marker.length,at+marker.length+factorySize))===d.factory_sha256&&d.finalizer.startsWith(\'\\n};\',at+marker.length+factorySize));\n keep(\'initial_source\',d.initial,262144);keep(\'finalizer_source\',d.finalizer,262144);keep(\'executor_source\',executor,262144);\n function fullChain(id,root){\n  let c=JSON.parse(canon(d.chain)),a=c[0].call,b=c[0].result,w=c[1].call,t=c[1].result;\n  let valid=c.length===2&&a.input===\'\'&&t.output.length===2&&t.output[1].text===\'\'&&a.call_id!==w.call_id&&b.call_id===a.call_id&&t.call_id===w.call_id;\n  const wrapper=/^Script (completed|running with cell ID ([A-Za-z0-9_-]{1,64}))\\nWall time [0-9]{1,12}(?:\\.[0-9]{1,9})? seconds\\nOutput:\\n$/,first=wrapper.exec(b.output),last=wrapper.exec(t.output[0].text);\n  valid=valid&&first&&first[2]&&last&&last[1]===\'completed\'&&b.output.length<=256&&t.output[0].text.length<=256;\n  const wa=JSON.parse(w.arguments);\n  valid=valid&&canon(wa)===w.arguments&&wa.cell_id===first[2]&&wa.max_tokens===100000&&wa.yield_time_ms>=1&&wa.yield_time_ms<=60000;\n  a.input=executor;t.output[1].text=root;\n  check(id+\'_chain_join\',valid&&t.output.slice(1).map(r=>r.text).join(\'\')===root&&typeof b.output===\'string\');\n  return {text:canon(c),reference:\'functions.exec/\'+first[2]};\n }\n check(\'six_setup_forms\',d.forms.length===6&&d.forms.filter(x=>x.success===true).length===1);\n let upstream=null;\n for(const form of d.forms){\n  const id=form.id;check(id+\'_setup\',ascii(form.stdout)&&ascii(form.stderr)&&(!form.success||!form.failure&&!form.partial&&!form.unknown&&!form.stderr));\n  const raw=[Buffer.from(form.stdout),Buffer.from(form.stderr),Buffer.from(ready)];\n  check(id+\'_provider_pipes\',raw[0].length<=2048&&raw[1].length<=2048&&raw[2].length<=32);\n  const terminal=snapshot(id,1,raw,setupInput,form),codes=[d.initial,...Array(5).fill(poll)],frames=codes.map((code,i)=>provider(i===5?terminal:JSON.stringify(i===0?[0,...clock,4294967295,null]:[0,4294967295,null]),i+1));\n  let selected,observed;\n  try{\n   const guard=budget(\'selected_wire_root_deadline\');\n   function original(value){try{return guard.phase(()=>gate2Canonical(value,32768));}catch(e){if(e&&e.message===\'canonical_bound\')throw Error(\'selected_wire_input\');throw e;}}\n   const selectedOriginal=original({call:{tool:\'mcp__node_repl__js\',timeout_ms:32000,codes},frames});\n   keep(id+\'_selected_original\',selectedOriginal,32768);selected=encoded(selectedOriginal,\'gate2-selected-lzss-v2\',guard);\n   const observedOriginal=original({calls:codes.map(code=>({code,timeout_ms:32000})),frames});\n   keep(id+\'_observed_original\',observedOriginal,32768);observed=encoded(observedOriginal,\'gate2-observed-lzss-v2\',guard);\n   keep(id+\'_selected_wire\',selected,12288);keep(id+\'_observed_wire\',observed,12288);\n   const receive=budget(\'selected_wire_receive_deadline\');check(id+\'_full_roundtrip\',decoded(selected,\'gate2-selected-lzss-v2\',receive).text===selectedOriginal&&decoded(observed,\'gate2-observed-lzss-v2\',receive).text===observedOriginal);\n  }catch(e){bound(id+\'_wire_geometry\',false);measure(id+\'_wire_refusal\',String(e.message));continue;}\n  const w=writer(id,selected,19000,12288,32768,clock,start+131000);\n  keep(id+\'_ack\',w.header,24576);keep(id+\'_writer_stdout\',w.raw.toString(\'ascii\'),2112);\n  bound(id+\'_writer_input_bound\',w.input.length<=90112);bound(id+\'_forms_bound\',w.formsOK);\n  const context=form.success?[\'vast.gate2.external-delivery.v1\',d.commit,32768,d.packet_sha256,w.selectedSHA,hash(d.initial),d.factory_sha256]:null,verification=JSON.stringify([3,start+132000,end,form.success,true,w.selectedSHA,context]);\n  const record={completed:form.success,setup_success:form.success,retention_complete:true,physical_acceptance:false,output_profile:{max_output_tokens:100000,max_record_bytes:65536},setup:{observed,selected},writer_call:{code:d.finalizer+\'\\nawait gate2Resume.finish(\'+JSON.stringify(selected)+\');\',timeout_ms:11000},writer:provider(w.text,7),verification_call:{code:\'gate2Resume.verifyReturn(\'+JSON.stringify(w.text)+\');\',timeout_ms:1000},verification:provider(verification,8),context,selected_sha256:w.selectedSHA};\n  const root=canon(record)+\'\\n\',chain=fullChain(id,root);keep(id+\'_root\',root,65536);keep(id+\'_chain\',chain.text,262144);\n  if(form.success&&root.length<=65536&&chain.text.length<=262144&&w.raw.length<=2112&&w.input.length<=90112&&w.formsOK){\n   const receipt={version:1,context_sha256:hash(canon(context)),record_size_bytes:root.length,record_sha256:hash(root),executor_call_sha256:hash(chain.text),max_output_tokens:100000,terminal:\'complete_untruncated\',tool_reference:chain.reference},receiptSHA=hash(canon(receipt));\n   const body=JSON.parse(canon(d.approval_template));check(\'approval_slots\',Object.values(body).filter(v=>v===null).length===3&&[\'receipt_sha256\',\'context_sha256\',\'selected_sha256\'].every(k=>body[k]===null));Object.assign(body,{receipt_sha256:receiptSHA,context_sha256:receipt.context_sha256,selected_sha256:w.selectedSHA});\n   const external={receipt,approval:{reference:d.approval_reference,body_sha256:hash(canon(body)+\'\\n\'),receipt_sha256:receiptSHA}};\n   upstream={pins:[w.selectedSHA,hash(d.initial),d.factory_sha256],external,externalSHA:hash(canon(external))};\n  }\n }\n check(\'six_later_forms\',d.later.length===6&&new Set(d.later.map(x=>x.stage+\':\'+x.failure)).size===6);\n bound(\'later_measured_upstream\',!!upstream);if(!upstream)return;\n for(const form of d.later){\n  let stage=form.stage,id=form.id,args=form.args,duration=stage===\'D\'?10000:150000;\n  check(id+\'_later\',[\'C1\',\'C6\',\'D\'].includes(stage)&&form.duration_ms===duration&&args.length===4&&args[0]===d.commit&&args[1]===\'32768\'&&args[2]===d.packet_sha256&&ascii(form.native_input));\n  const native=[Buffer.from(form.stdout),Buffer.from(form.stderr)],input=Buffer.from(form.native_input),stageStart=start+(stage===\'D\'?1200000:Number(stage.slice(1))*160000),stageEnd=stageStart+duration;\n  check(id+\'_pipe_limits\',native[0].length<=2048&&native[1].length<=768&&native[0].length+native[1].length<=4096);\n  const external=stage===\'C1\'?upstream.external:upstream.externalSHA,begin=\'await gate2Resume.cd.begin(\'+[stage,args,...upstream.pins,external].map(canon).join(\',\')+\');\',next=\'await gate2Resume.cd.poll(1);\';\n  const text=snapshot(id,2,native,input,{failure:form.failure},stageEnd-3000,[stageStart,stageEnd],null),codes=[begin,...Array(5).fill(next)],frames=codes.map((code,i)=>provider(i===5?text:JSON.stringify([0,stage,4294967295,null]),i+1));\n  const selected=canon({call:{tool:\'mcp__node_repl__js\',timeout_ms:32000,codes},frames});keep(id+\'_selected\',selected,4096);keep(id+\'_native_input\',form.native_input,32768);\n  if(selected.length>4096)continue;\n  const w=writer(id,selected,2000,4096,16384,[stageStart,stageEnd],stageEnd-2000);keep(id+\'_ack\',w.header,16384);keep(id+\'_writer_stdout\',w.raw.toString(\'ascii\'),2112);\n  bound(id+\'_writer_forms_bound\',w.formsOK);bound(id+\'_writer_input_bound\',w.input.length<=81920);\n }\n}\n'
+
+D25_GEOMETRY_STDIO = "'use strict';\nlet chunks=[],inputBytes=0,failed=false;\nconst report={schema_version:1,case:'geometry',node_version:process.versions.node,completed:false,cause:null,checks:[],measurements:[]};\nfunction check(id,ok){report.checks.push({id,ok:!!ok});if(!ok)throw Error('d25_driver_assertion');}\nfunction measure(id,text){if(typeof text!=='string'||/[^\\x00-\\x7f]/.test(text)||text.length>262144)throw Error('d25_driver_assertion');report.measurements.push({id,size_bytes:text.length,sha256:gate2SHA256(text)});}\nfunction budget(cause='selected_wire_deadline',now=()=>performance.now(),end=Infinity){return gate2WireBudget(now,cause,end);}\nfunction decoded(text,tag='gate2-selected-lzss-v2',guard=budget()){return gate2WireDecode(text,tag,gate2SHA256,gate2Canonical,guard);}\nfunction encoded(text,tag='gate2-selected-lzss-v2',guard=budget('selected_wire_root_deadline')){return gate2WireEncode(text,tag,gate2SHA256,gate2Canonical,guard);}\nfunction finish(cause){if(failed)return;failed=true;report.cause=cause;process.stdout.write(gate2Canonical(report,32767)+'\\n');}\nprocess.stdin.on('error',()=>finish('d25_driver_input'));\nprocess.stdin.on('data',b=>{if(failed)return;inputBytes+=b.length;if(inputBytes>262144){finish('d25_driver_input');process.stdin.destroy();return;}chunks.push(b);});\nprocess.stdin.on('end',()=>{if(failed)return;try{\n const bytes=Buffer.concat(chunks);chunks=[];if(bytes.some(x=>x>127))throw Error('d25_driver_input');\n const text=bytes.toString('ascii'),request=JSON.parse(text);\n if(!request||typeof request!=='object'||Array.isArray(request)||Object.keys(request).sort().join()!=='case,data'||request.case!=='geometry'||gate2Canonical(request,262144)!==text)throw Error('d25_driver_input');\n if(process.versions.node!=='25.2.1')throw Error('d25_node_version');\n if(typeof gate2WireEncode!=='function'||typeof gate2WireDecode!=='function'||typeof gate2WireBudget!=='function')throw Error('d25_codec_absent');\n d23Geometry(request.data,report);\n if(report.checks.every(row=>row.ok)){report.completed=true;finish(null);}else finish('d25_geometry_hold');\n }catch(e){finish(new Set(['d25_codec_absent','d25_driver_assertion','d25_driver_input','d25_node_version']).has(e.message)?e.message:'d25_driver_error');}});\n"
+
+def d25_geometry_driver_v1():
+    old_model = D23_GEOMETRY_DRIVER
+    old_stdio = D23_GEOMETRY_STDIO
+    if ((len(old_model), d22_sha(old_model.encode('ascii'))) !=
+            (11069, '117826dbcc1bc2c3ddbb99941c5d4784c6071a166b79a3673212c066a16cf827')
+            or (len(old_stdio), d22_sha(old_stdio.encode('ascii'))) !=
+            (2233, '60db15aca044d31019b4479b1d30a27aadc0f4a9cf76f5eb9894c68188b89b26')):
+        raise RuntimeError('d25_legacy_geometry_binding')
+    if (D25_GEOMETRY_DRIVER.count('gate2-selected-lzss-v2') != 2
+            or D25_GEOMETRY_DRIVER.count('gate2-observed-lzss-v2') != 2
+            or D25_GEOMETRY_STDIO.count('gate2-selected-lzss-v2') != 2
+            or D25_GEOMETRY_DRIVER.replace('gate2-selected-lzss-v2', 'gate2-selected-lz77-v1').replace(
+                'gate2-observed-lzss-v2', 'gate2-observed-lz77-v1') != old_model
+            or D25_GEOMETRY_STDIO.replace('gate2-selected-lzss-v2', 'gate2-selected-lz77-v1').replace(
+                'd25_', 'd23_') != old_stdio):
+        raise RuntimeError('d25_geometry_version_inverse')
+    return (ROOT_ENCODER + '\n' + ROOT_SHA256 + '\n' + D25_WIRE_CODEC + '\n'
+            + D25_GEOMETRY_DRIVER + '\n' + D25_GEOMETRY_STDIO)
+
+
+class D25CompleteGeometryTests(unittest.TestCase):
+    def test_complete_form_bounds_preserve_hold(self):
+        # The ONE consumed D25 geometry risk is retained DATA, never replayed.
+        import ast
+        import copy
+        import hashlib
+        import json
+        import re
+        from pathlib import Path
+
+        def require(ok, label):
+            if not ok:
+                raise AssertionError(label)
+
+        def sha(raw):
+            return hashlib.sha256(raw).hexdigest()
+
+        def pairs(rows):
+            result = {}
+            for key, value in rows:
+                require(key not in result, 'duplicate_json_key')
+                result[key] = value
+            return result
+
+        def load(raw):
+            return json.loads(raw, object_pairs_hook=pairs,
+                              parse_constant=lambda value: require(False, 'nonfinite_json'))
+
+        def canonical(value):
+            return json.dumps(value, sort_keys=True, separators=(',', ':'),
+                              ensure_ascii=True, allow_nan=False).encode('ascii')
+
+        def read_bounded(path, limit):
+            with path.open('rb') as handle:
+                raw = handle.read(limit + 1)
+            require(len(raw) <= limit, 'source_read_bound')
+            return raw
+
+        main_path = Path(__file__).absolute()
+        caller_path = main_path.with_name('test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py')
+        held = {'main': read_bounded(main_path, 524288),
+                'caller': read_bounded(caller_path, 524288)}
+        texts = {name: raw.decode('utf-8') for name, raw in held.items()}
+        trees = {name: ast.parse(text) for name, text in texts.items()}
+        data_name = '_D25_GEOMETRY_RETAINED_RESULT_V1'
+        data_nodes = [node for node in trees['caller'].body
+                      if isinstance(node, ast.Assign)
+                      and len(node.targets) == 1
+                      and isinstance(node.targets[0], ast.Name)
+                      and node.targets[0].id == data_name]
+        require(len(data_nodes) == 1, 'retained_assignment_identity')
+        payload = ast.literal_eval(data_nodes[0].value)
+        require(type(payload) is bytes and
+                (len(payload), sha(payload)) ==
+                (79735, '5e73ff7af9a7e7becd7d461513fbe9b8ef19c590f091ba8880990f5f63bd70db'),
+                'retained_payload_pin')
+        retained = load(payload)
+        require(type(retained) is dict and set(retained) == {
+            'schema_version', 'kind', 'disposition', 'originals',
+            'original_development_class', 'source_row_format', 'protected_source_rows',
+            'external_formatter_fixture_pins', 'actual_entry', 'root_tool_observation',
+            'expected', 'source_guard_policy', 'limits'}, 'retained_schema')
+        require(retained['schema_version'] == 1 and
+                retained['kind'] == 'd25_retained_geometry_negative_v1' and
+                retained['disposition'] == 'INCOMPLETE_WIRE_REFUSAL', 'retained_identity')
+
+        def declared(node):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                return [node.name]
+            if isinstance(node, ast.Import):
+                return [item.asname or item.name.split('.')[0] for item in node.names]
+            if isinstance(node, ast.ImportFrom):
+                return [item.asname or item.name for item in node.names]
+            if isinstance(node, (ast.Assign, ast.AnnAssign)):
+                targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+                return sorted({item.id for target in targets for item in ast.walk(target)
+                               if isinstance(item, ast.Name) and isinstance(item.ctx, ast.Store)})
+            return []
+
+        def literal(node):
+            try:
+                ast.literal_eval(node)
+            except (ValueError, TypeError, RecursionError, OverflowError):
+                require(False, 'additive_literal_required')
+
+        def declaration(node):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                require(not node.decorator_list and not getattr(node, 'type_params', []),
+                        'additive_function_modifier')
+                for value in node.args.defaults + [v for v in node.args.kw_defaults if v is not None]:
+                    literal(value)
+                args = node.args.posonlyargs + node.args.args + node.args.kwonlyargs
+                args += [arg for arg in (node.args.vararg, node.args.kwarg) if arg is not None]
+                for annotation in [arg.annotation for arg in args] + [node.returns]:
+                    if annotation is not None:
+                        require(isinstance(annotation, ast.Constant)
+                                and type(annotation.value) is str, 'additive_annotation')
+                return
+            if isinstance(node, ast.ClassDef):
+                require(not node.decorator_list and not node.keywords
+                        and not getattr(node, 'type_params', []) and len(node.bases) == 1
+                        and isinstance(node.bases[0], ast.Attribute)
+                        and isinstance(node.bases[0].value, ast.Name)
+                        and node.bases[0].value.id == 'unittest'
+                        and node.bases[0].attr == 'TestCase', 'additive_class_modifier')
+                names = set()
+                for item in node.body:
+                    if isinstance(item, ast.Expr) and isinstance(item.value, ast.Constant) and type(item.value.value) is str:
+                        continue
+                    require(isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)),
+                            'additive_class_body')
+                    require(item.name not in names, 'additive_class_duplicate')
+                    names.add(item.name)
+                    declaration(item)
+                return
+            require(isinstance(node, ast.Assign) and len(node.targets) == 1
+                    and isinstance(node.targets[0], ast.Name), 'additive_declaration_required')
+            literal(node.value)
+
+        def source_guard(role, text, tree, expected):
+            protected = {name for row in expected for name in row[1]}
+            protected.update(('D25CompleteGeometryTests', data_name))
+            nodes = []
+            excluded_class = excluded_data = 0
+            for node in tree.body:
+                if role == 'main' and isinstance(node, ast.ClassDef) and node.name == 'D25CompleteGeometryTests':
+                    require(not node.decorator_list and len(node.body) == 1
+                            and isinstance(node.body[0], ast.FunctionDef)
+                            and node.body[0].name == 'test_complete_form_bounds_preserve_hold',
+                            'replacement_class_shape')
+                    excluded_class += 1
+                    continue
+                if role == 'caller' and declared(node) == [data_name]:
+                    require(isinstance(node, ast.Assign) and len(node.targets) == 1
+                            and isinstance(node.targets[0], ast.Name), 'retained_assignment_shape')
+                    excluded_data += 1
+                    continue
+                nodes.append(node)
+            require(excluded_class == (1 if role == 'main' else 0)
+                    and excluded_data == (1 if role == 'caller' else 0), 'source_exclusion_identity')
+            require(len(nodes) >= len(expected), 'protected_node_missing')
+            for node, wanted in zip(nodes, expected):
+                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                    require(not node.decorator_list, 'protected_decorator_changed')
+                segment = ast.get_source_segment(text, node)
+                require(type(segment) is str, 'protected_segment_missing')
+                raw = segment.encode('utf-8')
+                actual = [type(node).__name__, declared(node), len(raw), sha(raw)]
+                # Exact source is portable across Python minors. Stored raw AST
+                # hashes are diagnostics, not a 3.14-to-3.12 comparison gate.
+                require(actual == wanted[:4], 'protected_contributor_changed')
+            new_names = set()
+            for node in nodes[len(expected):]:
+                names = declared(node)
+                require(len(names) == 1 and names[0] not in protected
+                        and names[0] not in new_names, 'additive_binding_reused')
+                declaration(node)
+                new_names.update(names)
+
+        for role in ('main', 'caller'):
+            rows = retained['protected_source_rows'][role]['ordered_rows']
+            require(len(rows) == (96 if role == 'main' else 70), 'protected_row_count')
+            source_guard(role, texts[role], trees[role], rows)
+        root = main_path.parents[1]
+        require(len(retained['external_formatter_fixture_pins']) == 4, 'formatter_pin_count')
+        for pin in retained['external_formatter_fixture_pins']:
+            raw = read_bounded(root / pin['path'], 262144)
+            require((len(raw), sha(raw)) == (pin['size_bytes'], pin['sha256']), 'formatter_source_changed')
+
+        def original_class(value):
+            raw = value['source_utf8'].encode('utf-8')
+            require((len(raw), sha(raw)) ==
+                    (10891, 'c804e88a9d5c405ecd66432219fe70e54b33a71c8367b5409df15697aedf9a5d'),
+                    'development_class_pin')
+            tree = ast.parse(raw.decode('utf-8'))
+            require(len(tree.body) == 1 and isinstance(tree.body[0], ast.ClassDef)
+                    and tree.body[0].name == 'D25CompleteGeometryTests', 'development_class_shape')
+
+        original_class(retained['original_development_class'])
+
+        def originals(value):
+            pins = (
+                ('stdout', 15811, 'a4a5ab1731bacdb30596e78f5b977b59b1de9f640c35292ace928c62f65d9f43'),
+                ('stderr', 0, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'),
+                ('parent', 3780, '3d31e731927dde64f42e95e8da6921c864a3d9b1bc7f9a4c2a9709e63f4e43b3'),
+                ('canonical_report', 4405, '4e3b8c93c98eb7ed3715c5a939531b01b41f59f9c501ff574fce70c115532e17'))
+            require(len(value) == 4, 'original_count')
+            buffers = {}
+            for row, (name, size, digest) in zip(value, pins):
+                raw = row['bytes_ascii'].encode('ascii')
+                require(row['name'] == name and (len(raw), sha(raw)) == (size, digest)
+                        and (row['size_bytes'], row['sha256']) == (size, digest), 'original_pin')
+                buffers[name] = raw
+            return buffers
+
+        buffers = originals(retained['originals'])
+        lines = buffers['stdout'].splitlines(keepends=True)
+        require(len(lines) == 7 and all(line.endswith(b'\n') and len(line) <= 32768 for line in lines), 'original_line_shape')
+        binding, started = load(lines[0]), load(lines[1])
+        require(lines[2].startswith(b'D25_GEOMETRY_SOURCE_METADATA ')
+                and lines[3].startswith(b'D25_CASE_METADATA '), 'original_metadata_order')
+        source = load(lines[2][len(b'D25_GEOMETRY_SOURCE_METADATA '):])
+        case = load(lines[3][len(b'D25_CASE_METADATA '):])
+        issue, terminal, summary = (load(line) for line in lines[4:])
+        parent = load(buffers['parent'])
+        report, capture = case['report'], case['capture']
+        test_id = ('tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.'
+                   'D25CompleteGeometryTests.test_complete_form_bounds_preserve_hold')
+        require(binding['event'] == 'source_bindings'
+                and binding['both_buffers_verified_before_either_compile'] is True
+                and binding['execution_reopens_test_paths'] is False
+                and all(binding[name] is True for name in ('held_caller_aliases_bound',
+                    'held_driver_aliases_bound', 'held_driver_loader_bound')), 'original_source_binding')
+        run_sources = [{'path': row['path'], 'size_bytes': row['run_preparation_buffer_size_bytes'],
+                        'sha256': row['run_preparation_buffer_sha256']}
+                       for row in (retained['protected_source_rows']['main'], retained['protected_source_rows']['caller'])]
+        require(binding['sources'] == parent['source_pins'] == run_sources, 'run_source_pin_join')
+        require(started == {'event': 'test_started', 'test_id': test_id}
+                and issue['event'] == 'parent_issue' and issue['test_id'] == test_id
+                and terminal['event'] == 'test_terminal' and terminal['test_id'] == test_id
+                and terminal['outcome'] == issue['outcome'] == 'failure'
+                and terminal['error_type'] == issue['error_type'] == 'AssertionError'
+                and terminal['issue_counts'] == {'parent_issue': 1, 'subtest_issue': 0}
+                and terminal['subtest_callbacks'] == 0, 'original_failure_identity')
+        require(issue['message_size_bytes'] == terminal['message_size_bytes'] == 2540
+                and issue['message_sha256'] == terminal['message_sha256'] ==
+                '99aa63d206d7144485e96f78b7a409e74a08cc0918e3cf282ff0a3643c008fd6', 'original_failure_pin')
+        require(summary == parent['test_summary'] and summary['event'] == 'test_summary'
+                and summary['tests_run'] == summary['failures'] == summary['issue_events'] == 1
+                and summary['successes'] == summary['errors'] == summary['skips'] == 0
+                and summary['successful'] is False and summary['parent_outcomes'] == {'failure': 1}, 'original_summary')
+        require(summary['test_streams']['stdout']['observed_bytes'] == len(lines[2] + lines[3])
+                and summary['test_streams']['stdout']['sha256'] == sha(lines[2] + lines[3]), 'tagged_stream_join')
+        require(set(case) == {'case', 'report', 'capture'} and case['case'] == 'geometry'
+                and canonical(report) + b'\n' == buffers['canonical_report'], 'canonical_report_join')
+        require(set(source) == set('kind driver initial node_codec finalizer executor input_data_size_bytes input_data_sha256 modeled_setup_form_count modeled_later_form_count controlled_synthetic_geometry_only independent_actual_acquisition_proven generated_operational_program_execution generated_full_subject_files_written behavior_conformance_complete physical_acceptance'.split())
+                and source['kind'] == 'd25_inert_source_construction_metadata_v1'
+                and source['modeled_setup_form_count'] == source['modeled_later_form_count'] == 6
+                and source['controlled_synthetic_geometry_only'] is True, 'source_metadata_shape')
+        for name in ('independent_actual_acquisition_proven', 'generated_operational_program_execution',
+                     'generated_full_subject_files_written', 'behavior_conformance_complete', 'physical_acceptance'):
+            require(source[name] is False, 'source_authority_limit')
+        driver = source['driver']
+        require(set(driver) == {'source_kind', 'driver_role', 'driver_getter', 'program_bytes', 'program_sha256'}
+                and driver == binding['fixed_driver'] == parent['fixed_driver_binding']
+                and all(capture[key] == value for key, value in driver.items())
+                and driver['source_kind'] == 'd25_fixed_test_driver_v1'
+                and driver['driver_role'] == 'geometry' and driver['driver_getter'] == 'd25_geometry_driver_v1'
+                and (driver['program_bytes'], driver['program_sha256']) ==
+                (24572, 'f3bce3947d93f0a9d630372bd1b0d4d02fe61ecd1e47458259f3a8ccdad72265'), 'actual_driver_join')
+        require(source['node_codec'] == binding['codec_role'] == parent['codec_role_binding']
+                and source['node_codec']['full_codec_bytes'] == 6903
+                and source['node_codec']['node_codec_bytes'] == 3939
+                and source['node_codec']['excluded_encoder_bytes'] == 2964, 'actual_codec_role_join')
+        initial = source['initial']
+        require((initial['source_bytes'], initial['source_sha256'], initial['canonical_data_bytes'],
+                 initial['canonical_data_sha256'], initial['compressed_data_bytes'], initial['compressed_data_sha256']) ==
+                (14162, '4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d',
+                 6566, '8ca48e37f97d03af660960f75afab79db162e8f8997f39f6c1c5c55dd896c97e',
+                 2365, 'a7caf17aa8d2d5d6beb60880d415e7328947d188623bf5fa0d1ad566e1fd2f2f')
+                and initial['data_fields'] == 9 and initial['strings_field_absent'] is True
+                and all(initial[name] is True for name in ('exact_decoder_inverse', 'exact_phase_inverse', 'exact_inverse_source')),
+                'actual_initial_recipe')
+
+        def complete_capture(value, report_bytes=None):
+            require(value['causes'] == [] and type(value['returncode']) is int and value['returncode'] == 0
+                    and value['descendant_quiescence'] == 'UNKNOWN', 'capture_status')
+            require(all(value[name] is True for name in ('data_only', 'spawned', 'parent_observed_completion',
+                    'finished_before_deadline', 'child_completion_observed_before_deadline', 'reaped',
+                    'threads_joined', 'stdin_complete', 'stdin_closed')), 'capture_completion')
+            require(all(value[name] is False for name in ('timed_out', 'kill_requested',
+                    'stdin_extent_unknown', 'stdin_write_in_flight')), 'capture_unknown')
+            require(value['started_monotonic'] + value['elapsed_seconds'] < value['cleanup_deadline']
+                    <= value['child_total_deadline'] <= value['caller_deadline'] - 5, 'capture_deadline')
+            for name in ('stdout', 'stderr'):
+                channel = value[name]
+                require(channel['eof'] is True and channel['closed'] is True and channel['overflow'] is False
+                        and channel['io_error'] is None and channel['unknown_remainder'] is False
+                        and channel['observed_bytes'] == channel['retained_bytes'], 'capture_channel')
+            require(value['stderr']['retained_bytes'] == 0, 'capture_stderr')
+            if report_bytes is not None:
+                require((value['report_bytes'], value['report_sha256']) == (len(report_bytes), sha(report_bytes))
+                        and value['stdout']['retained_bytes'] == len(report_bytes)
+                        and value['stdout']['prefix_sha256'] == sha(report_bytes), 'capture_report_join')
+
+        complete_capture(capture, buffers['canonical_report'])
+        compression = initial['compression']
+        complete_capture(compression)
+        require(compression['quality'] == 11 and compression['roundtrip'] is True
+                and (compression['input_bytes'], compression['input_sha256']) ==
+                (initial['canonical_data_bytes'], initial['canonical_data_sha256'])
+                and (compression['packed_bytes'], compression['packed_sha256']) ==
+                (initial['compressed_data_bytes'], initial['compressed_data_sha256']), 'compression_data_join')
+        require((capture['data_bytes'], capture['data_sha256']) ==
+                (source['input_data_size_bytes'], source['input_data_sha256'])
+                and capture['input_bytes'] == capture['stdin_bytes'] == source['input_data_size_bytes'] + 27
+                and capture['case_completed'] is False and capture['case_cause'] == 'd25_geometry_hold', 'actual_case_join')
+
+        def negative_dimensions(value, expected):
+            require(set(value) == {'schema_version', 'case', 'node_version', 'completed', 'cause', 'checks', 'measurements'}
+                    and value['schema_version'] == 1 and value['case'] == 'geometry'
+                    and value['node_version'] == '25.2.1' and value['completed'] is False
+                    and value['cause'] == 'd25_geometry_hold', 'negative_report_shape')
+            checks = {row['id']: row['ok'] for row in value['checks']}
+            measures = {row['id']: row for row in value['measurements']}
+            require(len(checks) == len(value['checks']) == 49
+                    and value['checks'] == expected['check_rows'], 'geometry_check_identity')
+            require(len(measures) == len(value['measurements']) == 15
+                    and value['measurements'] == expected['measurement_rows'], 'geometry_measurement_identity')
+            for row in value['checks']:
+                require(set(row) == {'id', 'ok'} and type(row['ok']) is bool, 'geometry_check_shape')
+            for row in value['measurements']:
+                require(set(row) == {'id', 'size_bytes', 'sha256'} and type(row['size_bytes']) is int
+                        and row['size_bytes'] > 0 and re.fullmatch('[0-9a-f]{64}', row['sha256']), 'geometry_measure_shape')
+            forms = ('success', 'structured_failure', 'unicode_failure', 'partial_emission', 'unknown_closure', 'setup_refusal')
+            later = ('C1_success', 'C1_failure', 'C6_success', 'C6_failure', 'D_success', 'D_failure')
+            wanted_checks = {'source_bindings', 'initial_source_bound', 'finalizer_source_bound',
+                             'executor_source_bound', 'six_setup_forms', 'six_later_forms', 'later_measured_upstream'}
+            wanted_measures = {'initial_source', 'finalizer_source', 'executor_source'}
+            for form in forms:
+                wanted_checks.update(form + suffix for suffix in ('_setup', '_provider_pipes', '_pipe0_inverse',
+                    '_pipe1_inverse', '_pipe2_inverse', '_selected_original_bound', '_wire_geometry'))
+                wanted_measures.update((form + '_selected_original', form + '_wire_refusal'))
+                require(measures[form + '_selected_original']['size_bytes'] <= 32768
+                        and checks[form + '_selected_original_bound'] is True
+                        and measures[form + '_wire_refusal']['size_bytes'] == 19
+                        and measures[form + '_wire_refusal']['sha256'] ==
+                        '17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6', 'selected_refusal_identity')
+            require(set(checks) == wanted_checks and set(measures) == wanted_measures, 'negative_available_dimensions')
+            false_ids = {form + '_wire_geometry' for form in forms} | {'later_measured_upstream'}
+            require({name for name, ok in checks.items() if not ok} == false_ids
+                    and sorted(false_ids) == expected['false_check_ids'], 'negative_false_identity')
+            base_checks = {'source_bindings', 'six_setup_forms', 'six_later_forms', 'approval_slots', 'later_measured_upstream'}
+            caps = {name: 262144 for name in ('initial_source', 'finalizer_source', 'executor_source')}
+            for form in forms:
+                base_checks.update(form + suffix for suffix in ('_setup', '_provider_pipes', '_pipe0_inverse',
+                    '_pipe1_inverse', '_pipe2_inverse', '_full_roundtrip', '_uint64', '_writer_pipe0_inverse',
+                    '_writer_pipe1_inverse', '_chain_join', '_writer_input_bound', '_forms_bound'))
+                for suffix, cap in (('selected_original', 32768), ('observed_original', 32768), ('selected_wire', 12288),
+                                    ('observed_wire', 12288), ('ack', 24576), ('writer_stdout', 2112), ('root', 65536), ('chain', 262144)):
+                    caps[form + '_' + suffix] = cap
+            for stage in later:
+                caps[stage + '_selected'] = 4096
+                caps[stage + '_native_input'] = 32768
+                base_checks.update(stage + suffix for suffix in ('_later', '_pipe_limits', '_pipe0_inverse', '_pipe1_inverse'))
+                require(not any(name.startswith(stage + '_') for name in checks)
+                        and not any(name.startswith(stage + '_') for name in measures), 'later_dimensions_unavailable')
+            base_checks.update(name + '_bound' for name in caps)
+            require(len(base_checks) == 164 and len(caps) == 63
+                    and sorted(base_checks - set(checks)) == expected['missing_always_required_check_ids']
+                    and sorted(set(caps) - set(measures)) == expected['missing_always_required_measurement_ids']
+                    and len(base_checks - set(checks)) == 121 and len(set(caps) - set(measures)) == 54
+                    and list(later) == expected['unavailable_conditional_later_groups'], 'negative_missing_identity')
+            # No later selected measurement exists, so writer-branch eligibility
+            # and all observed/wire/ACK/ROOT/chain/approval dimensions stay unknown.
+            require('approval_slots' not in checks and not all(checks.values())
+                    and any(not ok and not name.endswith('_bound') for name, ok in checks.items()), 'negative_not_bound_only_hold')
+            return measures
+
+        measures = negative_dimensions(report, retained['expected'])
+        for name, size, digest in (
+                ('initial_source', source['initial']['source_bytes'], source['initial']['source_sha256']),
+                ('finalizer_source', source['finalizer']['finalizer_size_bytes'], source['finalizer']['finalizer_sha256']),
+                ('executor_source', source['executor']['size_bytes'], source['executor']['sha256'])):
+            require((measures[name]['size_bytes'], measures[name]['sha256']) == (size, digest), 'source_measurement_join')
+        require(parent['returncode'] == 1 and parent['geometry_fully_measured'] is False
+                and parent['geometry_risk_passed'] is False
+                and parent['parent_observed_test_transport_complete'] is True
+                and parent['threads_joined'] is True and parent['forced_test_child'] is False
+                and parent['timed_out'] is False and parent['io_failure'] is False
+                and parent['ordered_causes'] == [] and parent['protocol_error_type'] is None
+                and parent['descendant_quiescence'] == 'UNKNOWN'
+                and parent['generated_operational_program_execution'] is False
+                and parent['self_report_persistence_or_whole_process_attested'] is False, 'parent_negative_observation')
+        require(parent['child_completion_observed_at'] < parent['cleanup_deadline']
+                <= parent['child_total_deadline'], 'parent_observation_deadline')
+        for name in ('stdout', 'stderr'):
+            channel = parent['channels'][name]
+            require((channel['size_bytes'], channel['observed_bytes'], channel['sha256']) ==
+                    (len(buffers[name]), len(buffers[name]), sha(buffers[name]))
+                    and all(channel[key] is True for key in ('eof', 'closed', 'close_attempted'))
+                    and all(channel[key] is False for key in ('overflow', 'closure_unknown', 'remainder_unknown'))
+                    and channel['error'] is None, 'parent_original_channel_join')
+        require(retained['root_tool_observation'] == {
+            'attribution': 'root_observed_tool_result_not_child_self_receipt',
+            'tool_chunk': '20e86c', 'exit_code': 1, 'wall_time_seconds': 1.4429275}, 'outer_tool_attribution')
+
+        def refuses(action, expected_label):
+            try:
+                action()
+            except AssertionError as error:
+                require(str(error) == expected_label, 'mutation_wrong_refusal')
+            else:
+                require(False, 'mutation_accepted')
+
+        for index in range(4):
+            mutated = copy.deepcopy(retained['originals'])
+            mutated[index]['bytes_ascii'] += ' '
+            refuses(lambda: originals(mutated), 'original_pin')
+        changed_class = copy.deepcopy(retained['original_development_class'])
+        changed_class['source_utf8'] += '\n'
+        refuses(lambda: original_class(changed_class), 'development_class_pin')
+        changed = copy.deepcopy(report)
+        changed['measurements'] = changed['measurements'][:-1]
+        refuses(lambda: negative_dimensions(changed, retained['expected']), 'geometry_measurement_identity')
+        changed = copy.deepcopy(report)
+        selected = next(row for row in changed['measurements'] if row['id'] == 'success_selected_original')
+        selected['size_bytes'] -= 1
+        refuses(lambda: negative_dimensions(changed, retained['expected']), 'geometry_measurement_identity')
+        changed = copy.deepcopy(report)
+        changed['checks'].append(copy.deepcopy(changed['checks'][0]))
+        refuses(lambda: negative_dimensions(changed, retained['expected']), 'geometry_check_identity')
+        changed = copy.deepcopy(retained['expected'])
+        changed['missing_always_required_measurement_ids'] = changed['missing_always_required_measurement_ids'][1:]
+        refuses(lambda: negative_dimensions(report, changed), 'negative_missing_identity')
+        changed_capture = copy.deepcopy(capture)
+        changed_capture['stdin_extent_unknown'] = True
+        refuses(lambda: complete_capture(changed_capture, buffers['canonical_report']), 'capture_unknown')
+        changed_capture = copy.deepcopy(capture)
+        changed_capture['stdout']['unknown_remainder'] = True
+        refuses(lambda: complete_capture(changed_capture, buffers['canonical_report']), 'capture_channel')
+        rows = retained['protected_source_rows']['main']['ordered_rows']
+        changed_rows = copy.deepcopy(rows)
+        changed_rows[0][3] = '0' * 64
+        refuses(lambda: source_guard('main', texts['main'], trees['main'], changed_rows), 'protected_contributor_changed')
+        changed_tree = copy.deepcopy(trees['main'])
+        function = next(node for node in changed_tree.body if isinstance(node, ast.FunctionDef))
+        function.decorator_list = [ast.Name(id='changed_decorator', ctx=ast.Load())]
+        refuses(lambda: source_guard('main', texts['main'], changed_tree, rows), 'protected_decorator_changed')
+        changed_tree = copy.deepcopy(trees['main'])
+        changed_tree.body.append(copy.deepcopy(changed_tree.body[0]))
+        refuses(lambda: source_guard('main', texts['main'], changed_tree, rows), 'additive_binding_reused')
+        changed_tree = copy.deepcopy(trees['main'])
+        changed_tree.body.append(ast.Assign(targets=[ast.Name(id='ROOT_ENCODER', ctx=ast.Store())], value=ast.Constant(0)))
+        refuses(lambda: source_guard('main', texts['main'], changed_tree, rows), 'additive_binding_reused')
+        changed_tree = copy.deepcopy(trees['main'])
+        changed_tree.body[0], changed_tree.body[1] = changed_tree.body[1], changed_tree.body[0]
+        refuses(lambda: source_guard('main', texts['main'], changed_tree, rows), 'protected_contributor_changed')
+        # Fixed Python AST DATA checks the append-only allowance; no source is
+        # assembled, compiled or executed, and no generated JS is present.
+        additive = ast.FunctionDef(name='_d25_retained_guard_additive_probe_v1',
+            args=ast.arguments(posonlyargs=[], args=[], vararg=None, kwonlyargs=[],
+                               kw_defaults=[], kwarg=None, defaults=[]),
+            body=[ast.Pass()], decorator_list=[], returns=None, type_comment=None,
+            type_params=[])
+        changed_tree = copy.deepcopy(trees['main'])
+        changed_tree.body.append(additive)
+        source_guard('main', texts['main'], changed_tree, rows)
+        additive.args.defaults = [ast.Call(func=ast.Name(id='unexpected_default', ctx=ast.Load()),
+                                         args=[], keywords=[])]
+        refuses(lambda: source_guard('main', texts['main'], changed_tree, rows), 'additive_literal_required')
+        # CI passing here preserves INCOMPLETE/HOLD. It admits no phase execution.

@@ -2770,3 +2770,2041 @@ class D22DataCompressionTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+# D23 fixed DATA-driver transport is additive. Existing D22 behavior is untouched.
+_D23_CASES = frozenset(('codec_vectors', 'codec_malformed', 'codec_overflow', 'geometry'))
+_D23_DRIVER_CAUSES = frozenset(('d23_codec_absent', 'd23_driver_assertion',
+                              'd23_driver_input', 'd23_driver_error', 'd23_node_version'))
+
+
+class D23CaseError(RuntimeError):
+    def __init__(self, metadata):
+        self.metadata = metadata
+        super().__init__('D23 fixed case transport refused: ' + metadata['causes'][0])
+
+
+class D23FixedDriverTransportTests(unittest.TestCase):
+    observations = []
+
+    def setUp(self):
+        import sys
+        self.fixed_program = "'use strict';/* fixed DATA transport fixture, never executed */"
+        self.loader = mock.patch(__name__ + '.resume_node_tests', return_value=types.SimpleNamespace(
+            d23_node_driver_v1=lambda: self.fixed_program))
+        self.loaded = self.loader.start()
+        self.resolver = mock.patch('shutil.which', return_value=sys.executable)
+        self.resolver.start()
+        self.addCleanup(self.resolver.stop)
+        self.addCleanup(self.loader.stop)
+
+    def _capture(self, call):
+        try:
+            result = call()
+        except D23CaseError as error:
+            self.observations.append(error.metadata)
+            return None, error.metadata
+        self.observations.append(result[1])
+        return result
+
+    def _wire(self, data=None, case='codec_vectors'):
+        return canonical({'case': case, 'data': {} if data is None else data})
+
+    def _output(self, case='codec_vectors', completed=True, cause=None):
+        return canonical({'schema_version': 1, 'case': case, 'node_version': '25.2.1',
+            'completed': completed, 'cause': cause,
+            'checks': [{'id': 'transport_fixture', 'ok': completed}], 'measurements': []}) + b'\n'
+
+    def _fake_process(self, stdout=b'', stderr=b'', status=0, blocked=False):
+        import threading
+        stopped = threading.Event()
+        state = {'status': None if blocked else status}
+        class Reader(io.BytesIO):
+            def read(self, size=-1):
+                if blocked:
+                    stopped.wait(2)
+                return super().read(size)
+        def kill():
+            state['status'] = -9
+            stopped.set()
+        def wait(timeout=None):
+            import subprocess
+            if state['status'] is None:
+                stopped.wait(timeout)
+            if state['status'] is None:
+                raise subprocess.TimeoutExpired('controlled DATA child', timeout)
+            return state['status']
+        return types.SimpleNamespace(pid=12345, stdin=io.BytesIO(), stdout=Reader(stdout),
+                                     stderr=Reader(stderr), poll=lambda: state['status'], kill=kill, wait=wait)
+
+    def test_fixed_driver_and_behavioral_failure_have_separate_completion_facts(self):
+        import time
+        for case in sorted(_D23_CASES):
+            for completed, cause in ((True, None), (False, 'd23_codec_absent')):
+                output = self._output(case, completed, cause)
+                with self.subTest(case=case, completed=completed), mock.patch('subprocess.Popen',
+                        return_value=self._fake_process(stdout=output)) as spawn, mock.patch.dict(
+                        os.environ, {'NODE_OPTIONS': 'forbidden', 'NODE_PATH': 'forbidden',
+                                     'NODE_REPL_HISTORY': 'forbidden'}):
+                    report, facts = self._capture(lambda: d23_run_case_v1(case, b'{}', time.monotonic() + 40))
+                self.assertTrue(facts['parent_observed_completion'])
+                self.assertIs(facts['case_completed'], completed)
+                self.assertIs(report['completed'], completed)
+                self.assertEqual(facts['case_cause'], cause)
+                self.assertEqual(facts['program_sha256'], hashlib.sha256(self.fixed_program.encode('ascii')).hexdigest())
+                argv = spawn.call_args.args[0]
+                self.assertEqual(argv[1:], ['--max-old-space-size=256', '--input-type=commonjs', '-e', self.fixed_program])
+                self.assertFalse(set(spawn.call_args.kwargs['env']) - {'PATH', 'SystemRoot'})
+                self.assertFalse(any(k in facts for k in ('stderr_prefix_b64', 'stdout_data', 'stderr_data')))
+                self.assertLessEqual(len(canonical(facts)), 32768)
+
+    def test_invalid_input_and_budget_refuse_before_driver_loading_or_spawn(self):
+        import time
+        now = time.monotonic()
+        cases = [('unknown', b'{}', now + 40), (True, b'{}', now + 40),
+                 ('codec_vectors', None, now + 40), ('codec_vectors', b'\xff', now + 40),
+                 ('codec_vectors', b'x' * 262145, now + 40), ('codec_vectors', b'{', now + 40),
+                 ('codec_vectors', b'{"x":1,"x":2}', now + 40), ('codec_vectors', b'NaN', now + 40),
+                 ('codec_vectors', b'1e9999', now + 40),
+                 ('codec_vectors', b'[' * 1100 + b'0', now + 40)]
+        cases += [('codec_vectors', b'{}', end) for end in (True, None, float('nan'), float('inf'), now - 1, now + 301)]
+        for case, raw, end in cases:
+            with self.subTest(kind=type(raw).__name__), mock.patch('subprocess.Popen') as spawn:
+                report, facts = self._capture(lambda: d23_run_case_v1(case, raw, end))
+                self.assertIsNone(report)
+                self.assertFalse(facts['spawned'] or facts['stdin_write_attempted'] or facts['stdin_extent_unknown'])
+                self.assertFalse(facts['parent_observed_completion'])
+                self.loaded.assert_not_called()
+                spawn.assert_not_called()
+
+    def test_full_envelope_exact_limit_and_one_byte_over(self):
+        import time
+        overhead = len(self._wire('', 'codec_vectors'))
+        data = 'x' * (262144 - overhead)
+        raw = canonical(data)
+        self.assertEqual(len(self._wire(data)), 262144)
+        with mock.patch('subprocess.Popen', return_value=self._fake_process(stdout=self._output())):
+            report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', raw, time.monotonic() + 40))
+        self.assertTrue(facts['parent_observed_completion'])
+        self.assertEqual(facts['input_bytes'], 262144)
+        self.loaded.reset_mock()
+        with mock.patch('subprocess.Popen') as spawn:
+            report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', canonical(data + 'x'), time.monotonic() + 40))
+        self.assertIn('input_envelope_limit', facts['causes'])
+        self.loaded.assert_not_called()
+        spawn.assert_not_called()
+
+    def test_fixed_driver_kind_ascii_and_size_are_bounded_before_spawn(self):
+        import time
+        for program, expected in ((None, 'driver_source_kind'), ('x' * 24577, 'driver_source_limit'),
+                                  ('', 'driver_source_limit'), ('\u0080', 'driver_source_ascii')):
+            with self.subTest(cause=expected), mock.patch(__name__ + '.resume_node_tests',
+                    return_value=types.SimpleNamespace(d23_node_driver_v1=lambda: program)), mock.patch('subprocess.Popen') as spawn:
+                report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+            self.assertIn(expected, facts['causes'])
+            spawn.assert_not_called()
+
+    def test_channel_overflow_status_errors_and_stderr_never_publish_raw_data(self):
+        import time
+        secret = b'GENERATED_SOURCE_MUST_STAY_RAM'
+        variants = [(self._fake_process(stdout=b'x' * 1048577), 'stdout_overflow'),
+                    (self._fake_process(stderr=secret * 600), 'stderr_overflow'),
+                    (self._fake_process(stdout=self._output(), stderr=secret), 'unexpected_stderr'),
+                    (self._fake_process(stdout=self._output(), status=7), 'child_status')]
+        class RefusingReader(io.BytesIO):
+            def read(self, size=-1):raise OSError('GENERATED_SOURCE_MUST_STAY_RAM')
+        broken = self._fake_process();broken.stdout = RefusingReader()
+        variants.append((broken, 'stdout_read_error'))
+        class UnknownEOFReader(io.BytesIO):
+            def read(self, size=-1):return None
+        no_eof = self._fake_process();no_eof.stdout = UnknownEOFReader()
+        variants.append((no_eof, 'stdout_read_error'))
+        def unavailable_status():raise OSError('GENERATED_SOURCE_MUST_STAY_RAM')
+        no_status = self._fake_process(stdout=self._output());no_status.poll = unavailable_status
+        variants.append((no_status, 'child_status_error'))
+        for process, expected in variants:
+            with self.subTest(cause=expected), mock.patch('subprocess.Popen', return_value=process):
+                report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+            self.assertIsNone(report)
+            self.assertIn(expected, facts['causes'])
+            self.assertFalse(facts['parent_observed_completion'])
+            self.assertTrue(secret not in canonical(facts), 'raw child DATA must never enter retained metadata')
+            self.assertLessEqual(len(canonical(facts)), 32768)
+
+    def test_report_schema_and_report_extent_are_independently_bounded(self):
+        import time
+        base = json.loads(self._output())
+        invalid = []
+        for key, value in [('schema_version', True), ('case', 'geometry'), ('node_version', '0'),
+                           ('completed', 1), ('cause', 'unbounded error text'), ('extra', None),
+                           ('checks', [{'id': 'bad-id', 'ok': True}]),
+                           ('checks', [{'id': 'ok', 'ok': 1}]),
+                           ('checks', [{'id': 'x', 'ok': True}] * 513),
+                           ('measurements', [{'id': 'x', 'size_bytes': True, 'sha256': '0' * 64}]),
+                           ('measurements', [{'id': 'x', 'size_bytes': 262145, 'sha256': '0' * 64}]),
+                           ('measurements', [{'id': 'x', 'size_bytes': 0, 'sha256': 'X' * 64}]),
+                           ('measurements', [{'id': 'x', 'size_bytes': 0, 'sha256': '0' * 64}] * 129)]:
+            value_report = dict(base);value_report[key] = value;invalid.append(canonical(value_report))
+        invalid += [b'{"case":"codec_vectors","case":"codec_vectors"}', b'[' * 1100 + b'0' + b']' * 1100,
+                    self._output() + b'{}', self._output() + b' ' * 32768]
+        for output in invalid:
+            with self.subTest(kind='closed bounded report'), mock.patch('subprocess.Popen', return_value=self._fake_process(stdout=output)):
+                report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+            self.assertIsNone(report)
+            self.assertIn('child_protocol', facts['causes'])
+        output = self._output();output += b' ' * (32768 - len(output))
+        with mock.patch('subprocess.Popen', return_value=self._fake_process(stdout=output)):
+            report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+        self.assertTrue(facts['parent_observed_completion'])
+        self.assertEqual(facts['report_bytes'], 32768)
+
+    def test_late_driver_or_node_resolution_cannot_spawn(self):
+        for phase in ('driver', 'node'):
+            clock = [1000.0]
+            def driver():
+                if phase == 'driver':clock[0] = 1027.0
+                return self.fixed_program
+            def resolve(name):
+                import sys
+                if phase == 'node':clock[0] = 1027.0
+                return sys.executable
+            with self.subTest(phase=phase), mock.patch('time.monotonic', side_effect=lambda: clock[0]), \
+                    mock.patch(__name__ + '.resume_node_tests', return_value=types.SimpleNamespace(d23_node_driver_v1=driver)), \
+                    mock.patch('shutil.which', resolve), mock.patch('subprocess.Popen') as spawn:
+                report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', 1040.0))
+            self.assertIn('deadline_before_spawn', facts['causes'])
+            spawn.assert_not_called()
+
+    def test_driver_loading_failure_is_bounded_and_never_exposes_its_message(self):
+        import time
+        with mock.patch(__name__ + '.resume_node_tests', side_effect=RuntimeError('GENERATED_SOURCE_MUST_STAY_RAM')), \
+                mock.patch('subprocess.Popen') as spawn:
+            report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+        self.assertIsNone(report)
+        self.assertEqual(facts['causes'], ['driver_source_error'])
+        self.assertTrue(b'GENERATED_SOURCE_MUST_STAY_RAM' not in canonical(facts))
+        spawn.assert_not_called()
+
+    def test_report_accepts_boundary_measurements_without_behavioral_pass_inference(self):
+        import time
+        value = json.loads(self._output(completed=False, cause='d23_driver_assertion'))
+        value['measurements'] = [{'id': 'x' * 64, 'size_bytes': size, 'sha256': '0' * 64}
+                                 for size in (0, 262144)]
+        with mock.patch('subprocess.Popen', return_value=self._fake_process(stdout=canonical(value) + b'\n')):
+            report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+        self.assertTrue(facts['parent_observed_completion'])
+        self.assertFalse(facts['case_completed'])
+        self.assertEqual(facts['measurements_count'], 2)
+        self.assertFalse(report['completed'])
+
+    def test_work_timeout_keeps_channel_and_stdin_unknowns_nonaccepting(self):
+        clock, started, after_start = [1000.0], [], [0]
+        process = self._fake_process(blocked=True)
+        class PendingThread:
+            ident = None
+            def __init__(self, target, args=(), daemon=None):pass
+            def start(self):
+                self.ident = 1
+                started.append(self)
+            def join(self, timeout=None):return None
+            def is_alive(self):return True
+        def now():
+            if len(started) == 3:
+                after_start[0] += 1
+                if after_start[0] >= 2:clock[0] = 1027.0
+            return clock[0]
+        with mock.patch('threading.Thread', PendingThread), mock.patch('time.monotonic', now), \
+                mock.patch('subprocess.Popen', return_value=process):
+            report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', 1040.0))
+        self.assertIsNone(report)
+        self.assertIn('child_timeout', facts['causes'])
+        self.assertTrue(facts['timed_out'] and facts['kill_requested'])
+        self.assertFalse(facts['stdout']['eof'] or facts['stderr']['eof'] or facts['stdin_complete'])
+        self.assertFalse(facts['parent_observed_completion'])
+        self.assertLessEqual(facts['cleanup_deadline'], facts['started_monotonic'] + 30)
+
+    def test_partial_thread_start_has_three_second_cleanup_and_known_unknowns(self):
+        import threading
+        import time
+        process = self._fake_process(blocked=True)
+        original_start, original_join = threading.Thread.start, threading.Thread.join
+        calls, waits = [], []
+        def start(thread):
+            calls.append(thread)
+            if len(calls) == 2:
+                raise RuntimeError('controlled partial startup')
+            original_start(thread)
+        def join(thread, timeout=None):
+            waits.append(timeout)
+            original_join(thread, timeout)
+        with mock.patch('subprocess.Popen', return_value=process), \
+                mock.patch('threading.Thread.start', start), mock.patch('threading.Thread.join', join):
+            report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', time.monotonic() + 295))
+        self.assertIsNone(report)
+        self.assertIn('thread_start_error', facts['causes'])
+        self.assertEqual(facts['threads_started'], 1)
+        self.assertTrue(facts['kill_requested'] and facts['reaped'])
+        self.assertFalse(facts['threads_joined'])
+        self.assertTrue(facts['stderr']['closed'] and facts['stderr']['unknown_remainder'])
+        self.assertTrue(bool(waits) and all(0 <= value <= 3 for value in waits))
+        self.assertLessEqual(facts['cleanup_deadline'], facts['work_deadline'] + 3)
+        self.assertLessEqual(facts['work_deadline'], facts['started_monotonic'] + 27)
+        self.assertLessEqual(facts['cleanup_deadline'], facts['started_monotonic'] + 30)
+        self.assertEqual((facts['child_total_limit_seconds'], facts['child_work_limit_seconds'],
+                          facts['cleanup_limit_seconds'], facts['final_reserve_seconds']), (30, 27, 3, 5))
+
+    def test_late_spawn_starts_no_worker_or_stdin_write(self):
+        process = self._fake_process(blocked=True)
+        writes, clock = [], [1000.0]
+        class Input(io.BytesIO):
+            def write(self, value):
+                writes.append(len(value))
+                return len(value)
+        process.stdin = Input()
+        def spawn(*args, **kwargs):
+            clock[0] = 1027.0
+            return process
+        with mock.patch('time.monotonic', side_effect=lambda: clock[0]), \
+                mock.patch('subprocess.Popen', spawn), mock.patch('threading.Thread.start') as start:
+            report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', 1040.0))
+        self.assertIsNone(report)
+        self.assertIn('deadline_after_spawn', facts['causes'])
+        self.assertTrue(facts['spawned'] and facts['kill_requested'] and facts['reaped'])
+        self.assertEqual(facts['threads_started'], 0)
+        self.assertTrue(not writes and facts['stdin_bytes'] == 0)
+        self.assertTrue(facts['stdout']['unknown_remainder'] and facts['stderr']['unknown_remainder'])
+        self.assertEqual(facts['returncode'], -9)
+        start.assert_not_called()
+
+    def test_each_worker_start_has_pre_and_post_work_guards(self):
+        for mode, expected in (('post', 'worker_start_late'), ('next', 'worker_start_deadline')):
+            with self.subTest(boundary=mode):
+                clock, starts, reads = [1000.0], [], [0]
+                process = self._fake_process()
+                class InlineThread:
+                    ident = None
+                    def __init__(self, target, args=(), daemon=None):
+                        self.target, self.args = target, args
+                    def start(self):
+                        starts.append(self)
+                        self.ident = 1
+                        self.target(*self.args)
+                    def join(self, timeout=None):
+                        return None
+                    def is_alive(self):
+                        return False
+                def now():
+                    if starts:
+                        reads[0] += 1
+                        if mode == 'post' or reads[0] >= 2:
+                            clock[0] = 1027.0
+                    return clock[0]
+                with mock.patch('time.monotonic', now), mock.patch('threading.Thread', InlineThread), \
+                        mock.patch('subprocess.Popen', return_value=process):
+                    report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', 1040.0))
+                self.assertIsNone(report)
+                self.assertIn(expected, facts['causes'])
+                self.assertEqual(len(starts), 1)
+                self.assertEqual(facts['stdin_bytes'], 0)
+                self.assertFalse(facts['stdin_complete'])
+
+    def test_late_wait_join_or_status_cannot_publish_completion(self):
+        output = self._output()
+        for phase in ('wait', 'join', 'status'):
+            with self.subTest(observation=phase):
+                clock, polls = [1000.0], [0]
+                process = self._fake_process(stdout=output)
+                class InlineThread:
+                    ident = None
+                    def __init__(self, target, args=(), daemon=None):
+                        self.target, self.args = target, args
+                    def start(self):
+                        self.ident = 1
+                        self.target(*self.args)
+                    def join(self, timeout=None):
+                        if phase == 'join':
+                            clock[0] = 1030.0
+                    def is_alive(self):
+                        return False
+                def status():
+                    polls[0] += 1
+                    if phase == 'status' and polls[0] >= 2:
+                        clock[0] = 1030.0
+                    return 0
+                def wait(timeout=None):
+                    if phase == 'wait':
+                        clock[0] = 1030.0
+                    return 0
+                process.poll, process.wait = status, wait
+                with mock.patch('time.monotonic', side_effect=lambda: clock[0]), \
+                        mock.patch('threading.Thread', InlineThread), mock.patch('subprocess.Popen', return_value=process):
+                    report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', 1040.0))
+                self.assertIsNone(report)
+                self.assertIn('child_completion_late', facts['causes'])
+                self.assertTrue(facts['finished_before_deadline'])
+                self.assertFalse(facts['child_completion_observed_before_deadline'])
+                self.assertFalse(facts['parent_observed_completion'])
+                self.assertEqual(facts['descendant_quiescence'], 'UNKNOWN')
+
+    def test_unjoined_reader_capture_binds_prefix_counters_eof_and_causes(self):
+        import threading
+        import time
+        for terminal in ('eof', 'error'):
+            with self.subTest(reader_terminal=terminal):
+                released, closed = threading.Event(), threading.Event()
+                process = self._fake_process()
+                process.poll = lambda: -9
+                process.wait = lambda timeout=None: -9
+                class LateReader(io.BytesIO):
+                    def read(self, size=-1):
+                        if not released.wait(2):
+                            raise OSError('controlled release deadline')
+                        part = super().read(size)
+                        if not part and terminal == 'error':
+                            raise OSError('controlled late read refusal')
+                        return part
+                    def close(self):
+                        super().close()
+                        closed.set()
+                process.stdout = LateReader(b'bounded DATA')
+                original_start, original_join = threading.Thread.start, threading.Thread.join
+                original_sha256 = hashlib.sha256
+                workers, triggered, settled = [], [], []
+                def start(thread):
+                    if len(workers) == 2:
+                        raise RuntimeError('controlled third startup')
+                    workers.append(thread)
+                    original_start(thread)
+                def hash_after_capture(value=b'', *args, **kwargs):
+                    if value == b'' and not triggered:
+                        triggered.append(True)
+                        released.set()
+                        settled.append(closed.wait(2))
+                    return original_sha256(value, *args, **kwargs)
+                try:
+                    with mock.patch('subprocess.Popen', return_value=process), \
+                            mock.patch('threading.Thread.start', start), \
+                            mock.patch('threading.Thread.join', return_value=None), \
+                            mock.patch('hashlib.sha256', hash_after_capture):
+                        report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+                    before = canonical(facts)
+                finally:
+                    released.set()
+                    for worker in workers:
+                        original_join(worker, 3)
+                self.assertIsNone(report)
+                self.assertTrue(bool(triggered) and settled == [True], 'controlled reader must finish during prefix hashing')
+                self.assertEqual((facts['stdout']['observed_bytes'], facts['stdout']['retained_bytes']), (0, 0))
+                self.assertEqual(facts['stdout']['prefix_sha256'], original_sha256(b'').hexdigest())
+                self.assertFalse(facts['stdout']['eof'] or facts['stdout']['closed'])
+                self.assertIsNone(facts['stdout']['io_error'])
+                self.assertTrue(facts['stdout']['unknown_remainder'])
+                self.assertEqual(set(facts['causes']), {'thread_start_error', 'pipe_completion_unknown',
+                                                       'child_status', 'io_completion_unknown'})
+                self.assertTrue(canonical(facts) == before, 'captured refusal must stay fixed after late reader completion')
+
+    def test_blocked_second_write_keeps_known_count_and_pending_unknown_extent(self):
+        import threading
+        import time
+        blocked, released = threading.Event(), threading.Event()
+        process = self._fake_process()
+        process.poll = lambda: -9
+        process.wait = lambda timeout=None: -9
+        writes = []
+        class PendingInput(io.BytesIO):
+            def write(self, value):
+                writes.append(len(value))
+                if len(writes) == 1:
+                    return 1
+                blocked.set()
+                if not released.wait(2):
+                    raise OSError('controlled write release deadline')
+                return len(value)
+        class RefusalAfterWrite(io.BytesIO):
+            def read(self, size=-1):
+                if not blocked.wait(2):
+                    raise OSError('controlled write entry deadline')
+                raise OSError('controlled capture refusal')
+        process.stdin, process.stdout = PendingInput(), RefusalAfterWrite()
+        original_start, original_join = threading.Thread.start, threading.Thread.join
+        workers = []
+        def start(thread):
+            workers.append(thread)
+            original_start(thread)
+        try:
+            with mock.patch('subprocess.Popen', return_value=process), \
+                    mock.patch('threading.Thread.start', start), \
+                    mock.patch('threading.Thread.join', return_value=None):
+                report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+            before = canonical(facts)
+        finally:
+            released.set()
+            for worker in workers:
+                original_join(worker, 3)
+        self.assertIsNone(report)
+        self.assertEqual(writes, [len(self._wire()), len(self._wire()) - 1])
+        self.assertEqual(facts['stdin_bytes'], 1)
+        self.assertTrue(facts['stdin_write_attempted'] and facts['stdin_write_in_flight']
+                        and facts['stdin_extent_unknown'])
+        self.assertFalse(facts['stdin_complete'] or facts['stdin_closed'] or facts['parent_observed_completion'])
+        self.assertIn('stdout_read_error', facts['causes'])
+        self.assertIn('pipe_completion_unknown', facts['causes'])
+        self.assertTrue(canonical(facts) == before, 'pending-write snapshot must stay fixed after a valid late count')
+
+    def test_invalid_stdin_count_preserves_unknown_extent(self):
+        import time
+        process = self._fake_process()
+        class InvalidCount(io.BytesIO):
+            def write(self, value):
+                return len(value) + 1
+        process.stdin = InvalidCount()
+        with mock.patch('subprocess.Popen', return_value=process):
+            report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+        self.assertIsNone(report)
+        self.assertIn('stdin_short_write', facts['causes'])
+        self.assertTrue(facts['stdin_extent_unknown'])
+        self.assertFalse(facts['stdin_complete'])
+
+
+
+    def test_early_cleanup_wait_join_or_status_lateness_refuses_before_child_total_end(self):
+        for phase in ('wait', 'join', 'status'):
+            with self.subTest(observation=phase):
+                clock, polls = [1000.0], [0]
+                process = self._fake_process(stdout=self._output())
+                class InlineThread:
+                    ident = None
+                    def __init__(self, target, args=(), daemon=None):
+                        self.target, self.args = target, args
+                    def start(self):
+                        self.ident = 1
+                        self.target(*self.args)
+                    def join(self, timeout=None):
+                        if phase == 'join':clock[0] = 1003.0
+                    def is_alive(self):return False
+                def status():
+                    polls[0] += 1
+                    if phase == 'status' and polls[0] >= 3:clock[0] = 1003.0
+                    return 0
+                def wait(timeout=None):
+                    if phase == 'wait':clock[0] = 1003.0
+                    return 0
+                process.poll, process.wait = status, wait
+                with mock.patch('time.monotonic', side_effect=lambda: clock[0]), \
+                        mock.patch('threading.Thread', InlineThread), mock.patch('subprocess.Popen', return_value=process):
+                    report, facts = self._capture(lambda: d23_run_case_v1('codec_vectors', b'{}', 1040.0))
+                self.assertIsNone(report)
+                self.assertEqual(facts['causes'], ['cleanup_late'])
+                self.assertEqual(facts['cleanup_deadline'], 1003.0)
+                self.assertLess(clock[0], facts['child_total_deadline'])
+                self.assertTrue(facts['finished_before_deadline'])
+                self.assertTrue(facts['child_completion_observed_before_deadline'])
+                self.assertFalse(facts['parent_observed_completion'])
+                self.assertEqual(facts['returncode'], 0)
+                self.assertTrue(facts['reaped'] and facts['threads_joined'])
+                self.assertTrue(facts['stdout']['eof'] and facts['stderr']['eof'])
+                self.assertEqual(facts['descendant_quiescence'], 'UNKNOWN')
+
+    def test_geometry_fixed_driver_binding_and_hold_cause_stay_separate(self):
+        import time
+        raw = canonical({'case': 'geometry'})
+        geometry_program = "'use strict';/* separate fixed geometry DATA fixture, never executed */"
+        module = self.loaded.return_value
+        codec_getter = mock.Mock(return_value=self.fixed_program)
+        geometry_getter = mock.Mock(return_value=geometry_program)
+        with mock.patch.object(module, 'd23_node_driver_v1', codec_getter), mock.patch.object(
+                module, 'd23_geometry_driver_v1', geometry_getter, create=True):
+            # A geometry name in both ordinary case/DATA cannot select a program.
+            with mock.patch('subprocess.Popen', return_value=self._fake_process(
+                    stdout=self._output('geometry'))) as spawn:
+                report, codec = self._capture(lambda: d23_run_case_v1(
+                    'geometry', raw, time.monotonic() + 40))
+                self.assertTrue(codec['parent_observed_completion'])
+                self.assertTrue(report['completed'])
+                codec_getter.assert_called_once_with()
+                geometry_getter.assert_not_called()
+                argv = spawn.call_args.args[0]
+                self.assertEqual(argv[1:], ['--max-old-space-size=256',
+                    '--input-type=commonjs', '-e', self.fixed_program])
+                self.assertEqual(codec['program_sha256'],
+                    hashlib.sha256(argv[-1].encode('ascii')).hexdigest())
+                self.assertEqual(codec['input_sha256'], hashlib.sha256(
+                    self._wire({'case': 'geometry'}, case='geometry')).hexdigest())
+            codec_getter.reset_mock()
+            with mock.patch('subprocess.Popen', return_value=self._fake_process(
+                    stdout=self._output('geometry', False, 'd23_geometry_hold'))) as spawn:
+                report, geometry = self._capture(lambda: d23_run_geometry_v1(
+                    raw, time.monotonic() + 40))
+                self.assertIsNotNone(report)
+                self.assertTrue(geometry['parent_observed_completion'])
+                self.assertFalse(geometry['case_completed'])
+                self.assertFalse(report['completed'])
+                self.assertEqual(report['cause'], 'd23_geometry_hold')
+                self.assertEqual(geometry['case_cause'], 'd23_geometry_hold')
+                self.assertEqual(geometry['causes'], [])
+                codec_getter.assert_not_called()
+                geometry_getter.assert_called_once_with()
+                argv = spawn.call_args.args[0]
+                self.assertEqual(argv[1:], ['--max-old-space-size=256',
+                    '--input-type=commonjs', '-e', geometry_program])
+                self.assertEqual(geometry['program_sha256'],
+                    hashlib.sha256(argv[-1].encode('ascii')).hexdigest())
+                self.assertNotEqual(geometry['program_sha256'], codec['program_sha256'])
+                self.assertEqual(geometry['input_sha256'], codec['input_sha256'])
+            geometry_getter.reset_mock()
+            with mock.patch('subprocess.Popen', return_value=self._fake_process(
+                    stdout=self._output('geometry', False, 'd23_geometry_hold'))) as spawn:
+                report, refused = self._capture(lambda: d23_run_case_v1(
+                    'geometry', raw, time.monotonic() + 40))
+                self.assertIsNone(report)
+                self.assertFalse(refused['parent_observed_completion'])
+                self.assertIn('child_protocol', refused['causes'])
+                codec_getter.assert_called_once_with()
+                geometry_getter.assert_not_called()
+                self.assertEqual(spawn.call_args.args[0][-1], self.fixed_program)
+                self.assertEqual(refused['program_sha256'], codec['program_sha256'])
+            for facts in (codec, geometry, refused):
+                self.assertFalse(any(key in facts for key in (
+                    'stderr_prefix_b64', 'stdout_data', 'stderr_data', 'program', 'raw')))
+                self.assertLessEqual(len(canonical(facts)), 32768)
+
+    def test_invalid_geometry_mode_refuses_before_loading_or_spawn(self):
+        import time
+        end = time.monotonic() + 40
+        for case, geometry in (('geometry', 1), ('geometry', None), ('codec_vectors', True)):
+            with self.subTest(case=case, mode_type=type(geometry).__name__), mock.patch(
+                    'subprocess.Popen') as spawn:
+                report, facts = self._capture(lambda: _d23_run_fixed_driver_v1(
+                    case, b'{}', end, geometry=geometry))
+                self.assertIsNone(report)
+                self.assertEqual(facts['causes'], ['geometry_invalid'])
+                self.assertFalse(facts['spawned'] or facts['stdin_write_attempted']
+                                 or facts['stdin_extent_unknown'])
+                self.assertFalse(facts['parent_observed_completion'])
+                self.loaded.assert_not_called()
+                spawn.assert_not_called()
+
+
+def _d23_run_fixed_driver_v1(case, raw, deadline, geometry=False):
+    """Run one closed DATA case in the fixed D23 driver with bounded capture.
+
+    A valid completed:false driver report returns normally. Only transport or
+    protocol refusal raises D23CaseError with immutable metadata, never raw DATA.
+    The original finite caller deadline also bounds startup, cleanup and return.
+    """
+    import copy
+    import math
+    import shutil
+    import subprocess
+    import threading
+    import time
+
+    started = time.monotonic()
+    buffers = {'stdout': bytearray(), 'stderr': bytearray()}
+    channels = {name: {'observed_bytes': 0, 'retained_bytes': 0, 'eof': False,
+                       'overflow': False, 'io_error': None, 'closed': False,
+                       'unknown_remainder': True} for name in buffers}
+    facts = {'schema_version': 1, 'data_only': True, 'spawned': False, 'pid': None,
+             'returncode': None, 'timed_out': False, 'kill_requested': False,
+             'stdin_bytes': 0, 'stdin_closed': False, 'stdin_complete': False,
+             'stdin_extent_unknown': False, 'stdin_write_attempted': False,
+             'stdin_write_in_flight': False, 'threads_started': 0, 'reaped': False,
+             'threads_joined': False, 'causes': [], 'node_version': None,
+             'case': case if type(case) is str and case in _D23_CASES else None,
+             'case_completed': None, 'case_cause': None, 'parent_observed_completion': False,
+             'descendant_quiescence': 'UNKNOWN', 'input_bytes': None,
+             'input_sha256': None, 'data_bytes': None, 'data_sha256': None,
+             'report_bytes': None, 'report_sha256': None, 'checks_count': None,
+             'measurements_count': None, 'environment_keys': [], 'program_sha256': None}
+    lock = threading.RLock()
+    def cause(value):
+        with lock:
+            if value not in facts['causes']:
+                facts['causes'].append(value)
+    def has_causes():
+        with lock:
+            return bool(facts['causes'])
+    def finish(report=None):
+        # Capture related facts, channels, causes and byte prefixes at one shared
+        # lock boundary. Later worker changes cannot mix these captured values.
+        with lock:
+            snapshot = copy.deepcopy(facts)
+            captured_channels = {name: dict(channel) for name, channel in channels.items()}
+            prefixes = {name: bytes(buffer) for name, buffer in buffers.items()}
+        for name, channel in captured_channels.items():
+            prefix = prefixes[name]
+            snapshot[name] = {**channel, 'retained_bytes': len(prefix),
+                              'prefix_sha256': hashlib.sha256(prefix).hexdigest(),
+                              'unknown_remainder': not channel['eof'] or channel['overflow'] or channel['io_error'] is not None}
+        observed = time.monotonic()
+        snapshot['elapsed_seconds'] = observed - started
+        snapshot['finished_before_deadline'] = observed < end if end is not None else False
+        snapshot['child_completion_observed_before_deadline'] = (
+            snapshot['spawned'] and child_total_end is not None and observed < child_total_end)
+        if snapshot['spawned'] and not snapshot['child_completion_observed_before_deadline']:
+            if 'child_completion_late' not in snapshot['causes']:
+                snapshot['causes'].append('child_completion_late')
+        if not snapshot['finished_before_deadline'] and 'parent_deadline' not in snapshot['causes']:
+            snapshot['causes'].append('parent_deadline')
+        if snapshot['spawned'] and observed >= cleanup_end:
+            if 'cleanup_late' not in snapshot['causes']:
+                snapshot['causes'].append('cleanup_late')
+        snapshot['parent_observed_completion'] = report is not None and not snapshot['causes']
+        encoded = canonical(snapshot)
+        if len(encoded) > 32768:
+            raise RuntimeError('D23 capture metadata bound')
+        # Publication is immutable; the shared capture does not establish
+        # continuous custody or quiescence of unjoined workers/descendants.
+        frozen = json.loads(encoded)
+        if frozen['causes']:
+            raise D23CaseError(frozen)
+        return report, frozen
+    end = None
+    child_total_end = None
+    if type(deadline) not in (int, float):
+        cause('deadline_invalid');return finish()
+    try:
+        end = float(deadline)
+    except (OverflowError, ValueError):
+        cause('deadline_invalid');return finish()
+    if not math.isfinite(end):
+        end = None;cause('deadline_invalid');return finish()
+    if end - started > 300:
+        cause('deadline_limit');return finish()
+    if type(case) is not str or case not in _D23_CASES:
+        cause('case_invalid');return finish()
+    if type(geometry) is not bool or geometry and case != 'geometry':
+        cause('geometry_invalid');return finish()
+    if type(raw) is not bytes:
+        cause('input_type');return finish()
+    if len(raw) > 262144:
+        cause('input_limit');return finish()
+    if not raw.isascii():
+        cause('input_ascii');return finish()
+    if time.monotonic() >= end - 8:
+        cause('deadline_no_window');return finish()
+    try:
+        def unique_input(rows):
+            value = dict(rows)
+            if len(value) != len(rows):
+                raise ValueError('duplicate DATA field')
+            return value
+        def reject_constant(value):
+            raise ValueError('nonfinite DATA')
+        data = json.loads(raw, object_pairs_hook=unique_input, parse_constant=reject_constant)
+        wire = canonical({'case': case, 'data': data})
+        if len(wire) > 262144:
+            cause('input_envelope_limit');return finish()
+    except (ValueError, TypeError, RecursionError, OverflowError):
+        cause('input_json');return finish()
+    with lock:
+        facts.update(data_bytes=len(raw), data_sha256=hashlib.sha256(raw).hexdigest(),
+                     input_bytes=len(wire), input_sha256=hashlib.sha256(wire).hexdigest())
+    raw = wire
+    work_end = min(started + 27, end - 8)
+    child_total_end = min(started + 30, end - 5)
+    cleanup_end = min(child_total_end, work_end + 3)
+    with lock:
+        facts.update(started_monotonic=started, caller_deadline=end, work_deadline=work_end,
+                     child_total_deadline=child_total_end, cleanup_deadline=cleanup_end, child_total_limit_seconds=30,
+                     child_work_limit_seconds=27, cleanup_limit_seconds=3, final_reserve_seconds=5)
+    if time.monotonic() >= work_end:
+        cause('deadline_no_window');return finish()
+    try:
+        module = resume_node_tests()
+        program = module.d23_geometry_driver_v1() if geometry else module.d23_node_driver_v1()
+    except Exception:
+        cause('driver_source_error');return finish()
+    if type(program) is not str:
+        cause('driver_source_kind');return finish()
+    if not 0 < len(program) <= 24576:
+        cause('driver_source_limit');return finish()
+    try:
+        program_bytes = program.encode('ascii')
+    except UnicodeEncodeError:
+        cause('driver_source_ascii');return finish()
+    # Hold one exact immutable source/argv buffer; DATA never selects a program.
+    program = program_bytes.decode('ascii')
+    with lock:
+        facts['program_sha256'] = hashlib.sha256(program_bytes).hexdigest()
+    node = shutil.which('node') or shutil.which('node.exe')
+    if node is None:
+        cause('node_unavailable');return finish()
+    try:
+        node = str(Path(node).resolve(strict=True))
+        environment = {'PATH': str(Path(node).parent)}
+        if os.name == 'nt':
+            environment['SystemRoot'] = os.environ['SystemRoot']
+        argv = [node, '--max-old-space-size=256', '--input-type=commonjs', '-e', program]
+        if os.name == 'nt' and len(subprocess.list2cmdline(argv)) > 32767:
+            cause('driver_command_limit');return finish()
+        with lock:
+            facts.update(node_executable=node, command_options=argv[1:4], environment_keys=sorted(environment))
+        if time.monotonic() >= work_end:
+            cause('deadline_before_spawn');return finish()
+        process = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, env=environment, bufsize=0,
+                                   start_new_session=os.name != 'nt',
+                                   creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+    except (OSError, KeyError, ValueError) as error:
+        cause('spawn_' + type(error).__name__);return finish()
+    with lock:
+        facts.update(spawned=True, pid=process.pid)
+    if time.monotonic() >= work_end:
+        with lock:
+            facts['timed_out'] = True;cause('deadline_after_spawn')
+    def read_channel(name, pipe, limit):
+        channel = channels[name]
+        try:
+            while True:
+                with lock:
+                    read_size = min(4096, limit + 1 - len(buffers[name]))
+                part = pipe.read(read_size)
+                with lock:
+                    if type(part) is not bytes:
+                        channel['io_error'] = 'invalid_read';cause(name + '_read_error');break
+                    if part == b'':
+                        channel['eof'] = True;break
+                    channel['observed_bytes'] += len(part)
+                    room = limit - len(buffers[name])
+                    buffers[name].extend(part[:room])
+                    if len(part) > room:
+                        channel['overflow'] = True;cause(name + '_overflow');break
+        except (OSError, ValueError) as error:
+            with lock:
+                channel['io_error'] = type(error).__name__;cause(name + '_read_error')
+        finally:
+            try:
+                pipe.close()
+                with lock:
+                    channel['closed'] = True
+            except (OSError, ValueError):
+                cause(name + '_close_error')
+    def write_input():
+        try:
+            while True:
+                with lock:
+                    offset = facts['stdin_bytes']
+                    if offset >= len(raw):
+                        break
+                    if time.monotonic() >= work_end:
+                        cause('stdin_deadline');break
+                    remaining = len(raw) - offset
+                    facts.update(stdin_write_attempted=True, stdin_write_in_flight=True,
+                                 stdin_extent_unknown=True)
+                count = process.stdin.write(raw[offset:])
+                with lock:
+                    facts['stdin_write_in_flight'] = False
+                    if type(count) is not int or not 0 < count <= remaining:
+                        cause('stdin_short_write');break
+                    facts['stdin_bytes'] += count
+                    facts['stdin_extent_unknown'] = False
+                if time.monotonic() >= work_end:
+                    cause('stdin_deadline');break
+            with lock:
+                facts['stdin_complete'] = (facts['stdin_bytes'] == len(raw)
+                                           and not facts['stdin_extent_unknown'])
+        except (OSError, ValueError):
+            with lock:
+                facts.update(stdin_write_in_flight=False, stdin_extent_unknown=True)
+                cause('stdin_write_error')
+        finally:
+            try:
+                process.stdin.close()
+                with lock:
+                    facts['stdin_closed'] = True
+            except (OSError, ValueError):
+                cause('stdin_close_error')
+    threads = [threading.Thread(target=read_channel, args=('stdout', process.stdout, 1048576), daemon=True),
+               threading.Thread(target=read_channel, args=('stderr', process.stderr, 16384), daemon=True),
+               threading.Thread(target=write_input, daemon=True)]
+    started_threads = []
+    for thread in threads:
+        if has_causes():
+            break
+        if time.monotonic() >= work_end:
+            with lock:
+                facts['timed_out'] = True;cause('worker_start_deadline')
+            break
+        try:
+            thread.start()
+            started_threads.append(thread)
+            if time.monotonic() >= work_end:
+                with lock:
+                    facts['timed_out'] = True;cause('worker_start_late')
+                break
+        except RuntimeError:
+            if thread.ident is not None:
+                started_threads.append(thread)
+            cause('thread_start_error');break
+    with lock:
+        facts['threads_started'] = len(started_threads)
+    def status():
+        try:
+            return process.poll()
+        except (OSError, ValueError):
+            cause('child_status_error');return None
+    while True:
+        if time.monotonic() >= work_end:
+            with lock:
+                facts['timed_out'] = True;cause('child_timeout')
+            break
+        if has_causes() or (status() is not None and all(not thread.is_alive() for thread in started_threads)):
+            break
+        time.sleep(min(.005, max(0, work_end - time.monotonic())))
+    cleanup_end = min(cleanup_end, time.monotonic() + 3)
+    with lock:
+        facts['cleanup_deadline'] = cleanup_end
+    if status() is None:
+        with lock:
+            facts['kill_requested'] = True
+        try:
+            process.kill()
+        except OSError:
+            cause('child_kill_error')
+    for thread, pipe, name in zip(threads, (process.stdout, process.stderr, process.stdin), ('stdout', 'stderr', 'stdin')):
+        if thread not in started_threads:
+            try:
+                pipe.close()
+                with lock:
+                    if name == 'stdin':
+                        facts['stdin_closed'] = True
+                    else:
+                        channels[name]['closed'] = True
+            except (OSError, ValueError):
+                cause(name + '_unstarted_close_error')
+    try:
+        returned = process.wait(timeout=max(0, cleanup_end - time.monotonic()))
+        with lock:
+            facts['reaped'] = type(returned) is int
+            if not facts['reaped']:
+                cause('child_reap_unknown')
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        cause('child_reap_unknown')
+    for thread in started_threads:
+        try:
+            thread.join(max(0, cleanup_end - time.monotonic()))
+        except RuntimeError:
+            cause('thread_join_error')
+    returned_status = status()
+    joined = len(started_threads) == len(threads) and all(not thread.is_alive() for thread in started_threads)
+    with lock:
+        facts.update(returncode=returned_status, threads_joined=joined)
+        if not facts['threads_joined']:
+            cause('pipe_completion_unknown')
+        if type(facts['returncode']) is not int or facts['returncode'] != 0:
+            cause('child_status')
+        if facts['kill_requested']:
+            cause('child_forced')
+        if not facts['stdin_complete'] or not facts['stdin_closed'] or not all(c['eof'] for c in channels.values()):
+            cause('io_completion_unknown')
+        stdout_data, stderr_data = bytes(buffers['stdout']), bytes(buffers['stderr'])
+    if has_causes():
+        return finish()
+    if stderr_data:
+        cause('unexpected_stderr');return finish()
+    try:
+        if len(stdout_data) > 32768 or not stdout_data.isascii():
+            raise ValueError('report extent')
+        def unique_pairs(rows):
+            result = dict(rows)
+            if len(result) != len(rows):
+                raise ValueError('duplicate report field')
+            return result
+        result = json.loads(stdout_data, object_pairs_hook=unique_pairs, parse_constant=reject_constant)
+        if (type(result) is not dict or set(result) != {'schema_version', 'case', 'node_version',
+                'completed', 'cause', 'checks', 'measurements'}
+                or type(result['schema_version']) is not int or result['schema_version'] != 1
+                or result['case'] != case or type(result['case']) is not str
+                or result['node_version'] != '25.2.1' or type(result['completed']) is not bool
+                or result['cause'] is not None and (type(result['cause']) is not str
+                    or result['cause'] not in _D23_DRIVER_CAUSES and not (geometry
+                        and case == 'geometry' and result['cause'] == 'd23_geometry_hold'))
+                or type(result['checks']) is not list or len(result['checks']) > 512
+                or type(result['measurements']) is not list or len(result['measurements']) > 128):
+            raise ValueError('report shape')
+        import re
+        def identifier(value):
+            return type(value) is str and re.fullmatch(r'[A-Za-z0-9_]{1,64}', value) is not None
+        for item in result['checks']:
+            if (type(item) is not dict or set(item) != {'id', 'ok'}
+                    or not identifier(item['id']) or type(item['ok']) is not bool):
+                raise ValueError('report check')
+        for item in result['measurements']:
+            if (type(item) is not dict or set(item) != {'id', 'size_bytes', 'sha256'}
+                    or not identifier(item['id']) or type(item['size_bytes']) is not int
+                    or not 0 <= item['size_bytes'] <= 262144
+                    or type(item['sha256']) is not str
+                    or re.fullmatch(r'[0-9a-f]{64}', item['sha256']) is None):
+                raise ValueError('report measurement')
+    except (ValueError, TypeError, RecursionError, OverflowError):
+        cause('child_protocol');return finish()
+    with lock:
+        facts.update(node_version=result['node_version'], case_completed=result['completed'],
+                     case_cause=result['cause'], report_bytes=len(stdout_data),
+                     report_sha256=hashlib.sha256(stdout_data).hexdigest(),
+                     checks_count=len(result['checks']), measurements_count=len(result['measurements']))
+    return finish(result)
+
+
+def d23_run_case_v1(case, raw, deadline):
+    """Use the original fixed codec DATA driver; input never selects a program."""
+    return _d23_run_fixed_driver_v1(case, raw, deadline, False)
+
+
+def d23_run_geometry_v1(raw, deadline):
+    """Use only the separate fixed geometry DATA driver, with no source execution."""
+    return _d23_run_fixed_driver_v1('geometry', raw, deadline, True)
+
+
+# D25 additive fixed TEST-driver transport. Existing helpers/defaults stay unchanged.
+_D25_CASES = frozenset(('codec_vectors', 'codec_malformed', 'codec_overflow', 'geometry'))
+_D25_DRIVER_CAUSES = frozenset(('d25_codec_absent', 'd25_driver_assertion',
+                              'd25_driver_input', 'd25_driver_error', 'd25_node_version'))
+
+
+class D25CaseError(RuntimeError):
+    def __init__(self, metadata):
+        self.metadata = metadata
+        super().__init__('D25 fixed case transport refused: ' + metadata['causes'][0])
+
+
+
+class D25FixedDriverTransportTests(unittest.TestCase):
+    observations = []
+
+    def setUp(self):
+        import sys
+        self.fixed_loader = _d25_main_module_v1
+        self.fixed_program = "'use strict';/* fixed DATA transport fixture, never executed */"
+        self.loader = mock.patch(__name__ + '._d25_main_module_v1', return_value=types.SimpleNamespace(
+            d25_node_driver_v1=lambda: self.fixed_program))
+        self.loaded = self.loader.start()
+        self.resolver = mock.patch('shutil.which', return_value=sys.executable)
+        self.resolver.start()
+        self.addCleanup(self.resolver.stop)
+        self.addCleanup(self.loader.stop)
+
+    def _capture(self, call):
+        try:
+            result = call()
+        except D25CaseError as error:
+            self.observations.append(error.metadata)
+            return None, error.metadata
+        self.observations.append(result[1])
+        return result
+
+    def _wire(self, data=None, case='codec_vectors'):
+        return canonical({'case': case, 'data': {} if data is None else data})
+
+    def _output(self, case='codec_vectors', completed=True, cause=None):
+        return canonical({'schema_version': 1, 'case': case, 'node_version': '25.2.1',
+            'completed': completed, 'cause': cause,
+            'checks': [{'id': 'transport_fixture', 'ok': completed}], 'measurements': []}) + b'\n'
+
+    def _fake_process(self, stdout=b'', stderr=b'', status=0, blocked=False):
+        import threading
+        stopped = threading.Event()
+        state = {'status': None if blocked else status}
+        class Reader(io.BytesIO):
+            def read(self, size=-1):
+                if blocked:
+                    stopped.wait(2)
+                return super().read(size)
+        def kill():
+            state['status'] = -9
+            stopped.set()
+        def wait(timeout=None):
+            import subprocess
+            if state['status'] is None:
+                stopped.wait(timeout)
+            if state['status'] is None:
+                raise subprocess.TimeoutExpired('controlled DATA child', timeout)
+            return state['status']
+        return types.SimpleNamespace(pid=12345, stdin=io.BytesIO(), stdout=Reader(stdout),
+                                     stderr=Reader(stderr), poll=lambda: state['status'], kill=kill, wait=wait)
+
+    def test_fixed_driver_and_behavioral_failure_have_separate_completion_facts(self):
+        import time
+        for case in sorted(_D25_CASES - {'geometry'}):
+            for completed, cause in ((True, None), (False, 'd25_codec_absent')):
+                output = self._output(case, completed, cause)
+                with self.subTest(case=case, completed=completed), mock.patch('subprocess.Popen',
+                        return_value=self._fake_process(stdout=output)) as spawn, mock.patch.dict(
+                        os.environ, {'NODE_OPTIONS': 'forbidden', 'NODE_PATH': 'forbidden',
+                                     'NODE_REPL_HISTORY': 'forbidden'}):
+                    report, facts = self._capture(lambda: d25_run_case_v1(case, b'{}', time.monotonic() + 40))
+                self.assertTrue(facts['parent_observed_completion'])
+                self.assertIs(facts['case_completed'], completed)
+                self.assertIs(report['completed'], completed)
+                self.assertEqual(facts['case_cause'], cause)
+                self.assertEqual(facts['program_sha256'], hashlib.sha256(self.fixed_program.encode('ascii')).hexdigest())
+                self.assertEqual(facts['source_kind'], 'd25_fixed_test_driver_v1')
+                self.assertEqual(facts['driver_role'], 'codec')
+                self.assertEqual(facts['driver_getter'], 'd25_node_driver_v1')
+                self.assertEqual(facts['program_bytes'], len(self.fixed_program.encode('ascii')))
+                argv = spawn.call_args.args[0]
+                self.assertEqual(argv[1:], ['--max-old-space-size=256', '--input-type=commonjs', '-e', self.fixed_program])
+                self.assertFalse(set(spawn.call_args.kwargs['env']) - {'PATH', 'SystemRoot'})
+                self.assertFalse(any(k in facts for k in ('stderr_prefix_b64', 'stdout_data', 'stderr_data')))
+                self.assertLessEqual(len(canonical(facts)), 32768)
+
+    def test_invalid_input_and_budget_refuse_before_driver_loading_or_spawn(self):
+        import time
+        now = time.monotonic()
+        cases = [('unknown', b'{}', now + 40), (True, b'{}', now + 40),
+                 ('codec_vectors', None, now + 40), ('codec_vectors', b'\xff', now + 40),
+                 ('codec_vectors', b'x' * 262145, now + 40), ('codec_vectors', b'{', now + 40),
+                 ('codec_vectors', b'{"x":1,"x":2}', now + 40), ('codec_vectors', b'NaN', now + 40),
+                 ('codec_vectors', b'1e9999', now + 40),
+                 ('codec_vectors', b'[' * 1100 + b'0', now + 40)]
+        cases += [('codec_vectors', b'{}', end) for end in (True, None, float('nan'), float('inf'), now - 1, now + 301)]
+        for case, raw, end in cases:
+            with self.subTest(kind=type(raw).__name__), mock.patch('subprocess.Popen') as spawn:
+                report, facts = self._capture(lambda: d25_run_case_v1(case, raw, end))
+                self.assertIsNone(report)
+                self.assertFalse(facts['spawned'] or facts['stdin_write_attempted'] or facts['stdin_extent_unknown'])
+                self.assertFalse(facts['parent_observed_completion'])
+                self.loaded.assert_not_called()
+                spawn.assert_not_called()
+
+    def test_full_envelope_exact_limit_and_one_byte_over(self):
+        import time
+        overhead = len(self._wire('', 'codec_vectors'))
+        data = 'x' * (262144 - overhead)
+        raw = canonical(data)
+        self.assertEqual(len(self._wire(data)), 262144)
+        with mock.patch('subprocess.Popen', return_value=self._fake_process(stdout=self._output())):
+            report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', raw, time.monotonic() + 40))
+        self.assertTrue(facts['parent_observed_completion'])
+        self.assertEqual(facts['input_bytes'], 262144)
+        self.loaded.reset_mock()
+        with mock.patch('subprocess.Popen') as spawn:
+            report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', canonical(data + 'x'), time.monotonic() + 40))
+        self.assertIn('input_envelope_limit', facts['causes'])
+        self.loaded.assert_not_called()
+        spawn.assert_not_called()
+
+    def test_fixed_driver_kind_ascii_and_size_are_bounded_before_spawn(self):
+        import time
+        for program, expected in ((None, 'driver_source_kind'), ('x' * 24577, 'driver_source_limit'),
+                                  ('', 'driver_source_limit'), ('\u0080', 'driver_source_ascii')):
+            with self.subTest(cause=expected), mock.patch(__name__ + '._d25_main_module_v1',
+                    return_value=types.SimpleNamespace(d25_node_driver_v1=lambda: program)), mock.patch('subprocess.Popen') as spawn:
+                report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+            self.assertIn(expected, facts['causes'])
+            spawn.assert_not_called()
+
+    def test_channel_overflow_status_errors_and_stderr_never_publish_raw_data(self):
+        import time
+        secret = b'GENERATED_SOURCE_MUST_STAY_RAM'
+        variants = [(self._fake_process(stdout=b'x' * 1048577), 'stdout_overflow'),
+                    (self._fake_process(stderr=secret * 600), 'stderr_overflow'),
+                    (self._fake_process(stdout=self._output(), stderr=secret), 'unexpected_stderr'),
+                    (self._fake_process(stdout=self._output(), status=7), 'child_status')]
+        class RefusingReader(io.BytesIO):
+            def read(self, size=-1):raise OSError('GENERATED_SOURCE_MUST_STAY_RAM')
+        broken = self._fake_process();broken.stdout = RefusingReader()
+        variants.append((broken, 'stdout_read_error'))
+        class UnknownEOFReader(io.BytesIO):
+            def read(self, size=-1):return None
+        no_eof = self._fake_process();no_eof.stdout = UnknownEOFReader()
+        variants.append((no_eof, 'stdout_read_error'))
+        def unavailable_status():raise OSError('GENERATED_SOURCE_MUST_STAY_RAM')
+        no_status = self._fake_process(stdout=self._output());no_status.poll = unavailable_status
+        variants.append((no_status, 'child_status_error'))
+        for process, expected in variants:
+            with self.subTest(cause=expected), mock.patch('subprocess.Popen', return_value=process):
+                report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+            self.assertIsNone(report)
+            self.assertIn(expected, facts['causes'])
+            self.assertFalse(facts['parent_observed_completion'])
+            self.assertTrue(secret not in canonical(facts), 'raw child DATA must never enter retained metadata')
+            self.assertLessEqual(len(canonical(facts)), 32768)
+
+    def test_report_schema_and_report_extent_are_independently_bounded(self):
+        import time
+        base = json.loads(self._output())
+        invalid = []
+        for key, value in [('schema_version', True), ('case', 'geometry'), ('node_version', '0'),
+                           ('completed', 1), ('cause', 'unbounded error text'), ('extra', None),
+                           ('checks', [{'id': 'bad-id', 'ok': True}]),
+                           ('checks', [{'id': 'ok', 'ok': 1}]),
+                           ('checks', [{'id': 'x', 'ok': True}] * 513),
+                           ('measurements', [{'id': 'x', 'size_bytes': True, 'sha256': '0' * 64}]),
+                           ('measurements', [{'id': 'x', 'size_bytes': 262145, 'sha256': '0' * 64}]),
+                           ('measurements', [{'id': 'x', 'size_bytes': 0, 'sha256': 'X' * 64}]),
+                           ('measurements', [{'id': 'x', 'size_bytes': 0, 'sha256': '0' * 64}] * 129)]:
+            value_report = dict(base);value_report[key] = value;invalid.append(canonical(value_report))
+        invalid += [b'{"case":"codec_vectors","case":"codec_vectors"}', b'[' * 1100 + b'0' + b']' * 1100,
+                    self._output() + b'{}', self._output() + b' ' * 32768]
+        for output in invalid:
+            with self.subTest(kind='closed bounded report'), mock.patch('subprocess.Popen', return_value=self._fake_process(stdout=output)):
+                report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+            self.assertIsNone(report)
+            self.assertIn('child_protocol', facts['causes'])
+        output = self._output();output += b' ' * (32768 - len(output))
+        with mock.patch('subprocess.Popen', return_value=self._fake_process(stdout=output)):
+            report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+        self.assertTrue(facts['parent_observed_completion'])
+        self.assertEqual(facts['report_bytes'], 32768)
+
+    def test_late_driver_or_node_resolution_cannot_spawn(self):
+        for phase in ('driver', 'node'):
+            clock = [1000.0]
+            def driver():
+                if phase == 'driver':clock[0] = 1027.0
+                return self.fixed_program
+            def resolve(name):
+                import sys
+                if phase == 'node':clock[0] = 1027.0
+                return sys.executable
+            with self.subTest(phase=phase), mock.patch('time.monotonic', side_effect=lambda: clock[0]), \
+                    mock.patch(__name__ + '._d25_main_module_v1', return_value=types.SimpleNamespace(d25_node_driver_v1=driver)), \
+                    mock.patch('shutil.which', resolve), mock.patch('subprocess.Popen') as spawn:
+                report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', 1040.0))
+            self.assertIn('deadline_before_spawn', facts['causes'])
+            spawn.assert_not_called()
+
+    def test_driver_loading_failure_is_bounded_and_never_exposes_its_message(self):
+        import time
+        with mock.patch(__name__ + '._d25_main_module_v1', side_effect=RuntimeError('GENERATED_SOURCE_MUST_STAY_RAM')), \
+                mock.patch('subprocess.Popen') as spawn:
+            report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+        self.assertIsNone(report)
+        self.assertEqual(facts['causes'], ['driver_source_error'])
+        self.assertTrue(b'GENERATED_SOURCE_MUST_STAY_RAM' not in canonical(facts))
+        spawn.assert_not_called()
+
+    def test_report_accepts_boundary_measurements_without_behavioral_pass_inference(self):
+        import time
+        value = json.loads(self._output(completed=False, cause='d25_driver_assertion'))
+        value['measurements'] = [{'id': 'x' * 64, 'size_bytes': size, 'sha256': '0' * 64}
+                                 for size in (0, 262144)]
+        with mock.patch('subprocess.Popen', return_value=self._fake_process(stdout=canonical(value) + b'\n')):
+            report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+        self.assertTrue(facts['parent_observed_completion'])
+        self.assertFalse(facts['case_completed'])
+        self.assertEqual(facts['measurements_count'], 2)
+        self.assertFalse(report['completed'])
+
+    def test_work_timeout_keeps_channel_and_stdin_unknowns_nonaccepting(self):
+        clock, started, after_start = [1000.0], [], [0]
+        process = self._fake_process(blocked=True)
+        class PendingThread:
+            ident = None
+            def __init__(self, target, args=(), daemon=None):pass
+            def start(self):
+                self.ident = 1
+                started.append(self)
+            def join(self, timeout=None):return None
+            def is_alive(self):return True
+        def now():
+            if len(started) == 3:
+                after_start[0] += 1
+                if after_start[0] >= 2:clock[0] = 1027.0
+            return clock[0]
+        with mock.patch('threading.Thread', PendingThread), mock.patch('time.monotonic', now), \
+                mock.patch('subprocess.Popen', return_value=process):
+            report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', 1040.0))
+        self.assertIsNone(report)
+        self.assertIn('child_timeout', facts['causes'])
+        self.assertTrue(facts['timed_out'] and facts['kill_requested'])
+        self.assertFalse(facts['stdout']['eof'] or facts['stderr']['eof'] or facts['stdin_complete'])
+        self.assertFalse(facts['parent_observed_completion'])
+        self.assertLessEqual(facts['cleanup_deadline'], facts['started_monotonic'] + 30)
+
+    def test_partial_thread_start_has_three_second_cleanup_and_known_unknowns(self):
+        import threading
+        import time
+        process = self._fake_process(blocked=True)
+        original_start, original_join = threading.Thread.start, threading.Thread.join
+        calls, waits = [], []
+        def start(thread):
+            calls.append(thread)
+            if len(calls) == 2:
+                raise RuntimeError('controlled partial startup')
+            original_start(thread)
+        def join(thread, timeout=None):
+            waits.append(timeout)
+            original_join(thread, timeout)
+        with mock.patch('subprocess.Popen', return_value=process), \
+                mock.patch('threading.Thread.start', start), mock.patch('threading.Thread.join', join):
+            report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', time.monotonic() + 295))
+        self.assertIsNone(report)
+        self.assertIn('thread_start_error', facts['causes'])
+        self.assertEqual(facts['threads_started'], 1)
+        self.assertTrue(facts['kill_requested'] and facts['reaped'])
+        self.assertFalse(facts['threads_joined'])
+        self.assertTrue(facts['stderr']['closed'] and facts['stderr']['unknown_remainder'])
+        self.assertTrue(bool(waits) and all(0 <= value <= 3 for value in waits))
+        self.assertLessEqual(facts['cleanup_deadline'], facts['work_deadline'] + 3)
+        self.assertLessEqual(facts['work_deadline'], facts['started_monotonic'] + 27)
+        self.assertLessEqual(facts['cleanup_deadline'], facts['started_monotonic'] + 30)
+        self.assertEqual((facts['child_total_limit_seconds'], facts['child_work_limit_seconds'],
+                          facts['cleanup_limit_seconds'], facts['final_reserve_seconds']), (30, 27, 3, 5))
+
+    def test_late_spawn_starts_no_worker_or_stdin_write(self):
+        process = self._fake_process(blocked=True)
+        writes, clock = [], [1000.0]
+        class Input(io.BytesIO):
+            def write(self, value):
+                writes.append(len(value))
+                return len(value)
+        process.stdin = Input()
+        def spawn(*args, **kwargs):
+            clock[0] = 1027.0
+            return process
+        with mock.patch('time.monotonic', side_effect=lambda: clock[0]), \
+                mock.patch('subprocess.Popen', spawn), mock.patch('threading.Thread.start') as start:
+            report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', 1040.0))
+        self.assertIsNone(report)
+        self.assertIn('deadline_after_spawn', facts['causes'])
+        self.assertTrue(facts['spawned'] and facts['kill_requested'] and facts['reaped'])
+        self.assertEqual(facts['threads_started'], 0)
+        self.assertTrue(not writes and facts['stdin_bytes'] == 0)
+        self.assertTrue(facts['stdout']['unknown_remainder'] and facts['stderr']['unknown_remainder'])
+        self.assertEqual(facts['returncode'], -9)
+        start.assert_not_called()
+
+    def test_each_worker_start_has_pre_and_post_work_guards(self):
+        for mode, expected in (('post', 'worker_start_late'), ('next', 'worker_start_deadline')):
+            with self.subTest(boundary=mode):
+                clock, starts, reads = [1000.0], [], [0]
+                process = self._fake_process()
+                class InlineThread:
+                    ident = None
+                    def __init__(self, target, args=(), daemon=None):
+                        self.target, self.args = target, args
+                    def start(self):
+                        starts.append(self)
+                        self.ident = 1
+                        self.target(*self.args)
+                    def join(self, timeout=None):
+                        return None
+                    def is_alive(self):
+                        return False
+                def now():
+                    if starts:
+                        reads[0] += 1
+                        if mode == 'post' or reads[0] >= 2:
+                            clock[0] = 1027.0
+                    return clock[0]
+                with mock.patch('time.monotonic', now), mock.patch('threading.Thread', InlineThread), \
+                        mock.patch('subprocess.Popen', return_value=process):
+                    report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', 1040.0))
+                self.assertIsNone(report)
+                self.assertIn(expected, facts['causes'])
+                self.assertEqual(len(starts), 1)
+                self.assertEqual(facts['stdin_bytes'], 0)
+                self.assertFalse(facts['stdin_complete'])
+
+    def test_late_wait_join_or_status_cannot_publish_completion(self):
+        output = self._output()
+        for phase in ('wait', 'join', 'status'):
+            with self.subTest(observation=phase):
+                clock, polls = [1000.0], [0]
+                process = self._fake_process(stdout=output)
+                class InlineThread:
+                    ident = None
+                    def __init__(self, target, args=(), daemon=None):
+                        self.target, self.args = target, args
+                    def start(self):
+                        self.ident = 1
+                        self.target(*self.args)
+                    def join(self, timeout=None):
+                        if phase == 'join':
+                            clock[0] = 1030.0
+                    def is_alive(self):
+                        return False
+                def status():
+                    polls[0] += 1
+                    if phase == 'status' and polls[0] >= 2:
+                        clock[0] = 1030.0
+                    return 0
+                def wait(timeout=None):
+                    if phase == 'wait':
+                        clock[0] = 1030.0
+                    return 0
+                process.poll, process.wait = status, wait
+                with mock.patch('time.monotonic', side_effect=lambda: clock[0]), \
+                        mock.patch('threading.Thread', InlineThread), mock.patch('subprocess.Popen', return_value=process):
+                    report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', 1040.0))
+                self.assertIsNone(report)
+                self.assertIn('child_completion_late', facts['causes'])
+                self.assertTrue(facts['finished_before_deadline'])
+                self.assertFalse(facts['child_completion_observed_before_deadline'])
+                self.assertFalse(facts['parent_observed_completion'])
+                self.assertEqual(facts['descendant_quiescence'], 'UNKNOWN')
+
+    def test_unjoined_reader_capture_binds_prefix_counters_eof_and_causes(self):
+        import threading
+        import time
+        for terminal in ('eof', 'error'):
+            with self.subTest(reader_terminal=terminal):
+                released, closed = threading.Event(), threading.Event()
+                process = self._fake_process()
+                process.poll = lambda: -9
+                process.wait = lambda timeout=None: -9
+                class LateReader(io.BytesIO):
+                    def read(self, size=-1):
+                        if not released.wait(2):
+                            raise OSError('controlled release deadline')
+                        part = super().read(size)
+                        if not part and terminal == 'error':
+                            raise OSError('controlled late read refusal')
+                        return part
+                    def close(self):
+                        super().close()
+                        closed.set()
+                process.stdout = LateReader(b'bounded DATA')
+                original_start, original_join = threading.Thread.start, threading.Thread.join
+                original_sha256 = hashlib.sha256
+                workers, triggered, settled = [], [], []
+                def start(thread):
+                    if len(workers) == 2:
+                        raise RuntimeError('controlled third startup')
+                    workers.append(thread)
+                    original_start(thread)
+                def hash_after_capture(value=b'', *args, **kwargs):
+                    if value == b'' and not triggered:
+                        triggered.append(True)
+                        released.set()
+                        settled.append(closed.wait(2))
+                    return original_sha256(value, *args, **kwargs)
+                try:
+                    with mock.patch('subprocess.Popen', return_value=process), \
+                            mock.patch('threading.Thread.start', start), \
+                            mock.patch('threading.Thread.join', return_value=None), \
+                            mock.patch('hashlib.sha256', hash_after_capture):
+                        report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+                    before = canonical(facts)
+                finally:
+                    released.set()
+                    for worker in workers:
+                        original_join(worker, 3)
+                self.assertIsNone(report)
+                self.assertTrue(bool(triggered) and settled == [True], 'controlled reader must finish during prefix hashing')
+                self.assertEqual((facts['stdout']['observed_bytes'], facts['stdout']['retained_bytes']), (0, 0))
+                self.assertEqual(facts['stdout']['prefix_sha256'], original_sha256(b'').hexdigest())
+                self.assertFalse(facts['stdout']['eof'] or facts['stdout']['closed'])
+                self.assertIsNone(facts['stdout']['io_error'])
+                self.assertTrue(facts['stdout']['unknown_remainder'])
+                self.assertEqual(set(facts['causes']), {'thread_start_error', 'pipe_completion_unknown',
+                                                       'child_status', 'io_completion_unknown'})
+                self.assertTrue(canonical(facts) == before, 'captured refusal must stay fixed after late reader completion')
+
+    def test_blocked_second_write_keeps_known_count_and_pending_unknown_extent(self):
+        import threading
+        import time
+        blocked, released = threading.Event(), threading.Event()
+        process = self._fake_process()
+        process.poll = lambda: -9
+        process.wait = lambda timeout=None: -9
+        writes = []
+        class PendingInput(io.BytesIO):
+            def write(self, value):
+                writes.append(len(value))
+                if len(writes) == 1:
+                    return 1
+                blocked.set()
+                if not released.wait(2):
+                    raise OSError('controlled write release deadline')
+                return len(value)
+        class RefusalAfterWrite(io.BytesIO):
+            def read(self, size=-1):
+                if not blocked.wait(2):
+                    raise OSError('controlled write entry deadline')
+                raise OSError('controlled capture refusal')
+        process.stdin, process.stdout = PendingInput(), RefusalAfterWrite()
+        original_start, original_join = threading.Thread.start, threading.Thread.join
+        workers = []
+        def start(thread):
+            workers.append(thread)
+            original_start(thread)
+        try:
+            with mock.patch('subprocess.Popen', return_value=process), \
+                    mock.patch('threading.Thread.start', start), \
+                    mock.patch('threading.Thread.join', return_value=None):
+                report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+            before = canonical(facts)
+        finally:
+            released.set()
+            for worker in workers:
+                original_join(worker, 3)
+        self.assertIsNone(report)
+        self.assertEqual(writes, [len(self._wire()), len(self._wire()) - 1])
+        self.assertEqual(facts['stdin_bytes'], 1)
+        self.assertTrue(facts['stdin_write_attempted'] and facts['stdin_write_in_flight']
+                        and facts['stdin_extent_unknown'])
+        self.assertFalse(facts['stdin_complete'] or facts['stdin_closed'] or facts['parent_observed_completion'])
+        self.assertIn('stdout_read_error', facts['causes'])
+        self.assertIn('pipe_completion_unknown', facts['causes'])
+        self.assertTrue(canonical(facts) == before, 'pending-write snapshot must stay fixed after a valid late count')
+
+    def test_invalid_stdin_count_preserves_unknown_extent(self):
+        import time
+        process = self._fake_process()
+        class InvalidCount(io.BytesIO):
+            def write(self, value):
+                return len(value) + 1
+        process.stdin = InvalidCount()
+        with mock.patch('subprocess.Popen', return_value=process):
+            report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
+        self.assertIsNone(report)
+        self.assertIn('stdin_short_write', facts['causes'])
+        self.assertTrue(facts['stdin_extent_unknown'])
+        self.assertFalse(facts['stdin_complete'])
+
+
+
+    def test_early_cleanup_wait_join_or_status_lateness_refuses_before_child_total_end(self):
+        for phase in ('wait', 'join', 'status'):
+            with self.subTest(observation=phase):
+                clock, polls = [1000.0], [0]
+                process = self._fake_process(stdout=self._output())
+                class InlineThread:
+                    ident = None
+                    def __init__(self, target, args=(), daemon=None):
+                        self.target, self.args = target, args
+                    def start(self):
+                        self.ident = 1
+                        self.target(*self.args)
+                    def join(self, timeout=None):
+                        if phase == 'join':clock[0] = 1003.0
+                    def is_alive(self):return False
+                def status():
+                    polls[0] += 1
+                    if phase == 'status' and polls[0] >= 3:clock[0] = 1003.0
+                    return 0
+                def wait(timeout=None):
+                    if phase == 'wait':clock[0] = 1003.0
+                    return 0
+                process.poll, process.wait = status, wait
+                with mock.patch('time.monotonic', side_effect=lambda: clock[0]), \
+                        mock.patch('threading.Thread', InlineThread), mock.patch('subprocess.Popen', return_value=process):
+                    report, facts = self._capture(lambda: d25_run_case_v1('codec_vectors', b'{}', 1040.0))
+                self.assertIsNone(report)
+                self.assertEqual(facts['causes'], ['cleanup_late'])
+                self.assertEqual(facts['cleanup_deadline'], 1003.0)
+                self.assertLess(clock[0], facts['child_total_deadline'])
+                self.assertTrue(facts['finished_before_deadline'])
+                self.assertTrue(facts['child_completion_observed_before_deadline'])
+                self.assertFalse(facts['parent_observed_completion'])
+                self.assertEqual(facts['returncode'], 0)
+                self.assertTrue(facts['reaped'] and facts['threads_joined'])
+                self.assertTrue(facts['stdout']['eof'] and facts['stderr']['eof'])
+                self.assertEqual(facts['descendant_quiescence'], 'UNKNOWN')
+
+    def test_fixed_main_aliases_use_canonical_priority_without_reopening(self):
+        import sys
+        names = ('tests.test_accepted_policy_fixture_compiler_gate2_resume_v1',
+                 'test_accepted_policy_fixture_compiler_gate2_resume_v1')
+        expected = Path(__file__).with_name('test_accepted_policy_fixture_compiler_gate2_resume_v1.py').absolute()
+        first = types.ModuleType(names[0]);other = types.ModuleType(names[1])
+        for module in (first, other):
+            module.__file__ = str(expected)
+            module.d25_node_driver_v1 = types.FunctionType(
+                (lambda: None).__code__.replace(co_filename=str(expected)), vars(module), 'd25_node_driver_v1')
+        for mode in ('canonical', 'discovery', 'same', 'different', 'absent', 'wrong_type', 'wrong_origin', 'bad_canonical'):
+            with self.subTest(mode=mode), mock.patch.dict(sys.modules), mock.patch(
+                    'builtins.open', side_effect=AssertionError('fixed alias must not reopen')), mock.patch.object(
+                    Path, 'open', side_effect=AssertionError('fixed alias must not reopen')):
+                for name in names:sys.modules.pop(name, None)
+                if mode in ('canonical', 'same', 'different', 'wrong_origin'):sys.modules[names[0]] = first
+                if mode == 'same':sys.modules[names[1]] = first
+                if mode in ('discovery', 'different', 'bad_canonical'):sys.modules[names[1]] = other
+                if mode in ('wrong_type', 'bad_canonical'):sys.modules[names[0]] = types.SimpleNamespace(__name__=names[0])
+                if mode == 'wrong_origin':first.__file__ = str(expected.with_name('wrong.py'))
+                try:
+                    if mode in ('canonical', 'discovery', 'same', 'different'):
+                        self.assertIs(self.fixed_loader(), other if mode == 'discovery' else first)
+                    else:
+                        with self.assertRaisesRegex(RuntimeError, '^d25_held_main_unavailable$'):
+                            self.fixed_loader()
+                finally:first.__file__ = str(expected)
+
+
+    def test_geometry_fixed_driver_binding_and_hold_cause_stay_separate(self):
+        import time
+        raw = canonical({'case': 'geometry'})
+        geometry_program = "'use strict';/* separate fixed geometry DATA fixture, never executed */"
+        module = self.loaded.return_value
+        codec_getter = mock.Mock(return_value=self.fixed_program)
+        geometry_getter = mock.Mock(return_value=geometry_program)
+        with mock.patch.object(module, 'd25_node_driver_v1', codec_getter), mock.patch.object(
+                module, 'd25_geometry_driver_v1', geometry_getter, create=True):
+            with mock.patch('subprocess.Popen', return_value=self._fake_process(
+                    stdout=self._output('codec_vectors'))) as spawn:
+                report, codec = self._capture(lambda: d25_run_case_v1(
+                    'codec_vectors', raw, time.monotonic() + 40))
+                self.assertTrue(codec['parent_observed_completion'])
+                self.assertTrue(report['completed'])
+                codec_getter.assert_called_once_with()
+                geometry_getter.assert_not_called()
+                self.assertEqual(spawn.call_args.args[0][-1], self.fixed_program)
+                self.assertEqual(codec['source_kind'], 'd25_fixed_test_driver_v1')
+                self.assertEqual(codec['driver_role'], 'codec')
+                self.assertEqual(codec['driver_getter'], 'd25_node_driver_v1')
+                self.assertEqual(codec['program_bytes'], len(self.fixed_program))
+                self.assertEqual(codec['program_sha256'], hashlib.sha256(self.fixed_program.encode('ascii')).hexdigest())
+            codec_getter.reset_mock()
+            with mock.patch('subprocess.Popen', return_value=self._fake_process(
+                    stdout=self._output('geometry', False, 'd25_geometry_hold'))) as spawn:
+                report, geometry = self._capture(lambda: d25_run_geometry_v1(
+                    raw, time.monotonic() + 40))
+                self.assertIsNotNone(report)
+                self.assertTrue(geometry['parent_observed_completion'])
+                self.assertFalse(geometry['case_completed'])
+                self.assertEqual(geometry['case_cause'], 'd25_geometry_hold')
+                self.assertEqual(geometry['causes'], [])
+                codec_getter.assert_not_called()
+                geometry_getter.assert_called_once_with()
+                self.assertEqual(spawn.call_args.args[0][-1], geometry_program)
+                self.assertEqual(geometry['source_kind'], 'd25_fixed_test_driver_v1')
+                self.assertEqual(geometry['driver_role'], 'geometry')
+                self.assertEqual(geometry['driver_getter'], 'd25_geometry_driver_v1')
+                self.assertEqual(geometry['program_bytes'], len(geometry_program))
+                self.assertEqual(geometry['program_sha256'], hashlib.sha256(geometry_program.encode('ascii')).hexdigest())
+                self.assertNotEqual(geometry['program_sha256'], codec['program_sha256'])
+                self.assertNotEqual(geometry['input_sha256'], codec['input_sha256'])
+            geometry_getter.reset_mock()
+            with mock.patch('subprocess.Popen', return_value=self._fake_process(
+                    stdout=self._output('codec_vectors', False, 'd25_geometry_hold'))) as spawn:
+                report, refused = self._capture(lambda: d25_run_case_v1(
+                    'codec_vectors', raw, time.monotonic() + 40))
+                self.assertIsNone(report)
+                self.assertFalse(refused['parent_observed_completion'])
+                self.assertIn('child_protocol', refused['causes'])
+                codec_getter.assert_called_once_with()
+                geometry_getter.assert_not_called()
+                self.assertEqual(refused['program_sha256'], codec['program_sha256'])
+            for facts in (codec, geometry, refused):
+                self.assertFalse(any(key in facts for key in (
+                    'stderr_prefix_b64', 'stdout_data', 'stderr_data', 'program', 'raw')))
+                self.assertLessEqual(len(canonical(facts)), 32768)
+
+    def test_invalid_geometry_mode_refuses_before_loading_or_spawn(self):
+        import time
+        end = time.monotonic() + 40
+        for case, geometry in (('geometry', 1), ('geometry', None), ('codec_vectors', True), ('geometry', False)):
+            with self.subTest(case=case, mode_type=type(geometry).__name__), mock.patch(
+                    'subprocess.Popen') as spawn:
+                report, facts = self._capture(lambda: _d25_run_fixed_driver_v1(
+                    case, b'{}', end, geometry=geometry))
+                self.assertIsNone(report)
+                self.assertEqual(facts['causes'], ['geometry_invalid'])
+                self.assertFalse(facts['spawned'] or facts['stdin_write_attempted']
+                                 or facts['stdin_extent_unknown'])
+                self.assertFalse(facts['parent_observed_completion'])
+                self.loaded.assert_not_called()
+                spawn.assert_not_called()
+
+
+
+def _d25_main_module_v1():
+    """Use canonical first, otherwise discovery, with no import or source reopening."""
+    import sys
+    names = ('tests.test_accepted_policy_fixture_compiler_gate2_resume_v1',
+             'test_accepted_policy_fixture_compiler_gate2_resume_v1')
+    expected = Path(__file__).with_name('test_accepted_policy_fixture_compiler_gate2_resume_v1.py').absolute()
+    present = [(name, sys.modules[name]) for name in names if name in sys.modules]
+    if not present:
+        raise RuntimeError('d25_held_main_unavailable')
+    selected_name, selected = present[0]
+    for name, module in present:
+        if type(module) is not types.ModuleType:
+            raise RuntimeError('d25_held_main_unavailable')
+        namespace = vars(module)
+        if (namespace.get('__name__') != name and module is not selected
+                or type(namespace.get('__file__')) is not str
+                or Path(namespace['__file__']).absolute() != expected):
+            raise RuntimeError('d25_held_main_unavailable')
+    namespace = vars(selected)
+    getter = namespace.get('d25_node_driver_v1')
+    if (namespace.get('__name__') != selected_name or type(getter) is not types.FunctionType
+            or getter.__name__ != 'd25_node_driver_v1' or getter.__module__ != selected_name
+            or getter.__globals__ is not namespace or Path(getter.__code__.co_filename).absolute() != expected):
+        raise RuntimeError('d25_held_main_unavailable')
+    return selected
+
+
+def _d25_run_fixed_driver_v1(case, raw, deadline, geometry=False):
+    """Run one closed DATA case in the fixed D25 driver with bounded capture.
+
+    A valid completed:false driver report returns normally. Only transport or
+    protocol refusal raises D25CaseError with immutable metadata, never raw DATA.
+    The original finite caller deadline also bounds startup, cleanup and return.
+    """
+    import copy
+    import math
+    import shutil
+    import subprocess
+    import threading
+    import time
+
+    started = time.monotonic()
+    buffers = {'stdout': bytearray(), 'stderr': bytearray()}
+    channels = {name: {'observed_bytes': 0, 'retained_bytes': 0, 'eof': False,
+                       'overflow': False, 'io_error': None, 'closed': False,
+                       'unknown_remainder': True} for name in buffers}
+    facts = {'schema_version': 1, 'data_only': True, 'spawned': False, 'pid': None,
+             'returncode': None, 'timed_out': False, 'kill_requested': False,
+             'stdin_bytes': 0, 'stdin_closed': False, 'stdin_complete': False,
+             'stdin_extent_unknown': False, 'stdin_write_attempted': False,
+             'stdin_write_in_flight': False, 'threads_started': 0, 'reaped': False,
+             'threads_joined': False, 'causes': [], 'node_version': None,
+             'case': case if type(case) is str and case in _D25_CASES else None,
+             'case_completed': None, 'case_cause': None, 'parent_observed_completion': False,
+             'descendant_quiescence': 'UNKNOWN', 'input_bytes': None,
+             'input_sha256': None, 'data_bytes': None, 'data_sha256': None,
+             'report_bytes': None, 'report_sha256': None, 'checks_count': None,
+             'measurements_count': None, 'environment_keys': [], 'program_sha256': None,
+             'source_kind': 'd25_fixed_test_driver_v1', 'program_bytes': None,
+             'driver_role': ('geometry' if geometry else 'codec') if type(geometry) is bool else None,
+             'driver_getter': ('d25_geometry_driver_v1' if geometry else 'd25_node_driver_v1') if type(geometry) is bool else None}
+    lock = threading.RLock()
+    def cause(value):
+        with lock:
+            if value not in facts['causes']:
+                facts['causes'].append(value)
+    def has_causes():
+        with lock:
+            return bool(facts['causes'])
+    def finish(report=None):
+        # Capture related facts, channels, causes and byte prefixes at one shared
+        # lock boundary. Later worker changes cannot mix these captured values.
+        with lock:
+            snapshot = copy.deepcopy(facts)
+            captured_channels = {name: dict(channel) for name, channel in channels.items()}
+            prefixes = {name: bytes(buffer) for name, buffer in buffers.items()}
+        for name, channel in captured_channels.items():
+            prefix = prefixes[name]
+            snapshot[name] = {**channel, 'retained_bytes': len(prefix),
+                              'prefix_sha256': hashlib.sha256(prefix).hexdigest(),
+                              'unknown_remainder': not channel['eof'] or channel['overflow'] or channel['io_error'] is not None}
+        observed = time.monotonic()
+        snapshot['elapsed_seconds'] = observed - started
+        snapshot['finished_before_deadline'] = observed < end if end is not None else False
+        snapshot['child_completion_observed_before_deadline'] = (
+            snapshot['spawned'] and child_total_end is not None and observed < child_total_end)
+        if snapshot['spawned'] and not snapshot['child_completion_observed_before_deadline']:
+            if 'child_completion_late' not in snapshot['causes']:
+                snapshot['causes'].append('child_completion_late')
+        if not snapshot['finished_before_deadline'] and 'parent_deadline' not in snapshot['causes']:
+            snapshot['causes'].append('parent_deadline')
+        if snapshot['spawned'] and observed >= cleanup_end:
+            if 'cleanup_late' not in snapshot['causes']:
+                snapshot['causes'].append('cleanup_late')
+        snapshot['parent_observed_completion'] = report is not None and not snapshot['causes']
+        encoded = canonical(snapshot)
+        if len(encoded) > 32768:
+            raise RuntimeError('D25 capture metadata bound')
+        # Publication is immutable; the shared capture does not establish
+        # continuous custody or quiescence of unjoined workers/descendants.
+        frozen = json.loads(encoded)
+        if frozen['causes']:
+            raise D25CaseError(frozen)
+        return report, frozen
+    end = None
+    child_total_end = None
+    if type(deadline) not in (int, float):
+        cause('deadline_invalid');return finish()
+    try:
+        end = float(deadline)
+    except (OverflowError, ValueError):
+        cause('deadline_invalid');return finish()
+    if not math.isfinite(end):
+        end = None;cause('deadline_invalid');return finish()
+    if end - started > 300:
+        cause('deadline_limit');return finish()
+    if type(case) is not str or case not in _D25_CASES:
+        cause('case_invalid');return finish()
+    if type(geometry) is not bool or geometry != (case == 'geometry'):
+        cause('geometry_invalid');return finish()
+    if type(raw) is not bytes:
+        cause('input_type');return finish()
+    if len(raw) > 262144:
+        cause('input_limit');return finish()
+    if not raw.isascii():
+        cause('input_ascii');return finish()
+    if time.monotonic() >= end - 8:
+        cause('deadline_no_window');return finish()
+    try:
+        def unique_input(rows):
+            value = dict(rows)
+            if len(value) != len(rows):
+                raise ValueError('duplicate DATA field')
+            return value
+        def reject_constant(value):
+            raise ValueError('nonfinite DATA')
+        data = json.loads(raw, object_pairs_hook=unique_input, parse_constant=reject_constant)
+        wire = canonical({'case': case, 'data': data})
+        if len(wire) > 262144:
+            cause('input_envelope_limit');return finish()
+    except (ValueError, TypeError, RecursionError, OverflowError):
+        cause('input_json');return finish()
+    with lock:
+        facts.update(data_bytes=len(raw), data_sha256=hashlib.sha256(raw).hexdigest(),
+                     input_bytes=len(wire), input_sha256=hashlib.sha256(wire).hexdigest())
+    raw = wire
+    work_end = min(started + 27, end - 8)
+    child_total_end = min(started + 30, end - 5)
+    cleanup_end = min(child_total_end, work_end + 3)
+    with lock:
+        facts.update(started_monotonic=started, caller_deadline=end, work_deadline=work_end,
+                     child_total_deadline=child_total_end, cleanup_deadline=cleanup_end, child_total_limit_seconds=30,
+                     child_work_limit_seconds=27, cleanup_limit_seconds=3, final_reserve_seconds=5)
+    if time.monotonic() >= work_end:
+        cause('deadline_no_window');return finish()
+    try:
+        module = _d25_main_module_v1()
+        program = module.d25_geometry_driver_v1() if geometry else module.d25_node_driver_v1()
+    except Exception:
+        cause('driver_source_error');return finish()
+    if type(program) is not str:
+        cause('driver_source_kind');return finish()
+    if not 0 < len(program) <= 24576:
+        cause('driver_source_limit');return finish()
+    try:
+        program_bytes = program.encode('ascii')
+    except UnicodeEncodeError:
+        cause('driver_source_ascii');return finish()
+    # Hold one exact immutable source/argv buffer; DATA never selects a program.
+    program = program_bytes.decode('ascii')
+    with lock:
+        facts.update(program_bytes=len(program_bytes), program_sha256=hashlib.sha256(program_bytes).hexdigest())
+    node = shutil.which('node') or shutil.which('node.exe')
+    if node is None:
+        cause('node_unavailable');return finish()
+    try:
+        node = str(Path(node).resolve(strict=True))
+        environment = {'PATH': str(Path(node).parent)}
+        if os.name == 'nt':
+            environment['SystemRoot'] = os.environ['SystemRoot']
+        argv = [node, '--max-old-space-size=256', '--input-type=commonjs', '-e', program]
+        if os.name == 'nt' and len(subprocess.list2cmdline(argv)) > 32767:
+            cause('driver_command_limit');return finish()
+        with lock:
+            facts.update(node_executable=node, command_options=argv[1:4], environment_keys=sorted(environment))
+        if time.monotonic() >= work_end:
+            cause('deadline_before_spawn');return finish()
+        process = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, env=environment, bufsize=0,
+                                   start_new_session=os.name != 'nt',
+                                   creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+    except (OSError, KeyError, ValueError) as error:
+        cause('spawn_' + type(error).__name__);return finish()
+    with lock:
+        facts.update(spawned=True, pid=process.pid)
+    if time.monotonic() >= work_end:
+        with lock:
+            facts['timed_out'] = True;cause('deadline_after_spawn')
+    def read_channel(name, pipe, limit):
+        channel = channels[name]
+        try:
+            while True:
+                with lock:
+                    read_size = min(4096, limit + 1 - len(buffers[name]))
+                part = pipe.read(read_size)
+                with lock:
+                    if type(part) is not bytes:
+                        channel['io_error'] = 'invalid_read';cause(name + '_read_error');break
+                    if part == b'':
+                        channel['eof'] = True;break
+                    channel['observed_bytes'] += len(part)
+                    room = limit - len(buffers[name])
+                    buffers[name].extend(part[:room])
+                    if len(part) > room:
+                        channel['overflow'] = True;cause(name + '_overflow');break
+        except (OSError, ValueError) as error:
+            with lock:
+                channel['io_error'] = type(error).__name__;cause(name + '_read_error')
+        finally:
+            try:
+                pipe.close()
+                with lock:
+                    channel['closed'] = True
+            except (OSError, ValueError):
+                cause(name + '_close_error')
+    def write_input():
+        try:
+            while True:
+                with lock:
+                    offset = facts['stdin_bytes']
+                    if offset >= len(raw):
+                        break
+                    if time.monotonic() >= work_end:
+                        cause('stdin_deadline');break
+                    remaining = len(raw) - offset
+                    facts.update(stdin_write_attempted=True, stdin_write_in_flight=True,
+                                 stdin_extent_unknown=True)
+                count = process.stdin.write(raw[offset:])
+                with lock:
+                    facts['stdin_write_in_flight'] = False
+                    if type(count) is not int or not 0 < count <= remaining:
+                        cause('stdin_short_write');break
+                    facts['stdin_bytes'] += count
+                    facts['stdin_extent_unknown'] = False
+                if time.monotonic() >= work_end:
+                    cause('stdin_deadline');break
+            with lock:
+                facts['stdin_complete'] = (facts['stdin_bytes'] == len(raw)
+                                           and not facts['stdin_extent_unknown'])
+        except (OSError, ValueError):
+            with lock:
+                facts.update(stdin_write_in_flight=False, stdin_extent_unknown=True)
+                cause('stdin_write_error')
+        finally:
+            try:
+                process.stdin.close()
+                with lock:
+                    facts['stdin_closed'] = True
+            except (OSError, ValueError):
+                cause('stdin_close_error')
+    threads = [threading.Thread(target=read_channel, args=('stdout', process.stdout, 1048576), daemon=True),
+               threading.Thread(target=read_channel, args=('stderr', process.stderr, 16384), daemon=True),
+               threading.Thread(target=write_input, daemon=True)]
+    started_threads = []
+    for thread in threads:
+        if has_causes():
+            break
+        if time.monotonic() >= work_end:
+            with lock:
+                facts['timed_out'] = True;cause('worker_start_deadline')
+            break
+        try:
+            thread.start()
+            started_threads.append(thread)
+            if time.monotonic() >= work_end:
+                with lock:
+                    facts['timed_out'] = True;cause('worker_start_late')
+                break
+        except RuntimeError:
+            if thread.ident is not None:
+                started_threads.append(thread)
+            cause('thread_start_error');break
+    with lock:
+        facts['threads_started'] = len(started_threads)
+    def status():
+        try:
+            return process.poll()
+        except (OSError, ValueError):
+            cause('child_status_error');return None
+    while True:
+        if time.monotonic() >= work_end:
+            with lock:
+                facts['timed_out'] = True;cause('child_timeout')
+            break
+        if has_causes() or (status() is not None and all(not thread.is_alive() for thread in started_threads)):
+            break
+        time.sleep(min(.005, max(0, work_end - time.monotonic())))
+    cleanup_end = min(cleanup_end, time.monotonic() + 3)
+    with lock:
+        facts['cleanup_deadline'] = cleanup_end
+    if status() is None:
+        with lock:
+            facts['kill_requested'] = True
+        try:
+            process.kill()
+        except OSError:
+            cause('child_kill_error')
+    for thread, pipe, name in zip(threads, (process.stdout, process.stderr, process.stdin), ('stdout', 'stderr', 'stdin')):
+        if thread not in started_threads:
+            try:
+                pipe.close()
+                with lock:
+                    if name == 'stdin':
+                        facts['stdin_closed'] = True
+                    else:
+                        channels[name]['closed'] = True
+            except (OSError, ValueError):
+                cause(name + '_unstarted_close_error')
+    try:
+        returned = process.wait(timeout=max(0, cleanup_end - time.monotonic()))
+        with lock:
+            facts['reaped'] = type(returned) is int
+            if not facts['reaped']:
+                cause('child_reap_unknown')
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        cause('child_reap_unknown')
+    for thread in started_threads:
+        try:
+            thread.join(max(0, cleanup_end - time.monotonic()))
+        except RuntimeError:
+            cause('thread_join_error')
+    returned_status = status()
+    joined = len(started_threads) == len(threads) and all(not thread.is_alive() for thread in started_threads)
+    with lock:
+        facts.update(returncode=returned_status, threads_joined=joined)
+        if not facts['threads_joined']:
+            cause('pipe_completion_unknown')
+        if type(facts['returncode']) is not int or facts['returncode'] != 0:
+            cause('child_status')
+        if facts['kill_requested']:
+            cause('child_forced')
+        if not facts['stdin_complete'] or not facts['stdin_closed'] or not all(c['eof'] for c in channels.values()):
+            cause('io_completion_unknown')
+        stdout_data, stderr_data = bytes(buffers['stdout']), bytes(buffers['stderr'])
+    if has_causes():
+        return finish()
+    if stderr_data:
+        cause('unexpected_stderr');return finish()
+    try:
+        if len(stdout_data) > 32768 or not stdout_data.isascii():
+            raise ValueError('report extent')
+        def unique_pairs(rows):
+            result = dict(rows)
+            if len(result) != len(rows):
+                raise ValueError('duplicate report field')
+            return result
+        result = json.loads(stdout_data, object_pairs_hook=unique_pairs, parse_constant=reject_constant)
+        if (type(result) is not dict or set(result) != {'schema_version', 'case', 'node_version',
+                'completed', 'cause', 'checks', 'measurements'}
+                or type(result['schema_version']) is not int or result['schema_version'] != 1
+                or result['case'] != case or type(result['case']) is not str
+                or result['node_version'] != '25.2.1' or type(result['completed']) is not bool
+                or result['cause'] is not None and (type(result['cause']) is not str
+                    or result['cause'] not in _D25_DRIVER_CAUSES and not (geometry
+                        and case == 'geometry' and result['cause'] == 'd25_geometry_hold'))
+                or type(result['checks']) is not list or len(result['checks']) > 512
+                or type(result['measurements']) is not list or len(result['measurements']) > 128):
+            raise ValueError('report shape')
+        import re
+        def identifier(value):
+            return type(value) is str and re.fullmatch(r'[A-Za-z0-9_]{1,64}', value) is not None
+        for item in result['checks']:
+            if (type(item) is not dict or set(item) != {'id', 'ok'}
+                    or not identifier(item['id']) or type(item['ok']) is not bool):
+                raise ValueError('report check')
+        for item in result['measurements']:
+            if (type(item) is not dict or set(item) != {'id', 'size_bytes', 'sha256'}
+                    or not identifier(item['id']) or type(item['size_bytes']) is not int
+                    or not 0 <= item['size_bytes'] <= 262144
+                    or type(item['sha256']) is not str
+                    or re.fullmatch(r'[0-9a-f]{64}', item['sha256']) is None):
+                raise ValueError('report measurement')
+    except (ValueError, TypeError, RecursionError, OverflowError):
+        cause('child_protocol');return finish()
+    with lock:
+        facts.update(node_version=result['node_version'], case_completed=result['completed'],
+                     case_cause=result['cause'], report_bytes=len(stdout_data),
+                     report_sha256=hashlib.sha256(stdout_data).hexdigest(),
+                     checks_count=len(result['checks']), measurements_count=len(result['measurements']))
+    return finish(result)
+
+
+
+def d25_run_case_v1(case, raw, deadline):
+    """Use the original fixed codec DATA driver; input never selects a program."""
+    return _d25_run_fixed_driver_v1(case, raw, deadline, False)
+
+
+
+def d25_run_geometry_v1(raw, deadline):
+    """Use only the separate fixed geometry DATA driver, with no source execution."""
+    return _d25_run_fixed_driver_v1('geometry', raw, deadline, True)
+
+# Full bounded original metadata DATA from the ONE consumed D25 risk.
+# This constant does not execute or reconstruct any operational subject.
+_D25_GEOMETRY_RETAINED_RESULT_V1 = b'{"actual_entry":{"path_basename":"vast-d25-geometry-local-driver-20261018-02.py","sha256":"d9ba5c51229b8ba50e33d10c46a7246392bfc75b939d03fcdb28a472bedc760a","size_bytes":73759},"disposition":"INCOMPLETE_WIRE_REFUSAL","expected":{"check_count":49,"check_rows":[{"id":"source_bindings","ok":true},{"id":"initial_source_bound","ok":true},{"id":"finalizer_source_bound","ok":true},{"id":"executor_source_bound","ok":true},{"id":"six_setup_forms","ok":true},{"id":"success_setup","ok":true},{"id":"success_provider_pipes","ok":true},{"id":"success_pipe0_inverse","ok":true},{"id":"success_pipe1_inverse","ok":true},{"id":"success_pipe2_inverse","ok":true},{"id":"success_selected_original_bound","ok":true},{"id":"success_wire_geometry","ok":false},{"id":"structured_failure_setup","ok":true},{"id":"structured_failure_provider_pipes","ok":true},{"id":"structured_failure_pipe0_inverse","ok":true},{"id":"structured_failure_pipe1_inverse","ok":true},{"id":"structured_failure_pipe2_inverse","ok":true},{"id":"structured_failure_selected_original_bound","ok":true},{"id":"structured_failure_wire_geometry","ok":false},{"id":"unicode_failure_setup","ok":true},{"id":"unicode_failure_provider_pipes","ok":true},{"id":"unicode_failure_pipe0_inverse","ok":true},{"id":"unicode_failure_pipe1_inverse","ok":true},{"id":"unicode_failure_pipe2_inverse","ok":true},{"id":"unicode_failure_selected_original_bound","ok":true},{"id":"unicode_failure_wire_geometry","ok":false},{"id":"partial_emission_setup","ok":true},{"id":"partial_emission_provider_pipes","ok":true},{"id":"partial_emission_pipe0_inverse","ok":true},{"id":"partial_emission_pipe1_inverse","ok":true},{"id":"partial_emission_pipe2_inverse","ok":true},{"id":"partial_emission_selected_original_bound","ok":true},{"id":"partial_emission_wire_geometry","ok":false},{"id":"unknown_closure_setup","ok":true},{"id":"unknown_closure_provider_pipes","ok":true},{"id":"unknown_closure_pipe0_inverse","ok":true},{"id":"unknown_closure_pipe1_inverse","ok":true},{"id":"unknown_closure_pipe2_inverse","ok":true},{"id":"unknown_closure_selected_original_bound","ok":true},{"id":"unknown_closure_wire_geometry","ok":false},{"id":"setup_refusal_setup","ok":true},{"id":"setup_refusal_provider_pipes","ok":true},{"id":"setup_refusal_pipe0_inverse","ok":true},{"id":"setup_refusal_pipe1_inverse","ok":true},{"id":"setup_refusal_pipe2_inverse","ok":true},{"id":"setup_refusal_selected_original_bound","ok":true},{"id":"setup_refusal_wire_geometry","ok":false},{"id":"six_later_forms","ok":true},{"id":"later_measured_upstream","ok":false}],"false_check_ids":["later_measured_upstream","partial_emission_wire_geometry","setup_refusal_wire_geometry","structured_failure_wire_geometry","success_wire_geometry","unicode_failure_wire_geometry","unknown_closure_wire_geometry"],"geometry_fully_measured":false,"geometry_risk_passed":false,"measurement_count":15,"measurement_rows":[{"id":"initial_source","sha256":"4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d","size_bytes":14162},{"id":"finalizer_source","sha256":"fcca4065d75430e87e6f8e1f4df3be68bd084421da0ca7266218a5f801e8eb1a","size_bytes":34397},{"id":"executor_source","sha256":"9104621cfe1b7e0931f1dca52ecf216c4f2874233803abcff621db1b9077ae45","size_bytes":78392},{"id":"success_selected_original","sha256":"46fdb4a08fc1898e57d6c2b942a28aebdebe49b1f4b5bbe11c44177f2cce628e","size_bytes":17067},{"id":"success_wire_refusal","sha256":"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6","size_bytes":19},{"id":"structured_failure_selected_original","sha256":"e8cf9b26009ff462152eff45d59343793f7ee5216f1e6f00197b6256ec0d310c","size_bytes":17293},{"id":"structured_failure_wire_refusal","sha256":"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6","size_bytes":19},{"id":"unicode_failure_selected_original","sha256":"84e2bf9ea93cf982623ef86d9eeb398f4e468eb80656efdf57f206541b55d563","size_bytes":17193},{"id":"unicode_failure_wire_refusal","sha256":"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6","size_bytes":19},{"id":"partial_emission_selected_original","sha256":"79ea8cf1b2d66bc2431f4175baabd65338946aff50e3b104d64ce986f8087297","size_bytes":16786},{"id":"partial_emission_wire_refusal","sha256":"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6","size_bytes":19},{"id":"unknown_closure_selected_original","sha256":"628eaa305921b541a5502e476b5c6d3ad4dbf5d452625a8ca547de7b1e1afff4","size_bytes":17071},{"id":"unknown_closure_wire_refusal","sha256":"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6","size_bytes":19},{"id":"setup_refusal_selected_original","sha256":"6beffafc4f5629b627f40ace16448fea4ca0e16e57cea746c602759262e53429","size_bytes":16147},{"id":"setup_refusal_wire_refusal","sha256":"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6","size_bytes":19}],"missing_always_required_check_ids":["C1_failure_later","C1_failure_native_input_bound","C1_failure_pipe0_inverse","C1_failure_pipe1_inverse","C1_failure_pipe_limits","C1_failure_selected_bound","C1_success_later","C1_success_native_input_bound","C1_success_pipe0_inverse","C1_success_pipe1_inverse","C1_success_pipe_limits","C1_success_selected_bound","C6_failure_later","C6_failure_native_input_bound","C6_failure_pipe0_inverse","C6_failure_pipe1_inverse","C6_failure_pipe_limits","C6_failure_selected_bound","C6_success_later","C6_success_native_input_bound","C6_success_pipe0_inverse","C6_success_pipe1_inverse","C6_success_pipe_limits","C6_success_selected_bound","D_failure_later","D_failure_native_input_bound","D_failure_pipe0_inverse","D_failure_pipe1_inverse","D_failure_pipe_limits","D_failure_selected_bound","D_success_later","D_success_native_input_bound","D_success_pipe0_inverse","D_success_pipe1_inverse","D_success_pipe_limits","D_success_selected_bound","approval_slots","partial_emission_ack_bound","partial_emission_chain_bound","partial_emission_chain_join","partial_emission_forms_bound","partial_emission_full_roundtrip","partial_emission_observed_original_bound","partial_emission_observed_wire_bound","partial_emission_root_bound","partial_emission_selected_wire_bound","partial_emission_uint64","partial_emission_writer_input_bound","partial_emission_writer_pipe0_inverse","partial_emission_writer_pipe1_inverse","partial_emission_writer_stdout_bound","setup_refusal_ack_bound","setup_refusal_chain_bound","setup_refusal_chain_join","setup_refusal_forms_bound","setup_refusal_full_roundtrip","setup_refusal_observed_original_bound","setup_refusal_observed_wire_bound","setup_refusal_root_bound","setup_refusal_selected_wire_bound","setup_refusal_uint64","setup_refusal_writer_input_bound","setup_refusal_writer_pipe0_inverse","setup_refusal_writer_pipe1_inverse","setup_refusal_writer_stdout_bound","structured_failure_ack_bound","structured_failure_chain_bound","structured_failure_chain_join","structured_failure_forms_bound","structured_failure_full_roundtrip","structured_failure_observed_original_bound","structured_failure_observed_wire_bound","structured_failure_root_bound","structured_failure_selected_wire_bound","structured_failure_uint64","structured_failure_writer_input_bound","structured_failure_writer_pipe0_inverse","structured_failure_writer_pipe1_inverse","structured_failure_writer_stdout_bound","success_ack_bound","success_chain_bound","success_chain_join","success_forms_bound","success_full_roundtrip","success_observed_original_bound","success_observed_wire_bound","success_root_bound","success_selected_wire_bound","success_uint64","success_writer_input_bound","success_writer_pipe0_inverse","success_writer_pipe1_inverse","success_writer_stdout_bound","unicode_failure_ack_bound","unicode_failure_chain_bound","unicode_failure_chain_join","unicode_failure_forms_bound","unicode_failure_full_roundtrip","unicode_failure_observed_original_bound","unicode_failure_observed_wire_bound","unicode_failure_root_bound","unicode_failure_selected_wire_bound","unicode_failure_uint64","unicode_failure_writer_input_bound","unicode_failure_writer_pipe0_inverse","unicode_failure_writer_pipe1_inverse","unicode_failure_writer_stdout_bound","unknown_closure_ack_bound","unknown_closure_chain_bound","unknown_closure_chain_join","unknown_closure_forms_bound","unknown_closure_full_roundtrip","unknown_closure_observed_original_bound","unknown_closure_observed_wire_bound","unknown_closure_root_bound","unknown_closure_selected_wire_bound","unknown_closure_uint64","unknown_closure_writer_input_bound","unknown_closure_writer_pipe0_inverse","unknown_closure_writer_pipe1_inverse","unknown_closure_writer_stdout_bound"],"missing_always_required_measurement_ids":["C1_failure_native_input","C1_failure_selected","C1_success_native_input","C1_success_selected","C6_failure_native_input","C6_failure_selected","C6_success_native_input","C6_success_selected","D_failure_native_input","D_failure_selected","D_success_native_input","D_success_selected","partial_emission_ack","partial_emission_chain","partial_emission_observed_original","partial_emission_observed_wire","partial_emission_root","partial_emission_selected_wire","partial_emission_writer_stdout","setup_refusal_ack","setup_refusal_chain","setup_refusal_observed_original","setup_refusal_observed_wire","setup_refusal_root","setup_refusal_selected_wire","setup_refusal_writer_stdout","structured_failure_ack","structured_failure_chain","structured_failure_observed_original","structured_failure_observed_wire","structured_failure_root","structured_failure_selected_wire","structured_failure_writer_stdout","success_ack","success_chain","success_observed_original","success_observed_wire","success_root","success_selected_wire","success_writer_stdout","unicode_failure_ack","unicode_failure_chain","unicode_failure_observed_original","unicode_failure_observed_wire","unicode_failure_root","unicode_failure_selected_wire","unicode_failure_writer_stdout","unknown_closure_ack","unknown_closure_chain","unknown_closure_observed_original","unknown_closure_observed_wire","unknown_closure_root","unknown_closure_selected_wire","unknown_closure_writer_stdout"],"unavailable_conditional_later_groups":["C1_success","C1_failure","C6_success","C6_failure","D_success","D_failure"]},"external_formatter_fixture_pins":[{"path":"tests/fixtures/accepted_policy_fixture_compiler_component_v1.py","sha256":"329fb13f2c6dcee0872e5a29ec1fd769dc6e57ce92ee1076fef6737f1da86d88","size_bytes":32732},{"path":"tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py","sha256":"5fd7d2d6ee62ff584d2a4662757ca804a3d3300d30bb966319901870c4c85670","size_bytes":32739},{"path":"tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py","sha256":"5a6c4b08ce3d381c355cbf72f93057c991b4adcb9d6ca8c43a638acd64f2ecf9","size_bytes":130783},{"path":"tests/fixtures/accepted_policy_fixture_compiler_v1.py","sha256":"1e40d4786fd03543ac43df7fe0e42a4349d55bad9288ead28f5d2a6ad87bcb03","size_bytes":103925}],"kind":"d25_retained_geometry_negative_v1","limits":["Retained negative regression only; never builds, invokes, imports, parses as JS or replays any generated operational subject or geometry.","Source-file pins identify actual consumed risk inputs; current contributor correspondence is not whole-current-file runtime custody.","All missing dimensions remain absent/unknown; a passing regression cannot admit phases, images, native/physical gates, task closure or merge."],"original_development_class":{"end_line":5249,"method_AST_sha256":"2b73adc3d1cd77a7d611508bc6c7d319c6fb0d415a5a94957e325ce698e15ace","method_sha256":"b71dc65d7c4eb984c474f79d1afb23c010c6f8ef387ec5830aae73ec608eedf9","method_size_bytes":10836,"path":"tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py","sha256":"c804e88a9d5c405ecd66432219fe70e54b33a71c8367b5409df15697aedf9a5d","size_bytes":10891,"source_utf8":"class D25CompleteGeometryTests(unittest.TestCase):\\n    def test_complete_form_bounds_preserve_hold(self):\\n        import time\\n        import io\\n        import sys\\n        from unittest import mock\\n        from tests.test_accepted_policy_fixture_compiler_gate2_resume_caller_v1 import d25_run_geometry_v1\\n        from tests import test_accepted_policy_fixture_compiler_gate2_resume_caller_v1 as caller\\n\\n        deadline = globals().get(\'D25_TEST_DEADLINE\', time.monotonic() + 295)\\n        try:\\n            module = sys.modules[__name__]\\n            with mock.patch.object(module, \'d24_phase_initial_v1\') as phase, mock.patch.object(Path, \'open\', side_effect=AssertionError(\'d24_unexpected_fixture_read\')) as opened:\\n                with self.assertRaisesRegex(RuntimeError, \'d25_construction_deadline\'):\\n                    d25_inert_bundle_v1(time.monotonic() - 1)\\n                phase.assert_not_called()\\n                opened.assert_not_called()\\n            with mock.patch.object(module, \'D25_WIRE_CODEC\', D25_WIRE_CODEC + \' \'), mock.patch.object(module, \'d24_phase_initial_v1\') as phase, mock.patch.object(Path, \'open\', side_effect=AssertionError(\'d24_unexpected_fixture_read\')) as opened:\\n                with self.assertRaises(RuntimeError):\\n                    d25_inert_bundle_v1(deadline)\\n                phase.assert_not_called()\\n                opened.assert_not_called()\\n            with mock.patch.object(module, \'D22_PREFIX\', \'x\' + D22_PREFIX[1:]), mock.patch.object(Path, \'open\', side_effect=AssertionError(\'d24_unexpected_fixture_read\')) as opened, mock.patch.object(caller, \'d22_compress_data_v1\', side_effect=AssertionError(\'d24_unexpected_compression\')) as compressed:\\n                with self.assertRaisesRegex(RuntimeError, \'d24_prefix_binding\'):\\n                    d24_phase_initial_v1(deadline)\\n                opened.assert_not_called()\\n                compressed.assert_not_called()\\n            with mock.patch.object(Path, \'open\', return_value=io.BytesIO(b\'invalid\')), mock.patch.object(module, \'d24_phase_initial_v1\') as phase:\\n                with self.assertRaisesRegex(RuntimeError, \'d25_fixture_binding\'):\\n                    d25_inert_bundle_v1(deadline)\\n                phase.assert_not_called()\\n            raw, facts = d25_inert_bundle_v1(deadline)\\n            self.assertEqual(facts[\'initial\'][\'data_fields\'], 9)\\n            self.assertTrue(facts[\'initial\'][\'strings_field_absent\'])\\n            for name in (\'exact_decoder_inverse\', \'exact_phase_inverse\', \'exact_inverse_source\'):\\n                self.assertIs(facts[\'initial\'][name], True)\\n            self.assertEqual((facts[\'node_codec\'][\'node_codec_bytes\'], facts[\'node_codec\'][\'node_codec_sha256\']), D25_CODEC_SOURCE_PINS[1])\\n            self.assertIs(facts[\'node_codec\'][\'role_is_exact_prefix\'], True)\\n            self.assertIs(facts[\'node_codec\'][\'encoder_excluded\'], True)\\n        except Exception as error:\\n            message = str(error).encode(\'utf-8\', \'backslashreplace\')\\n            retained = getattr(error, \'metadata\', None)\\n            retained_bytes = json.dumps(retained, sort_keys=True, separators=(\',\', \':\')).encode(\'ascii\')\\n            failure = {\'kind\': \'d25_construction_failure_metadata_v1\',\\n                       \'error_type\': type(error).__name__,\\n                       \'message_size_bytes\': len(message),\\n                       \'message_sha256\': hashlib.sha256(message).hexdigest(),\\n                       \'capture\': retained if len(retained_bytes) <= 30000 else None,\\n                       \'capture_metadata_unavailable\': retained is None or len(retained_bytes) > 30000,\\n                       \'capture_metadata_size_bytes\': len(retained_bytes),\\n                       \'capture_metadata_sha256\': hashlib.sha256(retained_bytes).hexdigest(),\\n                       \'generated_operational_program_execution\': False,\\n                       \'generated_full_subject_files_written\': False,\\n                       \'physical_acceptance\': False}\\n            encoded = json.dumps(failure, sort_keys=True, separators=(\',\', \':\'))\\n            self.assertLessEqual(len((\'D25_GEOMETRY_SOURCE_METADATA \' + encoded + \'\\\\n\').encode(\'ascii\')), 32768)\\n            print(\'D25_GEOMETRY_SOURCE_METADATA\', encoded)\\n            raise\\n        source_metadata = json.dumps(facts, sort_keys=True, separators=(\',\', \':\'))\\n        self.assertLessEqual(len((\'D25_GEOMETRY_SOURCE_METADATA \' + source_metadata + \'\\\\n\').encode(\'ascii\')), 32768)\\n        print(\'D25_GEOMETRY_SOURCE_METADATA\', source_metadata)\\n        value, capture = d25_run_geometry_v1(raw, deadline)\\n        metadata = json.dumps({\'case\': \'geometry\', \'report\': value, \'capture\': capture},\\n                              sort_keys=True, separators=(\',\', \':\'))\\n        self.assertLessEqual(len((\'D25_CASE_METADATA \' + metadata + \'\\\\n\').encode(\'ascii\')), 32768)\\n        print(\'D25_CASE_METADATA\', metadata)\\n        self.assertTrue(capture[\'parent_observed_completion\'])\\n        self.assertFalse(facts[\'generated_operational_program_execution\'])\\n        self.assertFalse(facts[\'generated_full_subject_files_written\'])\\n        self.assertFalse(facts[\'behavior_conformance_complete\'])\\n        self.assertFalse(facts[\'physical_acceptance\'])\\n        self.assertEqual(facts[\'modeled_setup_form_count\'], 6)\\n        self.assertEqual(facts[\'modeled_later_form_count\'], 6)\\n        self.assertEqual(capture[\'descendant_quiescence\'], \'UNKNOWN\')\\n        self.assertEqual(set(facts[\'driver\']), {\'source_kind\', \'driver_role\', \'driver_getter\',\\n                                              \'program_bytes\', \'program_sha256\'})\\n        for key in facts[\'driver\']:\\n            self.assertEqual(capture[key], facts[\'driver\'][key])\\n        actual_program = d25_geometry_driver_v1().encode(\'ascii\')\\n        self.assertEqual((facts[\'driver\'][\'program_bytes\'], facts[\'driver\'][\'program_sha256\']),\\n                         (len(actual_program), hashlib.sha256(actual_program).hexdigest()))\\n        measurements = {row[\'id\']: row for row in value[\'measurements\']}\\n        self.assertEqual(len(measurements), len(value[\'measurements\']))\\n        checks = {row[\'id\']: row[\'ok\'] for row in value[\'checks\']}\\n        self.assertEqual(len(checks), len(value[\'checks\']))\\n        self.assertTrue(checks)\\n        for row in value[\'measurements\']:\\n            self.assertGreater(row[\'size_bytes\'], 0)\\n            self.assertRegex(row[\'sha256\'], r\'^[0-9a-f]{64}$\')\\n        caps = {name: 262144 for name in (\'initial_source\', \'finalizer_source\', \'executor_source\')}\\n        required = {\'source_bindings\', \'six_setup_forms\', \'six_later_forms\',\\n                    \'approval_slots\', \'later_measured_upstream\'}\\n        setup_forms = (\'success\', \'structured_failure\', \'unicode_failure\', \'partial_emission\',\\n                       \'unknown_closure\', \'setup_refusal\')\\n        later_forms = (\'C1_success\', \'C1_failure\', \'C6_success\', \'C6_failure\', \'D_success\', \'D_failure\')\\n        for prefix in setup_forms:\\n            required.update(prefix + suffix for suffix in (\\n                \'_setup\', \'_provider_pipes\', \'_pipe0_inverse\', \'_pipe1_inverse\', \'_pipe2_inverse\',\\n                \'_full_roundtrip\', \'_uint64\', \'_writer_pipe0_inverse\', \'_writer_pipe1_inverse\',\\n                \'_chain_join\'))\\n            for suffix, cap in ((\'selected_original\', 32768), (\'observed_original\', 32768),\\n                                (\'selected_wire\', 12288), (\'observed_wire\', 12288),\\n                                (\'ack\', 24576), (\'writer_stdout\', 2112),\\n                                (\'root\', 65536), (\'chain\', 262144)):\\n                caps[prefix + \'_\' + suffix] = cap\\n        for stage in later_forms:\\n            caps[stage + \'_selected\'] = 4096\\n            caps[stage + \'_native_input\'] = 32768\\n            required.update(stage + suffix for suffix in (\\n                \'_later\', \'_pipe_limits\', \'_pipe0_inverse\', \'_pipe1_inverse\'))\\n            self.assertIn(stage + \'_selected\', measurements)\\n            if measurements[stage + \'_selected\'][\'size_bytes\'] <= 4096:\\n                caps[stage + \'_ack\'] = 16384\\n                caps[stage + \'_writer_stdout\'] = 2112\\n                required.update(stage + suffix for suffix in (\\n                    \'_uint64\', \'_writer_pipe0_inverse\', \'_writer_pipe1_inverse\'))\\n        self.assertEqual(set(measurements), set(caps))\\n        for name, cap in caps.items():\\n            self.assertIn(name + \'_bound\', checks)\\n            self.assertIs(checks[name + \'_bound\'], measurements[name][\'size_bytes\'] <= cap)\\n        required.update(name + \'_bound\' for name in caps)\\n        for prefix in setup_forms:\\n            selected_size = measurements[prefix + \'_selected_wire\'][\'size_bytes\']\\n            rounded = ((selected_size + 4095) // 4096) * 4096\\n            expected = {\\n                prefix + \'_writer_input_bound\': measurements[prefix + \'_ack\'][\'size_bytes\'] + 65471 <= 90112,\\n                prefix + \'_forms_bound\': max(12288, rounded) + rounded + 8192 <= 32768}\\n            for name, ok in expected.items():\\n                self.assertIn(name, checks)\\n                self.assertIs(checks[name], ok)\\n            required.update(expected)\\n        for stage in later_forms:\\n            selected_size = measurements[stage + \'_selected\'][\'size_bytes\']\\n            if selected_size <= 4096:\\n                rounded = ((selected_size + 4095) // 4096) * 4096\\n                expected = {\\n                    stage + \'_writer_input_bound\': measurements[stage + \'_ack\'][\'size_bytes\'] + 65471 <= 81920,\\n                    stage + \'_writer_forms_bound\': max(4096, rounded) + rounded + 8192 <= 16384}\\n                for name, ok in expected.items():\\n                    self.assertIn(name, checks)\\n                    self.assertIs(checks[name], ok)\\n                required.update(expected)\\n        self.assertEqual(set(checks), required)\\n        source_pins = (\\n            (\'initial_source\', facts[\'initial\'][\'source_bytes\'], facts[\'initial\'][\'source_sha256\']),\\n            (\'finalizer_source\', facts[\'finalizer\'][\'finalizer_size_bytes\'], facts[\'finalizer\'][\'finalizer_sha256\']),\\n            (\'executor_source\', facts[\'executor\'][\'size_bytes\'], facts[\'executor\'][\'sha256\']))\\n        for name, size, sha in source_pins:\\n            self.assertEqual(measurements[name][\'size_bytes\'], size)\\n            self.assertEqual(measurements[name][\'sha256\'], sha)\\n        if all(checks.values()):\\n            self.assertTrue(value[\'completed\'])\\n            self.assertIsNone(value[\'cause\'])\\n        else:\\n            # A fully measured bound-only HOLD preserves the negative risk\\n            # result. Missing mandatory evidence fails before reaching here.\\n            self.assertFalse(value[\'completed\'])\\n            self.assertEqual(value[\'cause\'], \'d25_geometry_hold\')\\n            self.assertTrue(any(not ok and name.endswith(\'_bound\') for name, ok in checks.items()))\\n            self.assertTrue(all(ok or name.endswith(\'_bound\') for name, ok in checks.items()))","start_line":5090},"originals":[{"bytes_ascii":"{\\"both_buffers_verified_before_either_compile\\":true,\\"codec_role\\":{\\"encoder_excluded\\":true,\\"excluded_encoder_bytes\\":2964,\\"excluded_encoder_sha256\\":\\"6123f11ab75ed5a4021dc038ff878cd6873d71492058e8b887d3b3c28b4fc295\\",\\"full_codec_bytes\\":6903,\\"full_codec_sha256\\":\\"c65b73fe0e7d274040dda413b7871ee83c4c952f9bb2c1e74962b0e3e5f34767\\",\\"kind\\":\\"d25_node_codec_role_v1\\",\\"marker_occurrences\\":1,\\"node_codec_bytes\\":3939,\\"node_codec_sha256\\":\\"d7f478ee3e5ff65d7146c58e2a9fa078e66219cc1e35ea8547701e576295c32d\\",\\"role_is_exact_prefix\\":true},\\"event\\":\\"source_bindings\\",\\"execution_reopens_test_paths\\":false,\\"fixed_driver\\":{\\"driver_getter\\":\\"d25_geometry_driver_v1\\",\\"driver_role\\":\\"geometry\\",\\"program_bytes\\":24572,\\"program_sha256\\":\\"f3bce3947d93f0a9d630372bd1b0d4d02fe61ecd1e47458259f3a8ccdad72265\\",\\"source_kind\\":\\"d25_fixed_test_driver_v1\\"},\\"held_caller_aliases_bound\\":true,\\"held_driver_aliases_bound\\":true,\\"held_driver_loader_bound\\":true,\\"held_driver_module\\":\\"tests.test_accepted_policy_fixture_compiler_gate2_resume_v1\\",\\"sources\\":[{\\"path\\":\\"tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py\\",\\"sha256\\":\\"3dcea0ea515be7c33cd95486adf9b818b63ce39894d9cbe48c8318ec4fd02b39\\",\\"size_bytes\\":476378},{\\"path\\":\\"tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py\\",\\"sha256\\":\\"77946ffadc24d7fd3759186417eb5ae330edd306f7a3170d5370f7e44b4e61b4\\",\\"size_bytes\\":281307}]}\\n{\\"event\\":\\"test_started\\",\\"test_id\\":\\"tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.D25CompleteGeometryTests.test_complete_form_bounds_preserve_hold\\"}\\nD25_GEOMETRY_SOURCE_METADATA {\\"behavior_conformance_complete\\":false,\\"controlled_synthetic_geometry_only\\":true,\\"driver\\":{\\"driver_getter\\":\\"d25_geometry_driver_v1\\",\\"driver_role\\":\\"geometry\\",\\"program_bytes\\":24572,\\"program_sha256\\":\\"f3bce3947d93f0a9d630372bd1b0d4d02fe61ecd1e47458259f3a8ccdad72265\\",\\"source_kind\\":\\"d25_fixed_test_driver_v1\\"},\\"executor\\":{\\"sha256\\":\\"9104621cfe1b7e0931f1dca52ecf216c4f2874233803abcff621db1b9077ae45\\",\\"size_bytes\\":78392},\\"finalizer\\":{\\"factory_sha256\\":\\"997579f8ffcc50d6e05ae859dd9164b1dc08ce5a71e82a1d8070633c3cdf3677\\",\\"factory_size_bytes\\":13073,\\"finalizer_sha256\\":\\"fcca4065d75430e87e6f8e1f4df3be68bd084421da0ca7266218a5f801e8eb1a\\",\\"finalizer_size_bytes\\":34397,\\"generated_full_subject_files_written\\":false,\\"generated_operational_program_execution\\":false,\\"initial_sha256\\":\\"4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d\\",\\"initial_size_bytes\\":14162,\\"python_common_sha256\\":\\"f56a723316fd5e1d21b7425320959977703cedf4b82dae3511cb28d6f1c1d0a8\\",\\"python_common_size_bytes\\":3674,\\"python_head_sha256\\":\\"3ced26dc51155909cd4cd8fbd441db7145dd0241cd0b2bd4de29a10a6cc3efc7\\",\\"python_head_size_bytes\\":314,\\"python_tail_sha256\\":\\"fe7e134bb04da2e1c994c9cd2e788ace8b9003f4f567b65a46b6382fa3d655e3\\",\\"python_tail_size_bytes\\":1544,\\"wrapper_prefix_size_bytes\\":32,\\"wrapper_suffix_size_bytes\\":2},\\"generated_full_subject_files_written\\":false,\\"generated_operational_program_execution\\":false,\\"independent_actual_acquisition_proven\\":false,\\"initial\\":{\\"base64_data_bytes\\":3156,\\"base64_data_sha256\\":\\"1703bd103a438c34c66fe18d82c5cd035d18262632055ab7428a73e13fd7125e\\",\\"baseline_body_bytes\\":12732,\\"baseline_body_sha256\\":\\"c40686a051a53f5b6443c414e45833fd5765b904bac971c8ba6f1eb9d365e613\\",\\"baseline_bytes\\":18321,\\"baseline_sha256\\":\\"8e045e64625562cded6903492fbdcf440ddbb9a7f30f20d3774faed53dcd8019\\",\\"behavior_conformance_complete\\":false,\\"canonical_data_bytes\\":6566,\\"canonical_data_sha256\\":\\"8ca48e37f97d03af660960f75afab79db162e8f8997f39f6c1c5c55dd896c97e\\",\\"complete_geometry_qualified\\":false,\\"compressed_data_bytes\\":2365,\\"compressed_data_sha256\\":\\"a7caf17aa8d2d5d6beb60880d415e7328947d188623bf5fa0d1ad566e1fd2f2f\\",\\"compression\\":{\\"caller_deadline\\":1895903.4914154,\\"causes\\":[],\\"child_completion_observed_before_deadline\\":true,\\"child_total_deadline\\":1895898.4914154,\\"child_total_limit_seconds\\":30,\\"child_work_limit_seconds\\":27,\\"cleanup_deadline\\":1895879.7526522,\\"cleanup_limit_seconds\\":3,\\"command_options\\":[\\"--max-old-space-size=256\\",\\"--input-type=commonjs\\",\\"-e\\"],\\"data_only\\":true,\\"descendant_quiescence\\":\\"UNKNOWN\\",\\"elapsed_seconds\\":0.06852049985900521,\\"environment_keys\\":[\\"PATH\\",\\"SystemRoot\\"],\\"final_reserve_seconds\\":5,\\"finished_before_deadline\\":true,\\"input_bytes\\":6566,\\"input_sha256\\":\\"8ca48e37f97d03af660960f75afab79db162e8f8997f39f6c1c5c55dd896c97e\\",\\"kill_requested\\":false,\\"node_executable\\":\\"C:\\\\\\\\Program Files\\\\\\\\nodejs\\\\\\\\node.exe\\",\\"node_version\\":\\"25.2.1\\",\\"packed_bytes\\":2365,\\"packed_sha256\\":\\"a7caf17aa8d2d5d6beb60880d415e7328947d188623bf5fa0d1ad566e1fd2f2f\\",\\"parent_observed_completion\\":true,\\"pid\\":61992,\\"program_sha256\\":\\"1b247b18c586bad5fe381de140410ee63fbe66e770cdbd2a52fe4540d1208c11\\",\\"quality\\":11,\\"reaped\\":true,\\"returncode\\":0,\\"roundtrip\\":true,\\"schema_version\\":1,\\"spawned\\":true,\\"started_monotonic\\":1895876.6842682,\\"stderr\\":{\\"closed\\":true,\\"eof\\":true,\\"io_error\\":null,\\"observed_bytes\\":0,\\"overflow\\":false,\\"prefix_sha256\\":\\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\\",\\"retained_bytes\\":0,\\"unknown_remainder\\":false},\\"stderr_prefix_b64\\":\\"\\",\\"stdin_bytes\\":6566,\\"stdin_closed\\":true,\\"stdin_complete\\":true,\\"stdin_extent_unknown\\":false,\\"stdin_write_attempted\\":true,\\"stdin_write_in_flight\\":false,\\"stdout\\":{\\"closed\\":true,\\"eof\\":true,\\"io_error\\":null,\\"observed_bytes\\":3228,\\"overflow\\":false,\\"prefix_sha256\\":\\"2f8a5164f43d19033a72018652e92813d3105fd1cb70fbac569f16b9b1824e8f\\",\\"retained_bytes\\":3228,\\"unknown_remainder\\":false},\\"threads_joined\\":true,\\"threads_started\\":3,\\"timed_out\\":false,\\"work_deadline\\":1895895.4914154},\\"data_fields\\":9,\\"decoder_bytes\\":5294,\\"decoder_sha256\\":\\"4b2260bb177b12668b0a4407711258aa3c1eb1c8d1702b6bd5e089502a399823\\",\\"deferred_definition_bytes\\":4172,\\"deferred_definition_sha256\\":\\"dbf54523ecfa1299d7f3dd6392aa1a8f90468112cdd619adcc5466eb8e60e966\\",\\"escaped_source_bytes\\":14243,\\"exact_decoder_inverse\\":true,\\"exact_inverse_source\\":true,\\"exact_phase_inverse\\":true,\\"finalizer_implemented\\":false,\\"generated_full_subject_files_written\\":false,\\"generated_operational_program_executed\\":false,\\"kind\\":\\"d24_initial_source_only_v1\\",\\"original_builder_bytes\\":18676,\\"original_builder_sha256\\":\\"bcfc55d551057f85aa3cd74f0d15d94e1e0aba932d7f079c18c7c9cbc8ac0dd3\\",\\"prefix_bytes\\":295,\\"prefix_sha256\\":\\"ea63175835e2149d61c71d52696c62033d17b908f76ca0a20cf25e32b18f142b\\",\\"source_bytes\\":14162,\\"source_contribution_fits\\":false,\\"source_only_over_cap_by\\":1955,\\"source_sha256\\":\\"4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d\\",\\"status\\":\\"HOLD_SOURCE_CONTRIBUTION_OVER_CAP\\",\\"strings_field_absent\\":true,\\"task_2_10_complete\\":false},\\"input_data_sha256\\":\\"423dd27140a3e9189795ae199b37094f663168f757f15d6c2c8b3c74b217a164\\",\\"input_data_size_bytes\\":188127,\\"kind\\":\\"d25_inert_source_construction_metadata_v1\\",\\"modeled_later_form_count\\":6,\\"modeled_setup_form_count\\":6,\\"node_codec\\":{\\"encoder_excluded\\":true,\\"excluded_encoder_bytes\\":2964,\\"excluded_encoder_sha256\\":\\"6123f11ab75ed5a4021dc038ff878cd6873d71492058e8b887d3b3c28b4fc295\\",\\"full_codec_bytes\\":6903,\\"full_codec_sha256\\":\\"c65b73fe0e7d274040dda413b7871ee83c4c952f9bb2c1e74962b0e3e5f34767\\",\\"kind\\":\\"d25_node_codec_role_v1\\",\\"marker_occurrences\\":1,\\"node_codec_bytes\\":3939,\\"node_codec_sha256\\":\\"d7f478ee3e5ff65d7146c58e2a9fa078e66219cc1e35ea8547701e576295c32d\\",\\"role_is_exact_prefix\\":true},\\"physical_acceptance\\":false}\\nD25_CASE_METADATA {\\"capture\\":{\\"caller_deadline\\":1895903.4914154,\\"case\\":\\"geometry\\",\\"case_cause\\":\\"d25_geometry_hold\\",\\"case_completed\\":false,\\"causes\\":[],\\"checks_count\\":49,\\"child_completion_observed_before_deadline\\":true,\\"child_total_deadline\\":1895898.4914154,\\"child_total_limit_seconds\\":30,\\"child_work_limit_seconds\\":27,\\"cleanup_deadline\\":1895879.9829615,\\"cleanup_limit_seconds\\":3,\\"command_options\\":[\\"--max-old-space-size=256\\",\\"--input-type=commonjs\\",\\"-e\\"],\\"data_bytes\\":188127,\\"data_only\\":true,\\"data_sha256\\":\\"423dd27140a3e9189795ae199b37094f663168f757f15d6c2c8b3c74b217a164\\",\\"descendant_quiescence\\":\\"UNKNOWN\\",\\"driver_getter\\":\\"d25_geometry_driver_v1\\",\\"driver_role\\":\\"geometry\\",\\"elapsed_seconds\\":0.13510000007227063,\\"environment_keys\\":[\\"PATH\\",\\"SystemRoot\\"],\\"final_reserve_seconds\\":5,\\"finished_before_deadline\\":true,\\"input_bytes\\":188154,\\"input_sha256\\":\\"0421d214971adcb6e19c3f34d642962511b043215c908e82e0f44b0361c210b3\\",\\"kill_requested\\":false,\\"measurements_count\\":15,\\"node_executable\\":\\"C:\\\\\\\\Program Files\\\\\\\\nodejs\\\\\\\\node.exe\\",\\"node_version\\":\\"25.2.1\\",\\"parent_observed_completion\\":true,\\"pid\\":37808,\\"program_bytes\\":24572,\\"program_sha256\\":\\"f3bce3947d93f0a9d630372bd1b0d4d02fe61ecd1e47458259f3a8ccdad72265\\",\\"reaped\\":true,\\"report_bytes\\":4405,\\"report_sha256\\":\\"4e3b8c93c98eb7ed3715c5a939531b01b41f59f9c501ff574fce70c115532e17\\",\\"returncode\\":0,\\"schema_version\\":1,\\"source_kind\\":\\"d25_fixed_test_driver_v1\\",\\"spawned\\":true,\\"started_monotonic\\":1895876.8481243,\\"stderr\\":{\\"closed\\":true,\\"eof\\":true,\\"io_error\\":null,\\"observed_bytes\\":0,\\"overflow\\":false,\\"prefix_sha256\\":\\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\\",\\"retained_bytes\\":0,\\"unknown_remainder\\":false},\\"stdin_bytes\\":188154,\\"stdin_closed\\":true,\\"stdin_complete\\":true,\\"stdin_extent_unknown\\":false,\\"stdin_write_attempted\\":true,\\"stdin_write_in_flight\\":false,\\"stdout\\":{\\"closed\\":true,\\"eof\\":true,\\"io_error\\":null,\\"observed_bytes\\":4405,\\"overflow\\":false,\\"prefix_sha256\\":\\"4e3b8c93c98eb7ed3715c5a939531b01b41f59f9c501ff574fce70c115532e17\\",\\"retained_bytes\\":4405,\\"unknown_remainder\\":false},\\"threads_joined\\":true,\\"threads_started\\":3,\\"timed_out\\":false,\\"work_deadline\\":1895895.4914154},\\"case\\":\\"geometry\\",\\"report\\":{\\"case\\":\\"geometry\\",\\"cause\\":\\"d25_geometry_hold\\",\\"checks\\":[{\\"id\\":\\"source_bindings\\",\\"ok\\":true},{\\"id\\":\\"initial_source_bound\\",\\"ok\\":true},{\\"id\\":\\"finalizer_source_bound\\",\\"ok\\":true},{\\"id\\":\\"executor_source_bound\\",\\"ok\\":true},{\\"id\\":\\"six_setup_forms\\",\\"ok\\":true},{\\"id\\":\\"success_setup\\",\\"ok\\":true},{\\"id\\":\\"success_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"success_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"success_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"success_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"success_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"success_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"structured_failure_setup\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"unicode_failure_setup\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"partial_emission_setup\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"unknown_closure_setup\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"setup_refusal_setup\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"six_later_forms\\",\\"ok\\":true},{\\"id\\":\\"later_measured_upstream\\",\\"ok\\":false}],\\"completed\\":false,\\"measurements\\":[{\\"id\\":\\"initial_source\\",\\"sha256\\":\\"4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d\\",\\"size_bytes\\":14162},{\\"id\\":\\"finalizer_source\\",\\"sha256\\":\\"fcca4065d75430e87e6f8e1f4df3be68bd084421da0ca7266218a5f801e8eb1a\\",\\"size_bytes\\":34397},{\\"id\\":\\"executor_source\\",\\"sha256\\":\\"9104621cfe1b7e0931f1dca52ecf216c4f2874233803abcff621db1b9077ae45\\",\\"size_bytes\\":78392},{\\"id\\":\\"success_selected_original\\",\\"sha256\\":\\"46fdb4a08fc1898e57d6c2b942a28aebdebe49b1f4b5bbe11c44177f2cce628e\\",\\"size_bytes\\":17067},{\\"id\\":\\"success_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19},{\\"id\\":\\"structured_failure_selected_original\\",\\"sha256\\":\\"e8cf9b26009ff462152eff45d59343793f7ee5216f1e6f00197b6256ec0d310c\\",\\"size_bytes\\":17293},{\\"id\\":\\"structured_failure_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19},{\\"id\\":\\"unicode_failure_selected_original\\",\\"sha256\\":\\"84e2bf9ea93cf982623ef86d9eeb398f4e468eb80656efdf57f206541b55d563\\",\\"size_bytes\\":17193},{\\"id\\":\\"unicode_failure_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19},{\\"id\\":\\"partial_emission_selected_original\\",\\"sha256\\":\\"79ea8cf1b2d66bc2431f4175baabd65338946aff50e3b104d64ce986f8087297\\",\\"size_bytes\\":16786},{\\"id\\":\\"partial_emission_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19},{\\"id\\":\\"unknown_closure_selected_original\\",\\"sha256\\":\\"628eaa305921b541a5502e476b5c6d3ad4dbf5d452625a8ca547de7b1e1afff4\\",\\"size_bytes\\":17071},{\\"id\\":\\"unknown_closure_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19},{\\"id\\":\\"setup_refusal_selected_original\\",\\"sha256\\":\\"6beffafc4f5629b627f40ace16448fea4ca0e16e57cea746c602759262e53429\\",\\"size_bytes\\":16147},{\\"id\\":\\"setup_refusal_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19}],\\"node_version\\":\\"25.2.1\\",\\"schema_version\\":1}}\\n{\\"error_type\\":\\"AssertionError\\",\\"event\\":\\"parent_issue\\",\\"exception_capture\\":{\\"capture\\":null,\\"capture_metadata_sha256\\":\\"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\\",\\"capture_metadata_size_bytes\\":4,\\"capture_metadata_unavailable\\":true},\\"issue_index\\":1,\\"message_sha256\\":\\"99aa63d206d7144485e96f78b7a409e74a08cc0918e3cf282ff0a3643c008fd6\\",\\"message_size_bytes\\":2540,\\"outcome\\":\\"failure\\",\\"subtest_ordinal\\":null,\\"test_id\\":\\"tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.D25CompleteGeometryTests.test_complete_form_bounds_preserve_hold\\"}\\n{\\"error_type\\":\\"AssertionError\\",\\"event\\":\\"test_terminal\\",\\"exception_capture\\":{\\"capture\\":null,\\"capture_metadata_sha256\\":\\"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\\",\\"capture_metadata_size_bytes\\":4,\\"capture_metadata_unavailable\\":true},\\"issue_counts\\":{\\"parent_issue\\":1,\\"subtest_issue\\":0},\\"message_sha256\\":\\"99aa63d206d7144485e96f78b7a409e74a08cc0918e3cf282ff0a3643c008fd6\\",\\"message_size_bytes\\":2540,\\"outcome\\":\\"failure\\",\\"subtest_callbacks\\":0,\\"test_id\\":\\"tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.D25CompleteGeometryTests.test_complete_form_bounds_preserve_hold\\"}\\n{\\"descendant_quiescence\\":\\"UNKNOWN\\",\\"errors\\":0,\\"event\\":\\"test_summary\\",\\"expected_failures\\":0,\\"expected_metadata_records\\":2,\\"failures\\":1,\\"generated_operational_program_execution\\":false,\\"geometry_case_records\\":1,\\"geometry_source_records\\":1,\\"issue_events\\":1,\\"parent_outcomes\\":{\\"failure\\":1},\\"selected_class\\":\\"D25CompleteGeometryTests\\",\\"skips\\":0,\\"subtest_callbacks\\":0,\\"successes\\":0,\\"successful\\":false,\\"test_streams\\":{\\"stderr\\":{\\"geometry_case_records\\":0,\\"geometry_source_records\\":0,\\"metadata_records\\":0,\\"observed_bytes\\":0,\\"raw_values_retained\\":false,\\"sha256\\":\\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\\",\\"unexpected_or_unterminated\\":false},\\"stdout\\":{\\"geometry_case_records\\":1,\\"geometry_source_records\\":1,\\"metadata_records\\":2,\\"observed_bytes\\":12199,\\"raw_values_retained\\":false,\\"sha256\\":\\"e2cb98ce5df1df0b35f009a3675a7332e6a1c81148358911e1924e666ccfbbab\\",\\"unexpected_or_unterminated\\":false}},\\"tests_run\\":1,\\"unexpected_successes\\":0}\\n","name":"stdout","original_filename":"vast-d25-geometry-complete-01-20261018-01.stdout.original.txt","sha256":"a4a5ab1731bacdb30596e78f5b977b59b1de9f640c35292ace928c62f65d9f43","size_bytes":15811},{"bytes_ascii":"","name":"stderr","original_filename":"vast-d25-geometry-complete-01-20261018-01.stderr.original.txt","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","size_bytes":0},{"bytes_ascii":"{\\"channels\\":{\\"stderr\\":{\\"close_attempted\\":true,\\"closed\\":true,\\"closure_unknown\\":false,\\"eof\\":true,\\"error\\":null,\\"observed_bytes\\":0,\\"overflow\\":false,\\"remainder_unknown\\":false,\\"secondary\\":[],\\"sha256\\":\\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\\",\\"size_bytes\\":0},\\"stdout\\":{\\"close_attempted\\":true,\\"closed\\":true,\\"closure_unknown\\":false,\\"eof\\":true,\\"error\\":null,\\"observed_bytes\\":15811,\\"overflow\\":false,\\"remainder_unknown\\":false,\\"secondary\\":[],\\"sha256\\":\\"a4a5ab1731bacdb30596e78f5b977b59b1de9f640c35292ace928c62f65d9f43\\",\\"size_bytes\\":15811}},\\"child_completion_before_cleanup_end\\":true,\\"child_completion_before_total_end\\":true,\\"child_completion_observed_at\\":1895877.0014977,\\"child_total_deadline\\":1895906.4914154,\\"child_total_seconds\\":30,\\"child_work_seconds\\":27,\\"cleanup_deadline\\":1895880.0014809,\\"codec_role_binding\\":{\\"encoder_excluded\\":true,\\"excluded_encoder_bytes\\":2964,\\"excluded_encoder_sha256\\":\\"6123f11ab75ed5a4021dc038ff878cd6873d71492058e8b887d3b3c28b4fc295\\",\\"full_codec_bytes\\":6903,\\"full_codec_sha256\\":\\"c65b73fe0e7d274040dda413b7871ee83c4c952f9bb2c1e74962b0e3e5f34767\\",\\"kind\\":\\"d25_node_codec_role_v1\\",\\"marker_occurrences\\":1,\\"node_codec_bytes\\":3939,\\"node_codec_sha256\\":\\"d7f478ee3e5ff65d7146c58e2a9fa078e66219cc1e35ea8547701e576295c32d\\",\\"role_is_exact_prefix\\":true},\\"deadline_seconds\\":300,\\"descendant_quiescence\\":\\"UNKNOWN\\",\\"elapsed_before_report_write_s\\":0.5301765000913292,\\"fixed_driver_binding\\":{\\"driver_getter\\":\\"d25_geometry_driver_v1\\",\\"driver_role\\":\\"geometry\\",\\"program_bytes\\":24572,\\"program_sha256\\":\\"f3bce3947d93f0a9d630372bd1b0d4d02fe61ecd1e47458259f3a8ccdad72265\\",\\"source_kind\\":\\"d25_fixed_test_driver_v1\\"},\\"forced_test_child\\":false,\\"generated_operational_program_execution\\":false,\\"geometry_fully_measured\\":false,\\"geometry_risk_passed\\":false,\\"geometry_source_kind\\":\\"d25_inert_source_construction_metadata_v1\\",\\"held_driver_loader_binding_validated\\":true,\\"io_failure\\":false,\\"kind\\":\\"d25_local_inert_geometry_test_parent_observation_v1\\",\\"ordered_causes\\":[],\\"parent_observed_test_transport_complete\\":true,\\"protocol_error_type\\":null,\\"python\\":\\"3.14.7\\",\\"returncode\\":1,\\"selected_class\\":\\"D25CompleteGeometryTests\\",\\"self_report_persistence_or_whole_process_attested\\":false,\\"source_binding_policy\\":\\"both_held_test_buffers_before_either_compile\\",\\"source_binding_record_validated\\":true,\\"source_execution_reopens_paths\\":false,\\"source_pins\\":[{\\"path\\":\\"tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py\\",\\"sha256\\":\\"3dcea0ea515be7c33cd95486adf9b818b63ce39894d9cbe48c8318ec4fd02b39\\",\\"size_bytes\\":476378},{\\"path\\":\\"tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py\\",\\"sha256\\":\\"77946ffadc24d7fd3759186417eb5ae330edd306f7a3170d5370f7e44b4e61b4\\",\\"size_bytes\\":281307}],\\"suite_mode\\":\\"geometry\\",\\"test_child_command_chars\\":30083,\\"test_summary\\":{\\"descendant_quiescence\\":\\"UNKNOWN\\",\\"errors\\":0,\\"event\\":\\"test_summary\\",\\"expected_failures\\":0,\\"expected_metadata_records\\":2,\\"failures\\":1,\\"generated_operational_program_execution\\":false,\\"geometry_case_records\\":1,\\"geometry_source_records\\":1,\\"issue_events\\":1,\\"parent_outcomes\\":{\\"failure\\":1},\\"selected_class\\":\\"D25CompleteGeometryTests\\",\\"skips\\":0,\\"subtest_callbacks\\":0,\\"successes\\":0,\\"successful\\":false,\\"test_streams\\":{\\"stderr\\":{\\"geometry_case_records\\":0,\\"geometry_source_records\\":0,\\"metadata_records\\":0,\\"observed_bytes\\":0,\\"raw_values_retained\\":false,\\"sha256\\":\\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\\",\\"unexpected_or_unterminated\\":false},\\"stdout\\":{\\"geometry_case_records\\":1,\\"geometry_source_records\\":1,\\"metadata_records\\":2,\\"observed_bytes\\":12199,\\"raw_values_retained\\":false,\\"sha256\\":\\"e2cb98ce5df1df0b35f009a3675a7332e6a1c81148358911e1924e666ccfbbab\\",\\"unexpected_or_unterminated\\":false}},\\"tests_run\\":1,\\"unexpected_successes\\":0},\\"threads_joined\\":true,\\"timed_out\\":false,\\"work_deadline\\":1895903.4914154}\\n","name":"parent","original_filename":"vast-d25-geometry-complete-01-20261018-01.derived.json","sha256":"3d31e731927dde64f42e95e8da6921c864a3d9b1bc7f9a4c2a9709e63f4e43b3","size_bytes":3780},{"acquisition":"canonical_report_plus_LF_bound_to_original_child_capture_hash_not_separate_direct_Node_file","bytes_ascii":"{\\"case\\":\\"geometry\\",\\"cause\\":\\"d25_geometry_hold\\",\\"checks\\":[{\\"id\\":\\"source_bindings\\",\\"ok\\":true},{\\"id\\":\\"initial_source_bound\\",\\"ok\\":true},{\\"id\\":\\"finalizer_source_bound\\",\\"ok\\":true},{\\"id\\":\\"executor_source_bound\\",\\"ok\\":true},{\\"id\\":\\"six_setup_forms\\",\\"ok\\":true},{\\"id\\":\\"success_setup\\",\\"ok\\":true},{\\"id\\":\\"success_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"success_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"success_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"success_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"success_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"success_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"structured_failure_setup\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"structured_failure_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"unicode_failure_setup\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"unicode_failure_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"partial_emission_setup\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"partial_emission_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"unknown_closure_setup\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"unknown_closure_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"setup_refusal_setup\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_provider_pipes\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_pipe0_inverse\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_pipe1_inverse\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_pipe2_inverse\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_selected_original_bound\\",\\"ok\\":true},{\\"id\\":\\"setup_refusal_wire_geometry\\",\\"ok\\":false},{\\"id\\":\\"six_later_forms\\",\\"ok\\":true},{\\"id\\":\\"later_measured_upstream\\",\\"ok\\":false}],\\"completed\\":false,\\"measurements\\":[{\\"id\\":\\"initial_source\\",\\"sha256\\":\\"4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d\\",\\"size_bytes\\":14162},{\\"id\\":\\"finalizer_source\\",\\"sha256\\":\\"fcca4065d75430e87e6f8e1f4df3be68bd084421da0ca7266218a5f801e8eb1a\\",\\"size_bytes\\":34397},{\\"id\\":\\"executor_source\\",\\"sha256\\":\\"9104621cfe1b7e0931f1dca52ecf216c4f2874233803abcff621db1b9077ae45\\",\\"size_bytes\\":78392},{\\"id\\":\\"success_selected_original\\",\\"sha256\\":\\"46fdb4a08fc1898e57d6c2b942a28aebdebe49b1f4b5bbe11c44177f2cce628e\\",\\"size_bytes\\":17067},{\\"id\\":\\"success_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19},{\\"id\\":\\"structured_failure_selected_original\\",\\"sha256\\":\\"e8cf9b26009ff462152eff45d59343793f7ee5216f1e6f00197b6256ec0d310c\\",\\"size_bytes\\":17293},{\\"id\\":\\"structured_failure_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19},{\\"id\\":\\"unicode_failure_selected_original\\",\\"sha256\\":\\"84e2bf9ea93cf982623ef86d9eeb398f4e468eb80656efdf57f206541b55d563\\",\\"size_bytes\\":17193},{\\"id\\":\\"unicode_failure_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19},{\\"id\\":\\"partial_emission_selected_original\\",\\"sha256\\":\\"79ea8cf1b2d66bc2431f4175baabd65338946aff50e3b104d64ce986f8087297\\",\\"size_bytes\\":16786},{\\"id\\":\\"partial_emission_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19},{\\"id\\":\\"unknown_closure_selected_original\\",\\"sha256\\":\\"628eaa305921b541a5502e476b5c6d3ad4dbf5d452625a8ca547de7b1e1afff4\\",\\"size_bytes\\":17071},{\\"id\\":\\"unknown_closure_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19},{\\"id\\":\\"setup_refusal_selected_original\\",\\"sha256\\":\\"6beffafc4f5629b627f40ace16448fea4ca0e16e57cea746c602759262e53429\\",\\"size_bytes\\":16147},{\\"id\\":\\"setup_refusal_wire_refusal\\",\\"sha256\\":\\"17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6\\",\\"size_bytes\\":19}],\\"node_version\\":\\"25.2.1\\",\\"schema_version\\":1}\\n","name":"canonical_report","original_filename":null,"sha256":"4e3b8c93c98eb7ed3715c5a939531b01b41f59f9c501ff574fce70c115532e17","size_bytes":4405}],"protected_source_rows":{"caller":{"excluded_replaced_class":null,"ordered_rows":[["Expr",[],80,"664f1276b0c65446318a967025c6a4d9568976116aa7373c42dc282d0c85eb16","f319dc3b92a3f2ba6e5bc05cb7cc104b42aa550b8989b795c971acf0c8ce3dbe"],["Import",["base64"],13,"f30aabd4a95e13b98c9537425bb02f63ac9631f1e6311b7f0ab80d85f88f61b8","99ccd02cb758ed604ff1bc1c067c06e1543524012de4421d7b80e9b7ad7717e7"],["Import",["contextlib"],17,"3ddb26968cc6251bdb984fa36c0441bbc314139a828d706fea21a8c502e5dcf8","dc298a564522c0894fe46a3cdb7c31e40f8408b4dbf1dd28469c587a6f0a7b5f"],["Import",["hashlib"],14,"ada1d9e0a360cda0fd1c8757d297aa74a4fc8d7193a69d3c28b43afc6950e9f9","092cb77ae0770f1627b29bf41b2732722fbcc3a0e1d77a79674801800a2721d1"],["Import",["io"],9,"b000f4590d6af9cfe633ffe0faae301a05dde8e4ca7757d7566f899d61f240b8","eb75a54c5d0d93fbb694f468951613f2f071166afbbe97a52903fa47a7cef914"],["Import",["json"],11,"ff3e4d4dcf7250cae8d622d77c9a6d69aefcf4ab04ef9920218fafe93c0f1991","211ee42757705c7e350e70e36b762987a737f5e9c268f2a343e2dbfcb8fbea75"],["Import",["os"],9,"de2abade832c8e350a1bdc98cfcdb1e202ac4749c5fc51a4a970d41736b6df5c","ac3a74d6dd975a8e8fe4b7f85fce794793a9355595b850e3926964913948d386"],["ImportFrom",["Path"],24,"6d69f2ac09017b8a49d050ab336e953b8fa02ae08c24396916ea7ea42418e627","59051b17634cdcb5a576ceb58fdc0a4e5652ed3b60d66667e92ddefd931abeca"],["Import",["tempfile"],15,"09d25239ae3d62e91c70b74fa5baa1d52a22c5c2397a785935889e61f91a8557","81dafa7a7cf16b83e7a7cafd7a6702e15f4b4d576a43463dc14beb05d48e72d0"],["Import",["types"],12,"9ba0ef4a2880daedd15b0e74d296458ac4dd0295c9a24bee6a3b486d4a963833","5fc62d8a32deca3631b4cf444b2d5eb1a9d861eaf4d371ab1f2139e0ee13500c"],["Import",["unittest"],15,"a3133fe783a48c83eae67900c7bba9f417b6367ab7d4708836feaa3b2c88e60c","c2989ab60afe692e3752cff01ca6c5975c26cf4d65ed0ff66c3e1ddd0062fe42"],["Import",["zlib"],11,"fb13e8690a2e9705e04cad7ad4a2958269186f6bc24bff331f76f8f01f9e5875","02de0820630aca0acec134c03e1eb366c46443b45b7a9410ae6ef721d7245fcb"],["ImportFrom",["mock"],25,"1386c1111eba21a088c0f150cd37c9688432ad5a380151e4faafb8ebd4d135f5","28c41628e362acf9f34ed052a8994c052db26ae684f23c3cabeee952b098a86d"],["Assign",["REPO"],42,"2ef3c9ab35eb9d9a70565b0f58f06576278721a072aa56c85bc611bf44e65953","94064ab90ac0aba038dd70c75863cfd04d56dc8cd6d2e1682e5cf64fd7d7650f"],["Assign",["FIXED_REPO"],93,"a7db5de2c19c2aa295136cd1c625815467716132155059ef8cf7e336b38c1967","0afda0cb27c11c811d12eed9640e34513a77e024ef0465100599bc4601d0ea5e"],["Assign",["PREFIX"],58,"573490013374c04b92300de35aa2d354950bd4b1451179080868a3fdfaf15716","a258a2f125fef23a3eb236b8f7d1e47f68c9801a39d3faa3c679392a20c925e5"],["Assign",["COMPONENT"],39,"940e0ee722eb651a6f18912ce11c83c7e928df673879f3c0a7b91043375a9aa8","9bd796a15311c2404c98b1c29800a7fe831ab1c7fd45e808b75f651a9e6810c8"],["Assign",["OPERATOR"],41,"ed172ade28eea7260025c1620b81bb9a285a988eb0d6796984d3469f01ce047e","ffafc4884134b007344eeb46c98ac40d79715670e45a977da8f7b59a78251885"],["Assign",["TARGET"],151,"54a5e24cd586400478c1db7894d293a7bc4f71779a88d1b147ee7f4a4954aeb0","8bd3ff3305ae07cb16598a06d40ebf63376105607436cf20a6caccdbc70cbb6f"],["Assign",["WRITER_READY"],228,"3927299011dbfa8e2c100572e4a2ecb877efd638d165ad82dc60bd7aef50df77","de6ec76cb46fc6b9f79fd8bc41692dfcd26773c48696b6574ea3f4fa1c63a0ec"],["Assign",["WRITER_BODY"],5146,"67174fbe6e6d06c992dfc34ccf865d93829ceae80a3252ce058b7cb1d6f99188","ba6fc5ed89a759796100a50931a58f22b3dd1b9b1a3b63f669547f6dba18b3e7"],["Assign",["WRITER_SOURCE"],42,"35eddffa293fc5a22f6ae92a40c40e45f83aeadd1bdcc175b176a240deeb5d11","df0e4e7bef27940a39adac752817f40c6b6abc50f8e8b00b713655024a90e2d1"],["Assign",["WRITER_COMPRESSED"],99,"cff01114564c8711f806f46137e2f82170f4365f4d4d9e29652cbc3e7b1410c5","799f0ff6ec1f14bbc4ab3fe8ccd13b2682bdfb238c8a9c5190120fc2cdea3032"],["Assign",["WRITER_CARRIER"],200,"299e78b0e9362acf22a9b93cefaf669eeeaf81ac171ab84716d6d2848c1e3ae2","a1b7f5ec7ec24c0f6ceaea0d0da8aad9e0508df080503711e6d833ccdf49e713"],["Assign",["QUALIFIED_REUSE_SOURCE"],38,"0b86a07e0d317b4e2d0feb554e4d2cb1adf3124256a271b4f49218e53e3805af","35fc964bb533d4a758aa5e269c362a4bb402fa7a653a052f370da62712d7959d"],["Assign",["WRITER_BODY"],5148,"099080fcd2f9aafe0ca57e247277f11c0af9c655cc57294bee6b40e7cab3688f","e9896b64fb6f30619993b2c7c4802d99561ecc1b60c3e934858a0c1a0265b349"],["Assign",["WRITER_SOURCE"],196,"392b4dc7a19b7d7fda6939846aa89c1c59648150a4a1ff288bb06bca498bb693","50b90bad0899cdb97506ae1339a95b5a2f1d2e8fee3c2c426eb0a736f4af4656"],["Assign",["WRITER_COMPRESSED"],99,"cff01114564c8711f806f46137e2f82170f4365f4d4d9e29652cbc3e7b1410c5","799f0ff6ec1f14bbc4ab3fe8ccd13b2682bdfb238c8a9c5190120fc2cdea3032"],["Assign",["WRITER_CARRIER"],200,"299e78b0e9362acf22a9b93cefaf669eeeaf81ac171ab84716d6d2848c1e3ae2","a1b7f5ec7ec24c0f6ceaea0d0da8aad9e0508df080503711e6d833ccdf49e713"],["Assign",["STANDALONE_WRITER_BODY","STANDALONE_WRITER_SOURCE"],77,"7a1794879b42a36a47780fb33f87c0dbecf4cef1484edde6587113514f7a321e","d73522b2c23257511daa415b9b0905d0dcbf55aa01ea854e0c75e5df5b8155d5"],["Assign",["STANDALONE_WRITER_CARRIER","STANDALONE_WRITER_COMPRESSED"],91,"ab0d814da420722555a8a9c0098c3a1cdd6752ba2b0006f6bf96f74fc97920e0","d4e130a23c1022b44fd566418476a455eb34494a3ae55b42e0a790bd93dc4ac6"],["Assign",["PYTHON_CLOCK_HEAD"],63,"b0bccd3bbf077bbd1983b82890acecb9f108da4fbc3bf7a4e1bf1a7a9f6af9a7","e02e221028a51179157be7780d7fe880f0b16318604c9ae087c2b5e6ae3c59c1"],["Assign",["WRITER_READY"],216,"646bc05c189677de2ac6ba71b464c2e8af3598ccfa41da385432f6d3197d7806","1054f55a62592e320cf63aba7e1572589913d66f5f05f21b0cdc67f961604e2d"],["Assign",["WRITER_HEAD"],112,"54a6111b988f24baf737cefcca24ac702584e948a5cd31a7d3787fc2a833ce36","592283a8c22702d96095c218875d2049f67ea2948ecaa6bd456795735961e4f4"],["Assign",["SETUP_COMMON_HEAD"],124,"ed63ea6e756cc0f701c2966f95408825b902c3fdb98e13ba24604416b4e04b41","d7820486ca254d8deaa0e7e19e1b5efec80517dd82fb171876b9d20301b735e7"],["Assign",["WRITER_COMMON_SOURCE"],3650,"fd79d90e544ef6c061a50f2e4ffcb63ce9da3d3b0c2e94cf76aa470dab67fbfa","67e2782c85fb8380591e9c2fd5f2cbc26f5ee6f4a1d8d9e82e5e56495c745eca"],["Assign",["WRITER_TAIL"],1477,"376f76cef2fc7961822d4715c6af765f1ccb5f68f1c69245750307a479204b2a","f4de0f1d9df844f0246faa4299fb41d7f0f57beb73fb8324ad93c3b98981551e"],["Assign",["WRITER_BODY"],62,"648a0f0fdd3c0c01ba0179f77de296590c694ce49a228726956294ab61960b1d","97ecc7ded6363305aec2caa4b6059b979d7ad7d4d5d5f64134d10f672d1e07b0"],["Assign",["WRITER_SOURCE"],196,"392b4dc7a19b7d7fda6939846aa89c1c59648150a4a1ff288bb06bca498bb693","50b90bad0899cdb97506ae1339a95b5a2f1d2e8fee3c2c426eb0a736f4af4656"],["Assign",["WRITER_COMPRESSED"],99,"cff01114564c8711f806f46137e2f82170f4365f4d4d9e29652cbc3e7b1410c5","799f0ff6ec1f14bbc4ab3fe8ccd13b2682bdfb238c8a9c5190120fc2cdea3032"],["Assign",["WRITER_CARRIER"],200,"299e78b0e9362acf22a9b93cefaf669eeeaf81ac171ab84716d6d2848c1e3ae2","a1b7f5ec7ec24c0f6ceaea0d0da8aad9e0508df080503711e6d833ccdf49e713"],["FunctionDef",["canonical"],163,"ef77bbf713bec30cf506858d88defd32365f45657afb797e99ae3835b8624186","56c13467459a519ed23beae122070837f894408f8ab7b6244314562ad4a4b77c"],["ClassDef",["WriterTests"],28081,"a4de1cbc3fa3ac6bc892abd6cb6477d876686ba94c13996457d9fa2e6409a5ab","5a2f19bbcb4b5bf7cdb366e917e8678e9b9a4c7d80f9216370f82ac629291c35"],["ClassDef",["CommonFragmentTests"],2733,"7d81bcd4478d841c6a9b94da20693e049bda8c6ae998ccf87636c12b324129dc","fa7b62dd1a7d26f361dc7486cf81f63a5f28356d3cff0087ada7cc909d748900"],["ClassDef",["HeldWriterTests"],12097,"eef4067e24a1d99f3f4a00a9fabc083d39c991574056eb6d596f6829b145ccbe","7bfdf20dd17e50b009ec3b0be4f407c9ada11af502fec05fb9dbbbca619f8f66"],["FunctionDef",["resume_node_tests"],415,"e7ff3bb27c77bd892ad5bb14f0e72a56038ab391f968abd4128cb005f06314bb","32cb9b4adbd9bc54f5db4d7649f59d7c15a8f500abe10cf4520bd310facbeaba"],["Assign",["CD_FACTORY_SOURCE"],13100,"b61813f70435a53cb9f6af1acb42b755b664bf1f979f4da7f3a142e1f4ee8354","3ba21d5d1af48fea98115c517b26326ef74a3bcc12629124fbbf9a4f8db903eb"],["Assign",["CD_EXTENSION"],32,"d79c4144ef027f67aafb5370474c73bf7c8a895a0ece5a165c57466756b6b19c","75c756c6a5bb8eaac7456c6d81bca80c0534dea60b212e5d07cc57de961b9782"],["Assign",["CD_HARNESS"],7770,"f1fb058c7ebb02801594a877a29e467396786c2ecc5fb7175d41aae44aea4348","c6bc43645bc1e2c8fae744a67ceb9f39e3c69787a1399008520a3c2b03957a4b"],["ClassDef",["LaterStageCallerTests"],49519,"4ecc1a9ccb7f76e84f84b3e4affb4fb7fe7c0d8fa6af38cbc1ff6e4404705cb4","fc7ea12edcf16db5764f455992bf0f0ba719cb041b21aacaa4044370e5faa8ca"],["Assign",["_D22_BROTLI_DATA_PROGRAM"],1062,"35f372dde5954be615231b1f48847c143a504d3b996733834c3ca2b65c77e097","0a9bbe79319cbcee1be2662ec65929e1abc54f73fb14c6b76b037817c71c91cb"],["ClassDef",["D22CompressionError"],190,"f086ca4a8285ea48db8f52884136f9b475c13216051e38c63aacee277c3881f8","6bc8886fa32a5cbb09ccaf38cb33700dac3c6da4a512c2f8a79058b6d711739b"],["FunctionDef",["d22_compress_data_v1"],14226,"a3c6d7495965066c91bc69c103a9ff6ea3607501795785abaef689be59f75841","7c4ea14c3da0e0dad9f9f0925d53e47d2dc3bf3615f26e3e5a772b906fae9a1e"],["ClassDef",["D22DataCompressionTests"],20858,"17bd46d29b8f22f1585d8eadb157676e50f1c6f58ee0c9eb29c31258667a9c75","963f654e6ce27ef97324d240a841b16b4f44cfdf3f13f8ef31efb5569e2e84dc"],["If",[],46,"adc075326e2b2c4151fa6bf03092887599f5f2ca5c53c46ecedfe045dc002c3e","444eddf8b0e49cc0b0fec1a7214dc0d852a2ac320c4e5f4e792895ff744a0420"],["Assign",["_D23_CASES"],90,"d1ccc92b3cb2874b6f4d8387e849750130c26fd5af1c4601bbc47ac6f0c36835","70fb1c104c2ae9219283cf053642a2f165fbb7edc3a5fbae58e9f703197ab98e"],["Assign",["_D23_DRIVER_CAUSES"],166,"a3f45b0588f8629d12ed98051bc55f9bd64f2af846ffaefc6580ffa1c740b798","19d07b09bf61aae84d2de52da0262fd63588af5e35edcfbaf5221bc2cfa95c4b"],["ClassDef",["D23CaseError"],187,"e53da0d70e6adba73391e2bbb166d35a23e7f60572764f87b9e4e275b9c1494b","2756fa9dcfd2c742b744e903452f0c9baae2bd90ee3434ba758bb2786464f003"],["ClassDef",["D23FixedDriverTransportTests"],34747,"86c0eb57b2c1a926315895b9f4039c250a89b1a9c16cbab14d4dbf5adb27fbf4","d1f7a45b7e7ed43e7e195955813aa1500cdc2c553af2de2f6972d0455153fd6e"],["FunctionDef",["_d23_run_fixed_driver_v1"],18006,"ffabfbc344b5025a1a8fc4136e6ee5126e54838722eb676471962f0acb9ff3f4","f2eb1ec43077f710bc0165d0cc3e38cbde9f8a826a0de0167569a9ebc77ca64b"],["FunctionDef",["d23_run_case_v1"],188,"2f4f89a7130f0c3ce54ff1451197cc2f772b208d175b6cc4d8ea9a2856b4b745","6b46120f71ad36468847feed4c6501fa6f073180a5eebdd1cb879ec54b57d0f2"],["FunctionDef",["d23_run_geometry_v1"],194,"6f341fd460c231b8aebcc5dced0ecfc7647899fc8416b7beda58f063bff8a804","091ed5fab5d7cb2eddf65d2f3bcfdc1dd9331371b07df5fcfb64718f6b2b15d9"],["Assign",["_D25_CASES"],90,"cce85803b7b76ce6d956c4a3b4421f61eca0c6704e2b9598371a8dbce420fa63","84b4e19d4ae29b540275b0e95a3984d253cd8ee2e1ef921461c1ba6b17b88e4d"],["Assign",["_D25_DRIVER_CAUSES"],166,"0648342962749298a7ced1ac44af6e247ec980fc9af112f14f9b4da06b231ae6","e5ee2eb3b686eb52653f51180d70cd971685336665b24e0ba0b9d12d044dbde8"],["ClassDef",["D25CaseError"],187,"68e8e2946ccbed4a98706d9dd5dbcaf31c389e5d13afc45145ab16bce7ff4af5","819e236a50e63b1d0550b808434e4922aa5532fcfacf3ecc32d476b4071997d5"],["ClassDef",["D25FixedDriverTransportTests"],37238,"6b1f2fc74679392263cdd2d78b441af65d50883dd7191c88e82b1946fdacfafe","34a09191666b1c534a45d137a0f40ca05bf48af5292de92c77b1b2ea4695daa8"],["FunctionDef",["_d25_main_module_v1"],1483,"0703151df5a51a36989d94027b0e2e3d3db1abf92c184815cc9a2bddba6d4266","a3271ba84ccd2d384ede392e98507f125d1e62137fb84bd70098236fcd26eaec"],["FunctionDef",["_d25_run_fixed_driver_v1"],18360,"57a1984b93812a2b71c78df7fc2919cd679d05ca8b5594fdcaad759d5f522b2b","d0c6cd5c024b2ade97ca9c98e74e99f4897d0112fec959898978dd62ca47aaa6"],["FunctionDef",["d25_run_case_v1"],188,"9dc8e23b53a829f506641e71187127c9cc76fc0780600f763a34d18920e7ea14","d229c829f2d9faf766c31b63e25f765c388256bdd46f5b03613be013d203f7c0"],["FunctionDef",["d25_run_geometry_v1"],194,"cd2cc0cd4529500e8a70b71c2cd1289ea6864b337d837e16e481ef31b706d4aa","62f3c220f6536d846302a4acc70818423e922c12d80d85a4bd8ba12bc9a03c27"]],"ordered_rows_sha256":"3f11dacd4c12f311a4c103d84eeb50917d7d7e58ee82efb8d578872c7c17c1b5","path":"tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py","run_preparation_buffer_sha256":"77946ffadc24d7fd3759186417eb5ae330edd306f7a3170d5370f7e44b4e61b4","run_preparation_buffer_size_bytes":281307},"main":{"excluded_replaced_class":"D25CompleteGeometryTests","ordered_rows":[["Expr",[],83,"ea93def14fdf75254774e5405f5d3bdcf8bd95619275df28cb534bc9d96fbced","1ca4454741e887ca1b0eb661a0d9f6237663802a33f1443e5eb037e557b643e0"],["Import",["hashlib"],14,"ada1d9e0a360cda0fd1c8757d297aa74a4fc8d7193a69d3c28b43afc6950e9f9","092cb77ae0770f1627b29bf41b2732722fbcc3a0e1d77a79674801800a2721d1"],["Import",["io"],9,"b000f4590d6af9cfe633ffe0faae301a05dde8e4ca7757d7566f899d61f240b8","eb75a54c5d0d93fbb694f468951613f2f071166afbbe97a52903fa47a7cef914"],["Import",["importlib"],16,"856a29a936ceb53098a8d45c076bcb67d3b911d9303db4f7bca5b423ded40744","20dd306b163f704835a4d8a0b38ad62a3a816de1a848abef67a957450ae3afab"],["Import",["json"],11,"ff3e4d4dcf7250cae8d622d77c9a6d69aefcf4ab04ef9920218fafe93c0f1991","211ee42757705c7e350e70e36b762987a737f5e9c268f2a343e2dbfcb8fbea75"],["Import",["os"],9,"de2abade832c8e350a1bdc98cfcdb1e202ac4749c5fc51a4a970d41736b6df5c","ac3a74d6dd975a8e8fe4b7f85fce794793a9355595b850e3926964913948d386"],["Import",["tempfile"],15,"09d25239ae3d62e91c70b74fa5baa1d52a22c5c2397a785935889e61f91a8557","81dafa7a7cf16b83e7a7cafd7a6702e15f4b4d576a43463dc14beb05d48e72d0"],["ImportFrom",["SimpleNamespace"],33,"8b0a598b55e130e14987b275b2591e44a0aa9c53dea319ad51960b301df278e4","271cd8a5819453f6952690fd43e9ce152386df249c8de9a1999907454b0006b7"],["ImportFrom",["Path"],24,"6d69f2ac09017b8a49d050ab336e953b8fa02ae08c24396916ea7ea42418e627","59051b17634cdcb5a576ceb58fdc0a4e5652ed3b60d66667e92ddefd931abeca"],["Import",["unittest"],15,"a3133fe783a48c83eae67900c7bba9f417b6367ab7d4708836feaa3b2c88e60c","c2989ab60afe692e3752cff01ca6c5975c26cf4d65ed0ff66c3e1ddd0062fe42"],["ImportFrom",["contextmanager","ExitStack"],47,"c9cd8e36f19a542d5ed8ad61537e2d1a4c6b9258a6a2b9796896575b359b2090","d22cf07e9f53ee8b93c2bc711ecf3045f4ee535e4d409292cd952fad428ad930"],["ImportFrom",["patch"],31,"db6bbcaebdfb0f0644d49c0fd8832e64978afd6f50d08a54da1a8e1a0630e7c4","4337bb2ad9c9b8e6d80fa1b5afcef1e5d4531beaa533830f57d17fa8c1fbfed0"],["FunctionDef",["subject"],208,"acd1bdd385da32e06c71b2bbb12be814661d3b25177ebebb423b8951f973c8dc","d5f4e9c4f1b1cafaad1459c8b6704d2fadb865524d04722fa5109112031585f3"],["FunctionDef",["formatter"],273,"3461789e74b632116e2e4f28daf223fc279393da4e2d8fe1b6391588e29e318a","87258097f1101a631af47aa11f6a196226d24b5f2cfee852a6e5beebaf84b122"],["Assign",["WINDOWS_CALLER"],2168,"7f38fcd038d01a0e246a59154904b9d5556ded9830fdcf106f7fd31c508a15ee","cc7d248da2b6f9e0beb1c2bf61fcb7f36cf9afc1d91e3fb4b68cbeeb9dbd15bd"],["Assign",["NODE_WINDOWS_PREFIX"],1828,"e636c14cb2ba7795e6fa82e11dab1fdbfe9c256e401a4aea7d6fc5ffcd304cf0","369cb4fcedd59d807390160d264a5b9a8ef997ee7b4770f533090c2fab81bfea"],["ImportFrom",["PYTHON_CLOCK_HEAD","WRITER_COMMON_SOURCE","WRITER_HEAD","WRITER_TAIL","SETUP_COMMON_HEAD","WRITER_READY","CURRENT_WRITER_SOURCE"],224,"5bf4857f55a3f6168af3fa5eec0f15ecad52517674854a07eb59cac9bb191320","c2f066e751c5970fe8d22260d10a24651336e9a652fd3499a42a0bc640e3856c"],["FunctionDef",["_indent_python"],84,"bb2d70f5e44904c8f47bcb49c80488af00e2f22c01a6431fc030069ce5880313","6376f9aadaa7fd4aa39d4466f31cf13e5d64e0d34f43e643aa74229341d43eaa"],["Assign",["NODE_SHARED_PYTHON"],55,"46bebe5dc4c1bfa07d7e58a5ca5f287a67e2f47697dd90cba3679ad2aa8e96a0","6d51d339c2eb32bc892d6f12b9ce9c785a45633e56adbb746b055f929d931b08"],["Assign",["NODE_SETUP_HEAD"],92,"dd46a0d48c4c0c9b1a4b6b1f93adcc9db68a68e423f31e4725e00c388aa96a08","18ca0c18c72eeea93784bdba0366c0d1b1a791e686e78f5bc0950b5ba58b5fc0"],["Assign",["NODE_SETUP_TAIL"],1311,"9602690a610a304e55ad343a7aa84419c80cd48cc48461f05aabfde02f0cc48b","49488543423082ea11cfaf53a660078a6690a1428cccf3a6f307d06a7aa8324e"],["Assign",["NODE_SETUP_TAIL"],117,"1a437d758896cb511420cb32f601554d1acd1a2dc1ef8133111bcc5d926aac77","ea66a77de7cfdcc194887bac038883ca14ec3bec8f620ed2272d22c90dd1be12"],["Assign",["NODE_WINDOWS_PROGRAM"],71,"f35f1503db7c9e9d9537a40682f7d379dfb3f23d01ba59687f9c1ef25b56d11f","918f695ad171ef9e077bd6f869d5acd86fcbb93f3696194b110026fcc89836ae"],["Assign",["NODE_WRITER_HEAD"],66,"72d82322551277e8f9a4245406515c49b690d9c308190fc8312a6c0e479e0b89","c508669cc3652a523c78bf9a62c49164f0a2a6cd5610bd00012832b2384733b0"],["Assign",["NODE_WRITER_TAIL"],114,"64cf75b9a1741b3dbd9d38d5eea4bcb9386e45b9f13ef694daa396076b911996","02172aa12c8f81df4cda990dd22181b5191139cbe5980b472fb8343b9bee3ccc"],["Assert",[],82,"c5dff9c134a7d428595f32c651d3a1ebd5335c428a0c12b6e502ceaf0c80d4be","4c80074d8771649bb55c79efb88c64734df15156146cfa8cd4d7c28c199bb344"],["Assign",["NODE_FIELDS"],301,"9c081ff36e0be3e501b120f30049258d1e2baa37c81da3fb30849a2c84a899d4","f53035d74db2cbaffe2b9c737b8966fe4fb0b50f7ee0431c63c5635b8583ae59"],["Assign",["NODE_PIPE_FIELDS"],99,"3744367d550eb9c611f377b4ad2eafc39d17973f16956bdd997ea77498272573","647fbda326368caa2ccda236ff7240f8e0f9a0e59dce865242c420d2adbca145"],["Assign",["NODE_CONTROLLER"],8738,"0dfa650625273068d1ced5d2b484351bf6c9210f853ab71bc3828c077dfc3898","aac87d2734b4fdaee2b7cef6fb59b22ccbb574e39409c8632219ab8c119c04f8"],["Assign",["NODE_FINISH_BODY"],1976,"272d0b346cc63e59becc245479a45a5ed81c3871174eca1393eabdb0602a0597","2e8fb66d0fe9c72d92102549d30b4c2f98707d4192fc7cf7b2560bc05cefc988"],["FunctionDef",["_inert_control_source"],3636,"76dd72b1a4d8eeae94e097aec05c35e30d47654f4d09c5d5108ee96ec7502eba","4b3d450e742a4c07a9f7974458407e4e05862596fc3208b5d15f925237896726"],["Assign",["INERT_CONTROL_EXPECTED"],436,"e22f6728c55424e1dc289f9c48436e2e3da52bc11ba43fd6017040e067e6ec04","897694ac774bd292d2c8083bff0ed08350e5572315e0c863867a9188697f22ac"],["Assign",["INERT_CONTROL_SOURCE"],46,"14ae9c81454ed1185b2e3c1fbc7938a17d4f80807ff9ea4acada88056e23562e","cda6efcff302955d254b0d393e38fcf69e75b89f45f23c422839d6898ca478f2"],["FunctionDef",["inert_control_cases"],3418,"57582cdc06005b82fda9d62d247590c3174bfc417f2580ac70d73f9ac6e2a2d1","277cea6129011207384f923689d921dc5a806d40bcbb7b452556ce087c1df41a"],["Assign",["INERT_HARNESS"],3138,"c62e22de834128495defc1e1706986945893e4d3895010a4dacdbe401d6607de","34a95d2a996e7f71d646d80b5d4e482d963c68bd5af3257954614f6eb3e34016"],["Assign",["NODE_HARNESS"],12117,"3dc5cc015c73c2af9c8955387da0dd1050c21301241cf29c87d3985d9d382e11","4f02a29a0c6417323e755f3b0404e9161135ee8d3cb9299ebf78536da0f21fe1"],["Assign",["NODE_DECODE"],1832,"17a52317d9fe94c2a53871282b5269d8d3e99879f513688b41c22f13b0c4a3b4","696afd5fd3745bb0ba5a96d68dfa8093e924461d3658ad5715afef5cac9140c5"],["Assign",["ROOT_ENCODER"],2683,"0fd891ebc644f959e569b01799052d83b44cfed2771145017966ea590fddf9f3","ec594cfe4972cd80cbe45680e898f327a3047e02cf61dca8d54cef73033dcd5d"],["Assign",["NODE_INNER_VIEW"],1327,"6c3f35e6a3cb832c77553cefcf903a1bebc10e48438cbc14e3ab9d76db359244","5387b6fa64ac93dee77c68423f3be65deb00012cd4f3cfeda5188415e01ca559"],["Assign",["NODE_VALIDATORS"],3098,"b7bebb8ae64df8ddade1c600bb7959ca0534e598b4de04ca620c421f613b5f5c","320cba936fe30fb9f28d9a76b48724d42c01e546ed5a5a5bec52cbedae828d41"],["Assign",["NODE_WRITER_VALIDATORS"],4847,"77b368e563206b5a0fcce9d3912240d08b0f640f86bbe5439a8a946284f2eb7e","66306f0ef96be20a0c94a54bd7b1d191ff3bad7fb09e7123cf50560766abc56d"],["Assign",["ROOT_SHA256"],1723,"2202455ca5b1f50605e9a22a7d3967186cbbb66d6605ba93fada8e2c01a18f4c","1be696395a15211aa61defd05bc84aa2db9239a5d3530e2027e5609db55865c0"],["Assign",["ROOT_ORCHESTRATOR"],3972,"952592ab9d3181ec370cb13ecd27a180e39684fa0f1674a5e76b629ef1e1c0f9","8e1b5a74eec21ff317873166fdf72223ba40f34dda45e454d133cfd4f19e9e3d"],["Assign",["ROOT_RECEIVER"],11231,"6c2e19d046b423ac7295061731ebc577515de259df4d41dab24c3281ac0ad16b","99635e4b09a66c22b075061eea3310c2c57016f73614da6d69a886c6b043f71d"],["Assign",["EXECUTOR_INERT_JOURNAL"],2331,"b4dda89921010a1b934f1958e246b0f1d23f2bd2428c0c5f895b004c4ff667e6","389b8a128426d22de1b78cfdb4713d4ea33067d0241cef5544b60639b1bafe06"],["ClassDef",["ResumeRootCaller"],30374,"c7a01ebf6042aaccf33d8de1cc6c8e6fd074a96ede589c5cd9a56057fca8e0ca","aa07ea6870decb2a3b5cc11178978c1bc6d4e71024c8256a3357b1ea497b23ff"],["Assign",["INERT_CONTROL_CAPTURE"],3826,"2d76d1992ff70cdf7be3708bc62eca79618b48eed2168e8d5224f3e58da9d186","29b77343190347a7186c093842af198225851093ae386e1a9cd61026b5776aa3"],["Assign",["INERT_CONTROL_RECEIVER"],2400,"066d87973d742782ad9e942f704d7c8cd3c350c1a24f2658d09a271e22a91af2","67580a4083a9651cd2451e0bcba8493e17d54fa5a350db2a75e4713d4dba6d51"],["FunctionDef",["inert_control_executor"],658,"122f218bfb7498484cc677183c2d80ca7bcd463168a0d01da2698686221c298e","601af4c88ec51e9a3c92133a703b30a64a80c132d1ffe6c3b7d07ff15f7d68d7"],["ClassDef",["InertControlTransportTests"],15315,"18f2ff44724183ffe37892b4dded4b41174f84e4bb3d672a566146008daf29af","bfa886521a0fc01fb7a90d3dc7d2256c8c60c0020021f36b584163a8b19f9818"],["ClassDef",["ResumeNodeCaller"],54248,"15a22aceb16a82fac89c05fa5af3df5c81fc5f1bf18f3916e6cf268a5720e8be","e5a44e2ad30e9d1708342db596f5ceaf8aa51d72208674c08ed624303b36cfae"],["ClassDef",["ResumeBoundaries"],58347,"bdd4c8722f5f9cf228e9252de9face349d53d37e755736fd1f2c0f1dcb1bdc1f","67076b39ab307d846b2949777093e94debff303a2ced5e05a38d3ff8a4b56916"],["FunctionDef",["d22_sha"],55,"721db2d8288fd1b192071b762bd90cf3b0564a29d6c965131671951a1502e4ef","91b4de13c7757a1f065feccda4c1edd0c34cb747f91db33fa2bf9f1f4f2b19a5"],["FunctionDef",["d22_canonical"],140,"c4b0bcf386b0f22437f616213f4f723be3d04677193b47b2d0f82f5fa7ba79b1","16dc7dac764073b5d0374a5885706a2a3361c2b9feab7db646d0ef5de0f0a7a2"],["Assign",["D22_PREFIX"],311,"68d5e147ff8e6c10240077949c1ed6af2adab087b81594d5404cdf82cd54c30b","b75654ea920a3d87d6d773efb9194f1f186ffb273b8c6f34279df722789fb848"],["Assign",["D22_IMPORTS"],219,"6574e5b157e60d3362290c8a7a0bb71acac676b32a78e8c354b976d8e4bcc419","daab94cb981481406d839bf8d92a99f149214e238324e4aa8e59b1f87c02d741"],["FunctionDef",["d22_build_plain"],3590,"7d7c0a586e495ec7f2070ce476f2dd4eb89de40fb8e994fcc4777799b9467b8b","afdf734f5ea09e37082127b37c116bdd3b189c17e304c594815749f1200dbbfb"],["Assign",["D22_OPS"],181,"1eec6dbf6f1e5e277c629a6e1eed1a5a2fbd1d3925e8959324fbcffaf528cd92","2a4c42d9344614ecf238a089513e861516af46a99dd073e92e9f874f51326425"],["Assign",["D22_NON_END"],114,"0d5a07910d32762c7bdae1a036081b0784f6503dcb4f08a2a6f4ff707c9b4feb","386aca9d33bfce0883b002c01bf6d507ffd78b58cb974c9a5d14bc31176ffa30"],["FunctionDef",["d22_lex"],1597,"b512aca7c9d9aee5dcb9188102a82a98cb5d12b3a17d7e83a6a50691689ec02d","2adc7443166f1c7d5c34ab842a686a2bbeb01e92428a7b49af883ee56916e27d"],["FunctionDef",["d22_pairs"],69,"78b835201408cc00c5919847a5144d927815170627c5444f7803f7db5dc569bc","256ffbc0e0f3368095ed854e5007cdb7e9b2d48341eb33fd09dc4c814c6d35ba"],["FunctionDef",["d22_join_tokens"],683,"a86c3632fc64c05ef952b629bb375700d601f1229cdf5fc7c219e685ffea279f","812233b87daa295605992ad71e9540e73434894d524d3b36f400ee5d2196d97b"],["Assign",["D22_PROPERTY_ALLOWLIST"],500,"047418f9f886a689e1cd455255887d27baedd9624ff7a3a7614f7ae65f25395b","393ab42277513b0ea40bb99cd8452e793d1a0860a083d4d46bfe36969a1b6961"],["Assign",["D22_PRIVATE_MAP"],251,"c7cd41f4cfcf5d8665ed7bfd6cb7f166a7199f683bcee42567a1ede5605162f4","e4f71dec148d14d4dcc965d9a84a4257af69af846d318b4e0aff3847f44cc691"],["FunctionDef",["d22_transform_body"],1762,"82f4d8428582c4759275db736d92f1a7e2ba0880f7b18901a57e6b80cba32139","96d9a7f4b3904227b2e3009b6ef6319a6dd4e8a672e99bd732682343c39df9d0"],["FunctionDef",["d22_shorten_private_prefix"],417,"bb21df2fd4bd4d872c5bb2626e016b2e246b9ff01d72e5170d47ab34dd7c1ee2","755335bbbb00acf8c8039b8e50c1fe88d158c538ba5d71b299c40497351ef5e2"],["FunctionDef",["d22_phase_initial_v1"],7509,"e0a028a01a21949622059803b62dccf7493d430d1d00124a2f631b1e9c6d36d0","87f72de20ac341000a8753fbfdc3b4a0a2c65a0ab231a9576bd5a4ee55e37558"],["ClassDef",["D22StaticPhaseConstructionTests"],3437,"8c6f87ccc96d3ab842a41ba3a663ff801e3ab5427e5fce70d360529338c7b341","9ce2ed33ff6588941b635d5e2ab71baf6651f479b6558dd65ca5639b202afb6a"],["Assign",["D23_WIRE_CODEC"],5889,"b9b04bddcd571b0a48b478b339a15fbf48f47b0b91a4ba2afebf2338b4805c5a","71de5f58d1821a00ad311350b9db4ab9f68780cc26ab8fbc3f9cd16c376ae8a2"],["Assign",["D23_DATA_DRIVER"],8102,"69bfd41dd811a8d0047e9e08c64b2156b34824ad688beb2b7fbf9b4456b86450","75f264688e08f17442d13f526f24608ee2ebec2639b932d28e069eec49174ac0"],["FunctionDef",["d23_node_driver_v1"],206,"a08505e632d12380a3460b891605f27977e68c4833162f15a50cbb4e9b5a921a","29bb3defe80190c870679a5e49bdddac82f28c3fe7b2f16961c3a83ac021263f"],["ClassDef",["D23WireCodecTests"],1337,"0d72e2a55ea3d2ff87585ce81f7877cc758f2d1cab761622a506bd4e1a1c9e0a","4772937caf6e4ae890c48a63d0e34bed4cf2a812ba49c9eb80f715960a7dd702"],["FunctionDef",["d23_finalizer_source_v1"],4969,"fd1c46d44200d3c5281c9ad85d60381fa2ab905708f4ffecd5b4ea3a4d2d6e30","33957ed3ce1a423dcab18174c05c61a129bfbbbd68e0b3d0dac359fff1200e9d"],["FunctionDef",["d23_root_wire_sources_v1"],9830,"44644acf9d0c4c25d9baab564f50b0ec3fe06b8c8e7a4b244db277c6d3de6ffb","4fc5b6a4eef02ac484fdbc2c547b08b2259fba66a07ab1871e303656907c0a59"],["FunctionDef",["d23_inert_bundle_v1"],13423,"8bf937c543d6296b952e1baddcd98378ba2b86b17faad3c4db641c2f4afdeb51","6ba2778d8347d1da18965e96e95f2e629f8b32cf67fb5dbb75c66b75c48d3548"],["Assign",["D23_GEOMETRY_DRIVER"],11098,"b2b3609610211d9514474350843ce54dcc71afd7255ad0c59daf62f5c6c9918c","3ff3771fe68869ca8953d3e9f2efb09bab008af07b90e4547875253cad44661c"],["Assign",["D23_GEOMETRY_STDIO"],2261,"9c1ee0a899345e40ad9953f09e3058673baa58f27e21fcd286e9d9c6f275db88","bc85ea4ea843310332227a1f9ce917f3552b09b1e37d59c32e86a17ccb643926"],["FunctionDef",["d23_geometry_driver_v1"],169,"bea5477f2ce5a3998ef38f14e555c35e11260636accd38524031d46780f1d449","b4543a621e8000508343aa817c7160df58726fdc5bd2a43c2209b7d510a05700"],["ClassDef",["D23CompleteGeometryTests"],23145,"17fe12460e3b7031f8d83388453fee01a065f52559c6249c75c4b99476b0cd98","e3e19ddabe03c418e83f53d34ac8817db7e025fd5e357cf9c2c25d140cb8093d"],["If",[],46,"adc075326e2b2c4151fa6bf03092887599f5f2ca5c53c46ecedfe045dc002c3e","444eddf8b0e49cc0b0fec1a7214dc0d852a2ac320c4e5f4e792895ff744a0420"],["FunctionDef",["d24_phase_initial_v1"],11838,"8284e6485edda6d9f8b65056c57c0d2a8ee3f4ca052e96cc6baa23c369fcdeef","9799dd267c388a1ef37938c9d161386ddf8d438f9dded4fb8bbda7f775772520"],["FunctionDef",["d24_node_codec_v1"],1552,"36d68281b8d62bb217e903310d44f8f6297211a4e73df121dcf42c6f2c4b4cd8","4325ed9c32089c950077acd684a6de2d48bca6f5cd1c0076ba072cadb5c43f81"],["FunctionDef",["d24_inert_bundle_v1"],15926,"ab0d46817a5925080ff5a80062539cc83e043b201c256d1aa3f26d9376f91c67","906111c7bc3748ea531543ff6d321d9faa664a47964b22cec5252f27b8049f8d"],["ClassDef",["D24CompleteGeometryTests"],36198,"65f0c1e198fc463910d4faa60d187b9abb07b4826701dfd24d3456534ebce219","b3f6ddf4a52b63293e6ee0474c2189e944716982d36b243959df9baf60716ca0"],["Assign",["D25_DATA_DRIVER"],13306,"dff6560146ac5173c5e4f2dfa2be9109ed42223977bcb495c7635f5f445a4057","ae37bfa67c65d43a5a02fe8e5f22e7d22ac0d16d198be0fe602febdc12c5fe89"],["FunctionDef",["d25_node_driver_v1"],154,"20339a2670b45fb754283fbaf9207486387ed1a738319ff0a1d15b2026fa625a","2829224bb0fb5994e6962a31aadd683b1b572225217f5cbb58fc8489515edb2f"],["ClassDef",["D25WireCodecTests"],1443,"2317ad9fe8c3bb47726b23fff678193e3177b09995783855e79ee3c0999bebf4","bb86fa945c2785b9be3baca20ca66e8ea14168b61dee09aa7e887e26bd73b87b"],["Assign",["D25_WIRE_CODEC"],6927,"b90c240ab681ff11f49b0c5712e96f9eb08309250678da2f65218e87ab3a4ff5","7668aa6a27c641ebc96478e67d0d98c63833e001969734702d50e91fb5c3efe9"],["Assign",["D25_CODEC_SOURCE_PINS"],267,"c2f9ff6ee3038e2182d558299e326fe8863648d3c88c034de725101c081d0f94","edfba8861053fd2d9cfe35d181d98e85811db4777fc6959203da93cdc6ddb945"],["FunctionDef",["d25_node_codec_v1"],2238,"1211d4016aea5991d208382cf80d19b931edff7e4dde69977ad6cf8ca4c27d97","ac9bf831b83069b4c11f2bc2ad362f0b9ec1189b784e08c53e405ed71eeed5c9"],["FunctionDef",["d25_finalizer_source_v1"],964,"b0a9b0f05ecc10fe2cfa064255f1aa5f9738f1867093712aa1eaf8fde6d48ceb","73adf517dc636124504c662b52edbe8ae286304ba197b2845d0044c451b381fb"],["FunctionDef",["d25_root_wire_sources_v1"],1016,"032379feeb1ddad1968058f47ec8b579721e5d0095b56cdcaf6dc5fbcb8de440","6d99d45015a46579b6e0165b86071b4f4c07a6b341431f000b5230e3cbe3d528"],["FunctionDef",["d25_inert_bundle_v1"],17118,"b2c65789a59beb69ba9cf68a4bbde3b85887d5f40d3406fa81aa3fbaa4e36ad7","8c570e17a1e5ddf700f7837a2cce296f86f589236591254b39e32052d3b27fbe"],["Assign",["D25_GEOMETRY_DRIVER"],11425,"5409ee9730a62af2423d9fa380185b1dfda15f11979ef50ef350915ca270680d","410ca3efa16fc2cdb2baf3d605a4b431b2fa7d23a3621da4dc00e454bc3f51d2"],["Assign",["D25_GEOMETRY_STDIO"],2279,"075d1aac0b5e035a15507604fe0b076dbf0d9ea7bd35084b56932e8fa048290e","d0a83542e9466c45af922c3db568cd10de251ae70a3b12f37878b24855658690"],["FunctionDef",["d25_geometry_driver_v1"],1212,"e20bc08b1ca6a13250c6471322725e0f3827c88a68490b23b79c6f9d5043964e","3035bec91deee2eaa7ffa7391e11d56e788d3031cd003d489ffc7e0d2646ef6e"]],"ordered_rows_sha256":"041c6a7318a4af8d4b917f6bc0fd16d1807d956292c9e9dcc3cdaabb86c78a11","path":"tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py","run_preparation_buffer_sha256":"3dcea0ea515be7c33cd95486adf9b818b63ce39894d9cbe48c8318ec4fd02b39","run_preparation_buffer_size_bytes":476378}},"root_tool_observation":{"attribution":"root_observed_tool_result_not_child_self_receipt","exit_code":1,"tool_chunk":"20e86c","wall_time_seconds":1.4429275},"schema_version":1,"source_guard_policy":{"allowed_future_extra_nodes":"append_only_unique_undecorated_declarations_or_literal_simple_assignments_no_protected_binding_reuse","future_assignment_name":"_D25_GEOMETRY_RETAINED_RESULT_V1","protected_top_level_decorators_absent":true,"raw_AST_hash_diagnostic_only":true,"source_text_authoritative":true},"source_row_format":["AST_node_kind","bound_names","source_segment_size_bytes","source_segment_sha256","author_runtime_AST_diagnostic_sha256"]}\n'
