@@ -5539,3 +5539,235 @@ class D25CompleteGeometryTests(unittest.TestCase):
                                          args=[], keywords=[])]
         refuses(lambda: source_guard('main', texts['main'], changed_tree, rows), 'additive_literal_required')
         # CI passing here preserves INCOMPLETE/HOLD. It admits no phase execution.
+
+
+# Additive D26 TEST-only RED-ready fragment; UNEXECUTED. No codec definition.
+
+D26_DATA_DRIVER = r'''"use strict";
+let chunks=[],inputBytes=0,finished=false;
+const A='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',H=Array.from({length:95},(_,i)=>String.fromCharCode(i+32)).filter(c=>c!=='"'&&c!=='\\').join(''),S='gate2-selected-lzss-v3',O='gate2-observed-lzss-v3';
+const cases=new Set(['codec_vectors','codec_malformed','codec_overflow']),C={i:'selected_wire_input',s:'selected_wire_shape',b:'selected_wire_bound',t:'selected_wire_token',e:'selected_wire_expansion',h:'selected_wire_binding'};
+const j=JSON.stringify,K=gate2Canonical,Q=gate2SHA256;
+const E='d26_driver_assertion',I='d26_driver_input',R='selected_wire_root_deadline',V='selected_wire_receive_deadline',D='selected_wire_deadline',F='fixture_semantic_refusal',X='d26_codec_absent',N='d26_node_version';
+const report={schema_version:1,case:'codec_vectors',node_version:process.versions.node,completed:false,cause:null,checks:[],measurements:[]};
+function ok(id,value){if(report.checks.length>=512)throw Error(E);report.checks.push({id,ok:!!value});if(!value)throw Error(E);}
+function ms(id,text){if(report.measurements.length>=128||typeof text!=='string'||text.length>262144||/[^\x00-\x7f]/.test(text))throw Error(E);report.measurements.push({id,size_bytes:text.length,sha256:Q(text)});}
+function cause(fn){try{fn();return null;}catch(e){return e.message;}}
+function expect(id,fn,wanted){ok(id,cause(fn)===wanted);}
+function budget(c=D,now=()=>performance.now(),end=Infinity){return gate2WireBudget(now,c,end);}
+function dec(w,tag=S,g=budget()){return gate2WireDecode(w,tag,Q,K,g);}
+function enc(t,tag=S,g=budget(R),h=Q){return gate2WireEncode(t,tag,h,K,g);}
+function wire(payload,t,tag=S,size=t.length,sha=Q(t)){return K({encoding:tag,expanded_sha256:sha,expanded_size_bytes:size,payload},262144);}
+function lit(c){let n=A.indexOf(c);return n<0?[1,c.charCodeAt(0)]:[0,n];}
+function lits(t){return Array.from(t,lit);}
+function bitsOf(tokens){let b=[];for(let t of tokens){let n=t[0]===0?7:t[0]===1?9:25,v=t[0]===0?t[1]:t[0]===1?256+t[1]:3*2**23+(t[1]-1)*256+t[2]-3;for(let k=n-1;k>=0;k--)b.push(Math.floor(v/2**k)%2);}return b;}
+function pkt(bits,count=bits.length,flip=-1){if(bits.length>294912)throw Error(E);let b=[];for(let k=23;k>=0;k--)b.push(Math.floor(count/2**k)%2);b=b.concat(bits);while(b.length%8)b.push(0);while(b.length%13)b.push(0);if(flip>=0)b[flip]^=1;let p='';for(let i=0;i<b.length;i+=13){let v=0;for(let j=0;j<13;j++)v=2*v+b[i+j];p+=H[Math.floor(v/93)]+H[v%93];}return p;}
+function pack(t){return pkt(bitsOf(t));}
+function oracle(t){let r=[],i=0;while(i<t.length){let b=0,d=0,ps=[];for(let j=Math.max(0,i-32768);j<i&&i+3<=t.length;j++)if(t.slice(j,j+3)===t.slice(i,i+3))ps.push(j);for(let j of ps.slice(-8)){let n=0;while(n<258&&i+n<t.length&&t[j+n]===t[i+n])n++;if(n>=3&&(n>b||n===b&&i-j<d)){b=n;d=i-j;}}r.push(b<3?lit(t[i++]):[2,d,b]);if(b>=3)i+=b;}return r;}
+function rep(t,n){while(n){let m=Math.min(258,n);if(m<3)for(let i=0;i<m;i++)t.push(lit('a'));else t.push([2,1,m]);n-=m;}return t;}
+function probe(p,fn){const P=String.prototype,B='charCodeAt';let reads=[],work=0,phases=0,active=false,g=budget(V,()=>0),w=g.work,f=g.phase,d=Object.getOwnPropertyDescriptor(P,B);try{g.work=()=>{w();work++;};g.phase=fn=>{active=++phases===4;try{return f(fn);}finally{active=false;}};Object.defineProperty(P,B,{...d,value:function(i){'use strict';if(active&&this===p&&(typeof i!=='number'||!Number.isInteger(i)||i<0||i>=p.length))throw Error(E);let v=Reflect.apply(d.value,this,[i]);if(active&&this===p){if(reads.length>=2048)throw Error(E);reads.push([i,work]);}return v;}});return [fn(g),reads,work,phases];}finally{try{Object.defineProperty(P,B,d);}finally{g.work=w;g.phase=f;}if(P[B]!==d.value||g.work!==w||g.phase!==f)throw Error(E);}}
+function cold(n){let t=j('a'.repeat(n)),bits=bitsOf(lits(t)),p=pkt(bits),N=3+Math.ceil(bits.length/8),M=p.length/2,expected=Array.from({length:p.length},(_,i)=>i),last=-1;function visit(i){let q=Math.floor(i/13);if(q!==last){expected.push(2*q,2*q+1);last=q;}}for(let i=0;i<24;i++)visit(i);for(let i=24+bits.length;i<8*N;i++)visit(i);for(let i=8*N;i<13*M;i++)visit(i);for(let i=24;i<24+bits.length;i++)visit(i);let r=probe(p,g=>dec(wire(p,t),S,g));ok('cold_'+n,r[0].text===t&&r[3]===7);ok('reads_'+n,j(r[1].map(x=>x[0]))===j(expected));ok('work_'+n,r[1].every((x,i)=>x[1]>(i?r[1][i-1][1]:0))&&r[2]>=r[1].length+13*M+t.length);}
+function vectors(){
+let good=true,count=0;for(let i=32;i<=126;i++){let t=j(String.fromCharCode(i)),p=pack(lits(t));good=(dec(wire(p,t)).text===t&&JSON.parse(enc(t)).payload===p)&&good;count++;}ok('literals95',good&&count===95&&H.length===93);
+let digits=new Set(),bp=new Set(),gp=new Set();good=true;for(let n=0;n<93;n++){let t=j('a'.repeat(n)),T=18+7*n,p=pack(lits(t)),N=3+Math.ceil(T/8);digits.add(H.indexOf(p[3]));bp.add((8-T%8)%8);gp.add((13-8*N%13)%13);good=(H.indexOf(p[3])===(4*T+2)%93&&dec(wire(p,t)).text===t)&&good;}ok('digits93',good&&digits.size===93);ok('two_tails',bp.size===8&&gp.size===13);
+const samples=[['min','aaaa'],['max','a'.repeat(259)],['overlap','ab'.repeat(130)],['longest','abcXabcYZabcYQabcYZ'],['nearest','abcXabcYabcZ'],['last8','abcLONGer'+Array.from({length:10},(_,i)=>'abc'+i).join('')+'abcLONGer'],['consumed','abcdefgh'.repeat(110)+'abcXYZabcUVWabcXYZ'],['d4096','ABC'+'Z'.repeat(4093)+'ABC'],['d4097','ABC'+'Z'.repeat(4094)+'ABC']];
+for(let [id,v] of samples){let t=j(v),w=enc(t);ok(id,JSON.parse(w).payload===pack(oracle(t))&&dec(w).text===t&&w===enc(t));ms(id,w);}
+ok('min3_25_vs21',JSON.parse(enc('"aaaa"')).payload===pack([lit('"'),lit('a'),[2,1,3],lit('"')]));ok('max258',JSON.parse(enc(j('a'.repeat(259)))).payload===pack([lit('"'),lit('a'),[2,1,258],lit('"')]));
+let groups=new Set(),bytes=new Set();good=true;for(let n=1;n<=13;n++){let t=j('a'.repeat(n+3)),tokens=[lit('"'),...Array.from({length:n},()=>lit('a')),[2,1,3],lit('"')];groups.add((33+7*n)%13);bytes.add((9+7*n)%8);good=dec(wire(pack(tokens),t)).text===t&&good;}ok('offsets13_8',good&&groups.size===13&&bytes.size===8);ok('pending37',groups.has(12)&&12+25===37&&bytes.has(7)&&7+25===32);
+cold(1);cold(290);
+let t=j('a'.repeat(11000)),T=77018,p=pack(lits(t)),w=wire(p,t);ok('virtual9631',t.length===11002&&3+Math.ceil(T/8)===9631&&p.length===11854&&w.length===12017&&dec(w).text===t);ms('v9631_wire',w);
+t=j('abc'.repeat(90));let s=enc(t),o=enc(t,O);ok('tags',s!==o&&JSON.parse(s).payload===JSON.parse(o).payload&&dec(o,O).text===t);expect('tag_swap',()=>dec(o),C.s);
+let tokens=rep([lit('"'),lit('a')],32763);tokens.push([2,32765,3]);t='"'+'a'.repeat(32764)+'"aa';ok('d32765',JSON.parse(enc(t)).payload===pack(tokens));expect('d32765_bind',()=>dec(wire(pack(tokens),t)),C.h);ok('nested',dec(enc(enc('"a"'))).text===enc('"a"'));
+}
+function malformed(){
+for(let [id,v] of [['null',null],['number',1],['empty',''],['nonprint','\n'],['long','x'.repeat(12289)]])expect('input_'+id,()=>dec(v),C.i);
+const t='"a"',bits=bitsOf(lits(t)),p=pkt(bits),w=wire(p,t),base=JSON.parse(w);function change(k,v){return K({...base,[k]:v},32768);}
+for(let [id,v] of [['parse','{'],['array','[]'],['extra',change('extra',1)],['tag',change('encoding','wrong')],['hash',change('expanded_sha256','A'.repeat(64))],['bool',change('expanded_size_bytes',true)],['fraction',change('expanded_size_bytes',1.5)],['exponent',w.replace('"expanded_size_bytes":3','"expanded_size_bytes":3e0')],['negative_zero',w.replace('"expanded_size_bytes":3','"expanded_size_bytes":-0')],['space',w+' ']])expect('shape_'+id,()=>dec(v),C.s);
+for(let n of [-1,0,32769])expect('range_'+String(n).replace('-','m'),()=>dec(wire(p,t,S,n)),C.b);
+for(let [id,q] of [['empty',''],['one_pair',H[0]+H[0]],['two_pairs',pkt([],1)],['odd',p+H[0]],['suffix',p+H[0]+H[0]],['quote','"'+p.slice(1)],['slash','\\'+p.slice(1)],...[9,10,31,127,233].map(n=>[n,String.fromCharCode(n)+p.slice(1)]),['zero_header',pkt([])],['huge_header',pkt(bits,16777215)],['more_header',pkt(bits,bits.length+16)],['less_header',pkt(bits,bits.length-8)]])expect('syntax_'+id,()=>probe(q,g=>dec(wire(q,t),S,g)),C.t);
+let tail=[true,true];for(let i=49;i<65;i++){let k=i<56?0:1;tail[k]=cause(()=>dec(wire(pkt(bits,bits.length,i),t,S,1)))===C.t&&tail[k];}ok('byte_pad',tail[0]);ok('group_pad',tail[1]);
+let count=0,good=true;for(let v=8192;v<8649;v++){let q=p.slice(0,-2)+H[Math.floor(v/93)]+H[v%93];good=cause(()=>dec(wire(q,t,S,1)))===C.t&&good;count++;}ok('pairs457',good&&count===457);
+for(let [id,b] of [['prefix1',[1]],['common_short',[0]],['other_short',[1,0,1]],['distance_short',[1,1,0]],['length_short',[1,1,...Array(15).fill(0),0]]])expect(id,()=>dec(wire(pkt(b),t)),C.t);
+count=0;good=true;for(let n=0;n<128;n++)if(n<32||n===127||A.includes(String.fromCharCode(n))){good=cause(()=>dec(wire(pack([[1,n]]),t,S,1)))===C.t&&good;count++;}ok('other97',good&&count===97);
+for(let [id,tokens,text,size,c] of [['no_prefix',[[2,1,3]],t,1,C.t],['distance_first',[lit('a'),[2,2,3]],'a',1,C.t],['other_first',[lit('a'),[1,65]],'a',1,C.t],['extra',[lit('a'),lit('b')],'a',1,C.e],['short',lits(t),t,4,C.h]])expect(id,()=>dec(wire(pack(tokens),text,S,size)),c);
+expect('bad_next',()=>dec(wire(pkt(bitsOf([lit('a')]).concat([1])),'a',S,1)),C.t);expect('sha',()=>dec(wire(p,t,S,3,'0'.repeat(64))),C.h);
+for(let [id,v] of [['json','abc'],['canonical','{ "a":1}']])expect(id,()=>dec(wire(pack(lits(v)),v)),C.h);expect('header_not_size',()=>dec(wire(pack(lits('ab')),'a',S,1)),C.e);
+let seen=0,semantic=q=>{dec(q);seen++;throw Error(F);};expect('before_sem',()=>semantic(wire(H[92]+H[92],t)),C.t);ok('sem_zero',seen===0);expect('after_sem',()=>semantic(w),F);ok('sem_once',seen===1);
+}
+function overflow(){
+const maximum=j('a'.repeat(32766)),w=enc(maximum);ok('expanded_max',maximum.length===32768&&dec(w).text===maximum);ms('max_wire',w);expect('expanded_over',()=>enc(maximum+' '),C.i);
+let full=rep([lit('"'),lit('a')],32765);full.push(lit('"'),[2,32768,3]);expect('d32768_full',()=>dec(wire(pack(full),maximum)),C.e);expect('d32768_short',()=>dec(wire(pack([lit('a'),[2,32768,3]]),'a')),C.t);
+const exact=wire(pkt(Array(78808).fill(0)),'A'.repeat(99));ok('wire_exact',exact.length===12288);expect('exact_expands',()=>dec(exact),C.e);expect('wire_plus1',()=>dec(exact+' '),C.i);expect('bit_quantum',()=>dec(wire(pkt(Array(78809).fill(0)),'A'.repeat(99))),C.i);ms('wire_exact',exact);
+let seq='',a=Array(4).fill(0);function db(t,p){if(t>3){if(3%p===0)for(let i=1;i<=p;i++)seq+=A[a[i]];}else{a[t]=a[t-p];db(t+1,p);for(let j=a[t-p]+1;j<32;j++){a[t]=j;db(t+1,t);}}}db(1,1);const text=j(seq.slice(0,32766)),edge=j('!#$%'+seq.slice(4,11250)),eb=bitsOf(lits(edge)),ew=wire(pkt(eb),edge);ok('count',seq.length===32768&&text.length===32768);ok('enc_edge',eb.length===78776&&ew.length===12287&&enc(edge)===ew&&dec(ew).text===edge);expect('edge_bit_over',()=>dec(wire(pkt(eb.concat([0])),edge)),C.i);
+const Arr=globalThis.Array,M=globalThis.Map;let ar=[],maps=0,on=false,hc=0;function hash(t){on=true;try{return Q(t);}finally{on=false;}}function log(a){if(on){if(a.length!==1||a[0]!==64)throw Error(E);hc++;}else ar.push(a[0]);}try{globalThis.Array=new Proxy(Arr,{construct(T,a){log(a);return Reflect.construct(T,a);},apply(T,x,a){log(a);return Reflect.apply(T,x,a);}});expect('count1',()=>enc(text,S,undefined,hash),C.b);ok('no_vec',ar.length===0&&hc>0);let v=enc(edge,S,undefined,hash);ok('one_vec',ar.length===1&&ar[0]===JSON.parse(v).payload.length);}finally{globalThis.Array=Arr;}try{globalThis.Map=new Proxy(M,{construct(T,args){maps++;return Reflect.construct(T,args);}});let v=enc('"abcabcabcabc"');ok('two_maps',maps===2&&JSON.parse(v).payload===pack(oracle('"abcabcabcabc"')));}finally{globalThis.Map=M;}
+for(let c of [D,R,V]){let clock=0,g=budget(c,()=>clock);g.phase(()=>true);clock=5000;expect(c,()=>dec(w,S,g),c);clock=0;g=budget(c,()=>clock);expect(c+'_post_throw',()=>g.phase(()=>{clock=5000;throw Error(C.t);}),c);}
+let clock=0,g=budget(V,()=>clock);dec(w,S,g);clock=5000;expect('shared_receive',()=>dec(enc('"a"',O),O,g),V);clock=0;g=budget(R,()=>clock);enc('"a"',S,g);clock=5000;expect('shared_encode',()=>enc('"a"',O,g),R);let calls=0;expect('regression',()=>enc('"a"',S,budget(R,()=>calls++?-1:0)),R);expect('nonfinite',()=>dec(w,S,budget(V,()=>Infinity)),V);expect('due_bad_pair',()=>dec(wire(H[92]+H[92],'a'),S,budget(V,()=>5000,5000)),V);
+}
+function finish(c){if(finished)return;finished=true;report.cause=c;process.stdout.write(K(report,32767)+'\n');}
+process.stdin.on('error',()=>finish(I));
+process.stdin.on('data',b=>{if(finished)return;inputBytes+=b.length;if(inputBytes>262144){finish(I);process.stdin.destroy();return;}chunks.push(b);});
+process.stdin.on('end',()=>{if(finished)return;try{const b=Buffer.concat(chunks);chunks=[];if(b.some(x=>x>127))throw Error(I);const text=b.toString('ascii'),r=JSON.parse(text);if(!r||typeof r!=='object'||Array.isArray(r)||Object.keys(r).sort().join()!=='case,data'||!cases.has(r.case)||K(r,262144)!==text)throw Error(I);report.case=r.case;if(process.versions.node!=='25.2.1')throw Error(N);if(typeof gate2WireEncode!=='function'||typeof gate2WireDecode!=='function'||typeof gate2WireBudget!=='function'||typeof gate2WireInput!=='function')throw Error(X);if(r.case==='codec_vectors')vectors();else if(r.case==='codec_malformed')malformed();else overflow();report.completed=true;finish(null);}catch(e){finish(new Set([X,E,I,N]).has(e.message)?e.message:'d26_driver_error');}});
+'''
+
+def d26_node_driver_v1():
+    return (ROOT_ENCODER + '\n' + ROOT_SHA256 + '\n'
+            + globals().get('D26_WIRE_CODEC', '') + '\n' + D26_DATA_DRIVER)
+
+
+class D26WireCodecTests(unittest.TestCase):
+    def setUpClass():
+        import time
+        D26WireCodecTests.deadline = globals().get('D26_TEST_DEADLINE', time.monotonic() + 295)
+
+    def run_case(self, case):
+        from tests.test_accepted_policy_fixture_compiler_gate2_resume_caller_v1 import d26_run_case_v1
+        value, capture = d26_run_case_v1(case, b'{}', self.deadline)
+        metadata = json.dumps({'case': case, 'report': value, 'capture': capture},
+                              sort_keys=True, separators=(',', ':'), ensure_ascii=True)
+        tagged = 'D26_CASE_METADATA ' + metadata
+        self.assertLessEqual(len((tagged + '\n').encode('ascii')), 32768, 'tagged D26 metadata bound')
+        print(tagged)
+        self.assertTrue(capture['parent_observed_completion'], 'bounded D26 child/protocol incomplete')
+        self.assertTrue(value['completed'], 'D26 controlled case failed: ' + str(value['cause']))
+        self.assertIsNone(value['cause'])
+        self.assertTrue(value['checks'] and all(row['ok'] for row in value['checks']))
+        self.assertEqual(capture['descendant_quiescence'], 'UNKNOWN')
+
+    def test_radix93_vectors_and_deterministic_parser(self):
+        self.run_case('codec_vectors')
+
+    def test_radix93_malformed_cause_order(self):
+        self.run_case('codec_malformed')
+
+    def test_radix93_caps_and_original_deadline(self):
+        self.run_case('codec_overflow')
+
+
+# Additive D26 fixed virtual-radix93 CODEC source; UNEXECUTED.
+D26_WIRE_CODEC = r'''function gate2WireBudget(now,cause,end=Infinity){
+ let origin=null,last=null,limit=null,units=0,failed=false;
+ function stop(){failed=true;throw Error(cause);}
+ function guard(){
+  if(failed)throw Error(cause);
+  let n;try{n=now();}catch{stop();}
+  if(typeof n!=='number'||!Number.isFinite(n)||last!==null&&n<last)stop();
+  if(origin===null){
+   if(typeof end!=='number'||!Number.isFinite(end)&&end!==Infinity)stop();
+   origin=n;limit=Math.min(n+5000,end);
+  }
+  last=n;if(n>=limit)stop();units=0;return n;
+ }
+ guard.work=()=>{if(failed)throw Error(cause);if(origin===null||units===256)guard();units++;};
+ guard.phase=fn=>{
+  guard();let value,error,threw=false;
+  try{value=fn();}catch(e){error=e;threw=true;}
+  guard();if(threw)throw error;return value;
+ };
+ return guard;
+}
+function gate2WireInput(wire){
+ if(typeof wire!=='string'||wire.length<1||wire.length>12288||/[^\x20-\x7e]/.test(wire))throw Error('selected_wire_input');
+ return wire;
+}
+function gate2F(c){throw Error('selected_wire_'+c);}
+function gate2A(){return 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';}
+function gate2I(n){return n>=65&&n<=90?n-65:n>=97&&n<=122?n-71:n>=48&&n<=57?n+4:n===43?62:n===47?63:-1;}
+function gate2WireDecode(wire,tag,sha,canon,guard){
+gate2WireInput(wire);
+const x=guard.phase(()=>{try{return JSON.parse(wire);}catch{gate2F('shape');}});
+guard.phase(()=>{
+if(!x||typeof x!=='object'||Array.isArray(x)||Object.keys(x).sort().join(',')!=='encoding,expanded_sha256,expanded_size_bytes,payload'||
+tag!=='gate2-selected-lzss-v3'&&tag!=='gate2-observed-lzss-v3'||x.encoding!==tag||
+typeof x.payload!=='string'||x.payload.length>12288||
+typeof x.expanded_sha256!=='string'||!/^[0-9a-f]{64}$/.test(x.expanded_sha256)||!Number.isSafeInteger(x.expanded_size_bytes))gate2F('shape');
+});
+const spell=guard.phase(()=>{try{return canon(x,12288);}catch{gate2F('shape');}});
+if(spell!==wire)gate2F('shape');
+if(x.expanded_size_bytes<1||x.expanded_size_bytes>32768)gate2F('bound');
+const text=guard.phase(()=>{
+const p=x.payload,a=gate2A(),pairs=p.length/2;
+if(!p.length||p.length%2)gate2F('token');
+function rank(i){guard.work();const c=p.charCodeAt(i);guard.work();if(c<32||c>126||c===34||c===92)gate2F('token');return c-32-(c>34)-(c>92);}
+function pair(q){const v=rank(q*2)*93+rank(q*2+1);guard.work();if(v>8191)gate2F('token');return v;}
+for(let q=0;q<pairs;q++){guard.work();pair(q);}
+if(pairs<2)gate2F('token');
+let ci=-1,value=0;
+function bit(i){guard.work();if(i<0||i>=13*pairs)gate2F('token');const q=Math.floor(i/13);guard.work();if(q!==ci){value=pair(q);ci=q;}guard.work();return Math.floor(value/2**(12-i%13))%2;}
+let bits=0;for(let i=0;i<24;i++){guard.work();bits=bits*2+bit(i);}
+const size=3+Math.ceil(bits/8);
+if(!bits||size>9984||p.length!==2*Math.ceil(8*size/13))gate2F('token');
+for(let i=24+bits;i<8*size;i++){guard.work();if(bit(i))gate2F('token');}
+for(let i=8*size;i<13*pairs;i++){guard.work();if(bit(i))gate2F('token');}
+let at=0;const output=[];
+function read(n){guard.work();if(at+n>bits)gate2F('token');let v=0;for(let i=0;i<n;i++){guard.work();v=v*2+bit(24+at);at++;}return v;}
+function append(c){guard.work();if(output.length>=x.expanded_size_bytes||output.length>=32768)gate2F('expansion');output.push(c);}
+while(at<bits){if(!read(1))append(a[read(6)]);else if(!read(1)){let v=read(7);if(v<32||v>126||gate2I(v)>=0)gate2F('token');append(String.fromCharCode(v));}else{let d=read(15)+1,n=read(8)+3;if(d>output.length)gate2F('token');for(let i=0;i<n;i++)append(output[output.length-d]);}}
+return output.join('');
+});
+if(text.length!==x.expanded_size_bytes)gate2F('binding');
+const digest=guard.phase(()=>sha(text));if(digest!==x.expanded_sha256)gate2F('binding');
+const value=guard.phase(()=>{try{return JSON.parse(text);}catch{gate2F('binding');}});
+const rc=guard.phase(()=>{try{return canon(value,32768);}catch{gate2F('binding');}});
+if(rc!==text)gate2F('binding');return {text,value};
+}
+function gate2WireEncode(text,tag,sha,canon,guard){
+function gate2D(n){return String.fromCharCode(n+32+(n>=2)+(n>=59));}
+if(typeof text!=='string'||text.length<1||text.length>32768||/[^\x20-\x7e]/.test(text))throw Error('selected_wire_input');
+const digest=guard.phase(()=>{if(tag!=='gate2-selected-lzss-v3'&&tag!=='gate2-observed-lzss-v3')gate2F('shape');const v=sha(text);if(typeof v!=='string'||!/^[0-9a-f]{64}$/.test(v))gate2F('shape');return v;});
+const head=guard.phase(()=>{try{return canon({encoding:tag,expanded_sha256:digest,expanded_size_bytes:text.length,payload:''},12288).length;}catch(e){if(e&&e.message==='canonical_bound')gate2F('bound');throw e;}});
+function bound(bits){guard.work();const n=3+Math.ceil(bits/8);if(n>9984||head+2*Math.ceil(8*n/13)>12288)gate2F('bound');}
+function walk(emit){
+const index=new Map();let at=0;
+function insert(p){guard.work();if(p+3>text.length)return;const k=text.slice(p,p+3);let row=index.get(k);if(!row){guard.work();row=[];index.set(k,row);}if(row.length===8){guard.work();row.shift();}guard.work();row.push(p);}
+while(at<text.length){guard.work();let best=0,dist=0;
+if(at+3<=text.length){guard.work();const row=index.get(text.slice(at,at+3));if(row){while(row.length&&at-row[0]>32768){guard.work();row.shift();}for(const p of row){guard.work();let n=0;while(n<258&&at+n<text.length){guard.work();if(text[p+n]!==text[at+n])break;n++;}let d=at-p;if(n>=3&&(n>best||n===best&&d<dist)){best=n;dist=d;}}}}
+const n=best>=3?best:1;if(best>=3)emit(2,dist,best);else{guard.work();const c=text.charCodeAt(at),v=gate2I(c);emit(v<0?1:0,v<0?c:v,0);}for(let p=at;p<at+n;p++)insert(p);at+=n;
+}
+}
+let bits=0;const ct=[0,0,0];
+guard.phase(()=>{bound(0);walk((k,v,n)=>{guard.work();let w=k===0?7:k===1?9:25,next=bits+w;bound(next);for(let i=0;i<w;i++)guard.work();bits=next;ct[k]++;});});
+const size=3+Math.ceil(bits/8),length=2*Math.ceil(8*size/13);
+const chars=guard.phase(()=>{bound(bits);guard();const a=new Array(length);guard();return a;});
+let at=0,pending=0,group=0,filled=0;const wr=[0,0,0];
+guard.phase(()=>{
+function feed(v,n){for(let i=n-1;i>=0;i--){guard.work();group=group*2+Math.floor(v/2**i)%2;pending++;at++;if(pending===13){guard.work();if(filled+2>length)gate2F('token');guard.work();chars[filled++]=gate2D(Math.floor(group/93));guard.work();chars[filled++]=gate2D(group%93);pending=0;group=0;}}}
+feed(bits,24);
+walk((k,v,n)=>{guard.work();wr[k]++;const w=k===0?7:k===1?9:25;if(at+w>24+bits)gate2F('token');feed(k===0?v:k===1?256+v:3*2**23+(v-1)*256+n-3,w);});
+if(at!==24+bits||wr.some((n,i)=>n!==ct[i]))gate2F('token');
+while(at<8*size)feed(0,1);if(at!==8*size)gate2F('token');while(pending)feed(0,1);
+if(at!==13*length/2||filled!==length||group!==0)gate2F('token');
+});
+const payload=guard.phase(()=>chars.join(''));
+return guard.phase(()=>{bound(bits);try{return canon({encoding:tag,expanded_sha256:digest,expanded_size_bytes:text.length,payload},12288);}catch(e){if(e&&e.message==='canonical_bound')gate2F('bound');throw e;}});
+}
+'''
+
+
+D26_CODEC_SOURCE_PINS = ((6907, 'be9a631d6eaa3191237d64f80dec89024d7e098c8249b55566549321dfa907b2'), (3918, '6e1467c2d1351dba5569b5a763ba29135287c7ca946c25b9456ddbc5b3274a47'), (2989, '0ff2e403ef1b83fb1b2698b3eab078d314be45b9bdf11d7147120243e216e237'))
+
+def d26_geometry_driver_v1():
+    import sys
+    import types
+    from pathlib import Path
+    names = ('tests.test_accepted_policy_fixture_compiler_gate2_resume_caller_v1',
+             'test_accepted_policy_fixture_compiler_gate2_resume_caller_v1')
+    expected = Path(__file__).with_name('test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py').absolute()
+    present = [(name, sys.modules[name]) for name in names if name in sys.modules]
+    if not present:
+        raise RuntimeError('d26_held_caller_unavailable')
+    selected_name, selected = present[0]
+    for name, module in present:
+        if type(module) is not types.ModuleType:
+            raise RuntimeError('d26_held_caller_unavailable')
+        namespace = vars(module)
+        if (namespace.get('__name__') != name and module is not selected
+                or type(namespace.get('__file__')) is not str
+                or Path(namespace['__file__']).absolute() != expected):
+            raise RuntimeError('d26_held_caller_unavailable')
+    namespace = vars(selected)
+    getter = namespace.get('_d26_geometry_program_v1')
+    if (namespace.get('__name__') != selected_name or type(getter) is not types.FunctionType
+            or getter.__name__ != '_d26_geometry_program_v1' or getter.__module__ != selected_name
+            or getter.__globals__ is not namespace or Path(getter.__code__.co_filename).absolute() != expected):
+        raise RuntimeError('d26_held_caller_unavailable')
+    return getter()
