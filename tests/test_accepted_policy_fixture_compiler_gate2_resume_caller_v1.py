@@ -2059,5 +2059,556 @@ class LaterStageCallerTests(unittest.TestCase):
         self.assertEqual(result['killed'],0)
 
 
+_D22_BROTLI_DATA_PROGRAM = r"""'use strict';
+const z=require('node:zlib');let chunks=[],size=0,failed=false;
+function fail(c){if(!failed){failed=true;process.stderr.write(c+'\n');process.exitCode=2;}}
+if(process.versions.node!=='25.2.1'){fail('d22_node_version');process.stdin.resume();}
+process.stdin.on('error',()=>fail('d22_stdin_error'));
+process.stdin.on('data',b=>{if(failed)return;size+=b.length;if(size>262144){fail('d22_input_limit');process.stdin.destroy();return;}chunks.push(b);});
+process.stdin.on('end',()=>{if(failed)return;try{
+ const raw=Buffer.concat(chunks);chunks=[];
+ if(raw.length>16384||raw.some(v=>v>127)){fail('d22_ascii_data');return;}
+ const packed=z.brotliCompressSync(raw,{params:{[z.constants.BROTLI_PARAM_QUALITY]:11}});
+ const back=z.brotliDecompressSync(packed,{maxOutputLength:16384});
+ if(!back.equals(raw)){fail('d22_roundtrip');return;}
+ process.stdout.write(JSON.stringify({node_version:process.versions.node,packed_b64:packed.toString('base64'),quality:11,roundtrip:true})+'\n');
+}catch(e){fail('d22_brotli_error');}});
+"""
+
+
+class D22CompressionError(RuntimeError):
+    def __init__(self, metadata):
+        self.metadata = metadata
+        super().__init__('D22 DATA compression refused: ' + metadata['causes'][0])
+
+
+def d22_compress_data_v1(raw, deadline):
+    """Compress ASCII DATA in a fixed builtin-only child; never evaluate the DATA.
+
+    Returns (packed bytes, bounded metadata). Refusals raise D22CompressionError
+    carrying the same bounded metadata schema. The absolute caller deadline is
+    never reset; eight seconds remain for cleanup and the caller's final return.
+    """
+    import math
+    import shutil
+    import subprocess
+    import threading
+    import time
+
+    started = time.monotonic()
+    buffers = {'stdout': bytearray(), 'stderr': bytearray()}
+    channels = {name: {'observed_bytes': 0, 'retained_bytes': 0, 'eof': False,
+                       'overflow': False, 'io_error': None, 'closed': False,
+                       'unknown_remainder': True} for name in buffers}
+    facts = {'schema_version': 1, 'data_only': True, 'spawned': False, 'pid': None,
+             'returncode': None, 'timed_out': False, 'kill_requested': False,
+             'stdin_bytes': 0, 'stdin_closed': False, 'stdin_complete': False,
+             'stdin_extent_unknown': False, 'threads_started': 0, 'reaped': False,
+             'threads_joined': False, 'causes': [], 'node_version': None,
+             'quality': 11, 'roundtrip': False, 'parent_observed_completion': False,
+             'descendant_quiescence': 'UNKNOWN', 'input_bytes': None,
+             'input_sha256': None, 'packed_bytes': None, 'packed_sha256': None,
+             'environment_keys': [], 'program_sha256': hashlib.sha256(_D22_BROTLI_DATA_PROGRAM.encode('ascii')).hexdigest()}
+    lock = threading.Lock()
+    def cause(value):
+        with lock:
+            if value not in facts['causes']:
+                facts['causes'].append(value)
+    def finish(packed=None):
+        snapshot = dict(facts)
+        for name, channel in channels.items():
+            prefix = bytes(buffers[name])
+            snapshot[name] = {**channel, 'retained_bytes': len(prefix),
+                              'prefix_sha256': hashlib.sha256(prefix).hexdigest(),
+                              'unknown_remainder': not channel['eof'] or channel['overflow'] or channel['io_error'] is not None}
+        snapshot['stderr_prefix_b64'] = base64.b64encode(buffers['stderr']).decode('ascii')
+        observed = time.monotonic()
+        snapshot['elapsed_seconds'] = observed - started
+        snapshot['finished_before_deadline'] = observed < end if end is not None else False
+        snapshot['child_completion_observed_before_deadline'] = (
+            facts['spawned'] and child_total_end is not None and observed < child_total_end)
+        if facts['spawned'] and not snapshot['child_completion_observed_before_deadline']:
+            cause('child_completion_late')
+        if not snapshot['finished_before_deadline']:
+            cause('parent_deadline')
+        snapshot['causes'] = list(facts['causes'])
+        snapshot['parent_observed_completion'] = packed is not None and not snapshot['causes']
+        encoded = canonical(snapshot)
+        if len(encoded) > 32768:
+            raise RuntimeError('D22 compression metadata bound')
+        # Copy every container before publishing; this is not an atomic custody
+        # claim about workers that could not be joined before their deadline.
+        frozen = json.loads(encoded)
+        if frozen['causes']:
+            raise D22CompressionError(frozen)
+        return packed, frozen
+    end = None
+    child_total_end = None
+    if type(deadline) not in (int, float):
+        cause('deadline_invalid');return finish()
+    try:
+        end = float(deadline)
+    except (OverflowError, ValueError):
+        cause('deadline_invalid');return finish()
+    if not math.isfinite(end):
+        end = None;cause('deadline_invalid');return finish()
+    if type(raw) is not bytes:
+        cause('input_type');return finish()
+    if len(raw) > 16384:
+        cause('input_limit');return finish()
+    if not raw.isascii():
+        cause('input_ascii');return finish()
+    facts.update(input_bytes=len(raw), input_sha256=hashlib.sha256(raw).hexdigest())
+    work_end = min(started + 27, end - 8)
+    child_total_end = min(started + 30, end - 5)
+    cleanup_end = min(child_total_end, work_end + 3)
+    facts.update(started_monotonic=started, caller_deadline=end, work_deadline=work_end,
+                 child_total_deadline=child_total_end, cleanup_deadline=cleanup_end, child_total_limit_seconds=30,
+                 child_work_limit_seconds=27, cleanup_limit_seconds=3, final_reserve_seconds=5)
+    if time.monotonic() >= work_end:
+        cause('deadline_no_window');return finish()
+    node = shutil.which('node') or shutil.which('node.exe')
+    if node is None:
+        cause('node_unavailable');return finish()
+    try:
+        node = str(Path(node).resolve(strict=True))
+        environment = {'PATH': str(Path(node).parent)}
+        if os.name == 'nt':
+            environment['SystemRoot'] = os.environ['SystemRoot']
+        argv = [node, '--max-old-space-size=256', '--input-type=commonjs', '-e', _D22_BROTLI_DATA_PROGRAM]
+        facts.update(node_executable=node, command_options=argv[1:4], environment_keys=sorted(environment))
+        if time.monotonic() >= work_end:
+            cause('deadline_before_spawn');return finish()
+        process = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, env=environment, bufsize=0,
+                                   start_new_session=os.name != 'nt',
+                                   creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+    except (OSError, KeyError, ValueError) as error:
+        cause('spawn_' + type(error).__name__);return finish()
+    facts.update(spawned=True, pid=process.pid)
+    if time.monotonic() >= work_end:
+        facts['timed_out'] = True;cause('deadline_after_spawn')
+    def read_channel(name, pipe, limit):
+        channel = channels[name]
+        try:
+            while True:
+                part = pipe.read(min(4096, limit + 1 - len(buffers[name])))
+                if not part:
+                    channel['eof'] = True;break
+                channel['observed_bytes'] += len(part)
+                room = limit - len(buffers[name])
+                buffers[name].extend(part[:room])
+                if len(part) > room:
+                    channel['overflow'] = True;cause(name + '_overflow');break
+        except (OSError, ValueError) as error:
+            channel['io_error'] = type(error).__name__;cause(name + '_read_error')
+        finally:
+            try:
+                pipe.close();channel['closed'] = True
+            except (OSError, ValueError):
+                cause(name + '_close_error')
+    def write_input():
+        try:
+            while facts['stdin_bytes'] < len(raw):
+                if time.monotonic() >= work_end:
+                    cause('stdin_deadline');break
+                remaining = len(raw) - facts['stdin_bytes']
+                count = process.stdin.write(raw[facts['stdin_bytes']:])
+                if type(count) is not int or not 0 < count <= remaining:
+                    facts['stdin_extent_unknown'] = True;cause('stdin_short_write');break
+                facts['stdin_bytes'] += count
+                if time.monotonic() >= work_end:
+                    cause('stdin_deadline');break
+            facts['stdin_complete'] = facts['stdin_bytes'] == len(raw)
+        except (OSError, ValueError):
+            facts['stdin_extent_unknown'] = True;cause('stdin_write_error')
+        finally:
+            try:
+                process.stdin.close();facts['stdin_closed'] = True
+            except (OSError, ValueError):
+                cause('stdin_close_error')
+    threads = [threading.Thread(target=read_channel, args=('stdout', process.stdout, 1048576), daemon=True),
+               threading.Thread(target=read_channel, args=('stderr', process.stderr, 16384), daemon=True),
+               threading.Thread(target=write_input, daemon=True)]
+    started_threads = []
+    for thread in threads:
+        if facts['causes']:
+            break
+        if time.monotonic() >= work_end:
+            facts['timed_out'] = True;cause('worker_start_deadline');break
+        try:
+            thread.start()
+            started_threads.append(thread)
+            if time.monotonic() >= work_end:
+                facts['timed_out'] = True;cause('worker_start_late');break
+        except RuntimeError:
+            if thread.ident is not None:
+                started_threads.append(thread)
+            cause('thread_start_error');break
+    facts['threads_started'] = len(started_threads)
+    def status():
+        try:
+            return process.poll()
+        except (OSError, ValueError):
+            cause('child_status_error');return None
+    while True:
+        if time.monotonic() >= work_end:
+            facts['timed_out'] = True;cause('child_timeout');break
+        if facts['causes'] or (status() is not None and all(not thread.is_alive() for thread in started_threads)):
+            break
+        time.sleep(min(.005, max(0, work_end - time.monotonic())))
+    cleanup_end = min(cleanup_end, time.monotonic() + 3)
+    facts['cleanup_deadline'] = cleanup_end
+    if status() is None:
+        facts['kill_requested'] = True
+        try:
+            process.kill()
+        except OSError:
+            cause('child_kill_error')
+    for thread, pipe, name in zip(threads, (process.stdout, process.stderr, process.stdin), ('stdout', 'stderr', 'stdin')):
+        if thread not in started_threads:
+            try:
+                pipe.close()
+                if name == 'stdin':
+                    facts['stdin_closed'] = True
+                else:
+                    channels[name]['closed'] = True
+            except (OSError, ValueError):
+                cause(name + '_unstarted_close_error')
+    try:
+        returned = process.wait(timeout=max(0, cleanup_end - time.monotonic()))
+        facts['reaped'] = type(returned) is int
+        if not facts['reaped']:
+            cause('child_reap_unknown')
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        cause('child_reap_unknown')
+    for thread in started_threads:
+        try:
+            thread.join(max(0, cleanup_end - time.monotonic()))
+        except RuntimeError:
+            cause('thread_join_error')
+    facts.update(returncode=status(), threads_joined=len(started_threads) == len(threads)
+                 and all(not thread.is_alive() for thread in started_threads))
+    if not facts['threads_joined']:
+        cause('pipe_completion_unknown')
+    if facts['returncode'] != 0:
+        cause('child_status')
+    if not facts['stdin_complete'] or not facts['stdin_closed'] or not all(c['eof'] for c in channels.values()):
+        cause('io_completion_unknown')
+    if facts['causes']:
+        return finish()
+    if buffers['stderr']:
+        cause('unexpected_stderr');return finish()
+    try:
+        def unique_pairs(rows):
+            result = dict(rows)
+            if len(result) != len(rows):
+                raise ValueError('duplicate DATA result field')
+            return result
+        result = json.loads(buffers['stdout'], object_pairs_hook=unique_pairs)
+        if (type(result) is not dict or set(result) != {'node_version', 'packed_b64', 'quality', 'roundtrip'}
+                or result['node_version'] != '25.2.1' or type(result['quality']) is not int
+                or result['quality'] != 11 or result['roundtrip'] is not True
+                or type(result['packed_b64']) is not str or bytes(buffers['stdout']) != canonical(result) + b'\n'):
+            raise ValueError('invalid DATA result')
+        if len(result['packed_b64']) > 4 * ((32768 + 2) // 3):
+            raise ValueError('DATA encoding bound')
+        packed = base64.b64decode(result['packed_b64'], validate=True)
+        if len(packed) > 32768 or base64.b64encode(packed).decode('ascii') != result['packed_b64']:
+            raise ValueError('invalid DATA encoding')
+    except (ValueError, TypeError, RecursionError, OverflowError):
+        cause('child_protocol');return finish()
+    facts.update(node_version=result['node_version'], roundtrip=True,
+                 packed_bytes=len(packed), packed_sha256=hashlib.sha256(packed).hexdigest())
+    return finish(packed)
+
+
+class D22DataCompressionTests(unittest.TestCase):
+    observations = []
+
+    def _capture(self, call):
+        try:
+            result = call()
+        except D22CompressionError as error:
+            self.observations.append(error.metadata)
+            return None, error.metadata
+        self.observations.append(result[1])
+        return result
+
+    def _fake_process(self, stdout=b'', stderr=b'', status=0, blocked=False):
+        import threading
+        stopped = threading.Event()
+        state = {'status': None if blocked else status}
+        class Reader(io.BytesIO):
+            def read(self, size=-1):
+                if blocked:
+                    stopped.wait(2)
+                return super().read(size)
+        def kill():
+            state['status'] = -9
+            stopped.set()
+        def wait(timeout=None):
+            import subprocess
+            if state['status'] is None:
+                stopped.wait(timeout)
+            if state['status'] is None:
+                raise subprocess.TimeoutExpired('controlled DATA child', timeout)
+            return state['status']
+        return types.SimpleNamespace(pid=12345, stdin=io.BytesIO(), stdout=Reader(stdout),
+                                     stderr=Reader(stderr), poll=lambda: state['status'], kill=kill, wait=wait)
+
+    def test_data_roundtrip_and_closed_child_environment(self):
+        import time
+        with mock.patch.dict(os.environ, {'NODE_OPTIONS': '--require=forbidden',
+                                         'NODE_PATH': 'forbidden', 'NODE_REPL_HISTORY': 'forbidden'}):
+            packed, facts = self._capture(lambda: d22_compress_data_v1(b'{"data":"' + b'x' * 4096 + b'"}', time.monotonic() + 40))
+        self.assertTrue(bool(packed), 'bounded DATA compression must return bytes')
+        self.assertTrue(facts['parent_observed_completion'])
+        self.assertEqual(facts['node_version'], '25.2.1')
+        self.assertEqual(facts['quality'], 11)
+        self.assertTrue(facts['roundtrip'])
+        self.assertTrue(facts['stdout']['eof'] and facts['stderr']['eof'])
+        self.assertFalse(set(facts['environment_keys']) & {'NODE_OPTIONS', 'NODE_PATH', 'NODE_REPL_HISTORY'})
+
+    def test_bad_data_and_expired_budget_refuse_before_spawn(self):
+        import time
+        for raw, deadline in ((None, time.monotonic() + 40), (b'\xff', time.monotonic() + 40),
+                              (b'x' * 16385, time.monotonic() + 40), (b'{}', time.monotonic() - 1)):
+            with self.subTest(kind=type(raw).__name__), mock.patch('subprocess.Popen') as spawn:
+                packed, facts = self._capture(lambda: d22_compress_data_v1(raw, deadline))
+                self.assertIsNone(packed)
+                self.assertFalse(facts['parent_observed_completion'])
+                self.assertFalse(facts['spawned'])
+                spawn.assert_not_called()
+
+    def test_stdout_overflow_preserves_prefix_and_unknown_remainder(self):
+        import time
+        process = self._fake_process(stdout=b'x' * (1048576 + 1))
+        with mock.patch('subprocess.Popen', return_value=process):
+            packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', time.monotonic() + 40))
+        self.assertIsNone(packed)
+        self.assertIn('stdout_overflow', facts['causes'])
+        self.assertEqual(facts['stdout']['retained_bytes'], 1048576)
+        self.assertTrue(facts['stdout']['unknown_remainder'])
+
+    def test_channel_io_failure_is_not_eof_or_completion(self):
+        import time
+        process = self._fake_process()
+        class BrokenReader(io.BytesIO):
+            def read(self, size=-1):
+                raise OSError('controlled read refusal')
+        process.stdout = BrokenReader()
+        with mock.patch('subprocess.Popen', return_value=process):
+            packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', time.monotonic() + 40))
+        self.assertIsNone(packed)
+        self.assertIn('stdout_read_error', facts['causes'])
+        self.assertFalse(facts['stdout']['eof'])
+        self.assertTrue(facts['stdout']['unknown_remainder'])
+
+    def test_deadline_preserves_forced_status_and_nonacceptance(self):
+        import time
+        process = self._fake_process(blocked=True)
+        with mock.patch('subprocess.Popen', return_value=process):
+            packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', time.monotonic() + 8.15))
+        self.assertIsNone(packed)
+        self.assertTrue(facts['timed_out'] and facts['kill_requested'])
+        self.assertEqual(facts['returncode'], -9)
+        self.assertFalse(facts['parent_observed_completion'])
+
+    def test_nonzero_status_keeps_bounded_stderr_original(self):
+        import time
+        process = self._fake_process(stderr=b'd22_data_refused\n', status=2)
+        with mock.patch('subprocess.Popen', return_value=process):
+            packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', time.monotonic() + 40))
+        self.assertIsNone(packed)
+        self.assertIn('child_status', facts['causes'])
+        self.assertEqual(facts['returncode'], 2)
+        self.assertTrue(base64.b64decode(facts['stderr_prefix_b64']) == b'd22_data_refused\n')
+
+    def test_partial_thread_start_has_three_second_cleanup_and_known_unknowns(self):
+        import threading
+        import time
+        process = self._fake_process(blocked=True)
+        original_start, original_join = threading.Thread.start, threading.Thread.join
+        calls, waits = [], []
+        def start(thread):
+            calls.append(thread)
+            if len(calls) == 2:
+                raise RuntimeError('controlled partial startup')
+            original_start(thread)
+        def join(thread, timeout=None):
+            waits.append(timeout)
+            original_join(thread, timeout)
+        with mock.patch('subprocess.Popen', return_value=process), \
+                mock.patch('threading.Thread.start', start), mock.patch('threading.Thread.join', join):
+            packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', time.monotonic() + 295))
+        self.assertIsNone(packed)
+        self.assertIn('thread_start_error', facts['causes'])
+        self.assertEqual(facts['threads_started'], 1)
+        self.assertTrue(facts['kill_requested'] and facts['reaped'])
+        self.assertFalse(facts['threads_joined'])
+        self.assertTrue(facts['stderr']['closed'] and facts['stderr']['unknown_remainder'])
+        self.assertTrue(bool(waits) and all(0 <= value <= 3 for value in waits))
+        self.assertLessEqual(facts['cleanup_deadline'], facts['work_deadline'] + 3)
+        self.assertLessEqual(facts['work_deadline'], facts['started_monotonic'] + 27)
+        self.assertLessEqual(facts['cleanup_deadline'], facts['started_monotonic'] + 30)
+        self.assertEqual((facts['child_total_limit_seconds'], facts['child_work_limit_seconds'],
+                          facts['cleanup_limit_seconds'], facts['final_reserve_seconds']), (30, 27, 3, 5))
+
+    def test_late_node_resolution_cannot_spawn(self):
+        import shutil
+        import time
+        node = shutil.which('node') or shutil.which('node.exe')
+        def delayed_resolution(name):
+            time.sleep(.15)
+            return node
+        with mock.patch('shutil.which', delayed_resolution), mock.patch('subprocess.Popen') as spawn:
+            packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', time.monotonic() + 8.1))
+        self.assertIsNone(packed)
+        self.assertIn('deadline_before_spawn', facts['causes'])
+        spawn.assert_not_called()
+
+    def test_late_spawn_starts_no_worker_or_stdin_write(self):
+        process = self._fake_process(blocked=True)
+        writes, clock = [], [1000.0]
+        class Input(io.BytesIO):
+            def write(self, value):
+                writes.append(len(value))
+                return len(value)
+        process.stdin = Input()
+        def spawn(*args, **kwargs):
+            clock[0] = 1027.0
+            return process
+        with mock.patch('time.monotonic', side_effect=lambda: clock[0]), \
+                mock.patch('subprocess.Popen', spawn), mock.patch('threading.Thread.start') as start:
+            packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', 1040.0))
+        self.assertIsNone(packed)
+        self.assertIn('deadline_after_spawn', facts['causes'])
+        self.assertTrue(facts['spawned'] and facts['kill_requested'] and facts['reaped'])
+        self.assertEqual(facts['threads_started'], 0)
+        self.assertTrue(not writes and facts['stdin_bytes'] == 0)
+        self.assertTrue(facts['stdout']['unknown_remainder'] and facts['stderr']['unknown_remainder'])
+        self.assertEqual(facts['returncode'], -9)
+        start.assert_not_called()
+
+    def test_each_worker_start_has_pre_and_post_work_guards(self):
+        for mode, expected in (('post', 'worker_start_late'), ('next', 'worker_start_deadline')):
+            with self.subTest(boundary=mode):
+                clock, starts, reads = [1000.0], [], [0]
+                process = self._fake_process()
+                class InlineThread:
+                    ident = None
+                    def __init__(self, target, args=(), daemon=None):
+                        self.target, self.args = target, args
+                    def start(self):
+                        starts.append(self)
+                        self.ident = 1
+                        self.target(*self.args)
+                    def join(self, timeout=None):
+                        return None
+                    def is_alive(self):
+                        return False
+                def now():
+                    if starts:
+                        reads[0] += 1
+                        if mode == 'post' or reads[0] >= 2:
+                            clock[0] = 1027.0
+                    return clock[0]
+                with mock.patch('time.monotonic', now), mock.patch('threading.Thread', InlineThread), \
+                        mock.patch('subprocess.Popen', return_value=process):
+                    packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', 1040.0))
+                self.assertIsNone(packed)
+                self.assertIn(expected, facts['causes'])
+                self.assertEqual(len(starts), 1)
+                self.assertEqual(facts['stdin_bytes'], 0)
+                self.assertFalse(facts['stdin_complete'])
+
+    def test_late_wait_join_or_status_cannot_publish_completion(self):
+        output = canonical({'node_version': '25.2.1', 'packed_b64': 'eA==', 'quality': 11, 'roundtrip': True}) + b'\n'
+        for phase in ('wait', 'join', 'status'):
+            with self.subTest(observation=phase):
+                clock, polls = [1000.0], [0]
+                process = self._fake_process(stdout=output)
+                class InlineThread:
+                    ident = None
+                    def __init__(self, target, args=(), daemon=None):
+                        self.target, self.args = target, args
+                    def start(self):
+                        self.ident = 1
+                        self.target(*self.args)
+                    def join(self, timeout=None):
+                        if phase == 'join':
+                            clock[0] = 1030.0
+                    def is_alive(self):
+                        return False
+                def status():
+                    polls[0] += 1
+                    if phase == 'status' and polls[0] >= 2:
+                        clock[0] = 1030.0
+                    return 0
+                def wait(timeout=None):
+                    if phase == 'wait':
+                        clock[0] = 1030.0
+                    return 0
+                process.poll, process.wait = status, wait
+                with mock.patch('time.monotonic', side_effect=lambda: clock[0]), \
+                        mock.patch('threading.Thread', InlineThread), mock.patch('subprocess.Popen', return_value=process):
+                    packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', 1040.0))
+                self.assertIsNone(packed)
+                self.assertIn('child_completion_late', facts['causes'])
+                self.assertTrue(facts['finished_before_deadline'])
+                self.assertFalse(facts['child_completion_observed_before_deadline'])
+                self.assertFalse(facts['parent_observed_completion'])
+                self.assertEqual(facts['descendant_quiescence'], 'UNKNOWN')
+
+    def test_failed_snapshot_does_not_follow_late_worker_mutation(self):
+        import threading
+        import time
+        process = self._fake_process(blocked=True)
+        process.poll = lambda: -9
+        process.wait = lambda timeout=None: -9
+        original_start, original_join = threading.Thread.start, threading.Thread.join
+        workers = []
+        def start(thread):
+            workers.append(thread)
+            if len(workers) == 3:
+                raise RuntimeError('controlled third startup')
+            original_start(thread)
+        with mock.patch('subprocess.Popen', return_value=process), \
+                mock.patch('threading.Thread.start', start), mock.patch('threading.Thread.join', return_value=None):
+            packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', time.monotonic() + 40))
+        before = canonical(facts)
+        for worker in workers[:2]:
+            original_join(worker, 3)
+        self.assertIsNone(packed)
+        self.assertTrue(canonical(facts) == before, 'published refusal snapshot must stay fixed')
+        self.assertFalse(facts['stdout']['eof'])
+        self.assertTrue(facts['stdout']['unknown_remainder'])
+
+    def test_decoder_recursion_and_packed_bound_refuse_as_metadata(self):
+        import time
+        oversized = canonical({'node_version': '25.2.1', 'packed_b64': base64.b64encode(b'x' * 32769).decode(),
+                               'quality': 11, 'roundtrip': True}) + b'\n'
+        for output in (b'[' * 1100 + b'0' + b']' * 1100, oversized):
+            with self.subTest(kind='bounded protocol'), mock.patch('subprocess.Popen', return_value=self._fake_process(stdout=output)):
+                packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', time.monotonic() + 40))
+            self.assertIsNone(packed)
+            self.assertIn('child_protocol', facts['causes'])
+
+    def test_invalid_stdin_count_preserves_unknown_extent(self):
+        import time
+        process = self._fake_process()
+        class InvalidCount(io.BytesIO):
+            def write(self, value):
+                return len(value) + 1
+        process.stdin = InvalidCount()
+        with mock.patch('subprocess.Popen', return_value=process):
+            packed, facts = self._capture(lambda: d22_compress_data_v1(b'{}', time.monotonic() + 40))
+        self.assertIsNone(packed)
+        self.assertIn('stdin_short_write', facts['causes'])
+        self.assertTrue(facts['stdin_extent_unknown'])
+        self.assertFalse(facts['stdin_complete'])
+
+
 if __name__ == '__main__':
     unittest.main()

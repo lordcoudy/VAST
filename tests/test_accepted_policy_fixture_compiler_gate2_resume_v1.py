@@ -2677,5 +2677,297 @@ class ResumeBoundaries(unittest.TestCase):
         self.assertEqual(str(caught.exception), 'source_binding')
 
 
+# D22 additive construction only. These pure lexical definitions are copied from
+# authenticated D17 source22845/29a4fb53fe3125e814236913b9ab457585077c7ddf4649129959df16e3976ea6.
+# No historical helper entry, acquired tool, generated program or operational path runs.
+def d22_sha(raw):return hashlib.sha256(raw).hexdigest()
+
+def d22_canonical(value):
+    return json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=True,allow_nan=False).encode('ascii')
+
+D22_PREFIX="if(Object.hasOwn(globalThis,'gate2Resume'))throw Error('state_exists');\nvar g2p=globalThis.performance;if(!g2p||typeof g2p.now!=='function')throw Error('monotonic_unavailable');\nvar g2t=g2p.now();if(!Number.isFinite(g2t)||g2t<0||g2t>Number.MAX_SAFE_INTEGER-150000)throw Error('original_clock');\n"
+
+D22_IMPORTS="var {spawn:g2s}=await import('node:child_process'),{createHash:g2h}=await import('node:crypto'),{brotliCompressSync:g2c}=await import('node:zlib'),g2fs=await import('node:fs/promises');var g2py=__COMMON__;"
+
+def d22_build_plain(data):
+ import base64,zlib
+ raw=d22_canonical(data);packed=zlib.compress(raw,9);encoded=base64.b64encode(packed).decode('ascii')
+ digest=d22_sha(raw)
+ decoder=("var g2before=g2t;function g2dataGate(){let n=g2p.now();if(!Number.isFinite(n)||n<g2before||n>=g2t+140000)throw Error('data_deadline');g2before=n;}\n"
+  "var {inflateSync:g2inflate,brotliCompressSync:g2c}=await import('node:zlib');g2dataGate();\n"
+  "var {createHash:g2h}=await import('node:crypto');g2dataGate();\n"
+  "var g2packed="+json.dumps(encoded)+";if(g2packed.length!=="+str(len(encoded))+"||!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(g2packed))throw Error('data_input');\n"
+  "var g2compressed=Buffer.from(g2packed,'base64');if(g2compressed.length!=="+str(len(packed))+")throw Error('data_input');g2dataGate();\n"
+  "var g2raw=g2inflate(g2compressed,{maxOutputLength:"+str(len(raw))+"});g2dataGate();if(g2raw.length!=="+str(len(raw))+"||!g2raw.every(v=>v<128)||g2h('sha256').update(g2raw).digest('hex')!=="+json.dumps(digest)+")throw Error('data_binding');\n"
+  "var g2data=JSON.parse(g2raw.toString('latin1'));g2dataGate();\n"
+  "if(g2data===null||typeof g2data!=='object'||Array.isArray(g2data)||Object.keys(g2data).sort().join(',')!=='approval,commit,common,fields,pipe_fields,root,setup_head,setup_tail,sources'||JSON.stringify(g2data)!==g2raw.toString('latin1'))throw Error('data_shape');\n"
+  "if(!['approval','commit','common','root','setup_head','setup_tail'].every(k=>typeof g2data[k]==='string')||!/^([0-9a-f]{40})$/.test(g2data.commit)||!g2data.approval.startsWith('https://github.com/lordcoudy/VAST/pull/9#issuecomment-')||! /^[0-9]{1,20}$/.test(g2data.approval.slice(54))||!Array.isArray(g2data.fields)||g2data.fields.length!=="+str(len(NODE_FIELDS))+"||!g2data.fields.every(k=>typeof k==='string')||!Array.isArray(g2data.pipe_fields)||g2data.pipe_fields.length!=="+str(len(NODE_PIPE_FIELDS))+"||!g2data.pipe_fields.every(k=>typeof k==='string')||!Array.isArray(g2data.sources)||g2data.sources.length!==2||!g2data.sources.every(r=>Array.isArray(r)&&r.length===2&&typeof r[0]==='string'&&r[1]!==null&&typeof r[1]==='object'&&!Array.isArray(r[1])&&Object.keys(r[1]).sort().join(',')==='git_blob,sha256,size_bytes'&&Number.isSafeInteger(r[1].size_bytes)&&r[1].size_bytes>0&&r[1].size_bytes<=32768&&/^([0-9a-f]{64})$/.test(r[1].sha256)&&/^([0-9a-f]{40})$/.test(r[1].git_blob)))throw Error('data_shape');g2dataGate();\n")
+ body=NODE_CONTROLLER[len(D22_PREFIX):].replace(D22_IMPORTS,"var {spawn:g2s}=await import('node:child_process');g2dataGate();var g2fs=await import('node:fs/promises');g2dataGate();var g2py=g2data.common;")
+ replacements={'__VALIDATORS__':NODE_VALIDATORS,'__ROOT__':'g2data.root','__COMMON__':'g2data.common','__SETUP_HEAD__':'g2data.setup_head','__SETUP_TAIL__':'g2data.setup_tail','__COMMIT__':'g2data.commit','__APPROVAL__':'g2data.approval','__WRITER_EXPR__':"''",'__FIELDS__':'g2data.fields','__PIPE_FIELDS__':'g2data.pipe_fields','__SOURCES__':'g2data.sources'}
+ for old,new in replacements.items():body=body.replace(old,new)
+ body=body.replace('last:g2t,calls:0','last:g2before,calls:0')
+ assert not any(key in body for key in replacements)
+ code=D22_PREFIX+decoder+body
+ assert code.startswith(D22_PREFIX) and 'eval(' not in code and 'Function(' not in code and 'vm.' not in code
+ return code,{'data_bytes':len(raw),'data_sha256':d22_sha(raw),'compressed_data_bytes':len(packed),'base64_data_bytes':len(encoded),'candidate_bytes':len(code.encode('ascii')),'candidate_sha256':d22_sha(code.encode('ascii')),'original_prefix_bytes':295}
+
+D22_OPS=sorted(['===','!==','>>>','**=','&&=','||=','??=','=>','==','!=','<=','>=','++','--','&&','||','??','?.','+=','-=','*=','/=','%=','<<','>>','**','...'],key=len,reverse=True)
+
+D22_NON_END={'return','throw','new','typeof','void','delete','in','instanceof','case','await','yield','else','of'}
+
+def d22_lex(source):
+ out=[];i=0;n=len(source)
+ while i<n:
+  if source[i].isspace():i+=1;continue
+  start=i;ch=source[i]
+  if ch in "'\"":
+   quote=ch;i+=1
+   while i<n:
+    if source[i]=='\\':i+=2;continue
+    if source[i]==quote:i+=1;break
+    if source[i] in '\r\n':raise AssertionError('unescaped string newline')
+    i+=1
+   else:raise AssertionError('unterminated string')
+   kind='string'
+  elif ch=='`':raise AssertionError('unsupported template literal')
+  elif ch=='/' and source[i:i+2] in ('//','/*'):raise AssertionError('unexpected comment in fixed candidate')
+  elif ch=='/' and (not out or out[-1][0]=='id' and out[-1][1] in D22_NON_END or out[-1][0]=='punct' and out[-1][1] not in (')',']','}','++','--')):
+   i+=1;group=False
+   while i<n:
+    if source[i]=='\\':i+=2;continue
+    if source[i]=='[':group=True
+    elif source[i]==']':group=False
+    elif source[i]=='/' and not group:i+=1;break
+    if source[i] in '\r\n':raise AssertionError('regex newline')
+    i+=1
+   else:raise AssertionError('unterminated regex')
+   while i<n and source[i].isalpha():i+=1
+   kind='regex'
+  elif ch.isalpha() or ch in '_$':
+   i+=1
+   while i<n and (source[i].isalnum() or source[i] in '_$'):i+=1
+   kind='id'
+  elif ch.isdigit():
+   i+=1
+   while i<n and (source[i].isalnum() or source[i] in '._'):i+=1
+   kind='number'
+  else:
+   op=next((v for v in D22_OPS if source.startswith(v,i)),None)
+   if op:i+=len(op)
+   elif ch in '{}[]().,:;?+-*/%!~&|^<>=':i+=1
+   else:raise AssertionError('unsupported token '+repr(ch))
+   kind='punct'
+  out.append((kind,source[start:i],start,i))
+ return out
+
+def d22_pairs(tokens):return [(kind,text) for kind,text,*_ in tokens]
+
+def d22_join_tokens(tokens,original):
+ result=[];last=None
+ for token in tokens:
+  kind,text,start,end=token
+  if last:
+   gap=original[last[3]:start] if start>=last[3] else ''
+   if '\n' in gap:result.append('\n')
+   elif ((last[0] in ('id','number') and kind in ('id','number')) or last[0]=='regex' and kind in ('id','number') or last[0]=='number' and text.startswith('.') or last[1][-1:]=='/' and text[:1] in ('/','*') or any((last[1]+text).startswith(op) and op!=last[1] for op in D22_OPS)):
+    result.append(' ')
+  result.append(text);last=token
+ value=''.join(result)
+ assert d22_pairs(d22_lex(value))==d22_pairs(tokens),'lexical rejoin changed token identities'
+ return value
+
+D22_PROPERTY_ALLOWLIST=frozenset(['size_bytes','stdin_extent_unknown','unknown_closure','physical_acceptance','returncode','source_facts','open_completed','close_completed','read_bytes','read_sha256','stdin_attempted','stdin_bytes','stdin_sha256','stdin_finished','stdin_closed','stdin_failed','remainder_unknown','terminal_observed_ms','isSafeInteger','MAX_SAFE_INTEGER','isFinite','isArray','replaceAll','charCodeAt','padStart','codePointAt','toString','getOwnPropertyDescriptor','getPrototypeOf'])
+
+D22_PRIVATE_MAP={'g2dataGate':'J','g2before':'L','g2packed':'P','g2compressed':'C','g2raw':'R','g2data':'D','epoch':'E','gate':'G','first':'F','secondary':'S','snapshot':'W','observed':'O','encoding':'N','unknown':'U','pipes':'I','text':'T','raw':'V'}
+
+def d22_transform_body(source,literal_allowlist,properties,aliases):
+ old=d22_lex(source);new=[];i=0;scope=[];changes={'literal_refs':0,'computed_member_keys':0,'private_refs':0,'reified_shorthands':0}
+ while i<len(old):
+  token=old[i];kind,text,start,end=token;previous=old[i-1][1] if i else '';following=old[i+1][1] if i+1<len(old) else ''
+  if text=='{':scope.append(('object' if previous in ('=','return','(',',','[',':','?','var','let','const') else 'block','}'))
+  elif text in ('(','['):scope.append(('other',')' if text=='(' else ']'))
+  elif text in ('}',')',']'):
+   assert scope and scope[-1][1]==text,(text,scope)
+   scope.pop()
+  if text in ('.','?.') and i+1<len(old) and old[i+1][0]=='id' and old[i+1][1] in properties:
+   assert text=='.','optional access not supported by fixed computed-key transform'
+   key=old[i+1][1];replacement='['+aliases[key]+']'
+   new.extend((k,v,start,old[i+1][3]) for k,v,*_ in d22_lex(replacement));changes['computed_member_keys']+=1;i+=2;continue
+  if kind=='string' and '\\' not in text[1:-1] and text[1:-1] in literal_allowlist:
+   new.append(('id',aliases[text[1:-1]],start,end));changes['literal_refs']+=1
+  elif kind=='id' and text in D22_PRIVATE_MAP and previous not in ('.','?.'):
+   object_key=scope and scope[-1][0]=='object' and previous in ('{',',')
+   if object_key and following==':':new.append(token)
+   elif object_key and following in (',','}'):
+    replacement=text+':'+D22_PRIVATE_MAP[text]
+    new.extend((k,v,start,end) for k,v,*_ in d22_lex(replacement));changes['private_refs']+=1;changes['reified_shorthands']+=1
+   else:new.append(('id',D22_PRIVATE_MAP[text],start,end));changes['private_refs']+=1
+  else:new.append(token)
+  i+=1
+ assert not scope
+ return d22_join_tokens(new,source),changes
+
+def d22_shorten_private_prefix(source):
+ tokens=d22_lex(source);changed=[]
+ for i,(kind,text,start,end) in enumerate(tokens):
+  previous=tokens[i-1][1] if i else '';following=tokens[i+1][1] if i+1<len(tokens) else ''
+  if kind=='id' and text in D22_PRIVATE_MAP and previous not in ('.','?.') and following!=':':text=D22_PRIVATE_MAP[text]
+  changed.append((kind,text,start,end))
+ return d22_join_tokens(changed,source)
+
+
+def d22_phase_initial_v1(deadline):
+    """One baseline_all derivation in RAM; a source-width result is never acceptance."""
+    import base64,time,zlib
+    from tests.test_accepted_policy_fixture_compiler_gate2_resume_caller_v1 import d22_compress_data_v1
+    def gate():
+        if time.monotonic() >= deadline - 5:raise RuntimeError('d22_construction_deadline')
+    gate()
+    root=Path(__file__).resolve().parents[1]
+    rows=[]
+    fixtures=(('tests/fixtures/accepted_policy_fixture_compiler_component_v1.py',32732,
+               '329fb13f2c6dcee0872e5a29ec1fd769dc6e57ce92ee1076fef6737f1da86d88',
+               '5a342c2c2efa44aa5add3f91ae94518c143acece'),
+              ('tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py',32739,
+               '5fd7d2d6ee62ff584d2a4662757ca804a3d3300d30bb966319901870c4c85670',
+               'cc9b6a1b7e6e6ff2f9b750ea67b20cf7213d09b0'))
+    for name,size,digest,blob in fixtures:
+        gate()
+        with root.joinpath(name).open('rb') as handle:raw=handle.read(32769)
+        gate()
+        actual_blob=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+        if (len(raw),d22_sha(raw),actual_blob)!=(size,digest,blob):
+            raise RuntimeError('d22_fixture_binding')
+        rows.append(['C:/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/'+name,
+                     {'size_bytes':len(raw),'sha256':d22_sha(raw),
+                      'git_blob':actual_blob}])
+    data={'approval':'https://github.com/lordcoudy/VAST/pull/9#issuecomment-1234567890',
+          'commit':hashlib.sha1(b'controlled-current-review').hexdigest(),
+          'common':NODE_SHARED_PYTHON,'fields':list(NODE_FIELDS),'pipe_fields':list(NODE_PIPE_FIELDS),
+          'root':'/home/s-a-balashov/work/vast-fixture-compiler-gate2-465ab7986939c67ae3594344ee3b6266cd2abd7a-01/r1',
+          'setup_head':NODE_SETUP_HEAD,'setup_tail':NODE_SETUP_TAIL,'sources':rows}
+    plain,_=d22_build_plain(data)
+    marker="var {spawn:g2s}=await import('node:child_process');"
+    ts=d22_lex(plain[plain.index(marker):])
+    literals=frozenset(t[1][1:-1] for t in ts
+                      if t[0]=='string' and '\\' not in t[1][1:-1] and len(t[1][1:-1])>=8)
+    properties={t[1] for i,t in enumerate(ts) if t[0]=='id' and i and ts[i-1][1] in ('.','?.')
+                and t[1] in D22_PROPERTY_ALLOWLIST}
+    pool=sorted(literals|properties)
+    if len(pool)!=74 or len(literals)!=53:raise RuntimeError('d22_original_pool')
+    aliases={v:('$'+chr(97+i) if i<26 else '$'+chr(65+i-26) if i<52 else '$x'+str(i))
+             for i,v in enumerate(pool)}
+    if set(aliases.values()) & {t[1] for t in d22_lex(plain) if t[0]=='id'}:
+        raise RuntimeError('d22_alias_collision')
+    data={**data,'strings':pool};raw=d22_canonical(data)
+    if len(raw)!=8369 or d22_sha(raw)!='7ecdc75899f600d71c728639ac33eb3090eb08d99fb85d914a9def761733a23c':
+        raise RuntimeError('d22_original_data_binding')
+    gate();packed,compression=d22_compress_data_v1(raw,deadline);gate()
+    if len(packed)!=2948 or d22_sha(packed)!='524b55cec5a004998fe0d0fee591d209ef0a52e07897d10ddc140f2debf4dbd6':
+        raise RuntimeError('d22_original_compressed_data_binding')
+    encoded=base64.b64encode(packed).decode('ascii')
+    original,_=d22_build_plain(data);at=original.index(marker)
+    pre=original[len(D22_PREFIX):at]
+    oldkeys="'approval,commit,common,fields,pipe_fields,root,setup_head,setup_tail,sources'"
+    if pre.count(oldkeys)!=1:raise RuntimeError('d22_data_shape_site')
+    pre=pre.replace(oldkeys,"'approval,commit,common,fields,pipe_fields,root,setup_head,setup_tail,sources,strings'")
+    pre+="if(!Array.isArray(g2data.strings)||g2data.strings.length!==74||!g2data.strings.every(v=>typeof v==='string'&&v.length<=512))throw Error('data_strings');\nconst["+','.join(aliases[v] for v in pool)+"]=g2data.strings;\n"
+    zpacked=zlib.compress(raw,9);previous=base64.b64encode(zpacked).decode('ascii')
+    pre=pre.replace(json.dumps(previous),json.dumps(encoded)).replace('g2packed.length!=='+str(len(previous)),
+                'g2packed.length!=='+str(len(encoded))).replace('g2compressed.length!=='+str(len(zpacked)),
+                'g2compressed.length!=='+str(len(packed))).replace('inflateSync:g2inflate','brotliDecompressSync:g2inflate')
+    baseline_body=original[at:]
+    def render(body):
+        transformed,_=d22_transform_body(body,literals,properties,aliases)
+        return D22_PREFIX+d22_shorten_private_prefix(pre)+'\n'+transformed
+    historical=render(baseline_body)
+    if len(historical)!=17014 or d22_sha(historical.encode('ascii'))!='e61180deba849f94f1cf223b4d42a217eb5d2ef664d81d1da3e0d11fd8b10d08':
+        raise RuntimeError('d22_historical_source_binding')
+    validators=NODE_VALIDATORS.replace('__COMMIT__','g2data.commit').replace('__ROOT__','g2data.root')
+    early="g2.commit=g2data.commit;g2.root=g2data.root;\ng2.need=(v,c)=>{if(!v)throw Error(c);};\n"
+    feature="g2.need(typeof JSON.rawJSON==='function'&&JSON.parse('1',(k,v,c)=>c?.source)==='1','parse_source_feature');\n"
+    capture="Object.defineProperty(g2,'_gate2CreateHash',{value:g2h,enumerable:false,writable:false,configurable:false});\n"
+    old_output='g2.last_setup=snapshot;g2.setup_success=false;try{g2.setupView(snapshot);g2.setup_success=true;}catch(e){g2.setup_refusal=String(e.message);}'
+    new_output='g2.last_setup=snapshot;g2.setup_success=null;'
+    if baseline_body.count(validators)!=1 or validators.count(early)!=1 or validators.count(feature)!=1 or baseline_body.count(old_output)!=1:
+        raise RuntimeError('d22_phase_source_sites')
+    deferred=validators.replace(early,'').replace(feature,'')
+    phase_body=baseline_body.replace(validators,early+feature+capture).replace(old_output,new_output)
+    inverse_body=phase_body.replace(early+feature+capture,validators).replace(new_output,old_output)
+    if inverse_body!=baseline_body:raise RuntimeError('d22_inverse_source')
+    initial=render(phase_body);restored=render(inverse_body);gate()
+    escaped=len(d22_canonical(initial));fit=escaped<=12288
+    facts={'kind':'d22_initial_source_only_v1','source_bytes':len(initial),
+           'source_sha256':d22_sha(initial.encode('ascii')),'escaped_source_bytes':escaped,
+           'historical_bytes':len(historical),'historical_sha256':d22_sha(historical.encode('ascii')),
+           'prefix_bytes':len(D22_PREFIX),'prefix_sha256':d22_sha(D22_PREFIX.encode('ascii')),
+           'canonical_data_bytes':len(raw),'canonical_data_sha256':d22_sha(raw),
+           'compressed_data_bytes':len(packed),'compressed_data_sha256':d22_sha(packed),
+           'pool_entries':len(pool),'literal_entries':len(literals),
+           'deferred_definition_bytes':len(deferred),'deferred_definition_sha256':d22_sha(deferred.encode('ascii')),
+           'exact_inverse_source':restored==historical,'source_contribution_fits':fit,
+           'source_only_over_cap_by':max(0,escaped-12288),'complete_geometry_qualified':False,
+           'behavior_conformance_complete':False,'finalizer_implemented':False,
+           'generated_operational_program_executed':False,'generated_full_subject_files_written':False,
+           'status':'UNQUALIFIED' if fit else 'HOLD_SOURCE_CONTRIBUTION_OVER_CAP',
+           'task_2_10_complete':False,'compression':compression}
+    if len(d22_canonical(facts))>32768:raise RuntimeError('d22_metadata_bound')
+    return initial,historical,{'phase_body':phase_body,'restored':restored,'deferred':deferred},facts
+
+
+class D22StaticPhaseConstructionTests(unittest.TestCase):
+    """The first risk slice proves derivation and width, not operational fitness."""
+
+    def test_changed_fixture_or_data_refuses_before_compression(self):
+        import time
+        from tests import test_accepted_policy_fixture_compiler_gate2_resume_caller_v1 as caller
+        requests=[]
+        class Sentinel(io.BytesIO):
+            def read(self, size=-1):
+                requests.append(size)
+                return super().read(size)
+        with patch.object(Path,'open',return_value=Sentinel(b'x'*32770)), \
+                patch.object(caller,'d22_compress_data_v1') as compress:
+            with self.assertRaisesRegex(RuntimeError,'d22_fixture_binding'):
+                d22_phase_initial_v1(time.monotonic()+20)
+        self.assertEqual(compress.call_count,0)
+        self.assertTrue(bool(requests) and all(0<size<=32769 for size in requests),
+                        'fixture input must be bounded before allocation')
+        with patch.dict(globals(),NODE_SHARED_PYTHON=NODE_SHARED_PYTHON+' '), \
+                patch.object(caller,'d22_compress_data_v1') as compress:
+            with self.assertRaisesRegex(RuntimeError,'d22_original_data_binding'):
+                d22_phase_initial_v1(time.monotonic()+20)
+        self.assertEqual(compress.call_count,0)
+
+    def test_phase_initial_preserves_baseline_and_unclassified_setup(self):
+        import time
+        initial, historical, parts, facts = d22_phase_initial_v1(
+            globals().get('D22_TEST_DEADLINE', time.monotonic() + 295))
+        self.assertEqual(len(historical.encode('ascii')), 17014)
+        self.assertEqual(hashlib.sha256(historical.encode('ascii')).hexdigest(),
+                         'e61180deba849f94f1cf223b4d42a217eb5d2ef664d81d1da3e0d11fd8b10d08')
+        self.assertTrue(parts['restored'] == historical, 'historical inverse source differs')
+        self.assertEqual(initial[:295], NODE_CONTROLLER[:295])
+        early = "g2.need(typeof JSON.rawJSON==='function'&&JSON.parse('1',(k,v,c)=>c?.source)==='1','parse_source_feature');"
+        body = parts['phase_body']
+        self.assertLess(body.index(early), body.index("Object.defineProperty(g2,'_gate2CreateHash'"))
+        self.assertLess(body.index("Object.defineProperty(g2,'_gate2CreateHash'"), body.index('await g2.auth();'))
+        self.assertFalse('g2.setupView=' in body, 'setup validator was not deferred')
+        self.assertFalse('function gate2Ascii(' in body, 'canonical validator was not deferred')
+        self.assertFalse('g2.setup_success=false;try{g2.setupView(snapshot);' in body,
+                         'initial snapshot was classified')
+        self.assertTrue('g2.last_setup=snapshot;g2.setup_success=null;' in body,
+                        'unclassified initial snapshot is missing')
+        self.assertEqual(facts['pool_entries'], 74)
+        escaped = len(json.dumps(initial, ensure_ascii=True, separators=(',', ':')).encode('ascii'))
+        self.assertEqual(facts['escaped_source_bytes'], escaped)
+        self.assertEqual(facts['source_contribution_fits'], escaped <= 12288)
+        self.assertFalse(facts['complete_geometry_qualified'])
+        self.assertFalse(facts['behavior_conformance_complete'])
+        report = json.dumps(facts, sort_keys=True, separators=(',', ':'))
+        self.assertLessEqual(len(report.encode('ascii')), 32768)
+        print('D22_INITIAL_SOURCE_ONLY', report)
+
+
 if __name__ == '__main__':
     unittest.main()
