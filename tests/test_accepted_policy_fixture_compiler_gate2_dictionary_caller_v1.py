@@ -271,7 +271,7 @@ def _d27_run_fixed_driver_v1(case, raw, deadline, geometry=False):
         if os.name == 'nt':
             environment['SystemRoot'] = os.environ['SystemRoot']
         argv = [node, '--max-old-space-size=256', '--input-type=commonjs', '-e', program]
-        if os.name == 'nt' and len(subprocess.list2cmdline(argv)) > 32767:
+        if os.name == 'nt' and len(subprocess.list2cmdline(argv).encode('utf-16-le'))//2 > 32767:
             cause('driver_command_limit');return finish()
         with lock:
             facts.update(node_executable=node, command_options=argv[1:4], environment_keys=sorted(environment))
@@ -794,6 +794,13 @@ class D27FixedDriverTransportTests(unittest.TestCase):
                 report, facts = self._capture(lambda: d27_run_case_v1('codec_vectors', b'{}', time.monotonic() + 40))
             self.assertIn(expected, facts['causes'])
             spawn.assert_not_called()
+
+    @unittest.skipUnless(os.name=='nt','Windows UTF16 command contract')
+    def test_non_bmp_command_overflow_refuses_before_spawn(self):
+        import time
+        with mock.patch('subprocess.list2cmdline',return_value='\U0001f600'*16384),mock.patch('subprocess.Popen') as spawn:
+            report,facts=self._capture(lambda:d27_run_case_v1('codec_vectors',b'{}',time.monotonic()+40))
+        spawn.assert_not_called();self.assertIsNone(report);self.assertIn('driver_command_limit',facts['causes'])
 
     def test_channel_overflow_status_errors_and_stderr_never_publish_raw_data(self):
         import time
@@ -1585,6 +1592,8 @@ def d27_compress_data_v1(raw, deadline):
         if os.name == 'nt':
             environment['SystemRoot'] = os.environ['SystemRoot']
         argv = [node, '--max-old-space-size=256', '--input-type=commonjs', '-e', _D27_BROTLI_DATA_PROGRAM]
+        if os.name == 'nt' and len(subprocess.list2cmdline(argv).encode('utf-16-le'))//2 > 32767:
+            cause('driver_command_limit');return finish()
         with lock:
             facts.update(node_executable=node, command_options=argv[1:4], environment_keys=sorted(environment))
         if time.monotonic() >= work_end:
@@ -2412,7 +2421,7 @@ class D27SourceCustodyTests(unittest.TestCase):
         self.assertLessEqual(len(geometry.encode('ascii')),24576)
         node=shutil.which('node') or 'node'
         for fixed in (program,geometry):
-            self.assertLessEqual(len(subprocess.list2cmdline([node,'--max-old-space-size=256','--input-type=commonjs','-e',fixed])),32767)
+            self.assertLessEqual(len(subprocess.list2cmdline([node,'--max-old-space-size=256','--input-type=commonjs','-e',fixed]).encode('utf-16-le'))//2,32767)
 
     @unittest.skipUnless(sys.version_info[:3]==(3,14,7) and os.name=='nt',
                          'D27 held-entry control requires fixed Windows Python3.14.7 worktree')
@@ -3411,7 +3420,7 @@ def d27_geometry_parent_v1(pins):
             ('tail',role['excluded_encoder_bytes'],role['excluded_encoder_sha256']))})
     command=[sys.executable,'-I','-S','-B','-c',D27_GEOMETRY_TEST_ENTRY,
              json.dumps(pins,separators=(',',':')),repr(work_end),'--d27-sole-inert-geometry-child']
-    command_chars=len(subprocess.list2cmdline(command))
+    command_chars=len(subprocess.list2cmdline(command).encode('utf-16-le'))//2
     if command_chars>32767:raise RuntimeError('d27_parent_command_bound')
     root=Path('C:/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST')
     caps={'stdout':1048576,'stderr':16384};buffers={k:bytearray() for k in caps}
