@@ -1477,13 +1477,68 @@ def d27_run_genuine_initial_v1(deadline):
     def has_causes():
         with lock:
             return bool(facts['causes'])
-    def finish(report=None):
+    def finish(report=None,parse_report=False):
         # Capture related facts, channels, causes and byte prefixes at one shared
         # lock boundary. Later worker changes cannot mix these captured values.
         with lock:
             snapshot = copy.deepcopy(facts)
             captured_channels = {name: dict(channel) for name, channel in channels.items()}
             prefixes = {name: bytes(buffer) for name, buffer in buffers.items()}
+        # Freeze once: parser and publication use these same immutable prefixes.
+        # Late workers cannot create or erase a report in this observation.
+        if parse_report:
+            stdout_data,stderr_data=prefixes['stdout'],prefixes['stderr']
+            if stderr_data and 'unexpected_stderr' not in snapshot['causes']:
+                snapshot['causes'].append('unexpected_stderr')
+            try:
+                if len(stdout_data) > 32768 or not stdout_data.isascii():
+                    raise ValueError('report extent')
+                def unique_pairs(rows):
+                    result = dict(rows)
+                    if len(result) != len(rows):
+                        raise ValueError('duplicate report field')
+                    return result
+                result = json.loads(stdout_data, object_pairs_hook=unique_pairs, parse_constant=reject_constant)
+                if (type(result) is not dict or set(result) != {'schema_version', 'case', 'node_version',
+                        'completed', 'cause', 'checks', 'measurements'}
+                        or type(result['schema_version']) is not int or result['schema_version'] != 1
+                        or result['case'] != case or type(result['case']) is not str
+                        or result['node_version'] != '25.2.1' or type(result['completed']) is not bool
+                        or result['cause'] is not None and (type(result['cause']) is not str
+                            or result['cause'] not in ('d27_genuine_assertion','d27_genuine_input','d27_genuine_version','d27_genuine_error'))
+                        or type(result['checks']) is not list or len(result['checks']) > 512
+                        or type(result['measurements']) is not list or len(result['measurements']) > 128):
+                    raise ValueError('report shape')
+                import re
+                def identifier(value):
+                    return type(value) is str and re.fullmatch(r'[A-Za-z0-9_]{1,64}', value) is not None
+                check_ids=set()
+                for item in result['checks']:
+                    if (type(item) is not dict or set(item) != {'id', 'ok'}
+                            or not identifier(item['id']) or type(item['ok']) is not bool):
+                        raise ValueError('report check')
+                    if item['id'] in check_ids:raise ValueError('duplicate report check')
+                    check_ids.add(item['id'])
+                measurement_ids=set()
+                for item in result['measurements']:
+                    if (type(item) is not dict or set(item) != {'id', 'size_bytes', 'sha256'}
+                            or not identifier(item['id']) or type(item['size_bytes']) is not int
+                            or not 0 <= item['size_bytes'] <= 262144
+                            or type(item['sha256']) is not str
+                            or re.fullmatch(r'[0-9a-f]{64}', item['sha256']) is None):
+                        raise ValueError('report measurement')
+                    if item['id'] in measurement_ids:raise ValueError('duplicate report measurement')
+                    measurement_ids.add(item['id'])
+                if canonical(result)+b'\n' != stdout_data:
+                    raise ValueError('report canonical LF')
+            except (ValueError, TypeError, RecursionError, OverflowError):
+                if 'child_protocol' not in snapshot['causes']:snapshot['causes'].append('child_protocol')
+            else:
+                report=result
+                snapshot.update(node_version=result['node_version'],case_completed=result['completed'],
+                    case_cause=result['cause'],report_bytes=len(stdout_data),
+                    report_sha256=hashlib.sha256(stdout_data).hexdigest(),
+                    checks_count=len(result['checks']),measurements_count=len(result['measurements']))
         for name, channel in captured_channels.items():
             prefix = prefixes[name]
             snapshot[name] = {**channel, 'retained_bytes': len(prefix),
@@ -1584,7 +1639,7 @@ def d27_run_genuine_initial_v1(deadline):
         if os.name == 'nt':
             environment['SystemRoot'] = os.environ['SystemRoot']
         argv = [node, '--max-old-space-size=256', '--experimental-vm-modules', '--no-warnings', '--input-type=commonjs', '-e', program]
-        if os.name == 'nt' and len(subprocess.list2cmdline(argv)) > 32767:
+        if os.name == 'nt' and len(subprocess.list2cmdline(argv).encode('utf-16-le'))//2 > 32767:
             cause('driver_command_limit');return finish()
         with lock:
             facts.update(node_executable=node, command_options=argv[1:6], environment_keys=sorted(environment))
@@ -1630,28 +1685,30 @@ def d27_run_genuine_initial_v1(deadline):
                 cause(name + '_close_error')
     def write_input():
         try:
-            while True:
-                with lock:
-                    offset = facts['stdin_bytes']
-                    if offset >= len(raw):
-                        break
+            with memoryview(raw) as view:
+                while True:
+                    with lock:
+                        offset = facts['stdin_bytes']
+                        if offset >= len(raw):
+                            break
+                        if time.monotonic() >= work_end:
+                            cause('stdin_deadline');break
+                        remaining = len(raw) - offset
+                        facts.update(stdin_write_attempted=True, stdin_write_in_flight=True,
+                                     stdin_extent_unknown=True)
+                    with view[offset:] as part:
+                        count = process.stdin.write(part)
+                    with lock:
+                        facts['stdin_write_in_flight'] = False
+                        if type(count) is not int or not 0 < count <= remaining:
+                            cause('stdin_short_write');break
+                        facts['stdin_bytes'] += count
+                        facts['stdin_extent_unknown'] = False
                     if time.monotonic() >= work_end:
                         cause('stdin_deadline');break
-                    remaining = len(raw) - offset
-                    facts.update(stdin_write_attempted=True, stdin_write_in_flight=True,
-                                 stdin_extent_unknown=True)
-                count = process.stdin.write(raw[offset:])
                 with lock:
-                    facts['stdin_write_in_flight'] = False
-                    if type(count) is not int or not 0 < count <= remaining:
-                        cause('stdin_short_write');break
-                    facts['stdin_bytes'] += count
-                    facts['stdin_extent_unknown'] = False
-                if time.monotonic() >= work_end:
-                    cause('stdin_deadline');break
-            with lock:
-                facts['stdin_complete'] = (facts['stdin_bytes'] == len(raw)
-                                           and not facts['stdin_extent_unknown'])
+                    facts['stdin_complete'] = (facts['stdin_bytes'] == len(raw)
+                                               and not facts['stdin_extent_unknown'])
         except (OSError, ValueError):
             with lock:
                 facts.update(stdin_write_in_flight=False, stdin_extent_unknown=True)
@@ -1746,59 +1803,7 @@ def d27_run_genuine_initial_v1(deadline):
             cause('child_forced')
         if not facts['stdin_complete'] or not facts['stdin_closed'] or not all(c['eof'] for c in channels.values()):
             cause('io_completion_unknown')
-        stdout_data, stderr_data = bytes(buffers['stdout']), bytes(buffers['stderr'])
-    if stderr_data:
-        cause('unexpected_stderr')
-    # A valid metadata report stays available even when transport failed.
-    try:
-        if len(stdout_data) > 32768 or not stdout_data.isascii():
-            raise ValueError('report extent')
-        def unique_pairs(rows):
-            result = dict(rows)
-            if len(result) != len(rows):
-                raise ValueError('duplicate report field')
-            return result
-        result = json.loads(stdout_data, object_pairs_hook=unique_pairs, parse_constant=reject_constant)
-        if (type(result) is not dict or set(result) != {'schema_version', 'case', 'node_version',
-                'completed', 'cause', 'checks', 'measurements'}
-                or type(result['schema_version']) is not int or result['schema_version'] != 1
-                or result['case'] != case or type(result['case']) is not str
-                or result['node_version'] != '25.2.1' or type(result['completed']) is not bool
-                or result['cause'] is not None and (type(result['cause']) is not str
-                    or result['cause'] not in ('d27_genuine_assertion','d27_genuine_input','d27_genuine_version','d27_genuine_error'))
-                or type(result['checks']) is not list or len(result['checks']) > 512
-                or type(result['measurements']) is not list or len(result['measurements']) > 128):
-            raise ValueError('report shape')
-        import re
-        def identifier(value):
-            return type(value) is str and re.fullmatch(r'[A-Za-z0-9_]{1,64}', value) is not None
-        check_ids=set()
-        for item in result['checks']:
-            if (type(item) is not dict or set(item) != {'id', 'ok'}
-                    or not identifier(item['id']) or type(item['ok']) is not bool):
-                raise ValueError('report check')
-            if item['id'] in check_ids:raise ValueError('duplicate report check')
-            check_ids.add(item['id'])
-        measurement_ids=set()
-        for item in result['measurements']:
-            if (type(item) is not dict or set(item) != {'id', 'size_bytes', 'sha256'}
-                    or not identifier(item['id']) or type(item['size_bytes']) is not int
-                    or not 0 <= item['size_bytes'] <= 262144
-                    or type(item['sha256']) is not str
-                    or re.fullmatch(r'[0-9a-f]{64}', item['sha256']) is None):
-                raise ValueError('report measurement')
-            if item['id'] in measurement_ids:raise ValueError('duplicate report measurement')
-            measurement_ids.add(item['id'])
-        if canonical(result)+b'\n' != stdout_data:
-            raise ValueError('report canonical LF')
-    except (ValueError, TypeError, RecursionError, OverflowError):
-        cause('child_protocol');return finish()
-    with lock:
-        facts.update(node_version=result['node_version'], case_completed=result['completed'],
-                     case_cause=result['cause'], report_bytes=len(stdout_data),
-                     report_sha256=hashlib.sha256(stdout_data).hexdigest(),
-                     checks_count=len(result['checks']), measurements_count=len(result['measurements']))
-    return finish(result)
+    return finish(parse_report=True)
 
 
 def d27_run_genuine_finalizer_v1(deadline):
@@ -1851,13 +1856,68 @@ def d27_run_genuine_finalizer_v1(deadline):
     def has_causes():
         with lock:
             return bool(facts['causes'])
-    def finish(report=None):
+    def finish(report=None,parse_report=False):
         # Capture related facts, channels, causes and byte prefixes at one shared
         # lock boundary. Later worker changes cannot mix these captured values.
         with lock:
             snapshot = copy.deepcopy(facts)
             captured_channels = {name: dict(channel) for name, channel in channels.items()}
             prefixes = {name: bytes(buffer) for name, buffer in buffers.items()}
+        # Freeze once: parser and publication use these same immutable prefixes.
+        # Late workers cannot create or erase a report in this observation.
+        if parse_report:
+            stdout_data,stderr_data=prefixes['stdout'],prefixes['stderr']
+            if stderr_data and 'unexpected_stderr' not in snapshot['causes']:
+                snapshot['causes'].append('unexpected_stderr')
+            try:
+                if len(stdout_data) > 32768 or not stdout_data.isascii():
+                    raise ValueError('report extent')
+                def unique_pairs(rows):
+                    result = dict(rows)
+                    if len(result) != len(rows):
+                        raise ValueError('duplicate report field')
+                    return result
+                result = json.loads(stdout_data, object_pairs_hook=unique_pairs, parse_constant=reject_constant)
+                if (type(result) is not dict or set(result) != {'schema_version', 'case', 'node_version',
+                        'completed', 'cause', 'checks', 'measurements'}
+                        or type(result['schema_version']) is not int or result['schema_version'] != 1
+                        or result['case'] != case or type(result['case']) is not str
+                        or result['node_version'] != '25.2.1' or type(result['completed']) is not bool
+                        or result['cause'] is not None and (type(result['cause']) is not str
+                            or result['cause'] not in ('d27_genuine_assertion','d27_genuine_input','d27_genuine_version','d27_genuine_error'))
+                        or type(result['checks']) is not list or len(result['checks']) > 512
+                        or type(result['measurements']) is not list or len(result['measurements']) > 128):
+                    raise ValueError('report shape')
+                import re
+                def identifier(value):
+                    return type(value) is str and re.fullmatch(r'[A-Za-z0-9_]{1,64}', value) is not None
+                check_ids=set()
+                for item in result['checks']:
+                    if (type(item) is not dict or set(item) != {'id', 'ok'}
+                            or not identifier(item['id']) or type(item['ok']) is not bool):
+                        raise ValueError('report check')
+                    if item['id'] in check_ids:raise ValueError('duplicate report check')
+                    check_ids.add(item['id'])
+                measurement_ids=set()
+                for item in result['measurements']:
+                    if (type(item) is not dict or set(item) != {'id', 'size_bytes', 'sha256'}
+                            or not identifier(item['id']) or type(item['size_bytes']) is not int
+                            or not 0 <= item['size_bytes'] <= 262144
+                            or type(item['sha256']) is not str
+                            or re.fullmatch(r'[0-9a-f]{64}', item['sha256']) is None):
+                        raise ValueError('report measurement')
+                    if item['id'] in measurement_ids:raise ValueError('duplicate report measurement')
+                    measurement_ids.add(item['id'])
+                if canonical(result)+b'\n' != stdout_data:
+                    raise ValueError('report canonical LF')
+            except (ValueError, TypeError, RecursionError, OverflowError):
+                if 'child_protocol' not in snapshot['causes']:snapshot['causes'].append('child_protocol')
+            else:
+                report=result
+                snapshot.update(node_version=result['node_version'],case_completed=result['completed'],
+                    case_cause=result['cause'],report_bytes=len(stdout_data),
+                    report_sha256=hashlib.sha256(stdout_data).hexdigest(),
+                    checks_count=len(result['checks']),measurements_count=len(result['measurements']))
         for name, channel in captured_channels.items():
             prefix = prefixes[name]
             snapshot[name] = {**channel, 'retained_bytes': len(prefix),
@@ -1958,7 +2018,7 @@ def d27_run_genuine_finalizer_v1(deadline):
         if os.name == 'nt':
             environment['SystemRoot'] = os.environ['SystemRoot']
         argv = [node, '--max-old-space-size=256', '--experimental-vm-modules', '--no-warnings', '--input-type=commonjs', '-e', program]
-        if os.name == 'nt' and len(subprocess.list2cmdline(argv)) > 32767:
+        if os.name == 'nt' and len(subprocess.list2cmdline(argv).encode('utf-16-le'))//2 > 32767:
             cause('driver_command_limit');return finish()
         with lock:
             facts.update(node_executable=node, command_options=argv[1:6], environment_keys=sorted(environment))
@@ -2004,28 +2064,30 @@ def d27_run_genuine_finalizer_v1(deadline):
                 cause(name + '_close_error')
     def write_input():
         try:
-            while True:
-                with lock:
-                    offset = facts['stdin_bytes']
-                    if offset >= len(raw):
-                        break
+            with memoryview(raw) as view:
+                while True:
+                    with lock:
+                        offset = facts['stdin_bytes']
+                        if offset >= len(raw):
+                            break
+                        if time.monotonic() >= work_end:
+                            cause('stdin_deadline');break
+                        remaining = len(raw) - offset
+                        facts.update(stdin_write_attempted=True, stdin_write_in_flight=True,
+                                     stdin_extent_unknown=True)
+                    with view[offset:] as part:
+                        count = process.stdin.write(part)
+                    with lock:
+                        facts['stdin_write_in_flight'] = False
+                        if type(count) is not int or not 0 < count <= remaining:
+                            cause('stdin_short_write');break
+                        facts['stdin_bytes'] += count
+                        facts['stdin_extent_unknown'] = False
                     if time.monotonic() >= work_end:
                         cause('stdin_deadline');break
-                    remaining = len(raw) - offset
-                    facts.update(stdin_write_attempted=True, stdin_write_in_flight=True,
-                                 stdin_extent_unknown=True)
-                count = process.stdin.write(raw[offset:])
                 with lock:
-                    facts['stdin_write_in_flight'] = False
-                    if type(count) is not int or not 0 < count <= remaining:
-                        cause('stdin_short_write');break
-                    facts['stdin_bytes'] += count
-                    facts['stdin_extent_unknown'] = False
-                if time.monotonic() >= work_end:
-                    cause('stdin_deadline');break
-            with lock:
-                facts['stdin_complete'] = (facts['stdin_bytes'] == len(raw)
-                                           and not facts['stdin_extent_unknown'])
+                    facts['stdin_complete'] = (facts['stdin_bytes'] == len(raw)
+                                               and not facts['stdin_extent_unknown'])
         except (OSError, ValueError):
             with lock:
                 facts.update(stdin_write_in_flight=False, stdin_extent_unknown=True)
@@ -2120,56 +2182,4 @@ def d27_run_genuine_finalizer_v1(deadline):
             cause('child_forced')
         if not facts['stdin_complete'] or not facts['stdin_closed'] or not all(c['eof'] for c in channels.values()):
             cause('io_completion_unknown')
-        stdout_data, stderr_data = bytes(buffers['stdout']), bytes(buffers['stderr'])
-    if stderr_data:
-        cause('unexpected_stderr')
-    # A valid metadata report stays available even when transport failed.
-    try:
-        if len(stdout_data) > 32768 or not stdout_data.isascii():
-            raise ValueError('report extent')
-        def unique_pairs(rows):
-            result = dict(rows)
-            if len(result) != len(rows):
-                raise ValueError('duplicate report field')
-            return result
-        result = json.loads(stdout_data, object_pairs_hook=unique_pairs, parse_constant=reject_constant)
-        if (type(result) is not dict or set(result) != {'schema_version', 'case', 'node_version',
-                'completed', 'cause', 'checks', 'measurements'}
-                or type(result['schema_version']) is not int or result['schema_version'] != 1
-                or result['case'] != case or type(result['case']) is not str
-                or result['node_version'] != '25.2.1' or type(result['completed']) is not bool
-                or result['cause'] is not None and (type(result['cause']) is not str
-                    or result['cause'] not in ('d27_genuine_assertion','d27_genuine_input','d27_genuine_version','d27_genuine_error'))
-                or type(result['checks']) is not list or len(result['checks']) > 512
-                or type(result['measurements']) is not list or len(result['measurements']) > 128):
-            raise ValueError('report shape')
-        import re
-        def identifier(value):
-            return type(value) is str and re.fullmatch(r'[A-Za-z0-9_]{1,64}', value) is not None
-        check_ids=set()
-        for item in result['checks']:
-            if (type(item) is not dict or set(item) != {'id', 'ok'}
-                    or not identifier(item['id']) or type(item['ok']) is not bool):
-                raise ValueError('report check')
-            if item['id'] in check_ids:raise ValueError('duplicate report check')
-            check_ids.add(item['id'])
-        measurement_ids=set()
-        for item in result['measurements']:
-            if (type(item) is not dict or set(item) != {'id', 'size_bytes', 'sha256'}
-                    or not identifier(item['id']) or type(item['size_bytes']) is not int
-                    or not 0 <= item['size_bytes'] <= 262144
-                    or type(item['sha256']) is not str
-                    or re.fullmatch(r'[0-9a-f]{64}', item['sha256']) is None):
-                raise ValueError('report measurement')
-            if item['id'] in measurement_ids:raise ValueError('duplicate report measurement')
-            measurement_ids.add(item['id'])
-        if canonical(result)+b'\n' != stdout_data:
-            raise ValueError('report canonical LF')
-    except (ValueError, TypeError, RecursionError, OverflowError):
-        cause('child_protocol');return finish()
-    with lock:
-        facts.update(node_version=result['node_version'], case_completed=result['completed'],
-                     case_cause=result['cause'], report_bytes=len(stdout_data),
-                     report_sha256=hashlib.sha256(stdout_data).hexdigest(),
-                     checks_count=len(result['checks']), measurements_count=len(result['measurements']))
-    return finish(result)
+    return finish(parse_report=True)
