@@ -2183,3 +2183,72 @@ def d27_run_genuine_finalizer_v1(deadline):
         if not facts['stdin_complete'] or not facts['stdin_closed'] or not all(c['eof'] for c in channels.values()):
             cause('io_completion_unknown')
     return finish(parse_report=True)
+def d27_parent_cap_control_v1(test):
+    """Fake I/O only: an oversized parent must not discard known originals."""
+    import contextlib,io,stat,sys
+    from unittest import mock
+    caller=_d27_caller_module_v1()
+    output,error,report=b'unit stdout prefix\n',b'unit stderr prefix\n',b'unit recovery sentinel\n'
+    helper=caller.D27FixedDriverTransportTests()
+    process=helper._fake_process(stdout=output,stderr=error)
+    producer=types.SimpleNamespace(D27_WIRE_CODEC=None,
+        d27_geometry_driver_v1=lambda:"/* unit DATA, never executed */")
+    role={name:value for part in ('full_codec','node_codec','excluded_encoder')
+          for name,value in ((part+'_bytes',1),(part+'_sha256','0'*64))}
+    pins={name:(1,'0'*64) for name in ('main','caller')}
+    encode=caller.canonical;files={};fds={};opened=[];published=io.BytesIO()
+    def serialize(value):
+        if type(value) is dict and value.get('kind')=='d27_local_inert_geometry_test_parent_observation_v1':
+            value={**value,'unit_forced_parent_cap':'x'*32768}
+        return encode(value)
+    def facts(row):
+        return types.SimpleNamespace(st_dev=1,st_ino=row['inode'],st_mode=stat.S_IFREG|0o600,
+            st_nlink=1,st_size=len(row['raw']),st_mtime_ns=1)
+    def create(path,mode,buffering=0):
+        test.assertEqual((mode,buffering),('xb',0))
+        name=path.name;opened.append(name)
+        test.assertNotIn('.parent.',name)
+        row={'raw':bytearray(),'inode':100+len(files)};files[name]=row
+        fd=100+len(fds);fds[fd]=(row,0)
+        class Writer:
+            def fileno(self):return fd
+            def write(self,part):
+                size=min(3,len(part));row['raw'].extend(part[:size]);return size
+            def flush(self):pass
+            def close(self):pass
+        return Writer()
+    def reopen(path,flags):
+        fd=100+len(fds);fds[fd]=(files[path.name],0);return fd
+    def read(fd,size):
+        row,offset=fds[fd];part=bytes(row['raw'][offset:offset+size])
+        fds[fd]=(row,offset+len(part));return part
+    # The protocol/recovery sentinels isolate retention control flow. They are
+    # not actual geometry evidence or a test of the unique-report validator.
+    with contextlib.ExitStack() as stack:
+        stack.enter_context(mock.patch.object(caller,'_d27_main_module_v1',return_value=producer))
+        stack.enter_context(mock.patch.object(caller,'d27_node_codec_v1',return_value=(None,role)))
+        stack.enter_context(mock.patch('subprocess.Popen',return_value=process))
+        stack.enter_context(mock.patch.object(caller,'d27_original_protocol_v1',return_value=(None,None,{'successful':True},True,True,True)))
+        recovered=stack.enter_context(mock.patch.object(caller,'d27_recover_canonical_report_v1',return_value=report))
+        stack.enter_context(mock.patch.object(caller,'canonical',side_effect=serialize))
+        stack.enter_context(mock.patch.object(caller.os.path,'lexists',return_value=False))
+        stack.enter_context(mock.patch.object(Path,'open',create))
+        stack.enter_context(mock.patch.object(Path,'lstat',lambda path:facts(files[path.name])))
+        stack.enter_context(mock.patch.object(caller.os,'open',side_effect=reopen))
+        stack.enter_context(mock.patch.object(caller.os,'fstat',side_effect=lambda fd:facts(fds[fd][0])))
+        stack.enter_context(mock.patch.object(caller.os,'read',side_effect=read))
+        stack.enter_context(mock.patch.object(caller.os,'close'))
+        stack.enter_context(mock.patch.object(caller.os,'fsync'))
+        stack.enter_context(mock.patch.object(sys,'stdout',types.SimpleNamespace(buffer=published)))
+        status=caller.d27_geometry_root_v1(pins)
+    recovered.assert_called_once();test.assertEqual(recovered.call_args.args[0],output)
+    result=json.loads(published.getvalue());test.assertLessEqual(len(published.getvalue()),32768)
+    test.assertEqual(status,1);test.assertFalse(result['retention_complete'])
+    test.assertTrue(result['geometry_risk_passed'])
+    test.assertEqual(result['originals']['parent'],{'available':False,'unavailable_reason':'RETENTION_FAILED'})
+    test.assertEqual(len(opened),3)
+    for name,raw in (('stdout',output),('stderr',error),('canonical_report',report)):
+        descriptor=result['originals'][name]
+        test.assertTrue(descriptor['available']);test.assertEqual(descriptor['size_bytes'],len(raw))
+        test.assertEqual(descriptor['sha256'],hashlib.sha256(raw).hexdigest())
+        test.assertEqual(bytes(files[Path(descriptor['path']).name]['raw']),raw)

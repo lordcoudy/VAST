@@ -3557,7 +3557,6 @@ def d27_geometry_parent_v1(pins):
         'source_execution_reopens_paths':False,'generated_operational_program_execution':False,
         'descendant_quiescence':'UNKNOWN','self_report_persistence_or_whole_process_attested':False}
     parent_raw=canonical(parent)+b'\n'
-    if len(parent_raw)>32768:raise RuntimeError('d27_parent_report_bound')
     report=d27_recover_canonical_report_v1(raw['stdout'],admitted)
     return {'stdout':raw['stdout'],'stderr':raw['stderr'],'parent':parent_raw,'canonical_report':report},parent
 
@@ -3951,6 +3950,9 @@ class D27ProtocolControlsTests(unittest.TestCase):
 
 
 class D27EntryTransportControlsTests(unittest.TestCase):
+    def test_parent_cap_preserves_originals(self):
+        _d27_main_module_v1().d27_parent_cap_control_v1(self)
+
     def test_mocked_genuine_capture_preserves_valid_report_on_transport_failure(self):
         from unittest import mock
         import time
