@@ -1,0 +1,27 @@
+{
+ "cwd": "/work/root",
+ "interpreter": "/usr/bin/python3.10",
+ "modules": {
+  "test_checkpoint_deepstream_runtime": {
+   "elapsed_s": 1.77,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 11 tests in 0.932s",
+    "OK"
+   ]
+  },
+  "test_operational_identifier_domain_v1": {
+   "elapsed_s": 1.05,
+   "returncode": 1,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 1 test in 0.000s",
+    "FAILED (errors=1)"
+   ]
+  }
+ },
+ "python": "3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]",
+ "pythonpath": "/work/root/scripts:/work/root/tests:/work/root:/work/pydeps",
+ "system": "deepstream"
+}

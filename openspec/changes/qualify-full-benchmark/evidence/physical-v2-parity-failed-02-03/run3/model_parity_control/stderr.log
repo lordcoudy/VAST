@@ -1,0 +1,37 @@
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer_v4.py", line 789, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer_v4.py", line 763, in main
+    result = materialize_and_promote_model_parity_v4(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer_v4.py", line 714, in materialize_and_promote_model_parity_v4
+    collection = materializer_v3._collect_production_evidence(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer.py", line 2946, in _collect_production_evidence
+    with socket_namespace.lifecycle(), NativeEndpointRunner(
+                                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer.py", line 1550, in __init__
+    self._launch_and_accept_workers()
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer.py", line 1804, in _launch_and_accept_workers
+    peer_identity = _attest_worker_peer_identity(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 1999, in _attest_worker_peer_identity
+    platform = worker_handle.peercred_pid0_platform_observation()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 3970, in peercred_pid0_platform_observation
+    self._platform_observer()
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 4041, in _observe_peercred_platform
+    observed = _observe_peercred_pid0_platform_observation(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 1507, in _observe_peercred_pid0_platform_observation
+    return _build_peercred_pid0_platform_observation(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 1246, in _build_peercred_pid0_platform_observation
+    docker_projection = _docker_desktop_platform_projection(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 1182, in _docker_desktop_platform_projection
+    _require(
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 286, in _require
+    raise SidecarError(message)
+checkpoint_gstreamer_analytics_sidecar.SidecarError: Docker Desktop containerd commit drifted

@@ -5,6 +5,8 @@ import json
 import sys
 import tempfile
 import unittest
+from collections.abc import Iterator
+from contextlib import contextmanager
 from pathlib import Path
 from unittest import mock
 
@@ -24,6 +26,45 @@ SYSTEMS = qualification.SYSTEMS
 RESOURCES = qualification.RESOURCES
 CODECS = qualification.CODECS
 TOPOLOGIES = qualification.TOPOLOGIES
+
+
+# Amendment 6 (E): drvfs without metadata reports a read-only 0444 leaf as
+# 0555; only custody that does not enforce POSIX modes may accept it.
+READONLY_MODE_CASES = (
+    (0o555, False, True),
+    (0o555, True, False),
+    (0o777, False, False),
+    (0o777, True, False),
+    (0o666, False, False),
+    (0o644, False, False),
+)
+
+
+@contextmanager
+def reported_readonly_mode(
+    custody_type: type, mode: int, *, enforced: bool, labels: set[str]
+) -> Iterator[list[str]]:
+    """Report ``mode`` for labelled leaves and pin POSIX-mode enforcement."""
+
+    stat_regular_identity = custody_type.stat_regular_identity
+    seen: list[str] = []
+
+    def reported(custody, value, *, label):
+        observed, identity = stat_regular_identity(custody, value, label=label)
+        if label in labels:
+            seen.append(label)
+            return mode, identity
+        return observed, identity
+
+    with mock.patch.object(
+        custody_type, "stat_regular_identity", reported
+    ), mock.patch.object(
+        custody_type,
+        "permission_modes_enforced",
+        new_callable=mock.PropertyMock,
+        return_value=enforced,
+    ):
+        yield seen
 
 
 def descriptor(root: Path, path: Path) -> dict[str, object]:
@@ -455,6 +496,39 @@ class FullResourceQualificationIndexV1Tests(unittest.TestCase):
                         (output.stat().st_dev, output.stat().st_ino),
                         published_identity,
                     )
+
+    def test_index_modes_accept_0555_only_without_mode_enforcement(self) -> None:
+        labels = (
+            "committed full-resource qualification index mode",
+            "cold full-resource qualification index",
+        )
+        payload = b'{"index":true}\n'
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve()
+            (root / "qualification").mkdir()
+            for site, label in enumerate(labels):
+                for case, (mode, enforced, accepted) in enumerate(
+                    READONLY_MODE_CASES
+                ):
+                    destination = root / f"qualification/index-{site}-{case}.json"
+                    with (
+                        self.subTest(label=label, mode=oct(mode), enforced=enforced),
+                        reported_readonly_mode(
+                            target.PhysicalRootCustodyV1,
+                            mode,
+                            enforced=enforced,
+                            labels={label},
+                        ) as seen,
+                    ):
+                        if accepted:
+                            target._commit_index(root, destination, payload)
+                            self.assertIn(label, seen)
+                            self.assertEqual(destination.read_bytes(), payload)
+                        else:
+                            with self.assertRaises(
+                                target.FullResourceQualificationIndexV1Error
+                            ):
+                                target._commit_index(root, destination, payload)
 
 
 if __name__ == "__main__":

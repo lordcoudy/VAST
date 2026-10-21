@@ -1,0 +1,24 @@
+{
+  "checks": [
+    {
+      "name": "vast-gate2-resume-12k-working-openspec-all-01.original.log",
+      "returncode": 0,
+      "sha256": "5f51cd14a7b0eb5d4d1ca61c3e1bfeda6df0a584a2f2a3d33994ce6b941aae55",
+      "size_bytes": 3655,
+      "totals": [
+        "Totals: 6 passed, 0 failed (6 items)"
+      ]
+    },
+    {
+      "name": "vast-gate2-resume-12k-working-openspec-archive-01.original.log",
+      "returncode": 0,
+      "sha256": "d4de148ddcd080aea9dfc976c4b1250238e6e5be2afcfcc70671f41224fe8ea8",
+      "size_bytes": 285,
+      "totals": [
+        "Totals: 5 passed, 0 failed (5 items)"
+      ]
+    }
+  ],
+  "physical_acceptance": false,
+  "scope": "Local structuralOpenSpec checks on workingstate; not semanticconformance, implementation CI, archive of activechange or physicalapproval. Raw allvalidation copied successfully before display-only CP1251UnicodeEncodeError; archive was then run separately without repeating all."
+}

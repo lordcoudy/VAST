@@ -1,0 +1,33 @@
+CONTROLLED_NODE_RUNTIME /mnt/c/Program Files/nodejs/node.exe v25.2.1
+F
+======================================================================
+FAIL: test_known_setup_child_is_retained_when_tracking_throws_and_stdin_closes_once (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_known_setup_child_is_retained_when_tracking_throws_and_stdin_closes_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 774, in test_known_setup_child_is_retained_when_tracking_throws_and_stdin_closes_once
+    value=self.node(self.carrier(self.code()),action='pending',track_throw=1,stdin_async_error=1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 491, in node
+    self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : [eval]:10
+child.stdin=new EventEmitter();child.stdin.end=raw=>{stdinEnds[0]++;setup_ack=Buffer.from(raw||'').toString('base64');if(test.stdin_end_throw===1)throw Error('controlled_stdin');if(test.stdin_async_error===1)queueMicrotask(()=>child.stdin.emit('error',Error('controlled async input')));if(test.stdin_error)child.stdin.emit('error',Error('controlled input'));child.stdin.emit('finish');child.stdin.emit('close');};child.stdio=[child.stdin,child.stdout,child.stderr,new Pipe(2)];
+                                                                                                                                                                                                                                                            ^
+
+Error: controlled async input
+    at [eval]:10:253
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+Emitted 'error' event at:
+    at [eval]:10:240
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+
+Node.js v25.2.1
+
+
+----------------------------------------------------------------------
+Ran 1 test in 1.196s
+
+FAILED (failures=1)

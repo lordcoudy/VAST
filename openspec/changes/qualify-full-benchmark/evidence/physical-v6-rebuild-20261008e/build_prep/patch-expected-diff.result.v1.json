@@ -1,0 +1,202 @@
+{
+ "summary": {
+  "tag": 10,
+  "deepstream": 12,
+  "binding_hash": 10,
+  "unexpected": 0
+ },
+ "rows": [
+  {
+   "path": "patch_sha256",
+   "kind": "binding_hash",
+   "old": "ca05be1fddae8857b749a8cacf6e92c0fc5f26e6f2e56d535c9a19e6cc8d4496",
+   "new": "35b3028d6a3ff063a9e19875bbeeef213fdb04ee524f4f7400c6c69d7c56ebca"
+  },
+  {
+   "path": "receipts/analytics_worker/path",
+   "kind": "tag",
+   "old": "artifacts/qualify_full_benchmark_20261008d/worker_images/analytics-worker.freeze.json",
+   "new": "artifacts/qualify_full_benchmark_20261008e/worker_images/analytics-worker.freeze.json"
+  },
+  {
+   "path": "receipts/native_probe/path",
+   "kind": "tag",
+   "old": "artifacts/qualify_full_benchmark_20261008d/native-a/native_probe.freeze.json",
+   "new": "artifacts/qualify_full_benchmark_20261008e/native-a/native_probe.freeze.json"
+  },
+  {
+   "path": "receipts/runtime_images/deepstream/path",
+   "kind": "tag",
+   "old": "artifacts/qualify_full_benchmark_20261008d/runtime_images/deepstream.runtime.freeze.json",
+   "new": "artifacts/qualify_full_benchmark_20261008e/runtime_images/deepstream.runtime.freeze.json"
+  },
+  {
+   "path": "receipts/runtime_images/deepstream/receipt_sha256",
+   "kind": "deepstream",
+   "old": "c388a73d1b9526f0b649b01eeaccb953da48f38a5a7cb514df43f1ad99cbbfef",
+   "new": "4832368ece6ab6184a0e785b5dc76ddc5e1d1decee8e7a58399c9e763cb10150"
+  },
+  {
+   "path": "receipts/runtime_images/deepstream/sha256",
+   "kind": "deepstream",
+   "old": "4e6b055df5b3e644df8463306e5bb89108685e7d96d35781c1954a7529b2afa6",
+   "new": "d2e8875a9308858e8d1872bb7166281e0c8cb461c79e570621639b6fb8734c12"
+  },
+  {
+   "path": "receipts/runtime_images/gstreamer_custom/path",
+   "kind": "tag",
+   "old": "artifacts/qualify_full_benchmark_20261008d/runtime_images/gstreamer_custom.runtime.freeze.json",
+   "new": "artifacts/qualify_full_benchmark_20261008e/runtime_images/gstreamer_custom.runtime.freeze.json"
+  },
+  {
+   "path": "receipts/runtime_images/gstreamer_custom/receipt_sha256",
+   "kind": "binding_hash",
+   "old": "bd010a2ed7c824d34a0926c86fbfb6b002793686184b9bd3c102e6acd6fcd2cb",
+   "new": "04efa5f35d61a21ede76799a475889f78424d4bca4dad71990b95c8091fbe38d"
+  },
+  {
+   "path": "receipts/runtime_images/gstreamer_custom/sha256",
+   "kind": "binding_hash",
+   "old": "c703fafee94e25f73a6d1b10df49bdadf21cbb7766942cda24f447e1a3bd2380",
+   "new": "87234bc73ec72eeb4a0510a4ae549d716ebca08c8ea26588e8c8c5873780646d"
+  },
+  {
+   "path": "receipts/runtime_images/openvino_gva/path",
+   "kind": "tag",
+   "old": "artifacts/qualify_full_benchmark_20261008d/runtime_images/openvino_gva.runtime.freeze.json",
+   "new": "artifacts/qualify_full_benchmark_20261008e/runtime_images/openvino_gva.runtime.freeze.json"
+  },
+  {
+   "path": "receipts/runtime_images/openvino_gva/receipt_sha256",
+   "kind": "binding_hash",
+   "old": "e85f95b2bde37ac4359ec1099078b2657a03c91d99014f900b882d7c30cf7452",
+   "new": "6006d595542d7b8616d734babc6ab489103d7fc5f45d5422c8507e9580cba603"
+  },
+  {
+   "path": "receipts/runtime_images/openvino_gva/sha256",
+   "kind": "binding_hash",
+   "old": "11a6cc4bf82ecd6c86e5c3994d4b29df30be315852282f383bf17da524adc091",
+   "new": "293f7a93b1626b8e754b8359b16d5f718c091815c1d92a6fa479863e008e142d"
+  },
+  {
+   "path": "receipts/runtime_images/savant/path",
+   "kind": "tag",
+   "old": "artifacts/qualify_full_benchmark_20261008d/runtime_images/savant.runtime.freeze.json",
+   "new": "artifacts/qualify_full_benchmark_20261008e/runtime_images/savant.runtime.freeze.json"
+  },
+  {
+   "path": "receipts/runtime_images/savant/receipt_sha256",
+   "kind": "binding_hash",
+   "old": "d2a1876bade07f5d8be1a665d4bcebd05072503169794952939489ae4c209dbb",
+   "new": "66e05224bafb29a176766248f8a799c73aaa7d6b201713a098c7b630aee63555"
+  },
+  {
+   "path": "receipts/runtime_images/savant/sha256",
+   "kind": "binding_hash",
+   "old": "b6c72fe726d7b25a2ccaf5939d1e74e062154b6bc367cf00562b5c1f4b9fc15f",
+   "new": "a3b32086ad39b75afdc2c4d1ff58d3ce8e49dec2b2e1ebb9f15a8c5691c5769f"
+  },
+  {
+   "path": "systems/deepstream/fragment_identity/image_id",
+   "kind": "deepstream",
+   "old": "sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157",
+   "new": "sha256:3a9aa20a8efb722e89865e73aaa9d29ec6ce6ae4e806f485887a9a032bebb984"
+  },
+  {
+   "path": "systems/deepstream/fragment_identity/repository_digest",
+   "kind": "deepstream",
+   "old": "vast/deepstream-publication-runtime-v3@sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157",
+   "new": "vast/deepstream-publication-runtime-v3@sha256:3a9aa20a8efb722e89865e73aaa9d29ec6ce6ae4e806f485887a9a032bebb984"
+  },
+  {
+   "path": "systems/deepstream/fragment_identity/runtime_source_sha256",
+   "kind": "deepstream",
+   "old": "9a214b1b342687939f48e81e4fbff9ea304b746ab25b9b0b7f10857f9d940fdb",
+   "new": "eec3f2c97e91b6503aee89a75887de2f6b63ed37a7d9c1c8cef46ea84f7b9154"
+  },
+  {
+   "path": "systems/deepstream/physical_identity/canonical_repository_digest",
+   "kind": "deepstream",
+   "old": "vast/deepstream-publication-runtime-v3@sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157",
+   "new": "vast/deepstream-publication-runtime-v3@sha256:3a9aa20a8efb722e89865e73aaa9d29ec6ce6ae4e806f485887a9a032bebb984"
+  },
+  {
+   "path": "systems/deepstream/physical_identity/image_id",
+   "kind": "deepstream",
+   "old": "sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157",
+   "new": "sha256:3a9aa20a8efb722e89865e73aaa9d29ec6ce6ae4e806f485887a9a032bebb984"
+  },
+  {
+   "path": "systems/deepstream/physical_identity/inspect_full_sha256",
+   "kind": "deepstream",
+   "old": "a5ce1137fb4955468102f92c3de8aa959779c61aa32c7ac5b597fef05a205816",
+   "new": "3519bbe8b38c588df423a1b90582d33f96c3334562fe6b2ec5248a717f256823"
+  },
+  {
+   "path": "systems/deepstream/physical_identity/inspect_projection_sha256",
+   "kind": "deepstream",
+   "old": "b41205cb97a392bd86adea753a35752337219c150ea864d63e77ef582e8a0278",
+   "new": "8881fa8da87e892ad00cc3b9289172236248cc1e39a0037e6f69dbff9b21f392"
+  },
+  {
+   "path": "systems/deepstream/physical_identity/labels/org.vast.runtime-source-sha256",
+   "kind": "deepstream",
+   "old": "9a214b1b342687939f48e81e4fbff9ea304b746ab25b9b0b7f10857f9d940fdb",
+   "new": "eec3f2c97e91b6503aee89a75887de2f6b63ed37a7d9c1c8cef46ea84f7b9154"
+  },
+  {
+   "path": "systems/deepstream/physical_identity/native_receipt/path",
+   "kind": "tag",
+   "old": "artifacts/qualify_full_benchmark_20261008d/native-a/native_probe.freeze.json",
+   "new": "artifacts/qualify_full_benchmark_20261008e/native-a/native_probe.freeze.json"
+  },
+  {
+   "path": "systems/deepstream/physical_identity/observed_repository_digests/0",
+   "kind": "deepstream",
+   "old": "vast/deepstream-publication-runtime-v3@sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157",
+   "new": "vast/deepstream-publication-runtime-v3@sha256:3a9aa20a8efb722e89865e73aaa9d29ec6ce6ae4e806f485887a9a032bebb984"
+  },
+  {
+   "path": "systems/deepstream/physical_identity/source_identity/runtime_source_sha256",
+   "kind": "deepstream",
+   "old": "9a214b1b342687939f48e81e4fbff9ea304b746ab25b9b0b7f10857f9d940fdb",
+   "new": "eec3f2c97e91b6503aee89a75887de2f6b63ed37a7d9c1c8cef46ea84f7b9154"
+  },
+  {
+   "path": "systems/gstreamer_custom/physical_identity/inspect_full_sha256",
+   "kind": "binding_hash",
+   "old": "90d15e5f733d64d59f2149b48e28ee0fd12b35ea63af92763c3c386a07daf814",
+   "new": "84e0cb9ecc71f39ff57e35041a17689f335e5b345110fa1d8b8e6071ad425c57"
+  },
+  {
+   "path": "systems/gstreamer_custom/physical_identity/native_receipt/path",
+   "kind": "tag",
+   "old": "artifacts/qualify_full_benchmark_20261008d/native-a/native_probe.freeze.json",
+   "new": "artifacts/qualify_full_benchmark_20261008e/native-a/native_probe.freeze.json"
+  },
+  {
+   "path": "systems/openvino_gva/physical_identity/inspect_full_sha256",
+   "kind": "binding_hash",
+   "old": "810169b3bd43332db07141500a2ed9aa9ccb5b111fca128a2085a273439da327",
+   "new": "ebbcbdd321dc9a7d79a7b25da454ad6e42eae8b446ffa765dca619eb68c1dd76"
+  },
+  {
+   "path": "systems/openvino_gva/physical_identity/native_receipt/path",
+   "kind": "tag",
+   "old": "artifacts/qualify_full_benchmark_20261008d/native-a/native_probe.freeze.json",
+   "new": "artifacts/qualify_full_benchmark_20261008e/native-a/native_probe.freeze.json"
+  },
+  {
+   "path": "systems/savant/physical_identity/inspect_full_sha256",
+   "kind": "binding_hash",
+   "old": "049c935bb71909780203f5404e41497655dd95e5154f723d7f591fdeec3c6935",
+   "new": "954a7234e61630698797a17f9e9e5097604507646be88a267cc7ebdc9a574e36"
+  },
+  {
+   "path": "systems/savant/physical_identity/native_receipt/path",
+   "kind": "tag",
+   "old": "artifacts/qualify_full_benchmark_20261008d/native-a/native_probe.freeze.json",
+   "new": "artifacts/qualify_full_benchmark_20261008e/native-a/native_probe.freeze.json"
+  }
+ ]
+}

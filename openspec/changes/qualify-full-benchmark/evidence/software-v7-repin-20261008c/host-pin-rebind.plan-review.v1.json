@@ -1,0 +1,116 @@
+{
+ "changed_lines_equal_planned_lines": true,
+ "files": [
+  {
+   "changed_lines": [
+    43,
+    44,
+    47,
+    53,
+    54,
+    57,
+    63,
+    66,
+    73,
+    77,
+    95,
+    99,
+    102,
+    108
+   ],
+   "edits": 14,
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+  },
+  {
+   "changed_lines": [
+    54,
+    55,
+    56,
+    70
+   ],
+   "edits": 4,
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py"
+  },
+  {
+   "changed_lines": [
+    57,
+    58,
+    59,
+    69
+   ],
+   "edits": 4,
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py"
+  },
+  {
+   "changed_lines": [
+    75,
+    79,
+    82,
+    88
+   ],
+   "edits": 4,
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py"
+  },
+  {
+   "changed_lines": [
+    31,
+    36,
+    38,
+    44,
+    49,
+    50,
+    68,
+    84,
+    89,
+    328,
+    335,
+    410,
+    414,
+    418,
+    422,
+    446,
+    447,
+    448,
+    449,
+    455,
+    456,
+    457,
+    463,
+    464,
+    465
+   ],
+   "edits": 25,
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+  },
+  {
+   "changed_lines": [
+    233,
+    235,
+    236
+   ],
+   "edits": 3,
+   "file": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+  },
+  {
+   "changed_lines": [
+    51,
+    55
+   ],
+   "edits": 2,
+   "file": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py"
+  },
+  {
+   "changed_lines": [
+    250
+   ],
+   "edits": 1,
+   "file": "tests/test_publication_gstreamer_component_inputs_v1.py"
+  }
+ ],
+ "mapping_size": 143,
+ "non_pin_ast_unchanged": true,
+ "patch_bytes": 20977,
+ "patch_sha256": "75ac19dbbe156d1b431152c7bda405eabd69c1d21015b8880eac0eced50c9d69",
+ "plan_sha256": "7441cf4804ad5047de78e2f12a96021e7ffaa72f271d1cfb5c415fbaf6054a13",
+ "status": "verified_plan_rendered"
+}

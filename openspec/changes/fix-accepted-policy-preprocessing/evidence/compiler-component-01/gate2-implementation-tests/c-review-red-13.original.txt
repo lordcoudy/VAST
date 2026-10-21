@@ -1,0 +1,144 @@
+command: python3 -B -m unittest tests.test_accepted_policy_fixture_compiler_gate2_c_v1
+exit_code: 1
+....FFFFFFFF...F.....F...E.FF.
+======================================================================
+ERROR: test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 158, in write_record_v1
+    _require(compiler._json_bound(value) <= cap, "record_bound")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_v1.py", line 247, in _json_bound
+    size += _json_bound(item, depth=depth+1, ancestors=ancestors, nodes=nodes) + 1
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_v1.py", line 247, in _json_bound
+    size += _json_bound(item, depth=depth+1, ancestors=ancestors, nodes=nodes) + 1
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_v1.py", line 247, in _json_bound
+    size += _json_bound(item, depth=depth+1, ancestors=ancestors, nodes=nodes) + 1
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [Previous line repeated 1 more time]
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_v1.py", line 237, in _json_bound
+    raise ValueError("fixture JSON type/container bound exceeded")
+ValueError: fixture JSON type/container bound exceeded
+System.Management.Automation.RemoteException
+The above exception was the direct cause of the following exception:
+System.Management.Automation.RemoteException
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 872, in run_c_v1
+    owner_desc = write_record_v1(output / "outer.owner.original.json", owner, cap=RECORD_LIMIT)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 160, in write_record_v1
+    raise Gate2Refusal("record_bound") from error
+tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1.Gate2Refusal: record_bound
+System.Management.Automation.RemoteException
+The above exception was the direct cause of the following exception:
+System.Management.Automation.RemoteException
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 480, in test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat
+    result = gate.run_c_v1(stage, project_root=root, packet_descriptor={},
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 934, in run_c_v1
+    raise Gate2Refusal("c_stage_stopped", refusal) from error
+tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1.Gate2Refusal: c_stage_stopped
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_all_six_exact_mappings_and_both_adopted_variants (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_all_six_exact_mappings_and_both_adopted_variants) (stage='C1', adopted=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 109, in test_all_six_exact_mappings_and_both_adopted_variants
+    self.assertTrue(result["passed"], result)
+AssertionError: False is not true : {'schema_version': 1, 'artifact_kind': 'vast_fixture_compiler_gate2_c_comparison_v1', 'stage': 'C1', 'passed': False, 'causes': ['rpc_peer_epoch'], 'whole_chain_authority': False}
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_all_six_exact_mappings_and_both_adopted_variants (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_all_six_exact_mappings_and_both_adopted_variants) (stage='C2', adopted=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 109, in test_all_six_exact_mappings_and_both_adopted_variants
+    self.assertTrue(result["passed"], result)
+AssertionError: False is not true : {'schema_version': 1, 'artifact_kind': 'vast_fixture_compiler_gate2_c_comparison_v1', 'stage': 'C2', 'passed': False, 'causes': ['rpc_peer_epoch'], 'whole_chain_authority': False}
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_all_six_exact_mappings_and_both_adopted_variants (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_all_six_exact_mappings_and_both_adopted_variants) (stage='C3', adopted=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 109, in test_all_six_exact_mappings_and_both_adopted_variants
+    self.assertTrue(result["passed"], result)
+AssertionError: False is not true : {'schema_version': 1, 'artifact_kind': 'vast_fixture_compiler_gate2_c_comparison_v1', 'stage': 'C3', 'passed': False, 'causes': ['rpc_peer_epoch'], 'whole_chain_authority': False}
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_all_six_exact_mappings_and_both_adopted_variants (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_all_six_exact_mappings_and_both_adopted_variants) (stage='C4', adopted=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 109, in test_all_six_exact_mappings_and_both_adopted_variants
+    self.assertTrue(result["passed"], result)
+AssertionError: False is not true : {'schema_version': 1, 'artifact_kind': 'vast_fixture_compiler_gate2_c_comparison_v1', 'stage': 'C4', 'passed': False, 'causes': ['rpc_peer_epoch'], 'whole_chain_authority': False}
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_all_six_exact_mappings_and_both_adopted_variants (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_all_six_exact_mappings_and_both_adopted_variants) (stage='C4', adopted=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 109, in test_all_six_exact_mappings_and_both_adopted_variants
+    self.assertTrue(result["passed"], result)
+AssertionError: False is not true : {'schema_version': 1, 'artifact_kind': 'vast_fixture_compiler_gate2_c_comparison_v1', 'stage': 'C4', 'passed': False, 'causes': ['rpc_peer_epoch'], 'whole_chain_authority': False}
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_all_six_exact_mappings_and_both_adopted_variants (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_all_six_exact_mappings_and_both_adopted_variants) (stage='C5', adopted=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 109, in test_all_six_exact_mappings_and_both_adopted_variants
+    self.assertTrue(result["passed"], result)
+AssertionError: False is not true : {'schema_version': 1, 'artifact_kind': 'vast_fixture_compiler_gate2_c_comparison_v1', 'stage': 'C5', 'passed': False, 'causes': ['rpc_peer_epoch'], 'whole_chain_authority': False}
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_all_six_exact_mappings_and_both_adopted_variants (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_all_six_exact_mappings_and_both_adopted_variants) (stage='C5', adopted=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 109, in test_all_six_exact_mappings_and_both_adopted_variants
+    self.assertTrue(result["passed"], result)
+AssertionError: False is not true : {'schema_version': 1, 'artifact_kind': 'vast_fixture_compiler_gate2_c_comparison_v1', 'stage': 'C5', 'passed': False, 'causes': ['rpc_peer_epoch'], 'whole_chain_authority': False}
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_all_six_exact_mappings_and_both_adopted_variants (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_all_six_exact_mappings_and_both_adopted_variants) (stage='C6', adopted=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 109, in test_all_six_exact_mappings_and_both_adopted_variants
+    self.assertTrue(result["passed"], result)
+AssertionError: False is not true : {'schema_version': 1, 'artifact_kind': 'vast_fixture_compiler_gate2_c_comparison_v1', 'stage': 'C6', 'passed': False, 'causes': ['rpc_peer_epoch'], 'whole_chain_authority': False}
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_evaluator_accepts_actual_transport_peer_and_epoch_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_evaluator_accepts_actual_transport_peer_and_epoch_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 179, in test_evaluator_accepts_actual_transport_peer_and_epoch_facts
+    self.assertTrue(gate.evaluate_c_v1("C1", owner, seen)["passed"])
+AssertionError: False is not true
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_rpc_upgrade_is_closed_without_requiring_handshake_eof (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_rpc_upgrade_is_closed_without_requiring_handshake_eof)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 163, in test_rpc_upgrade_is_closed_without_requiring_handshake_eof
+    self.assertTrue(gate.evaluate_c_v1("C1", owner, seen)["passed"])
+AssertionError: False is not true
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_identity_refuses_drift_before_owner_and_records_only_four_gets (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_identity_refuses_drift_before_owner_and_records_only_four_gets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 360, in test_identity_refuses_drift_before_owner_and_records_only_four_gets
+    self.assertIsInstance(result["rpc"]["rpc"][0]["epoch_before"], list)
+AssertionError: ((1, 2, 0, 0, 16877, None), (1, 3, 0, 0, 16877, None), (1, 4, 0, 999, 49584, 17)) is not an instance of <class 'list'>
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_kernel_delta_accepts_only_attributable_sig25_assembler_dump (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_kernel_delta_accepts_only_attributable_sig25_assembler_dump)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 400, in test_kernel_delta_accepts_only_attributable_sig25_assembler_dump
+    self.assertFalse(gate.kernel_delta_v1("C3", before, before + lines + audit.replace(b"pid=22", b"pid=99"),
+AssertionError: True is not false
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 23 tests in 0.337s
+System.Management.Automation.RemoteException
+FAILED (failures=12, errors=1)

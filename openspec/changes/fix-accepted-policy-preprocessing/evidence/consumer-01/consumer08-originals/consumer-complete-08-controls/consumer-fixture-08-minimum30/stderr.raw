@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 189, in <module>
+    main()
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 146, in main
+    with prepared_complete_fixture_inputs_v2(
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/tests/fixtures/accepted_policy_physical_fixture_v2.py", line 118, in prepared_complete_fixture_inputs_v2
+    runtime = materialize_publication_policy_qualification_runtime_inputs_v2(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 3469, in materialize_publication_policy_qualification_runtime_inputs_v2
+    result = _materialize_publication_policy_qualification_runtime_inputs_v2_held(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 3160, in _materialize_publication_policy_qualification_runtime_inputs_v2_held
+    device_probes = _probe_devices(
+                    ^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 1564, in _probe_devices
+    value = dependencies.probe_openvino_device(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 479, in _default_probe_openvino_device
+    value = _run_json(
+            ^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 433, in _run_json
+    _require(
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 189, in _require
+    _fail(message)
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 184, in _fail
+    raise QualificationRuntimeInputMaterializationV2Error(message)
+publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputMaterializationV2Error: openvino_gva OpenVINO device probe failed closed

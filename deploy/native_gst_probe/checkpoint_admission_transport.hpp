@@ -9,6 +9,8 @@
 #include <fcntl.h>
 #include <limits>
 #include <mutex>
+#include <optional>
+#include <ostream>
 #include <poll.h>
 #include <stdexcept>
 #include <string>
@@ -54,6 +56,29 @@ class NonDecreasingWallClock {
  private:
   std::atomic<std::uint64_t> last_{0};
   std::atomic<std::uint64_t> max_clamp_{0};
+};
+
+// One bounded "[role][wall-clock] max_clamp_ns=N" stderr line when the owning
+// scope ends, on normal return and on exception unwinding alike, so an owner
+// that retains stderr as failure evidence also retains the applied clamp.
+class WallClockExitLine {
+ public:
+  WallClockExitLine(std::ostream& out, const char* role,
+                    const NonDecreasingWallClock& clock = NonDecreasingWallClock::process())
+      : out_(out), role_(role), clock_(clock) {}
+  WallClockExitLine(const WallClockExitLine&) = delete;
+  WallClockExitLine& operator=(const WallClockExitLine&) = delete;
+  ~WallClockExitLine() {
+    try {
+      out_ << '[' << role_ << "][wall-clock] max_clamp_ns=" << clock_.max_clamp_ns() << '\n';
+      out_.flush();
+    } catch (...) {}
+  }
+
+ private:
+  std::ostream& out_;
+  const char* role_;
+  const NonDecreasingWallClock& clock_;
 };
 
 // One owned lifecycle bound, shared by its callbacks and transports. Realtime

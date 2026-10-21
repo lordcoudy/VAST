@@ -1,0 +1,194 @@
+EEEEEEEEEEEEEEEE
+======================================================================
+ERROR: test_allocation_drift_or_unknown_refuses_even_when_bytes_and_identity_match (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeAuthenticatedReadTests.test_allocation_drift_or_unknown_refuses_even_when_bytes_and_identity_match) (amounts=[4096, 8192])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 134, in test_allocation_drift_or_unknown_refuses_even_when_bytes_and_identity_match
+    with self.subTest(amounts=amounts), patch.object(component, "_resume_fd_allocation_v1",
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_resume_fd_allocation_v1'
+
+======================================================================
+ERROR: test_allocation_drift_or_unknown_refuses_even_when_bytes_and_identity_match (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeAuthenticatedReadTests.test_allocation_drift_or_unknown_refuses_even_when_bytes_and_identity_match) (amounts=[None, None])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 134, in test_allocation_drift_or_unknown_refuses_even_when_bytes_and_identity_match
+    with self.subTest(amounts=amounts), patch.object(component, "_resume_fd_allocation_v1",
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_resume_fd_allocation_v1'
+
+======================================================================
+ERROR: test_allocation_drift_or_unknown_refuses_even_when_bytes_and_identity_match (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeAuthenticatedReadTests.test_allocation_drift_or_unknown_refuses_even_when_bytes_and_identity_match) (amounts=[True, True])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 134, in test_allocation_drift_or_unknown_refuses_even_when_bytes_and_identity_match
+    with self.subTest(amounts=amounts), patch.object(component, "_resume_fd_allocation_v1",
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_resume_fd_allocation_v1'
+
+======================================================================
+ERROR: test_known_allocation_is_observed_twice_on_same_authenticated_open_fd (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeAuthenticatedReadTests.test_known_allocation_is_observed_twice_on_same_authenticated_open_fd)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 123, in test_known_allocation_is_observed_twice_on_same_authenticated_open_fd
+    with patch.object(component, "_resume_fd_allocation_v1", side_effect=allocation):
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_resume_fd_allocation_v1'
+
+======================================================================
+ERROR: test_nonregular_or_link_refuses_before_potentially_blocking_open (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeAuthenticatedReadTests.test_nonregular_or_link_refuses_before_potentially_blocking_open) (kind='link')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 147, in test_nonregular_or_link_refuses_before_potentially_blocking_open
+    component._resume_read_v1(path, 4096)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute '_resume_read_v1'
+
+======================================================================
+ERROR: test_nonregular_or_link_refuses_before_potentially_blocking_open (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeAuthenticatedReadTests.test_nonregular_or_link_refuses_before_potentially_blocking_open) (kind='fifo')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 147, in test_nonregular_or_link_refuses_before_potentially_blocking_open
+    component._resume_read_v1(path, 4096)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute '_resume_read_v1'
+
+======================================================================
+ERROR: test_duplicate_version_and_unfunded_source_slot_refuse (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_duplicate_version_and_unfunded_source_slot_refuse) (row=[0, '0635c484de771e9fe333003577060b487197a2a9', 98603, '79b55f9d1ae2aa2a1e3ff0f0dc01e3523512d16658007cd4ab62ed53a6c25382'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 86, in test_duplicate_version_and_unfunded_source_slot_refuse
+    self.quote()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 48, in quote
+    return component.resume_code_forms_quote_v1(self.root, code=self.code,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'resume_code_forms_quote_v1'. Did you mean: 'current_code_forms_quote_v1'?
+
+======================================================================
+ERROR: test_duplicate_version_and_unfunded_source_slot_refuse (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_duplicate_version_and_unfunded_source_slot_refuse) (row=[99, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 1, 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 86, in test_duplicate_version_and_unfunded_source_slot_refuse
+    self.quote()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 48, in quote
+    return component.resume_code_forms_quote_v1(self.root, code=self.code,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'resume_code_forms_quote_v1'. Did you mean: 'current_code_forms_quote_v1'?
+
+======================================================================
+ERROR: test_extra_intermediate_plan_git_is_additive_even_when_current_bytes_unchanged (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_extra_intermediate_plan_git_is_additive_even_when_current_bytes_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 70, in test_extra_intermediate_plan_git_is_additive_even_when_current_bytes_unchanged
+    self.assertEqual(self.quote(), 946176)
+                     ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 48, in quote
+    return component.resume_code_forms_quote_v1(self.root, code=self.code,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'resume_code_forms_quote_v1'. Did you mean: 'current_code_forms_quote_v1'?
+
+======================================================================
+ERROR: test_scoped_budget_keeps_legacy_and_counts_full_current_and_superseded_forms (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_scoped_budget_keeps_legacy_and_counts_full_current_and_superseded_forms)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 65, in test_scoped_budget_keeps_legacy_and_counts_full_current_and_superseded_forms
+    self.assertEqual(component.RESUME_CODE_FORMS_V1, 983040)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'RESUME_CODE_FORMS_V1'. Did you mean: 'CURRENT_CODE_FORMS_V1'?
+
+======================================================================
+ERROR: test_unfunded_working_allocation_and_unknown_allocation_refuse (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_unfunded_working_allocation_and_unknown_allocation_refuse) (allocation=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 105, in test_unfunded_working_allocation_and_unknown_allocation_refuse
+    with self.subTest(allocation=allocation), patch.object(component, "_resume_fd_allocation_v1",
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_resume_fd_allocation_v1'
+
+======================================================================
+ERROR: test_unfunded_working_allocation_and_unknown_allocation_refuse (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_unfunded_working_allocation_and_unknown_allocation_refuse) (allocation=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 105, in test_unfunded_working_allocation_and_unknown_allocation_refuse
+    with self.subTest(allocation=allocation), patch.object(component, "_resume_fd_allocation_v1",
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_resume_fd_allocation_v1'
+
+======================================================================
+ERROR: test_unfunded_working_allocation_and_unknown_allocation_refuse (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_unfunded_working_allocation_and_unknown_allocation_refuse) (allocation=-1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 105, in test_unfunded_working_allocation_and_unknown_allocation_refuse
+    with self.subTest(allocation=allocation), patch.object(component, "_resume_fd_allocation_v1",
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_resume_fd_allocation_v1'
+
+======================================================================
+ERROR: test_unfunded_working_allocation_and_unknown_allocation_refuse (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_unfunded_working_allocation_and_unknown_allocation_refuse) (allocation=9223372036854775808)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 105, in test_unfunded_working_allocation_and_unknown_allocation_refuse
+    with self.subTest(allocation=allocation), patch.object(component, "_resume_fd_allocation_v1",
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_resume_fd_allocation_v1'
+
+======================================================================
+ERROR: test_unfunded_working_allocation_and_unknown_allocation_refuse (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_unfunded_working_allocation_and_unknown_allocation_refuse) (allocation=1073741824)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 105, in test_unfunded_working_allocation_and_unknown_allocation_refuse
+    with self.subTest(allocation=allocation), patch.object(component, "_resume_fd_allocation_v1",
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py'> does not have the attribute '_resume_fd_allocation_v1'
+
+======================================================================
+ERROR: test_wrong_index_source_identity_or_unchanged_alias_refuses (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_wrong_index_source_identity_or_unchanged_alias_refuses)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 90, in test_wrong_index_source_identity_or_unchanged_alias_refuses
+    self.quote()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 48, in quote
+    return component.resume_code_forms_quote_v1(self.root, code=self.code,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'resume_code_forms_quote_v1'. Did you mean: 'current_code_forms_quote_v1'?
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.167s
+
+FAILED (errors=16)

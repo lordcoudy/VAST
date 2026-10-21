@@ -30,6 +30,20 @@ def canonical_bytes(value: object) -> bytes:
 
 
 class QualificationExecutionCodeClosureV1Tests(unittest.TestCase):
+    def test_actual_closure_freezes_the_shared_wall_clock_with_its_clients(self) -> None:
+        sources = {
+            path.relative_to(ROOT).as_posix()
+            for _module, path in target._discover_sources(ROOT)
+        }
+        self.assertLessEqual(
+            {
+                "scripts/non_decreasing_wall_clock_v1.py",
+                "scripts/checkpoint_deepstream_protocol_bridge.py",
+                "scripts/publication_guardian_operational_recorder_v1.py",
+            },
+            sources,
+        )
+
     def _seed_tree(self, root: Path) -> None:
         scripts = root / "scripts"
         scripts.mkdir()

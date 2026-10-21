@@ -1,0 +1,23 @@
+{
+  "apply_executed": false,
+  "source_read_only": true,
+  "argv": [
+    "C:\\Windows\\System32\\wsl.exe",
+    "--distribution",
+    "Ubuntu",
+    "--user",
+    "s-a-balashov",
+    "--exec",
+    "/usr/bin/env",
+    "HOME=/home/s-a-balashov",
+    "TMPDIR=/var/tmp",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/retain_consumer08_originals.py",
+    "plan"
+  ],
+  "plan_path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer08-originals.retention-plan.v1.json",
+  "helper_sha256": "89eff34e1ff8222a4417187daf490a65b1b0293bde9cb37654995b039590ca2f",
+  "started_utc": "2026-10-11T23:23:17.0043849+00:00"
+}

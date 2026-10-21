@@ -1,0 +1,32 @@
+CONTROLLED ONLY: real frozen CD_HARNESS; fake imports/spawn/streams/clock, no native/MCP operation
+FACTORY {"sha256": "997579f8ffcc50d6e05ae859dd9164b1dc08ce5a71e82a1d8070633c3cdf3677", "size_bytes": 13073}
+test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) ... DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "let saved=delivery[\"receipt\"];Object.defineProperty(delivery,\"receipt\",{enumerable:true,configurable:true,get(){getter_reads++;return saved;}});"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "Object.defineProperty(delivery,\"hidden\",{value:true,enumerable:false});"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "delivery[Symbol(\"hidden\")]=true;"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "let saved=delivery.receipt[\"record_sha256\"];Object.defineProperty(delivery.receipt,\"record_sha256\",{enumerable:true,configurable:true,get(){getter_reads++;return saved;}});"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "Object.defineProperty(delivery.receipt,\"hidden\",{value:true,enumerable:false});"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "delivery.receipt[Symbol(\"hidden\")]=true;"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "let saved=delivery.approval[\"body_sha256\"];Object.defineProperty(delivery.approval,\"body_sha256\",{enumerable:true,configurable:true,get(){getter_reads++;return saved;}});"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "Object.defineProperty(delivery.approval,\"hidden\",{value:true,enumerable:false});"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "delivery.approval[Symbol(\"hidden\")]=true;"}
+ok
+test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) ... DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "delivery=Object.assign(new String(\"\"),delivery);"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "Object.setPrototypeOf(delivery,{unrequested:true});"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "delivery.receipt=Object.assign(new String(\"\"),delivery.receipt);"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "Object.setPrototypeOf(delivery.receipt,{unrequested:true});"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "delivery.approval=Object.assign(new String(\"\"),delivery.approval);"}
+DATA_RECORD_OBSERVATION {"admission_error": "cd_external_delivery", "getter_reads": 0, "spawned": 0, "stage_imports": 0, "transform": "Object.setPrototypeOf(delivery.approval,{unrequested:true});"}
+ok
+test_plain_and_null_prototype_data_records_remain_valid (__main__.DataRecordTests.test_plain_and_null_prototype_data_records_remain_valid) ... DATA_RECORD_OBSERVATION {"admission_error": null, "getter_reads": 0, "spawned": 1, "stage_imports": 2, "transform": ""}
+DATA_RECORD_OBSERVATION {"admission_error": null, "getter_reads": 0, "spawned": 1, "stage_imports": 2, "transform": "Object.setPrototypeOf(delivery,null);"}
+DATA_RECORD_OBSERVATION {"admission_error": null, "getter_reads": 0, "spawned": 1, "stage_imports": 2, "transform": "Object.setPrototypeOf(delivery.receipt,null);"}
+DATA_RECORD_OBSERVATION {"admission_error": null, "getter_reads": 0, "spawned": 1, "stage_imports": 2, "transform": "Object.setPrototypeOf(delivery.approval,null);"}
+DATA_RECORD_OBSERVATION {"admission_error": null, "getter_reads": 0, "spawned": 1, "stage_imports": 2, "transform": "Object.setPrototypeOf(delivery,null);Object.setPrototypeOf(delivery.receipt,null);Object.setPrototypeOf(delivery.approval,null);"}
+ok
+test_authentic_98_character_native_c1_c6_d_outputs_and_complete_six_frame_geometry (frozen_caller_record_guard_69.LaterStageCallerTests.test_authentic_98_character_native_c1_c6_d_outputs_and_complete_six_frame_geometry) ... CONTROLLED_AUTHENTIC_LATER_SIX_FRAME_GEOMETRY [{"complete_bytes": 3682, "poststdout_failure": false, "stage": "C1", "stderr": 0, "stdout": 725}, {"complete_bytes": 3986, "poststdout_failure": true, "stage": "C1", "stderr": 388, "stdout": 725}, {"complete_bytes": 2998, "poststdout_failure": false, "stage": "C6", "stderr": 0, "stdout": 725}, {"complete_bytes": 3302, "poststdout_failure": true, "stage": "C6", "stderr": 388, "stdout": 725}, {"complete_bytes": 2926, "poststdout_failure": false, "stage": "D", "stderr": 0, "stdout": 568}, {"complete_bytes": 3234, "poststdout_failure": true, "stage": "D", "stderr": 388, "stdout": 568}]
+ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 2.441s
+
+OK

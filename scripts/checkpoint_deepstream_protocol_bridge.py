@@ -37,6 +37,7 @@ from analytics_execution_worker import (
     validate_worker_capability,
 )
 from analytics_execution_endpoint import terminal_detector_identity
+from non_decreasing_wall_clock_v1 import wall_time_ns
 BRIDGE_SCHEMA_VERSION = 1
 BRIDGE_IMPLEMENTATION_STATUS = (
     "protocol_bridge_sdk_callback_adapter_source_implemented_not_kpp_pair_piloted"
@@ -359,7 +360,7 @@ class DeepStreamProtocolBridge:
                 "DeepStream resource recorder lacks record_analytics_transfers()",
             )
         self._resource_recorder = resource_recorder
-        self._clock_ms = clock_ms or (lambda: time.time_ns() / 1_000_000.0)
+        self._clock_ms = clock_ms or (lambda: wall_time_ns() / 1_000_000.0)
         self._lock = threading.RLock()
         self._sequence = 0
         self._last_event_timestamp_ms = -1

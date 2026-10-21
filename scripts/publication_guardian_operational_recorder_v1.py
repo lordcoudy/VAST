@@ -14,6 +14,7 @@ import re
 import threading
 import time
 from publication_operational_request_domain_v1 import canonical_json_v1, payload_with_sha256_v1, seal_guardian_event_v1, validate_study_scope_v1, STUDY_GUARDIAN_KIND_V1
+from non_decreasing_wall_clock_v1 import process_wall_clock, wall_time_ns
 from typing import Any, Callable, Mapping
 
 BRANCHES = ("plate_number", "vehicle_type", "damage", "foreign_object")
@@ -164,7 +165,7 @@ class GuardianOperationalRecorder:
 
     def __init__(self, outdir: Path | str, headers_by_route: Mapping[tuple[str, str], Mapping[str, Any]],
                  *, budgets: Mapping[str, int] | None = None,
-                 clock_ns: Callable[[], int] = time.time_ns) -> None:
+                 clock_ns: Callable[[], int] = wall_time_ns) -> None:
         self._budgets = dict(DEFAULT_BUDGETS)
         study_scopes = [header.get("study_scope") for header in headers_by_route.values()]
         if any(scope is not None for scope in study_scopes):
@@ -430,7 +431,8 @@ class GuardianOperationalRecorder:
                 first = next(iter(self._headers.values()))
                 group = _sealed({"schema_version": 1, "artifact_kind": GROUP_KIND,
                     "lifecycle_id": first["lifecycle_id"], "accounting_input": first["descriptors"]["accounting_input"],
-                    "journals": journals, "counts": self.snapshot()})
+                    "journals": journals, "counts": self.snapshot(),
+                    "max_clamp_ns": process_wall_clock().max_clamp_ns()})
                 raw = _canonical(group) + b"\n"
                 _require(len(raw) <= 1048576 and sum(row["bytes"] for row in self._routes.values()) + len(raw) <= self._budgets["max_group_bytes"], "operational companion/group capacity exhausted")
                 path = self._outdir / "operational_group.v1.json"

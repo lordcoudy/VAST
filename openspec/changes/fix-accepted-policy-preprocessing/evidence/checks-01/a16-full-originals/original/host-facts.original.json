@@ -1,0 +1,48 @@
+{
+  "api_available": {
+    "CLONE_NEWNS": true,
+    "CLONE_NEWPID": true,
+    "CLONE_NEWUSER": true,
+    "fork": true,
+    "pidfd_open": true,
+    "unshare": true
+  },
+  "executable": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+  "executable_realpath": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+  "executable_stat": {
+    "st_dev": 2128,
+    "st_gid": 1000,
+    "st_ino": 87545,
+    "st_mode": 33261,
+    "st_nlink": 1,
+    "st_size": 8020928,
+    "st_uid": 1000
+  },
+  "gid": 1000,
+  "kernel_release": "6.6.87.2-microsoft-standard-WSL2",
+  "namespace_sysctls": {
+    "apparmor_restrict_unprivileged_userns": {
+      "path": "/proc/sys/kernel/apparmor_restrict_unprivileged_userns",
+      "unavailable": "FileNotFoundError: [Errno 2] No such file or directory: '/proc/sys/kernel/apparmor_restrict_unprivileged_userns'"
+    },
+    "max_user_namespaces": {
+      "path": "/proc/sys/user/max_user_namespaces",
+      "value": "96077"
+    },
+    "unprivileged_userns_clone": {
+      "path": "/proc/sys/kernel/unprivileged_userns_clone",
+      "unavailable": "FileNotFoundError: [Errno 2] No such file or directory: '/proc/sys/kernel/unprivileged_userns_clone'"
+    }
+  },
+  "process_status": {
+    "CapAmb": "0000000000000000",
+    "CapBnd": "000001ffffffffff",
+    "CapEff": "0000000000000000",
+    "CapInh": "0000000000000000",
+    "CapPrm": "0000000000000000",
+    "NoNewPrivs": "0",
+    "Seccomp": "0"
+  },
+  "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "uid": 1000
+}

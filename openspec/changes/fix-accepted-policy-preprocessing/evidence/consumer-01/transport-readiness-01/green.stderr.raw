@@ -1,0 +1,29 @@
+test_bound_only_front_is_refused_by_actual_production_transport_reader (tests.test_accepted_policy_fixture_transport_v2.AcceptedPolicyFixtureTransportV2Tests.test_bound_only_front_is_refused_by_actual_production_transport_reader) ... ok
+test_prepared_fixture_is_listening_before_two_actual_probes_and_drains_them (tests.test_accepted_policy_fixture_transport_v2.AcceptedPolicyFixtureTransportV2Tests.test_prepared_fixture_is_listening_before_two_actual_probes_and_drains_them) ... ERROR
+
+======================================================================
+ERROR: test_prepared_fixture_is_listening_before_two_actual_probes_and_drains_them (tests.test_accepted_policy_fixture_transport_v2.AcceptedPolicyFixtureTransportV2Tests.test_prepared_fixture_is_listening_before_two_actual_probes_and_drains_them)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_transport_v2.py", line 94, in test_prepared_fixture_is_listening_before_two_actual_probes_and_drains_them
+    with fixture.prepared_complete_fixture_inputs_v2(
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_physical_fixture_v2.py", line 118, in prepared_complete_fixture_inputs_v2
+    runtime = materialize_publication_policy_qualification_runtime_inputs_v2(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_transport_v2.py", line 76, in runtime_setup_spy
+    (assets / fixture.DOCKER_ASSET).write_bytes(b"fixture setup pin only; never executed\n")
+  File "/usr/lib/python3.12/pathlib.py", line 1038, in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/accepted-policy-early-front-terfrprt/consumer/setup-runtime-assets/_assets/container-engine/docker'
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.017s
+
+FAILED (errors=1)

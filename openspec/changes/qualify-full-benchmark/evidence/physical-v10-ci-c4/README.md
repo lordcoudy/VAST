@@ -1,0 +1,3 @@
+# 6E.5 (заменено 6F.5): ext4 suite на `C_Q1''''` `ad9bda3d6eed425fae01ba1cd65a9907ba32df8a`
+
+Прогон выполнен параллельно с G8 до его отказа ([run_ext4_suite_6e5.sh](run_ext4_suite_6e5.sh), рецепт — `run_ext4_suite_6d8_rerun2.sh`; 9 окт. 15:01–15:40Z): 3246 discovered, 3237 run, 3149 successes, 88 skips; 0 failures, errors, expected failures, unexpected successes, missing required; `raw_checkout_bytes_match_commit=true`, `changed_tracked_paths=[]` ([report](ext4-suite.report.json), [output](ext4-suite-ad9bda3d.original-output.tar.gz)). `successful=false` — одобренная причина 5.5/6C.8/6D.8; множество skips идентично 6D.8; +20 — тесты Amendment 8. После FAILED G8 (Amendment 9) повторы выполнены на `C_Q1'''''` — [physical-v12-ci-c5](../physical-v12-ci-c5/README.md).

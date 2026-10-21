@@ -773,7 +773,12 @@ class AnalyticsExecutionBridge:
                 except BaseException as error:
                     if primary is None:
                         raise
-                    primary.add_note("study timing persistence also failed: " + str(error)[:512])
+                    note = "study timing persistence also failed: " + str(error)[:512]
+                    note_adder = getattr(primary, "add_note", None)
+                    if callable(note_adder):
+                        note_adder(note)
+                    else:
+                        primary.__notes__ = [*getattr(primary, "__notes__", ()), note]
         provenance = response["provenance"]
         terminal = response["terminal"]
         timing = response["timing"]

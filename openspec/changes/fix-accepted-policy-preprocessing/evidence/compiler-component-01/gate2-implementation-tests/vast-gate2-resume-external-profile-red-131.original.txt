@@ -1,0 +1,39 @@
+FF
+======================================================================
+FAIL: test_pure_ascii_sha256_matches_standard_and_padding_boundary_vectors (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRootCaller.test_pure_ascii_sha256_matches_standard_and_padding_boundary_vectors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 418, in test_pure_ascii_sha256_matches_standard_and_padding_boundary_vectors
+    result=self.js("console.log(JSON.stringify(input.map(gate2SHA256)));",values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 413, in js
+    self.assertEqual(r.returncode,0,r.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : [eval]:23
+console.log(JSON.stringify(input.map(gate2SHA256)));
+                                     ^
+
+ReferenceError: gate2SHA256 is not defined
+    at [eval]:23:38
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [eval]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_string:71:3
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_required_external_output_profile_refuses_before_any_provider_call (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRootCaller.test_required_external_output_profile_refuses_before_any_provider_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 427, in test_required_external_output_profile_refuses_before_any_provider_call
+    self.assertTrue(all(v=={'calls':0,'refused':True} for v in result))
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.345s
+
+FAILED (failures=2)

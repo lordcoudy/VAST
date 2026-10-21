@@ -1,0 +1,11 @@
+$ python -m unittest tests.test_image_input_eol_rules_v1 (RED, PR branch @ 012232c7 + test)
+----------------------------------------------------------------------
+AssertionError: Lists differ: ['deploy/deepstream/checkpoint/Dockerfile'[143 chars].py'] != []
++ []
+- ['deploy/deepstream/checkpoint/Dockerfile',
+-  'deploy/native_gst_probe/checkpoint_study_reference.hpp',
+-  'scripts/canonical_systems_study_plan_v1.py',
+-  'scripts/non_decreasing_wall_clock_v1.py']
+----------------------------------------------------------------------
+Ran 1 test in 0.050s
+FAILED (failures=1)

@@ -1,0 +1,15 @@
+CONTROLLED_NODE_GEOMETRY 3369 397 5627
+CONTROLLED_NODE_GEOMETRY 3369 653 5937
+..F....
+======================================================================
+FAIL: test_node_duplicate_initial_call_cannot_replace_held_child_or_clock (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_node_duplicate_initial_call_cannot_replace_held_child_or_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 232, in test_node_duplicate_initial_call_cannot_replace_held_child_or_clock
+    self.assertEqual(value['spawned'],1)
+AssertionError: 2 != 1
+
+----------------------------------------------------------------------
+Ran 7 tests in 2.986s
+
+FAILED (failures=1)

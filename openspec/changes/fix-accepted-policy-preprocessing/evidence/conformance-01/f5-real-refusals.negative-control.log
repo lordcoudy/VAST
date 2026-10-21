@@ -1,0 +1,13 @@
+publication_policy_qualification.QualificationError: pilot resource_intervals artifact size/SHA drift
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_f5_real_refusals.py", line 115, in test_valid_native_sidecars_and_six_stream_reset_reach_only_the_dataset_gate
+    with self.assertRaisesRegex(stock.QualificationError,
+  File "/usr/lib/python3.12/unittest/case.py", line 276, in __exit__
+    self._raiseFailure('"{}" does not match "{}"'.format(
+  File "/usr/lib/python3.12/unittest/case.py", line 200, in _raiseFailure
+    raise self.test_case.failureException(msg)
+AssertionError: "pilot sidecar revalidation failed: unknown dataset 'kpp_iss_publication_v3_h264'" does not match "pilot resource_intervals artifact size/SHA drift"

@@ -10,8 +10,9 @@ import sys
 import tempfile
 import threading
 import unittest
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 from pathlib import Path
 from unittest import mock
 
@@ -29,6 +30,45 @@ from publication_guardian_runtime_expectations_v1 import (  # noqa: E402
 ACCEPTANCE_FILENAME = target.ACCEPTANCE_FILENAME
 FINAL_NAMESPACE_FILES = target.FINAL_NAMESPACE_FILES
 qualification_pilot_cells_v2 = target.qualification_pilot_cells_v2
+
+
+# Amendment 6 (E): drvfs without metadata reports a read-only 0444 leaf as
+# 0555; only custody that does not enforce POSIX modes may accept it.
+READONLY_MODE_CASES = (
+    (0o555, False, True),
+    (0o555, True, False),
+    (0o777, False, False),
+    (0o777, True, False),
+    (0o666, False, False),
+    (0o644, False, False),
+)
+
+
+@contextmanager
+def reported_readonly_mode(
+    custody_type: type, mode: int, *, enforced: bool, labels: set[str]
+) -> Iterator[list[str]]:
+    """Report ``mode`` for labelled leaves and pin POSIX-mode enforcement."""
+
+    stat_regular_identity = custody_type.stat_regular_identity
+    seen: list[str] = []
+
+    def reported(custody, value, *, label):
+        observed, identity = stat_regular_identity(custody, value, label=label)
+        if label in labels:
+            seen.append(label)
+            return mode, identity
+        return observed, identity
+
+    with mock.patch.object(
+        custody_type, "stat_regular_identity", reported
+    ), mock.patch.object(
+        custody_type,
+        "permission_modes_enforced",
+        new_callable=mock.PropertyMock,
+        return_value=enforced,
+    ):
+        yield seen
 
 
 def canonical(value: object) -> bytes:
@@ -1418,6 +1458,49 @@ class PublicationPolicyQualificationExecutionClosureV1Tests(unittest.TestCase):
             ):
                 fixture.invoke()
             self.assertEqual(linked.read_bytes(), fixture.authority_path.read_bytes())
+
+    def test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement(
+        self,
+    ) -> None:
+        labels = (
+            "qualification execution closure receipt",
+            "guardian authority snapshot",
+            "guardian lifecycle snapshot",
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = Fixture(Path(tmp))
+            receipt_path = Path(fixture.invoke()["receipt_path"])
+
+            def load() -> dict[str, object]:
+                return target.load_publication_policy_qualification_execution_closure_v1(
+                    project_root=fixture.root,
+                    receipt_path=receipt_path,
+                    dependencies=fixture.dependencies(),
+                )
+
+            for label in labels:
+                for mode, enforced, accepted in READONLY_MODE_CASES:
+                    with (
+                        self.subTest(label=label, mode=oct(mode), enforced=enforced),
+                        reported_readonly_mode(
+                            target.PhysicalRootCustodyV1,
+                            mode,
+                            enforced=enforced,
+                            labels={label},
+                        ) as seen,
+                    ):
+                        if accepted:
+                            loaded = load()
+                            self.assertIn(label, seen)
+                            self.assertEqual(
+                                loaded["receipt_descriptor"],
+                                descriptor(fixture.root, receipt_path),
+                            )
+                        else:
+                            with self.assertRaises(
+                                target.QualificationExecutionClosureV1Error
+                            ):
+                                load()
 
 
 if __name__ == "__main__":

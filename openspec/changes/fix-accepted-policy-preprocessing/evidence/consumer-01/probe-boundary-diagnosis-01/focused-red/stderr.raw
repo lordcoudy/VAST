@@ -1,0 +1,38 @@
+test_prepared_context_binds_system_probes_to_exact_patch_image_ids (tests.test_accepted_policy_fixture_probe_binding_v2.AcceptedPolicyFixtureProbeBindingV2Tests.test_prepared_context_binds_system_probes_to_exact_patch_image_ids) ... {"bounded_probe_red": true, "system": "openvino_gva", "actual_elf_exit_code": 52, "stdout_bytes": 0, "stderr_bytes": 0}
+ERROR
+
+======================================================================
+ERROR: test_prepared_context_binds_system_probes_to_exact_patch_image_ids (tests.test_accepted_policy_fixture_probe_binding_v2.AcceptedPolicyFixtureProbeBindingV2Tests.test_prepared_context_binds_system_probes_to_exact_patch_image_ids)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_probe_binding_v2.py", line 129, in test_prepared_context_binds_system_probes_to_exact_patch_image_ids
+    with bounded_prepared_setup_v2(root, patch_path, inspections, probes, observed) as prepared:
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_probe_binding_v2.py", line 105, in bounded_prepared_setup_v2
+    with fixture.prepared_complete_fixture_inputs_v2(
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_physical_fixture_v2.py", line 118, in prepared_complete_fixture_inputs_v2
+    runtime = materialize_publication_policy_qualification_runtime_inputs_v2(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_probe_binding_v2.py", line 66, in runtime_setup_spy
+    value = runtime_inputs._default_probe_openvino_device(engine_path, engine_socket, root, image, system)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 479, in _default_probe_openvino_device
+    value = _run_json(
+            ^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 433, in _run_json
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 189, in _require
+    _fail(message)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 184, in _fail
+    raise QualificationRuntimeInputMaterializationV2Error(message)
+publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputMaterializationV2Error: openvino_gva OpenVINO device probe failed closed
+
+----------------------------------------------------------------------
+Ran 1 test in 0.582s
+
+FAILED (errors=1)

@@ -1,0 +1,31 @@
+{
+  "cases": [
+    {
+      "original_returncode": 1,
+      "pid": 276503,
+      "requested_soft_limit": 1024,
+      "sample_count": 3472
+    },
+    {
+      "original_returncode": 0,
+      "pid": 277249,
+      "requested_soft_limit": 10240,
+      "sample_count": 3582
+    }
+  ],
+  "commit": "591a93e778a9a7839da6278326d215e24e91ea45",
+  "helper_path": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/measure_owner37_fd_v1.py",
+  "helper_sha256": "dc3d9eb3eee4530a6afa98752b31843f8c66531b587695f18b413d14ae4bfc1a",
+  "qualification_authority": false,
+  "sampling_interval_seconds": 0.01,
+  "schema_version": 1,
+  "source_after": {
+    "commit": "591a93e778a9a7839da6278326d215e24e91ea45",
+    "stock_raw_byte_verifier_passed": true,
+    "tracked_paths_count": 11757,
+    "tracked_status": ""
+  },
+  "source_mutations": false,
+  "source_root": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45",
+  "test_id": "tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_owner_executes_exact_37_and_binding_passes_cold_closure_with_real_validators"
+}

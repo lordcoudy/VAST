@@ -1,0 +1,361 @@
+{
+  "accepted_envelope": {
+    "all_supported_metadata_preserved": true,
+    "content_count": 1,
+    "extra_output": "bounded full frame preserved, failed observation",
+    "isError": "absent or false",
+    "text": "exact 361B expected result, including one LF",
+    "text_item": [
+      "type",
+      "text",
+      "annotations",
+      "_meta"
+    ],
+    "top_level": [
+      "content",
+      "isError",
+      "_meta"
+    ]
+  },
+  "actual_control_submitted": false,
+  "change": "fix-accepted-policy-preprocessing",
+  "control_approval": false,
+  "external_sources_and_metadata": [
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-gate2-d18-inert-control-final-01.metadata.derived.json",
+      "sha256": "a86e5b2e024ff7be2aebef8130949e08f586645e068a74301f17d6c4ad6faf52",
+      "size_bytes": 4756
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-gate2-d18-control-transport-final-01.metadata.derived.json",
+      "sha256": "693d0d95c01fc080ceabf819298613098a4ff56b90889aa199e9047cf2fe64cf",
+      "size_bytes": 6198
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-root-preservation-and-pins-01.derived.json",
+      "sha256": "3c0cff17500c65e1aef455466a777cbc09fca192cae9ca2f0de474692c83c086",
+      "size_bytes": 2197
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-public-chain-intake-03.candidate.py",
+      "sha256": "ca2fafae2ce87ac497212d59a158c706cfda1f30b78e1844d11cb0e387629efb",
+      "size_bytes": 14053
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-public-chain-intake-03.metadata.derived.json",
+      "sha256": "ec0ce1e99f70c53a40e82ebe6885a4ce6151cfe0d5fe314f6e6bba6bb7fe9e1e",
+      "size_bytes": 1984
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-intake-launch-04.proposal.py",
+      "sha256": "9fe313ebf2d07ce8e18d4bf717ae5fe95b5d736f0680a370f3aabfd855a51495",
+      "size_bytes": 5467
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-intake-launch-04.metadata.derived.json",
+      "sha256": "84d310b90a80cb15e1cca1ffe470aaea8322060bcfa640a8dece6f2eae529534",
+      "size_bytes": 4610
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-postcapture-recipe-01.py",
+      "sha256": "9b186bc9ef384b543006d309ed777a2ce529b7de3d5d6577006d9741aad14c8b",
+      "size_bytes": 8060
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-postcapture-recipe-01.metadata.derived.json",
+      "sha256": "1fe6cfbef51e7be25bbb3e0e644abfc17355c6f617059eff7bf56ee133a11024",
+      "size_bytes": 1294
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-intake-launch-04.epoch-tests.py",
+      "sha256": "c2f76fef2fd2d80c95ed183b2561379bdb19c54526918e9c45fc7ef66f8f3e58",
+      "size_bytes": 4568
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-intake-launch-04.epoch-tests.derived.json",
+      "sha256": "ee642272cc4a629b359536959aa80d95b8dbd03cbbc4a00a81ee4b038473598f",
+      "size_bytes": 2218
+    }
+  ],
+  "failure_and_authority": {
+    "consumed_physical_attempt": "6230407759 / cell1640 CLOSED; never reset/replay/poll",
+    "full_generated_program_record_chain_files": false,
+    "full_material_retention": "RAM plus original journal only; bounded metadata/result evidence may be retained",
+    "image_delete_offload_authority": false,
+    "native_activity_closure_namespace": "UNKNOWN",
+    "one_submission_consumes_control_on_every_outcome": true,
+    "pre_submission_gates": "Independent exact pushed harness/control/Node+enclosing args/result/complete finite retention recipe reviews, NEW required exact-source CI, then separate explicit delegated AGENT CONTROL approval in same PR9. Scoped reviews/planning approval do not authorize submission.",
+    "progress": "24/46;2.10 OPEN; whole1.5/genuine/renewal/Q1/archive/merge incomplete",
+    "protected_images": 227,
+    "retry_reset_fallback_probe_or_physical_action": false,
+    "strict_extra_output": "Full bounded unsupported/extra provider envelope retained in failed observation; never stripped to qualify",
+    "upstream_provider_allocation_journal_peak_engine_enumeration": "UNKNOWN; explicit traversal/copy/encoding bounds apply to supported host-decoded JSON; no universal heap/Proxy/hidden-exotic guarantee"
+  },
+  "initial_functions_profile": {
+    "Node_keys": [
+      "code",
+      "timeout_ms"
+    ],
+    "Node_timeout_ms": 10000,
+    "max_output_tokens": 100000,
+    "same_cell_waits": {
+      "max_pairs": 3,
+      "max_tokens": 100000,
+      "max_waits": 2,
+      "raw_arguments_cap": 256,
+      "yield_time_ms": 60000
+    },
+    "source_cap": 16384,
+    "title_present": false,
+    "yield_time_ms": 10000
+  },
+  "kind": "vast.gate2.d18.inert-control.recipe.v1",
+  "limits": {
+    "control_source_ascii": 8192,
+    "first_source_ascii": 16384,
+    "max_pairs": 3,
+    "max_waits": 2,
+    "node_args_canonical": 16384,
+    "provider_canonical": 16384,
+    "public_chain_canonical": 131072,
+    "raw_wait_string": 256,
+    "result_ascii": 1024,
+    "selected_raw_row": 65536,
+    "selected_raw_rows": 131072,
+    "transport_ascii_including_one_lf": 32768,
+    "wait_max_tokens": 100000,
+    "wait_yield_time_ms": 60000
+  },
+  "local_evidence": {
+    "collector_v3_synthetic_tests": 45,
+    "first_slice_affected_classes": 87,
+    "first_slice_new_tests": 7,
+    "launcher04_controlled_epoch_tests": 23,
+    "launcher04_scope": "Pure extracted helper and AST callsite/diff fixtures only; old mismatch reproduced under controlled epochs, no actual stat/journal/bootstrap launch.",
+    "outer_slice_new_tests": 10,
+    "postcapture_synthetic_tests": 5,
+    "preservation": "Root verified all190 HEAD932 test-method ASTs and only intentional old harness-constant changes; independent inverse deletion restored exact first-slice main snapshot.",
+    "prior_87_not_restarted": true,
+    "scope": "Local Windows Python3.14.7/Node25.2.1 controlled development evidence. External Temp collector/postcapture tests are not hosted-CI coverage claims. No actual backend or journal qualification."
+  },
+  "pin_manifest": {
+    "expected_result": {
+      "sha256": "7245d71a42fdc05d9efeb571fbfe6f6e29162aebeeb45d8f2ae4899f21377486",
+      "size_bytes": 361
+    },
+    "first_source": {
+      "sha256": "6375af8eabadc1c52334a6d94a9e1f3786acdb5e03512df0f4c1ffffe437ef45",
+      "size_bytes": 11889
+    },
+    "node_args": {
+      "sha256": "e76bff4ec92cb2e053cb207ecac4ba681eba8fef15cd8ce8ef35440f35c1a59a",
+      "size_bytes": 3249
+    },
+    "node_profile": {
+      "keys": [
+        "code",
+        "timeout_ms"
+      ],
+      "timeout_ms": 10000
+    },
+    "node_source": {
+      "sha256": "c8a8a2280fc9f97966cc34188fefead80fb0685a80eb3738b28b10f94dc11a44",
+      "size_bytes": 3113
+    },
+    "outer_validator": {
+      "sha256": "daaf67add4079978b92e799d70f75ffb0d9dbd3f61577faf11b803c0e5414da4",
+      "size_bytes": 14281
+    },
+    "version": 1
+  },
+  "pin_manifest_descriptor": {
+    "sha256": "0e2abf658851449b39059b71085b2cfa432dc2b6781f3ff806f70c0dff4ace8f",
+    "size_bytes": 636
+  },
+  "planning_approval": "https://github.com/lordcoudy/VAST/pull/9#issuecomment-6231741381",
+  "postcapture_check": {
+    "functions_profile": {
+      "max_output_tokens": 100000,
+      "yield_time_ms": 10000
+    },
+    "generated_full_source": {
+      "sha256": "bdf8ef06281d265e3a9e845f8d9048e5022e19dd5248180d5d7c45ab52039d19",
+      "size_bytes": 17394
+    },
+    "input_store": "gate2D18ActualOriginalIntake01",
+    "output_max": 8192,
+    "output_store": "gate2D18BoundedObservation01",
+    "scope": "Use generated pure RAM functions source; Python builder __main__ is only development tests, not actual postcapture. strict_control_result_matches cannot establish original-row provenance/completeness or capability approval. All qualification/retention/setup/physical flags remain false; external original-journal provenance join required.",
+    "source_cap": 32768,
+    "tail": {
+      "sha256": "3559d05b7190f9907b6a42cbfeaf9bd927df4ac1b0b6a4b16fc9a68764dad285",
+      "size_bytes": 3052
+    },
+    "validator_core": {
+      "sha256": "daaf67add4079978b92e799d70f75ffb0d9dbd3f61577faf11b803c0e5414da4",
+      "size_bytes": 14281
+    }
+  },
+  "postterminal_intake": {
+    "bootstrap": {
+      "sha256": "178eef81fc767bdb48206cfdc8a869ea958b7a980ecd3b0275900534bed7abd7",
+      "size_bytes": 2731
+    },
+    "bootstrap_failure_max": 1024,
+    "candidate": {
+      "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-d18-control-public-chain-intake-03.candidate.py",
+      "sha256": "ca2fafae2ce87ac497212d59a158c706cfda1f30b78e1844d11cb0e387629efb",
+      "size_bytes": 14053
+    },
+    "canonical_scope": "collector Python decoded-JSON export and its hash are not JS ROOT_ENCODER or raw journal/wire hashes",
+    "command": {
+      "sha256": "30f80380cfea170ee3724bba181bbf78feac2cf25833244a47f3d9eefc73ec37",
+      "size_bytes": 2809
+    },
+    "complete_export_max": 131072,
+    "delivery": "Require actual exit0 and complete untruncated one-LF bounded JSON before storing full intake in RAM; token request alone proves neither. If not complete after bounded same-session delivery, retain bounded original/prefix/count/hash/unknown-remainder facts, hold, and do not relaunch/recollect to obtain acceptance.",
+    "exec_args_descriptor": {
+      "sha256": "41b8435aa9ffff1c191bd1d85f3e6ba86f1e082c794d7f11788bdc949dca350e",
+      "size_bytes": 3041
+    },
+    "failure_max": 8192,
+    "identity_scope": "regular nlink1 held-file identity and bounded prefix; append allowed. Original row length/SHA/ordinal/line evidence is distinct from decoded payload equality. No byte-identical wire/flush/quiescence/immutable epoch/custody/native closure guarantee.",
+    "journal_max_prefix": 536870912,
+    "journal_scan_row_max": 4194304,
+    "max_output_tokens": 100000,
+    "portable_identity": "Only Windows cross-API FD/path comparison excludes ctime; full same-API before/after FD and path epochs retain ctime. Non-Windows cross comparison retains ctime. All dev/ino/mode/nlink/size/mtime/birth facts remain bound; compile/exec uses exact authenticated read bytes.",
+    "same_session_polling": {
+      "chars": "",
+      "max_output_tokens": 100000,
+      "max_polls": 2,
+      "session_id": "actual same initial exec_command session only",
+      "tool": "tools.write_stdin",
+      "yield_time_ms": 10000
+    },
+    "selected_raw_max": 131072,
+    "selected_row_max": 65536,
+    "selected_rows_max": 6,
+    "selection": "exact first source size/SHA; all full public call/result payload fields; actual raw argument strings; exact same-cell waits; duplicates/ambiguity/unsupported correlated arguments refuse",
+    "tool": "tools.exec_command",
+    "workdir": "C:/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST",
+    "yield_time_ms": 10000
+  },
+  "preflight": {
+    "aggregate_key_and_string_utf16_units": "<=cap",
+    "depth": 64,
+    "explicit_work_ticks": "<=4*cap",
+    "frontier": "<=cap",
+    "nodes": "<=cap",
+    "own_enumerable_keys": "<=cap",
+    "serialization": "existing unchanged gate2Canonical only"
+  },
+  "schema_version": 1,
+  "scoped_review_originals": [
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-gate2-d18-inert-control-scoped-peer-01.original.md",
+      "sha256": "002242483f53008515588c1a051b8bba1c3958c50d31419370c8769a57257db7",
+      "size_bytes": 2386
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-gate2-d18-control-transport-scoped-peer-01.original.md",
+      "sha256": "7965fcbcb6438b9773f389c74287df8513f20a27393bc8dc13c57c72cfbf42f3",
+      "size_bytes": 5095
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-public-chain-intake-02.independent-review.original.md",
+      "sha256": "042135a0c9f6bba958981970e0a38080d6f5f573eff2dfe7fbbb3705511d9b1b",
+      "size_bytes": 5426
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-public-chain-intake-03.independent-review.original.md",
+      "sha256": "24fd4161aa93fed4633157ef95a48880b679260e97220cc0c146413a0effbf0d",
+      "size_bytes": 2968
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-d18-control-postcapture-recipe-01.independent-review.original.md",
+      "sha256": "e146224050e05612e738c98a49a5e6aa570a462e7a68c73d3d93c4dfb5f08328",
+      "size_bytes": 4680
+    }
+  ],
+  "source": {
+    "test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py": {
+      "new_methods": 3,
+      "old_assignments_changed": [
+        "CD_HARNESS"
+      ],
+      "old_methods_exact": 90,
+      "source": {
+        "sha256": "3d06fde684e1e971f45174232b9f31797a06294402ae83375be74c0bcaed0f5c",
+        "size_bytes": 133260
+      }
+    },
+    "test_accepted_policy_fixture_compiler_gate2_resume_v1.py": {
+      "new_methods": 14,
+      "old_assignments_changed": [
+        "NODE_HARNESS"
+      ],
+      "old_methods_exact": 100,
+      "source": {
+        "sha256": "de2c6c5066dd6438ced4ad3dccedd2c772971823bcfb14ddf59ca9fb6ad7fd14",
+        "size_bytes": 239593
+      }
+    }
+  },
+  "source_commit_binding": "external exact-pushed review and later explicit delegated AGENT control approval; no self/future commit hash",
+  "stage": "prepared_for_exact_pushed_source_review",
+  "superseded_launch_recipe": {
+    "builder03": {
+      "sha256": "e9b86b63dd9f2fcaa90560c856eb020729b26ccc1a8bb90a5aed08bcb7eb0719",
+      "size_bytes": 5384
+    },
+    "commit": "560e9f7c5dd18cc7806fbdb92326207db902ea1d",
+    "finding": "Independent exact560 review found Windows Python cross-API lstat/fstat ctime mismatch; actual control never submitted. Original source/review/CI remain separately retained, not cancelled or retroactively approved.",
+    "metadata03": {
+      "sha256": "bbc9035da227c72647f1758ee39bbd971cd6e5834c95a4abef0c9ef8edfe90f2",
+      "size_bytes": 4527
+    }
+  },
+  "synthetic_geometry_only": {
+    "chain_exact_cap_test": 131072,
+    "chains": {
+      "1": {
+        "raw_wait_arguments": [],
+        "sha256": "2821636c579f2eefe7fcad8353608f3e18dade02dce22052f88c64e931a57f5c",
+        "size_bytes": 16980
+      },
+      "2": {
+        "raw_wait_arguments": [
+          "{\"cell_id\":\"controlled_cell\",\"max_tokens\":100000,\"yield_time_ms\":60000}"
+        ],
+        "sha256": "0ec571bcd9621af1144a365a9a7dfedb48e0e7b5ab17f7b862de214361fd8189",
+        "size_bytes": 17414
+      },
+      "3": {
+        "raw_wait_arguments": [
+          "{\"cell_id\":\"controlled_cell\",\"max_tokens\":100000,\"yield_time_ms\":60000}",
+          "{\"cell_id\":\"controlled_cell\",\"max_tokens\":100000,\"yield_time_ms\":60000}"
+        ],
+        "sha256": "97f851137c64881e32300f21e2b34eb49f3cc5dc9a305f915cf900bd0253cbc9",
+        "size_bytes": 17848
+      }
+    },
+    "max_frame_provider": {
+      "sha256": "1fc78b0c2ed7dbfa6d881d0d1e883885c5cd5005d6da4dc6fa052bffb97383cf",
+      "size_bytes": 16384
+    },
+    "max_frame_record": {
+      "sha256": "7edf9acd4db81cb6acc4d1205fcd74162af836b02c1589a8d97c90cb88ca2c5d",
+      "size_bytes": 19863
+    },
+    "nominal_provider": {
+      "sha256": "02950d8b5c6e55b2ef1eb28d55e81d1d565b20894ae66db0f83ab74d4eeb4233",
+      "size_bytes": 572
+    },
+    "nominal_record": {
+      "sha256": "99ad47221ae54a03e6337a23ad01a6d42f2fe3b66edf93488cf249589dbf77be",
+      "size_bytes": 4051
+    },
+    "record_guard_exact_cap_is_not_closed_nominal_protocol_case": true,
+    "record_guard_exact_cap_test": 32768
+  }
+}

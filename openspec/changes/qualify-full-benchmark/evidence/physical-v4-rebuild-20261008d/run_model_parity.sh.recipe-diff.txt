@@ -1,0 +1,20 @@
+5c5
+< base="$root/artifacts/qualify_full_benchmark_20261008c"
+---
+> base="$root/artifacts/qualify_full_benchmark_20261008d"
+9c9
+< namespace=qfb-20261008c
+---
+> namespace=qfb-20261008d
+12c12
+< [[ ! -e /var/tmp/vast-parity-qfb-20261008c ]]
+---
+> [[ ! -e /var/tmp/vast-parity-qfb-20261008d ]]
+14c14
+< mkdir -m 700 /var/tmp/vast-parity-qfb-20261008c
+---
+> mkdir -m 700 /var/tmp/vast-parity-qfb-20261008d
+32c32
+<   --socket-dir /var/tmp/vast-parity-qfb-20261008c \
+---
+>   --socket-dir /var/tmp/vast-parity-qfb-20261008d \

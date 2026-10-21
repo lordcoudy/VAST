@@ -1,0 +1,24 @@
+F
+======================================================================
+FAIL: test_oversized_native_p0_and_f2_actual_schema_flags_remain_in_compact_projection (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.FailureFactsTests.test_oversized_native_p0_and_f2_actual_schema_flags_remain_in_compact_projection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 261, in test_oversized_native_p0_and_f2_actual_schema_flags_remain_in_compact_projection
+    self.assertEqual(rows["/p0"],p0)
+AssertionError: {'pid[20 chars] None} != {'pid[20 chars] None, 'normal_exit': False, 'forced_parent_te[143 chars]True}
++ {'eof_stderr': True,
++  'eof_stdout': False,
++  'forced_parent_termination': True,
++  'linux_child_closure': 'unknown',
++  'normal_exit': False,
++  'parent_termination_proves_linux_child_closure': False,
++  'pid': 73,
+- {'pid': 73, 'returncode': None}
+? -----------
+
++  'returncode': None}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+FAILED (failures=1)

@@ -1,0 +1,48 @@
+Amendment 6, task 6C.5, in-image checks D(a)-(c) -- 2026-10-08
+Root: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a at C_B'' 8990a091 (read-only mount /work/root).
+Images (artifacts/qualify_full_benchmark_20261008d/qualification_image_identity_patch.json):
+  deepstream sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157  (Python 3.10.12)
+  savant     sha256:045ccc3527dac40959706a678480f1145a3c7de609a9262365f5787911f667a7  (Python 3.10.12)
+All containers: docker run --rm --network none --user 1000:1000 (own names claude-inimage-diag-*).
+
+D(a) PASS  (run_a.sh, a_in_image_check.py, a_<sys>.report.json, a_<sys>.rc.txt, a_<sys>.unpackaged_compile.txt)
+  In-image /opt/vast/runtime-source-allowlist.txt sha256 == root allowlist (deepstream 1513ee85..., savant 2bea911a...).
+  deepstream: 71 Python allowlist entries; 69 packaged in /opt/vast/checkpoint, all byte-identical to root,
+              69/69 compiled, 69/69 import OK (image PYTHONPATH=/opt/vast/checkpoint, cwd=image WORKDIR, --gpus all).
+  savant:     79 Python allowlist entries; 77 packaged, all byte-identical to root, 77/77 compiled, 77/77 import OK
+              (PYTHONPATH=/opt/vast/checkpoint:/opt/savant).
+  Not packaged (build-time only): deploy/<sys>/.../validate_runtime_source_closure_v3.py and
+  scripts/materialize_runtime_build_context_v3.py -- compiled OK with the image python3 from the root mount.
+  No SyntaxError / ImportError / AttributeError / NameError in either image. No native-lib import failures occurred.
+
+D(b) PASS  (run_b.sh + b_in_image_tests.py -> b_<sys>/, b_<sys>.summary.json; rerun run_b2.sh + b2_in_image_tests.py -> b2_<sys>/)
+  17 test modules, unittest with image python3, PYTHONPATH=/work/root/scripts:/work/root/tests:/work/root[:/opt/savant].
+  First pass (208 tests/image): 13 modules OK in both images; 4 modules failed, all environment-only:
+    - test_checkpoint_runtime, test_publication_operational_process_custody_v1: ModuleNotFoundError psutil
+      (host-only dependency of run_experiments.py / collect_metrics.py; psutil is not in the runtime images).
+    - test_publication_operational_container_custody_v1 (10 errors + 1 failure): PermissionError executing
+      /proc/self/fd/N -- the compiled fixture ELF lives in /tmp, and Docker tmpfs defaults to noexec (harness).
+    - test_publication_policy_qualification_execution_closure_v1 (17 errors): ExecutionCodeClosureV1Error
+      "Python interpreter is not one canonical physical file" -- sys.executable /usr/bin/python3 is a symlink.
+  Rerun b2 of those 4 modules (103 tests/image) with /tmp exec, interpreter /usr/bin/python3.10, psutil 7.2.2
+  (cp36-abi3, copied from the host publication venv): all 4 OK in both images
+  (skips: toolchain/GStreamer-dev not in image; Windows-only; schema-v1 history; PEP 701 needs 3.12).
+  3.10-API class failures: none.
+
+D(c) PASS  (c_stage_and_run.py; c_<sys>.record.json, c_<sys>.stderr.raw, c_<sys>.stdout.raw, c_<sys>.driver.log)
+  Inputs: copies of attempt-2 materialized inputs for <sys>/cpu/h264/independent_processes (bundle
+  artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/),
+  35 files each, every root file matched the bundle SHA-256 (no model/config/source substitution needed).
+  Only substitution: savant operational_request_context native_context_13 -> native_context_04 (sha 2d3eee03...),
+  the context used by attempt-2 engine_02; deepstream uses the bundle's own native_context_05.
+  Endpoint socket: scratch UNIX socket file with no listener (guardian intentionally absent).
+  Savant argv equals attempt-2 engine_02 argv except name/cidfile/label, image ID, scratch and socket sources
+  (the record's argv_matches_attempt2_engine02=false is a normalization-order artifact: only the socket mount
+  line differs because the scratch prefix was substituted before the socket path).
+  savant:     rc=2, 7.853 s, stderr 3292 B sha256 b694da46b148ac7afdf90b91384f742a25a851d708772d9ea0fa19343a72bd40
+              terminal: "checkpoint worker exited before the common start barrier" -- all 24 workers spawned,
+              each "[Errno 111] Connection refused" on the analytics socket.
+  deepstream: rc=2, 4.568 s, stderr 1799 B sha256 476427f6ea27165bd86994335c5b01ef9fee7fcd794bbb16ebf035e04cc48669
+              terminal: "checkpoint worker exited before the common start barrier" -- workers spawned (24 worker
+              dirs), "DeepStream callback factory failed: [Errno 111] Connection refused".
+  Both pass worker spawn; previous blocker "module 'sys' has no attribute 'exception'" is gone; no 3.10-API error.

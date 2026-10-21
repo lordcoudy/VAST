@@ -1,0 +1,14 @@
+{
+ "describes": "readonly-diagnosis-20261008.v1.json",
+ "observed_at_utc": "2026-10-07T21:42:27Z (output file mtime 2026-10-08 00:42:27 MSK; probe ran seconds before)",
+ "observer": "Claude Code session, WSL uid 1000, read-only",
+ "interpreter": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -B",
+ "root": "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a (HEAD 1112af0b, imported modules read only)",
+ "compared_against": "artifacts/qualify_full_benchmark_20261007a/qualification_image_identity_patch.json (SHA256 938a2cddcbe92d6b421dd689670ed985c3fa6f8ae4b5b4291f2f72db56138ef7)",
+ "method": [
+  "registry = publication_qualification_image_refreeze_v1.load_refreeze_registry(configs/publication_qualification_image_refreeze_v1.json)",
+  "for each system: /usr/bin/docker image inspect of final_reference and both deterministic_references; Id == patch physical_identity.image_id",
+  "projection: sha256(refreeze._canonical(refreeze._image_projection(system, inspect))) == physical_identity.inspect_projection_sha256 (all three refs give one value)",
+  "engine: docker version --format '{{json .}}' and docker info --format '{{json .}}' via /usr/bin/docker (default socket /run/docker.sock)"
+ ]
+}

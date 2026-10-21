@@ -7,6 +7,7 @@ import os
 import sys
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -15,6 +16,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import publication_guardian_accepted_policy_preprocessing_contract_v1 as target  # noqa: E402
+from analytics_execution_protocol import (  # noqa: E402
+    MAX_CONTROL_BYTES,
+    MAX_TENSOR_BYTES,
+    PROTOCOL_IDENTITY_SHA256,
+    TRANSPORT_KIND,
+)
+from checkpoint_gstreamer_analytics_sidecar import SidecarError  # noqa: E402
 from publication_guardian_runtime_expectations_v1 import (  # noqa: E402
     runtime_expectations_from_preprocessing_receipt_v1,
 )
@@ -110,25 +118,41 @@ class Fixture:
         self.candidate_receipt_descriptor = descriptor(root, self.candidate_receipt_path)
 
         self.config_path = root / "parity" / "execution-config.json"
-        self.config_identity = semantic({"execution": "config"})
         self.worker_images = {
             "cpu": "sha256:" + "1" * 64,
             "gpu": "sha256:" + "2" * 64,
         }
-        self.config = {
-            "identity": {"algorithm": "sha256", "sha256": self.config_identity},
+        self.config_raw = {
+            "schema_version": 1,
+            "artifact_kind": "vast_analytics_execution_layer_config",
+            "config_id": "accepted-policy-config-fixture-v1",
+            "protocol_identity_sha256": PROTOCOL_IDENTITY_SHA256,
+            "model_parity_manifest": "configs/model-parity.json",
+            "transport": {
+                "kind": TRANSPORT_KIND,
+                "max_control_bytes": MAX_CONTROL_BYTES,
+                "max_tensor_bytes": MAX_TENSOR_BYTES,
+                "max_inflight_requests_per_worker": 1,
+            },
             "workers": {
                 resource: {
                     "engine": (
                         "openvino_cpu" if resource == "cpu" else "tensorrt_cuda"
                     ),
+                    "base_image": f"vast/{resource}-base@sha256:" + "3" * 64,
+                    "base_image_id": "sha256:" + "3" * 64,
+                    "image": f"vast/{resource}@{self.worker_images[resource]}",
                     "image_id": self.worker_images[resource],
                     "worker_implementation_sha256": semantic({"impl": resource}),
+                    "entrypoint": f"/opt/vast/{resource}-worker",
+                    "requires_nvidia_runtime": resource == "gpu",
                 }
                 for resource in RESOURCES
             },
         }
-        write_json(self.config_path, self.config)
+        write_json(self.config_path, self.config_raw)
+        self.config = target._default_load_execution_config(self.config_path)
+        self.config_identity = self.config["identity"]["sha256"]
         self.config_descriptor = descriptor(root, self.config_path)
 
         self.probes: dict[str, dict[str, object]] = {}
@@ -306,7 +330,18 @@ class Fixture:
             "policy_contract_sha256": self.policy_sha,
             "aggregation_rule": "median_of_balanced_native_codec_topology_cells_v1",
             "minimum_samples_per_branch_cell": 30,
-            "calibrations": {system: {} for system in target.SYSTEMS},
+            "calibrations": {
+                system: {
+                    "costs": {
+                        branch: {
+                            resource: {"samples": 120}
+                            for resource in RESOURCES
+                        }
+                        for branch in BRANCHES
+                    }
+                }
+                for system in target.SYSTEMS
+            },
         }
         self.accepted_calibration_path = (
             self.accepted_dir / "checkpoint_policy_calibration_mapping.json"
@@ -346,7 +381,21 @@ class Fixture:
         }
         write_json(self.accepted_receipt_path, self.accepted_receipt)
 
+    def rewrite_accepted(self) -> None:
+        write_json(self.accepted_calibration_path, self.calibration)
+        unsigned = {
+            key: value for key, value in self.accepted_receipt.items() if key != "sha256"
+        }
+        unsigned["coverage"] = self.coverage
+        unsigned["outputs"]["calibration_mapping"] = {
+            **descriptor(self.root, self.accepted_calibration_path),
+            "path": self.accepted_calibration_path.name,
+        }
+        self.accepted_receipt = {**unsigned, "sha256": semantic(unsigned)}
+        write_json(self.accepted_receipt_path, self.accepted_receipt)
+
     def dependencies(self) -> target.AcceptedPolicyGuardianDependenciesV1:
+        # Only config loading is real; upstream eligibility/accounting is stubbed.
         def load_predecessor(**kwargs: object) -> dict[str, object]:
             if Path(kwargs["materialization_receipt_path"]) != self.predecessor_receipt_path:
                 raise AssertionError(kwargs)
@@ -385,11 +434,6 @@ class Fixture:
                 "receipt_sha256": self.closure["receipt_sha256"],
             }
 
-        def load_config(path: Path) -> dict[str, object]:
-            if path != self.config_path:
-                raise AssertionError(path)
-            return copy.deepcopy(self.config)
-
         def load_probe(path: Path, *, engine: str) -> dict[str, object]:
             value = json.loads(path.read_bytes())
             if value["engine"] != engine:
@@ -422,12 +466,18 @@ class Fixture:
             load_qualification_preprocessing=load_predecessor,
             assess_policy_qualification=assess_policy,
             load_execution_closure=load_closure,
-            load_execution_config=load_config,
+            load_execution_config=target._default_load_execution_config,
             load_runtime_probe=load_probe,
             load_binding_set=load_bindings,
         )
 
-    def materialize(self, output: Path, **overrides: object) -> dict[str, object]:
+    def materialize(
+        self,
+        output: Path,
+        *,
+        dependencies: target.AcceptedPolicyGuardianDependenciesV1 | None = None,
+        **overrides: object,
+    ) -> dict[str, object]:
         return target.materialize_accepted_policy_guardian_preprocessing_contract_v1(
             project_root=self.root,
             qualification_preprocessing_contract_path=self.predecessor_contract_path,
@@ -439,8 +489,22 @@ class Fixture:
             execution_config_path=self.config_path,
             binding_set_dir=self.binding_dir,
             output_dir=output,
-            dependencies=self.dependencies(),
+            dependencies=dependencies or self.dependencies(),
             **overrides,
+        )
+
+    def cold_load(
+        self,
+        result: dict[str, object],
+        *,
+        dependencies: target.AcceptedPolicyGuardianDependenciesV1 | None = None,
+    ) -> dict[str, object]:
+        return target.load_accepted_policy_guardian_preprocessing_contract_v1(
+            project_root=self.root,
+            preprocessing_contract_path=result["contract_path"],
+            materialization_receipt_path=result["receipt_path"],
+            accepted_policy_capability_manifest_path=self.accepted_capability_path,
+            dependencies=dependencies or self.dependencies(),
         )
 
 
@@ -449,6 +513,224 @@ class SyntheticAtomicCrash(BaseException):
 
 
 class AcceptedPolicyGuardianPreprocessingContractV1Tests(unittest.TestCase):
+    def _assert_config_refusal(
+        self,
+        fixture: Fixture,
+        output: Path,
+        result: dict[str, object] | None,
+        dependencies: target.AcceptedPolicyGuardianDependenciesV1,
+    ) -> None:
+        before = (
+            {path.name: path.read_bytes() for path in output.iterdir()}
+            if result is not None
+            else None
+        )
+        with self.assertRaisesRegex(
+            target.AcceptedPolicyGuardianPreprocessingContractV1Error,
+            "execution config",
+        ):
+            if result is None:
+                fixture.materialize(output, dependencies=dependencies)
+            else:
+                fixture.cold_load(result, dependencies=dependencies)
+        if result is None:
+            self.assertFalse(output.exists())
+        else:
+            self.assertEqual(
+                {path.name: path.read_bytes() for path in output.iterdir()}, before
+            )
+
+    def test_default_execution_config_loader_materializes_and_cold_loads_raw_config(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            fixture = Fixture(root)
+            raw_bytes = fixture.config_path.read_bytes()
+            raw = json.loads(raw_bytes)
+            self.assertEqual(
+                set(raw),
+                {
+                    "schema_version",
+                    "artifact_kind",
+                    "config_id",
+                    "protocol_identity_sha256",
+                    "model_parity_manifest",
+                    "transport",
+                    "workers",
+                },
+            )
+            self.assertNotIn("identity", raw)
+            self.assertEqual(
+                fixture.config,
+                {
+                    **raw,
+                    "identity": {"algorithm": "sha256", "sha256": semantic(raw)},
+                },
+            )
+            dependencies = fixture.dependencies()
+            self.assertIs(
+                dependencies.load_execution_config, target._default_load_execution_config
+            )
+            output = root / "default-config-output"
+            result = fixture.materialize(output, dependencies=dependencies)
+            # A separate cold reader reruns config loading, not an acceptance cache.
+            loaded = fixture.cold_load(result, dependencies=fixture.dependencies())
+            self.assertEqual(loaded["receipt"]["execution_config"], fixture.config_descriptor)
+            self.assertEqual(
+                loaded["receipt"]["execution_config_identity_sha256"],
+                fixture.config_identity,
+            )
+            self.assertEqual(fixture.config_path.read_bytes(), raw_bytes)
+            self.assertEqual(
+                {path.name for path in output.iterdir()},
+                {target.CONTRACT_FILENAME, target.RECEIPT_FILENAME},
+            )
+
+    def test_execution_config_loaded_identity_and_projection_drift_refuse_without_writes(self) -> None:
+        cases = (
+            ("wrong-derived-hash", lambda c: c["identity"].update(sha256="0" * 64)),
+            ("forged-algorithm", lambda c: c["identity"].update(algorithm="sha512")),
+            ("extra-identity-field", lambda c: c["identity"].update(extra="forged")),
+            ("extra-loaded-field", lambda c: c.update(extra="forged")),
+            ("changed-loaded-field", lambda c: c.update(config_id="other-config")),
+            (
+                "changed-loaded-worker",
+                lambda c: c["workers"]["cpu"].update(image_id="sha256:" + "9" * 64),
+            ),
+        )
+        for name, mutate in cases:
+            for consumer in ("materializer", "cold-reader"):
+                with self.subTest(case=name, consumer=consumer), tempfile.TemporaryDirectory() as temporary:
+                    fixture = Fixture(Path(temporary).resolve())
+                    output = fixture.root / "config-drift-output"
+                    result = fixture.materialize(output) if consumer == "cold-reader" else None
+
+                    def load_changed(path: Path) -> dict[str, object]:
+                        value = target._default_load_execution_config(path)
+                        mutate(value)
+                        return value
+
+                    dependencies = replace(
+                        fixture.dependencies(), load_execution_config=load_changed
+                    )
+                    self._assert_config_refusal(fixture, output, result, dependencies)
+
+    def test_default_execution_config_loader_forbids_identity_in_raw_file(self) -> None:
+        for consumer in ("materializer", "cold-reader"):
+            with self.subTest(consumer=consumer), tempfile.TemporaryDirectory() as temporary:
+                fixture = Fixture(Path(temporary).resolve())
+                output = fixture.root / "raw-identity-output"
+                result = fixture.materialize(output) if consumer == "cold-reader" else None
+                write_json(
+                    fixture.config_path,
+                    {**fixture.config_raw, "identity": copy.deepcopy(fixture.config["identity"])},
+                )
+                with self.assertRaisesRegex(SidecarError, "execution layer config fields"):
+                    target._default_load_execution_config(fixture.config_path)
+                self._assert_config_refusal(fixture, output, result, fixture.dependencies())
+
+    def test_execution_config_stale_physical_bytes_refuse_materializer_and_cold_reader(self) -> None:
+        for consumer in ("materializer", "cold-reader"):
+            with self.subTest(consumer=consumer), tempfile.TemporaryDirectory() as temporary:
+                fixture = Fixture(Path(temporary).resolve())
+                output = fixture.root / "stale-config-output"
+                result = fixture.materialize(output) if consumer == "cold-reader" else None
+                write_json(
+                    fixture.config_path,
+                    {**fixture.config_raw, "config_id": "changed-physical-config"},
+                )
+                self._assert_config_refusal(fixture, output, result, fixture.dependencies())
+
+    def test_execution_config_mutation_during_loader_refuses_before_output_writes(self) -> None:
+        for consumer in ("materializer", "cold-reader"):
+            with self.subTest(consumer=consumer), tempfile.TemporaryDirectory() as temporary:
+                fixture = Fixture(Path(temporary).resolve())
+                output = fixture.root / "loader-mutation-output"
+                result = fixture.materialize(output) if consumer == "cold-reader" else None
+                before = fixture.config_path.read_bytes()
+
+                def load_then_mutate(path: Path) -> dict[str, object]:
+                    value = target._default_load_execution_config(path)
+                    write_json(path, {**fixture.config_raw, "config_id": "mutated-during-load"})
+                    return value
+
+                dependencies = replace(
+                    fixture.dependencies(), load_execution_config=load_then_mutate
+                )
+                self._assert_config_refusal(fixture, output, result, dependencies)
+                self.assertNotEqual(fixture.config_path.read_bytes(), before)
+
+    def test_execution_config_post_load_descriptor_drift_refuses_before_output_writes(self) -> None:
+        for consumer in ("materializer", "cold-reader"):
+            with self.subTest(consumer=consumer), tempfile.TemporaryDirectory() as temporary:
+                fixture = Fixture(Path(temporary).resolve())
+                output = fixture.root / "post-load-mutation-output"
+                result = fixture.materialize(output) if consumer == "cold-reader" else None
+                before = fixture.config_path.read_bytes()
+                base = fixture.dependencies()
+
+                def load_bindings_then_mutate(path: Path, **kwargs: object) -> SimpleNamespace:
+                    bindings = base.load_binding_set(path, **kwargs)
+                    write_json(
+                        fixture.config_path,
+                        {**fixture.config_raw, "config_id": "mutated-after-config-load"},
+                    )
+                    return bindings
+
+                dependencies = replace(base, load_binding_set=load_bindings_then_mutate)
+                self._assert_config_refusal(fixture, output, result, dependencies)
+                self.assertNotEqual(fixture.config_path.read_bytes(), before)
+
+    def test_measured_sample_count_survives_materialization_and_cold_load(self) -> None:
+        for count in (3840, 126016):
+            with self.subTest(count=count), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary).resolve()
+                fixture = Fixture(root)
+                fixture.coverage["accepted_sample_count"] = count
+                for calibration in fixture.calibration["calibrations"].values():
+                    for costs in calibration["costs"].values():
+                        for value in costs.values():
+                            value["samples"] = count // 32
+                fixture.rewrite_accepted()
+                result = fixture.materialize(root / "measured-output")
+                loaded = target.load_accepted_policy_guardian_preprocessing_contract_v1(
+                    project_root=root,
+                    preprocessing_contract_path=result["contract_path"],
+                    materialization_receipt_path=result["receipt_path"],
+                    accepted_policy_capability_manifest_path=fixture.accepted_capability_path,
+                    dependencies=fixture.dependencies(),
+                )
+                self.assertEqual(loaded["receipt"], json.loads(result["receipt_path"].read_bytes()))
+                self.assertEqual(fixture.accepted_receipt["coverage"]["accepted_sample_count"], count)
+
+    def test_coverage_types_coordinates_and_calibration_totals_refuse_before_writes(self) -> None:
+        cases = (
+            lambda f: f.coverage.update(accepted_sample_count=True),
+            lambda f: f.coverage.update(accepted_sample_count="3840"),
+            lambda f: f.coverage.update(accepted_sample_count=3840.0),
+            lambda f: f.coverage.update(binding_count=32.0),
+            lambda f: f.coverage.update(pilot_cell_count=True),
+            lambda f: f.coverage.update(minimum_samples_per_branch_cell=30.0),
+            lambda f: f.coverage.update(accepted_sample_count=3839),
+            lambda f: f.coverage.update(extra=1),
+            lambda f: f.calibration["calibrations"].pop("savant"),
+            lambda f: f.calibration["calibrations"].update(extra={}),
+            lambda f: f.calibration["calibrations"]["deepstream"]["costs"].pop("damage"),
+            lambda f: f.calibration["calibrations"]["deepstream"]["costs"]["damage"].update(extra={"samples": 120}),
+            lambda f: f.calibration["calibrations"]["deepstream"]["costs"]["damage"]["gpu"].update(samples=True),
+            lambda f: f.calibration["calibrations"]["deepstream"]["costs"]["damage"]["gpu"].update(samples=119),
+            lambda f: f.calibration["calibrations"]["deepstream"]["costs"]["damage"]["gpu"].update(samples=121),
+        )
+        for position, mutate in enumerate(cases):
+            with self.subTest(case=position), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary).resolve()
+                fixture = Fixture(root)
+                mutate(fixture)
+                fixture.rewrite_accepted()
+                output = root / "refused-output"
+                with self.assertRaises(target.AcceptedPolicyGuardianPreprocessingContractV1Error):
+                    fixture.materialize(output)
+                self.assertFalse(output.exists())
+
     def test_receipt_last_cold_load_proves_promotion_closure_and_consensus(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary).resolve()

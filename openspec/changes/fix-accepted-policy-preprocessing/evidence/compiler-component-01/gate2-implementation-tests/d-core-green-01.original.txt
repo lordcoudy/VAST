@@ -1,0 +1,26 @@
+...................E................
+======================================================================
+ERROR: test_native_shaped_maximum_raw_controls_fit_with_rounded_allocation (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_native_shaped_maximum_raw_controls_fit_with_rounded_allocation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py", line 657, in run_d_v1
+    raise StageDRefusal('d_receipt_reserve')
+tests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_receipt_reserve
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 517, in test_native_shaped_maximum_raw_controls_fit_with_rounded_allocation
+    result = self.run_d(observer=observer)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 313, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py", line 690, in run_d_v1
+    raise StageDRefusal(code, facts) from error
+tests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_receipt_reserve
+
+----------------------------------------------------------------------
+Ran 36 tests in 0.190s
+
+FAILED (errors=1)

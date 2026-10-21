@@ -50,6 +50,7 @@ RUN python3 -m pip install \
     && rm -rf /tmp/vast-python
 
 COPY \
+  scripts/analytics_execution_capability.py \
   scripts/analytics_execution_endpoint.py \
   scripts/analytics_execution_protocol.py \
   scripts/analytics_execution_worker.py \
@@ -102,6 +103,7 @@ COPY \
   scripts/kpp_iss_publication_v3_dataset.py \
   scripts/kpp_legacy_iss_v2_manifest.py \
   scripts/model_parity_grant.py \
+  scripts/non_decreasing_wall_clock_v1.py \
   scripts/publication_acceptance_evidence.py \
   scripts/publication_child_evidence_materializer_v1.py \
   scripts/publication_gstreamer_component_authority_v1.py \
@@ -110,6 +112,7 @@ COPY \
   scripts/publication_guardian_operational_recorder_v1.py \
   scripts/publication_guardian_preprocessing_contract_v1.py \
   scripts/publication_guardian_runtime_expectations_v1.py \
+  scripts/publication_image_freeze_receipt_validation_v1.py \
   scripts/publication_operational_capture_plan_v1.py \
   scripts/publication_operational_container_custody_v1.py \
   scripts/publication_operational_process_custody_v1.py \
@@ -123,6 +126,9 @@ COPY \
   scripts/publication_policy_projection_v1.py \
   scripts/publication_policy_qualification.py \
   scripts/publication_policy_qualification_execution_closure_v1.py \
+  scripts/publication_policy_qualification_fragment_validation_v2.py \
+  scripts/publication_policy_qualification_pilot_validation_v2.py \
+  scripts/publication_policy_qualification_transaction_validation_v2.py \
   scripts/publication_qualification_image_refreeze_v1.py \
   scripts/resource_interval_contract.py \
   scripts/topology_contract.py \

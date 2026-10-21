@@ -1,0 +1,32 @@
+{
+  "approval": "https://github.com/lordcoudy/VAST/pull/9#issuecomment-6228062438",
+  "green": "74 tests PASS; canonicalUbuntuPython3.12.3",
+  "index": {
+    "sha256": "d310418f13e8a0afd287a1d774056ace70287f1d37a5841270a52e8dc5f8109c",
+    "size_bytes": 9998
+  },
+  "initial_charge": 29323264,
+  "maximum_source_quote": 991232,
+  "new_source_limit": 1032192,
+  "outstanding_tail": 45312,
+  "physical_acceptance": false,
+  "planning_commit": "b5f64480cccddebf3656e8c17c6520d448e26d7a",
+  "raws": [
+    {
+      "original": "C:\\Users\\S-A-BA~1\\AppData\\Local\\Temp\\vast-gate2-resume-source-12k-red-01.original.log",
+      "repository_copy": "openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\compiler-component-01\\gate2-implementation-tests\\vast-gate2-resume-source-12k-red-01.original.log",
+      "sha256": "2f04c77744437bd0dd9aaa901fbbe7b5c6b1d24e5bb24185a04a606df1668834",
+      "size_bytes": 1735
+    },
+    {
+      "original": "C:\\Users\\S-A-BA~1\\AppData\\Local\\Temp\\vast-gate2-resume-source-12k-green-02.original.log",
+      "repository_copy": "openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\compiler-component-01\\gate2-implementation-tests\\vast-gate2-resume-source-12k-green-02.original.log",
+      "sha256": "2cb46e20b3d34ac51ad74afa44e6b8c0ef35c7faed339674976238977851fb07",
+      "size_bytes": 16549
+    }
+  ],
+  "red": "1 expected ComponentRecipeError: resume forms bound with approved22version fixture and oldcap983040",
+  "scope": "Controlled root accounting RED/GREEN; no physical P0/packet/C-D admission",
+  "source_margin": 40960,
+  "task_2_10_complete": false
+}
