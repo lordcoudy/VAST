@@ -1169,3 +1169,1007 @@ D27_GEOMETRY_MODEL = 'function d23Geometry(d,report){\n const z=require(\'node:z
 D27_GEOMETRY_STDIO = "'use strict';\nlet chunks=[],inputBytes=0,failed=false;\nconst report={schema_version:1,case:'geometry',node_version:process.versions.node,completed:false,cause:null,checks:[],measurements:[]};\nfunction check(id,ok){report.checks.push({id,ok:!!ok});if(!ok)throw Error('d27_driver_assertion');}\nfunction measure(id,text){if(typeof text!=='string'||/[^\\x00-\\x7f]/.test(text)||text.length>262144)throw Error('d27_driver_assertion');report.measurements.push({id,size_bytes:text.length,sha256:gate2SHA256(text)});}\nfunction budget(cause='selected_wire_deadline',now=()=>performance.now(),end=Infinity){return gate2WireBudget(now,cause,end);}\nfunction decoded(text,tag='gate2-selected-lzw-v4',guard=budget()){return gate2WireDecode(text,tag,gate2SHA256,gate2Canonical,guard);}\nfunction encoded(text,tag='gate2-selected-lzw-v4',guard=budget('selected_wire_root_deadline')){return gate2WireEncode(text,tag,gate2SHA256,gate2Canonical,guard);}\nfunction finish(cause){if(failed)return;failed=true;report.cause=cause;process.stdout.write(gate2Canonical(report,32767)+'\\n');}\nprocess.stdin.on('error',()=>finish('d27_driver_input'));\nprocess.stdin.on('data',b=>{if(failed)return;inputBytes+=b.length;if(inputBytes>262144){finish('d27_driver_input');process.stdin.destroy();return;}chunks.push(b);});\nprocess.stdin.on('end',()=>{if(failed)return;try{\n const bytes=Buffer.concat(chunks);chunks=[];if(bytes.some(x=>x>127))throw Error('d27_driver_input');\n const text=bytes.toString('ascii'),request=JSON.parse(text);\n if(!request||typeof request!=='object'||Array.isArray(request)||Object.keys(request).sort().join()!=='case,data'||request.case!=='geometry'||gate2Canonical(request,262144)!==text)throw Error('d27_driver_input');\n if(process.versions.node!=='25.2.1')throw Error('d27_node_version');\n if(typeof gate2WireEncode!=='function'||typeof gate2WireDecode!=='function'||typeof gate2WireBudget!=='function')throw Error('d27_codec_absent');\n d23Geometry(request.data,report);\n if(report.checks.every(row=>row.ok)){report.completed=true;finish(null);}else finish('d27_geometry_hold');\n }catch(e){finish(new Set(['d27_codec_absent','d27_driver_assertion','d27_driver_input','d27_node_version']).has(e.message)?e.message:'d27_driver_error');}});\n"
 
 D27_GEOMETRY_SOURCE_PINS = ((11065, 'c9e308fc544252984ed3e68df409539b621ada5590b76f976901f9bad76acc4f'), (2231, '3e6bdae5fca3837444a5ab4913e281cf427a72a296dec5fd909ae7aa836b7744'))
+
+
+D27_GENUINE_VM_CORE = r'''const vm=require('node:vm'),crypto=require('node:crypto'),zlib=require('node:zlib'),{EventEmitter}=require('node:events');
+const sha=b=>crypto.createHash('sha256').update(b).digest('hex'),ascii=s=>typeof s==='string'&&!/[^\x00-\x7f]/.test(s);
+const need=(v,c='d27_genuine_assertion')=>{if(!v)throw Error(c);};
+const ROOT='C:/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST',ANCHOR=1755772592209100n;
+const READY=Buffer.from('{"ready":true,"schema_version":1}\n');
+const names=['component','finalizer','initial','resume','root','structured_failure','success','unicode_failure'];
+const paths=[ROOT+'/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py',ROOT+'/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py'];
+function canon(v){if(typeof v==='bigint')return v.toString();if(Array.isArray(v))return '['+v.map(canon).join(',')+']';if(v&&typeof v==='object')return '{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canon(v[k])).join(',')+'}';return JSON.stringify(v);}
+const report={schema_version:1,case:D27_CASE,node_version:process.versions.node,completed:false,cause:null,checks:[],measurements:[]};
+function check(id,ok){need(/^[A-Za-z0-9_]{1,64}$/.test(id)&&typeof ok==='boolean'&&report.checks.length<512&&!report.checks.some(x=>x.id===id));report.checks.push({id,ok});need(ok);}
+function measure(id,b,cap){need(Buffer.isBuffer(b)&&b.length<=cap&&report.measurements.length<128&&!report.measurements.some(x=>x.id===id));report.measurements.push({id,size_bytes:b.length,sha256:sha(b)});}
+async function readRoles(){
+let n=0,parts=[];for await(const b of process.stdin){need(Buffer.isBuffer(b),'d27_genuine_input');n+=b.length;need(n<=262144,'d27_genuine_input');parts.push(b);}
+const raw=Buffer.concat(parts,n);need(raw.every(b=>b<128),'d27_genuine_input');const value=JSON.parse(raw.toString('ascii'));
+need(value&&!Array.isArray(value)&&Object.keys(value).sort().join()===names.join()&&canon(value)===raw.toString('ascii'),'d27_genuine_input');let S={};
+for(const name of names){const v=value[name],p=E.roles[name];need(typeof v==='string'&&Number.isSafeInteger(p.size_bytes)&&p.size_bytes>0&&p.size_bytes<=262144&&v.length===4*Math.ceil(p.size_bytes/3)&&/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(v),'d27_genuine_input');const b=Buffer.from(v,'base64');need(b.length===p.size_bytes&&b.toString('base64')===v&&sha(b)===p.sha256,'d27_genuine_input');S[name]=b;}
+for(const name of ['initial','finalizer','root'])need(S[name].every(b=>b<128),'d27_genuine_input');
+for(const name of ['success','structured_failure','unicode_failure'])need(S[name].length<=2048&&S[name].every(b=>b<128),'d27_genuine_input');
+need(S.component.length===32732&&S.resume.length===32739,'d27_genuine_input');return S;
+}
+function forms(S){return [{id:'success',out:S.success,err:Buffer.alloc(0),success:true},{id:'structured_failure',out:Buffer.alloc(0),err:S.structured_failure,failure:true},{id:'unicode_failure',out:Buffer.alloc(0),err:S.unicode_failure,failure:true},{id:'partial_emission',out:S.success.subarray(0,1024),err:Buffer.alloc(0),partial:true},{id:'unknown_closure',out:S.success,err:Buffer.alloc(0),unknown:true},{id:'setup_refusal',out:Buffer.from('{}\n'),err:Buffer.alloc(0)}];}
+function fixedExecutor(S){const expected={code_commit:E.commit,core_sha256:E.roles.initial.sha256,factory_sha256:E.factory_sha256},profile={max_output_tokens:100000,max_record_bytes:65536};return '// @exec: {"yield_time_ms":1,"max_output_tokens":100000}\n(async()=>{\n'+S.root.toString('ascii')+'\nconst profile='+canon(profile)+';const record=await gate2Complete(tools,'+JSON.stringify(S.initial.toString('ascii'))+','+JSON.stringify(S.finalizer.toString('ascii'))+',profile,'+canon(expected)+');text(gate2Export(record,profile));\n})()';}
+function cell(S,form,fault=null){
+const held=[S.component,S.resume],desc=held.map(b=>({git_blob:crypto.createHash('sha1').update('blob '+b.length+'\0').update(b).digest('hex'),sha256:sha(b),size_bytes:b.length}));
+let clock=10,bad=null,kills=0,reads=0,closes=0,cx,wd=null,bs=0,terminal=false,writer=false,verified=false;
+const ps=[],outs=[],ts=[],events=[],exports=[];
+const now=()=>{const a=!!cx?.gate2Resume?.held;if(a&&fault==='clock_regression')return 9;if(a&&fault==='clock_nonfinite')return NaN;if(a&&fault==='source_deadline')clock=140010;return clock;};
+class Pipe extends EventEmitter{constructor(){super();this.raw=Buffer.alloc(0);}read(n){need(Number.isSafeInteger(n)&&n>0&&n<=4096);if(!this.raw.length)return null;let b=this.raw.subarray(0,n);this.raw=this.raw.subarray(b.length);return b;}feed(b){b=Buffer.from(b);need(this.raw.length+b.length<=8192);this.raw=Buffer.concat([this.raw,b]);this.emit('readable');}end(){this.emit('end');this.emit('close');}}
+function index(path){const i=paths.indexOf(path);need(i>=0);return i;}
+function stat(i){return {dev:1n,ino:BigInt(i+1),mode:33188n,nlink:fault==='source_kind'?2n:1n,size:BigInt(held[i].length),mtimeNs:1n,ctimeNs:1n,birthtimeNs:1n,blocks:64n,isFile:()=>true};}
+const fsMock={constants:{O_RDONLY:0,O_NOFOLLOW:0x20000,O_NONBLOCK:0x800},realpath:async p=>{index(p);return p;},lstat:async p=>stat(index(p)),open:async(p,flags)=>{const i=index(p);need(flags===(0x20000|0x800));let offset=0,closed=false;return {stat:async()=>{need(!closed);return {...stat(i),ino:BigInt(i+(fault==='source_open_drift'?2:1))};},read:async(b,at,n,pos)=>{need(!closed&&pos===null&&Number.isSafeInteger(at)&&Number.isSafeInteger(n)&&at>=0&&n>0&&at+n<=b.length);reads++;let size=Math.min(n,held[i].length-offset);if(fault==='source_eof'||fault==='source_eof_close')size=0;held[i].copy(b,at,offset,offset+size);offset+=size;return {bytesRead:size};},close:async()=>{need(!closed);closed=true;closes++;if(fault==='source_close'||fault==='source_eof_close')throw Error('controlled_close');}};}};
+function receipt(h){const round=BigInt(Math.ceil(h.size_bytes/4096)*4096);return {completed:true,external_terminal_required:true,size_bytes:BigInt(h.size_bytes),sha256:h.sha256,write_facts:{stdin_eof:true,stdin_extent_unknown:false,source_bytes:held.map(b=>BigInt(b.length)),source_sha256:held.map(sha),open_completed:true,written_bytes:BigInt(h.size_bytes),extent_unknown:false,fsync_completed:true,close_completed:true,allocated_bytes:round,completed:true,sha256:h.sha256,unknown_closure:false},deadline_ns:ANCHOR+BigInt(h.remaining_ms)*1000000n,all_forms_quote_bytes:round*2n+8192n};}
+function spawn(file,args,options){
+const i=ps.length;need(i<2&&file==='C:/Python314/python.exe'&&args.slice(0,4).join()==='-I,-S,-B,-c'&&args.length===(i===0?8:6));
+const py=i===0?E.setup_python:E.writer_python;need(ascii(args[4])&&Buffer.byteLength(args[4])===py.size_bytes&&sha(args[4])===py.sha256&&args.at(-1)===canon(desc));
+need(options.cwd===ROOT&&options.windowsHide===true&&JSON.stringify(options.stdio)===JSON.stringify(i===0?['pipe','pipe','pipe','pipe']:['pipe','pipe','pipe']));
+if(i===0)need(args[5]===E.commit&&args[6]===E.approval);else{let g=cx.gate2Resume;need(g.writer_installed===true&&['setupView','hash','view','finish','verifyReturn'].every(k=>typeof g[k]==='function')&&Object.keys(g.cd).sort().join()==='begin,finish,poll,verifyReturn'&&g.cd_factory_sha256===E.factory_sha256);}
+if(fault==='null_child'){ps.push(null);return null;}
+const p=new EventEmitter();p.pid=i===0?4321:5678;p.stdout=new Pipe();p.stderr=new Pipe();p.stdin=new EventEmitter();p.stdio=[p.stdin,p.stdout,p.stderr];if(i===0)p.stdio.push(new Pipe());p.kill=()=>{kills++;throw Error('d27_mock_kill');};p.stdin.writableEnded=false;
+p.stdin.end=input=>{
+need(!p.stdin.writableEnded);p.stdin.writableEnded=true;const b=Buffer.from(input),at=b.indexOf(10);need(at>0&&at<=24576&&b.length<=90112);const h=JSON.parse(b.subarray(0,at).toString('ascii'));
+need(Object.keys(h).sort().join()==='remaining_ms,selected_base64,sha256,size_bytes'&&Number.isSafeInteger(h.remaining_ms)&&h.remaining_ms===Math.floor(cx.gate2Resume.end_ms-clock)&&h.remaining_ms>0&&h.remaining_ms<=150000&&b.subarray(at+1).equals(Buffer.concat(held)));
+if(i===0)need(h.remaining_ms>10000&&h.size_bytes===0&&h.selected_base64===''&&h.sha256===sha(''));else{need(Number.isSafeInteger(h.size_bytes)&&h.size_bytes>0&&h.size_bytes<=12288&&typeof h.selected_base64==='string');let selected=Buffer.from(h.selected_base64,'base64');need(selected.length===h.size_bytes&&selected.toString('base64')===h.selected_base64&&sha(selected)===h.sha256&&selected.every(x=>x<128));}
+events.push(i===0?'setup_ack':'writer_ack');if(fault==='stdin_error')p.stdin.emit('error',Error('controlled'));p.stdin.emit('finish');p.stdin.emit('close');
+const complete=()=>{try{if(i===1){let r=receipt(h);if(fault==='writer_forms'||fault==='writer_forms_hash')r.all_forms_quote_bytes+=1n;if(fault==='writer_hash'||fault==='writer_forms_hash')r.sha256='0'.repeat(64);const out=Buffer.from(canon(r)+'\n');need(out.length+READY.length<=2112);p.stdout.feed(out);p.stdout.end();p.stderr.end();p.emit('exit',0,null);p.emit('close',0,null);}else{p.stdout.feed(fault==='pipe_overflow'?Buffer.alloc(2049,65):form.out);p.stderr.feed(form.err);if(form.partial){p.emit('exit',0,null);p.stdout.emit('error',Error('controlled'));p.stderr.end();}else{p.stdout.end();p.stderr.end();if(!form.unknown)p.emit('exit',form.failure?1:0,null);p.emit('close',form.failure?1:0,null);}}}catch(error){bad=error;p.emit('error',Error('d27_mock_failure'));}};
+if(form.pending&&i===0)p.complete=complete;else queueMicrotask(complete);
+};ps.push(p);return p;
+}
+cx=vm.createContext({Buffer,performance:{now},setTimeout:(f,n)=>{need(typeof f==='function'&&Number.isFinite(n)&&n>=0&&n<=150000);const t={f,at:clock+n,off:false};ts.push(t);return t;},clearTimeout:t=>{t.off=true;},text:v=>{need(ascii(v)&&v.length<=65536&&exports.length===0&&v.endsWith('\n'));exports.push(v);},nodeRepl:{write:v=>{need(typeof v==='string'&&Buffer.byteLength(v)<=8192&&outs.length<8);outs.push(v);events.push('output');}}},{codeGeneration:{strings:false,wasm:false}});
+const imports={'node:crypto':crypto,'node:zlib':{brotliCompressSync:zlib.brotliCompressSync,brotliDecompressSync:zlib.brotliDecompressSync},'node:fs/promises':fsMock,'node:child_process':{spawn}};
+async function importModuleDynamically(name){need(Object.hasOwn(imports,name));const values=imports[name],keys=Object.keys(values),m=new vm.SyntheticModule(keys,function(){for(const k of keys)this.setExport(k,values[k]);},{context:cx});await m.link(()=>{throw Error('d27_static_import');});await m.evaluate();return m;}
+function run(source){need(ascii(source)&&Buffer.byteLength(source)<=262144);return new vm.Script('(async()=>{\n'+source+'\n})()',{importModuleDynamically}).runInContext(cx);}
+async function drive(p,ready=false){let done=false,result,error;p.then(v=>{done=true;result=v;},e=>{done=true;error=e;});for(let turn=0;turn<32&&!done;turn++){for(let k=0;k<400&&!done;k++)await Promise.resolve();if(!done&&ready&&ps[0]?.stdio[3].listenerCount('end')&&ps[0].stdio[3].raw.length===0&&!ps[0].ready){ps[0].ready=true;ps[0].stdio[3].feed(Buffer.from(ANCHOR.toString()+'\n'));ps[0].stdio[3].end();continue;}if(done)break;let t=null;for(const q of ts)if(!q.off&&(!t||q.at<t.at))t=q;if(t){need(t.at>=clock);t.off=true;clock=t.at;t.f();}}need(done&&!bad);if(error)throw error;return result;}
+async function initial(){return drive(run(S.initial.toString('ascii')),true);}
+async function poll(){if(ps[0]?.complete&&(!form.six||bs>=6)){const f=ps[0].complete;ps[0].complete=null;f();}return drive(run('await gate2Resume.poll();'));}
+function fresh(){const g=cx.gate2Resume,d=Object.getOwnPropertyDescriptor(g,'_gate2CreateHash');return !!g.last_setup&&g.setup_success===null&&g.held.length===2&&g.source_facts.length===2&&g.source_facts.every(f=>f.cause===null&&f.open_completed===true&&f.close_completed===true&&f.unknown_closure===false)&&['setupView','hash','view','finish','verifyReturn','cd'].every(k=>!Object.hasOwn(g,k))&&d&&typeof d.value==='function'&&!d.enumerable&&!d.writable&&!d.configurable&&closes===2&&kills===0;}
+cx.__d27Bridge=async args=>{
+need(args&&Object.keys(args).sort().join()==='code,timeout_ms'&&ascii(args.code));const before=outs.length;
+if(!terminal){need(args.timeout_ms===32000&&bs<6);if(bs++===0){need(args.code===S.initial.toString('ascii'));await initial();}else{need(args.code==='await gate2Resume.poll();');await poll();}terminal=outs.at(-1)?.startsWith('[1,')===true;if(terminal)need(fresh());}
+else if(!writer){need(args.timeout_ms===11000);const prefix=S.finalizer.toString('ascii')+'\nawait gate2Resume.finish(';need(args.code.startsWith(prefix)&&args.code.endsWith(');'));const wire=JSON.parse(args.code.slice(prefix.length,-2));need(typeof wire==='string'&&wire.length>0&&wire.length<=12288&&!/[^\x20-\x7e]/.test(wire)&&args.code===prefix+JSON.stringify(wire)+');');if(fault==='writer_install_late')clock=cx.gate2Resume.end_ms;const p=run(args.code);if(fault==='writer_install_late')await drive(p);for(let k=0;k<10000&&ps.length<2;k++)await Promise.resolve();need(ps.length===2);ps[1].stdout.feed(READY);await drive(p);writer=true;wd=outs.at(-1);events.push('writer_delivered');if(fault==='root_after_writer_deadline')clock=cx.gate2Resume.end_ms;}
+else{need(!verified&&args.timeout_ms===1000&&args.code==='gate2Resume.verifyReturn('+JSON.stringify(wd)+');');if(fault==='return_late')clock=cx.gate2Resume.end_ms;await drive(run(args.code));verified=true;events.push('return_verified');}
+need(outs.length===before+1&&!bad);return canon({content:[{type:'text',text:outs.at(-1)}],isError:false,_meta:{actual_ordinal:outs.length,resource:{uri:'controlled:retained'}},resource:{mimeType:'application/json'}});
+};
+async function execute(){await drive(run('globalThis.__d27Actual={calls:[],frames:[]};globalThis.tools={mcp__node_repl__js:async args=>{__d27Actual.calls.push(args);const r=JSON.parse(await __d27Bridge(args));__d27Actual.frames.push(r);return r;}};'));const source=fixedExecutor(S);need(source.length===E.executor.size_bytes&&sha(source)===E.executor.sha256&&source.length<=262144);await new vm.Script(source,{importModuleDynamically}).runInContext(cx);need(exports.length===1);return exports[0];}
+return {initial,poll,run,drive,execute,fresh,context:cx,facts:()=>({spawned:ps.length,kills,reads,closes,outs:outs.length,verified,events:[...events],texts:[...outs]})};
+}
+function publish(){const b=Buffer.from(canon(report)+'\n');need(b.length<=32768);process.stdout.write(b);}
+async function finish(test){try{need(process.versions.node==='25.2.1','d27_genuine_version');const S=await readRoles();await test(S);report.completed=report.checks.length>0&&report.checks.every(x=>x.ok);}catch(e){const allowed=['d27_genuine_assertion','d27_genuine_input','d27_genuine_version'];report.cause=allowed.includes(e?.message)?e.message:'d27_genuine_error';report.completed=false;}try{publish();}catch{process.exitCode=1;}}
+'''
+
+
+D27_GENUINE_INITIAL_TEST = r'''finish(async S=>{
+for(const form of forms(S)){
+const b=cell(S,form);await b.initial();const f=b.facts(),g=b.context.gate2Resume;
+check(form.id+'_unclassified',b.fresh()&&f.spawned===1&&f.outs===1&&!f.verified&&f.texts[0].startsWith('[1,')&&g.final===true);
+check(form.id+'_closure',g.last_setup.facts.unknown_closure===!!(form.partial||form.unknown)&&g.last_setup.facts.completed===!(form.partial||form.unknown||form.failure));
+}
+for(const fault of ['source_kind','source_open_drift','source_eof','source_close','source_eof_close','source_deadline']){
+const b=cell(S,forms(S)[0],fault);await b.initial();const g=b.context.gate2Resume,f=b.facts(),first=fault==='source_eof_close'?'source_eof':fault;
+check(fault+'_first_cause',f.spawned===0&&g.setup.causes[0]===first&&g.setup_success===null&&g.last_setup.facts.completed===false);
+if(fault==='source_eof_close')check('source_eof_close_secondary',g.source_facts[0].cause==='source_eof'&&g.source_facts[0].secondary.join()==='source_close'&&g.source_facts[0].unknown_closure===true);
+}
+for(const fault of ['feature','reviver','clock_regression','clock_nonfinite']){
+const b=cell(S,forms(S)[0],fault);if(fault==='feature')await b.drive(b.run('JSON.rawJSON=undefined;'));if(fault==='reviver')await b.drive(b.run('const p=JSON.parse;JSON.parse=(s,r)=>p(s,(k,v)=>r?r(k,v):v);'));let cause=null;try{await b.initial();}catch(e){cause=e?.message;}
+check(fault+'_pre_effect_refusal',cause===((fault==='feature'||fault==='reviver')?'parse_source_feature':'clock_regression')&&b.facts().spawned===0&&b.facts().outs===0);
+}
+for(const fault of ['stdin_error','pipe_overflow']){
+const b=cell(S,forms(S)[0],fault);await b.initial();const g=b.context.gate2Resume;
+check(fault+'_known_capture',b.facts().spawned===1&&g.setup.causes.includes(fault)&&g.last_setup.facts.completed===false&&g.last_setup.facts.unknown_closure===true&&g.setup_success===null);
+}
+const pending=cell(S,{...forms(S)[0],pending:true});await pending.initial();check('pending_before_terminal',pending.facts().texts[0].startsWith('[0,')&&!Object.hasOwn(pending.context.gate2Resume,'setup_success'));await pending.poll();check('pending_terminal_unclassified',pending.fresh()&&pending.facts().outs===2&&pending.facts().texts[1].startsWith('[1,'));
+const nullBox=cell(S,forms(S)[0],'null_child');await nullBox.initial();for(let n=1;n<6&&!nullBox.context.gate2Resume.final;n++)await nullBox.poll();const ng=nullBox.context.gate2Resume;check('null_child_unknown',ng.final===true&&ng.last_setup.facts.pid===null&&ng.last_setup.facts.unknown_closure===true&&ng.setup_success===null);
+const box=cell(S,forms(S)[0]);const disabled=await box.drive(box.run('let a=false,b=false,c=false;try{eval("globalThis.__d27Executed=true");}catch(e){a=e instanceof EvalError;}try{Function("return 1")();}catch(e){b=e instanceof EvalError;}try{await WebAssembly.compile(new Uint8Array([0,97,115,109,1,0,0,0]));}catch(e){c=e instanceof WebAssembly.CompileError;}return a&&b&&c&&!Object.hasOwn(globalThis,"__d27Executed");'));check('both_codegen_routes_disabled',disabled===true&&box.facts().spawned===0);
+});
+'''
+
+
+D27_GENUINE_FINALIZER_TEST = r'''finish(async S=>{
+const validation=String.raw`
+const record=JSON.parse(rt),actual=globalThis.__d27Actual;
+const need=(v,c='d27_genuine_assertion')=>{if(!v)throw Error(c);};
+const ctx0={code_commit:E.commit,core_sha256:E.roles.initial.sha256,factory_sha256:E.factory_sha256};
+need(record.retention_complete===true&&record.physical_acceptance===false&&record.setup_success===wanted&&record.completed===wanted);
+const guard=gate2WireBudget(()=>performance.now(),'selected_wire_receive_deadline');
+const selected=gate2WireDecode(record.setup.selected,'gate2-selected-lzw-v4',gate2SHA256,gate2Canonical,guard),observed=gate2WireDecode(record.setup.observed,'gate2-observed-lzw-v4',gate2SHA256,gate2Canonical,guard),n=selected.value.frames.length;
+guard.phase(()=>{const same=(a,b)=>gate2Canonical(a,32768)===gate2Canonical(b,32768);need(same(selected.value.frames,actual.frames.slice(0,n))&&same(observed.value.frames,actual.frames.slice(0,n))&&same(observed.value.calls,actual.calls.slice(0,n))&&same(selected.value.call.codes,actual.calls.slice(0,n).map(x=>x.code)));});
+const c=record.context,context=wanted?{code_commit:c[1],packet_size_bytes:c[2],packet_sha256:c[3],selected_sha256:c[4],core_sha256:c[5],factory_sha256:c[6]}:{...ctx0,packet_size_bytes:32768,packet_sha256:E.packet_sha256,selected_sha256:gate2SHA256(record.setup.selected)};
+const chain=[{call:{type:'custom_tool_call',name:'exec',status:'completed',call_id:'d27_exec',id:'d27_call',input:et},result:{type:'custom_tool_call_output',call_id:'d27_exec',id:'d27_result',output:[{type:'input_text',text:'Script completed\nWall time '+wall+' seconds\nOutput:\n'},{type:'input_text',text:rt}]}}];
+const chainText=gate2Canonical(chain,262144);need(et.length===E.executor.size_bytes&&gate2SHA256(et)===E.executor.sha256);
+function clone(){return {record:JSON.parse(gate2Canonical(record,65535)),context:JSON.parse(gate2Canonical(context,1024)),chain:JSON.parse(gate2Canonical(chain,262144))};}
+function receive(x){let text=gate2Canonical(x.record,65535)+'\n';x.chain[0].result.output[1].text=text;return gate2Receive(text,x.chain,x.context,'functions.exec',E.executor.sha256);}
+function refuses(cause,change){let x=clone(),caught=false;change(x);try{receive(x);}catch(e){caught=true;need(e.message===cause);}need(caught);}
+let receipt=null;
+if(wanted){
+receipt=receive({record,context,chain});
+need(Object.keys(receipt).sort().join()==='context_sha256,executor_call_sha256,max_output_tokens,record_sha256,record_size_bytes,terminal,tool_reference,version'&&receipt.version===1&&receipt.context_sha256===gate2Context(context)&&receipt.record_size_bytes===rt.length&&receipt.record_sha256===gate2SHA256(rt)&&receipt.executor_call_sha256===gate2SHA256(chainText)&&receipt.max_output_tokens===100000&&receipt.terminal==='complete_untruncated'&&receipt.tool_reference==='functions.exec');
+const rs=gate2SHA256(gate2Canonical(receipt,2048)),reference='https://github.com/lordcoudy/VAST/pull/9#issuecomment-99999999999999999999',independent='https://github.com/lordcoudy/VAST/pull/9#issuecomment-88888888888888888888',body={version:1,kind:'vast_gate2_external_delivery_approval_v1',receipt_sha256:rs,context_sha256:gate2Context(context),...context,decision:'approved_for_C1',approval_type:'delegated_agent_self_approval',independent_review_reference:independent},obs0={reference,body:gate2Canonical(body,8191)+'\n'},approved=gate2Approve(receipt,context,obs0);
+need(approved.receipt===receipt&&approved.approval.reference===reference&&approved.approval.receipt_sha256===rs&&approved.approval.body_sha256===gate2SHA256(obs0.body));
+refuses('delivery_selected',x=>{x.record.setup={selected:0,observed:0,extra:true};});
+const bad=wire=>{let v=JSON.parse(wire);v.payload='"';return gate2Canonical(v,12288);};
+refuses('delivery_selected',x=>{x.record.setup.selected=bad(x.record.setup.selected);x.context.selected_sha256='0'.repeat(64);x.record.selected_sha256=x.context.selected_sha256;});
+refuses('selected_wire_token',x=>{x.record.setup.selected=bad(x.record.setup.selected);x.context.selected_sha256=gate2SHA256(x.record.setup.selected);x.record.selected_sha256=x.context.selected_sha256;});
+refuses('delivery_actual_setup_calls',x=>{let v=JSON.parse(observed.text);v.frames[0]._meta.actual_ordinal++;const g=gate2WireBudget(()=>performance.now(),'selected_wire_root_deadline');x.record.setup.observed=gate2WireEncode(gate2Canonical(v,32768),'gate2-observed-lzw-v4',gate2SHA256,gate2Canonical,g);});
+refuses('delivery_causal_call',x=>{x.record.verification_call.code='gate2Resume.verifyReturn("different delivery");';});
+refuses('executor_source_binding',x=>{x.chain[0].call.input+=' ';});
+refuses('delivery_return_proof',x=>{let proof=JSON.parse(x.record.verification.content[0].text);proof[5]='0'.repeat(64);x.record.verification.content[0].text=JSON.stringify(proof);});
+}else{let caught=false;try{receive({record,context,chain});}catch(e){caught=true;need(e.message==='delivery_setup_failed');}need(caught);}
+const rows=[['selected_original',selected.text],['observed_original',observed.text],['selected_wire',record.setup.selected],['observed_wire',record.setup.observed],['chain',chainText]].map(([id,text])=>({id,size_bytes:text.length,sha256:gate2SHA256(text)}));
+const g=globalThis.gate2Resume;let late=false;try{g.verifyReturn('different delivery');}catch(e){late=e.message==='writer_delivered_binding';}need(late);
+let duplicate=false;try{await g.finish(record.setup.selected);}catch(e){duplicate=e.message==='writer_state';}need(duplicate);
+return {rows,rc:wanted,fc:!wanted,cr:true,dw:true};
+`;
+for(const form of [...forms(S),{...forms(S)[0],id:'success_six',pending:true,six:true}]){
+const b=cell(S,form),started=process.hrtime.bigint(),rt=await b.execute(),wall=(Number(process.hrtime.bigint()-started)/1e9).toFixed(9),et=fixedExecutor(S);
+const slot=canon({rt,et,E,wall,wanted:!!form.success});need(slot.length<=6*(65536+262144)+16384);b.context.__d27VerificationJSON=slot;
+const test=S.root.toString('ascii')+'\nconst {rt,et,E,wall,wanted}=JSON.parse(globalThis.__d27VerificationJSON);\n'+validation;
+const value=await b.drive(b.run(test)),f=b.facts();delete b.context.__d27VerificationJSON;
+check(form.id+'_same_vm_writer_return',f.spawned===2&&f.kills===0&&f.verified&&f.outs===(form.six?8:3)&&value.cr&&value.dw&&f.events.indexOf('writer_ack')<f.events.indexOf('writer_delivered')&&f.events.indexOf('writer_delivered')<f.events.indexOf('return_verified'));
+check(form.id+'_receiver_and_acquisition',value.rc===!!form.success&&value.fc===!form.success);
+measure(form.id+'_root',Buffer.from(rt),65536);
+for(const row of value.rows){need(row.size_bytes<=(row.id==='chain'?262144:row.id.endsWith('original')?32768:12288));const id=form.id+'_'+row.id;need(!report.measurements.some(x=>x.id===id));report.measurements.push({id,size_bytes:row.size_bytes,sha256:row.sha256});}
+}
+for(const [fault,cause,spawned] of [['writer_forms','writer_forms',2],['writer_hash','writer_schema',2],['writer_forms_hash','writer_schema',2],['writer_install_late','writer_install',1],['return_late','writer_return_unknown',2],['root_after_writer_deadline','selected_wire_root_deadline',2]]){
+const b=cell(S,forms(S)[0],fault),text=await b.execute(),v=JSON.parse(text),f=b.facts();check(fault+'_ordered_refusal',v.completed===false&&v.retention_complete===false&&v.cause===cause&&f.spawned===spawned&&!f.verified&&f.kills===0);
+}
+const b=cell(S,forms(S)[0]);const disabled=await b.drive(b.run('let a=false,b=false,c=false;try{eval("globalThis.__d27Executed=true");}catch(e){a=e instanceof EvalError;}try{Function("return 1")();}catch(e){b=e instanceof EvalError;}try{await WebAssembly.compile(new Uint8Array([0,97,115,109,1,0,0,0]));}catch(e){c=e instanceof WebAssembly.CompileError;}return a&&b&&c&&!Object.hasOwn(globalThis,"__d27Executed");'));check('both_codegen_routes_disabled',disabled===true&&b.facts().spawned===0);
+});
+'''
+
+
+def _d27_genuine_material_v1(deadline):
+    """Construct only the fixed roles in RAM after the launcher's outcome gate."""
+    import base64
+    import math
+    import os
+    import stat
+    import time
+    if type(deadline) not in (int,float) or not math.isfinite(deadline):
+        raise RuntimeError('d27_genuine_construction_deadline')
+    last=None
+    def gate():
+        nonlocal last
+        now=time.monotonic()
+        if (not math.isfinite(now) or deadline-now>300 or now>=deadline-5
+                or last is not None and now<last):
+            raise RuntimeError('d27_genuine_construction_deadline')
+        last=now
+    def pin(raw):
+        return {'size_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+    gate()
+    caller=_d27_caller_module_v1()
+    caller.d27_assert_fixed_data_v1(deadline)
+    codec,role=caller.d27_node_codec_v1(D27_WIRE_CODEC)
+    gate()
+    initial,baseline,parts,initial_facts=d27_phase_initial_v1(deadline)
+    if ((len(initial),d22_sha(initial.encode('ascii'))) !=
+            (14162,'4032a534147aada87931734f3b06cde67988d62c75851b959945399843a3770d')
+            or parts['restored']!=baseline or not initial_facts['exact_inverse_source']):
+        raise RuntimeError('d27_genuine_initial_binding')
+    finalizer,finalizer_facts=caller.d27_finalizer_source_v1(initial,parts['deferred'],codec,
+                                                          _d27_main_self_v1(),caller)
+    gate()
+    roots=caller.d27_root_wire_sources_v1(D27_WIRE_CODEC)
+    root=ROOT_ENCODER+'\n'+ROOT_SHA256+'\n'+D27_WIRE_CODEC+'\n'+roots['orchestrator']+'\n'+roots['receiver']
+    buffers={'initial':initial.encode('ascii'),'finalizer':finalizer.encode('ascii'),'root':root.encode('ascii')}
+    fixed=(('component','tests/fixtures/accepted_policy_fixture_compiler_component_v1.py',32732,
+            '329fb13f2c6dcee0872e5a29ec1fd769dc6e57ce92ee1076fef6737f1da86d88'),
+           ('resume','tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py',32739,
+            '5fd7d2d6ee62ff584d2a4662757ca804a3d3300d30bb966319901870c4c85670'))
+    root_path=Path(__file__).absolute().parents[1]
+    def epoch(value,cross=False):
+        return (value.st_dev,value.st_ino,value.st_mode,value.st_nlink,value.st_size,value.st_mtime_ns,
+                getattr(value,'st_birthtime_ns',None),None if cross and os.name=='nt' else value.st_ctime_ns)
+    for name,rel,size,digest in fixed:
+        gate();path=root_path/rel;before=path.lstat()
+        if (path.resolve(strict=True)!=path or not stat.S_ISREG(before.st_mode)
+                or before.st_nlink!=1 or before.st_size!=size):
+            raise RuntimeError('d27_genuine_formatter_kind')
+        with path.open('rb') as handle:
+            opened=os.fstat(handle.fileno())
+            if epoch(opened,True)!=epoch(before,True):raise RuntimeError('d27_genuine_formatter_epoch')
+            raw=handle.read(32769)
+            if epoch(os.fstat(handle.fileno()))!=epoch(opened):raise RuntimeError('d27_genuine_formatter_epoch')
+        gate()
+        if epoch(path.lstat())!=epoch(before) or len(raw)!=size or d22_sha(raw)!=digest:
+            raise RuntimeError('d27_genuine_formatter_binding')
+        buffers[name]=raw
+    for name,raw in (('success',caller._d27_setup_success_output_v1().encode('ascii')),
+                     ('structured_failure',caller._d27_setup_failure_output_v1().encode('ascii')),
+                     ('unicode_failure',caller._d27_setup_failure_output_v1(unicode=True).encode('ascii'))):
+        gate()
+        if not 0<len(raw)<=2048:raise RuntimeError('d27_genuine_form_bound')
+        buffers[name]=raw
+    if set(buffers)!={'component','finalizer','initial','resume','root','structured_failure','success','unicode_failure'}:
+        raise RuntimeError('d27_genuine_role_set')
+    if any(not 0<len(raw)<=262144 for raw in buffers.values()):raise RuntimeError('d27_genuine_role_bound')
+    gate()
+    raw=d22_canonical({name:base64.b64encode(value).decode('ascii') for name,value in buffers.items()})
+    if len(raw)>262144:raise RuntimeError('d27_genuine_input_bound')
+    expected={'roles':{name:pin(value) for name,value in buffers.items()},
+              'setup_python':pin((NODE_SETUP_HEAD+NODE_SHARED_PYTHON+NODE_SETUP_TAIL).encode('ascii')),
+              'writer_python':pin((NODE_WRITER_HEAD+NODE_SHARED_PYTHON+NODE_WRITER_TAIL).encode('ascii')),
+              'commit':hashlib.sha1(b'controlled-current-review').hexdigest(),
+              'approval':'https://github.com/lordcoudy/VAST/pull/9#issuecomment-1234567890',
+              'packet_sha256':d22_sha(b'packet'),
+              'factory_sha256':d22_sha(caller.CD_FACTORY_SOURCE.encode('ascii'))}
+    profile={'max_output_tokens':100000,'max_record_bytes':65536}
+    expected_context={'code_commit':expected['commit'],'core_sha256':expected['roles']['initial']['sha256'],
+                      'factory_sha256':expected['factory_sha256']}
+    executor=('// @exec: {"yield_time_ms":1,"max_output_tokens":100000}\n(async()=>{\n'+root
+              +'\nconst profile='+d22_canonical(profile).decode('ascii')
+              +';const record=await gate2Complete(tools,'
+              +json.dumps(initial,ensure_ascii=True,separators=(',',':'))+','
+              +json.dumps(finalizer,ensure_ascii=True,separators=(',',':'))
+              +',profile,'+d22_canonical(expected_context).decode('ascii')
+              +');text(gate2Export(record,profile));\n})()')
+    if len(executor)>262144:raise RuntimeError('d27_genuine_executor_bound')
+    expected['executor']=pin(executor.encode('ascii'))
+    if len(d22_canonical(expected))>1518:raise RuntimeError('d27_genuine_expectation_bound')
+    facts={'kind':'d27_genuine_construction_metadata_v1','initial':initial_facts,
+           'finalizer':finalizer_facts,'codec':role,'roles':expected['roles'],
+           'executor':expected['executor'],'input':pin(raw),'generated_operational_program_execution':False,
+           'generated_full_subject_files_written':False,'physical_acceptance':False}
+    if len(d22_canonical(facts))>16384:raise RuntimeError('d27_genuine_construction_metadata_bound')
+    gate()
+    return raw,expected,facts
+
+
+def _d27_main_self_v1():
+    import sys
+    module=sys.modules.get(__name__)
+    if type(module) is not types.ModuleType or vars(module) is not globals():
+        raise RuntimeError('d27_main_identity')
+    return module
+
+
+def d27_run_genuine_initial_v1(deadline):
+    """Execute only this fixed restricted route after positive pure geometry.
+
+    Sources and complete operational buffers remain RAM-only. The original
+    deadline bounds construction and bounded Node capture; no native call runs.
+    """
+    import copy
+    import os
+    caller=_d27_caller_module_v1()
+    caller.d27_require_positive_geometry_v1()
+    raw,expectations,construction=_d27_genuine_material_v1(deadline)
+    case='genuine_initial'
+    canonical=d22_canonical
+    D27CaseError=caller.D27CaseError
+    program=('const E='+canonical(expectations).decode('ascii')+';\nconst D27_CASE='+json.dumps(case)+';\n'
+             +D27_GENUINE_VM_CORE+'\n'+D27_GENUINE_INITIAL_TEST)
+    import math
+    import shutil
+    import subprocess
+    import threading
+    import time
+
+    started = time.monotonic()
+    buffers = {'stdout': bytearray(), 'stderr': bytearray()}
+    channels = {name: {'observed_bytes': 0, 'retained_bytes': 0, 'eof': False,
+                       'overflow': False, 'io_error': None, 'closed': False,
+                       'unknown_remainder': True} for name in buffers}
+    facts = {'schema_version': 1, 'data_only': False, 'spawned': False, 'pid': None,
+             'returncode': None, 'timed_out': False, 'kill_requested': False,
+             'stdin_bytes': 0, 'stdin_closed': False, 'stdin_complete': False,
+             'stdin_extent_unknown': False, 'stdin_write_attempted': False,
+             'stdin_write_in_flight': False, 'threads_started': 0, 'reaped': False,
+             'threads_joined': False, 'causes': [], 'node_version': None,
+             'case': case if type(case) is str and case in ('genuine_initial',) else None,
+             'case_completed': None, 'case_cause': None, 'parent_observed_completion': False,
+             'descendant_quiescence': 'UNKNOWN', 'input_bytes': None,
+             'input_sha256': None, 'data_bytes': None, 'data_sha256': None,
+             'report_bytes': None, 'report_sha256': None, 'checks_count': None,
+             'measurements_count': None, 'environment_keys': [], 'program_sha256': None,
+             'source_kind': 'd27_fixed_genuine_test_v1', 'program_bytes': None,
+             'driver_role': case, 'driver_getter': 'd27_run_genuine_initial_v1',
+             'construction':construction, 'native_activity':'UNKNOWN','physical_acceptance':False}
+    lock = threading.RLock()
+    def cause(value):
+        with lock:
+            if value not in facts['causes']:
+                facts['causes'].append(value)
+    def has_causes():
+        with lock:
+            return bool(facts['causes'])
+    def finish(report=None):
+        # Capture related facts, channels, causes and byte prefixes at one shared
+        # lock boundary. Later worker changes cannot mix these captured values.
+        with lock:
+            snapshot = copy.deepcopy(facts)
+            captured_channels = {name: dict(channel) for name, channel in channels.items()}
+            prefixes = {name: bytes(buffer) for name, buffer in buffers.items()}
+        for name, channel in captured_channels.items():
+            prefix = prefixes[name]
+            snapshot[name] = {**channel, 'retained_bytes': len(prefix),
+                              'prefix_sha256': hashlib.sha256(prefix).hexdigest(),
+                              'unknown_remainder': not channel['eof'] or channel['overflow'] or channel['io_error'] is not None}
+        observed = time.monotonic()
+        snapshot['elapsed_seconds'] = observed - started
+        snapshot['finished_before_deadline'] = observed < end if end is not None else False
+        snapshot['child_completion_observed_before_deadline'] = (
+            snapshot['spawned'] and child_total_end is not None and observed < child_total_end)
+        if snapshot['spawned'] and not snapshot['child_completion_observed_before_deadline']:
+            if 'child_completion_late' not in snapshot['causes']:
+                snapshot['causes'].append('child_completion_late')
+        if not snapshot['finished_before_deadline'] and 'parent_deadline' not in snapshot['causes']:
+            snapshot['causes'].append('parent_deadline')
+        if snapshot['spawned'] and observed >= cleanup_end:
+            if 'cleanup_late' not in snapshot['causes']:
+                snapshot['causes'].append('cleanup_late')
+        snapshot['parent_observed_completion'] = report is not None and not snapshot['causes']
+        encoded = canonical(snapshot)
+        if len(encoded) > 28000:
+            raise RuntimeError('D27 genuine capture metadata bound')
+        # Publication is immutable; the shared capture does not establish
+        # continuous custody or quiescence of unjoined workers/descendants.
+        frozen = json.loads(encoded)
+        if frozen['causes']:
+            error=D27CaseError(frozen)
+            if report is not None:error.validated_report=json.loads(canonical(report))
+            raise error
+        return report, frozen
+    end = None
+    child_total_end = None
+    if type(deadline) not in (int, float):
+        cause('deadline_invalid');return finish()
+    try:
+        end = float(deadline)
+    except (OverflowError, ValueError):
+        cause('deadline_invalid');return finish()
+    if not math.isfinite(end):
+        end = None;cause('deadline_invalid');return finish()
+    if end - started > 300:
+        cause('deadline_limit');return finish()
+    if type(case) is not str or case not in ('genuine_initial',):
+        cause('case_invalid');return finish()
+    if type(raw) is not bytes:
+        cause('input_type');return finish()
+    if len(raw) > 262144:
+        cause('input_limit');return finish()
+    if not raw.isascii():
+        cause('input_ascii');return finish()
+    if time.monotonic() >= end - 8:
+        cause('deadline_no_window');return finish()
+    try:
+        def unique_input(rows):
+            value = dict(rows)
+            if len(value) != len(rows):
+                raise ValueError('duplicate DATA field')
+            return value
+        def reject_constant(value):
+            raise ValueError('nonfinite DATA')
+        data = json.loads(raw, object_pairs_hook=unique_input, parse_constant=reject_constant)
+        wire = canonical(data)
+        if len(wire) > 262144:
+            cause('input_envelope_limit');return finish()
+    except (ValueError, TypeError, RecursionError, OverflowError):
+        cause('input_json');return finish()
+    with lock:
+        facts.update(data_bytes=len(raw), data_sha256=hashlib.sha256(raw).hexdigest(),
+                     input_bytes=len(wire), input_sha256=hashlib.sha256(wire).hexdigest())
+    raw = wire
+    work_end = min(started + 27, end - 8)
+    child_total_end = min(started + 30, end - 5)
+    cleanup_end = min(child_total_end, work_end + 3)
+    with lock:
+        facts.update(started_monotonic=started, caller_deadline=end, work_deadline=work_end,
+                     child_total_deadline=child_total_end, cleanup_deadline=cleanup_end, child_total_limit_seconds=30,
+                     child_work_limit_seconds=27, cleanup_limit_seconds=3, final_reserve_seconds=5)
+    if time.monotonic() >= work_end:
+        cause('deadline_no_window');return finish()
+    if type(program) is not str:
+        cause('driver_source_kind');return finish()
+    if not 0 < len(program) <= 24576:
+        cause('driver_source_limit');return finish()
+    try:
+        program_bytes = program.encode('ascii')
+    except UnicodeEncodeError:
+        cause('driver_source_ascii');return finish()
+    # Hold one exact immutable source/argv buffer; DATA never selects a program.
+    program = program_bytes.decode('ascii')
+    with lock:
+        facts.update(program_bytes=len(program_bytes), program_sha256=hashlib.sha256(program_bytes).hexdigest())
+    node = shutil.which('node') or shutil.which('node.exe')
+    if node is None:
+        cause('node_unavailable');return finish()
+    try:
+        node = str(Path(node).resolve(strict=True))
+        environment = {'PATH': str(Path(node).parent)}
+        if os.name == 'nt':
+            environment['SystemRoot'] = os.environ['SystemRoot']
+        argv = [node, '--max-old-space-size=256', '--experimental-vm-modules', '--no-warnings', '--input-type=commonjs', '-e', program]
+        if os.name == 'nt' and len(subprocess.list2cmdline(argv)) > 32767:
+            cause('driver_command_limit');return finish()
+        with lock:
+            facts.update(node_executable=node, command_options=argv[1:6], environment_keys=sorted(environment))
+        if time.monotonic() >= work_end:
+            cause('deadline_before_spawn');return finish()
+        process = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, env=environment, bufsize=0,
+                                   start_new_session=os.name != 'nt',
+                                   creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+    except (OSError, KeyError, ValueError) as error:
+        cause('spawn_' + type(error).__name__);return finish()
+    with lock:
+        facts.update(spawned=True, pid=process.pid)
+    if time.monotonic() >= work_end:
+        with lock:
+            facts['timed_out'] = True;cause('deadline_after_spawn')
+    def read_channel(name, pipe, limit):
+        channel = channels[name]
+        try:
+            while True:
+                with lock:
+                    read_size = min(4096, limit + 1 - len(buffers[name]))
+                part = pipe.read(read_size)
+                with lock:
+                    if type(part) is not bytes:
+                        channel['io_error'] = 'invalid_read';cause(name + '_read_error');break
+                    if part == b'':
+                        channel['eof'] = True;break
+                    channel['observed_bytes'] += len(part)
+                    room = limit - len(buffers[name])
+                    buffers[name].extend(part[:room])
+                    if len(part) > room:
+                        channel['overflow'] = True;cause(name + '_overflow');break
+        except (OSError, ValueError) as error:
+            with lock:
+                channel['io_error'] = type(error).__name__;cause(name + '_read_error')
+        finally:
+            try:
+                pipe.close()
+                with lock:
+                    channel['closed'] = True
+            except (OSError, ValueError):
+                cause(name + '_close_error')
+    def write_input():
+        try:
+            while True:
+                with lock:
+                    offset = facts['stdin_bytes']
+                    if offset >= len(raw):
+                        break
+                    if time.monotonic() >= work_end:
+                        cause('stdin_deadline');break
+                    remaining = len(raw) - offset
+                    facts.update(stdin_write_attempted=True, stdin_write_in_flight=True,
+                                 stdin_extent_unknown=True)
+                count = process.stdin.write(raw[offset:])
+                with lock:
+                    facts['stdin_write_in_flight'] = False
+                    if type(count) is not int or not 0 < count <= remaining:
+                        cause('stdin_short_write');break
+                    facts['stdin_bytes'] += count
+                    facts['stdin_extent_unknown'] = False
+                if time.monotonic() >= work_end:
+                    cause('stdin_deadline');break
+            with lock:
+                facts['stdin_complete'] = (facts['stdin_bytes'] == len(raw)
+                                           and not facts['stdin_extent_unknown'])
+        except (OSError, ValueError):
+            with lock:
+                facts.update(stdin_write_in_flight=False, stdin_extent_unknown=True)
+                cause('stdin_write_error')
+        finally:
+            try:
+                process.stdin.close()
+                with lock:
+                    facts['stdin_closed'] = True
+            except (OSError, ValueError):
+                cause('stdin_close_error')
+    threads = [threading.Thread(target=read_channel, args=('stdout', process.stdout, 1048576), daemon=True),
+               threading.Thread(target=read_channel, args=('stderr', process.stderr, 16384), daemon=True),
+               threading.Thread(target=write_input, daemon=True)]
+    started_threads = []
+    for thread in threads:
+        if has_causes():
+            break
+        if time.monotonic() >= work_end:
+            with lock:
+                facts['timed_out'] = True;cause('worker_start_deadline')
+            break
+        try:
+            thread.start()
+            started_threads.append(thread)
+            if time.monotonic() >= work_end:
+                with lock:
+                    facts['timed_out'] = True;cause('worker_start_late')
+                break
+        except RuntimeError:
+            if thread.ident is not None:
+                started_threads.append(thread)
+            cause('thread_start_error');break
+    with lock:
+        facts['threads_started'] = len(started_threads)
+    def status():
+        try:
+            return process.poll()
+        except (OSError, ValueError):
+            cause('child_status_error');return None
+    while True:
+        if time.monotonic() >= work_end:
+            with lock:
+                facts['timed_out'] = True;cause('child_timeout')
+            break
+        if has_causes() or (status() is not None and all(not thread.is_alive() for thread in started_threads)):
+            break
+        time.sleep(min(.005, max(0, work_end - time.monotonic())))
+    cleanup_end = min(cleanup_end, time.monotonic() + 3)
+    with lock:
+        facts['cleanup_deadline'] = cleanup_end
+    if status() is None:
+        with lock:
+            facts['kill_requested'] = True
+        try:
+            process.kill()
+        except OSError:
+            cause('child_kill_error')
+    for thread, pipe, name in zip(threads, (process.stdout, process.stderr, process.stdin), ('stdout', 'stderr', 'stdin')):
+        if thread not in started_threads:
+            try:
+                pipe.close()
+                with lock:
+                    if name == 'stdin':
+                        facts['stdin_closed'] = True
+                    else:
+                        channels[name]['closed'] = True
+            except (OSError, ValueError):
+                cause(name + '_unstarted_close_error')
+    try:
+        returned = process.wait(timeout=max(0, cleanup_end - time.monotonic()))
+        with lock:
+            facts['reaped'] = type(returned) is int
+            if not facts['reaped']:
+                cause('child_reap_unknown')
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        cause('child_reap_unknown')
+    for thread in started_threads:
+        try:
+            thread.join(max(0, cleanup_end - time.monotonic()))
+        except RuntimeError:
+            cause('thread_join_error')
+    returned_status = status()
+    joined = len(started_threads) == len(threads) and all(not thread.is_alive() for thread in started_threads)
+    with lock:
+        facts.update(returncode=returned_status, threads_joined=joined)
+        if not facts['threads_joined']:
+            cause('pipe_completion_unknown')
+        if type(facts['returncode']) is not int or facts['returncode'] != 0:
+            cause('child_status')
+        if facts['kill_requested']:
+            cause('child_forced')
+        if not facts['stdin_complete'] or not facts['stdin_closed'] or not all(c['eof'] for c in channels.values()):
+            cause('io_completion_unknown')
+        stdout_data, stderr_data = bytes(buffers['stdout']), bytes(buffers['stderr'])
+    if stderr_data:
+        cause('unexpected_stderr')
+    # A valid metadata report stays available even when transport failed.
+    try:
+        if len(stdout_data) > 32768 or not stdout_data.isascii():
+            raise ValueError('report extent')
+        def unique_pairs(rows):
+            result = dict(rows)
+            if len(result) != len(rows):
+                raise ValueError('duplicate report field')
+            return result
+        result = json.loads(stdout_data, object_pairs_hook=unique_pairs, parse_constant=reject_constant)
+        if (type(result) is not dict or set(result) != {'schema_version', 'case', 'node_version',
+                'completed', 'cause', 'checks', 'measurements'}
+                or type(result['schema_version']) is not int or result['schema_version'] != 1
+                or result['case'] != case or type(result['case']) is not str
+                or result['node_version'] != '25.2.1' or type(result['completed']) is not bool
+                or result['cause'] is not None and (type(result['cause']) is not str
+                    or result['cause'] not in ('d27_genuine_assertion','d27_genuine_input','d27_genuine_version','d27_genuine_error'))
+                or type(result['checks']) is not list or len(result['checks']) > 512
+                or type(result['measurements']) is not list or len(result['measurements']) > 128):
+            raise ValueError('report shape')
+        import re
+        def identifier(value):
+            return type(value) is str and re.fullmatch(r'[A-Za-z0-9_]{1,64}', value) is not None
+        check_ids=set()
+        for item in result['checks']:
+            if (type(item) is not dict or set(item) != {'id', 'ok'}
+                    or not identifier(item['id']) or type(item['ok']) is not bool):
+                raise ValueError('report check')
+            if item['id'] in check_ids:raise ValueError('duplicate report check')
+            check_ids.add(item['id'])
+        measurement_ids=set()
+        for item in result['measurements']:
+            if (type(item) is not dict or set(item) != {'id', 'size_bytes', 'sha256'}
+                    or not identifier(item['id']) or type(item['size_bytes']) is not int
+                    or not 0 <= item['size_bytes'] <= 262144
+                    or type(item['sha256']) is not str
+                    or re.fullmatch(r'[0-9a-f]{64}', item['sha256']) is None):
+                raise ValueError('report measurement')
+            if item['id'] in measurement_ids:raise ValueError('duplicate report measurement')
+            measurement_ids.add(item['id'])
+        if canonical(result)+b'\n' != stdout_data:
+            raise ValueError('report canonical LF')
+    except (ValueError, TypeError, RecursionError, OverflowError):
+        cause('child_protocol');return finish()
+    with lock:
+        facts.update(node_version=result['node_version'], case_completed=result['completed'],
+                     case_cause=result['cause'], report_bytes=len(stdout_data),
+                     report_sha256=hashlib.sha256(stdout_data).hexdigest(),
+                     checks_count=len(result['checks']), measurements_count=len(result['measurements']))
+    return finish(result)
+
+
+def d27_run_genuine_finalizer_v1(deadline):
+    """Execute only this fixed restricted route after positive pure geometry.
+
+    Sources and complete operational buffers remain RAM-only. The original
+    deadline bounds construction and bounded Node capture; no native call runs.
+    """
+    import copy
+    import os
+    caller=_d27_caller_module_v1()
+    caller.d27_require_positive_geometry_v1()
+    raw,expectations,construction=_d27_genuine_material_v1(deadline)
+    case='genuine_finalizer'
+    canonical=d22_canonical
+    D27CaseError=caller.D27CaseError
+    program=('const E='+canonical(expectations).decode('ascii')+';\nconst D27_CASE='+json.dumps(case)+';\n'
+             +D27_GENUINE_VM_CORE+'\n'+D27_GENUINE_FINALIZER_TEST)
+    import math
+    import shutil
+    import subprocess
+    import threading
+    import time
+
+    started = time.monotonic()
+    buffers = {'stdout': bytearray(), 'stderr': bytearray()}
+    channels = {name: {'observed_bytes': 0, 'retained_bytes': 0, 'eof': False,
+                       'overflow': False, 'io_error': None, 'closed': False,
+                       'unknown_remainder': True} for name in buffers}
+    facts = {'schema_version': 1, 'data_only': False, 'spawned': False, 'pid': None,
+             'returncode': None, 'timed_out': False, 'kill_requested': False,
+             'stdin_bytes': 0, 'stdin_closed': False, 'stdin_complete': False,
+             'stdin_extent_unknown': False, 'stdin_write_attempted': False,
+             'stdin_write_in_flight': False, 'threads_started': 0, 'reaped': False,
+             'threads_joined': False, 'causes': [], 'node_version': None,
+             'case': case if type(case) is str and case in ('genuine_finalizer',) else None,
+             'case_completed': None, 'case_cause': None, 'parent_observed_completion': False,
+             'descendant_quiescence': 'UNKNOWN', 'input_bytes': None,
+             'input_sha256': None, 'data_bytes': None, 'data_sha256': None,
+             'report_bytes': None, 'report_sha256': None, 'checks_count': None,
+             'measurements_count': None, 'environment_keys': [], 'program_sha256': None,
+             'source_kind': 'd27_fixed_genuine_test_v1', 'program_bytes': None,
+             'driver_role': case, 'driver_getter': 'd27_run_genuine_finalizer_v1',
+             'construction':construction, 'native_activity':'UNKNOWN','physical_acceptance':False}
+    lock = threading.RLock()
+    def cause(value):
+        with lock:
+            if value not in facts['causes']:
+                facts['causes'].append(value)
+    def has_causes():
+        with lock:
+            return bool(facts['causes'])
+    def finish(report=None):
+        # Capture related facts, channels, causes and byte prefixes at one shared
+        # lock boundary. Later worker changes cannot mix these captured values.
+        with lock:
+            snapshot = copy.deepcopy(facts)
+            captured_channels = {name: dict(channel) for name, channel in channels.items()}
+            prefixes = {name: bytes(buffer) for name, buffer in buffers.items()}
+        for name, channel in captured_channels.items():
+            prefix = prefixes[name]
+            snapshot[name] = {**channel, 'retained_bytes': len(prefix),
+                              'prefix_sha256': hashlib.sha256(prefix).hexdigest(),
+                              'unknown_remainder': not channel['eof'] or channel['overflow'] or channel['io_error'] is not None}
+        observed = time.monotonic()
+        snapshot['elapsed_seconds'] = observed - started
+        snapshot['finished_before_deadline'] = observed < end if end is not None else False
+        snapshot['child_completion_observed_before_deadline'] = (
+            snapshot['spawned'] and child_total_end is not None and observed < child_total_end)
+        if snapshot['spawned'] and not snapshot['child_completion_observed_before_deadline']:
+            if 'child_completion_late' not in snapshot['causes']:
+                snapshot['causes'].append('child_completion_late')
+        if not snapshot['finished_before_deadline'] and 'parent_deadline' not in snapshot['causes']:
+            snapshot['causes'].append('parent_deadline')
+        if snapshot['spawned'] and observed >= cleanup_end:
+            if 'cleanup_late' not in snapshot['causes']:
+                snapshot['causes'].append('cleanup_late')
+        snapshot['parent_observed_completion'] = report is not None and not snapshot['causes']
+        encoded = canonical(snapshot)
+        if len(encoded) > 28000:
+            raise RuntimeError('D27 genuine capture metadata bound')
+        # Publication is immutable; the shared capture does not establish
+        # continuous custody or quiescence of unjoined workers/descendants.
+        frozen = json.loads(encoded)
+        if frozen['causes']:
+            error=D27CaseError(frozen)
+            if report is not None:error.validated_report=json.loads(canonical(report))
+            raise error
+        return report, frozen
+    end = None
+    child_total_end = None
+    if type(deadline) not in (int, float):
+        cause('deadline_invalid');return finish()
+    try:
+        end = float(deadline)
+    except (OverflowError, ValueError):
+        cause('deadline_invalid');return finish()
+    if not math.isfinite(end):
+        end = None;cause('deadline_invalid');return finish()
+    if end - started > 300:
+        cause('deadline_limit');return finish()
+    if type(case) is not str or case not in ('genuine_finalizer',):
+        cause('case_invalid');return finish()
+    if type(raw) is not bytes:
+        cause('input_type');return finish()
+    if len(raw) > 262144:
+        cause('input_limit');return finish()
+    if not raw.isascii():
+        cause('input_ascii');return finish()
+    if time.monotonic() >= end - 8:
+        cause('deadline_no_window');return finish()
+    try:
+        def unique_input(rows):
+            value = dict(rows)
+            if len(value) != len(rows):
+                raise ValueError('duplicate DATA field')
+            return value
+        def reject_constant(value):
+            raise ValueError('nonfinite DATA')
+        data = json.loads(raw, object_pairs_hook=unique_input, parse_constant=reject_constant)
+        wire = canonical(data)
+        if len(wire) > 262144:
+            cause('input_envelope_limit');return finish()
+    except (ValueError, TypeError, RecursionError, OverflowError):
+        cause('input_json');return finish()
+    with lock:
+        facts.update(data_bytes=len(raw), data_sha256=hashlib.sha256(raw).hexdigest(),
+                     input_bytes=len(wire), input_sha256=hashlib.sha256(wire).hexdigest())
+    raw = wire
+    work_end = min(started + 27, end - 8)
+    child_total_end = min(started + 30, end - 5)
+    cleanup_end = min(child_total_end, work_end + 3)
+    with lock:
+        facts.update(started_monotonic=started, caller_deadline=end, work_deadline=work_end,
+                     child_total_deadline=child_total_end, cleanup_deadline=cleanup_end, child_total_limit_seconds=30,
+                     child_work_limit_seconds=27, cleanup_limit_seconds=3, final_reserve_seconds=5)
+    if time.monotonic() >= work_end:
+        cause('deadline_no_window');return finish()
+    if type(program) is not str:
+        cause('driver_source_kind');return finish()
+    if not 0 < len(program) <= 24576:
+        cause('driver_source_limit');return finish()
+    try:
+        program_bytes = program.encode('ascii')
+    except UnicodeEncodeError:
+        cause('driver_source_ascii');return finish()
+    # Hold one exact immutable source/argv buffer; DATA never selects a program.
+    program = program_bytes.decode('ascii')
+    with lock:
+        facts.update(program_bytes=len(program_bytes), program_sha256=hashlib.sha256(program_bytes).hexdigest())
+    node = shutil.which('node') or shutil.which('node.exe')
+    if node is None:
+        cause('node_unavailable');return finish()
+    try:
+        node = str(Path(node).resolve(strict=True))
+        environment = {'PATH': str(Path(node).parent)}
+        if os.name == 'nt':
+            environment['SystemRoot'] = os.environ['SystemRoot']
+        argv = [node, '--max-old-space-size=256', '--experimental-vm-modules', '--no-warnings', '--input-type=commonjs', '-e', program]
+        if os.name == 'nt' and len(subprocess.list2cmdline(argv)) > 32767:
+            cause('driver_command_limit');return finish()
+        with lock:
+            facts.update(node_executable=node, command_options=argv[1:6], environment_keys=sorted(environment))
+        if time.monotonic() >= work_end:
+            cause('deadline_before_spawn');return finish()
+        process = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, env=environment, bufsize=0,
+                                   start_new_session=os.name != 'nt',
+                                   creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+    except (OSError, KeyError, ValueError) as error:
+        cause('spawn_' + type(error).__name__);return finish()
+    with lock:
+        facts.update(spawned=True, pid=process.pid)
+    if time.monotonic() >= work_end:
+        with lock:
+            facts['timed_out'] = True;cause('deadline_after_spawn')
+    def read_channel(name, pipe, limit):
+        channel = channels[name]
+        try:
+            while True:
+                with lock:
+                    read_size = min(4096, limit + 1 - len(buffers[name]))
+                part = pipe.read(read_size)
+                with lock:
+                    if type(part) is not bytes:
+                        channel['io_error'] = 'invalid_read';cause(name + '_read_error');break
+                    if part == b'':
+                        channel['eof'] = True;break
+                    channel['observed_bytes'] += len(part)
+                    room = limit - len(buffers[name])
+                    buffers[name].extend(part[:room])
+                    if len(part) > room:
+                        channel['overflow'] = True;cause(name + '_overflow');break
+        except (OSError, ValueError) as error:
+            with lock:
+                channel['io_error'] = type(error).__name__;cause(name + '_read_error')
+        finally:
+            try:
+                pipe.close()
+                with lock:
+                    channel['closed'] = True
+            except (OSError, ValueError):
+                cause(name + '_close_error')
+    def write_input():
+        try:
+            while True:
+                with lock:
+                    offset = facts['stdin_bytes']
+                    if offset >= len(raw):
+                        break
+                    if time.monotonic() >= work_end:
+                        cause('stdin_deadline');break
+                    remaining = len(raw) - offset
+                    facts.update(stdin_write_attempted=True, stdin_write_in_flight=True,
+                                 stdin_extent_unknown=True)
+                count = process.stdin.write(raw[offset:])
+                with lock:
+                    facts['stdin_write_in_flight'] = False
+                    if type(count) is not int or not 0 < count <= remaining:
+                        cause('stdin_short_write');break
+                    facts['stdin_bytes'] += count
+                    facts['stdin_extent_unknown'] = False
+                if time.monotonic() >= work_end:
+                    cause('stdin_deadline');break
+            with lock:
+                facts['stdin_complete'] = (facts['stdin_bytes'] == len(raw)
+                                           and not facts['stdin_extent_unknown'])
+        except (OSError, ValueError):
+            with lock:
+                facts.update(stdin_write_in_flight=False, stdin_extent_unknown=True)
+                cause('stdin_write_error')
+        finally:
+            try:
+                process.stdin.close()
+                with lock:
+                    facts['stdin_closed'] = True
+            except (OSError, ValueError):
+                cause('stdin_close_error')
+    threads = [threading.Thread(target=read_channel, args=('stdout', process.stdout, 1048576), daemon=True),
+               threading.Thread(target=read_channel, args=('stderr', process.stderr, 16384), daemon=True),
+               threading.Thread(target=write_input, daemon=True)]
+    started_threads = []
+    for thread in threads:
+        if has_causes():
+            break
+        if time.monotonic() >= work_end:
+            with lock:
+                facts['timed_out'] = True;cause('worker_start_deadline')
+            break
+        try:
+            thread.start()
+            started_threads.append(thread)
+            if time.monotonic() >= work_end:
+                with lock:
+                    facts['timed_out'] = True;cause('worker_start_late')
+                break
+        except RuntimeError:
+            if thread.ident is not None:
+                started_threads.append(thread)
+            cause('thread_start_error');break
+    with lock:
+        facts['threads_started'] = len(started_threads)
+    def status():
+        try:
+            return process.poll()
+        except (OSError, ValueError):
+            cause('child_status_error');return None
+    while True:
+        if time.monotonic() >= work_end:
+            with lock:
+                facts['timed_out'] = True;cause('child_timeout')
+            break
+        if has_causes() or (status() is not None and all(not thread.is_alive() for thread in started_threads)):
+            break
+        time.sleep(min(.005, max(0, work_end - time.monotonic())))
+    cleanup_end = min(cleanup_end, time.monotonic() + 3)
+    with lock:
+        facts['cleanup_deadline'] = cleanup_end
+    if status() is None:
+        with lock:
+            facts['kill_requested'] = True
+        try:
+            process.kill()
+        except OSError:
+            cause('child_kill_error')
+    for thread, pipe, name in zip(threads, (process.stdout, process.stderr, process.stdin), ('stdout', 'stderr', 'stdin')):
+        if thread not in started_threads:
+            try:
+                pipe.close()
+                with lock:
+                    if name == 'stdin':
+                        facts['stdin_closed'] = True
+                    else:
+                        channels[name]['closed'] = True
+            except (OSError, ValueError):
+                cause(name + '_unstarted_close_error')
+    try:
+        returned = process.wait(timeout=max(0, cleanup_end - time.monotonic()))
+        with lock:
+            facts['reaped'] = type(returned) is int
+            if not facts['reaped']:
+                cause('child_reap_unknown')
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        cause('child_reap_unknown')
+    for thread in started_threads:
+        try:
+            thread.join(max(0, cleanup_end - time.monotonic()))
+        except RuntimeError:
+            cause('thread_join_error')
+    returned_status = status()
+    joined = len(started_threads) == len(threads) and all(not thread.is_alive() for thread in started_threads)
+    with lock:
+        facts.update(returncode=returned_status, threads_joined=joined)
+        if not facts['threads_joined']:
+            cause('pipe_completion_unknown')
+        if type(facts['returncode']) is not int or facts['returncode'] != 0:
+            cause('child_status')
+        if facts['kill_requested']:
+            cause('child_forced')
+        if not facts['stdin_complete'] or not facts['stdin_closed'] or not all(c['eof'] for c in channels.values()):
+            cause('io_completion_unknown')
+        stdout_data, stderr_data = bytes(buffers['stdout']), bytes(buffers['stderr'])
+    if stderr_data:
+        cause('unexpected_stderr')
+    # A valid metadata report stays available even when transport failed.
+    try:
+        if len(stdout_data) > 32768 or not stdout_data.isascii():
+            raise ValueError('report extent')
+        def unique_pairs(rows):
+            result = dict(rows)
+            if len(result) != len(rows):
+                raise ValueError('duplicate report field')
+            return result
+        result = json.loads(stdout_data, object_pairs_hook=unique_pairs, parse_constant=reject_constant)
+        if (type(result) is not dict or set(result) != {'schema_version', 'case', 'node_version',
+                'completed', 'cause', 'checks', 'measurements'}
+                or type(result['schema_version']) is not int or result['schema_version'] != 1
+                or result['case'] != case or type(result['case']) is not str
+                or result['node_version'] != '25.2.1' or type(result['completed']) is not bool
+                or result['cause'] is not None and (type(result['cause']) is not str
+                    or result['cause'] not in ('d27_genuine_assertion','d27_genuine_input','d27_genuine_version','d27_genuine_error'))
+                or type(result['checks']) is not list or len(result['checks']) > 512
+                or type(result['measurements']) is not list or len(result['measurements']) > 128):
+            raise ValueError('report shape')
+        import re
+        def identifier(value):
+            return type(value) is str and re.fullmatch(r'[A-Za-z0-9_]{1,64}', value) is not None
+        check_ids=set()
+        for item in result['checks']:
+            if (type(item) is not dict or set(item) != {'id', 'ok'}
+                    or not identifier(item['id']) or type(item['ok']) is not bool):
+                raise ValueError('report check')
+            if item['id'] in check_ids:raise ValueError('duplicate report check')
+            check_ids.add(item['id'])
+        measurement_ids=set()
+        for item in result['measurements']:
+            if (type(item) is not dict or set(item) != {'id', 'size_bytes', 'sha256'}
+                    or not identifier(item['id']) or type(item['size_bytes']) is not int
+                    or not 0 <= item['size_bytes'] <= 262144
+                    or type(item['sha256']) is not str
+                    or re.fullmatch(r'[0-9a-f]{64}', item['sha256']) is None):
+                raise ValueError('report measurement')
+            if item['id'] in measurement_ids:raise ValueError('duplicate report measurement')
+            measurement_ids.add(item['id'])
+        if canonical(result)+b'\n' != stdout_data:
+            raise ValueError('report canonical LF')
+    except (ValueError, TypeError, RecursionError, OverflowError):
+        cause('child_protocol');return finish()
+    with lock:
+        facts.update(node_version=result['node_version'], case_completed=result['completed'],
+                     case_cause=result['cause'], report_bytes=len(stdout_data),
+                     report_sha256=hashlib.sha256(stdout_data).hexdigest(),
+                     checks_count=len(result['checks']), measurements_count=len(result['measurements']))
+    return finish(result)
