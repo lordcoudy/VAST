@@ -63,13 +63,27 @@ supported direct interface; do not recursively build tooling to review tooling.
 
 ## Current verification limits
 
-The existing exact-head required CI is successful. The first local focused test
-attempt used native Windows and stopped during imports (`pandas` and POSIX
-`fcntl`); it is not a behavioral RED. Existing Ubuntu is running at the same
-mapped C: checkout with Python 3.12.3, but its system interpreter does not have
-the CI dependency set. No dependencies were installed and no container or
-benchmark worker was started. New test changes still require execution in the
-established Linux test environment/CI.
+The prior required CI is successful at `1a8f9d2`; CI for `33ce25c` is still
+running. The first local focused attempt used native Windows and stopped during
+imports (`pandas` and POSIX `fcntl`); it is not a behavioral RED. Existing Ubuntu
+now has the recorded CPU dependencies in an isolated, ignored `.venv/` at this
+same mapped C: checkout, using Python 3.12.3. This environment occupies
+258,178,054 bytes; observed C: free space after installation is 85,186,646,016
+bytes. No container or benchmark worker was started.
+
+A fresh interpreter reproduced a product failure in the runtime refreeze
+handoff: its fixed file loader could not import the shared receipt-reader leaf.
+The minimal sibling-path bootstrap correction passes all 24 handoff, image-build
+and refreeze tests, including a separate-process regression that failed before
+the correction. Original RED/GREEN logs remain under
+`tmp/pr9-verification-20261025/`; the seven-suite portable run is still in progress.
+This does not establish actual runtime-image or genuine-consumer acceptance.
+
+The current accepted-parity configuration points to an image patch, CPU/GPU
+runtime probes and four ONNX source files absent from this C: checkout. The next
+genuine execution needs fresh, valid physical inputs; no substitute fixture or
+historical result supplies them. Read-only Docker observations reached the
+existing Ubuntu native daemon (18 images), not the Desktop image inventory.
 
 The genuine default-path, runtime renewal, physical, capacity, conformance and
 final-acceptance gates remain open. The dedicated semantic-conformance CI gate
