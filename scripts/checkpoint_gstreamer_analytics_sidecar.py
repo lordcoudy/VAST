@@ -17,6 +17,7 @@ import json
 import os
 import re
 import secrets
+import selectors
 import signal
 import socket
 import stat
@@ -3680,47 +3681,329 @@ def wait_publication_sidecar_guardian_stop_v1(
     raise SidecarError("timed out waiting for analytics production guardian stop")
 
 
+def _note_failure(error: BaseException, detail: str) -> None:
+    """Keep secondary facts on Python3.10 as well as runtimes with PEP678."""
+    notes = list(getattr(error, "__notes__", ()))
+    notes.append(detail)
+    error.__notes__ = notes
+
+
+def _failure_text(error: BaseException) -> str:
+    return "; ".join((str(error), *getattr(error, "__notes__", ())))
+
+
+class _BoundedPipeCapture:
+    """Drain one owned output pipe without retaining an unbounded log."""
+
+    def __init__(self, stream: Any, *, limit: int = 2048, complete: bool = False) -> None:
+        self._stream = stream
+        self._limit = limit
+        self._complete = complete
+        self._payload = bytearray()
+        self._lock = threading.Lock()
+        self._stop = threading.Event()
+        self._ready = threading.Event()
+        self._eof = False
+        self._error: str | None = None
+        self._exception: BaseException | None = None
+        self._overflow = False
+        self._thread = threading.Thread(target=self._consume, daemon=True,
+                                        name="vast-docker-output")
+        try:
+            self._thread.start()
+        except BaseException as error:
+            try:
+                stream.close()
+            except BaseException as cleanup:
+                _note_failure(error, "output stream close failed: " + _failure_text(cleanup))
+            raise
+
+    def require_started(self, deadline: float) -> None:
+        if not self._ready.wait(max(0.0, deadline - time.monotonic())) or self._error is not None:
+            raise SidecarError("Docker output reader could not start") from self._exception
+
+    def _consume(self) -> None:
+        try:
+            descriptor = self._stream.fileno()
+            os.set_blocking(descriptor, False)
+            with selectors.DefaultSelector() as selector:
+                selector.register(descriptor, selectors.EVENT_READ)
+                self._ready.set()
+                while not self._stop.is_set():
+                    if not selector.select(0.05):
+                        continue
+                    try:
+                        chunk = os.read(descriptor, 4096)
+                    except BlockingIOError:
+                        continue
+                    if not chunk:
+                        self._eof = True
+                        break
+                    with self._lock:
+                        if self._complete:
+                            remaining = self._limit - len(self._payload)
+                            self._payload.extend(chunk[:remaining])
+                            self._overflow |= len(chunk) > remaining
+                        else:
+                            self._payload.extend(chunk)
+                            del self._payload[:-self._limit]
+        except BaseException as error:
+            self._error = type(error).__name__
+            self._exception = error
+        finally:
+            try:
+                self._stream.close()
+            except BaseException as error:
+                self._error = self._error or type(error).__name__
+                self._exception = self._exception or error
+            self._ready.set()
+
+    def getvalue(self) -> bytes:
+        with self._lock:
+            return bytes(self._payload)
+
+    def overflowed(self) -> bool:
+        with self._lock:
+            return self._overflow
+
+    def finish(self, deadline: float) -> bool:
+        self._thread.join(max(0.0, deadline - time.monotonic()))
+        return not self._thread.is_alive() and self._eof and self._error is None
+
+    def close(self) -> bool:
+        self._stop.set()
+        self._thread.join(0.2)
+        return not self._thread.is_alive()
+
+
 def _bounded_engine_observation(command: Sequence[str], *, timeout: float = 2.0) -> subprocess.CompletedProcess[str]:
-    """Read an owned CLI's bounded facts; terminate only this observer on overflow."""
+    """Capture a complete bounded response, retaining the original failure."""
+    deadline = time.monotonic() + timeout
     process = subprocess.Popen(list(command), stdin=subprocess.DEVNULL,
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    values = {"stdout": bytearray(), "stderr": bytearray()}
-    overflow = threading.Event()
-
-    def consume(name: str, stream: Any, limit: int) -> None:
-        try:
-            while True:
-                chunk = stream.read(1024)
-                if not chunk:
-                    break
-                remaining = limit - len(values[name])
-                values[name].extend(chunk[:max(0, remaining)])
-                if len(chunk) > remaining:
-                    overflow.set()
-                    if process.poll() is None:
-                        process.kill()
-                    break
-        finally:
-            stream.close()
-
-    threads = [threading.Thread(target=consume, args=(name, getattr(process, name), limit), daemon=True)
-               for name, limit in (("stdout", 8192), ("stderr", 1024))]
-    for thread in threads:
-        thread.start()
+    captures: dict[str, _BoundedPipeCapture] = {}
+    failure: BaseException | None = None
     try:
-        status = process.wait(timeout=timeout)
-    except subprocess.TimeoutExpired:
-        process.kill()
-        process.wait(timeout=1.0)
+        for name, limit in (("stdout", 8192), ("stderr", 1024)):
+            captures[name] = _BoundedPipeCapture(getattr(process, name), limit=limit,
+                                                complete=True)
+            captures[name].require_started(deadline)
+        while process.poll() is None:
+            _require(not any(value.overflowed() for value in captures.values()),
+                     "engine observation exceeded its bounded capture")
+            _require(not any(value._error is not None for value in captures.values()),
+                     "engine observation output reader failed")
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise subprocess.TimeoutExpired(command, timeout)
+            try:
+                process.wait(timeout=min(0.02, remaining))
+            except subprocess.TimeoutExpired:
+                pass
+        for capture in captures.values():
+            _require(capture.finish(deadline), "engine observation capture retirement is unproved")
+        _require(not any(value.overflowed() for value in captures.values()),
+                 "engine observation exceeded its bounded capture")
+        _require(time.monotonic() < deadline, "engine observation deadline exceeded")
+        return subprocess.CompletedProcess(command, process.returncode,
+            stdout=captures["stdout"].getvalue().decode("utf-8"),
+            stderr=captures["stderr"].getvalue().decode("utf-8"))
+    except BaseException as error:
+        failure = error
+        try:
+            if process.poll() is None:
+                process.kill()
+            process.wait(timeout=1.0)
+            _note_failure(error, f"original observer terminal returncode={process.returncode}")
+        except BaseException as cleanup:
+            _note_failure(error, "observer retirement failed: " + _failure_text(cleanup))
         raise
     finally:
-        for thread in threads:
-            thread.join(timeout=1.0)
-    _require(not overflow.is_set() and not any(thread.is_alive() for thread in threads),
-             "engine observation exceeded its bounded capture")
-    return subprocess.CompletedProcess(command, status,
-        stdout=values["stdout"].decode("utf-8", errors="replace"),
-        stderr=values["stderr"].decode("utf-8", errors="replace"))
+        errors: list[str] = []
+        for capture in captures.values():
+            try:
+                if not capture.close():
+                    errors.append("observer reader retirement unproved")
+            except BaseException as error:
+                errors.append("observer reader close: " + _failure_text(error))
+        for name in ("stdout", "stderr"):
+            if name not in captures:
+                try:
+                    stream = getattr(process, name)
+                    if stream is not None:
+                        stream.close()
+                except BaseException as error:
+                    errors.append("observer stream close: " + _failure_text(error))
+        if errors:
+            detail = "; ".join(errors)
+            if failure is not None:
+                _note_failure(failure, detail)
+            else:
+                raise SidecarError(detail)
+
+
+def _engine_command(runner: Any, command: Sequence[str], *, timeout: float) -> subprocess.CompletedProcess[str]:
+    if runner is subprocess.run:
+        result = _bounded_engine_observation(command, timeout=timeout)
+    else:
+        result = runner(list(command), check=False, capture_output=True, text=True, timeout=timeout)
+    _require(len(result.stdout.encode("utf-8")) <= 8192
+             and len(result.stderr.encode("utf-8")) <= 1024,
+             "engine command exceeded its bounded capture")
+    return result
+
+
+class _OwnedDockerContainer:
+    """A Docker-written CID plus immutable launch identity, never a name grant."""
+
+    def __init__(self, *, name: str, image_id: str, lifecycle_id: str,
+                 role: str, receipt_dir: Path, daemon_id: str, runner: Any) -> None:
+        self.name, self.image_id, self.daemon_id = name, image_id, daemon_id
+        self.labels = {"org.vast.worker.lifecycle": lifecycle_id, "org.vast.worker.role": role}
+        self.cid_path = receipt_dir / (name + ".cid")
+        _require(not os.path.lexists(self.cid_path), "Docker CID receipt already exists")
+        self._directory_identity = _stat_identity(receipt_dir)
+        self._runner = runner
+        self._custody: DirectoryFdCustodyV1 | None = None
+        self._cid_fd: int | None = None
+        self._cid_identity: tuple[int, ...] | None = None
+        self._cid: str | None = None
+        self._closed = False
+
+    def launch_options(self) -> list[str]:
+        options = ["--name", self.name, "--log-driver", "none", "--cidfile", str(self.cid_path)]
+        for key, value in self.labels.items():
+            options.extend(["--label", key + "=" + value])
+        return options
+
+    @staticmethod
+    def _file_identity(value: os.stat_result) -> tuple[int, ...]:
+        return (value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns,
+                value.st_ctime_ns, value.st_nlink, value.st_uid, value.st_gid,
+                stat.S_IFMT(value.st_mode))
+
+    def cid(self) -> str:
+        _require(not self._closed, "Docker CID custody is closed")
+        if self._custody is None:
+            self._custody = DirectoryFdCustodyV1.open_existing(
+                self.cid_path.parent, label="Docker CID receipt directory")
+        self._custody.verify()
+        _require(_stat_identity(self.cid_path.parent) == self._directory_identity,
+                 "Docker CID receipt directory changed")
+        if self._cid_fd is None:
+            descriptor = os.open(self.cid_path.name, os.O_RDONLY | os.O_NOFOLLOW
+                                 | os.O_NONBLOCK | getattr(os, "O_CLOEXEC", 0),
+                                 dir_fd=self._custody.directory_fd)
+        else:
+            descriptor = self._cid_fd
+        try:
+            before = os.fstat(descriptor)
+            if before.st_size == 0 and self._cid is None:
+                raise FileNotFoundError("Docker CID receipt is not complete yet")
+            _require(stat.S_ISREG(before.st_mode) and before.st_nlink == 1
+                     and before.st_uid == os.getuid() and before.st_size in {64, 65},
+                     "Docker CID receipt physical metadata is invalid")
+            payload = os.pread(descriptor, 66, 0)
+            after = os.fstat(descriptor)
+            named = os.stat(self.cid_path.name, dir_fd=self._custody.directory_fd,
+                            follow_symlinks=False)
+            identity = self._file_identity(before)
+            _require(identity == self._file_identity(after) == self._file_identity(named)
+                     and (self._cid_identity is None or identity == self._cid_identity),
+                     "Docker CID receipt changed")
+            _require(re.fullmatch(rb"[0-9a-f]{64}\n?", payload) is not None,
+                     "Docker CID receipt is malformed")
+            cid = payload.decode("ascii").rstrip("\n")
+            _require(self._cid is None or cid == self._cid, "Docker CID changed")
+            self._custody.verify()
+            self._cid, self._cid_identity, self._cid_fd = cid, identity, descriptor
+            return cid
+        finally:
+            if descriptor != self._cid_fd:
+                os.close(descriptor)
+
+    def _run(self, command: Sequence[str], deadline: float) -> subprocess.CompletedProcess[str]:
+        remaining = deadline - time.monotonic()
+        _require(remaining > 0, "Docker cleanup deadline exhausted")
+        limit = 5.0 if command[1] in {"stop", "kill"} else 2.0
+        return _engine_command(self._runner, command, timeout=min(limit, remaining))
+
+    def _same_daemon(self, deadline: float) -> None:
+        result = self._run(["docker", "info", "--format", "{{.ID}}"], deadline)
+        _require(result.returncode == 0 and result.stdout.strip() == self.daemon_id,
+                 "original Docker daemon is unavailable or changed")
+
+    def snapshot(self, deadline: float) -> dict[str, Any] | None:
+        cid = self.cid()
+        self._same_daemon(deadline)
+        formatter = ('{"id":{{json .Id}},"image":{{json .Image}},"labels":{'
+            '"org.vast.worker.lifecycle":{{json (index .Config.Labels "org.vast.worker.lifecycle")}},'
+            '"org.vast.worker.role":{{json (index .Config.Labels "org.vast.worker.role")}}},'
+            '"running":{{.State.Running}}}')
+        result = self._run(["docker", "inspect", "--format", formatter, cid], deadline)
+        if result.returncode != 0:
+            present = self._run(["docker", "ps", "--all", "--quiet", "--no-trunc",
+                                 "--filter", "id=" + cid], deadline)
+            self._same_daemon(deadline)
+            _require(present.returncode == 0 and present.stdout.strip() == "",
+                     "original Docker container absence is unproved")
+            return None
+        value = json.loads(result.stdout)
+        _require(type(value) is dict and set(value) == {"id", "image", "labels", "running"}
+                 and value["id"] == cid and value["image"] == self.image_id
+                 and value["labels"] == self.labels and type(value["running"]) is bool,
+                 "original Docker container identity changed")
+        return value
+
+    def mutate(self, operation: str, deadline: float) -> bool:
+        _require(operation in {"stop", "kill"}, "invalid owned Docker mutation")
+        if self.snapshot(deadline) is None:
+            return False
+        command = ["docker", operation]
+        if operation == "stop":
+            command.extend(["--time", "1"])
+        result = self._run([*command, self.cid()], deadline)
+        _require(result.returncode == 0, f"owned Docker {operation} failed")
+        return True
+
+    def retire(self, deadline: float) -> list[str]:
+        errors: list[str] = []
+        try:
+            state = self.snapshot(deadline)
+            if state is not None and state["running"]:
+                try:
+                    if self.mutate("stop", deadline):
+                        errors.append("container_required_stop")
+                except BaseException as error:
+                    errors.append(f"container_stop:{_failure_text(error)}")
+                state = self.snapshot(deadline)
+                if state is not None and state["running"]:
+                    if self.mutate("kill", deadline):
+                        errors.append("container_required_kill")
+                    state = self.snapshot(deadline)
+            while state is not None and not state["running"] and time.monotonic() < deadline:
+                time.sleep(min(0.02, max(0.0, deadline - time.monotonic())))
+                state = self.snapshot(deadline)
+            if state is not None:
+                errors.append("container_retirement_unproved")
+        except BaseException as error:
+            errors.append(f"container_retirement:{_failure_text(error)}")
+        if time.monotonic() >= deadline:
+            errors.append("container_cleanup_deadline_exhausted")
+        return errors
+
+    def close(self) -> None:
+        if self._closed:
+            return
+        self._closed = True
+        try:
+            if self._cid_fd is not None:
+                os.close(self._cid_fd)
+                self._cid_fd = None
+        finally:
+            if self._custody is not None:
+                self._custody.close()
+                self._custody = None
 
 
 def _study_clock_domain_label(offsets_text: str, time_namespace: str, time_for_children: str) -> str:
@@ -3759,6 +4042,10 @@ class DockerWorkerHandle:
         self._last_engine_state: dict[str, Any] | None = None
         self._launched_at_utc = launched_at_utc or datetime.now(timezone.utc).isoformat()
         self._engine_identity: dict[str, Any] | None = None
+        self._owned_container: _OwnedDockerContainer | None = None
+        self._retirement_errors: list[str] | None = None
+        self._cleanup_deadline: float | None = None
+        self._startup_deadline: float | None = None
         try:
             self._frontend_start_ticks = _process_starttime_ticks(self.pid) if isinstance(process, subprocess.Popen) else None
         except Exception:
@@ -3767,21 +4054,23 @@ class DockerWorkerHandle:
     @staticmethod
     def _capture_tail(capture: Any, *, maximum_bytes: int = 2048) -> str:
         try:
-            capture.flush()
-            try:
-                descriptor = capture.fileno()
-            except (OSError, ValueError, AttributeError):
-                # BytesIO fixtures have no shared file description. getvalue()
-                # observes their bytes without moving the fixture cursor.
+            if isinstance(capture, _BoundedPipeCapture):
                 payload = capture.getvalue()[-maximum_bytes:]
             else:
-                metadata = os.fstat(descriptor)
-                if not stat.S_ISREG(metadata.st_mode):
-                    return "capture_unavailable"
-                payload = os.pread(
-                    descriptor, maximum_bytes,
-                    max(0, int(metadata.st_size) - maximum_bytes),
-                )
+                capture.flush()
+                try:
+                    descriptor = capture.fileno()
+                except (OSError, ValueError, AttributeError):
+                    # BytesIO fixtures have no shared file description.
+                    payload = capture.getvalue()[-maximum_bytes:]
+                else:
+                    metadata = os.fstat(descriptor)
+                    if not stat.S_ISREG(metadata.st_mode):
+                        return "capture_unavailable"
+                    payload = os.pread(
+                        descriptor, maximum_bytes,
+                        max(0, int(metadata.st_size) - maximum_bytes),
+                    )
         except (OSError, ValueError, AttributeError):
             return "capture_unavailable"
         if not isinstance(payload, bytes):
@@ -3794,11 +4083,15 @@ class DockerWorkerHandle:
         return self._command_runner(list(command), check=False, capture_output=True,
                                     text=True, timeout=timeout)
 
-    def _observe_engine_state(self) -> dict[str, Any]:
+    def _observe_engine_state(self, *, deadline: float | None = None) -> dict[str, Any]:
         formatter = '{"id":{{json .Id}},"image":{{json .Image}},"pid":{{.State.Pid}},"exit_code":{{.State.ExitCode}},"oom_killed":{{.State.OOMKilled}},"running":{{.State.Running}},"started_at":{{json .State.StartedAt}},"finished_at":{{json .State.FinishedAt}}}'
         try:
+            timeout = 2.0 if deadline is None else min(2.0, deadline - time.monotonic())
+            _require(timeout > 0, "engine state observation deadline exhausted")
+            if self._owned_container is not None:
+                self._container_id = self._owned_container.cid()
             completed = self._observe(["docker", "inspect", "--format", formatter,
-                                       self._container_id or self.container_name])
+                                       self._container_id or self.container_name], timeout=timeout)
             _require(completed.returncode == 0 and len(completed.stdout.encode("utf-8")) <= 8192,
                      "engine state observation unavailable")
             value = json.loads(completed.stdout)
@@ -3819,13 +4112,15 @@ class DockerWorkerHandle:
         except Exception as error:
             return {"status": "unavailable", "reason": type(error).__name__, "facts": None}
 
-    def _capture_engine_identity(self) -> None:
+    def _capture_engine_identity(self, *, deadline: float | None = None) -> None:
         if self._engine_identity is None:
             identity = {}
             for key, command in (("daemon_id", ["docker", "info", "--format", "{{.ID}}"]),
                                  ("context", ["docker", "context", "show"])):
                 try:
-                    completed = self._observe(command)
+                    timeout = 2.0 if deadline is None else min(2.0, deadline - time.monotonic())
+                    _require(timeout > 0, "engine identity observation deadline exhausted")
+                    completed = self._observe(command, timeout=timeout)
                     value = completed.stdout.strip()
                     _require(completed.returncode == 0 and value.isascii() and 0 < len(value) <= 128
                              and all(ord(character) >= 0x20 for character in value), "engine identity unavailable")
@@ -3922,20 +4217,31 @@ class DockerWorkerHandle:
         )
 
     def close_diagnostics(self) -> None:
+        errors: list[str] = []
         for field in ("_stdout_capture", "_stderr_capture"):
             capture = getattr(self, field, None)
-            setattr(self, field, None)
             if capture is not None:
                 try:
-                    capture.close()
-                except OSError:
-                    pass
+                    retired = capture.close()
+                    if isinstance(capture, _BoundedPipeCapture) and not retired:
+                        errors.append(field + " reader retirement unproved")
+                    else:
+                        setattr(self, field, None)
+                except BaseException as error:
+                    errors.append(field + " close: " + str(error))
+        _require(not errors, "; ".join(errors))
 
     def __del__(self) -> None:
-        self.close_diagnostics()
+        try:
+            self.close_diagnostics()
+        except BaseException:
+            # Acceptance uses explicit retirement; destruction cannot confer it.
+            pass
 
     def expected_peer_pid(self, timeout_s: float) -> int:
         deadline = time.monotonic() + timeout_s
+        if self._startup_deadline is not None:
+            deadline = min(deadline, self._startup_deadline)
         while time.monotonic() < deadline:
             if self.poll() is not None:
                 raise SidecarError(
@@ -3943,25 +4249,32 @@ class DockerWorkerHandle:
                     f"{self.failure_diagnostic()}"
                 )
             try:
-                completed = self._command_runner(
+                target = self.container_name
+                if self._owned_container is not None:
+                    observed = self._owned_container.snapshot(deadline)
+                    _require(observed is not None and observed["running"],
+                             "owned worker is not running during startup")
+                    target = self._owned_container.cid()
+                remaining = deadline - time.monotonic()
+                _require(remaining > 0, "worker PID observation deadline exhausted")
+                completed = _engine_command(self._command_runner,
                     [
                         "docker",
                         "inspect",
                         "--format",
                         "{{.State.Pid}}",
-                        self.container_name,
+                        target,
                     ],
-                    check=True,
-                    capture_output=True,
-                    text=True,
-                    timeout=min(5.0, max(0.1, deadline - time.monotonic())),
+                    timeout=min(5.0, remaining),
                 )
+                _require(completed.returncode == 0, "worker PID observation failed")
                 raw = completed.stdout.strip()
                 if raw.isdigit() and int(raw) > 0:
-                    state = self._observe_engine_state()
+                    state = self._observe_engine_state(deadline=deadline)
                     _require(state["status"] == "observed" and state["facts"]["pid"] == int(raw),
                              "worker engine identity unavailable at original readiness")
-                    self._capture_engine_identity()
+                    self._capture_engine_identity(deadline=deadline)
+                    _require(time.monotonic() < deadline, "worker PID observation deadline exhausted")
                     return int(raw)
             except (OSError, subprocess.SubprocessError):
                 pass
@@ -3979,33 +4292,130 @@ class DockerWorkerHandle:
         return self._process.poll()
 
     def wait(self, timeout_s: float) -> int:
-        return int(self._process.wait(timeout=timeout_s))
+        deadline = time.monotonic() + timeout_s
+        status = int(self._process.wait(timeout=max(0.0, timeout_s)))
+        for capture in (self._stdout_capture, self._stderr_capture):
+            if isinstance(capture, _BoundedPipeCapture):
+                _require(capture.finish(deadline),
+                         "analytics Docker diagnostic capture did not retire")
+        return status
 
     def terminate(self) -> None:
         try:
-            self._command_runner(
-                ["docker", "stop", "--time", "1", self.container_name],
-                check=False,
-                capture_output=True,
-                text=True,
-                timeout=5,
-            )
+            _require(self._owned_container is not None, "unowned Docker stop refused")
+            self._owned_container.mutate("stop", self._cleanup_deadline or time.monotonic() + 5.0)
         finally:
             if self.poll() is None:
                 self._process.terminate()
 
     def kill(self) -> None:
         try:
-            self._command_runner(
-                ["docker", "kill", self.container_name],
-                check=False,
-                capture_output=True,
-                text=True,
-                timeout=5,
-            )
+            _require(self._owned_container is not None, "unowned Docker kill refused")
+            self._owned_container.mutate("kill", self._cleanup_deadline or time.monotonic() + 5.0)
         finally:
             if self.poll() is None:
                 self._process.kill()
+
+
+def _retire_worker_handles(handles: Mapping[tuple[str, str], Any], *, deadline: float) -> list[str]:
+    """Retire every owned client, engine and capture within one cleanup budget."""
+    errors: list[str] = []
+    wait_errors: dict[tuple[str, str], list[str]] = {key: [] for key in handles}
+    graceful_deadline = time.monotonic() + max(0.0, deadline - time.monotonic()) / 2
+    for key, handle in handles.items():
+        try:
+            if handle.poll() is None and time.monotonic() < graceful_deadline:
+                handle.wait(graceful_deadline - time.monotonic())
+        except (TimeoutError, subprocess.TimeoutExpired):
+            pass
+        except BaseException as error:
+            wait_errors[key].append(f"worker_wait:{error}")
+    containment_deadline: float | None = None
+    for key, handle in handles.items():
+        local = wait_errors[key]
+        docker = type(handle) is DockerWorkerHandle
+        if docker and handle._retirement_errors is not None:
+            errors.extend(f"worker_cleanup:{key[0]}/{key[1]}:{item}"
+                          for item in handle._retirement_errors)
+            continue
+        try:
+            initial_status = handle.poll()
+            if initial_status is not None and initial_status != 0:
+                local.append(f"worker_nonzero:{initial_status}")
+            if docker:
+                handle._cleanup_deadline = deadline
+                if handle._owned_container is None:
+                    local.append("original_container_ownership_unavailable")
+                else:
+                    try:
+                        handle._container_id = handle._owned_container.cid()
+                    except BaseException as error:
+                        local.append(f"container_cid:{error}")
+                    local.extend(handle._owned_container.retire(deadline))
+            if handle.poll() is None:
+                local.append("client_required_terminate")
+                try:
+                    if docker:
+                        handle._process.terminate()
+                    else:
+                        handle.terminate()
+                except BaseException as error:
+                    local.append(f"client_terminate:{error}")
+                try:
+                    remaining = max(0.0, deadline - time.monotonic()) / 2
+                    handle.wait(remaining)
+                except (TimeoutError, subprocess.TimeoutExpired):
+                    pass
+                except BaseException as error:
+                    local.append(f"client_terminate_wait:{error}")
+            if handle.poll() is None:
+                local.append("client_required_kill")
+                try:
+                    if docker:
+                        handle._process.kill()
+                    else:
+                        handle.kill()
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        # Failed containment cannot establish original-budget acceptance.
+                        if containment_deadline is None:
+                            containment_deadline = time.monotonic() + 1.0
+                        remaining = max(0.0, containment_deadline - time.monotonic())
+                    handle.wait(remaining)
+                except BaseException as error:
+                    local.append(f"client_kill_wait:{error}")
+            status = handle.poll()
+            if status is None:
+                local.append("client_still_live")
+            elif status != 0:
+                marker = f"worker_nonzero:{status}"
+                if marker not in local:
+                    local.append(marker)
+            if docker:
+                for name in ("_stdout_capture", "_stderr_capture"):
+                    capture = getattr(handle, name)
+                    if isinstance(capture, _BoundedPipeCapture) and not capture.finish(deadline):
+                        local.append(f"{name}_retirement_unproved")
+        except BaseException as error:
+            local.append(f"retirement:{error}")
+        finally:
+            if docker:
+                try:
+                    handle.close_diagnostics()
+                except BaseException as error:
+                    local.append(f"capture_close:{error}")
+                try:
+                    if handle._owned_container is not None:
+                        handle._owned_container.close()
+                except BaseException as error:
+                    local.append(f"container_custody_close:{error}")
+                if time.monotonic() >= deadline:
+                    local.append("original_cleanup_deadline_exhausted")
+                handle._retirement_errors = list(local)
+        errors.extend(f"worker_cleanup:{key[0]}/{key[1]}:{item}" for item in local)
+    if time.monotonic() >= deadline:
+        errors.append("worker_cleanup_deadline_exhausted")
+    return errors
 
 
 class DockerWorkerProcessFactory:
@@ -4041,6 +4451,30 @@ class DockerWorkerProcessFactory:
         self._command_runner = command_runner
         self._popen_factory = popen_factory
         self._peercred_platform_observation: dict[str, Any] | None = None
+        self._receipt_root: Path | None = None
+        self._daemon_id: str | None = None
+        self._launch_deadline: float | None = None
+
+    def _owned_launch(self, *, name: str, image_id: str, lifecycle_id: str,
+                      role: str, deadline: float) -> _OwnedDockerContainer:
+        _require(re.fullmatch(r"[0-9a-f]{32}", lifecycle_id) is not None,
+                 "Docker lifecycle identity is invalid")
+        remaining = deadline - time.monotonic()
+        _require(remaining > 0, "Docker launch deadline exhausted")
+        observed = _engine_command(self._command_runner,
+            ["docker", "info", "--format", "{{.ID}}"], timeout=min(2.0, remaining))
+        daemon_id = observed.stdout.strip()
+        _require(observed.returncode == 0 and daemon_id.isascii() and 0 < len(daemon_id) <= 128
+                 and all(ord(character) >= 0x20 for character in daemon_id)
+                 and (self._daemon_id is None or daemon_id == self._daemon_id),
+                 "original Docker daemon is unavailable or changed before launch")
+        self._daemon_id = daemon_id
+        if self._receipt_root is None:
+            # Socket namespaces must become empty; durable CID receipts live beside them.
+            self._receipt_root = Path(tempfile.mkdtemp(
+                prefix=".vast-docker-custody-", dir=self.runtime_dir.parent))
+        return _OwnedDockerContainer(name=name, image_id=image_id, lifecycle_id=lifecycle_id,
+            role=role, receipt_dir=self._receipt_root, daemon_id=daemon_id, runner=self._command_runner)
 
     def _observe_peercred_platform(self) -> Mapping[str, Any]:
         observed = _observe_peercred_pid0_platform_observation(
@@ -4084,6 +4518,11 @@ class DockerWorkerProcessFactory:
         self, resource: str, worker_config: Mapping[str, Any]
     ) -> Mapping[str, Any]:
         worker = self._worker(resource, worker_config)
+        deadline = time.monotonic() + 120.0
+        lifecycle_id = uuid.uuid4().hex
+        owned = self._owned_launch(name=f"vast-gst-probe-{lifecycle_id}-{resource}",
+            image_id=str(worker["image_id"]), lifecycle_id=lifecycle_id,
+            role=f"capability:{resource}", deadline=deadline)
         command = [
             "docker",
             "run",
@@ -4107,6 +4546,7 @@ class DockerWorkerProcessFactory:
             "ALL",
             "--security-opt",
             "no-new-privileges",
+            *owned.launch_options(),
         ]
         if resource == "gpu":
             command.extend(["--gpus", "all"])
@@ -4118,26 +4558,40 @@ class DockerWorkerProcessFactory:
                 "--capability",
             ]
         )
+        failure: BaseException | None = None
+        checked: dict[str, Any] | None = None
         try:
-            completed = self._command_runner(
-                command,
-                check=True,
-                capture_output=True,
-                text=True,
-                timeout=120,
-            )
+            remaining = deadline - time.monotonic()
+            _require(remaining > 0, "Docker probe deadline exhausted")
+            # Reserve ordinary retirement inside the original 120-second probe budget.
+            capture_budget = remaining - min(5.0, remaining / 2)
+            completed = _engine_command(self._command_runner, command, timeout=capture_budget)
+            _require(completed.returncode == 0,
+                     f"Docker probe client returned {completed.returncode}")
             value = json.loads(completed.stdout)
-            return validate_runtime_probe(value, engine=ENGINE_BY_RESOURCE[resource])
-        except (
-            OSError,
-            subprocess.SubprocessError,
-            UnicodeDecodeError,
-            json.JSONDecodeError,
-            ProtocolError,
-        ) as error:
+            checked = validate_runtime_probe(value, engine=ENGINE_BY_RESOURCE[resource])
+        except BaseException as error:
+            failure = error
+        errors = owned.retire(deadline)
+        try:
+            owned.close()
+        except BaseException as error:
+            errors.append(f"probe_custody_close:{_failure_text(error)}")
+        if errors:
+            cleanup = "probe cleanup failed: " + "; ".join(errors)
+            if failure is not None:
+                _note_failure(failure, cleanup)
+            else:
+                failure = SidecarError(cleanup)
+        if failure is not None:
+            if not isinstance(failure, Exception):
+                raise failure
             raise SidecarError(
-                f"analytics Docker {resource} runtime probe failed: {error}"
-            ) from error
+                f"analytics Docker {resource} runtime probe failed: {_failure_text(failure)}"
+            ) from failure
+        _require(checked is not None and time.monotonic() < deadline,
+                 "Docker probe did not complete within its original deadline")
+        return checked
 
     def start(self, spec: WorkerLaunchSpec) -> WorkerHandle:
         worker = self._worker(spec.resource, spec.worker_config)
@@ -4157,14 +4611,18 @@ class DockerWorkerProcessFactory:
             len(container_name) <= 128,
             "analytics Docker container name exceeds its bound",
         )
+        deadline = self._launch_deadline
+        if deadline is None:
+            deadline = time.monotonic() + 120.0
+        owned = self._owned_launch(name=container_name, image_id=str(worker["image_id"]),
+            lifecycle_id=spec.lifecycle_id, role=f"worker:{spec.branch}/{spec.resource}", deadline=deadline)
         command = [
             "docker",
             "run",
             "--rm",
             "--network",
             "none",
-            "--name",
-            container_name,
+            *owned.launch_options(),
             "--user",
             self.container_user,
             "--read-only",
@@ -4204,23 +4662,58 @@ class DockerWorkerProcessFactory:
                 str(spec.max_requests),
             ]
         )
-        stdout_capture = tempfile.TemporaryFile(mode="w+b")
-        stderr_capture = tempfile.TemporaryFile(mode="w+b")
         try:
             launched_at_utc = datetime.now(timezone.utc).isoformat()
             process = self._popen_factory(
                 command,
                 stdin=subprocess.DEVNULL,
-                stdout=stdout_capture,
-                stderr=stderr_capture,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
             )
         except OSError as error:
-            stdout_capture.close()
-            stderr_capture.close()
+            errors = owned.retire(deadline)
+            try:
+                owned.close()
+            except BaseException as cleanup:
+                errors.append("Docker launch CID close failed: " + _failure_text(cleanup))
+            if errors:
+                _note_failure(error, "Docker launch cleanup: " + "; ".join(errors))
             raise SidecarError(
-                f"cannot start analytics Docker worker {spec.branch}/{spec.resource}: {error}"
+                f"cannot start analytics Docker worker {spec.branch}/{spec.resource}: {_failure_text(error)}"
             ) from error
-        return DockerWorkerHandle(
+        captures: dict[str, _BoundedPipeCapture] = {}
+        try:
+            for name in ("stdout", "stderr"):
+                captures[name] = _BoundedPipeCapture(getattr(process, name))
+                captures[name].require_started(deadline)
+        except BaseException as error:
+            try:
+                if process.poll() is None:
+                    process.kill()
+                process.wait(timeout=1.0)
+            except BaseException as cleanup:
+                _note_failure(error, "Docker capture client retirement failed: " + _failure_text(cleanup))
+            errors = owned.retire(deadline)
+            try:
+                owned.close()
+            except BaseException as cleanup:
+                errors.append("Docker CID close failed: " + _failure_text(cleanup))
+            for capture in captures.values():
+                if not capture.close():
+                    errors.append("Docker capture reader retirement unproved")
+            for name in ("stdout", "stderr"):
+                if name not in captures:
+                    try:
+                        stream = getattr(process, name)
+                        if stream is not None:
+                            stream.close()
+                    except BaseException as cleanup:
+                        errors.append("Docker output close failed: " + _failure_text(cleanup))
+            if errors:
+                _note_failure(error, "Docker capture startup cleanup: " + "; ".join(errors))
+            raise
+        stdout_capture, stderr_capture = captures["stdout"], captures["stderr"]
+        handle = DockerWorkerHandle(
             process,
             container_name=container_name,
             command_runner=self._command_runner,
@@ -4232,6 +4725,9 @@ class DockerWorkerProcessFactory:
             launched_at_utc=launched_at_utc,
             worker_entrypoint=str(worker["entrypoint"]),
         )
+        handle._owned_container = owned
+        handle._startup_deadline = deadline
+        return handle
 
 
 def _default_bridge_factory(**values: Any) -> BridgeLike:
@@ -4869,6 +5365,9 @@ class GStreamerAnalyticsSidecar:
     def _launch_workers(
         self, materialized: MaterializedBindingSet
     ) -> dict[tuple[str, str], socket.socket]:
+        deadline = time.monotonic() + self.startup_timeout_s
+        if type(self.process_factory) is DockerWorkerProcessFactory:
+            self.process_factory._launch_deadline = deadline
         workers = _exact(
             self.execution_config.get("workers"),
             {"cpu", "gpu"},
@@ -4934,7 +5433,6 @@ class GStreamerAnalyticsSidecar:
                 "analytics worker process coverage is not exact 8",
             )
 
-            deadline = time.monotonic() + self.startup_timeout_s
             for branch in BRANCHES:
                 for resource in RESOURCES:
                     key = (branch, resource)
@@ -5807,7 +6305,10 @@ class GStreamerAnalyticsSidecar:
         return []
 
     def _shutdown(self) -> list[str]:
-        errors: list[str] = []
+        errors = list(getattr(self, "_worker_cleanup_errors", ()))
+        remaining = (self._study_shutdown_remaining_v1()
+                     if hasattr(self, "_study_shutdown_remaining_v1") else self.shutdown_timeout_s)
+        deadline = self.__dict__.setdefault("_worker_cleanup_deadline", time.monotonic() + remaining)
         try:
             self._verify_runtime_directory_custody()
         except BaseException as error:
@@ -5845,60 +6346,15 @@ class GStreamerAnalyticsSidecar:
                 pass
         self._connections.clear()
 
-        graceful_deadline = time.monotonic() + (self._study_shutdown_remaining_v1() if hasattr(self,"_study_shutdown_remaining_v1") else self.shutdown_timeout_s)
-        for key, handle in self._handles.items():
-            if handle.poll() is None:
-                try:
-                    handle.wait(max(0.001, graceful_deadline - time.monotonic()))
-                except (TimeoutError, subprocess.TimeoutExpired):
-                    pass
-                except BaseException as error:
-                    errors.append(f"worker_wait:{key[0]}/{key[1]}:{error}")
-        for key, handle in self._handles.items():
-            if handle.poll() is None:
-                try:
-                    handle.terminate()
-                except BaseException as error:
-                    errors.append(f"worker_terminate:{key[0]}/{key[1]}:{error}")
-        terminate_deadline = time.monotonic() + (self._study_shutdown_remaining_v1() if hasattr(self,"_study_shutdown_remaining_v1") else self.shutdown_timeout_s)
-        for key, handle in self._handles.items():
-            if handle.poll() is None:
-                try:
-                    handle.wait(max(0.001, terminate_deadline - time.monotonic()))
-                except (TimeoutError, subprocess.TimeoutExpired):
-                    pass
-                except BaseException as error:
-                    errors.append(
-                        f"worker_terminate_wait:{key[0]}/{key[1]}:{error}"
-                    )
-        for key, handle in self._handles.items():
-            if handle.poll() is None:
-                try:
-                    handle.kill()
-                except BaseException as error:
-                    errors.append(f"worker_kill:{key[0]}/{key[1]}:{error}")
-        kill_deadline = time.monotonic() + (self._study_shutdown_remaining_v1() if hasattr(self,"_study_shutdown_remaining_v1") else self.shutdown_timeout_s)
-        for key, handle in self._handles.items():
-            if handle.poll() is None:
-                try:
-                    handle.wait(max(0.001, kill_deadline - time.monotonic()))
-                except (TimeoutError, subprocess.TimeoutExpired) as error:
-                    errors.append(
-                        f"worker_survived_kill:{key[0]}/{key[1]}:{error}"
-                    )
-                except BaseException as error:
-                    errors.append(
-                        f"worker_kill_wait:{key[0]}/{key[1]}:{error}"
-                    )
-        for key, handle in self._handles.items():
-            if handle.poll() is None:
-                errors.append(f"worker_still_live:{key[0]}/{key[1]}")
+        errors.extend(_retire_worker_handles(self._handles, deadline=deadline))
         try:
             self._verify_runtime_directory_custody()
         except BaseException as error:
             marker = f"runtime_directory_custody:{error}"
             if marker not in errors:
                 errors.append(marker)
+        errors = list(dict.fromkeys(errors))
+        self._worker_cleanup_errors = tuple(errors)
         return errors
 
     def run(self) -> dict[str, Any]:

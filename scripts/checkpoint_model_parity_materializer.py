@@ -61,6 +61,8 @@ from checkpoint_gstreamer_analytics_sidecar import (
     _close_owned_socket,
     _complete_peer_identity_after_handshake,
     _open_owned_listener,
+    _note_failure,
+    _retire_worker_handles,
     _validate_retired_socket_record_v1,
     load_execution_config,
     load_materialized_binding_set,
@@ -1548,11 +1550,11 @@ class NativeEndpointRunner:
         try:
             self._establish_socket_retirement_custody()
             self._launch_and_accept_workers()
-        except BaseException:
+        except BaseException as error:
             try:
                 self.close(require_clean=False)
-            except BaseException:
-                pass
+            except BaseException as cleanup:
+                _note_failure(error, "analytics worker startup cleanup failed: " + str(cleanup))
             raise
 
     def _establish_socket_retirement_custody(self) -> None:
@@ -1718,6 +1720,9 @@ class NativeEndpointRunner:
             )
 
     def _launch_and_accept_workers(self) -> None:
+        deadline = time.monotonic() + self._startup_timeout_s
+        if type(self._process_factory) is DockerWorkerProcessFactory:
+            self._process_factory._launch_deadline = deadline
         endpoint_engine = {
             "cpu": ENGINE_OPENVINO_CPU,
             "gpu": ENGINE_TENSORRT_CUDA,
@@ -1767,7 +1772,6 @@ class NativeEndpointRunner:
             "analytics worker lifecycle coverage is not exact 8",
         )
 
-        deadline = time.monotonic() + self._startup_timeout_s
         for branch in BRANCHES:
             for endpoint_resource in ("cpu", "gpu"):
                 endpoint_key = (branch, endpoint_resource)
@@ -1951,7 +1955,9 @@ class NativeEndpointRunner:
         )
 
     def close(self, *, require_clean: bool = False) -> None:
-        errors: list[str] = []
+        errors = list(getattr(self, "_worker_cleanup_errors", ()))
+        deadline = self.__dict__.setdefault(
+            "_worker_cleanup_deadline", time.monotonic() + self._shutdown_timeout_s)
         for value in tuple(self._sockets.values()):
             try:
                 value.shutdown(socket.SHUT_RDWR)
@@ -1972,61 +1978,21 @@ class NativeEndpointRunner:
             finally:
                 self._listeners.pop(key, None)
 
-        graceful_deadline = time.monotonic() + self._shutdown_timeout_s
-        for key, handle in self._handles.items():
-            if handle.poll() is None:
-                try:
-                    handle.wait(max(0.001, graceful_deadline - time.monotonic()))
-                except (TimeoutError, subprocess.TimeoutExpired):
-                    pass
-                except BaseException as error:
-                    errors.append(f"worker_wait:{key[0]}/{key[1]}:{error}")
-        for key, handle in self._handles.items():
-            if handle.poll() is None:
-                try:
-                    handle.terminate()
-                except BaseException as error:
-                    errors.append(f"worker_terminate:{key[0]}/{key[1]}:{error}")
-        terminate_deadline = time.monotonic() + self._shutdown_timeout_s
-        for key, handle in self._handles.items():
-            if handle.poll() is None:
-                try:
-                    handle.wait(max(0.001, terminate_deadline - time.monotonic()))
-                except (TimeoutError, subprocess.TimeoutExpired):
-                    pass
-                except BaseException as error:
-                    errors.append(
-                        f"worker_terminate_wait:{key[0]}/{key[1]}:{error}"
-                    )
-        for key, handle in self._handles.items():
-            if handle.poll() is None:
-                try:
-                    handle.kill()
-                except BaseException as error:
-                    errors.append(f"worker_kill:{key[0]}/{key[1]}:{error}")
-        kill_deadline = time.monotonic() + self._shutdown_timeout_s
-        for key, handle in self._handles.items():
-            if handle.poll() is None:
-                try:
-                    handle.wait(max(0.001, kill_deadline - time.monotonic()))
-                except (TimeoutError, subprocess.TimeoutExpired) as error:
-                    errors.append(f"worker_survived_kill:{key[0]}/{key[1]}:{error}")
-                except BaseException as error:
-                    errors.append(f"worker_kill_wait:{key[0]}/{key[1]}:{error}")
-        for key, handle in self._handles.items():
-            status = handle.poll()
-            if status is None:
-                errors.append(f"worker_still_live:{key[0]}/{key[1]}")
-            elif require_clean and status != 0:
-                errors.append(f"worker_nonzero:{key[0]}/{key[1]}:{status}")
-        self._handles.clear()
+        errors.extend(_retire_worker_handles(self._handles, deadline=deadline))
+        if not errors:
+            self._handles.clear()
         try:
             if self._runtime_directory_custody is not None:
                 self._verify_socket_retirement_namespace(require_all=True)
         except BaseException as error:
             errors.append(f"socket_retirement_custody:{error}")
         finally:
-            self._close_socket_retirement_custody()
+            try:
+                self._close_socket_retirement_custody()
+            except BaseException as error:
+                errors.append(f"socket_retirement_custody_close:{error}")
+        errors = list(dict.fromkeys(errors))
+        self._worker_cleanup_errors = tuple(errors)
         if errors:
             raise MaterializerError(
                 "analytics worker lifecycle cleanup failed: " + "; ".join(errors)
@@ -2036,7 +2002,13 @@ class NativeEndpointRunner:
         return self
 
     def __exit__(self, *args: object) -> None:
-        self.close(require_clean=not args or args[0] is None)
+        try:
+            self.close(require_clean=not args or args[0] is None)
+        except BaseException as cleanup:
+            if len(args) > 1 and isinstance(args[1], BaseException):
+                _note_failure(args[1], "analytics worker cleanup failed: " + str(cleanup))
+            else:
+                raise
 
 
 class _UniqueKeyLoader(yaml.SafeLoader):

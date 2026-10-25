@@ -3055,6 +3055,14 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             class FakeDockerProcess:
                 pid = 4242
 
+                def __init__(self) -> None:
+                    streams = []
+                    for _ in range(2):
+                        read_fd, write_fd = os.pipe()
+                        os.close(write_fd)
+                        streams.append(os.fdopen(read_fd, "rb", buffering=0))
+                    self.stdout, self.stderr = streams
+
                 @staticmethod
                 def poll() -> None:
                     return None
@@ -3073,13 +3081,23 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
                     return None
 
             def popen(command: list[str], **kwargs: Any) -> FakeDockerProcess:
-                del kwargs
+                self.assertEqual(kwargs["stdout"], subprocess.PIPE)
+                self.assertEqual(kwargs["stderr"], subprocess.PIPE)
                 commands.append(command)
+                Path(command[command.index("--cidfile") + 1]).write_text("e" * 64, encoding="ascii")
                 return FakeDockerProcess()
 
             def runner(command: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
                 del kwargs
                 commands.append(command)
+                if command[1] == "info":
+                    return subprocess.CompletedProcess(command, 0, stdout="original-fixture-daemon\n", stderr="")
+                if command[1] == "inspect":
+                    return subprocess.CompletedProcess(command, 1, stdout="", stderr="not found")
+                if command[1] == "ps":
+                    return subprocess.CompletedProcess(command, 0, stdout="", stderr="")
+                self.assertEqual(command[1], "run")
+                Path(command[command.index("--cidfile") + 1]).write_text("a" * 64, encoding="ascii")
                 return subprocess.CompletedProcess(
                     command,
                     0,
@@ -3096,7 +3114,7 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             )
             probe = factory.probe("gpu", self.config["workers"]["gpu"])
             self.assertEqual(probe["engine"], ENGINE_TENSORRT_CUDA)
-            factory.start(
+            handle = factory.start(
                 WorkerLaunchSpec(
                     branch="damage",
                     resource="gpu",
@@ -3112,8 +3130,15 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
                     lifecycle_id="a" * 32,
                 )
             )
-            self.assertEqual(len(commands), 2)
-            probe_command, run_command = commands
+            self.addCleanup(handle.close_diagnostics)
+            launches = [command for command in commands if command[:2] == ["docker", "run"]]
+            self.assertEqual(len(launches), 2)
+            probe_command, run_command = launches
+            for command in launches:
+                self.assertEqual(command[command.index("--log-driver") + 1], "none")
+                self.assertFalse(Path(command[command.index("--cidfile") + 1]).is_relative_to(runtime))
+                self.assertIn("--label", command)
+            self.assertFalse(any(command[1] in {"stop", "kill", "rm"} for command in commands))
             expected_user = f"{runtime.stat().st_uid}:{runtime.stat().st_gid}"
             self.assertEqual(probe_command[:4], ["docker", "run", "--rm", "--network"])
             self.assertIn("none", probe_command)

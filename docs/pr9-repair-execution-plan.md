@@ -1,7 +1,7 @@
 # PR9 repair execution plan
 
-Updated 2026-10-25 following the user's instruction to reassess the stalled work
-and choose a more effective strategy. This changes the work sequence and review
+Updated 2026-10-26; the strategy was chosen on 2026-10-25 following the user's
+instruction to reassess the stalled work. This changes the work sequence and review
 process; it does not claim that any outstanding acceptance criterion passed.
 
 ## Diagnosis
@@ -28,7 +28,7 @@ latter.
 - Use OpenSpec as the existing requirements reference. Stop generating new
   OpenSpec decisions or approval chains for delivery plumbing. No new framework,
   codec, generic loader or proof of Node internals is part of the repair path.
-- Use ordinary supported process execution, bounded file logs, existing tests
+- Use ordinary supported process execution, bounded process output, existing tests
   and the existing CI. Review actual product changes at exact commits, retaining
   the configured Grok model and independent review before final acceptance.
   No local dependency installation, CI redesign or model switch is implied.
@@ -92,6 +92,23 @@ readers, preserves scientific concurrency and clocks, and requires independent
 review/checks/delegated approval before implementation. It adds no delivery
 framework. D27/Native57 work stays parked, and its lost RAM/admissions remain
 unavailable.
+
+The planning amendment at `dde3990f844bedb73e47358f24a584e9ff8a9457`
+passed independent source review, the complete configured Grok review and hosted
+CI40227766331 (4,406 tests, 4,311 successful, 95 explicit skips, no failures or
+errors). Delegated AGENT approval to implement this correction is recorded in
+PR9comment6402696800. This approval does not authorize physical acceptance.
+
+The resulting worker/probe correction passes 127 focused local tests with no
+skips, failures or errors. Meaningful failing regressions first demonstrated
+unbounded worker output, orphaned containers after client exit, loss of a primary
+failure during cleanup, invalid UTF-8 acceptance and an oversized PID response.
+The correction keeps bounded output readers, verifies the original daemon,
+Docker-written CID, image and lifecycle labels before container mutation, and
+uses one original cleanup deadline for both owners. Python 3.10-compatible
+secondary failure notes preserve the original cause. Tests use real child pipes
+and finite fake Docker boundaries; the changed factory has not yet run against
+Docker. Exact-commit implementation review and hosted CI remain pending.
 
 The genuine default-path, runtime renewal, physical, capacity, conformance and
 final-acceptance gates remain open. Dedicated semantic-conformance CI is absent.
