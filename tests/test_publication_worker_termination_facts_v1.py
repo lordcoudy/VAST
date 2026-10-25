@@ -171,7 +171,10 @@ class WorkerOutputBoundsTests(unittest.TestCase):
                             side_effect=AssertionError("worker output must not allocate a disk capture")):
                 handle = self.start_writer(Path(temporary), "print('small output')")
             try:
-                self.assertEqual(handle.wait(5.0), 0)
+                deadline = time.monotonic() + 5.0
+                self.assertEqual(handle.wait(deadline - time.monotonic()), 0)
+                for capture in (handle._stdout_capture, handle._stderr_capture):
+                    self.assertTrue(capture.finish(deadline))
                 self.assertIn("small output", handle.failure_diagnostic())
             finally:
                 if handle.poll() is None:
@@ -194,9 +197,11 @@ for thread in threads: thread.join()
         with tempfile.TemporaryDirectory() as temporary:
             handle = self.start_writer(Path(temporary), program)
             try:
-                self.assertEqual(handle.wait(8.0), 0)
+                deadline = time.monotonic() + 8.0
+                self.assertEqual(handle.wait(deadline - time.monotonic()), 0)
                 for capture, byte, suffix in ((handle._stdout_capture, "O", "stdout-final"),
                                                (handle._stderr_capture, "E", "stderr-final")):
+                    self.assertTrue(capture.finish(deadline))
                     self.assertLessEqual(self.retained_bytes(capture), 2048)
                     self.assertEqual(DockerWorkerHandle._capture_tail(capture),
                                      byte * (2048 - len(suffix)) + suffix)
@@ -300,6 +305,34 @@ class _OwnedEngine:
 
 
 class OwnedDockerCleanupTests(unittest.TestCase):
+    def test_graceful_client_exit_uses_original_deadline_for_reader_retirement(self):
+        from contextlib import ExitStack
+        with tempfile.TemporaryDirectory() as temporary:
+            engine = _OwnedEngine()
+            engine.client_exit = 0
+            handle = engine.start(Path(temporary))
+            engine.running = False
+            class EndingClient:
+                status = None
+                def poll(self): return self.status
+                def wait(self, timeout):
+                    self.status = 0
+                    return 0
+            handle._process = EndingClient()
+            deadline = time.monotonic() + 1.0
+            observed = []
+            with ExitStack() as patches:
+                for capture in (handle._stdout_capture, handle._stderr_capture):
+                    original_finish = capture.finish
+                    def finish(granted, original_finish=original_finish):
+                        observed.append(granted)
+                        return granted >= deadline and original_finish(granted)
+                    patches.enter_context(mock.patch.object(capture, "finish", side_effect=finish))
+                errors = sidecar._retire_worker_handles({("damage", "cpu"): handle}, deadline=deadline)
+            self.assertEqual(errors, [])
+            self.assertTrue(observed)
+            self.assertEqual(set(observed), {deadline})
+
     @staticmethod
     def parity_owner(handle):
         # Isolate the real close operation from model loading and inference.
@@ -514,6 +547,42 @@ class OwnedDockerCleanupTests(unittest.TestCase):
 
 
 class BoundedEngineCaptureTests(unittest.TestCase):
+    def test_reader_setup_and_secondary_close_failure_both_reach_reporting(self):
+        class DoubleFailureStream:
+            def fileno(self): raise OSError("original reader setup failure")
+            def close(self): raise OSError("distinct stream close failure")
+        capture = sidecar._BoundedPipeCapture(DoubleFailureStream())
+        try:
+            with self.assertRaises(SidecarError) as caught:
+                capture.require_started(time.monotonic() + 1.0)
+            self.assertIsInstance(caught.exception.__cause__, OSError)
+            self.assertIn("original reader setup failure", str(caught.exception))
+            self.assertIn("distinct stream close failure", str(caught.exception))
+            self.assertTrue(capture.close())
+            self.assertFalse(capture._thread.is_alive())
+        finally:
+            capture.close()
+
+    def test_stock_parity_cli_persists_primary_and_secondary_cleanup_failure(self):
+        from contextlib import redirect_stderr
+        import checkpoint_model_parity_materializer as materializer
+        primary = MaterializerError("original parity failure")
+        primary.__notes__ = ["distinct parity cleanup failure"]
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path = root / "stderr.txt"
+            args = [item for option in ("materialization-dir", "ffmpeg", "binding-set",
+                    "cpu-runtime-probe", "gpu-runtime-probe", "socket-dir")
+                    for item in ("--" + option, str(root / option))]
+            with path.open("w", encoding="utf-8") as saved, redirect_stderr(saved), \
+                    mock.patch.object(materializer, "materialize_and_promote_model_parity", side_effect=primary):
+                code = materializer.main(args)
+            self.assertEqual(code, 78)
+            message = path.read_text(encoding="utf-8")
+            self.assertIn("original parity failure", message)
+            self.assertIn("distinct parity cleanup failure", message)
+            self.assertEqual(str(primary), "original parity failure")
+
     def test_worker_pid_lookup_refuses_oversized_complete_response(self):
         def runner(command, **kwargs):
             if command[1] == "inspect" and command[3] == "{{.State.Pid}}":

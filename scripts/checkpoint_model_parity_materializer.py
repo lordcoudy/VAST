@@ -60,6 +60,7 @@ from checkpoint_gstreamer_analytics_sidecar import (
     _attest_worker_peer_identity,
     _close_owned_socket,
     _complete_peer_identity_after_handshake,
+    _failure_text,
     _open_owned_listener,
     _note_failure,
     _retire_worker_handles,
@@ -1554,7 +1555,7 @@ class NativeEndpointRunner:
             try:
                 self.close(require_clean=False)
             except BaseException as cleanup:
-                _note_failure(error, "analytics worker startup cleanup failed: " + str(cleanup))
+                _note_failure(error, "analytics worker startup cleanup failed: " + _failure_text(cleanup))
             raise
 
     def _establish_socket_retirement_custody(self) -> None:
@@ -2006,7 +2007,7 @@ class NativeEndpointRunner:
             self.close(require_clean=not args or args[0] is None)
         except BaseException as cleanup:
             if len(args) > 1 and isinstance(args[1], BaseException):
-                _note_failure(args[1], "analytics worker cleanup failed: " + str(cleanup))
+                _note_failure(args[1], "analytics worker cleanup failed: " + _failure_text(cleanup))
             else:
                 raise
 
@@ -3595,7 +3596,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         SidecarError,
         ProtocolError,
     ) as error:
-        print(f"model parity materialization blocked: {error}", file=sys.stderr)
+        print(f"model parity materialization blocked: {_failure_text(error)}", file=sys.stderr)
         return 78
     print(
         json.dumps(

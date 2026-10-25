@@ -982,6 +982,38 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             self.assertTrue(factory.all_stopped())
             self.assertEqual(list((root / "runtime").iterdir()), [])
 
+    def test_startup_failure_lifecycle_persists_secondary_cleanup_details(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            owner = self._owner(root, _ProcessFactory(self.config))
+            primary = SidecarError("original capture startup failure")
+            primary.__notes__ = ["distinct capture cleanup failure"]
+            with mock.patch.object(owner, "_launch_workers", side_effect=primary):
+                with self.assertRaises(SidecarError) as caught:
+                    owner.run()
+            self.assertIs(caught.exception, primary)
+            lifecycle = json.loads((root / "engineering-evidence/lifecycle.json").read_text(encoding="utf-8"))
+            self.assertIn("original capture startup failure", lifecycle["failure"]["message"])
+            self.assertIn("distinct capture cleanup failure", lifecycle["failure"]["message"])
+
+    def test_stock_guardian_cli_persists_primary_and_secondary_failure(self) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar_module
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            authority = root / "authority.json"
+            authority.write_text("{}\n", encoding="ascii")
+            primary = SidecarError("original guardian failure")
+            primary.__notes__ = ["distinct guardian cleanup failure"]
+            path = root / "stderr.json"
+            with path.open("w", encoding="utf-8") as saved, redirect_stderr(saved), \
+                    mock.patch.object(sidecar_module, "query_publication_sidecar_guardian_v1", side_effect=primary):
+                code = main(["--production-status-authority", str(authority)])
+            self.assertEqual(code, 78)
+            message = json.loads(path.read_text(encoding="utf-8"))["message"]
+            self.assertIn("original guardian failure", message)
+            self.assertIn("distinct guardian cleanup failure", message)
+            self.assertEqual(str(primary), "original guardian failure")
+
     def test_runtime_worker_crash_interrupts_front_service(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

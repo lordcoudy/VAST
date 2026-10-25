@@ -3720,7 +3720,8 @@ class _BoundedPipeCapture:
 
     def require_started(self, deadline: float) -> None:
         if not self._ready.wait(max(0.0, deadline - time.monotonic())) or self._error is not None:
-            raise SidecarError("Docker output reader could not start") from self._exception
+            detail = "" if self._error is None else ": " + self._error
+            raise SidecarError("Docker output reader could not start" + detail) from self._exception
 
     def _consume(self) -> None:
         try:
@@ -3748,14 +3749,17 @@ class _BoundedPipeCapture:
                             self._payload.extend(chunk)
                             del self._payload[:-self._limit]
         except BaseException as error:
-            self._error = type(error).__name__
+            self._error = _failure_text(error)
             self._exception = error
         finally:
             try:
                 self._stream.close()
             except BaseException as error:
-                self._error = self._error or type(error).__name__
-                self._exception = self._exception or error
+                if self._exception is None:
+                    self._exception = error
+                else:
+                    _note_failure(self._exception, "output stream close failed: " + _failure_text(error))
+                self._error = _failure_text(self._exception)
             self._ready.set()
 
     def getvalue(self) -> bytes:
@@ -3792,7 +3796,8 @@ def _bounded_engine_observation(command: Sequence[str], *, timeout: float = 2.0)
             _require(not any(value.overflowed() for value in captures.values()),
                      "engine observation exceeded its bounded capture")
             _require(not any(value._error is not None for value in captures.values()),
-                     "engine observation output reader failed")
+                     "engine observation output reader failed: " + "; ".join(
+                         value._error for value in captures.values() if value._error is not None))
             remaining = deadline - time.monotonic()
             if remaining <= 0:
                 raise subprocess.TimeoutExpired(command, timeout)
@@ -3801,7 +3806,8 @@ def _bounded_engine_observation(command: Sequence[str], *, timeout: float = 2.0)
             except subprocess.TimeoutExpired:
                 pass
         for capture in captures.values():
-            _require(capture.finish(deadline), "engine observation capture retirement is unproved")
+            _require(capture.finish(deadline), "engine observation capture retirement is unproved"
+                     + (": " + capture._error if capture._error is not None else ""))
         _require(not any(value.overflowed() for value in captures.values()),
                  "engine observation exceeded its bounded capture")
         _require(time.monotonic() < deadline, "engine observation deadline exceeded")
@@ -3824,6 +3830,8 @@ def _bounded_engine_observation(command: Sequence[str], *, timeout: float = 2.0)
             try:
                 if not capture.close():
                     errors.append("observer reader retirement unproved")
+                if capture._error is not None:
+                    errors.append("observer reader failed: " + capture._error)
             except BaseException as error:
                 errors.append("observer reader close: " + _failure_text(error))
         for name in ("stdout", "stderr"):
@@ -4227,6 +4235,8 @@ class DockerWorkerHandle:
                         errors.append(field + " reader retirement unproved")
                     else:
                         setattr(self, field, None)
+                    if isinstance(capture, _BoundedPipeCapture) and capture._error is not None:
+                        errors.append(field + " reader failed: " + capture._error)
                 except BaseException as error:
                     errors.append(field + " close: " + str(error))
         _require(not errors, "; ".join(errors))
@@ -4292,13 +4302,8 @@ class DockerWorkerHandle:
         return self._process.poll()
 
     def wait(self, timeout_s: float) -> int:
-        deadline = time.monotonic() + timeout_s
-        status = int(self._process.wait(timeout=max(0.0, timeout_s)))
-        for capture in (self._stdout_capture, self._stderr_capture):
-            if isinstance(capture, _BoundedPipeCapture):
-                _require(capture.finish(deadline),
-                         "analytics Docker diagnostic capture did not retire")
-        return status
+        # The owner judges reader EOF once, against its original cleanup deadline.
+        return int(self._process.wait(timeout=max(0.0, timeout_s)))
 
     def terminate(self) -> None:
         try:
@@ -4395,7 +4400,8 @@ def _retire_worker_handles(handles: Mapping[tuple[str, str], Any], *, deadline: 
                 for name in ("_stdout_capture", "_stderr_capture"):
                     capture = getattr(handle, name)
                     if isinstance(capture, _BoundedPipeCapture) and not capture.finish(deadline):
-                        local.append(f"{name}_retirement_unproved")
+                        local.append(f"{name}_retirement_unproved"
+                                     + (": " + capture._error if capture._error is not None else ""))
         except BaseException as error:
             local.append(f"retirement:{error}")
         finally:
@@ -5653,7 +5659,7 @@ class GStreamerAnalyticsSidecar:
         self._stop.set()
 
     def _production_failure_message(self, error: BaseException) -> str:
-        message = str(error)[:3500]
+        message = _failure_text(error)[:3500]
         descriptor = self._production_failure_diagnostic
         if descriptor is not None:
             message += f"; protocol_diagnostic={descriptor['path']}; sha256={descriptor['sha256']}"
@@ -6459,7 +6465,7 @@ class GStreamerAnalyticsSidecar:
                 if failure is None
                 else {
                     "type": type(failure).__name__,
-                    "message": str(failure)[:4096],
+                    "message": _failure_text(failure)[:4096],
                 }
             ),
             "cleanup_errors": cleanup_errors,
@@ -6482,15 +6488,15 @@ class GStreamerAnalyticsSidecar:
         if failure is not None:
             if cleanup_errors:
                 raise SidecarError(
-                    f"{failure}; sidecar cleanup failed: {cleanup_errors}"
+                    f"{_failure_text(failure)}; sidecar cleanup failed: {cleanup_errors}"
                 ) from failure
             if evidence_failure is not None:
                 raise SidecarError(
-                    f"{failure}; lifecycle evidence failed: {evidence_failure}"
+                    f"{_failure_text(failure)}; lifecycle evidence failed: {_failure_text(evidence_failure)}"
                 ) from failure
             if isinstance(failure, SidecarError):
                 raise failure
-            raise SidecarError(str(failure)) from failure
+            raise SidecarError(_failure_text(failure)) from failure
         if cleanup_errors:
             raise SidecarError(f"analytics sidecar cleanup failed: {cleanup_errors}")
         if evidence_failure is not None:
@@ -6844,7 +6850,7 @@ class GStreamerAnalyticsProductionService(GStreamerAnalyticsSidecar):
             self._production_state = "failed"
             if cleanup_errors:
                 raise SidecarError(
-                    f"{error}; production startup cleanup failed: {cleanup_errors}"
+                    f"{_failure_text(error)}; production startup cleanup failed: {cleanup_errors}"
                 ) from error
             if isinstance(error, SidecarError):
                 raise
@@ -7789,7 +7795,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             if wait_failure is not None:
                 raise SidecarError(
-                    f"analytics production guardian failed: {wait_failure}"
+                    f"analytics production guardian failed: {_failure_text(wait_failure)}"
                 ) from wait_failure
             return (
                 0
@@ -7826,7 +7832,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     "status": "engineering_failed_nonpublication",
                     "publication_ready": False,
                     "accepted_evidence_written": False,
-                    "message": str(error),
+                    "message": _failure_text(error),
                 },
                 sort_keys=True,
             ),

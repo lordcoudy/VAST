@@ -99,7 +99,7 @@ CI40227766331 (4,406 tests, 4,311 successful, 95 explicit skips, no failures or
 errors). Delegated AGENT approval to implement this correction is recorded in
 PR9comment6402696800. This approval does not authorize physical acceptance.
 
-The resulting worker/probe correction passes 127 focused local tests with no
+The resulting worker/probe correction passes 132 focused local tests with no
 skips, failures or errors. Meaningful failing regressions first demonstrated
 unbounded worker output, orphaned containers after client exit, loss of a primary
 failure during cleanup, invalid UTF-8 acceptance and an oversized PID response.
@@ -109,6 +109,17 @@ uses one original cleanup deadline for both owners. Python 3.10-compatible
 secondary failure notes preserve the original cause. Tests use real child pipes
 and finite fake Docker boundaries; the changed factory has not yet run against
 Docker. Exact-commit implementation review and hosted CI remain pending.
+
+The first implementation reviews required fixes for lost cleanup details at
+stock CLI/lifecycle reporting boundaries, a reader's secondary stream-close
+failure, and premature reader retirement against the graceful subdeadline.
+Five additional regressions reproduced those defects before correction. Reader
+retirement now uses the owner's original cleanup deadline, and existing error
+fields retain both initiating and secondary failures. A proposed requirement for
+a newline-terminated CID was rejected: the actual configured Docker CLI wrote a
+64-byte CID without a newline, consistent with its public writer. Receipt
+mutation continues to refuse cleanup authority. Review of the corrected exact
+commit and its hosted CI are still required before changed-factory execution.
 
 The genuine default-path, runtime renewal, physical, capacity, conformance and
 final-acceptance gates remain open. Dedicated semantic-conformance CI is absent.
