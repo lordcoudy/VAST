@@ -110,6 +110,18 @@ class FullPublicationIdentityPolicyCoverageTests(unittest.TestCase):
         )
         self.assertEqual(json.loads(self.receipt_path.read_text())["coverage"]["accepted_sample_count"], 126016)
 
+    def test_real_identity_reader_preserves_above_minimum_and_uneven_totals(self) -> None:
+        for count in (3968, 3969):
+            with self.subTest(count=count):
+                self.fixture = Fixture(self.root)
+                self._set_measured_total(count)
+                result = self.fixture.load(production_policy=True)
+                self.assertEqual(
+                    result["bindings"]["policy_qualification"]["receipt"],
+                    descriptor(self.root, self.receipt_path),
+                )
+                self.assertEqual(self._coverage()["accepted_sample_count"], count)
+
     def test_coverage_requires_exact_integer_counts_and_keys(self) -> None:
         changes = [
             (field, bad)

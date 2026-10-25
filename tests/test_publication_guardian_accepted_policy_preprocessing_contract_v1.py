@@ -681,15 +681,20 @@ class AcceptedPolicyGuardianPreprocessingContractV1Tests(unittest.TestCase):
                 self.assertNotEqual(fixture.config_path.read_bytes(), before)
 
     def test_measured_sample_count_survives_materialization_and_cold_load(self) -> None:
-        for count in (3840, 126016):
+        for count in (3840, 3968, 3969, 126016):
             with self.subTest(count=count), tempfile.TemporaryDirectory() as temporary:
                 root = Path(temporary).resolve()
                 fixture = Fixture(root)
                 fixture.coverage["accepted_sample_count"] = count
-                for calibration in fixture.calibration["calibrations"].values():
-                    for costs in calibration["costs"].values():
-                        for value in costs.values():
-                            value["samples"] = count // 32
+                coordinates = [
+                    value
+                    for calibration in fixture.calibration["calibrations"].values()
+                    for costs in calibration["costs"].values()
+                    for value in costs.values()
+                ]
+                quotient, remainder = divmod(count, len(coordinates))
+                for position, value in enumerate(coordinates):
+                    value["samples"] = quotient + (position < remainder)
                 fixture.rewrite_accepted()
                 result = fixture.materialize(root / "measured-output")
                 loaded = target.load_accepted_policy_guardian_preprocessing_contract_v1(
