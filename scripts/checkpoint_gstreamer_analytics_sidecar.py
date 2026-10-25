@@ -3716,6 +3716,8 @@ class _BoundedPipeCapture:
                 stream.close()
             except BaseException as cleanup:
                 _note_failure(error, "output stream close failed: " + _failure_text(cleanup))
+            if isinstance(error, Exception):
+                raise SidecarError("Docker output reader could not start: " + _failure_text(error)) from error
             raise
 
     def require_started(self, deadline: float) -> None:
@@ -4262,8 +4264,9 @@ class DockerWorkerHandle:
                 target = self.container_name
                 if self._owned_container is not None:
                     observed = self._owned_container.snapshot(deadline)
-                    _require(observed is not None and observed["running"],
-                             "owned worker is not running during startup")
+                    if observed is None or not observed["running"]:
+                        time.sleep(min(0.02, max(0.0, deadline - time.monotonic())))
+                        continue
                     target = self._owned_container.cid()
                 remaining = deadline - time.monotonic()
                 _require(remaining > 0, "worker PID observation deadline exhausted")
@@ -5427,7 +5430,7 @@ class GStreamerAnalyticsSidecar:
                         raise
                     except BaseException as error:
                         raise SidecarError(
-                            f"cannot start analytics worker {branch}/{resource}: {error}"
+                            f"cannot start analytics worker {branch}/{resource}: {_failure_text(error)}"
                         ) from error
                     _require(
                         type(handle.pid) is int and handle.pid > 0,
@@ -5455,7 +5458,7 @@ class GStreamerAnalyticsSidecar:
                         raise
                     except BaseException as error:
                         raise SidecarError(
-                            f"cannot attest analytics worker {branch}/{resource} PID: {error}"
+                            f"cannot attest analytics worker {branch}/{resource} PID: {_failure_text(error)}"
                         ) from error
                     owned = worker_listeners[key]
                     listener = owned.listener

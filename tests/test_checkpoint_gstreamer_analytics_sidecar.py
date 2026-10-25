@@ -996,6 +996,39 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             self.assertIn("original capture startup failure", lifecycle["failure"]["message"])
             self.assertIn("distinct capture cleanup failure", lifecycle["failure"]["message"])
 
+    def test_worker_start_and_pid_wrappers_persist_non_sidecar_cleanup_notes(self) -> None:
+        for phase in ("start", "pid"):
+            with self.subTest(phase=phase), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                factory = _ProcessFactory(self.config)
+                owner = self._owner(root, factory)
+                primary = RuntimeError("original " + phase + " failure")
+                primary.__notes__ = ["distinct " + phase + " cleanup failure"]
+                original_start = factory.start
+                def start(spec):
+                    if phase == "start":
+                        raise primary
+                    handle = original_start(spec)
+                    handle.expected_peer_pid = mock.Mock(side_effect=primary)
+                    return handle
+                with mock.patch.object(factory, "start", side_effect=start):
+                    with self.assertRaises(SidecarError) as caught:
+                        owner.run()
+                cause = caught.exception
+                for _ in range(8):
+                    if cause.__cause__ is None:
+                        break
+                    cause = cause.__cause__
+                self.assertIs(cause, primary)
+                lifecycle = json.loads((root / "engineering-evidence/lifecycle.json").read_text(encoding="utf-8"))
+                self.assertIn("original " + phase + " failure", lifecycle["failure"]["message"])
+                self.assertIn("distinct " + phase + " cleanup failure", lifecycle["failure"]["message"])
+                if phase == "start":
+                    self.assertEqual(factory.handles, {})
+                else:
+                    self.assertTrue(factory.all_stopped())
+                self.assertEqual(list((root / "runtime").iterdir()), [])
+
     def test_stock_guardian_cli_persists_primary_and_secondary_failure(self) -> None:
         import checkpoint_gstreamer_analytics_sidecar as sidecar_module
         with tempfile.TemporaryDirectory() as temporary:
@@ -2739,6 +2772,10 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
 
                 def drifted_request(*args: Any, **kwargs: Any) -> dict[str, Any]:
                     acknowledgement = original_request(*args, **kwargs)
+                    # Complete the producer before isolating acknowledgement drift.
+                    closer.join(timeout=5)
+                    self.assertFalse(closer.is_alive())
+                    self.assertEqual(closer_errors, [])
                     acknowledgement[field] = replacement
                     return acknowledgement
 

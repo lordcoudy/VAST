@@ -99,7 +99,7 @@ CI40227766331 (4,406 tests, 4,311 successful, 95 explicit skips, no failures or
 errors). Delegated AGENT approval to implement this correction is recorded in
 PR9comment6402696800. This approval does not authorize physical acceptance.
 
-The resulting worker/probe correction passes 132 focused local tests with no
+The resulting worker/probe correction passes 135 focused local tests with no
 skips, failures or errors. Meaningful failing regressions first demonstrated
 unbounded worker output, orphaned containers after client exit, loss of a primary
 failure during cleanup, invalid UTF-8 acceptance and an oversized PID response.
@@ -120,6 +120,16 @@ a newline-terminated CID was rejected: the actual configured Docker CLI wrote a
 64-byte CID without a newline, consistent with its public writer. Receipt
 mutation continues to refuse cleanup authority. Review of the corrected exact
 commit and its hosted CI are still required before changed-factory execution.
+
+Further caller regressions reproduce lost notes across worker-start and PID
+wrappers and a real reader-thread start failure reaching the parity CLI without
+its controlled error record. These boundaries now retain the initiating cause
+and cleanup details. An authenticated container created before it starts is
+polled within the original startup deadline. The acknowledgement-drift negative
+test first refused descriptor custody while lifecycle publication was still in
+progress; it now waits for producer completion before testing the altered
+acknowledgement. The original failed run is retained. This test synchronization
+does not establish production publication/cold-reader acceptance.
 
 The genuine default-path, runtime renewal, physical, capacity, conformance and
 final-acceptance gates remain open. Dedicated semantic-conformance CI is absent.

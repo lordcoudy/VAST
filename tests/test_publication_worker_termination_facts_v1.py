@@ -305,6 +305,32 @@ class _OwnedEngine:
 
 
 class OwnedDockerCleanupTests(unittest.TestCase):
+    def test_authenticated_created_container_can_reach_running_within_original_deadline(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            engine = _OwnedEngine()
+            engine.client_exit = 0
+            handle = engine.start(Path(temporary))
+            process = Process()
+            handle._process = process
+            original_snapshot = handle._owned_container.snapshot
+            calls = []
+            def snapshot(deadline):
+                value = original_snapshot(deadline)
+                calls.append(deadline)
+                return {**value, "running": False} if len(calls) == 1 else value
+            try:
+                with mock.patch.object(handle._owned_container, "snapshot", side_effect=snapshot):
+                    try:
+                        observed = handle.expected_peer_pid(0.5)
+                    except SidecarError as error:
+                        observed = error
+                self.assertEqual(observed, 42)
+                self.assertGreaterEqual(len(calls), 2)
+            finally:
+                process.status = 0
+                engine.running = False
+                sidecar._retire_worker_handles({("damage", "cpu"): handle}, deadline=time.monotonic() + 0.5)
+
     def test_graceful_client_exit_uses_original_deadline_for_reader_retirement(self):
         from contextlib import ExitStack
         with tempfile.TemporaryDirectory() as temporary:
@@ -547,6 +573,55 @@ class OwnedDockerCleanupTests(unittest.TestCase):
 
 
 class BoundedEngineCaptureTests(unittest.TestCase):
+    def test_real_reader_thread_start_failure_reaches_stock_parity_cli_with_cleanup(self):
+        from contextlib import redirect_stderr
+        import checkpoint_model_parity_materializer as materializer
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            engine = _OwnedEngine()
+            factory = engine.factory(root)
+            binding = root / "bindings/damage.json"
+            binding.write_text("{}\n", encoding="ascii")
+            spec = WorkerLaunchSpec(branch="damage", resource="cpu", engine=ENGINE_OPENVINO_CPU,
+                binding_path=binding, socket_path=root / "runtime/damage.sock",
+                container_binding_path="/run/vast/bindings/damage.json",
+                container_socket_path="/run/vast/analytics/damage.sock",
+                worker_config={"engine": ENGINE_OPENVINO_CPU, "image": "fixture-worker",
+                               "image_id": engine.image, "entrypoint": "/worker"},
+                max_requests=1, lifecycle_id=engine.lifecycle_id)
+            clients, failures = [], []
+            original_popen = factory._popen_factory
+            def popen(*args, **kwargs):
+                process = original_popen(*args, **kwargs)
+                clients.append(process)
+                return process
+            factory._popen_factory = popen
+            def launch(**kwargs):
+                try:
+                    return factory.start(spec)
+                except BaseException as error:
+                    failures.append(error)
+                    raise
+            args = [item for option in ("materialization-dir", "ffmpeg", "binding-set",
+                    "cpu-runtime-probe", "gpu-runtime-probe", "socket-dir")
+                    for item in ("--" + option, str(root / option))]
+            path = root / "stderr.txt"
+            with path.open("w", encoding="utf-8") as saved, redirect_stderr(saved), \
+                    mock.patch.object(threading.Thread, "start", side_effect=RuntimeError("original reader thread failure")), \
+                    mock.patch.object(materializer, "materialize_and_promote_model_parity", side_effect=launch):
+                try:
+                    code = materializer.main(args)
+                except RuntimeError:
+                    code = None
+            self.assertFalse(engine.running)
+            self.assertTrue(clients and all(client.poll() is not None for client in clients))
+            self.assertEqual(code, 78)
+            message = path.read_text(encoding="utf-8")
+            self.assertIn("original reader thread failure", message)
+            self.assertIn("container_required_stop", message)
+            self.assertIsInstance(failures[0].__cause__, RuntimeError)
+            self.assertEqual(str(failures[0].__cause__), "original reader thread failure")
+
     def test_reader_setup_and_secondary_close_failure_both_reach_reporting(self):
         class DoubleFailureStream:
             def fileno(self): raise OSError("original reader setup failure")
