@@ -39,6 +39,8 @@ None.
 
 ### Modified Capabilities
 
+- `finite-component-study`: permit only bounded diagnostic output readers for existing Docker clients; preserve every scientific concurrency, deadline, retirement and attempt restriction.
+
 - `benchmark-launch-preparation`: add explicit accepted-policy consumer compatibility, measured coverage, renewal, integration/storage preservation and evidence-bound capacity requirements for authority-v2 qualification outputs, including bounded recovery-diagnostic failure reporting, complete default packaged receipt-reader dependencies and explicit withdrawal of an unused filesystem-recovery remedy and bounded fresh fixture compilation.
 
 ## Impact
@@ -210,3 +212,9 @@ Propose ONE fixed LZW95/radix93 v4 evidence recipe in a NEW ordinary authored fi
 Modified capability remains only benchmark-launch-preparation. Exact new paths, grammar/allocation/cause rules, fully enumerated seven-key8MiB retained metadata schema and meaningful validation are in Decision27 design and the same existing open2.10 substeps. New fixed held modules remain<=524288 each; codec<=6907, TEST<=24576, Windowsargv<=32767 and every original wire/ROOT/chain/ACK/C-D/capture/heap/time cap survive. Source size, compression and geometry fit are unmeasured; reviewed headroom/retention proof and one separately recorded new inert admission remain prerequisites.
 
 Independent peer and COMPLETED configured-Grok review of the exact FOUR-artifact planning commit, NEW planning CI and recorded delegated AGENT SPEC approval precede dependent code/helpers/tests. This is a prospective amendment in the SAME change/branch/Draft PR, not a D26 replay or transfer of approval. Both genuine restricted routes, full final conformance, TWO final reviews including completed Grok, NEW final CI/approval and separate inclusive accounting/physical admission remain required. All prior failures/unknowns/46task identities24states/9requirements/67prior scenarios/227images and all archive/merge gates are preserved; new source/Git/review forms carry future accounting liability without capacity credit.
+
+## Bounded Docker diagnostics and owned retirement, 2026-10-25
+
+The finite execution plan in `docs/pr9-repair-execution-plan.md` parks D27/Native57 delivery machinery and preserves every historical failure and open acceptance gate. Source inspection of the ordinary product path found unbounded worker log files and cleanup that can mistake Docker-client exit for container retirement. Correct the existing shared factory and both parity/guardian owners, including capability probes, without a new orchestrator or dependency. Preserve all scientific predicates, defaults, native/worker inputs and diagnostic schemas; renew the four affected runtimes.
+
+Two observation-only output readers per existing Docker client are the sole new thread allowance. They cannot issue inference, schedule frames, increase in-flight work or extend any request, phase or cleanup clock. The `finite-component-study` delta records this explicit narrow exception and preserves the complete existing budget/closure requirement and its scenarios. This grants no new finite-study attempt, Q1, campaign or image action.

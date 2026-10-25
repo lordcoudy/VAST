@@ -374,3 +374,23 @@ The fixed complete-fixture standalone cold reader SHALL preserve its existing de
 #### Scenario: A bounded reader boundary is offered as complete repair evidence
 - **WHEN** portable/controlled boundary tests or actual bounded reader qualification pass while parent/enclosing logs, proof copies, physical peak, renewal or genuine cohorts remain incomplete
 - **THEN** whole1.5 and existing2.8/4.2-4.5/5.2/5.3/conformance/archive/final gates SHALL remain required, all preserved failures/history SHALL retain their original disposition, and neither the4MiB per-reader/16MiB four-fixture logical quote nor compiler approval SHALL grant additional execution or Q1/storage/image authority.
+
+### Requirement: Docker diagnostics and owned retirement remain bounded
+
+Parity and guardian Docker launches, including capability probes, SHALL bound both host output retention and daemon logging. Worker diagnostic suffixes SHALL retain at most 2,048 bytes per channel while draining output without unbounded queues or disk files. Capability probes SHALL consume a complete response bounded to 8 KiB stdout and 1 KiB stderr; diagnostic suffixes SHALL NOT substitute for that JSON. At most two observation-only output readers per existing client SHALL be permitted; they SHALL NOT schedule inference, change scientific concurrency or extend original deadlines. Every owned container SHALL have an original daemon, full CID, image and full lifecycle identity checked before mutation. Cleanup SHALL target only that authenticated CID and SHALL check engine retirement independently of client exit. Forced or unknown closure, capture failure and surviving owned resources SHALL prevent clean lifecycle and parity promotion while preserving primary and distinct secondary failures. All other scientific, custody, deadline, image-protection and final-acceptance requirements SHALL remain unchanged.
+
+#### Scenario: Workers emit more diagnostic output than retained tails
+- **WHEN** existing workers emit concurrently beyond pipe and suffix capacities
+- **THEN** both channels SHALL drain with bounded memory and no disk logging, retain their actual last 2,048 bytes and preserve the existing diagnostic schemas without changing inference scheduling.
+
+#### Scenario: A Docker client exits while its owned container remains live
+- **WHEN** a client exits or fails but its authenticated original container remains running
+- **THEN** cleanup SHALL attempt that CID within the original remaining cleanup budget, preserve the initiating failure and refuse clean lifecycle or parity acceptance even if containment succeeds.
+
+#### Scenario: Container absence is unproved or a name is reused
+- **WHEN** the original daemon or ownership evidence is unavailable, or discovery finds a foreign or reused-name identity
+- **THEN** cleanup SHALL NOT mutate that foreign identity or infer absence from client exit or a failed observation; only a successful original-daemon observation of the authenticated CID's absence SHALL establish normal removal.
+
+#### Scenario: Capability capture or retirement fails
+- **WHEN** a probe exceeds its complete-response bound or original deadline, or any capture/owned-resource retirement fails or remains unknown
+- **THEN** the probe and dependent acceptance SHALL fail, every other owned resource SHALL still receive its bounded retirement attempt, and cleanup SHALL preserve each failure without a new success clock.
