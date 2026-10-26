@@ -1,0 +1,44 @@
+{
+  "scope": "B1 metadata follow-up; no provider export/import or qualification executed",
+  "source_head": "2e72b22195c4d47e09c13ce17ccf863d24dc26df",
+  "manifest_summary_first_tool_return": {
+    "chunk_id": "d68f41",
+    "wall_time_seconds": 10.0162135,
+    "session_id": 76035,
+    "original_token_count": 358,
+    "output": "{\"body_sha256\":\"c108c004fc1ab24133d200085572b70713b91667b530c883e85fd13b155a7a39\",\"body_size_bytes\":8579,\"image_id\":\"sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759\",\"image_size\":29400323407,\"manifests\":[{\"Available\":true,\"Descriptor\":{\"digest\":\"sha256:34e56b46f00a2c79acb42bfd4f3a977753607a99179520744389ce40ce96eb59\",\"mediaType\":\"application/vnd.docker.distribution.manifest.v2+json\",\"platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"},\"size\":10184},\"ID\":\"sha256:34e56b46f00a2c79acb42bfd4f3a977753607a99179520744389ce40ce96eb59\",\"ImageData\":{\"Containers\":null,\"Platform\":{\"architecture\":\"amd64\",\"os\":\"linux\"},\"Size\":{\"Unpacked\":18930741248}},\"Kind\":\"image\",\"Size\":{\"Content\":10469582159,\"Total\":29400323407}},{\"Available\":false,\"Descriptor\":{\"digest\":\"sha256:3579dec5816b1df3d327f8b8c62b0cc55579ba912a32f919d3942c99edfdb9cd\",\"mediaType\":\"application/vnd.docker.distribution.manifest.v2+json\",\"platform\":{\"architecture\":\"arm64\",\"os\":\"linux\"},\"size\":10987},\"ID\":\"sha256:3579dec5816b1df3d327f8b8c62b0cc55579ba912a32f919d3942c99edfdb9cd\",\"ImageData\":{\"Containers\":null,\"Platform\":{\"architecture\":\"arm64\",\"os\":\"linux\"},\"Size\":{\"Unpacked\":0}},\"Kind\":\"image\",\"Size\":{\"Content\":0,\"Total\":0}}],\"scope\":\"B1 read-only selected Docker manifest summaries\",\"status\":200,\"target\":\"/v1.55/images/nvcr.io%2Fnvidia%2Fdeepstream%40sha256%3Ac11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759/json?manifests=true\"}\n"
+  },
+  "manifest_summary_terminal_tool_return": {
+    "chunk_id": "7a3f0e",
+    "wall_time_seconds": 0.0000056,
+    "exit_code": 0,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "arithmetic": {
+    "compressed_layer_bytes": 10469524887,
+    "config_bytes": 47088,
+    "amd64_manifest_bytes": 10184,
+    "original_index_bytes": 745,
+    "old_native_packed_size": 10469582904,
+    "current_desktop_content_size": 10469582159,
+    "current_desktop_unpacked_size": 18930741248,
+    "current_desktop_total": 29400323407,
+    "historical_native_unpacked": 18930790400,
+    "unpacked_accounting_difference": 49152
+  },
+  "assertions": {
+    "native_expected_packed_size_exact": true,
+    "desktop_current_total_exact": true,
+    "only_amd64_available": true
+  },
+  "primary_sources": [
+    "https://raw.githubusercontent.com/moby/moby/docker-v29.7.2/daemon/containerd/image_inspect.go",
+    "https://raw.githubusercontent.com/moby/moby/docker-v29.8.2/daemon/containerd/image_inspect.go",
+    "https://github.com/moby/moby/pull/53426",
+    "https://raw.githubusercontent.com/moby/moby/docker-v29.8.2/daemon/containerd/image_exporter.go",
+    "https://raw.githubusercontent.com/moby/moby/docker-v29.7.2/daemon/containerd/image_exporter.go",
+    "https://github.com/containerd/containerd/blob/main/cmd/ctr/commands/images/import.go"
+  ],
+  "limits": "Native post-restore Size/RepoDigest/RootFS/index/config and snapshot expectations remain mandatory. Version-specific accounting explains current observations; no expected constant or acceptance predicate changed."
+}

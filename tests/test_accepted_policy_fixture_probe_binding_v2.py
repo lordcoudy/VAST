@@ -22,6 +22,7 @@ if str(ROOT / "scripts") not in sys.path:
 
 import publication_policy_qualification_runtime_inputs_v2 as runtime_inputs  # noqa: E402
 from tests.fixtures import accepted_policy_physical_fixture_v2 as fixture  # noqa: E402
+from tests.fixtures.accepted_policy_controlled_compiler_v1 import controlled_fixture_compiler_v1
 
 
 def artificial_reply_inputs_v2():
@@ -104,6 +105,7 @@ def bounded_prepared_setup_v2(root, patch_path, inspections, probes, observed):
     }
     try:
         with ExitStack() as stack:
+            authority = stack.enter_context(controlled_fixture_compiler_v1(root))
             for name, replacement in providers.items():
                 stack.enter_context(patch.object(fixture, name, replacement))
             with fixture.prepared_complete_fixture_inputs_v2(
@@ -112,6 +114,7 @@ def bounded_prepared_setup_v2(root, patch_path, inspections, probes, observed):
                 accepted_model_parity_assessment_path=root / "setup-assessment",
                 accepted_model_parity_receipt_path=root / "setup-receipt", image_inspections=inspections,
                 device_probes=probes, socket_prefix=".apf-probe-test",
+                **authority,
             ) as prepared:
                 native_root = prepared["native_socket_root"]
                 yield prepared

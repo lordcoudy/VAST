@@ -8,19 +8,16 @@ command boundary is doubled; custody writers, transfer, and cold readers are rea
 from contextlib import contextmanager
 from dataclasses import dataclass
 import hashlib
-import json
 import os
 from pathlib import Path
-import shutil
 import socket
-import subprocess
 from types import SimpleNamespace
 
 import checkpoint_gstreamer_publication_runtime_v3 as runtime
 import publication_operational_container_custody_v1 as container_custody
 import publication_operational_process_custody_v1 as process_custody
-from publication_operational_request_domain_v1 import canonical_json_v1
 from publication_operational_runtime_context_v1 import _materialize_operational_file_v1
+from tests.fixtures import accepted_policy_fixture_compiler_v1 as fixture_compiler
 
 
 ENGINE_SOURCE = r'''
@@ -123,56 +120,132 @@ class HeldFixtureEngineV1:
     state_path: Path
 
 
-def _reply_table(name, mapping, *, inspection):
-    rows = []
-    for key, value in sorted((mapping or {}).items()):
-        if type(key) is not str or not key.isascii() or type(value) is not dict:
-            raise ValueError("fixture image/probe reply requires ASCII key and object")
-        raw = canonical_json_v1([value] if inspection else value).decode("ascii")
-        rows.append("    {" + json.dumps(key) + ", " + json.dumps(raw) + "},")
-    return "static const struct reply " + name + "[] = {\n" + "\n".join(rows) + "\n    {NULL, NULL}\n};"
+def preflight_original_fixture_engine_v1(*, project_root, output_dir,
+        image_inspections=None, device_probes=None, compiler_qualification=None,
+        compiler_admission=None, compiler_absolute_deadline_ns=None):
+    """Bind the prospective source and refuse before any fixture allocation."""
+    root, output = Path(project_root).resolve(strict=True), Path(output_dir)
+    if (output.resolve(strict=False) != output or not output.is_relative_to(root)
+            or output == root or os.path.lexists(output)):
+        raise ValueError("fixture engine output must be fresh physical project path")
+    if (compiler_qualification is None or compiler_admission is None
+            or type(compiler_absolute_deadline_ns) is not int):
+        raise fixture_compiler.FixtureCompilerError("fixture_compiler_authority_required")
+    source_raw = fixture_compiler.build_fixture_source_v1(ENGINE_SOURCE,
+        output / "mutable/state", image_inspections, device_probes)
+    fixture_compiler.preflight_fixture_engine_v1(project_root=root,
+        source_path=output / "immutable/engine.c", source_bytes=source_raw,
+        executable_path=output / "immutable/engine", qualification=compiler_qualification,
+        admission=compiler_admission, absolute_deadline_ns=compiler_absolute_deadline_ns)
+    return source_raw
+
+
+def _write_fixture_source_v1(path, raw, absolute_deadline_ns):
+    causes, file = [], None
+    try:
+        fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+        file = path.open("xb")
+        for offset in range(0, len(raw), 65536):
+            fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+            block = raw[offset:offset + 65536]
+            if file.write(block) != len(block):
+                raise fixture_compiler.FixtureCompilerError("fixture_source_short_write")
+            fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+        file.flush()
+        fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+        os.fsync(file.fileno())
+        fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+    except (OSError, ValueError, fixture_compiler.FixtureCompilerError) as error:
+        causes.extend(error.causes if isinstance(error, fixture_compiler.FixtureCompilerError)
+                      else ["fixture_source_" + type(error).__name__])
+    finally:
+        if file is not None:
+            try:
+                file.close()
+            except (OSError, ValueError) as error:
+                causes.append("fixture_source_close_" + type(error).__name__)
+            try:
+                fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+            except fixture_compiler.FixtureCompilerError as error:
+                causes.extend(error.causes)
+    if causes:
+        raise fixture_compiler.FixtureCompilerError(*dict.fromkeys(causes))
 
 
 @contextmanager
 def prepare_original_fixture_engine_v1(*, project_root, output_dir,
-        image_inspections=None, device_probes=None, socket_path=None):
+        image_inspections=None, device_probes=None, socket_path=None,
+        compiler_qualification=None, compiler_admission=None, compiler_absolute_deadline_ns=None):
     """Hold one immutable local ELF/socket for every artificial fixture operation."""
     root = Path(project_root).resolve(strict=True)
     output = Path(output_dir)
-    if output.resolve(strict=False) != output or not output.is_relative_to(root):
-        raise ValueError("fixture engine output must be physical and inside project")
+    source_raw = preflight_original_fixture_engine_v1(project_root=root, output_dir=output,
+        image_inspections=image_inspections, device_probes=device_probes,
+        compiler_qualification=compiler_qualification, compiler_admission=compiler_admission,
+        compiler_absolute_deadline_ns=compiler_absolute_deadline_ns)
+    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     output.mkdir(mode=0o700, parents=True, exist_ok=False)
     immutable, mutable = output / "immutable", output / "mutable"
+    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     immutable.mkdir(mode=0o700)
+    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     mutable.mkdir(mode=0o700)
+    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     state_path = mutable / "state"
     source = immutable / "engine.c"
-    replies = _reply_table("image_replies", image_inspections, inspection=True) + "\n" + _reply_table("probe_replies", device_probes, inspection=False)
-    source.write_text(ENGINE_SOURCE.replace("/* FIXTURE_REPLY_TABLES */", replies), encoding="ascii")
+    _write_fixture_source_v1(source, source_raw, compiler_absolute_deadline_ns)
     executable = immutable / "engine"
-    compiler = shutil.which("cc")
-    if compiler is None:
-        raise RuntimeError("genuine fixture ELF requires C compiler")
-    subprocess.run([compiler, "-O0", "-std=c11", '-DSTATE_FILE=' + json.dumps(str(state_path)),
-        '-DDAEMON_ID=' + json.dumps('"fixture-daemon-1"'), str(source), "-o", str(executable)],
-        check=True, capture_output=True)
+    compiled = fixture_compiler.compile_fixture_engine_v1(project_root=root,
+        source_path=source, executable_path=executable, qualification=compiler_qualification,
+        admission=compiler_admission, absolute_deadline_ns=compiler_absolute_deadline_ns)
+    if (compiled.get("accepted") is not True or compiled.get("normal_closed") is not True
+            or compiled.get("receipt_persisted") is not True):
+        raise fixture_compiler.FixtureCompilerError("fixture_compiler_not_accepted")
+    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     fd = os.open(executable, os.O_RDONLY | os.O_NOFOLLOW)
-    sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    sock, primary = None, None
     try:
+        fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         path = Path(socket_path) if socket_path is not None else output / "engine.sock"
         if path.resolve(strict=False) != path or path.exists() or path.is_symlink():
             raise ValueError("fixture engine socket must be fresh and canonical")
+        fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
         sock.bind(str(path))
         info = path.lstat()
-        descriptor = _descriptor(executable)
+        raw = fixture_compiler._compiler_read_v1(executable, 16777216)
+        descriptor = {"path": str(executable), "size_bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+        held, named = os.fstat(fd), executable.stat(follow_symlinks=False)
+        if (held.st_dev, held.st_ino, held.st_size) != (named.st_dev, named.st_ino, len(raw)):
+            raise fixture_compiler.FixtureCompilerError("fixture_held_elf_drift")
+        fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
         engine = SimpleNamespace(path=executable, fd=fd, size=descriptor["size_bytes"],
             sha256=descriptor["sha256"], proc_path=f"/proc/self/fd/{fd}")
         yield HeldFixtureEngineV1(engine=engine, engine_descriptor=descriptor,
             engine_socket={"path": str(path), "device": info.st_dev, "inode": info.st_ino,
                 "owner_uid": info.st_uid, "owner_gid": info.st_gid}, state_path=state_path)
+    except BaseException as error:
+        primary = error
+        raise
     finally:
-        sock.close()
-        os.close(fd)
+        cleanup = []
+        if sock is not None:
+            try:
+                sock.close()
+            except (OSError, ValueError) as error:
+                cleanup.append("fixture_socket_close_" + type(error).__name__)
+        try:
+            os.close(fd)
+        except (OSError, ValueError) as error:
+            cleanup.append("fixture_elf_close_" + type(error).__name__)
+        if cleanup:
+            if primary is None:
+                raise fixture_compiler.FixtureCompilerError(*cleanup)
+            if isinstance(primary, fixture_compiler.FixtureCompilerError):
+                raise fixture_compiler.FixtureCompilerError(*dict.fromkeys(primary.causes + cleanup)) from primary
+            primary.fixture_cleanup_causes = tuple(cleanup)
+            if hasattr(primary, "add_note"):
+                primary.add_note("fixture cleanup causes: " + ", ".join(cleanup))
 
 
 def capture_original_fixture_operation_v1(*, project_root, operation_id,

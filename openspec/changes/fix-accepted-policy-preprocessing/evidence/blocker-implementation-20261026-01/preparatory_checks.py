@@ -1,4 +1,4 @@
-"""Four fixed local checks only; portable results confer no physical authority."""
+"""Fixed local checks only; portable results confer no physical authority."""
 import os
 from pathlib import Path
 import sys
@@ -27,12 +27,13 @@ ROSTER = {
     "green": ["tests.test_accepted_policy_fixture_authority_v1"],
     "owner": ["tests.test_accepted_policy_fixture_compiler_v1", "tests.test_accepted_policy_fixture_compiler_owner_v1"],
     "transport": ["tests.test_accepted_policy_fixture_transport_v2", *PROBES],
+    "edges": ["tests.test_accepted_policy_fixture_preflight_v1"],
 }
 
 
 def main():
     if len(sys.argv) != 2 or sys.argv[1] not in ROSTER:
-        raise ValueError("one of the four reviewed phases is required")
+        raise ValueError("one reviewed literal phase is required")
     phase = sys.argv[1]
     deadline = {"absolute_monotonic_ns": time.monotonic_ns() + 300_000_000_000,
                 "term_grace_ns": 5_000_000_000, "kill_grace_ns": 5_000_000_000,
@@ -47,7 +48,8 @@ def main():
         units[label], free[label] = info.f_frsize, info.f_bavail * info.f_frsize
     if any(not 0 < value <= 4096 for value in units.values()):
         raise ValueError("preparatory allocation-unit bound differs")
-    if free["c"] < 42949672960 + 536870912 or free["temporary"] < 1073741824 + 536870912:
+    allowance = 536870912 + (134217728 if phase == "edges" else 0)
+    if free["c"] < 42949672960 + allowance or free["temporary"] < 1073741824 + allowance:
         raise ValueError("preparatory physical floor is insufficient")
     if time.monotonic_ns() >= deadline["absolute_monotonic_ns"] - 15_000_000_000:
         raise ValueError("preparatory deadline expired before namespace allocation")

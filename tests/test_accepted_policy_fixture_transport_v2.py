@@ -12,6 +12,7 @@ import shutil
 import socket
 import sys
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
@@ -52,11 +53,24 @@ class AcceptedPolicyFixtureTransportV2Tests(unittest.TestCase):
                 "bootstrap_mapping_path", "bootstrap_receipt_path", "bootstrap_dir", "transaction_receipt_path",
             )}
             observed = []
+            authority_calls = []
+            authority = {"compiler_qualification": {"controlled_transport_only": "qualification"},
+                         "compiler_admission": {"controlled_transport_only": "admission"},
+                         "compiler_absolute_deadline_ns": time.monotonic_ns() + 150_000_000_000}
             native_root = None
+
+            def preflight_setup_spy(**kwargs):
+                self.assertFalse(output.exists(), "outer preflight must precede its own allocation")
+                for key, value in authority.items():
+                    self.assertIs(kwargs[key], value)
+                authority_calls.append("outer-preflight")
 
             @contextmanager
             def engine_setup_spy(**kwargs):
                 nonlocal native_root
+                for key, value in authority.items():
+                    self.assertIs(kwargs[key], value)
+                authority_calls.append("nested-engine")
                 native_root = kwargs["socket_path"].parent.parent
                 yield SimpleNamespace(engine=SimpleNamespace(path=root / "setup-engine"),
                                       engine_socket={"path": kwargs["socket_path"]})
@@ -79,6 +93,7 @@ class AcceptedPolicyFixtureTransportV2Tests(unittest.TestCase):
                 return {"runtime_input_root": assets, "front_pin": before}
 
             providers = {
+                "preflight_original_fixture_engine_v1": preflight_setup_spy,
                 "prepare_original_fixture_engine_v1": engine_setup_spy,
                 "materialize_publication_policy_qualification_transaction_v2": lambda **kwargs: common,
                 "materialize_guardian_preprocessing_contract_v1": lambda **kwargs: {
@@ -99,6 +114,7 @@ class AcceptedPolicyFixtureTransportV2Tests(unittest.TestCase):
                         accepted_model_parity_assessment_path=root / "setup-assessment",
                         accepted_model_parity_receipt_path=root / "setup-parity-receipt",
                         image_inspections={}, device_probes={}, socket_prefix=".apf-ready-test",
+                        **authority,
                     ) as prepared:
                         native_root = prepared["native_socket_root"]
                         front = prepared["front_socket"]
@@ -117,6 +133,7 @@ class AcceptedPolicyFixtureTransportV2Tests(unittest.TestCase):
                                 front.accept()
                         finally:
                             front.setblocking(True)
+                    self.assertEqual(authority_calls, ["outer-preflight", "nested-engine"])
             finally:
                 if native_root is not None:
                     shutil.rmtree(native_root)

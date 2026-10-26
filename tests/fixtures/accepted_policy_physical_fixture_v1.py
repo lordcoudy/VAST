@@ -30,8 +30,10 @@ from checkpoint_publication_runtime import NATIVE_EXECUTION_BINDING_PROVENANCE, 
 from checkpoint_qualification_pilot_acceptance_v1 import finalize_checkpoint_qualification_pilot_acceptance_v1
 from publication_acceptance_evidence import FULL_RESOURCE_EVIDENCE_FILES
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import prepare_original_fixture_engine_v1
+from tests.fixtures.accepted_policy_original_custody_fixture_v1 import preflight_original_fixture_engine_v1
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import capture_original_fixture_operation_v1
 from tests.fixtures.accepted_policy_native_fixture_v1 import write_native_policy_fixture_cell_v1
+from tests.fixtures import accepted_policy_fixture_compiler_v1 as fixture_compiler
 
 
 @contextmanager
@@ -46,6 +48,9 @@ def prepared_complete_fixture_inputs_v1(
     image_inspections: Mapping[str, Any],
     device_probes: Mapping[str, Any],
     socket_prefix: str = ".apf01",
+    compiler_qualification=None,
+    compiler_admission=None,
+    compiler_absolute_deadline_ns=None,
 ):
     """Hold a real cold-validated 37-operation plan and runtime input bundle."""
     root = project_root.resolve(strict=True)
@@ -54,8 +59,21 @@ def prepared_complete_fixture_inputs_v1(
         raise ValueError("explicit consumer fixture requires a fresh canonical project namespace")
     if not socket_prefix.startswith(".") or "/" in socket_prefix or len(socket_prefix) > 36:
         raise ValueError("fixture socket prefix is invalid")
+    inspection_aliases = dict(image_inspections)
+    for image in image_inspections.values():
+        for reference in (image["Id"], *(image.get("RepoTags") or []), *(image.get("RepoDigests") or [])):
+            previous = inspection_aliases.setdefault(reference, image)
+            if previous != image:
+                raise ValueError("captured image inspection aliases disagree")
+    preflight_original_fixture_engine_v1(project_root=root, output_dir=output / "command-boundary",
+        image_inspections=inspection_aliases, device_probes=device_probes,
+        compiler_qualification=compiler_qualification, compiler_admission=compiler_admission,
+        compiler_absolute_deadline_ns=compiler_absolute_deadline_ns)
+    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     output.mkdir(mode=0o700, parents=True, exist_ok=False)
+    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     native_socket_root = Path(tempfile.mkdtemp(prefix=socket_prefix.removeprefix(".") + "-", dir="/var/tmp"))
+    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     socket_dir = native_socket_root / "runtime"
     socket_dir.mkdir(mode=0o700, exist_ok=False)
     front_path = socket_dir / "analytics-execution.sock"
@@ -64,21 +82,19 @@ def prepared_complete_fixture_inputs_v1(
     for path in (front_path, control_path, engine_path):
         if path.exists() or path.is_symlink() or len(str(path).encode()) >= 108:
             raise ValueError("fixture socket reservation is occupied or exceeds AF_UNIX bound")
+    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     front = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
     control = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
     try:
+        fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
         front.bind(str(front_path))
         control.bind(str(control_path))
-        inspection_aliases = dict(image_inspections)
-        for image in image_inspections.values():
-            for reference in (image["Id"], *(image.get("RepoTags") or []), *(image.get("RepoDigests") or [])):
-                previous = inspection_aliases.setdefault(reference, image)
-                if previous != image:
-                    raise ValueError("captured image inspection aliases disagree")
         with prepare_original_fixture_engine_v1(
             project_root=root, output_dir=output / "command-boundary",
             image_inspections=inspection_aliases, device_probes=device_probes,
             socket_path=engine_path,
+            compiler_qualification=compiler_qualification, compiler_admission=compiler_admission,
+            compiler_absolute_deadline_ns=compiler_absolute_deadline_ns,
         ) as engine:
             transaction = materialize_publication_policy_qualification_transaction_v2(
                 project_root=root, identity_patch_path=identity_patch_path,

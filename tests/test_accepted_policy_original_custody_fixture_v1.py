@@ -10,6 +10,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from publication_operational_request_domain_v1 import canonical_json_v1, payload_with_sha256_v1
+from tests.fixtures.accepted_policy_controlled_compiler_v1 import controlled_fixture_compiler_v1
 
 
 @unittest.skipUnless(sys.platform == "linux" and shutil.which("cc"), "genuine held ELF fixture requires Linux C compiler")
@@ -27,8 +28,9 @@ class AcceptedPolicyOriginalCustodyFixtureTests(unittest.TestCase):
             probe = {"schema_version": 1, "artifact_kind": "vast_openvino_checkpoint_device_probe",
                 "openvino_version": "explicit-artificial-fixture", "available_devices": [{"device_id": "CPU"}],
                 "gstreamer_elements": {"identity": {"available": True, "factory": "identity"}}}
-            with prepare_original_fixture_engine_v1(project_root=root, output_dir=root / "fixture-engine",
-                    image_inspections={image_id: image}, device_probes={image_id: probe}) as held:
+            with controlled_fixture_compiler_v1(root) as authority, prepare_original_fixture_engine_v1(
+                    project_root=root, output_dir=root / "fixture-engine",
+                    image_inspections={image_id: image}, device_probes={image_id: probe}, **authority) as held:
                 self.assertEqual(_default_inspect_image(held.engine.path, Path(held.engine_socket["path"]), image_id), image)
                 for system in ("openvino_gva", "gstreamer_custom"):
                     with self.subTest(system=system):
@@ -50,7 +52,8 @@ class AcceptedPolicyOriginalCustodyFixtureTests(unittest.TestCase):
                 path.write_bytes(raw)
                 return {"path": str(path), "size_bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
 
-            with prepare_original_fixture_engine_v1(project_root=root, output_dir=root / "fixture-engine") as held:
+            with controlled_fixture_compiler_v1(root) as authority, prepare_original_fixture_engine_v1(
+                    project_root=root, output_dir=root / "fixture-engine", **authority) as held:
                 engine_descriptor = dict(held.engine_descriptor)
                 observed_engines = []
                 for number, system in enumerate(("gstreamer_custom", "openvino_gva"), 1):
