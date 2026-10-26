@@ -6,6 +6,9 @@ The other listed boundaries remain open; no complete B3/peak claim is implied.
 The duplicate journal header/cleanup slice is now addressed separately in
 B3-journal-checkpoint.md; this retained original audit is not rewritten as a
 claim that the enclosing I/O, replay or whole-chain gates have passed.
+Seven fixed-role artifact reads are separately bounded in
+B3-artifact-reads-checkpoint.md; their byte ceilings do not close the retained
+audit's conditional metadata heap, captured engine, finalization or caller work.
 
 Independent provider/source review inspected the unchanged enclosing fixture
 callers at2fcb1478514d5fe90e916c60706484fdac6a8d41 while the fixed sidecar

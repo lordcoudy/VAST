@@ -30,6 +30,7 @@ from checkpoint_admission import schedule_fingerprint_for_records
 from checkpoint_publication_runtime import NATIVE_EXECUTION_BINDING_PROVENANCE, _acceptance_evidence_files
 from checkpoint_qualification_pilot_acceptance_v1 import finalize_checkpoint_qualification_pilot_acceptance_v1
 from publication_acceptance_evidence import FULL_RESOURCE_EVIDENCE_FILES
+from publication_physical_io_v1 import PhysicalRootCustodyV1
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import prepare_original_fixture_engine_v1
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import preflight_original_fixture_engine_v1
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import capture_original_fixture_operation_v1
@@ -70,7 +71,12 @@ def _fixture_command_replies_v2(
             if previous != image:
                 raise ValueError("captured image inspection aliases disagree")
     try:
-        patch_systems = json.loads(identity_patch_path.read_bytes())["systems"]
+        with PhysicalRootCustodyV1.open(identity_patch_path.parent, label="fixture image patch") as custody:
+            _, payload = custody.read_descriptor(identity_patch_path, label="fixture image patch",
+                maximum=16 * 1024**2, capture=True)
+            custody.verify()
+        patch_systems = json.loads(payload)["systems"]
+        del payload
         identities = {system: (
             patch_systems[system]["physical_identity"]["image_id"],
             patch_systems[system]["fragment_identity"]["image_id"],
@@ -257,14 +263,38 @@ def build_original_native_fixture_observations_v2(
         plan, samples_per_branch=samples_per_branch,
         qualification_samples_by_operation_id=qualification_samples_by_operation_id,
     )
-    capability = json.loads(Path(prepared["transaction"]["candidate_manifest_path"]).read_bytes())
+    capability_path = Path(prepared["transaction"]["candidate_manifest_path"])
+    with PhysicalRootCustodyV1.open(capability_path.parent, label="fixture candidate capability") as custody:
+        _, payload = custody.read_descriptor(capability_path, label="fixture candidate capability",
+            maximum=16 * 1024**2, capture=True)
+        custody.verify()
+    capability = json.loads(payload)
+    del payload
     contexts = {row["operation_id"]: row["descriptor"] for row in plan["index"]["native_contexts"]}
     operations = []
     domains = []
     for row in plan["operation_manifest"]["operations"]:
-        original = json.loads(Path(row["original_operation"]["path"]).read_bytes())
-        source_plan = json.loads(Path(row["descriptors"]["source_plan"]["path"]).read_bytes())
-        calibration = json.loads(Path(row["descriptors"]["calibration"]["path"]).read_bytes())
+        original_path = Path(row["original_operation"]["path"])
+        with PhysicalRootCustodyV1.open(original_path.parent, label="fixture original operation") as custody:
+            _, payload = custody.read_descriptor(original_path, label="fixture original operation",
+                maximum=1024**2, capture=True)
+            custody.verify()
+        original = json.loads(payload)
+        del payload
+        source_plan_path = Path(row["descriptors"]["source_plan"]["path"])
+        with PhysicalRootCustodyV1.open(source_plan_path.parent, label="fixture source plan") as custody:
+            _, payload = custody.read_descriptor(source_plan_path, label="fixture source plan",
+                maximum=16 * 1024**2, capture=True)
+            custody.verify()
+        source_plan = json.loads(payload)
+        del payload
+        calibration_path = Path(row["descriptors"]["calibration"]["path"])
+        with PhysicalRootCustodyV1.open(calibration_path.parent, label="fixture calibration") as custody:
+            _, payload = custody.read_descriptor(calibration_path, label="fixture calibration",
+                maximum=16 * 1024**2, capture=True)
+            custody.verify()
+        calibration = json.loads(payload)
+        del payload
         native_context = plan["native_contexts_by_id"][row["operation_id"]]
         coordinate_resource = "cpu" if row["policy"] == "cpu_only" else "gpu"
         coordinate = (row["system"], coordinate_resource, row["codec"], source_plan["topology_kind"])
@@ -293,7 +323,11 @@ def build_original_native_fixture_observations_v2(
             worker_ids_by_branch_stream=worker_ids,
             limits_path=output / "observation-limits" / f"{row['operation_id']}.json",
         )
-        native_payload = (producer_operational / "native_operational_requests.v1.jsonl").read_bytes()
+        native_path = producer_operational / "native_operational_requests.v1.jsonl"
+        with PhysicalRootCustodyV1.open(producer_operational, label="fixture native payload") as custody:
+            _, native_payload = custody.read_descriptor(native_path, label="fixture native payload",
+                maximum=64 * 1024**2, capture=True)
+            custody.verify()
         capture = capture_original_fixture_operation_v1(
             project_root=root, operation_id=row["operation_id"], original_operation_descriptor=row["original_operation"],
             native_context_descriptor=contexts[row["operation_id"]], expected_container_image=original["container_image"],
@@ -324,7 +358,13 @@ def build_original_native_fixture_observations_v2(
 
 def finalize_fixture_qualification_cells_v2(*, prepared: Mapping[str, Any], native: Mapping[str, Any], guardian_authority_path: Path) -> list[dict[str, Any]]:
     """Run the default real pilot finalizer while the fixture guardian is live."""
-    runtime_receipt = json.loads(Path(prepared["runtime"]["receipt_path"]).read_bytes())
+    runtime_receipt_path = Path(prepared["runtime"]["receipt_path"])
+    with PhysicalRootCustodyV1.open(runtime_receipt_path.parent, label="fixture runtime receipt") as custody:
+        _, payload = custody.read_descriptor(runtime_receipt_path, label="fixture runtime receipt",
+            maximum=64 * 1024**2, capture=True)
+        custody.verify()
+    runtime_receipt = json.loads(payload)
+    del payload
     bundles = {record["arm_id"]: record for record in runtime_receipt["bundles"]}
     transaction = prepared["transaction"]
     result = []

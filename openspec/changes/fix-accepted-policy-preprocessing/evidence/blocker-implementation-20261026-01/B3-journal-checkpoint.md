@@ -6,7 +6,8 @@ also replace a read/finish failure. The new purpose-specific header reader uses
 the existing strict JSON/canonical form,64KiB header ceiling and64MiB native-file
 ceiling. It checks the descriptor, original regular leaf, held parent custody,
 non-following/nonblocking opened identity and post-read file epoch. It reads at
-most65,537B before parsing, then closes its own buffer/raw FD/custody. The existing
+most65,537B as the returned line/parser input, with a separate64KiB buffer that
+may prefetch additional underlying bytes, then closes its own buffer/raw FD/custody. The existing
 iterator still owns full replay, final native hash/count validation and scientific
 predicates; this duplicate header read is not independent authority acceptance.
 
@@ -63,3 +64,17 @@ admission, physical/genuine consumer execution or whole task1.5. Exact-commit
 source/outcome review, completed configured Grok and current-head CI remain
 required. Full B3/preparse/caller bounds, B4 peak and other acceptance gates remain
 open;46/24 task states and D27/Native57 disposition remain unchanged.
+
+Subsequent exact-commit independent source/evidence reviews are CLEAR at
+4b93e29a931cb7bba242e183f584f088d0d9fc77. The configured Grok initial client
+reached its600s deadline with zero stdout; captured channel prefixes and actual
+parent tool return remain incomplete evidence, with no inferred EOF or verdict.
+Same session01a17a97-e241-7272-88f3-79700a919edd then returned a final scoped
+CLEAR at that exact journal commit in one turn, actual modelgrok-4.7-build,
+without model/settings override. It did not qualify unchanged helper internals,
+physical reads or real replay. Seven retained files including the initial parent
+failure are in B3-journal-source-grok-originals.zip,59932B/SHA
+2dae741b81e16e570db1b4f7e7da7b2aede482c7ea3ddd9e61f65d3bfacf2fee,
+with a member manifest and local originals. The separate64KiB buffered-prefetch
+wording is corrected above, not relabeled as a source or physical outcome.
+Current-head hosted CI remains pending; no stage/final/physical approval follows.
