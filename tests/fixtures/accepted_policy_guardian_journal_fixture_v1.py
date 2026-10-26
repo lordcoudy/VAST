@@ -7,7 +7,6 @@ not physical inference or publication-campaign evidence.
 """
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -15,6 +14,7 @@ from typing import Any, Mapping, Sequence
 from publication_guardian_operational_recorder_v1 import GuardianOperationalRecorder
 from publication_operational_request_domain_v1 import canonical_json_v1, iter_native_domain_v1
 from publication_operational_request_reconciliation_v1 import _identity
+from publication_physical_io_v1 import PhysicalRootCustodyV1
 from publication_policy_contract import bind_native_decision_evidence, validate_decision_record
 from publication_policy_projection_v1 import project_accepted_decision_v1, reconstruct_original_decision_v1
 
@@ -99,8 +99,12 @@ def write_fixture_guardian_operational_journals_v1(
         descriptor = recorder.finish(counters)
     finally:
         recorder.close()
-    payload = Path(descriptor["path"]).read_bytes()
-    if len(payload) != descriptor["size_bytes"] or hashlib.sha256(payload).hexdigest() != descriptor["sha256"]:
+    companion = Path(descriptor["path"])
+    with PhysicalRootCustodyV1.open(companion.parent, label="fixture guardian companion") as custody:
+        observed, _ = custody.read_descriptor(companion, label="fixture guardian companion",
+            maximum=1024**2, capture=False)
+        custody.verify()
+    if observed["size_bytes"] != descriptor["size_bytes"] or observed["sha256"] != descriptor["sha256"]:
         raise ValueError("fixture guardian group descriptor changed")
     return {
         "operational_group": descriptor, "lifecycle_counters": counters,

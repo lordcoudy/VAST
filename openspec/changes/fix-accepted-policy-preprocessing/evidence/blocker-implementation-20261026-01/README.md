@@ -2,7 +2,8 @@
 
 This initial checkpoint is historical. Current compiler restoration/admission is
 in B2-compatibility-checkpoint.md; successive B3 provenance/report/quantity/
-binding/sidecar checkpoints retain their actual scopes and failures. The B4
+binding/sidecar/reader/writefacts checkpoints retain their actual scopes and
+failures, including the original Grok refusal and corrected composed facts. The B4
 fixed-store amendment is approved planning only. Read those later checkpoints
 before interpreting the original B2 wording or remaining-gate list below.
 

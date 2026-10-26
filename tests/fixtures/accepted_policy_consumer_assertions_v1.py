@@ -8,17 +8,19 @@ from pathlib import Path
 import sys
 import types
 from typing import Any, Mapping
+from publication_physical_io_v1 import PhysicalRootCustodyV1
 
 def _descriptor(root: Path, path: Path) -> dict[str, Any]:
-    payload = path.read_bytes()
-    return {"path": path.relative_to(root).as_posix(), "size_bytes": len(payload),
-            "sha256": hashlib.sha256(payload).hexdigest()}
+    with PhysicalRootCustodyV1.open(root, label="fixture identity descriptor") as custody:
+        descriptor, _ = custody.read_descriptor(path, label="fixture identity descriptor",
+            maximum=64 * 1024**2, capture=False)
+        custody.verify()
+    return descriptor
 
 
 def validate_fixture_identity_policy_component_v1(*, project_root: Path, accepted_dir: Path) -> dict[str, Any]:
     """Use the same physical registry and actual assessor as the whole identity reader."""
     import full_publication_identity_artifacts as identity
-    from publication_physical_io_v1 import PhysicalRootCustodyV1
     from publication_policy_qualification import CALIBRATION_MAPPING_FILENAME, CAPABILITY_MANIFEST_FILENAME, QUALIFICATION_RECEIPT_FILENAME
 
     binding = {"receipt": _descriptor(project_root, accepted_dir / QUALIFICATION_RECEIPT_FILENAME),
@@ -40,9 +42,16 @@ def check_fixture_measured_coverage_refusals_v1(*, accepted_dir: Path) -> list[d
     import publication_guardian_accepted_policy_preprocessing_contract_v1 as guardian
     from publication_policy_qualification import CALIBRATION_MAPPING_FILENAME, QUALIFICATION_RECEIPT_FILENAME
 
-    receipt = json.loads((accepted_dir / QUALIFICATION_RECEIPT_FILENAME).read_bytes())
+    with PhysicalRootCustodyV1.open(accepted_dir, label="fixture coverage inputs") as custody:
+        _, receipt_payload = custody.read_descriptor(accepted_dir / QUALIFICATION_RECEIPT_FILENAME,
+            label="fixture coverage receipt", maximum=64 * 1024**2, capture=True)
+        _, calibration_payload = custody.read_descriptor(accepted_dir / CALIBRATION_MAPPING_FILENAME,
+            label="fixture coverage calibration", maximum=64 * 1024**2, capture=True)
+        custody.verify()
+    receipt = json.loads(receipt_payload)
     original_coverage = receipt["coverage"]
-    original_calibration = json.loads((accepted_dir / CALIBRATION_MAPPING_FILENAME).read_bytes())
+    original_calibration = json.loads(calibration_payload)
+    del receipt_payload, calibration_payload
     mutations = []
     for field, count in original_coverage.items():
         for label, bad in (("boolean", True), ("numeric_string", str(count)), ("fraction", count + 0.5)):

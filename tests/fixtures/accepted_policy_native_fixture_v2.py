@@ -158,8 +158,7 @@ def _write_fixture_sidecar_table_v2(output, filename, columns, rows):
         facts["fsync_completed"] = True
     except BaseException as error:
         primary, facts["failure_stage"] = error, stage
-        if stage in ("write", "flush"):
-            facts["write_extent_unknown"] = True
+        # The sink alone interprets write returns; persistence flags are separate.
     finally:
         if stream is not None:
             facts["close_attempted"] = True
@@ -171,8 +170,6 @@ def _write_fixture_sidecar_table_v2(output, filename, columns, rows):
                     primary, facts["failure_stage"] = error, "close"
                 elif error is not primary:
                     secondary.append(error)
-                if not facts["flush_completed"]:
-                    facts["write_extent_unknown"] = True
     if primary is not None:
         raise _FixtureSidecarWriteErrorV2(facts, primary, secondary) from primary
     return facts

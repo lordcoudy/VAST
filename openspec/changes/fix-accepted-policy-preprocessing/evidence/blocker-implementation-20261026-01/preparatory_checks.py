@@ -64,6 +64,14 @@ ROSTER = {
         "tests.test_accepted_policy_fixture_sidecar_edges_v1",
         "tests.test_accepted_policy_fixture_binding_bounds_v1",
         "tests.test_accepted_policy_fixture_quantity_v1"],
+    "readers-red-01": ["tests.test_accepted_policy_fixture_reader_bounds_v1"],
+    "readers-green-01": ["tests.test_accepted_policy_fixture_reader_bounds_v1"],
+    "writefacts-red-01": ["tests.test_accepted_policy_fixture_sidecar_write_facts_v1"],
+    "writefacts-green-01": ["tests.test_accepted_policy_fixture_sidecar_write_facts_v1",
+        "tests.test_accepted_policy_fixture_sidecar_bounds_v1",
+        "tests.test_accepted_policy_fixture_sidecar_edges_v1",
+        "tests.test_accepted_policy_fixture_binding_bounds_v1",
+        "tests.test_accepted_policy_fixture_quantity_v1"],
 }
 
 
@@ -76,7 +84,7 @@ def main():
                 "final_ns": 5_000_000_000}
     output = Path(__file__).resolve().parent / ("prep-" + phase)
     temporary = Path("/var/tmp") / ("vast-pr9-b2-prep-" + phase)
-    if phase.startswith(("reports-", "quantity-", "bindings-", "sidecars-")):
+    if phase.startswith(("reports-", "quantity-", "bindings-", "sidecars-", "readers-", "writefacts-")):
         # Pure report tests need no native socket or executable filesystem.
         # Their deliberately oversized RED originals stay directly on C:.
         temporary = Path(__file__).resolve().parent / ("temporary-" + phase)
@@ -84,7 +92,7 @@ def main():
         raise ValueError("preparatory paths must be canonical and fresh; no retry")
     units, free, runtime = {}, {}, None
     paths = [("c", Path("/mnt/c")), ("temporary", temporary.parent)]
-    if phase.startswith(("compat-", "reports-", "quantity-", "bindings-", "sidecars-")):
+    if phase.startswith(("compat-", "reports-", "quantity-", "bindings-", "sidecars-", "readers-", "writefacts-")):
         paths.append(("e", Path("/mnt/e")))
     for label, path in paths:
         info = os.statvfs(path)
@@ -106,9 +114,13 @@ def main():
         allowance = 1409286144  # prior1280MiB plus the prospective64MiB sidecar tranche
     if phase in ("sidecars-edges-red-01", "sidecars-green-01"):
         allowance = 1426063360  # review-found failure cases add their own16MiB tranche
+    if phase.startswith("readers-"):
+        allowance = 1493172224  # prior1360MiB plus the prospective64MiB adapter tranche
+    if phase.startswith("writefacts-"):
+        allowance = 1526726656  # prior1424MiB plus the prospective32MiB fact-correction tranche
     if free["c"] < 42949672960 + allowance or free["temporary"] < 1073741824 + allowance:
         raise ValueError("preparatory physical floor is insufficient")
-    if phase.startswith(("compat-", "reports-", "quantity-", "bindings-", "sidecars-")):
+    if phase.startswith(("compat-", "reports-", "quantity-", "bindings-", "sidecars-", "readers-", "writefacts-")):
         # Payload scattering and all previously unbacked fixed ext4 metadata,
         # full guest swap and host bookkeeping have their own physical quote.
         # E also pays its entire64GiB pagefile maximum plus1GiB source forms.
@@ -133,7 +145,7 @@ def main():
     command = [sys.executable, "-B", "-m", "unittest", "-v", *ROSTER[phase]]
     facts, _, _ = _capture_owned_reader_v2(command=command, cwd=ROOT,
         outputs={key: output / (key + ".original") for key in ("stdout", "stderr")}, deadline=deadline)
-    expected = 1 if phase in ("red", "metadata-red", "reports-red-01", "quantity-red-01", "bindings-red-01", "sidecars-red-01", "sidecars-edges-red-01") else 0
+    expected = 1 if phase in ("red", "metadata-red", "reports-red-01", "quantity-red-01", "bindings-red-01", "sidecars-red-01", "sidecars-edges-red-01", "readers-red-01", "writefacts-red-01") else 0
     closed = (not facts["causes"] and facts["closure"]["closed"] and not facts["forced"]
               and facts["signal"] is None and facts["returncode"] == expected)
     for channel in ("stdout", "stderr"):
@@ -152,7 +164,7 @@ def main():
     complete = closed and not persistence["causes"] and persistence["written_bytes"] == len(raw) + 1 and not late
     status = _bounded_json_v2({"phase": phase, "capture_closed_with_expected_child_status": bool(closed),
         "child_returncode": facts["returncode"], "result": str(path), "result_persistence": persistence,
-        "deadline_exceeded": late, "red_output_review_required": phase in ("red", "metadata-red", "reports-red-01", "quantity-red-01", "bindings-red-01", "sidecars-red-01", "sidecars-edges-red-01")}, 2048)
+        "deadline_exceeded": late, "red_output_review_required": phase in ("red", "metadata-red", "reports-red-01", "quantity-red-01", "bindings-red-01", "sidecars-red-01", "sidecars-edges-red-01", "readers-red-01", "writefacts-red-01")}, 2048)
     if status is None:
         raise ValueError("fixed preparatory status exceeded its reviewed bound")
     print(status.decode("ascii"), flush=True)

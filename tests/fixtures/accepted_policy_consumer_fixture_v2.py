@@ -8,7 +8,6 @@ the selected project's actual implementation, without dependency overrides.
 from __future__ import annotations
 
 import copy
-import hashlib
 import json
 from pathlib import Path
 from typing import Any, Mapping
@@ -17,6 +16,7 @@ from checkpoint_gstreamer_analytics_sidecar import load_execution_config, load_m
 from publication_guardian_preprocessing_contract_v1 import load_guardian_preprocessing_contract_v1
 from publication_guardian_runtime_expectations_v1 import runtime_expectations_from_preprocessing_receipt_v1
 from publication_operational_request_domain_v1 import payload_with_sha256_v1
+from publication_physical_io_v1 import PhysicalRootCustodyV1
 from publication_qualification_operational_owner_v1 import write_operational_execution_binding_v1
 from publication_policy_qualification_execution_closure_v1 import (
     load_publication_policy_qualification_execution_closure_v1,
@@ -36,12 +36,22 @@ from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import run_fixt
 
 
 def _json(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_bytes())
+    with PhysicalRootCustodyV1.open(path.parent, label="fixture runtime probe") as custody:
+        _, payload = custody.read_descriptor(path, label="fixture runtime probe",
+            maximum=64 * 1024**2, capture=True)
+        custody.verify()
+    value = json.loads(payload)
+    if type(value) is not dict:
+        raise ValueError("fixture runtime probe requires a JSON object")
+    return value
 
 
-def _descriptor(root: Path, path: Path) -> dict[str, Any]:
-    payload = path.read_bytes()
-    return {"path": path.relative_to(root).as_posix(), "size_bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()}
+def _descriptor(root: Path, path: Path, *, maximum: int = 64 * 1024**2) -> dict[str, Any]:
+    with PhysicalRootCustodyV1.open(root, label="fixture operational descriptor") as custody:
+        descriptor, _ = custody.read_descriptor(path, label="fixture operational descriptor",
+            maximum=maximum, capture=False)
+        custody.verify()
+    return descriptor
 
 
 def _write_fixture_operational_binding_v2(
@@ -56,8 +66,8 @@ def _write_fixture_operational_binding_v2(
         decisions, ingress = directory / "publication_policy_decisions.jsonl", directory / "ingress_ledger.csv"
         outputs.append({"operation_id": row["operation_id"],
             **{name: dict(capture[name]) for name in ("native_domain", "process_receipt", "container_receipt")},
-            "measurement_decisions": {**_descriptor(root, decisions), "path": str(decisions)},
-            "accepted_ingress": {**_descriptor(root, ingress), "path": str(ingress)}})
+            "measurement_decisions": {**_descriptor(root, decisions, maximum=64 * 1024**2), "path": str(decisions)},
+            "accepted_ingress": {**_descriptor(root, ingress, maximum=1024**2), "path": str(ingress)}})
     accounting_path = output / "original-operational-binding.v1.json"
     write_operational_execution_binding_v1(
         project_root=root, binding_path=accounting_path,

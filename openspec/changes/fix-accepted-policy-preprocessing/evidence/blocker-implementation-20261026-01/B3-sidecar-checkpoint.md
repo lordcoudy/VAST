@@ -1,5 +1,10 @@
 # Fixed twelve-table bounds and persistence
 
+This checkpoint retains the original31-method result. Configured Grok later
+requested changes to composed write-extent facts; see B3-writefacts-checkpoint.md
+for that preserved finding, meaningful new RED and corrected36-method result.
+The earlier31PASS does not establish that missing behavior.
+
 NativeV2 now admits run64/arm68 safe-ASCII names before mkdir. The original
 twelve CSV names/columns/rows remain. Each table has a literal maximum row count,
 encoded row/file cap, supported scalar kinds and complete ASCII/CSV upper-bound

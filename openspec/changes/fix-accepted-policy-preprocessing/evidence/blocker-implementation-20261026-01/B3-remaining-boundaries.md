@@ -1,5 +1,9 @@
 # Independent remaining-boundary audit, before physical admission
 
+This is the original audit. Some duplicate consumer/assertion/companion reads
+have since been bounded; see B3-reader-checkpoint.md for exact scoped evidence.
+The other listed boundaries remain open; no complete B3/peak claim is implied.
+
 Independent provider/source review inspected the unchanged enclosing fixture
 callers at2fcb1478514d5fe90e916c60706484fdac6a8d41 while the fixed sidecar
 slice was being implemented. These findings are outstanding work, not claimed

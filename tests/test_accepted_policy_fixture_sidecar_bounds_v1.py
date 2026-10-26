@@ -226,7 +226,7 @@ class FixtureSidecarBoundsTests(unittest.TestCase):
         self.assertEqual(caught.exception.secondary, (secondary,))
         self.assertTrue(caught.exception.facts["close_attempted"])
         self.assertFalse(caught.exception.facts["close_completed"])
-        self.assertTrue(caught.exception.facts["write_extent_unknown"])
+        self.assertFalse(caught.exception.facts["write_extent_unknown"])
 
     def test_fsync_failure_and_close_failure_preserve_primary_and_secondary(self):
         primary, secondary = OSError("original fsync"), OSError("distinct close")
