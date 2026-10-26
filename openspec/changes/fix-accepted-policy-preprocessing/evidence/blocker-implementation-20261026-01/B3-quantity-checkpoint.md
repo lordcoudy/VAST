@@ -14,8 +14,8 @@ resume/D27 sources remain unchanged. Quantity limits are not file-byte limits.
 
 RED ran once against original nativea0a3c7.../physical109b0b...:8methods,
 2valid controls and10intended sentinel failures, no errors/skips,0.022s.
-Markers prevented all native allocation, candidate consumption and set
-materialization under test. The6371B source was copied BEFORE execution and
+Markers prevented all native allocation, candidate consumption and explicit
+set(...) construction under test. The6371B source was copied BEFORE execution and
 matches SHA256546af4ff73d86bbfccce707fc7d0ec58633eb0ac76430353c55054c27b2b998d.
 Independent primary/capacity reviews accepted the meaningful RED and capture.
 
@@ -45,7 +45,16 @@ E65GiB/pagefile/source caps remain. All actual mount/boot/config/memory/swap/
 USN/floor checks were renewed after the human interruption; none of the old
 admissions or test names was reused. No extra artifact/repack/retry is funded.
 
-Exact-commit independent review, configured Grok and new-head CI remain required.
+Exact source review at1864f207976f9e6079751021342fed1a5b52e23a is independently
+CLEAR, with the preceding explicit-set wording correction accepted. Configured
+Grok session01a179eb-48e0-7880-bf1b-59c9fdbfb315 exhausted its initial5turns
+without a verdict; that incomplete result remains retained. A one-turn same-
+session continuation returned CLEAR for this quantity slice. Both invocations
+reported actual modelgrok-4.6-build; no model/settings override was supplied.
+All six original prompt/result/stderr files are byte-exact in the accompanying
+ZIP/manifest, with local originals preserved. Hosted run40396327801 is pending
+at this checkpoint; it is not yet recorded as successful. New-head CI remains
+required after subsequent source changes.
 Byte/field caps, complete B3/task1.5, compiler/reader admission, real Docker,
 lifecycle, runtime renewal, genuine3840-first validation and final acceptance
 remain open. All46task/24check states remain and D27/Native57 stays parked.

@@ -30,6 +30,7 @@ from tests.fixtures.accepted_policy_native_rows_v2 import (
     branch_terminal_row, ingress_ledger_row, interval_row, native_event_row,
     native_frame_row, resource_event_row, stage_contract_row,
 )
+from tests.fixtures.accepted_policy_fixture_provenance_v1 import fixture_metadata_identity_v1
 
 
 MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2 = 985
@@ -77,10 +78,19 @@ def write_native_policy_fixture_cell_v2(
     if (type(samples_per_branch) is not int
             or not 1 <= samples_per_branch <= MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2):
         raise ValueError("native fixture completed sample count must be in 1..985")
+    if type(dropped_ingress) is not bool:
+        raise ValueError("native fixture dropped_ingress requires an exact Boolean")
     if resource not in RESOURCES or codec not in {"h264", "h265"}:
         raise ValueError("unsupported fixture coordinate")
     if topology_kind not in {"independent_processes", "shared_video_dag"}:
         raise ValueError("unsupported fixture topology")
+    # Both resources feed calibration; selected-resource labels also enter
+    # protocol messages and sidecars. Admit originals before any output exists.
+    for branch in ANALYTICS_BRANCHES:
+        for selected_resource in RESOURCES:
+            binding = capability["systems"][system]["branches"][branch][selected_resource]
+            for field in ("implementation_id", "terminal_detector", "terminal_backend"):
+                fixture_metadata_identity_v1(binding[field])
     output_dir.mkdir(parents=True, exist_ok=False)
     stem = f"fixture-{system}-{resource}-{codec}-{topology_kind}"
     run_id = run_id or stem + "-run"
