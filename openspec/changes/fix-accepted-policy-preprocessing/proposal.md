@@ -228,3 +228,21 @@ Independent peer and COMPLETED configured-Grok review of the exact FOUR-artifact
 The finite execution plan in `docs/pr9-repair-execution-plan.md` parks D27/Native57 delivery machinery and preserves every historical failure and open acceptance gate. Source inspection of the ordinary product path found unbounded worker log files and cleanup that can mistake Docker-client exit for container retirement. Correct the existing shared factory and both parity/guardian owners, including capability probes, without a new orchestrator or dependency. Preserve all scientific predicates, defaults, native/worker inputs and diagnostic schemas; renew the four affected runtimes.
 
 Two observation-only output readers per existing Docker client are the sole new thread allowance. They cannot issue inference, schedule frames, increase in-flight work or extend any request, phase or cleanup clock. The `finite-component-study` delta records this explicit narrow exception and preserves the complete existing budget/closure requirement and its scenarios. This grants no new finite-study attempt, Q1, campaign or image action.
+
+## Prospective bounded native-store remedy, 2026-10-26
+
+Within existing task1.5, review the design's B4 amendment for one fully reserved
+fixed96GiB disk directly on C:. Enclose both native Docker/containerd stores,
+BuildKit/temp/context/export/cache/log writers; retain original stores through
+read-only custody views and an offline verified copy. Keep the native daemon,
+socket, provider and B identities, existing C: worktree/branch/PR and protected
+images. Narrow service/mount guards must refuse fallback to original stores.
+
+The earlier conditional20GB outer subtotal has no complete retained derivation;
+rebuild the full external ledger before disk creation or cutover. This is a
+prospective implementation detail of the existing capacity/preservation
+requirements, not new qualification or a reopened storage rehearsal. No delta
+requirement/scenario, task identity or checked state changes. Independent review,
+required planning checks and recorded delegated amendment approval precede
+dependent operator/builder implementation; physical allocation and fresh P0/
+qualification still require their separate complete admissions.

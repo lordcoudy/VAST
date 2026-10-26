@@ -241,6 +241,16 @@ inventing sharing credits. If the inequality cannot be proved, record the exact
 unpriced term or shortfall and review a finite remedy; no lower floor, image
 deletion/offload or withdrawn storage rehearsal is implied.
 
+The prospective design amendment dated2026-10-26 selects one fixed96GiB direct-C
+native-store boundary with offline copied Docker/containerd roots, preserved
+original/read-only custody and fail-closed service/mount guards. It encloses
+image/snapshot/cache/temp/context/export/log writers while preserving native
+engine/provider/B identities. Review/approve that amendment before its operator
+or builder changes. Rebuild the external ledger: the old conditional20GB subtotal
+lacks complete retained derivation. Disk creation/cutover remains held until the
+complete physical inequality and separate operation recipe are accepted; no
+allocation, source qualification or task completion follows from selecting S.
+
 ### B5. Execute only separately admitted provider/component work
 
 After B1/B4 review and the required source checks, obtain a fresh finite admission

@@ -686,3 +686,18 @@ dependencies, source slices, verification and stop conditions for existing work:
 
 No new task, checkmark, execution admission, prerequisite waiver, altered pin or
 limit, provider fallback, D27/Native57 resumption, archive or merge is asserted.
+
+## Prospective B4 fixed-store substeps within task1.5, 2026-10-26
+
+Preserve all46task rows/24checked states. Independently review the design's
+fixed96GiB direct-C native-store remedy, pass required planning checks and record
+delegated amendment approval before operator/unit/builder changes. Rebuild the
+external ledger rather than promote the underived conditional20GB subtotal.
+Before disk creation accept the complete physical peak; then review/admit the
+single exact create/attach/format/offline-copy/mount activation roster, bounded
+originals and one deadline. Refuse foreign/existing/ambiguous devices, incomplete
+copies, mount drift or service startup fallback; preserve original/read-only
+stores, B IDs and every failed form. No deletion/offload, alternate daemon/provider,
+cap growth, live detach/fill experiment or consumed replay is authorized. After
+literal-source tests/reviews/CI and independently checked actual cutover facts,
+renew P0/qualification for new storage identities before dependent operations.

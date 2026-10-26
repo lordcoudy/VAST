@@ -952,3 +952,122 @@ reader within the already-required genuine cohorts, without a duplicate full
 cohort for capture qualification. Only complete current evidence/reviews/checks
 and applicable delegated approval can release dependent controller verification;
 planning approval and free-space observations alone release nothing.
+
+## B4 fixed native-store boundary amendment, 2026-10-26 (prospective)
+
+**Reason and scope.** B1 reconciled the pinned provider accounting without an
+identity change; B2 source integration is at `d78b7b18`. Read-only native inventory
+found257 nodes and85,675,469 apparent regular-file bytes across Docker/containerd,
+with no hardlink groups or xattrs observed. This is sizing evidence, not a coherent
+offline-copy manifest. The old20,037,997,204-byte outer subtotal lacks its complete
+retained derivation and remains unadmitted. Neither runtime flags nor BuildKit GC
+establish an aggregate image/cache/VHD allocation ceiling.
+
+Select ONE new fixed-size96GiB native-store disk, exposed capacity
+**103,079,215,104 B**, directly backed by a fresh dense fixed VHD on physical C:.
+Use the exact prospective path
+`C:/Users/s-a-balashov/AppData/Local/VAST/pr9/bounded-native-20261026.vhd` and
+Linux mount `/var/lib/vast-pr9-bounded`. This is a new simple storage boundary,
+not resumption of withdrawn D9 rehearsal or parked D27/Native57 machinery.
+Do not create a loop file inside Ubuntu's growing VHD, a sparse/dynamic/differencing
+disk, an alternate daemon/provider, or a new worktree. The fixed filesystem
+contains its own allocation metadata/journal and all retained failed build state;
+no assumed cleanup, deduplication, compression or cache-GC credit reduces its cap.
+The96GiB value is an enforced safety ceiling, not evidence that all A/B builds
+will fit or succeed. Before admitting the roster, compare authenticated base
+objects and bounded build forms against usable filesystem capacity; an unproved
+fit remains HOLD. Exhaustion is a failed operation, never a successful peak test.
+
+**Allocation admission remains separate.** Before even the first directory/disk
+allocation, independently accept the complete chain ledger against fresh Windows
+physical and Linux backing observations. Charge the full96GiB exposed capacity,
+verified VHD footer/host allocation rounded at the actual NTFS unit, a separately
+bounded host metadata/control allowance, every external artifact/copy/Git/check
+form, and actual VM/swap backing liabilities. C: must remain >=42,949,672,960 B;
+all other filesystem thresholds also apply. The old conditional20GB figure is
+not an accepted external term. Unknown external bounds hold disk creation. Seal
+the exact byte ceiling, inode/format settings, file path, operation roster and
+absolute setup deadline before use; no auto-growth, extra disk or cap increase
+after exhaustion is admitted by this amendment.
+
+**New disk identity.** Use supported Windows fixed-VHD creation and WSL bare-disk
+attachment, retaining their actual statuses and verifying physical allocation,
+canonical path, single file identity, exact capacity and absence of sparse,
+compressed, reparse or parent/differencing behavior. Before formatting, join the
+sole newly attached Linux device to that exact newly created VHD using retained
+before/after device inventories and Windows disk identity; any ambiguous match,
+existing filesystem/partition/mount or unexpected device refuses formatting.
+Never infer `/dev/sdX` from ordering or touch Ubuntu/Desktop VHDs. Bind the new
+filesystem UUID/device/format to every later activation check.
+
+**Coherent retained-store copy.** First establish all native namespaces and tasks,
+the exact stopped B1-B3 IDs/restart policies, and the native roots/configuration.
+Stop socket activation and both services only after proving no live tasks and no
+store submount users. Keep the original stores local and intact, with independently
+accessible read-only custody views. Copy both trees offline with ownership, modes,
+mtime, sparse extents, hardlinks, symlinks, ACLs and overlay xattrs preserved.
+Compare complete bounded original/copy content-and-metadata manifests before
+activation, with changed inode/device facts explicitly identified. A failed copy
+or equality check retains every remnant and leaves services stopped; no automatic
+rollback/start against original stores is allowed.
+
+Use distinct directories on that disk for Docker and containerd, bind-mounted at
+the existing `/var/lib/docker` and `/var/lib/containerd`. Preserve the installed
+Docker29.7.2/containerd2.3.3 executables, native daemon ID
+`1e493309-3767-45fb-9078-05b838bdfd80`, fixed `/run/docker.sock`, provider identities
+and stopped B IDs. The Desktop engine/alias/store remain distinct and unchanged.
+This copy retains original bytes and creates no cleanup/offload capacity credit.
+No image deletion/offload is included; exact additional human authorization still
+precedes either action on any protected image.
+
+**Fail-closed activation.** Add narrowly scoped systemd mount dependencies and
+startup guards for both services and socket activation. Require both exact bind
+sources on the sealed filesystem UUID, root-owned canonical paths and the bounded
+disk identity/capacity before a service can start. Couple service lifetime to the
+mounts and refuse startup on absence, replacement or drift. Plain directory
+existence, `Restart=always`, matching engine ID alone or falling through to hidden
+original trees is insufficient. Review the literal guard/unit changes before
+installation. Preserve engine ID/socket, provider pins, installed Docker/
+containerd/runtime identities and driver/cgroup/security configuration; allow
+only the reviewed mount/storage, temp/log/environment and crash-limit settings.
+Mount-loss
+testing must first establish stopped/owned service state; no live detach rehearsal
+or destructive fill/crash experiment follows from this amendment.
+
+**Every selected writer.** Put Docker/containerd content, snapshots and metadata,
+BuildKit state, daemon temporary directories, build contexts, import/export
+archives/staging, build client configuration/cache and daemon/build logs on the
+bounded filesystem. The four existing builders must receive an explicit checked
+context/export root rather than silently use their current `/tmp` paths. Keep
+source in the same C: worktree. Any control/runtime tmpfs, VM swap, result/proof,
+outside journal, source/Git or evidence copy receives its own finite external
+ledger term. A fixed Docker `data-root` alone does not enclose containerd data.
+No pull/network/base substitution is added. Stop at first failure; if the store
+is full, capture bounded causes externally and retain partial state inside it.
+Explicitly close crash writers too: Linux CORE0 does not suppress a piped core
+handler. Preserve D15's qualified CORE1/filter policy; require the build RUN
+processes and both daemons to inherit reviewed immutable CORE1 hard/soft limits
+(and applicable filter controls), with actual runtime checks before compilation/
+imports. If that cannot be established, price the actual crash-handler outputs
+outside the disk or hold. No build/container/daemon crash is triggered to test it.
+The reviewed service changes must name and bound their environment/temp/log
+destinations; merely retaining the daemon's old environment is insufficient.
+
+**Verification and release.** Before physical use, require meaningful portable
+refusal tests for pre-existing/foreign/ambiguous targets, wrong capacity/UUID,
+incomplete manifests, missing/wrong mounts, source drift, failure causes and
+startup fallback; static unit verification; exact-source independent/Grok review
+and configured CI. No tests format real disks or fill/detach the live store.
+After a separately admitted one-time operation, independently compare both store
+manifests, original/read-only custody, engine/provider/B identities and actual
+physical backing. New mount/device/inode epochs require fresh P0/component and
+reader admission facts; never normalize them to historical evidence. No disk
+setup, copy, mount, service change, task completion or physical acceptance is
+performed by this planning amendment.
+
+The design uses [Windows fixed-VHD allocation](https://learn.microsoft.com/en-us/windows/dev-drive/)
+and [WSL disk attachment](https://learn.microsoft.com/en-us/windows/wsl/wsl2-mount-disk).
+Docker documents [separate Docker/containerd data roots](https://docs.docker.com/engine/daemon/);
+[systemd dependencies](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html)
+provide startup/lifetime mechanisms. The custody, capacity and fail-closed checks
+above are this repair's design, not outcomes guaranteed by those documents.
