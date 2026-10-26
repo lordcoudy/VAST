@@ -38,23 +38,40 @@ latter.
 
 ## Finite work sequence
 
-1. Map the unchecked product tasks to existing implementation and tests. Verify
-   focused behavior first; fix demonstrated product failures. Start with measured
-   coverage at 3,840, 3,968, an uneven total and 126,016, strict types/coordinates,
-   calibration agreement and refusal before writes. These bounded fixtures do
-   not establish genuine pilot replay.
-2. Exercise the smallest complete authority-v2 default assessor/materializer/
-   independent cold-reader path, with original dependencies and no validation
-   substitutions. Follow failures to the production boundary. Reuse existing
-   builders and entrypoints rather than creating another test framework.
-3. Verify shared leaves, default identities, legacy/refusal behavior and actual
-   packaged import closure. Measure real capacity before allocations, then renew
-   affected runtime images, refreeze, parity and pins through existing commands.
-4. Complete the genuine 3,840/3,968/126,016 consumers and 29/20/42 refusal cohorts,
-   required regression/physical checks, conformance and exact-head independent
-   final review. Only actual success can close tasks or permit merge.
-5. Keep fresh Q1, Q4/capacity and the full 5,600-arm campaign separate from repair
-   acceptance, as already required. Do not launch them on partial repair evidence.
+The human's 2026-10-26 milestone is one complete, freshly validated 3,840-sample
+default path. The following order supersedes the earlier work sequence while
+preserving its acceptance criteria and all historical results.
+
+1. Close task 1.5 and execution admissions before dependent allocations. Qualify
+   the whole renewal/check/consumer peak, including compiler temporaries and
+   outputs, conditional metadata, image/layer/cache/VHD growth, retained failures,
+   originals and copies. Preserve the C: 40 GiB floor and applicable filesystem
+   thresholds. Complete the required compiler and standalone-reader admissions.
+2. Validate the approved controller against real Docker with small CPU/GPU
+   probes bound to receipt-backed candidate images. Verify bounded output,
+   original-CID ownership, client/backend/reader retirement and absence of owned
+   leftovers. Scope each result to the command and input that actually ran.
+3. Reproduce the concurrent cold-reader lifecycle-publication failure
+   deterministically. Review any necessary design amendment before implementing
+   atomic complete publication with unchanged directory custody and collision
+   refusal. Require meaningful RED/GREEN, independent review, the configured
+   Grok opinion and exact-head CI for the resulting source correction.
+4. Once source settles, renew all four runtimes with A/B builds. Verify packaged
+   imports and default reader closure under each actual Python version, refreeze,
+   complete parity's 480/32 checks and the independent tensor audit, then apply only
+   reviewed identity-pin replacements.
+5. Run the genuine default assessor -> materializer -> independent cold reader
+   at 3,840 first. Then complete 3,968, a separately promoted 126,016, genuine 29
+   underfill and sealed 20/42 refusal cohorts. Preserve all 32 calibration cells,
+   128 branch minima, exact totals, reference equivalence and refusal-before-write
+   predicates. Portable or substituted boundaries do not close these gates.
+6. Complete all nine physical integrations, regression checks and scenario
+   conformance. Disclose the absent dedicated conformance CI without redesigning
+   CI. Sync/archive in this same PR9, obtain independent final reviews including
+   configured Grok, latest-head CI and delegated AGENT approval, then merge.
+
+Fresh Q1, Q4 and the full 5,600-arm/2,800-pair campaign follow repair acceptance
+separately. D27/Native57 remains parked. Keep this C: worktree, branch and PR.
 
 Every next action must either change required product behavior, test such
 behavior, or resolve a concrete prerequisite for the next real execution. If a
