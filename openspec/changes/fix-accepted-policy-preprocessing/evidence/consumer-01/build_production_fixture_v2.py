@@ -77,8 +77,14 @@ def _git(root: Path, *args: str) -> bytes:
 
 
 def _fresh_json(path: Path, value: object) -> None:
+    from tests.fixtures.accepted_policy_fixture_report_v1 import REPORT_LIMIT, fixture_report_bytes_v1
+
+    # Preserve the original text writer's native final newline, including its
+    # extra byte on Windows, within the complete physical report ceiling.
+    raw = fixture_report_bytes_v1(value, limit=REPORT_LIMIT - (len(os.linesep) - 1))
     with path.open("x", encoding="ascii") as stream:
-        stream.write(json.dumps(value, sort_keys=True, separators=(",", ":"), default=str) + "\n")
+        if stream.write(raw.decode("ascii")) != len(raw):
+            raise OSError("fixture report short write")
 
 
 def main() -> None:

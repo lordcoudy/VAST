@@ -23,6 +23,7 @@ from publication_policy_qualification_execution_closure_v1 import (
     materialize_publication_policy_qualification_execution_closure_v1,
 )
 from tests.fixtures.accepted_policy_fixture_provenance_v1 import loaded_fixture_production_sources_v1
+from tests.fixtures.accepted_policy_fixture_report_v1 import CONSUMER_LIMIT, fixture_report_bytes_v1
 from tests.fixtures.accepted_policy_consumer_assertions_v1 import (
     check_fixture_measured_coverage_refusals_v1,
     run_approved_guardian_snapshot_red_v1,
@@ -208,7 +209,7 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
     )
     identity_policy = validate_fixture_identity_policy_component_v1(project_root=root, accepted_dir=accepted_dir)
     refusals = check_fixture_measured_coverage_refusals_v1(accepted_dir=accepted_dir)
-    return {"campaign_authority": False, "physical_inference_observed": False, "finalized_cell_count": len(finalized),
+    result = {"campaign_authority": False, "physical_inference_observed": False, "finalized_cell_count": len(finalized),
             "journals": journals["operational_group"], "lifecycle": lifecycle["lifecycle_descriptor"], "execution_closure": str(closure["receipt_path"]),
             "completed_index": str(index_path), "assessment": assessment, "promotion": promoted, "guardian": guardian,
             "standalone_guardian_cold_reader_passed": True,
@@ -218,3 +219,5 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
             "genuine_cpu_gpu_stock_sample_equality": stock_equality,
             "dropped_gpu_qualification_cell_count": native["dropped_gpu_qualification_cell_count"],
             "loaded_production_sources": loaded_fixture_production_sources_v1(project_root=root)}
+    fixture_report_bytes_v1(result, limit=CONSUMER_LIMIT)
+    return result
