@@ -38,3 +38,9 @@ afcfeac3f8972ab44a35034e76976da5422fded514ac9d0d64e70f742a8d1fe3,
 artifact12647802119 ofrun40313370100. No physical or task acceptance follows.
 The compatibility remedy is a separate prospective amendment; no historical pin,
 protected method, old C/D source or qualification receipt has been changed.
+
+All six RED/GREEN capture members are also preserved byte-for-byte in
+`B3-metadata-capture-originals.zip`, with its size/SHA256 member manifest. RED
+stderr has a natural trailing space on unittest's subtest progress line. Its
+unchanged raw local file is kept; the archive is the current Git representation
+so validation need not normalize an original or weaken whitespace rules.

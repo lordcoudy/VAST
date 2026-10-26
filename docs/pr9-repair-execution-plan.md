@@ -181,6 +181,16 @@ established Ubuntu `.venv/bin/python -B -m unittest` with
 `tests.test_accepted_policy_fixture_transport_v2` and
 `tests.test_accepted_policy_fixture_probe_binding_v2`, as each slice requires.
 
+CI atd78b7b18 exposed the compiler-v1 full-source formatter contract. The
+prospective compatibility amendment preserves that exact actual executor and
+keeps the custody constructor bounded, adding only a shared upstream admission
+gate for preflight/handoff. This explicitly permits narrowly repeated checks;
+V1 revalidation, execution, results and errors remain unchanged. Review/approve
+the amendment before dependent changes. Keep historical pins/protected tests and
+C/D/D27 sources exact, and require the nine regressions/current coverage to pass.
+The gate's separate source/whole-chain binding cannot be presented as physical
+qualification by the existing C/D executor route.
+
 ### B3. Close metadata and enclosing reader output bounds
 
 For tasks 1.5/2.12, inventory each selected writer and every retained form before

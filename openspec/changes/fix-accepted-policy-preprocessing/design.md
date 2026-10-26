@@ -1071,3 +1071,69 @@ Docker documents [separate Docker/containerd data roots](https://docs.docker.com
 [systemd dependencies](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html)
 provide startup/lifetime mechanisms. The custody, capacity and fail-closed checks
 above are this repair's design, not outcomes guaranteed by those documents.
+
+## B2 frozen-executor compatibility amendment, 2026-10-26 (prospective)
+
+CI40313370100 at `d78b7b18` ran the full suite and retained6errors/3failures.
+Their common dependency is the full source identity of
+`tests/fixtures/accepted_policy_fixture_compiler_v1.py`, not the custody
+constructor. D25/D26/D27 formatter metadata and resume source-slot2 pin that
+executor to103,925B, SHA256
+`1e40d4786fd03543ac43df7fe0e42a4349d55bad9288ead28f5d2a6ad87bcb03`, Git blob
+`b15741dd81851d29d481734d8d6cc79f19f732db`. Preserve those failures and contracts.
+Restoring the custody constructor would neither fix the pins nor preserve its
+new pre-allocation behavior.
+
+Restore that exact compiler-v1 blob at its existing path. It remains the actual
+compiler owner, public usable-output entrypoint and final acceptance authority.
+Keep the bounded custody constructor and both current outer entrypoints. Add
+only `tests/fixtures/accepted_policy_fixture_compiler_admission_v1.py` as a small
+upstream preparation gate. It owns no compiler process, Docker request,
+publication or cleanup lifecycle and selects no alternate executor/provider.
+Reuse the unchanged executor's bounded source/descriptor utilities where useful.
+
+**Narrow sharing exception.** The frozen executor cannot be refactored in place
+without invalidating historical evidence. Permit the new gate to repeat its
+reviewed authority/source/runtime/floor checks: ONE new implementation serves
+both prospective preflight and actual compile handoff. This is the sole exception
+to B2's earlier request to extract checks directly from the executor. The frozen
+executor always repeats every original check itself; no current gate result,
+exception, cache or approval substitutes for that validation.
+
+Prospective preflight authenticates the exact source bytes still in RAM against
+the sealed source descriptor before directories/sockets/source writes. The
+separate handoff authenticates the actual written source using bounded reads,
+rechecks qualification/admission expiry, boot/runtime identities, physical floors
+and original remaining containment time, then calls the unchanged public V1
+`compile_fixture_engine_v1` exactly once. Forward the original descriptor objects,
+paths and already sealed absolute deadline unchanged. Return its actual result
+or exception unchanged, including `.facts` and ordered causes. No private
+component call, synthetic acceptance, fallback, rebinding or aliasing under a
+different authenticated module identity is allowed.
+
+`host_sha256` continues identifying the restored executor file; helper checks in
+the new gate must read `executor.__file__`, not the gate's own `__file__`.
+Publisher/profile bindings and V1's closed descriptor schema remain unchanged.
+Bind the new gate, constructor and both callers separately in the existing
+current-source inventory and reviewed whole-chain/source-plan authority BEFORE
+their module parsing. Their source/working/Git/intermediate/copy forms are new
+additive liabilities. No self-reported hash establishes independent approval.
+
+The existing C/D route imports, hashes and runs compiler V1, so it continues to
+name the code that actually owns compilation. It does not physically qualify the
+new upstream gate. Physical qualification is STILL incomplete: fresh boot/P0,
+packet, provider, capture, completion and prospective admission gates remain.
+Restored compatibility grants no consumed-stage replay or renewed old authority.
+
+Before implementation, obtain exact-commit independent/configured-Grok amendment
+review, required planning checks and recorded delegated approval. Then retain
+invalid-authority/source/expiry no-output coverage at all three current
+entrypoints, exact one-deadline handoff, unchanged result/error propagation and
+current-gate source integrity checks. Run the nine failing historical regressions
+unchanged and the applicable current controlled coverage under a newly reviewed
+finite allowance. Preserve all historical pins, retained fixtures, protected
+method ASTs, budgets and C/D/resume/D27 sources. Required current-head CI and
+independent/Grok source reviews must pass before physical use. This amendment
+changes no consumer predicate, receipt schema, delta requirement/scenario, task
+identity or checked state; it does not reopen D27/Native57 or introduce another
+compiler framework.

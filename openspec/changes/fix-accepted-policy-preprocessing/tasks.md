@@ -701,3 +701,18 @@ stores, B IDs and every failed form. No deletion/offload, alternate daemon/provi
 cap growth, live detach/fill experiment or consumed replay is authorized. After
 literal-source tests/reviews/CI and independently checked actual cutover facts,
 renew P0/qualification for new storage identities before dependent operations.
+
+## Prospective B2 frozen-executor compatibility substeps, 2026-10-26
+
+Within existing1.5/2.10, preserve the failed B2CI original ZIP/statuses and review
+the design's thin-admission-layer exception before implementation. Restore exact
+compiler-v1 blob b15741dd81851d29d481734d8d6cc79f19f732db; retain the bounded
+constructor. Add only the new shared preparation gate plus direct public-V1
+handoff, with actual-source/TTL/boot/floor/deadline rechecks and unchanged
+result/error/facts propagation. Keep V1 owner/publisher/profile bindings truthful;
+authenticate the gate/callers separately before parsing and price their forms.
+Independently review its finite current/historical regression roster before local
+tests; require all nine CI failures to pass without changing protected pins,
+fixtures, method ASTs or budgets. Current-source Grok/independent review/CI and
+fresh actual qualification/admissions remain required. No row/checkmark, C/D
+replay, physical use, D27/Native57 resumption or archive/merge is authorized here.

@@ -246,3 +246,19 @@ requirement/scenario, task identity or checked state changes. Independent review
 required planning checks and recorded delegated amendment approval precede
 dependent operator/builder implementation; physical allocation and fresh P0/
 qualification still require their separate complete admissions.
+
+## Prospective frozen-executor compatibility, 2026-10-26
+
+Retained B2CI6errors/3failures identify immutable compiler-v1 formatter bytes.
+Keep the bounded custody constructor; restore the exact103,925B compiler-v1
+executor and add only a small current preparation-admission gate. Explicitly
+permit that gate's narrow duplication of frozen checks, shared between its
+prospective and actual-source handoff paths. Always delegate execution and final
+acceptance to unchanged V1 with exact original arguments/results/exceptions.
+Existing C/D continues binding the actual executor; the new gate needs separate
+source/whole-chain authority and earns no physical qualification from that route.
+
+Preserve historical pins/protected tests/attempts and all46/24task states. Review
+and approve this amendment before dependent gate/import/test changes; require
+the unchanged nine regressions and current source coverage/CI/reviews afterward.
+No new executor, proof relabeling, schema change or parked machinery is added.
