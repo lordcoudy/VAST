@@ -1125,8 +1125,8 @@ under the enclosing admission; a physical byte ceiling does not prove heap or
 deadline fit. Keep partial files and primary/distinct cleanup/persistence causes.
 
 Preserve the existing memory24GiB/swap6GiB and unrelated configuration settings.
-An enabled `debugConsoleLogFile` must route to the same verified volume or a
-separately admitted finite boundary; prove it disabled otherwise. WSL host tracing,
+An enabled `debugConsoleLogFile` must route to the same verified diagnostic
+volume; prove it disabled otherwise. WSL host tracing,
 swap/pagefile and other host metadata remain explicit separate ledger terms.
 Do not treat crash collection errors as workload termination: WSL can continue.
 The selected owners must be guarded against config/volume/boot drift and must

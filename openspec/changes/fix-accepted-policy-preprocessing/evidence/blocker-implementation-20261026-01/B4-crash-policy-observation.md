@@ -2,7 +2,8 @@
 
 Tool return8749cd and exact submitted probe source are retained separately.
 The probe only reads bounded kernel/process metadata; it launches no container,
-crash, compiler, build, service change or storage allocation. Output<=4096B;
+crash, compiler, build, service change or storage allocation. JSON<=4096B plus
+the printed LF, hence stdout<=4097B;
 process scan<=8192entries, at most4name matches. These are claimed process names,
 not socket/service/executable-identity or bootstrap qualification. Raw proc-file
 bytes were parsed by the probe and are not claimed separately captured originals.
