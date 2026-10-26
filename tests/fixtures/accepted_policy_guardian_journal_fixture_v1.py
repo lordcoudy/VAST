@@ -7,16 +7,95 @@ not physical inference or publication-campaign evidence.
 """
 from __future__ import annotations
 
-import json
+import os
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from publication_guardian_operational_recorder_v1 import GuardianOperationalRecorder
-from publication_operational_request_domain_v1 import canonical_json_v1, iter_native_domain_v1
+from publication_operational_request_domain_v1 import (
+    MAX_NATIVE_DOMAIN_BYTES_V1, MAX_NATIVE_HEADER_BYTES_V1,
+    _identity as _native_file_identity, _physical_file as _native_physical_file,
+    canonical_json_v1, iter_native_domain_v1, strict_json_object_v1, validate_descriptor_v1,
+)
 from publication_operational_request_reconciliation_v1 import _identity
 from publication_physical_io_v1 import PhysicalRootCustodyV1
 from publication_policy_contract import bind_native_decision_evidence, validate_decision_record
 from publication_policy_projection_v1 import project_accepted_decision_v1, reconstruct_original_decision_v1
+
+
+class _FixtureJournalIoErrorV1(ValueError):
+    def __init__(self, primary, secondary):
+        super().__init__("fixture journal I/O failed; distinct causes retained")
+        self.primary, self.secondary = primary, tuple(secondary)
+
+
+def _raise_fixture_journal_error_v1(primary, secondary):
+    if primary is None:
+        return
+    if isinstance(primary, _FixtureJournalIoErrorV1):
+        secondary = [*primary.secondary, *secondary]
+        primary = primary.primary
+    distinct = []
+    for error in secondary:
+        if error is not primary and not any(error is previous for previous in distinct):
+            distinct.append(error)
+    if distinct:
+        raise _FixtureJournalIoErrorV1(primary, distinct) from primary
+    raise primary
+
+
+def _read_fixture_native_header_v1(path, descriptor):
+    """Read only the bounded original header; the existing iterator owns replay."""
+    validate_descriptor_v1(descriptor)
+    if path.absolute() != Path(descriptor["path"]).absolute():
+        raise ValueError("fixture native header descriptor path mismatch")
+    custody, stream, fd = None, None, -1
+    primary, secondary, header = None, [], None
+    try:
+        custody = PhysicalRootCustodyV1.open(path.parent, label="fixture native header")
+        before = _native_physical_file(path)
+        if not 0 < before.st_size <= MAX_NATIVE_DOMAIN_BYTES_V1 or before.st_size != descriptor["size_bytes"]:
+            raise ValueError("fixture native header file size mismatch")
+        _, physical_identity = custody.stat_regular_identity(path, label="fixture native header")
+        if physical_identity != (before.st_dev, before.st_ino):
+            raise ValueError("fixture native header custody identity changed")
+        fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+                     | getattr(os, "O_NONBLOCK", 0) | getattr(os, "O_CLOEXEC", 0)
+                     | getattr(os, "O_BINARY", 0))
+        if _native_file_identity(before) != _native_file_identity(os.fstat(fd)):
+            raise ValueError("fixture native header identity changed before read")
+        # Keep raw ownership even if buffered-wrapper construction fails.
+        stream = os.fdopen(fd, "rb", buffering=MAX_NATIVE_HEADER_BYTES_V1, closefd=False)
+        line = stream.readline(MAX_NATIVE_HEADER_BYTES_V1 + 1)
+        if not line or len(line) > MAX_NATIVE_HEADER_BYTES_V1 or not line.endswith(b"\n"):
+            raise ValueError("fixture native header is oversized or truncated")
+        header = strict_json_object_v1(line, max_bytes=MAX_NATIVE_HEADER_BYTES_V1)
+        if canonical_json_v1(header) + b"\n" != line:
+            raise ValueError("fixture native header is not canonical JSONL")
+        if (_native_file_identity(before) != _native_file_identity(os.fstat(stream.fileno()))
+                or _native_file_identity(before) != _native_file_identity(_native_physical_file(path))):
+            raise ValueError("fixture native header identity changed during read")
+        custody.verify()
+    except BaseException as error:
+        primary = error
+    finally:
+        closures = []
+        if stream is not None:
+            closures.append(stream.close)
+        if fd >= 0:
+            closures.append(lambda: os.close(fd))
+        if custody is not None:
+            closures.append(custody.close)
+        for close in closures:
+            try:
+                close()
+            except BaseException as error:
+                if primary is None:
+                    primary = error
+                else:
+                    secondary.append(error)
+    _raise_fixture_journal_error_v1(primary, secondary)
+    return header
 
 
 def write_fixture_guardian_operational_journals_v1(
@@ -50,12 +129,12 @@ def write_fixture_guardian_operational_journals_v1(
             raise ValueError("fixture original capability binding drifted")
 
     recorder = GuardianOperationalRecorder(output_dir, headers)
+    primary, secondary = None, []
     try:
         for domain in native_domains:
             descriptor = domain["descriptor"]
             path = Path(descriptor["path"])
-            with path.open("rb") as stream:
-                native_header = json.loads(stream.readline())
+            native_header = _read_fixture_native_header_v1(path, descriptor)
             route_connections: dict[str, int] = {}
             local_sequences: dict[str, int] = {}
             count = measured = 0
@@ -97,8 +176,17 @@ def write_fixture_guardian_operational_journals_v1(
         counters = {"requests_started": total, "requests_completed": total, "requests_failed": 0,
                     "connections_accepted": connections, "requests_by_worker": request_counts}
         descriptor = recorder.finish(counters)
+    except BaseException as error:
+        primary = error
     finally:
-        recorder.close()
+        try:
+            recorder.close()
+        except BaseException as error:
+            if primary is None:
+                primary = error
+            else:
+                secondary.append(error)
+    _raise_fixture_journal_error_v1(primary, secondary)
     companion = Path(descriptor["path"])
     with PhysicalRootCustodyV1.open(companion.parent, label="fixture guardian companion") as custody:
         observed, _ = custody.read_descriptor(companion, label="fixture guardian companion",
