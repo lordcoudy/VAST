@@ -255,6 +255,13 @@ executor and add only a small current preparation-admission gate. Explicitly
 permit that gate's narrow duplication of frozen checks, shared between its
 prospective and actual-source handoff paths. Always delegate execution and final
 acceptance to unchanged V1 with exact original arguments/results/exceptions.
+Move all preflight/inter-allocation clock calls to that gate and replace the
+constructor's direct compile call with its sole handoff; add no V1 exports.
+Retarget only current controlled doubles/test seams. Keep C/D's original private
+component route on restored V1 outside the usable gate; a missing frozen symbol
+holds for review rather than changing C/D or the blob. Require written-source
+drift refusal before public entry, actual executor-file hash binding, exactly one
+owner call and identical result/error/facts/causes with no preflight allocations.
 Existing C/D continues binding the actual executor; the new gate needs separate
 source/whole-chain authority and earns no physical qualification from that route.
 

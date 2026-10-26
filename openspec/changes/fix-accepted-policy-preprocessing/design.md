@@ -1100,6 +1100,18 @@ to B2's earlier request to extract checks directly from the executor. The frozen
 executor always repeats every original check itself; no current gate result,
 exception, cache or approval substitutes for that validation.
 
+Move prospective preflight and all inter-allocation deadline checks used by the
+constructor and both outer entrypoints to this one new gate. Replace the
+constructor's direct public compiler call with the gate's written-source handoff;
+do not retain both calls. Reuse only bounded utilities already defined in the
+frozen blob. Repeat any missing authority/source/runtime/floor/clock checks in
+the gate; add no exports or edits to compiler V1. Retarget the controlled compiler
+double and current preflight/clock test seams to this gate. C/D's preserved
+`_compile_fixture_component_v1` call stays on restored V1 outside the usable-output
+gate. The gate never invokes that call, `_compile_fixture_owned_v1`, or another
+private compile body. If an unchanged C/D symbol is absent from the restored blob,
+hold for another reviewed amendment; do not modify C/D/resume/D27 or expand V1.
+
 Prospective preflight authenticates the exact source bytes still in RAM against
 the sealed source descriptor before directories/sockets/source writes. The
 separate handoff authenticates the actual written source using bounded reads,
@@ -1129,7 +1141,13 @@ Before implementation, obtain exact-commit independent/configured-Grok amendment
 review, required planning checks and recorded delegated approval. Then retain
 invalid-authority/source/expiry no-output coverage at all three current
 entrypoints, exact one-deadline handoff, unchanged result/error propagation and
-current-gate source integrity checks. Run the nine failing historical regressions
+current-gate source integrity checks. Specifically test that a successful RAM-source preflight followed by
+written-file drift refuses without entering the public compiler; a gate-file
+hash cannot satisfy `host_sha256`; the sole public call receives the original
+descriptor objects, paths and sealed deadline; and the actual V1 result or
+exception, `.facts` and ordered causes are the same objects/values returned to
+the caller. Successful preflight creates no directory, socket, source file,
+publication or cleanup and grants no acceptance. Run the nine failing historical regressions
 unchanged and the applicable current controlled coverage under a newly reviewed
 finite allowance. Preserve all historical pins, retained fixtures, protected
 method ASTs, budgets and C/D/resume/D27 sources. Required current-head CI and

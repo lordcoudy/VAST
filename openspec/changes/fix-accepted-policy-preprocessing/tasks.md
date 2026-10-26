@@ -709,7 +709,16 @@ the design's thin-admission-layer exception before implementation. Restore exact
 compiler-v1 blob b15741dd81851d29d481734d8d6cc79f19f732db; retain the bounded
 constructor. Add only the new shared preparation gate plus direct public-V1
 handoff, with actual-source/TTL/boot/floor/deadline rechecks and unchanged
-result/error/facts propagation. Keep V1 owner/publisher/profile bindings truthful;
+result/error/facts propagation. Move preflight and every inter-allocation clock
+check to the gate, replace rather than supplement the constructor's direct
+compile call, and retarget the current controlled doubles/test seams. Add no V1
+exports and reuse only existing frozen utilities. Keep C/D's private component
+route unchanged outside this gate; a missing frozen symbol holds for review.
+Test RAM-success/written-drift refusal before public entry, executor-file rather
+than gate-file hash binding, exactly one public call with the original descriptor
+objects/paths/deadline, identical result/error/facts/causes, and preflight without
+allocation/publication/cleanup or acceptance. Keep V1 owner/publisher/profile
+bindings truthful;
 authenticate the gate/callers separately before parsing and price their forms.
 Independently review its finite current/historical regression roster before local
 tests; require all nine CI failures to pass without changing protected pins,

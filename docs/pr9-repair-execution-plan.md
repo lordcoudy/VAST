@@ -142,11 +142,21 @@ identity/design issue before implementation or transfer. No restore runs in B1.
 This implements the remaining integration described by D15, not another compiler
 framework. Split it into two small source slices:
 
-1. In `accepted_policy_original_custody_fixture_v1.py`, use the existing
-   `build_fixture_source_v1` and `compile_fixture_engine_v1`. Require explicit
+1. Restore compiler V1 byte-exact to blob
+   `b15741dd81851d29d481734d8d6cc79f19f732db` (103,925 B, SHA256
+   `1e40d4786fd03543ac43df7fe0e42a4349d55bad9288ead28f5d2a6ad87bcb03`).
+   It gains no exports or other edits. In the bounded custody constructor, keep
+   its existing `build_fixture_source_v1` utility and replace the direct compiler
+   call with the new gate's written-source handoff. Move preflight and every
+   inter-allocation clock check to
+   `accepted_policy_fixture_compiler_admission_v1.py`. Require explicit
    qualified-recipe/admission descriptors and the inherited absolute deadline.
-   Share the helper's authority checks rather than create a second interpreter
-   of them. Missing, malformed, expired or mismatched authority must refuse before
+   ONE shared policy in that new gate serves preflight and handoff. Its narrowly
+   repeated frozen-executor checks are the sole permitted second interpreter;
+   this supersedes the earlier in-executor sharing direction. Reuse only bounded
+   utilities already defined in the frozen blob; duplicate missing checks in the
+   gate without adding symbols to V1. Missing, malformed, expired or mismatched
+   authority must refuse before
    fixture directories, sockets or source files are created. Bind the prospective
    source in RAM to its fresh STATE_FILE/reply data before the first bounded write.
    Open the held ELF only after authentic normal closure and completed export/
@@ -158,7 +168,13 @@ framework. Split it into two small source slices:
    just pass descriptors to the later nested constructor. Add no-output negatives
    for missing/malformed/expired/foreign authority at each entrypoint. Keep the
    native coordinator, custody, default validators, sample semantics and refusal
-   predicates unchanged.
+   predicates unchanged. The constructor's sole handoff calls public
+   `compile_fixture_engine_v1` once; it never also calls that owner directly or
+   calls a private compile body. Retarget the controlled compiler double and
+   active preflight/clock test seams to the gate. Preserve C/D's existing private
+   component call on restored V1 outside this usable-output gate. If any unchanged
+   C/D symbol is absent from the frozen blob, hold for a reviewed amendment;
+   do not edit C/D/resume/D27 or expand V1.
 
 Preserve D15's 8 MiB source, 16 MiB ELF, 1 MiB compiler channel limits, 128 MiB /
 4,096-inode work tmpfs, read-only root, fixed environment/provider, CORE=1/filter,
@@ -168,6 +184,12 @@ with the later ELF reader's larger size ceiling.
 Verification: meaningful RED/GREEN in the original-custody/compiler-owner tests
 for missing/foreign/expired authority, source/table overflow before writes, exact
 argument/source bindings, compiler failure and preserved primary/cleanup causes.
+Require RAM/source match followed by written-file drift to refuse before the
+public owner call; prove gate-file hashing cannot satisfy `host_sha256`, which
+authenticates `executor.__file__`. Prove the sole public call receives original
+descriptor objects, paths and sealed deadline and returns the same result or
+exception, `.facts` and ordered causes. Successful preflight must create no
+directory, socket, source, publication or cleanup and must not claim acceptance.
 Retain real custody/default-probe coverage with explicitly controlled external
 compiler setup in portable tests; no new skips or substituted genuine validation.
 Use the existing transport/probe-binding tests to prove both callers pass the
