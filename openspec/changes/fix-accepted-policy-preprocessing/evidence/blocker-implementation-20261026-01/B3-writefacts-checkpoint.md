@@ -51,7 +51,14 @@ forms and derived C69.943359375GiB fit C80GiB above40GiB floor; E65GiB/full
 config/pagefile/USN/mount/UUID/boot checks preceded EACH invocation. All streams,
 formatter calls, opens and fsync are bounded doubles; no file/FD/root/payload.
 
-Exact-commit independent/Grok correction/CI remain required. Original Grok
-REQUEST CHANGES is unresolved until that reviewed correction, not relabelled
-CLEAR. Full B3/task1.5, compiler/reader/whole-chain admissions and physical/
+Exact-commit independent review atdde0b812399b543ca68dc2e8cf622677fbfee08d
+is CLEAR. The same configured Grok session reviewed that exact correction AND
+the three reader adapters in one further turn, returning scoped CLEAR for both
+from supplied full sources/API, actual modelgrok-4.7-build with no settings/model
+override. It did not rerun/accept outcome or RSS/peak figures; independent outcome
+reviews retain their own evidence. Three correction prompt/result/stderr originals
+remain in a separate ZIP/manifest. Original REQUEST CHANGES stays unchanged and
+historical; this new opinion resolves that finding on the new source only.
+Hosted current-head40411800531 is pending, so no stage/final/physical delegated
+approval is recorded. Full B3/task1.5, compiler/reader/whole-chain admissions and physical/
 genuine/default3840-first validation remain open;46/24 and D27/Native57 stay.

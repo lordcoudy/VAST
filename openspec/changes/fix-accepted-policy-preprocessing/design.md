@@ -1072,6 +1072,110 @@ Docker documents [separate Docker/containerd data roots](https://docs.docker.com
 provide startup/lifetime mechanisms. The custody, capacity and fail-closed checks
 above are this repair's design, not outcomes guaranteed by those documents.
 
+## B4 Windows diagnostic boundary amendment, 2026-10-27 (prospective)
+
+**Observed gap.** The retained bounded read-only probe observes
+`|/wsl-capture-crash %t %E %p %s` and unlimited daemon core limits; it does not
+authenticate those process executables or qualify inheritance. WSL2.5.10 source
+streams core output to Windows and also writes panic text. These source findings
+are conditional on authenticating the installed package/service/handler, not
+proof of its installed behavior. See the retained
+[observation](evidence/blocker-implementation-20261026-01/B4-crash-policy-observation.md).
+
+**Selected additional boundary.** Keep the preceding C:96GiB native-store remedy.
+Add exactly one dense classic fixed VHD,16GiB virtual capacity, at
+`E:/VAST-pr9/bounded-wsl-diagnostics-20261027.vhd`. Attach it to Windows without a
+drive letter and format only the proved newly created disk as NTFS. It is not a
+Linux disk, a dynamic/sparse/differencing VHD or a new provider. Bind its canonical
+backing path/FileID, VHD ID, actual allocation, attached disk and partition, volume
+GUID, NTFS serial/geometry and exact capacity together before formatting/use.
+Refuse pre-existing, ambiguous, reparse, compressed or foreign targets. Never
+select a PhysicalDrive number by guess. Attachment must survive operator-handle
+closure; prevent detach, resize or reformat while any admitted owner remains.
+
+Its16GiB ceiling is shared by Linux core dumps, WSL panic text and any enabled
+console-file log. It is containment, not proof that every possible dump fits.
+The backing file is17,179,869,696B including the512B footer, or17,179,873,280B
+rounded at a verified4KiB host allocation unit. Recompute rounding for the actual
+unit. Price host allocation/metadata/control, retained originals/copies, full E:
+pagefile growth and all other outside-native-store writers in the whole-chain
+ledger before the first allocation. Preserve C:>=42,949,672,960B and applicable
+E:/other filesystem floors. Unknown bounds hold allocation; the old20GB subtotal
+and virtual Linux free space remain insufficient. Keep all existing dumps and
+failures without deletion/offload, compression, deduplication or cleanup credit.
+
+**Configuration and custody.** Route `CrashDumpFolder` directly to the new
+`\\?\Volume{GUID}\wsl-crashes` path. Precreate ordinary non-reparse directories
+with reviewed ACLs for the actual impersonated Windows SID; retain directory,
+configuration and backing-file custody through the full owner interval. Refuse
+hard-link aliases/unrelated writers in the dedicated dump directory. Authenticate
+the installed WSL configuration parser and round-trip the exact escaped value;
+the2.5.10 INI parser consumes backslashes. Reject unreadable/missing configuration,
+duplicate or malformed keys and empty/default destinations. Verify effective
+startup routing, not just intended file text. A configured volume failure must
+not authorize a Windows-temp fallback. Do not change global `core_pattern`.
+
+Use the positive signed retention value2,147,483,647, never zero or negative.
+With actual NTFS1024B file records,16GiB can hold fewer than16,777,216 distinct
+files, before other filesystem costs, so the source retention comparison cannot
+delete a dump in this controlled directory. Verify that geometry and the absence
+of aliases; otherwise hold. This is only a no-prune proof. Separately bound the
+complete retained/new file roster and the collector's enumeration memory/time
+under the enclosing admission; a physical byte ceiling does not prove heap or
+deadline fit. Keep partial files and primary/distinct cleanup/persistence causes.
+
+Preserve the existing memory24GiB/swap6GiB and unrelated configuration settings.
+An enabled `debugConsoleLogFile` must route to the same verified volume or a
+separately admitted finite boundary; prove it disabled otherwise. WSL host tracing,
+swap/pagefile and other host metadata remain explicit separate ledger terms.
+Do not treat crash collection errors as workload termination: WSL can continue.
+The selected owners must be guarded against config/volume/boot drift and must
+stop within their original deadlines on loss, overflow or unproved closure.
+Retain all partial output; no automatic growth, prune, retry or fallback is added.
+
+**Ordered activation and qualification.** Before a required WSL VM restart,
+inventory all WSL/Desktop/native users and prove their safe quiescence; never
+kill unrelated work or start the three retained stopped B containers. Install
+reviewed service/socket guards before a restart can activate native writers.
+Qualify the diagnostic boundary first, then perform separately admitted native
+disk setup/cutover. Renew all boot/config/mount/source/owner admissions afterward;
+the historical21B `.wslconfig` observation cannot authorize the new configuration.
+Keep compiler D15 CORE1/filter/isolation qualification and actual daemon/build
+inheritance checks: the host boundary does not replace them.
+
+Before dependent code, independently review this entire amendment, complete the
+configured Grok review and exact-head required planning checks, then record
+delegated AGENT approval in PR9. Implementation needs meaningful refusal tests for
+configuration parsing/defaults, GUID/disk mismatch, reparse paths, lost custody,
+retention geometry, startup/lifetime guard failures and partial writes. A finite
+bootstrap qualification must authenticate installed binaries and separately price
+all possible default-C: and configured-E: outputs, process/heap/file limits,
+owned closure and one inherited absolute deadline before any actual invocation.
+Qualify real directory traversal, core-file creation and panic-writer opening
+semantics; an unrelated .NET write does not prove the C++ writer. Use reviewed
+installed-binary/API evidence or a bounded equivalent opening probe for the panic
+path; do not induce a kernel panic. No Docker/build/daemon crash is authorized.
+Any necessary inert process crash requires its own reviewed sealed finite recipe;
+it cannot self-approve routing or borrow unpriced whole-chain authority. Missing
+prerequisites hold that operation and all dependent execution.
+
+This is an addition to B4, not replacement of its copy/identity/startup/retention
+requirements. Keep all46task identities/24checked states, all11requirements,
+all prior scenarios, protected227images and historical failed/unknown outcomes.
+It adds three capacity scenarios and no new attempt, compiler, provider, loader,
+controller, CI redesign, worktree or PR. Physical/genuine/final gates stay open.
+
+Primary sources: [WSL2.5.10 receiver and panic writer](https://github.com/microsoft/WSL/blob/2.5.10/src/windows/service/exe/WslCoreVm.cpp),
+[configuration defaults](https://github.com/microsoft/WSL/blob/2.5.10/src/windows/common/WslCoreConfig.cpp),
+[INI escaping](https://github.com/microsoft/WSL/blob/2.5.10/src/shared/configfile/configfile.cpp),
+[retention implementation](https://github.com/microsoft/WSL/blob/2.5.10/src/windows/common/wslutil.cpp),
+[volume GUID paths](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-volume),
+[NTFS file records](https://learn.microsoft.com/en-us/windows/win32/fileio/master-file-table),
+[attachment lifetime](https://learn.microsoft.com/en-us/windows/win32/api/virtdisk/ne-virtdisk-attach_virtual_disk_flag)
+and [fixed VHD backing](https://learn.microsoft.com/en-us/windows/win32/vstor/about-vhd).
+These support the prospective mechanism; they establish no installed-runtime or
+physical admission by themselves.
+
 ## B2 frozen-executor compatibility amendment, 2026-10-26 (prospective)
 
 CI40313370100 at `d78b7b18` ran the full suite and retained6errors/3failures.

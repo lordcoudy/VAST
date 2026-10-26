@@ -45,5 +45,8 @@ Real custody capture still has chunks+join+raw JSON+decoded-object costs, with
 exact selected inputs and full VM24GiB/6GiB swap to be admitted. Native-header,
 physical fixture hashes/reads, caller Git/failure/persistence/clocks, authority
 forwarding and predecessor reads remain open. The independent complete remaining
-audit is retained separately. Exact-commit/Grok/CI review, full B3/task1.5 and
+audit is retained separately. Independent exact-commitdde0b812... review and
+configured Grok source opinion are scoped CLEAR, recorded with the write-facts
+correction; hosted current-head40411800531 remains pending. No outcome/RSS/peak
+acceptance is attributed to Grok's source reading. Full B3/task1.5 and
 actual compiler/reader/Docker/runtime/genuine validation remain open;46/24 stays.

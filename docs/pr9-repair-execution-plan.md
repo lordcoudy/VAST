@@ -283,6 +283,25 @@ lacks complete retained derivation. Disk creation/cutover remains held until the
 complete physical inequality and separate operation recipe are accepted; no
 allocation, source qualification or task completion follows from selecting S.
 
+The additional prospective2026-10-27 amendment closes the WSL Windows-diagnostic
+escape with a separate fixed16GiB NTFS VHD on E:, at
+`E:/VAST-pr9/bounded-wsl-diagnostics-20261027.vhd`. Its shared ceiling covers core
+dumps, panic text and enabled console-file logs through an authenticated effective
+volume-GUID configuration. Verify dense backing/disk/partition/NTFS identity,
+directory/configuration custody and positive retention geometry; separately price
+collector enumeration memory/time and every possible bootstrap/default-C: output.
+No zero/negative retention, pruning or cleanup credit is selected. Keep C:96GiB,
+the worktree/branch/PR, installed providers and all227images unchanged. Preserve
+CORE/filter/inheritance qualification and all other outside-S ledger terms.
+Review/check/approve the amendment before dependent implementation. Before any
+allocation/restart/probe, separately admit its finite operation and full physical
+liabilities; prove all WSL/Desktop/native users safely quiescent before restart,
+install writer guards first, qualify diagnostic routing before native cutover and
+renew admissions on the new boot/configuration. Missing routing/custody, full
+capacity or unknown closure holds execution; retain partial output without
+fallback/growth/retry. The design specifies the installed-runtime opening checks
+and forbids a kernel panic or Docker/build/daemon crash as qualification.
+
 ### B5. Execute only separately admitted provider/component work
 
 After B1/B4 review and the required source checks, obtain a fresh finite admission

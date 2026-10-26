@@ -72,6 +72,18 @@ A packaged accepted-policy repair SHALL invalidate affected image/source/parity/
 - **WHEN** fresh physical capacity cannot cover the conservative whole-chain peak while preserving the C: 40 GiB floor and applicable filesystem thresholds, or the peak is unqualified
 - **THEN** dependent copying/building/check/consumer allocations SHALL remain held with a recorded shortfall and concrete remedy; a first-stage allowance, virtual capacity, historical sample, blind retry or lowered floor SHALL NOT admit the chain.
 
+#### Scenario: WSL diagnostic writers escape the native-store boundary
+- **WHEN** renewal can emit WSL core dumps, panic text or enabled console-file logs outside the native-store disk
+- **THEN** the reviewed additional fixed16GiB Windows NTFS volume on E: SHALL enclose their shared bytes through an authenticated effective volume-GUID configuration, while the complete host allocation/metadata/pagefile/retention ledger preserves every physical floor; intended text, retention count or Linux core flags alone SHALL NOT establish containment.
+
+#### Scenario: The diagnostic volume or configuration loses custody
+- **WHEN** the diagnostic volume/configuration/boot binding drifts, is absent or malformed, its path redirects, its shared capacity is exhausted, or collector closure is unknown
+- **THEN** dependent execution SHALL remain held or its admitted owners SHALL stop within their original deadlines, preserving partial output and distinct causes without Windows-temp fallback, automatic pruning, growth, retry or deletion of retained files; positive retention and actual NTFS geometry SHALL establish that WSL cannot prune the controlled dump directory.
+
+#### Scenario: Diagnostic routing requires installed-runtime qualification
+- **WHEN** diagnostic containment needs new configuration, a WSL restart or a routing/opening probe
+- **THEN** exact planning review/checks/delegated approval and a separately accepted finite setup/qualification recipe SHALL precede the operation, including safe quiescence, installed-binary/parser/path identity, all possible C:/E: failure outputs, heap/file/clock/closure bounds and fresh post-restart admissions; the boundary SHALL NOT replace compiler CORE/filter/inheritance qualification or close whole-chain acceptance by itself.
+
 ### Requirement: Integrated repair preserves accepted storage behavior and evidence boundaries
 The accepted repaired baseline SHALL preserve the accepted S3 export/recovery contract and supported historical Seafile reading while retaining the complete inherited implementation and repair's reviewed behavior. Integration acceptance SHALL require independent review of the entire inherited/repair diff at its exact integrated commit, required current checks and genuine scenario conformance. Repair sync/archive SHALL preserve the accepted S3 main requirements/archive and every unaffected main requirement/scenario. Historical failed qualification documents, unchecked tasks, raw evidence and identities SHALL retain their original disposition; code integration SHALL NOT establish qualification, Q4, capacity or full-publication eligibility. All 227 retained images SHALL remain protected unless explicit human confirmation covers the exact images and deletion/offload action.
 

@@ -269,3 +269,21 @@ Preserve historical pins/protected tests/attempts and all46/24task states. Revie
 and approve this amendment before dependent gate/import/test changes; require
 the unchanged nine regressions and current source coverage/CI/reviews afterward.
 No new executor, proof relabeling, schema change or parked machinery is added.
+
+## Prospective Windows diagnostic containment, 2026-10-27
+
+The actual WSL piped crash handler can write Windows files outside the native
+store boundary. Extend B4 with one additional fixed16GiB Windows NTFS disk at
+`E:/VAST-pr9/bounded-wsl-diagnostics-20261027.vhd`, shared by WSL crash dumps,
+panic text and any enabled console-file logging. Keep the existing C: worktree,
+native96GiB disk, daemon/provider identities and all protected images. Use an
+authenticated volume-GUID destination and guarded effective configuration;
+preserve partial dumps and existing Windows-temp files without cleanup credit.
+
+This refines the existing renewal-capacity requirement and task1.5. Three new
+scenarios cover routing, loss and finite qualification; no requirement/task
+identity or checked state changes. Exact planning review, configured Grok,
+required checks and recorded delegated amendment approval precede dependent
+implementation. Neither this remedy nor the earlier native-disk approval admits
+allocation: the complete peak and every setup/qualification operation still need
+separate finite admissions. D27/Native57 and future Q1/Q4/campaign remain parked.
