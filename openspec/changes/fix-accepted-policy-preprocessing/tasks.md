@@ -656,3 +656,33 @@ No new checkbox or completion is asserted: all46task rows/24checked states remai
 ## Product lifecycle correction, 2026-10-25
 
 Within existing tasks 1.5, 4.3, 5.1, 5.2 and 5.4, correct bounded Docker output and owned retirement in the shared factory and both parity/guardian owners, including capability probes. First independently review the exact pushed planning amendment, pass mandatory planning checks and record delegated AGENT approval; then implement and retain real-child flood/reader-failure RED/GREEN, complete probe-output bounds, original-CID/daemon/image/label checks, exited-client/live-engine and foreign/reused-name negatives, authenticated `--rm` absence, bounded timeout/forced/unknown closure and both-owner first-error preservation tests. Review changed implementation at its exact commit, run required checks and renew the affected four runtimes before dependent execution. No checkbox, old compiler/reader admission, genuine result or final gate is completed by this planning note; all prior task identities and dispositions remain unchanged.
+
+## Prospective blocker breakdown, 2026-10-26
+
+The user requested planning only. All 46 task rows and their 24 checked states
+remain unchanged. `docs/pr9-repair-execution-plan.md`, B1-B6, supplies the concrete
+dependencies, source slices, verification and stop conditions for existing work:
+
+- B1 -> 1.5/2.10: bounded read-only native provider/size/identity diagnosis and
+  selection of one supported identity-preserving local remedy, before mutation.
+- B2 -> remaining D15 fixture integration under 1.5/2.10: shared bounded compiler
+  and explicit recipe/admission/deadline inputs, with pre-write refusal and both
+  complete-fixture callers covered. Historical 2.9 completion covers its helper;
+  it does not claim that this constructor integration or physical qualification
+  already passed.
+- B3 -> 1.5/2.12: finite actual metadata, enclosing channel/report/proof-copy and
+  serialization/write limits, preserving default reader/provenance and causes.
+  B2/B3 local controlled tests first require their own reviewed finite preparatory
+  roster/retention/floor allowance. Both outer fixture entrypoints must reject bad
+  authority before their allocations, with no-output negatives for each caller.
+- B4 -> 1.5: complete peak reservation including provider preparation, A/B scratch,
+  cache/VHD growth, all cohorts, copies and retained failures, with physical floors.
+- B5 -> 2.10: separately reviewed/admitted preparatory/component cases, fresh
+  packet/P0/C/D evidence and actual compiler qualification; preserve old seals,
+  retained B stages and consumed attempts without replay or inferred acceptance.
+- B6 -> 1.5/2.12: reconcile actual retention, accept the whole-chain envelope and
+  separately qualify current reader ownership/EOF/persistence/deadline behavior
+  before the real controller probes and later genuine consumer milestones.
+
+No new task, checkmark, execution admission, prerequisite waiver, altered pin or
+limit, provider fallback, D27/Native57 resumption, archive or merge is asserted.

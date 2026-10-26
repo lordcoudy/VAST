@@ -901,3 +901,54 @@ Capability stdout is a complete JSON response, not a diagnostic suffix. Bound it
 Both `NativeEndpointRunner.close()` and guardian `_shutdown()` must check owned engine retirement independently of client `poll()`. Keep one original remaining cleanup deadline across owned workers, engine observations and reader retirement; attempt the other resources after a failure. A required stop/kill, nonzero client, unknown engine state, surviving child or unresolved capture prevents clean lifecycle/parity promotion. Preserve the initiating error and append distinct capture/termination/cleanup failures. No fallback, retry, new scientific clock or change to inference commands, mounts, user, capabilities, network or native/worker image identity is permitted.
 
 The bounded OS-only Desktop observation at `tmp/pr9-verification-20261025/docker-logging-cid-probe-01/result.json` returned zero, preserved separate attached markers with `--log-driver none`, retained the full CID file after `--rm`, and observed authenticated absence on the same daemon. It is platform behavior evidence only, not project/model, parity or hardware acceptance. Independently review this exact planning commit, pass mandatory planning checks and record delegated AGENT approval in PR9 before implementation. Then require meaningful real-child RED/GREEN, identity/timeout/absence/foreign-container negatives, both-owner behavioral tests and exact-head independent review/CI before dependent execution.
+
+## Admission blocker planning refinement, 2026-10-26
+
+Use `docs/pr9-repair-execution-plan.md`, B1-B6, as the concrete breakdown of
+Decisions 6, 15 and 16. This refines implementation/admission sequencing without
+reopening parked D27/Native57 or adding a delivery framework. Existing delta
+requirements, scientific predicates, provider/source/profile pins, byte/clock
+limits, original failures and task dispositions remain unchanged. This request
+ends at planning; it does not authorize the described physical operations.
+
+First determine native metadata/content availability and reconcile the selected
+index, amd64 manifest and config as distinct pinned objects. The current native
+recipe's Size 10,469,582,904 B and unpacked 18,930,790,400 B do not equal Desktop's
+observed Size 29,400,323,407 B. Preserve exact RepoDigest/Id/RootFS/Size validation.
+Choose no-op, supported local registration/import or exact offline restore only
+after the discrepancy and identity-preservation route are demonstrated. Unknown
+conversion behavior, tag-only recovery, manual metadata edits or a changed Size
+cannot be treated as equivalence. A necessary material identity/design amendment
+requires review before dependent implementation or allocation.
+
+Wire the existing bounded source builder and usable compiler into the fixture and
+both complete-fixture callers, passing explicit qualified recipe, fresh admission
+and inherited deadline. Share pre-write authority checks and refuse before fixture
+allocation; preserve all D15 isolation/source/export/closure limits and genuine
+validation defaults. Portable setup doubles do not confer genuine acceptance.
+Apply that check at both outer complete-fixture entrypoints before their own
+mkdir/temp-root/socket allocations as well as in the nested constructor. Cover
+both callers with no-output refusal tests. Before any local controlled test batch,
+independently price/review its closed case roster, numeric source/temp/output/copy
+and retained-failure envelope and fresh physical floors. That preparatory allowance
+is not yet admitted and grants no provider/component/build/consumer authority.
+
+Close actual metadata and enclosing reader-copy/output bounds before serialization
+or writes. Preserve the existing standalone program, complete success proof and
+D16 limits. Derive remaining finite numeric recipe bounds from complete actual
+shapes, with refusal on overflow and preserved first/distinct-secondary causes.
+
+The complete peak reservation precedes dependent allocations and includes any
+provider preparation, build/cache/VHD growth, outputs, retained failures and copy
+tails. A distinct finite preparatory/component admission permits only its selected
+cases; it cannot close task 1.5 or silently enlarge the old 512 MiB seal. Actual
+compiler qualification then precedes independently accepted whole-chain admission
+and usable fixture compilation. Preserve fresh packet/P0/C/D completion gates,
+consumed-attempt prohibitions and the original scopes of historical evidence.
+
+Finally qualify the actual reader owner/EOF/persistence boundary under its sealed
+parent-bounded deadline and finite enclosing outputs. Run the unchanged default
+reader within the already-required genuine cohorts, without a duplicate full
+cohort for capture qualification. Only complete current evidence/reviews/checks
+and applicable delegated approval can release dependent controller verification;
+planning approval and free-space observations alone release nothing.
