@@ -18,6 +18,7 @@ import publication_operational_container_custody_v1 as container_custody
 import publication_operational_process_custody_v1 as process_custody
 from publication_operational_runtime_context_v1 import _materialize_operational_file_v1
 from tests.fixtures import accepted_policy_fixture_compiler_v1 as fixture_compiler
+from tests.fixtures import accepted_policy_fixture_compiler_admission_v1 as fixture_admission
 
 
 ENGINE_SOURCE = r'''
@@ -133,7 +134,7 @@ def preflight_original_fixture_engine_v1(*, project_root, output_dir,
         raise fixture_compiler.FixtureCompilerError("fixture_compiler_authority_required")
     source_raw = fixture_compiler.build_fixture_source_v1(ENGINE_SOURCE,
         output / "mutable/state", image_inspections, device_probes)
-    fixture_compiler.preflight_fixture_engine_v1(project_root=root,
+    fixture_admission.preflight_fixture_engine_v1(project_root=root,
         source_path=output / "immutable/engine.c", source_bytes=source_raw,
         executable_path=output / "immutable/engine", qualification=compiler_qualification,
         admission=compiler_admission, absolute_deadline_ns=compiler_absolute_deadline_ns)
@@ -143,18 +144,18 @@ def preflight_original_fixture_engine_v1(*, project_root, output_dir,
 def _write_fixture_source_v1(path, raw, absolute_deadline_ns):
     causes, file = [], None
     try:
-        fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+        fixture_admission._compiler_preparation_clock_v1(absolute_deadline_ns)
         file = path.open("xb")
         for offset in range(0, len(raw), 65536):
-            fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+            fixture_admission._compiler_preparation_clock_v1(absolute_deadline_ns)
             block = raw[offset:offset + 65536]
             if file.write(block) != len(block):
                 raise fixture_compiler.FixtureCompilerError("fixture_source_short_write")
-            fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+            fixture_admission._compiler_preparation_clock_v1(absolute_deadline_ns)
         file.flush()
-        fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+        fixture_admission._compiler_preparation_clock_v1(absolute_deadline_ns)
         os.fsync(file.fileno())
-        fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+        fixture_admission._compiler_preparation_clock_v1(absolute_deadline_ns)
     except (OSError, ValueError, fixture_compiler.FixtureCompilerError) as error:
         causes.extend(error.causes if isinstance(error, fixture_compiler.FixtureCompilerError)
                       else ["fixture_source_" + type(error).__name__])
@@ -165,7 +166,7 @@ def _write_fixture_source_v1(path, raw, absolute_deadline_ns):
             except (OSError, ValueError) as error:
                 causes.append("fixture_source_close_" + type(error).__name__)
             try:
-                fixture_compiler._compiler_preparation_clock_v1(absolute_deadline_ns)
+                fixture_admission._compiler_preparation_clock_v1(absolute_deadline_ns)
             except fixture_compiler.FixtureCompilerError as error:
                 causes.extend(error.causes)
     if causes:
@@ -183,34 +184,34 @@ def prepare_original_fixture_engine_v1(*, project_root, output_dir,
         image_inspections=image_inspections, device_probes=device_probes,
         compiler_qualification=compiler_qualification, compiler_admission=compiler_admission,
         compiler_absolute_deadline_ns=compiler_absolute_deadline_ns)
-    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     output.mkdir(mode=0o700, parents=True, exist_ok=False)
     immutable, mutable = output / "immutable", output / "mutable"
-    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     immutable.mkdir(mode=0o700)
-    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     mutable.mkdir(mode=0o700)
-    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     state_path = mutable / "state"
     source = immutable / "engine.c"
     _write_fixture_source_v1(source, source_raw, compiler_absolute_deadline_ns)
     executable = immutable / "engine"
-    compiled = fixture_compiler.compile_fixture_engine_v1(project_root=root,
+    compiled = fixture_admission.compile_admitted_fixture_engine_v1(project_root=root,
         source_path=source, executable_path=executable, qualification=compiler_qualification,
         admission=compiler_admission, absolute_deadline_ns=compiler_absolute_deadline_ns)
     if (compiled.get("accepted") is not True or compiled.get("normal_closed") is not True
             or compiled.get("receipt_persisted") is not True):
         raise fixture_compiler.FixtureCompilerError("fixture_compiler_not_accepted")
-    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     fd = os.open(executable, os.O_RDONLY | os.O_NOFOLLOW)
     sock, primary = None, None
     try:
-        fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+        fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         path = Path(socket_path) if socket_path is not None else output / "engine.sock"
         if path.resolve(strict=False) != path or path.exists() or path.is_symlink():
             raise ValueError("fixture engine socket must be fresh and canonical")
-        fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+        fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
         sock.bind(str(path))
         info = path.lstat()
         raw = fixture_compiler._compiler_read_v1(executable, 16777216)
@@ -218,7 +219,7 @@ def prepare_original_fixture_engine_v1(*, project_root, output_dir,
         held, named = os.fstat(fd), executable.stat(follow_symlinks=False)
         if (held.st_dev, held.st_ino, held.st_size) != (named.st_dev, named.st_ino, len(raw)):
             raise fixture_compiler.FixtureCompilerError("fixture_held_elf_drift")
-        fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+        fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
         engine = SimpleNamespace(path=executable, fd=fd, size=descriptor["size_bytes"],
             sha256=descriptor["sha256"], proc_path=f"/proc/self/fd/{fd}")
         yield HeldFixtureEngineV1(engine=engine, engine_descriptor=descriptor,

@@ -10,7 +10,6 @@ import socket
 import stat
 import time
 import signal
-from types import SimpleNamespace
 from urllib.parse import quote
 
 from publication_operational_request_domain_v1 import canonical_json_v1
@@ -1401,8 +1400,15 @@ def _compile_fixture_component_v1(*, project_root, source_path, executable_path,
         absolute_deadline_ns=absolute_deadline_ns, usable=False)
 
 
-def _compiler_authority_v1(*, project_root, qualification, admission, absolute_deadline_ns, usable):
-    """One authority interpreter for pre-allocation refusal and the actual owner."""
+def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
+                            qualification, admission, absolute_deadline_ns, usable):
+    causes, facts = [], {"accepted": False, "normal_closed": False, "own_completion": None,
+                         "cid": None, "creation_unknown": False, "forced": False,
+                         "receipt_persisted": False, "promotion": None, "rpc": None,
+                         "start_attempted": False, "start_unknown": False}
+    def fail(code):
+        if code not in causes:
+            causes.append(code)
     def require(condition, code):
         if not condition:
             raise FixtureCompilerError(code)
@@ -1466,15 +1472,12 @@ def _compiler_authority_v1(*, project_root, qualification, admission, absolute_d
     floors = admitted["filesystem_floors"]
     require(type(floors["c_bytes"]) is int and floors["c_bytes"] >= 42949672960 and
             type(floors["project_bytes"]) is int and floors["project_bytes"] > 0, "owner_floor_manifest")
-    return SimpleNamespace(root=root, start_time=start_time, deadline=deadline,
-        prestart_end=prestart_end, admitted=admitted, admission_bytes=admission_bytes,
-        recipe=recipe, recipe_bytes=recipe_bytes, bindings=bindings, floors=floors)
-
-
-def _compiler_bound_helpers_v1(root, bindings):
-    def require(condition, code):
-        if not condition:
-            raise FixtureCompilerError(code)
+    source = _compiler_physical_v1(source_path, root)
+    executable = _compiler_physical_v1(executable_path, root, fresh=True)
+    keys(admitted["source"], "relative_path size_bytes sha256", "owner_source_binding")
+    require(type(admitted["source"]["size_bytes"]) is int and 0 < admitted["source"]["size_bytes"] <= SOURCE_LIMIT and
+            sha(admitted["source"]["sha256"]) and str(source.relative_to(root)) == admitted["source"]["relative_path"] and
+            str(executable.relative_to(root)) == admitted["executable_relative"], "owner_source_binding")
     publisher = _compiler_physical_v1(root / "tests/fixtures/accepted_policy_fixture_compiler_publisher_v1.py", root)
     profile = _compiler_physical_v1(root / "tests/fixtures/accepted_policy_fixture_compiler_seccomp_v1.json", root)
     publisher_raw, profile_raw = _compiler_read_v1(publisher, 65536), _compiler_read_v1(profile, 65536)
@@ -1483,100 +1486,6 @@ def _compiler_bound_helpers_v1(root, bindings):
     require(hashlib.sha256(host_raw).hexdigest() == bindings["host_sha256"] and
             hashlib.sha256(publisher_raw).hexdigest() == bindings["publisher_sha256"] and
             hashlib.sha256(profile_raw).hexdigest() == PROFILE_SHA256, "owner_helper_drift")
-    return publisher, publisher_raw, profile, profile_raw, host_path, host_raw
-
-
-def _compiler_preallocation_facts_v1(root, admitted, floors, source_size):
-    def require(condition, code):
-        if not condition:
-            raise FixtureCompilerError(code)
-    require(admitted["retained_upper_bytes"] >= 3 * 16777216 + source_size + 2 * 1048576 + 262144, "owner_retention_quote")
-    identity = _compiler_self_identity_v1()
-    require(type(identity) is dict and identity.get("boot_id") == admitted["boot_id"] and identity.get("machine") == "x86_64"
-            and identity.get("kernel") == "6.6.87.2-microsoft-standard-WSL2", "owner_runtime_binding")
-    free = _compiler_floor_facts_v1(root)
-    require(type(free) is dict and type(free.get("c_free")) is int and type(free.get("project_free")) is int and
-            free["c_free"] >= floors["c_bytes"] + admitted["additional_disk_upper_bytes"] and
-            free["project_free"] >= floors["project_bytes"] + admitted["additional_disk_upper_bytes"], "owner_fresh_floor")
-    return identity
-
-
-def _compiler_source_paths_v1(root, admitted, source, executable):
-    entry = admitted["source"]
-    if (type(entry) is not dict or set(entry) != {"relative_path", "size_bytes", "sha256"}
-            or type(entry["size_bytes"]) is not int or not 0 < entry["size_bytes"] <= SOURCE_LIMIT
-            or type(entry["sha256"]) is not str or re.fullmatch("[0-9a-f]{64}", entry["sha256"]) is None
-            or str(source.relative_to(root)) != entry["relative_path"]
-            or str(executable.relative_to(root)) != admitted["executable_relative"]):
-        raise FixtureCompilerError("owner_source_binding")
-
-
-def _compiler_preparation_clock_v1(absolute_deadline_ns):
-    """The caller seals one preparation window; repeated checks never renew it."""
-    now = time.monotonic_ns()
-    if (type(absolute_deadline_ns) is not int or type(now) is not int or now < 0
-            or not 0 < absolute_deadline_ns - now <= 150_000_000_000):
-        raise FixtureCompilerError("owner_preparation_deadline")
-    return now
-
-
-def preflight_fixture_engine_v1(*, project_root, source_path, source_bytes, executable_path,
-                                qualification=None, admission=None, absolute_deadline_ns=None):
-    """Validate the same authority against prospective bytes before any write.
-
-    Parent directories may not exist yet. This grants no cached success: the
-    actual owner repeats authority, physical-input and runtime checks later.
-    """
-    _compiler_preparation_clock_v1(absolute_deadline_ns)
-    authority = _compiler_authority_v1(project_root=project_root, qualification=qualification,
-        admission=admission, absolute_deadline_ns=absolute_deadline_ns, usable=True)
-    root, admitted = authority.root, authority.admitted
-    paths = []
-    for value in (source_path, executable_path):
-        path = Path(value)
-        if (not path.is_absolute() or not path.is_relative_to(root) or path == root
-                or path.resolve(strict=False) != path or os.path.lexists(path)):
-            raise FixtureCompilerError("owner_path")
-        paths.append(path)
-    source, executable = paths
-    _compiler_source_paths_v1(root, admitted, source, executable)
-    if (type(source_bytes) is not bytes or len(source_bytes) != admitted["source"]["size_bytes"]
-            or not source_bytes.isascii() or b"\0" in source_bytes
-            or hashlib.sha256(source_bytes).hexdigest() != admitted["source"]["sha256"]
-            or not source_bytes.startswith(b"#define STATE_FILE ")
-            or b"\n#define DAEMON_ID " not in source_bytes[:8192]):
-        raise FixtureCompilerError("owner_source_binding")
-    _compiler_bound_helpers_v1(root, authority.bindings)
-    _compiler_preallocation_facts_v1(root, admitted, authority.floors, len(source_bytes))
-    now = time.monotonic_ns()
-    if (type(now) is not int or not authority.start_time <= now < authority.deadline
-            or authority.deadline - now <= 80_000_000_000):
-        raise FixtureCompilerError("owner_containment_room")
-
-
-def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
-                            qualification, admission, absolute_deadline_ns, usable):
-    causes, facts = [], {"accepted": False, "normal_closed": False, "own_completion": None,
-                         "cid": None, "creation_unknown": False, "forced": False,
-                         "receipt_persisted": False, "promotion": None, "rpc": None,
-                         "start_attempted": False, "start_unknown": False}
-    def fail(code):
-        if code not in causes:
-            causes.append(code)
-    def require(condition, code):
-        if not condition:
-            raise FixtureCompilerError(code)
-    authority = _compiler_authority_v1(project_root=project_root, qualification=qualification,
-        admission=admission, absolute_deadline_ns=absolute_deadline_ns, usable=usable)
-    root, start_time = authority.root, authority.start_time
-    deadline, prestart_end = authority.deadline, authority.prestart_end
-    admitted, recipe = authority.admitted, authority.recipe
-    admission_bytes, recipe_bytes = authority.admission_bytes, authority.recipe_bytes
-    bindings, floors = authority.bindings, authority.floors
-    source = _compiler_physical_v1(source_path, root)
-    executable = _compiler_physical_v1(executable_path, root, fresh=True)
-    _compiler_source_paths_v1(root, admitted, source, executable)
-    publisher, publisher_raw, profile, profile_raw, host_path, host_raw = _compiler_bound_helpers_v1(root, bindings)
     source_file = open(source, "rb")
     client = attach = None
     output = None
@@ -1674,7 +1583,14 @@ def _compile_fixture_owned_v1(*, project_root, source_path, executable_path,
             require(stat.S_ISREG(held.st_mode) and held.st_nlink == 1 and held.st_size == len(raw), "owner_guard_kind")
             entry["identity"] = (held.st_dev, held.st_ino, held.st_size, held.st_mtime_ns, held.st_ctime_ns)
             require(entry["file"].read(limit + 1) == raw, "owner_guard_drift")
-        identity = _compiler_preallocation_facts_v1(root, admitted, floors, len(source_raw))
+        require(admitted["retained_upper_bytes"] >= 3 * 16777216 + len(source_raw) + 2 * 1048576 + 262144, "owner_retention_quote")
+        identity = _compiler_self_identity_v1()
+        require(type(identity) is dict and identity.get("boot_id") == admitted["boot_id"] and identity.get("machine") == "x86_64"
+                and identity.get("kernel") == "6.6.87.2-microsoft-standard-WSL2", "owner_runtime_binding")
+        free = _compiler_floor_facts_v1(root)
+        require(type(free) is dict and type(free.get("c_free")) is int and type(free.get("project_free")) is int and
+                free["c_free"] >= floors["c_bytes"] + admitted["additional_disk_upper_bytes"] and
+                free["project_free"] >= floors["project_bytes"] + admitted["additional_disk_upper_bytes"], "owner_fresh_floor")
         now()
         nonce = os.urandom(16).hex()
         name = "vast-fixture-compiler-" + nonce

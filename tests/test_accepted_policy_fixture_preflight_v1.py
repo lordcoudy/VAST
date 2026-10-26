@@ -11,6 +11,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from tests import test_accepted_policy_fixture_compiler_owner_v1 as owner_cases
 from tests.fixtures import accepted_policy_fixture_compiler_v1 as compiler
+from tests.fixtures import accepted_policy_fixture_compiler_admission_v1 as admission
 from tests.fixtures import accepted_policy_original_custody_fixture_v1 as original
 from tests.fixtures import accepted_policy_physical_fixture_v1 as physical_v1
 from tests.fixtures import accepted_policy_physical_fixture_v2 as physical_v2
@@ -73,10 +74,10 @@ class FixturePreflightTests(unittest.TestCase):
             self.assertEqual(case.clients, [])
 
     def test_enclosing_clock_cannot_supply_a_fresh_window_longer_than_150_seconds(self):
-        with patch.object(compiler.time, "monotonic_ns", return_value=100):
+        with patch.object(admission.time, "monotonic_ns", return_value=100):
             with self.assertRaisesRegex(compiler.FixtureCompilerError, "owner_preparation_deadline"):
-                compiler._compiler_preparation_clock_v1(150_000_000_101)
-            self.assertEqual(compiler._compiler_preparation_clock_v1(150_000_000_100), 100)
+                admission._compiler_preparation_clock_v1(150_000_000_101)
+            self.assertEqual(admission._compiler_preparation_clock_v1(150_000_000_100), 100)
 
     def test_reply_string_and_table_overflow_refuse_before_output(self):
         with tempfile.TemporaryDirectory() as name:
@@ -84,7 +85,7 @@ class FixturePreflightTests(unittest.TestCase):
             for replies in ({"image": {"oversized": "x" * (compiler.STRING_LIMIT + 1)}},
                             {str(number): {} for number in range(compiler.TABLE_LIMIT + 1)}):
                 with self.subTest(entries=len(replies)):
-                    with patch.object(compiler, "preflight_fixture_engine_v1", side_effect=AssertionError("oversized source passed builder")):
+                    with patch.object(admission, "preflight_fixture_engine_v1", side_effect=AssertionError("oversized source passed builder")):
                         with self.assertRaises(ValueError):
                             original.preflight_original_fixture_engine_v1(project_root=root, output_dir=root / "absent",
                                 image_inspections=replies, device_probes={}, compiler_qualification={}, compiler_admission={},
@@ -120,7 +121,7 @@ class FixturePreflightTests(unittest.TestCase):
                 closed.append(True)
                 raise ValueError("controlled close")
         with patch.object(Path, "open", return_value=File()), \
-                patch.object(compiler.time, "monotonic_ns", side_effect=lambda: clock[0]), \
+                patch.object(admission.time, "monotonic_ns", side_effect=lambda: clock[0]), \
                 patch.object(original.os, "fsync", side_effect=AssertionError("expired source reached fsync")):
             with self.assertRaises(compiler.FixtureCompilerError) as observed:
                 original._write_fixture_source_v1(Path("unused"), b"bounded", 150_000_000_001)
@@ -132,8 +133,8 @@ class FixturePreflightTests(unittest.TestCase):
             root = Path(name).resolve()
             authority = dict(compiler_qualification={}, compiler_admission={},
                              compiler_absolute_deadline_ns=time.monotonic_ns() + 150_000_000_000)
-            with patch.object(compiler, "preflight_fixture_engine_v1"), \
-                    patch.object(compiler, "compile_fixture_engine_v1", side_effect=compiler.FixtureCompilerError("controlled_compile_failure")) as compile_call, \
+            with patch.object(admission, "preflight_fixture_engine_v1"), \
+                    patch.object(admission, "compile_admitted_fixture_engine_v1", side_effect=compiler.FixtureCompilerError("controlled_compile_failure")) as compile_call, \
                     patch.object(original.socket, "socket", side_effect=AssertionError("refused compiler opened socket")):
                 with self.assertRaisesRegex(compiler.FixtureCompilerError, "controlled_compile_failure"):
                     with original.prepare_original_fixture_engine_v1(project_root=root, output_dir=root / "fixture", **authority):
@@ -161,8 +162,8 @@ class FixturePreflightTests(unittest.TestCase):
             def compile_spy(**kwargs):
                 Path(kwargs["executable_path"]).write_bytes(b"controlled held bytes, never executed")
                 return dict(accepted=True, normal_closed=True, receipt_persisted=True)
-            with patch.object(compiler, "preflight_fixture_engine_v1"), \
-                    patch.object(compiler, "compile_fixture_engine_v1", side_effect=compile_spy), \
+            with patch.object(admission, "preflight_fixture_engine_v1"), \
+                    patch.object(admission, "compile_admitted_fixture_engine_v1", side_effect=compile_spy), \
                     patch.object(original.socket, "socket", return_value=Socket()), \
                     patch.object(original.os, "close", side_effect=close_fd):
                 with self.assertRaises(ValueError) as observed:

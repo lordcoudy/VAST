@@ -22,6 +22,17 @@ PROBES = ["tests.test_accepted_policy_fixture_probe_binding_v2.AcceptedPolicyFix
 PROBES[-1] = PROBES[-1].replace("_is_refused_", "_are_refused_")
 PROBES += ["tests.test_accepted_policy_fixture_probe_binding_v2.AcceptedPolicyFixtureProbeBindingV2Tests.test_" +
            name for name in ("empty_maps_remain_explicit_transport_only_boundary", "reply_maps_require_explicit_objects")]
+LEGACY = [
+    "tests.test_accepted_policy_fixture_compiler_gate2_dictionary_caller_v1.D27SourceCustodyTests.test_fixed_old_three_and_four_formatter_data_pins",
+    "tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_current_git_alias_requires_size_and_sha256_as_well_as_blob_identity",
+    "tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_extra_intermediate_plan_git_is_additive_even_when_current_bytes_unchanged",
+    "tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_reviewed_12k_plan_history_remains_inside_source_budget",
+    "tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_scoped_budget_keeps_legacy_and_counts_full_current_and_superseded_forms",
+    "tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_wrong_index_source_identity_or_unchanged_alias_refuses",
+    "tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.D25CompleteGeometryTests.test_complete_form_bounds_preserve_hold",
+    "tests.test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.D26CompleteGeometryTests.test_complete_form_bounds_preserve_hold",
+    "tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_actual_main_verified_closure_p0_api_write_order_and_single_terminal",
+]
 ROSTER = {
     "red": ["tests.test_accepted_policy_fixture_authority_v1"],
     "green": ["tests.test_accepted_policy_fixture_authority_v1"],
@@ -30,6 +41,13 @@ ROSTER = {
     "edges": ["tests.test_accepted_policy_fixture_preflight_v1"],
     "metadata-red": ["tests.test_accepted_policy_fixture_metadata_v1"],
     "metadata-green": ["tests.test_accepted_policy_fixture_metadata_v1"],
+    "compat-current-01": ["tests.test_accepted_policy_fixture_authority_v1",
+        "tests.test_accepted_policy_fixture_preflight_v1",
+        "tests.test_accepted_policy_fixture_compiler_admission_v1",
+        "tests.test_accepted_policy_fixture_compiler_v1",
+        "tests.test_accepted_policy_fixture_compiler_owner_v1",
+        "tests.test_accepted_policy_fixture_transport_v2", *PROBES],
+    "compat-legacy-01": LEGACY,
 }
 
 
@@ -53,6 +71,8 @@ def main():
     allowance = 536870912 + (134217728 if phase == "edges" or phase.startswith("metadata-") else 0)
     if phase.startswith("metadata-"):
         allowance += 134217728
+    if phase.startswith("compat-"):
+        allowance = 1073741824  # prior768MiB plus the complete reviewed256MiB tranche
     if free["c"] < 42949672960 + allowance or free["temporary"] < 1073741824 + allowance:
         raise ValueError("preparatory physical floor is insufficient")
     if time.monotonic_ns() >= deadline["absolute_monotonic_ns"] - 15_000_000_000:

@@ -15,6 +15,7 @@ import tempfile
 from unittest.mock import patch
 
 from tests.fixtures import accepted_policy_fixture_compiler_v1 as compiler
+from tests.fixtures import accepted_policy_fixture_compiler_admission_v1 as admission
 from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import (
     _bounded_json_v2, _capture_owned_reader_v2, _write_result_v2,
 )
@@ -51,7 +52,7 @@ def controlled_fixture_compiler_v1(project_root):
         if (not source.is_relative_to(root) or not executable.is_relative_to(root)
                 or executable.exists() or bindings[(source, executable)] != (len(raw), hashlib.sha256(raw).hexdigest())):
             raise AssertionError("controlled compiler input/output binding differs")
-        compiler._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
+        admission._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
         with open("/proc/self/mountinfo", "rb") as stream:
             mounts = stream.read(262145)
         if len(mounts) > 262144:
@@ -62,16 +63,16 @@ def controlled_fixture_compiler_v1(project_root):
                 or not 0 < usage.f_blocks * usage.f_frsize <= 32 * 1024**3
                 or usage.f_bavail * usage.f_frsize < 16 * 1024**2):
             raise AssertionError("controlled compiler requires the declared finite existing tmpfs")
-        compiler._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
+        admission._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
         workspace = Path(tempfile.mkdtemp(prefix="vast-controlled-cc-", dir="/dev/shm"))
         workspaces.append(workspace)
-        compiler._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
+        admission._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
         with (workspace / "engine.c").open("xb") as stream:
             if stream.write(raw) != len(raw):
                 raise AssertionError("controlled source copy was short")
             stream.flush()
             os.fsync(stream.fileno())
-        compiler._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
+        admission._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
         command = ["/usr/bin/env", "-i", "PATH=/usr/bin:/bin", "LC_ALL=C", "HOME=" + str(workspace),
             "TMPDIR=" + str(workspace), "TMP=" + str(workspace), "TEMP=" + str(workspace),
             "/usr/bin/prlimit", "--as=134217728", "--fsize=1048576", "--core=1", "--cpu=10", "--",
@@ -99,23 +100,23 @@ def controlled_fixture_compiler_v1(project_root):
         elf = compiler._compiler_read_v1(workspace / "engine", 1048576)
         if len(elf) < 64 or elf[:7] != b"\x7fELF\x02\x01\x01" or int.from_bytes(elf[18:20], "little") != 62:
             raise AssertionError("controlled compiler did not produce a bounded amd64 ELF")
-        compiler._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
+        admission._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
         with executable.open("xb") as stream:
             if stream.write(elf) != len(elf):
                 raise AssertionError("controlled ELF copy was short")
-            compiler._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
+            admission._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
             stream.flush()
-            compiler._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
+            admission._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
             os.fsync(stream.fileno())
-        compiler._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
+        admission._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
         executable.chmod(0o700)
-        compiler._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
+        admission._compiler_preparation_clock_v1(kwargs["absolute_deadline_ns"])
         return {"accepted": True, "normal_closed": True, "receipt_persisted": True,
                 "controlled_test_only": True, "physical_qualification": False}
 
     try:
-        with patch.object(compiler, "preflight_fixture_engine_v1", side_effect=preflight), \
-                patch.object(compiler, "compile_fixture_engine_v1", side_effect=compile_external):
+        with patch.object(admission, "preflight_fixture_engine_v1", side_effect=preflight), \
+                patch.object(admission, "compile_admitted_fixture_engine_v1", side_effect=compile_external):
             yield authority
     except BaseException:
         # Keep failed originals and scratch, even when the enclosing test cleans its root.

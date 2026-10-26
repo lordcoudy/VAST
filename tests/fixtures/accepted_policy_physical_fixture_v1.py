@@ -33,7 +33,7 @@ from tests.fixtures.accepted_policy_original_custody_fixture_v1 import prepare_o
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import preflight_original_fixture_engine_v1
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import capture_original_fixture_operation_v1
 from tests.fixtures.accepted_policy_native_fixture_v1 import write_native_policy_fixture_cell_v1
-from tests.fixtures import accepted_policy_fixture_compiler_v1 as fixture_compiler
+from tests.fixtures import accepted_policy_fixture_compiler_admission_v1 as fixture_admission
 
 
 @contextmanager
@@ -69,11 +69,11 @@ def prepared_complete_fixture_inputs_v1(
         image_inspections=inspection_aliases, device_probes=device_probes,
         compiler_qualification=compiler_qualification, compiler_admission=compiler_admission,
         compiler_absolute_deadline_ns=compiler_absolute_deadline_ns)
-    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     output.mkdir(mode=0o700, parents=True, exist_ok=False)
-    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     native_socket_root = Path(tempfile.mkdtemp(prefix=socket_prefix.removeprefix(".") + "-", dir="/var/tmp"))
-    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     socket_dir = native_socket_root / "runtime"
     socket_dir.mkdir(mode=0o700, exist_ok=False)
     front_path = socket_dir / "analytics-execution.sock"
@@ -82,11 +82,11 @@ def prepared_complete_fixture_inputs_v1(
     for path in (front_path, control_path, engine_path):
         if path.exists() or path.is_symlink() or len(str(path).encode()) >= 108:
             raise ValueError("fixture socket reservation is occupied or exceeds AF_UNIX bound")
-    fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
     front = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
     control = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
     try:
-        fixture_compiler._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+        fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
         front.bind(str(front_path))
         control.bind(str(control_path))
         with prepare_original_fixture_engine_v1(
