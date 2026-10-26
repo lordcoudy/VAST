@@ -58,3 +58,28 @@ runtime renewal and genuine3840/3968/126016/29/20/42 acceptance remain OPEN.
 No physical compile, image transfer, disk allocation, build, consumer or replay
 was performed. D27/Native57 stays parked, all46/24task states remain unchanged,
 and no archive or merge readiness is claimed.
+
+## Fresh controlled results after this source checkpoint
+
+Both separately admitted phases subsequently ran once under the reviewed
+80GiB C:/65GiB E: physical reservation. Current:89/89 passed, no skips,2.438s;
+legacy:9/9 unchanged IDs passed, no skips,3.482s. Normal owned closure, bothEOFs,
+zero overflow/discard/unknown/signal/forcing and complete raw persistence were
+observed. Outer tool returns prove4518B/3509B result writes, fsync and close with
+no cause or deadline overrun. Independent source/outcome review verified exact
+method rosters, channel hashes, fresh admissions and all seven protected D27
+source/data pins. Both names are consumed; no further invocation is covered.
+
+The physical backing derivation and pre-write guards are documented in
+`preparatory-compatibility-envelope.md`; original capacity tool returns are
+separate from the explicitly derived active-VHD review. All channels, results,
+admissions and outer returns are preserved in B2-compatibility-capture-originals.zip
+with exact member hashes. The configured Grok source opinion, including its
+incomplete first pass and explicit inspection limits, is preserved in
+B2-compatibility-source-grok-originals.zip. It is source-only CLEAR at7efaa522,
+not execution approval or CI/physical acceptance. New-head CPU CI remains pending.
+
+The original failed d78CI ZIP is now also retained in Git with a size/hash/run
+manifest. Its failed status remains unchanged; the local98passing cases establish
+only the scoped compatibility repair. All task/physical/renewal/consumer gates
+listed above remain OPEN.

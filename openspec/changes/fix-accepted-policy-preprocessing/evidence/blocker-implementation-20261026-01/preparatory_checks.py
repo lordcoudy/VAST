@@ -62,8 +62,11 @@ def main():
     temporary = Path("/var/tmp") / ("vast-pr9-b2-prep-" + phase)
     if ROOT.resolve(strict=True) != ROOT or output.exists() or temporary.exists():
         raise ValueError("preparatory paths must be canonical and fresh; no retry")
-    units, free = {}, {}
-    for label, path in (("c", Path("/mnt/c")), ("temporary", temporary.parent)):
+    units, free, runtime = {}, {}, None
+    paths = [("c", Path("/mnt/c")), ("temporary", temporary.parent)]
+    if phase.startswith("compat-"):
+        paths.append(("e", Path("/mnt/e")))
+    for label, path in paths:
         info = os.statvfs(path)
         units[label], free[label] = info.f_frsize, info.f_bavail * info.f_frsize
     if any(not 0 < value <= 4096 for value in units.values()):
@@ -75,6 +78,22 @@ def main():
         allowance = 1073741824  # prior768MiB plus the complete reviewed256MiB tranche
     if free["c"] < 42949672960 + allowance or free["temporary"] < 1073741824 + allowance:
         raise ValueError("preparatory physical floor is insufficient")
+    if phase.startswith("compat-"):
+        # Payload scattering and all previously unbacked fixed ext4 metadata,
+        # full guest swap and host bookkeeping have their own physical quote.
+        # E also pays its entire64GiB pagefile maximum plus1GiB source forms.
+        if free["c"] < 128849018880 or free["e"] < 70866960384:
+            raise ValueError("compatibility physical backing reservation is insufficient")
+        with Path("/proc/meminfo").open("rb") as stream:
+            memory = stream.read(16385)
+        if len(memory) > 16384:
+            raise ValueError("compatibility memory observation exceeds bound")
+        rows = dict(line.split(b":", 1) for line in memory.splitlines())
+        runtime = {name.decode("ascii"): int(rows[name].split()[0]) * 1024
+                   for name in (b"MemTotal", b"SwapTotal")}
+        if (not 0 < runtime["MemTotal"] <= 24 * 1024**3
+                or runtime["SwapTotal"] != 6 * 1024**3):
+            raise ValueError("compatibility VM memory/swap geometry differs")
     if time.monotonic_ns() >= deadline["absolute_monotonic_ns"] - 15_000_000_000:
         raise ValueError("preparatory deadline expired before namespace allocation")
     output.mkdir(mode=0o700)
@@ -92,7 +111,8 @@ def main():
         closed = closed and row is not None and row["eof"] and not row["overflow"] and not row["remainder_unknown"]
         closed = closed and row["file"]["fsync_completed"] and row["file"]["close_completed"]
     raw = _bounded_json_v2({"phase": phase, "command": command, "fresh_free_bytes": free,
-        "allocation_units": units, "expected_child_returncode": expected, "capture": facts,
+        "allocation_units": units, "vm_memory_bytes": runtime,
+        "expected_child_returncode": expected, "capture": facts,
         "closed_as_expected": bool(closed), "physical_acceptance": False}, 32767)
     if raw is None:
         raise ValueError("preparatory result exceeds its reviewed bound")
