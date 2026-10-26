@@ -28,6 +28,8 @@ ROSTER = {
     "owner": ["tests.test_accepted_policy_fixture_compiler_v1", "tests.test_accepted_policy_fixture_compiler_owner_v1"],
     "transport": ["tests.test_accepted_policy_fixture_transport_v2", *PROBES],
     "edges": ["tests.test_accepted_policy_fixture_preflight_v1"],
+    "metadata-red": ["tests.test_accepted_policy_fixture_metadata_v1"],
+    "metadata-green": ["tests.test_accepted_policy_fixture_metadata_v1"],
 }
 
 
@@ -48,7 +50,9 @@ def main():
         units[label], free[label] = info.f_frsize, info.f_bavail * info.f_frsize
     if any(not 0 < value <= 4096 for value in units.values()):
         raise ValueError("preparatory allocation-unit bound differs")
-    allowance = 536870912 + (134217728 if phase == "edges" else 0)
+    allowance = 536870912 + (134217728 if phase == "edges" or phase.startswith("metadata-") else 0)
+    if phase.startswith("metadata-"):
+        allowance += 134217728
     if free["c"] < 42949672960 + allowance or free["temporary"] < 1073741824 + allowance:
         raise ValueError("preparatory physical floor is insufficient")
     if time.monotonic_ns() >= deadline["absolute_monotonic_ns"] - 15_000_000_000:
@@ -60,7 +64,7 @@ def main():
     command = [sys.executable, "-B", "-m", "unittest", "-v", *ROSTER[phase]]
     facts, _, _ = _capture_owned_reader_v2(command=command, cwd=ROOT,
         outputs={key: output / (key + ".original") for key in ("stdout", "stderr")}, deadline=deadline)
-    expected = 1 if phase == "red" else 0
+    expected = 1 if phase in ("red", "metadata-red") else 0
     closed = (not facts["causes"] and facts["closure"]["closed"] and not facts["forced"]
               and facts["signal"] is None and facts["returncode"] == expected)
     for channel in ("stdout", "stderr"):
@@ -78,7 +82,7 @@ def main():
     complete = closed and not persistence["causes"] and persistence["written_bytes"] == len(raw) + 1 and not late
     status = _bounded_json_v2({"phase": phase, "capture_closed_with_expected_child_status": bool(closed),
         "child_returncode": facts["returncode"], "result": str(path), "result_persistence": persistence,
-        "deadline_exceeded": late, "red_output_review_required": phase == "red"}, 2048)
+        "deadline_exceeded": late, "red_output_review_required": phase in ("red", "metadata-red")}, 2048)
     if status is None:
         raise ValueError("fixed preparatory status exceeded its reviewed bound")
     print(status.decode("ascii"), flush=True)
