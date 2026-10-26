@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
+import os
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -34,6 +36,146 @@ from tests.fixtures.accepted_policy_fixture_provenance_v1 import fixture_metadat
 
 
 MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2 = 985
+
+# Cross-topology maxima at985 completed frames and at most one dropped ingress.
+# These twelve sidecars exclude coordinator outputs and fixture_limits.json.
+_FIXTURE_SIDECAR_SPECS_V2 = {
+    "frames.csv": (FRAME_COLUMNS, 985, 512, 512 * 1024),
+    "frame_events.csv": (FRAME_EVENT_COLUMNS, 15774, 1024, 16 * 1024**2),
+    "resource_events.csv": (RESOURCE_EVENT_COLUMNS, 15774, 1024, 16 * 1024**2),
+    "ingress_ledger.csv": (INGRESS_LEDGER_COLUMNS, 986, 1024, 1024**2),
+    "branch_terminals.csv": (BRANCH_TERMINAL_COLUMNS, 3944, 2048, 8 * 1024**2),
+    "topology_events.csv": (TOPOLOGY_EVENT_COLUMNS, 24625, 2048, 64 * 1024**2),
+    "reset_evidence.csv": (RESET_EVIDENCE_COLUMNS, 30, 1024, 32 * 1024),
+    "drop_counters.csv": (DROP_COUNTER_COLUMNS, 6, 512, 4 * 1024),
+    "stage_contracts.csv": (STAGE_CONTRACT_COLUMNS, 48, 2048, 128 * 1024),
+    "resource_intervals.csv": (RESOURCE_INTERVAL_COLUMNS, 12805, 1024, 16 * 1024**2),
+    "fanout_work_counters.csv": (FANOUT_WORK_COUNTER_COLUMNS, 3940, 1024, 4 * 1024**2),
+    "hardware_resource_samples.csv": (HARDWARE_RESOURCE_SAMPLE_COLUMNS, 3, 512, 2 * 1024),
+}
+
+
+def _fixture_sidecar_table_bound_v2(filename, columns, rows):
+    """Admit the complete fixed CSV geometry before pandas allocates its output."""
+    if (type(filename) is not str or len(filename) > 64
+            or filename not in _FIXTURE_SIDECAR_SPECS_V2):
+        raise ValueError("fixture sidecar filename is outside the fixed roster")
+    expected, row_count, row_limit, file_limit = _FIXTURE_SIDECAR_SPECS_V2[filename]
+    if (type(columns) is not list and type(columns) is not tuple
+            or len(columns) != len(expected)
+            or any(type(column) is not str or len(column) > 128 for column in columns)
+            or list(columns) != list(expected)
+            or type(rows) is not list or len(rows) > row_count):
+        raise ValueError("fixture sidecar column/row geometry exceeds its fixed bound")
+    # Reserve quotes even for ordinary fields and CRLF on either platform.
+    total = sum(len(column) + 2 for column in expected) + len(expected) - 1 + 2
+    for row in rows:
+        if (type(row) is not dict or len(row) > 64
+                or any(type(key) is not str for key in row)):
+            raise ValueError("fixture sidecar row must be a bounded plain dictionary")
+        cost = len(expected) - 1 + 2
+        for column in expected:
+            value = row.get(column)
+            kind = type(value)
+            if value is None:
+                width = 0
+            elif kind is str:
+                if len(value) > 4096 or not value.isascii():
+                    raise ValueError("fixture sidecar string exceeds its ASCII field bound")
+                width = len(value) + value.count('"')
+            elif kind is bool:
+                width = 5
+            elif kind is int:
+                if not -(2**63) <= value < 2**63:
+                    raise ValueError("fixture sidecar integer exceeds signed64")
+                # pandas can coerce an integer column to floating output.
+                width = 32
+            elif kind is float and math.isfinite(value):
+                width = 32
+            else:
+                raise ValueError("fixture sidecar scalar kind/finite bound refused")
+            cost += width + 2
+        if cost > row_limit:
+            raise ValueError("fixture sidecar encoded row bound exceeded")
+        total += cost
+        if total > file_limit:
+            raise ValueError("fixture sidecar encoded file bound exceeded")
+    if total > file_limit:
+        raise ValueError("fixture sidecar encoded header bound exceeded")
+    return total
+
+
+class _FixtureSidecarSinkV2:
+    """Forward only admitted text; pandas retains its original CSV formatter."""
+    def __init__(self, stream, limit, facts):
+        self.stream, self.limit, self.facts = stream, limit, facts
+
+    def write(self, text):
+        if (type(text) is not str or len(text) > self.limit - self.facts["accepted_text_bytes"]
+                or not text.isascii()):
+            raise ValueError("fixture sidecar text exceeds its admitted byte bound")
+        try:
+            written = self.stream.write(text)
+        except BaseException:
+            self.facts["write_extent_unknown"] = True
+            raise
+        if type(written) is not int or not 0 <= written <= len(text):
+            self.facts["write_extent_unknown"] = True
+            raise ValueError("fixture sidecar write extent is unknown")
+        self.facts["accepted_text_bytes"] += written
+        if written != len(text):
+            raise ValueError("fixture sidecar short write")
+        return written
+
+
+class _FixtureSidecarWriteErrorV2(ValueError):
+    def __init__(self, facts, primary, secondary):
+        super().__init__("fixture sidecar output failed; bounded persistence facts retained")
+        self.facts, self.primary, self.secondary = facts, primary, tuple(secondary)
+        self.completed = {}
+
+
+def _write_fixture_sidecar_table_v2(output, filename, columns, rows):
+    upper = _fixture_sidecar_table_bound_v2(filename, columns, rows)
+    facts = {"filename": filename, "admitted_upper_bytes": upper, "accepted_text_bytes": 0,
+        "open_completed": False, "serialization_completed": False,
+        "flush_completed": False, "fsync_completed": False, "close_attempted": False,
+        "close_completed": False, "write_extent_unknown": False, "failure_stage": None}
+    stream, primary, secondary, stage = None, None, [], "dataframe"
+    try:
+        frame = pd.DataFrame(rows, columns=columns)
+        stage = "open"
+        stream = (output / filename).open("x", encoding="utf-8", errors="strict", newline="")
+        facts["open_completed"] = True
+        stage = "write"
+        frame.to_csv(_FixtureSidecarSinkV2(stream, upper, facts), index=False)
+        facts["serialization_completed"] = True
+        stage = "flush"
+        stream.flush()
+        facts["flush_completed"] = True
+        stage = "fsync"
+        os.fsync(stream.fileno())
+        facts["fsync_completed"] = True
+    except BaseException as error:
+        primary, facts["failure_stage"] = error, stage
+        if stage in ("write", "flush"):
+            facts["write_extent_unknown"] = True
+    finally:
+        if stream is not None:
+            facts["close_attempted"] = True
+            try:
+                stream.close()
+                facts["close_completed"] = True
+            except BaseException as error:
+                if primary is None:
+                    primary, facts["failure_stage"] = error, "close"
+                elif error is not primary:
+                    secondary.append(error)
+                if not facts["flush_completed"]:
+                    facts["write_extent_unknown"] = True
+    if primary is not None:
+        raise _FixtureSidecarWriteErrorV2(facts, primary, secondary) from primary
+    return facts
 
 
 def fixture_calibration_v2(capability: Mapping[str, Any], system: str) -> dict[str, Any]:
@@ -91,10 +233,17 @@ def write_native_policy_fixture_cell_v2(
             binding = capability["systems"][system]["branches"][branch][selected_resource]
             for field in ("implementation_id", "terminal_detector", "terminal_backend"):
                 fixture_metadata_identity_v1(binding[field])
-    output_dir.mkdir(parents=True, exist_ok=False)
+    if ((run_id is not None and type(run_id) is not str)
+            or (arm_id is not None and type(arm_id) is not str)):
+        raise ValueError("native fixture run/arm IDs require bounded strings")
     stem = f"fixture-{system}-{resource}-{codec}-{topology_kind}"
     run_id = run_id or stem + "-run"
     arm_id = arm_id or stem + "-arm"
+    if len(run_id) > 64 or len(arm_id) > 68:
+        raise ValueError("native fixture run/arm ID geometry exceeds64/68")
+    fixture_metadata_identity_v1(run_id)
+    fixture_metadata_identity_v1(arm_id)
+    output_dir.mkdir(parents=True, exist_ok=False)
     policy = "cpu_only" if resource == "cpu" else "gpu_only"
     scenario = (
         "checkpoint_independent_processes_baseline"
@@ -224,7 +373,7 @@ def write_native_policy_fixture_cell_v2(
         "source_sha256_by_stream": dict(source_sha256_by_stream or {}),
         "limits": limits,
     }
-    _write_native_sidecars_v1(output_dir, capability, metadata)
+    metadata["sidecar_persistence"] = _write_native_sidecars_v1(output_dir, capability, metadata)
     return metadata
 
 
@@ -232,7 +381,7 @@ def _sha(value: str) -> str:
     return hashlib.sha256(value.encode("ascii")).hexdigest()
 
 
-def _write_native_sidecars_v1(output: Path, capability: Mapping[str, Any], metadata: Mapping[str, Any]) -> None:
+def _write_native_sidecars_v1(output: Path, capability: Mapping[str, Any], metadata: Mapping[str, Any]) -> dict[str, Any]:
     coordinate = metadata["limits"]["coordinate"]
     system, resource, topology_kind = (coordinate[key] for key in ("system", "resource", "topology_kind"))
     shared = topology_kind == "shared_video_dag"
@@ -399,5 +548,16 @@ def _write_native_sidecars_v1(output: Path, capability: Mapping[str, Any], metad
     tables.update({"resource_intervals.csv": (RESOURCE_INTERVAL_COLUMNS, intervals),
                    "fanout_work_counters.csv": (FANOUT_WORK_COUNTER_COLUMNS, fanout_counters),
                    "hardware_resource_samples.csv": (HARDWARE_RESOURCE_SAMPLE_COLUMNS, hardware)})
+    if len(tables) != 12 or set(tables) != set(_FIXTURE_SIDECAR_SPECS_V2):
+        raise ValueError("fixture sidecar table roster drifted")
+    # Admit ALL tables before the first output DataFrame or sidecar open.
     for filename, (columns, rows) in tables.items():
-        pd.DataFrame(rows, columns=columns).to_csv(output / filename, index=False)
+        _fixture_sidecar_table_bound_v2(filename, columns, rows)
+    completed = {}
+    for filename, (columns, rows) in tables.items():
+        try:
+            completed[filename] = _write_fixture_sidecar_table_v2(output, filename, columns, rows)
+        except _FixtureSidecarWriteErrorV2 as error:
+            error.completed = completed
+            raise
+    return completed

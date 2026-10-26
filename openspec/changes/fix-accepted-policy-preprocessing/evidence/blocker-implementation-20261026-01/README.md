@@ -1,5 +1,11 @@
 # Blocker implementation checkpoint, 2026-10-26
 
+This initial checkpoint is historical. Current compiler restoration/admission is
+in B2-compatibility-checkpoint.md; successive B3 provenance/report/quantity/
+binding/sidecar checkpoints retain their actual scopes and failures. The B4
+fixed-store amendment is approved planning only. Read those later checkpoints
+before interpreting the original B2 wording or remaining-gate list below.
+
 Same C: worktree, branch, change and Draft PR9. The independently reviewed
 planning commit is `2e72b22195c4d47e09c13ce17ccf863d24dc26df`; delegated AGENT
 specification approval was recorded in PR9 before source changes. Its hosted CPU

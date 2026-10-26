@@ -37,7 +37,15 @@ reviewed57/64MiB direct-file tranche brings cumulative forms to1280MiB and
 derived C liability69.771484375GiB within80GiB. No cleanup or virtual-space
 credit was taken. Raw facts retain their actual platform observations.
 
-Exact-commit independent review, configured Grok and new-head CI remain required.
+Exact-commit independent review at2fcb1478514d5fe90e916c60706484fdac6a8d41
+is CLEAR for source/evidence continuity. Configured Grok session
+01a179fc-27b4-7d92-9214-d473af91c744 returned scoped CLEAR in one same-session
+continuation after an initial3turn max-turn result with no verdict. All six
+original prompts/results/stderr files remain byte-exact in the separate ZIP/
+manifest; neither incomplete output nor source opinion is relabelled execution.
+Both invocations reported actual modelgrok-4.7-build with no model/settings
+override. Hosted40399522288 is still pending at this checkpoint; new-head CI
+remains required. Scoped review/status is recorded in PR9comment6427275394.
 Sidecar byte/field shapes, earlier reader/linkage copies, remaining metadata and
 failure/I/O/deadline bounds, full B3, task1.5 and actual compiler/reader admissions
 remain open. This is no Docker/controller/provider/runtime/genuine-consumer
