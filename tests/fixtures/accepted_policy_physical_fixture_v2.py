@@ -33,7 +33,9 @@ from publication_acceptance_evidence import FULL_RESOURCE_EVIDENCE_FILES
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import prepare_original_fixture_engine_v1
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import preflight_original_fixture_engine_v1
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import capture_original_fixture_operation_v1
-from tests.fixtures.accepted_policy_native_fixture_v2 import write_native_policy_fixture_cell_v2
+from tests.fixtures.accepted_policy_native_fixture_v2 import (
+    MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2, write_native_policy_fixture_cell_v2,
+)
 from tests.fixtures import accepted_policy_fixture_compiler_admission_v1 as fixture_admission
 
 
@@ -223,18 +225,24 @@ def _fixture_operation_sample_counts_v2(
     plan: Mapping[str, Any], *, samples_per_branch: int,
     qualification_samples_by_operation_id: Mapping[str, int] | None,
 ) -> dict[str, int]:
-    if type(samples_per_branch) is not int or samples_per_branch < 30:
-        raise ValueError("complete fixture default requires at least 30 samples per branch")
+    if (type(samples_per_branch) is not int
+            or not 30 <= samples_per_branch <= MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2):
+        raise ValueError("complete fixture default sample count must be in 30..985")
     overrides = {} if qualification_samples_by_operation_id is None else qualification_samples_by_operation_id
-    if type(overrides) is not dict:
-        raise ValueError("mixed qualification sample counts must be an explicit object")
+    if type(overrides) is not dict or len(overrides) > 32:
+        raise ValueError("mixed qualification sample counts require at most 32 explicit entries")
     operations = plan["operation_manifest"]["operations"]
+    if type(operations) is not list or len(operations) != 37:
+        raise ValueError("complete fixture requires exactly 37 operations")
     operation_ids = [row["operation_id"] for row in operations]
     qualification_ids = {row["operation_id"] for row in operations if row["phase"] == "qualification_cell"}
+    if len(qualification_ids) != 32:
+        raise ValueError("complete fixture requires exactly 32 qualification operations")
     if len(set(operation_ids)) != len(operation_ids) or not set(overrides).issubset(qualification_ids):
         raise ValueError("mixed sample counts must name unique existing qualification operations")
-    if any(type(value) is not int or value < 1 for value in overrides.values()):
-        raise ValueError("mixed qualification sample counts must be positive integers")
+    if any(type(value) is not int or not 1 <= value <= MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2
+           for value in overrides.values()):
+        raise ValueError("mixed qualification sample counts must be in 1..985")
     return {operation_id: overrides.get(operation_id, samples_per_branch) for operation_id in operation_ids}
 
 

@@ -50,6 +50,11 @@ ROSTER = {
     "compat-legacy-01": LEGACY,
     "reports-red-01": ["tests.test_accepted_policy_fixture_report_v1"],
     "reports-green-01": ["tests.test_accepted_policy_fixture_report_v1"],
+    "quantity-red-01": ["tests.test_accepted_policy_fixture_quantity_v1"],
+    "quantity-green-01": ["tests.test_accepted_policy_fixture_quantity_v1",
+        "tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_mixed_counts_change_one_qualification_cell_and_leave_others_at31",
+        "tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_negative_entrypoint_compiles_and_uses_actual_call_signatures_without_changing_positive_gate",
+        "tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes"],
 }
 
 
@@ -62,7 +67,7 @@ def main():
                 "final_ns": 5_000_000_000}
     output = Path(__file__).resolve().parent / ("prep-" + phase)
     temporary = Path("/var/tmp") / ("vast-pr9-b2-prep-" + phase)
-    if phase.startswith("reports-"):
+    if phase.startswith(("reports-", "quantity-")):
         # Pure report tests need no native socket or executable filesystem.
         # Their deliberately oversized RED originals stay directly on C:.
         temporary = Path(__file__).resolve().parent / ("temporary-" + phase)
@@ -70,7 +75,7 @@ def main():
         raise ValueError("preparatory paths must be canonical and fresh; no retry")
     units, free, runtime = {}, {}, None
     paths = [("c", Path("/mnt/c")), ("temporary", temporary.parent)]
-    if phase.startswith(("compat-", "reports-")):
+    if phase.startswith(("compat-", "reports-", "quantity-")):
         paths.append(("e", Path("/mnt/e")))
     for label, path in paths:
         info = os.statvfs(path)
@@ -84,9 +89,11 @@ def main():
         allowance = 1073741824  # prior768MiB plus the complete reviewed256MiB tranche
     if phase.startswith("reports-"):
         allowance = 1207959552  # prior1GiB plus the prospective128MiB report tranche
+    if phase.startswith("quantity-"):
+        allowance = 1275068416  # prior1152MiB plus the prospective64MiB quantity tranche
     if free["c"] < 42949672960 + allowance or free["temporary"] < 1073741824 + allowance:
         raise ValueError("preparatory physical floor is insufficient")
-    if phase.startswith(("compat-", "reports-")):
+    if phase.startswith(("compat-", "reports-", "quantity-")):
         # Payload scattering and all previously unbacked fixed ext4 metadata,
         # full guest swap and host bookkeeping have their own physical quote.
         # E also pays its entire64GiB pagefile maximum plus1GiB source forms.
@@ -111,7 +118,7 @@ def main():
     command = [sys.executable, "-B", "-m", "unittest", "-v", *ROSTER[phase]]
     facts, _, _ = _capture_owned_reader_v2(command=command, cwd=ROOT,
         outputs={key: output / (key + ".original") for key in ("stdout", "stderr")}, deadline=deadline)
-    expected = 1 if phase in ("red", "metadata-red", "reports-red-01") else 0
+    expected = 1 if phase in ("red", "metadata-red", "reports-red-01", "quantity-red-01") else 0
     closed = (not facts["causes"] and facts["closure"]["closed"] and not facts["forced"]
               and facts["signal"] is None and facts["returncode"] == expected)
     for channel in ("stdout", "stderr"):
@@ -130,7 +137,7 @@ def main():
     complete = closed and not persistence["causes"] and persistence["written_bytes"] == len(raw) + 1 and not late
     status = _bounded_json_v2({"phase": phase, "capture_closed_with_expected_child_status": bool(closed),
         "child_returncode": facts["returncode"], "result": str(path), "result_persistence": persistence,
-        "deadline_exceeded": late, "red_output_review_required": phase in ("red", "metadata-red", "reports-red-01")}, 2048)
+        "deadline_exceeded": late, "red_output_review_required": phase in ("red", "metadata-red", "reports-red-01", "quantity-red-01")}, 2048)
     if status is None:
         raise ValueError("fixed preparatory status exceeded its reviewed bound")
     print(status.decode("ascii"), flush=True)

@@ -81,3 +81,18 @@ Task1.5, actual compiler/reader qualification, real Docker probes, lifecycle
 publication, runtime A/B renewal, genuine3840-first cohorts and final acceptance
 remain open. No image deletion/offload, disk allocation or physical workload
 ran. All46task identities/24checks and parked D27/Native57 remain unchanged.
+
+## Exact source release checks completed
+
+Independent exact-commit review at ee889770368a653a664a69e0a84c44e5b9a96d3f
+is CLEAR: all11files, source hashes,46archive members, protected sources and
+the recovered-source disclosure were verified. Configured Grok returned scoped
+source CLEAR in session01a178b7-0d66-7e90-8dfb-11e8d760fa1a, one turn, using
+the supplied source bytes. It did not rehash or rerun tests and explicitly left
+the declared wider B3 work open. Configured CLI had no model/settings override;
+actual modelUsage reports grok-4.7-build. Its complete original prompt/result/
+stderr are retained in B3-report-source-grok-originals.zip with member hashes.
+
+VAST CPU checks40344134928 at that exact source commit completed SUCCESS,
+updated2026-10-26T15:35:21Z. This closes the scoped source-review/CI checks; it
+does not close the consumer-return execution, full B3/task1.5 or physical gates.

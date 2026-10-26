@@ -32,6 +32,9 @@ from tests.fixtures.accepted_policy_native_rows_v2 import (
 )
 
 
+MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2 = 985
+
+
 def fixture_calibration_v2(capability: Mapping[str, Any], system: str) -> dict[str, Any]:
     return {
         "schema_version": 1,
@@ -71,8 +74,9 @@ def write_native_policy_fixture_cell_v2(
     worker_ids_by_branch_stream: Mapping[tuple[str, int], str] | None = None,
     limits_path: Path | None = None,
 ) -> dict[str, Any]:
-    if type(samples_per_branch) is not int or samples_per_branch < 1:
-        raise ValueError("native fixture requires a positive integer completed sample count")
+    if (type(samples_per_branch) is not int
+            or not 1 <= samples_per_branch <= MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2):
+        raise ValueError("native fixture completed sample count must be in 1..985")
     if resource not in RESOURCES or codec not in {"h264", "h265"}:
         raise ValueError("unsupported fixture coordinate")
     if topology_kind not in {"independent_processes", "shared_video_dag"}:
