@@ -54,3 +54,18 @@ Cumulative direct allowance is 1776 MiB = 1862270976 B; derived C liability
 fresh Windows/Linux capacity/configuration/boot/UUID/source/hash/collision checks.
 Both names are consumed. Final exact-commit review, configured Grok and CI remain
 separate; full B3/task 1.5/B4/compiler/reader and genuine milestones remain open.
+
+Subsequent independent exact-commit source/evidence review by
+/root/provider_route_review is CLEAR at e8dcfbfd187f2d594f37f117364996f26bed00a5.
+It verified both archive member sets, CRCs, hashes, original bytes and outcomes.
+The configured Grok invocation returned scoped CLEAR in one turn, exit 0,
+130.084 s. Its actual modelUsage records grok-4.6-build; the invocation supplied
+no model or reasoning override. Preserve this observed identity separately from
+the preceding caller review's grok-4.7-build identity. No configuration change
+was made; post-run hash/size/write time are in the derived observation.
+Grok reviewed supplied hash-checked source texts; it did not claim independent
+hashes, CRCs, execution, CI or physical socket closure. Exact-head CI 40439765020
+was still in progress when observed. No delegated stage approval follows yet.
+The five-record source-review ZIP is 65216 B, SHA256
+93e53d7f7d81f3eafa4c25bf52d7f8a20195927a80e1b6b63c9ea84d8c2b3101;
+all raw originals and the labelled derived observation remain in place.

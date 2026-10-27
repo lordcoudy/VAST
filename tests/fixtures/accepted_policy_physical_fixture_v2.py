@@ -119,28 +119,37 @@ def _fixture_command_replies_v2(
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     if type(image_inspections) is not dict or type(device_probes) is not dict:
         raise ValueError("fixture command reply maps must be explicit objects")
+    fixture_admission.executor._json_bound(image_inspections)
+    fixture_admission.executor._json_bound(device_probes)
     if not image_inspections and not device_probes:
         return {}, {}
     systems = {"openvino_gva", "gstreamer_custom"}
     if set(device_probes) != systems or any(type(value) is not dict for value in device_probes.values()):
         raise ValueError("fixture device probe map requires exactly two system objects")
-    aliases = dict(image_inspections)
+    fixture_admission.executor._table_bound("image_replies", image_inspections, True)
+    fixture_admission.executor._table_bound("probe_replies", device_probes, False)
     for key, image in image_inspections.items():
         if (type(image) is not dict or type(key) is not str
                 or re.fullmatch(r"sha256:[0-9a-f]{64}", key) is None or image.get("Id") != key):
             raise ValueError("captured fixture image key and Id must agree exactly")
-        references = [key]
         for name in ("RepoTags", "RepoDigests"):
             values = image.get(name)
             if values is None:
                 values = []
-            if type(values) is not list or any(type(value) is not str or not value.isascii() or not value for value in values):
+            if type(values) is not list or any(type(value) is not str or not value
+                    or len(value) > 512 or not value.isascii() or not value.isprintable() for value in values):
                 raise ValueError("captured fixture image aliases are malformed")
-            references.extend(values)
-        for reference in references:
-            previous = aliases.setdefault(reference, image)
-            if previous != image:
-                raise ValueError("captured image inspection aliases disagree")
+    aliases = {}
+    for key, image in image_inspections.items():
+        for values in ([key], image.get("RepoTags") or (), image.get("RepoDigests") or ()):
+            for reference in values:
+                previous = aliases.get(reference)
+                if previous is None:
+                    if len(aliases) >= fixture_admission.executor.TABLE_LIMIT:
+                        raise ValueError("fixture expanded image aliases exceed table bound")
+                    aliases[reference] = image
+                elif previous is not image and previous != image:
+                    raise ValueError("captured image inspection aliases disagree")
     try:
         with PhysicalRootCustodyV1.open(identity_patch_path.parent, label="fixture image patch") as custody:
             _, payload = custody.read_descriptor(identity_patch_path, label="fixture image patch",

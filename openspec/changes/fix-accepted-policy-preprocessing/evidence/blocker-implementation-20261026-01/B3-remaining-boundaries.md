@@ -27,6 +27,11 @@ recipe is preserved; owned children, enclosing clocks and persistence remain ope
 Outer preparation socket ownership and initiating/distinct-close preservation
 are separately addressed in B3-preparation-cleanup-checkpoint.md. Per-socket
 closure facts and inner accept/restoration cleanup remain unqualified.
+Complete reply-map and unique-alias preflight is separately addressed in
+B3-reply-preflight-checkpoint.md. Literal reads and pre-parse/whole heap remain
+open; B3-literal-child-capture-findings.md records the concrete nested Git/proof
+requirements. B4-retained-input-capacity-findings.md records the missing build
+state and sharing evidence without admitting the 96 GiB volume.
 
 Independent provider/source review inspected the unchanged enclosing fixture
 callers at2fcb1478514d5fe90e916c60706484fdac6a8d41 while the fixed sidecar
