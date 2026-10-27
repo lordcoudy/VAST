@@ -11,6 +11,9 @@ B3-artifact-reads-checkpoint.md; their byte ceilings do not close the retained
 audit's conditional metadata heap, captured engine, finalization or caller work.
 The captured-engine read/pin slice is now addressed in B3-engine-pin-checkpoint.md;
 its enclosing caller/outer cleanup/timing and actual execution gates remain open.
+Finalization CSV/hash/candidate encoding bounds are now separately addressed in
+B3-finalizer-bounds-checkpoint.md; candidate persistence/enclosing clocks and all
+other unclosed audit terms remain open.
 
 Independent provider/source review inspected the unchanged enclosing fixture
 callers at2fcb1478514d5fe90e916c60706484fdac6a8d41 while the fixed sidecar

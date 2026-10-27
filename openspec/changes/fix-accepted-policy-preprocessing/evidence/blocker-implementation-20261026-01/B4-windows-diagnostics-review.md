@@ -29,3 +29,13 @@ steps passed, CPU build/test discovery was still running. No delegated amendment
 approval is recorded while required checks remain incomplete. Independent planning
 approval alone cannot admit the physical operations: the complete whole peak,
 actual installed routing/custody and each finite setup/qualification remain open.
+
+Later exact-fc35fccf CI40420581061 completed SUCCESS. All independent findings
+remain resolved and configured Grok is complete at that exact planning scope.
+Explicit delegated AGENT amendment approval is recorded in
+[PR9comment6430536540](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6430536540).
+It releases reviewed B4 guard/operator implementation only. Full peak, safe
+quiescence, actual installed routing/custody and separately finite operations
+still precede every physical allocation/configuration/restart/probe/cutover.
+Later B3 source commits do not alter the reviewed planning blobs; their own
+current-source review/checks remain separate. No physical acceptance is implied.

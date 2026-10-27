@@ -9,7 +9,8 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from pathlib import Path
-import hashlib
+import csv
+import io
 import json
 import os
 import re
@@ -35,8 +36,10 @@ from tests.fixtures.accepted_policy_original_custody_fixture_v1 import prepare_o
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import preflight_original_fixture_engine_v1
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import capture_original_fixture_operation_v1
 from tests.fixtures.accepted_policy_native_fixture_v2 import (
-    MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2, write_native_policy_fixture_cell_v2,
+    MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2, _FIXTURE_SIDECAR_SPECS_V2,
+    write_native_policy_fixture_cell_v2,
 )
+from tests.fixtures.accepted_policy_fixture_report_v1 import fixture_report_bytes_v1
 from tests.fixtures import accepted_policy_fixture_compiler_admission_v1 as fixture_admission
 
 
@@ -412,6 +415,50 @@ def build_original_native_fixture_observations_v2(
             "campaign_authority": False, "physical_inference_observed": False}
 
 
+def _fixture_finalization_table_v2(directory, filename):
+    """Admit the two fixed finalization tables before pandas allocates them."""
+    if filename not in ("frames.csv", "ingress_ledger.csv"):
+        raise ValueError("unsupported fixture finalization table")
+    columns, row_limit, row_bytes, file_limit = _FIXTURE_SIDECAR_SPECS_V2[filename]
+    with PhysicalRootCustodyV1.open(directory, label="fixture finalization table") as custody:
+        _, payload = custody.read_descriptor(directory / filename, label="fixture finalization table",
+            maximum=file_limit, capture=True)
+        custody.verify()
+    reader = csv.reader(io.StringIO(payload.decode("ascii"), newline=""), strict=True)
+    if next(reader, None) != list(columns):
+        raise ValueError("fixture finalization CSV header drifted")
+    count = 0
+    for record in reader:
+        if not record:
+            continue
+        count += 1
+        if count > row_limit or len(record) != len(columns):
+            raise ValueError("fixture finalization CSV row/column bound exceeded")
+        upper = len(record) + sum(len(field) + field.count('"') + 2 for field in record)
+        if upper > row_bytes:
+            raise ValueError("fixture finalization CSV record bound exceeded")
+    if count == 0:
+        raise ValueError("fixture finalization CSV is empty")
+    return pd.read_csv(io.BytesIO(payload), nrows=row_limit + 1)
+
+
+def _fixture_finalization_hashes_v2(directory, policy):
+    evidence = {}
+    with PhysicalRootCustodyV1.open(directory, label="fixture finalization evidence") as custody:
+        for name in _acceptance_evidence_files(policy):
+            if name in _FIXTURE_SIDECAR_SPECS_V2:
+                maximum = _FIXTURE_SIDECAR_SPECS_V2[name][3]
+            elif name in ("policy_decisions.csv", "publication_policy_decisions.jsonl"):
+                maximum = 64 * 1024**2
+            else:
+                raise ValueError("unsupported fixture finalization hash role")
+            descriptor, _ = custody.read_descriptor(directory / name,
+                label="fixture finalization evidence", maximum=maximum, capture=False)
+            evidence[name] = descriptor["sha256"]
+        custody.verify()
+    return evidence
+
+
 def finalize_fixture_qualification_cells_v2(*, prepared: Mapping[str, Any], native: Mapping[str, Any], guardian_authority_path: Path) -> list[dict[str, Any]]:
     """Run the default real pilot finalizer while the fixture guardian is live."""
     runtime_receipt_path = Path(prepared["runtime"]["receipt_path"])
@@ -429,8 +476,8 @@ def finalize_fixture_qualification_cells_v2(*, prepared: Mapping[str, Any], nati
         if row["phase"] != "qualification_cell":
             continue
         directory = Path(item["original"]["outputs"]["measurement_dir"])
-        frames = pd.read_csv(directory / "frames.csv")
-        ingress = pd.read_csv(directory / "ingress_ledger.csv")
+        frames = _fixture_finalization_table_v2(directory, "frames.csv")
+        ingress = _fixture_finalization_table_v2(directory, "ingress_ledger.csv")
         fingerprint = schedule_fingerprint_for_records({**record, "sequence": record["admission_seq"]} for record in ingress.to_dict(orient="records"))
         candidate = {
             "schema_version": 2, "artifact_kind": "checkpoint_publication_runtime_candidate",
@@ -442,12 +489,14 @@ def finalize_fixture_qualification_cells_v2(*, prepared: Mapping[str, Any], nati
             "measurement_schedule_fingerprint_sha256": fingerprint,
             "completed_frames_by_stream": {str(stream): int(count) for stream, count in frames.groupby("stream_id").size().items()},
             "summary": {"campaign_authority": False, "physical_inference_observed": False, "fixture_observations": True},
-            "evidence_sha256": {name: hashlib.sha256((directory / name).read_bytes()).hexdigest() for name in _acceptance_evidence_files(row["policy"])},
+            "evidence_sha256": _fixture_finalization_hashes_v2(directory, row["policy"]),
             "pending_full_resource_evidence": list(FULL_RESOURCE_EVIDENCE_FILES),
         }
         path = directory / "checkpoint_publication_candidate.json"
+        candidate_raw = fixture_report_bytes_v1(candidate, limit=8192 - (len(os.linesep) - 1))
         with path.open("x", encoding="ascii") as stream:
-            stream.write(json.dumps(candidate, sort_keys=True, separators=(",", ":")) + "\n")
+            if stream.write(candidate_raw.decode("ascii")) != len(candidate_raw):
+                raise OSError("fixture finalization candidate short write")
         bundle_path = Path(prepared["runtime"]["receipt_path"]).parent / bundles[row["arm_id"]]["path"]
         calibration_path = Path(row["descriptors"]["calibration"]["path"])
         acceptance = finalize_checkpoint_qualification_pilot_acceptance_v1(
