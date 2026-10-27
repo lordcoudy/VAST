@@ -52,6 +52,12 @@ class _FixtureCapturedEngineErrorV2(ValueError):
         self.primary, self.secondary = primary, tuple(secondary)
 
 
+class _FixturePreparationCleanupErrorV2(ValueError):
+    def __init__(self, primary, secondary):
+        super().__init__("fixture preparation failed; distinct cleanup causes retained")
+        self.primary, self.secondary = primary, tuple(secondary)
+
+
 @contextmanager
 def _held_fixture_captured_engine_v2(path, preparation_absolute_deadline_ns):
     """Stream-hash the fixed captured ELF and lend one explicitly owned raw FD."""
@@ -205,9 +211,11 @@ def prepared_complete_fixture_inputs_v2(
         if path.exists() or path.is_symlink() or len(str(path).encode()) >= 108:
             raise ValueError("fixture socket reservation is occupied or exceeds AF_UNIX bound")
     fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
-    front = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
-    control = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+    front, control, primary = None, None, None
+    secondary = []
     try:
+        front = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+        control = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
         fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
         front.bind(str(front_path))
         front.listen(2)
@@ -281,9 +289,23 @@ def prepared_complete_fixture_inputs_v2(
                                "upstream": "fresh_physical_full_v4_and_authenticated_kpp",
                                "command_boundary": "held_artificial_elf_not_docker"},
                     }
+    except BaseException as error:
+        primary = error
     finally:
-        front.close()
-        control.close()
+        for owned in (front, control):
+            if owned is None:
+                continue
+            try:
+                owned.close()
+            except BaseException as error:
+                if primary is None:
+                    primary = error
+                elif error is not primary and not any(error is previous for previous in secondary):
+                    secondary.append(error)
+    if primary is not None:
+        if secondary:
+            raise _FixturePreparationCleanupErrorV2(primary, secondary) from primary
+        raise primary
 
 
 def _fixture_operation_sample_counts_v2(

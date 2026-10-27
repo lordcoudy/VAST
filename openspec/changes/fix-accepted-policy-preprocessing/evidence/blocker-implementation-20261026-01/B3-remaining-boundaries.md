@@ -24,6 +24,9 @@ must use B3-cohort-geometry-correction.md, including five ancillary985 operation
 Negative-29 now requires the same arguments, validates clocks early and forwards
 compiler authorities; see B3-refusal-arguments-checkpoint.md. The fixed refusal
 recipe is preserved; owned children, enclosing clocks and persistence remain open.
+Outer preparation socket ownership and initiating/distinct-close preservation
+are separately addressed in B3-preparation-cleanup-checkpoint.md. Per-socket
+closure facts and inner accept/restoration cleanup remain unqualified.
 
 Independent provider/source review inspected the unchanged enclosing fixture
 callers at2fcb1478514d5fe90e916c60706484fdac6a8d41 while the fixed sidecar
