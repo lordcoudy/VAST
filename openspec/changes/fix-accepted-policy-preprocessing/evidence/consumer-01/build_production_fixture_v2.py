@@ -110,6 +110,35 @@ def _fixture_execution_inputs_v2(args):
     return qualification, admission, reader_deadline, overrides
 
 
+def _fixture_observation_maps_v2(observations: Path):
+    from publication_physical_io_v1 import PhysicalRootCustodyV1
+    from tests.fixtures.accepted_policy_fixture_compiler_v1 import _json_bound
+
+    values = []
+    with PhysicalRootCustodyV1.open(observations, label="fixture producer observations") as custody:
+        for name in ("image-inspect-map.json", "device-probe-map.json"):
+            _, payload = custody.read_descriptor(observations / name, label=name,
+                maximum=16 * 1024**2, capture=True)
+            custody.verify()
+            value = json.loads(payload)
+            del payload
+            if type(value) is not dict:
+                raise ValueError("fixture observation map requires a JSON object")
+            _json_bound(value)
+            values.append(value)
+    return values[0], values[1]
+
+
+def _fixture_entrypoint_sha256_v2(root: Path, entrypoint: Path) -> str:
+    from publication_physical_io_v1 import PhysicalRootCustodyV1
+
+    with PhysicalRootCustodyV1.open(root, label="fixture producer entrypoint") as custody:
+        descriptor, _ = custody.read_descriptor(entrypoint, label="fixture producer entrypoint",
+            maximum=2 * 1024**2, capture=False)
+        custody.verify()
+    return descriptor["sha256"]
+
+
 def _fresh_json(path: Path, value: object) -> None:
     from tests.fixtures.accepted_policy_fixture_report_v1 import REPORT_LIMIT, fixture_report_bytes_v1
 
@@ -166,7 +195,7 @@ def main() -> None:
               "campaign_authority": False, "physical_inference_observed": False,
               "complete_consumer_positive_asserted": False,
               "upstream_root": str(root), "source_commit": args.expected_source_commit,
-              "entrypoint_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+              "entrypoint_sha256": _fixture_entrypoint_sha256_v2(root, Path(__file__)),
               "samples_per_branch": args.samples_per_branch,
               "expected_measured_sample_count": 32 * 4 * args.samples_per_branch if overrides is None else None,
               "approved_old_guardian_commit": APPROVED_COMMIT,
@@ -189,14 +218,14 @@ def main() -> None:
     config_base = root / "configs" / f"checkpoint_analytics_model_parity.refreshed.v4.{args.namespace}.accepted"
     observations = base / "consumer-runtime-observations-02"
     try:
+        image_inspections, device_probes = _fixture_observation_maps_v2(observations)
         with prepared_complete_fixture_inputs_v2(
             project_root=root, output_dir=output,
             identity_patch_path=base / "qualification_image_identity_patch.json",
             accepted_model_parity_manifest_path=config_base.with_suffix(".accepted.yaml"),
             accepted_model_parity_assessment_path=Path(str(config_base) + ".assessment.json"),
             accepted_model_parity_receipt_path=Path(str(config_base) + ".acceptance_receipt.json"),
-            image_inspections=json.loads((observations / "image-inspect-map.json").read_bytes()),
-            device_probes=json.loads((observations / "device-probe-map.json").read_bytes()),
+            image_inspections=image_inspections, device_probes=device_probes,
             socket_prefix=args.socket_prefix,
             compiler_qualification=qualification, compiler_admission=admission,
             compiler_absolute_deadline_ns=args.compiler_deadline_ns,

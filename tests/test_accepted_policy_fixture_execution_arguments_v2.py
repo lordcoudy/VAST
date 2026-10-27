@@ -70,6 +70,8 @@ class FixtureExecutionArgumentsTests(unittest.TestCase):
             stack.enter_context(patch.object(sys, "argv", argv))
             self.git = stack.enter_context(patch.object(builder, "_git", side_effect=git_reply))
             self.reporter = stack.enter_context(patch.object(builder, "_fresh_json"))
+            stack.enter_context(patch.object(builder, "_fixture_observation_maps_v2", return_value=({}, {}), create=True))
+            stack.enter_context(patch.object(builder, "_fixture_entrypoint_sha256_v2", return_value="d" * 64, create=True))
             stack.enter_context(patch.object(builder, "_canonical_fixture_root_v2", return_value=ROOT))
             stack.enter_context(patch.object(builder, "_canonical_fixture_directory_v2", side_effect=lambda value, **kwargs: Path(value)))
             stack.enter_context(patch.object(Path, "read_bytes", return_value=b"{}"))

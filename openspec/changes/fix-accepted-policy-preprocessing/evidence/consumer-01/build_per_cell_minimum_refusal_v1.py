@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import re
@@ -13,6 +12,7 @@ import traceback
 
 from build_production_fixture_v2 import (
     _add_fixture_execution_arguments_v2, _fixture_execution_inputs_v2,
+    _fixture_observation_maps_v2, _fixture_entrypoint_sha256_v2,
     _canonical_fixture_directory_v2, _canonical_fixture_root_v2, _fixture_source_root_v2, _fresh_json, _git,
 )
 
@@ -91,18 +91,18 @@ def main() -> None:
     report = {"schema_version": 1, "campaign_authority": False, "physical_inference_observed": False,
               "accepted_policy_qualification_asserted": False, "complete_consumer_positive_asserted": False,
               "default_guardian_refusal_asserted": False, "source_commit": args.expected_source_commit,
-              "project_root": str(root), "entrypoint_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+              "project_root": str(root), "entrypoint_sha256": _fixture_entrypoint_sha256_v2(root, Path(__file__)),
               "refusal_coordinate": REFUSAL_COORDINATE, "expected_measured_sample_count": 3960,
               "source_raw_before": before_raw, "initial_loaded_production_sources": original_sources}
     try:
+        image_inspections, device_probes = _fixture_observation_maps_v2(observations)
         with prepared_complete_fixture_inputs_v2(
             project_root=root, output_dir=output,
             identity_patch_path=base / "qualification_image_identity_patch.json",
             accepted_model_parity_manifest_path=config_base.with_suffix(".accepted.yaml"),
             accepted_model_parity_assessment_path=Path(str(config_base) + ".assessment.json"),
             accepted_model_parity_receipt_path=Path(str(config_base) + ".acceptance_receipt.json"),
-            image_inspections=json.loads((observations / "image-inspect-map.json").read_bytes()),
-            device_probes=json.loads((observations / "device-probe-map.json").read_bytes()),
+            image_inspections=image_inspections, device_probes=device_probes,
             socket_prefix=args.socket_prefix,
             compiler_qualification=qualification, compiler_admission=admission,
             compiler_absolute_deadline_ns=args.compiler_deadline_ns,

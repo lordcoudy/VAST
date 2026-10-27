@@ -37,6 +37,9 @@ and _write_result_v2 with original status/EOF/ownership/persistence facts; a
 retained prefix cannot be accepted as complete output.
 
 This is a source audit, not implemented capture, execution or CI redesign.
+The subsequent B3-literal-reads-checkpoint.md closes the two fixed observation
+file reads and entrypoint hashing adapters only; the child captures above and
+the negative source-plan selector remain open.
 No test, workload or provider command was run by the reviewer. Source anchors:
 consumer-01/build_production_fixture_v2.py:75,
 consumer-01/build_per_cell_minimum_refusal_v1.py:23 and :177,

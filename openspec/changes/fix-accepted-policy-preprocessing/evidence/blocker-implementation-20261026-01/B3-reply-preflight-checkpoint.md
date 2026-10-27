@@ -63,3 +63,19 @@ Two 16 MiB tranches yield cumulative 1808 MiB = 1895825408 B; derived C liabilit
 Windows/Linux physical/configuration/boot/UUID/source/hash/collision checks.
 Both namespaces are consumed. Exact-commit review, configured Grok and latest
 CI remain separate; whole B3/task 1.5/B4 and genuine acceptance remain open.
+
+Subsequent independent exact-commit source/evidence review is CLEAR at
+c1ec2a111edcfc5a8157e04d3475029c61fc8fbe. All twenty capture and five preceding
+review-archive members, source copies and actual outcomes were verified.
+The configured Grok invocation returned scoped CLEAR at the same commit:
+one turn, exit 0, 182.358 s, actual modelUsage grok-4.6-build with no model or
+reasoning override. Its source-text review does not claim independent hashes,
+CRCs, CI or execution. Exact-head CI 40445610730 was still in progress when
+observed. The earlier caller and cleanup heads passed CI 40437647170 and
+40439765020 respectively; those successes do not pass this later head.
+The four-record source-review ZIP is 73252 B, SHA256
+92b73e25b9fa4d7e13040f53f028db4baaf19ffc4014d11faa43d14968eff3e1.
+
+Fresh connector observation subsequently confirmed exact-head run 40445610730
+completed successfully for c1ec2a111edcfc5a8157e04d3475029c61fc8fbe.
+This passes that source checkpoint only, not a later head or physical admission.

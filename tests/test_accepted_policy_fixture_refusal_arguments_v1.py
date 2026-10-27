@@ -62,6 +62,8 @@ class FixtureRefusalArgumentsTests(unittest.TestCase):
             self.raw_proof = stack.enter_context(patch.object(builder, "_raw_committed_source_proof",
                 return_value={"original_exit_code": 0}))
             stack.enter_context(patch.object(builder, "_fresh_json"))
+            stack.enter_context(patch.object(builder, "_fixture_observation_maps_v2", return_value=({}, {}), create=True))
+            stack.enter_context(patch.object(builder, "_fixture_entrypoint_sha256_v2", return_value="d" * 64, create=True))
             stack.enter_context(patch.object(builder, "_canonical_fixture_root_v2", return_value=ROOT))
             stack.enter_context(patch.object(builder, "_canonical_fixture_directory_v2",
                 side_effect=lambda value, **kwargs: Path(value)))

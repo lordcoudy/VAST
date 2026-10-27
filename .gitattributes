@@ -436,3 +436,9 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 /openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/f2-successor-c-typed-binding-red-03.original.txt whitespace=-blank-at-eol,blank-at-eof,space-before-tab
 /openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/retention-current-code-windows-40.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/retention-windows-actual-green-35.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Exact retained CI log/script bytes, including their emitted whitespace.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/ci-9cf04a1b-originals/workflow-job.connector-text.utf8.log -text !eol whitespace=-blank-at-eol,-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/ci-9cf04a1b-originals/preservation-command.redacted.ps1 -text !eol whitespace=-blank-at-eol,-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/ci-9cf04a1b-originals/workflow-job.connector-text.utf8.log -text !eol whitespace=-blank-at-eol,-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/ci-9cf04a1b-originals/preservation-command.redacted.ps1 -text !eol whitespace=-blank-at-eol,-blank-at-eof
