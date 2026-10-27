@@ -12,6 +12,7 @@ import sys
 import traceback
 
 from build_production_fixture_v2 import (
+    _add_fixture_execution_arguments_v2, _fixture_execution_inputs_v2,
     _canonical_fixture_directory_v2, _canonical_fixture_root_v2, _fixture_source_root_v2, _fresh_json, _git,
 )
 
@@ -57,11 +58,17 @@ def main() -> None:
     parser.add_argument("--namespace", required=True)
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--socket-prefix", default=".apf29")
+    _add_fixture_execution_arguments_v2(parser)
     args = parser.parse_args()
     source_root = _fixture_source_root_v2(Path(__file__))
     root = _canonical_fixture_root_v2(args.project_root, source_root=source_root)
     if re.fullmatch(r"[0-9a-f]{40}", args.expected_source_commit) is None:
         raise ValueError("expected source commit must be an exact commit SHA")
+    sys.path.insert(0, str(root))
+    sys.path.insert(0, str(root / "scripts"))
+    qualification, admission, reader_deadline, overrides = _fixture_execution_inputs_v2(args)
+    if overrides is not None:
+        raise ValueError("the fixed negative-29 recipe does not accept qualification overrides")
     before_head, before_status = _git(root, "rev-parse", "HEAD"), _git(root, "status", "--porcelain", "--untracked-files=no")
     if before_head.decode().strip() != args.expected_source_commit or before_status:
         raise ValueError("refusal fixture requires exact clean frozen source")
@@ -72,8 +79,6 @@ def main() -> None:
     before_raw = _raw_committed_source_proof(root)
     if before_raw["original_exit_code"] != 0:
         raise ValueError("stock raw committed source proof failed before refusal fixture")
-    sys.path.insert(0, str(root))
-    sys.path.insert(0, str(root / "scripts"))
     from tests.fixtures.accepted_policy_fixture_provenance_v1 import loaded_fixture_production_sources_v1
     from tests.fixtures.accepted_policy_physical_fixture_v2 import (
         build_original_native_fixture_observations_v2, prepared_complete_fixture_inputs_v2,
@@ -99,6 +104,8 @@ def main() -> None:
             image_inspections=json.loads((observations / "image-inspect-map.json").read_bytes()),
             device_probes=json.loads((observations / "device-probe-map.json").read_bytes()),
             socket_prefix=args.socket_prefix,
+            compiler_qualification=qualification, compiler_admission=admission,
+            compiler_absolute_deadline_ns=args.compiler_deadline_ns,
         ) as prepared:
             operation_id = _select_refusal_operation(prepared)
             native = build_original_native_fixture_observations_v2(

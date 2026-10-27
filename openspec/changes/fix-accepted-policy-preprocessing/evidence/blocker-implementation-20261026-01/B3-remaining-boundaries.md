@@ -18,9 +18,12 @@ The complete consumer now validates its existing reader clock before its own
 materialization; see B3-consumer-clock-checkpoint.md. The literal producer and
 enclosing-call clock/admission/persistence work remain unclosed.
 The positive literal producer now requires and forwards its existing authorities
-and clocks; see B3-execution-arguments-checkpoint.md. Negative-29, owned child
-capture, enclosing clocks and persistence remain open. Mixed-cohort capacity
+and clocks; see B3-execution-arguments-checkpoint.md. Owned child capture,
+enclosing clocks and persistence remain open. Mixed-cohort capacity
 must use B3-cohort-geometry-correction.md, including five ancillary985 operations.
+Negative-29 now requires the same arguments, validates clocks early and forwards
+compiler authorities; see B3-refusal-arguments-checkpoint.md. The fixed refusal
+recipe is preserved; owned children, enclosing clocks and persistence remain open.
 
 Independent provider/source review inspected the unchanged enclosing fixture
 callers at2fcb1478514d5fe90e916c60706484fdac6a8d41 while the fixed sidecar

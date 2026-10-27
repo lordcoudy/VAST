@@ -142,7 +142,8 @@ def main() -> None:
     from tests.fixtures.accepted_policy_native_fixture_v2 import MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2
 
     qualification, admission, reader_deadline, overrides = _fixture_execution_inputs_v2(args)
-    if type(args.samples_per_branch) is not int or not 30 <= args.samples_per_branch <= MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2:
+    if (type(args.samples_per_branch) is not int or args.samples_per_branch < 30
+            or args.samples_per_branch > MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2):
         raise ValueError("complete fixture requires 30..985 samples in every branch cell")
     if re.fullmatch(r"[a-z0-9][a-z0-9-]{0,100}", args.namespace) is None:
         raise ValueError("fixture upstream namespace is invalid")

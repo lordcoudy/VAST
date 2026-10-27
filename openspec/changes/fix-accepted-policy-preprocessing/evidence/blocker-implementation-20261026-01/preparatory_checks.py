@@ -92,6 +92,11 @@ ROSTER = {
         "tests.test_accepted_policy_fixture_execution_arguments_v2.FixtureExecutionArgumentsTests.test_mixed126016_overrides_are_forwarded_and_counted_from_fixed_plan",
         "tests.test_accepted_policy_fixture_execution_arguments_v2.FixtureExecutionArgumentsTests.test_override_cardinality_and_value_types_refuse_before_git"],
     "executionargs-green-01": ["tests.test_accepted_policy_fixture_execution_arguments_v2"],
+    "negativeargs-red-01": ["tests.test_accepted_policy_fixture_refusal_arguments_v1"],
+    "negativeargs-green-01": ["tests.test_accepted_policy_fixture_refusal_arguments_v1"],
+    "callercompat-green-01": ["tests.test_accepted_policy_fixture_execution_arguments_v2",
+        "tests.test_accepted_policy_fixture_refusal_arguments_v1",
+        "tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_negative_entrypoint_compiles_and_uses_actual_call_signatures_without_changing_positive_gate"],
 }
 
 
@@ -104,7 +109,7 @@ def main():
                 "final_ns": 5_000_000_000}
     output = Path(__file__).resolve().parent / ("prep-" + phase)
     temporary = Path("/var/tmp") / ("vast-pr9-b2-prep-" + phase)
-    if phase.startswith(("reports-", "quantity-", "bindings-", "sidecars-", "readers-", "writefacts-", "headers-", "artreads-", "enginepin-", "finalbounds-", "consumerclock-", "executionargs-")):
+    if phase.startswith(("reports-", "quantity-", "bindings-", "sidecars-", "readers-", "writefacts-", "headers-", "artreads-", "enginepin-", "finalbounds-", "consumerclock-", "executionargs-", "negativeargs-", "callercompat-")):
         # Pure report tests need no native socket or executable filesystem.
         # Their deliberately oversized RED originals stay directly on C:.
         temporary = Path(__file__).resolve().parent / ("temporary-" + phase)
@@ -112,7 +117,7 @@ def main():
         raise ValueError("preparatory paths must be canonical and fresh; no retry")
     units, free, runtime = {}, {}, None
     paths = [("c", Path("/mnt/c")), ("temporary", temporary.parent)]
-    if phase.startswith(("compat-", "reports-", "quantity-", "bindings-", "sidecars-", "readers-", "writefacts-", "headers-", "artreads-", "enginepin-", "finalbounds-", "consumerclock-", "executionargs-")):
+    if phase.startswith(("compat-", "reports-", "quantity-", "bindings-", "sidecars-", "readers-", "writefacts-", "headers-", "artreads-", "enginepin-", "finalbounds-", "consumerclock-", "executionargs-", "negativeargs-", "callercompat-")):
         paths.append(("e", Path("/mnt/e")))
     for label, path in paths:
         info = os.statvfs(path)
@@ -156,9 +161,13 @@ def main():
         allowance = 1761607680  # prior1648MiB plus the prospective32MiB literal-argument tranche
     if phase in ("executionargs-counts-red-01", "executionargs-green-01"):
         allowance = 1778384896  # per-operation forwarding RED has its own16MiB tranche
+    if phase.startswith("negativeargs-"):
+        allowance = 1811939328  # prior1696MiB plus the prospective32MiB negative-caller tranche
+    if phase.startswith("callercompat-"):
+        allowance = 1828716544  # one16MiB tranche for the review-required caller regression
     if free["c"] < 42949672960 + allowance or free["temporary"] < 1073741824 + allowance:
         raise ValueError("preparatory physical floor is insufficient")
-    if phase.startswith(("compat-", "reports-", "quantity-", "bindings-", "sidecars-", "readers-", "writefacts-", "headers-", "artreads-", "enginepin-", "finalbounds-", "consumerclock-", "executionargs-")):
+    if phase.startswith(("compat-", "reports-", "quantity-", "bindings-", "sidecars-", "readers-", "writefacts-", "headers-", "artreads-", "enginepin-", "finalbounds-", "consumerclock-", "executionargs-", "negativeargs-", "callercompat-")):
         # Payload scattering and all previously unbacked fixed ext4 metadata,
         # full guest swap and host bookkeeping have their own physical quote.
         # E also pays its entire64GiB pagefile maximum plus1GiB source forms.
@@ -183,7 +192,7 @@ def main():
     command = [sys.executable, "-B", "-m", "unittest", "-v", *ROSTER[phase]]
     facts, _, _ = _capture_owned_reader_v2(command=command, cwd=ROOT,
         outputs={key: output / (key + ".original") for key in ("stdout", "stderr")}, deadline=deadline)
-    expected = 1 if phase in ("red", "metadata-red", "reports-red-01", "quantity-red-01", "bindings-red-01", "sidecars-red-01", "sidecars-edges-red-01", "readers-red-01", "writefacts-red-01", "headers-red-01", "headers-owner-red-01", "artreads-red-01", "enginepin-red-01", "finalbounds-red-01", "finalbounds-fixture-red-01", "consumerclock-red-01", "executionargs-red-01", "executionargs-counts-red-01") else 0
+    expected = 1 if phase in ("red", "metadata-red", "reports-red-01", "quantity-red-01", "bindings-red-01", "sidecars-red-01", "sidecars-edges-red-01", "readers-red-01", "writefacts-red-01", "headers-red-01", "headers-owner-red-01", "artreads-red-01", "enginepin-red-01", "finalbounds-red-01", "finalbounds-fixture-red-01", "consumerclock-red-01", "executionargs-red-01", "executionargs-counts-red-01", "negativeargs-red-01") else 0
     closed = (not facts["causes"] and facts["closure"]["closed"] and not facts["forced"]
               and facts["signal"] is None and facts["returncode"] == expected)
     for channel in ("stdout", "stderr"):
@@ -202,7 +211,7 @@ def main():
     complete = closed and not persistence["causes"] and persistence["written_bytes"] == len(raw) + 1 and not late
     status = _bounded_json_v2({"phase": phase, "capture_closed_with_expected_child_status": bool(closed),
         "child_returncode": facts["returncode"], "result": str(path), "result_persistence": persistence,
-        "deadline_exceeded": late, "red_output_review_required": phase in ("red", "metadata-red", "reports-red-01", "quantity-red-01", "bindings-red-01", "sidecars-red-01", "sidecars-edges-red-01", "readers-red-01", "writefacts-red-01", "headers-red-01", "headers-owner-red-01", "artreads-red-01", "enginepin-red-01", "finalbounds-red-01", "finalbounds-fixture-red-01", "consumerclock-red-01", "executionargs-red-01", "executionargs-counts-red-01")}, 2048)
+        "deadline_exceeded": late, "red_output_review_required": phase in ("red", "metadata-red", "reports-red-01", "quantity-red-01", "bindings-red-01", "sidecars-red-01", "sidecars-edges-red-01", "readers-red-01", "writefacts-red-01", "headers-red-01", "headers-owner-red-01", "artreads-red-01", "enginepin-red-01", "finalbounds-red-01", "finalbounds-fixture-red-01", "consumerclock-red-01", "executionargs-red-01", "executionargs-counts-red-01", "negativeargs-red-01")}, 2048)
     if status is None:
         raise ValueError("fixed preparatory status exceeded its reviewed bound")
     print(status.decode("ascii"), flush=True)
