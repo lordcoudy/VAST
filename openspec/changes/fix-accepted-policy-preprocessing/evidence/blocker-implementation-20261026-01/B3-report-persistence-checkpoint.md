@@ -67,3 +67,28 @@ Independent working source/outcome/archive/checkpoint review by
 /root/provider_route_review is CLEAR. All33 stored members, CRCs, hashes and
 originals match; the legacy scope was independently observed as eleven roots
 and one132-byte report. This verdict does not replace exact-commit/Grok/CI gates.
+
+Exact-commit follow-up: /root/provider_route_review returned CLEAR for
+30ef6372397476b83f62b8b29bc983008ce56b72, including both producers, tests,
+runner, all33 archive members and checkpoint scope. Configured Grok completed
+normally with CLEAR for that same commit: actual modelUsage grok-4.6-build,
+one turn, exit0,116.941 s. It reviewed supplied source; it did not rerun tests,
+hashes, CRCs, CI or physical qualification. The four-member review-originals
+ZIP is76215 B, SHA256
+d00b85f54cfd6e2572b6afd67b8423a80569554074878219012b41d05e2b4523.
+Prompt, raw stdout/stderr and the actual stored outer completion are preserved.
+The last phrase in Grok's text about S96/images is scoped here: S96 fit is OPEN,
+all227 images remain protected, and D27/Native57 remains parked.
+
+GitHub Actions VAST CPU checks40462783038 completed SUCCESS at exact30ef.
+This completes the review/check conditions for delegated AGENT source-stage
+approval of this slice only. It closes no task1.5, B3/B4, compiler/reader/runtime,
+genuine-consumer, conformance, archive or merge gate.
+
+PR9comment6436235576 records that narrow delegated AGENT approval. Independent
+/root/capacity_review verified all four ZIP members, CRCs, hashes and preserved
+originals:75467 B originals,77081 B archive/manifest,229629 B including the one
+funded Git archive/manifest copy. The final outer-tool wall_time is return latency,
+not Grok's duration. Fresh Windows/Linux guards and the exact-head CI connector
+observation are retained in B3-report-persistence-review-completion.original.json;
+they permit only this small retention within the existing16 MiB metadata tranche.
