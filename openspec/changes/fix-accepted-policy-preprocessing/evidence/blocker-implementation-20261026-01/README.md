@@ -88,3 +88,10 @@ failure-frame implementation and its sole3-method/five-failure RED,88-method GRE
 [B3-failure-frame-checkpoint.md](B3-failure-frame-checkpoint.md). Its independently
 reviewed96MiB allowance raises cumulative direct reservations to2192MiB; whole1.5
 remains open. No genuine or physical acceptance follows from the controlled cases.
+
+The subsequent bounded build-context metadata repair is recorded in
+[B4-build-metadata-checkpoint.md](B4-build-metadata-checkpoint.md): meaningful
+8-method/14-failure RED followed by27 passing qualified-Linux methods, with
+unchanged copy behavior and two retained9-member ZIPs. Its separate32MiB direct
+pair and2GiB physical scatter make cumulative direct2224MiB and derived C
+73.130859375GiB. Whole1.5 and real build/controller/reader/consumer gates remain open.

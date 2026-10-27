@@ -3,9 +3,11 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import os
+import stat
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest import mock
 
 
@@ -318,6 +320,218 @@ class RuntimeBuildContextV3Tests(unittest.TestCase):
                     source_date_epoch=0,
                 )
             self.assertEqual(list(output.iterdir()), [])
+
+
+class RuntimeBuildContextMetadataTests(unittest.TestCase):
+    def _case(self):
+        # Retain small witnesses for both RED and GREEN; never replay a root.
+        parent = Path(tempfile.mkdtemp(prefix="buildmeta-"))
+        project, manifests, paths = RuntimeBuildContextV3Tests()._fixture(parent)
+        output = parent / "context"
+        output.mkdir()
+        return _module(), project, manifests, paths, output
+
+    def _manifest(self, raw):
+        parent = Path(tempfile.mkdtemp(prefix="buildmeta-"))
+        path = parent / "manifest.txt"
+        path.write_bytes(raw)
+        return _module(), parent, path
+
+    def _run(self, module, project, manifests, output):
+        return module.materialize_runtime_build_context(
+            project_root=project, output_dir=output,
+            manifest_paths=manifests, source_date_epoch=0,
+        )
+
+    def _refuse_before_copy(self, module, project, manifests, output, message):
+        with mock.patch.object(module, "_copy_held_source", wraps=module._copy_held_source) as copy:
+            with self.assertRaisesRegex(ValueError, message):
+                self._run(module, project, manifests, output)
+            copy.assert_not_called()
+        self.assertEqual(list(output.iterdir()), [])
+
+    def test_manifest_size_is_refused_before_reading_or_decoding(self):
+        module, root, manifest = self._manifest(b"x" * 8192 + b"\n")
+        # GREEN strengthening after retained RED: reject from sealed metadata,
+        # before either the old unbounded read or a new descriptor/read path.
+        with mock.patch.object(Path, "read_bytes", side_effect=AssertionError("unbounded manifest read")), \
+                mock.patch.object(module.os, "open", side_effect=AssertionError("oversize manifest opened")), \
+                mock.patch.object(module.os, "read", side_effect=AssertionError("oversize manifest read")):
+            with self.assertRaisesRegex(ValueError, "manifest byte bound"):
+                module._manifest_members(root, manifest)
+
+    def test_manifest_growth_and_truncation_cannot_be_accumulated(self):
+        for chunks in ((b"x\nx",), (b"x", b"\nx"), (b"x", b"")):
+            with self.subTest(chunks=chunks):
+                module, root, manifest = self._manifest(b"x\n")
+                with mock.patch.object(module.os, "read", side_effect=chunks) as read:
+                    with self.assertRaisesRegex(ValueError, "manifest size drifted"):
+                        module._manifest_members(root, manifest)
+                    self.assertLessEqual(read.call_count, len(chunks))
+                    self.assertEqual(read.call_args_list[0].args[1], 3)
+                    if read.call_count == 2:
+                        self.assertEqual(read.call_args_list[1].args[1], 2)
+
+    def test_manifest_open_is_nonblocking_nofollow_and_immediately_validated(self):
+        module, root, manifest = self._manifest(b"x\n")
+        with mock.patch.object(module.os, "open", wraps=os.open) as opened, \
+                mock.patch.object(module.os, "fstat", wraps=os.fstat) as checked:
+            self.assertEqual(module._manifest_members(root, manifest), ("x",))
+        self.assertEqual(opened.call_count, 1)
+        self.assertGreaterEqual(checked.call_count, 1)
+        flags = opened.call_args.args[1]
+        for name in ("O_NONBLOCK", "O_NOFOLLOW", "O_CLOEXEC"):
+            if hasattr(os, name):
+                self.assertEqual(flags & getattr(os, name), getattr(os, name))
+
+    def test_manifest_entry_count_is_refused_before_path_collection(self):
+        raw = b"".join(f"x{index:03d}\n".encode("ascii") for index in range(129))
+        module, root, manifest = self._manifest(raw)
+        with self.assertRaisesRegex(ValueError, "manifest entry bound"):
+            module._manifest_members(root, manifest)
+
+    def test_path_bytes_alphabet_and_depth_are_bounded(self):
+        for value in ("x" * 257, "/".join("x" for _ in range(9)), "caf\u00e9", "x\x01y"):
+            with self.subTest(value=value):
+                module, root, manifest = self._manifest(value.encode("utf-8") + b"\n")
+                with self.assertRaisesRegex(ValueError, "manifest path bound"):
+                    module._manifest_members(root, manifest)
+
+    def test_four_manifest_inputs_refuse_before_any_destination_write(self):
+        module, project, manifests, _, output = self._case()
+        extra = tuple(project / "manifests" / name for name in ("third.txt", "fourth.txt"))
+        for path in extra:
+            path.write_bytes(b"runtime/entry.py\n")
+        self._refuse_before_copy(module, project, manifests + extra, output, "manifest count bound")
+
+    def test_manifest_input_iterator_stops_after_first_excess_element(self):
+        module, project, manifests, _, output = self._case()
+        consumed = []
+
+        def candidates():
+            for index in range(4):
+                consumed.append(index)
+                yield manifests[index % 2]
+            raise AssertionError("input consumed beyond the first excess manifest")
+
+        self._refuse_before_copy(module, project, candidates(), output, "manifest count bound")
+        self.assertEqual(consumed, [0, 1, 2, 3])
+
+    def test_union_overflow_refuses_before_member_stat_or_copy(self):
+        module, project, manifests, _, output = self._case()
+        rows = tuple(f"x{index:03d}" for index in range(129))
+        with mock.patch.object(module, "_manifest_members", side_effect=(rows[:65], rows[65:])), \
+                mock.patch.object(module, "_physical_member", side_effect=AssertionError("early member stat")):
+            self._refuse_before_copy(module, project, manifests, output, "path union bound")
+
+    def _sized_member(self, original, sizes):
+        def member(root, relative):
+            source, info = original(root, relative)
+            if relative in sizes:
+                info = SimpleNamespace(**{
+                    name: (sizes[relative] if name == "st_size" else getattr(info, name))
+                    for name in ("st_dev", "st_ino", "st_mode", "st_nlink", "st_size", "st_mtime_ns", "st_ctime_ns")
+                })
+            return source, info
+        return member
+
+    def test_late_oversize_or_negative_member_refuses_before_first_copy(self):
+        for size in (-1, 32 * 1024**2 + 1):
+            with self.subTest(size=size):
+                module, project, manifests, _, output = self._case()
+                member = self._sized_member(module._physical_member, {"runtime/entry.py": size})
+                with mock.patch.object(module, "_physical_member", side_effect=member):
+                    self._refuse_before_copy(module, project, manifests, output, "member byte bound")
+
+    def test_total_member_bytes_refuse_before_first_copy(self):
+        module, project, manifests, _, output = self._case()
+        member = self._sized_member(module._physical_member, {
+            "bundle/dependency.whl": 24 * 1024**2, "runtime/entry.py": 24 * 1024**2,
+        })
+        with mock.patch.object(module, "_physical_member", side_effect=member):
+            self._refuse_before_copy(module, project, manifests, output, "context byte bound")
+
+    def test_manifest_descriptor_substitution_refuses_before_first_read(self):
+        module, root, manifest = self._manifest(b"x\n")
+        info = manifest.stat()
+        fifo = SimpleNamespace(**{
+            name: (stat.S_IFIFO | 0o600 if name == "st_mode" else getattr(info, name))
+            for name in ("st_dev", "st_ino", "st_mode", "st_nlink", "st_size", "st_mtime_ns", "st_ctime_ns")
+        })
+        with mock.patch.object(module.os, "fstat", return_value=fifo), \
+                mock.patch.object(module.os, "read", side_effect=AssertionError("unsafe descriptor read")) as read:
+            with self.assertRaisesRegex(ValueError, "manifest changed before read"):
+                module._manifest_members(root, manifest)
+            read.assert_not_called()
+
+    def test_manifest_read_and_close_failures_keep_both_original_causes(self):
+        module, root, manifest = self._manifest(b"x\n")
+        primary = OSError("controlled read")
+        secondary = OSError("controlled close")
+        close = os.close
+
+        def close_then_fail(descriptor):
+            close(descriptor)
+            raise secondary
+
+        with mock.patch.object(module.os, "read", side_effect=primary), \
+                mock.patch.object(module.os, "close", side_effect=close_then_fail):
+            with self.assertRaises(ValueError) as refused:
+                module._manifest_members(root, manifest)
+        causes = []
+        current = refused.exception
+        for _ in range(8):
+            if current is None or any(current is item for item in causes):
+                break
+            causes.append(current)
+            current = current.__cause__ or current.__context__
+        self.assertTrue(any(item is primary for item in causes))
+        self.assertTrue(any(item is secondary for item in causes))
+
+    def test_exact_manifest_and_path_boundaries_preserve_original_rows(self):
+        rows = tuple(f"{index:03d}" + "x" * 60 for index in range(128))
+        raw = ("\n".join(rows) + "\n").encode("ascii")
+        self.assertEqual(len(raw), 8192)
+        module, root, manifest = self._manifest(raw)
+        self.assertEqual(module._manifest_members(root, manifest), rows)
+        for value in ("x" * 256, "/".join("x" for _ in range(8)), 'a"b'):
+            module, root, manifest = self._manifest(value.encode("ascii") + b"\n")
+            self.assertEqual(module._manifest_members(root, manifest), (value,))
+
+    def test_success_preserves_schema_bytes_hash_and_timestamp(self):
+        module, project, manifests, paths, output = self._case()
+        result = self._run(module, project, manifests, output)
+        self.assertEqual(result, {
+            "schema_version": 3, "artifact_kind": "vast_exact_runtime_build_context_v3",
+            "relative_paths": paths, "aggregate_sha256": _aggregate(project, paths),
+            "source_date_epoch": 0,
+        })
+        for relative in paths:
+            self.assertEqual((output / relative).read_bytes(), (project / relative).read_bytes())
+            self.assertEqual(int((output / relative).stat().st_mtime), 0)
+
+    def test_output_scans_never_collect_or_recurse_into_unexpected_tree(self):
+        module, project, manifests, _, output = self._case()
+        original_copy = module._copy_held_source
+        original_scan = os.scandir
+        foreign = output / "foreign"
+
+        def copy_then_inject(*args, **kwargs):
+            digest = original_copy(*args, **kwargs)
+            foreign.mkdir(exist_ok=True)
+            return digest
+
+        def scan(path):
+            if Path(path) == foreign:
+                raise AssertionError("descended into an unadmitted directory")
+            return original_scan(path)
+
+        with mock.patch.object(module, "_copy_held_source", side_effect=copy_then_inject), \
+                mock.patch.object(module.os, "scandir", side_effect=scan), \
+                mock.patch.object(Path, "rglob", side_effect=AssertionError("unbounded recursive scan")), \
+                mock.patch.object(Path, "iterdir", side_effect=AssertionError("eager directory scan")):
+            with self.assertRaisesRegex(ValueError, "inventory drifted"):
+                self._run(module, project, manifests, output)
 
 
 if __name__ == "__main__":

@@ -442,3 +442,17 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 /openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/ci-9cf04a1b-originals/preservation-command.redacted.ps1 -text !eol whitespace=-blank-at-eol,-blank-at-eof
 /openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/ci-9cf04a1b-originals/workflow-job.connector-text.utf8.log -text !eol whitespace=-blank-at-eol,-blank-at-eof
 /openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/ci-9cf04a1b-originals/preservation-command.redacted.ps1 -text !eol whitespace=-blank-at-eol,-blank-at-eof
+
+# Preserve the six exact reviewed B4 scripts, including their final blank line.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-admission.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-archive-command.original.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-archive.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-admission.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-archive-command.original.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-archive.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-admission.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-archive-command.original.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-archive.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-admission.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-archive-command.original.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-archive.proposed.ps1 -text !eol whitespace=-blank-at-eof
