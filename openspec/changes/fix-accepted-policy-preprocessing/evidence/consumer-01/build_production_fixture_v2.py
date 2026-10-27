@@ -76,6 +76,40 @@ def _git(root: Path, *args: str) -> bytes:
     return subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True).stdout
 
 
+def _add_fixture_execution_arguments_v2(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--compiler-qualification-json", required=True)
+    parser.add_argument("--compiler-admission-json", required=True)
+    parser.add_argument("--compiler-deadline-ns", type=int, required=True)
+    parser.add_argument("--reader-deadline-json", required=True)
+    parser.add_argument("--qualification-samples-json")
+
+
+def _fixture_execution_inputs_v2(args):
+    """Read bounded data arguments; existing gates still authenticate authority."""
+    from publication_operational_request_domain_v1 import strict_json_object_v1
+    from tests.fixtures.accepted_policy_native_fixture_v2 import MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2
+    from tests.fixtures.accepted_policy_fixture_compiler_admission_v1 import _compiler_preparation_clock_v1
+    from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import _sealed_deadline_v2
+
+    values = []
+    raw_values = [args.compiler_qualification_json, args.compiler_admission_json, args.reader_deadline_json]
+    if args.qualification_samples_json is not None:
+        raw_values.append(args.qualification_samples_json)
+    for raw in raw_values:
+        if type(raw) is not str or len(raw) > 4096:
+            raise ValueError("fixture execution JSON argument exceeds its bound")
+        values.append(strict_json_object_v1(raw.encode("utf-8"), max_bytes=4096))
+    qualification, admission, reader_deadline = values[:3]
+    overrides = values[3] if len(values) == 4 else None
+    if overrides is not None and (len(overrides) > 32 or any(
+            type(value) is not int or not 1 <= value <= MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2
+            for value in overrides.values())):
+        raise ValueError("fixture qualification overrides exceed their count/value bounds")
+    _sealed_deadline_v2(reader_deadline)
+    _compiler_preparation_clock_v1(args.compiler_deadline_ns)
+    return qualification, admission, reader_deadline, overrides
+
+
 def _fresh_json(path: Path, value: object) -> None:
     from tests.fixtures.accepted_policy_fixture_report_v1 import REPORT_LIMIT, fixture_report_bytes_v1
 
@@ -97,26 +131,31 @@ def main() -> None:
     parser.add_argument("--socket-prefix", default=".apfv2")
     parser.add_argument("--samples-per-branch", type=int, default=30)
     parser.add_argument("--stage", choices=("inputs", "original-observations", "complete"), default="complete")
+    _add_fixture_execution_arguments_v2(parser)
     args = parser.parse_args()
     source_root = _fixture_source_root_v2(Path(__file__))
     root = _canonical_fixture_root_v2(args.project_root, source_root=source_root)
     if re.fullmatch(r"[0-9a-f]{40}", args.expected_source_commit) is None:
         raise ValueError("expected source commit must be an exact commit SHA")
+    sys.path.insert(0, str(root))
+    sys.path.insert(0, str(root / "scripts"))
+    from tests.fixtures.accepted_policy_native_fixture_v2 import MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2
+
+    qualification, admission, reader_deadline, overrides = _fixture_execution_inputs_v2(args)
+    if type(args.samples_per_branch) is not int or not 30 <= args.samples_per_branch <= MAX_FIXTURE_COMPLETED_SAMPLES_PER_BRANCH_V2:
+        raise ValueError("complete fixture requires 30..985 samples in every branch cell")
+    if re.fullmatch(r"[a-z0-9][a-z0-9-]{0,100}", args.namespace) is None:
+        raise ValueError("fixture upstream namespace is invalid")
     if _git(root, "rev-parse", "HEAD").decode().strip() != args.expected_source_commit:
         raise ValueError("fixture source HEAD differs from the explicitly pinned commit")
     if _git(root, "status", "--porcelain", "--untracked-files=no"):
         raise ValueError("fixture tracked source is not clean")
-    if type(args.samples_per_branch) is not int or args.samples_per_branch < 30:
-        raise ValueError("complete fixture requires at least 30 samples in every branch cell")
-    if re.fullmatch(r"[a-z0-9][a-z0-9-]{0,100}", args.namespace) is None:
-        raise ValueError("fixture upstream namespace is invalid")
     base = _canonical_fixture_directory_v2(args.artifact_base, root=root, fresh=False)
     output = _canonical_fixture_directory_v2(args.output_dir, root=root, fresh=True)
-    sys.path.insert(0, str(root))
-    sys.path.insert(0, str(root / "scripts"))
     from tests.fixtures.accepted_policy_fixture_provenance_v1 import loaded_fixture_production_sources_v1
     from tests.fixtures.accepted_policy_physical_fixture_v2 import (
-        build_original_native_fixture_observations_v2, prepared_complete_fixture_inputs_v2,
+        _fixture_operation_sample_counts_v2, build_original_native_fixture_observations_v2,
+        prepared_complete_fixture_inputs_v2,
     )
     from tests.fixtures.accepted_policy_consumer_fixture_v2 import complete_fixture_production_consumers_v2
 
@@ -128,7 +167,7 @@ def main() -> None:
               "upstream_root": str(root), "source_commit": args.expected_source_commit,
               "entrypoint_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               "samples_per_branch": args.samples_per_branch,
-              "expected_measured_sample_count": 32 * 4 * args.samples_per_branch,
+              "expected_measured_sample_count": 32 * 4 * args.samples_per_branch if overrides is None else None,
               "approved_old_guardian_commit": APPROVED_COMMIT,
               "approved_old_guardian_source_sha256": hashlib.sha256(approved_source).hexdigest(),
               "initial_loaded_production_sources": original_sources}
@@ -158,14 +197,22 @@ def main() -> None:
             image_inspections=json.loads((observations / "image-inspect-map.json").read_bytes()),
             device_probes=json.loads((observations / "device-probe-map.json").read_bytes()),
             socket_prefix=args.socket_prefix,
+            compiler_qualification=qualification, compiler_admission=admission,
+            compiler_absolute_deadline_ns=args.compiler_deadline_ns,
         ) as prepared:
+            sample_counts = _fixture_operation_sample_counts_v2(prepared["capture_plan"],
+                samples_per_branch=args.samples_per_branch, qualification_samples_by_operation_id=overrides)
+            report["expected_measured_sample_count"] = 4 * sum(
+                sample_counts[row["operation_id"]] for row in prepared["capture_plan"]["operation_manifest"]["operations"]
+                if row["phase"] == "qualification_cell")
             phase("01-prepared")
             report.update(transaction_receipt=str(prepared["transaction"]["transaction_receipt_path"]),
                           preprocessing_receipt=str(prepared["preprocessing"]["receipt_path"]),
                           capture_plan=prepared["capture_plan_descriptor"],
                           runtime_input_receipt=str(prepared["runtime"]["receipt_path"]))
             if args.stage != "inputs":
-                native = build_original_native_fixture_observations_v2(prepared=prepared, samples_per_branch=args.samples_per_branch)
+                native = build_original_native_fixture_observations_v2(prepared=prepared,
+                    samples_per_branch=args.samples_per_branch, qualification_samples_by_operation_id=overrides)
                 phase("02-originals")
                 report.update(original_operation_count=len(native["operations"]),
                               qualification_count=native["qualification_count"], native_domains=native["native_domains"])
@@ -173,6 +220,7 @@ def main() -> None:
                     consumers = complete_fixture_production_consumers_v2(
                         prepared=prepared, native=native, approved_guardian_source=approved_source,
                         approved_guardian_commit=APPROVED_COMMIT,
+                        standalone_reader_deadline=reader_deadline,
                     )
                     if consumers["assessment"]["coverage"]["accepted_sample_count"] != report["expected_measured_sample_count"]:
                         raise ValueError("real F1 measured sample count includes a drop or loses a branch cell")

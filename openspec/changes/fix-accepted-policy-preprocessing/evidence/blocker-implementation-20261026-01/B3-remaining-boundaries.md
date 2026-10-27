@@ -17,15 +17,21 @@ other unclosed audit terms remain open.
 The complete consumer now validates its existing reader clock before its own
 materialization; see B3-consumer-clock-checkpoint.md. The literal producer and
 enclosing-call clock/admission/persistence work remain unclosed.
+The positive literal producer now requires and forwards its existing authorities
+and clocks; see B3-execution-arguments-checkpoint.md. Negative-29, owned child
+capture, enclosing clocks and persistence remain open. Mixed-cohort capacity
+must use B3-cohort-geometry-correction.md, including five ancillary985 operations.
 
 Independent provider/source review inspected the unchanged enclosing fixture
 callers at2fcb1478514d5fe90e916c60706484fdac6a8d41 while the fixed sidecar
-slice was being implemented. These findings are outstanding work, not claimed
-acceptance, permission to allocate or changes to production readers/predicates.
+slice was being implemented. The findings below retain that historical audit;
+the checkpoint pointers above identify subsequently closed slices and residuals.
+They do not claim acceptance, allocation permission or production-reader changes.
 No tests/workloads/services/Git subprocesses/APIs or edits were run by that audit.
 
+Historical findings at 2fcb1478514d5fe90e916c60706484fdac6a8d41 follow.
 Use existing PhysicalRootCustodyV1 bounded reads/hashes where applicable; do not
-introduce a general loader or change the standalone program. Role distinctions:
+introduce a general loader or change the standalone program. Original distinctions:
 
 - guardian_journal header: read<=65537B; require<=65536B and terminating LF
   before JSON. Companion metadata is1MiB;256MiB is its eight-route lifetime
