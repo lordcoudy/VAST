@@ -62,3 +62,18 @@ Exact-commit source review, configured Grok and latest-head CI remain separate
 required checks. Candidate persistence, outer cleanup, caller clocks, metadata
 heap/preparse inventory, full B3/task1.5/B4 and genuine/default3840-first gates stay
 open. No protected image, service/storage configuration or46/24task state changed.
+
+Independent exact-commit source/evidence review is CLEAR at
+6fccc220c46649c690430b6c5ae5445ba7193361. Configured Grok reviewed the pin/finalizer
+interaction in the same session01a17ad0-d506-76d3-95b3-ddb27d4f3f5e. Initial client
+reached600s with zero captured stdout and no completed EOF/verdict; actual parent
+failure and channel prefixes remain incomplete. Same-session continuation then
+returned final scoped CLEAR at6fccc220, actual modelgrok-4.7-build without settings/
+model override. It did not rehash sources or accept outcome/physical claims.
+Seven originals including initial parent failure are retained in
+B3-physical-finalization-source-grok-originals.zip,153305B/SHA
+7c2eb515f90b490a346fb845a76d198498e14e5f1a11c31216d5175f6e49794e,
+with manifest and local originals. Residual timing/durability/heap/helper/borrower
+and physical-epoch limitations remain open as stated; no stage/final/physical
+approval follows. Current-head CI and later materially changed source remain
+required; new consumer-clock work is outside that exact physical-module opinion.

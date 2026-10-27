@@ -54,3 +54,10 @@ separate required gates before dependent actual execution. Full B3/finalizer/
 caller/source/metadata-heap, task1.5/B4/reader/physical/genuine3840-first acceptance
 remain open. No protected image, storage/service/configuration or task state
 changed;46/24 and D27/Native57 remain.
+
+Subsequent independent exact-496988a4 source/evidence review is CLEAR. Combined
+configured Grok source review at6fccc220 is scoped CLEAR for this unchanged pin
+and the new finalizer bounds; initial client timeout and subsequent verdict stay
+distinct. See B3-finalizer-bounds-checkpoint.md and its seven-member raw archive.
+This does not qualify unchanged helpers, arbitrary descriptor-releasing borrowers,
+real reads/timing or physical use; latest-head CI and broader gates remain open.

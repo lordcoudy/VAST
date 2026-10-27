@@ -14,6 +14,9 @@ its enclosing caller/outer cleanup/timing and actual execution gates remain open
 Finalization CSV/hash/candidate encoding bounds are now separately addressed in
 B3-finalizer-bounds-checkpoint.md; candidate persistence/enclosing clocks and all
 other unclosed audit terms remain open.
+The complete consumer now validates its existing reader clock before its own
+materialization; see B3-consumer-clock-checkpoint.md. The literal producer and
+enclosing-call clock/admission/persistence work remain unclosed.
 
 Independent provider/source review inspected the unchanged enclosing fixture
 callers at2fcb1478514d5fe90e916c60706484fdac6a8d41 while the fixed sidecar

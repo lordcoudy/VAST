@@ -32,7 +32,9 @@ from tests.fixtures.accepted_policy_consumer_assertions_v1 import (
 from tests.fixtures.accepted_policy_guardian_journal_fixture_v1 import write_fixture_guardian_operational_journals_v1
 from tests.fixtures.accepted_policy_guardian_lifecycle_fixture_v1 import begin_fixture_guardian_lifecycle_v1, finish_fixture_guardian_lifecycle_v1
 from tests.fixtures.accepted_policy_physical_fixture_v2 import finalize_fixture_qualification_cells_v2
-from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import run_fixture_standalone_guardian_cold_reader_v2
+from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import (
+    _sealed_deadline_v2, run_fixture_standalone_guardian_cold_reader_v2,
+)
 
 
 def _json(path: Path) -> dict[str, Any]:
@@ -160,6 +162,7 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
 
     The standalone reader runs only under the recipe's sealed deadline (Decision16).
     """
+    _sealed_deadline_v2(standalone_reader_deadline)
     chain = materialize_fixture_completed_execution_v2(prepared=prepared, native=native)
     root, output = prepared["root"], prepared["output_dir"]
     preprocessing = prepared["preprocessing"]
