@@ -64,3 +64,21 @@ scripts/build_deepstream_publication_runtime_v3.sh:74,
 deploy/deepstream/checkpoint/Dockerfile.runtime:135, and the four literal
 build_*_publication_runtime_v3.sh scripts. No operator or physical authority
 follows from this audit.
+
+Subsequent B4-desktop-base-graph-checkpoint.md retains fresh read-only Desktop
+graph/API observations. The exact fifty-layer Savant prefix is now authenticated
+in that source store; the earlier four-independent-input arithmetic above is
+historical and remains preserved. Target snapshot/store/worker sharing and
+unpacked bytes/nodes still require proof before assigning any fit credit.
+The four-member original metadata ZIP is255913 B, SHA256
+391d66f68a47a86b99479b51fd7016a19057166d0f9bb6c8b1d8983b3f84ecfa.
+Its255263 B inputs and complete stored ZIP were preflighted in memory before
+exclusive writes; originals remain. The1/2/3/10 MiB metadata-only row limits
+remain, including index.lock in housekeeping. This does not authorize S/builds.
+See B4-desktop-base-observation-limitations.md: the Windows error206 is reported
+only; its original wrapper/outer error is absent from the retained21 observations.
+Independent /root/capacity_review outcome review is scoped CLEAR: allnine
+bodies, the current API/RootFS join,50-layer prefix,112-layer sum, metadata
+difference, four stored ZIP members/CRCs/hashes, fresh admission observations
+and retained forms were independently verified. Target allocation/sharing,
+S96 fit and task1.5 remain open; exact delivery-commit binding follows.

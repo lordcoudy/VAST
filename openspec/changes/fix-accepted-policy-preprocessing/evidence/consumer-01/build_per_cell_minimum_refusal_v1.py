@@ -35,13 +35,37 @@ def _raw_committed_source_proof(root: Path) -> dict:
 
 
 def _select_refusal_operation(prepared: dict) -> str:
+    from publication_physical_io_v1 import PhysicalRootCustodyV1
+    from tests.fixtures.accepted_policy_fixture_compiler_v1 import _json_bound
+    from tests.fixtures.accepted_policy_physical_fixture_v2 import _fixture_operation_sample_counts_v2
+
+    plan = prepared["capture_plan"]
+    operations = plan["operation_manifest"]["operations"]
+    if type(operations) is not list or len(operations) != 37:
+        raise ValueError("fresh refusal fixture requires exactly 37 operations")
+    _json_bound(operations)
+    _fixture_operation_sample_counts_v2(plan, samples_per_branch=31,
+        qualification_samples_by_operation_id=None)
     coordinates = {}
-    for row in prepared["capture_plan"]["operation_manifest"]["operations"]:
+    for row in operations:
         if row["phase"] != "qualification_cell":
             continue
-        source = json.loads(Path(row["descriptors"]["source_plan"]["path"]).read_bytes())
+        source_path = Path(row["descriptors"]["source_plan"]["path"])
+        with PhysicalRootCustodyV1.open(source_path.parent, label="fixture refusal source plan") as custody:
+            _, payload = custody.read_descriptor(source_path, label="fixture refusal source plan",
+                maximum=16 * 1024**2, capture=True)
+            custody.verify()
+        source = json.loads(payload)
+        del payload
+        if type(source) is not dict:
+            raise ValueError("fixture refusal source plan requires a JSON object")
+        _json_bound(source)
+        topology = source["topology_kind"]
+        if type(topology) is not str or len(topology) > 512:
+            raise ValueError("fixture refusal topology exceeds its string bound")
         coordinate = (row["system"], "cpu" if row["policy"] == "cpu_only" else "gpu",
-                      row["codec"], source["topology_kind"])
+                      row["codec"], topology)
+        del source
         if coordinate in coordinates:
             raise ValueError("fresh refusal fixture has duplicate qualification coordinates")
         coordinates[coordinate] = row["operation_id"]

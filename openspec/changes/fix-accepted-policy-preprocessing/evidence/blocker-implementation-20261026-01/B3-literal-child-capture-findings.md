@@ -45,3 +45,7 @@ consumer-01/build_production_fixture_v2.py:75,
 consumer-01/build_per_cell_minimum_refusal_v1.py:23 and :177,
 scripts/run_ci_checks.py:142 and :179,
 tests/fixtures/accepted_policy_standalone_reader_fixture_v2.py:236.
+
+Later B3-refusal-selector-checkpoint.md implements and tests the negative
+source-plan read/roster bounds. Its inherited clock, parsing heap and unchanged
+custody cleanup remain separate, as do all child/raw-proof captures above.
