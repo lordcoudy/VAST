@@ -148,6 +148,22 @@ class FixtureReportPersistenceRefusedV2(ValueError):
         super().__init__("fixture producer report persistence is incomplete")
 
 
+class _FixtureProducerFailureV2(ValueError):
+    def __init__(self, primary, secondary):
+        self.primary, self.secondary = primary, tuple(secondary)
+        super().__init__("fixture producer failed; distinct finalization causes retained")
+
+
+def _raise_fixture_producer_failure_v2(primary, secondary):
+    distinct = []
+    for error in secondary:
+        if error is not primary and not any(error is previous for previous in distinct):
+            distinct.append(error)
+    if distinct:
+        raise _FixtureProducerFailureV2(primary, distinct) from primary
+    raise primary
+
+
 def _fresh_json(path: Path, value: object, *, absolute_deadline_ns=None):
     from tests.fixtures.accepted_policy_fixture_report_v1 import REPORT_LIMIT, fixture_report_bytes_v1
     from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import _monotonic_ns, _write_result_v2
@@ -286,11 +302,14 @@ def main() -> None:
                               "complete_consumer_positive_asserted": report["complete_consumer_positive_asserted"],
                               "report_path": str(output / "producer-stage-report.v2.json")}, sort_keys=True), flush=True)
     except Exception as error:
-        if output.is_dir() and not (output / "producer-failure.v2.json").exists():
-            _fresh_json(output / "producer-failure.v2.json",
-                        {**report, "complete_consumer_positive_asserted": False,
-                         "error_type": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()},
-                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
+        try:
+            if output.is_dir() and not (output / "producer-failure.v2.json").exists():
+                _fresh_json(output / "producer-failure.v2.json",
+                            {**report, "complete_consumer_positive_asserted": False,
+                             "error_type": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()},
+                            absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
+        except BaseException as secondary:
+            _raise_fixture_producer_failure_v2(error, [secondary])
         raise
 
 

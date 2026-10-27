@@ -107,3 +107,9 @@ encoding/persistence on the same reader absolute clock, including exact returned
 extent/fsync/close acceptance. It leaves parent error masking, str/traceback
 construction and failure-fact transport open. The earlier literal file/selector
 read checkpoints do not supply JSON preparse/whole-heap or stock-proof bounds.
+
+Later B3-producer-failure-checkpoint.md preserves initiating and identity-distinct
+secondary exception objects through the selected literal producer failure paths,
+and guards the negative producer's remaining outer source spawns with the same
+observation end. This does not bound those subprocesses, pre-stringification or
+traceback construction, or deliver complete external failure-fact transport.

@@ -14,6 +14,7 @@ from build_production_fixture_v2 import (
     _add_fixture_execution_arguments_v2, _fixture_execution_inputs_v2,
     _fixture_observation_maps_v2, _fixture_entrypoint_sha256_v2,
     _canonical_fixture_directory_v2, _canonical_fixture_root_v2, _fixture_source_root_v2, _fresh_json, _git,
+    _raise_fixture_producer_failure_v2,
 )
 
 
@@ -118,6 +119,15 @@ def main() -> None:
               "project_root": str(root), "entrypoint_sha256": _fixture_entrypoint_sha256_v2(root, Path(__file__)),
               "refusal_coordinate": REFUSAL_COORDINATE, "expected_measured_sample_count": 3960,
               "source_raw_before": before_raw, "initial_loaded_production_sources": original_sources}
+    primary, secondary, after_raw = None, [], None
+
+    def remember(error):
+        nonlocal primary
+        if primary is None:
+            primary = error
+        elif error is not primary and not any(error is previous for previous in secondary):
+            secondary.append(error)
+
     try:
         image_inspections, device_probes = _fixture_observation_maps_v2(observations)
         with prepared_complete_fixture_inputs_v2(
@@ -192,20 +202,44 @@ def main() -> None:
         if any(by_name.get(row["module"]) != row for row in original_sources):
             raise ValueError("loaded production source provenance changed during refusal fixture")
         report["final_loaded_production_sources"] = current
-    except Exception as error:
-        if output.is_dir():
-            _fresh_json(output / "per-cell-minimum-failure.v1.json",
-                        {**report, "error_type": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()},
-                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
-        raise
+    except BaseException as error:
+        remember(error)
+        try:
+            if output.is_dir():
+                _fresh_json(output / "per-cell-minimum-failure.v1.json",
+                            {**report, "error_type": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()},
+                            absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
+        except BaseException as report_error:
+            remember(report_error)
     finally:
-        after_raw = _raw_committed_source_proof(root)
-        if output.is_dir():
-            _fresh_json(output / "raw-source-after.v1.json", after_raw,
-                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
-        if (after_raw["original_exit_code"] != 0 or _git(root, "rev-parse", "HEAD") != before_head
-                or _git(root, "status", "--porcelain", "--untracked-files=no") != before_status):
-            raise ValueError("raw committed source or tracked Git state changed during refusal fixture")
+        from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import _monotonic_ns
+
+        observe_end = reader_deadline["absolute_monotonic_ns"] - sum(
+            reader_deadline[key] for key in ("term_grace_ns", "kill_grace_ns", "final_ns"))
+        for check in ("proof", "head", "status"):
+            if _monotonic_ns() >= observe_end:
+                remember(ValueError("fixture source finalization deadline expired"))
+                break
+            try:
+                if check == "proof":
+                    after_raw = _raw_committed_source_proof(root)
+                    try:
+                        if output.is_dir():
+                            _fresh_json(output / "raw-source-after.v1.json", after_raw,
+                                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
+                    except BaseException as report_error:
+                        remember(report_error)
+                    changed = after_raw["original_exit_code"] != 0
+                elif check == "head":
+                    changed = _git(root, "rev-parse", "HEAD") != before_head
+                else:
+                    changed = _git(root, "status", "--porcelain", "--untracked-files=no") != before_status
+                if changed:
+                    raise ValueError("raw committed source or tracked Git state changed during refusal fixture")
+            except BaseException as final_error:
+                remember(final_error)
+    if primary is not None:
+        _raise_fixture_producer_failure_v2(primary, secondary)
     report["source_raw_after"] = after_raw
     _fresh_json(output / "per-cell-minimum-refusal-report.v1.json", report,
                 absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
