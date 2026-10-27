@@ -32,6 +32,68 @@ def _aggregate(root: Path, relative_paths: tuple[str, ...]) -> str:
     return hashlib.sha256(rows).hexdigest()
 
 
+class RuntimeBuildContextCopyExtentTests(unittest.TestCase):
+    def _refused_stream(self, sealed: bytes, chunks: tuple[bytes, ...], prefix: bytes) -> None:
+        module = _module()
+        # Keep the actual source/destination witnesses, including failed REDs.
+        temporary = Path(tempfile.mkdtemp(prefix="buildextent-"))
+        source = temporary / "source"
+        destination = temporary / "destination"
+        source.write_bytes(sealed)
+        expected = source.stat()
+        write = os.write
+
+        def short_write(descriptor, data):
+            return write(descriptor, data[:1])
+
+        with mock.patch.object(module.os, "read", side_effect=(*chunks, b"")) as reads, \
+                mock.patch.object(module.os, "write", side_effect=short_write) as writes, \
+                mock.patch.object(module.os, "fsync") as fsync:
+            with self.assertRaisesRegex(ValueError, "size drifted"):
+                module._copy_held_source(
+                    source, destination, expected=expected, source_date_epoch=0,
+                )
+            self.assertEqual(destination.read_bytes(), prefix)
+            self.assertEqual(writes.call_count, len(prefix))
+            self.assertEqual(reads.call_count, len(chunks))
+            fsync.assert_not_called()
+
+    def test_growth_is_refused_before_any_destination_write(self) -> None:
+        for sealed, chunk in ((b"", b"x"), (b"abcd", b"abcde")):
+            with self.subTest(sealed_size=len(sealed)):
+                self._refused_stream(sealed, (chunk,), b"")
+
+    def test_growth_after_prefix_cannot_cross_sealed_extent(self) -> None:
+        for chunks, prefix in (((b"ab", b"cde"), b"ab"), ((b"abcd", b"x"), b"abcd")):
+            with self.subTest(prefix=prefix):
+                self._refused_stream(b"abcd", chunks, prefix)
+
+    def test_truncated_stream_is_refused_before_fsync(self) -> None:
+        self._refused_stream(b"abcd", (b"abc", b""), b"abc")
+
+    def test_exact_empty_and_chunked_streams_preserve_bytes_hash_and_short_writes(self) -> None:
+        for sealed, chunks in ((b"", (b"",)), (b"abcd", (b"ab", b"cd", b""))):
+            with self.subTest(sealed_size=len(sealed)):
+                module = _module()
+                temporary = Path(tempfile.mkdtemp(prefix="buildextent-"))
+                source = temporary / "source"
+                destination = temporary / "destination"
+                source.write_bytes(sealed)
+                write = os.write
+
+                def short_write(descriptor, data):
+                    return write(descriptor, data[:1])
+
+                with mock.patch.object(module.os, "read", side_effect=chunks), \
+                        mock.patch.object(module.os, "write", side_effect=short_write):
+                    digest = module._copy_held_source(
+                        source, destination, expected=source.stat(), source_date_epoch=0,
+                    )
+                self.assertEqual(destination.read_bytes(), sealed)
+                self.assertEqual(digest, hashlib.sha256(sealed).hexdigest())
+                self.assertEqual(int(destination.stat().st_mtime), 0)
+
+
 class RuntimeBuildContextV3Tests(unittest.TestCase):
     def _fixture(self, parent: Path) -> tuple[Path, tuple[Path, Path], tuple[str, ...]]:
         project = parent / "project"

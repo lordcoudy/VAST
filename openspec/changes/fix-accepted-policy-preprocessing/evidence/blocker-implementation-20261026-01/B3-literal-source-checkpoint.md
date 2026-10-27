@@ -108,3 +108,35 @@ GREEN case filesystem and unchanged source copies were verified. Independent
 forms:13852672 B main source/review row<16 MiB,2379776 B clock source row<4 MiB,
 and2113536 B clock Git archive copy<3 MiB assigned slack. This includes maximum
 review forms and<=512 KiB aggregate remaining tail; no additional allowance.
+
+Exact-commit independent follow-up is CLEAR for
+d950d8124960e82db88ae5cc08775d9683b047a4, including the adapter, callers,
+tests/harnesses, runner and all56 archive members. No source changed after GREEN.
+
+The first configured Grok invocation stopped at max_turn_requests after one turn,
+exit1/35.42 s, while requesting remaining offloaded source. It gave NO verdict.
+Its126411 B prompt,1041 B stdout,10016 B stderr and actual outer return remain in
+the incomplete-review ZIP138342 B, SHA256
+53579a565096d477826acb0560864e6c3e75a6edca4b9c62f9ec7c9d5e0d3acb.
+That failure is not relabeled success or rerun.
+
+Independent capacity review admitted ONE separately named continuation with the
+same configured model/session, max4 turns and unchanged600 s/channel/archive caps.
+The directly resupplied52057 B packet avoids the previous large-prompt offload.
+It completed CLEAR for exactd950, actual modelUsage grok-4.6-build, four turns,
+exit0/341.101 s, after reading remaining scoped source. No tests/proofs/hashes/CI
+were executed by that review. Prompt,29885 B stdout,6622 B stderr and actual
+outer return are retained in ZIP89544 B, SHA256
+554ed7283b410e506cf3234256135c44f045514b356968589cbf09fa72938cf7.
+The original failed review and all originals remain. Repriced main-row upper
+14286848 B=13.625 MiB still fits16 MiB, with the aggregate512 KiB tail unchanged.
+No further continuation is covered. Exact-head CI40483508440 remains pending;
+no new source approval, physical acceptance or task completion is claimed yet.
+
+CI40483508440 subsequently completed SUCCESS for exactd950. The actual filtered
+workflow query and PR check diagnostic are retained in
+B3-literal-source-capture-completion.original.json; the latter returns explicit
+headRevision/head_sha d950d8124960e82db88ae5cc08775d9683b047a4 for both successful
+checks. Independent exact-source and configured Grok continuation verdicts remain
+CLEAR. This is source-stage evidence only; the open runtime/whole1.5 gates above
+remain open. Later working changes are outside that reviewed source scope.

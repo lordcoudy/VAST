@@ -159,11 +159,14 @@ def _copy_held_source(
             | getattr(os, "O_CLOEXEC", 0),
             0o444,
         )
+        sealed_size = int(expected.st_size)
         copied = 0
         while True:
-            chunk = os.read(source_fd, _COPY_CHUNK_BYTES)
+            remaining = sealed_size - copied
+            chunk = os.read(source_fd, min(_COPY_CHUNK_BYTES, remaining + 1))
             if not chunk:
                 break
+            _require(len(chunk) <= remaining, f"manifest member size drifted: {source}")
             digest.update(chunk)
             copied += len(chunk)
             view = memoryview(chunk)
@@ -171,7 +174,7 @@ def _copy_held_source(
                 written = os.write(destination_fd, view)
                 _require(written > 0, f"build-context write stalled: {destination}")
                 view = view[written:]
-        _require(copied == int(expected.st_size), f"manifest member size drifted: {source}")
+        _require(copied == sealed_size, f"manifest member size drifted: {source}")
         os.fsync(destination_fd)
     except OSError as error:
         raise ValueError(f"cannot materialize build-context member: {source}") from error
