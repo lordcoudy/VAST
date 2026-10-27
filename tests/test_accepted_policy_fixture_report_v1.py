@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
@@ -25,7 +26,8 @@ class FixtureReportWriterTests(unittest.TestCase):
         output = Path(tempfile.mkdtemp(prefix="fixture-report-")) / "absent.json"
         try:
             with self.assertRaises(ValueError):
-                producer()._fresh_json(output, value)
+                producer()._fresh_json(output, value,
+                    absolute_deadline_ns=time.monotonic_ns() + 60_000_000_000)
         finally:
             self.assertFalse(output.exists(), "report refusal opened its output")
 
@@ -33,7 +35,8 @@ class FixtureReportWriterTests(unittest.TestCase):
         value = {"proof": {"path": Path("relative/path"), "rows": [True, None, 1, -1, 0.5]},
                  "unicode": "\u00e9\U0001f600", "escaped": 'quote" slash\\ newline\n'}
         output = Path(tempfile.mkdtemp(prefix="fixture-report-")) / "complete.json"
-        producer()._fresh_json(output, value)
+        producer()._fresh_json(output, value,
+            absolute_deadline_ns=time.monotonic_ns() + 60_000_000_000)
         self.assertEqual(output.read_bytes(),
             (json.dumps(value, sort_keys=True, separators=(",", ":"), default=str) + os.linesep).encode("ascii"))
 

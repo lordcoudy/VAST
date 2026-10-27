@@ -62,3 +62,7 @@ reasoning override. It claims no independent hashes, CRCs, CI or re-execution.
 Four-record source-review ZIP 57160 B, SHA256
 4adc61688341cb2ef36c13f5aadeaafe33e251a6c63d73d32bb2fc23b884d3bf.
 Exact-head CI 40451594787 was still in progress at the latest observation.
+
+Subsequent fresh connector observation confirms run40451594787 SUCCESS at
+dc62b6bc0657a172aa82c760b51a22884bd21472. Later source-head34f73eae also passed
+40453426015; these CPU/structure/build/test checks supply no genuine acceptance.

@@ -139,15 +139,37 @@ def _fixture_entrypoint_sha256_v2(root: Path, entrypoint: Path) -> str:
     return descriptor["sha256"]
 
 
-def _fresh_json(path: Path, value: object) -> None:
+class FixtureReportPersistenceRefusedV2(ValueError):
+    def __init__(self, facts, *, late=False):
+        self.facts = facts
+        self.causes = facts["causes"].copy()
+        if late and "fixture_report_deadline_exceeded" not in self.causes:
+            self.causes.append("fixture_report_deadline_exceeded")
+        super().__init__("fixture producer report persistence is incomplete")
+
+
+def _fresh_json(path: Path, value: object, *, absolute_deadline_ns=None):
     from tests.fixtures.accepted_policy_fixture_report_v1 import REPORT_LIMIT, fixture_report_bytes_v1
+    from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import _monotonic_ns, _write_result_v2
+
+    if (type(absolute_deadline_ns) is not int or absolute_deadline_ns <= 0
+            or _monotonic_ns() >= absolute_deadline_ns):
+        raise ValueError("fixture report requires an unexpired inherited absolute deadline")
 
     # Preserve the original text writer's native final newline, including its
     # extra byte on Windows, within the complete physical report ceiling.
     raw = fixture_report_bytes_v1(value, limit=REPORT_LIMIT - (len(os.linesep) - 1))
-    with path.open("x", encoding="ascii") as stream:
-        if stream.write(raw.decode("ascii")) != len(raw):
-            raise OSError("fixture report short write")
+    raw = raw[:-1] + os.linesep.encode("ascii")
+    if _monotonic_ns() >= absolute_deadline_ns:
+        raise ValueError("fixture report deadline expired during encoding")
+    facts = _write_result_v2(path, raw, absolute_deadline_ns)
+    late = _monotonic_ns() >= absolute_deadline_ns
+    if (facts["attempted"] is not True or type(facts["written_bytes"]) is not int
+            or facts["written_bytes"] != len(raw) or facts["write_extent_unknown"] is not False
+            or facts["fsync_completed"] is not True or facts["close_completed"] is not True
+            or facts["causes"] or late):
+        raise FixtureReportPersistenceRefusedV2(facts, late=late)
+    return facts
 
 
 def main() -> None:
@@ -212,7 +234,8 @@ def main() -> None:
         if output.is_dir():
             _fresh_json(output / ("producer-phase-" + name + ".v2.json"),
                         {"phase": name, "source_commit": args.expected_source_commit,
-                         "loaded_production_sources": current, "campaign_authority": False})
+                         "loaded_production_sources": current, "campaign_authority": False},
+                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
 
     phase("00-imported")
     config_base = root / "configs" / f"checkpoint_analytics_model_parity.refreshed.v4.{args.namespace}.accepted"
@@ -257,7 +280,8 @@ def main() -> None:
                     phase("03-complete-consumers")
                     report.update(consumers=consumers, complete_consumer_positive_asserted=True)
             report["final_loaded_production_sources"] = loaded_fixture_production_sources_v1(project_root=root)
-            _fresh_json(output / "producer-stage-report.v2.json", report)
+            _fresh_json(output / "producer-stage-report.v2.json", report,
+                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
             print(json.dumps({"fixture_completed": args.stage,
                               "complete_consumer_positive_asserted": report["complete_consumer_positive_asserted"],
                               "report_path": str(output / "producer-stage-report.v2.json")}, sort_keys=True), flush=True)
@@ -265,7 +289,8 @@ def main() -> None:
         if output.is_dir() and not (output / "producer-failure.v2.json").exists():
             _fresh_json(output / "producer-failure.v2.json",
                         {**report, "complete_consumer_positive_asserted": False,
-                         "error_type": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()})
+                         "error_type": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()},
+                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
         raise
 
 

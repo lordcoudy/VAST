@@ -59,3 +59,14 @@ Independent working outcome/archive/checkpoint review by
 retained originals match; the source copies reproduce the GREEN input. The
 three commands use61440 B rounded within64 KiB. Exact-commit binding follows
 the commit, and configured Grok/new-head CI remain pending.
+
+Exact-commit selector review is CLEAR at
+34f73eae966c94376a09912d1274aaf4a6b2132b. Configured Grok source-text review is
+CLEAR at the same commit: one turn, exit0,123.644 s, actual modelUsage
+grok-4.6-build, no model/reasoning override. The four-record review ZIP46844 B,
+SHA256716ec95476c4df7e586ce0614dd96ee16052640d9f4cc6e3ef6abca7a63bd824,
+retains raw stdout/stderr/prompt and explicitly labels completion fields as a
+transcription of the displayed outer tool return. It claims no independent
+hashes/CRCs/CI/re-execution. Fresh exact-head CI40453426015 is SUCCESS. Delegated
+AGENT source-stage approval is recorded in PR9; no dependent physical release,
+whole/task acceptance, archive or merge approval follows.

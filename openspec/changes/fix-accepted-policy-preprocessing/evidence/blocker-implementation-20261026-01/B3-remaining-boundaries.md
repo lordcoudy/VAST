@@ -101,3 +101,9 @@ Protected predecessor readers include custody-checked reads to EOF without their
 own byte cap. Bounding a duplicate fixture JSON read does not bound those later
 reads: seal/fund their exact selected inputs/schemas/copies/memory before entry.
 Complete B3/task1.5 and compiler/reader/whole-chain admissions remain OPEN.
+
+Later B3-report-persistence-checkpoint.md implements bounded producer report
+encoding/persistence on the same reader absolute clock, including exact returned
+extent/fsync/close acceptance. It leaves parent error masking, str/traceback
+construction and failure-fact transport open. The earlier literal file/selector
+read checkpoints do not supply JSON preparse/whole-heap or stock-proof bounds.

@@ -195,17 +195,20 @@ def main() -> None:
     except Exception as error:
         if output.is_dir():
             _fresh_json(output / "per-cell-minimum-failure.v1.json",
-                        {**report, "error_type": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()})
+                        {**report, "error_type": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()},
+                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
         raise
     finally:
         after_raw = _raw_committed_source_proof(root)
         if output.is_dir():
-            _fresh_json(output / "raw-source-after.v1.json", after_raw)
+            _fresh_json(output / "raw-source-after.v1.json", after_raw,
+                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
         if (after_raw["original_exit_code"] != 0 or _git(root, "rev-parse", "HEAD") != before_head
                 or _git(root, "status", "--porcelain", "--untracked-files=no") != before_status):
             raise ValueError("raw committed source or tracked Git state changed during refusal fixture")
     report["source_raw_after"] = after_raw
-    _fresh_json(output / "per-cell-minimum-refusal-report.v1.json", report)
+    _fresh_json(output / "per-cell-minimum-refusal-report.v1.json", report,
+                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
     print(json.dumps({"genuine_per_cell_minimum_refusal_asserted": True, "measured_sample_count": 3960,
                       "default_guardian_refusal_asserted": False,
                       "report_path": str(output / "per-cell-minimum-refusal-report.v1.json")}, sort_keys=True), flush=True)
