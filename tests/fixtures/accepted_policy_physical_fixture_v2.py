@@ -30,7 +30,7 @@ from checkpoint_admission import schedule_fingerprint_for_records
 from checkpoint_publication_runtime import NATIVE_EXECUTION_BINDING_PROVENANCE, _acceptance_evidence_files
 from checkpoint_qualification_pilot_acceptance_v1 import finalize_checkpoint_qualification_pilot_acceptance_v1
 from publication_acceptance_evidence import FULL_RESOURCE_EVIDENCE_FILES
-from publication_physical_io_v1 import PhysicalRootCustodyV1
+from publication_physical_io_v1 import PhysicalRootCustodyV1, _file_identity
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import prepare_original_fixture_engine_v1
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import preflight_original_fixture_engine_v1
 from tests.fixtures.accepted_policy_original_custody_fixture_v1 import capture_original_fixture_operation_v1
@@ -41,6 +41,68 @@ from tests.fixtures import accepted_policy_fixture_compiler_admission_v1 as fixt
 
 
 STOCK_EQUIVALENCE_GPU_COORDINATE_V2 = ("gstreamer_custom", "gpu", "h264", "independent_processes")
+
+
+class _FixtureCapturedEngineErrorV2(ValueError):
+    def __init__(self, primary, secondary):
+        super().__init__("fixture captured engine failed; distinct causes retained")
+        self.primary, self.secondary = primary, tuple(secondary)
+
+
+@contextmanager
+def _held_fixture_captured_engine_v2(path, preparation_absolute_deadline_ns):
+    """Stream-hash the fixed captured ELF and lend one explicitly owned raw FD."""
+    custody, fd, before = None, -1, None
+    primary, secondary = None, []
+
+    def retain(error):
+        nonlocal primary
+        if primary is None:
+            primary = error
+        elif error is not primary and not any(error is previous for previous in secondary):
+            secondary.append(error)
+
+    def verify_pin():
+        if (_file_identity(before) != _file_identity(os.fstat(fd))
+                or _file_identity(before) != _file_identity(path.lstat())):
+            raise ValueError("fixture captured engine identity changed")
+        custody.verify()
+
+    try:
+        fixture_admission._compiler_preparation_clock_v1(preparation_absolute_deadline_ns)
+        custody = PhysicalRootCustodyV1.open(path.parent, label="fixture captured engine")
+        before = path.lstat()
+        descriptor, _, inode = custody.read_descriptor_identity(path,
+            label="fixture captured engine", maximum=16 * 1024**2, capture=False)
+        fixture_admission._compiler_preparation_clock_v1(preparation_absolute_deadline_ns)
+        if inode != (before.st_dev, before.st_ino) or descriptor["size_bytes"] != before.st_size:
+            raise ValueError("fixture captured engine identity disagrees with hash")
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC)
+        verify_pin()
+        fixture_admission._compiler_preparation_clock_v1(preparation_absolute_deadline_ns)
+        yield SimpleNamespace(path=path, fd=fd, size=descriptor["size_bytes"],
+            sha256=descriptor["sha256"], proc_path=f"/proc/self/fd/{fd}")
+    except BaseException as error:
+        retain(error)
+    finally:
+        if fd >= 0:
+            try:
+                verify_pin()
+            except BaseException as error:
+                retain(error)
+            try:
+                os.close(fd)
+            except BaseException as error:
+                retain(error)
+        if custody is not None:
+            try:
+                custody.close()
+            except BaseException as error:
+                retain(error)
+    if primary is not None:
+        if secondary:
+            raise _FixtureCapturedEngineErrorV2(primary, secondary) from primary
+        raise primary
 
 
 def _fixture_command_replies_v2(
@@ -200,12 +262,8 @@ def prepared_complete_fixture_inputs_v2(
                 finally:
                     front.setblocking(True)
                 captured_engine_path = runtime["runtime_input_root"] / DOCKER_ASSET
-                captured_engine_fd = os.open(captured_engine_path, os.O_RDONLY | os.O_NOFOLLOW)
-                captured_engine_bytes = captured_engine_path.read_bytes()
-                captured_engine = SimpleNamespace(path=captured_engine_path, fd=captured_engine_fd,
-                    size=len(captured_engine_bytes), sha256=hashlib.sha256(captured_engine_bytes).hexdigest(),
-                    proc_path=f"/proc/self/fd/{captured_engine_fd}")
-                try:
+                with _held_fixture_captured_engine_v2(captured_engine_path,
+                        compiler_absolute_deadline_ns) as captured_engine:
                     yield {
                     "root": root, "output_dir": output, "engine": engine,
                     "capture_engine": captured_engine,
@@ -220,8 +278,6 @@ def prepared_complete_fixture_inputs_v2(
                                "upstream": "fresh_physical_full_v4_and_authenticated_kpp",
                                "command_boundary": "held_artificial_elf_not_docker"},
                     }
-                finally:
-                    os.close(captured_engine_fd)
     finally:
         front.close()
         control.close()

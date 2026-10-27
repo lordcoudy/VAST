@@ -51,3 +51,18 @@ finalization hash/CSV/candidate bounds and caller clocks/persistence remain open
 Unchanged custody internals and later default readers require their own admitted
 inputs/qualification. No real compiler, Docker, reader or genuine cohort ran;
 full B3/task1.5/physical/default3840-first acceptance and46/24 tasks stay open.
+
+Independent exact-commit source/evidence review is CLEAR at
+4b0dc70e35c11f065c8281e44895786a6b4aca8f. Configured Grok session
+01a17aa8-0462-7943-a6f1-7c071d6ff045 completed one-turn scoped CLEAR for the
+supplied pinned seven-adapter source/tests, actual modelgrok-4.7-build without
+model/settings override. Its source opinion does not recompute hashes or accept
+outcome/physical claims. The disclosed uncertainty about the custody exception
+class resolves from unchanged publication_physical_io_v1.py:69:
+PublicationPhysicalIoV1Error inherits RuntimeError and is therefore not absorbed
+by the image-patch helper's existing ValueError clause. No code change or new
+helper qualification follows from that source fact. Three prompt/result/stderr
+originals remain in B3-artifact-reads-source-grok-originals.zip,108182B/SHA
+94e00bd8bdf2e1cf714bb1c9879746efdb420531e1b6d535bbb7766b1c8700eb,
+with a manifest and local originals. New captured-engine work is separate from
+this exact-commit opinion. Current-head CI and broader gates remain open.
