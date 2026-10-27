@@ -150,11 +150,14 @@ def _fixture_entrypoint_sha256_v2(root: Path, entrypoint: Path) -> str:
 
 
 class FixtureReportPersistenceRefusedV2(ValueError):
-    def __init__(self, facts, *, late=False):
+    def __init__(self, facts, *, late=False, clock_error=None):
         self.facts = facts
+        self.primary, self.secondary = clock_error, ()
         self.causes = facts["causes"].copy()
         if late and "fixture_report_deadline_exceeded" not in self.causes:
             self.causes.append("fixture_report_deadline_exceeded")
+        if clock_error is not None and "fixture_report_clock_unavailable" not in self.causes:
+            self.causes.append("fixture_report_clock_unavailable")
         super().__init__("fixture producer report persistence is incomplete")
 
 
@@ -189,7 +192,10 @@ def _fresh_json(path: Path, value: object, *, absolute_deadline_ns=None):
     if _monotonic_ns() >= absolute_deadline_ns:
         raise ValueError("fixture report deadline expired during encoding")
     facts = _write_result_v2(path, raw, absolute_deadline_ns)
-    late = _monotonic_ns() >= absolute_deadline_ns
+    try:
+        late = _monotonic_ns() >= absolute_deadline_ns
+    except BaseException as clock_error:
+        raise FixtureReportPersistenceRefusedV2(facts, clock_error=clock_error) from clock_error
     if (facts["attempted"] is not True or type(facts["written_bytes"]) is not int
             or facts["written_bytes"] != len(raw) or facts["write_extent_unknown"] is not False
             or facts["fsync_completed"] is not True or facts["close_completed"] is not True

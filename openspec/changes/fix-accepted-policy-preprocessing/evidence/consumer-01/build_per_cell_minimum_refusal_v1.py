@@ -217,7 +217,12 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
         observe_end = reader_deadline["absolute_monotonic_ns"] - sum(
             reader_deadline[key] for key in ("term_grace_ns", "kill_grace_ns", "final_ns"))
         for check in ("proof", "head", "status"):
-            if _monotonic_ns() >= observe_end:
+            try:
+                observed_now = _monotonic_ns()
+            except BaseException as clock_error:
+                remember(clock_error)
+                break
+            if observed_now >= observe_end:
                 remember(ValueError("fixture source finalization deadline expired"))
                 break
             try:

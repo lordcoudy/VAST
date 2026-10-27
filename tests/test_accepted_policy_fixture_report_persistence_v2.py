@@ -120,6 +120,23 @@ class ProducerReportPersistenceTests(unittest.TestCase):
                     causes + ["fixture_report_deadline_exceeded"])
                 self.persist.assert_called_once()
 
+    def test_clock_failure_after_writer_retains_original_facts_and_clock_error(self):
+        for causes in ([], ["result_fsync", "result_close"]):
+            with self.subTest(original_causes=causes):
+                facts = {**complete_facts(12), "causes": causes.copy()}
+                if causes:
+                    facts.update(fsync_completed=False, close_completed=False)
+                before = copy.deepcopy(facts)
+                clock_error = OSError("controlled post-write clock failure")
+                self.invoke({"value": 1}, facts=facts, ticks=[NOW, NOW, clock_error])
+                self.assertIs(getattr(self.error, "facts", None), facts)
+                self.assertIs(getattr(self.error, "primary", None), clock_error)
+                self.assertIs(self.error.__cause__, clock_error)
+                self.assertEqual(facts, before)
+                self.assertEqual(getattr(self.error, "causes", None),
+                    causes + ["fixture_report_clock_unavailable"])
+                self.persist.assert_called_once()
+
     def test_both_literal_callers_forward_original_report_deadline(self):
         for builder in (positive, negative):
             with self.subTest(caller=builder.__name__):

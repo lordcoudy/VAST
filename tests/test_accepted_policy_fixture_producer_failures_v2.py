@@ -35,6 +35,7 @@ class ProducerFailureTests(unittest.TestCase):
         self.primary = InitiatingFailure("original observation failed")
         self.secondary = self.primary if same else SecondaryFailure("secondary controlled failure")
         self.now, self.head_calls, self.status_calls, self.proof_calls = NOW, 0, 0, 0
+        self.clock_unavailable = False
         self.failure_report, self.after_report = None, None
         seal = {"path": "controlled-seal.json", "size_bytes": 1, "sha256": "b" * 64}
         clock = {"absolute_monotonic_ns": ABSOLUTE, "term_grace_ns": 5_000_000_000,
@@ -64,12 +65,21 @@ class ProducerFailureTests(unittest.TestCase):
                     raise self.secondary
                 if fault == "expiry-after-proof":
                     self.now = ABSOLUTE
+                if fault == "clock-after-proof":
+                    self.clock_unavailable = True
             return {"original_exit_code": 0}
 
         def observations(*args, **kwargs):
             if fault == "expiry-before-proof":
                 self.now = ABSOLUTE
+            if fault == "clock-before-proof":
+                self.clock_unavailable = True
             raise self.primary
+
+        def clock():
+            if self.clock_unavailable:
+                raise self.secondary
+            return self.now
 
         def report(path, value, **kwargs):
             if "failure" in path.name:
@@ -99,7 +109,7 @@ class ProducerFailureTests(unittest.TestCase):
             stack.enter_context(patch.object(Path, "exists", return_value=False))
             stack.enter_context(patch.object(provenance, "loaded_fixture_production_sources_v1", return_value=[]))
             self.preparation = stack.enter_context(patch.object(physical, "prepared_complete_fixture_inputs_v2"))
-            stack.enter_context(patch.object(reader, "_monotonic_ns", side_effect=lambda: self.now))
+            stack.enter_context(patch.object(reader, "_monotonic_ns", side_effect=clock))
             stack.enter_context(patch.object(admission.time, "monotonic_ns", return_value=NOW))
             self.error = None
             try:
@@ -138,6 +148,16 @@ class ProducerFailureTests(unittest.TestCase):
                 self.assertIsInstance(secondary[0], ValueError)
                 self.assertEqual(str(secondary[0]), "fixture source finalization deadline expired")
                 self.assertEqual(self.proof_calls, 1 if fault == "expiry-before-proof" else 2)
+                self.assertEqual((self.head_calls, self.status_calls), (1, 1))
+
+    def test_negative_clock_failure_keeps_primary_and_stops_remaining_source_spawns(self):
+        for fault in ("clock-before-proof", "clock-after-proof"):
+            with self.subTest(fault=fault):
+                self.invoke(negative, fault=fault)
+                self.assertIs(getattr(self.error, "primary", None), self.primary)
+                self.assertEqual(getattr(self.error, "secondary", None), (self.secondary,))
+                self.assertIs(self.error.__cause__, self.primary)
+                self.assertEqual(self.proof_calls, 1 if fault == "clock-before-proof" else 2)
                 self.assertEqual((self.head_calls, self.status_calls), (1, 1))
 
 
