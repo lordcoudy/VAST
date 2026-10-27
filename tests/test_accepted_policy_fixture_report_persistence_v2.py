@@ -1,5 +1,5 @@
 """Producer report clocks and returned persistence facts; all I/O is doubled."""
-from contextlib import ExitStack, redirect_stderr, redirect_stdout
+from contextlib import ExitStack, nullcontext, redirect_stderr, redirect_stdout
 import copy
 import io
 import json
@@ -128,7 +128,7 @@ class ProducerReportPersistenceTests(unittest.TestCase):
                 seal = {"path": "controlled.json", "size_bytes": 1, "sha256": "b" * 64}
                 argv = [str(builder.__file__), "--project-root", str(ROOT),
                     "--expected-source-commit", "a" * 40, "--artifact-base", str(ROOT / "controlled-inputs"),
-                    "--namespace", "controlled", "--output-dir", str(ROOT / "controlled-output"),
+                    "--namespace", "controlled", "--output-dir", str(ROOT / "controlled-output"), "--source-capture-dir", str(ROOT / "controlled-source-capture"),
                     "--compiler-qualification-json", json.dumps(seal),
                     "--compiler-admission-json", json.dumps(seal),
                     "--compiler-deadline-ns", str(NOW + 100_000_000_000),
@@ -137,7 +137,8 @@ class ProducerReportPersistenceTests(unittest.TestCase):
                     stack.enter_context(redirect_stdout(io.StringIO()))
                     stack.enter_context(redirect_stderr(io.StringIO()))
                     stack.enter_context(patch.object(sys, "argv", argv))
-                    stack.enter_context(patch.object(builder, "_git", side_effect=lambda root, *args:
+                    stack.enter_context(patch.object(builder, "_fixture_source_capture_v2", return_value=nullcontext(object())))
+                    stack.enter_context(patch.object(builder, "_git", side_effect=lambda root, *args, **kwargs:
                         b"a" * 40 + b"\n" if args[0] == "rev-parse" else b""))
                     if builder is negative:
                         stack.enter_context(patch.object(builder, "_raw_committed_source_proof",

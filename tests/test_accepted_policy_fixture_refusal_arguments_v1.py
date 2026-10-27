@@ -1,5 +1,5 @@
 """Negative-29 caller admission arguments; all external effects are doubled."""
-from contextlib import ExitStack, redirect_stderr, redirect_stdout
+from contextlib import ExitStack, nullcontext, redirect_stderr, redirect_stdout
 import importlib.util
 import io
 import json
@@ -39,7 +39,7 @@ class FixtureRefusalArgumentsTests(unittest.TestCase):
                    oversized=False, nonobject=False, overrides=None):
         argv = [str(DRIVER), "--project-root", str(ROOT), "--expected-source-commit", "a" * 40,
             "--artifact-base", str(ROOT / "controlled-artifacts"), "--namespace", "controlled",
-            "--output-dir", str(ROOT / "controlled-output")]
+            "--output-dir", str(ROOT / "controlled-output"), "--source-capture-dir", str(ROOT / "controlled-source-capture")]
         deadline = {**self.reader_deadline, "absolute_monotonic_ns": self.now} if expired else self.reader_deadline
         if not missing:
             qualification = " " * 4097 if oversized else "[]" if nonobject else json.dumps(self.qualification)
@@ -58,6 +58,7 @@ class FixtureRefusalArgumentsTests(unittest.TestCase):
             stack.enter_context(redirect_stdout(io.StringIO()))
             stack.enter_context(redirect_stderr(io.StringIO()))
             stack.enter_context(patch.object(sys, "argv", argv))
+            stack.enter_context(patch.object(builder, "_fixture_source_capture_v2", return_value=nullcontext(object())))
             self.git = stack.enter_context(patch.object(builder, "_git", side_effect=git_reply))
             self.raw_proof = stack.enter_context(patch.object(builder, "_raw_committed_source_proof",
                 return_value={"original_exit_code": 0}))

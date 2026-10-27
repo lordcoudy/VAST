@@ -113,3 +113,10 @@ secondary exception objects through the selected literal producer failure paths,
 and guards the negative producer's remaining outer source spawns with the same
 observation end. This does not bound those subprocesses, pre-stringification or
 traceback construction, or deliver complete external failure-fact transport.
+
+B3-literal-source-checkpoint.md replaces the two selected producers' unbounded
+Git/proof calls with fixed3/6-slot D16 capture under the original clock. Its
+controlled success does not qualify the actual source/runtime/configuration,
+quiescent window, parent/child AS fit or whole peak. Other historical cohort
+drivers are not silently covered. Pre-stringification and external failure-fact
+transport remain open; the unchanged default reader still needs actual admission.

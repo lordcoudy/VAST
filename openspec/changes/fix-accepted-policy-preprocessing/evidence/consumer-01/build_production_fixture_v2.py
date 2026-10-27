@@ -9,7 +9,6 @@ import json
 import os
 from pathlib import Path
 import re
-import subprocess
 import sys
 import traceback
 
@@ -72,8 +71,18 @@ def _canonical_fixture_directory_v2(value: str | Path, *, root: Path, fresh: boo
     return path
 
 
-def _git(root: Path, *args: str) -> bytes:
-    return subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True).stdout
+def _git(root: Path, *args: str, source_capture=None, slot=None) -> bytes:
+    if source_capture is None or slot is None:
+        raise ValueError("literal Git requires its explicit fixed source capture")
+    return source_capture.git(root, *args, slot=slot)
+
+
+def _fixture_source_capture_v2(*, project_root, output_dir, capture_dir, deadline,
+                               expected_commit, negative=False):
+    from tests.fixtures.accepted_policy_literal_source_capture_v2 import LiteralSourceCaptureV2
+
+    return LiteralSourceCaptureV2(project_root=project_root, output_dir=output_dir,
+        capture_dir=capture_dir, deadline=deadline, expected_commit=expected_commit, negative=negative)
 
 
 def _add_fixture_execution_arguments_v2(parser: argparse.ArgumentParser) -> None:
@@ -81,6 +90,7 @@ def _add_fixture_execution_arguments_v2(parser: argparse.ArgumentParser) -> None
     parser.add_argument("--compiler-admission-json", required=True)
     parser.add_argument("--compiler-deadline-ns", type=int, required=True)
     parser.add_argument("--reader-deadline-json", required=True)
+    parser.add_argument("--source-capture-dir", required=True)
     parser.add_argument("--qualification-samples-json")
 
 
@@ -214,12 +224,18 @@ def main() -> None:
         raise ValueError("complete fixture requires 30..985 samples in every branch cell")
     if re.fullmatch(r"[a-z0-9][a-z0-9-]{0,100}", args.namespace) is None:
         raise ValueError("fixture upstream namespace is invalid")
-    if _git(root, "rev-parse", "HEAD").decode().strip() != args.expected_source_commit:
-        raise ValueError("fixture source HEAD differs from the explicitly pinned commit")
-    if _git(root, "status", "--porcelain", "--untracked-files=no"):
-        raise ValueError("fixture tracked source is not clean")
     base = _canonical_fixture_directory_v2(args.artifact_base, root=root, fresh=False)
     output = _canonical_fixture_directory_v2(args.output_dir, root=root, fresh=True)
+    with _fixture_source_capture_v2(project_root=root, output_dir=output, capture_dir=args.source_capture_dir,
+            deadline=reader_deadline, expected_commit=args.expected_source_commit) as source_capture:
+        _run_fixture_v2(args, root, qualification, admission, reader_deadline, overrides, base, output, source_capture)
+
+
+def _run_fixture_v2(args, root, qualification, admission, reader_deadline, overrides, base, output, source_capture):
+    if _git(root, "rev-parse", "HEAD", source_capture=source_capture, slot="head").decode().strip() != args.expected_source_commit:
+        raise ValueError("fixture source HEAD differs from the explicitly pinned commit")
+    if _git(root, "status", "--porcelain", "--untracked-files=no", source_capture=source_capture, slot="status"):
+        raise ValueError("fixture tracked source is not clean")
     from tests.fixtures.accepted_policy_fixture_provenance_v1 import loaded_fixture_production_sources_v1
     from tests.fixtures.accepted_policy_physical_fixture_v2 import (
         _fixture_operation_sample_counts_v2, build_original_native_fixture_observations_v2,
@@ -228,7 +244,8 @@ def main() -> None:
     from tests.fixtures.accepted_policy_consumer_fixture_v2 import complete_fixture_production_consumers_v2
 
     original_sources = loaded_fixture_production_sources_v1(project_root=root)
-    approved_source = _git(root, "show", APPROVED_COMMIT + ":" + GUARDIAN_SOURCE)
+    approved_source = _git(root, "show", APPROVED_COMMIT + ":" + GUARDIAN_SOURCE,
+        source_capture=source_capture, slot="guardian")
     report = {"schema_version": 2, "fixture_stage": args.stage,
               "campaign_authority": False, "physical_inference_observed": False,
               "complete_consumer_positive_asserted": False,

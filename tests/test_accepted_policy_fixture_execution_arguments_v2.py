@@ -42,7 +42,7 @@ class FixtureExecutionArgumentsTests(unittest.TestCase):
                    samples=30, reach_consumers=False, overrides=None, finish=False):
         argv = [str(DRIVER), "--project-root", str(ROOT), "--expected-source-commit", "a" * 40,
             "--artifact-base", str(ROOT / "controlled-artifacts"), "--namespace", "controlled",
-            "--output-dir", str(ROOT / "controlled-output"), "--samples-per-branch", str(samples)]
+            "--output-dir", str(ROOT / "controlled-output"), "--source-capture-dir", str(ROOT / "controlled-source-capture"), "--samples-per-branch", str(samples)]
         deadline = {**self.reader_deadline, "absolute_monotonic_ns": self.now} if expired else self.reader_deadline
         if not missing:
             qualification = " " * 4097 if oversized else "[]" if nonobject else json.dumps(self.qualification)
@@ -68,6 +68,7 @@ class FixtureExecutionArgumentsTests(unittest.TestCase):
             stack.enter_context(redirect_stdout(io.StringIO()))
             stack.enter_context(redirect_stderr(io.StringIO()))
             stack.enter_context(patch.object(sys, "argv", argv))
+            stack.enter_context(patch.object(builder, "_fixture_source_capture_v2", return_value=nullcontext(object())))
             self.git = stack.enter_context(patch.object(builder, "_git", side_effect=git_reply))
             self.reporter = stack.enter_context(patch.object(builder, "_fresh_json"))
             stack.enter_context(patch.object(builder, "_fixture_observation_maps_v2", return_value=({}, {}), create=True))

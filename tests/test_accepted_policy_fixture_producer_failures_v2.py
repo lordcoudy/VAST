@@ -1,5 +1,5 @@
 """Producer mains preserve initiating exceptions; all external effects doubled."""
-from contextlib import ExitStack, redirect_stderr, redirect_stdout
+from contextlib import ExitStack, nullcontext, redirect_stderr, redirect_stdout
 import io
 import json
 from pathlib import Path
@@ -41,7 +41,7 @@ class ProducerFailureTests(unittest.TestCase):
             "kill_grace_ns": 5_000_000_000, "final_ns": 5_000_000_000}
         argv = [str(Path(builder.__file__)), "--project-root", str(ROOT),
             "--expected-source-commit", "a" * 40, "--artifact-base", str(ROOT / "controlled-artifacts"),
-            "--namespace", "controlled", "--output-dir", str(ROOT / "controlled-output"),
+            "--namespace", "controlled", "--output-dir", str(ROOT / "controlled-output"), "--source-capture-dir", str(ROOT / "controlled-source-capture"),
             "--compiler-qualification-json", json.dumps(seal), "--compiler-admission-json", json.dumps(seal),
             "--compiler-deadline-ns", str(NOW + 100_000_000_000),
             "--reader-deadline-json", json.dumps(clock)]
@@ -85,6 +85,7 @@ class ProducerFailureTests(unittest.TestCase):
             stack.enter_context(redirect_stdout(io.StringIO()))
             stack.enter_context(redirect_stderr(io.StringIO()))
             stack.enter_context(patch.object(sys, "argv", argv))
+            stack.enter_context(patch.object(builder, "_fixture_source_capture_v2", return_value=nullcontext(object())))
             stack.enter_context(patch.object(builder, "_git", side_effect=git))
             if builder is negative:
                 stack.enter_context(patch.object(builder, "_raw_committed_source_proof", side_effect=proof))

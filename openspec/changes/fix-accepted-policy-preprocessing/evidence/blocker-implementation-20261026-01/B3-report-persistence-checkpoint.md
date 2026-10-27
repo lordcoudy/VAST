@@ -92,3 +92,9 @@ funded Git archive/manifest copy. The final outer-tool wall_time is return laten
 not Grok's duration. Fresh Windows/Linux guards and the exact-head CI connector
 observation are retained in B3-report-persistence-review-completion.original.json;
 they permit only this small retention within the existing16 MiB metadata tranche.
+
+CI provenance qualification: the retained connector response identifies the run
+and SUCCESS but does not itself include a head SHA. The30ef association comes
+from the actual fetch_commit_workflow_runs query for that exact SHA, retained in
+the tool-call history; the wrapper's authored source_commit field alone is not
+an additional service assertion. No historical query or response is reconstructed.

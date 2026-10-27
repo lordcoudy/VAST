@@ -63,5 +63,31 @@ it is not implemented or runtime-qualified by this slice. Exact-commit review,
 configured Grok and exact-head CI remain pending. No task is newly checked.
 
 Independent /root/blocker_plan_review cleared the working source, actual GREEN
-outcome, all33 ZIP members/CRCs/manifest/original matches and checkpoint scope.
+outcome, all33 ZIP members/SHA256/manifest/original matches and checkpoint scope.
 This is not yet an exact-commit/Grok/CI or physical acceptance verdict.
+
+The exact-commit review at bdd5566e confirmed all reviewed blobs and source
+behavior. Its P3 attribution correction above distinguishes SHA256 checks from
+CRC validation; /root/capacity_review separately checked CRCs. That reviewer
+also cleared the finite Grok-retention quote:1134592 B existing forms plus4374528 B
+maximum review forms and<=512 KiB remaining command/checkpoint/copy tail totals
+6033408 B, below the same6 MiB assignment. No additional tranche is allocated.
+
+Configured Grok completed CLEAR for exact
+bdd5566ef68c82688f340362ed46eecca417dc83: actual modelUsage grok-4.6-build,
+one turn, normal exit0,150.49 s. This supplied-text reading does not rerun tests,
+hashes, CRCs, CI or qualification. The original prompt77629 B, stdout18516 B,
+stderr9491 B and actual stored outer completion are preserved in the four-member
+source-review ZIP106519 B, SHA256
+e1c35cb113d30734122d7f34a33132ffdbad6c0e6cc8b757e7b56c59f9104deb.
+The unchanged bounded command and fresh admission record remain separately
+retained. CI40469964107 is still in progress; no delegated source approval is
+claimed before that exact-head check succeeds.
+
+Follow-up: the exact bdd5566e query subsequently returned CI40469964107
+SUCCESS. B3-producer-failure-review-completion.original.json preserves the
+actual query arguments and connector return alongside the Grok completion.
+PR9comment6437886626 records delegated AGENT source-stage approval for bdd only.
+The next uncommitted literal-source adapter is outside that approval and has
+its own RED/source/GREEN/Grok/CI gates. Grok's cutoff description is semantic:
+the code computes observe_end once, then checks it before each source call.

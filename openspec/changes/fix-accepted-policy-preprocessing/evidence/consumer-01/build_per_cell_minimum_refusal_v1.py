@@ -6,7 +6,6 @@ import argparse
 import json
 from pathlib import Path
 import re
-import subprocess
 import sys
 import traceback
 
@@ -15,24 +14,17 @@ from build_production_fixture_v2 import (
     _fixture_observation_maps_v2, _fixture_entrypoint_sha256_v2,
     _canonical_fixture_directory_v2, _canonical_fixture_root_v2, _fixture_source_root_v2, _fresh_json, _git,
     _raise_fixture_producer_failure_v2,
+    _fixture_source_capture_v2,
 )
 
 
 REFUSAL_COORDINATE = ("gstreamer_custom", "cpu", "h264", "independent_processes")
 
 
-def _raw_committed_source_proof(root: Path) -> dict:
-    program = (
-        "import json,sys; from pathlib import Path; root=Path(" + repr(str(root)) + "); "
-        "sys.path.insert(0,str(root/'scripts')); import run_ci_checks as ci; "
-        "paths=ci.tracked_paths(root); ci.verify_committed_bytes(root,paths); "
-        "print(json.dumps({'raw_committed_bytes_verified':True,'tracked_path_count':len(paths),"
-        "'verifier_path':ci.__file__},sort_keys=True))"
-    )
-    command = [sys.executable, "-B", "-c", program]
-    result = subprocess.run(command, cwd=root, capture_output=True)
-    return {"command": command, "original_exit_code": result.returncode,
-            "stdout": result.stdout.decode("utf-8"), "stderr": result.stderr.decode("utf-8")}
+def _raw_committed_source_proof(root: Path, *, source_capture=None, slot=None) -> dict:
+    if source_capture is None or slot not in ("before-proof", "after-proof"):
+        raise ValueError("literal stock proof requires its explicit fixed source capture")
+    return source_capture.proof(root, slot=slot)
 
 
 def _select_refusal_operation(prepared: dict) -> str:
@@ -94,14 +86,22 @@ def main() -> None:
     qualification, admission, reader_deadline, overrides = _fixture_execution_inputs_v2(args)
     if overrides is not None:
         raise ValueError("the fixed negative-29 recipe does not accept qualification overrides")
-    before_head, before_status = _git(root, "rev-parse", "HEAD"), _git(root, "status", "--porcelain", "--untracked-files=no")
-    if before_head.decode().strip() != args.expected_source_commit or before_status:
-        raise ValueError("refusal fixture requires exact clean frozen source")
     if re.fullmatch(r"[a-z0-9][a-z0-9-]{0,100}", args.namespace) is None:
         raise ValueError("fixture upstream namespace is invalid")
     base = _canonical_fixture_directory_v2(args.artifact_base, root=root, fresh=False)
     output = _canonical_fixture_directory_v2(args.output_dir, root=root, fresh=True)
-    before_raw = _raw_committed_source_proof(root)
+    with _fixture_source_capture_v2(project_root=root, output_dir=output, capture_dir=args.source_capture_dir,
+            deadline=reader_deadline, expected_commit=args.expected_source_commit, negative=True) as source_capture:
+        _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output, source_capture)
+
+
+def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output, source_capture):
+    before_head = _git(root, "rev-parse", "HEAD", source_capture=source_capture, slot="before-head")
+    before_status = _git(root, "status", "--porcelain", "--untracked-files=no",
+        source_capture=source_capture, slot="before-status")
+    if before_head.decode().strip() != args.expected_source_commit or before_status:
+        raise ValueError("refusal fixture requires exact clean frozen source")
+    before_raw = _raw_committed_source_proof(root, source_capture=source_capture, slot="before-proof")
     if before_raw["original_exit_code"] != 0:
         raise ValueError("stock raw committed source proof failed before refusal fixture")
     from tests.fixtures.accepted_policy_fixture_provenance_v1 import loaded_fixture_production_sources_v1
@@ -222,7 +222,7 @@ def main() -> None:
                 break
             try:
                 if check == "proof":
-                    after_raw = _raw_committed_source_proof(root)
+                    after_raw = _raw_committed_source_proof(root, source_capture=source_capture, slot="after-proof")
                     try:
                         if output.is_dir():
                             _fresh_json(output / "raw-source-after.v1.json", after_raw,
@@ -231,9 +231,10 @@ def main() -> None:
                         remember(report_error)
                     changed = after_raw["original_exit_code"] != 0
                 elif check == "head":
-                    changed = _git(root, "rev-parse", "HEAD") != before_head
+                    changed = _git(root, "rev-parse", "HEAD", source_capture=source_capture, slot="after-head") != before_head
                 else:
-                    changed = _git(root, "status", "--porcelain", "--untracked-files=no") != before_status
+                    changed = _git(root, "status", "--porcelain", "--untracked-files=no",
+                        source_capture=source_capture, slot="after-status") != before_status
                 if changed:
                     raise ValueError("raw committed source or tracked Git state changed during refusal fixture")
             except BaseException as final_error:
