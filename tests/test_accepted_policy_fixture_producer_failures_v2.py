@@ -31,8 +31,8 @@ class SecondaryFailure(OSError):
 
 
 class ProducerFailureTests(unittest.TestCase):
-    def invoke(self, builder, *, fault, same=False):
-        self.primary = InitiatingFailure("original observation failed")
+    def invoke(self, builder, *, fault, same=False, primary=None, failure_state=None, source_context=None, report_callback=None):
+        self.primary = InitiatingFailure("original observation failed") if primary is None else primary
         self.secondary = self.primary if same else SecondaryFailure("secondary controlled failure")
         self.now, self.head_calls, self.status_calls, self.proof_calls = NOW, 0, 0, 0
         self.clock_unavailable = False
@@ -90,12 +90,15 @@ class ProducerFailureTests(unittest.TestCase):
                 self.after_report = value
                 if fault == "after-report":
                     raise self.secondary
+            if report_callback is not None:
+                return report_callback(path, value, **kwargs)
 
         with ExitStack() as stack:
             stack.enter_context(redirect_stdout(io.StringIO()))
             stack.enter_context(redirect_stderr(io.StringIO()))
             stack.enter_context(patch.object(sys, "argv", argv))
-            stack.enter_context(patch.object(builder, "_fixture_source_capture_v2", return_value=nullcontext(object())))
+            stack.enter_context(patch.object(builder, "_fixture_source_capture_v2",
+                return_value=nullcontext(object()) if source_context is None else source_context))
             stack.enter_context(patch.object(builder, "_git", side_effect=git))
             if builder is negative:
                 stack.enter_context(patch.object(builder, "_raw_committed_source_proof", side_effect=proof))
@@ -113,7 +116,7 @@ class ProducerFailureTests(unittest.TestCase):
             stack.enter_context(patch.object(admission.time, "monotonic_ns", return_value=NOW))
             self.error = None
             try:
-                builder.main()
+                builder.main(**({} if failure_state is None else {"_failure_state": failure_state}))
             except BaseException as error:
                 self.error = error
         self.preparation.assert_not_called()

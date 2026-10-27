@@ -157,7 +157,8 @@ def materialize_fixture_completed_execution_v2(
 
 def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], native: Mapping[str, Any],
                                            approved_guardian_source: bytes, approved_guardian_commit: str,
-                                           standalone_reader_deadline: Mapping[str, int] | None = None) -> dict[str, Any]:
+                                           standalone_reader_deadline: Mapping[str, int] | None = None,
+                                           _failure_state=None) -> dict[str, Any]:
     """Use actual live finalization and real stopped closure/F1/default guardian.
 
     The standalone reader runs only under the recipe's sealed deadline (Decision16).
@@ -188,8 +189,13 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
     stock_equality = [assert_genuine_f5_stock_samples_v1(pilot, f5_context) for pilot in (cpu_positive, gpu_positive)]
     assessment = assess_policy_qualification(project_root=root, index_path=index_path,
         pilot_validator=policy_pilot_validator, fragment_validator=_fragment_validator)
+    if _failure_state is not None:
+        _failure_state["assessment"] = assessment
+        _failure_state["assessment_returned"] = True
     if assessment.get("passed") is not True:
-        raise ValueError(f"actual F1 policy assessor refused: {assessment}")
+        refusal = ValueError("actual F1 policy assessor refused")
+        refusal.fixture_assessment = assessment
+        raise refusal
     promoted = promote_policy_qualification(project_root=root, index_path=index_path, output_dir=output / "accepted-policy",
         pilot_validator=policy_pilot_validator, fragment_validator=_fragment_validator)
     accepted_dir = output / "accepted-policy"
@@ -215,11 +221,15 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
     )
     if cold_guardian["receipt"]["preprocessing_contract_content_sha256"] != guardian["preprocessing_contract_sha256"]:
         raise ValueError("independent accepted-policy guardian reader disagrees with materialized identity")
+    if _failure_state is not None:
+        _failure_state["reader_output_dir"] = output
     standalone = run_fixture_standalone_guardian_cold_reader_v2(
         project_root=root, output_dir=output, guardian=guardian,
         accepted_capability_path=accepted_dir / CAPABILITY_MANIFEST_FILENAME,
         deadline=standalone_reader_deadline,
     )
+    if _failure_state is not None:
+        _failure_state["cold_reader"] = standalone
     identity_policy = validate_fixture_identity_policy_component_v1(project_root=root, accepted_dir=accepted_dir)
     refusals = check_fixture_measured_coverage_refusals_v1(accepted_dir=accepted_dir)
     result = {"campaign_authority": False, "physical_inference_observed": False, "finalized_cell_count": len(finalized),

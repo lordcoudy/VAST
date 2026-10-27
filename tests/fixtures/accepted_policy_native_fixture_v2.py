@@ -556,5 +556,6 @@ def _write_native_sidecars_v1(output: Path, capability: Mapping[str, Any], metad
             completed[filename] = _write_fixture_sidecar_table_v2(output, filename, columns, rows)
         except _FixtureSidecarWriteErrorV2 as error:
             error.completed = completed
+            error.output_directory = output
             raise
     return completed

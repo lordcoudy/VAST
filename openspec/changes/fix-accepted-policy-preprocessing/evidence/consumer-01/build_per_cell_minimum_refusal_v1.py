@@ -7,7 +7,6 @@ import json
 from pathlib import Path
 import re
 import sys
-import traceback
 
 from build_production_fixture_v2 import (
     _add_fixture_execution_arguments_v2, _fixture_execution_inputs_v2,
@@ -15,6 +14,8 @@ from build_production_fixture_v2 import (
     _canonical_fixture_directory_v2, _canonical_fixture_root_v2, _fixture_source_root_v2, _fresh_json, _git,
     _raise_fixture_producer_failure_v2,
     _fixture_source_capture_v2,
+    _fixture_failure_report_v2, _fixture_report_context_v2,
+    _fixture_argument_parser_v2, _fixture_cli_v2,
 )
 
 
@@ -67,8 +68,19 @@ def _select_refusal_operation(prepared: dict) -> str:
     return coordinates[REFUSAL_COORDINATE]
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+def _require_plain_promoter_refusal_v1(error, expected):
+    from publication_policy_qualification import QualificationError
+
+    if type(error) is not QualificationError:
+        raise error
+    arguments = error.args
+    if (type(arguments) is not tuple or len(arguments) != 1
+            or type(arguments[0]) is not str or len(arguments[0]) > len(expected)):
+        raise error
+
+
+def main(*, _failure_state=None) -> None:
+    parser = _fixture_argument_parser_v2(_failure_state, description=__doc__)
     parser.add_argument("--project-root", required=True)
     parser.add_argument("--expected-source-commit", required=True)
     parser.add_argument("--artifact-base", required=True)
@@ -90,12 +102,17 @@ def main() -> None:
         raise ValueError("fixture upstream namespace is invalid")
     base = _canonical_fixture_directory_v2(args.artifact_base, root=root, fresh=False)
     output = _canonical_fixture_directory_v2(args.output_dir, root=root, fresh=True)
-    with _fixture_source_capture_v2(project_root=root, output_dir=output, capture_dir=args.source_capture_dir,
-            deadline=reader_deadline, expected_commit=args.expected_source_commit, negative=True) as source_capture:
-        _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output, source_capture)
+    context = _fixture_source_capture_v2(project_root=root, output_dir=output, capture_dir=args.source_capture_dir,
+        deadline=reader_deadline, expected_commit=args.expected_source_commit, negative=True)
+    if _failure_state is not None:
+        _failure_state["source_context"] = context
+    with context as source_capture:
+        _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output,
+            source_capture, **({} if _failure_state is None else {"_failure_state": _failure_state}))
 
 
-def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output, source_capture):
+def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output,
+                    source_capture, *, _failure_state=None):
     before_head = _git(root, "rev-parse", "HEAD", source_capture=source_capture, slot="before-head")
     before_status = _git(root, "status", "--porcelain", "--untracked-files=no",
         source_capture=source_capture, slot="before-status")
@@ -171,8 +188,14 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
             assessment = assess_policy_qualification(
                 project_root=root, index_path=chain["index_path"],
                 pilot_validator=policy_pilot_validator, fragment_validator=_fragment_validator)
+            report["actual_f1_assessment"] = assessment
+            if _failure_state is not None:
+                _failure_state["assessment"] = assessment
+                _failure_state["assessment_returned"] = True
             if assessment.get("passed") is not False or assessment.get("blockers") != [expected_blocker]:
-                raise ValueError(f"actual F1 did not reach the exact genuine per-cell minimum refusal: {assessment}")
+                refusal = ValueError("actual F1 did not reach the exact genuine per-cell minimum refusal")
+                refusal.fixture_assessment = assessment
+                raise refusal
             promotion_parent = output / "must-remain-absent"
             promotion_output = promotion_parent / "accepted-policy"
             if promotion_parent.exists() or promotion_output.exists():
@@ -181,6 +204,7 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
                 promote_policy_qualification(project_root=root, index_path=chain["index_path"], output_dir=promotion_output,
                     pilot_validator=policy_pilot_validator, fragment_validator=_fragment_validator)
             except QualificationError as error:
+                _require_plain_promoter_refusal_v1(error, "policy qualification is blocked: " + expected_blocker)
                 if str(error) != "policy qualification is blocked: " + expected_blocker:
                     raise
                 promotion_refusal = str(error)
@@ -207,8 +231,9 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
         try:
             if output.is_dir():
                 _fresh_json(output / "per-cell-minimum-failure.v1.json",
-                            {**report, "error_type": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()},
-                            absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
+                            _fixture_failure_report_v2(report, error, _failure_state),
+                            absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
+                            **_fixture_report_context_v2(_failure_state, "failure"))
         except BaseException as report_error:
             remember(report_error)
     finally:
@@ -231,7 +256,8 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
                     try:
                         if output.is_dir():
                             _fresh_json(output / "raw-source-after.v1.json", after_raw,
-                                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
+                                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
+                                **_fixture_report_context_v2(_failure_state, "after-proof"))
                     except BaseException as report_error:
                         remember(report_error)
                     changed = after_raw["original_exit_code"] != 0
@@ -248,11 +274,12 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
         _raise_fixture_producer_failure_v2(primary, secondary)
     report["source_raw_after"] = after_raw
     _fresh_json(output / "per-cell-minimum-refusal-report.v1.json", report,
-                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
+                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
+                **_fixture_report_context_v2(_failure_state, "final"))
     print(json.dumps({"genuine_per_cell_minimum_refusal_asserted": True, "measured_sample_count": 3960,
                       "default_guardian_refusal_asserted": False,
                       "report_path": str(output / "per-cell-minimum-refusal-report.v1.json")}, sort_keys=True), flush=True)
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(_fixture_cli_v2(main, "negative"))

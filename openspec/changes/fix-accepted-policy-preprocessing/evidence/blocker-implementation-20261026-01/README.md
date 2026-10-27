@@ -79,3 +79,12 @@ B6 whole-chain/reader admissions remain open. Tasks remain24/46; no task is newl
 complete. No controller/image build/provider mutation, source-pin replacement,
 genuine3840/3968/126016 or refusal cohort, archive or merge occurred. D27/Native57
 and fresh Q1/Q4/full campaign remain parked/separate as previously instructed.
+
+## Later scoped source checkpoints
+
+The retained sections above describe their historical batches. Current producer
+failure-frame implementation and its sole3-method/five-failure RED,88-method GREEN,
+61-member original-byte archive audit and remaining gates are recorded in
+[B3-failure-frame-checkpoint.md](B3-failure-frame-checkpoint.md). Its independently
+reviewed96MiB allowance raises cumulative direct reservations to2192MiB; whole1.5
+remains open. No genuine or physical acceptance follows from the controlled cases.
