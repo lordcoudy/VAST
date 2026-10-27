@@ -85,3 +85,18 @@ exact-head CI remain required before source acceptance. No task is newly checked
 Compiler/reader admissions, bounded producer failure transport, whole1.5, actual
 controller probes, atomic lifecycle repair, runtime A/B/refreeze/parity/tensor audit,
 genuine cohorts, nine integrations, conformance/archive/final review/merge stay OPEN.
+
+Independent exact-local-commit review subsequently cleared all28 committed blobs
+at f35d3b34fa940609decf3df4d0a638817704f531, including73 B4 and eight additional B3
+archive members. The raw proposed PS1 remains byte-exact in its ZIP and loose
+original; it was not duplicated as Git text because its extra EOF blank fails
+diff-check. No original was normalized. Current committed source hashes still match.
+
+The single configured Grok review completed CLEAR for exactf35d3b34, actual model
+grok-4.6-build, one turn/end_turn, exit0/133.753s. It inspected supplied source;
+it did not execute tests, proofs or runtime checks. Its64054B prompt,12765B stdout,
+9240B stderr and actual enclosing tool return are preserved in the separate reviewed
+<=1.5MiB ZIP. The configured max4 turns/600s/channel caps were unchanged; no
+continuation was used. Fresh Windows/Linux guards passed before invocation.
+Configured review does not close the open gates above. New exact-head CI and
+source-stage delegated approval still remain required.
