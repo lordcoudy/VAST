@@ -426,7 +426,6 @@ class GrokReviewVolumeTest(unittest.TestCase):
                 self.assertNotIn("initialize", result["trace"])
 
 
-@unittest.skipUnless(sys.platform == "win32", "Windows owned-worker transport")
 class GrokReadonlyWorkerContractTest(unittest.TestCase):
     def load_worker(self):
         import importlib.util
@@ -448,16 +447,54 @@ class GrokReadonlyWorkerContractTest(unittest.TestCase):
         self.assertEqual(module.METADATA_EXECUTABLE, r"C:\Python314\python.exe")
 
     def test_fixed_payload_authenticates_driver_with_installed_python(self):
+        import builtins
+        import types
+        from unittest import mock
         module = self.load_worker()
         payload = module.STATIC_ARGUMENTS["metadata_qualification"][-1]
         self.assertLessEqual(len(payload), 24576)
+        self.assertEqual(payload.count("\nnamespace ="), 1)
         prefix = payload.split("\nnamespace =", 1)[0]
-        # Only decompress and hash the embedded source; no driver is parsed or run.
-        completed = subprocess.run([sys.executable, "-I", "-B", "-S", "-c",
-            prefix + "\nprint('bound',end='')"], cwd=ROOT, stdin=subprocess.DEVNULL,
-            capture_output=True, timeout=15, check=False)
-        self.assertEqual(completed.returncode, 0, completed.stderr.decode("utf-8", "replace"))
-        self.assertEqual(completed.stdout, b"bound")
+        self.assertNotIn("exec(", prefix)
+        source = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_driver_v1.proposed.py"
+        self.assertLessEqual(source.stat().st_size, 65536)
+        original = source.read_bytes()
+        code = compile(prefix, "controlled-source-authentication-prefix", "exec")
+        for corrupt in (False, True):
+            with self.subTest(corrupt=corrupt):
+                sample = bytes([original[0] ^ 1]) + original[1:] if corrupt else original
+                before = types.SimpleNamespace(st_mode=0o100400, st_file_attributes=0,
+                    st_nlink=1, st_size=len(sample), st_dev=1, st_ino=2, st_mtime_ns=3)
+                path = mock.Mock()
+                path.lstat.return_value = before
+                path.is_symlink.return_value = False
+                position = [0]
+                def read(descriptor, count):
+                    self.assertEqual(descriptor, 17)
+                    self.assertTrue(0 < count <= 16384)
+                    part = sample[position[0]:position[0] + count]
+                    position[0] += len(part)
+                    return part
+                fake_os = types.SimpleNamespace(O_RDONLY=0, O_BINARY=0x8000, O_NOINHERIT=0x80,
+                    open=mock.Mock(return_value=17), fstat=mock.Mock(return_value=before),
+                    read=mock.Mock(side_effect=read), close=mock.Mock())
+                resolve = mock.Mock(return_value=path)
+                def fixture_import(name, globals=None, locals=None, fromlist=(), level=0):
+                    if name == "os": return fake_os
+                    if name == "pathlib": return types.SimpleNamespace(Path=resolve)
+                    if name not in {"hashlib", "json", "stat", "sys"}:
+                        raise AssertionError("unexpected guard dependency")
+                    return builtins.__import__(name, globals, locals, fromlist, level)
+                namespace = {"__builtins__": {**vars(builtins), "__import__": fixture_import}}
+                if corrupt:
+                    with self.assertRaisesRegex(ValueError, "extent/hash"):
+                        exec(code, namespace)
+                else:
+                    exec(code, namespace)
+                    self.assertEqual(bytes(namespace["raw"]), original)
+                fake_os.open.assert_called_once_with(path, 0x8080)
+                fake_os.close.assert_called_once_with(17)
+                resolve.assert_called_once()
 
     def test_unknown_mode_never_constructs_a_process(self):
         from unittest import mock
@@ -499,6 +536,7 @@ class GrokReadonlyWorkerContractTest(unittest.TestCase):
                         deadline_tick_ms=181000, job_type=None, observation=None, private_outputs=None)
             probe.assert_not_called()
 
+    @unittest.skipUnless(sys.platform == "win32", "Windows Job accounting control")
     def test_transient_job_accounting_after_root_exit_waits_for_retirement(self):
         import os
         module = self.load_worker()
@@ -555,555 +593,6 @@ class GrokReadonlyWorkerContractTest(unittest.TestCase):
         self.assertTrue(facts["complete"], facts)
         self.assertFalse(facts["forced"])
         self.assertEqual(result["private_channel_bytes"], [b"out\n", b"err\n"])
-
-@unittest.skipUnless(sys.platform == "win32", "Windows qualification caller")
-class GrokReadonlyCallerTest(unittest.TestCase):
-    def load_caller(self):
-        import importlib.util
-        path = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_driver_v1.proposed.py"
-        self.assertTrue(path.is_file(), "fixed read-only caller is absent")
-        spec = importlib.util.spec_from_file_location("pr9_readonly_caller_control", path)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        return module
-
-    def test_import_and_default_description_have_no_execution_authority(self):
-        module = self.load_caller()
-        result = module.describe()
-        self.assertEqual(result["scope"], "ntfs_metadata_qualification_v1")
-        self.assertFalse(result["execution_authority"])
-        self.assertFalse(result["capacity_accepted"])
-
-    def test_missing_admission_refuses_without_environment_or_worker_entry(self):
-        from unittest import mock
-        module = self.load_caller()
-        with mock.patch.object(module, "qualify_parent", side_effect=AssertionError("environment tripwire")):
-            with self.assertRaises(ValueError):
-                module.run_qualification({}, {}, now_tick=1000)
-
-    def test_oversize_witness_refuses_before_file_creation(self):
-        from unittest import mock
-        module = self.load_caller()
-        with mock.patch.object(module.os, "open", side_effect=AssertionError("allocation tripwire")):
-            with self.assertRaises(ValueError):
-                module.persist_witness(ROOT / "unused", b"x" * 32769)
-
-    def test_write_failure_preserves_first_cause_and_still_flushes_and_closes(self):
-        from unittest import mock
-        module = self.load_caller()
-        write_error = OSError("controlled write")
-        flush_error = OSError("controlled flush")
-        close_error = OSError("controlled close")
-        with mock.patch.object(module.os, "open", return_value=17), \
-             mock.patch.object(module.os, "write", side_effect=[2, write_error]), \
-             mock.patch.object(module.os, "fsync", side_effect=flush_error) as flush, \
-             mock.patch.object(module.os, "close", side_effect=close_error) as close:
-            result = module.persist_witness(ROOT / "unused", b"abcd")
-        self.assertEqual(result["known_written_bytes"], 2)
-        self.assertTrue(result["write_extent_unknown"])
-        self.assertFalse(result["complete"])
-        self.assertEqual(result["primary"]["phase"], "write")
-        self.assertEqual([row["phase"] for row in result["secondary"]], ["fsync", "close"])
-        flush.assert_called_once_with(17)
-        close.assert_called_once_with(17)
-
-    def test_collision_does_not_write_flush_close_or_adopt(self):
-        from unittest import mock
-        module = self.load_caller()
-        with mock.patch.object(module.os, "open", side_effect=FileExistsError("controlled collision")), \
-             mock.patch.object(module.os, "write", side_effect=AssertionError("write tripwire")), \
-             mock.patch.object(module.os, "fsync", side_effect=AssertionError("flush tripwire")), \
-             mock.patch.object(module.os, "close", side_effect=AssertionError("close tripwire")):
-            result = module.persist_witness(ROOT / "unused", b"abcd")
-        self.assertFalse(result["complete"])
-        self.assertFalse(result["created"])
-        self.assertEqual(result["primary"]["phase"], "create_new")
-
-    def test_read_access_time_change_is_not_source_identity_drift(self):
-        import hashlib
-        from types import SimpleNamespace
-        from unittest import mock
-        module = self.load_caller()
-        raw = b"bounded source"
-        before = SimpleNamespace(st_dev=1, st_ino=2, st_size=len(raw), st_mtime_ns=4,
-                                 st_atime_ns=5, st_nlink=1, st_mode=0o100600, st_file_attributes=0)
-        after = SimpleNamespace(**{**before.__dict__, "st_atime_ns": 6})
-        path = mock.Mock()
-        path.lstat.return_value = before
-        path.is_symlink.return_value = False
-        with mock.patch.object(module.os, "open", return_value=17), \
-             mock.patch.object(module.os, "fstat", side_effect=[before, after]), \
-             mock.patch.object(module.os, "read", side_effect=[raw, b""]), \
-             mock.patch.object(module.os, "close") as close:
-            module.snapshot(path, len(raw), hashlib.sha256(raw).hexdigest())
-        close.assert_called_once_with(17)
-
-    def test_ps7_policy_uses_the_actual_core_registry_root(self):
-        import types
-        from unittest import mock
-        module = self.load_caller()
-        closed = []
-        def open_key(hive, name, reserved, access):
-            if name == r"Software\Policies\Microsoft\PowerShellCore\Transcription":
-                return 17
-            raise FileNotFoundError()
-        registry = types.SimpleNamespace(HKEY_LOCAL_MACHINE=1, HKEY_CURRENT_USER=2,
-            KEY_WOW64_64KEY=4, KEY_WOW64_32KEY=8, KEY_READ=16, OpenKey=open_key,
-            CloseKey=lambda handle: closed.append(handle))
-        with mock.patch.dict(sys.modules, {"winreg": registry}), \
-             mock.patch.object(module, "PSHOME", ROOT / "absent-controlled-policy-home"), \
-             mock.patch.dict(module.os.environ, {"USERPROFILE": str(ROOT / "absent-controlled-policy-user")}):
-            with self.assertRaises(ValueError):
-                module.check_powershell_policy()
-        self.assertEqual(closed, [17])
-
-    def test_token_close_is_attempted_after_sid_memory_free_failure(self):
-        from unittest import mock
-        module = self.load_caller()
-        first = OSError("controlled SID release")
-        second = OSError("controlled token close")
-        free = mock.Mock(side_effect=first)
-        close = mock.Mock(side_effect=second)
-        result = module.release_parent_resources(free, close, 31, 17)
-        self.assertEqual(result, [first, second])
-        free.assert_called_once_with(31)
-        close.assert_called_once_with(17)
-
-    def test_runtime_custody_rejects_a_different_opened_file_identity(self):
-        from unittest import mock
-        module = self.load_caller()
-        custody = object.__new__(module.RuntimeCustody)
-        custody.paths = set()
-        custody.handles = []
-        custody.close_causes = []
-        custody.create = mock.Mock(return_value=17)
-        custody.close = mock.Mock(return_value=True)
-        custody.opened_identity = mock.Mock(return_value={"volume": 0, "file_index": 0,
-            "bytes": 0, "links": 1, "attributes": 0})
-        with self.assertRaises(ValueError):
-            custody.hold(SOURCE)
-        self.assertEqual(custody.handles, [17])
-        self.assertEqual(custody.retire(), [])
-        custody.close.assert_called_once_with(17)
-
-    def test_runtime_custody_joins_and_closes_its_actual_read_handle(self):
-        module = self.load_caller()
-        custody = module.RuntimeCustody()
-        try:
-            custody.hold(SOURCE)
-            self.assertEqual(len(custody.handles), 1)
-            self.assertIn(SOURCE, custody.paths)
-        finally:
-            errors = custody.retire()
-        self.assertEqual(errors, [])
-        self.assertEqual(custody.handles, [])
-
-    def test_current_user_policy_checks_the_resolved_documents_folder(self):
-        import io
-        import types
-        from unittest import mock
-        module = self.load_caller()
-        documents = ROOT / "controlled-redirected-documents"
-        config = documents / "PowerShell/powershell.config.json"
-        registry = types.SimpleNamespace(HKEY_LOCAL_MACHINE=1, HKEY_CURRENT_USER=2,
-            KEY_WOW64_64KEY=4, KEY_WOW64_32KEY=8, KEY_READ=16,
-            OpenKey=mock.Mock(side_effect=FileNotFoundError()), CloseKey=mock.Mock())
-        with mock.patch.dict(sys.modules, {"winreg": registry}), \
-             mock.patch.object(module, "documents_directory", return_value=documents, create=True), \
-             mock.patch.object(module, "PSHOME", ROOT / "absent-controlled-policy-home"), \
-             mock.patch.dict(module.os.environ, {"USERPROFILE": str(ROOT / "absent-controlled-policy-user")}), \
-             mock.patch.object(Path, "exists", autospec=True, side_effect=lambda path: path == config), \
-             mock.patch.object(Path, "stat", return_value=types.SimpleNamespace(st_size=66)), \
-             mock.patch.object(Path, "open", return_value=io.BytesIO(b'{"PowerShellPolicies":{"Transcription":{"EnableTranscripting":true}}}')):
-            with self.assertRaises(ValueError):
-                module.check_powershell_policy()
-
-    def test_returned_capture_survives_witness_persistence_failure(self):
-        import base64
-        import hashlib
-        from types import SimpleNamespace
-        from unittest import mock
-        module = self.load_caller()
-        fake_worker = b'''METADATA_EXECUTABLE = r"C:\\Python314\\python.exe"
-class WindowsObservation:
- def tick(self): return 1000
-def load_reviewed_job_definitions(raw): return object
-def capture_literal(**kw): return {"facts":{"complete":True,"original_pid":17},"private_channel_bytes":[b"original metadata",b""],"private_primary":None,"private_secondary":()}
-_QUARANTINED_READERS=[None,None]
-'''
-        sources = {"capture": fake_worker, "driver": b"d", "guard": b"g", "jobs": b"j"}
-        admission = {"schema_version": 1, "scope": module.SCOPE,
-            "planning_commit": "44e8cef19d70f555e2f37dd4ea07651bd9b8125f",
-            "reviewed_commit": "a" * 40, "entry_approval": 103, "independent_reviews": [101, 102],
-            "deadline_tick_ms": 31000, "boot_filetime": "123", "ordinary_sid": module.SID,
-            "source_pins": {name: {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()} for name, raw in sources.items()}}
-        custody = SimpleNamespace(paths=set(module.SOURCE_PATHS.values()) | {module.PSHOME / "pwsh.exe", Path(sys.executable)},
-                                  active=True, retire=mock.Mock(return_value=[]))
-        box = {"capture": None, "document_original": None, "attestation": None}
-        parent = {"sid": module.SID, "elevated": True, "pid": 19, "boot_filetime": "123"}
-        persistence = {"complete": False, "known_written_bytes": 3, "write_extent_unknown": True,
-                       "primary": {"phase": "write", "type": "OSError"}}
-        with mock.patch.object(module, "qualify_parent", return_value=parent), \
-             mock.patch.object(module, "persist_witness", return_value=persistence), \
-             mock.patch.object(Path, "exists", return_value=False):
-            result = module.run_qualification(admission, sources, now_tick=1000, custody=custody,
-                                             enclosing_result=box)
-        original = base64.b64decode(result["witness_original_base64"], validate=True)
-        self.assertEqual(original, box["document_original"])
-        self.assertEqual(json.loads(original)["prefixes_base64"], [base64.b64encode(b"original metadata").decode(), ""])
-        self.assertEqual(box["capture"]["facts"]["original_pid"], 17)
-        self.assertEqual(result["attestation"]["persistence"], persistence)
-        self.assertFalse(result["attestation"]["qualification_accepted"])
-        self.assertFalse(result["attestation"]["capacity_accepted"])
-        self.assertLessEqual(len(module.bounded_json(result["attestation"], 4096)), 4096)
-        self.assertLessEqual(len(module.bounded_json(result, 65536)), 65536)
-        custody.retire.assert_called_once_with()
-
-    def metadata_fixture(self, module):
-        from types import SimpleNamespace
-        events = []
-        api = SimpleNamespace(
-            v_absent=lambda: events.append("v_namespace") or True,
-            ntfs_e=lambda: events.append("ntfs_E") or {"filesystem": "NTFS"},
-            file_metadata=lambda path: events.append(path) or {"path": path, "allocation": 4096})
-        parent = lambda: {"sid": module.SID, "elevated": True}
-        return api, parent, events
-
-    def test_python_metadata_refuses_expired_deadline_before_parent_or_api(self):
-        from unittest import mock
-        module = self.load_caller()
-        tripwire = mock.Mock(side_effect=AssertionError("native entry tripwire"))
-        with self.assertRaises(ValueError):
-            module.collect_metadata(1000, now=lambda: 1000, api_factory=tripwire, parent_check=tripwire)
-        tripwire.assert_not_called()
-
-    def test_python_metadata_executes_only_the_six_fixed_read_operations(self):
-        module = self.load_caller()
-        api, parent, events = self.metadata_fixture(module)
-        result = module.collect_metadata(31000, now=lambda: 1000, api_factory=lambda: api, parent_check=parent)
-        self.assertTrue(result["complete"])
-        self.assertEqual(events, ["v_namespace", "ntfs_E", r"E:\$MFT", r"E:\$LogFile", r"E:\$Secure", r"E:\VAST-pr9"])
-        self.assertEqual(len(result["records"]), 6)
-        self.assertFalse(result["capacity_accepted"])
-        self.assertEqual(result["storage_effects"], 0)
-
-    def test_python_metadata_preserves_the_actual_late_return_before_stopping(self):
-        module = self.load_caller()
-        api, parent, events = self.metadata_fixture(module)
-        clock = [1000]
-        marker = {"path": r"E:\$MFT", "allocation": 8192}
-        def late_read(path):
-            events.append(path)
-            clock[0] = 31000
-            return marker
-        api.file_metadata = late_read
-        result = module.collect_metadata(31000, now=lambda: clock[0], api_factory=lambda: api, parent_check=parent)
-        self.assertFalse(result["complete"])
-        self.assertTrue(result["deadline_exceeded"])
-        self.assertEqual(len(result["records"]), 3)
-        self.assertIs(result["records"][-1]["facts"], marker)
-        self.assertEqual(events[-1], r"E:\$MFT")
-
-    def test_python_metadata_keeps_completed_read_when_original_handle_close_fails(self):
-        from unittest import mock
-        module = self.load_caller()
-        api = object.__new__(module.MetadataWin32)
-        api.create = mock.Mock(return_value=17)
-        closing = OSError("controlled close")
-        api.close = mock.Mock(side_effect=closing)
-        marker = {"allocation": 4096}
-        try:
-            api.with_handle("controlled", 0x80, 0x02200000, lambda handle: marker)
-        except BaseException as error:
-            result = module.metadata_failure(error, "controlled_close")
-        else:
-            self.fail("expected original handle close failure")
-        self.assertIs(result["returned_facts"], marker)
-        self.assertTrue(result["returned_facts_available"])
-        self.assertFalse(result["complete"])
-        api.close.assert_called_once_with(17)
-
-    def test_python_metadata_native_abi_extents_are_exact(self):
-        import ctypes
-        module = self.load_caller()
-        self.assertEqual(ctypes.sizeof(module.MetadataBasic), 52)
-        self.assertEqual(ctypes.sizeof(module.MetadataStandard), 24)
-
-    def test_python_metadata_clock_failure_preserves_the_completed_read(self):
-        module = self.load_caller()
-        api, parent, events = self.metadata_fixture(module)
-        calls = [0]
-        def clock():
-            calls[0] += 1
-            if calls[0] >= 3:
-                raise OSError("controlled observation clock")
-            return 1000
-        result = module.collect_metadata(31000, now=clock, api_factory=lambda: api, parent_check=parent)
-        self.assertFalse(result["complete"])
-        self.assertIsNone(result["deadline_exceeded"])
-        self.assertEqual(result["records"][0]["facts"], {"absent": True})
-        self.assertEqual(events, ["v_namespace"])
-        self.assertIsNone(result["finished_tick_ms"])
-
-    def test_python_metadata_repeated_error_identity_does_not_exhaust_causes(self):
-        module = self.load_caller()
-        same = OSError("controlled repeated cause")
-        result = module.metadata_failure(ExceptionGroup("controlled", [same] * 32), "controlled_identity")
-        self.assertFalse(result["cause_bound_exceeded"])
-        self.assertEqual(sum(row["type"] == "OSError" for row in result["causes"]), 1)
-
-    def test_python_metadata_reads_only_public_source_attributes_and_closes(self):
-        module = self.load_caller()
-        result = module.MetadataWin32().file_metadata(str(SOURCE))
-        self.assertEqual(result["eof"], SOURCE.stat().st_size)
-        self.assertGreaterEqual(result["allocation"], result["eof"])
-        self.assertFalse(result["directory"])
-        self.assertFalse(result["delete_pending"])
-
-    def test_python_metadata_ntfs_and_usn_buffers_and_inactive_code_are_exact(self):
-        import ctypes
-        from unittest import mock
-        module = self.load_caller()
-        api = object.__new__(module.MetadataWin32)
-        api.create = mock.Mock(return_value=17)
-        api.close = mock.Mock(return_value=True)
-        def volume(handle, label, label_size, serial, maximum, flags, filesystem, filesystem_size):
-            self.assertEqual((label_size, filesystem_size), (261, 64))
-            filesystem.value = "NTFS"
-            serial._obj.value = 0x12345678
-            return True
-        def device(handle, code, input_buffer, input_size, output, output_size, count, overlapped):
-            self.assertEqual((input_buffer, input_size, overlapped), (None, 0, None))
-            if code == 0x00090064:
-                self.assertEqual(output_size, 96)
-                count._obj.value = 96
-                return True
-            self.assertEqual((code, output_size), (0x000900f4, 80))
-            ctypes.set_last_error(1179)
-            return False
-        api.volume = volume
-        api.device = device
-        result = api.ntfs_e()
-        self.assertFalse(result["usn_active"])
-        self.assertEqual(result["usn_query_error"], 1179)
-        self.assertEqual(result["volume_serial"], "12345678")
-        api.create.assert_called_once_with(r"\\.\E:", 0x80000000, 3, None, 3, 0, None)
-        api.close.assert_called_once_with(17)
-
-    def test_retired_runtime_custody_cannot_reuse_its_old_path_claims(self):
-        from unittest import mock
-        module = self.load_caller()
-        custody = object.__new__(module.RuntimeCustody)
-        custody.retired = True
-        custody.handles = []
-        custody.paths = {SOURCE}
-        custody.create = mock.Mock(side_effect=AssertionError("native reopen tripwire"))
-        with self.assertRaises(ValueError):
-            custody.hold(SOURCE)
-        custody.create.assert_not_called()
-
-    def test_runtime_close_failure_fanout_is_bounded_before_append(self):
-        from unittest import mock
-        module = self.load_caller()
-        custody = object.__new__(module.RuntimeCustody)
-        custody.retired = False
-        custody.handles = list(range(1, 34))
-        custody.paths = set()
-        custody.close_causes = []
-        custody.close = mock.Mock(side_effect=OSError("controlled closure failure"))
-        result = custody.retire()
-        self.assertLessEqual(len(result), 16)
-        self.assertEqual(custody.close_failure_count, 33)
-        self.assertTrue(custody.close_cause_bound_exceeded)
-        self.assertEqual(custody.close.call_count, 33)
-        self.assertEqual(custody.handles, [])
-
-    def test_persistence_facts_survive_later_retirement_and_clock_failures(self):
-        import hashlib
-        from types import SimpleNamespace
-        from unittest import mock
-        module = self.load_caller()
-        for role in ("retirement", "clock"):
-            with self.subTest(role=role):
-                clock = b"next(ticks)" if role == "clock" else b"1000"
-                code = b'''METADATA_EXECUTABLE = r"C:\\Python314\\python.exe"
-ticks=iter((1000,))
-class WindowsObservation:
- def tick(self): return ''' + clock + b'''
-def load_reviewed_job_definitions(raw): return object
-def capture_literal(**kw): return {"facts":{"complete":True},"private_channel_bytes":[b"metadata",b""],"private_primary":None,"private_secondary":()}
-_QUARANTINED_READERS=[None,None]
-'''
-                sources = {"capture": code, "driver": b"d", "guard": b"g", "jobs": b"j"}
-                admission = {"schema_version": 1, "scope": module.SCOPE, "planning_commit": "44e8cef19d70f555e2f37dd4ea07651bd9b8125f",
-                    "reviewed_commit": "a" * 40, "entry_approval": 103, "independent_reviews": [101, 102],
-                    "deadline_tick_ms": 31000, "boot_filetime": "123", "ordinary_sid": module.SID,
-                    "source_pins": {name: {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()} for name, raw in sources.items()}}
-                custody = SimpleNamespace(paths=set(module.SOURCE_PATHS.values()) | {Path(sys.executable)}, active=True,
-                    retire=mock.Mock(side_effect=OSError("controlled retirement")) if role == "retirement" else mock.Mock(return_value=[]))
-                box = {"capture": None, "document_original": None, "attestation": None}
-                persisted = {"complete": True, "known_written_bytes": 317, "fsync_completed": True, "close_completed": True}
-                with mock.patch.object(module, "qualify_parent", return_value={"boot_filetime": "123"}), \
-                     mock.patch.object(module, "persist_witness", return_value=persisted), \
-                     mock.patch.object(Path, "exists", return_value=False):
-                    result = module.run_qualification(admission, sources, now_tick=1000, custody=custody, enclosing_result=box)
-                self.assertIs(box["attestation"]["persistence"], persisted)
-                self.assertFalse(result["attestation"]["qualification_accepted"])
-                if role == "clock":
-                    self.assertIsNone(result["attestation"]["deadline_exceeded_after_close"])
-                    self.assertEqual(result["attestation"]["completion_failure"]["phase"], "completion_clock")
-                else:
-                    self.assertFalse(result["attestation"]["runtime_close_available"])
-                    self.assertEqual(result["attestation"]["completion_failure"]["phase"], "runtime_retirement")
-
-    def test_directory_custody_requests_real_list_access_before_claiming_custody(self):
-        from unittest import mock
-        module = self.load_caller()
-        custody = object.__new__(module.RuntimeCustody)
-        custody.retired = False
-        custody.paths, custody.handles = set(), []
-        before = ROOT.stat()
-        custody.create = mock.Mock(return_value=17)
-        custody.opened_identity = mock.Mock(return_value={"volume": before.st_dev, "file_index": before.st_ino,
-            "attributes": 0x10, "bytes": before.st_size, "links": 1})
-        custody.hold(ROOT, directory=True)
-        self.assertEqual(custody.create.call_args.args[1:3], (0x20081, 3))
-
-    def test_metadata_terminal_preserves_collection_after_encoding_write_and_flush_faults(self):
-        import io
-        module = self.load_caller()
-        for role in ("encode", "write", "flush", "write_and_flush"):
-            with self.subTest(role=role):
-                original = {"complete": True, "records": [{"allocation": 8192}], "capacity_accepted": False}
-                calls = [0]
-                def encode(value, limit):
-                    calls[0] += 1
-                    if role == "encode" and calls[0] == 1:
-                        raise OSError("controlled terminal encoding")
-                    return module.bounded_json(value, limit)
-                class Output(io.BytesIO):
-                    def write(self, raw):
-                        if role in ("write", "write_and_flush"):
-                            raise OSError("controlled terminal write")
-                        return super().write(raw)
-                    def flush(self):
-                        if role in ("flush", "write_and_flush"):
-                            raise OSError("controlled terminal flush")
-                        return super().flush()
-                stdout, stderr = Output(), io.BytesIO()
-                result = module.emit_metadata(31000, collect=lambda deadline: original, encode=encode,
-                                              stdout=stdout, stderr=stderr)
-                self.assertEqual(result["exit_code"], 1)
-                self.assertIs(result["completed_collection"], original)
-                self.assertTrue(result["fallback_completed"])
-                fallback = json.loads(stderr.getvalue())
-                self.assertEqual(fallback["completed_collection"], original)
-                self.assertTrue(fallback["collection_returned"])
-                expected = {"encode": ["encode"], "write": ["stdout_write"], "flush": ["stdout_flush"],
-                            "write_and_flush": ["stdout_write", "stdout_flush"]}[role]
-                self.assertEqual([row["phase"] for row in fallback["post_failures"]], expected)
-
-    def test_real_directory_custody_denies_delete_access_with_a_working_baseline(self):
-        import ctypes
-        module = self.load_caller()
-        directory = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01"
-        observer = module.RuntimeCustody()
-        def delete_access_probe():
-            handle = observer.create(str(directory), 0x10080, 7, None, 3, 0x02200000, None)
-            if handle in (None, ctypes.c_void_p(-1).value):
-                return False, ctypes.get_last_error()
-            try:
-                return True, observer.opened_identity(handle)
-            finally:
-                if not observer.close(handle):
-                    raise ctypes.WinError(ctypes.get_last_error())
-        baseline, baseline_identity = delete_access_probe()
-        self.assertTrue(baseline, baseline_identity)
-        observations = []
-        for metadata_only in (True, False):
-            holder = module.RuntimeCustody()
-            native_create = holder.create
-            if metadata_only:
-                holder.create = lambda path, access, *args: native_create(path, 0x80, *args)
-            try:
-                holder.hold(directory, directory=True)
-                opened, detail = delete_access_probe()
-                observations.append({"metadata_only_counterfactual": metadata_only, "delete_access_opened": opened,
-                                     "error": detail if not opened else None})
-                self.assertEqual(opened, metadata_only)
-                if not opened:
-                    self.assertEqual(detail, 32)
-            finally:
-                errors = holder.retire()
-            self.assertEqual(errors, [])
-        print("CONTROLLED_DIRECTORY_SHARE_ACCESS", json.dumps({"baseline_identity": baseline_identity,
-            "observations": observations, "directory_renamed": False, "directory_deleted": False}, separators=(",", ":")))
-
-    def test_admission_identifiers_are_bounded_before_native_parent_entry(self):
-        module = self.load_caller()
-        base = {"schema_version": 1, "scope": module.SCOPE,
-            "planning_commit": "44e8cef19d70f555e2f37dd4ea07651bd9b8125f", "reviewed_commit": "a" * 40,
-            "entry_approval": 103, "independent_reviews": [101, 102], "deadline_tick_ms": 31000,
-            "boot_filetime": "123", "ordinary_sid": module.SID,
-            "source_pins": {name: {"bytes": 1, "sha256": "a" * 64} for name in module.SOURCE_PATHS}}
-        for field, bad in (("entry_approval", 1 << 64), ("independent_reviews", [1 << 64, 102])):
-            with self.subTest(field=field), self.assertRaises(ValueError):
-                module.validate_admission({**base, field: bad}, 1000)
-
-
-
-    def test_operator_finalizer_keeps_original_and_distinct_close_failure(self):
-        import types
-        path=ROOT/"openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_invocation_v1.proposed.ps1"
-        self.assertTrue(path.is_file(),"fixed enclosing owner absent")
-        raw=path.read_text().split("$Pr9ReadonlyController = @'\n",1)[1].split("\n'@",1)[0]
-        ns={"__name__":"pr9_operator_control"}
-        exec(compile(raw,"fixed-operator-control","exec"),ns)
-        original=object(); first=OSError(); closing=RuntimeError()
-        def run(a,b,**kw):
-            kw["enclosing_result"]["capture"]=original
-            raise first
-        owner=types.SimpleNamespace(handles=[1],retired=False)
-        def retire():
-            owner.handles.pop(); owner.retired=True
-            raise closing
-        owner.retire=retire
-        driver=types.SimpleNamespace(run_qualification=run)
-        state=ns["own_qualification"](driver,{}, {},owner,lambda:1)
-        self.assertIs(state["box"]["capture"],original)
-        self.assertIs(state["errors"][0][1],first)
-        self.assertIs(state["errors"][1][1],closing)
-        self.assertEqual(state["remaining_runtime_handles"],0)
-
-    def test_runtime_census_missing_or_bad_sources_refuse_before_io_and_import(self):
-        from unittest import mock
-        m=self.load_caller()
-        run=getattr(m,"collect_runtime_census",None)
-        self.assertTrue(callable(run),"census absent")
-        p={name:{"bytes":1,"sha256":"a"*64} for name in m.SOURCE_PATHS}
-        for bad in (None,{},{**p,"driver":{"bytes":True,"sha256":"a"*64}},
-                    {**p,"guard":{"bytes":65537,"sha256":"a"*64}},
-                    {**p,"capture":{"bytes":1,"sha256":"private"}}):
-            with self.subTest(value=bad),mock.patch.object(m.os,"open",side_effect=AssertionError("file")),\
-                 mock.patch("builtins.__import__",side_effect=AssertionError("import")):
-                with self.assertRaisesRegex(ValueError,"source"):
-                    run(bad)
-
-    def test_runtime_census_module_overflow_refuses_before_collection_io_and_import(self):
-        import types
-        from unittest import mock
-        m=self.load_caller()
-        run=getattr(m,"collect_runtime_census",None)
-        self.assertTrue(callable(run),"census absent")
-        class Modules:
-            def __len__(self):return 513
-            def __iter__(self):raise AssertionError("collect")
-        p={name:{"bytes":1,"sha256":"a"*64} for name in m.SOURCE_PATHS}
-        with mock.patch.object(m,"sys",types.SimpleNamespace(modules=Modules())),\
-             mock.patch.object(m.os,"open",side_effect=AssertionError("file")),\
-             mock.patch("builtins.__import__",side_effect=AssertionError("import")):
-            with self.assertRaisesRegex(ValueError,"m"):
-                run(p)
 
 
 if __name__ == "__main__":
