@@ -84,6 +84,18 @@ A packaged accepted-policy repair SHALL invalidate affected image/source/parity/
 - **WHEN** diagnostic containment needs new configuration, a WSL restart or a routing/opening probe
 - **THEN** exact planning review/checks/delegated approval and a separately accepted finite setup/qualification recipe SHALL precede the operation, including safe quiescence, installed-binary/parser/path identity, all possible C:/E: failure outputs, heap/file/clock/closure bounds and fresh post-restart admissions; the boundary SHALL NOT replace compiler CORE/filter/inheritance qualification or close whole-chain acceptance by itself.
 
+#### Scenario: Configured review requires writable session bookkeeping
+- **WHEN** the configured review CLI requires persistence that an immutable copy cannot provide
+- **THEN** only the independently approved narrow support bootstrap MAY create the separately admitted fixed128MiB Windows execution filesystem at the literal E: target, after two exact-pushed specification reviews, required CI, delegated AGENT approval and separately qualified complete setup peak, privilege, source and lifecycle controls; no pre-existing/ambiguous disk may be initialized or formatted and no application whole-chain authority or prior Grok approval is inferred.
+
+#### Scenario: A configured review uses the bounded execution copy
+- **WHEN** an ordinary-principal configured review is separately admitted on the proved new filesystem
+- **THEN** original personal data and readonly auth/config/cache inputs SHALL remain unchanged, only reviewed session bookkeeping SHALL be mutable inside that fixed ceiling, the authenticated full packet SHALL bypass offload using reviewed supported --verbatim, and original ownership/deadline/I/O/persistence/response/private-data controls SHALL remain enforced; the actual source/input scope and resulting verdict require independent disposition before dependent application reliance.
+
+#### Scenario: Configured-review setup or execution loses its admission
+- **WHEN** privilege, target/caller/volume/device/custody identity, fixed capacity, complete backend retirement, inventory or original clock is missing, drifts, exhausts or becomes unknown
+- **THEN** the system SHALL refuse before the next dependent effect or stop admitted owners within the original deadline, retaining every available original/partial outcome without guessing a disk, alternate V: mapping, fallback, retry, growth, cleanup credit or deletion; peer/CI bootstrap approval SHALL NOT replace any required later configured-Grok, application conformance, archive or merge gate.
+
 ### Requirement: Integrated repair preserves accepted storage behavior and evidence boundaries
 The accepted repaired baseline SHALL preserve the accepted S3 export/recovery contract and supported historical Seafile reading while retaining the complete inherited implementation and repair's reviewed behavior. Integration acceptance SHALL require independent review of the entire inherited/repair diff at its exact integrated commit, required current checks and genuine scenario conformance. Repair sync/archive SHALL preserve the accepted S3 main requirements/archive and every unaffected main requirement/scenario. Historical failed qualification documents, unchecked tasks, raw evidence and identities SHALL retain their original disposition; code integration SHALL NOT establish qualification, Q4, capacity or full-publication eligibility. All 227 retained images SHALL remain protected unless explicit human confirmation covers the exact images and deletion/offload action.
 

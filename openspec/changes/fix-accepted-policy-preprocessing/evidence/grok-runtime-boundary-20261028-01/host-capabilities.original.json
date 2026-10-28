@@ -1,0 +1,11 @@
+{
+  "scope": "readonly_storage_command_capability_original_return",
+  "original_tool_return": {
+    "chunk_id": "2d8623",
+    "wall_time_seconds": 3.2934539,
+    "exit_code": 0,
+    "original_token_count": 232,
+    "output": "{\"scope\":\"readonly_storage_command_capability_only\",\"elevated\":false,\"commands\":[{\"name\":\"New-VHD\",\"available\":true,\"module\":\"Hyper-V\"},{\"name\":\"Mount-VHD\",\"available\":true,\"module\":\"Hyper-V\"},{\"name\":\"Get-VHD\",\"available\":true,\"module\":\"Hyper-V\"},{\"name\":\"Mount-DiskImage\",\"available\":true,\"module\":\"Storage\"},{\"name\":\"Get-DiskImage\",\"available\":true,\"module\":\"Storage\"},{\"name\":\"Get-Disk\",\"available\":true,\"module\":\"Storage\"},{\"name\":\"Initialize-Disk\",\"available\":true,\"module\":\"Storage\"},{\"name\":\"New-Partition\",\"available\":true,\"module\":\"Storage\"},{\"name\":\"Format-Volume\",\"available\":true,\"module\":\"Storage\"},{\"name\":\"Add-PartitionAccessPath\",\"available\":true,\"module\":\"Storage\"}],\"volumes\":[{\"DriveLetter\":\"E\",\"FileSystem\":\"NTFS\",\"AllocationUnitSize\":4096,\"SizeRemaining\":259157676032},{\"DriveLetter\":\"C\",\"FileSystem\":\"NTFS\",\"AllocationUnitSize\":4096,\"SizeRemaining\":233680707584}],\"allocation_or_mount_performed\":false}\r\n"
+  },
+  "execution_authority": false
+}

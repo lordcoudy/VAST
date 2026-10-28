@@ -1259,3 +1259,112 @@ independent/Grok source reviews must pass before physical use. This amendment
 changes no consumer predicate, receipt schema, delta requirement/scenario, task
 identity or checked state; it does not reopen D27/Native57 or introduce another
 compiler framework.
+
+
+## Prospective configured-review storage boundary, 2026-10-28
+
+**Context and selected remedy.** The source findings linked in the proposal
+establish mandatory ordinary-headless session persistence; no supported
+ordinary-release CLI persistence bypass was established. Preserve the failed06 fact pattern and
+generic-error limitation. Select one new classic fixed128MiB Windows VHD,
+E:/VAST-pr9/grok-bounded-review-20261028-07.vhd, for a fresh private execution
+copy only. Keep planned S96/E16 and all original roots/daemon/provider/image
+identities unchanged. Reject unbounded writable directories, relaxing .g5,
+changing the executable/provider/model, a hidden persistence bypass, and
+retrospectively treating this as a successful06 diagnosis.
+
+**Planning and bootstrap boundary.** Keep this one change/branch/PR. Before
+implementation, independently review the exact pushed four-artifact amendment
+with two reviewers, pass required planning CI and record delegated AGENT
+specification approval. Configured Grok is currently unavailable through the
+invalid support environment: peer/CI approval of this narrow bootstrap is not
+represented as a completed Grok review or a waiver of any application gate.
+Before dependent application execution, run and independently disposition a
+qualified configured-Grok review at the actual reviewed source/input commit,
+including the relevant bootstrap changes. Do not reopen any consumed D-stage
+or parked D27/Native57 path.
+
+**New-disk identity and setup.** Seal the literal backing path,128MiB virtual
+capacity, classic fixed format, prospective V: mapping, caller Windows SID and
+one original setup deadline before use. Use existing supported Hyper-V/Storage
+commands only after installed-source/runtime/privilege qualification. Admit
+actual source/capture/provider/diagnostic/failure-output peaks before even the
+first directory/disk allocation. Require fresh physical C:>=40GiB after the
+conservative peak and all E:/other floors, including full pagefile and retained
+failures. The logical VHD file is134218240B including its512B footer; on verified
+4KiB E: allocation its rounded file term is134221824B. The proposed total E129MiB
+leaves1044480B for host metadata; it is not an accepted setup peak until every
+outside writer is qualified. No actual disk operation follows from authoring.
+
+Refuse existing/reparse/compressed/sparse/EFS/differencing/foreign targets.
+Create only that new fixed file, retain actual VhdId/file identity/allocation
+and read-back footer/size/type facts, attach initially without a drive letter,
+then authenticate exactly one sole newly added RAW disk of the expected size
+with no partitions and false boot/system/cluster flags. Join its actual CIM
+Path/UniqueId/object identity to the same backing file using a reverse VHD
+lookup; disk number alone, newest disk or all-RAW selection is insufficient.
+Before each destructive step revalidate ownership/identity. Pass only that
+proved disk object to GPT initialization, create the specified aligned data
+partition, and pass only its returned proved partition to NTFS formatting with
+4096B allocation units. Verify actual usable capacity and fresh volume GUID/
+serial/partition/disk/backing joins. Assign V: only if absent in ordinary and
+elevated namespaces and still absent immediately before assignment; otherwise
+refuse without another letter or path. Set reviewed private ownership/ACLs on
+the new volume/profile and deny direct runtime write/delete of the backing file.
+
+**Privilege and operation lifecycle.** Prepare and review the complete fixed
+elevated setup before requesting OS user action. Run Grok with its original
+ordinary principal, never with setup elevation. A failed prerequisite produces
+no storage allocation. Retain actual original caller/provider-job identities
+and outcomes under one deadline; distinguish synchronous completion, original
+asynchronous job completion, failure and unknown state. PowerShell exit or
+client cancellation alone is not backend retirement. On timeout, ambiguous job,
+disk match or format state, preserve every available original and partial file
+and HOLD without retry, format, detach, delete, alternate provider or rollback
+against original stores. Keep all owned resources accounted for; prove required
+completion before the next dependent operation. No unrelated service/job may
+be stopped to obtain closure.
+
+**Private execution copy.** Use the qualified volume for a new namespace and
+authenticate a complete bounded initial copy from retained/current original
+configuration under read-only source custody. Preserve the configured model,
+provider/authentication, policy and tool/extension/experiment restrictions.
+Keep auth/config/cache copies immutable; only the selected session bookkeeping
+tree may have write/replace/lock access. Do not retain ShareRead file custody
+that forbids legitimate replacement of mutable outputs; instead hold directory/
+filesystem identity and use the fixed byte ceiling, bounded inventory and
+post-retirement sealing/retention for that subtree. Keep source originals and
+.g5 unchanged and retain before/after equality proof for every immutable input.
+All discovered internal session/temporary/trace/compaction/lock writers must
+remain inside the same fixed filesystem. No personal, project or Windows-temp
+bookkeeping fallback is permitted.
+
+Before workload entry and through the owner interval verify backing/volume/
+mount/principal/custody identity, absence of other owners and required space;
+loss, aliases or drift stop/hold under the original deadline. Bound inventory
+before collecting/descent, metadata, channels, all control records and reader
+heap/time independently of disk capacity. After actual original-process/Job
+retirement and settled I/O, seal and retain mutable outputs without publishing
+private auth/config/session/text/thought values or hashes. Ordinary model turns
+and captured stdout limits are not an internal-write capacity proof.
+
+**Exact request and acceptance.** Prospectively review --verbatim with the
+installed/pinned parser and preserve the entire authenticated source packet in
+the actual request. Keep explicit finite turns, one original deadline, original
+PID/Job ownership, bounded channels, independent write/fsync/close, first/distinct
+causes, exact output/usage/model/session/CWD validation and lossless external
+returns. Require fresh credential validity, all source/configuration/runtime/
+storage checks, separately approved entry and unused namespaces. No replay or
+continuation follows a consumed attempt. Exhaustion is failure; no enlargement,
+conversion, cleanup credit, extra volume or cap increase is automatic.
+
+**Validation and migration.** First prove refusal before any effect for missing
+approval/privilege, occupied V:, existing/aliased target, wrong/extra disk,
+identity drift, insufficient capacity and expired deadline. Exercise original
+backend unknown/failure, partial persistence and distinct cleanup causes.
+Controlled tests do not establish live privilege, device identity or fit.
+Validate the setup receipt in the ordinary process before any private copy;
+only then admit a separately bounded configured review and independently
+disposition what actually ran. Retain all previous profiles/archives/failures.
+This support operation authorizes no compiler, Docker/GPU, application build,
+lifecycle, renewal or genuine-consumer execution and does not close whole1.5.

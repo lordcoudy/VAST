@@ -287,3 +287,42 @@ required checks and recorded delegated amendment approval precede dependent
 implementation. Neither this remedy nor the earlier native-disk approval admits
 allocation: the complete peak and every setup/qualification operation still need
 separate finite admissions. D27/Native57 and future Q1/Q4/campaign remain parked.
+
+
+## Prospective bounded configured-review execution, 2026-10-28
+
+The retained review06 failed before an accepted model result. Public release
+source requires durable session writes even for ordinary cold headless resume;
+the existing deny-write/ShareRead copy cannot satisfy that path. Its generic
+LoadSession error does not prove the exact earliest installed-runtime failure.
+The current packet also needs supported --verbatim to bypass prompt offloading.
+See evidence/grok-runtime-boundary-20261028-01/proposal-source-findings.md.
+
+Refine task1.5 with one separate128MiB classic fixed Windows VHD on E: for a
+new private Grok execution copy. Preserve the C:worktree/branch/PR9, original
+personal files, immutable .g5/.gm2 and every failure. This is auxiliary review
+storage, not a Docker/native-store/provider replacement or activation of the
+planned S96/E16 remedies. Configuration/authentication/cache remain readonly;
+only reviewed session bookkeeping is mutable inside the fixed filesystem.
+
+An exact planning commit, two independent reviews, required planning CI and
+delegated AGENT approval precede support-host implementation. Source and controlled qualification of one fixed elevated setup precede any
+user OS-action request; actual elevated-token/provider/device qualification
+after authorization and before storage effects, plus setup/copy/model operations,
+need their own complete finite peaks, identity,
+privilege, deadline and backend-completion admissions. The current shell's
+non-elevated token and installed cmdlets do not establish execution authority.
+Only this support-environment bootstrap may proceed through those peer/CI
+gates while configured Grok is unavailable; no prior Grok approval is claimed.
+The first qualified configured-Grok review must cover its actual source/input
+scope before dependent application execution. All existing application-stage
+Grok/CI/conformance requirements remain open and unchanged.
+
+The fixed filesystem is a containment ceiling, not a promise of successful fit.
+Unknown completion, exhaustion or identity drift preserves all state and holds
+dependents without resize, fallback, replay or automatic deletion. The proposed
+129MiB E: setup allowance remains unvalidated until its complete peak is proved.
+The separately accepted16MiB authoring row retains all earlier charges:
+2455MiB/C73.3564453125GiB. No whole task1.5, lifecycle, runtime, genuine-consumer,
+archive or merge acceptance follows; D27/Native57 and fresh Q1/Q4/campaign stay
+separate. No protected image deletion/offload is included.

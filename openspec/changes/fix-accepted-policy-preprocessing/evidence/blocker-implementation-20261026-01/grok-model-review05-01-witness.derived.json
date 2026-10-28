@@ -1,0 +1,122 @@
+{
+  "scope": "failed_review05_actual_public_witness_only",
+  "source_commit": "605eb02733fe256ad5ef14f358eaa81ee1a0ae44",
+  "admission_comment": 6463585289,
+  "attempt": "review05/01",
+  "actual_return_metadata": {
+    "chunk_id": "3f1bae",
+    "wall_time_seconds": 3.8936846000000003,
+    "exit_code": 1,
+    "original_token_count": 140
+  },
+  "controller_exit_code": 1,
+  "grok_cli_exit_code": 2,
+  "phase": "post_comparison",
+  "primary_code": "post_comparison",
+  "capture_primary_code": "job_accounting",
+  "post_comparison_complete": true,
+  "private_model_raw_sealed": true,
+  "preflight_checks": {
+    "extensions_and_experiments_empty": true,
+    "mcp_and_plugins_disabled": true,
+    "original_configuration_join": true,
+    "pager_ack_disposition": true,
+    "recognized_model_and_provider_route": true,
+    "reviewed_configuration_layers": true
+  },
+  "response_checks": null,
+  "resource_and_channel_facts": {
+    "active_after_retirement": 0,
+    "assigned_before_resume": true,
+    "original_pid": 50604,
+    "original_creation_filetime_decimal": "134376472876548108",
+    "job_handle_closed": true,
+    "process_handle_closed": true,
+    "parent_writers_closed": [
+      true,
+      true
+    ],
+    "pipe_handles_closed": [
+      true,
+      true
+    ],
+    "channels": [
+      {
+        "cancel_completed": false,
+        "cancel_requested": false,
+        "close_completed": true,
+        "discarded_bytes_lower_bound": 0,
+        "eof": true,
+        "fsync_completed": true,
+        "io_settled": true,
+        "observed_bytes": 0,
+        "overflow": false,
+        "pending_ever": true,
+        "quarantined": false,
+        "read_completions": 1,
+        "read_failed": false,
+        "read_starts": 1,
+        "remainder_unknown": false,
+        "retention_failed": false,
+        "write_extent_unknown": false,
+        "written_prefix_bytes": 0
+      },
+      {
+        "cancel_completed": false,
+        "cancel_requested": false,
+        "close_completed": true,
+        "discarded_bytes_lower_bound": 0,
+        "eof": true,
+        "fsync_completed": true,
+        "io_settled": true,
+        "observed_bytes": 187,
+        "overflow": false,
+        "pending_ever": true,
+        "quarantined": false,
+        "read_completions": 3,
+        "read_failed": false,
+        "read_starts": 3,
+        "remainder_unknown": false,
+        "retention_failed": false,
+        "write_extent_unknown": false,
+        "written_prefix_bytes": 187
+      }
+    ]
+  },
+  "public_terminal_receipt_hash_join": true,
+  "terminal_receipt_write": {
+    "attempted": true,
+    "created": true,
+    "written_prefix_bytes": 4054,
+    "write_extent_unknown": false,
+    "fsync_completed": true,
+    "close_completed": true,
+    "post_write_clock_known": true,
+    "deadline_exceeded": false,
+    "complete": true
+  },
+  "public_controller_join": true,
+  "external_collection_ended": true,
+  "completion_unknown": false,
+  "complete": false,
+  "independent_verdict_accepted": false,
+  "network_or_model_request_proven": false,
+  "model_or_product_accepted": false,
+  "interpretation": "CLI resumed and refused the public --plan argument; no configured model review accepted. job_accounting is a phase label encompassing the explicit nonzero-return check, not evidence of a Job API failure. No original is rewritten.",
+  "read_only_diagnostics": {
+    "first": {
+      "chunk_id": "6c127a",
+      "wall_time_seconds": 2.1246568,
+      "exit_code": 0,
+      "original_token_count": 86,
+      "output": "{\"scope\":\"private_cli_stderr_public_argv_diagnostic_only\",\"raw_bytes\":187,\"families\":{\"unexpected_argument\":true,\"conflicting_arguments\":false,\"invalid_value\":false,\"missing_required\":false,\"unrecognized_subcommand\":false,\"usage_present\":true},\"public_flags_present\":[\"--resume\",\"--plan\"],\"raw_text_or_hash_emitted\":false,\"grok_rerun\":false}\r\n"
+    },
+    "exact_flag": {
+      "chunk_id": "99fb90",
+      "wall_time_seconds": 2.0876844,
+      "exit_code": 0,
+      "original_token_count": 39,
+      "output": "{\"scope\":\"known_public_unexpected_argument_only\",\"unexpected_public_flag\":\"--plan\",\"raw_bytes\":187,\"raw_text_or_hash_emitted\":false,\"grok_rerun\":false}\r\n"
+    }
+  }
+}

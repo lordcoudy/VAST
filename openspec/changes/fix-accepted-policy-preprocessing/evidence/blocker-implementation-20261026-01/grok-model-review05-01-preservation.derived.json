@@ -1,0 +1,35 @@
+{
+  "scope": "review05_public_provenance_preservation_only",
+  "source_commit": "605eb02733fe256ad5ef14f358eaa81ee1a0ae44",
+  "original_creation_filetime_policy": "Decimal string derived from exact original JSON numeric bytes; original receipt/controller remain authoritative.",
+  "guard_original_tool_return": {
+    "chunk_id": "d74377",
+    "wall_time_seconds": 2.2198677,
+    "exit_code": 0,
+    "original_token_count": 432,
+    "output": "{\"scope\":\"readonly_linux_guard_with_separate_native_channels\",\"exit_code\":0,\"stdout\":\"{\\\"allocation_units\\\":{\\\"c\\\":4096,\\\"e\\\":4096,\\\"temporary\\\":4096},\\\"boot_id\\\":\\\"df4955d9-4762-42b4-a55b-0106ba3786f8\\\",\\\"free_bytes\\\":{\\\"c\\\":234632654848,\\\"e\\\":259150749696,\\\"temporary\\\":880664952832},\\\"observed_utc\\\":\\\"2026-10-28T07:47:32.656550+00:00\\\",\\\"root_device\\\":\\\"/dev/sdf\\\",\\\"root_mounts\\\":[[\\\"/dev/sdf\\\",\\\"/\\\",\\\"ext4\\\",\\\"rw,relatime,discard,errors=remount-ro,data=ordered\\\",\\\"0\\\",\\\"0\\\"]],\\\"root_uuid\\\":\\\"c3d3247e-154c-43c0-a9fe-2b91d6db7666\\\",\\\"temporary_same_device_as_root\\\":true,\\\"vm_memory_bytes\\\":{\\\"MemTotal\\\":25196363776,\\\"SwapTotal\\\":6442450944},\\\"wslconfig_sha256\\\":\\\"6efea9e209212784c22240a6019c17cee3bd31011840250c76c3bb31e2c7eea1\\\",\\\"wslconfig_size\\\":21}\",\"stderr\":\"w\\u0000s\\u0000l\\u0000:\\u0000 \\u0000A\\u0000 \\u0000l\\u0000o\\u0000c\\u0000a\\u0000l\\u0000h\\u0000o\\u0000s\\u0000t\\u0000 \\u0000p\\u0000r\\u0000o\\u0000x\\u0000y\\u0000 \\u0000c\\u0000o\\u0000n\\u0000f\\u0000i\\u0000g\\u0000u\\u0000r\\u0000a\\u0000t\\u0000i\\u0000o\\u0000n\\u0000 \\u0000w\\u0000a\\u0000s\\u0000 \\u0000d\\u0000e\\u0000t\\u0000e\\u0000c\\u0000t\\u0000e\\u0000d\\u0000 \\u0000b\\u0000u\\u0000t\\u0000 \\u0000n\\u0000o\\u0000t\\u0000 \\u0000m\\u0000i\\u0000r\\u0000r\\u0000o\\u0000r\\u0000e\\u0000d\\u0000 \\u0000i\\u0000n\\u0000t\\u0000o\\u0000 \\u0000W\\u0000S\\u0000L\\u0000.\\u0000 \\u0000W\\u0000S\\u0000L\\u0000 \\u0000i\\u0000n\\u0000 \\u0000N\\u0000A\\u0000T\\u0000 \\u0000m\\u0000o\\u0000d\\u0000e\\u0000 \\u0000d\\u0000o\\u0000e\\u0000s\\u0000 \\u0000n\\u0000o\\u0000t\\u0000 \\u0000s\\u0000u\\u0000p\\u0000p\\u0000o\\u0000r\\u0000t\\u0000 \\u0000l\\u0000o\\u0000c\\u0000a\\u0000l\\u0000h\\u0000o\\u0000s\\u0000t\\u0000 \\u0000p\\u0000r\\u0000o\\u0000x\\u0000i\\u0000e\\u0000s\\u0000.\\u0000\\n\\u0000\\n\\u0000\",\"counts\":{\"stderr\":258,\"stdout\":616}}\r\n"
+  },
+  "credential_metadata_original_tool_return": {
+    "chunk_id": "88ac23",
+    "wall_time_seconds": 2.2630466,
+    "exit_code": 0,
+    "original_token_count": 49,
+    "output": "{\"observed_utc\":\"2026-10-28T07:47:32.5324621+00:00\",\"credential_metadata_available\":true,\"expires_utc\":\"2026-10-28T12:45:05.6613319+00:00\",\"fresh_for_900_seconds\":true,\"auth_file_bytes\":1764}\r\n"
+  },
+  "first_diagnostic_invocation": "& 'C:/Python314/python.exe' -I -B -S -c 'import json,os\nfrom pathlib import Path\np=Path(r\"C:\\Users\\s-a-balashov\\.gm1\\stderr.private\")\ns=p.lstat()\nassert not p.is_symlink() and s.st_nlink==1 and not (getattr(s,\"st_file_attributes\",0)&0x400) and s.st_size==187\nwith p.open(\"rb\") as f:\n raw=f.read(188)\n assert len(raw)==187 and f.read(1)==b\"\"\nflags=(\"--resume\",\"--plan\",\"--no-memory\",\"--no-auto-update\",\"--no-subagents\",\"--disable-web-search\",\"--tools\",\"--disallowed-tools\",\"--deny\",\"--max-turns\",\"--output-format\",\"--prompt-file\")\nfamilies={\"unexpected_argument\":b\"unexpected argument\",\"conflicting_arguments\":b\"cannot be used\",\"invalid_value\":b\"invalid value\",\"missing_required\":b\"required arguments\",\"unrecognized_subcommand\":b\"unrecognized subcommand\",\"usage_present\":b\"Usage:\"}\nout={\"scope\":\"private_cli_stderr_public_argv_diagnostic_only\",\"raw_bytes\":len(raw),\"families\":{k:v in raw for k,v in families.items()},\"public_flags_present\":[x for x in flags if x.encode() in raw],\"raw_text_or_hash_emitted\":False,\"grok_rerun\":False}\nprint(json.dumps(out,separators=(\",\",\":\")))'",
+  "exact_flag_diagnostic_invocation": "& 'C:/Python314/python.exe' -I -B -S -c 'import json,stat\nfrom pathlib import Path\np=Path(r\"C:\\Users\\s-a-balashov\\.gm1\\stderr.private\")\ns=p.lstat()\nassert stat.S_ISREG(s.st_mode) and s.st_nlink==1 and not (getattr(s,\"st_file_attributes\",0)&0x400) and s.st_size==187\nwith p.open(\"rb\") as f:\n raw=f.read(188)\n assert len(raw)==187 and f.read(1)==b\"\"\nknown=(\"--resume\",\"--plan\",\"--no-memory\",\"--no-auto-update\",\"--no-subagents\",\"--disable-web-search\",\"--tools\",\"--disallowed-tools\",\"--deny\",\"--max-turns\",\"--output-format\",\"--prompt-file\")\nquote=bytes([39])\nmatches=[x for x in known if b\"unexpected argument \"+quote+x.encode()+quote in raw]\nassert len(matches)==1\nprint(json.dumps({\"scope\":\"known_public_unexpected_argument_only\",\"unexpected_public_flag\":matches[0],\"raw_bytes\":187,\"raw_text_or_hash_emitted\":False,\"grok_rerun\":False},separators=(\",\",\":\")))'",
+  "external_persistence_original_tool_return": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  scope: 'review05_external_record_local_persistence_only',\n  record_bytes: 4915,\n  record_sha256: 'c4fc370e091d2161f011a380fa2e2841e2114efddc28d9b39cb8d8269f62a45d',\n  facts: {\n    attempted: true,\n    created: true,\n    written_prefix_bytes: 4915,\n    write_extent_unknown: false,\n    fsync_attempted: true,\n    fsync_completed: true,\n    close_attempted: true,\n    close_completed: true,\n    complete: true\n  },\n  primary_cause: null,\n  secondary_causes: [],\n  external_collection_ended: true,\n  completion_unknown: false,\n  model_or_product_accepted: false\n}"
+      }
+    ],
+    "isError": false
+  },
+  "private_raw_text_or_hash_included": false,
+  "private_material_archived": false,
+  "grok_rerun": false,
+  "protected_images_changed": false,
+  "broader_acceptance": false
+}
