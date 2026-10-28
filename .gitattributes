@@ -468,3 +468,13 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 /openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/grok_reviewed_job_definitions_v1.proposed.py -text !eol whitespace=-blank-at-eof
 /openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/grok_windows_model_capture_v1.proposed.py -text !eol whitespace=-blank-at-eof
 /openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/grok_windows_model_capture_v2.proposed.py -text !eol whitespace=-blank-at-eof
+
+# PR9 bounded runtime bridge: preserve reviewed raw source and fixture bytes.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/proposal-source-findings.md -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/source-control-recipes.md -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_capture_v1.proposed.py -text !eol whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_driver_v1.proposed.py -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_invocation_v1.proposed.ps1 -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_source_contract_v1.proposed.json -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/tests/test_grok_review_volume_v1.py -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/tests/test_grok_readonly_operator_v1.py -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
