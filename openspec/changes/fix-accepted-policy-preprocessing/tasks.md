@@ -750,3 +750,25 @@ separate outside-writer/SetupAPI capacity work before any VHD/storage effect,
 and configured Grok before dependent application reliance. No task is checked,
 no original overwritten and no compiler/reader/Docker/lifecycle/runtime/consumer/
 Q1/Q4/campaign/archive/merge gate is waived by this support repair.
+
+
+### Prospective authoring-reservation amendment:24MiB (2026-10-29)
+
+Task1.5 and the24/46 completion count remain unchanged. The previous20MiB quote
+is retained history; after exact-pushed approval the bounded authoring partition
+is planning8MiB/sourceGit3MiB/ordinary3MiB/one-archive-and-Git8MiB/metadata2MiB.
+Within metadata preserve old other-tail768KiB and reserve control1280KiB, keeping
+all old debits and every slot/per-file/live limit. Cumulative direct2463MiB/
+2582642688B; conservative C78810984448B leaves7088361472B in the same80GiB reserve.
+C40GiB/fresh120GiB and E/pagefile/exterior liabilities remain mandatory.
+
+Use independent reservation/drafting review and explicit delegated drafting
+approval before the four document/raw-Git pairs; commit/push only those existing
+planning paths, then require exact-head independent specification review,
+current planning CI and delegated approval before dependent source/control use.
+No new control is released by this amendment. Individually price/review/admit
+all later originals, copies, outputs, heap, clocks and retirement, preserving
+failure data without truncation or history credit. The existing native metadata,
+setup, configured Grok, compiler/reader, Docker, lifecycle, renewal, genuine
+consumer, conformance, sync/archive, final-review/latest-CI/merge and separate
+Q1/Q4/campaign gates remain open. Do not check any task on authoring arithmetic.

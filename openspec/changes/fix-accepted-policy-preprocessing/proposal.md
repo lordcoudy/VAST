@@ -363,3 +363,28 @@ quote is78806790144B/73.3945426940918GiB, leaving7092555776B inside the existing
 80GiB reserve. Independent authoring reservation6492480925 permits only bounded
 planning preparation within these terms. This confers no implementation/native
 authority. Physical C40GiB/E floors and every execution admission remain unchanged.
+
+
+## Authoring-only reservation amendment (2026-10-29, prospective24MiB)
+
+The20MiB authoring quote above is historical after this amendment is approved;
+retain its allocations, forms and failures in full. Independent review found no
+proved basis for reducing the old768KiB non-control-tail reservation, and neither
+32KiB future original capsules nor repeated source/packet copies are admitted by
+previous control success. Increase only the support authoring reservation by
+4MiB to24MiB: planning8MiB, source/Git3MiB, ordinary3MiB, ONE originals.zip plus
+Git8MiB, and metadata/tails2MiB. Within the last row reserve1280KiB for control
+originals/forms and preserve the existing768KiB for other tails. Keep every
+source/ordinary slot, individual/live ceiling, historical form and retained failure.
+
+The cumulative direct quote becomes2463MiB/2582642688B and conservative C quote
+78810984448B, leaving7088361472B inside the unchanged80GiB reserve. Preserve the
+C40GiB floor, fresh support C>=120GiB guard and all E/pagefile/exterior liabilities.
+This funds bounded authoring, not additional execution or whole task1.5 acceptance.
+Only the four existing planning artifacts may use the prospective drafting
+supplement after independently reviewed reservation and delegated drafting
+approval. Exact-pushed specification reviews, current planning CI and delegated
+specification approval precede dependent use for further code/control forms.
+Every later entry still requires its own complete original/source/heap/output/
+clock/retirement/retention quote and separate approval; unused allowance is not
+entry authority. D27/Native57 and all later acceptance gates remain unchanged.

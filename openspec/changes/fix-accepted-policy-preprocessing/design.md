@@ -1524,3 +1524,66 @@ Primary contracts: [file-record retrieval](https://learn.microsoft.com/en-us/win
 [metadata streams](https://learn.microsoft.com/en-us/windows/win32/fileio/defragmenting-files),
 [root-relative open](https://learn.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntcreatefile),
 [final path](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfinalpathnamebyhandlew).
+
+
+## Authoring-only reservation supplement:24MiB (2026-10-29)
+
+This section supersedes ONLY the prospective authoring partition/arithmetic of
+the earlier16MiB/20MiB quotes after exact-pushed approval; it removes no old
+allocation, history, failure, schema bound, admission or physical floor.
+
+The current planning pair leaves729088B, insufficient for another complete
+four-artifact raw/Git pair (approximately1.37MiB). Source/Git2MiB is fully reserved
+following the independently reviewed focused GREEN caller debit. The existing
+control256KiB cannot cover both measured originals (RED18719B and GREEN17202B,
+40960B rounded pair each), two additional maximum64KiB originals/pairs131072B
+each and other retained forms. No proved historical non-control carry<=640KiB or
+complete future original<=32KiB permits a silent transfer. Preserve the full old
+control256KiB and other-tail768KiB; do not take compression, delta, sharing,
+cleanup, overwrite or dropped-failure credit.
+
+Reserve24MiB authoring as follows: planning8MiB; source/Git3MiB; ordinary3MiB;
+ONE originals.zip plus Git8MiB; metadata/tails2MiB. The increase is2MiB planning,
+1MiB source/Git and1MiB metadata/tails. Split metadata/tails into1280KiB control
+originals/forms and768KiB unchanged other tails. Preserve all previous debits.
+The old control256KiB plus two future64KiB original/pair liabilities256KiB fit
+within the new control row, leaving768KiB there for separately priced additional
+control forms; that remainder is neither a released entry nor an extra row.
+Measure/debit each complete original and every representation/rounding term;
+refuse before retaining another form if its whole quote does not fit. Data must
+remain complete if an admitted result fails, so a post-write check alone or
+truncation cannot substitute for the prospective bound.
+
+Keep12 named source slots with per-file65536B and live aggregate524288B. The
+reviewed lowered final invocation36864B and contract53248B ceilings remain;
+other final ceilings/slots remain. No unused-slot substitution, fifth role or
+new helper/file is authorized. Keep17 named ordinary slots and their bounds.
+Source and caller forms, complete actual input/tool-return capsules, failures
+and the single original archive all remain separately charged. Increasing a
+sub-budget never waives an individual/live/schema limit or permits unreviewed
+source substitution.
+
+Add4194304B to the previous cumulative direct2578448384B, obtaining2582642688B
+(2463MiB). Add the same increment to conservative C78806790144B, obtaining
+78810984448B. The unchanged80GiB/85899345920B reserve leaves7088361472B;
+36712448B full Circular-EVTX liability and every earlier C term remain included.
+C40GiB floor and fresh support guard>=120GiB remain. Keep the inherited complete
+E/pagefile/outside-writer liabilities and E floor; a C-only authoring/control
+quote neither measures E nor assumes zero ambient pagefile/logging activity.
+
+Drafting sequence: independent finite reservation/drafting reviews of the exact
+supplement, then explicit delegated drafting approval and a fresh C/head/branch/
+pre-write full-pair quote may fund ONLY these four existing planning files.
+Preserve their original bytes and other delta spec. Stage/commit/push only those
+planning paths in PR9. Obtain independent reviews of that exact pushed commit,
+successful current planning CI and delegated specification approval before using
+the increased code/control allowance. No retroactive approval, source execution
+or extra control entry follows from drafting approval. Every new bounded entry
+still needs its individual reviewed source/input/capacity/clock/ownership/output/
+closure/retention admission. Existing consumed RED/GREEN remain immutable data.
+
+Whole metadata schema/host/custody/census/contract/native qualification and task1.5
+remain open. This supplement does not authorize VHD/storage, WSL, Docker, Grok,
+compiler/reader, lifecycle/runtime/consumer work, protected-image action, fresh
+Q1/Q4/campaign, conformance, archive or merge. It does not redesign CI; absence of
+a dedicated conformance CI is still disclosed and not replaced by local reports.
