@@ -1,0 +1,15 @@
+{
+  "scope": "one remaining transport phase only; existing512MiB cumulative allowance",
+  "reviewer": "/root/blocker_plan_review",
+  "verdict": "CLEAR",
+  "transport_test_sha256": "7d58518269f72a52990d21f0315d67d020cf64f994144d0edc7bac40e900aae0",
+  "runner_sha256": "38d66efd7203301f57dc0e3d5ee38d57043ea348f9f3470ecec160dcd361fcb8",
+  "fresh_windows_floor": {
+    "chunk_id": "ab81d8",
+    "wall_time_seconds": 1.606767,
+    "exit_code": 0,
+    "original_token_count": 15,
+    "output": "{\"AllocationUnitSize\":4096,\"SizeRemaining\":242234667008}\r\n"
+  },
+  "delegated_agent_admission": "ACCEPTED for two transport plus14negative/pure probe cases; actual Linux floors rechecked before allocation; no physical qualification"
+}

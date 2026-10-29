@@ -1,0 +1,34 @@
+controlled fixed PRE/FINAL API RED;09 was testauthor indentation error, retained
+test_resume_pre_refuses_existing_scope_before_any_allocation_or_info (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_resume_pre_refuses_existing_scope_before_any_allocation_or_info) ... ERROR
+test_resume_final_charges_interval_and_outstanding_tail_after_max_once (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_resume_final_charges_interval_and_outstanding_tail_after_max_once) ... ERROR
+
+======================================================================
+ERROR: test_resume_pre_refuses_existing_scope_before_any_allocation_or_info (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_resume_pre_refuses_existing_scope_before_any_allocation_or_info)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 466, in test_resume_pre_refuses_existing_scope_before_any_allocation_or_info
+    with patch.object(gate, '_resume_measure_v1', return_value=self.context['baseline']), \
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py'> does not have the attribute '_resume_measure_v1'
+
+======================================================================
+ERROR: test_resume_final_charges_interval_and_outstanding_tail_after_max_once (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_resume_final_charges_interval_and_outstanding_tail_after_max_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 478, in test_resume_final_charges_interval_and_outstanding_tail_after_max_once
+    with patch.object(gate, '_resume_measure_v1', return_value=measured), \
+  File "/usr/lib/python3.12/unittest/mock.py", line 1458, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1431, in get_original
+    raise AttributeError(
+AttributeError: <module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' from '/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py'> does not have the attribute '_resume_measure_v1'
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.072s
+
+FAILED (errors=2)

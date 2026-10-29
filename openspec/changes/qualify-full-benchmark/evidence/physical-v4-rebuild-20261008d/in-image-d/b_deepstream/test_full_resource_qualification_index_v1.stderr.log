@@ -1,0 +1,12 @@
+test_builds_exact_index_from_fragments_and_reuses_the_same_32_pilots (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests) ... ok
+test_commit_is_idempotent_and_rejects_conflict_dangling_and_hardlink (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests) ... ok
+test_execution_closure_is_mandatory (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests) ... ok
+test_index_modes_accept_0555_only_without_mode_enforcement (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests) ... ok
+test_index_recovers_every_atomic_physical_window_same_path (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests) ... ok
+test_missing_pilot_and_fragment_descriptor_drift_fail_before_commit (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests) ... ok
+test_same_bytes_from_a_different_fragment_path_is_rejected (test_full_resource_qualification_index_v1.FullResourceQualificationIndexV1Tests) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.293s
+
+OK

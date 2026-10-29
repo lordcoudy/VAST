@@ -1,0 +1,1637 @@
+Independently review EXACT local commit b98b4aced156784c883887910f9e481e867b8d44, parent8b76aefff3a3ba0fec8222aa4af6bf86c1b15803, same branch codex/fix-accepted-policy-preprocessing and Draft PR9. This is the configured Grok review for the fixed B3 producer failure-frame source slice only. Use the configured model; do not delegate, use network, execute code/tests, mutate files or run workloads. Allowed read tools may inspect exact repository source/evidence. Be adversarial; peer CLEAR is evidence, not your verdict. Need CLEAR or concrete actionable defects with file/line/evidence. Do not weaken bounds or claim runtime/whole1.5 acceptance.
+Review the approved implementation contract, opaque-error callback avoidance, exact canonical/__main__ identities, checked scalar/cause/path geometry, source/report/assessment/reader retention before subsequent errors, legacy cleanup-code transport, single global facts blocks and error identity links, parser-origin exits versus body SystemExit0, actual tail wiring and one stderr attempt with nonzero partial/failed delivery. Verify default in-process call shapes and original error identity remain. Compiler/D16/program/report encoder protected bytes are unchanged. Full heterogeneous compiler facts and real environment/heap/general stderr/drain/deadline/runtime qualification remain OPEN.
+Retained sole RED3methods/5intended assertions .043s; sole GREEN88methods1.066s/noerrors/skips. Exactly6tinyCLIchildren with forbidden production mains (statuses1,1,1,1,0,2),7Ccase roots19files293423B. Max syntheticframe273513B SHA2ebef1dc83d55611c6dabc9b9fe0b86d6f7fbad3d904b494e292982f9b2cfbe4 preserves22worst paths/6captures/64errors/64codes+identities/11prior+1failedsidecar. Three original ZIPs61members CRC/hash/loose-original verified. Read archived/source facts rather than rerunning. Working independent source/outcome and capacity reviews CLEAR; this does not predetermine yours.
+Direct core is intentionally partial to stay<=64KiB. Read the remaining tests/source at this exact clean head with bounded tools if needed. Context/prompt<=128KiB. Four-turn/600s maximum, no continuation. Stop after a concrete final verdict. No task, physical, real Docker, consumer, source-pin renewal, archive/merge approval follows.
+EXACT COMMIT production diff (read full source with allowed read tools as needed):
+diff --git a/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_per_cell_minimum_refusal_v1.py b/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_per_cell_minimum_refusal_v1.py
+index f2d77478..c49d839b 100644
+--- a/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_per_cell_minimum_refusal_v1.py
++++ b/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_per_cell_minimum_refusal_v1.py
+@@ -9,3 +9,2 @@ import re
+ import sys
+-import traceback
+ 
+@@ -17,2 +16,4 @@ from build_production_fixture_v2 import (
+     _fixture_source_capture_v2,
++    _fixture_failure_report_v2, _fixture_report_context_v2,
++    _fixture_argument_parser_v2, _fixture_cli_v2,
+ )
+@@ -69,4 +70,15 @@ def _select_refusal_operation(prepared: dict) -> str:
+ 
+-def main() -> None:
+-    parser = argparse.ArgumentParser(description=__doc__)
++def _require_plain_promoter_refusal_v1(error, expected):
++    from publication_policy_qualification import QualificationError
++
++    if type(error) is not QualificationError:
++        raise error
++    arguments = error.args
++    if (type(arguments) is not tuple or len(arguments) != 1
++            or type(arguments[0]) is not str or len(arguments[0]) > len(expected)):
++        raise error
++
++
++def main(*, _failure_state=None) -> None:
++    parser = _fixture_argument_parser_v2(_failure_state, description=__doc__)
+     parser.add_argument("--project-root", required=True)
+@@ -92,8 +104,13 @@ def main() -> None:
+     output = _canonical_fixture_directory_v2(args.output_dir, root=root, fresh=True)
+-    with _fixture_source_capture_v2(project_root=root, output_dir=output, capture_dir=args.source_capture_dir,
+-            deadline=reader_deadline, expected_commit=args.expected_source_commit, negative=True) as source_capture:
+-        _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output, source_capture)
++    context = _fixture_source_capture_v2(project_root=root, output_dir=output, capture_dir=args.source_capture_dir,
++        deadline=reader_deadline, expected_commit=args.expected_source_commit, negative=True)
++    if _failure_state is not None:
++        _failure_state["source_context"] = context
++    with context as source_capture:
++        _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output,
++            source_capture, **({} if _failure_state is None else {"_failure_state": _failure_state}))
+ 
+ 
+-def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output, source_capture):
++def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output,
++                    source_capture, *, _failure_state=None):
+     before_head = _git(root, "rev-parse", "HEAD", source_capture=source_capture, slot="before-head")
+@@ -173,4 +190,10 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
+                 pilot_validator=policy_pilot_validator, fragment_validator=_fragment_validator)
++            report["actual_f1_assessment"] = assessment
++            if _failure_state is not None:
++                _failure_state["assessment"] = assessment
++                _failure_state["assessment_returned"] = True
+             if assessment.get("passed") is not False or assessment.get("blockers") != [expected_blocker]:
+-                raise ValueError(f"actual F1 did not reach the exact genuine per-cell minimum refusal: {assessment}")
++                refusal = ValueError("actual F1 did not reach the exact genuine per-cell minimum refusal")
++                refusal.fixture_assessment = assessment
++                raise refusal
+             promotion_parent = output / "must-remain-absent"
+@@ -183,2 +206,3 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
+             except QualificationError as error:
++                _require_plain_promoter_refusal_v1(error, "policy qualification is blocked: " + expected_blocker)
+                 if str(error) != "policy qualification is blocked: " + expected_blocker:
+@@ -209,4 +233,5 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
+                 _fresh_json(output / "per-cell-minimum-failure.v1.json",
+-                            {**report, "error_type": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()},
+-                            absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
++                            _fixture_failure_report_v2(report, error, _failure_state),
++                            absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
++                            **_fixture_report_context_v2(_failure_state, "failure"))
+         except BaseException as report_error:
+@@ -233,3 +258,4 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
+                             _fresh_json(output / "raw-source-after.v1.json", after_raw,
+-                                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
++                                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
++                                **_fixture_report_context_v2(_failure_state, "after-proof"))
+                     except BaseException as report_error:
+@@ -250,3 +276,4 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
+     _fresh_json(output / "per-cell-minimum-refusal-report.v1.json", report,
+-                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
++                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
++                **_fixture_report_context_v2(_failure_state, "final"))
+     print(json.dumps({"genuine_per_cell_minimum_refusal_asserted": True, "measured_sample_count": 3960,
+@@ -257,2 +284,2 @@ def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base,
+ if __name__ == "__main__":
+-    main()
++    raise SystemExit(_fixture_cli_v2(main, "negative"))
+diff --git a/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py b/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py
+index 200b159c..aaf3b7a7 100644
+--- a/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py
++++ b/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py
+@@ -12,3 +12,2 @@ import re
+ import sys
+-import traceback
+ 
+@@ -179,3 +178,4 @@ def _raise_fixture_producer_failure_v2(primary, secondary):
+ 
+-def _fresh_json(path: Path, value: object, *, absolute_deadline_ns=None):
++def _fresh_json(path: Path, value: object, *, absolute_deadline_ns=None,
++                _failure_state=None, _failure_site=None):
+     from tests.fixtures.accepted_policy_fixture_report_v1 import REPORT_LIMIT, fixture_report_bytes_v1
+@@ -183,2 +183,5 @@ def _fresh_json(path: Path, value: object, *, absolute_deadline_ns=None):
+ 
++    site = _fixture_report_site_v2(_failure_state, _failure_site)
++    if site is not None:
++        site.update(entered=True, path=path)
+     if (type(absolute_deadline_ns) is not int or absolute_deadline_ns <= 0
+@@ -191,9 +194,21 @@ def _fresh_json(path: Path, value: object, *, absolute_deadline_ns=None):
+     raw = raw[:-1] + os.linesep.encode("ascii")
++    if site is not None:
++        site.update(encoding_complete=True, encoded_bytes=len(raw),
++            encoded_sha256=hashlib.sha256(raw).hexdigest())
+     if _monotonic_ns() >= absolute_deadline_ns:
+         raise ValueError("fixture report deadline expired during encoding")
++    if site is not None:
++        site["writer_entered"] = True
+     facts = _write_result_v2(path, raw, absolute_deadline_ns)
++    if site is not None:
++        site.update(writer_returned=True, facts=facts)
+     try:
+-        late = _monotonic_ns() >= absolute_deadline_ns
++        observed = _monotonic_ns()
+     except BaseException as clock_error:
++        if site is not None:
++            site["clock_available"] = False
+         raise FixtureReportPersistenceRefusedV2(facts, clock_error=clock_error) from clock_error
++    if site is not None:
++        site.update(clock_available=True, clock_observed_ns=observed)
++    late = observed >= absolute_deadline_ns
+     if (facts["attempted"] is not True or type(facts["written_bytes"]) is not int
+@@ -206,4 +221,553 @@ def _fresh_json(path: Path, value: object, *, absolute_deadline_ns=None):
+ 
+-def main() -> None:
+-    parser = argparse.ArgumentParser(description=__doc__)
++# Fixed diagnostics for the two explicit producer recipes. These are facts, not
++# execution authority. Unknown exceptions are deliberately opaque.
++_FAILURE_FRAME_LIMIT_V2 = 485376
++_FAILURE_REPORT_SITES_V2 = {
++    "positive": ("phase00", "phase01", "phase02", "phase03", "stage", "failure"),
++    "negative": ("after-proof", "failure", "final"),
++}
++_FAILURE_SOURCE_SLOTS_V2 = {
++    "positive": ("head", "status", "guardian"),
++    "negative": ("before-head", "before-status", "before-proof", "after-proof", "after-head", "after-status"),
++}
++_FAILURE_WRITER_CODES_V2 = (
++    "result_deadline", "result_open", "result_short_write", "result_write",
++    "result_fsync", "result_close", "result_deadline_exceeded",
++)
++_FAILURE_SOURCE_CODES_V2 = (
++    "source_post_return_clock", "source_result_persistence_raised",
++    "source_observation_deadline", "source_capture_or_persistence_incomplete",
++    "source_completed_file_or_protocol_refused",
++)
++
++
++def _fixture_failure_state_v2(recipe):
++    if type(recipe) is not str or recipe not in _FAILURE_REPORT_SITES_V2:
++        raise ValueError("unknown fixed fixture failure recipe")
++    return {"recipe": recipe, "source_context": None, "assessment": None,
++        "assessment_returned": False, "assessment_failure_report_prepared": False,
++        "cold_reader": None, "reader_output_dir": None, "parser_exit": None,
++        "parser_status": None, "reports": {name: {
++            "entered": False, "path": None, "encoding_complete": False,
++            "encoded_bytes": None, "encoded_sha256": None, "writer_entered": False,
++            "writer_returned": False, "facts": None, "clock_available": None,
++            "clock_observed_ns": None} for name in _FAILURE_REPORT_SITES_V2[recipe]}}
++
++
++def _fixture_report_context_v2(state, site):
++    return {} if state is None else {"_failure_state": state, "_failure_site": site}
++
++
++def _fixture_report_site_v2(state, site):
++    if state is None:
++        return None
++    if (type(state) is not dict or type(site) is not str
++            or type(state.get("recipe")) is not str
++            or state["recipe"] not in _FAILURE_REPORT_SITES_V2
++            or site not in _FAILURE_REPORT_SITES_V2[state["recipe"]]
++            or type(state.get("reports")) is not dict):
++        raise ValueError("unknown fixed fixture report site")
++    record = state["reports"].get(site)
++    if type(record) is not dict or record.get("entered") is not False:
++        raise ValueError("fixture report site is malformed or reused")
++    return record
++
++
++def _fixture_loaded_type_v2(module_name, class_name):
++    from types import ModuleType
++    module = sys.modules.get(module_name)
++    if type(module) is ModuleType:
++        return vars(module).get(class_name)
++    return None
++
++
++def _fixture_error_kind_v2(error):
++    kind = type(error)
++    if kind is _FixtureProducerFailureV2:
++        return "producer_failure"
++    if kind is FixtureReportPersistenceRefusedV2:
++        return "report_persistence"
++    for module, name, code in (
++        ("accepted_policy_literal_source_capture_v2", "LiteralSourceCaptureRefusedV2", "literal_source"),
++        ("accepted_policy_physical_fixture_v2", "_FixturePreparationCleanupErrorV2", "preparation_cleanup"),
++        ("accepted_policy_physical_fixture_v2", "_FixtureCapturedEngineErrorV2", "captured_engine"),
++        ("accepted_policy_guardian_journal_fixture_v1", "_FixtureJournalIoErrorV1", "journal_io"),
++        ("accepted_policy_standalone_reader_fixture_v2", "StandaloneReaderRefusedV2", "standalone_reader"),
++        ("accepted_policy_native_fixture_v2", "_FixtureSidecarWriteErrorV2", "sidecar_write"),
++        ("accepted_policy_fixture_compiler_v1", "FixtureCompilerError", "compiler"),
++    ):
++        if kind is _fixture_loaded_type_v2("tests.fixtures." + module, name):
++            return code
++    return "opaque_exception"
++
++
++def _fixture_failure_report_v2(report, error, state):
++    # This precedes the report's own writer and remaining source cleanup.
++    value = {**report, "failure": {"kind": _fixture_error_kind_v2(error),
++        "final_state_observed": False}, "campaign_authority": False}
++    if state is not None and (state["assessment_returned"] is True or state["assessment"] is not None):
++        value["actual_f1_assessment"] = state["assessment"]
++        state["assessment_failure_report_prepared"] = True
++    return value
++
++
++def _fixture_failure_frame_v2(error, state):
++    from pathlib import PosixPath, PurePosixPath, PureWindowsPath, WindowsPath
++    from tests.fixtures.accepted_policy_fixture_report_v1 import fixture_report_bytes_v1
++
++    refusals, files, captures, source_slots, report_sites, errors = [], [], [], [], [], []
++    capture_objects, error_objects = [], []
++    compiler_object, sidecar_object, reader_object = None, None, None
++    compiler_block, sidecar_block, reader_block = None, None, None
++
++    def refuse(code):
++        # All callers use fixed literals; no error text can enter the header.
++        if code not in refusals:
++            if len(refusals) >= 32:
++                raise ValueError("fixture projection refusal roster exceeded")
++            refusals.append(code)
++        return None
++
++    def plain(value, maximum=64):
++        if (type(value) is not dict or len(value) > maximum
++                or any(type(key) is not str for key in value)):
++            refuse("invalid_owned_mapping")
++            return {}
++        return value
++
++    def integer(value, *, nullable=False, nonnegative=False):
++        if value is None and nullable:
++            return None
++        if type(value) is int and -(2**63) <= value < 2**63 and (not nonnegative or value >= 0):
++            return value
++        return refuse("invalid_integer")
++
++    def boolean(value, *, nullable=False):
++        if value is None and nullable:
++            return None
++        if type(value) is bool:
++            return value
++        return refuse("invalid_boolean")
++
++    def digest(value, *, nullable=False):
++        if value is None and nullable:
++            return None
++        if type(value) is str and len(value) == 64 and all(char in "0123456789abcdef" for char in value):
++            return value
++        return refuse("invalid_digest")
++
++    def codes(value, *, maximum=64, width=128, whitelist=None):
++        if not (type(value) is list or type(value) is tuple) or len(value) > maximum:
++            return refuse("invalid_cause_codes")
++        for item in value:
++            if (type(item) is not str or not 1 <= len(item) <= width
++                    or any(not 32 <= ord(char) <= 126 or char in '\\"' for char in item)
++                    or whitelist is not None and item not in whitelist):
++                return refuse("invalid_cause_codes")
++        return list(value)
++
++    def fit(value, limit):
++        try:
++            fixture_report_bytes_v1(value, limit=limit + 1)
++        except BaseException:
++            return refuse("projection_block_overflow")
++        return value
++
++    def path_text(value):
++        kind = type(value)
++        if any(kind is supported for supported in (PosixPath, WindowsPath, PurePosixPath, PureWindowsPath)):
++            parts = value.parts
++            if len(parts) > 640 or any(type(part) is not str for part in parts) or sum(map(len, parts)) > 640:
++                return refuse("invalid_file_path")
++            value = str(value)  # Exact stdlib path only, never arbitrary __fspath__.
++        if type(value) is not str or not 1 <= len(value) <= 640:
++            return refuse("invalid_file_path")
++        return value
++
++    def file_ref(path, role, metadata=None):
++        text = path_text(path)
++        if text is None:
++            return None
++        if len(files) >= 22:
++            return refuse("file_reference_limit")
++        row = {"id": len(files), "role": role, "path": text, **(metadata or {})}
++        # Charge every non-path byte, including its key, braces and separators.
++        without_path = {**row, "path": ""}
++        if (len(fixture_report_bytes_v1(without_path)) - 3 > 510
++                or fit(row, 8192) is None):
++            return refuse("file_reference_limit")
++        files.append(row)
++        return row["id"]
++
++    def persistence(value):
++        if value is None:
++            return None
++        row = plain(value)
++        return {"attempted": boolean(row.get("attempted")),
++            "written_bytes": integer(row.get("written_bytes"), nonnegative=True),
++            "write_extent_unknown": boolean(row.get("write_extent_unknown")),
++            "fsync_completed": boolean(row.get("fsync_completed")),
++            "close_completed": boolean(row.get("close_completed")),
++            "causes": codes(row.get("causes"), maximum=8, width=24, whitelist=_FAILURE_WRITER_CODES_V2)}
++
++    def capture(value, role):
++        if value is None:
++            return None
++        for index, previous in enumerate(capture_objects):
++            if value is previous:
++                return index
++        if len(captures) >= 6:
++            return refuse("capture_limit")
++        row = plain(value)
++        index = len(captures)
++        capture_objects.append(value)
++        captures.append(None)
++        deadline, closure = plain(row.get("deadline")), plain(row.get("closure"))
++        identities = closure.get("owned_descendants")
++        if type(identities) is not list or len(identities) > 64:
++            identities = refuse("identity_limit")
++        else:
++            identities = [{"pid": integer(plain(item).get("pid"), nonnegative=True),
++                "start_ticks": integer(plain(item).get("start_ticks"), nonnegative=True)} for item in identities]
++        projected = {"role": role, "causes": codes(row.get("causes")),
++            "deadline": {key: integer(deadline.get(key), nonnegative=True) for key in (
++                "absolute_monotonic_ns", "term_grace_ns", "kill_grace_ns", "final_ns", "observe_end_ns")},
++            "pid": integer(row.get("pid"), nullable=True, nonnegative=True),
++            "start_ticks": integer(row.get("start_ticks"), nullable=True, nonnegative=True),
++            "returncode": integer(row.get("returncode"), nullable=True),
++            "signal": integer(row.get("signal"), nullable=True, nonnegative=True),
++            "forced": boolean(row.get("forced")), "term_sent": boolean(row.get("term_sent")),
++            "kill_sent": boolean(row.get("kill_sent")),
++            "term_delivered": integer(row.get("term_delivered"), nonnegative=True),
++            "kill_delivered": integer(row.get("kill_delivered"), nonnegative=True),
++            "closure": {"closed": boolean(closure.get("closed")),
++                "owned_descendants": identities, "descendants_unknown": boolean(closure.get("descendants_unknown")),
++                "subreaper_restored": boolean(closure.get("subreaper_restored"))}}
++        for name in ("stdout", "stderr"):
++            current = row.get(name)
++            if current is None:
++                projected[name] = None
++                continue
++            channel, raw_file = plain(current), plain(plain(current).get("file"))
++            reference = file_ref(raw_file.get("path"), role + "/" + name, {
++                "written_bytes": integer(raw_file.get("written_bytes"), nonnegative=True),
++                "write_extent_unknown": boolean(raw_file.get("write_extent_unknown")),
++                "confirmed_prefix_sha256": digest(raw_file.get("sha256"), nullable=True),
++                "fsync_completed": boolean(raw_file.get("fsync_completed")),
++                "close_completed": boolean(raw_file.get("close_completed"))})
++            projected[name] = {"observed_bytes": integer(channel.get("observed_bytes"), nonnegative=True),
++                "retained_bytes": integer(channel.get("retained_bytes"), nonnegative=True),
++                "discarded_bytes": integer(channel.get("discarded_bytes"), nullable=True, nonnegative=True),
++                "remainder_unknown": boolean(channel.get("remainder_unknown")),
++                "eof": boolean(channel.get("eof")), "overflow": boolean(channel.get("overflow")),
++                "retained_sha256": digest(channel.get("retained_sha256"), nullable=True), "file": reference}
++        captures[index] = fit(projected, 18432)
++        return index
++
++    state = plain(state)
++    recipe = state.get("recipe")
++    if type(recipe) is not str or recipe not in _FAILURE_REPORT_SITES_V2:
++        raise ValueError("invalid fixed fixture failure state")
++    slots = _FAILURE_SOURCE_SLOTS_V2[recipe]
++    records, used = [], []
++    context = state.get("source_context")
++    source_type = _fixture_loaded_type_v2("tests.fixtures.accepted_policy_literal_source_capture_v2",
++        "LiteralSourceCaptureV2")
++    if context is not None:
++        if type(context) is source_type:
++            records, used = context.records, context.used
++        else:
++            refuse("source_context_unavailable")
++    if type(records) is not list or len(records) > len(slots):
++        records = []
++        refuse("source_record_limit")
++    if (type(used) is not list or len(used) > len(slots)
++            or any(type(item) is not str or item not in slots for item in used)):
++        used = []
++        refuse("source_record_limit")
++
++    # Gather owned graph first, recovering only fixed owned carriers when main did
++    # not receive a context or reader return. No __cause__/__context__ traversal.
++    def visit(current, depth):
++        nonlocal compiler_object, sidecar_object, reader_object, records
++        if current is None:
++            return None
++        for index, previous in enumerate(error_objects):
++            if current is previous:
++                return index
++        if depth >= 8 or len(errors) >= 64:
++            return refuse("error_graph_limit")
++        index = len(errors)
++        error_objects.append(current)
++        kind = _fixture_error_kind_v2(current)
++        node = {"kind": kind, "primary": None, "secondary": [], "fact_role": None}
++        errors.append(node)
++        if kind not in ("compiler", "opaque_exception"):
++            try:
++                cleanup = object.__getattribute__(current, "fixture_cleanup_causes")
++            except AttributeError:
++                node["fixture_cleanup_causes_available"] = False
++                node["fixture_cleanup_causes"] = None
++            else:
++                node["fixture_cleanup_causes_available"] = True
++                cleanup = codes(cleanup, maximum=2, width=128)
++                if cleanup is not None and any(not code.startswith((
++                        "fixture_socket_close_", "fixture_elf_close_")) for code in cleanup):
++                    cleanup = refuse("invalid_cleanup_codes")
++                node["fixture_cleanup_causes"] = cleanup
++        if kind == "compiler":
++            if compiler_object is None:
++                compiler_object = current
++                node["fact_role"] = "compiler"
++            elif current is not compiler_object:
++                refuse("extra_compiler_terminal")
++            errors[index] = fit(node, 2048)
++            return index
++        if kind == "opaque_exception":
++            refuse("opaque_exception_facts_unavailable")
++            errors[index] = fit(node, 2048)
++            return index
++        if kind == "sidecar_write":
++            if sidecar_object is None:
++                sidecar_object = current
++                node["fact_role"] = "sidecar"
++            elif current is not sidecar_object:
++                refuse("extra_sidecar_terminal")
++        elif kind == "literal_source":
++            node["fact_role"] = "source_slots"
++            if not records:
++                evidence = plain(current.evidence)
++                fallback = evidence.get("records")
++                if fallback is None and type(evidence.get("slot")) is str:
++                    fallback = [evidence]
++                if type(fallback) is list and len(fallback) <= len(slots):
++                    records = fallback
++                else:
++                    refuse("source_records_unavailable")
++        elif kind == "standalone_reader":
++            if reader_object is None:
++                reader_object = current.evidence
++                node["fact_role"] = "reader"
++            elif current.evidence is not reader_object:
++                refuse("extra_reader_terminal")
++            errors[index] = fit(node, 2048)
++            return index
++        elif kind == "report_persistence":
++            matching = [name for name, record in plain(state.get("reports")).items()
++                if type(record) is dict and record.get("facts") is current.facts]
++            if len(matching) == 1 and matching[0] in _FAILURE_REPORT_SITES_V2[recipe]:
++                node["fact_role"] = matching[0]
++            else:
++                refuse("report_facts_unavailable")
++            node["causes"] = codes(current.causes, maximum=10, width=64,
++                whitelist=(*_FAILURE_WRITER_CODES_V2, "fixture_report_deadline_exceeded", "fixture_report_clock_unavailable"))
++        primary = current.primary
++        node["primary"] = visit(primary, depth + 1)
++        secondary = current.secondary
++        if not (type(secondary) is tuple or type(secondary) is list) or len(secondary) > 8:
++            refuse("secondary_limit")
++        else:
++            distinct = []
++            for child in secondary:
++                if child is None or child is primary or any(child is previous for previous in distinct):
++                    continue
++                distinct.append(child)
++                child_index = visit(child, depth + 1)
++                if child_index is not None:
++                    node["secondary"].append(child_index)
++        errors[index] = fit(node, 2048)
++        return index
++
++    visit(error, 0)
++    for slot in slots:
++        matching = []
++        for candidate in records:
++            candidate = plain(candidate)
++            candidate_slot = candidate.get("slot")
++            if type(candidate_slot) is not str or candidate_slot not in slots:
++                refuse("source_record_slot")
++            elif candidate_slot == slot:
++                matching.append(candidate)
++        if len(matching) > 1:
++            refuse("source_record_slot")
++        row = matching[0] if len(matching) == 1 else None
++        projected = {"slot": slot, "used": slot in used or row is not None,
++            "record_available": row is not None, "capture": None}
++        if row is not None:
++            projected.update(capture=capture(row.get("capture"), "source/" + slot),
++                capture_returned=boolean(row.get("capture_returned")),
++                capture_return_observed_ns=integer(row.get("capture_return_observed_ns"), nullable=True, nonnegative=True),
++                post_return_clock_failed=boolean(row.get("post_return_clock_failed")),
++                returned_within_observation=boolean(row.get("returned_within_observation"), nullable=True),
++                result_complete=boolean(row.get("result_complete")),
++                result_persistence=persistence(row.get("result_persistence")),
++                causes=codes(row.get("causes"), maximum=8, width=64, whitelist=_FAILURE_SOURCE_CODES_V2),
++                result=file_ref(row.get("result_path"), "source/" + slot + "/result",
++                    {"intended_encoded_sha256": digest(row.get("result_sha256"), nullable=True)}))
++        elif slot in used:
++            refuse("source_records_unavailable")
++        source_slots.append(fit(projected, 2048))
++
++    reports = plain(state.get("reports"))
++    for name in _FAILURE_REPORT_SITES_V2[recipe]:
++        row = plain(reports.get(name))
++        returned = boolean(row.get("writer_returned"))
++        projected = {"site": name, "entered": boolean(row.get("entered")),
++            "encoding_complete": boolean(row.get("encoding_complete")),
++            "encoded_bytes": integer(row.get("encoded_bytes"), nullable=True, nonnegative=True),
++            "encoded_sha256": digest(row.get("encoded_sha256"), nullable=True),
++            "writer_entered": boolean(row.get("writer_entered")), "writer_returned": returned,
++            "persistence": persistence(row.get("facts")) if returned is True else None,
++            "clock_available": boolean(row.get("clock_available"), nullable=True),
++            "clock_observed_ns": integer(row.get("clock_observed_ns"), nullable=True, nonnegative=True),
++            "file": file_ref(row.get("path"), "report/" + name,
++                {"intended_target_only": True}) if row.get("path") is not None else None}
++        report_sites.append(fit(projected, 2048))
++
++    actual_reader = state.get("cold_reader")
++    if actual_reader is not None:
++        if reader_object is not None and reader_object is not actual_reader:
++            refuse("extra_reader_terminal")
++        reader_object = actual_reader
++    reader_directory = state.get("reader_output_dir")
++    if reader_object is not None or reader_directory is not None or recipe == "positive":
++        row = plain(reader_object) if reader_object is not None else {}
++        text = path_text(reader_directory) if reader_directory is not None else None
++        target = None
++        if text is not None:
++            target = file_ref(text.rstrip("/\\") + "/standalone-guardian-cold-reader.result.v2.json",
++                "reader/result", {"intended_target_only": True})
++        if reader_object is None and reader_directory is not None:
++            refuse("reader_facts_unavailable")
++        if reader_object is not None and reader_directory is None:
++            refuse("reader_target_unavailable")
++        reader_block = fit({"call_site_entered": True if reader_directory is not None else
++                None if reader_object is not None else False,
++            "returned_evidence_available": reader_object is not None,
++            "capture": capture(row.get("capture"), "reader"),
++            "passed": boolean(row.get("standalone_guardian_cold_reader_passed"), nullable=True),
++            "result_complete": boolean(row.get("result_complete"), nullable=True),
++            "result_persistence": persistence(row.get("result_persistence")), "intended_result": target}, 2048)
++        if recipe != "positive":
++            refuse("reader_recipe_mismatch")
++
++    if compiler_object is not None:
++        try:
++            facts = object.__getattribute__(compiler_object, "facts")
++        except AttributeError:
++            facts_kind = "absent"
++        else:
++            facts_kind = "null" if facts is None else "exact_dict" if type(facts) is dict else "other"
++        compiler_block = fit({"causes": codes(compiler_object.causes),
++            "facts_kind": facts_kind, "facts_reference": None, "heterogeneous_facts_qualified": False}, 16384)
++        if facts_kind in ("exact_dict", "other"):
++            refuse("compiler_facts_unqualified")
++
++    if sidecar_object is not None:
++        native_module = sys.modules["tests.fixtures.accepted_policy_native_fixture_v2"]
++        specs = vars(native_module)["_FIXTURE_SIDECAR_SPECS_V2"]
++        def table(value):
++            row = plain(value)
++            filename = row.get("filename")
++            if type(filename) is not str or len(filename) > 64 or filename not in specs:
++                return refuse("invalid_sidecar_table")
++            admitted = integer(row.get("admitted_upper_bytes"), nonnegative=True)
++            accepted = integer(row.get("accepted_text_bytes"), nonnegative=True)
++            if admitted is None or accepted is None or not accepted <= admitted <= specs[filename][-1]:
++                return refuse("invalid_sidecar_extent")
++            stage = row.get("failure_stage")
++            if stage is not None and (type(stage) is not str or stage not in (
++                    "dataframe", "open", "write", "flush", "fsync", "close")):
++                stage = refuse("invalid_sidecar_table")
++            result = {"filename": filename, "admitted_upper_bytes": admitted,
++                "accepted_text_bytes": accepted, "failure_stage": stage}
++            for flag in ("open_completed", "serialization_completed", "flush_completed",
++                    "fsync_completed", "close_attempted", "close_completed", "write_extent_unknown"):
++                result[flag] = boolean(row.get(flag))
++            return fit(result, 1024)
++        completed = plain(sidecar_object.completed, 11)
++        prior = []
++        for name, facts in completed.items():
++            facts = plain(facts)
++            filename = facts.get("filename")
++            if type(filename) is not str or len(filename) > 64 or filename != name:
++                refuse("invalid_sidecar_table")
++            else:
++                prior.append(table(facts))
++        try:
++            directory = object.__getattribute__(sidecar_object, "output_directory")
++        except AttributeError:
++            reference = refuse("sidecar_directory_unavailable")
++        else:
++            reference = file_ref(directory, "sidecar/directory", {"intended_target_only": True})
++        sidecar_block = fit({"directory": reference, "failed": table(sidecar_object.facts),
++            "completed": prior, "text_acceptance_is_disk_extent": False}, 16384)
++        if reader_object is not None or reader_directory is not None:
++            refuse("sidecar_reader_overlap")
++
++    assessment = state.get("assessment")
++    passed = plain(assessment).get("passed") if type(assessment) is dict else None
++    if passed is not None and type(passed) is not bool:
++        passed = refuse("invalid_assessment_status")
++    header = {"schema_version": 2, "kind": "fixture_producer_failure",
++        "recipe": recipe, "campaign_authority": False, "physical_acceptance": False,
++        "facts_complete": not refusals, "projection_refusals": refusals,
++        "assessment_available": state.get("assessment_returned") is True or assessment is not None,
++        "assessment_passed": passed,
++        "assessment_failure_report_site": "failure"
++            if state.get("assessment_failure_report_prepared") is True else None}
++    if fit(header, 4095) is None:
++        raise ValueError("fixture failure header exceeds its fixed allowance")
++    frame = {**header, "files": files, "captures": captures, "source_slots": source_slots,
++        "report_sites": report_sites, "reader": reader_block, "compiler": compiler_block,
++        "sidecar": sidecar_block, "errors": errors}
++    return fixture_report_bytes_v1(frame, limit=_FAILURE_FRAME_LIMIT_V2)
++
++
++def _fixture_argument_parser_v2(state, **kwargs):
++    if state is None:
++        return argparse.ArgumentParser(**kwargs)
++
++    class Parser(argparse.ArgumentParser):
++        def exit(self, status=0, message=None):
++            error = SystemExit(status)
++            state["parser_exit"], state["parser_status"] = error, status
++            raise error
++
++        def error(self, message):
++            self.exit(2)
++
++    kwargs.setdefault("prog", "fixture-producer-" + state["recipe"])
++    return Parser(**kwargs)
++
++
++def _fixture_cli_v2(entrypoint, recipe):
++    state = _fixture_failure_state_v2(recipe)
++    try:
++        entrypoint(_failure_state=state)
++        return 0
++    except BaseException as error:
++        originated = error is state["parser_exit"]
++        status = state["parser_status"] if originated else 1
++        if type(status) is not int or not 0 <= status <= 255:
++            status = 1
++        if originated and status == 0:
++            return 0
++        if status == 0:
++            status = 1
++        try:
++            raw = _fixture_failure_frame_v2(error, state)
++        except BaseException:
++            raw = (b'{"campaign_authority":false,"facts_complete":false,'
++                b'"kind":"fixture_producer_failure","physical_acceptance":false,'
++                b'"projection_refusals":["frame_unavailable"],"schema_version":2}\n')
++        try:
++            count = os.write(2, raw)
++        except BaseException:
++            return 1
++        return status if type(count) is int and count == len(raw) else 1
++
++
++def main(*, _failure_state=None) -> None:
++    parser = _fixture_argument_parser_v2(_failure_state, description=__doc__)
+     parser.add_argument("--project-root", required=True)
+@@ -234,8 +798,13 @@ def main() -> None:
+     output = _canonical_fixture_directory_v2(args.output_dir, root=root, fresh=True)
+-    with _fixture_source_capture_v2(project_root=root, output_dir=output, capture_dir=args.source_capture_dir,
+-            deadline=reader_deadline, expected_commit=args.expected_source_commit) as source_capture:
+-        _run_fixture_v2(args, root, qualification, admission, reader_deadline, overrides, base, output, source_capture)
++    context = _fixture_source_capture_v2(project_root=root, output_dir=output, capture_dir=args.source_capture_dir,
++        deadline=reader_deadline, expected_commit=args.expected_source_commit)
++    if _failure_state is not None:
++        _failure_state["source_context"] = context
++    with context as source_capture:
++        _run_fixture_v2(args, root, qualification, admission, reader_deadline, overrides, base, output,
++            source_capture, **({} if _failure_state is None else {"_failure_state": _failure_state}))
+ 
+ 
+-def _run_fixture_v2(args, root, qualification, admission, reader_deadline, overrides, base, output, source_capture):
++def _run_fixture_v2(args, root, qualification, admission, reader_deadline, overrides, base, output,
++                    source_capture, *, _failure_state=None):
+     if _git(root, "rev-parse", "HEAD", source_capture=source_capture, slot="head").decode().strip() != args.expected_source_commit:
+@@ -276,3 +845,4 @@ def _run_fixture_v2(args, root, qualification, admission, reader_deadline, overr
+                          "loaded_production_sources": current, "campaign_authority": False},
+-                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
++                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
++                        **_fixture_report_context_v2(_failure_state, "phase" + name[:2]))
+ 
+@@ -315,2 +885,3 @@ def _run_fixture_v2(args, root, qualification, admission, reader_deadline, overr
+                         standalone_reader_deadline=reader_deadline,
++                        **({} if _failure_state is None else {"_failure_state": _failure_state}),
+                     )
+@@ -322,3 +893,4 @@ def _run_fixture_v2(args, root, qualification, admission, reader_deadline, overr
+             _fresh_json(output / "producer-stage-report.v2.json", report,
+-                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
++                        absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
++                        **_fixture_report_context_v2(_failure_state, "stage"))
+             print(json.dumps({"fixture_completed": args.stage,
+@@ -330,5 +902,6 @@ def _run_fixture_v2(args, root, qualification, admission, reader_deadline, overr
+                 _fresh_json(output / "producer-failure.v2.json",
+-                            {**report, "complete_consumer_positive_asserted": False,
+-                             "error_type": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()},
+-                            absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"])
++                            _fixture_failure_report_v2({**report, "complete_consumer_positive_asserted": False},
++                                error, _failure_state),
++                            absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
++                            **_fixture_report_context_v2(_failure_state, "failure"))
+         except BaseException as secondary:
+@@ -339,2 +912,2 @@ def _run_fixture_v2(args, root, qualification, admission, reader_deadline, overr
+ if __name__ == "__main__":
+-    main()
++    raise SystemExit(_fixture_cli_v2(main, "positive"))
+diff --git a/tests/fixtures/accepted_policy_consumer_fixture_v2.py b/tests/fixtures/accepted_policy_consumer_fixture_v2.py
+index c1f7c706..1ef1b93d 100644
+--- a/tests/fixtures/accepted_policy_consumer_fixture_v2.py
++++ b/tests/fixtures/accepted_policy_consumer_fixture_v2.py
+@@ -159,3 +159,4 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
+                                            approved_guardian_source: bytes, approved_guardian_commit: str,
+-                                           standalone_reader_deadline: Mapping[str, int] | None = None) -> dict[str, Any]:
++                                           standalone_reader_deadline: Mapping[str, int] | None = None,
++                                           _failure_state=None) -> dict[str, Any]:
+     """Use actual live finalization and real stopped closure/F1/default guardian.
+@@ -190,4 +191,9 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
+         pilot_validator=policy_pilot_validator, fragment_validator=_fragment_validator)
++    if _failure_state is not None:
++        _failure_state["assessment"] = assessment
++        _failure_state["assessment_returned"] = True
+     if assessment.get("passed") is not True:
+-        raise ValueError(f"actual F1 policy assessor refused: {assessment}")
++        refusal = ValueError("actual F1 policy assessor refused")
++        refusal.fixture_assessment = assessment
++        raise refusal
+     promoted = promote_policy_qualification(project_root=root, index_path=index_path, output_dir=output / "accepted-policy",
+@@ -217,2 +223,4 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
+         raise ValueError("independent accepted-policy guardian reader disagrees with materialized identity")
++    if _failure_state is not None:
++        _failure_state["reader_output_dir"] = output
+     standalone = run_fixture_standalone_guardian_cold_reader_v2(
+@@ -222,2 +230,4 @@ def complete_fixture_production_consumers_v2(*, prepared: Mapping[str, Any], nat
+     )
++    if _failure_state is not None:
++        _failure_state["cold_reader"] = standalone
+     identity_policy = validate_fixture_identity_policy_component_v1(project_root=root, accepted_dir=accepted_dir)
+diff --git a/tests/fixtures/accepted_policy_native_fixture_v2.py b/tests/fixtures/accepted_policy_native_fixture_v2.py
+index a6b2d34a..90dbb0a2 100644
+--- a/tests/fixtures/accepted_policy_native_fixture_v2.py
++++ b/tests/fixtures/accepted_policy_native_fixture_v2.py
+@@ -558,2 +558,3 @@ def _write_native_sidecars_v1(output: Path, capability: Mapping[str, Any], metad
+             error.completed = completed
++            error.output_directory = output
+             raise
+Selected exact-test method bodies (remaining test module available to read tools):
+    def test_report_state_saves_exact_return_before_a_post_write_clock_error(self):
+        for clock_failed in (False, True):
+            with self.subTest(clock_failed=clock_failed):
+                state = self.state()
+                facts = persistence(12)
+                clock_error = OSError("controlled clock")
+                ticks = [NOW, NOW, clock_error if clock_failed else NOW]
+                with patch.object(reader, "_write_result_v2", return_value=facts) as writer, \
+                        patch.object(reader, "_monotonic_ns", side_effect=ticks):
+                    try:
+                        positive._fresh_json(ROOT / "controlled.json", {"value": 1},
+                            absolute_deadline_ns=ABSOLUTE, _failure_state=state, _failure_site="stage")
+                    except positive.FixtureReportPersistenceRefusedV2 as error:
+                        self.assertTrue(clock_failed)
+                        self.assertTrue(error.primary is clock_error)
+                site = state["reports"]["stage"]
+                self.assertTrue(site["facts"] is facts)
+                self.assertTrue(site["writer_entered"] and site["writer_returned"])
+                self.assertEqual(site["clock_available"], not clock_failed)
+                self.assertEqual(site["encoded_bytes"], 12)
+                writer.assert_called_once()
+
+
+    def test_actual_main_failure_report_keeps_assessment_source_and_writer_refusal(self):
+        fresh_json = positive._fresh_json
+        for builder, recipe in ((positive, "positive"), (negative, "negative")):
+            with self.subTest(recipe=recipe):
+                state = self.state(recipe)
+                assessment = {"passed": False, "blockers": ["controlled"]}
+                state["assessment"] = assessment
+                context = source_context(recipe)
+                primary = OSError("controlled body")
+                failed = {**persistence(1), "fsync_completed": False, "causes": ["result_fsync"]}
+                def writer(path, raw, absolute):
+                    return failed if "failure" in path.name else persistence(len(raw))
+                control = legacy.ProducerFailureTests(
+                    "test_positive_report_failure_keeps_original_and_distinct_secondary")
+                with patch.object(reader, "_write_result_v2", side_effect=writer), \
+                        patch.object(source.LiteralSourceCaptureV2, "__enter__", return_value=context), \
+                        patch.object(source.LiteralSourceCaptureV2, "__exit__", return_value=False):
+                    control.invoke(builder, fault="body", primary=primary, failure_state=state,
+                        source_context=context, report_callback=fresh_json)
+                self.assertTrue(type(control.error) is positive._FixtureProducerFailureV2)
+                self.assertTrue(control.error.primary is primary)
+                self.assertTrue(control.failure_report["actual_f1_assessment"] is assessment)
+                self.assertTrue(state["reports"]["failure"]["facts"] is failed)
+                self.assertTrue(state["source_context"] is context)
+                _, value = self.frame(control.error, state)
+                self.assertEqual(len(value["captures"]), len(context.slots))
+                site = next(row for row in value["report_sites"] if row["site"] == "failure")
+                self.assertEqual(site["persistence"]["causes"], ["result_fsync"])
+                self.assertEqual(value["errors"][0]["primary"], 1)
+                self.assertEqual(value["errors"][0]["secondary"], [2])
+                self.assertEqual(value["assessment_failure_report_site"], "failure")
+
+
+    def test_opaque_error_projection_never_observes_custom_metadata(self):
+        events = []
+        class Hostile(RuntimeError):
+            def __str__(self):
+                events.append("str")
+                raise AssertionError("str forbidden")
+            def __repr__(self):
+                events.append("repr")
+                raise AssertionError("repr forbidden")
+            def __hash__(self):
+                events.append("hash")
+                raise AssertionError("hash forbidden")
+            def __eq__(self, other):
+                events.append("equality")
+                raise AssertionError("equality forbidden")
+            @property
+            def facts(self):
+                events.append("facts")
+                raise AssertionError("foreign facts forbidden")
+            @property
+            def fixture_cleanup_causes(self):
+                events.append("cleanup")
+                raise AssertionError("foreign cleanup forbidden")
+        raw, value = self.frame(Hostile(object()), self.state())
+        self.assertEqual(events, [])
+        self.assertEqual(value["errors"][0]["kind"], "opaque_exception")
+        self.assertNotIn(b"Hostile", raw)
+
+
+    def test_owned_error_links_preserve_order_and_identity_without_fact_duplication(self):
+        state = self.state()
+        facts = persistence(1)
+        state["reports"]["stage"].update(entered=True, writer_entered=True,
+            writer_returned=True, facts=facts, encoded_bytes=1, clock_available=True)
+        class Primary(OSError):
+            def __eq__(self, other):
+                raise AssertionError("error equality forbidden")
+            def __hash__(self):
+                raise AssertionError("error hash forbidden")
+        primary = Primary("primary")
+        report_error = positive.FixtureReportPersistenceRefusedV2(facts)
+        error = positive._FixtureProducerFailureV2(primary, [report_error, report_error, primary])
+        error.fixture_cleanup_causes = ("fixture_socket_close_OSError", "fixture_elf_close_ValueError")
+        _, value = self.frame(error, state)
+        root = value["errors"][0]
+        self.assertEqual(root["primary"], 1)
+        self.assertEqual(root["secondary"], [2])
+        self.assertEqual(root["fixture_cleanup_causes"], list(error.fixture_cleanup_causes))
+        self.assertEqual(len(value["errors"]), 3)
+        self.assertNotIn("facts", value["errors"][2])
+        self.assertEqual(value["report_sites"][4]["persistence"]["written_bytes"], 1)
+
+
+    def test_consumer_retains_actual_assessment_before_constant_refusal(self):
+        events = []
+        class Assessment(dict):
+            def __str__(self):
+                events.append("str")
+                raise AssertionError("assessment format forbidden")
+            def __repr__(self):
+                events.append("repr")
+                raise AssertionError("assessment repr forbidden")
+        assessment = Assessment(passed=False)
+        state = self.state()
+        error, unused, unused_failure, unused_output, reader_call = self.consumer_failure(assessment, state)
+        self.assertTrue(type(error) is ValueError)
+        self.assertTrue(state["assessment"] is assessment)
+        self.assertTrue(state["assessment_returned"])
+        self.assertTrue(getattr(error, "fixture_assessment", None) is assessment)
+        self.assertEqual(events, [])
+        reader_call.assert_not_called()
+        state = self.state()
+        error, unused, unused_failure, unused_output, reader_call = self.consumer_failure(None, state)
+        self.assertTrue(state["assessment_returned"])
+        self.assertIsNone(state["assessment"])
+        _, value = self.frame(error, state)
+        self.assertTrue(value["assessment_available"])
+        self.assertIsNone(value["assessment_passed"])
+        report = positive._fixture_failure_report_v2({}, error, state)
+        self.assertIn("actual_f1_assessment", report)
+        self.assertIsNone(report["actual_f1_assessment"])
+
+
+    def test_consumer_retains_actual_reader_return_before_later_refusal(self):
+        state = self.state()
+        error, evidence, failure, output, reader_call = self.consumer_failure({"passed": True}, state, after_reader=True)
+        self.assertTrue(error is failure)
+        self.assertTrue(state["cold_reader"] is evidence)
+        self.assertEqual(state["reader_output_dir"], output)
+        reader_call.assert_called_once()
+        _, value = self.frame(error, state)
+        self.assertTrue(value["reader"]["call_site_entered"])
+        self.assertTrue(value["reader"]["returned_evidence_available"])
+        state = self.state()
+        unavailable = OSError("controlled unavailable reader return")
+        error, unused, unused_failure, output, reader_call = self.consumer_failure(
+            {"passed": True}, state, reader_error=unavailable)
+        self.assertTrue(error is unavailable)
+        self.assertIsNone(state["cold_reader"])
+        self.assertEqual(state["reader_output_dir"], output)
+        reader_call.assert_called_once()
+        _, value = self.frame(error, state)
+        self.assertTrue(value["reader"]["call_site_entered"])
+        self.assertFalse(value["reader"]["returned_evidence_available"])
+        self.assertIsNone(value["reader"]["capture"])
+        self.assertIsNone(value["reader"]["result_persistence"])
+        target = value["files"][value["reader"]["intended_result"]]
+        self.assertTrue(target["intended_target_only"])
+
+
+    def test_complete_admitted_geometry_keeps_global_caps_and_worst_paths(self):
+        state = self.state("negative")
+        context = source_context("negative")
+        state["source_context"] = context
+        ordinal = 0
+        for record in context.records:
+            for name in ("stdout", "stderr", "result"):
+                path = "/" + chr(0x1F600 + ordinal) * 639
+                ordinal += 1
+                record[name + "_path"] = path
+                if name != "result":
+                    record["capture"][name]["file"]["path"] = path
+            record["capture"]["causes"] = ["reader_" + str(index).zfill(3) + "x" * 118 for index in range(64)]
+            record["capture"]["closure"]["owned_descendants"] = [
+                {"pid": 2**63 - 1 - index, "start_ticks": 2**63 - 1} for index in range(64)]
+        for site in state["reports"].values():
+            site.update(entered=True, writer_entered=True, writer_returned=True,
+                facts=persistence(3), encoded_bytes=3, clock_available=True,
+                clock_observed_ns=NOW, path="/" + chr(0x1F600 + ordinal) * 639)
+            ordinal += 1
+        names = list(native._FIXTURE_SIDECAR_SPECS_V2)
+        compilation = compiler.FixtureCompilerError(*["compiler_" + str(index).zfill(3) + "x" * 116 for index in range(64)])
+        sidecar = native._FixtureSidecarWriteErrorV2(table_facts(names[-1], failed=True), compilation, [])
+        sidecar.completed = {name: table_facts(name) for name in names[:-1]}
+        sidecar.output_directory = Path("/" + chr(0x1F600 + ordinal) * 639)
+        groups = [positive._FixtureProducerFailureV2(RuntimeError("primary"),
+            [RuntimeError("secondary") for unused in range(7)]) for unused in range(6)]
+        groups.append(positive._FixtureProducerFailureV2(RuntimeError("primary"),
+            [RuntimeError("secondary") for unused in range(4)]))
+        error = positive._FixtureProducerFailureV2(sidecar, [*groups, RuntimeError("last")])
+        raw, value = self.frame(error, state)
+        self.assertEqual(len(value["files"]), 22)
+        self.assertEqual(len(value["captures"]), 6)
+        self.assertEqual(len(value["source_slots"]), 6)
+        self.assertEqual(len(value["errors"]), 64)
+        self.assertEqual(value["sidecar"]["failed"]["filename"], names[-1])
+        self.assertEqual([row["filename"] for row in value["sidecar"]["completed"]], names[:-1])
+        for record, projected in zip(context.records, value["captures"]):
+            self.assertEqual(projected["causes"], record["capture"]["causes"])
+            self.assertEqual(projected["closure"]["owned_descendants"],
+                record["capture"]["closure"]["owned_descendants"])
+            for name in ("stdout", "stderr", "result"):
+                self.assertTrue(any(row["path"] == record[name + "_path"] for row in value["files"]))
+        self.assertEqual(value["compiler"]["causes"], compilation.causes)
+        self.assertLessEqual(len(value["projection_refusals"]), 32)
+        self.assertLessEqual(len(raw), EMISSION_LIMIT)
+        directory = Path(tempfile.mkdtemp(prefix="failureframe-geometry-"))
+        written = reader._write_result_v2(directory / "frame.original.json", raw, self.absolute)
+        self.assertEqual(written["causes"], [])
+        self.assertEqual(written["written_bytes"], len(raw))
+        self.assertTrue(written["fsync_completed"] and written["close_completed"])
+        print(fixture_report_bytes_v1({"controlled_geometry_path": str(directory / "frame.original.json"),
+            "result_persistence": written, "physical_acceptance": False}, limit=4096).decode("ascii"),
+            end="", flush=True)
+
+
+    def test_cli_tails_and_positive_main_namespace_keep_owned_class_identity(self):
+        for builder, recipe in ((positive, "positive"), (negative, "negative")):
+            with self.subTest(recipe=recipe):
+                with Path(builder.__file__).open("rb") as stream:
+                    raw = stream.read(65537)
+                self.assertLessEqual(len(raw), 65536)
+                tree = ast.parse(raw)
+                expected = ast.parse('if __name__ == "__main__":\n'
+                    '    raise SystemExit(_fixture_cli_v2(main, "' + recipe + '"))\n').body[0]
+                self.assertEqual(ast.dump(tree.body[-1]), ast.dump(expected))
+                if recipe == "positive":
+                    # Execute only the reviewed definitions; the real tail is excluded.
+                    namespace = {"__name__": "__main__", "__file__": builder.__file__}
+                    exec(compile(ast.Module(body=tree.body[:-1], type_ignores=[]),
+                        builder.__file__, "exec"), namespace)
+                    error = namespace["_FixtureProducerFailureV2"](RuntimeError("primary"), [])
+                    self.assertTrue(type(error) is not positive._FixtureProducerFailureV2)
+                    frame = namespace["_fixture_failure_frame_v2"](error,
+                        namespace["_fixture_failure_state_v2"]("positive"))
+                    self.assertEqual(json.loads(frame)["errors"][0]["kind"], "producer_failure")
+
+
+    def test_cause_identity_and_error_graph_caps_refuse_incomplete_not_recurse(self):
+        for mode in ("causes", "identities", "depth", "nodes", "cleanup"):
+            with self.subTest(mode=mode):
+                state = self.state()
+                context = source_context("positive")
+                state["source_context"] = context
+                error = RuntimeError("controlled")
+                if mode == "causes":
+                    context.records[0]["capture"]["causes"] = ["code"] * 65
+                elif mode == "identities":
+                    context.records[0]["capture"]["closure"]["owned_descendants"] = [
+                        {"pid": index + 1, "start_ticks": 1} for index in range(65)]
+                elif mode == "depth":
+                    for unused in range(10):
+                        error = positive._FixtureProducerFailureV2(error, [])
+                elif mode == "cleanup":
+                    error = positive._FixtureProducerFailureV2(error, [])
+                    error.fixture_cleanup_causes = ("fixture_elf_close_OSError",) * 3
+                else:
+                    groups = [positive._FixtureProducerFailureV2(RuntimeError("primary"),
+                        [RuntimeError("secondary") for unused in range(7)]) for unused in range(8)]
+                    error = positive._FixtureProducerFailureV2(groups[0], groups[1:])
+                _, value = self.frame(error, state)
+                self.assertFalse(value["facts_complete"])
+                self.assertLessEqual(len(value["errors"]), 64)
+                if mode == "cleanup":
+                    self.assertIsNone(value["errors"][0]["fixture_cleanup_causes"])
+                    self.assertIn("invalid_cause_codes", value["projection_refusals"])
+
+
+    def test_single_stderr_attempt_never_retries_partial_or_failed_emission(self):
+        def fail(*, _failure_state):
+            raise RuntimeError("controlled")
+        for action in (lambda descriptor, raw: len(raw) - 1,
+                       lambda descriptor, raw: True, OSError("closed stderr")):
+            with self.subTest(action_kind=type(action) is OSError):
+                with patch.object(positive.os, "write", side_effect=action) as written:
+                    status = positive._fixture_cli_v2(fail, "positive")
+                self.assertIs(type(status), int)
+                self.assertNotEqual(status, 0)
+                written.assert_called_once()
+                self.assertLessEqual(len(written.call_args.args[1]), EMISSION_LIMIT)
+
+
+    def test_actual_tiny_cli_children_have_one_frame_or_originated_help_exit(self):
+        cases = (("positive", "error", 1), ("negative", "error", 1),
+                 ("positive", "body-exit-zero", 1), ("negative", "body-exit-zero", 1),
+                 ("positive", "help", 0), ("negative", "bad-arg", 2))
+        absolute = self.absolute
+        deadline = {"absolute_monotonic_ns": absolute, "term_grace_ns": 5_000_000_000,
+            "kill_grace_ns": 5_000_000_000, "final_ns": 5_000_000_000}
+        program = '''import sys
+from pathlib import Path
+root=Path(sys.argv[1]);sys.path.insert(0,str(root));sys.path.insert(0,str(root/"scripts"));sys.path.insert(0,str(root/"openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01"))
+import build_production_fixture_v2 as p
+import build_per_cell_minimum_refusal_v1 as n
+recipe,mode=sys.argv[2:]
+def forbidden(*a,**kw): raise RuntimeError("production main forbidden")
+p.main=n.main=forbidden
+class Hostile(RuntimeError):
+ def __str__(self): raise RuntimeError("FORMAT_CALLBACK_FORBIDDEN")
+ def __repr__(self): raise RuntimeError("FORMAT_CALLBACK_FORBIDDEN")
+def entry(*,_failure_state):
+ if mode=="help" or mode=="bad-arg":
+  parser=p._fixture_argument_parser_v2(_failure_state,prog="controlled-cli")
+  parser.parse_args(["--help"] if mode=="help" else ["--bad"])
+ elif mode=="body-exit-zero": raise SystemExit(0)
+ else: raise Hostile("controlled")
+raise SystemExit(p._fixture_cli_v2(entry,recipe))
+'''
+        for recipe, mode, expected in cases:
+            with self.subTest(recipe=recipe, mode=mode):
+                directory = Path(tempfile.mkdtemp(prefix="failureframe-cli-"))
+                facts, stdout, stderr = reader._capture_owned_reader_v2(
+                    command=[sys.executable, "-I", "-B", "-c", program, str(ROOT), recipe, mode],
+                    cwd=ROOT, outputs={name: directory / (name + ".original") for name in ("stdout", "stderr")},
+                    deadline=deadline)
+                self.assertEqual(facts["returncode"], expected)
+                self.assertTrue(facts["closure"]["closed"])
+                self.assertFalse(facts["forced"])
+                self.assertEqual(facts["causes"], [])
+                for name in ("stdout", "stderr"):
+                    self.assertTrue(facts[name]["eof"])
+                    self.assertFalse(facts[name]["overflow"])
+                    self.assertFalse(facts[name]["remainder_unknown"])
+                    self.assertTrue(facts[name]["file"]["fsync_completed"])
+                    self.assertTrue(facts[name]["file"]["close_completed"])
+                if mode == "help":
+                    self.assertIn(b"usage:", stdout)
+                    self.assertEqual(stderr, b"")
+                else:
+                    self.assertEqual(stderr.count(b"\n"), 1)
+                    self.assertLessEqual(len(stderr), EMISSION_LIMIT)
+                    value = json.loads(stderr)
+                    self.assertFalse(value["campaign_authority"])
+                    self.assertNotIn(b"Traceback", stderr)
+                    self.assertNotIn(b"FORMAT_CALLBACK_FORBIDDEN", stderr)
+                self.assertIsNone(facts["signal"])
+                self.assertTrue(facts["closure"]["subreaper_restored"])
+                raw = fixture_report_bytes_v1(facts, limit=32768)
+                persistence_facts = reader._write_result_v2(directory / "capture.original.json", raw, absolute)
+                self.assertEqual(persistence_facts["causes"], [])
+                self.assertEqual(persistence_facts["written_bytes"], len(raw))
+                self.assertTrue(persistence_facts["fsync_completed"] and persistence_facts["close_completed"])
+                self.assertFalse(persistence_facts["write_extent_unknown"])
+                outer = fixture_report_bytes_v1({"controlled_cli": [recipe, mode],
+                    "capture_path": str(directory / "capture.original.json"),
+                    "result_persistence": persistence_facts, "physical_acceptance": False}, limit=4096)
+                print(outer.decode("ascii"), end="", flush=True)
+
+
+
+
+
+DOCUMENT B3-producer-failure-frame-shape.proposed.md
+# Proposed fixed producer failure-frame shape
+
+This records the independent provider-route audit at d950/f35d and its concrete
+corrections, before implementation. It is an implementation detail of approved B3;
+full exact-source/test/capacity review is still required. No frame code, execution
+or whole1.5 acceptance follows. The separate two-clock fix is not this full repair.
+
+Remove general str(error), traceback.format_exc and full-assessment f-strings from
+both producers AND consumer_fixture_v2's failed F1 assessor branch. Before the
+unchanged exact short promoter-refusal comparison, require exact canonical
+QualificationError, one exact builtin string argument and length no greater than
+the existing exact expected message. Otherwise re-raise the original unexpected
+error without formatting. Keep the actual assessment in fixed
+private fixture state before refusal; the existing16MiB failure-report encoder/
+writer can carry that actual object unchanged. The external frame reports its
+availability, known passed status and the actual existing failure-report reference/
+persistence. Encoding/write failure means not durably preserved, never success
+inferred from a path. No new report file or generic reporter is required.
+
+Use one thin CLI boundary after main/source cleanup: fixed bounded ASCII JSON plus
+LF on inherited stderr, then integer nonzero exit. In-process main keeps raising
+its original errors. Avoid implicit Python traceback/exception formatting at the
+actual CLI boundary; preserve integer argparse exits deliberately, with no arbitrary
+SystemExit data formatting. No new owner, worker, timer, retry or fresh deadline.
+Broken/partial/overflowed transport remains nonzero/incomplete; no claimed delivery.
+
+The optional private CLI-created state retains the actual source context before
+its with block, actual report facts immediately when returned and the one actual
+standalone-reader return. Source __exit__ returns False on ordinary body failures,
+so walking exception chains alone cannot recover prior records. The consumer must
+retain standalone facts immediately after its call, before identity/refusal checks
+can raise. A producer-only first slice would have to label those facts unavailable.
+Use fixed per-site records, not callbacks or a new event/logging system.
+
+Closed recipe maxima: positive3 source slots,1 cold reader,6 report sites; negative
+6 source slots,0 cold readers,3 report sites. Unused, not entered, returned and
+unavailable are distinct. Source-result persistence belongs to source records;
+it must not also count as a literal report site.
+
+The independently derived EMISSION cap is485376B INCLUDING LF, encoded with
+unchanged fixture_report_bytes_v1. The512KiB reporting band remains an outer
+ceiling, with38912B reserved for other reporting diagnostics. Eventual runtime
+admission must also price startup/argparse/cleanup/other stderr within the unchanged
+1MiB outer capture; no such runtime admission follows here. Complete geometry:
+
+- 22 unique file references x8192B =180224B.
+- 6 D16 capture blocks x18432B =110592B.
+- 6 source-slot blocks x2048B =12288B.
+- 6 report-site blocks x2048B =12288B.
+- 1 cold-reader summary x2048B =2048B.
+- 64 error records x2048B =131072B.
+- Fixed header/flags/LF4096B.
+- Compiler cause-code/availability reserve16384B.
+- One complete sidecar block16384B.
+
+No larger frame may consume the38912B reporting margin. Error records contain only fixed kind/role codes, ordinal
+primary/secondary/fact/reference links and availability flags. They MUST NOT embed
+full .facts/.evidence. Each actual fact set projects ONCE in its fixed role block;
+errors link to it. Otherwise the64x2KiB error reservation is invalid. Link/dedup by
+object identity, never exception/class hashing. Cap owned structure at64 objects,
+eight levels and eight secondary links per node; reject/mark incomplete on excess.
+
+Recognize exact owned types by identity only: _FixtureProducerFailureV2,
+LiteralSourceCaptureRefusedV2, _FixturePreparationCleanupErrorV2,
+_FixtureCapturedEngineErrorV2, _FixtureJournalIoErrorV1,
+FixtureReportPersistenceRefusedV2, StandaloneReaderRefusedV2,
+_FixtureSidecarWriteErrorV2 and the separate terminal FixtureCompilerError case
+described below. Resolve producer __main__/import identity correctly.
+Unknown exceptions get a fixed opaque_exception code. Never traverse arbitrary
+__cause__/__context__/args/notes/dictionaries or read custom __name__/str/repr.
+Preserve actual primary/ordered identity-distinct secondary links for owned wrappers;
+do not invent per-operation completion facts for cleanup wrappers that lack them.
+
+D16 projection: five deadline integers, original PID/start ticks, returncode/signal,
+forced/TERM/KILL flags and delivered counts, closure/subreaper/unknown flags, up to
+64 recorded PID/start-tick pairs, both channels' observed/retained/discarded counts,
+EOF/overflow/remainder flags, retained hashes and raw-file reference IDs. The D16
+owned_descendants list is signalled-identity history, not a live-leftover list.
+D16 capture causes have a separate64-entry/128checked-JSON-safe-ASCII-char allowance because
+some existing codes append dynamic exception type names. JSON-safe means each
+character is0x20..0x7E excluding quote0x22 and backslash0x5C; reject control/DEL,
+non-ASCII, empty or oversized codes before encoding with explicit null/incomplete.
+This alphabet applies to compiler and all other admitted non-whitelist cause codes;
+ASCII alone does not bound escaping. Use signed64 scalars;
+unknown/malformed/oversized data becomes null plus fixed refusal codes and explicit
+facts_complete=false, not silent truncation or substituted successful values.
+
+Persistence projects the actual six returned fields attempted, written_bytes,
+write_extent_unknown, fsync_completed, close_completed and causes. A writer that
+raises without returning facts is unavailable. D16 writer has maximum four concurrent
+causes (write/short-write,fsync,close,final deadline); early deadline/open returns are
+separate. Its seven fixed codes are at most24chars. Eight-entry headroom plus the
+fixed report deadline/clock markers fits the2KiB report-site block.
+
+Current source-slot cause count is at most two from five fixed literals. Use the
+actual fixed source whitelist (each<64chars) and writer's short fixed vocabulary.
+Do not allow two independent8x128char arrays in a2KiB source record; that geometry
+does not fit. Complete source-result persistence is below512B. Slot data includes
+used/returned/observed-clock-available flags, original observed return or unknown,
+within-observation/result-complete flags and three references. Exclude command and
+proof/channel payloads. Report sites include entered/returned, known encoded length,
+actual persistence, post-write clock availability and reference, never a self-attest.
+
+Header includes a fixed whitelist of at most32 projection-refusal codes, each at
+most64 JSON-safe ASCII characters; header/flags/key syntax/codes/LF together<=4096B.
+Compiler fact-kind is one fixed enum(absent,null,exact_dict,other), never __name__.
+One GLOBAL compiler block and one GLOBAL sidecar block are allowed. Extra distinct
+compiler/sidecar terminals link to unavailable with fixed refusal/incomplete state;
+they never create more16KiB blocks. The reader summary and capture roster are also
+global fixed-role blocks, not per-error copies.
+
+File references use actual path, known hash/count/persistence and fixed role IDs.
+Check exact path strings<=640codepoints before encoding; worst escaping7682B leaves
+510B ALL non-path metadata/key syntax inside8192B; check each complete encoded
+reference against8192B rather than assuming key overhead is free. Existing source paths are at most541filesystem bytes
+(directory512+separator+filename28). Report/reader/sidecar paths need their own checked
+admission; that bound is not established by their present callers.
+
+Sidecar error is an actual omitted owned shape, not a generic .facts dictionary.
+Its record has filename from12 fixed names(length<=64), admitted_upper_bytes and
+accepted_text_bytes, seven Booleans(open_completed,serialization_completed,
+flush_completed,fsync_completed,close_attempted,close_completed,write_extent_unknown)
+and failure_stage(None,dataframe,open,write,flush,fsync,close). Require exact integers
+0<=accepted_text_bytes<=admitted_upper_bytes<=that existing table ceiling(max64MiB).
+accepted_text_bytes is text accepted by the stream, not confirmed on-disk bytes.
+Retain failed facts plus up to11 preceding completed table facts at1KiB each inside
+the16KiB sidecar block, and original primary/at-most-one close secondary. No hashes
+or stronger persistence facts can be invented. Current exception lacks output-dir;
+retain one checked actual directory at its existing catch, then combine with fixed
+filenames. Until retained, location is unavailable. Sidecar failure precedes the
+positive cold reader and cannot coexist with it. Negative can still finish six
+source slots and failure/after-proof reports; its final success report cannot
+coexist. Reserved22refs covers18source+3report+1sidecar conservatively.
+
+Recognize only the exact frozen canonical FixtureCompilerError identity as a
+terminal case, never as an aggregate wrapper. Its16KiB compiler block retains at
+most64 exact JSON-safe ASCII cause codes of<=128chars and actual absent/present/type status
+of its optional .facts. Do not inspect or copy any heterogeneous facts keys or
+invent a result-file reference: compiler_facts_reference stays null until an actual
+separately qualified reference exists. Missing/malformed/oversized causes mark
+projection incomplete. Other compiler-like classes remain opaque. The frozen
+compiler is unchanged; full compiler fact transport and actual heap/runtime
+qualification remain a separate open source-backed audit. No new compiler state
+sink is needed.
+
+Meaningful future controls must expose old formatting callbacks, both clock losses,
+disk-report failure with actual source/D16 facts, ordinary body error retaining prior
+source records, post-reader consumer refusal, sidecar completed/failed records and
+location, maximum geometry/refusal boundaries and CLI single-frame/nonzero exit
+without implicit traceback. Preflight all controlled batch forms before execution.
+This file is a proposed next-slice audit; no task or genuine gate is closed.
+
+DOCUMENT B3-producer-failure-frame-contract.proposed.md
+# Proposed private producer failure-state boundary
+
+Read with B3-producer-failure-frame-shape.proposed.md. This is the concrete next
+implementation contract for independent review before code/tests; the485376B
+diagnostic is not a qualification proof or a new execution authority. No new
+process owner, loader, reporter, service, worker or deadline is introduced.
+
+Keep the fixed codec and thin CLI wrapper in build_production_fixture_v2.py,
+already imported by the negative producer. This keeps both producer-owned error
+classes in the actual helper globals when positive runs as __main__ or negative
+imports it. Other owned types come only from their fixed, already loaded canonical
+fixture modules; compare exact type identities. Do not import a second positive
+module to classify its __main__ errors, or hash arbitrary classes/errors.
+
+main gains only an optional private keyword-only _failure_state=None. Normal
+in-process main() calls retain their argument/call shapes and original raised
+objects. The actual CLI alone creates a fixed-recipe state and supplies it. Both
+__main__ tails become integer SystemExit of the same private CLI wrapper; the
+wrapper invokes the actual main, catches after complete unwinding, emits at most
+one frame, then returns an integer status. Preserve ordinary success and known
+origin-established integer argparse exits; arbitrary body SystemExit(0) is still
+a nonzero opaque failure. Establish origin with the actual CLI-only parser exit
+hook retaining the exact exception identity/status, never infer it from integer
+code alone. The CLI parser error hook emits no arbitrary error text; fixed help
+output remains bounded and default in-process parser behavior remains unchanged.
+Unknown SystemExit objects never reach implicit formatting.
+Use one bounded unbuffered stderr write and check its returned count; no retry
+after a partial frame. Full encoding happens before the first stderr write;
+an encoding/projection failure may select one fixed small incomplete frame instead.
+An external-write failure cannot prove delivery and must keep nonzero status.
+
+State is plain private data, never a callback or authority input. Its fixed fields:
+
+- recipe: positive/negative constant, never an arbitrary label.
+- source_context: actual fixed source-capture object saved BEFORE entering its
+  with block, even if __enter__/body/__exit__ fails. No reconstructed records.
+- reports: fixed positive six slots (phase00,phase01,phase02,phase03,stage,failure)
+  or negative three slots (after-proof,failure,final). Unused slots stay explicitly
+  unused; record site entry, encoding length/hash when known, writer entry/return,
+  exact returned persistence and clock observation availability immediately.
+- assessment: actual F1 object saved immediately before its refusal check; known
+  passed status only when exact builtins permit it. The existing failure report
+  carries the actual object unchanged through its preflighted16MiB encoder.
+- cold_reader: actual returned standalone evidence assigned immediately after the
+  existing call in complete_fixture_production_consumers_v2, before subsequent
+  identity-policy/refusal checks. Also retain its actual supplied output directory
+  before the call: the frozen owner omits result_path from its return. The fixed
+  intended result filename may be joined to that direct argument only, explicitly
+  labelled an intended target, never evidence that the writer entered/completed.
+  No reader/_PROGRAM/owner change or unrelated-path reconstruction.
+
+_fresh_json adds optional private state/site keywords. Existing default call/return
+behavior remains. Every CLI report site supplies a fixed slot; unknown/reused slots
+refuse before encoding/writing. Record actual facts before any post-write clock or
+validation. A writer that raises has returned=false and facts unavailable, never
+invented six-field facts. Source-result persistence is NOT a literal report slot.
+Do not count phase entry as writer entry. Clock unavailable is distinct from late.
+
+Pass state only when supplied into the two existing _run helpers and the complete
+consumer; default in-process calls receive no extra forwarded keyword. The consumer
+adds only an optional private state keyword. Its failed-assessment error becomes
+constant text, with the actual assessment retained in state and on the newly created
+owned refusal object for in-process inspection; avoid formatting the object. The
+negative assessor branch uses the same retention-before-check rule. The known short
+scientific promoter-refusal string comparison stays byte-for-byte unchanged AFTER
+a pre-format guard: exact canonical QualificationError, exact tuple args of length1,
+one exact builtin str and length<=the existing exact expected-message length.
+Unexpected type/args/length reraises the original error without formatting. Tests
+must cover hostile subclasses, argument objects and oversized strings.
+
+The native sidecar owner already catches its exact write error and attaches the
+current completed dictionary. Attach the actual output directory at that SAME catch;
+retain original files/facts/error objects and add no I/O. The codec reads the new
+directory only on that exact owned type. Current completed is a dictionary of at
+most11 preceding fixed filename-to-fact records, not an arbitrary event list.
+
+Failure-report construction uses fixed error/role/status data instead of general
+str/repr/traceback. Keep the original error first and any distinct report failure
+second via the existing aggregation. The CLI-created state survives both that
+failure and source-context cleanup. A post-main frame includes the actual final
+ordered errors and source records. It excludes complete report/proof/command text.
+The disk failure report contains a bounded pre-report error summary, not a final
+self-attesting CLI frame: it cannot claim its own future writer facts or source
+cleanup/checks that have not happened. Those actual returned facts belong only to
+the later state/external frame. Store no report payload inside its own site record.
+
+The frame has a fixed version/kind, recipe, non-authority flags, completeness and
+bounded projection-refusal codes, plus files/captures/source_slots/report_sites/
+reader/sidecar/errors blocks. Per-block maxima and485376B complete geometry are in
+the shape audit. Actual emitted frame including LF<=485376B; the38912B reporting
+margin inside512KiB is not available to a bigger frame. Header/refusal codes stay
+within4096B, at most32 fixed codes<=64 JSON-safe chars; compiler fact-kind is a
+fixed enum. All checked cause alphabets exclude quote/backslash/control/DEL, not
+merely non-ASCII. Each whole encoded file reference includes all key syntax under
+8192B, with non-path metadata<=510B. Error records are links only. Facts project once per actual fixed
+role; malformed/foreign/overflowed fields become explicit null/unknown plus fixed
+codes and incomplete status. Unknown errors never expose their names/args/notes/
+causes/dictionaries. Identity dedup uses builtin id or is, not user hashing/equality.
+The sole compiler exception is exact frozen FixtureCompilerError, a terminal case
+with its separately reserved16KiB short-code/availability block. Inspect only its
+owned .causes and optional facts availability/type; keep heterogeneous facts
+unprojected and their unqualified reference null. It has no aggregate links or
+new state sink. The frozen compiler and full compiler transport gate stay intact.
+Compiler and sidecar blocks are GLOBAL singletons; additional distinct terminal
+objects are explicitly unavailable/incomplete, never additional per-error blocks.
+
+Do not overstate hash/extent meaning: D16 retained-byte hash is not proof of a
+completed disk file when its raw writer failed. A source/report intended-result
+hash/count describes encoded bytes, with actual persistence stored separately.
+Use distinct fixed field names or links for intended/retained data and confirmed
+persistence. File-reference metadata stays within its510B allowance; cause arrays
+live in their owner block, not repeated in every file/error reference.
+
+Before execution prepare a separately priced finite RED/GREEN recipe with actual
+source/test/command/parent/retention/copy maxima. RED must expose existing arbitrary
+formatting, source-record/report fact loss and CLI implicit formatting through
+controlled effects; missing new API checks alone are insufficient. GREEN covers
+both actual main paths, the consumer post-reader/assessment seams, sidecar directory/
+completed facts, unknown/malformed/maximum frame boundaries and nonzero single-frame
+CLI exit. Preserve all existing scientific assertions and unchanged owner/compiler
+source. Independent exact review/configuredGrok/new-head CI/delegated approval follow.
+
+This proposal does not close heterogeneous compiler fact transport, actual frame/
+environment/heap fit, whole1.5 or real controller/runtime/genuine/final acceptance.
+
+DOCUMENT B3-failure-frame-review-corrections.md
+# Pre-GREEN implementation review corrections
+
+The shape/contract audits remain the basis of approved B3. These corrections
+preserve their fixed geometry and do not close task1.5 or runtime qualification.
+Review these actual deltas and revised exact pins before the one GREEN invocation.
+
+Retained RED selected3methods/five intended callback/directory assertions against
+the old source: .043s, noerrors/skips. Both raw channels reachedEOF and normal
+owner closure; outerexit0/child1, actual resultwrite2560B/fsync/close. The15 exact
+pre-RED source originals remain unchanged. The subsequent GREEN controls add no
+child or case file:22new/88total methods, six tiny children plus one maximum frame.
+
+Completed-sidecar filename fields now require exact str/length<=64 before equality
+or lookup. Foreign equality is exercised with an owned malformed fact record;
+oversized and unsupported filenames become null/refusal without a callback.
+
+The consumer retains its actual output argument before the cold-reader call. The
+frame distinguishes call_site_entered, unused and evidence available/unavailable,
+including an exception before a returned evidence object. The joined result path
+is an intended target only. No callee/writer entry, capture or persistence facts
+are inferred. A positive unused reader has explicit false/unknown fields. Sidecar
+overlap checks actual reader evidence/call-site state, not that unused summary.
+
+An assessor-returned None differs from no return: one fixed assessment_returned
+Boolean records that event. The actual object remains unchanged. A second fixed
+Boolean records only preparation of that object in the failure-report payload;
+the frame links the failure site for its separate actual encoding/writer/clock
+facts. It does not attest future writing or durability. Controls cover None and
+the actual-main refused-writer/source-fact combination.
+
+The existing original-custody helper can attach fixture_cleanup_causes to a real
+known initiating wrapper. Retain that optional field only on the exact recognized
+owned classes, never opaque errors. Its maximum is2 checked safe-ASCII codes of
+<=128characters, with the actual fixture_socket_close_/fixture_elf_close_ prefixes.
+The two-code array is at most263B; keys/availability, fixed kind/role, graph links
+and the existing bounded report-cause array remain below the enforced2048B error
+block. It is short-code metadata, not a duplicate .facts/.evidence block. Compiler
+cleanup codes already belong to the sole compiler cause block. No original-custody
+helper, compiler, owner or encoder changes. Opaque cleanup properties stay unread;
+three codes refuse, and exact two-code ordering is preserved by controls.
+
+All terminal and aggregate error records now receive the same encoded2KiB check.
+Projection-refusal vocabulary is fixed; at most32 codes per header, each<=64safe
+characters. The header4096B and final485376B includingLF checks are unchanged.
+Independent source/capacity review must accept these deltas before execution.
+
+DOCUMENT B3-failure-frame-test-recipe.proposed.md
+# Finite fixed failure-frame/CLI regression recipe
+
+Apply only the independently cleared B3 shape/contract proposals (shape SHA
+7bc9bdb627cbd40f88a2f81b4943df52b535177ef0ee4683716a51bab2e2f992,
+contract SHAd64698794112394c3734e848e65bc03ee5f875e704a9ffdc77a58976bcda4aee).
+No formal OpenSpec amendment is necessary. The retained RED predates frame
+implementation. Base8b76aefff3a3ba0fec8222aa4af6bf86c1b15803, same C: worktree/branch/PR9.
+
+The new module now has22 methods. Retained RED failureframe-red-01 selected exactly
+three against the21-method preimplementation source snapshot:
+two actual producer failure-report methods with both callers (four cases) expose
+general str/traceback and dynamic type-name/hash callbacks; the actual sidecar
+catch exposes missing output-directory retention (one case). Expected five
+assertion failures, no errors/skips/missing-API or mock-exhaustion failures.
+Only existing old code runs on RED. Its controlled DataFrame/CSV/Path effects are
+doubled, with the existing tiny in-memory manifest/metadata and no output files.
+New private API/maximum-frame/CLI tests are GREEN-only, not claimed as RED coverage.
+
+GREEN failureframe-green-01 selects the22-method module plus unchanged assertion
+coverage in report-persistence8, producer-failure4, literal-source12, refusal-selector7,
+sidecar-write-facts5, sidecar-edges2, sidecar-bounds15, execution-argument8 and
+refusal-argument5:88 methods total. The existing producer harness only adds optional
+controlled primary/state/context/report arguments; all old calls/assertions remain.
+
+New cases cover both main paths retaining source context; actual failure-report
+assembly forwarding the retained assessment and report-site state, with a refused
+writer and prior source facts in the final frame; report writer return and
+post-clock state; raised writer facts unavailable; named unordered report sites and
+reuse refusal; opaque callbacks; ordered identity links and single fact blocks;
+compiler/sidecar global singletons; consumer actual assessment and post-reader
+retention; full admitted64-error/6capture/22ref/12sidecar geometry; malformed code
+alphabets and cardinalities/depth/nodes;640/641codepoint paths; exact promoter
+pre-format guards; and one stderr attempt on partial/failed writes. Geometry asserts
+all11 preceding sidecar rows,64 causes/identities and original worst paths survive.
+Opacity controls include hostile equality, and rejected cause strings must not echo.
+One definition-only namespace control reads each reviewed producer<=64KiB, checks
+its actual AST tail wiring, then executes the positive definitions with __name__
+equal to __main__ and the tail excluded. It checks the distinct owned-class identity
+without invoking either actual main, creating a child or writing a case file.
+The bounded memory controls also cover the four corrections documented in
+B3-failure-frame-review-corrections.md: malformed filename equality, an entered
+reader without returned evidence, an assessor-returned None and optional two-code
+cleanup metadata on exact owned wrappers. The22/88 method roster, six children,
+seven retained case directories and every physical allowance stay unchanged.
+
+Exactly six tiny actual Python CLI children exercise the SAME private CLI/parser/
+codec path with fixed controlled main functions. Real production main functions
+are replaced by a forbidden sentinel; no compiler, source proof, Docker, model,
+real validator, image, storage/configuration or genuine fixture can be reached.
+Cases:positive/negative opaque failures, positive/negative body SystemExit0,
+originated positive help0 and originated negative bad-argument2. Expected status,
+single bounded stderr frame/no traceback, parent closure/EOF/no forcing, raw files
+and persistence are asserted. Successful help has fixed bounded stdout/no frame.
+
+Each child uses unchanged D16 capture with1MiB per raw channel; cases are serial,
+retaining six fresh directories,12 raw channels and six<=32KiB capture JSON files.
+Their actual returned result-persistence facts are encoded into the outer test
+stdout, never self-attested in those JSON files. A seventh fresh directory retains
+the maximum synthetic frame<=485376B with its actual returned writer facts outside
+that file. No automatic cleanup/overwrite/replay. No native process is executed.
+All other case effects remain doubled, including consumer/sidecar operations.
+
+The local runner supplies one fixture-only absolute300s test deadline via a fixed
+test-data environment key; all nested cases/writes borrow it with existing5s/5s/5s
+reserves. Production code never consumes this environment key. Generic remote CI
+without it establishes one180s class deadline, not one fresh clock per child.
+Qualified Linux/pidfd/single-Python-thread/no-live-child D16 preconditions remain.
+
+Preprice a new96MiB pair before allocations, within unchanged C80GiB above40GiB:
+-4MiB outer two-phase raw channels;1MiB outer results/tool/admission forms.
+-12MiB six child raw channels;256KiB their capture/result forms.
+-512KiB retained maximum frame.
+-2MiB exact source forms and funded copy; at most15 source copies/phase, each<=64KiB,
+ aggregate<=512KiB. Protected compiler/D16/encoder stay unchanged with exact pins.
+-32MiB two main source/raw ZIPs plus their Git copies(each ZIP<=8MiB).
+-32MiB one nested-case ZIP and its Git copy(ZIP<=16MiB).
+-2MiB directory/allocation/metadata/copy rounding, no retirement/sharing credit.
+-5MiB ONE configured Grok review forms; unchanged600s/max4turns, prompt<=128KiB,
+ direct core<=64KiB, channels<=512KiB each, outer<=16KiB, ZIP<=1.5MiB; no continuation.
+-1MiB command/checkpoint/manifests/tails including all three<=16KiB manifests and
+ their Git copies(<=96KiB). Four test command forms<=32KiB each/<=128KiB aggregate.
+These selected rows total91.75MiB, leaving4.25MiB retained slack. Per-member ZIP
+inputs remain<=1MiB; split source phases rather than lifting that cap. Existing
+archive helper's65536/member conservative guard applies before each fresh ZIP.
+
+Cumulative direct allowance becomes2192MiB=2298478592B; derived C additional
+quote71.099609375GiB<80GiB retains the preceding448MiB VHD scattering charge.
+E65GiB/full64GiB pagefile and source/Git192MiB stay. All new case data/raw/archives
+are on C:, not ext4; same Ubuntu boot/UUID/config/units/RAM/swap/fresh physical
+floor guards precede each invocation. A failed namespace is consumed.
+
+Independent actual test/launcher/capacity review precedes RED; implemented-source/
+RED-disposition review precedes sole GREEN. Exact-commit review/configuredGrok/
+latest-head CI/delegated source approval follow. No physical, compiler transport,
+runtime fit, whole1.5 or controller/runtime/genuine/final gate closes here.
+
+DOCUMENT B3-failure-frame-checkpoint.md
+# B3 fixed producer failure-frame source checkpoint
+
+Same C: worktree, branch and Draft PR9; base8b76aefff3a3ba0fec8222aa4af6bf86c1b15803.
+This is a controlled source repair. Exact-commit review, configured Grok and
+latest-head CI remain pending at this checkpoint. No task is newly checked.
+
+Both CLI tails now catch after main/source unwinding and make at most one checked
+unbuffered stderr write. The frame includes LF within485376B; partial/failed
+delivery remains nonzero with no retry or implicit traceback. Parser-origin
+identity distinguishes help/argument exits from a body's SystemExit0. In-process
+main() still raises its original error objects and forwards no extra default
+keywords. Unknown exceptions cannot supply names, str/repr, equality, hashes,
+notes or arbitrary attributes to the frame.
+
+Fixed state retains the actual source context, named report encoding/writer/clock
+events, assessor return and cold-reader return/call-site argument. Facts project
+once in fixed roles; errors have bounded identity links/short metadata. Intended
+paths/encoded hashes, retained-channel hashes, confirmed raw-file prefixes and
+returned persistence remain distinct. Exact canonical compiler errors expose only
+bounded causes and heterogeneous-facts availability, with no qualified reference.
+The frozen compiler, D16 owner/program and report encoder are byte-unchanged.
+
+The shape/contract audits and review-corrections document describe the fixed
+geometry. Independent blocker/provider reviews accepted the implementation
+corrections without a formal OpenSpec amendment; capacity review confirmed the
+same byte ceilings. Its first cases-archive proposal had a missing leading t in
+the literal path roster; independent review caught it before any archive attempt.
+The corrected command was reviewed and used. No original bytes were modified.
+
+Actual local execution, each phase once:
+- RED:3methods/five intended callback/directory assertions,.043s,noerrors/skips.
+  Child1/outer0; stderr5925B; bothEOF/normal closure/no forcing; actual outer
+  resultwrite2560B with fsync/close.
+- GREEN:88methods including22new,1.066s,noerrors/skips. Child0/outer0; normal
+  closure/bothEOF/no forcing/overflow/unknown/deadline; actual outer resultwrite
+  2722B with fsync/close. No replay.
+- Exactly six tiny Python CLI cases produced statuses1,1,1,1,0,2. Production mains
+  were forbidden sentinels; the same CLI/parser/codec ran with controlled entries.
+  The separate definition-only __main__ namespace/AST-tail control covered owned
+  class identity and actual wiring without another child or case file.
+- The maximum synthetic frame is273513B, SHA256
+  2ebef1dc83d55611c6dabc9b9fe0b86d6f7fbad3d904b494e292982f9b2cfbe4.
+  Assertions retain22worst640-codepoint references,6captureblocks each with64codes/
+  identities,64errors,64compiler codes and11preceding+onefailed sidecar records.
+- Seven fresh C: case directories retain19files/293423B. Their seven writer
+  receipts were returned in outer stdout; none self-attests its future writer.
+  All15 GREEN source originals match the final264608B reviewed/current pins.
+  Independent /root/blocker_plan_review verified these exact joins.
+
+Byte-exact original archives, all loose originals retained:
+- RED:21members,255752B,SHA256
+  d0a3c887c8ef368641215535d0dc1bc7204337684319855ae326b0bac9cefd1b.
+- GREEN:21members,309430B,SHA256
+  be0d4249ae1fc2c5523d49e730579c6aafe98f71c3267fe82dcea517fd8dead7.
+- Cases:19members,297753B,SHA256
+  b67b4b13a805b8d15b933086ac5edc1d39d32eb6a1c12a65108968ea67b232d0.
+The bounded audit checked all61 CRCs/manifest hashes/loose-original joins and all
+15 current source pins. Original command/admission/tool returns are retained.
+
+Capacity review admitted only this96MiB pair:91.75MiB rows plus4.25MiB slack,
+then explicitly charged256KiB slack for archive command/return/Git forms, leaving
+4MiB slack. Cumulative direct allowance2192MiB=2298478592B; derived C additional
+quote71.099609375GiB<80GiB above40GiB. E65GiB/fullpagefile,source/Git192MiB and
+prior448MiB VHD scatter remain. Fresh Windows/Linux floors, units, same Ubuntu
+boot/UUID,21B config hash,<=24GiB RAM/6GiB swap, source pins and fresh namespaces
+passed before each phase; archive guards were renewed. No cleanup/sharing credit.
+
+This closes neither complete compiler fact transport nor actual environment/
+heap/other-stderr/drain/deadline fit. Whole1.5, actual compiler/reader admissions,
+receipt-bound Docker probes, lifecycle atomic-publication repair, runtime renewal,
+parity/tensor/identity pins, genuine3840-first/3968/promoted126016/29/20/42,
+nine physical integrations/conformance/archive/final review/merge remain open.
+Dedicated conformance CI is absent; no CI redesign occurred. Tasks stay24/46.
+D27/Native57 remains parked; freshQ1/Q4/fullcampaign follow repair acceptance.

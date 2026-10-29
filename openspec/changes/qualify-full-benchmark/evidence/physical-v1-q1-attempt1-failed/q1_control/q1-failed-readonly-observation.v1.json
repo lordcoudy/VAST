@@ -1,0 +1,53 @@
+{
+ "artifact_kind": "q1_failed_readonly_observation",
+ "observed_at_utc": "2026-10-07T19:15:00Z",
+ "observer": "Claude Code (read-only after failure)",
+ "q1_status": "FAILED",
+ "failed_step": "q1_02_transaction",
+ "rc": 78,
+ "stderr": "qualification input transaction blocked: qualification fragment materialization failed closed: live deepstream runtime image differs from refreeze receipt",
+ "step_started_utc": "2026-10-07T18:57:38.459825451Z",
+ "step_finished_utc": "2026-10-07T19:01:42.611787491Z",
+ "check": "scripts/publication_policy_qualification_fragments_from_authority_v2.py:_verify_live_images — system image: Id equal AND sha256(canonical full `docker image inspect` of final_reference) == physical_identity.inspect_full_sha256",
+ "readonly_comparison": {
+  "worker:cpu": {
+   "id_ok": true,
+   "projection_ok": true
+  },
+  "worker:gpu": {
+   "id_ok": true,
+   "projection_ok": true
+  },
+  "system:deepstream": {
+   "id_ok": true,
+   "full_inspect_ok": false,
+   "projection_ok": false
+  },
+  "system:savant": {
+   "id_ok": true,
+   "full_inspect_ok": false,
+   "projection_ok": false
+  },
+  "system:openvino_gva": {
+   "id_ok": true,
+   "full_inspect_ok": false,
+   "projection_ok": false
+  },
+  "system:gstreamer_custom": {
+   "id_ok": true,
+   "full_inspect_ok": false,
+   "projection_ok": false
+  },
+  "docker_version": [
+   {
+    "Name": "Docker Desktop 4.93.0 (240920)"
+   },
+   "29.8.1",
+   "1.56"
+  ]
+ },
+ "interpretation": "All 4 system image IDs and both worker images (id + projection) match. Full-inspect SHA256 differs for all 4 runtime images. Docker Desktop was upgraded by Chocolatey to 4.93.0 (engine 29.8.1, API 1.56) at 2026-10-07 10:38:44-10:39:36 MSK (MsiInstaller events; chocolatey.log), after runtime refreeze receipts were written at 08:28-08:29 MSK. Probable cause: engine upgrade changed full inspect output for unchanged images. Full inspect at freeze time was not stored, so the differing field is not proven. Earlier readiness checks verified image IDs only, not full-inspect hashes.",
+ "containers_after_failure": 0,
+ "vast_processes_after_failure": 0,
+ "no_actions_taken": "no retry, no deletion/rename, no docker stop/rm/prune, receipts unchanged; guardian never started"
+}

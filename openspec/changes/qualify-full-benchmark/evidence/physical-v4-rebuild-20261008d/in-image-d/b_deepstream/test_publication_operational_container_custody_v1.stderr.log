@@ -1,0 +1,249 @@
+test_cid_is_exact_original_regular_single_link_bytes (test_publication_operational_container_custody_v1.ContainerCustodyContractTests) ... ok
+test_inactive_measurement_does_not_change_original_arguments (test_publication_operational_container_custody_v1.ContainerCustodyContractTests) ... ok
+test_noncanonical_or_foreign_not_found_is_not_positive_absence (test_publication_operational_container_custody_v1.ContainerCustodyContractTests) ... ok
+test_actual_gva_three_field_image_is_preserved_without_fabricated_base (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ERROR
+test_actual_process_and_original_cid_receipts_compose_through_cold_readers (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ERROR
+test_actual_retained_terminal_and_resealed_invalid_times_are_checked (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ERROR
+test_malformed_original_cid_remains_failure_and_cleans_only_validated_owned_name (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ERROR
+test_nonzero_and_timeout_stop_only_original_surviving_cid_and_never_accept (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... test_resealed_foreign_absence_cannot_grant_quiescence (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ERROR
+test_resealed_foreign_daemon_identity_cannot_grant_quiescence (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ERROR
+test_resealed_foreign_reserved_label_is_rejected_against_original_launch (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ERROR
+test_start_persistence_failure_recovers_owned_name_and_cleans_original_cid (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... FAIL
+test_uncounted_container_fact_is_rejected (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) ... ERROR
+
+======================================================================
+ERROR: test_actual_gva_three_field_image_is_preserved_without_fabricated_base (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 246, in test_actual_gva_three_field_image_is_preserved_without_fabricated_base
+    self.measure()
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 180, in measure
+    with process_custody.original_engine_phase_v1("measurement"), custody.measurement_container_custody_v1(
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 439, in measurement_container_custody_v1
+    owned = _ContainerCustody(capture, engine, engine_socket, argv)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 218, in __init__
+    daemon = self._command("daemon_before", ("info", "--format", "{{json .ID}}"))
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 282, in _command
+    process = subprocess.Popen([self.engine_pin.proc_path, *argv], executable=self.engine_pin.proc_path,
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 13] Permission denied: '/proc/self/fd/3'
+
+======================================================================
+ERROR: test_actual_process_and_original_cid_receipts_compose_through_cold_readers (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 196, in test_actual_process_and_original_cid_receipts_compose_through_cold_readers
+    self.measure()
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 180, in measure
+    with process_custody.original_engine_phase_v1("measurement"), custody.measurement_container_custody_v1(
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 439, in measurement_container_custody_v1
+    owned = _ContainerCustody(capture, engine, engine_socket, argv)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 218, in __init__
+    daemon = self._command("daemon_before", ("info", "--format", "{{json .ID}}"))
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 282, in _command
+    process = subprocess.Popen([self.engine_pin.proc_path, *argv], executable=self.engine_pin.proc_path,
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 13] Permission denied: '/proc/self/fd/3'
+
+======================================================================
+ERROR: test_actual_retained_terminal_and_resealed_invalid_times_are_checked (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 217, in test_actual_retained_terminal_and_resealed_invalid_times_are_checked
+    self.measure("retained_success")
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 180, in measure
+    with process_custody.original_engine_phase_v1("measurement"), custody.measurement_container_custody_v1(
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 439, in measurement_container_custody_v1
+    owned = _ContainerCustody(capture, engine, engine_socket, argv)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 218, in __init__
+    daemon = self._command("daemon_before", ("info", "--format", "{{json .ID}}"))
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 282, in _command
+    process = subprocess.Popen([self.engine_pin.proc_path, *argv], executable=self.engine_pin.proc_path,
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 13] Permission denied: '/proc/self/fd/3'
+
+======================================================================
+ERROR: test_malformed_original_cid_remains_failure_and_cleans_only_validated_owned_name (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 356, in test_malformed_original_cid_remains_failure_and_cleans_only_validated_owned_name
+    self.measure("failure", 5)
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 180, in measure
+    with process_custody.original_engine_phase_v1("measurement"), custody.measurement_container_custody_v1(
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 439, in measurement_container_custody_v1
+    owned = _ContainerCustody(capture, engine, engine_socket, argv)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 218, in __init__
+    daemon = self._command("daemon_before", ("info", "--format", "{{json .ID}}"))
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 282, in _command
+    process = subprocess.Popen([self.engine_pin.proc_path, *argv], executable=self.engine_pin.proc_path,
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 13] Permission denied: '/proc/self/fd/3'
+
+======================================================================
+ERROR: test_nonzero_and_timeout_stop_only_original_surviving_cid_and_never_accept (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) (mode='failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 317, in test_nonzero_and_timeout_stop_only_original_surviving_cid_and_never_accept
+    self.measure(mode, timeout)
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 180, in measure
+    with process_custody.original_engine_phase_v1("measurement"), custody.measurement_container_custody_v1(
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 439, in measurement_container_custody_v1
+    owned = _ContainerCustody(capture, engine, engine_socket, argv)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 218, in __init__
+    daemon = self._command("daemon_before", ("info", "--format", "{{json .ID}}"))
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 282, in _command
+    process = subprocess.Popen([self.engine_pin.proc_path, *argv], executable=self.engine_pin.proc_path,
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 13] Permission denied: '/proc/self/fd/3'
+
+======================================================================
+ERROR: test_nonzero_and_timeout_stop_only_original_surviving_cid_and_never_accept (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests) (mode='timeout')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 317, in test_nonzero_and_timeout_stop_only_original_surviving_cid_and_never_accept
+    self.measure(mode, timeout)
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 180, in measure
+    with process_custody.original_engine_phase_v1("measurement"), custody.measurement_container_custody_v1(
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 439, in measurement_container_custody_v1
+    owned = _ContainerCustody(capture, engine, engine_socket, argv)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 218, in __init__
+    daemon = self._command("daemon_before", ("info", "--format", "{{json .ID}}"))
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 282, in _command
+    process = subprocess.Popen([self.engine_pin.proc_path, *argv], executable=self.engine_pin.proc_path,
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 13] Permission denied: '/proc/self/fd/5'
+
+======================================================================
+ERROR: test_resealed_foreign_absence_cannot_grant_quiescence (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 263, in test_resealed_foreign_absence_cannot_grant_quiescence
+    self.measure()
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 180, in measure
+    with process_custody.original_engine_phase_v1("measurement"), custody.measurement_container_custody_v1(
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 439, in measurement_container_custody_v1
+    owned = _ContainerCustody(capture, engine, engine_socket, argv)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 218, in __init__
+    daemon = self._command("daemon_before", ("info", "--format", "{{json .ID}}"))
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 282, in _command
+    process = subprocess.Popen([self.engine_pin.proc_path, *argv], executable=self.engine_pin.proc_path,
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 13] Permission denied: '/proc/self/fd/3'
+
+======================================================================
+ERROR: test_resealed_foreign_daemon_identity_cannot_grant_quiescence (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 278, in test_resealed_foreign_daemon_identity_cannot_grant_quiescence
+    self.measure()
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 180, in measure
+    with process_custody.original_engine_phase_v1("measurement"), custody.measurement_container_custody_v1(
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 439, in measurement_container_custody_v1
+    owned = _ContainerCustody(capture, engine, engine_socket, argv)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 218, in __init__
+    daemon = self._command("daemon_before", ("info", "--format", "{{json .ID}}"))
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 282, in _command
+    process = subprocess.Popen([self.engine_pin.proc_path, *argv], executable=self.engine_pin.proc_path,
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 13] Permission denied: '/proc/self/fd/3'
+
+======================================================================
+ERROR: test_resealed_foreign_reserved_label_is_rejected_against_original_launch (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 293, in test_resealed_foreign_reserved_label_is_rejected_against_original_launch
+    self.measure()
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 180, in measure
+    with process_custody.original_engine_phase_v1("measurement"), custody.measurement_container_custody_v1(
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 439, in measurement_container_custody_v1
+    owned = _ContainerCustody(capture, engine, engine_socket, argv)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 218, in __init__
+    daemon = self._command("daemon_before", ("info", "--format", "{{json .ID}}"))
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 282, in _command
+    process = subprocess.Popen([self.engine_pin.proc_path, *argv], executable=self.engine_pin.proc_path,
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 13] Permission denied: '/proc/self/fd/3'
+
+======================================================================
+ERROR: test_uncounted_container_fact_is_rejected (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 304, in test_uncounted_container_fact_is_rejected
+    self.measure()
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 180, in measure
+    with process_custody.original_engine_phase_v1("measurement"), custody.measurement_container_custody_v1(
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 439, in measurement_container_custody_v1
+    owned = _ContainerCustody(capture, engine, engine_socket, argv)
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 218, in __init__
+    daemon = self._command("daemon_before", ("info", "--format", "{{json .ID}}"))
+  File "/work/root/scripts/publication_operational_container_custody_v1.py", line 282, in _command
+    process = subprocess.Popen([self.engine_pin.proc_path, *argv], executable=self.engine_pin.proc_path,
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 13] Permission denied: '/proc/self/fd/3'
+
+======================================================================
+FAIL: test_start_persistence_failure_recovers_owned_name_and_cleans_original_cid (test_publication_operational_container_custody_v1.OriginalContainerCompositionTests)
+----------------------------------------------------------------------
+PermissionError: [Errno 13] Permission denied: '/proc/self/fd/3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_operational_container_custody_v1.py", line 339, in test_start_persistence_failure_recovers_owned_name_and_cleans_original_cid
+    with self.assertRaisesRegex(OSError, "fixture launch persistence failed"):
+AssertionError: "fixture launch persistence failed" does not match "[Errno 13] Permission denied: '/proc/self/fd/3'"
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.417s
+
+FAILED (failures=1, errors=10)

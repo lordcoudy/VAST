@@ -266,3 +266,215 @@ deploy/native_gst_probe/vast_native_gst_probe.cpp text eol=lf
 # Preserve finite-study original evidence bytes before and after supported archive.
 /openspec/changes/run-finite-component-study/evidence/** -text !eol
 /openspec/changes/archive/*-run-finite-component-study/evidence/** -text !eol
+
+# Image build inputs added after the byte freeze (R5/S5, qualify-full-benchmark):
+# keep exact LF bytes under core.autocrlf=true so rebuilt images reproduce.
+/deploy/deepstream/checkpoint/Dockerfile text eol=lf
+/deploy/native_gst_probe/checkpoint_study_reference.hpp text eol=lf
+/scripts/canonical_systems_study_plan_v1.py text eol=lf
+/scripts/non_decreasing_wall_clock_v1.py text eol=lf
+
+# New read-only validator leaves must reproduce the reviewed packaged LF bytes.
+/scripts/publication_policy_qualification_fragment_validation_v2.py text eol=lf
+/scripts/publication_policy_qualification_pilot_validation_v2.py text eol=lf
+/scripts/publication_policy_qualification_transaction_validation_v2.py text eol=lf
+
+# Preserve finite repair originals under current and supported archive paths.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/physical-01/physical-results/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/physical-01/physical-results/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/completed-check-results/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/completed-check-results/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/completed-check-retention-control/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/completed-check-retention-control/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/ext4-original-results/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/ext4-original-results/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/ext4-original-retention-control/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/ext4-original-retention-control/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/transport-readiness-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/transport-readiness-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/failed-consumer-results/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/failed-consumer-results/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/failed-consumer-retention-control/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/failed-consumer-retention-control/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/pins-01/host-pin-rebind.planned.patch -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/pins-01/host-pin-rebind.planned.patch -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/conformance-01/f5-real-refusals.green.log -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/conformance-01/f5-real-refusals.green.log -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/conformance-01/f5-real-refusals.negative-control.log -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/conformance-01/f5-real-refusals.negative-control.log -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38173554386-failure/vast-cpu-checks.original.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38173554386-failure/vast-cpu-checks.original.zip -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/owner37-fd-retention-controls-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/owner37-fd-retention-controls-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/sample-boundaries-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/sample-boundaries-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/standalone-reader-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/standalone-reader-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/archive-paths-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/archive-paths-01/** -text !eol
+
+# Exact finite hosted archives, not normalized or re-created reports.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38179553996-pass/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38179553996-pass/*.zip -text !eol
+
+# Closed A16 capture namespaces remain byte-exact through the dated archive.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals-retention-control/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals-retention-control/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/integration-a16-original-control-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/integration-a16-original-control-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/full-a16-control-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/full-a16-control-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/archive-draft-validation-01/controls/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/archive-draft-validation-01/controls/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/readonly-preflight-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/readonly-preflight-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/device-probe-boundary-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/device-probe-boundary-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-retention-control/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-retention-control/** -text !eol
+
+# Additional closed A16 originals and exact-head hosted archives remain byte evidence.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-originals/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-plan-control-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-plan-control-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-apply-control-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-apply-control-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-independent-control-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-independent-control-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38186180310-pass/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38186180310-pass/*.zip -text !eol
+
+# Closed SOURCE06 originals and lifecycle regression captures preserve raw bytes.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/source06-closed-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/source06-closed-originals/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/guardian-lifetime-01/originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/guardian-lifetime-01/originals/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38251020884-pass/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38251020884-pass/*.zip -text !eol
+
+# Fixture binding regression originals are immutable byte evidence.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/fixture-binding-tdd-01/originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/fixture-binding-tdd-01/originals/** -text !eol
+
+# Failed A2 consumer controls are retained without normalization or replay.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer12-failed-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/consumer12-failed-originals/** -text !eol
+
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38294921755-pass/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38294921755-pass/*.zip -text !eol
+
+# Naturally failed A3 consumer controls preserve their original bytes.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer16-failed-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/consumer16-failed-originals/** -text !eol
+
+# Stock-reference regression captures preserve original byte evidence.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/stock-sample-reference-tdd-02/originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/stock-sample-reference-tdd-02/originals/** -text !eol
+
+# Exact A4 hosted artifact bytes are retained without ZIP normalization.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38364806151-pass-02/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38364806151-pass-02/*.zip -text !eol
+
+# Naturally failed A4 consumer and config-regression originals stay byte-exact.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer24-failed-originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/consumer24-failed-originals/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/guardian-config-tdd-01/originals/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/consumer-01/guardian-config-tdd-01/originals/** -text !eol
+
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38430468779-pass-01/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/checks-01/hosted-ci-38430468779-pass-01/*.zip -text !eol
+
+# Shared receipt reader and bounded diagnostic evidence retain exact bytes.
+/scripts/publication_image_freeze_receipt_validation_v1.py -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/** -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/package-receipt-reader-01/** -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/package-receipt-reader-01/** -text !eol
+
+# These original Windows receipts retain CRLF; other whitespace checks stay active.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/retention-final-scope.original.v1.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/retention-final-scope.original.v2.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/retention-final-scope.original.v1.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/recovery-diagnostics-v6-01/retention-final-scope.original.v2.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Gate-2 test originals retain captured bytes, including Windows CRLF.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/*.original.txt -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/*.original.txt -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-*.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-*.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/gate2-openspec-01.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/gate2-openspec-01.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Tracked setup/capture TDD originals also include original Windows captures.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/setup-*.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/setup-*.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/capture-*.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/capture-*.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve the original hosted diagnostic ZIP from the interrupted CPU run.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-e162-38911635009-01/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-e162-38911635009-01/*.zip -text !eol
+# Preserve the original c67 hosted failure artifact and API response bytes.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/*.zip -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/*.zip -text !eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/*.original.json -text !eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/*.original.json -text !eol
+
+# Preserve these exact new TDD originals' emitted spaces and Windows CRLF.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/f2-successor-c-codeproof-red-09.original.txt whitespace=-blank-at-eol,blank-at-eof,space-before-tab
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/f2-successor-c-file-kind-red-05.original.txt whitespace=-blank-at-eol,blank-at-eof,space-before-tab
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/f2-successor-c-typed-binding-red-03.original.txt whitespace=-blank-at-eol,blank-at-eof,space-before-tab
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/retention-current-code-windows-40.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/retention-windows-actual-green-35.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/f2-successor-c-codeproof-red-09.original.txt whitespace=-blank-at-eol,blank-at-eof,space-before-tab
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/f2-successor-c-file-kind-red-05.original.txt whitespace=-blank-at-eol,blank-at-eof,space-before-tab
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/f2-successor-c-typed-binding-red-03.original.txt whitespace=-blank-at-eol,blank-at-eof,space-before-tab
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/retention-current-code-windows-40.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/retention-windows-actual-green-35.original.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Exact retained CI log/script bytes, including their emitted whitespace.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/ci-9cf04a1b-originals/workflow-job.connector-text.utf8.log -text !eol whitespace=-blank-at-eol,-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/ci-9cf04a1b-originals/preservation-command.redacted.ps1 -text !eol whitespace=-blank-at-eol,-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/ci-9cf04a1b-originals/workflow-job.connector-text.utf8.log -text !eol whitespace=-blank-at-eol,-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/ci-9cf04a1b-originals/preservation-command.redacted.ps1 -text !eol whitespace=-blank-at-eol,-blank-at-eof
+
+# Preserve the six exact reviewed B4 scripts, including their final blank line.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-admission.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-archive-command.original.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-archive.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-admission.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-archive-command.original.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-archive.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-admission.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-archive-command.original.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-green-archive.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-admission.proposed.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-archive-command.original.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/archive/*-fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B4-build-metadata-red-archive.proposed.ps1 -text !eol whitespace=-blank-at-eof
+
+# Exact consumed configured-review evidence; keep reviewed source/packet bytes.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B3-B4-current-source-grok-prompt-03.original.txt -text !eol whitespace=-blank-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B3-failure-frame-source-grok-prompt-02.original.txt -text !eol whitespace=-blank-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B3-grok-model-caller-disposition-v2.proposed.md -text !eol whitespace=cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/B3-grok-review06-archive-command.proposed.ps1 -text !eol whitespace=cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/grok-readonly-preparation-05-command.original.ps1 -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/grok_readonly_model_data_v1.proposed.ps1 -text !eol whitespace=cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/grok_readonly_model_data_v2.proposed.ps1 -text !eol whitespace=cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/grok_reviewed_job_definitions_v1.proposed.py -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/grok_windows_model_capture_v1.proposed.py -text !eol whitespace=-blank-at-eof
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/grok_windows_model_capture_v2.proposed.py -text !eol whitespace=-blank-at-eof
+
+# PR9 bounded runtime bridge: preserve reviewed raw source and fixture bytes.
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/proposal-source-findings.md -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/source-control-recipes.md -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_capture_v1.proposed.py -text !eol whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_driver_v1.proposed.py -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_invocation_v1.proposed.ps1 -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_source_contract_v1.proposed.json -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/tests/test_grok_review_volume_v1.py -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/tests/test_grok_readonly_operator_v1.py -text !eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

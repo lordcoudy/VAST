@@ -1,0 +1,175 @@
+test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) ... 
+  test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (mixed=True) ... ERROR
+  test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (global_count=True) ... ERROR
+  test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (mixed='29') ... ERROR
+  test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (global_count='29') ... ERROR
+  test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (mixed=29.0) ... ERROR
+  test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (global_count=29.0) ... ERROR
+  test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (mixed=0) ... ERROR
+  test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (global_count=0) ... ERROR
+  test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (mixed=-1) ... ERROR
+  test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (global_count=-1) ... ERROR
+test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) ... ERROR
+test_mixed_counts_change_one_qualification_cell_and_leave_others_at31 (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_mixed_counts_change_one_qualification_cell_and_leave_others_at31) ... ERROR
+test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum) ... 
+  test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum) (resource='cpu', topology='independent_processes') ... ERROR
+  test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum) (resource='cpu', topology='shared_video_dag') ... ERROR
+  test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum) (resource='gpu', topology='independent_processes') ... ERROR
+  test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum) (resource='gpu', topology='shared_video_dag') ... ERROR
+
+======================================================================
+ERROR: test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (mixed=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 39, in test_invalid_global_or_mixed_counts_refuse_before_native_writes
+    physical._fixture_operation_sample_counts_v2(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (global_count=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 43, in test_invalid_global_or_mixed_counts_refuse_before_native_writes
+    physical._fixture_operation_sample_counts_v2(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (mixed='29')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 39, in test_invalid_global_or_mixed_counts_refuse_before_native_writes
+    physical._fixture_operation_sample_counts_v2(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (global_count='29')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 43, in test_invalid_global_or_mixed_counts_refuse_before_native_writes
+    physical._fixture_operation_sample_counts_v2(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (mixed=29.0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 39, in test_invalid_global_or_mixed_counts_refuse_before_native_writes
+    physical._fixture_operation_sample_counts_v2(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (global_count=29.0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 43, in test_invalid_global_or_mixed_counts_refuse_before_native_writes
+    physical._fixture_operation_sample_counts_v2(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (mixed=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 39, in test_invalid_global_or_mixed_counts_refuse_before_native_writes
+    physical._fixture_operation_sample_counts_v2(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (global_count=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 43, in test_invalid_global_or_mixed_counts_refuse_before_native_writes
+    physical._fixture_operation_sample_counts_v2(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (mixed=-1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 39, in test_invalid_global_or_mixed_counts_refuse_before_native_writes
+    physical._fixture_operation_sample_counts_v2(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes) (global_count=-1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 43, in test_invalid_global_or_mixed_counts_refuse_before_native_writes
+    physical._fixture_operation_sample_counts_v2(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_invalid_global_or_mixed_counts_refuse_before_native_writes (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_invalid_global_or_mixed_counts_refuse_before_native_writes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 46, in test_invalid_global_or_mixed_counts_refuse_before_native_writes
+    physical._fixture_operation_sample_counts_v2(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_mixed_counts_change_one_qualification_cell_and_leave_others_at31 (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_mixed_counts_change_one_qualification_cell_and_leave_others_at31)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 22, in test_mixed_counts_change_one_qualification_cell_and_leave_others_at31
+    counts = physical._fixture_operation_sample_counts_v2(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_physical_fixture_v2' has no attribute '_fixture_operation_sample_counts_v2'
+
+======================================================================
+ERROR: test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum) (resource='cpu', topology='independent_processes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 61, in test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum
+    metadata = write_native_policy_fixture_cell_v2(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_native_fixture_v2.py", line 75, in write_native_policy_fixture_cell_v2
+    raise ValueError("fixture requires at least 30 completed samples per branch")
+ValueError: fixture requires at least 30 completed samples per branch
+
+======================================================================
+ERROR: test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum) (resource='cpu', topology='shared_video_dag')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 61, in test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum
+    metadata = write_native_policy_fixture_cell_v2(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_native_fixture_v2.py", line 75, in write_native_policy_fixture_cell_v2
+    raise ValueError("fixture requires at least 30 completed samples per branch")
+ValueError: fixture requires at least 30 completed samples per branch
+
+======================================================================
+ERROR: test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum) (resource='gpu', topology='independent_processes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 61, in test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum
+    metadata = write_native_policy_fixture_cell_v2(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_native_fixture_v2.py", line 75, in write_native_policy_fixture_cell_v2
+    raise ValueError("fixture requires at least 30 completed samples per branch")
+ValueError: fixture requires at least 30 completed samples per branch
+
+======================================================================
+ERROR: test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum (tests.test_accepted_policy_fixture_sample_counts_v2.AcceptedPolicyFixtureSampleCountsV2Tests.test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum) (resource='gpu', topology='shared_video_dag')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_sample_counts_v2.py", line 61, in test_real29_native_coordinator_sidecars_and_reset_are_valid_before_policy_minimum
+    metadata = write_native_policy_fixture_cell_v2(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_native_fixture_v2.py", line 75, in write_native_policy_fixture_cell_v2
+    raise ValueError("fixture requires at least 30 completed samples per branch")
+ValueError: fixture requires at least 30 completed samples per branch
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.035s
+
+FAILED (errors=16)

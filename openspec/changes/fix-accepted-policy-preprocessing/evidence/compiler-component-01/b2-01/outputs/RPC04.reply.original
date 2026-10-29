@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Api-Version: 1.55
+Content-Type: application/json
+Docker-Experimental: false
+Ostype: linux
+Server: Docker/29.7.2 (linux)
+Date: Fri, 16 Oct 2026 09:26:03 GMT
+Connection: close
+Transfer-Encoding: chunked
+
+94c
+[{"Id":"4df593e12ca362e69f0594b2035197335f335d3ceae3c71894b31db9f197a09f","Names":["/vast-fixture-compiler-probe-b1-66f97415cf0d360619ca942bb7eedcc8"],"Image":"sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759","ImageID":"sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759","ImageManifestDescriptor":{"mediaType":"application/vnd.docker.distribution.manifest.v2+json","digest":"sha256:34e56b46f00a2c79acb42bfd4f3a977753607a99179520744389ce40ce96eb59","size":10184,"platform":{"architecture":"amd64","os":"linux"}},"Command":"/usr/bin/python3 -I -S -B /fixture/compiler.py","Created":1792139852,"Ports":[],"Labels":{"com.amazonaws.sagemaker.capabilities.accept-bind-to-port":"true","com.amazonaws.sagemaker.capabilities.multi-models":"true","com.nvidia.build.id":"72127154","com.nvidia.build.ref":"dd90ebd1bd901b96d44303b22903523bef736e10","com.nvidia.cublas.version":"12.2.5.6","com.nvidia.cuda.version":"9.0","com.nvidia.cudnn.version":"8.9.5.29","com.nvidia.cufft.version":"11.0.8.103","com.nvidia.curand.version":"10.3.3.141","com.nvidia.cusolver.version":"11.5.2.141","com.nvidia.cusparse.version":"12.1.2.141","com.nvidia.cutensor.version":"1.7.0.1","com.nvidia.nccl.version":"2.19.3","com.nvidia.npp.version":"12.2.1.4","com.nvidia.nsightcompute.version":"2023.2.2.3","com.nvidia.nsightsystems.version":"2023.3.1.92","com.nvidia.nvjpeg.version":"12.2.2.4","com.nvidia.tensorrt.version":"8.6.1.6+cuda12.0.1.011","com.nvidia.tensorrtoss.version":"23.10","com.nvidia.tritonserver.version":"2.39.0","com.nvidia.volumes.needed":"nvidia_driver","org.opencontainers.image.ref.name":"ubuntu","org.opencontainers.image.version":"22.04","org.vast.fixture-compiler.nonce":"66f97415cf0d360619ca942bb7eedcc8","org.vast.fixture-compiler.purpose":"fresh-artificial-engine-v1","org.vast.fixture-compiler.source-sha256":"053acd78d1a0dc7921cb86251dcd375d34e3e778cb9437a551c9f698ec3c50f0"},"State":"exited","Status":"Exited (0) 48 minutes ago","HostConfig":{"NetworkMode":"none"},"Health":{"Status":"none","FailingStreak":0},"NetworkSettings":{"Networks":{}},"Mounts":[{"Type":"bind","Source":"/home/s-a-balashov/work/vast-fixture-compiler-component-8c08cd30f2355a26b2e7a31b53e6f268acafda29-01/tests/fixtures/accepted_policy_fixture_compiler_probe_program_v1.py","Destination":"/fixture/compiler.py","Mode":"","RW":false,"Propagation":"rprivate"}]}]
+
+0
+

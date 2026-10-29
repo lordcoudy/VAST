@@ -1,0 +1,70 @@
+test_actual_core_new_stage_begins_after_expired_setup_with_own_absolute_clock (caller.LaterStageCallerTests.test_actual_core_new_stage_begins_after_expired_setup_with_own_absolute_clock) ... ok
+test_closed_argv_and_c1_prior_minus_reject_before_native_spawn (caller.LaterStageCallerTests.test_closed_argv_and_c1_prior_minus_reject_before_native_spawn) ... 
+  test_closed_argv_and_c1_prior_minus_reject_before_native_spawn (caller.LaterStageCallerTests.test_closed_argv_and_c1_prior_minus_reject_before_native_spawn) (args=['cccccccccccccccccccccccccccccccccccccccc', '32769', 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', '-']) ... FAIL
+  test_closed_argv_and_c1_prior_minus_reject_before_native_spawn (caller.LaterStageCallerTests.test_closed_argv_and_c1_prior_minus_reject_before_native_spawn) (args=['cccccccccccccccccccccccccccccccccccccccc', '1', 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', '8192:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee']) ... FAIL
+  test_closed_argv_and_c1_prior_minus_reject_before_native_spawn (caller.LaterStageCallerTests.test_closed_argv_and_c1_prior_minus_reject_before_native_spawn) (args=['cccccccccccccccccccccccccccccccccccccccc', '1', 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', '-', 'extra']) ... FAIL
+test_extension_has_a_separate_four_kibibyte_writer_and_six_frame_limit (caller.LaterStageCallerTests.test_extension_has_a_separate_four_kibibyte_writer_and_six_frame_limit) ... ok
+test_extension_installs_only_after_retention_and_binds_the_exact_core (caller.LaterStageCallerTests.test_extension_installs_only_after_retention_and_binds_the_exact_core) ... ok
+test_extension_owns_fixed_stage_clocks_and_never_uses_setup_phase_helpers (caller.LaterStageCallerTests.test_extension_owns_fixed_stage_clocks_and_never_uses_setup_phase_helpers) ... ok
+test_missing_prior_or_changed_held_source_refuses_before_spawn (caller.LaterStageCallerTests.test_missing_prior_or_changed_held_source_refuses_before_spawn) ... 
+  test_missing_prior_or_changed_held_source_refuses_before_spawn (caller.LaterStageCallerTests.test_missing_prior_or_changed_held_source_refuses_before_spawn) (cause='cd_prior_retention') ... FAIL
+  test_missing_prior_or_changed_held_source_refuses_before_spawn (caller.LaterStageCallerTests.test_missing_prior_or_changed_held_source_refuses_before_spawn) (cause='cd_source_binding') ... FAIL
+test_original_clock_expiry_refuses_without_writer_or_reexecution (caller.LaterStageCallerTests.test_original_clock_expiry_refuses_without_writer_or_reexecution) ... ok
+test_selected_overbound_refuses_before_windows_writer_spawn (caller.LaterStageCallerTests.test_selected_overbound_refuses_before_windows_writer_spawn) ... ok
+test_unknown_or_nonzero_or_overflow_cannot_be_success (caller.LaterStageCallerTests.test_unknown_or_nonzero_or_overflow_cannot_be_success) ... ok
+
+======================================================================
+FAIL: test_closed_argv_and_c1_prior_minus_reject_before_native_spawn (caller.LaterStageCallerTests.test_closed_argv_and_c1_prior_minus_reject_before_native_spawn) (args=['cccccccccccccccccccccccccccccccccccccccc', '32769', 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', '-'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1336, in test_closed_argv_and_c1_prior_minus_reject_before_native_spawn
+    self.assertIn(value['error'], ('cd_arguments', 'cd_completions'))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "Cannot read properties of undefined (reading 'stdout')" not found in ('cd_arguments', 'cd_completions')
+
+======================================================================
+FAIL: test_closed_argv_and_c1_prior_minus_reject_before_native_spawn (caller.LaterStageCallerTests.test_closed_argv_and_c1_prior_minus_reject_before_native_spawn) (args=['cccccccccccccccccccccccccccccccccccccccc', '1', 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', '8192:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1336, in test_closed_argv_and_c1_prior_minus_reject_before_native_spawn
+    self.assertIn(value['error'], ('cd_arguments', 'cd_completions'))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "Cannot read properties of undefined (reading 'stdout')" not found in ('cd_arguments', 'cd_completions')
+
+======================================================================
+FAIL: test_closed_argv_and_c1_prior_minus_reject_before_native_spawn (caller.LaterStageCallerTests.test_closed_argv_and_c1_prior_minus_reject_before_native_spawn) (args=['cccccccccccccccccccccccccccccccccccccccc', '1', 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', '-', 'extra'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1336, in test_closed_argv_and_c1_prior_minus_reject_before_native_spawn
+    self.assertIn(value['error'], ('cd_arguments', 'cd_completions'))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "Cannot read properties of undefined (reading 'stdout')" not found in ('cd_arguments', 'cd_completions')
+
+======================================================================
+FAIL: test_missing_prior_or_changed_held_source_refuses_before_spawn (caller.LaterStageCallerTests.test_missing_prior_or_changed_held_source_refuses_before_spawn) (cause='cd_prior_retention')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1307, in test_missing_prior_or_changed_held_source_refuses_before_spawn
+    self.assertEqual(value['error'], cause)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "Cannot read properties of undefined (reading 'stdout')" != 'cd_prior_retention'
+- Cannot read properties of undefined (reading 'stdout')
++ cd_prior_retention
+
+
+======================================================================
+FAIL: test_missing_prior_or_changed_held_source_refuses_before_spawn (caller.LaterStageCallerTests.test_missing_prior_or_changed_held_source_refuses_before_spawn) (cause='cd_source_binding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1307, in test_missing_prior_or_changed_held_source_refuses_before_spawn
+    self.assertEqual(value['error'], cause)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "Cannot read properties of undefined (reading 'stdout')" != 'cd_source_binding'
+- Cannot read properties of undefined (reading 'stdout')
++ cd_source_binding
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.837s
+
+FAILED (failures=5)

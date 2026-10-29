@@ -1,0 +1,24 @@
+test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers) ... 
+  test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers) (typed_binding='retention') ... FAIL
+  test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers) (typed_binding='helper_code') ... FAIL
+
+======================================================================
+FAIL: test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers) (typed_binding='retention')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 391, in test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers
+    with self.subTest(typed_binding=field), self.assertRaises(gate.Gate2Refusal):
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers) (typed_binding='helper_code')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 391, in test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers
+    with self.subTest(typed_binding=field), self.assertRaises(gate.Gate2Refusal):
+AssertionError: Gate2Refusal not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.014s
+
+FAILED (failures=2)

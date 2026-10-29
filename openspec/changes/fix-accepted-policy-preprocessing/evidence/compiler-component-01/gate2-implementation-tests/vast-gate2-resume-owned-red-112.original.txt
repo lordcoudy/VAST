@@ -1,0 +1,27 @@
+CONTROLLED_NODE_RUNTIME /mnt/c/Program Files/nodejs/node.exe v25.2.1
+FF
+======================================================================
+FAIL: test_known_setup_child_is_retained_when_tracking_throws_and_stdin_closes_once (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_known_setup_child_is_retained_when_tracking_throws_and_stdin_closes_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 760, in test_known_setup_child_is_retained_when_tracking_throws_and_stdin_closes_once
+    self.assertEqual(facts['pid'],4321);self.assertIn('controlled_track',','.join(facts['causes']))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 4321
+
+======================================================================
+FAIL: test_known_writer_child_survives_tracking_failure_and_second_finish_is_denied (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_known_writer_child_survives_tracking_failure_and_second_finish_is_denied)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 767, in test_known_writer_child_survives_tracking_failure_and_second_finish_is_denied
+    self.assertEqual(value['spawned'],2);self.assertEqual(value['error'],'writer_state')
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'controlled_track' != 'writer_state'
+- controlled_track
++ writer_state
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.909s
+
+FAILED (failures=2)

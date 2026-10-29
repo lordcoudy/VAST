@@ -1,0 +1,337 @@
+{
+  "kind": "reviewed_regression_input_copy_v1",
+  "commit": "06c828ce798d3454f1d4b8a992aed7133882b5a1",
+  "mode": "ext4",
+  "catalog_sha256": "8b9111ab5855bf73b0bac2532599b1a77d36235e05a544d0a08c47cdbcaac0e7",
+  "source_root": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1",
+  "target_root": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-ci-06c828ce798d3454f1d4b8a992aed7133882b5a1",
+  "copied_files": [
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+      "size_bytes": 659,
+      "sha256": "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/foreign_object.tensorrt_cuda.json",
+      "size_bytes": 1058,
+      "sha256": "2866a754c38ee3d0645eb2aa71e64e25a5efe51b3b4146a4c4e642956af7b518"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/runtime_images/openvino_gva.runtime.freeze.json",
+      "size_bytes": 6759,
+      "sha256": "293f7a93b1626b8e754b8359b16d5f718c091815c1d92a6fa479863e008e142d"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/damage.openvino_cpu.json",
+      "size_bytes": 1141,
+      "sha256": "3476e618336c998672915b96bef1fcb07484cfcc7b0d1775aefc20e18da5961e"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/qualification/bindings/policy.vehicle_type.cpu.json",
+      "size_bytes": 5026,
+      "sha256": "39296ec10c91c905cebeb4dd9ee8b25675a7ee5a9525dcea9855d223bbc35489"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/qualification/bindings/policy.plate_number.cpu.json",
+      "size_bytes": 5026,
+      "sha256": "3aeb8ccf5606e28812d5eb456f0d8bdaa7e8d7f766857194fcbb082198b5b794"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/qualification/bindings/policy.foreign_object.cpu.json",
+      "size_bytes": 5035,
+      "sha256": "42d297aef31aa5880b3304b0d9641868eb9fd22a17a260870f4169ca506fce80"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/plate_number.openvino_cpu.json",
+      "size_bytes": 1150,
+      "sha256": "443de143f6a3b38eae7294ed6c1b38408c743b758f709de1a04063cb7b1a122f"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/index.json",
+      "size_bytes": 1877,
+      "sha256": "45ce0c4a43cf7de91a9fd14902fe0047bb35fb78f5d2e2dc8d70062bc43b0d30"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/qualification/bindings/policy.foreign_object.gpu.json",
+      "size_bytes": 5071,
+      "sha256": "4e742f4f600df6b19641fbdd5a6a6dc94a2ef4c7f3ea908ceabb74e7a48d146c"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/worker_images/analytics-worker.freeze.json",
+      "size_bytes": 3963,
+      "sha256": "5509b370821e8881f65f78dd1f61714fd908780eb50220a1d32c2d8936f5b554"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/native-a/native_probe.freeze.json",
+      "size_bytes": 6094,
+      "sha256": "57f1a9f30c345c930a1ddff06dc51fdfebfa570c1651971d468d115d91d6ece0"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/qualification/bindings/resource.gpu.json",
+      "size_bytes": 4944,
+      "sha256": "62ad44110f4d0cff2bffc4a9439775557a29da4a556b6d3b9acad632c650562c"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/acceptance_binding.v4.json",
+      "size_bytes": 18644,
+      "sha256": "639644170f3697655f7e119e2dd9f54b4a729f13e094009bfca3e2cb11c11146"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/foreign_object.openvino_cpu.json",
+      "size_bytes": 1158,
+      "sha256": "78f61d2d5c0a29cd760aaf77026a7ea8556ff6ed8592c310c79da83eb590f58a"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/runtime_images/gstreamer_custom.runtime.freeze.json",
+      "size_bytes": 6976,
+      "sha256": "87234bc73ec72eeb4a0510a4ae549d716ebca08c8ea26588e8c8c5873780646d"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/runtime_images/savant.runtime.freeze.json",
+      "size_bytes": 6247,
+      "sha256": "a3b32086ad39b75afdc2c4d1ff58d3ce8e49dec2b2e1ebb9f15a8c5691c5769f"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+      "size_bytes": 654,
+      "sha256": "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/qualification/qualification_fragment.json",
+      "size_bytes": 10786,
+      "sha256": "b6ee04ab8bcc15dc33f6f064e443ca7876d96eb02e7c2372f20f26a4623949a7"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/vehicle_type.tensorrt_cuda.json",
+      "size_bytes": 1051,
+      "sha256": "b9c37f22bf38f4757a991dddd7e51de27aa904210d29082193fd7b5f08987aa3"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/plate_number.tensorrt_cuda.json",
+      "size_bytes": 1051,
+      "sha256": "bfc531a7c3ca1f020cd01776dbd2084cefbffbb131980914a808ab5e9ffa4cfb"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/qualification/bindings/policy.damage.cpu.json",
+      "size_bytes": 5002,
+      "sha256": "cc7104005f2758f7c6171f261eedb2c64f6fa3d971c917851f9f25efab38ff4f"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/qualification_image_identity_patch.json",
+      "size_bytes": 29949,
+      "sha256": "ceb0900bd33f25acadc46b5d3553143ffbeeadb503da419acf330e78862734dd"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/runtime_images/deepstream.runtime.freeze.json",
+      "size_bytes": 5113,
+      "sha256": "d2e8875a9308858e8d1872bb7166281e0c8cb461c79e570621639b6fb8734c12"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/qualification/bindings/policy.damage.gpu.json",
+      "size_bytes": 5038,
+      "sha256": "d493c4a85c8417143a8053a67dc17cd67a14e1d597a8a8e56ff42b419c1a4d74"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/qualification/bindings/policy.plate_number.gpu.json",
+      "size_bytes": 5062,
+      "sha256": "d5b63b0fc699f85a7e7a0a73492dc1a2727314e10b4d933206bb22523b25818f"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/runtime_image_evidence.v1.json",
+      "size_bytes": 8083,
+      "sha256": "de1f4954165844d0a793d4e3919bde5495f6f724c9dd4e5da29c5d110b5c7b9e"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/qualification/bindings/policy.vehicle_type.gpu.json",
+      "size_bytes": 5062,
+      "sha256": "df16e10c134fc7d9dacaa0ca5188f2e82d1721c407b3aeb63a91de1fcdd72e41"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/damage.tensorrt_cuda.json",
+      "size_bytes": 1041,
+      "sha256": "e26d41631a1ba92ad493d9a75c80f7a46736c3391efc4b84ba5980d6383e3733"
+    },
+    {
+      "path": "artifacts/deepstream_publication_v3/qualification/bindings/resource.cpu.json",
+      "size_bytes": 4941,
+      "sha256": "f60ce1c3fef0f120596df8c69ee1ef8445ba6880447e801dc0b92547ba232a24"
+    },
+    {
+      "path": "artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/vehicle_type.openvino_cpu.json",
+      "size_bytes": 1150,
+      "sha256": "f92be63e67f1cc147e70a34a54258d219ec436b9ca5dd362e682134d32446ee7"
+    },
+    {
+      "path": "data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_front_gate.mp4",
+      "size_bytes": 63131711,
+      "sha256": "08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273"
+    },
+    {
+      "path": "data/videos/kpp/kpp_iss_publication_v3/h264/iss_v2_underbody.mp4",
+      "size_bytes": 1079445865,
+      "sha256": "b7e5165549172266a5617ff7bbca6e5b888775b0a2490e27b7cbe17640e3b102"
+    },
+    {
+      "path": "data/videos/kpp/kpp_iss_publication_v3/h265/iss_v2_front_gate.mp4",
+      "size_bytes": 14910770,
+      "sha256": "fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728"
+    },
+    {
+      "path": "data/videos/kpp/kpp_iss_publication_v3/h265/iss_v2_underbody.mp4",
+      "size_bytes": 223684192,
+      "sha256": "5368c94a26659c529106724427fc6c3e60fe6788d56699da14c93bc4222e7839"
+    },
+    {
+      "path": "data/videos/kpp/kpp_iss_publication_v3/kpp_iss_publication_v3_authorization_receipt.json",
+      "size_bytes": 3300,
+      "sha256": "eee7a49472077ff83bd9a9f3cc67a462c4441b0c841bc64d75859271333732ee"
+    },
+    {
+      "path": "data/videos/kpp/kpp_iss_publication_v3/kpp_iss_publication_v3_manifest.json",
+      "size_bytes": 7225,
+      "sha256": "9a9cf3e08be159bfd4bdeda1d9323b13102980322bde03d9b061e749c1d3fa24"
+    },
+    {
+      "path": "data/videos/kpp/kpp_iss_publication_v3/receipts/iss_v2_underbody_metadata.json",
+      "size_bytes": 12731945,
+      "sha256": "d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4"
+    },
+    {
+      "path": "data/videos/kpp/kpp_iss_publication_v3/receipts/kpp_iss_v2_extraction_receipt.json",
+      "size_bytes": 2495,
+      "sha256": "f160ce153804f92dd02068ad48547b396636bd2cb7dfc8fb39114210f23a0e05"
+    },
+    {
+      "path": "data/videos/kpp/kpp_iss_publication_v3/receipts/kpp_iss_v2_materialization_receipt.json",
+      "size_bytes": 28131,
+      "sha256": "dd0d2aa38da1281a750806858b555b994a9dcf3c9bcd35e8379dbc9d339f2b33"
+    },
+    {
+      "path": "data/videos/kpp/kpp_iss_publication_v3/receipts/kpp_iss_v2_transcode_receipt.json",
+      "size_bytes": 7092,
+      "sha256": "f78406237d539224a25c38bf40f913f18069e120e8e66e9d11270ff88ceb5470"
+    },
+    {
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.bin",
+      "size_bytes": 3691778,
+      "sha256": "7f9344e41167d14179a0da136f87f2570a30ac5399e0363fd6787a9ae18d0fa0"
+    },
+    {
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-2002/FP16/person-vehicle-bike-detection-2002.xml",
+      "size_bytes": 254351,
+      "sha256": "2630c4cc5a68d8b1f7f224741340ddf8f733e245252379c691083c7d3dc111ed"
+    },
+    {
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.bin",
+      "size_bytes": 5774062,
+      "sha256": "a7f04e3243aae3099a00c5276074bdbe57bc8bf91986093dfeafb3b065843f45"
+    },
+    {
+      "path": "models/openvino/public/intel/person-vehicle-bike-detection-crossroad-1016/FP16/person-vehicle-bike-detection-crossroad-1016.xml",
+      "size_bytes": 292640,
+      "sha256": "baed27b9dde81b75590a382d2aa458d63391cdb146e7ef20c12577c4cb0617d8"
+    },
+    {
+      "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.bin",
+      "size_bytes": 3634654,
+      "sha256": "c0a602428cfd71ac63a533c23b7cdb8c83e144f118a81001420246701daf0c78"
+    },
+    {
+      "path": "models/openvino/public/intel/vehicle-detection-0202/FP16/vehicle-detection-0202.xml",
+      "size_bytes": 254888,
+      "sha256": "08b844a402a615605a626261fd9e27161a044845426ece5aa0872203c50bb5a2"
+    },
+    {
+      "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.bin",
+      "size_bytes": 1286772,
+      "sha256": "7f96bfaa0ac3af65d136f6a185d1d78d68d03bab2e1f2faafe1d27ccd94b0dc1"
+    },
+    {
+      "path": "models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/vehicle-license-plate-detection-barrier-0106.xml",
+      "size_bytes": 325452,
+      "sha256": "69ed174cee70e19b098215f53d1fe6f27edc5b417790bbc44cde7f37cc082fae"
+    },
+    {
+      "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet101-v1-7.bin",
+      "size_bytes": 177985984,
+      "sha256": "788c9ab3de09c18b234314adb6eddf212754a93e579e1396d9aee2cd2255c4ba"
+    },
+    {
+      "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet101-v1-7.xml",
+      "size_bytes": 295738,
+      "sha256": "c1b9fc3d0c56f9574dd195f10461f4c640167523764a4470225ef2be9cc74124"
+    },
+    {
+      "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet18-v1-7.bin",
+      "size_bytes": 46738880,
+      "sha256": "5495508a114ecb2fb6abd4c2fa1cc523fc2181459f108aa60d6d02bc05d17d0b"
+    },
+    {
+      "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet18-v1-7.xml",
+      "size_bytes": 60599,
+      "sha256": "c77b4b18c61da5a7c66b9b0b1be940afa81de1bd419b608cd4c8c3e1d4cbb579"
+    },
+    {
+      "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet34-v1-7.bin",
+      "size_bytes": 87156672,
+      "sha256": "957e1783c07a712c12bc61a22d359ee8fddf7b6e34bdd4bf2a5c09a6f8f212cf"
+    },
+    {
+      "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet34-v1-7.xml",
+      "size_bytes": 107535,
+      "sha256": "0f22a937abe289a5278c7e628145a6545e98c4857e2b196eb0a983eec1c07147"
+    },
+    {
+      "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet50-v1-12.bin",
+      "size_bytes": 102121920,
+      "sha256": "703fbee2cc2684970b1748115589ce51c1e788099a995faba0f6a30801b3ad64"
+    },
+    {
+      "path": "models/parity/derived/openvino-2026.1.0-fp32-static-b1/resnet50-v1-12.xml",
+      "size_bytes": 151074,
+      "sha256": "8ddf516c52c140d33277aaaa9b2d7ed80b038f1940de30ac5e27c43d54f1e5c9"
+    },
+    {
+      "path": "models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet101-v1-7.engine",
+      "size_bytes": 225698788,
+      "sha256": "f981e1da75813ae30d18b03d422c37d6047245962d2b5552eb54c4deedb48f97"
+    },
+    {
+      "path": "models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet18-v1-7.engine",
+      "size_bytes": 62258620,
+      "sha256": "07031b0493b5f1d9e27beffd51e622b74cc204505536f8a1618bde3e904d8fbe"
+    },
+    {
+      "path": "models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet34-v1-7.engine",
+      "size_bytes": 126793356,
+      "sha256": "bfa8303f89639d4033ee71389e77c009bf3bf1ab7e526e91949e0e0870f885d9"
+    },
+    {
+      "path": "models/parity/derived/tensorrt-8.6.1.6-cuda12.2.2-cc86-fp32-static-b1/resnet50-v1-12.engine",
+      "size_bytes": 118354276,
+      "sha256": "ecd41a7f7037a233da5629f87ff8d51e455b582c996963815a085cd139c3a7a5"
+    },
+    {
+      "path": "models/parity/sources/resnet101-v1-7.onnx",
+      "size_bytes": 178914043,
+      "sha256": "760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c"
+    },
+    {
+      "path": "models/parity/sources/resnet18-v1-7.onnx",
+      "size_bytes": 46820737,
+      "sha256": "4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c"
+    },
+    {
+      "path": "models/parity/sources/resnet34-v1-7.onnx",
+      "size_bytes": 87302588,
+      "sha256": "883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc"
+    },
+    {
+      "path": "models/parity/sources/resnet50-v1-12.onnx",
+      "size_bytes": 102576593,
+      "sha256": "3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526"
+    }
+  ],
+  "new_runtime_authority": false,
+  "promoter_materializer_admission": false
+}

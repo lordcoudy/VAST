@@ -1,0 +1,127 @@
+FFEFEFEE........FF..
+======================================================================
+ERROR: test_completion_is_externally_bound_and_does_not_claim_itself (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.BlockerTests.test_completion_is_externally_bound_and_does_not_claim_itself)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 904, in test_completion_is_externally_bound_and_does_not_claim_itself
+    result = collect_native(UNC_OUT, binding(), effects)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 240, in collect_native
+    original = p0.windows_native_p0_effects
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'windows_native_p0_effects'. Did you mean: 'windows_controlled_effects'?
+
+======================================================================
+ERROR: test_native_classification_and_controlled_spoof_refusal (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.BlockerTests.test_native_classification_and_controlled_spoof_refusal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 706, in test_native_classification_and_controlled_spoof_refusal
+    signature = inspect.signature(p0.collect_native_p0_v1)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'collect_native_p0_v1'
+
+======================================================================
+ERROR: test_posix_native_entry_does_not_construct_launcher (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.BlockerTests.test_posix_native_entry_does_not_construct_launcher)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 891, in test_posix_native_entry_does_not_construct_launcher
+    result = collect_native(OUT, binding(), effects)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 240, in collect_native
+    original = p0.windows_native_p0_effects
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'windows_native_p0_effects'. Did you mean: 'windows_controlled_effects'?
+
+======================================================================
+ERROR: test_reviewed_commit_format_refuses_before_mkdir (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.BlockerTests.test_reviewed_commit_format_refuses_before_mkdir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 757, in test_reviewed_commit_format_refuses_before_mkdir
+    result = collect_native(OUT, binding(), effects, commit=commit)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 240, in collect_native
+    original = p0.windows_native_p0_effects
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1' has no attribute 'windows_native_p0_effects'. Did you mean: 'windows_controlled_effects'?
+
+======================================================================
+FAIL: test_clock_starts_before_mkdir_regression_and_late_spawn (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.BlockerTests.test_clock_starts_before_mkdir_regression_and_late_spawn)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 771, in test_clock_starts_before_mkdir_regression_and_late_spawn
+    self.assertEqual(shifted_result["commands"][0]["deadline"]["global_deadline"], 30.0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 35.0 != 30.0
+
+======================================================================
+FAIL: test_close_crossing_deadline_and_observation_exceptions_keep_facts (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.BlockerTests.test_close_crossing_deadline_and_observation_exceptions_keep_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 802, in test_close_crossing_deadline_and_observation_exceptions_keep_facts
+    self.assertFalse(proof["completed"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_huge_binding_is_rejected_before_json_and_reserve_precedes_write (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.BlockerTests.test_huge_binding_is_rejected_before_json_and_reserve_precedes_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1002, in test_huge_binding_is_rejected_before_json_and_reserve_precedes_write
+    self.assertEqual(calls, [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^
+AssertionError: Lists differ: [1] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+1
+
+- [1]
+?  -
+
++ []
+
+======================================================================
+FAIL: test_native_spawn_refuses_inexact_argv_and_env_without_launch (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.BlockerTests.test_native_spawn_refuses_inexact_argv_and_env_without_launch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 849, in test_native_spawn_refuses_inexact_argv_and_env_without_launch
+    asyncio.run(windows.spawn(p0.fixed_argv("id"), p0.fixed_environment()))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\asyncio\runners.py", line 205, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Python314\Lib\asyncio\runners.py", line 128, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python314\Lib\asyncio\base_events.py", line 720, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_p0_v1.py", line 958, in spawn
+    process = await asyncio.create_subprocess_exec(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 840, in forbidden
+    raise AssertionError("native launch")
+AssertionError: native launch
+
+======================================================================
+FAIL: test_inclusive_allocation_and_preencoding_bounds (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.PureContractTests.test_inclusive_allocation_and_preencoding_bounds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 389, in test_inclusive_allocation_and_preencoding_bounds
+    self.assertEqual(worst, expected)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 393216 != 387328
+
+======================================================================
+FAIL: test_signature_constants_and_phase_reserves_do_not_reset (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.PureContractTests.test_signature_constants_and_phase_reserves_do_not_reset)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 278, in test_signature_constants_and_phase_reserves_do_not_reset
+    self.assertEqual(p0.CONTROL_RECORD_CAP, 8192)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 16384 != 8192
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.024s
+
+FAILED (failures=6, errors=4)

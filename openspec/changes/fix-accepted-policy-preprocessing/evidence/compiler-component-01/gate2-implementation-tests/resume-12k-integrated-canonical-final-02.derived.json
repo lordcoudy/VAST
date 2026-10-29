@@ -1,0 +1,55 @@
+{
+  "checked_source_count": 36,
+  "counts": {
+    "errors": 0,
+    "expectedFailures": 0,
+    "failures": 0,
+    "skipped": 0,
+    "source_unchanged": true,
+    "successful": true,
+    "testsRun": 753,
+    "unexpectedSuccesses": 0
+  },
+  "modules": [
+    "tests.test_accepted_policy_fixture_compiler_attach_v1",
+    "tests.test_accepted_policy_fixture_compiler_component_v1",
+    "tests.test_accepted_policy_fixture_compiler_config_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_c_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_capture_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_d_child_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_d_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_export_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_p0_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_resume_caller_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_resume_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_retention_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_setup_v1",
+    "tests.test_accepted_policy_fixture_compiler_gate2_writer_v1",
+    "tests.test_accepted_policy_fixture_compiler_owner_v1",
+    "tests.test_accepted_policy_fixture_compiler_probe_v1",
+    "tests.test_accepted_policy_fixture_compiler_publisher_v1",
+    "tests.test_accepted_policy_fixture_compiler_recovery_v1",
+    "tests.test_accepted_policy_fixture_compiler_seccomp_v1",
+    "tests.test_accepted_policy_fixture_compiler_transport_v1",
+    "tests.test_accepted_policy_fixture_compiler_v1"
+  ],
+  "node_runtime_prints": [
+    "CONTROLLED_NODE_RUNTIME /mnt/c/Program Files/nodejs/node.exe v25.2.1"
+  ],
+  "original": {
+    "name": "vast-gate2-resume-12k-integrated-canonical-02.original.log",
+    "sha256": "366588b1e4b766d7e72920c495d7c7c9e37d9be258c992ad2efe6bb699f5bc24",
+    "size_bytes": 178775
+  },
+  "os_name": "posix",
+  "physical_acceptance": false,
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "runtime_summary": [
+    "Ran 753 tests in 58.597s"
+  ],
+  "scope": "Final frozen complete controlled compiler run across23 modules, canonicalUbuntu Python3.12.3; current WSL Node resolves WindowsNode25.2.1 as explicitly printed. This is not hosted LinuxNode CI or physical admission.",
+  "utc": "2026-10-17T02:40:51.078106+00:00"
+}

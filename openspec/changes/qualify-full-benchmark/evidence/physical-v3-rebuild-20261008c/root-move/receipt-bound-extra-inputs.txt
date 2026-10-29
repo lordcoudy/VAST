@@ -1,0 +1,14 @@
+deploy/analytics_execution/Dockerfile.openvino
+deploy/analytics_execution/Dockerfile.tensorrt
+deploy/deepstream/checkpoint/Dockerfile
+deploy/deepstream/checkpoint/Dockerfile.runtime
+deploy/gstreamer_custom/publication/Dockerfile
+deploy/native_gst_probe/Dockerfile.deepstream
+deploy/native_gst_probe/Dockerfile.openvino
+deploy/native_gst_probe/Dockerfile.savant
+deploy/openvino_gva/publication/Dockerfile
+deploy/savant/publication/Dockerfile
+scripts/build_deepstream_publication_runtime_v3.sh
+scripts/build_gstreamer_custom_publication_runtime_v3.sh
+scripts/build_openvino_gva_publication_runtime_v3.sh
+scripts/build_savant_publication_runtime_v3.sh

@@ -1,0 +1,38 @@
+EE
+======================================================================
+ERROR: test_native_bootstrap_fifo_refuses_before_any_potentially_blocking_open (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_native_bootstrap_fifo_refuses_before_any_potentially_blocking_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 733, in test_native_bootstrap_fifo_refuses_before_any_potentially_blocking_open
+    with self.assertRaises(AssertionError): self.execute(capture.PRE_METER,self.pre_payload())
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 669, in execute
+    exec(compile(source.replace("__REVIEWED_COMMIT__",COMMIT),"<fixed-controlled-meter>","exec"),{})
+  File "<fixed-controlled-meter>", line 86, in <module>
+  File "<fixed-controlled-meter>", line 60, in retention_component
+  File "<fixed-controlled-meter>", line 18, in read
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 730, in opened
+    raise RuntimeError("blocking bootstrap open must not start")
+RuntimeError: blocking bootstrap open must not start
+
+======================================================================
+ERROR: test_native_open_identity_epoch_and_nonblocking_flags_are_checked (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_native_open_identity_epoch_and_nonblocking_flags_are_checked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 746, in test_native_open_identity_epoch_and_nonblocking_flags_are_checked
+    with self.assertRaises(AssertionError): self.execute(capture.PRE_METER,self.pre_payload())
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 669, in execute
+    exec(compile(source.replace("__REVIEWED_COMMIT__",COMMIT),"<fixed-controlled-meter>","exec"),{})
+  File "<fixed-controlled-meter>", line 87, in <module>
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 190, in verify_prior_retention_v1
+    raw, observed = _retention_read_v1(Path(repo_root) / relative, cap)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 82, in _retention_read_v1
+    raise ComponentRecipeError("retention open identity")
+tests.fixtures.accepted_policy_fixture_compiler_component_v1.ComponentRecipeError: retention open identity
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.030s
+
+FAILED (errors=2)

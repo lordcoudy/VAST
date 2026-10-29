@@ -1,0 +1,333 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_gate2_hosted_actor_controlled_verification_v1",
+  "parent_commit": "4e1ecf793280e8af04403ed478a5b742d5b88071",
+  "planning_commit": "93bb04b647a9015f47ad3743551cb416b1695376",
+  "planning_approval": "https://github.com/lordcoudy/VAST/pull/9#issuecomment-6215421351",
+  "scope": "Test-only controlled D actor fixture portability. Production guards, clocks, commands, predicates and caps unchanged.",
+  "physical_execution": false,
+  "task_2_10_complete": false,
+  "task_progress": {
+    "complete": 24,
+    "total": 46
+  },
+  "source_and_tests": [
+    {
+      "path": "scripts/publication_operational_request_domain_v1.py",
+      "size_bytes": 30328,
+      "sha256": "dab192de70bb82e56871b73b87f0337acf66a219b8460359634582a8bb5f8da6"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_component_v1.py",
+      "size_bytes": 9329,
+      "sha256": "d99e4139175fb8f9dd098fd7d6876f4b58330720d729848307d40fd16fcf9dad"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py",
+      "size_bytes": 98603,
+      "sha256": "79b55f9d1ae2aa2a1e3ff0f0dc01e3523512d16658007cd4ab62ed53a6c25382"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py",
+      "size_bytes": 39080,
+      "sha256": "0aa45af74336821943dc198c7a218de1b3be3a8c866b22d412d597c31a0c4d4b"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_child_v1.py",
+      "size_bytes": 19404,
+      "sha256": "f230fd6fd88d0b99309d3ec5b12a942a05c6ac131062ace734033a1fe2e8c013"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py",
+      "size_bytes": 48660,
+      "sha256": "31c3a7c92ad96cc2357ebb091b666c52faa1f3a214109419f2489d89e10d1bbb"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_p0_v1.py",
+      "size_bytes": 69033,
+      "sha256": "2152ec302f5fb5bce37bad882eb142839b54700b7631481afb858998f40a535f"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py",
+      "size_bytes": 45589,
+      "sha256": "fe7e2ffc8a854456e4ed7d1cc032558ccefe6cefb18b7eb3b765bbe2d5753077"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_probe_program_v1.py",
+      "size_bytes": 26298,
+      "sha256": "f35692198a1df636d69c9da0d54ed1365671dfa880ad834cea5b1bdfafac3219"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_probe_v1.py",
+      "size_bytes": 19496,
+      "sha256": "9f155cda056e7194a11d38581caaab30072f5f5c973c9880027f1b188aa8acb0"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_publisher_v1.py",
+      "size_bytes": 23351,
+      "sha256": "438c5d1a16a0712d5483ac2af0841e329daf875c301e9595a51d0004be350c07"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py",
+      "size_bytes": 46387,
+      "sha256": "3d88a5a4d014bdd055ea71aaf871a6eeb3bb3389ba18fe25ef049b9d72af9ee0"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_seccomp_v1.json",
+      "size_bytes": 31921,
+      "sha256": "ee45f10961781d812e88d185659b74e893031a4bd4e90d3cce0857d5308ba8cf"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_v1.py",
+      "size_bytes": 103925,
+      "sha256": "1e40d4786fd03543ac43df7fe0e42a4349d55bad9288ead28f5d2a6ad87bcb03"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_attach_v1.py",
+      "size_bytes": 21641,
+      "sha256": "aa45cf3645b249c5cb039ddb0e2c1ca58b0d8017ad89bad9b76713616dc1ba2d"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_component_v1.py",
+      "size_bytes": 6736,
+      "sha256": "32e7aa31c4158bb6e0a5e2e33096623647f786a124b5e78610379cc59eefb9f2"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_config_v1.py",
+      "size_bytes": 4615,
+      "sha256": "7257acaa7946ef2833e73db5d081f106d22d1ef87a8ec18724b08c90518e1407"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py",
+      "size_bytes": 62027,
+      "sha256": "7afd4cc5840fcb457b11677daddfdfb81f3c07c163d30d5273c7d775a7612ce7"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py",
+      "size_bytes": 39563,
+      "sha256": "afade615cf349ac1880f56f9b79785ae51cd281b9ea10197eabdab941f1463b3"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_d_child_v1.py",
+      "size_bytes": 14236,
+      "sha256": "5b097a65c996be8eae5defb722d79a813c6852cb2407a5ce93e621b59e5e906e"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py",
+      "size_bytes": 65625,
+      "sha256": "77113db968043da6caeaeed41461843fb000fde58696c40f6f8f0fc240fc6e2b"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_export_v1.py",
+      "size_bytes": 2468,
+      "sha256": "cef6092b66fbbb675c781e811eb6a9d6ad7728155d3f4d867f166cdf8a9c30fc"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py",
+      "size_bytes": 11953,
+      "sha256": "a96c6a0d7d1743b44d34e42a26b0260e024277c89ef59d7b6d746ab8b00267a4"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py",
+      "size_bytes": 71173,
+      "sha256": "bac18a4ea1e05d0d8ce6571b70ab6b35d9487372a4bfbb495d84fe7d1f1f44e7"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py",
+      "size_bytes": 33266,
+      "sha256": "3967e2444c7f1958f3a85fec6e022555fbaddb4f83f8cf71af4cc5b66afa42ec"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_writer_v1.py",
+      "size_bytes": 4961,
+      "sha256": "c7c4dadadf881d82ac96880c4314371f05c83e004949bb3dc6310d14e5d5b10d"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_owner_v1.py",
+      "size_bytes": 35735,
+      "sha256": "3ada71ad2d0155c3edb24f6b85a544875e51bf264b00bd428db722cf4fa12ef2"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_probe_v1.py",
+      "size_bytes": 15648,
+      "sha256": "3d8a18f724769351c1308e49146afaac759ee7998597180fd12befcfa634a242"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_publisher_v1.py",
+      "size_bytes": 29569,
+      "sha256": "1639e8f7e6c29d7c5cfb49254676335359771e8d7bb78f4611cca494c5e3c62e"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_recovery_v1.py",
+      "size_bytes": 30701,
+      "sha256": "4c25fdcc92e2d09591e41a4179b14f2352f8b96c3097c808919b9536acd78cb4"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_seccomp_v1.py",
+      "size_bytes": 14043,
+      "sha256": "0af3c93662832738fb748fdb57e5bff07ff3315dc9fd145b8ba44e3c09c51768"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_transport_v1.py",
+      "size_bytes": 33345,
+      "sha256": "8d2273b8f018361c5767482da17466c71ffbbf2759a947c10979c1f3f85fc8ce"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_v1.py",
+      "size_bytes": 12130,
+      "sha256": "ee76c6a72fb91939ab61c6c4a11274fbc2df15d86572860f4ab96251a39080fe"
+    }
+  ],
+  "changed_source_and_tests": [
+    "tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py"
+  ],
+  "retention_policy": {
+    "path": ".gitattributes",
+    "size_bytes": 35274,
+    "sha256": "e58a3f508fb9faecbba89be52f2d01feb267a784e16d5c5b3392e8962cf913e1"
+  },
+  "new_originals": [
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-hosted-actor-green-23.original.txt",
+      "size_bytes": 503,
+      "sha256": "ae2466b66f747dc5fc32ea872278064d497ce952a5b42986d34290ffa29d32e7"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-hosted-actor-red-22.original.txt",
+      "size_bytes": 1358,
+      "sha256": "a7893a92af571f9069601b5c211a2982bc325447376c5758223369dfaf20244d"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/hosted-actor-integrated-01.original.txt",
+      "size_bytes": 571,
+      "sha256": "0faed9e905d7e0de387fc19b59ebabf6c7cb96769382d306e0af15a823a7229c"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/hosted-actor-openspec-01.original.txt",
+      "size_bytes": 3655,
+      "sha256": "5f51cd14a7b0eb5d4d1ca61c3e1bfeda6df0a584a2f2a3d33994ce6b941aae55"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/hosted-actor-syntax-01.original.txt",
+      "size_bytes": 2855,
+      "sha256": "d5b64e82a42b1be5e90cbc4ead822f8e5a89195c95ba2de10a3e487be4dfa38b"
+    }
+  ],
+  "hosted_c67_failure": {
+    "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-hosted-ci-c67-failure.v1.json",
+    "size_bytes": 23141,
+    "sha256": "d3a8e3ae6174a30186ca064307927a96bdfad0d5264b5ab58e95ceb8347254f6"
+  },
+  "prior_exact_source_reviews": {
+    "commit": "4e1ecf793280e8af04403ed478a5b742d5b88071",
+    "codex_reviewer": "/root/gate2_v8_review",
+    "codex_verdict": "CLEAR_WITH_NOTES",
+    "grok_session": "01a144ff-9c02-7803-b3ee-2b6862245be7",
+    "grok_verdict": "CLEAR_WITH_NOTES",
+    "grok_exported_response": {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-review-4e1e.grok.final-response.exported.txt",
+      "size_bytes": 6201,
+      "sha256": "51a38a0182ef242c0b05ff8b9739578935ee6799dc65372e4fa1260e3e93b760"
+    },
+    "provenance": "Last Assistant section extracted byte-exactly after its heading/leading blank lines from the original full completed session export retained in Temp/vast-grok-invocation-review-4e1e-completed.md. This is an exported response section, not raw CLI transport.",
+    "dispositions": [
+      "Native1000 guard unchanged; hosted1001 fixture corrected only in controlled test helper.",
+      "Original measurement816-byte command/2602-byte frame remains; quoted-executable818/2604 is explicitly a calculation, not a new producer run."
+    ],
+    "current_commit_approval": false
+  },
+  "historical_manifests": [
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-verification.v1.json",
+      "size_bytes": 38413,
+      "sha256": "c9529f64ba81e86a74dba59315eb15eadd15f053ae934adc5cf1c26516ebf580"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-operator-verification.v1.json",
+      "size_bytes": 26816,
+      "sha256": "b6c9893ad14f38acee6e2b7cd8f8bf8a885641d6d97aeead91d28e725b29dbda"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-invocation-verification.v1.json",
+      "size_bytes": 24182,
+      "sha256": "43611b2694cec1bf82a7834b913ff8ef353c1abfa4d4b3d77aa3059e0fc1de9a"
+    }
+  ],
+  "checks": [
+    {
+      "command": "canonical WSL Python3.12.3 unittest compiler discovery",
+      "result": "PASS",
+      "tests": 470,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "original": {
+        "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/hosted-actor-integrated-01.original.txt",
+        "size_bytes": 571,
+        "sha256": "0faed9e905d7e0de387fc19b59ebabf6c7cb96769382d306e0af15a823a7229c"
+      }
+    },
+    {
+      "command": "canonical WSL D/child tests normal and simulated ambient UID/EUID/GID/EGID1001",
+      "result": "PASS",
+      "normal_tests": 84,
+      "ambient1001_tests": 84,
+      "skips": 0,
+      "original": {
+        "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-hosted-actor-green-23.original.txt",
+        "size_bytes": 503,
+        "sha256": "ae2466b66f747dc5fc32ea872278064d497ce952a5b42986d34290ffa29d32e7"
+      }
+    },
+    {
+      "command": "Python3.10 grammar for31 fixture/test files+11 statically resolved operator strings",
+      "result": "PASS",
+      "original": {
+        "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/hosted-actor-syntax-01.original.txt",
+        "size_bytes": 2855,
+        "sha256": "d5b64e82a42b1be5e90cbc4ead822f8e5a89195c95ba2de10a3e487be4dfa38b"
+      }
+    },
+    {
+      "command": "agreed OpenSpec strict all validation",
+      "result": "PASS",
+      "validator_exit_code": 0,
+      "original": {
+        "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/hosted-actor-openspec-01.original.txt",
+        "size_bytes": 3655,
+        "sha256": "5f51cd14a7b0eb5d4d1ca61c3e1bfeda6df0a584a2f2a3d33994ce6b941aae55"
+      }
+    }
+  ],
+  "advisory_review": {
+    "reviewer": "/root/gate2_v8_review",
+    "verdict": "ADVISORY CLEAR",
+    "reviewed_test_sha256": "77113db968043da6caeaeed41461843fb000fde58696c40f6f8f0fc240fc6e2b",
+    "production_runtime_unchanged": true,
+    "evidence": "Identity mocks confined to controlled helper; ambient1001 restores correctly and remains controlled/nonphysical. Four direct wrong-actor cases refuse before binding/measure/allocation/copy/child.",
+    "formal_commit_approval": false,
+    "reviewer_ran_tests_or_native": false
+  },
+  "runtime_export_quote": {
+    "paths": 10,
+    "raw_source_bytes": 480941,
+    "before_packet_bytes": 544768,
+    "dynamic_packet_cap_bytes": 106496,
+    "code_total_reserved_bytes": 651520,
+    "p0_max_bytes": 387328,
+    "code_plus_p0_bytes": 1038848,
+    "root_limit_bytes": 1048576
+  },
+  "retention": "Original c67 CPU artifact/API bytes committed; initial escape-sequence refusal, raw fetched job log and extracts remain in recorded Temp paths. All original failures retained; no restart or cancellation.",
+  "remaining_gates": [
+    "Exact new-commit independent Codex and same Grok CLI review; required latest CPU/host CI; explicit delegated AGENT approval before physical setup.",
+    "Actual setup/packet/native status/EOF/completed persistence review, per-C completion authorities and actual D evidence.",
+    "Task2.10 stays unchecked; whole1.5/genuineconsumers/package/conformance/archive/Q1/merge remain open."
+  ],
+  "derived_ci_report_encoding": {
+    "serialization": "LF for derived report; all five original API/ZIP bytes unchanged",
+    "author_crlf_snapshot_path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-ci-c67b-38922339662-cpu117045142722-01\\gate2-hosted-ci-c67-failure.author-crlf.v1.json",
+    "size_bytes": 23445,
+    "sha256": "76312289c6adeca6fb2e0d1e8e62c931991f8df6e2ae11b0d7dbe25db6c91a75"
+  }
+}

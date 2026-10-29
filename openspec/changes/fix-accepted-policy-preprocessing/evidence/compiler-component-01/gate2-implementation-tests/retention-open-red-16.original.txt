@@ -1,0 +1,32 @@
+.....F.F...
+======================================================================
+FAIL: test_kind_change_at_open_is_nonblocking_and_refuses_fd_identity (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.NativeRetentionTests.test_kind_change_at_open_is_nonblocking_and_refuses_fd_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 221, in test_kind_change_at_open_is_nonblocking_and_refuses_fd_identity
+    with self.assertRaisesRegex(component.ComponentRecipeError,"identity"):
+AssertionError: ComponentRecipeError not raised
+
+======================================================================
+FAIL: test_nonregular_refuses_before_any_blocking_open (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.NativeRetentionTests.test_nonregular_refuses_before_any_blocking_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 212, in test_nonregular_refuses_before_any_blocking_open
+    component._retention_read_v1(self.index_path,12288)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 66, in _retention_read_v1
+    with path.open("rb") as stream:
+         ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+AssertionError: blocking open must not start
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.099s
+
+FAILED (failures=2)

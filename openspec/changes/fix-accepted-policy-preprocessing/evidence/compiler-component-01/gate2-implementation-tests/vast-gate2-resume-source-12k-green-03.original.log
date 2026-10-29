@@ -1,0 +1,12 @@
+test_current_git_alias_requires_size_and_sha256_as_well_as_blob_identity (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_current_git_alias_requires_size_and_sha256_as_well_as_blob_identity) ... ok
+test_duplicate_version_and_unfunded_source_slot_refuse (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_duplicate_version_and_unfunded_source_slot_refuse) ... ok
+test_extra_intermediate_plan_git_is_additive_even_when_current_bytes_unchanged (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_extra_intermediate_plan_git_is_additive_even_when_current_bytes_unchanged) ... ok
+test_reviewed_12k_plan_history_remains_inside_source_budget (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_reviewed_12k_plan_history_remains_inside_source_budget) ... ok
+test_scoped_budget_keeps_legacy_and_counts_full_current_and_superseded_forms (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_scoped_budget_keeps_legacy_and_counts_full_current_and_superseded_forms) ... ok
+test_unfunded_working_allocation_and_unknown_allocation_refuse (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_unfunded_working_allocation_and_unknown_allocation_refuse) ... ok
+test_wrong_index_source_identity_or_unchanged_alias_refuses (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_wrong_index_source_identity_or_unchanged_alias_refuses) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.257s
+
+OK

@@ -1,0 +1,10 @@
+test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_green61.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) ... ok
+test_partial_tracking_fallback_owns_repeated_async_errors_on_all_four_emitters (caller_guard_green61.LaterStageCallerTests.test_partial_tracking_fallback_owns_repeated_async_errors_on_all_four_emitters) ... ok
+test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot (caller_guard_green61.LaterStageCallerTests.test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot) ... ok
+test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts (caller_guard_green61.LaterStageCallerTests.test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts) ... ok
+test_synchronous_writer_spawn_failure_is_one_attempt_and_never_retried (caller_guard_green61.LaterStageCallerTests.test_synchronous_writer_spawn_failure_is_one_attempt_and_never_retried) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.136s
+
+OK

@@ -1,0 +1,390 @@
+## Why
+
+The accepted-policy guardian consumer cannot read the qualification bundle produced by the approved authority-v2 promotion path: it selects legacy fragment/pilot validators and requires exactly 3,840 samples. G9 assessed 126,016 diagnostic samples without establishing accepted qualification; the full-publication identity reader repeats the incorrect exact-count restriction. The repaired baseline must integrate the inherited implementation with accepted master/S3 behavior and satisfy genuine consumer and renewal gates before a distinct fresh qualification.
+
+## What Changes
+
+- Give the accepted-policy preprocessing consumer a production authority-v2 assessment path with the same narrowly defined pilot sample semantics as reviewed F5, independently checking transaction, fragments, index and execution closure.
+- Accept measured policy sample counts above the 3,840 minimum in both the guardian consumer and full-publication identity reader, with exact types, complete coordinates, bound calibration totals and independent assessment agreement.
+- Extract shared read-only transaction/fragment validators and the reviewed pilot validator, so promotion/builders and the guardian consumer share predicates without importing host orchestration into images; preserve public entrypoints and legacy behavior.
+- Add production-path compatibility and negative evidence checks, including reset evidence, dropped GPU ingress, count/type/lineage corruption and refusal before materialization.
+- Rebuild affected runtime images, renew refreeze/parity/pins and execution closures, then run required checks before Q1. Hand off the full-duration host-protection requirement to the new qualification change's launch checklist without editing the historical runbook.
+- Integrate the entire inherited qualification implementation and repair into master in this same PR after PR #8's S3 delivery is independently accepted and merged. Review the complete inherited/repair diff and combined supervisor/service behavior; preserve accepted S3 export/recovery and historical Seafile readers.
+- Admit the whole renewal/check/consumer chain only with a conservative peak-capacity calculation and fresh physical backing observations preserving the C: 40 GiB floor and applicable filesystem thresholds. Preserve all original evidence and all 227 images; image deletion or offload requires separate explicit human confirmation of the exact images/action.
+
+- Close the packaged default authority-v2 receipt-reader dependency path through one shared read-only image-freeze receipt leaf; preserve the host builder's public reader and original rejection/identity semantics, and keep host build orchestration outside runtime images.
+- Inventory fixed file-loader targets and finite module-name maps as well as literal/function-body imports. Prove the supported default packaged cold-reader path under actual image interpreters without host-source mounts, preloaded caches or substituted production dependencies; retain explicit host-only legacy/build-route dispositions.
+
+- Prepare separately named v6 host recovery diagnostics and bounded offline/synthetic recorder-to-launcher-to-guest tests. Preserve initiating, termination, receipt and cleanup causes independently, all owned-child closure states and bounded native publication diagnostics; unknown or forced closure cannot pass recovery acceptance.
+
+- Withdraw the unused E-backed filesystem recovery prerequisite before its unimplemented stages. Preserve original planning, sources, failed evidence and unresolved custody; independently complete actual whole-chain capacity, validator, renewal and consumer gates.
+
+
+- Bound the fresh artificial fixture compiler through one qualified existing provider, fixed native-only crash/resource policy and bounded original export/closure, preserving actual fresh bindings and every genuine consumer predicate; separately admit component qualification before execution.
+
+Planning refinement, 2026-10-26: `docs/pr9-repair-execution-plan.md`, B1-B6,
+breaks down the observed provider/capacity/compiler/reader blockers within these
+existing requirements. Diagnose native registration/content and the native versus
+Desktop provider-size discrepancy before selecting any identity-preserving local
+remedy. Complete bounded fixture integration and output/metadata limits, reserve
+the whole peak, separately admit preparatory/component work, then accept whole-chain
+and reader admissions before dependent execution. This is a planning-only request;
+no new requirement, changed provider/identity/limit, execution admission, completed
+task or resumption of D27/Native57 follows from this refinement.
+
+User decision on 2026-10-11: close PR #7 unmerged with its failed-Q1 outcome, keep this repair separate, then qualify under a new change. PR #7's closeout remains preserved at `4219f3e5`; its inherited code was absent from master at the 2026-10-15 amendment inspection. This amendment expands integration review to the entire master-to-repair diff, not qualification execution. The user delegates stage/final approval after successful independent exact-commit review and mandatory checks; record that delegated agent approval in this same PR before dependent work. The next qualification is `qualify-repaired-full-benchmark`, with a distinct branch/PR and fresh inputs. Preserve historical `qualify-full-benchmark`, its nine unchecked tasks and failed attempts unarchived; do not resume attempt 5 or report its incomplete scope as accepted.
+
+Diagnostics scope refinement, 2026-10-15: the selected historical-image capacity route first needs trustworthy failure reporting. The planning-only host amendment `E:/STUDY/VAST/tmp/completion-implementation-20261015/cold-recovery-diagnostics-amendment.v1.md`, SHA256 `b200d14419b0d5ddf04cc256963e0d9f55a236f89738edcfd9533a3b03b8c77d`, is the input to this same-change amendment, not execution approval. Independent review and recorded delegated approval of the exact revised OpenSpec commit precede new diagnostic helpers/tests. This stage permits only diagnostic preparation and isolated synthetic/offline reporting-chain tests; it grants no backing-storage rehearsal, restore attempt, archive upload, image deletion/offload or qualification launch. All original failed roots, helpers, scratch, TARs, data/models/runtimes and all227images remain protected; numerical gates and restore Size equality remain unchanged.
+
+Package dependency refinement, 2026-10-15: exact integrated implementation `0cb95b94caefe62dd3405c82fb8af13068a20a30` is byte-identical in planning HEAD `4666e9e21741eda1f2f5b72d5a2de4bba6a7cd1a`. Static inspection independently confirmed that the default authority-v2 fragment/identity-patch reader loads a host image-builder sibling absent from all four runtime COPY groups. PR #9 comment6179777830 supersedes the earlier static CLEAR with BLOCK; portable CI does not resolve this default packaged path. This amendment permits only the bounded shared-reader remedy after independent exact-commit planning review, mandatory planning checks and recorded delegated agent approval in this same PR. Existing renewal/capacity/consumer/recovery/final gates and protected originals remain unchanged; task2.2's broad closure claim is reopened.
+
+## Capabilities
+
+Recovery-route withdrawal, 2026-10-15: Decision14 withdraws the unexecuted Decision9 filesystem remedy and dependent Decisions10-13 from active repair implementation. Approved storage maintenance restored C: capacity; the retained report task1-5-capacity-current-c9.readonly.v1.md records103.2075GiB free, and a later Windows-only observation records110485143552B. This is not task1.5 admission.193 Desktop and18 native images remain after the exact prior user-approved34-image action; historical227-image references describe the original audited Desktop set and grant no additional deletion/offload authority.
+
+Preserve original D9-13 planning/approvals at c9d6bfef4e854a9b701d0957898ec1e9877a6b4b and all D7/C1-C3 helpers, controls, failed cases, cap/lost-source/unknown-closure facts, backing/scratch/TAR/data/model/runtime evidence. Retire1.13-1.16 as withdrawn/unimplemented, never complete; remove only the unmerged ADDED filesystem requirement and its14scenarios, absent from main. The other7requirements/28scenarios and genuine repair gates remain exact. New1.21 requires independent exact-pushed review, mandatory checks and recorded delegated AGENT approval. No compiler/reader profile, source-loader execution, storage or workload is admitted.
+### New Capabilities
+
+None.
+
+### Modified Capabilities
+
+- `finite-component-study`: permit only bounded diagnostic output readers for existing Docker clients; preserve every scientific concurrency, deadline, retirement and attempt restriction.
+
+- `benchmark-launch-preparation`: add explicit accepted-policy consumer compatibility, measured coverage, renewal, integration/storage preservation and evidence-bound capacity requirements for authority-v2 qualification outputs, including bounded recovery-diagnostic failure reporting, complete default packaged receipt-reader dependencies and explicit withdrawal of an unused filesystem-recovery remedy and bounded fresh fixture compilation.
+
+## Impact
+
+- `scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py`, `scripts/full_publication_identity_artifacts.py`, `scripts/publication_qualification_promotion_v2.py`, the transaction/fragment builder modules and new read-only validation modules, with focused adjacent tests. Moving the existing cold-validation closure is a substantial extraction, not only a small pilot helper.
+- `scripts/publication_image_build_v1.py`, `scripts/publication_qualification_image_refreeze_v1.py` and the new read-only image-freeze receipt leaf, preserving public/default/exception/physical semantics without packaging host builders.
+- The four runtime Dockerfiles/source allowlists and all affected image, parity, source and execution identities. Native/worker build inputs must be inventoried and proved unchanged or renewed if affected.
+- The inherited clock, operational owner/custody/accounting, native lifecycle/transport, Python/package/identifier and full-consumer changes; `scripts/full_publication_supervisor.py` and `scripts/full_publication_wsl_user_service_v1.py` overlap PR #8. Preserve its archived S3 delivery and all unaffected main-spec requirements when syncing this repair.
+- The next qualification change will own its new runbook, exact final source commit, receipt hashes, launch-duration checklist and fresh namespaces. The old PR #7 runbook remains historical.
+- Host prerequisite only: future v6 derivatives of the existing cold recorder/launcher/guest/native publisher and their synthetic reporting tests under new ignored temporary controls. Reuse the existing protocols and components; no new orchestration framework, dependency, CI change or production qualification-validator change is included in this diagnostics scope.
+- Historical retention only for Decision9-13 rehearsal sources, authority/result proposals, custody and observer/bootstrap studies. They confer no active implementation, fixture or live-storage authority after Decision14; future storage work needs a separately reviewed scope and fresh admission.
+- No new dependency, qualification/producer receipt-kind or schema change, relaxed scientific criterion, Q4/capacity/full-matrix execution, CI infrastructure change or rewrite of historical attempts is proposed. Decision9's host-only rehearsal kinds remain unimplemented historical planning.
+
+## Compiler gate-2 continuation (Decision15)
+
+The observed B1-B3 component stages leave six C containers and gate 2 pending. The V8 component admission amendment records the bounded stopped-B1 toolchain supplement, narrow effective-config normalization, externally bound runner/proof packet, exact negative-outcome checks and complete physical accounting before further execution. It preserves all original source/profile/scientific limits and the 512 MiB seal, with no new qualification, image/storage action or merge authority. Independent exact-commit review, required checks and delegated approval precede dependent implementation and the implemented packet's physical use; existing component/whole-chain acceptance boundaries and task states remain unchanged.
+
+### Proposed one-successor setup amendment, 2026-10-16
+
+The once-approved setup at `c75ad950ee542621a365725db627fdd03d2363e8` failed with `f2_source_drift` after only the three initial identity GETs. It performed zero archive GETs and no P0/C/D. The retained B1 and fresh inspect differ only in the unrequested `HostConfig.Dns`, `DnsOptions` and `DnsSearch` defaults, from `null` to `[]`. Preserve that invocation as failed, its actual raw HTTP/code/F2/AUX/capture forms unchanged, and its missing outer closing meter as UNAVAILABLE. The partial recorded charge of 618,496 B is not final setup accounting or acceptance.
+
+Propose at most ONE separately admitted successor setup, using a fresh root derived from its newly reviewed implemented commit; the c75 root and original deadline are never reused. First obtain independent exact-commit planning review, required planning CI and recorded delegated AGENT approval in this same PR. Only then implement and test the narrow correction; two independent exact implemented-commit reviews, new required CI and recorded delegated AGENT approval precede any successor physical operation. A separately approved actual packet still precedes C1. This is no general retry/fallback permission and adds no B/C container.
+
+The sole historical-to-fresh compatibility rule requires all three named DNS keys to exist: each sealed value is `null`, and each fresh value is either `null` or a typed empty list, with `NetworkMode` exactly `none`. Missing/wrong-type/nonempty DNS values and every other Config/HostConfig/State/provider/mount/size difference refuse. Preserve the hash of the actual fresh selected inspect, so any representation change between the successor's first and final fresh observations still refuses. Meaningful raw-fixture RED/GREEN tests must establish both the exact permitted case and every refused boundary; the existing requested-field, Labels/Volumes and CapAdd rules remain unchanged.
+
+Candidate B replaces the directory-only old F2 debit with a 393,216 B (384 KiB) upper bound for ALL old F2 proof forms, already carried within the proposed 6,291,456 B failed-setup/bridge reserve. It leaves 7,995,392 B for the successor under the unchanged combined F2 cap of 8,388,608 B. The known old-proof quote is333,056 B, including whole readable JSON index/transcript and distinct old setup/capture Git forms, leaving60,160 B below that subcap; code/plan forms retain their separate category, and no old form is globally charged twice. Keep raw originals6,291,456 B, decoded tar4,226,048 B, all13member bounds and12 MiB wire limits unchanged. Only the closed final-accounting footer receives a16,384 B private cap; the other three controls remain262,144 B each, including the full failure liability. Its proposed per-file entry quote7,970,816 B fits the successor bound with24,576 B spare, subject to meaningful closed-schema/reservation/partial-footer tests after planning approval.
+
+The prior6 MiB reserve is carved from the former80 MiB shared allowance, leaving74 MiB, without increasing the536,870,912 B seal or lowering any floor. Decision15 and the V8 operational addendum define the candidate-B total535,785,472 B/unallocated1,085,440 B and fail-closed admission. Use one complete readable plain JSON retained index with an encoded-byte cap12,288 B and an independently enforced working+Git rounded/metadata bound32,768 B. The without-dedup owned quote includes one held6,651 B tool transcript at12,288 B allocation (its4 KiB metadata already included) and those index forms, giving2,102,272 B under the PRIVATE failed-owned cap2,162,688 B (2 MiB+64 KiB), with60,416 B spare. D's own2,097,152 B cap is unchanged. The index binds historical c75 plan bytes; successor authority separately binds the index and reviewed amended plan, without a hash cycle. The native6,213 B stdout original was not retained; the actual parsed receipt and byte count/hash remain available through held tool evidence, without reconstruction or another copy. These proposed bounds are not proof of the failed interval's peak or assurance that the residual2 MiB planned metadata slack suffices. Unresolved backing, closed-schema bounds, inventory, retention/copy or missing-endpoint disposition holds physical work. All46task identities and24completed checks remain intact, task2.10 stays unchecked, and component work does not establish whole1.5, genuine consumers, Q1, archive or merge.
+
+### Proposed single P0/packet exception after the 465 failure, 2026-10-17
+
+The sole successor at `465ab7986939c67ae3594344ee3b6266cd2abd7a` completed its19 F2 GETs and13 member checks, then failed the first P0 command with unknown exit status and incomplete stream persistence. Its setup admission is consumed; it produced no packet/C/D. The correctness-only P0 repair does not revive that admission. Preserve the whole-setup closing meter, historical peak and old P0 Linux-child closure as UNAVAILABLE/unknown. The separately authorized, completed ordinary read-only diagnostic is point-time evidence only: its one held8,645 B tool-return original has SHA256 `c10bf42d132f92692ce72a37a6f3d64a944e2a90c6fa3fcc608a1e1cd4aa6780` and a16,384 B all-forms quote, not retrospective setup acceptance.
+
+Propose one explicit exception for at most ONE newly reviewed P0 collection and packet-construction scope, with no full setup/export/recovery or new F2 GET. It reuses the immutable465 F2 originals as historical producer evidence, authenticates current repaired P0/consumer code separately and permits only additive `/r1` and `/r1.operator-originals` namespaces under the retained465 project root. Every old native/historical evidence file remains byte-identical; only explicitly budgeted parent-directory metadata may change. Declared current-repository C/component/plan working versions may be superseded by reviewed new bytes, while their historical465 Git forms stay retained/charged; the diagnostic's old working hashes are not false current-code requirements. The current consumer commit is bound in external authority and the packet, never inferred from the literal child name. A collision or any failure consumes the exception without retry, fallback, new B or repeated/additional C stage. Independent exact planning review, required planning CI and recorded delegated AGENT approval precede code/tests; two independent exact implemented-source reviews, new required CI and recorded delegated AGENT approval precede this physical scope. Separate actual-packet approval and every existing C/D completion review remain mandatory.
+
+Use one new fixed tracked operator, current canonical C with a fixed D entry branch, and unchanged compiler-owner/D/D-child/P0 collection interfaces. Current code is authenticated at the fixed reviewed repository, while the retained465 parent supplies its unchanged publisher/profile assets. Bind historical producer commit/plan, current consumer commit/plan/code, owner/workspace roles, the complete bounded retention index and actual diagnostic provenance independently; no rewritten supplement, old-code import, future-hash cycle or old-F2-to-new-operation idle charge is permitted. The index's source-version inventory contains only frozen pre-implementation versions, including c75,465,bf2 and reviewed planning snapshots; its role/form assignments remain closed. An unchanged current runtime or plan may share a historical descriptor value; that alias equality grants no current approval. Do not embed the index's own hash, a future implemented-consumer commit or mutually dependent current authority; external authority separately authenticates the current runtime/operator/plan, actual index descriptors and approval. One fresh ordinary `/info` observation, the unchanged P0 argv/30 s boundary and fresh entry/end floors precede packet use. Use exactly three ordinary native phases: PRE<=15 s, PACKET<=15 s, then FINAL<=5 s after all packet/AUX/event writes. FINAL facts and actual returned status/EOF enter only the sole terminal document/transcript, without rewriting events; outstanding transcript/copy liabilities remain additive after that measured endpoint. The new operation has one150 s envelope, a140 s work cutoff and10 s reserved for actual return/retention; existing C/D clocks and caps do not change.
+
+The revised candidate raises only the approved resume source reserve983,040 to1,032,192 B, retaining one additional reviewed planning Git version (45,056 B). The actual candidate991,232 leaves40,960 B; every version remains charged and the legacy524,288 B path stays exact. Carry the diagnostic16,384 B once. Total536,834,048 B leaves36,864 B under the unchanged536,870,912 B seal. The existing1 MiB code/P0 category closes at1,019,136 B, including old code/failed-P0586,240, fresh P0 maximum387,328, packet33,024, child directory4,352 and parent growth8,192. Explicitly replace only old unused AUX/capture liabilities with their independently observed retained quotes: outside516,352 B remains below524,288, including one new index working/Git pair32,768, bounded new AUX29,952, one Info pair20,992 and one complete selected tool transcript working/Git pair32,768. No Temp third copy, full F2/receipt duplicate, root seed file or unpriced program/capture form is permitted. Preserve the old5345280 B F2 prefix/tail debit, add the new bounded operation's conservative interval liability without idle/old-tail credit, and retain combined F2/global/floor limits. Authentic packet<=32 KiB, events<=8 KiB, complete escaped multi-frame transcript<=12 KiB and actual short-root D receipt geometry must be proved before physical admission; failure to fit holds the scope. All46 task identities/24 checks and task2.10's unchecked status remain intact; this proposal grants no present physical authority or whole-chain acceptance.
+
+The complete authenticated caller measured9,629 B after static factoring, so this is an explicit retention-bound amendment, not acceptance under the former8 KiB cap. Retain every original fact and prior failed test. The sole transcript is prebound to12,288 B/32,768 B two forms; its maximum four-key ACK is16,524 B and has a fixed24,576 B input ceiling before decode. The unchanged outside524,288 B row funds the8,192 B increase without another global debit. Initial carried debit becomes29,323,264; unchanged future liabilities507,510,784 fit507,547,648 available. Keep the four index history roles and69 row16, append the newly approved plan Git blob as the22nd version after approval, and leave current plan binding null/external. Preserve the superseded uncommitted index prototype descriptor/review disposition in development evidence without an extra active old-index form. All five planning files require independent exact-commit review, required CI and delegated AGENT approval before any dependent cap/index/test change; every later source/physical gate remains separate.
+
+## Standalone cold-reader refinement (Decision16)
+
+The complete-consumer fixture's standalone default guardian reader still uses unbounded subprocess capture and writes both raw streams and the result JSON without byte limits (tests/fixtures/accepted_policy_standalone_reader_fixture_v2.py:57,60-61,88). Add only a fixed capture/result boundary for that reader in the existing benchmark-launch-preparation capability. Preserve its existing _PROGRAM, interpreter/argv provenance, default guardian/fragment/stock validators and full source-provenance proof; no scientific predicate, production default, provider or receipt-kind substitution is proposed.
+
+Select 1 MiB stdout, 1 MiB stderr and 2 MiB complete result JSON ceilings before encoding/retention/writes. The resulting 4 MiB logical maximum per reader and 16 MiB for the four required main fixtures are selected prospective payload bounds, not measured physical peaks or a bound on all raw logs. Seal one actual recipe-supplied absolute deadline within the unchanged parent budget, including finite observation, TERM, KILL and final EOF/persistence phases; the earlier 45-second study example is unselected and supplies no default or reduction of the 126016 window. Track actual owned PID/start identity, fresh process group and descendants through positive closure, preserving original prefixes/counts, unavailable remainder and first/distinct secondary causes. Late, forced, nonzero, unavailable or incomplete outcomes cannot pass.
+
+Independent review of the exact pushed four-artifact amendment, mandatory planning checks and recorded delegated AGENT approval in this same PR precede reader code/tests. Decision15's separately approved compiler work continues under its own scope. New unchecked1.23/2.11/2.12 govern this boundary; task1.5 still needs every parent/enclosing raw log, result serialization, proof copy and retained failure to have finite accounted bounds. Existing renewal, complete genuine consumers/refusals, conformance, archive/final and image-protection gates remain unchanged. This amendment grants no compiler/component execution, storage/image action, Q1 authority, retry or erasure of originals.
+
+## Node backend compatibility amendment (Decision17, 2026-10-17)
+
+The one P0/packet admission in PR9 comment6230407759 was submitted once at source24cc8e9d5dd543aec2971e7dc25564e2ca9c4b63. Functions cell1640 returned a complete nonaccepting ROOT export: the initial Node provider reported `Code generation from strings disallowed for this context`. Admission is consumed; there is no accepted packet, writer/verification result or C/D authority. Source approval and portable CI remain historical evidence within their recorded scope; neither established backend compatibility. The provider error does not prove native-process closure, zero activity or namespace absence.
+
+Revise only the emitted Node representation and its controlled qualification after independent exact-commit amendment review, mandatory planning CI and recorded delegated AGENT approval. Emit static JavaScript, compress bounded data only, preserve original clocks and all validation/capture/accounting predicates, and qualify the actual backend with one separately reviewed inert control. This amendment grants no replacement physical operation, namespace, reset, retry, cleanup or image action. Existing task2.10 remains open; all46 task identities and24 checked states remain unchanged. Any later physical proposal requires a separate same-change reviewed amendment and a fresh inclusive budget carrying this failed attempt and every retained source/Git form.
+
+## Early inert capability qualification sequence (Decision18, 2026-10-17)
+
+The reviewed harness increment4509779fe0976c296cd657fb687dce5a324b60f1 reproduces the historical carrier denials while preserving static controlled baselines. Independent peer/Grok reviews and original RED/GREEN evidence are recorded in PR9 comment6230945925. The Temp-only DATA-only static baseline remains unfit: complete six-frame selections21534..21759B exceed12288 and controlled ROOT refuses before writer admission. This disproves unchanged-spelling fit, not every static representation. The provider's generic denial cannot establish whether its wrapper or the submitted argument produced it.
+
+Change only the order of the SAME single tiny inert control proposed by Decision17. Independently review this exact four-artifact amendment, pass required planning CI and record delegated AGENT specification approval before dependent control implementation/tests. Then independently review the exact pushed harness/control source, submitted and enclosing arguments, strict expected result and bounded retention/failure recipe, pass NEW required exact-source CI and record explicit delegated AGENT control approval before its ONE submission. Complete static-route implementation and successful geometry need not precede that inert control. They remain mandatory with equivalence, independent exact-source reviews and CI before any operational admission. Current450 partial reviews/CI and historical approvals do not authorize this control.
+
+The control uses only a tiny static const stub-closure, bounded authenticated DATA decode/hash/closed parse, captured-intrinsic source authentication/direct call and individually listed pure performance/JSON features. Imports are limited to node:crypto/node:zlib. It queries no OS/version/path/process/host metadata or alternative APIs. It accesses no actual persistent gate2Resume, real factory, operational definitions, project/native files, children, shell, Python, WSL, network or physical namespace. One invocation consumes it on every outcome, without retry/reset/fallback. Retain/authenticate every actual argument/result/enclosing field in RAM plus original journal and bounded evidence, without a new full program/record/chain file. Success qualifies only exercised capabilities; production identities, actual OS/runtime/Windows readiness, static fit and physical acceptance stay unqualified. Failure cannot locate a generic provider rejection.
+
+This selects no persistent helper preload, capture-boundary change, cap waiver or replacement physical operation. Preserve runtime/V8/index, all historical forms/unknowns,24/46 and open2.10. Later physical work requires its separate reviewed same-change admission amendment and fresh inclusive failure/history/source/Git/raw/copy accounting. No keeper, cleanup, image, archive or merge authority follows.
+
+## Bounded offline minifier feasibility (Decision19, 2026-10-18)
+
+The SAME Decision18 inert control matched its exact result after source review, required CI and delegated AGENT approval6241364452. It is CONSUMED; public outcome6241494611 and bounded originals at a84d0c4fde1a8e2a03ad105c481f62aeb24e2ea7 do not authorize another control. Operational static fit remains unresolved. A Temp-only 77-subset DATA-pool audit reproduces the old17014-byte source baseline and finds best escaped source17102, already4814 above the complete12288 limit before the other frames. A separate deliberately optimistic token-only renaming model gives15184, still2896 above it. This model includes unrenameable globals/protocol keys and ignores collisions; it is neither attainable output nor a global impossibility proof. The source was not executed in these audits.
+
+Refine Decision17's explicit no-minifier selection ONLY to allow the finite offline development-tool trial in Decision19 after independent exact-commit planning review, mandatory CI and recorded delegated AGENT approval in this same PR. Pin Terser5.44.0 and its complete eleven-package published dependency closure by exact version and SHA512. Seal exact RAM input/DATA descriptors, complete options, sorted reserved/binding inventories and conservative parser/invariant policy before acquisition; derive that seal by authenticated existing pure lexer/source inspection, not by executing an unacquired tool. Then acquire without lifecycle scripts in a new isolated Temp tool directory under one120 s acquisition/extraction deadline,15 s per request, no retries or redirects. No project/global/runtime/image/CI dependency is added. Compare six fixed byte-only cases through one prospectively selected Acorn8.15.0 script/TLA ESTree-to-Terser adapter interface, with fresh AST/options per case and no text-parser/module/wrapper fallback, before considering any generated-program execution or repository implementation. Preserve the exact295-byte prefix, opaque Python/data bytes, authenticated factory body, external names and all timing/validation/capture/retention contracts. Fit is an observation to make, not a promised outcome; an unfit result holds for a further reviewed design change without raising caps or changing boundaries.
+
+This is one refinement of the same change/branch/PR/task2.10, with no new task identity or checked state. No helper preload, module-based operational execution, alternate backend, new actual control, physical operation/namespace/window, runtime/V8/index edit, cleanup, image action, archive or merge is selected. Every later operational/source/CI/admission gate survives. Whole1.5,2.10,4.1,genuine,renewal,Q1 and final acceptance remain open. The earlier no-new-dependency statements still apply to the project and deployed/runtime closure; the sole exception is this isolated, pinned offline feasibility tool, whose retained forms must enter any later inclusive development-history accounting.
+
+## Exact pooled-import validation for one offline successor (Decision20, 2026-10-18)
+
+Decision19's one invocation at dbc10d4be977cb7e629bd50999af3a492e797f02 is CONSUMED and terminal HOLD, not an unstarted experiment. The retained acquisition verified eleven archives and219 extracted files; the Node driver then refused changed_import_specifier during first-input preflight, before any minify call. All six cases remain unrun. Its literal-only import classifier omitted existing fixed const aliases from the authenticated DATA string pool. This is a supported-representation gap in the development validator, not evidence of changed import values or an operational import. The actual result, immutable seal and independent CLEAR_WITH_NOTES evidence audit are recorded in [PR9 outcome6243212387](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6243212387); the full acquisition original is [6243212942](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6243212942). Neither parser agreement, a profile size, semantic equivalence nor global impossibility was measured.
+
+Prospectively select ONE separately marked offline successor only after independent review of this exact pushed four-artifact amendment, NEW required CI and recorded delegated AGENT specification approval. Reuse the existing authenticated eleven-package closure without any request, installation, re-extraction, version/source change or automatic retry. Keep the original two sources, DATA/Python, prefix, six canonical options, parser/adapter, protected-site filters and resource/capture limits. Add only exact lexical const-binding/pool-origin/index/value import descriptors, plus bounded parser-only positive/negative gates before any minify call. A fresh descriptor binds the immutable parent seal, actual acquisition original and newly reviewed helper/policy pins without rewriting historical originals. Refusal consumes the successor and holds; it supplies no fallback or another attempt.
+
+No repository implementation is selected by planning approval: this permits only dependent Temp development-validator/tests and the one finite offline batch. Runtime/V8/index, all207 current test-method ASTs, the authenticated factory and every physical/production predicate remain unchanged. No actual Node MCP control, journal recollection, namespace/window, native work, cleanup or image action follows. All46 task identities/24 checks and open whole1.5/2.10/4.1/genuine/renewal/Q1/archive/merge gates survive. All old and new tool/source/synthetic/failure/evidence forms remain liabilities for later inclusive accounting, with no capacity credit. Any potentially fitting result still requires complete geometry and Decision17's equivalence/source/NEW-CI gates, then a separate reviewed physical admission.
+
+
+## Compatible F2-only offline follow-up (Decision21, 2026-10-18)
+
+D20 at4fea78ea60271128e611c0978933255079df123c is now CONSUMED/HOLD after specification approval6243681282 and independent final peer/Grok source review plus delegated AGENT development approval6244010332. The full actual originals, root checks and independent evidence-consistency audit are [public6244057178](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6244057178). Both real inventories and all14 fixed parser gates passed. Four F0/F1 outputs preserved protected comparisons but their escaped source contributions17005/16725/16982/16702 exceed12288. Both F2 attempts refused the original unsupported annotations:false option before producing any output-size/fit fact. Six attempted calls are not six successful outputs, equivalence or global impossibility.
+
+Select ONLY a prospective new F2-compat-v1 profile, defined by the complete original F2 object with exactly compress.annotations:false deleted. Static inspection of authenticated Terser5.44.0's57-key compressor constructor confirms that this is the only unknown supplied key; the other57 values and every outer/mangle/format/parser/reserved field remain exact. The complete two case-specific option objects and hashes are in design Decision21. This is a new explicit profile, never a repair/relabel of consumed D19/D20 F2 or a claim that old immutable options changed.
+
+After independent exact-pushed four-artifact planning review including Grok CLI, NEW required CI and recorded delegated AGENT specification approval, permit dependent Temp helpers/policy and, only after final independent exact-source review closes findings, ONE separately marked RAM-only TWO-case offline invocation: baseline_all then drop_11, each F2-compat-v1 once. Do not rerun the four already measured F0/F1 cases. Preserve exact parent input/DATA/Python/prefix, retained tool closure, parser/adapter/classifier, both real-inventory checks and the14 fixed parser-only gates and every protected full-AST/site comparison, resource/capture cap and downstream acceptance gate. No new acquisition, fallback or additional case is selected.
+
+No runtime/V8/index/project implementation, actual MCP/control/journal/native/image operation, cleanup, physical admission, archive or merge is authorized. All46 task identities/24 checks and all55 existing scenario bodies survive; two prospective R8 scenarios make57. D19 and D20 stay consumed HOLD, native states UNKNOWN and physical admission CLOSED;227 images stay protected. A refusal or unfit compatible profile consumes this new invocation and returns to reviewed design, without another option/output-selected attempt or relaxed filter/cap. New retained forms are later accounting liabilities, never capacity credit.
+
+## Phase-separated static caller development (Decision22, 2026-10-18)
+
+D21 at0b2665250312ab0af5ffb28eda2adbd8d94fcda6 is CONSUMED/HOLD after specification approval6244416642 and final exact-source delegated development goahead6244630806. The actual bounded originals and independent consistency review are [public6244668103](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6244668103). Both inventories and14 parser gates passed; exactly two minify calls returned outputs, whose escaped contributions16522/16497 exceed12288 and whose protected-literal comparisons refused. Later protected comparisons and semantics were not completed. These are returned-but-unfit outputs, not unsupported-option refusals, zero-sized results, successful equivalence or proof that every static representation is impossible. All consumed D19/D20/D21 sources, markers, options and results remain immutable.
+
+Select a different functional development slice: retain early capability/source/child/pipe/clock/capture checks, but defer the pure setup-document validation definitions and the caught setup classification to the existing separate finalizer. The initial output remains the complete factual snapshot and is unclassified, with setup_success=null. Keep the original JSON.rawJSON/exact JSON.parse reviver-source feature refusal before source reads or child creation. Retain the original createHash function reference in one immutable nonenumerable private state slot for the finalizer's lexical binding. After selectedView and the held-source check, sample only the original monotonic clock immediately before writer spawn: expiry uses writer_state without consulting writer_started. Keep writer_deadline only at the existing post-ready/pre-ACK remaining-time check. Invalid setup still follows the diagnostic-retention route. The new clock sample/earlier refusal and private bootstrap capture are explicit functional deltas; all other predicates, returned facts, caps and source custody remain.
+
+The factory13073-byte lower bound applies only to a selected argument containing its full body. Current setup.selected contains initial/poll codes and frames; the factory belongs to the separate writer_call retained in ROOT/chain, so its size does not prove setup.selected impossible. Retain that inline factory placement and byte-exact source authentication. Do not select modules, preload, staged calls outside capture or a wider cap.
+
+After independent exact-pushed four-artifact review including configured Grok CLI, NEW required planning CI and recorded delegated AGENT specification approval, permit additive controlled prototype construction/tests in the two existing caller harnesses. Preserve legacy construction paths and all207 existing test-method ASTs. Use only one baseline_all-derived phase-separated initial shape with the original DATA/pool, the fixed existing lexical spelling transform and no further minifier/profile search. Its generated source stays RAM-only. Fit is unproven; measure every complete form and refuse an over-cap result. Ordinary controlled test corrections within this approved slice are development, never replay of a consumed trial. Two independent exact-source reviews, required NEW implementation CI and explicit delegated approval must precede any operational integration/readiness claim; a separate physical admission remains mandatory.
+
+All46 task identities/24 checks and57 existing scenario bodies survive; two new R8 scenarios make59. Runtime/V8/index, actual Node MCP/control/journal/native/image activity and historical evidence are unchanged. Physical6230407759/cell1640 stays CLOSED, D18 stays consumed, native activity/closure/namespace UNKNOWN,227 images protected; whole1.5/2.10/4.1/genuine/renewal/Q1/archive/merge stay OPEN. All additional forms remain later inclusive-accounting liabilities, without capacity credit.
+
+## Lossless complete evidence wires (Decision23, corrected planning revision, 2026-10-18)
+
+D22 at38c33275f98e0d7d827878128dfc531cc17501f4 remains a partial controlled prototype: source13841/SHA256242f28752079f1d2b50a410d0f2606a3097899b8ca95e2add43068483609cff5 has escaped13923 bytes,1635 over12288 before frames. Preserve its exact HOLD and all225 current test-method ASTs. Finalizer, behavioral correspondence and full geometry remain unqualified. Corrected-source [reviews6245706774](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6245706774) and [terminal CI/root verification6247397613](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6247397613) cover only their stated partial scope.
+
+The first D23 planning commitc1b88916 received peer CLEAR_WITH_NOTES and configured Grok CLI BLOCK/P1 for ambiguous first-cause rules. Preserve both complete reports and author acceptance in [6247644406](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6247644406); no approval or dependent code followed. This prospective revision assigns exact ordered causes, retains finish's original entry guard before wire inspection, and explicitly changes ROOT's observation representation. Existing-span cost analysis also shows that an uncompressed observed record plus two embedded selected wires leaves a serious65536-byte ROOT risk; it is not a measured fit or impossibility result.
+
+Select TWO independently constructed lossless DATA envelopes using ONE fixed pure-JavaScript ASCII codec: setup.selected uses gate2-selected-lz77-v1 and setup.observed uses gate2-observed-lz77-v1. Each complete canonical envelope is1..12288 bytes; EACH recovered complete original has an explicitly NEW1..32768 logical ceiling. Selected recovers the original call+frames document; observed recovers the original calls+frames document captured directly from actual arguments/results. This replaces uncompressed observed only on the new branch and changes the former expanded-selection12288 condition. It neither shrinks D22 raw source nor passes its old cap. Legacy raw construction/defaults stay unchanged. No field is omitted, shared by reference, reconstructed from the other document or replaced by a source catalog. Both exact wires remain in the full authenticated ROOT/original chain; the receiver independently recovers and compares every code, timeout, metadata field and frame under one budget. These are two representations from the existing host capture boundary, not two independent acquisitions. Direct raw-JSON inspectability changes.
+
+Existing selected SHA/context/ACK/Python proof bind exact selected WIRE bytes; each envelope additionally binds its own complete recovered bytes. Python writer/fixtures and factory13073/997579f8ffcc50d6e05ae859dd9164b1dc08ce5a71e82a1d8070633c3cdf3677 remain byte-identical. ROOT65536, complete original chain262144/max64, ACK24576, later C/D4096 and every file/allocation/physical cap remain fixed. Recovered JavaScript-looking strings are evidence only, never execution/compilation/import/loading input. No extra tool call, dependency, module/preload, unselected staging or expanded raw file is selected. The new construction always uses its fixed pair of formats; size cannot select another codec, raw fallback or representation.
+
+Before dependent codec/builder/tests, obtain independent exact-pushed four-artifact peer/Grok review, NEW required planning CI and recorded delegated AGENT specification approval in PR9. After meaningful RED, build the fixed additive codec and complete inert source construction, then measure all full six-frame/ROOT/chain/ACK/C-D forms including both full evidence wires and the selected wire repeated inside writer_call. Unfit means HOLD without another codec/profile/cap or omitted original. Only after this risk gate passes finish D22's static finalizer and BOTH restricted-harness behavioral/source/custody/clock/closure/persistence/causal routes. Two independent exact final-source/conformance reviews including Grok, NEW final-pushed implementation CI and explicit delegated AGENT approval precede operational readiness; separately reviewed inclusive accounting and physical admission precede actual use.
+
+All59 prior scenarios/9 requirements survive; two D23 scenarios make61. Preserve46 task identities/24 checks, all225 old method ASTs, runtime/V8/index,227 images and historical failures. Physical6230407759/cell1640 stays CLOSED, D18 CONSUMED and D19-D21 CONSUMED/HOLD; native activity/closure/namespace UNKNOWN. Whole1.5/2.10/4.1/genuine/renewal/Q1/archive/merge stay OPEN. Every old/new source/test/tool/review/failure/Git/copy form remains a future inclusive-accounting liability without capacity credit.
+
+## One unpooled phase source with the existing codec (Decision24, prospective amendment, 2026-10-18)
+
+Decision23's controlled implementation did not solve the overrun. Its codec3tests/59checks and revised transport20tests passed, but the ONE complete inert geometry command returned an incomplete negative result, retained with independent audit in [PR9 outcome6249347290](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6249347290). Four selected encodes refused selected_wire_bound without complete wire-size facts; partial-emission ROOT77125 and setup-refusal ROOT75063 exceed65536 by11589/9527. Only75checks/27measurements returned, no valid successful upstream exists, and all C1/C6/D4096 dimensions remain UNMEASURED. Actual capture/EOF/status were normal, while Python had1failure and geometry_fully_measured/risk_passed remained false. Preserve those distinctions, exact originals/source pins and independent review; D22 escaped13923/overrun1635 remains HOLD. No dependent operational phase ran and no partial result becomes readiness.
+
+Select ONE prospective new initial-source recipe: the original nine-field DATA and untransformed baseline JavaScript with the SAME D22 phase separation/early feature/private-hash/clock changes, quality11 bounded DATA-only Brotli, original names/property/literal sites and exact295-byte prefix. Omit only the construction-time74-entry string pool/computed-property/private-alias transformation. This is an explicit new SOURCE representation, requiring fresh DATA/compressed/initial pins and inverse proof; it omits no actual captured argument/result/source/frame/metadata. D22's pooled DATA/source identities and its failed prototype remain historical, not authentication for this new recipe. There is no minifier/profile search or output-selected fallback.
+
+Keep BOTH complete v1 evidence wires and the exact existing codec/canonicalizer/ordered causes/budgets. Node finalizer alone includes the exact3370-byte budget/input/decoder prefix of that codec, excluding its unused2495-byte encoder tail; ROOT retains the full5865-byte codec. Keep the complete bounded ROOT_ENCODER in Node, since g2.canon has different bounds/types/causes. Python and exact13073-byte factory/static custody stay unchanged. This role reduction alone saves2553 quoted bytes and cannot close the measured ROOT overrun; whether unpooled repetition supplies the remaining savings is unproven. No wire12288/original32768/ROOT65536/chain262144-max64/ACK24576/C-D4096 or physical cap changes.
+
+Before dependent new construction/tests, obtain exact-pushed FOUR-artifact independent peer/configured-Grok review, NEW required planning CI and explicit delegated AGENT specification approval in this same Draft PR. Then require separate negative/inverse/role/source tests and a complete bounded RAM-only inert risk measurement of the one new recipe. Preserve D23's negative outcome as a negative regression; no missing dimension can qualify the new risk gate. Only all-true complete geometry permits BOTH restricted genuine phase harnesses; two exact final-source/conformance reviews including completed Grok, NEW final-pushed implementation CI and recorded delegated approval precede readiness. Fresh inclusive accounting and physical admission remain separate. No actual native/control/Python-writer/API/P0/image action, consumed replay, archive or merge is admitted here.
+
+All61 prior scenario bodies/9requirements and46task identities/24checks survive; two D24 R8 scenarios make63. Preserve all225 pre-D23 method ASTs and the3codec/20transport method ASTs; only the new D23 geometry development unit may assert its retained negative outcome. Runtime/V8/index/227images, closed6230407759/cell1640, D18 CONSUMED, D19-D21 CONSUMED/HOLD, native UNKNOWN and whole1.5/2.10/4.1/genuine/renewal/Q1/archive/merge OPEN remain. Every old/new source/test/tool/review/failure/Git/copy form remains a later accounting liability without capacity credit.
+
+## Binary evidence payload after the measured ROOT refusal (Decision25, prospective draft)
+
+Decision24's one controlled construction brought all twelve complete evidence wires below12288, but every complete ROOT still exceeds65536:70717..74200, with an observed maximum8664-byte excess. Preserve the authoritative failed run and independent audit in [outcome6249955558](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6249955558):127checks/51measurements, no valid success upstream and all C1/C6/D dimensions unmeasured. The source-only1955 excess of the new unpooled source and historical D22's1635 excess remain distinct from these wire/ROOT facts. No dependent phase harness ran.
+
+Prospectively select ONE separately tagged binary-LZSS v2 evidence format under design Decision25. Its fixed32768-byte history,3-byte prefix/last8 positions and SAME greedy longest-nearest3..258 parser feed ONE MSB-first bitpacket:0+6 common-alphabet bits,10+7 OTHER-printable bits,11+15 distance-minus-one bits+8 length-minus-three bits. A three-byte big-endian significant-token-bit-count header, exact body extent and zero low body padding make termination explicit; canonical Base64 carries the packet. A guarded exact7/9/25-bit counting pass including the header precedes packed/Base64 allocation and the identical writing pass under the same computational budget. Keep min3 even when a match costs more than three common literals; no gain-aware selection is admitted. This changes the evidence representation while retaining every independently captured original source/argument/result/frame/metadata byte, the same four envelope fields and all existing wire/original/ROOT/chain/ACK/C-D/time/allocation caps. The complete v1 codec/defaults/failed constructors stay preserved. There is no mixed-version negotiation, output-selected alternative, profile search or cap increase.
+
+Keep the exact D24 unpooled initial recipe, Python and factory; use distinct fixed v2 ROOT/finalizer/test routes and a newly authenticated decoder-only Node role. Source cost, literal expansion and finite computational work are explicit constraints: common literals use7bits but OTHER literals use9, packet framing and outer Base64 remain, emitted literal counts are unmeasured, and the3156-byte bootstrap Base64 is only a known exposure. This fixed refinement has no measured gain and can still expand data. The complete fixed geometry TEST source must still fit24576 (current23534 leaves only1042; with identical surrounding source the full codec allowance is6907). No new codec, source size, savings or fit is claimed by this draft.
+
+Before implementation obtain exact-pushed four-artifact independent peer/configured-Grok specification review, NEW required planning CI and explicit delegated AGENT approval. Then require bounded codec/capture tests, exact source/role/cause reviews and ONE complete inert geometry gate; only a complete all-true result permits both genuine restricted phase harnesses. Final conformance, two exact source/entry reviews including completed Grok, NEW final implementation CI and delegated approval precede readiness. Preserve all249 now-protected method ASTs (225old+3codec+20transport+the retained-negative D23 test); only the new D24 geometry development unit may become its documented pure negative regression. All63 prior scenario bodies/9requirements/46task rows24checks remain, with two additional R8 scenarios making65. Physical/image/control/archive/merge gates remain open and unchanged.
+
+
+**Recorded Decision25 implementation outcome (2026-10-18; no new authorization).** The sole Decision25 inert risk is CONSUMED INCOMPLETE/HOLD, not fitting evidence. See [complete outcome6251428618](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6251428618). Actual tool20e86c exit1/wall1.4429275s authenticated main476378/3dcea0ea515be7c33cd95486adf9b818b63ce39894d9cbe48c8318ec4fd02b39,caller281307/77946ffadc24d7fd3759186417eb5ae330edd306f7a3170d5370f7e44b4e61b4 and entry73759/d9ba5c51229b8ba50e33d10c46a7246392bfc75b939d03fcdb28a472bedc760a. Complete stdout15811/a4a5ab1731bacdb30596e78f5b977b59b1de9f640c35292ace928c62f65d9f43,stderr0/e3b0,parent3780/3d31e731927dde64f42e95e8da6921c864a3d9b1bc7f9a4c2a9709e63f4e43b3 preserve49checks/15measurements,42true/7false. Six selected originals16147..17293 fit32768, but each SELECTED encoding refuses selected_wire_bound(19/17f54ba84e38766575c165a616f7755840343aa043663bd0f9f2f833393831a6) BEFORE observed-original creation. All observed originals/actual wire lengths/ACK/ROOT/chain/later/approval dimensions are unavailable; no twelve-wire claim, overrun magnitude, compression ratio or ROOT reduction follows. Both DATA Node transports complete normally; Python1failure/0errors and geometry_fully_measured:false/geometry_risk_passed:false remain distinct from parent transport:true. Independent audit13693/c8ca65d0d49c125c4db68fc359d573b13915e4e969a837e5cf4dd2072efa4367 found no retained-original/schema/source/capture/clock join mismatch. BOTH genuine phases remain STOPPED/UNRUN; no replay or alternative profile is admitted. The historical1635-byte source-only defect remains unresolved; the fresh unchanged initial source has its separate14243-escaped/1955-over source-only fact. Same change/branch/PR,24of46 checked and all whole/final/physical/image/archive/merge gates remain open.
+
+
+## Fixed radix93 evidence transport (Decision26, prospective amendment)
+
+D25 remains consumed INCOMPLETE/HOLD with full actual negative and pure retained-result/source-join unit/DATA protected; its separate factual record remains authoritative. No complete packet extent, observed original, wire/ROOT/ACK/chain/later/approval, actual ratio/overrun or fit was measured. This proposal does not replay an old risk or turn a failure into readiness.
+
+Select ONE standalone v3 transport for the SAME deterministic significant-header/LZSS packet: fixed13-bit MSB groups become exactly two radix93 digits, printable32..126 excluding quote/backslash, with separate zero byte/group tails. Preserve greedy32768/prefix3/last8/min3/max258/7-9-25 parser. Explicitly amend v3 to a derived virtual N<=9984 domain while protected v2 structural<=9216 remains unchanged; no packed binary buffer exists, and no unchanged-numbers or larger-allocation claim is made. External wire12288/original32768/ROOT65536/chain262144-max64/ACK24576/C-D4096/forms/stdin/time/source/heap/capture caps remain fixed. Tags gate2-selected-lzss-v3/gate2-observed-lzss-v3 are fixed same-width replacements only on the new branch; no negotiation/fallback/ratio parse/dictionary/profile search.
+
+Keep complete independent actual originals/custody, exact initial/nine-key DATA/Python/full ROOT_ENCODER/factory and ALL275 current methods/current contributors including D25 pureunit/DATA; no field omission, decoded-code execution or extra operational call. Hard6907/24576/32767/524288 source/argv/held bounds may block the proposal. Implementation/vectors must fit the same two held modules. A NEW explicitly reviewed DATA-only fixture tests/fixtures/gate2/d26-geometry-retained-v1.json, max8MiB, may retain the sole future outcome only AFTER the actual admitted attempt and sealing of available actual metadata; it is not a code/operational loader or an increase to old source/wire/runtime caps. Design26 defines every nested key/type/cardinality and the named unavailable_reason now, before approval; a frozen exact template and full delimiter-inclusive worst-case retention proof are prerequisites before the attempt. A missing preflight prerequisite means STOP with no submission, no consumed risk, no outcome/fixture/null-original placeholder/fakehash, without omitted originals or raised bounds. An actual failed/unfit/incomplete attempt consumes the risk; incomplete later gates after all-true geometry HOLD readiness while preserving the actual geometry unchanged. The accessor starts invalid at index-1 after validation and before its first header access; real pair0 reads/work must precede any hit, with cold-zero/nonzero and backward-cache proof under the same clock.
+
+Exact-pushed FOUR-artifact independent peer AND COMPLETED configured Grok review, NEW required planning CI/delegated SPEC approval precede code/tests/helpers. Meaningful absent-codec RED, fixed vectors/capture GREEN and independent exact source/role/entry review precede ONE new separately admitted RAM-only inert risk. Only complete all-true geometry admits BOTH genuine restricted routes/full conformance; TWO final independent reviews including completed Grok, NEW final implementation CI/delegated approval and separate accounting/physical admission remain. Only the new D26 development unit may afterward retain its sole actual outcome as pure CI metadata without replay; a retained negative passing admits no phase. Preserve65old scenarios/9requirements/46rows24states; two new R8 scenarios make67, task2.10 and whole/final gates remain OPEN,227images/consumed/UNKNOWN states survive and retained forms earn no capacity credit.
+
+
+**Recorded Decision26 actual outcome (2026-10-18; no new authorization).** The separately admitted sole D26 risk is CONSUMED INCOMPLETE/HOLD. [Pre-attempt retention proof/template anchor and delegated AGENT admission6253719896](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6253719896) precedes the [complete actual originals and independent audit6253778484](https://github.com/lordcoudy/VAST/pull/9#issuecomment-6253778484). Actual tool454827 completed exit1/wall1.5317020000000001s with normal parent/Node transport, unittest1failure/0errors,62checks/21measurements,55true/7false and unchanged geometry_fully_measured:false/geometry_risk_passed:false. Five selected-wire refusals provide no actual encoded extent/ratio/overrun projection. The setup_refusal branch measured wires11579/11543 within12288, but full ROOT72303 exceeds65536 by6767; later_measured_upstream:false. Missing71always checks/35always measurements plus six UNAVAILABLE/UPSTREAM_UNAVAILABLE groups give149/59 full missing dimensions. BOTH genuine routes remain STOPPED/UNRUN; no replay, fallback or alternative profile is admitted.
+
+The post-outcome fixed DATA fixture tests/fixtures/gate2/d26-geometry-retained-v1.json is102199/SHA256408379cb8ee0d7ce2fd233d963a0939889485156e7c42a07481d3726b419578f. It preserves all four actual bounded metadata originals, the authored development class/method, source roles, exact available/missing inventories and root-attributed external result. The recoverable canonical report5815/8d14aff982b0d7f457f68d79f0290a387cd6c7f8eca94119e9b322581f696327 is available:true; known empty stderr is also available:true. It reproduces pre-attempt RAM-only T57024/da07ff5ef783c5107ced47e1c389996d5b3939d78d3571159dc13aa75dd1748f, not a new result-selected template. Retention occurred only after the actual attempt; no operational subject or T file was persisted. Only the excluded new D26 class may become the pure metadata/source regression; passing that regression confers no geometry or genuine/final/physical readiness.
+
+The historical1635-byte source-only defect remains unresolved; the fresh unchanged initial escaped14243/+1955 source-only fact is distinct. Preserve all275 prior methods/contributors/D25 pure DATA/unit,67scenario bodies/9requirements/46task identities/24checked states,227images and native/closure/namespace UNKNOWN. Task2.10 and whole/genuine/renewal/Q1/final/archive/merge gates remain open. See [D26 evidence and limited conformance](evidence/compiler-component-01/gate2-implementation-tests/d26-radix93-sole-outcome-v1.md).
+
+
+## Fixed dictionary evidence and preserved TEST placement (Decision27, prospective)
+
+D26 is consumed INCOMPLETE/HOLD: five encoded extents remain unavailable; the known full ROOT72303 exceeds65536 by6767. The historical1635-byte source-only defect remains unresolved. Its retained implementation at ac77c484 has completed scoped native/configured-Grok source review and exact-head CI4335tests/4247successes/88skips/0errors/0failures; neither passing negative regressions nor CI establish fit. The exact103/83 contributor-row guard now prevents any declaration append to the old pair.
+
+Propose ONE fixed LZW95/radix93 v4 evidence recipe in a NEW ordinary authored fixed TEST main/caller pair, preserving the entire old pair/all300methods/D26fixture byte-exact. The new wire keeps complete independent selected/observed originals and all existing external caps, canonical/hash/cause/clock/field/source boundaries, exact D24 initial/DATA/Python/full ROOT canonicalizer/factory and default v1/v2/v3 paths. Only the token grammar, private role paths, fresh source identities and explicitly bounded dictionary allocation change. No Node zlib wire codec, external dependency, arbitrary loader, decoded-code execution, cap increase, omitted field or fallback is added. The fixed grammar uses95 ASCII literals, next95/cap8192, width7..13, no reset/control/EOS code and the existing positive-T radix93 transport. Full-table states are source/arithmetic-proved unreachable under the unchanged T bound; no fabricated runtime saturation coverage is allowed.
+
+Modified capability remains only benchmark-launch-preparation. Exact new paths, grammar/allocation/cause rules, fully enumerated seven-key8MiB retained metadata schema and meaningful validation are in Decision27 design and the same existing open2.10 substeps. New fixed held modules remain<=524288 each; codec<=6907, TEST<=24576, Windowsargv<=32767 and every original wire/ROOT/chain/ACK/C-D/capture/heap/time cap survive. Source size, compression and geometry fit are unmeasured; reviewed headroom/retention proof and one separately recorded new inert admission remain prerequisites.
+
+Independent peer and COMPLETED configured-Grok review of the exact FOUR-artifact planning commit, NEW planning CI and recorded delegated AGENT SPEC approval precede dependent code/helpers/tests. This is a prospective amendment in the SAME change/branch/Draft PR, not a D26 replay or transfer of approval. Both genuine restricted routes, full final conformance, TWO final reviews including completed Grok, NEW final CI/approval and separate inclusive accounting/physical admission remain required. All prior failures/unknowns/46task identities24states/9requirements/67prior scenarios/227images and all archive/merge gates are preserved; new source/Git/review forms carry future accounting liability without capacity credit.
+
+## Bounded Docker diagnostics and owned retirement, 2026-10-25
+
+The finite execution plan in `docs/pr9-repair-execution-plan.md` parks D27/Native57 delivery machinery and preserves every historical failure and open acceptance gate. Source inspection of the ordinary product path found unbounded worker log files and cleanup that can mistake Docker-client exit for container retirement. Correct the existing shared factory and both parity/guardian owners, including capability probes, without a new orchestrator or dependency. Preserve all scientific predicates, defaults, native/worker inputs and diagnostic schemas; renew the four affected runtimes.
+
+Two observation-only output readers per existing Docker client are the sole new thread allowance. They cannot issue inference, schedule frames, increase in-flight work or extend any request, phase or cleanup clock. The `finite-component-study` delta records this explicit narrow exception and preserves the complete existing budget/closure requirement and its scenarios. This grants no new finite-study attempt, Q1, campaign or image action.
+
+## Prospective bounded native-store remedy, 2026-10-26
+
+Within existing task1.5, review the design's B4 amendment for one fully reserved
+fixed96GiB disk directly on C:. Enclose both native Docker/containerd stores,
+BuildKit/temp/context/export/cache/log writers; retain original stores through
+read-only custody views and an offline verified copy. Keep the native daemon,
+socket, provider and B identities, existing C: worktree/branch/PR and protected
+images. Narrow service/mount guards must refuse fallback to original stores.
+
+The earlier conditional20GB outer subtotal has no complete retained derivation;
+rebuild the full external ledger before disk creation or cutover. This is a
+prospective implementation detail of the existing capacity/preservation
+requirements, not new qualification or a reopened storage rehearsal. No delta
+requirement/scenario, task identity or checked state changes. Independent review,
+required planning checks and recorded delegated amendment approval precede
+dependent operator/builder implementation; physical allocation and fresh P0/
+qualification still require their separate complete admissions.
+
+## Prospective frozen-executor compatibility, 2026-10-26
+
+Retained B2CI6errors/3failures identify immutable compiler-v1 formatter bytes.
+Keep the bounded custody constructor; restore the exact103,925B compiler-v1
+executor and add only a small current preparation-admission gate. Explicitly
+permit that gate's narrow duplication of frozen checks, shared between its
+prospective and actual-source handoff paths. Always delegate execution and final
+acceptance to unchanged V1 with exact original arguments/results/exceptions.
+Move all preflight/inter-allocation clock calls to that gate and replace the
+constructor's direct compile call with its sole handoff; add no V1 exports.
+Retarget only current controlled doubles/test seams. Keep C/D's original private
+component route on restored V1 outside the usable gate; a missing frozen symbol
+holds for review rather than changing C/D or the blob. Require written-source
+drift refusal before public entry, actual executor-file hash binding, exactly one
+owner call and identical result/error/facts/causes with no preflight allocations.
+Existing C/D continues binding the actual executor; the new gate needs separate
+source/whole-chain authority and earns no physical qualification from that route.
+
+Preserve historical pins/protected tests/attempts and all46/24task states. Review
+and approve this amendment before dependent gate/import/test changes; require
+the unchanged nine regressions and current source coverage/CI/reviews afterward.
+No new executor, proof relabeling, schema change or parked machinery is added.
+
+## Prospective Windows diagnostic containment, 2026-10-27
+
+The actual WSL piped crash handler can write Windows files outside the native
+store boundary. Extend B4 with one additional fixed16GiB Windows NTFS disk at
+`E:/VAST-pr9/bounded-wsl-diagnostics-20261027.vhd`, shared by WSL crash dumps,
+panic text and any enabled console-file logging. Keep the existing C: worktree,
+native96GiB disk, daemon/provider identities and all protected images. Use an
+authenticated volume-GUID destination and guarded effective configuration;
+preserve partial dumps and existing Windows-temp files without cleanup credit.
+
+This refines the existing renewal-capacity requirement and task1.5. Three new
+scenarios cover routing, loss and finite qualification; no requirement/task
+identity or checked state changes. Exact planning review, configured Grok,
+required checks and recorded delegated amendment approval precede dependent
+implementation. Neither this remedy nor the earlier native-disk approval admits
+allocation: the complete peak and every setup/qualification operation still need
+separate finite admissions. D27/Native57 and future Q1/Q4/campaign remain parked.
+
+
+## Prospective bounded configured-review execution, 2026-10-28
+
+The retained review06 failed before an accepted model result. Public release
+source requires durable session writes even for ordinary cold headless resume;
+the existing deny-write/ShareRead copy cannot satisfy that path. Its generic
+LoadSession error does not prove the exact earliest installed-runtime failure.
+The current packet also needs supported --verbatim to bypass prompt offloading.
+See evidence/grok-runtime-boundary-20261028-01/proposal-source-findings.md.
+
+Refine task1.5 with one separate128MiB classic fixed Windows VHD on E: for a
+new private Grok execution copy. Preserve the C:worktree/branch/PR9, original
+personal files, immutable .g5/.gm2 and every failure. This is auxiliary review
+storage, not a Docker/native-store/provider replacement or activation of the
+planned S96/E16 remedies. Configuration/authentication/cache remain readonly;
+only reviewed session bookkeeping is mutable inside the fixed filesystem.
+
+An exact planning commit, two independent reviews, required planning CI and
+delegated AGENT approval precede support-host implementation. Source and controlled qualification of one fixed elevated setup precede any
+user OS-action request; actual elevated-token/provider/device qualification
+after authorization and before storage effects, plus setup/copy/model operations,
+need their own complete finite peaks, identity,
+privilege, deadline and backend-completion admissions. The current shell's
+non-elevated token and installed cmdlets do not establish execution authority.
+Only this support-environment bootstrap may proceed through those peer/CI
+gates while configured Grok is unavailable; no prior Grok approval is claimed.
+The first qualified configured-Grok review must cover its actual source/input
+scope before dependent application execution. All existing application-stage
+Grok/CI/conformance requirements remain open and unchanged.
+
+The fixed filesystem is a containment ceiling, not a promise of successful fit.
+Unknown completion, exhaustion or identity drift preserves all state and holds
+dependents without resize, fallback, replay or automatic deletion. The proposed
+129MiB E: setup allowance remains unvalidated until its complete peak is proved.
+The separately accepted16MiB authoring row retains all earlier charges:
+2455MiB/C73.3564453125GiB. No whole task1.5, lifecycle, runtime, genuine-consumer,
+archive or merge acceptance follows; D27/Native57 and fresh Q1/Q4/campaign stay
+separate. No protected image deletion/offload is included.
+
+## Prospective read-only metadata repair, 2026-10-29
+
+The actual Core PowerShell7.5.5 packet in PR9 comment6492003274 has a complete
+transport and an incomplete collector: V namespace, NTFS E geometry and MFT
+returned facts; LogFile, Secure and the proposed parent returned no facts.
+Independent DATA reviews6492124961/6492182641 accept only the stated integrity,
+identity and recorded closure joins. Preserve the separate Desktop5.1 failure,
+consumed entry6480661090, occupied original witness and cross-clock/provenance
+limits. No retroactive approval, capacity acceptance or replay follows.
+
+Refine the existing support bootstrap with an explicit supported-host refusal,
+a bounded volume-level allocation query for the two protected metadata files,
+and a verified existing-root/relative-leaf disposition. A verified absent
+prospective directory is an observed state whose future creation must be priced;
+it is not zero metadata cost. Keep the literal VHD target unchanged. Complete
+metadata observations remain baseline facts, not future-growth ceilings.
+
+Review the exact pushed four-artifact amendment with two independent reviewers,
+required planning CI and delegated AGENT specification approval before dependent
+collector/host/test changes. The existing narrow peer/CI bootstrap exception
+applies only to repairing the unavailable configured-review support environment;
+all later configured-Grok and application gates remain required. Preserve all
+46 task identities/24 checked states, protected227images, failures, fixed-volume
+limits and the separate D27/Native57/Q1/Q4/campaign dispositions.
+
+Prospectively add ONE4MiB authoring increment, retaining the earlier16MiB and
+all other charges: authoring20MiB, cumulative2459MiB/2578448384B. Split the new
+increment into2MiB additional planning forms,1MiB additional source/Git history
+and1MiB additional ordinary records. Their combined ceilings become6MiB,2MiB
+and3MiB respectively. Keep12 named source slots,512KiB live aggregate and64KiB
+per source; add only the fixed17th ordinary record named in the design,64KiB
+maximum. With unchanged36712448B Circular-EVTX liability the conservative C
+quote is78806790144B/73.3945426940918GiB, leaving7092555776B inside the existing
+80GiB reserve. Independent authoring reservation6492480925 permits only bounded
+planning preparation within these terms. This confers no implementation/native
+authority. Physical C40GiB/E floors and every execution admission remain unchanged.
+
+
+## Authoring-only reservation amendment (2026-10-29, prospective24MiB)
+
+The20MiB authoring quote above is historical after this amendment is approved;
+retain its allocations, forms and failures in full. Independent review found no
+proved basis for reducing the old768KiB non-control-tail reservation, and neither
+32KiB future original capsules nor repeated source/packet copies are admitted by
+previous control success. Increase only the support authoring reservation by
+4MiB to24MiB: planning8MiB, source/Git3MiB, ordinary3MiB, ONE originals.zip plus
+Git8MiB, and metadata/tails2MiB. Within the last row reserve1280KiB for control
+originals/forms and preserve the existing768KiB for other tails. Keep every
+source/ordinary slot, individual/live ceiling, historical form and retained failure.
+
+The cumulative direct quote becomes2463MiB/2582642688B and conservative C quote
+78810984448B, leaving7088361472B inside the unchanged80GiB reserve. Preserve the
+C40GiB floor, fresh support C>=120GiB guard and all E/pagefile/exterior liabilities.
+This funds bounded authoring, not additional execution or whole task1.5 acceptance.
+Only the four existing planning artifacts may use the prospective drafting
+supplement after independently reviewed reservation and delegated drafting
+approval. Exact-pushed specification reviews, current planning CI and delegated
+specification approval precede dependent use for further code/control forms.
+Every later entry still requires its own complete original/source/heap/output/
+clock/retirement/retention quote and separate approval; unused allowance is not
+entry authority. D27/Native57 and all later acceptance gates remain unchanged.

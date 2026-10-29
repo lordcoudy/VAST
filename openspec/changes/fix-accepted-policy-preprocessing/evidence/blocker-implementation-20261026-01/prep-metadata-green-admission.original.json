@@ -1,0 +1,18 @@
+{
+  "scope": "B3 source-provenance metadata GREEN only; one invocation",
+  "reviewer": "/root/blocker_plan_review",
+  "verdict": "CLEAR; originalRED independently accepted; deterministic replacement-fixture correction independently reviewed",
+  "implementation_sha256": "8d951ab5ba4e26efe01cc9045556595edb6ae7433c80a98f298b55c05f1e529d",
+  "green_tests_sha256": "def6a3ea8f0faa813f9bc30157260a252d9f2df3982e661dbc8b0d66275de5e5",
+  "red_tests_sha256": "222cc98d08e1ed8c1adf6990b8b74a620e20e04a4fe3794b827f1b62d142a2ae",
+  "runner_sha256": "dad62f9ecbe68ccada0f9e2cc72eb0bbe04be0c2f767e73d7b73f7852abd8bf7",
+  "reservation_c_bytes": 805306368,
+  "fresh_windows_floor": {
+    "chunk_id": "523bac",
+    "wall_time_seconds": 1.6034234,
+    "exit_code": 0,
+    "original_token_count": 15,
+    "output": "{\"AllocationUnitSize\":4096,\"SizeRemaining\":242061664256}\r\n"
+  },
+  "delegated_agent_admission": "ACCEPTED for sixmetadataGREENmethods only. OriginalRED remainsunchanged. Linuxfloors recheckedbeforeallocation. FullB3/reader/physicalqualification remainopen."
+}

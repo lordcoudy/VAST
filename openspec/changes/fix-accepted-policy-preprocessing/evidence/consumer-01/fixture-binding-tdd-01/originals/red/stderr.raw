@@ -1,0 +1,24 @@
+test_complete_fixture_binding_uses_absolute_stock_output_contract (tests.test_accepted_policy_fixture_binding_v2.AcceptedPolicyFixtureBindingV2Tests.test_complete_fixture_binding_uses_absolute_stock_output_contract) ... ERROR
+
+======================================================================
+ERROR: test_complete_fixture_binding_uses_absolute_stock_output_contract (tests.test_accepted_policy_fixture_binding_v2.AcceptedPolicyFixtureBindingV2Tests.test_complete_fixture_binding_uses_absolute_stock_output_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_binding_v2.py", line 111, in test_complete_fixture_binding_uses_absolute_stock_output_contract
+    fixture.materialize_fixture_completed_execution_v2(prepared=self.prepared, native=self.native)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_consumer_fixture_v2.py", line 117, in materialize_fixture_completed_execution_v2
+    closure = materialize_publication_policy_qualification_execution_closure_v1(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_binding_v2.py", line 86, in inspect_binding_at_closure
+    stock = owner.operational_execution_binding_v1(**{
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/scripts/publication_qualification_operational_owner_v1.py", line 332, in operational_execution_binding_v1
+    _require(Path(row[name]["path"]).is_absolute(), "original binding descriptor is not absolute")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/scripts/publication_qualification_operational_owner_v1.py", line 61, in _require
+    raise ValueError(message)
+ValueError: original binding descriptor is not absolute
+
+----------------------------------------------------------------------
+Ran 1 test in 0.100s
+
+FAILED (errors=1)

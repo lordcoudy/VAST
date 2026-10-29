@@ -1,0 +1,21 @@
+{
+  "approved_design_commit": "67b1362fde9463a1e983b49dbc0ee545a5095231",
+  "argv": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "-c",
+    "import importlib,json,sys\nfrom pathlib import Path\nsys.path[:0]=['/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14', '/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14/scripts']\nimport tests\ntests.__path__=['/var/tmp/vast-stock-sample-reference-tdd-20261013b/red/tests',*tests.__path__]\nimport tests.fixtures\ntests.fixtures.__path__=['/var/tmp/vast-stock-sample-reference-tdd-20261013b/red/tests/fixtures',*tests.fixtures.__path__]\nowned={'tests.fixtures.accepted_policy_stock_sample_reference_v1': '/var/tmp/vast-stock-sample-reference-tdd-20261013b/red/tests/fixtures/accepted_policy_stock_sample_reference_v1.py', 'tests.test_accepted_policy_f5_real_refusals': '/var/tmp/vast-stock-sample-reference-tdd-20261013b/red/tests/test_accepted_policy_f5_real_refusals.py', 'tests.test_accepted_policy_stock_sample_reference_v1': '/var/tmp/vast-stock-sample-reference-tdd-20261013b/red/tests/test_accepted_policy_stock_sample_reference_v1.py'}\nloaded={name:Path(importlib.import_module(name).__file__).resolve() for name in owned}\nassert all(loaded[name] == Path(path).resolve() for name,path in owned.items()), loaded\nprint(json.dumps({'owned_import_paths':{name:str(path) for name,path in loaded.items()}},sort_keys=True),flush=True)\nimport unittest\nunittest.main(module=None,argv=['unittest', 'tests.test_accepted_policy_stock_sample_reference_v1.AcceptedPolicyStockSampleReferenceV1Tests.test_reference_passes_real_six_stream_reset_to_dataset_gate', '-v'])"
+  ],
+  "cwd": "/var/tmp/vast-stock-sample-reference-tdd-20261013b/red",
+  "gid": 1000,
+  "no_complete_consumer_or_campaign": true,
+  "overlay_files": [
+    "tests/fixtures/accepted_policy_stock_sample_reference_v1.py",
+    "tests/test_accepted_policy_f5_real_refusals.py",
+    "tests/test_accepted_policy_stock_sample_reference_v1.py"
+  ],
+  "python_version": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "read_only_dependency_source_commit": "d725413ef086f3550dcafd6bc8233982f35cab14",
+  "started_utc": "2026-10-13T07:15:09.644384+00:00",
+  "uid": 1000
+}

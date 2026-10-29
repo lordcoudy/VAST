@@ -1,0 +1,50 @@
+[    2.850538] misc dxg: dxgk: dxgkio_is_feature_enabled: Ioctl failed: -22
+[    2.852427] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -22
+[    2.852730] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -22
+[    2.853017] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -22
+[    2.853360] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    2.955861] memfd:vast-probe-x32: memfd:vast-prob: potentially unexpected fatal signal 31.
+[    2.955864] CPU: 16 PID: 1120 Comm: memfd:vast-prob Not tainted 6.6.87.2-microsoft-standard-WSL2 #1
+[    2.955866] RIP: 0033:0x401007
+[    2.955868] audit: type=1326 audit(1792142763.450:2): auid=4294967295 uid=1000 gid=1000 ses=4294967295 subj=kernel pid=1120 comm="memfd:vast-prob" exe=2F6D656D66643A766173742D70726F62652D783332202864656C6574656429 sig=31 arch=c000003e syscall=1073741863 compat=1 ip=0x401007 code=0x0
+[    2.955870] Code: Unable to access opcode bytes at 0x400fdd.
+[    2.955870] RSP: 002b:00007ffc7a8cbd60 EFLAGS: 00000202 ORIG_RAX: 0000000040000027
+[    2.955872] RAX: 0000000040000027 RBX: 0000000000000000 RCX: 0000000000401007
+[    2.955872] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[    2.955873] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+[    2.955873] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+[    2.955874] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[    2.955874] FS:  0000000000000000 GS:  0000000000000000
+[    2.955885] Process 12(memfd:vast-prob) has RLIMIT_CORE set to 1
+[    2.955886] Aborting core
+[    2.980895] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    2.982895] memfd:vast-probe-i386: memfd:vast-prob: potentially unexpected fatal signal 31.
+[    2.982897] CPU: 26 PID: 1126 Comm: memfd:vast-prob Not tainted 6.6.87.2-microsoft-standard-WSL2 #1
+[    2.982898] RIP: 0033:0x401007
+[    2.982901] audit: type=1326 audit(1792142763.478:3): auid=4294967295 uid=1000 gid=1000 ses=4294967295 subj=kernel pid=1126 comm="memfd:vast-prob" exe=2F6D656D66643A766173742D70726F62652D69333836202864656C6574656429 sig=31 arch=40000003 syscall=20 compat=1 ip=0x401007 code=0x0
+[    2.982902] Code: Unable to access opcode bytes at 0x400fdd.
+[    2.982903] RSP: 002b:00007ffe56c99570 EFLAGS: 00000202 ORIG_RAX: 0000000000000014
+[    2.982904] RAX: 0000000000000014 RBX: 0000000000000000 RCX: 0000000000000000
+[    2.982905] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[    2.982905] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+[    2.982905] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[    2.982906] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[    2.982906] FS:  0000000000000000 GS:  0000000000000000
+[    2.982917] Process 18(memfd:vast-prob) has RLIMIT_CORE set to 1
+[    2.982918] Aborting core
+[    3.063746] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.064064] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.064306] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.064474] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.064669] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.064899] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.065206] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.065429] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.065658] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.065855] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.066083] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.066302] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.066491] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.066964] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.067117] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
+[    3.067309] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2

@@ -12,12 +12,15 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 import checkpoint_savant_sdk_runtime_v3 as worker
+import non_decreasing_wall_clock_v1 as wall_clock
 from checkpoint_savant_container_runtime_v3 import (
     SavantContainerRuntimeV3Error, validate_savant_native_stdio,
 )
 
 DEFAULT = b'max_fps_dur 8.33333e+06 min_fps_dur 2e+08\n'
 CONFIGURED = b'max_fps_dur 1.66667e+06 min_fps_dur 1.66667e+06\n'
+# Every worker exit adds exactly one clamp line to its own (owner-piped) stderr.
+WALL_CLOCK_EXIT = '[savant-sdk-runtime][wall-clock] max_clamp_ns=0\n'
 
 
 class SavantNativeStdioContractV3Tests(unittest.TestCase):
@@ -71,23 +74,25 @@ class SavantNativeStdioContractV3Tests(unittest.TestCase):
                 return receipt
 
             stdout, stderr = io.StringIO(), io.StringIO()
-            with mock.patch.object(worker, 'run_fd_worker', side_effect=complete) as run:
+            with mock.patch.object(worker, 'run_fd_worker', side_effect=complete) as run, \
+                    mock.patch.object(wall_clock, '_PROCESS_CLOCK', wall_clock.NonDecreasingWallClock()):
                 with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
                     result = worker.main(self._arguments(output))
             self.assertEqual(result, 0)
             run.assert_called_once()
             self.assertEqual(json.loads((output / 'worker.runtime.json').read_text()), receipt)
             self.assertEqual(stdout.getvalue(), '')
-            self.assertEqual(stderr.getvalue(), '')
+            self.assertEqual(stderr.getvalue(), WALL_CLOCK_EXIT)
 
     def test_worker_entrypoint_keeps_failure_on_stderr(self):
         stdout, stderr = io.StringIO(), io.StringIO()
-        with mock.patch.object(worker, 'run_fd_worker', side_effect=worker.SavantSdkRuntimeV3Error('native callback failed')):
+        with mock.patch.object(worker, 'run_fd_worker', side_effect=worker.SavantSdkRuntimeV3Error('native callback failed')), \
+                mock.patch.object(wall_clock, '_PROCESS_CLOCK', wall_clock.NonDecreasingWallClock()):
             with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
                 result = worker.main(self._arguments(Path('/unused')))
         self.assertEqual(result, 2)
         self.assertEqual(stdout.getvalue(), '')
-        self.assertEqual(stderr.getvalue(), 'native callback failed\n')
+        self.assertEqual(stderr.getvalue(), 'native callback failed\n' + WALL_CLOCK_EXIT)
 
     @staticmethod
     def _arguments(output):

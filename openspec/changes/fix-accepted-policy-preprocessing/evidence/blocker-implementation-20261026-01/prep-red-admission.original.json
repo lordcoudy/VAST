@@ -1,0 +1,39 @@
+{
+  "kind": "pr9_b2_preparatory_red_admission_v1",
+  "observed_utc": "2026-10-26T10:32:50Z",
+  "scope": "single red phase only; no physical qualification",
+  "planning_commit": "2e72b22195c4d47e09c13ce17ccf863d24dc26df",
+  "reservation_c_bytes": 536870912,
+  "c_floor_bytes": 42949672960,
+  "temporary_floor_bytes": 1073741824,
+  "maximum_allocation_unit": 4096,
+  "review": {
+    "reviewer": "/root/blocker_plan_review",
+    "verdict": "CLEAR for one RED invocation after three findings resolved",
+    "tests_sha256": "0dae02f39fd81a5caa7ae761befaacbda40e77172ae58ca10b24a4a42ac7abf2",
+    "runner_sha256": "38d66efd7203301f57dc0e3d5ee38d57043ea348f9f3470ecec160dcd361fcb8",
+    "envelope_sha256": "4a1d17f471c802c07a6653b828d3783d6a084b7ffc6c55f8d53cd61ddcc4b87d",
+    "dispositions": [
+      "RED output must be independently checked for all six intended outcomes before GREEN",
+      "returned result persistence facts/causes retained in bounded outer JSON",
+      "single phase deadline begins before namespace allocation"
+    ]
+  },
+  "actual_tool_returns": [
+    {
+      "chunk_id": "3d37a4",
+      "wall_time_seconds": 2.1986537999999998,
+      "exit_code": 0,
+      "original_token_count": 24,
+      "output": "{\"DriveLetter\":\"C\",\"FileSystem\":\"NTFS\",\"AllocationUnitSize\":4096,\"SizeRemaining\":246427172864}\r\n"
+    },
+    {
+      "chunk_id": "79c8ee",
+      "wall_time_seconds": 1.1350048,
+      "exit_code": 0,
+      "original_token_count": 77,
+      "output": "{\"boot_id\": \"df4955d9-4762-42b4-a55b-0106ba3786f8\", \"c\": {\"allocation_unit\": 4096, \"available_bytes\": 246427107328, \"device\": 130, \"path\": \"/mnt/c\", \"realpath\": \"/mnt/c\"}, \"temporary\": {\"allocation_unit\": 4096, \"available_bytes\": 880667119616, \"device\": 2128, \"path\": \"/var/tmp\", \"realpath\": \"/var/tmp\"}}\n"
+    }
+  ],
+  "delegated_agent_admission": "ACCEPTED for one finite RED invocation only; all sampled physical inequalities satisfied. GREEN requires independent RED disposition; other phases and whole-chain remain held."
+}

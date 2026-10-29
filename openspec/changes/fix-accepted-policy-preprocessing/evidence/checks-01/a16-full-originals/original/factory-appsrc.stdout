@@ -1,0 +1,197 @@
+Factory Details:
+  Rank                     none (0)
+  Long-name                AppSrc
+  Klass                    Generic/Source
+  Description              Allow the application to feed buffers to a pipeline
+  Author                   David Schleef <ds@schleef.org>, Wim Taymans <wim.taymans@gmail.com>
+  Documentation            https://gstreamer.freedesktop.org/documentation/app/appsrc.html
+
+Plugin Details:
+  Name                     app
+  Description              Elements used to communicate with applications
+  Filename                 /usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstapp.so
+  Version                  1.24.2
+  License                  LGPL
+  Source module            gst-plugins-base
+  Documentation            https://gstreamer.freedesktop.org/documentation/app/
+  Source release date      2024-04-09
+  Binary package           GStreamer Base Plugins (Ubuntu)
+  Origin URL               https://launchpad.net/ubuntu/+source/gst-plugins-base1.0
+
+GObject
+ +----GInitiallyUnowned
+       +----GstObject
+             +----GstElement
+                   +----GstBaseSrc
+                         +----GstAppSrc
+
+Implemented Interfaces:
+  GstURIHandler
+
+Pad Templates:
+  SRC template: 'src'
+    Availability: Always
+    Capabilities:
+      ANY
+
+Element has no clocking capabilities.
+
+URI handling capabilities:
+  Element can act as source.
+  Supported URI protocols:
+    appsrc
+
+Pads:
+  SRC: 'src'
+    Pad Template: 'src'
+
+Element Properties:
+
+  automatic-eos       : Automatically EOS when the segment is done
+                        flags: readable, writable
+                        Boolean. Default: true
+  
+  block               : Block push-buffer when max-bytes are queued
+                        flags: readable, writable
+                        Boolean. Default: false
+  
+  blocksize           : Size in bytes to read per buffer (-1 = default)
+                        flags: readable, writable
+                        Unsigned Integer. Range: 0 - 4294967295 Default: 4096 
+  
+  caps                : The allowed caps for the src pad
+                        flags: readable, writable
+                        Caps (NULL)
+  
+  current-level-buffers: The number of currently queued buffers
+                        flags: readable
+                        Unsigned Integer64. Range: 0 - 18446744073709551615 Default: 0 
+  
+  current-level-bytes : The number of currently queued bytes
+                        flags: readable
+                        Unsigned Integer64. Range: 0 - 18446744073709551615 Default: 0 
+  
+  current-level-time  : The amount of currently queued time
+                        flags: readable
+                        Unsigned Integer64. Range: 0 - 18446744073709551615 Default: 0 
+  
+  do-timestamp        : Apply current stream time to buffers
+                        flags: readable, writable
+                        Boolean. Default: false
+  
+  duration            : The duration of the data stream in nanoseconds (GST_CLOCK_TIME_NONE if unknown)
+                        flags: readable, writable
+                        Unsigned Integer64. Range: 0 - 18446744073709551615 Default: 18446744073709551615 
+  
+  emit-signals        : Emit need-data, enough-data and seek-data signals
+                        flags: readable, writable
+                        Boolean. Default: true
+  
+  format              : The format of the segment events and seek
+                        flags: readable, writable
+                        Enum "GstFormat" Default: 2, "bytes"
+                           (0): undefined        - GST_FORMAT_UNDEFINED
+                           (1): default          - GST_FORMAT_DEFAULT
+                           (2): bytes            - GST_FORMAT_BYTES
+                           (3): time             - GST_FORMAT_TIME
+                           (4): buffers          - GST_FORMAT_BUFFERS
+                           (5): percent          - GST_FORMAT_PERCENT
+  
+  handle-segment-change: Whether to detect and handle changed time format GstSegment in GstSample. User should set valid GstSegment in GstSample. Must set format property as "time" to enable this property
+                        flags: readable, writable, changeable only in NULL or READY state
+                        Boolean. Default: false
+  
+  is-live             : Whether to act as a live source
+                        flags: readable, writable
+                        Boolean. Default: false
+  
+  leaky-type          : Whether to drop buffers once the internal queue is full
+                        flags: readable, writable, changeable only in NULL or READY state
+                        Enum "GstAppLeakyType" Default: 0, "none"
+                           (0): none             - GST_APP_LEAKY_TYPE_NONE
+                           (1): upstream         - GST_APP_LEAKY_TYPE_UPSTREAM
+                           (2): downstream       - GST_APP_LEAKY_TYPE_DOWNSTREAM
+  
+  max-buffers         : The maximum number of buffers to queue internally (0 = unlimited)
+                        flags: readable, writable
+                        Unsigned Integer64. Range: 0 - 18446744073709551615 Default: 0 
+  
+  max-bytes           : The maximum number of bytes to queue internally (0 = unlimited)
+                        flags: readable, writable
+                        Unsigned Integer64. Range: 0 - 18446744073709551615 Default: 200000 
+  
+  max-latency         : The maximum latency (-1 = unlimited)
+                        flags: readable, writable
+                        Integer64. Range: -1 - 9223372036854775807 Default: -1 
+  
+  max-time            : The maximum amount of time to queue internally (0 = unlimited)
+                        flags: readable, writable
+                        Unsigned Integer64. Range: 0 - 18446744073709551615 Default: 0 
+  
+  min-latency         : The minimum latency (-1 = default)
+                        flags: readable, writable
+                        Integer64. Range: -1 - 9223372036854775807 Default: -1 
+  
+  min-percent         : Emit need-data when queued bytes drops below this percent of max-bytes
+                        flags: readable, writable
+                        Unsigned Integer. Range: 0 - 100 Default: 0 
+  
+  name                : The name of the object
+                        flags: readable, writable
+                        String. Default: "appsrc0"
+  
+  num-buffers         : Number of buffers to output before sending EOS (-1 = unlimited)
+                        flags: readable, writable
+                        Integer. Range: -1 - 2147483647 Default: -1 
+  
+  parent              : The parent of the object
+                        flags: readable, writable
+                        Object of type "GstObject"
+  
+  size                : The size of the data stream in bytes (-1 if unknown)
+                        flags: readable, writable
+                        Integer64. Range: -1 - 9223372036854775807 Default: -1 
+  
+  stream-type         : the type of the stream
+                        flags: readable, writable
+                        Enum "GstAppStreamType" Default: 0, "stream"
+                           (0): stream           - GST_APP_STREAM_TYPE_STREAM
+                           (1): seekable         - GST_APP_STREAM_TYPE_SEEKABLE
+                           (2): random-access    - GST_APP_STREAM_TYPE_RANDOM_ACCESS
+  
+  typefind            : Run typefind before negotiating (deprecated, non-functional)
+                        flags: readable, writable, deprecated
+                        Boolean. Default: false
+  
+
+Element Signals:
+
+  "need-data" :  void user_function (GstElement * object,
+                                     guint arg0,
+                                     gpointer user_data);
+
+  "enough-data" :  void user_function (GstElement * object,
+                                       gpointer user_data);
+
+  "seek-data" :  gboolean user_function (GstElement * object,
+                                         guint64 arg0,
+                                         gpointer user_data);
+
+
+Element Actions:
+
+  "push-buffer" -> GstFlowReturn  :  g_signal_emit_by_name (element, "push-buffer",
+                                                            GstBuffer * arg0,
+                                                            GstFlowReturn * p_return_value);
+
+  "push-buffer-list" -> GstFlowReturn  :  g_signal_emit_by_name (element, "push-buffer-list",
+                                                                 GstBufferList * arg0,
+                                                                 GstFlowReturn * p_return_value);
+
+  "push-sample" -> GstFlowReturn  :  g_signal_emit_by_name (element, "push-sample",
+                                                            GstSample * arg0,
+                                                            GstFlowReturn * p_return_value);
+
+  "end-of-stream" -> GstFlowReturn  :  g_signal_emit_by_name (element, "end-of-stream",
+                                                              GstFlowReturn * p_return_value);
+

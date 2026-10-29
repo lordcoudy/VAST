@@ -1,0 +1,99 @@
+# task 4.1 RED (genuine: owner module absent)
+# base commit: 36c395bebf73ec4881caa30d5bb14c0b6a438ce9 + uncommitted new test tests/test_publication_qualification_operational_owner_v1.py
+# test sha256: 446ed1e7c0e3f1fa00a8762f7acb9b24799e8e67951dfd98b873fe569021a445
+# date_utc: 2026-10-06T22:13:47Z
+# host: WSL 6.6.87.2-microsoft-standard-WSL2
+# command: /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest tests.test_publication_qualification_operational_owner_v1
+# no Docker, build, GPU or benchmark was run
+E
+======================================================================
+ERROR: test_publication_qualification_operational_owner_v1 (unittest.loader._FailedTest.test_publication_qualification_operational_owner_v1)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_publication_qualification_operational_owner_v1
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 66, in <module>
+    import publication_qualification_operational_owner_v1 as owner
+ModuleNotFoundError: No module named 'publication_qualification_operational_owner_v1'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+# exit_code: 1
+
+# --- second RED (appended): held prechecks/Savant reuse of the stock runner, before production change ---
+# base commit: 36c395bebf73ec4881caa30d5bb14c0b6a438ce9 + uncommitted owner module and test
+# test sha256: 1d823a19562a7c27aa75657dad141f79c0d07af4672cd7cb65f62405eb43b55a
+# date_utc: 2026-10-07T04:33:06Z
+# command: /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests
+EEEEEE
+======================================================================
+ERROR: test_foreign_or_inactive_bundle_context_is_rejected (tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests.test_foreign_or_inactive_bundle_context_is_rejected) (case='foreign')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 653, in test_foreign_or_inactive_bundle_context_is_rejected
+    self.bind("gstreamer_custom", case.pop("value"), **case)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 621, in bind
+    from publication_operational_stock_operations_v1 import held_operation_runtime_inputs_v1
+ImportError: cannot import name 'held_operation_runtime_inputs_v1' from 'publication_operational_stock_operations_v1' (/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/scripts/publication_operational_stock_operations_v1.py)
+
+======================================================================
+ERROR: test_foreign_or_inactive_bundle_context_is_rejected (tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests.test_foreign_or_inactive_bundle_context_is_rejected) (case='mode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 653, in test_foreign_or_inactive_bundle_context_is_rejected
+    self.bind("gstreamer_custom", case.pop("value"), **case)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 621, in bind
+    from publication_operational_stock_operations_v1 import held_operation_runtime_inputs_v1
+ImportError: cannot import name 'held_operation_runtime_inputs_v1' from 'publication_operational_stock_operations_v1' (/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/scripts/publication_operational_stock_operations_v1.py)
+
+======================================================================
+ERROR: test_foreign_or_inactive_bundle_context_is_rejected (tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests.test_foreign_or_inactive_bundle_context_is_rejected) (case='reuse')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 653, in test_foreign_or_inactive_bundle_context_is_rejected
+    self.bind("gstreamer_custom", case.pop("value"), **case)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 621, in bind
+    from publication_operational_stock_operations_v1 import held_operation_runtime_inputs_v1
+ImportError: cannot import name 'held_operation_runtime_inputs_v1' from 'publication_operational_stock_operations_v1' (/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/scripts/publication_operational_stock_operations_v1.py)
+
+======================================================================
+ERROR: test_held_runner_dispatches_each_system_to_its_stock_runtime (tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests.test_held_runner_dispatches_each_system_to_its_stock_runtime)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 660, in test_held_runner_dispatches_each_system_to_its_stock_runtime
+    self.assertIs(diagnostic._stock_runtime_v1(system), expected)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_benchmark_native_diagnostic_v1' has no attribute '_stock_runtime_v1'
+
+======================================================================
+ERROR: test_native_precheck_changes_only_its_own_pinned_context (tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests.test_native_precheck_changes_only_its_own_pinned_context)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 629, in test_native_precheck_changes_only_its_own_pinned_context
+    result = self.bind("openvino_gva", original)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 621, in bind
+    from publication_operational_stock_operations_v1 import held_operation_runtime_inputs_v1
+ImportError: cannot import name 'held_operation_runtime_inputs_v1' from 'publication_operational_stock_operations_v1' (/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/scripts/publication_operational_stock_operations_v1.py)
+
+======================================================================
+ERROR: test_savant_original_keeps_sdk_context_mount_path (tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests.test_savant_original_keeps_sdk_context_mount_path)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 641, in test_savant_original_keeps_sdk_context_mount_path
+    result = self.bind("savant", self.runtime_inputs("savant"))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/tests/test_publication_qualification_operational_owner_v1.py", line 621, in bind
+    from publication_operational_stock_operations_v1 import held_operation_runtime_inputs_v1
+ImportError: cannot import name 'held_operation_runtime_inputs_v1' from 'publication_operational_stock_operations_v1' (/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-owner/VAST/scripts/publication_operational_stock_operations_v1.py)
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.029s
+
+FAILED (errors=6)
+# exit_code: 1

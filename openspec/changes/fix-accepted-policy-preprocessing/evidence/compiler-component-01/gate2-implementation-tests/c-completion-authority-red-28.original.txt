@@ -1,0 +1,72 @@
+command: canonical WSL Python3.12.3 controlled C unittest
+exit_code: 1
+...............EEE..EEE.E......E
+======================================================================
+ERROR: test_actor_effective_ids_and_fragment_backing_refuse_before_packet_or_output (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_actor_effective_ids_and_fragment_backing_refuse_before_packet_or_output) (bad='geteuid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 723, in test_actor_effective_ids_and_fragment_backing_refuse_before_packet_or_output
+    gate.run_c_v1("C1", project_root=root, packet_descriptor={},
+TypeError: run_c_v1() got an unexpected keyword argument 'completion_authorities'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_actor_effective_ids_and_fragment_backing_refuse_before_packet_or_output (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_actor_effective_ids_and_fragment_backing_refuse_before_packet_or_output) (bad='getegid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 723, in test_actor_effective_ids_and_fragment_backing_refuse_before_packet_or_output
+    gate.run_c_v1("C1", project_root=root, packet_descriptor={},
+TypeError: run_c_v1() got an unexpected keyword argument 'completion_authorities'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_actor_effective_ids_and_fragment_backing_refuse_before_packet_or_output (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_actor_effective_ids_and_fragment_backing_refuse_before_packet_or_output)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 731, in test_actor_effective_ids_and_fragment_backing_refuse_before_packet_or_output
+    gate.run_c_v1("C1", project_root=root, packet_descriptor={},
+TypeError: run_c_v1() got an unexpected keyword argument 'completion_authorities'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_c_failure_after_original_deadline_preserves_facts_without_new_refusal_write (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_c_failure_after_original_deadline_preserves_facts_without_new_refusal_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 638, in test_c_failure_after_original_deadline_preserves_facts_without_new_refusal_write
+    gate.run_c_v1("C1", project_root=root, packet_descriptor={},
+TypeError: run_c_v1() got an unexpected keyword argument 'completion_authorities'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_c_floor_loss_before_owner_starts_no_new_refusal_persistence (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_c_floor_loss_before_owner_starts_no_new_refusal_persistence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 658, in test_c_floor_loss_before_owner_starts_no_new_refusal_persistence
+    gate.run_c_v1("C1", project_root=root, packet_descriptor={},
+TypeError: run_c_v1() got an unexpected keyword argument 'completion_authorities'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_d_binding_cannot_use_only_c1_or_arbitrary_elf (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_d_binding_cannot_use_only_c1_or_arbitrary_elf)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 410, in test_d_binding_cannot_use_only_c1_or_arbitrary_elf
+    gate.validated_c1_binding_v1(project_root=Path(tmp).resolve(), packet_descriptor={},
+TypeError: validated_c1_binding_v1() got an unexpected keyword argument 'completion_authorities'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 506, in test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat
+    result = gate.run_c_v1(stage, project_root=root, packet_descriptor={},
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_c_v1() got an unexpected keyword argument 'completion_authorities'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_outer_receipt_write_and_close_faults_preserve_actual_owner_in_exception (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_outer_receipt_write_and_close_faults_preserve_actual_owner_in_exception)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 700, in test_outer_receipt_write_and_close_faults_preserve_actual_owner_in_exception
+    gate.run_c_v1("C1", project_root=root, packet_descriptor={},
+TypeError: run_c_v1() got an unexpected keyword argument 'completion_authorities'
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 30 tests in 0.343s
+System.Management.Automation.RemoteException
+FAILED (errors=8)

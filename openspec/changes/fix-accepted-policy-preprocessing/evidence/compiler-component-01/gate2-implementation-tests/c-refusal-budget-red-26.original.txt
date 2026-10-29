@@ -1,0 +1,44 @@
+command: canonical WSL Python3.12.3 controlled C unittest
+exit_code: 1
+...................F..F.......
+======================================================================
+FAIL: test_c_floor_loss_before_owner_starts_no_new_refusal_persistence (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_c_floor_loss_before_owner_starts_no_new_refusal_persistence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 1025, in run_c_v1
+    reserve_v1(charged=charged, liability=C_LIMIT + 4194304 + 2097152,
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 262, in reserve_v1
+    _require(c_free_bytes >= component.C_BYTES + component.ADDITIONAL_DISK_UPPER_BYTES, "capacity_floor")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 95, in _require
+    raise Gate2Refusal(cause)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1.Gate2Refusal: capacity_floor
+System.Management.Automation.RemoteException
+During handling of the above exception, another exception occurred:
+System.Management.Automation.RemoteException
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 648, in test_c_floor_loss_before_owner_starts_no_new_refusal_persistence
+    gate.run_c_v1("C1", project_root=root, packet_descriptor={},
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 1151, in run_c_v1
+    write_record_v1(output / "run.refusal.original.json", refusal, cap=4096, absolute_deadline_ns=deadline)
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+AssertionError: write after floor denial
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 571, in test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat
+    self.assertFalse((root / "outputs/C1/run.refusal.original.json").exists())
+AssertionError: True is not false
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 30 tests in 0.908s
+System.Management.Automation.RemoteException
+FAILED (failures=2)

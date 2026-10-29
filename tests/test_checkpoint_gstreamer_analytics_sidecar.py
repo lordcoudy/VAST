@@ -982,6 +982,71 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             self.assertTrue(factory.all_stopped())
             self.assertEqual(list((root / "runtime").iterdir()), [])
 
+    def test_startup_failure_lifecycle_persists_secondary_cleanup_details(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            owner = self._owner(root, _ProcessFactory(self.config))
+            primary = SidecarError("original capture startup failure")
+            primary.__notes__ = ["distinct capture cleanup failure"]
+            with mock.patch.object(owner, "_launch_workers", side_effect=primary):
+                with self.assertRaises(SidecarError) as caught:
+                    owner.run()
+            self.assertIs(caught.exception, primary)
+            lifecycle = json.loads((root / "engineering-evidence/lifecycle.json").read_text(encoding="utf-8"))
+            self.assertIn("original capture startup failure", lifecycle["failure"]["message"])
+            self.assertIn("distinct capture cleanup failure", lifecycle["failure"]["message"])
+
+    def test_worker_start_and_pid_wrappers_persist_non_sidecar_cleanup_notes(self) -> None:
+        for phase in ("start", "pid"):
+            with self.subTest(phase=phase), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                factory = _ProcessFactory(self.config)
+                owner = self._owner(root, factory)
+                primary = RuntimeError("original " + phase + " failure")
+                primary.__notes__ = ["distinct " + phase + " cleanup failure"]
+                original_start = factory.start
+                def start(spec):
+                    if phase == "start":
+                        raise primary
+                    handle = original_start(spec)
+                    handle.expected_peer_pid = mock.Mock(side_effect=primary)
+                    return handle
+                with mock.patch.object(factory, "start", side_effect=start):
+                    with self.assertRaises(SidecarError) as caught:
+                        owner.run()
+                cause = caught.exception
+                for _ in range(8):
+                    if cause.__cause__ is None:
+                        break
+                    cause = cause.__cause__
+                self.assertIs(cause, primary)
+                lifecycle = json.loads((root / "engineering-evidence/lifecycle.json").read_text(encoding="utf-8"))
+                self.assertIn("original " + phase + " failure", lifecycle["failure"]["message"])
+                self.assertIn("distinct " + phase + " cleanup failure", lifecycle["failure"]["message"])
+                if phase == "start":
+                    self.assertEqual(factory.handles, {})
+                else:
+                    self.assertTrue(factory.all_stopped())
+                self.assertEqual(list((root / "runtime").iterdir()), [])
+
+    def test_stock_guardian_cli_persists_primary_and_secondary_failure(self) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar_module
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            authority = root / "authority.json"
+            authority.write_text("{}\n", encoding="ascii")
+            primary = SidecarError("original guardian failure")
+            primary.__notes__ = ["distinct guardian cleanup failure"]
+            path = root / "stderr.json"
+            with path.open("w", encoding="utf-8") as saved, redirect_stderr(saved), \
+                    mock.patch.object(sidecar_module, "query_publication_sidecar_guardian_v1", side_effect=primary):
+                code = main(["--production-status-authority", str(authority)])
+            self.assertEqual(code, 78)
+            message = json.loads(path.read_text(encoding="utf-8"))["message"]
+            self.assertIn("original guardian failure", message)
+            self.assertIn("distinct guardian cleanup failure", message)
+            self.assertEqual(str(primary), "original guardian failure")
+
     def test_runtime_worker_crash_interrupts_front_service(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -2707,6 +2772,10 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
 
                 def drifted_request(*args: Any, **kwargs: Any) -> dict[str, Any]:
                     acknowledgement = original_request(*args, **kwargs)
+                    # Complete the producer before isolating acknowledgement drift.
+                    closer.join(timeout=5)
+                    self.assertFalse(closer.is_alive())
+                    self.assertEqual(closer_errors, [])
                     acknowledgement[field] = replacement
                     return acknowledgement
 
@@ -3055,6 +3124,14 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             class FakeDockerProcess:
                 pid = 4242
 
+                def __init__(self) -> None:
+                    streams = []
+                    for _ in range(2):
+                        read_fd, write_fd = os.pipe()
+                        os.close(write_fd)
+                        streams.append(os.fdopen(read_fd, "rb", buffering=0))
+                    self.stdout, self.stderr = streams
+
                 @staticmethod
                 def poll() -> None:
                     return None
@@ -3073,13 +3150,23 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
                     return None
 
             def popen(command: list[str], **kwargs: Any) -> FakeDockerProcess:
-                del kwargs
+                self.assertEqual(kwargs["stdout"], subprocess.PIPE)
+                self.assertEqual(kwargs["stderr"], subprocess.PIPE)
                 commands.append(command)
+                Path(command[command.index("--cidfile") + 1]).write_text("e" * 64, encoding="ascii")
                 return FakeDockerProcess()
 
             def runner(command: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
                 del kwargs
                 commands.append(command)
+                if command[1] == "info":
+                    return subprocess.CompletedProcess(command, 0, stdout="original-fixture-daemon\n", stderr="")
+                if command[1] == "inspect":
+                    return subprocess.CompletedProcess(command, 1, stdout="", stderr="not found")
+                if command[1] == "ps":
+                    return subprocess.CompletedProcess(command, 0, stdout="", stderr="")
+                self.assertEqual(command[1], "run")
+                Path(command[command.index("--cidfile") + 1]).write_text("a" * 64, encoding="ascii")
                 return subprocess.CompletedProcess(
                     command,
                     0,
@@ -3096,7 +3183,7 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             )
             probe = factory.probe("gpu", self.config["workers"]["gpu"])
             self.assertEqual(probe["engine"], ENGINE_TENSORRT_CUDA)
-            factory.start(
+            handle = factory.start(
                 WorkerLaunchSpec(
                     branch="damage",
                     resource="gpu",
@@ -3112,8 +3199,15 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
                     lifecycle_id="a" * 32,
                 )
             )
-            self.assertEqual(len(commands), 2)
-            probe_command, run_command = commands
+            self.addCleanup(handle.close_diagnostics)
+            launches = [command for command in commands if command[:2] == ["docker", "run"]]
+            self.assertEqual(len(launches), 2)
+            probe_command, run_command = launches
+            for command in launches:
+                self.assertEqual(command[command.index("--log-driver") + 1], "none")
+                self.assertFalse(Path(command[command.index("--cidfile") + 1]).is_relative_to(runtime))
+                self.assertIn("--label", command)
+            self.assertFalse(any(command[1] in {"stop", "kill", "rm"} for command in commands))
             expected_user = f"{runtime.stat().st_uid}:{runtime.stat().st_gid}"
             self.assertEqual(probe_command[:4], ["docker", "run", "--rm", "--network"])
             self.assertIn("none", probe_command)

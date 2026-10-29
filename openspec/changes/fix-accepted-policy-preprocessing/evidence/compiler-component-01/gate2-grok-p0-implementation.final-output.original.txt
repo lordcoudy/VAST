@@ -1,0 +1,28 @@
+The second P0 slice is in the same owned files. The native entry records an agent-observed run with `controlled: false` and `physical_acceptance: false`. The injected seam stays controlled and cannot launch a process.
+
+## APIs
+
+- `collect_p0_v1(output_dir, sealed_binding, *, effects)` is unchanged. It requires a controlled seam, records `controlled: true`, `reviewed_code_commit: null`, and `completion_record: null`, and writes seven files.
+- `collect_native_p0_v1(output_dir, sealed_binding, *, reviewed_code_commit)` takes no effects, argv, or env. `reviewed_code_commit` must be 40 lowercase hex characters. On Windows it calls `windows_native_p0_effects()` once. A non-Windows interpreter or a bad commit returns before that factory, mkdir, and spawn.
+- `WindowsControlledEffects.spawn` raises `P0SeamError` (`controlled_effects_cannot_launch`). Construction still does not launch.
+- `WindowsNativeP0Effects.spawn` accepts only an exact `fixed_argv` command and an exact `fixed_environment()`. The process launcher sits behind that check. Tests patched it and the call count stayed empty.
+- Both records use `actor: agent_observed_root_proof`, `human_review: false`, `engine_observed_by_collector: false`, and `kernel_preemption_claimed: false`. `physical_acceptance` stays false.
+
+## Schema and budget
+
+- Control file `p0-control.v1.json`, schema `gate2-p0-control.v1`, at most 8192 bytes. It now includes `reviewed_code_commit` and the real `controlled` value. It still has no write proof and no self-persistence claim.
+- Native completion file `p0-completion.v1.json`, schema `gate2-p0-originals.v1`, at most 4096 bytes. Fields are `reviewed_code_commit`, `controlled: false`, `physical_acceptance: false`, `actor`, `human_review: false`, `engine_observed_by_collector: false`, `bound_engine_id`, `boot_id`, `control` (`relative_path`, `size_bytes`, `sha256`), `control_write_proof`, `predicates_satisfied`, `causes`, `timing` (`start`, `deadline`, `finish`), and `allocation` (`ceiling_bytes`, `charged_bytes`, `within_ceiling`, `metadata_copy_bytes`). The file does not describe its own persistence.
+- The return value `gate2-p0-capture.v1` carries `completion_record.sha256` and `completion_record.write_proof` after the completion close. Control plus completion together stay at most 12288 bytes. No second full-result file is written.
+- The absolute 30 seconds starts at entry, before binding validation and mkdir. A close that finishes after the deadline leaves `completed: false` and `prefix_sha256: null`. Clock regression, read errors, and poll errors keep the known prefix, mark the remainder and Linux closure unknown, and stop later commands.
+- Worst inclusive charge is 387328 bytes: 324 KiB rounded stdout + 24 KiB worst stderr + 4 KiB directory + 12 KiB metadata + 12 KiB metadata copy + 9 × 256 inode bytes. That is within the unchanged 393216-byte ceiling. Stream caps are unchanged. Each known file size is reserved, rounded, before the write.
+
+## Tests
+
+- RED `p0-red-02.original.txt`: 20 tests, 6 failures, 4 errors (`Ran 20 tests in 0.024s`).
+- GREEN `p0-green-02.original.txt`: 20 tests, OK (`Ran 20 tests in 0.051s`), using `C:/Python314/python.exe -B`.
+- `p0-red-01.original.txt` and `p0-green-01.original.txt` are unchanged.
+- Host syntax compiled with Python 3.12.10.
+
+## Limits
+
+`physical_acceptance` is false on every path. The native launcher was not executed. Canonical WSL Python 3.12.3 was not run. The C validator is not in this slice. Nothing was committed or pushed. This is implementation evidence for the fixed collector, not stage completion and not acceptance of a physical run.

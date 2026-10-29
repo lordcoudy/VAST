@@ -1,0 +1,20 @@
+{
+  "scope": "B3 source-provenance metadata RED only; one invocation",
+  "base_commit": "dbe6d507cbf7284ba8b2db91713e09b547a5398e",
+  "reviewer": "/root/blocker_plan_review",
+  "verdict": "CLEAR",
+  "tests_sha256": "222cc98d08e1ed8c1adf6990b8b74a620e20e04a4fe3794b827f1b62d142a2ae",
+  "runner_sha256": "dad62f9ecbe68ccada0f9e2cc72eb0bbe04be0c2f767e73d7b73f7852abd8bf7",
+  "envelope_sha256": "21852a81a83a965b08721800e453f8e0eee5f77bab1bd1247d5a193c546bc2d1",
+  "reservation_c_bytes": 805306368,
+  "physical_c_required_bytes": 43754979328,
+  "temporary_required_bytes": 1879048192,
+  "fresh_windows_floor": {
+    "chunk_id": "d70068",
+    "wall_time_seconds": 2.2121801,
+    "exit_code": 0,
+    "original_token_count": 15,
+    "output": "{\"AllocationUnitSize\":4096,\"SizeRemaining\":242146422784}\r\n"
+  },
+  "delegated_agent_admission": "ACCEPTED for one metadataRED; originalsource unchanged. Linuxviewscheckedbyrunner beforeallocation. GREENheldpendingindependentRED/source review. No compiler/consumer/physical action."
+}

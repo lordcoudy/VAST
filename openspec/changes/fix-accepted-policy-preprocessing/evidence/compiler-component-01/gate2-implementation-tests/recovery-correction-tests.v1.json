@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_gate2_f2_correction_controlled_test_receipt_v1",
+  "planning_commit": "93bb04b647a9015f47ad3743551cb416b1695376",
+  "source_hashes": [
+    {
+      "file": "accepted_policy_fixture_compiler_recovery_v1.py",
+      "sha256": "2f2267e22636af05674591a840ce3e9a046d2c6a8042d87486fcd605bf2b2be3"
+    },
+    {
+      "file": "test_accepted_policy_fixture_compiler_recovery_v1.py",
+      "sha256": "4c25fdcc92e2d09591e41a4179b14f2352f8b96c3097c808919b9536acd78cb4"
+    }
+  ],
+  "physical_execution": false,
+  "controlled_tests_only": true,
+  "red": [
+    {
+      "file": "recovery-correction-initial-red.original.txt",
+      "scope": "Observed missing output-filesystem binding. Two B3-keyword failures were an intermediate interface experiment withdrawn after independent requirements review; they are not behavioral evidence for the final requirements."
+    },
+    {
+      "file": "recovery-correction-copy-reserve-red.original.txt",
+      "scope": "Zero outside-copy reserve incorrectly permitted output-directory creation and archive requests before refusal."
+    }
+  ],
+  "green": {
+    "file": "recovery-correction-green.original.txt",
+    "tests": 150,
+    "recovery_tests": 35,
+    "existing_owner_transport_publisher_tests": 115,
+    "exit_code": 0
+  },
+  "grammar": {
+    "file": "recovery-correction-grammar-green.original.txt",
+    "runtime": "Canonical WSL Python 3.12.3",
+    "feature_version": "Python 3.10",
+    "result": "PASS"
+  },
+  "behavior_cases": [
+    "Late final-control close refuses; no fresh failure file after original deadline.",
+    "Final bounded supplement reread is followed by original deadline check.",
+    "Physical/accounting reservation refusal creates no additional failure file.",
+    "Derived write failure retains unknown extent and distinct close failure.",
+    "Fresh native output must share root st_dev and 4096-byte fragment allocation before mkdir/RPC.",
+    "Each current/future inode/metadata form and two control-report/Git copies are included in the unchanged 8MiB limit.",
+    "Real internal monotonic guard is not mislabeled as a caller-injected clock."
+  ],
+  "interpretation_disposition": {
+    "kind": "correction_not_amendment",
+    "basis": "Independent review found approved V7 charges Windows C-free decrease over each run; V8 carries fixed B charges and adds finite F2/export/D operation intervals.",
+    "historical_b3_idle_anchor": "withdrawn; no B3 API, helper, enforcement or dependent tests remain",
+    "fixed_b_charges_bytes": 11890688,
+    "component_seal_bytes": 536870912,
+    "f2_aggregate_bytes": 8388608,
+    "fresh_baseline": "Taken at F2 entry before authority reads and all new F2 forms; absolute floors remain mandatory."
+  },
+  "limitations": [
+    "No actual F2, root-P0, Docker, compiler or fixture execution occurred.",
+    "Control-file bytes cannot self-certify their own final close timing; actual evidence approval must bind the original invocation outcome and reject exceptions.",
+    "Synchronous native I/O is a trusted non-preemption boundary; late returns always refuse and never obtain another write window.",
+    "Task 2.10 remains unchecked; independent exact-code review, CI and physical approval remain required."
+  ]
+}
