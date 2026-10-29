@@ -96,6 +96,14 @@ A packaged accepted-policy repair SHALL invalidate affected image/source/parity/
 - **WHEN** privilege, target/caller/volume/device/custody identity, fixed capacity, complete backend retirement, inventory or original clock is missing, drifts, exhausts or becomes unknown
 - **THEN** the system SHALL refuse before the next dependent effect or stop admitted owners within the original deadline, retaining every available original/partial outcome without guessing a disk, alternate V: mapping, fallback, retry, growth, cleanup credit or deletion; peer/CI bootstrap approval SHALL NOT replace any required later configured-Grok, application conformance, archive or merge gate.
 
+#### Scenario: Support metadata collection returns a partial snapshot
+- **WHEN** an admitted read-only support collection has complete process/output closure but required protected metadata cannot be read completely or its identity/completeness is unproved
+- **THEN** available observations and every distinct failure SHALL remain retained; failed terms SHALL remain unknown, full metadata/capacity acceptance SHALL remain held, and a complete transport SHALL NOT grant a rerun or make unavailable allocations zero. A separately reviewed root-relative proof of an absent prospective leaf MAY complete that observational record, while future directory costs and allocation authority remain required.
+
+#### Scenario: An unsupported host reaches support metadata entry
+- **WHEN** the support entry runs under an unqualified PowerShell/.NET host or its original monotonic clock is unavailable
+- **THEN** it SHALL refuse before source I/O, authentication, protected calls or child creation with bounded failure data, preserving original failures and requiring a fresh separately reviewed entry for any later collection; a missing clock SHALL NOT become a zero/default deadline or restart a consumed invocation.
+
 ### Requirement: Integrated repair preserves accepted storage behavior and evidence boundaries
 The accepted repaired baseline SHALL preserve the accepted S3 export/recovery contract and supported historical Seafile reading while retaining the complete inherited implementation and repair's reviewed behavior. Integration acceptance SHALL require independent review of the entire inherited/repair diff at its exact integrated commit, required current checks and genuine scenario conformance. Repair sync/archive SHALL preserve the accepted S3 main requirements/archive and every unaffected main requirement/scenario. Historical failed qualification documents, unchecked tasks, raw evidence and identities SHALL retain their original disposition; code integration SHALL NOT establish qualification, Q4, capacity or full-publication eligibility. All 227 retained images SHALL remain protected unless explicit human confirmation covers the exact images and deletion/offload action.
 

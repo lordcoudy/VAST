@@ -725,3 +725,28 @@ tests; require all nine CI failures to pass without changing protected pins,
 fixtures, method ASTs or budgets. Current-source Grok/independent review/CI and
 fresh actual qualification/admissions remain required. No row/checkmark, C/D
 replay, physical use, D27/Native57 resumption or archive/merge is authorized here.
+
+## Prospective support metadata repair within task1.5, 2026-10-29
+
+Preserve all46 task identities/24 checked states. Retain the actual partial
+packet6492003274, independent DATA reviews6492124961/6492182641, separate PS5
+failure and consumed original entry/witness. Obtain two independent reviews of
+the exact pushed four-artifact amendment, required planning CI and delegated
+AGENT approval before dependent code. Respect independent authoring
+reservation6492480925 for the additional4MiB
+row and complete retained-form quotes before new writes.
+
+Implement only the design's early supported-host refusal, authenticated existing
+four-role metadata-source handoff, fixed-reference/layout query and verified
+root-relative present/absent leaf classification. Keep all native/output/Job/
+original-clock/closure bounds. Prove meaningful RED/GREEN for malformed native
+buffers, coverage/completeness/refusal, actual handoff, host/version/clock gates,
+root-relative errors, collision and independent close failures. Renew actual
+ordinary runtime census/contract, exact-source reviews and exact-head CI; then
+prepare a separately reviewed unused metadata-supplement witness and one native
+entry. Cold-review the actual result without rerun or backdated approval.
+Verified metadata only informs the still-open growth/setup peak. Finish the
+separate outside-writer/SetupAPI capacity work before any VHD/storage effect,
+and configured Grok before dependent application reliance. No task is checked,
+no original overwritten and no compiler/reader/Docker/lifecycle/runtime/consumer/
+Q1/Q4/campaign/archive/merge gate is waived by this support repair.

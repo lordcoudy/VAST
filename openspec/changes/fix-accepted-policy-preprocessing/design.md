@@ -1368,3 +1368,159 @@ only then admit a separately bounded configured review and independently
 disposition what actually ran. Retain all previous profiles/archives/failures.
 This support operation authorizes no compiler, Docker/GPU, application build,
 lifecycle, renewal or genuine-consumer execution and does not close whole1.5.
+
+## Prospective read-only metadata repair, 2026-10-29
+
+**Scope and evidence.** See the proposal's partial actual packet. Consume no
+further entry under6480661090 and preserve setup-witness.derived.json5587B/
+dfd1e833bb6e973c56cbce0e7196a40e5dd91f27bb6c72d110f108ccfbfb5ade. Preserve the
+PS5 failure and human-pasted PS7/version records, without invented command,
+line-ending, clock-order or fresh-authority claims. This amendment refines only
+support-host refusal and read-only metadata collection. SetupAPI writer/cache/
+registry qualification and the complete setup peak remain separate open work.
+No disk/configuration/permission/image/model/application action follows.
+
+**Host entry.** Refuse an unsupported host before source I/O, authentication,
+protected calls or child creation. Explicitly qualify Core PowerShell7.5.5/X64
+and required monotonic/hash APIs instead of letting missing Desktop5.1 APIs
+produce null clock values. Establish one known original180s monotonic deadline
+before the first source read; inherit it through source guard, original owned
+controller/Job/child, observation, persistence and retirement. Preserve the
+15s retirement reserve,512MiB/active1/KillOnClose, existing channel/error limits
+and first/distinct causes. A host refusal is bounded failure data, never entry
+success. Do not infer the precise PS5 failing instruction from RuntimeException.
+
+**Selected metadata API.** Keep six logical collection records, but replace the
+two protected pathname opens and parent-only success criterion. Obtain an
+existing E-root handle using read-only OPEN_EXISTING, directory and reparse
+controls. Verify root directory/non-reparse/non-delete-pending identity, file
+reference, volume serial and bounded volume-GUID final path. Open exactly that
+volume by its authenticated GUID; join its NTFS geometry/serial to the held
+root. Reject unknown/unsupported geometry, extra target, wrong filesystem or
+identity drift. Require NTFS3.0/3.1 from a fixed128B volume-data response,
+validating returned extent and the extended-version prefix before interpreting
+file references; unknown/short/unsupported version is HOLD. All native buffers
+and raw file records stay in bounded memory;
+output only the closed selected metadata schema, no record contents or ACLs.
+
+On this one volume handle use FSCTL_GET_NTFS_FILE_RECORD once for ordinal2 and
+once for9. Bound each result to1040B after qualified1024B file-record geometry;
+validate every returned length and full reference, nonzero sequence and exact
+requested ordinal. Reject the documented downward substitution. The call is
+identity discovery only: do not implement a raw MFT allocation/attribute parser.
+Retain full references as exact integers or decimal/hex strings throughout.
+
+For each discovered full reference issue one singleton FILEID-filtered
+FSCTL_QUERY_FILE_LAYOUT with RESTART|NAMES|STREAMS|NOCLUSTERS (SDK26100 flags0x27,
+control0x90277/METHOD_NEITHER), no extents, whole-volume query or other file.
+Use a fixed16KiB aligned output buffer and at most two calls per file: the
+first must return exactly one matching file entry with NTFS single-instance
+semantics; the continuation on the SAME handle/filter must clear RESTART
+(flags0x26)
+and explicitly terminate at the qualified native EOF status without another
+entry. Repeating0x27 would reset the cursor and is forbidden. Six file-record/
+layout FSCTL calls total.
+Register discovery and first-layout observations before any continuation,
+clock or close can fail. A later failure retains those bounded observations
+with explicit partial/unproved completeness, never a fabricated zero or a lost
+successful first response. Overflow, partial/extra entry, missing target,
+unsupported version, absent
+required information or unexpected continuation is HOLD; do not grow buffers,
+restart enumeration, alter filters, try another API or reinterpret failure.
+
+Parse only supported header/file/name/stream layouts with checked in-buffer
+aligned offsets, positive progress, no cycles/overlap, no duplicate stream keys
+and nonnegative checked allocation/EOF sizes. At most8 names and32 streams per
+file; each UTF16 identifier<=512 units. Key every stream by actual attribute
+type and returned identifier and preserve its flags, allocation and EOF. Request
+resident/unallocated attributes too. Secure's SDS DATA alone is insufficient:
+attribute-list and SDH/SII index-allocation/bitmap streams are also relevant;
+Microsoft's list is a coverage warning, not a fabricated exhaustive roster.
+Missing names/zero streams remain explicitly unavailable pending independent
+installed-runtime disposition, never proof of zero allocation. Do not publish
+raw attribute contents. Every selected per-file fact record must additionally
+fit1536 canonical ASCII-JSON bytes before being accepted as returned facts;
+otherwise refuse without truncation. Root/parent facts are bounded to768B.
+Before entry prove the entire maximum closed collection/error schema fits the
+unchanged6144B normal collection,8192B fallback/channel and32768B witness
+limits, preserving the existing terminal diagnostic reserve, including escaping,
+wrappers and distinct close/clock failures; smaller component caps do not
+establish that proof. A complete enumeration is an observed baseline, not an
+atomic cross-call snapshot or a ceiling on future growth.
+
+**Prospective directory.** Resolve only literal VAST-pr9 relative to the held
+verified root using read-only NtCreateFile/FILE_OPEN with directory and
+open-reparse-point controls; no path search or creation. Qualify its installed
+ABI/status mapping and bounded final-path/identity response. If present, require
+the returned ordinary directory on the same volume and retain its metadata.
+Only specifically qualified STATUS_OBJECT_NAME_NOT_FOUND beneath that held root
+can return the explicit leaf_absent disposition. Denial, another missing-path
+status, reparse/identity/namespace ambiguity or close failure is UNKNOWN/HOLD.
+Retain the root identity in either case. Parent absence may complete this
+observational record; creating the directory still requires separately reviewed
+costs, custody and allocation authority. Keep the same literal future target.
+Bound each final-path buffer to1024 UTF16 units without resizing and cap all new
+root/volume/leaf and file-record/layout native calls at40 total, excluding the
+already separately bounded parent/token/floor/clock machinery. Check the same
+original deadline before and after every call. Keep every acquired original
+handle under one bounded owner across the six
+records, including partial acquisition; close each exactly once in the final
+retirement path and preserve returned facts plus read/clock/close causes
+independently. Observation expiry or a clock failure must not skip the remaining
+owned close attempts or obtain a new clock. Reserve close calls inside the40
+native-call ceiling before observational calls.
+
+**Source and retention.** Keep the existing four authenticated operational
+roles and source-before-execution custody. Move the metadata API definitions
+from the nearly full65441B driver into spare space in the existing capture
+module, then load/inject the exact authenticated capture definitions into the
+owned collector child. Preserve the exact read-close exception identity used
+by metadata_failure so completed facts survive close failures. Explicitly bind
+the driver/capture bytes in the fixed child handoff before definitions execute;
+no self-hash cycle, ambient import, fifth role, alternate executable or
+new generic loader. Independently authenticate every changed child-source path,
+actual bytes/size/hash and original driver/capture pairing. This is permitted
+only if all source files remain<=64KiB and the12-slot512KiB live aggregate fits;
+otherwise HOLD before writing an unadmitted variant. Preserve unrelated
+functions/predicates and all historical source/runtime/contract forms. Renew
+ordinary runtime census, source contract, source/entry reviews and exact-head
+CI after source settles; old03 census cannot qualify changed sources.
+
+Prospective authoring terms are those in the proposal: add4MiB once, retain all
+old charges and failures, use6MiB planning/2MiB source+Git/3MiB ordinary ceilings,
+with all other authoring categories unchanged. The sole added ordinary slot is
+evidence/grok-runtime-boundary-20261028-01/ntfs-metadata-supplement-20261029-01.witness.derived.json,
+<=64KiB; actual collection retains the stricter32KiB witness limit. No old file
+is overwritten or adopted. Controlled source/test/runtime-census originals and
+failures must remain inside their existing explicit capture/retention ceilings;
+no unused archive/profile/setup/model slot is silently repurposed. The full
+source history, intermediate variants and final Git forms must be quoted before
+writes; planning and Git copies consume their stated categories. No cleanup or
+compression credit is required. The new row is authoring only and does not admit
+an elevated collection. A new exact reviewed entry, fixed unused witness and
+fresh checks remain required before the one later native trial.
+
+**Validation and gates.** After exact-pushed planning reviews/required CI and
+delegated approval, use meaningful RED/GREEN controlled tests for unsupported
+host refusal before first source I/O; wrong/downward/sequence references;
+malformed lengths/alignment/overlap/cycles/duplicates/versions/counts; non-ASCII
+escaping and every component/whole-output one-byte boundary; wrong/missing/
+additional continuation and EOF; all returned Secure stream types; present,
+verified absent, denied/reparse/foreign root-relative leaf; deadline and distinct
+read/close failures; and selected-new-witness collision before any protected
+call, while the occupied original witness remains unchanged. Verify
+no write/resize/privilege/fallback/retry route and exact held-source execution.
+Tests must exercise the new parser and actual collector handoff, not only copied
+constants. Controlled success does not qualify native ABI, protected metadata
+coverage or future growth. Separately review the literal source/runtime/entry,
+then admit one bounded native trial; preserve and independently cold-disposition
+its actual complete or partial result. All complete setup, configured Grok,
+compiler/reader, Docker, lifecycle, renewal, genuine consumer, conformance,
+archive and final gates remain open. D27/Native57 stays parked.
+
+Primary contracts: [file-record retrieval](https://learn.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_get_ntfs_file_record),
+[layout input](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_query_file_layout_input),
+[layout output](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_query_file_layout_output),
+[metadata streams](https://learn.microsoft.com/en-us/windows/win32/fileio/defragmenting-files),
+[root-relative open](https://learn.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntcreatefile),
+[final path](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfinalpathnamebyhandlew).

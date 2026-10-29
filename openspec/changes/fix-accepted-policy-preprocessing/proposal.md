@@ -326,3 +326,40 @@ The separately accepted16MiB authoring row retains all earlier charges:
 2455MiB/C73.3564453125GiB. No whole task1.5, lifecycle, runtime, genuine-consumer,
 archive or merge acceptance follows; D27/Native57 and fresh Q1/Q4/campaign stay
 separate. No protected image deletion/offload is included.
+
+## Prospective read-only metadata repair, 2026-10-29
+
+The actual Core PowerShell7.5.5 packet in PR9 comment6492003274 has a complete
+transport and an incomplete collector: V namespace, NTFS E geometry and MFT
+returned facts; LogFile, Secure and the proposed parent returned no facts.
+Independent DATA reviews6492124961/6492182641 accept only the stated integrity,
+identity and recorded closure joins. Preserve the separate Desktop5.1 failure,
+consumed entry6480661090, occupied original witness and cross-clock/provenance
+limits. No retroactive approval, capacity acceptance or replay follows.
+
+Refine the existing support bootstrap with an explicit supported-host refusal,
+a bounded volume-level allocation query for the two protected metadata files,
+and a verified existing-root/relative-leaf disposition. A verified absent
+prospective directory is an observed state whose future creation must be priced;
+it is not zero metadata cost. Keep the literal VHD target unchanged. Complete
+metadata observations remain baseline facts, not future-growth ceilings.
+
+Review the exact pushed four-artifact amendment with two independent reviewers,
+required planning CI and delegated AGENT specification approval before dependent
+collector/host/test changes. The existing narrow peer/CI bootstrap exception
+applies only to repairing the unavailable configured-review support environment;
+all later configured-Grok and application gates remain required. Preserve all
+46 task identities/24 checked states, protected227images, failures, fixed-volume
+limits and the separate D27/Native57/Q1/Q4/campaign dispositions.
+
+Prospectively add ONE4MiB authoring increment, retaining the earlier16MiB and
+all other charges: authoring20MiB, cumulative2459MiB/2578448384B. Split the new
+increment into2MiB additional planning forms,1MiB additional source/Git history
+and1MiB additional ordinary records. Their combined ceilings become6MiB,2MiB
+and3MiB respectively. Keep12 named source slots,512KiB live aggregate and64KiB
+per source; add only the fixed17th ordinary record named in the design,64KiB
+maximum. With unchanged36712448B Circular-EVTX liability the conservative C
+quote is78806790144B/73.3945426940918GiB, leaving7092555776B inside the existing
+80GiB reserve. Independent authoring reservation6492480925 permits only bounded
+planning preparation within these terms. This confers no implementation/native
+authority. Physical C40GiB/E floors and every execution admission remain unchanged.
