@@ -1843,3 +1843,139 @@ delegated SPEC approval still precede general enlarged use. Keep P->S->native
 entry provenance, existing peer/CI support bootstrap and configured Grok gates,
 all C40GiB/support120GiB/E physical floors, all retained original liabilities,
 local synchronization and every application/whole1.5 acceptance requirement.
+
+## Split Docker engine route, 2026-11-04 (supersedes the unentered B4 native store)
+
+**Engine assignment.**
+- **Native** `1e493309` (29.7.2, `/run/docker.sock`): the D15 compiler only (task 2.10
+  and the fixture-compile step of 5.3). The D15 pins at line 162 and in the compiler
+  code are unchanged.
+- **Desktop** `aa8f3d33` (29.8.2): runtime A/B builds, refreeze, parity 480/32,
+  guardian, the nine integrations and the genuine consumer chain.
+  - Inside Ubuntu, every Desktop caller sets
+    `DOCKER_HOST=unix:///run/vast-pr9-desktop-api.sock`.
+  - Before any allocation, a caller refuses if it reaches the native socket, or sees
+    an engine ID other than `aa8f3d33`, or a ServerVersion other than 29.8.2.
+- Outputs of 4.3 feed 4.4 and 5.2, so all three use Desktop.
+- For the 5.3 fixture, image inspections and device probes come from Desktop, where
+  the runtime images and the consumer chain run. Native contributes only the compiled
+  ELF. If a fixture field binds both to one engine identity, the work holds and
+  returns to a spec update. Implementation does not change fixture semantics.
+
+**What stays and what goes from B4 (2026-10-26).**
+
+| B4 element | Status |
+|---|---|
+| Fixed 96GiB C: VHD, offline store copy, bind mounts, systemd mount/start guards, cutover | Withdrawn, never created |
+| Line 1085 "keep the preceding C:96GiB native-store remedy" | Superseded by this section |
+| Line 1101 "outside-native-store writers" | Now means all WSL-hosted writers outside the bounded engine stores |
+| Line 1162 copy/identity clause | Applies only if a native store copy is ever reintroduced; none is planned |
+| Builders take an explicit checked context/export root, not literal `/tmp` | Retained, for the Desktop builders |
+| Build RUN processes inherit CORE 1 | Retained: Desktop builds pass `--ulimit core=1:1`, checked in-build before compilation |
+| Daemon CORE limits | Native: D15 policy unchanged. Desktop: observed read-only before 4.3; if not CORE 1, the 16GiB diagnostics volume must enclose its dumps |
+| Daemon/build logs and temp under bounded locations | Retained: Desktop build state and logs count inside the Desktop growth bound below |
+
+**Diagnostics.** The scenario "WSL diagnostic writers escape the native-store boundary"
+is read as covering all WSL-hosted diagnostic output. That includes the Desktop VM,
+which shares the WSL2 kernel. Before 4.3, a read-only check confirms that Desktop
+crash output follows the same effective dump configuration. The fixed 16GiB E:
+diagnostics volume stays required.
+
+**B1 restore.**
+- Restore the pinned DeepStream base into native containerd. Export it by digest with
+  `docker image save` (no `--platform`) from Desktop. Then run `ctr images import
+  --local --base-name nvcr.io/nvidia/deepstream --digests --platform linux/amd64`, as
+  in the B1 assessment.
+- The archive lives at `/var/lib/vast-pr9-b1/` on Ubuntu ext4. That is backed by
+  `ext4.vhdx` on C: and counted once, in the native bound below.
+- After import, verify RepoDigest, ID, RootFS and native Size.
+- Desktop is only read, and nothing is deleted. The archive is retained through
+  archive/merge, and any later removal needs its own decision.
+
+**Capacity: one whole-chain admission from measured bounds, plus a containment guard.**
+Both VHDX files are dynamic, sit on C: and never shrink: Desktop `docker_data.vhdx`
+(143.6GB) and Ubuntu `ext4.vhdx` (144.1GB). WSL's reported 820GB is virtual and earns
+no credit. No Desktop or WSL disk setting is changed, because lowering a virtual-disk
+limit can recreate the disk and so lose protected images.
+
+1. **Native growth bound, from the B1 assessment's reconciled sizes.**
+   - **Terms**, each counted separately with no sharing credit:
+
+     | Term | Bytes | Source |
+     |---|---|---|
+     | Archive | 10,469,582,904 | layers 10,469,524,887 + config 47,088 + manifest 10,184 + index 745, B1-assessment.md |
+     | `ctr import` ingest/staging | 10,469,582,904 | equals the archive content size: ingest stages each blob once |
+     | Packed content in native containerd | 10,469,582,904 | equals the archive content size: the same blobs, kept |
+     | Unpacked snapshot | 18,930,790,400 | the larger of the native expectation (18,930,790,400) and Desktop's accounting (18,930,741,248), B1-assessment.md |
+
+   - The existing D15 pre-write output limits.
+   - A 2GiB filesystem metadata/journal allowance.
+   - **Non-chain Ubuntu writers** (journald, apt, unattended-upgrades) are external
+     terms. Each is bounded by its configured cap, read fresh at admission. A writer
+     without a cap is unbounded, and the guard contains it.
+2. **Desktop growth bound, from fresh measurements of present objects:**
+   - **Measurement:** for each of the four runtimes' latest accepted images, read the
+     "UNIQUE SIZE" column of `docker system df -v`, fresh at admission.
+     - Under engine 29.8.2's containerd store, that size covers packed content and
+       unpacked snapshots together, as reconciled in B1-assessment.md.
+     - Let U be the sum over the four images.
+   - **Build term:** 2 × U per build, and two builds (A and B), so 4 × U.
+   - **Cache term:** another 4 × U for the BuildKit cache.
+   - **Why this is an upper bound:**
+     - Task 4.2 changes only the source bytes that the existing COPY groups copy.
+       Dockerfiles, pinned bases and dependencies are unchanged, so each new image's
+       unique bytes stay within the measured U plus the changed sources, and ×2 covers
+       those.
+     - If any Dockerfile, base or dependency changes, the bound is re-derived, or 1.5
+       holds as unqualified.
+   - **Containers and logs:** parity/integration/consumer container writable layers
+     and logs are bounded by their existing retention and log limits.
+   - This measures present image sizes, not an old free-space sample. Any growth
+     beyond it is contained by the guard.
+3. **External terms:**
+   - outputs, evidence, ZIPs and Git copies on C: NTFS
+   - the WSL control tmpfs and VM swap
+   - each with a stated bound
+4. **Whole-chain admission, before B1.** One fresh C: sample must cover:
+   42,949,672,960 B + native bound + Desktop growth bound + external terms + retained
+   failed state + the 48GiB guard reserve.
+   - The whole-chain total and each term are recorded in PR #9.
+   - Before each later phase (2.10, 4.3, 4.4, 5.2, 5.3), a fresh sample is re-admitted
+     against the *remaining* chain peak.
+5. **Containment guard (not admission):**
+   - **Sampling:** during each phase it samples C: and E: free at least every 2 s. A
+     failed or unknown sample counts as a breach.
+   - **Breach:**
+     - C: below 42,949,672,960 B plus a 48GiB reserve.
+     - E: below its 12GiB floor (12,884,901,888 B; "E:12GiB floor" at line 94) plus
+       10GiB.
+   - **Why 48GiB is enough:**
+     - C: is a Samsung SSD 970 EVO Plus 1TB on NVMe, read via `Get-Disk` on
+       2026-11-04. Its rated sequential write is 3,300 MB/s.
+     - That rate over one 2 s sampling interval plus a 10 s stop is about 39.6GB,
+       which is under 48GiB (51.5GB).
+   - **Stop:** on a breach it stops only the phase's owned work. Containers are
+     identified by full ID on the admitted daemon, following the owned-retirement
+     rules of the Docker diagnostics requirement. BuildKit builds are cancelled by
+     ending their owned build client.
+   - **Afterwards:** partial state and causes are retained. No prune, deletion, retry
+     or floor change follows.
+6. **E:**
+   - **Admission:** before B1 and before each phase, a fresh E: sample must cover:
+     12GiB floor + 16GiB diagnostics volume (once it is created) + the 10GiB guard
+     reserve + any bounded E: output of that phase.
+   - **Out of scope:** the 112GiB E: admission at line 94 belongs to Q1 guest runs,
+     outside this repair. The 71,017,955,328 B figure belongs only to the local
+     planning Git operation.
+   - **Unbounded writers:** pagefile growth and the unexplained E: decline
+     (241→149GB since 2026-10-31) are treated as unbounded external writers,
+     contained by the guard.
+
+**Desktop identity re-pin (code, under tasks 4.2/4.3).**
+- Enumerate every Desktop identity check reachable from 4.3, 4.4 and 5.2.
+- Add the current containerd commit, with ServerVersion 29.8.2, to the sidecar
+  allowlist (`scripts/checkpoint_gstreamer_analytics_sidecar.py:160-167`), keeping the
+  old entries.
+- Add the endpoint/engine refusal to the builder, parity and integration callers.
+- Each change needs RED/GREEN tests, independent review and CI.
+- Freeze, guardian and parity receipts are regenerated by 4.3/4.4, never rebound.

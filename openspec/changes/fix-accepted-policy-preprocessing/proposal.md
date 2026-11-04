@@ -467,3 +467,33 @@ exact remote P review/current CI/delegated SPEC approval still precedes general
 allowance use. Existing peer/CI support bootstrap and configured-Grok-before-
 application/final gates stay. Every native, model, Docker, compiler, reader,
 lifecycle, runtime-renewal, scientific and whole1.5 gate remains separate.
+
+## Split Docker engine route, 2026-11-04
+
+Human decision (PR #9, 2026-11-04): use each Docker engine only where it is needed.
+Read-only evidence (PR #9 comment 6627815825) found that only the D15 fixture compiler
+is engine-bound. Its code pins native engine `1e493309`, Docker 29.7.2, systemd
+cgroups, SO_PEERCRED uid 0 and provider Size `10469582904`. The aca94dd0 runtime
+builds, the nine integrations and finite study attempt K all ran on Docker Desktop
+`aa8f3d33`. Desktop has since moved from 29.8.1 to 29.8.2 (containerd
+`ee2735368117...`), which the sidecar allowlist does not accept.
+
+- The native Ubuntu engine `1e493309` serves only task 2.10 and the fixture-compile
+  step of 5.3, after the B1 restore of the pinned DeepStream base from Desktop.
+- Docker Desktop `aa8f3d33` serves the 4.3 runtime A/B builds, refreeze, 4.4 parity,
+  guardian, the 5.2 integrations and the 5.3 consumer chain, through an explicit
+  endpoint. 4.3, 4.4 and 5.2 stay on Desktop together.
+- This amendment accepts Docker Desktop 4.95.0 (build 242831), engine 29.8.2,
+  containerd `ee2735368117d2eb259779949d5e75cdafec9761`, as the Desktop pin. Further
+  Desktop updates stay off. No Desktop setting, including its disk limit, is changed.
+- The unentered B4 fixed 96GiB native-store disk and its copy/cutover machinery are
+  withdrawn. They were never created, so nothing is removed. The design replaces
+  the ceiling with growth bounds derived from present, freshly measured objects,
+  one whole-chain C: admission and a containment guard.
+- The Desktop identity pins reachable from 4.3/4.4/5.2, including the sidecar's
+  containerd allowlist, are re-pinned through separately reviewed code changes.
+  Historical pins and receipts are retained, not rebound.
+
+No requirement, scenario, task identity or checked state changes. The 227 protected
+images, the C: 40 GiB floor, the E: thresholds, D27/Native57 parking and every later
+gate are unchanged.

@@ -845,3 +845,29 @@ Independent drafting review/delegation may admit first-P authoring; exact P
 review/current CI/SPEC approval still precedes general use. Preserve all native/
 application/whole1.5, local-sync, configured-Grok and final gates; counts stay
 24/46 and11/87 (all86 prior scenarios preserved). No stage/task acceptance follows from the platform assumption.
+
+## Split Docker engine route within 1.5/2.10/4.2-5.3, 2026-11-04
+
+All 46 task rows and 24 checked states are unchanged. For row 1.5, "the reviewed
+native-store boundary" is now met by the measured native and Desktop growth bounds,
+the whole-chain admission and the containment guard in design.md. The diagnostics
+fixed-volume boundary is unchanged.
+
+Substeps, in order:
+1. **1.5:** fresh C:/E: samples; native, Desktop and external bounds; whole-chain
+   admission recorded in PR #9.
+2. **1.5:** implement and test the containment guard with RED/GREEN tests: breach,
+   unknown sample, and owned-only stop.
+3. **1.5:** B1 restore into native under the guard; verify identities.
+4. **2.10** on native, otherwise unchanged.
+5. **4.2/4.3:** enumerate Desktop identity checks. Then make the code changes, each
+   with RED/GREEN tests, review and CI:
+   - the sidecar re-pin;
+   - the caller endpoint/engine refusal;
+   - the builder changes for the explicit context root and `--ulimit core=1:1` with
+     its in-build check.
+6. **4.3, 4.4, 5.2** on Desktop: each phase re-admitted against the remaining peak,
+   under the guard.
+7. **5.3:** native fixture compile, then the Desktop consumer chain.
+
+The B4 native-store disk substeps (2026-10-26) are withdrawn as unentered.
