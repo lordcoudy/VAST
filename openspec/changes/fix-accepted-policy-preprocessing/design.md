@@ -1587,3 +1587,259 @@ remain open. This supplement does not authorize VHD/storage, WSL, Docker, Grok,
 compiler/reader, lifecycle/runtime/consumer work, protected-image action, fresh
 Q1/Q4/campaign, conformance, archive or merge. It does not redesign CI; absence of
 a dedicated conformance CI is still disclosed and not replaced by local reports.
+
+
+## Bounded support-authoring continuation:34MiB (2026-10-29)
+
+This supersedes ONLY the24MiB prospective partition after exact-head approval.
+The old8/3/3/8/2MiB rows and every retained original/source/failure/unused
+reservation remain charged. Set planning14MiB, source/Git6MiB, ordinary3MiB,
+ONEoriginals.zip plusGit8MiB, metadata/tails3MiB:34MiB total. Add6MiB planning,
+3MiB source/Git and1MiB metadata. No history, cleanup, compression, delta or
+sharing credit. The single4MiB archive and its Git charge stay unchanged/unused.
+
+Planning increase6MiB prices at most FOUR additional complete raw/Git planning
+pairs, each<=1536KiB including this amendment, using only the four existing
+proposal/design/tasks/benchmark-delta paths. Preserve all original bytes and
+the finite-component delta. These are authoring bounds, not approval of future
+amendment substance. Each exact full-pair quote/review/CI/approval remains
+mandatory; no fifth variant is silently released. Old712704B planning balance
+remains separate/unreleased, with no transfer or assumed historical credit.
+
+Source increase3MiB prices at most THREE additional retained source/caller
+batches, each complete raw/Git/representation quote<=1MiB, for the reviewed
+host/census/contract freeze and separately reviewed corrections. Count every
+intermediate source and caller/encoding form once in its own measured batch;
+never reuse an old variant debit. These do not add file slots or authorize
+arbitrary runtime imports, source execution or a fifth operational role or an additional helper/file. Keep12
+named source slots, individual65536B/live524288B, finalinvocation36864B and
+contract53248B, and17ordinary slots/caps. Refuse before retaining a form whose
+whole prospective representation quote does not fit, rather than checking only
+after write or dropping/truncating old data. Exact admissible sources remain
+independently reviewed; a reserved batch is not an execution approval.
+
+Metadata3MiB is control2304KiB plus unchanged other768KiB. Preserve the entire
+oldcontrol1280KiB and all ordinary/native/model/outer accounting. The extra
+1024KiB is only a container for separately priced complete control/original
+forms within their established individual/schema caps. No extra record path,
+new output role, archive, filename substitution or blanket extra-entry grant.
+Complete failed/partial/unknown results remain charged. Every original needs
+a prospective all-argument/unmodified-tool-return/representation/rounding
+bound before entry; timeout/overflow/truncation is HOLD, never a smaller pass.
+
+Exact carried source accounting before backing-space6504307843 is3078144B of
+3145728B (67584B unreleased); its separately reserved57344B leaves10240B.
+Oldcontrol632KiB unreleased becomes504KiB after that ONE128KiB originalpair
+reservation. These lower balances are retained regardless of its result; no
+success or compressed-original credit. After the new rows, unreleased source
+is3155968B and control1528KiB before further separately priced forms.
+
+Add10485760B to direct2582642688B ->2593128448B (2473MiB), and conservative
+C78810984448B ->78821470208B. Unchanged80GiB/85899345920B reserve leaves
+7077875712B. Retain36712448B Circular-EVTX and every earlier exterior/pagefile/
+image/build/source/cache/output liability, C40GiB floor and supportfresh120GiB.
+This is bounded authoring only, not whole1.5 peak closure.
+
+Git common storage is E:/STUDY/VAST/.git. Preserve inherited65GiB (including
+64GiB pagefile,816MiB mappingforms,192MiB source/Git/proof and16MiB outer) with
+no assumed unused192MiB balance. Duplicate FULL34MiB authoring on E, no C
+credit: Ereserve69828870144B +1GiBfloor =70902611968B. Fresh owned available-
+to-caller E observation and separately bounded Git operation are required
+BEFORE GitWRITES. Old E70892126208B threshold is historical24MiB arithmetic,
+not a fresh observation. A free-space-only probe does not qualify protected
+NTFS metadata, compiler/reader, logs/cache/VHD growth, whole1.5 or native setup.
+
+Draft sequence remains independent finite drafting/content/capacity reviews,
+explicit delegated drafting approval, fresh C/head/branch and complete four-
+file pair quote before C edits; only the selected four paths may be staged/
+committed/pushed in this PR after fresh E admission. Obtain independent exact
+pushed-head reviews, successful current planning CI and explicit delegated
+specification approval BEFORE increased code/control use. No dependent code
+or new controlled entry is authorized by draft approval. Source/bootstrap
+review is not configured Grok, native qualification or final acceptance.
+
+Preserve task24/46 and all11requirements/86scenarios. Whole1.5, host/source/
+census/contract/native metadata, compiler/reader/log/cache/VHD, real Docker,
+reviewed atomic lifecycle publication, runtime renewal, genuine consumers,
+nine integrations/conformance/archive/final merge remain open. No CI redesign
+or protected-image action. D27/Native57 stays parked; Q1/Q4/full campaign stay
+separate after repair acceptance.
+
+
+The separate first planning Git operation also needs a16MiB temporary-writer
+reservation, OUTSIDE34MiB authoring. Read-only preflight found the existing
+E:/STUDY/VAST/.git/worktrees/VAST8/index2819415B, noindexlock/stagedchanges,
+noactivehookfiles, unsetcommit.gpgsign and nofilter on these four paths. Price
+FOUR index/original/lock/commit-temp forms<=3MiB each (12MiB), complete new
+looseobjects/trees/ref/reflog forms<=3MiB, and push-transport/temp<=1MiB:16MiB.
+These are closed operation bounds, not assumed spare old192MiB. Recheck index
+size/config/stagedstate and refuse drift before entry. NoautoGC/maintenance,
+prune/repack/forceupdate/hooks/signing/filter override is silently introduced.
+Only these four existing planning paths may enter the commit; all other
+staged/unstaged/untracked evidence stays retained. An exact reviewed finite
+Git operation quote, fresh owned C/E samples and explicit separate delegated
+entry approval still precede any Gitwrite; this section is not that entry.
+
+Including this16MiB writer liability, cumulative direct2609905664B and
+conservativeC78838247424B preserve80GiB by7061098496B. ConservativeE peak is
+inherited65GiB +FULL34MiBauthoring +16MiBoperation =69845647360B; adding the
+unchanged1GiBfloor requires70919389184B. The earlier70902611968B remains the
+authoring-only minimum; it does not close this Git operation. A read-only
+available-space sample may be compared against both without claiming volume
+identity, protectedmetadata qualification or automatic allocation authority.
+Retain the16MiB case liability/failure remnants in later inclusive peaks;
+no success/cleanup credit. C40GiB/supportfresh120GiB and all other caps remain.
+
+
+## Support checkpoint publication with local Git writers held
+
+For these support-only artifacts, the separately reviewed connected GitHub
+Git-data route MAY publish the same branch while local E: Git writes remain
+HOLD. This creates no alternate branch, worktree, repository or OpenSpec change.
+Keep the full34MiB authoring and16MiB local-Git reservation charged; no remote
+publication, absent local object or eventual sharing is a capacity credit.
+
+For clarity, earlier support-continuation E-capacity/staging/commit/push
+conditions apply to LOCAL E-backed Git mutations. This separately admitted
+remote route does not waive them or create their index/object/ref writers.
+
+First publish the four reviewed planning files; obtain independent reviews,
+required CI at that exact remote commit and delegated specification approval
+before using increased source/control allowances. Planning publication alone
+SHALL NOT qualify the current dirty Native/helper implementation. Then require
+one separately reviewed complete support-source/evidence checkpoint on the
+SAME branch, with every intended existing source/evidence file separately
+pinned and the complete allowlisted closure bound to its exact remote tree.
+Required source reviews, schema/runtime/census/contract controls and exact-head
+CI precede the separately admitted narrow native metadata trial. Preserve all
+existing entry gates; only the already approved peer/CI support-bootstrap
+exception while configured Grok is unavailable applies. It is NOT a completed
+configured model review; configured Grok remains mandatory before dependent
+application reliance and at its existing general/final gates.
+
+An admitted publication freezes exact parent commit/base-tree identity, the
+allowed existing file paths and100644 blob modes, before/after byte counts,
+SHA256 and standard Git blob identities, expected unchanged branch and a
+finite object/request set. Read exact bytes from independently verified C-file snapshots OR from
+complete GitHub reads at the exact parent plus only reviewed literal edits in
+RAM; freeze one route before entry. Require every resulting blob SHA to match
+the independently measured C-file bytes before creating the tree/commit. Use that parent tree and ONLY
+allowlisted path entries. Verify the created commit has exactly one expected
+parent and the intended path/blob diff. Advance ONLY the existing branch with
+expected_sha equal to the frozen parent and force=false. On mismatch, failure,
+unknown response or partial publication, retain every object/response identity
+and HOLD; inspect current ref before any separately reviewed continuation.
+No force update, rollback, silent retry or extra path follows.
+
+Remote publication acquires no local index/lock/object/ref/transport writer:
+no local git add/commit/fetch/reset/read-tree/update-ref/push or repository
+migration is permitted by this route. Record actual local HEAD and actual
+remote reviewed HEAD as different whenever they differ. The authoritative
+support checkpoint is the exact reviewed remote tree PLUS independently
+verified matching C-source bytes and preserved closure, not a fictitious local
+commit. Source/runtime observations and the externally verified provenance
+remain required; reviewed_commit syntax alone is not authentication.
+
+Scientific source-capture and every other existing local-HEAD requirement
+SHALL remain unchanged and HOLD until a separately bounded/currently admitted
+local synchronization brings this SAME Cbranch to the reviewed descendant.
+Native E qualification does not automatically approve that sync. Before sync,
+prove allowed ancestry, all original index/worktree/untracked preservation,
+exact byte equivalence and separately reviewed index/object/ref/transport/
+filesystem bookkeeping bounds plus fresh physical capacity/floors; refuse
+other staged changes or branch drift. No blanket destructive reset, checkout
+or rewriting/adoption of historical evidence. Local sync and all whole1.5,
+Docker/lifecycle/runtime/genuine-consumer/final gates remain prerequisites to
+application acceptance. No new role/file/slot or CI redesign is introduced.
+
+
+## Complete support-publication retention:128MiB authoring
+
+The earlier prospective34MiB/24MiB partitions do not price complete cloud API
+request/response originals. On exact planning approval, use128MiB authoring:
+planning24MiB, source/Git16MiB, ordinary3MiB, ONEoriginals.zip plusGit8MiB and
+metadata/tails77MiB. Preserve all old allocations, unused reservations, source
+variants, originals, failures and specific slot/file/live/schema limits. No
+history, compression, sharing, dropped-response or absent-local-object credit.
+This is a finite support-authoring ceiling, not whole1.5/application acceptance.
+
+Relative to approved24MiB, add16MiB planning,13MiB source/Git and75MiB metadata:
+104MiB total. Planning's new16MiB prices TEN complete planning raw/Git pairs
+<=1536KiB each (15MiB), plus1MiB separately measured prospective drafting/forms.
+Every previously charged pair/form stays included; the old712704B remains
+separate. Only the existing four planning paths and individually reviewed edits
+are admitted. Source's new13MiB prices at most THIRTEEN additional all-form
+source/caller batches<=1MiB each, each prospectively quoted and reviewed.
+Keep12source slots/65536B perfile/524288B live, invocation36864B, contract53248B,
+17ordinary slots/caps and the single4MiB archive plus its4MiB Git liability.
+These batch counts are not automatic amendments, retries, roles or executions.
+
+**Prospective closed pre-SPEC authoring repair (2026-10-30).** After exact remote planning review/current CI/delegated SPEC approval, the support-authoring partition remains128MiB: planning24/sourceGit16/ordinary3/ONEoriginalsZIPplusGit8/metadata77MiB. Preserve every old charge, source, failure and fixed slot/file/live/schema/floor. New planning16MiB still prices TEN complete pairs<=1536KiB plus1MiB separately measured forms; source13MiB still prices THIRTEEN all-form batches<=1MiB. Control78080KiB and other768KiB are unchanged. Cleanup32KiB and the consumed host-original128KiB leave344KiB old carry; adding75MiB gives77144KiB, with3416KiB remaining after the unchanged72MiB cloud reservation.
+
+Replace ONLY that72MiB schedule with FIVE fixed groups: the first P group<=40MiB ALL forms INCLUDING its already charged16MiB, ONE independent read-only P-review group<=8MiB, and THREE later support groups<=8MiB each (40+8+3*8=72MiB). The added24MiB in first P and the reader8MiB consume FOUR previously unentered8MiB reservations; they do not refund or add to the old16MiB. First P may retain<=4MiB complete logical originals in aggregate; its ONE fresh acquisition/Git-phase/manifest still has a separate<=2MiB aggregate. Each other group remains<=2MiB logical. Every complete request/result/reader-return, transfer, encoded/carrier/framing, preparation, parser, temporary, retained failure and prospective Git/copy form SHALL count before allocation. No truncation, sharing, compression, deletion or success credit follows.
+
+This prospective drafting exception MAY cover only the retained first-P prefix, ONE fresh four-path acquisition/publication transaction, and ONE read-only independent actual-prefix/C-pin review before planning SPEC approval. Preserve the completed original90 acquisition calls,47 hash calls,20 ADD+20 exact GET calls and6 untruncated old-tree observations; source-only evidence confers no acceptance. PR9 entry6510691107 and the20 IDs in its retained publication records (first6510694437,last6510719802) retain original Source A890070B/SHA256af5ec799ebc85ff7c43f7299ec0f4c5a3c620ce9f2daf866cbe347374ea1174a; read6 entry6510896829 retains the13939B root response that disproved the old8192B cap. The old frozen V1 snapshot and consumed admissions SHALL NOT be reset, overwritten, replayed or retrospectively approved. A separately frozen private V2 snapshot MAY capture the amended same FOUR planning paths once; no other ref-changing P transaction is authorized. An error/unknown consumes the applicable entry and stops dependents without retry, rollback or fallback.
+
+Cumulative frozen P source/caller forms MAY be<=768KiB ALL forms, including the fully charged old512KiB. This remains inside the ALREADY FULLY charged first1MiB of13 source batches; its unused remainder, the other12 batches and all general increased source/control remain held. Only the rebound fixed P reader/caller and a fixed RAM-only P DATA review decoder/hash helper are added. They SHALL use native canonical Base64/UTF8/JSON/hash operations, fixed inventories and bounded inputs; captured program strings are inert DATA and SHALL NOT be evaluated, compiled, imported or used as a loader. Per-file65536B/live524288B,12source slots, invocation36864B, contract53248B,17ordinary slots and the ONE4MiB ZIP plus4MiB Git liability stay unchanged. No new physical file/role or generic execution service is authorized.
+
+Within first P, immutable V1 snapshot727078B remains in the old16MiB. The added24MiB separately prices: new canonical forms256KiB; V2 initial and BOTH future check snapshots3*768KiB; temporary/serialization forms2MiB; fresh logical originals2MiB; fresh complete hash carriers4.5MiB; publication arguments3MiB; complete readbacks6MiB; entry/control/enclosing forms2MiB. These sum22MiB, leaving2MiB reserved; no old form is credited away. Each V2 snapshot SHALL fit its full768KiB representation before entry.
+
+The independent reader SHALL bind one frozen current Source A inventory of at most24 indexed piece GETs, source original<=1MiB and exact bytes/SHA, its own<=2MiB logical prefix/report rather than the4MiB P aggregate, with complete GET wrappers and all transfer/reassembly/parse/hash/caller copies inside its8MiB. Its closed ledger is complete GET arguments/results3MiB, complete transfer/caller records1.5MiB, simultaneous decoded/UTF8/parsed/hash views3MiB, and control/enclosing/failure forms512KiB; explicit stage barriers SHALL prove actual fit before entry. Explicit copy-stage barriers may retire only derived representations after complete originals remain losslessly preserved; they prove no physical reclamation or backend retirement. Independent evidence-backed actual acquisition/prefix/C-pin review SHALL complete BEFORE the sole M transaction. Exact content/source/request/result/capacity review and a separate delegated entry SHALL precede every fresh group or invocation; neither this ceiling nor an unused reservation alone is entry authority.
+
+For the first40MiB group only, allow at most128 indexed pieces in AGGREGATE, each<=65536B and ALL published pieces/framing<=6MiB; other groups retain64 pieces/3MiB. Every INDIVIDUAL packet still retains the existing<=2MiB raw/3MiB encoded/64-piece limits of the frozen encoder/hash programs; no operational DATA bound rebind follows from the larger group aggregate. Preserve unchanged UTF8 originals, canonical native Base64, optional standard gzip, exact lossless reassembly and raw byte/SHA identities; no custom codec or hash substitution. Freeze finite requests and complete NORMAL record/CLIENT-OWNED copy quotes under the existing explicit P/S connected-GitHub/hosted-CI trust boundary. Post-return caps detect; they do not enforce opaque producer/error/buffering/platform/backend bounds. Unknown/oversized/truncated returns HOLD with honest available-prefix and unavailable-remainder facts.
+
+Inclusive C78936813568B and E69944213504B plus1GiBfloor71017955328B remain unchanged; retain C40GiB/supportfresh120GiB and every prior physical/image/cache/failure liability. Exact remote P review/current CI/delegated SPEC approval still precedes general128MiB use. S retains its own complete source/runtime/census/contract inventory, review, exact-head CI and entry. No production/test/CI implementation, local Git writer, privileged metadata, model/child/Docker/WSL/VHD/scientific/application execution or whole1.5 acceptance follows. Configured-Grok-before-application,227 protected images,D27/Native57 parking and all consumer/conformance/archive/final/merge gates survive. Task states remain24/46; all11requirements/86 prior scenarios remain, with the new bootstrap-review scenario making11/87.
+
+**Prospective input preparation and V2 quote (2026-10-31).** Preserve prior40MiB, the admitted0.75MiB, and all old charges/UNKNOWNs. First P becomes41.75MiB:512KiB clean control/transfer/copy forms plus1.25MiB canonical/source forms, including the already charged256KiB. The73.75MiB schedule keeps reader8MiB and three later8MiB groups;1624KiB remains from3416KiB. Unchanged2MiB temporary storage covers ONE fresh4-Buffer set plus ONE decoded-file view and bounded JSON views. Frozen P SOURCE may use the fully charged firstTWO1MiB batches; other11 stay held; per-file/live/packet/logical limits remain unchanged. Exact independent DRAFT/source/capacity review and separate delegated entries admit NEW expected DATA at old pins and the unchanged1097B projection once, as recorded in6535545675/6535557032/6535564352; neither may rerun. Materialize this reviewed amendment only after closing its distinct planning-pair reservation. Then separately review a bounded native-UTF8/JSON/hash resegmentation of amended expected DATA and the rebound95-call V2 profile/callers before V2 entry. Missing old RAM earns no credit. No protected-key reset, historical replay, new role/file, native/application acceptance or other gate release.
+
+**Fresh-runtime fit certificate (2026-10-31).** Human planning decisions 6541441718 replace the old+current per-holder predicate of 6540846729 item3 (deadlock 6541361242), for V2 and M only, and fund it from the three later support groups. Holders whose namespace is unavailable (6541218330), and every CurrentRoot holder once the fresh runtime starts, SHALL be HISTORICAL-UNREACHABLE. Each keeps its recorded charge, and each UNKNOWN keeps its full enclosing-row ceiling. None earns GC/retirement/pooling/deletion/refund credit, and none is fit evidence. First P stays closed at 41.75MiB fully charged and admits no allocation after the fresh runtime starts. The THREE later support groups (3*8MiB) become ONE fresh V2/M group <=24MiB. The 73.75MiB schedule, reader 8MiB and remaining 1624KiB stay unchanged, and later support work needs its own funding amendment. Inside the fresh group, the first-P V2 pricing rows apply unchanged: canonical 256KiB, snapshots 3*768KiB, temporary 2MiB, originals 2MiB, hash carriers 4.5MiB, publication arguments 3MiB, readbacks 6MiB, control/enclosing 2MiB, with 2MiB reserved. The fresh group takes over several limits from first P, which keeps none of them for new allocations: the 128-piece/6MiB published aggregate, the 4MiB logical-original and 2MiB fresh-acquisition limits, and the SOLE fresh four-path acquisition/publication transaction and M. Per-packet limits stay unchanged. ONE fresh runtime MAY start once. Its entry census SHALL use ONE fixed, independently reviewed, read-only RAM-only census inventory, charged to the control/enclosing row. It adds no new file, role or generic execution service. The census SHALL show own globals that are a subset of the 93 runtime/API names enumerated in 6541218330 (S50315/50318). It SHALL also show none of the 311 store names, neither snapshot property and no user root. Any other name or a surviving store HOLDs. The certificate SHALL give every V2/M holder its own pre-allocation upper-bound row, measured after return. Rows cover each Buffer backing, including 65536B pooled allocations, and every text/JSON/control/enclosing/transfer/retained-failure form. Rows SHALL fit their pricing rows; otherwise HOLD. The independent reader stays within its own 8MiB. Preparations 6535545675/6535557032/6535564352 stay consumed and charged to first P. ONE new distinct preparation of expected DATA and the 1097B projection MAY run once in the fresh runtime. This preparation is a new distinct entry, not a rerun of the consumed ones. The fresh group's temporary 2MiB covers its ONE 4-Buffer set, decoded view and JSON views together with V2 serialization. The CurrentRoot set stays charged to first P. Fresh source/caller copies are charged to the control/enclosing row. The preparation SHALL read the four files exactly as this amendment materializes them, matching that receipt's bytes/SHA. V2 profile/callers SHALL rebind to those pins using measured sizes of the materialized files, under the bounded resegmentation method of 6536118743, with fresh independent review. Any byte/SHA difference HOLDs. Materializing this amendment still requires its own closed planning-pair reservation. Loss of the fresh runtime makes its holders HISTORICAL-UNREACHABLE and HOLDs; no second fresh runtime may start. Census, certificate, preparation and V2 entry each need independent review and a separate delegated entry. No reset/replay of a consumed admission, retrospective approval or other gate release follows. Task states remain 24/46; 11/87 unchanged.
+
+Fresh 24MiB: move 2MiB reserve to control/enclosing 4MiB, reserve 0; other fresh rows unchanged. NEW pair 11:1536KiB + writer controls 88KiB use 1624KiB headroom, leaving 0; old pairs stay charged. Price ancillary client copies BYCONSTRUCTION only; producer/platform buffering UNPROVED/UNPRICED. V2:95 calls(94 reads12/49/18/15+init),8192.
+
+Prospective6546305286:ONLY historical P_i,G/D_i/N_i and B_records dependent on P_i or T/G remain UNPROVED/UNPRICED; disclose in every later certificate,no fit credit/no other original term joins. Boundable C_k/fixed B_records,608B/787968B stay priced/charged. 6562230462 admits ROOT3 as incident1/4; at most3 further missing-full-client-R events require exact Source retained AND independently reviewed. Expressly admitted656/657 incidents join the named residual. Fifth events,Source loss,unreviewed calls,lost publication/write receipts,loss of ANY of the four planning FILES OR pins,and fabricated/estimated sizes HOLD. 6571527473 DECLARES ASSUMPTION ceiling1024UTF16u/2048B per uncapped platform-generated scalar metadata FIELD,with Source/contract-bounded field counts,full fresh-control charge/no refund; disclose assumption/counts/charges in EVERY later certificate. Contract-sized numeric forms stay separately priced. Store fullR in.then before inspection/measurement; over-ceiling follows incident/HOLD rules. Client Source/strings/payloads/bodies/errors/counts/arrays/objects are excluded; their Source bounds still gate. 6572933784 reserves4incident-only90112B envelopes,total360448B,ONE per admitted incident; overrun HOLD is NOT another incident; no planning/runtime/V2/M/reader/certificate/preparation subsidy. Current-chat supplement adds65536B DATA+262144B controls to SAME GrantPair1:1638400B DATA/352256B controls;80GiB unchanged,Creserve78944153600B. Old pair/Source616/SIM/forensic charges stay;44906B paired base includes102B correction,no refund. V2 uses8192-unit reads;97calls(12/50/19/15+init) supersede prior prospective counts ONLY after fresh approved planning simulation;no operational release.
+
+
+Add104MiB authoring to direct2582642688B ->2691694592B and conservative
+C78810984448B ->78920036352B. Keep the separate16MiB local-Git writer liability:
+inclusive direct2708471808B, conservativeC78936813568B,80GiBmargin6962532352B.
+C40GiB and supportfresh120GiB remain; every old image/build/cache/pagefile/
+Circular-EVTX/exterior liability stays. Duplicate FULL128MiB authoring and the
+separate16MiB Gitcase on E over inherited65GiB: Ereserve69944213504B, plus
+1GiBfloor ->71017955328B for that local operation. Earlier34MiB thresholds
+remain historical/prospective lower quotes, not current write authority.
+No local index/object/ref/fetch/commit/push writer is released by cloud surplus
+or by this arithmetic; local synchronization still requires its own complete
+operation/metadata/configuration/physical-capacity admission. Keep configured-
+Grok-before-application and all whole1.5/physical/genuine-consumer/final gates.
+
+
+## Support-checkpoint platform trust; not a bounded producer
+
+The complete connected-GitHub MCP error/metadata envelope has no established
+hard producer ceiling. For ONLY the closed P planning and subsequent S support-
+source/evidence deliveries, trust the connected GitHub/hosted-CI authoring
+platform as an explicit boundary. Producer buffering, incidental platform
+side effects and backend retirement remain unproved. This assumption is not
+whole1.5 physical capacity, original-controller retirement or application proof.
+First P remains restricted to the four pinned planning files; S still requires
+its own frozen full source/runtime/census/contract inventory, independent review,
+exact-head CI and separate entry. No native/app producer limit is relaxed.
+
+Before entry retain finite request sets, fixed normal-record and owned-copy
+quotes, actual-source/byte/hash guards, original/all-form ceilings, expected
+parent/base-tree/nonforce lease, readback and current physical floors. Caps
+checked after a tool return DETECT overflow; they do not enforce a server-side
+producer cap. Preserve complete observable arguments/results within admission.
+If a result is oversized, truncated, missing or uncertain, retain everything
+actually available and HOLD with explicit unavailable-prefix/remainder facts;
+never claim complete retention, hash omitted bytes, retry or roll back. Any
+partial remote commit/ref effects remain recorded and separately inspected.
+
+Exact independent drafting/content/source/capacity reviews and delegated
+AGENT drafting approval may cover this first-P authoring assumption before
+SPEC approval; it is ordinary Draft-PR delivery, not production/test/CI
+implementation authority. Exact remote P independent review/current CI and
+delegated SPEC approval still precede general enlarged use. Keep P->S->native
+entry provenance, existing peer/CI support bootstrap and configured Grok gates,
+all C40GiB/support120GiB/E physical floors, all retained original liabilities,
+local synchronization and every application/whole1.5 acceptance requirement.
