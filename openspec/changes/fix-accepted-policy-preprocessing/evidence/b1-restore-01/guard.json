@@ -1,0 +1,30 @@
+{
+  "breach": {
+    "kind": "unknown",
+    "reason": "sample timed out",
+    "volume": "C:"
+  },
+  "breached": true,
+  "child_returncode": 3,
+  "containers": {},
+  "exit_code": 3,
+  "guard_signals": [],
+  "last_sample": {
+    "C:": null,
+    "E:": null
+  },
+  "max_gap_seconds": 1.938,
+  "owner_token": "66181feab0401032f2348af1d4511a68",
+  "phase": "b1-restore",
+  "retained": "partial state retained; no prune, deletion, retry or floor change",
+  "samples": 152,
+  "schema": "vast.pr9.containment-guard.v1",
+  "stop": {
+    "cause": "breach",
+    "client_signals": [
+      "SIGTERM"
+    ],
+    "failures": [],
+    "killed_containers": []
+  }
+}
