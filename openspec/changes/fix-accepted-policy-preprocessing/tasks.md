@@ -871,3 +871,16 @@ Substeps, in order:
 7. **5.3:** native fixture compile, then the Desktop consumer chain.
 
 The B4 native-store disk substeps (2026-10-26) are withdrawn as unentered.
+
+**Amendment, 2026-11-06 (after B1 run 01).** Run 01 is retained and consumed. Its
+evidence is in `evidence/b1-restore-01/` and PR #9 comment 6659021449. Before a
+second B1 attempt (substep 3):
+- **Guard:** change sampling to the amended design rule. A failed sample breaches at
+  once. A timed-out (unknown) sample is tolerated while the last known sample is no
+  more than 2 s old.
+- **B1 helper:** add a mode that reuses the retained archive. It re-verifies the
+  archive in full and requires the recorded sha256 and size.
+
+Each change gets RED/GREEN tests, independent review, CI and a recorded approval
+before the single attempt-02 invocation. All 46 task rows and 24 checked states are
+unchanged.

@@ -1889,6 +1889,18 @@ diagnostics volume stays required.
 - The archive lives at `/var/lib/vast-pr9-b1/` on Ubuntu ext4. That is backed by
   `ext4.vhdx` on C: and counted once, in the native bound below.
 - After import, verify RepoDigest, ID, RootFS and native Size.
+- **Reusing a retained archive** (*amended 2026-11-06*):
+  - A later attempt that follows a consumed one may skip the save and reuse the
+    retained archive. It must first re-verify that archive in full, exactly as the
+    first attempt did: complete membership and every blob hash.
+  - It must also match the sha256 and size recorded by the earlier attempt. For run
+    01 those are `a55b6e0c5c522b09aa1c5f521789424609455d49678dd0042c6c3472d00aa9b1`
+    and 10,469,630,464 B.
+  - Any mismatch refuses the attempt. No new save, overwrite or removal follows.
+  - Remnants of the earlier attempt, such as an abandoned ingest or a ctr lease, are
+    recorded and left to containerd, not removed.
+  - Reuse writes no new archive bytes.
+  - Each attempt is a single invocation and needs its own reviewed approval.
 - Desktop is only read, and nothing is deleted. The archive is retained through
   archive/merge, and any later removal needs its own decision.
 
@@ -1943,8 +1955,19 @@ limit can recreate the disk and so lose protected images.
    - Before each later phase (2.10, 4.3, 4.4, 5.2, 5.3), a fresh sample is re-admitted
      against the *remaining* chain peak.
 5. **Containment guard (not admission):**
-   - **Sampling:** during each phase it samples C: and E: free at least every 2 s. A
-     failed or unknown sample counts as a breach.
+   - **Sampling:** during each phase it samples C: and E: free at least every 2 s.
+     - A **failed** sample (the read raised an error, or returned something other
+       than a non-negative integer) counts as a breach at once.
+     - A sample that does not return within its time budget is **unknown**. Unknown
+       samples are tolerated only while the last known sample completed no more than
+       2 s ago. The phase is breached as soon as no known sample has completed for
+       more than 2 s, or when the number of hung reads reaches the guard's thread
+       bound.
+     - *Amended 2026-11-06* after B1 run 01 (`evidence/b1-restore-01/`). There, a
+       drvfs statfs on `/mnt/c` and `/mnt/e` stalled past its 0.5 s budget during
+       import I/O on C:, while C: had about 262GB free.
+     - The 48GiB reserve argument below is unchanged. Writes after the last known
+       sample still span at most 2 s plus the 10 s stop.
    - **Breach:**
      - C: below 42,949,672,960 B plus a 48GiB reserve.
      - E: below its 12GiB floor (12,884,901,888 B; "E:12GiB floor" at line 94) plus
