@@ -857,7 +857,8 @@ Substeps, in order:
 1. **1.5:** fresh C:/E: samples; native, Desktop and external bounds; whole-chain
    admission recorded in PR #9.
 2. **1.5:** implement and test the containment guard with RED/GREEN tests: breach,
-   unknown sample, and owned-only stop.
+   unknown sample, and owned-only stop. The sampling rule was revised by the
+   2026-11-06 amendment below.
 3. **1.5:** B1 restore into native under the guard; verify identities.
 4. **2.10** on native, otherwise unchanged.
 5. **4.2/4.3:** enumerate Desktop identity checks. Then make the code changes, each
@@ -875,12 +876,27 @@ The B4 native-store disk substeps (2026-10-26) are withdrawn as unentered.
 **Amendment, 2026-11-06 (after B1 run 01).** Run 01 is retained and consumed. Its
 evidence is in `evidence/b1-restore-01/` and PR #9 comment 6659021449. Before a
 second B1 attempt (substep 3):
-- **Guard:** change sampling to the amended design rule. A failed sample breaches at
-  once. A timed-out (unknown) sample is tolerated while the last known sample is no
-  more than 2 s old.
-- **B1 helper:** add a mode that reuses the retained archive. It re-verifies the
-  archive in full and requires the recorded sha256 and size.
+- **2a. Guard:** implement the per-volume freshness rule from design.md
+  ("Containment guard", Sampling):
+  - one reader per volume, at most one read in flight, and the read's start time
+    used as its observation time;
+  - a failed read, or a valid read below the line, breaches at once on either
+    volume;
+  - staleness beyond 2 s breaches, checked when a read completes and at each
+    volume's deadline;
+  - the phase launches only once every volume has a valid read;
+  - the record keeps read counts, the longest read and the greatest staleness.
+- **3a. B1 helper:** add a reuse mode that skips only the save:
+  - open the archive read-only; the archive directory must hold exactly that one
+    file;
+  - full re-verification, plus the sha256 and size recorded by run 01;
+  - keep preflight, the identity pin, the import command and the post-import
+    contract;
+  - take a read-only snapshot of active ingests and leases before the import.
+- **3b. Attempt 02:** a fresh re-admission that counts the retained archive and the
+  run-01 ingest; one invocation with `--interval 1.0` under the guard, after its own
+  approval.
 
-Each change gets RED/GREEN tests, independent review, CI and a recorded approval
-before the single attempt-02 invocation. All 46 task rows and 24 checked states are
-unchanged.
+2a and 3a each get RED/GREEN tests, independent review, CI and a recorded approval
+before 3b. These are substeps within existing row 1.5, so all 46 task rows and 24
+checked states are unchanged.

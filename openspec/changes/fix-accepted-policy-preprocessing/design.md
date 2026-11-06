@@ -1890,17 +1890,38 @@ diagnostics volume stays required.
   `ext4.vhdx` on C: and counted once, in the native bound below.
 - After import, verify RepoDigest, ID, RootFS and native Size.
 - **Reusing a retained archive** (*amended 2026-11-06*):
-  - A later attempt that follows a consumed one may skip the save and reuse the
-    retained archive. It must first re-verify that archive in full, exactly as the
-    first attempt did: complete membership and every blob hash.
-  - It must also match the sha256 and size recorded by the earlier attempt. For run
-    01 those are `a55b6e0c5c522b09aa1c5f521789424609455d49678dd0042c6c3472d00aa9b1`
-    and 10,469,630,464 B.
+  - A later attempt that follows a consumed one may skip **only the save** and reuse
+    the retained archive. Everything else stays as in the first attempt:
+    - preflight, including the read-only Desktop identity check and the refusal when
+      the native image or reference is already present;
+    - the archive's file identity pinned across the import;
+    - the same import command;
+    - the full post-import contract.
+  - **Opening the archive:** it is opened read-only and without following links. The
+    archive directory must hold exactly that one file, which stands in for the empty
+    directory and `O_EXCL` of the first attempt.
+  - **Verification:** the archive is re-verified in full, as in the first attempt:
+    complete membership and every blob hash. It must also match the sha256 and size
+    recorded by the earlier attempt. For run 01, `evidence/b1-restore-01/` records
+    `a55b6e0c5c522b09aa1c5f521789424609455d49678dd0042c6c3472d00aa9b1` and
+    10,469,630,464 B.
   - Any mismatch refuses the attempt. No new save, overwrite or removal follows.
-  - Remnants of the earlier attempt, such as an abandoned ingest or a ctr lease, are
-    recorded and left to containerd, not removed.
-  - Reuse writes no new archive bytes.
-  - Each attempt is a single invocation and needs its own reviewed approval.
+  - **The window between verification and import:**
+    - containerd digest-checks every content blob when it commits it;
+    - the non-content members (`index.json`, `manifest.json`) are covered by the
+      post-import contract, not by containerd.
+  - **Remnants of the earlier attempt** (run 01: ingest `tar-blobs/sha256/0874059c…`,
+    339.7 MB, and the ctr lease that expires 2026-11-06T13:17:22Z):
+    - they are recorded by a read-only snapshot of active ingests and leases in
+      preflight, and left to containerd, not removed;
+    - resuming that ingest is acceptable, because containerd verifies each blob's
+      digest when it commits;
+    - an ingest conflict or failure is a refusal, and it consumes the attempt.
+  - **Capacity:** reuse writes no new archive bytes. Each attempt is re-admitted from
+    a fresh sample against the remaining peak, with the retained archive and the
+    remnant ingest counted as retained failed state.
+  - Each attempt is a single invocation, needs its own reviewed approval, and runs
+    with `--interval 1.0` under the guard.
 - Desktop is only read, and nothing is deleted. The archive is retained through
   archive/merge, and any later removal needs its own decision.
 
@@ -1955,19 +1976,45 @@ limit can recreate the disk and so lose protected images.
    - Before each later phase (2.10, 4.3, 4.4, 5.2, 5.3), a fresh sample is re-admitted
      against the *remaining* chain peak.
 5. **Containment guard (not admission):**
-   - **Sampling:** during each phase it samples C: and E: free at least every 2 s.
-     - A **failed** sample (the read raised an error, or returned something other
-       than a non-negative integer) counts as a breach at once.
-     - A sample that does not return within its time budget is **unknown**. Unknown
-       samples are tolerated only while the last known sample completed no more than
-       2 s ago. The phase is breached as soon as no known sample has completed for
-       more than 2 s, or when the number of hung reads reaches the guard's thread
-       bound.
-     - *Amended 2026-11-06* after B1 run 01 (`evidence/b1-restore-01/`). There, a
-       drvfs statfs on `/mnt/c` and `/mnt/e` stalled past its 0.5 s budget during
-       import I/O on C:, while C: had about 262GB free.
-     - The 48GiB reserve argument below is unchanged. Writes after the last known
-       sample still span at most 2 s plus the 10 s stop.
+   - **Sampling:** during each phase every volume (C: and E:) must stay *fresh*: its
+     latest valid read must have **started** no more than 2 s ago. The rule works per
+     volume, as follows (*amended 2026-11-06*):
+     - **Readers:**
+       - Each volume has its own reader.
+       - At most one free-space read is in flight per volume.
+       - A new read starts at most once per interval (1.0 s or less), and never
+         while that volume's previous read is still in flight.
+       - A read's observation time is its **start** time. Free space only falls
+         under the phase's writes, and the value cannot describe an earlier moment
+         than the start.
+     - **Breach at once, on either volume:**
+       - a failed read (it raised an error, or returned something other than a
+         non-negative integer);
+       - a valid read below that volume's line.
+     - **Breach on staleness:**
+       - The guard re-evaluates whenever a read completes, and at each volume's
+         freshness deadline (the latest valid read's start + 2 s).
+       - It breaches as soon as any volume is not fresh.
+       - A read that is still in flight, however slow, never extends freshness.
+       - A read that completes after the deadline counts only if it comes before
+         the breach decision is taken. Once the breach is declared, nothing resets
+         it.
+     - **Before launch:** the phase starts only after every volume has a valid read
+       above its line. If that read does not come within 2 s of the reader starting,
+       the phase is refused before launch.
+     - **What this replaces:** the earlier fixed per-sample budget (interval/2) and
+       the hung-read thread bound. Now at most one read per volume can be hung, and a
+       hung read simply lets that volume go stale.
+     - **Exposure:** at most 2 s passes from the last valid observation to the breach
+       decision, plus scheduling jitter, plus the 10 s stop. So the 48GiB argument
+       below is unchanged: 12 s at 3,300 MB/s is about 39.6GB.
+     - **Why the amendment:** B1 run 01 (`evidence/b1-restore-01/`). There, a drvfs
+       statfs on `/mnt/c` and `/mnt/e` exceeded the old 0.5 s budget during import
+       I/O on C:, while C: had about 262GB free.
+     - **Accepted liveness risk:** if a volume's reads stall for more than 2 s, the
+       phase still breaches. For B1 attempt 02 that would consume the attempt. The
+       record therefore keeps read counts, the longest read and the greatest
+       staleness observed.
    - **Breach:**
      - C: below 42,949,672,960 B plus a 48GiB reserve.
      - E: below its 12GiB floor (12,884,901,888 B; "E:12GiB floor" at line 94) plus
