@@ -1,0 +1,361 @@
+{
+  "archive": {
+    "blobs": 50,
+    "content_bytes": 10469582904,
+    "index_annotations": {
+      "containerd.io/distribution.source.nvcr.io": "nvidia/deepstream"
+    },
+    "members": 55,
+    "sha256": "a55b6e0c5c522b09aa1c5f521789424609455d49678dd0042c6c3472d00aa9b1",
+    "size": 10469630464
+  },
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "-H",
+        "unix:///run/vast-pr9-desktop-api.sock",
+        "version",
+        "--format",
+        "{{.Server.Version}}"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.265,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 7,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "-H",
+        "unix:///run/vast-pr9-desktop-api.sock",
+        "info",
+        "--format",
+        "{{.ID}}"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 1.667,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 37,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "-H",
+        "unix:///run/vast-pr9-desktop-api.sock",
+        "image",
+        "inspect",
+        "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+        "--format",
+        "{{json .Id}} {{json .RepoDigests}}"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.214,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 176,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/ctr",
+        "--address",
+        "/run/containerd/containerd.sock",
+        "version"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.016,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 229,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/ctr",
+        "--address",
+        "/run/containerd/containerd.sock",
+        "--namespace",
+        "moby",
+        "images",
+        "ls",
+        "-q"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.008,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 0,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/ctr",
+        "--address",
+        "/run/containerd/containerd.sock",
+        "--namespace",
+        "moby",
+        "content",
+        "active"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.016,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 125,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/ctr",
+        "--address",
+        "/run/containerd/containerd.sock",
+        "--namespace",
+        "moby",
+        "leases",
+        "ls"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.016,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 184,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/ctr",
+        "--address",
+        "/run/containerd/containerd.sock",
+        "--namespace",
+        "moby",
+        "content",
+        "active"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.14,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 125,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/ctr",
+        "--address",
+        "/run/containerd/containerd.sock",
+        "--namespace",
+        "moby",
+        "leases",
+        "ls"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.032,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 184,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/ctr",
+        "--address",
+        "/run/containerd/containerd.sock",
+        "--namespace",
+        "moby",
+        "images",
+        "import",
+        "--local",
+        "--base-name",
+        "nvcr.io/nvidia/deepstream",
+        "--digests",
+        "--platform",
+        "linux/amd64",
+        "--snapshotter",
+        "overlayfs",
+        "--sync-fs",
+        "/var/lib/vast-pr9-b1/deepstream-c11befa8.docker-save.tar"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 148.329,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 189,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/ctr",
+        "--address",
+        "/run/containerd/containerd.sock",
+        "--namespace",
+        "moby",
+        "images",
+        "ls",
+        "-q"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.119,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 98,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    }
+  ],
+  "import_started": true,
+  "late_signals": [],
+  "mode": "reuse",
+  "native_containers_after": [
+    [
+      "4df593e12ca362e69f0594b2035197335f335d3ceae3c71894b31db9f197a09f",
+      "exited"
+    ],
+    [
+      "90f8ebb69bd83cbb02067a831cc2ace5efe78fc6b568a665bd93333d7b4b6e87",
+      "exited"
+    ],
+    [
+      "9b5c396109909a8a091a0fc6bb6529f887233df77ab314435ce85ab05e22fbc5",
+      "exited"
+    ]
+  ],
+  "native_containers_before": [
+    [
+      "4df593e12ca362e69f0594b2035197335f335d3ceae3c71894b31db9f197a09f",
+      "exited"
+    ],
+    [
+      "90f8ebb69bd83cbb02067a831cc2ace5efe78fc6b568a665bd93333d7b4b6e87",
+      "exited"
+    ],
+    [
+      "9b5c396109909a8a091a0fc6bb6529f887233df77ab314435ce85ab05e22fbc5",
+      "exited"
+    ]
+  ],
+  "native_image": {
+    "chain_id": "sha256:583abc9004877e79fd0f5d47e4c7cff085b8538fdcbff0c070e044bdb0b43c1a",
+    "env_keys_sha256": "6785bc7c38e52df3c99c3856d0619875fc1a1f44aab077baa550da820b8f1db9",
+    "id": "sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+    "repo_digests": [
+      "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+    ],
+    "repo_tags": [
+      "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+    ],
+    "rootfs_sha256": "1e0fe0c49e48962dc125b19e5b1936c564f1c6a3e00006d5e5cca7dc7ebfd981",
+    "size": 10469582904,
+    "unpacked_bytes": 18930790400
+  },
+  "native_references_after": [
+    "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+  ],
+  "native_references_before": [],
+  "outcome": "restored",
+  "provider": "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+  "remnants_before_import": {
+    "ingests": [
+      "REF\t\t\t\t\t\t\t\t\t\t\tSIZE\tAGE\t\t",
+      "tar-blobs/sha256/0874059c255d19eb34bcb009a6006d6634fa381a23988b78f35b4a9f9d2dcc02\t339.7MB\t28 hours"
+    ],
+    "ingests_truncated": false,
+    "leases": [
+      "ID             CREATED AT                LABELS                                            ",
+      "124685930-FsqA 2026-11-05T16:17:22+03:00 containerd.io/gc.expire=2026-11-06T16:17:22+03:00"
+    ],
+    "leases_truncated": false
+  },
+  "remnants_preflight": {
+    "ingests": [
+      "REF\t\t\t\t\t\t\t\t\t\t\tSIZE\tAGE\t\t",
+      "tar-blobs/sha256/0874059c255d19eb34bcb009a6006d6634fa381a23988b78f35b4a9f9d2dcc02\t339.7MB\t28 hours"
+    ],
+    "ingests_truncated": false,
+    "leases": [
+      "ID             CREATED AT                LABELS                                            ",
+      "124685930-FsqA 2026-11-05T16:17:22+03:00 containerd.io/gc.expire=2026-11-06T16:17:22+03:00"
+    ],
+    "leases_truncated": false
+  },
+  "retained": "the archive and this record are retained; the helper never prunes, removes, overwrites or retries (containerd may release a failed import's unreferenced content when ctr's lease ends)",
+  "schema": "vast.pr9.b1-restore.v1",
+  "seconds": 174.227,
+  "stages": [
+    {
+      "at": 2.312,
+      "desktop_engine": "aa8f3d33-e1dc-4ed2-ad06-488b46b332d0",
+      "native_engine": "1e493309-3767-45fb-9078-05b838bdfd80",
+      "stage": "preflight"
+    },
+    {
+      "at": 2.312,
+      "expected_sha256": "a55b6e0c5c522b09aa1c5f521789424609455d49678dd0042c6c3472d00aa9b1",
+      "path": "/var/lib/vast-pr9-b1/deepstream-c11befa8.docker-save.tar",
+      "stage": "archive_reused"
+    },
+    {
+      "at": 25.3,
+      "blobs": 50,
+      "members": 55,
+      "sha256": "a55b6e0c5c522b09aa1c5f521789424609455d49678dd0042c6c3472d00aa9b1",
+      "size": 10469630464,
+      "stage": "verified"
+    },
+    {
+      "at": 173.811,
+      "stage": "imported"
+    },
+    {
+      "at": 174.227,
+      "stage": "native_verified"
+    }
+  ]
+}
